@@ -196,6 +196,11 @@ void FilenameTest::testPathJavascriptArray()
 	assertPath("javascript:copyrights.join('-')", "copyright1-copyright2");
 }
 
+void FilenameTest::testPathJavascriptDate()
+{
+	assertPath("javascript:date.toISOString().slice(0, 10)", "2016-08-18");
+}
+
 void FilenameTest::testPathInvalidJavascript()
 {
 	assertPath("javascript:'", QStringList());

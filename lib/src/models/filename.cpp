@@ -1,7 +1,8 @@
 #include "models/filename.h"
 #include <QCollator>
 #include <QIcon>
-#include <QtScript>
+#include <QJSEngine>
+#include <QRegularExpression>
 #include <algorithm>
 #include "functions.h"
 #include "models/image.h"
@@ -129,61 +130,45 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
-QString generateJavaScriptVariableInternal(const QString &name, const QString &value)
+void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens) const
 {
-	return "var " + name + " = " + value + ";\r\n";
-}
-QString generateJavaScriptVariableDate(const QString &name, const QString &value)
-{
-	return generateJavaScriptVariableInternal(name, "new Date(\"" + value + "\")");
-}
-QString generateJavaScriptVariable(const QString &name, const QStringList &values)
-{
-	return generateJavaScriptVariableInternal(name, values.isEmpty() ? "[]" : "[\"" + values.join("\", \"") + "\"]");
-}
-QString generateJavaScriptVariable(const QString &name, const QString &value)
-{
-	return generateJavaScriptVariableInternal(name, "\"" + value + "\"");
-}
+	QJSValue &obj = engine.globalObject();
 
-QString Filename::generateJavaScriptVariables(QSettings *settings, const QMap<QString, Token> &tokens) const
-{
-	QString inits = "";
 	for (auto it = tokens.begin(); it != tokens.end(); ++it)
 	{
 		const QString &key = it.key();
 		QVariant val = it.value().value();
-		QString res;
 
-		if (val.type() == QVariant::StringList)
+		if (val.type() == QVariant::StringList || val.type() == QVariant::String)
 		{
-			QStringList vals = val.toStringList();
-			QString mainSeparator = settings->value("Save/separator", " ").toString();
-			QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
+			QString res;
 
-			if (key != "all" && key != "tags")
-			{ inits += generateJavaScriptVariable(key + "s", vals); }
+			if (val.type() == QVariant::StringList)
+			{
+				QStringList vals = val.toStringList();
+				QString mainSeparator = settings->value("Save/separator", " ").toString();
+				QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
 
-			res = vals.join(tagSeparator);
+				if (key != "all" && key != "tags")
+				{ obj.setProperty(key + "s", engine.toScriptValue(vals)); }
+
+				res = vals.join(tagSeparator);
+			}
+			else
+			{ res = val.toString(); }
+
+			if (key != "allo")
+			{
+				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+				if (!settings->value("Save/replaceblanks", false).toBool())
+				{ res.replace("_", " "); }
+			}
+
+			obj.setProperty(key, res);
 		}
-		else if (val.type() == QVariant::DateTime)
-		{ res = val.toDateTime().toString(Qt::ISODate); }
 		else
-		{ res = val.toString(); }
-
-		if (key != "allo")
-		{
-			res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-			if (!settings->value("Save/replaceblanks", false).toBool())
-			{ res.replace("_", " "); }
-		}
-
-		if (key == "date")
-		{ inits += generateJavaScriptVariableDate(key, res); }
-		else
-		{ inits += generateJavaScriptVariable(key, res); }
+		{ obj.setProperty(key, engine.toScriptValue(val)); }
 	}
-	return inits;
 }
 
 bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const
@@ -194,12 +179,10 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 		// We remove the "javascript:" part
 		cond = cond.right(cond.length() - 11);
 
-		// Variables initialization
-		QString inits = generateJavaScriptVariables(settings, tokens);
-
 		// Script execution
-		QScriptEngine engine;
-		QScriptValue result = engine.evaluate(QScriptProgram(inits + cond));
+		QJSEngine engine;
+		setJavaScriptVariables(engine, settings, tokens);
+		QJSValue result = engine.evaluate(cond);
 		if (result.isError())
 		{
 			log("Error in Javascript evaluation:<br/>" + result.toString());
@@ -315,12 +298,10 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 		for (const auto &replaces : replacesList)
 		{
-			// Variables initialization
-			QString inits = generateJavaScriptVariables(settings, replaces);
-
 			// Script execution
-			QScriptEngine engine;
-			QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
+			QJSEngine engine;
+			setJavaScriptVariables(engine, settings, replaces);
+			QJSValue result = engine.evaluate(filename);
 			if (result.isError())
 			{
 				log("Error in Javascript evaluation:<br/>" + result.toString());

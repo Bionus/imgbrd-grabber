@@ -1,4 +1,5 @@
-#include <QtScript>
+#include <QEventLoop>
+#include <QRegularExpression>
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
 #include "functions.h"

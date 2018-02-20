@@ -1,6 +1,7 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
+#include <QJSEngine>
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -52,7 +53,7 @@ class Filename
 		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
 		bool returnError(const QString &msg, QString *error) const;
 		QString fixSeparator(const QString &separator) const;
-		QString generateJavaScriptVariables(QSettings *settings, const QMap<QString, Token> &tokens) const;
+		void setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens) const;
 		bool matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const;
 
 	private:
