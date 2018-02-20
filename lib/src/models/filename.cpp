@@ -132,7 +132,7 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 
 void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens) const
 {
-	QJSValue &obj = engine.globalObject();
+	QJSValue obj = engine.globalObject();
 
 	for (auto it = tokens.begin(); it != tokens.end(); ++it)
 	{
