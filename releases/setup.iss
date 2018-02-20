@@ -80,7 +80,7 @@ Source: "..\release\Qt5Multimedia.dll";         DestDir: "{app}"; Flags: ignorev
 Source: "..\release\Qt5Network.dll";            DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5OpenGL.dll";             DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5PrintSupport.dll";       DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\Qt5Script.dll";             DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\Qt5Qml.dll";                DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5Sql.dll";                DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5Widgets.dll";            DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5Xml.dll";                DestDir: "{app}"; Flags: ignoreversion
