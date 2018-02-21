@@ -147,12 +147,7 @@ void PageApi::updateUrls()
 		}
 	}
 	if (url.isEmpty())
-	{
-		if (t.isEmpty() && m_api->contains("Urls/Home"))
-		{ url = m_api->value("Urls/Home"); }
-		else
-		{ url = m_api->value("Urls/Tags"); }
-	}
+	{ url = m_api->pageUrl(t, p, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
 
 	// Global replace tokens
 	m_originalUrl = QString(url);

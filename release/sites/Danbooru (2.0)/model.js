@@ -6,13 +6,45 @@ function mapFields(data, map) {
     for (var to in map) {
         var from = map[to];
         var val = from in data ? data[from] : undefined;
-        if (val && typeof val === "object" && "#text" in val) {
+        if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
             val = val["#text"];
         }
         result[to] = val;
     }
     return result;
 }
+
+function loginUrl(fields, values) {
+    var res = "";
+    for (var i in fields) {
+        var field = fields[i];
+        res += field.key + "=" + values[field.key] + "&amp;";
+    }
+    return res;
+};
+
+function fixPageUrl(url, page, previous) {
+    url = url.replace("{page}", page);
+    if (previous) {
+        url = url.replace("{min}", previous.minId);
+        url = url.replace("{max}", previous.maxId);
+        url = url.replace("{min-1}", previous.minId - 1);
+        url = url.replace("{max-1}", previous.maxId - 1);
+        url = url.replace("{min+1}", previous.minId + 1);
+        url = url.replace("{max+1}", previous.maxId + 1);
+    }
+    return url;
+};
+
+function pageUrl(page, previous, limit, ifBelow, ifNext, ifPrev) {
+    if (page < limit || !previous) {
+        return fixPageUrl(ifBelow, page, previous);
+    }
+    if (previous.page > page) {
+        return fixPageUrl(ifPrev, page, previous);
+    }
+    return fixPageUrl(ifNext, page, previous);
+};
 
 var auth = {
     url: {
@@ -23,7 +55,7 @@ var auth = {
                 type: "username",
             },
             {
-                key: "password",
+                key: "password_hash",
                 type: "hash",
                 hash: "sha1",
                 salt: "choujin-steiner--%value%--",
@@ -58,6 +90,11 @@ return {
             auth: [],
             maxLimit: 200,
             search: {
+                url: function(query, opts, previous) {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    return "/posts.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
+                },
                 parse: function(src) {
                     var map = {
                         "created_at": "created_at",
@@ -107,6 +144,11 @@ return {
             auth: [],
             maxLimit: 200,
             search: {
+                url: function(query, opts, previous) {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    return "/posts.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
+                },
                 parse: function(src) {
                     var map = {
                         "created_at": "created-at",
@@ -156,6 +198,11 @@ return {
             auth: [],
             maxLimit: 200,
             search: {
+                url: function(query, opts, previous) {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
+                },
                 parse: function(src) {
                     var matches = Grabber.regexMatches('<li class="category-(?<type>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<tag>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
                     var tags = {};

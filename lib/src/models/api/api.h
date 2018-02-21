@@ -15,6 +15,8 @@ struct ParsedPage
 	QList<QSharedPointer<Image>> images;
 };
 
+class Site;
+
 class Api : public QObject
 {
 	Q_OBJECT
@@ -26,12 +28,13 @@ class Api : public QObject
 		QString getName() const;
 		bool needAuth() const;
 
-		// XML info getters
+		// Info getters
 		bool contains(const QString &key) const;
 		QString value(const QString &key) const;
 		QString operator[](const QString &key) const { return value(key); }
 
 		// API
+		virtual QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first) const = 0;
 
 	protected:

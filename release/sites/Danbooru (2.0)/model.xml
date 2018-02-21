@@ -49,7 +49,7 @@
 					<Type>username</Type>
 				</Field>
 				<Field>
-					<Key>password</Key>
+					<Key>password_hash</Key>
 					<Type>hash</Type>
 					<Hash>sha1</Hash>
 					<Salt>choujin-steiner--%value%--</Salt>

@@ -28,6 +28,18 @@ bool Api::contains(const QString &key) const	{ return m_data.contains(key);	}
 QString Api::value(const QString &key) const	{ return m_data.value(key);		}
 
 
+QString Api::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+{
+	QString url;
+	if (search.isEmpty() && m_data.contains("Urls/Home"))
+	{ url = m_data.value("Urls/Home"); }
+	else
+	{ url = m_data.value("Urls/Tags"); }
+
+	return url;
+}
+
+
 QString _parseSetImageUrl(Site *site, const Api *api, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, const QString &def = QString())
 {
 	if (api->contains(settingUrl) && ret.length() < 5)
