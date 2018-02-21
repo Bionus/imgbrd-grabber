@@ -61,6 +61,7 @@ class Site : public QObject
 		QVariant setting(const QString &key, const QVariant &def = QVariant());
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
 		void syncSettings();
+		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
 		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);

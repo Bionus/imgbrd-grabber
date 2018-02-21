@@ -332,6 +332,7 @@ void Site::finishedTags()
 QVariant Site::setting(const QString &key, const QVariant &def)	{ return m_settings->value(key, def); }
 void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def)	{ m_settings->setValue(key, value, def); }
 void Site::syncSettings() { m_settings->sync(); }
+MixedSettings *Site::settings() const { return m_settings; }
 TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
 QString Site::name() const { return m_name;	}
