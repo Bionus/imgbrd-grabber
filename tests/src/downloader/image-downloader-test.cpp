@@ -24,6 +24,7 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["file_url"] = "http://test.com/img/oldfilename.jpg";
 	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
 	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	details["page_url"] = "/posts/7331";
 
 	auto *profile = new Profile("tests/resources/");
 	auto *source = new Source(profile, "release/sites/Danbooru (2.0)");

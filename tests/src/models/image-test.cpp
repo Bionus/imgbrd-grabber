@@ -31,7 +31,7 @@ void ImageTest::init()
 	m_details["file_url"] = "http://test.com/img/oldfilename.jpg?123456";
 	m_details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
 	m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
-	m_details["page_url"] = "";
+	m_details["page_url"] = "/posts/7331";
 	m_details["width"] = "800";
 	m_details["height"] = "600";
 	m_details["source"] = "http://google.com/toto/toto.jpg";
