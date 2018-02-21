@@ -2,7 +2,7 @@
 
 
 TestSuite::TestSuite()
-	: QObject(), profile("tests/resources/")
+	: QObject()
 {
 	getSuites().append(this);
 }
@@ -23,8 +23,8 @@ void TestSuite::setupSite(const QString &site, const QString &source)
 	{ QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini"); }
 }
 
-QList<QObject*> &TestSuite::getSuites()
+QList<TestSuite*> &TestSuite::getSuites()
 {
-	static QList<QObject*> suites;
+	static QList<TestSuite*> suites;
 	return suites;
 }

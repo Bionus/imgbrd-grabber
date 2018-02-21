@@ -18,7 +18,7 @@ class PageTest : public TestSuite
 		void testLoadTagsAbort();
 
 	private:
-		QSettings *m_settings;
+		Profile *m_profile;
 		QList<Site*> m_sites;
 		Site *m_site;
 };

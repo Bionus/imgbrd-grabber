@@ -22,6 +22,7 @@ class SourceTest : public TestSuite
 
 	private:
 		QSettings *m_settings;
+		Profile *m_profile;
 		Source *m_source;
 };
 

@@ -15,6 +15,9 @@ class SourceGuesserTest : public TestSuite
 		void testNetworkError();
 		void testDanbooru1();
 		void testDanbooru2();
+
+	private:
+		Profile *m_profile;
 };
 
 #endif // SOURCE_GUESSER_TEST_H

@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 	setTestModeEnabled(true);
 
-	for (QObject *suite : TestSuite::getSuites())
+	for (TestSuite *suite : TestSuite::getSuites())
 	{
 		if (!testSuites.isEmpty() && !testSuites.contains(suite->metaObject()->className()))
 			continue;

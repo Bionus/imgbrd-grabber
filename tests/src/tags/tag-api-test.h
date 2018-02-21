@@ -18,7 +18,8 @@ class TagApiTest : public TestSuite
 		void testBasic();
 
 	private:
-		Site* m_site;
+		Profile *m_profile;
+		Site *m_site;
 };
 
 #endif // TAG_API_TEST_H

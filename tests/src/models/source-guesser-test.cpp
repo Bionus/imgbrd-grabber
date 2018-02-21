@@ -7,12 +7,14 @@ void SourceGuesserTest::initTestCase()
 {
 	setupSource("Danbooru");
 	setupSource("Danbooru (2.0)");
+
+	m_profile = new Profile("tests/resources/");
 }
 
 void SourceGuesserTest::testNotFound()
 {
 	QList<Source*> sources;
-	sources.append(new Source(&profile, "tests/resources/sites/Danbooru"));
+	sources.append(new Source(m_profile, "tests/resources/sites/Danbooru"));
 
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/homepage.html");
 
@@ -25,7 +27,7 @@ void SourceGuesserTest::testNotFound()
 void SourceGuesserTest::testNetworkError()
 {
 	QList<Source*> sources;
-	sources.append(new Source(&profile, "tests/resources/sites/Danbooru"));
+	sources.append(new Source(m_profile, "tests/resources/sites/Danbooru"));
 
 	CustomNetworkAccessManager::NextFiles.enqueue("404");
 
@@ -38,7 +40,7 @@ void SourceGuesserTest::testNetworkError()
 void SourceGuesserTest::testDanbooru1()
 {
 	QList<Source*> sources;
-	sources.append(new Source(&profile, "tests/resources/sites/Danbooru"));
+	sources.append(new Source(m_profile, "tests/resources/sites/Danbooru"));
 
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/behoimi.org/homepage.html");
 
@@ -52,7 +54,7 @@ void SourceGuesserTest::testDanbooru1()
 void SourceGuesserTest::testDanbooru2()
 {
 	QList<Source*> sources;
-	sources.append(new Source(&profile, "tests/resources/sites/Danbooru (2.0)"));
+	sources.append(new Source(m_profile, "tests/resources/sites/Danbooru (2.0)"));
 
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/homepage.html");
 

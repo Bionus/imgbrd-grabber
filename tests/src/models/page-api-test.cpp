@@ -17,8 +17,9 @@ void PageApiTest::init()
 	settings.setValue("auth/password", "pass");
 	settings.sync();
 
-	m_sites.append(new Site("danbooru.donmai.us", new Source(&profile, "tests/resources/sites/Danbooru (2.0)")));
-	m_site = new Site("gelbooru.com", new Source(&profile, "tests/resources/sites/Gelbooru (0.2)"));
+	m_profile = new Profile("tests/resources/");
+	m_sites.append(new Site("danbooru.donmai.us", new Source(m_profile, "tests/resources/sites/Danbooru (2.0)")));
+	m_site = new Site("gelbooru.com", new Source(m_profile, "tests/resources/sites/Gelbooru (0.2)"));
 }
 
 void PageApiTest::cleanup()
@@ -33,8 +34,8 @@ void PageApiTest::cleanup()
 void PageApiTest::testParseUrlBasic()
 {
 	QStringList tags = QStringList() << "test" << "tag";
-	Page page(&profile, m_site, m_sites, tags);
-	PageApi pageApi(&page, &profile, m_site, m_site->getApis().first(), tags);
+	Page page(m_profile, m_site, m_sites, tags);
+	PageApi pageApi(&page, m_profile, m_site, m_site->getApis().first(), tags);
 
 	QCOMPARE(pageApi.parseUrl("/index.php?page=post&s=list&pid={pid}&tags={tags}").toString(),
 			 QString("https://gelbooru.com/index.php?page=post&s=list&pid=0&tags=test tag"));
@@ -45,8 +46,8 @@ void PageApiTest::testParseUrlLogin()
 	Site *site = m_sites.first();
 
 	QStringList tags = QStringList() << "test" << "tag";
-	Page page(&profile, site, m_sites, tags);
-	PageApi pageApi(&page, &profile, site, site->getApis().first(), tags);
+	Page page(m_profile, site, m_sites, tags);
+	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags);
 
 	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={page}{altpage}&tags={tags}").toString(),
 			 QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
@@ -56,9 +57,9 @@ void PageApiTest::testParseUrlAltPage()
 {
 	QStringList tags = QStringList() << "test" << "tag";
 	Site *site = m_sites.first();
-	Page prevPage(&profile, site, m_sites, tags, 1000);
-	Page page(&profile, site, m_sites, tags, 1001);
-	PageApi pageApi(&page, &profile, site, site->getApis().first(), tags, 1001);
+	Page prevPage(m_profile, site, m_sites, tags, 1000);
+	Page page(m_profile, site, m_sites, tags, 1001);
+	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags, 1001);
 	pageApi.setLastPage(&prevPage);
 
 	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={altpage}&tags={tags}").toString(),

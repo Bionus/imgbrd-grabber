@@ -31,12 +31,13 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	m_filesToRemove.append(settings.fileName());
 
 	QList<Site*> sites;
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	Profile *profile = new Profile("tests/resources/");
+	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
 	ste->setAutoLogin(false);
 	sites.append(ste);
 
 	QList<Image*> result;
-	m_downloader = new Downloader(&profile,
+	m_downloader = new Downloader(profile,
 								  tags.split(' '),
 								  QStringList(),
 								  sites,
@@ -95,12 +96,13 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	QList<Site*> sites;
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	Profile *profile = new Profile("tests/resources/");
+	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
 	ste->setAutoLogin(false);
 	sites.append(ste);
 
 	QList<Tag> result;
-	m_downloader = new Downloader(&profile,
+	m_downloader = new Downloader(profile,
 								  tags.split(' '),
 								  QStringList(),
 								  sites,
@@ -158,11 +160,12 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	Profile *profile = new Profile("tests/resources/");
+	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
 	ste->setAutoLogin(false);
 
 	QList<Tag> result;
-	TagApi tagApi(&profile, ste, ste->getApis().first(), 1, 100);
+	TagApi tagApi(profile, ste, ste->getApis().first(), 1, 100);
 
 	// Wait for tag api
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));

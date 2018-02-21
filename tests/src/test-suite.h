@@ -48,10 +48,7 @@ class TestSuite : public QObject
 		TestSuite();
 		void setupSource(const QString &site);
 		void setupSite(const QString &site, const QString &source);
-		static QList<QObject*> &getSuites();
-
-	protected:
-		Profile profile;
+		static QList<TestSuite*> &getSuites();
 };
 
 #endif // TEST_SUITE_H

@@ -25,9 +25,10 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
 	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
 
-	auto *source = new Source(&profile, "release/sites/Danbooru (2.0)");
+	auto *profile = new Profile("tests/resources/");
+	auto *source = new Source(profile, "release/sites/Danbooru (2.0)");
 	auto *site = new Site("danbooru.donmai.us", source);
-	return new Image(site, details, &profile);
+	return new Image(site, details, profile);
 }
 
 
