@@ -52,7 +52,7 @@
 					<Key>password</Key>
 					<Type>hash</Type>
 					<Hash>sha1</Hash>
-					<Salt>choujin-steiner--%password%--</Salt>
+					<Salt>choujin-steiner--%value%--</Salt>
 				</Field>
 			</Fields>
 		</Auth>

@@ -130,7 +130,12 @@ void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
 	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_site->value("PasswordSalt")));
 	if (!password.isEmpty())
-	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
+	{
+		QString salt = m_site->value("PasswordSalt");
+		salt.replace("%password%", password);
+		salt.replace("%value%", password);
+		ui->lineAuthPassword->setText(QCryptographicHash::hash(salt.toUtf8(), QCryptographicHash::Sha1).toHex());
+	}
 }
 
 void SourcesSettingsWindow::deleteSite()

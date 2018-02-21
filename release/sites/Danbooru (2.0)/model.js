@@ -26,7 +26,7 @@ var auth = {
                 key: "password",
                 type: "hash",
                 hash: "sha1",
-                salt: "choujin-steiner--%password%--",
+                salt: "choujin-steiner--%value%--",
             },
         ],
     },
