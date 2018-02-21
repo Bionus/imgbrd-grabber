@@ -79,6 +79,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
+	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
 	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
@@ -144,6 +145,7 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
+	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
 	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);

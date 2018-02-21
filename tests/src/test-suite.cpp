@@ -11,7 +11,9 @@ void TestSuite::setupSource(const QString &site)
 {
 	QDir().mkpath("tests/resources/sites/" + site);
 	QFile::remove("tests/resources/sites/" + site +"/model.xml");
+	QFile::remove("tests/resources/sites/" + site +"/model.js");
 	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
+	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
 }
 
 void TestSuite::setupSite(const QString &site, const QString &source)
