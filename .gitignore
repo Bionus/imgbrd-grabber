@@ -10,6 +10,7 @@ tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
 tests/resources/*.txt
+tests/resources/favorites.*
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/
