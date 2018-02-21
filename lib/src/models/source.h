@@ -1,6 +1,7 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
+#include <QJSValue>
 #include <QList>
 #include <QString>
 #include "tags/tag-name-format.h"
@@ -36,6 +37,7 @@ class Source : public QObject
 		Profile *m_profile;
 		SourceUpdater m_updater;
 		TagNameFormat m_tagNameFormat;
+		QJSValue m_jsSource;
 };
 
 #endif // SOURCE_H

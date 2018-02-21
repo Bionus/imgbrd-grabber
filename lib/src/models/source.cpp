@@ -3,10 +3,14 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QFileInfo>
+#include <QJSValue>
+#include <QJSValueIterator>
 #include <QStringList>
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/html-api.h"
+#include "models/api/javascript-grabber-helper.h"
+#include "models/api/javascript-api.h"
 #include "models/api/json-api.h"
 #include "models/api/rss-api.h"
 #include "models/api/xml-api.h"
@@ -26,68 +30,105 @@ QString getUpdaterBaseUrl()
 Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, getUpdaterBaseUrl())
 {
-	// Load XML details for this source from its model file
-	QFile file(m_dir + "/model.xml");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	bool enableJs = m_profile->getSettings()->value("enableJsModels", false).toBool();
+
+	// Javascript models
+	QFile js(m_dir + "/model.js");
+	if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		QString fileContents = file.readAll();
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
+		log(QString("Using Javascript model for %1").arg(m_name), Logger::Debug);
+
+		QString fileContents = js.readAll();
+		QString src = "(function() { " + fileContents + " })()";
+
+		auto engine = new QJSEngine(this);
+		engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
+		m_jsSource = engine->evaluate(src, js.fileName());
+
+		if (m_jsSource.isError())
+		{ log(QString("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 		else
 		{
-			QDomElement docElem = doc.documentElement();
-			QMap<QString, QString> details = domToMap(docElem);
-
-			// Get the list of possible API for this Source
-			QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";
-			QStringList availableApis;
-			for (const QString &api : possibleApis)
-				if (details.contains("Urls/" + api + "/Tags"))
-					availableApis.append(api);
-
-			if (!availableApis.isEmpty())
+			// Get the list of APIs for this Source
+			QJSValue apis = m_jsSource.property("apis");
+			QJSValueIterator it(apis);
+			while (it.hasNext())
 			{
-				m_apis.reserve(availableApis.count());
-				for (const QString &apiName : availableApis)
-				{
-					Api *api = nullptr;
-					if (apiName == "Html")
-					{ api = new HtmlApi(details); }
-					else if (apiName == "Json")
-					{ api = new JsonApi(details); }
-					else if (apiName == "Rss")
-					{ api = new RssApi(details); }
-					else if (apiName == "Xml")
-					{ api = new XmlApi(details); }
-
-					if (api != nullptr)
-					{ m_apis.append(api); }
-					else
-					{ log(QString("Unknown API type '%1'").arg(apiName), Logger::Error); }
-				}
+				it.next();
+				m_apis.append(new JavascriptApi(m_jsSource, it.name()));
 			}
-			else
-			{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
-
-			// Read tag naming format
-			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
-			{
-				{ "lower", TagNameFormat::Lower },
-				{ "upper_first", TagNameFormat::UpperFirst },
-				{ "upper", TagNameFormat::Upper },
-				{ "caps", TagNameFormat::Caps },
-			};
-			auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
-			m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
+			if (m_apis.isEmpty())
+			{ log(QString("No valid source has been found in the model.js file from %1.").arg(m_name)); }
 		}
 
-		file.close();
+		js.close();
 	}
+
 	else
-	{ log(QString("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
+	{
+		// Load XML details for this source from its model file
+		QFile file(m_dir + "/model.xml");
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			QString fileContents = file.readAll();
+			QDomDocument doc;
+			QString errorMsg;
+			int errorLine, errorColumn;
+			if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
+			{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
+			else
+			{
+				QDomElement docElem = doc.documentElement();
+				QMap<QString, QString> details = domToMap(docElem);
+
+				// Get the list of possible API for this Source
+				QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";
+				QStringList availableApis;
+				for (const QString &api : possibleApis)
+					if (details.contains("Urls/" + api + "/Tags"))
+						availableApis.append(api);
+
+				if (!availableApis.isEmpty())
+				{
+					m_apis.reserve(availableApis.count());
+					for (const QString &apiName : availableApis)
+					{
+						Api *api = nullptr;
+						if (apiName == "Html")
+						{ api = new HtmlApi(details); }
+						else if (apiName == "Json")
+						{ api = new JsonApi(details); }
+						else if (apiName == "Rss")
+						{ api = new RssApi(details); }
+						else if (apiName == "Xml")
+						{ api = new XmlApi(details); }
+
+						if (api != nullptr)
+						{ m_apis.append(api); }
+						else
+						{ log(QString("Unknown API type '%1'").arg(apiName), Logger::Error); }
+					}
+				}
+				else
+				{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
+
+				// Read tag naming format
+				static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+				{
+					{ "lower", TagNameFormat::Lower },
+					{ "upper_first", TagNameFormat::UpperFirst },
+					{ "upper", TagNameFormat::Upper },
+					{ "caps", TagNameFormat::Caps },
+				};
+				auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
+				m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
+			}
+
+			file.close();
+		}
+		else
+		{ log(QString("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
+	}
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
