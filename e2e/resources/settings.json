@@ -1,6 +1,6 @@
 {
-    "Db (2.0)": {
-        "db.dm.us": {
+    "Danbooru (2.0)": {
+        "danbooru.donmai.us": {
             "json": ["", -1, 5, 0],
             "xml":  ["", -1, 5, 0],
             "html": ["", -1, 5, [">", 0]]

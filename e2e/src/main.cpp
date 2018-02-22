@@ -1,4 +1,7 @@
+#include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include "functions.h"
@@ -9,38 +12,91 @@
 #include "models/source.h"
 
 
+bool opCompare(QString op, int left, int right)
+{
+	if (right == -1)
+		return true;
+	if (op == ">")
+		return left > right;
+	if (op == "<")
+		return left < right;
+	return left == right;
+}
+
+bool jsonCompare(QVariant value, QJsonValue opt)
+{
+	QString op = "=";
+	if (opt.isArray())
+	{
+		QJsonArray arrOpt = opt.toArray();
+		op = arrOpt[0].toString();
+		opt = arrOpt[1];
+	}
+
+	if (value.type() == QVariant::String)
+	{ return value.toString() == opt.toString(); }
+
+	return opCompare(op, value.toInt(), opt.toDouble());
+}
+
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 
+	QCommandLineParser parser;
+	parser.addHelpOption();
+
+	QCommandLineOption inputOption(QStringList() << "i" << "input", "Input JSON configuration file", "input");
+	QCommandLineOption outputOption(QStringList() << "o" << "output", "Output JSON result file", "output");
+	parser.addOption(inputOption);
+	parser.addOption(outputOption);
+	parser.process(app);
+
+	parser.value(inputOption);
+	parser.value(outputOption);
+
+	QFile f(parser.value(inputOption));
+	if (!f.open(QFile::ReadOnly | QFile::Text))
+		return 1;
+
+	QJsonObject allJson;
+	QJsonDocument input = QJsonDocument::fromJson(f.readAll());
+	f.close();
+
 	auto manager = new QNetworkAccessManager();
-	QStringList sourcesToTest = QStringList() << "Danbooru (2.0)";
-	QStringList sitesToTest = QStringList() << "danbooru.donmai.us";
-
 	Profile *profile = new Profile(savePath());
-	for (Source *source : profile->getSources().values())
+	auto allSites = profile->getSites();
+
+	QJsonObject sources = input.object();
+	for (const QString &source : sources.keys())
 	{
-		if (!sourcesToTest.isEmpty() && !sourcesToTest.contains(source->getName()))
-			continue;
+		qDebug() << "#" << "Source" << source;
+		QJsonObject sourceJson;
 
-		qDebug() << "#########" << "Source" << source->getName();
-
-		for (Site *site : source->getSites())
+		QJsonObject sites = sources.value(source).toObject();
+		for (const QString &siteUrl : sites.keys())
 		{
-			if (!sitesToTest.isEmpty() && !sitesToTest.contains(site->url()))
-				continue;
+			qDebug() << "##" << "Site" << siteUrl;
+			QJsonObject siteJson;
 
-			qDebug() << "######" << "Site" << site->url();
+			Site *site = allSites.value(siteUrl);
+			QJsonObject apis = sites.value(siteUrl).toObject();
 
 			QString search = "rating:safe";
 			int pagei = 1;
 			int limit = 5;
 
-			Page *page = new Page(profile, site, profile->getSites().values(), QStringList() << search, pagei, limit);
+			Page *page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);
 
-			for (Api *api : site->getApis())
+			for (const QString &apiName : apis.keys())
 			{
-				qDebug() << "###" << "API" << api->getName();
+				qDebug() << "###" << "API" << apiName;
+				QJsonObject apiJson;
+
+				Api *api = Q_NULLPTR;
+				for (Api *a : site->getApis())
+					if (a->getName().toLower() == apiName.toLower())
+						api = a;
 
 				QString url = api->pageUrl(search, pagei, limit, 0, 0, 0, site);
 				QEventLoop loop;
@@ -49,24 +105,58 @@ int main(int argc, char *argv[])
 				loop.exec();
 
 				QString src = reply->readAll();
-				qDebug() << "url" << url;
-				qDebug() << "src" << src.left(200);
-
 				auto ret = api->parsePage(page, src, 0);
-				qDebug() << "error" << ret.error;
-				qDebug() << "imagesCount" << ret.imagesCount;
-				qDebug() << "images" << ret.images.count();
-				for (const QSharedPointer<Image> &img : ret.images)
-				{ qDebug() << "-" << img->md5(); }
-				qDebug() << "tags" << ret.tags.count();
-				for (const Tag &tag : ret.tags)
-				{ qDebug() << "-" << tag.text() << "/" << tag.type().name() << "/" << tag.count(); }
-			}
 
+				apiJson["status"] = "ok";
+				QStringList message;
+
+				// Checks
+				QJsonArray checks = apis.value(apiName).toArray();
+				if (!jsonCompare(ret.error, checks[0]))
+				{
+					apiJson["status"] = "error";
+					message.append(ret.error);
+				}
+				if (!jsonCompare(ret.imagesCount, checks[1]))
+				{
+					if (apiJson["status"] == "ok")
+					{ apiJson["status"] = "warning"; }
+					message.append("Image count error: " + QString::number(ret.imagesCount));
+				}
+				if (!jsonCompare(ret.images.count(), checks[2]))
+				{
+					apiJson["status"] = "error";
+					message.append("Number of images error: " + QString::number(ret.images.count()));
+				}
+				if (!jsonCompare(ret.tags.count(), checks[3]))
+				{
+					if (apiJson["status"] == "ok")
+					{ apiJson["status"] = "warning"; }
+					message.append("Number of tags error: " + QString::number(ret.tags.count()));
+				}
+
+				if (!message.isEmpty())
+				{
+					apiJson["message"] = message.join(", ");
+					siteJson[apiName] = apiJson;
+				}
+				else
+				{ siteJson[apiName] = apiJson["status"]; }
+			}
+			sourceJson[siteUrl] = siteJson;
 		}
+		allJson[source] = sourceJson;
 	}
 
 	manager->deleteLater();
+
+	QJsonDocument outDoc(allJson);
+	QFile fOut(parser.value(outputOption));
+	if (!fOut.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
+		return 1;
+
+	fOut.write(outDoc.toJson());
+	fOut.close();
 
 	return 0;
 }
