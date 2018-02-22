@@ -98,9 +98,7 @@ QJSValue JavascriptGrabberHelper::parseXML(QString txt)
 	int errorLine, errorColumn;
 	if (!doc.setContent(txt, false, &errorMsg, &errorLine, &errorColumn))
 	{
-		auto err = QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn));
-		log(err, Logger::Error);
-		return err;
+		log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error);
 		return QJSValue(QJSValue::UndefinedValue);
 	}
 
