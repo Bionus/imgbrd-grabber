@@ -68,7 +68,10 @@ int main(int argc, char *argv[])
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
-	QJsonObject sources = input.object();
+	QJsonObject root = input.object();
+	QJsonArray rootSearch = root.value("search").toArray();
+	QJsonObject sources = root.value("sources").toObject();
+
 	for (const QString &sourceName : sources.keys())
 	{
 		qDebug() << "#" << "Source" << sourceName;
@@ -78,7 +81,9 @@ int main(int argc, char *argv[])
 		QJsonObject sites = sources.value(sourceName).toObject();
 
 		QJsonObject sourceApis = sites.value("apis").toObject();
-		QJsonArray sourceSearch = sites.value("search").toArray();;
+		QJsonArray sourceSearch = rootSearch;
+		if (sites.contains("search"))
+		{ sourceSearch = sites.value("search").toArray(); }
 
 		for (Site *site : source->getSites())
 		{
