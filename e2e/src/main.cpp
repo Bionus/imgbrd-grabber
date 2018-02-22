@@ -5,8 +5,10 @@
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include "functions.h"
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/page.h"
+#include "models/page-api.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -55,6 +57,8 @@ int main(int argc, char *argv[])
 	parser.value(inputOption);
 	parser.value(outputOption);
 
+	Logger::getInstance().setLogLevel(Logger::Warning);
+
 	QFile f(parser.value(inputOption));
 	if (!f.open(QFile::ReadOnly | QFile::Text))
 		return 1;
@@ -92,9 +96,9 @@ int main(int argc, char *argv[])
 
 			QJsonObject siteApis = sourceApis;
 			QJsonArray siteSearch = sourceSearch;
-			if (sourceJson.contains(site->url()))
+			if (sites.contains(site->url()))
 			{
-				QJsonObject override = sourceJson.value(site->url()).toObject();
+				QJsonObject override = sites.value(site->url()).toObject();
 				if (override.contains("apis"))
 				{ siteApis = override.value("apis").toObject(); }
 				if (override.contains("search"))
@@ -117,41 +121,41 @@ int main(int argc, char *argv[])
 					if (a->getName().toLower() == apiName.toLower())
 						api = a;
 
-				QString url = api->pageUrl(search, pagei, limit, 0, 0, 0, site);
+				auto pageApi = new PageApi(page, profile, site, api, search.split(' '), pagei, limit);
 				QEventLoop loop;
-				auto reply = manager->get(QNetworkRequest(QUrl(url)));
-				QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+				QObject::connect(pageApi, &PageApi::finishedLoading, &loop, &QEventLoop::quit);
+				pageApi->load();
 				loop.exec();
-
-				QString src = reply->readAll();
-				auto ret = api->parsePage(page, src, 0);
 
 				apiJson["status"] = "ok";
 				QStringList message;
 
 				// Checks
 				QJsonArray checks = siteApis.value(apiName).toArray();
-				if (!jsonCompare(ret.error, checks[0]))
+				if (!jsonCompare(pageApi->errors().join(", "), checks[0]))
 				{
 					apiJson["status"] = "error";
-					message.append(ret.error);
+					message.append(pageApi->errors());
 				}
-				if (!jsonCompare(ret.imagesCount, checks[1]))
+				if (!jsonCompare(pageApi->imagesCount(false), checks[1]))
 				{
 					if (apiJson["status"] == "ok")
 					{ apiJson["status"] = "warning"; }
-					message.append("Image count error: " + QString::number(ret.imagesCount));
+					message.append("Image count error: " + QString::number(pageApi->imagesCount(false)));
 				}
-				if (!jsonCompare(ret.images.count(), checks[2]))
+				if (!jsonCompare(pageApi->images().count(), checks[2]))
 				{
 					apiJson["status"] = "error";
-					message.append("Number of images error: " + QString::number(ret.images.count()));
+					message.append("Number of images error: " + QString::number(pageApi->images().count()));
 				}
-				if (!jsonCompare(ret.tags.count(), checks[3]))
+				if (!jsonCompare(pageApi->tags().count(), checks[3]))
 				{
 					if (apiJson["status"] == "ok")
 					{ apiJson["status"] = "warning"; }
-					message.append("Number of tags error: " + QString::number(ret.tags.count()));
+					QStringList tags;
+					for (const Tag& tag : pageApi->tags())
+					{ tags.append(tag.text()); }
+					message.append("Number of tags error: " + QString::number(pageApi->tags().count()) + " [" + tags.join(", ") + "]");
 				}
 
 				if (!message.isEmpty())
