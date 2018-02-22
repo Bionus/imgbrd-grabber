@@ -65,30 +65,44 @@ int main(int argc, char *argv[])
 
 	auto manager = new QNetworkAccessManager();
 	Profile *profile = new Profile(savePath());
+	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
 	QJsonObject sources = input.object();
-	for (const QString &source : sources.keys())
+	for (const QString &sourceName : sources.keys())
 	{
-		qDebug() << "#" << "Source" << source;
+		qDebug() << "#" << "Source" << sourceName;
 		QJsonObject sourceJson;
 
-		QJsonObject sites = sources.value(source).toObject();
-		for (const QString &siteUrl : sites.keys())
+		Source *source = allSources.value(sourceName);
+		QJsonObject sites = sources.value(sourceName).toObject();
+
+		QJsonObject sourceApis = sites.value("apis").toObject();
+		QJsonArray sourceSearch = sites.value("search").toArray();;
+
+		for (Site *site : source->getSites())
 		{
-			qDebug() << "##" << "Site" << siteUrl;
+			qDebug() << "##" << "Site" << site->url();
 			QJsonObject siteJson;
 
-			Site *site = allSites.value(siteUrl);
-			QJsonObject apis = sites.value(siteUrl).toObject();
+			QJsonObject siteApis = sourceApis;
+			QJsonArray siteSearch = sourceSearch;
+			if (sourceJson.contains(site->url()))
+			{
+				QJsonObject override = sourceJson.value(site->url()).toObject();
+				if (override.contains("apis"))
+				{ siteApis = override.value("apis").toObject(); }
+				if (override.contains("search"))
+				{ siteSearch = override.value("search").toArray(); }
+			}
 
-			QString search = "rating:safe";
-			int pagei = 1;
-			int limit = 5;
+			QString search = siteSearch[0].toString();
+			int pagei = siteSearch[1].toDouble();
+			int limit = siteSearch[2].toDouble();
 
 			Page *page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);
 
-			for (const QString &apiName : apis.keys())
+			for (const QString &apiName : siteApis.keys())
 			{
 				qDebug() << "###" << "API" << apiName;
 				QJsonObject apiJson;
@@ -111,7 +125,7 @@ int main(int argc, char *argv[])
 				QStringList message;
 
 				// Checks
-				QJsonArray checks = apis.value(apiName).toArray();
+				QJsonArray checks = siteApis.value(apiName).toArray();
 				if (!jsonCompare(ret.error, checks[0]))
 				{
 					apiJson["status"] = "error";
@@ -143,9 +157,9 @@ int main(int argc, char *argv[])
 				else
 				{ siteJson[apiName] = apiJson["status"]; }
 			}
-			sourceJson[siteUrl] = siteJson;
+			sourceJson[site->url()] = siteJson;
 		}
-		allJson[source] = sourceJson;
+		allJson[sourceName] = sourceJson;
 	}
 
 	manager->deleteLater();

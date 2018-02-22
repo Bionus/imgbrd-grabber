@@ -1,9 +1,10 @@
 {
     "Danbooru (2.0)": {
-        "danbooru.donmai.us": {
+        "search": ["1girl", 2, 5],
+        "apis": {
             "json": ["", -1, 5, 0],
             "xml":  ["", -1, 5, 0],
-            "html": ["", -1, 5, [">", 0]]
+            "html": ["", -1, 5, 25]
         }
     }
 }
