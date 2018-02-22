@@ -22,11 +22,16 @@
                 success: function(data) {
                     var html = "";
                     for (var source in data) {
+                        var sites = data[source];
+                        if (Object.keys(sites).length == 0) {
+                            continue;
+                        }
+
                         html += "<h2>" + source + "</h2>";
                         html += "<table>";
 
                         var first = true;
-                        for (var site in data[source]) {
+                        for (var site in sites) {
                             var stts = data[source][site];
 
                             if (first) {
