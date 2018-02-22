@@ -23,8 +23,8 @@ class Source : public QObject
 		// Getters
 		QString getName() const;
 		QString getPath() const;
-		QList<Site*> getSites() const;
-		QList<Api*> getApis() const;
+		const QList<Site*> &getSites() const;
+		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;

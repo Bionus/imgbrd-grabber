@@ -157,8 +157,8 @@ Source::~Source()
 
 QString Source::getName() const					{ return m_name;	}
 QString Source::getPath() const					{ return m_dir;		}
-QList<Site*> Source::getSites() const			{ return m_sites;	}
-QList<Api*> Source::getApis() const				{ return m_apis;	}
+const QList<Site*> &Source::getSites() const	{ return m_sites;	}
+const QList<Api*> &Source::getApis() const		{ return m_apis;	}
 Profile *Source::getProfile() const				{ return m_profile;	}
 const SourceUpdater &Source::getUpdater() const	{ return m_updater;	}
 
