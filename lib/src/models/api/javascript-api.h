@@ -12,7 +12,7 @@ class JavascriptApi : public Api
 	Q_OBJECT
 
 	public:
-		explicit JavascriptApi(const QJSValue &source, const QString &key);
+		explicit JavascriptApi(const QMap<QString, QString> &data, const QJSValue &source, const QString &key);
 
 		// API
 		QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;

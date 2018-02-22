@@ -11,8 +11,8 @@ QString normalize(QString key)
 	return key;
 }
 
-JavascriptApi::JavascriptApi(const QJSValue &source, const QString &key)
-	: Api(normalize(key), QMap<QString, QString>()), m_source(source), m_key(key)
+JavascriptApi::JavascriptApi(const QMap<QString, QString> &data, const QJSValue &source, const QString &key)
+	: Api(normalize(key), data), m_source(source), m_key(key)
 {}
 
 QString JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
