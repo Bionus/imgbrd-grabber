@@ -31,10 +31,26 @@ QString Api::value(const QString &key) const	{ return m_data.value(key);		}
 QString Api::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
 	QString url;
-	if (search.isEmpty() && m_data.contains("Urls/Home"))
-	{ url = m_data.value("Urls/Home"); }
-	else
-	{ url = m_data.value("Urls/Tags"); }
+
+	// Custom URL for pool search
+	if (m_data.contains("Urls/Pools"))
+	{
+		QRegularExpression poolRx("pool:(\\d+)");
+		auto match = poolRx.match(search);
+		if (match.hasMatch())
+		{
+			url = m_data.value("Urls/Pools");
+			url.replace("{pool}", match.captured(1));
+		}
+	}
+
+	if (url.isEmpty())
+	{
+		if (search.isEmpty() && m_data.contains("Urls/Home"))
+		{ url = m_data.value("Urls/Home"); }
+		else
+		{ url = m_data.value("Urls/Tags"); }
+	}
 
 	return url;
 }

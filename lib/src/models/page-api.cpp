@@ -118,38 +118,7 @@ void PageApi::updateUrls()
 		return;
 	}
 
-	// Check if we are looking for a pool
-	QRegularExpression poolRx("pool:(\\d+)");
-	auto match = poolRx.match(t);
-	QString url;
-	int pl = -1;
-	if (match.hasMatch())
-	{
-		for (Api *api : m_site->getApis())
-		{
-			if (api->contains("Urls/Pools"))
-			{
-				url = api->value("Urls/Pools");
-				url.replace("{pool}", match.captured(1));
-				pl = match.captured(1).toInt();
-				m_api = api;
-				t = t.remove(match.capturedStart(0), match.captured(0).length()).trimmed();
-				break;
-			}
-		}
-		if (url.isEmpty())
-		{
-			log(QString("[%1][%2] No source of this site is compatible with pools.").arg(m_site->url(), m_format), Logger::Warning);
-			m_errors.append(tr("No source of this site is compatible with pools."));
-			m_search.removeAll("pool:"+match.captured(1));
-			t.remove(m_pool);
-			t = t.trimmed();
-		}
-	}
-	if (url.isEmpty())
-	{ url = m_api->pageUrl(t, p, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
-
-	// Global replace tokens
+	QString url = m_api->pageUrl(t, p, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site);
 	m_originalUrl = QString(url);
 	m_url = parseUrl(url, pid, p, t).toString();
 	m_urlRegex = QUrl(m_url);
