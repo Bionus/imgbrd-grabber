@@ -341,12 +341,12 @@ void PageApi::clear()
 }
 
 QList<QSharedPointer<Image>>	PageApi::images()		{ return m_images;		}
-QUrl			PageApi::url()			{ return m_url;			}
-QString			PageApi::source()		{ return m_source;		}
+QUrl			PageApi::url()		{ return m_url;			}
+QString			PageApi::source()	{ return m_source;		}
 QString			PageApi::wiki()		{ return m_wiki;		}
 QList<Tag>		PageApi::tags()		{ return m_tags;		}
-QStringList		PageApi::search()		{ return m_search;		}
-QStringList		PageApi::errors()		{ return m_errors;		}
+QStringList		PageApi::search()	{ return m_search;		}
+QStringList		PageApi::errors()	{ return m_errors;		}
 QUrl			PageApi::nextPage()	{ return m_urlNextPage;	}
 QUrl			PageApi::prevPage()	{ return m_urlPrevPage;	}
 

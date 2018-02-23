@@ -37,8 +37,7 @@ void PageApiTest::testParseUrlBasic()
 	Page page(m_profile, m_site, m_sites, tags);
 	PageApi pageApi(&page, m_profile, m_site, m_site->getApis().first(), tags);
 
-	QCOMPARE(pageApi.parseUrl("/index.php?page=post&s=list&pid={pid}&tags={tags}").toString(),
-			 QString("https://gelbooru.com/index.php?page=post&s=list&pid=0&tags=test tag"));
+	QCOMPARE(pageApi.url().toString(), QString("https://gelbooru.com/index.php?page=dapi&s=post&q=index&limit=25&pid=0&tags=test tag"));
 }
 
 void PageApiTest::testParseUrlLogin()
@@ -49,21 +48,20 @@ void PageApiTest::testParseUrlLogin()
 	Page page(m_profile, site, m_sites, tags);
 	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags);
 
-	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={page}{altpage}&tags={tags}").toString(),
-			 QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
+	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
 }
 
 void PageApiTest::testParseUrlAltPage()
 {
-	QStringList tags = QStringList() << "test" << "tag";
 	Site *site = m_sites.first();
+
+	QStringList tags = QStringList() << "test" << "tag";
 	Page prevPage(m_profile, site, m_sites, tags, 1000);
 	Page page(m_profile, site, m_sites, tags, 1001);
 	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags, 1001);
 	pageApi.setLastPage(&prevPage);
 
-	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={altpage}&tags={tags}").toString(),
-			 QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
+	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
 }
 
 

@@ -66,8 +66,6 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	// Basic replaces
 	url.replace("{tags}", QUrl::toPercentEncoding(search));
 	url.replace("{limit}", QString::number(limit));
-	url.replace("{pid}", QString::number(pid));
-	url.replace("{page}", QString::number(page));
 
 	// Previous page replaces
 	url.replace("{min}", QString::number(lastPageMinId));
@@ -97,6 +95,10 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 		{ url.replace("{pagepart}", m_data.value("Urls/PagePart")); }
 		url.replace("{altpage}", "");
 	}
+
+	// Page replaces
+	url.replace("{pid}", QString::number(pid));
+	url.replace("{page}", QString::number(page));
 
 	return url;
 }

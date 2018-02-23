@@ -29,6 +29,8 @@ QString JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	for (const QString &key : settings->childKeys())
 	{
 		QString value = settings->value(key).toString();
+		if (key == "pseudo" && !auth.hasProperty("login"))
+		{ auth.setProperty("login", value); }
 		if (key == "password" && !auth.hasProperty("password_hash"))
 		{ auth.setProperty("password_hash", value); }
 		auth.setProperty(key, value);
