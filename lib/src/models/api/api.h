@@ -10,9 +10,12 @@
 struct ParsedPage
 {
 	QString error;
-	int imagesCount = -1;
+	int pageCount = -1;
+	int imageCount = -1;
 	QList<Tag> tags;
 	QList<QSharedPointer<Image>> images;
+	QUrl urlNextPage;
+	QUrl urlPrevPage;
 };
 
 class Site;

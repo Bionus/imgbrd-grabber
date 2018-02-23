@@ -160,12 +160,18 @@ void PageApi::parse()
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
-	if (page.imagesCount >= 0)
-	{ setImageCount(page.imagesCount, true); }
+	if (page.imageCount >= 0)
+	{ setImageCount(page.imageCount, true); }
+	if (page.pageCount >= 0)
+	{ setPageCount(page.pageCount, true); }
 	for (const Tag &tag : page.tags)
 	{ m_tags.append(tag); }
 	for (const QSharedPointer<Image> &img : page.images)
 	{ addImage(img); }
+	if (page.urlNextPage.isValid())
+	{ m_urlNextPage = page.urlNextPage; }
+	if (page.urlPrevPage.isValid())
+	{ m_urlPrevPage = page.urlPrevPage; }
 
 	// If tags have not been retrieved yet
 	if (m_tags.isEmpty())
@@ -279,22 +285,6 @@ void PageApi::parseTags()
 
 void PageApi::parseNavigation(const QString &source)
 {
-	// Navigation
-	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
-	{
-		QRegularExpression rx(m_site->value("Regex/NextPage"));
-		auto match = rx.match(source);
-		if (match.hasMatch())
-		{ m_urlNextPage = QUrl(match.captured(1)); }
-	}
-	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
-	{
-		QRegularExpression rx(m_site->value("Regex/PrevPage"));
-		auto match = rx.match(source);
-		if (match.hasMatch())
-		{ m_urlPrevPage = QUrl(match.captured(1)); }
-	}
-
 	// Last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
 	{ setPageCount(m_site->value("LastPage").toInt(), true); }
@@ -316,14 +306,6 @@ void PageApi::parseNavigation(const QString &source)
 	}
 
 	// Count images
-	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
-	{
-		QRegularExpression rxlast(m_site->value("Regex/Count"));
-		auto match = rxlast.match(source);
-		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
-		if (cnt > 0)
-		{ setImageCount(cnt, true); }
-	}
 	if (m_imagesCount < 1)
 	{
 		for (const Tag &tag : m_tags)

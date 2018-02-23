@@ -72,5 +72,31 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 		id++;
 	}
 
+	// Navigation
+	if (contains("Regex/NextPage"))
+	{
+		QRegularExpression rx(value("Regex/NextPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ ret.urlNextPage = QUrl(match.captured(1)); }
+	}
+	if (contains("Regex/PrevPage"))
+	{
+		QRegularExpression rx(value("Regex/PrevPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ ret.urlPrevPage = QUrl(match.captured(1)); }
+	}
+
+	// Count images
+	if (contains("Regex/Count"))
+	{
+		QRegularExpression rxlast(value("Regex/Count"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
+		if (cnt > 0)
+		{ ret.imageCount = cnt; }
+	}
+
 	return ret;
 }

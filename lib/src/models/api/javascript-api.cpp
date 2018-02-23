@@ -138,5 +138,15 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 		}
 	}
 
+	// Basic properties
+	if (results.hasProperty("imageCount"))
+	{ ret.imageCount = results.property("imageCount").toInt(); }
+	if (results.hasProperty("pageCount"))
+	{ ret.pageCount = results.property("pageCount").toInt(); }
+	if (results.hasProperty("urlNextPage"))
+	{ ret.urlNextPage = results.property("urlNextPage").toString(); }
+	if (results.hasProperty("urlPrevPage"))
+	{ ret.urlPrevPage = results.property("urlPrevPage").toString(); }
+
 	return ret;
 }
