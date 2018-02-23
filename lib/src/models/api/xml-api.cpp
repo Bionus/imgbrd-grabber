@@ -27,7 +27,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first)
 	if (count == 0 && database == "array")
 	{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 	if (count > 0)
-	{ ret.imagesCount = count; }
+	{ ret.imageCount = count; }
 
 	// Reading posts
 	QDomNodeList nodeList = docElem.elementsByTagName("post");

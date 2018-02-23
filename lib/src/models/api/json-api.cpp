@@ -27,7 +27,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 	}
 
 	if (data.contains("total"))
-	{ ret.imagesCount = data.value("total").toInt(); }
+	{ ret.imageCount = data.value("total").toInt(); }
 
 	// Get the list of posts
 	QList<QVariant> sourc = src.toList();

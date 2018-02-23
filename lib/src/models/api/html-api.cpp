@@ -20,14 +20,14 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	}
 
 	// Getting images
-	QRegularExpression rx(value("Regex/Image"), QRegularExpression::DotMatchesEverythingOption);
-	auto matches = rx.globalMatch(source);
+	QRegularExpression rxImages(value("Regex/Image"), QRegularExpression::DotMatchesEverythingOption);
+	auto matches = rxImages.globalMatch(source);
 	int id = 0;
 	while (matches.hasNext())
 	{
 		auto match = matches.next();
 		QMap<QString, QString> d;
-		for (QString group : rx.namedCaptureGroups())
+		for (QString group : rxImages.namedCaptureGroups())
 		{
 			if (group.isEmpty())
 				continue;
@@ -66,15 +66,15 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	// Navigation
 	if (contains("Regex/NextPage"))
 	{
-		QRegularExpression rx(value("Regex/NextPage"));
-		auto match = rx.match(source);
+		QRegularExpression rxNextPage(value("Regex/NextPage"));
+		auto match = rxNextPage.match(source);
 		if (match.hasMatch())
 		{ ret.urlNextPage = QUrl(match.captured(1)); }
 	}
 	if (contains("Regex/PrevPage"))
 	{
-		QRegularExpression rx(value("Regex/PrevPage"));
-		auto match = rx.match(source);
+		QRegularExpression rxPrevPage(value("Regex/PrevPage"));
+		auto match = rxPrevPage.match(source);
 		if (match.hasMatch())
 		{ ret.urlPrevPage = QUrl(match.captured(1)); }
 	}

@@ -314,24 +314,24 @@ void PageApi::clear()
 	m_pageImageCount = 0;
 }
 
-QList<QSharedPointer<Image>>	PageApi::images()		{ return m_images;		}
-QUrl			PageApi::url()		{ return m_url;			}
-QString			PageApi::source()	{ return m_source;		}
-QString			PageApi::wiki()		{ return m_wiki;		}
-QList<Tag>		PageApi::tags()		{ return m_tags;		}
-QStringList		PageApi::search()	{ return m_search;		}
-QStringList		PageApi::errors()	{ return m_errors;		}
-QUrl			PageApi::nextPage()	{ return m_urlNextPage;	}
-QUrl			PageApi::prevPage()	{ return m_urlPrevPage;	}
+QList<QSharedPointer<Image>>	PageApi::images() const	{ return m_images;		}
+QUrl			PageApi::url() const		{ return m_url;			}
+QString			PageApi::source() const		{ return m_source;		}
+QString			PageApi::wiki() const		{ return m_wiki;		}
+QList<Tag>		PageApi::tags() const		{ return m_tags;		}
+QStringList		PageApi::search() const		{ return m_search;		}
+QStringList		PageApi::errors() const		{ return m_errors;		}
+QUrl			PageApi::nextPage() const	{ return m_urlNextPage;	}
+QUrl			PageApi::prevPage() const	{ return m_urlPrevPage;	}
 bool			PageApi::isLoaded() const	{ return m_loaded;		}
 
-int PageApi::imagesPerPage()
+int PageApi::imagesPerPage() const
 { return m_imagesPerPage;	}
-int PageApi::page()
+int PageApi::page() const
 { return m_page;			}
-int PageApi::pageImageCount()
+int PageApi::pageImageCount() const
 { return m_pageImageCount;	}
-int PageApi::highLimit()
+int PageApi::highLimit() const
 {
 	if (m_api->contains("Urls/Limit"))
 		return m_api->value("Urls/Limit").toInt();
@@ -340,8 +340,8 @@ int PageApi::highLimit()
 	return 0;
 }
 
-bool PageApi::isImageCountSure() { return m_imagesCountSafe; }
-int PageApi::imagesCount(bool guess)
+bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
+int PageApi::imagesCount(bool guess) const
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
@@ -350,8 +350,8 @@ int PageApi::imagesCount(bool guess)
 
 	return m_imagesCount;
 }
-bool PageApi::isPageCountSure() { return m_pagesCountSafe; }
-int PageApi::pagesCount(bool guess)
+bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
+int PageApi::pagesCount(bool guess) const
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
@@ -376,11 +376,6 @@ qulonglong PageApi::minId() const
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
 	return minId;
-}
-
-void PageApi::setUrl(const QUrl &url)
-{
-	m_url = url;
 }
 
 void PageApi::setImageCount(int count, bool sure)
