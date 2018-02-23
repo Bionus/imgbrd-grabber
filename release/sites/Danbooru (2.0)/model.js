@@ -44,7 +44,12 @@ function pageUrl(page, previous, limit, ifBelow, ifPrev, ifNext) {
         return fixPageUrl(ifPrev, page, previous);
     }
     return fixPageUrl(ifNext, page, previous);
-};
+}
+
+function buildImage(data) {
+    data["page_url"] = "/posts/" + data["id"];
+    return data;
+}
 
 var auth = {
     url: {
@@ -132,7 +137,7 @@ return {
 
                     var images = [];
                     for (var i = 0; i < data.length; ++i) {
-                        images.push(mapFields(data[i], map));
+                        images.push(buildImage(mapFields(data[i], map)));
                     }
 
                     return { images: images };
@@ -186,7 +191,7 @@ return {
 
                     var images = [];
                     for (var i = 0; i < data.length; ++i) {
-                        images.push(mapFields(data[i], map));
+                        images.push(buildImage(mapFields(data[i], map)));
                     }
 
                     return { images: images };
@@ -227,7 +232,7 @@ return {
                                 match[key] = json[key];
                             }
                         }
-                        images.push(match);
+                        images.push(buildImage(match));
                     }
 
                     return { images: images, tags: tags };
