@@ -114,7 +114,7 @@ void PageApi::updateUrls()
 	{
 		m_originalUrl = QString(t);
 		m_url = parseUrl(t, pid, p, t).toString();
-		m_urlRegex = parseUrl(t, pid, p, t).toString();
+		m_urlRegex = QUrl(m_url);
 		return;
 	}
 
@@ -152,22 +152,7 @@ void PageApi::updateUrls()
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	m_url = parseUrl(url, pid, p, t).toString();
-
-	auto plMatch = poolRx.match(t);
-	if ((pl > 0 || plMatch.hasMatch()) && m_api->contains("Urls/Html/Pools"))
-	{
-		url = m_site->value("Urls/Html/Pools");
-		url = parseUrl(url, pid, p, t).toString();
-		url.replace("{pool}", pl > 0 ? QString::number(pl) : plMatch.captured(1));
-		m_urlRegex = QUrl(url);
-	}
-	else if (m_api->contains("Urls/Html/Tags"))
-	{
-		url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
-		m_urlRegex = parseUrl(url, pid, p, t);
-	}
-	else
-	{ m_urlRegex = ""; }
+	m_urlRegex = QUrl(m_url);
 }
 
 void PageApi::load(bool rateLimit)
@@ -193,12 +178,12 @@ void PageApi::abort()
 
 void PageApi::loadTags()
 {
-	if (!m_urlRegex.isEmpty())
-	{
-		log(QString("[%1][%2] Loading tags from page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
-		m_replyTags = m_site->get(m_urlRegex);
-		connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
-	}
+	if (m_urlRegex.isEmpty())
+		return;
+
+	log(QString("[%1][%2] Loading tags from page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
+	m_replyTags = m_site->get(m_urlRegex);
+	connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
 }
 void PageApi::abortTags()
 {
