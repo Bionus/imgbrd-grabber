@@ -751,7 +751,7 @@ void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
 
-void optionsWindow::on_buttonImageBackgroundColor_textChanged()
+void optionsWindow::on_lineImageBackgroundColor_textChanged()
 { setColor(ui->lineImageBackgroundColor); }
 void optionsWindow::on_buttonImageBackgroundColor_clicked()
 { setColor(ui->lineImageBackgroundColor, true); }

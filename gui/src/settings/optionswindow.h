@@ -68,7 +68,7 @@ class optionsWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
-		void on_buttonImageBackgroundColor_textChanged();
+		void on_lineImageBackgroundColor_textChanged();
 		void on_buttonImageBackgroundColor_clicked();
 		void addCustom(const QString &, const QString &);
 		void on_buttonFilenames_clicked();
