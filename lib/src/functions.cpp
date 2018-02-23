@@ -735,6 +735,15 @@ QString qFontToCss(const QFont &font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
+QFont qFontFromString(const QString &str)
+{
+	QFont font;
+	font.fromString(str);
+	if (font.family().isEmpty())
+	{ font.setFamily(font.defaultFamily()); }
+	return font;
+}
+
 bool isFileParentWithSuffix(const QString &fileName, const QString &parent, const QStringList &suffixes)
 {
 	for (const QString &suffix : suffixes)

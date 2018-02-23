@@ -263,29 +263,17 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
-			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontKeptForLater, fontBlacklisteds, fontIgnoreds;
-			fontArtists.fromString(settings->value("artists").toString());
-			fontCircles.fromString(settings->value("circles").toString());
-			fontCopyrights.fromString(settings->value("copyrights").toString());
-			fontCharacters.fromString(settings->value("characters").toString());
-			fontSpecies.fromString(settings->value("species").toString());
-			fontModels.fromString(settings->value("models").toString());
-			fontGenerals.fromString(settings->value("generals").toString());
-			fontFavorites.fromString(settings->value("favorites").toString());
-			fontKeptForLater.fromString(settings->value("keptForLater").toString());
-			fontBlacklisteds.fromString(settings->value("blacklisteds").toString());
-			fontIgnoreds.fromString(settings->value("ignoreds").toString());
-			ui->lineColoringArtists->setFont(fontArtists);
-			ui->lineColoringCircles->setFont(fontCircles);
-			ui->lineColoringCopyrights->setFont(fontCopyrights);
-			ui->lineColoringCharacters->setFont(fontCharacters);
-			ui->lineColoringSpecies->setFont(fontSpecies);
-			ui->lineColoringModels->setFont(fontModels);
-			ui->lineColoringGenerals->setFont(fontGenerals);
-			ui->lineColoringFavorites->setFont(fontFavorites);
-			ui->lineColoringKeptForLater->setFont(fontKeptForLater);
-			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
-			ui->lineColoringIgnoreds->setFont(fontIgnoreds);
+			ui->lineColoringArtists->setFont(qFontFromString(settings->value("artists").toString()));
+			ui->lineColoringCircles->setFont(qFontFromString(settings->value("circles").toString()));
+			ui->lineColoringCopyrights->setFont(qFontFromString(settings->value("copyrights").toString()));
+			ui->lineColoringCharacters->setFont(qFontFromString(settings->value("characters").toString()));
+			ui->lineColoringSpecies->setFont(qFontFromString(settings->value("species").toString()));
+			ui->lineColoringModels->setFont(qFontFromString(settings->value("models").toString()));
+			ui->lineColoringGenerals->setFont(qFontFromString(settings->value("generals").toString()));
+			ui->lineColoringFavorites->setFont(qFontFromString(settings->value("favorites").toString()));
+			ui->lineColoringKeptForLater->setFont(qFontFromString(settings->value("keptForLater").toString()));
+			ui->lineColoringBlacklisteds->setFont(qFontFromString(settings->value("blacklisteds").toString()));
+			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
 		settings->endGroup();
 	settings->endGroup();
 
@@ -675,7 +663,7 @@ void optionsWindow::setFont(QLineEdit *lineEdit)
 	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
-		lineEdit->setFont(police);
+	{ lineEdit->setFont(police); }
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()

@@ -65,6 +65,7 @@ bool isTestModeEnabled();
 QString parseMarkdown(QString str);
 
 QString qFontToCss(const QFont &font);
+QFont qFontFromString(const QString &str);
 
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
