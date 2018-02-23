@@ -142,7 +142,7 @@ Source::Source(Profile *profile, const QString &dir)
 		}
 	}
 	if (m_sites.isEmpty())
-	{ log(QString("No site for source %1").arg(m_name)); }
+	{ log(QString("No site for source %1").arg(m_name), Logger::Debug); }
 }
 
 Source::~Source()
