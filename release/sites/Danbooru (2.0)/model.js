@@ -14,6 +14,17 @@ function mapFields(data, map) {
     return result;
 }
 
+function countToInt(str) {
+    var count = str.toLowerCase().trim().replace(",", "");
+    if (count.slice(-1) === "k") {
+        var withoutK = count.substring(0, count.length - 1).trim();
+        count = parseFloat(withoutK, 10) * 1000;
+    } else {
+        count = parseFloat(count, 10);
+    }
+    return Math.floor(count);
+}
+
 function loginUrl(fields, values) {
     var res = "";
     for (var i in fields) {
@@ -216,7 +227,7 @@ return {
                         if (!(match["tag"] in tags)) {
                             tags[match["tag"]] = {
                                 tag: match["tag"],
-                                count: match["count"],
+                                count: countToInt(match["count"]),
                                 type: match["type"],
                             };
                         }
