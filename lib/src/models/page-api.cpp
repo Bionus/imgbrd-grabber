@@ -64,6 +64,9 @@ void PageApi::updateUrls()
 
 void PageApi::load(bool rateLimit)
 {
+	if (m_reply != nullptr)
+		return;
+
 	// Reading reply and resetting vars
 	m_images.clear();
 	m_tags.clear();
