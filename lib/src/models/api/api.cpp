@@ -63,18 +63,6 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 		{ url = m_data.value("Urls/Tags"); }
 	}
 
-	// Basic replaces
-	url.replace("{tags}", QUrl::toPercentEncoding(search));
-	url.replace("{limit}", QString::number(limit));
-
-	// Previous page replaces
-	url.replace("{min}", QString::number(lastPageMinId));
-	url.replace("{max}", QString::number(lastPageMaxId));
-	url.replace("{min-1}", QString::number(lastPageMinId - 1));
-	url.replace("{max-1}", QString::number(lastPageMaxId - 1));
-	url.replace("{min+1}", QString::number(lastPageMinId + 1));
-	url.replace("{max+1}", QString::number(lastPageMaxId + 1));
-
 	int maxPage = -1;
 	if (site->isLoggedIn() && m_data.contains("Urls/MaxPageLoggedIn"))
 	{ maxPage = m_data.value("Urls/MaxPageLoggedIn").toInt(); }
@@ -95,6 +83,18 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 		{ url.replace("{pagepart}", m_data.value("Urls/PagePart")); }
 		url.replace("{altpage}", "");
 	}
+
+	// Basic replaces
+	url.replace("{tags}", QUrl::toPercentEncoding(search));
+	url.replace("{limit}", QString::number(limit));
+
+	// Previous page replaces
+	url.replace("{min}", QString::number(lastPageMinId));
+	url.replace("{max}", QString::number(lastPageMaxId));
+	url.replace("{min-1}", QString::number(lastPageMinId - 1));
+	url.replace("{max-1}", QString::number(lastPageMaxId - 1));
+	url.replace("{min+1}", QString::number(lastPageMinId + 1));
+	url.replace("{max+1}", QString::number(lastPageMaxId + 1));
 
 	// Page replaces
 	url.replace("{pid}", QString::number(pid));

@@ -8,10 +8,11 @@
 		<Preview>/data/preview/{md5}.jpg</Preview>
 		<Xml>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
-			<Tags>/posts.xml?{login}limit={limit}&amp;page={page}{altpage}&amp;tags={tags}</Tags>
-			<Pools>/posts.xml?{login}limit={limit}&amp;page={page}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/posts.xml?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts.xml?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
 			<MaxLimit>200</MaxLimit>
 			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
 			<TagApi>/tags.xml?{login}limit={limit}&amp;page={page}</TagApi>
@@ -19,10 +20,11 @@
 		</Xml>
 		<Json>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
-			<Tags>/posts.json?{login}limit={limit}&amp;page={page}{altpage}&amp;tags={tags}</Tags>
-			<Pools>/posts.json?{login}limit={limit}&amp;page={page}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/posts.json?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts.json?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
 			<MaxLimit>200</MaxLimit>
 			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
 			<TagApi>/tags.json?{login}limit={limit}&amp;page={page}</TagApi>
@@ -30,10 +32,11 @@
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
-			<Tags>/posts?{login}limit={limit}&amp;page={page}{altpage}&amp;tags={tags}</Tags>
-			<Pools>/posts?{login}limit={limit}&amp;page={page}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/posts?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
 			<Post>/posts/{id}</Post>
 			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
 			<TagApi>/tags?{login}limit={limit}&amp;page={page}</TagApi>
