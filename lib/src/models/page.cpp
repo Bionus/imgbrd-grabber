@@ -121,11 +121,13 @@ void Page::loadTags()
 	if (m_regexApi < 0)
 		return;
 
-	connect(m_pageApis[m_regexApi], &PageApi::finishedLoadingTags, this, &Page::loadTagsFinished);
-	m_pageApis[m_regexApi]->loadTags();
+	connect(m_pageApis[m_regexApi], &PageApi::finishedLoading, this, &Page::loadTagsFinished);
+	m_pageApis[m_regexApi]->load();
 }
-void Page::loadTagsFinished(PageApi *api)
+void Page::loadTagsFinished(PageApi *api, PageApi::LoadResult status)
 {
+	Q_UNUSED(status);
+
 	if (m_regexApi < 0 || api != m_pageApis[m_regexApi])
 		return;
 
@@ -136,7 +138,7 @@ void Page::abortTags()
 	if (m_regexApi < 0)
 		return;
 
-	m_pageApis[m_regexApi]->abortTags();
+	m_pageApis[m_regexApi]->abort();
 }
 
 

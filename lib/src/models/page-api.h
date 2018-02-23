@@ -26,7 +26,6 @@ class PageApi : public QObject
 		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags = QStringList(), int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		void			setLastPage(Page *page);
 		void			load(bool rateLimit = false);
-		void			loadTags();
 		QList<QSharedPointer<Image>> images() const;
 		bool			isImageCountSure() const;
 		bool			isPageCountSure() const;
@@ -50,9 +49,7 @@ class PageApi : public QObject
 
 	public slots:
 		void parse();
-		void parseTags();
 		void abort();
-		void abortTags();
 		void clear();
 
 	signals:

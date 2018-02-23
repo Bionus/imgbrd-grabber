@@ -84,21 +84,6 @@ void PageApi::abort()
 		m_reply->abort();
 }
 
-void PageApi::loadTags()
-{
-	if (m_urlRegex.isEmpty())
-		return;
-
-	log(QString("[%1][%2] Loading tags from page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
-	m_replyTags = m_site->get(m_urlRegex);
-	connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
-}
-void PageApi::abortTags()
-{
-	if (m_replyTags != nullptr && m_replyTags->isRunning())
-		m_replyTags->abort();
-}
-
 bool PageApi::addImage(QSharedPointer<Image> img)
 {
 	if (img.isNull())
@@ -242,37 +227,6 @@ void PageApi::parse()
 	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
-}
-void PageApi::parseTags()
-{
-	log(QString("[%1][%2] Receiving tags page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_replyTags->url().toString().toHtmlEscaped()), Logger::Info);
-
-	// Check redirection
-	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
-	{
-		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
-		log(QString("[%1][%2] Redirecting tags page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_urlRegex.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
-		m_urlRegex = newUrl;
-		loadTags();
-		return;
-	}
-
-	QString source = QString::fromUtf8(m_replyTags->readAll());
-
-	if (m_site->contains("Regex/Tags"))
-	{
-		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), source);
-		if (!tgs.isEmpty())
-		{ m_tags = tgs; }
-	}
-
-	parseNavigation(source);
-
-	m_replyTags->deleteLater();
-	m_replyTags = nullptr;
-
-	emit finishedLoadingTags(this);
 }
 
 void PageApi::parseNavigation(const QString &source)

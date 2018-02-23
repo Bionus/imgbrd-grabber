@@ -52,7 +52,7 @@ class Page : public QObject
 
 	protected slots:
 		void loadFinished(PageApi *api, PageApi::LoadResult status);
-		void loadTagsFinished(PageApi *api);
+		void loadTagsFinished(PageApi *api, PageApi::LoadResult status);
 
 	signals:
 		void finishedLoading(Page*);
