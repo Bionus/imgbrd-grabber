@@ -28,9 +28,19 @@ bool Api::contains(const QString &key) const	{ return m_data.contains(key);	}
 QString Api::value(const QString &key) const	{ return m_data.value(key);		}
 
 
-QString Api::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
 	QString url;
+	QString search = tt;
+
+	// Default tag is none is given
+	if (m_data.contains("DefaultTag") && search.isEmpty())
+	{ search = m_data.value("DefaultTag"); }
+
+	// Find page number
+	int pidLimit = m_data.contains("Urls/Limit") ? m_data.value("Urls/Limit").toInt() : limit;
+	int pid = pidLimit * (page - 1);
+	page = page - 1 + m_data.value("FirstPage").toInt();
 
 	// Custom URL for pool search
 	if (m_data.contains("Urls/Pools"))
@@ -44,12 +54,48 @@ QString Api::pageUrl(const QString &search, int page, int limit, int lastPage, i
 		}
 	}
 
+	// Home URL for empty searches
 	if (url.isEmpty())
 	{
 		if (search.isEmpty() && m_data.contains("Urls/Home"))
 		{ url = m_data.value("Urls/Home"); }
 		else
 		{ url = m_data.value("Urls/Tags"); }
+	}
+
+	// Basic replaces
+	url.replace("{tags}", QUrl::toPercentEncoding(search));
+	url.replace("{limit}", QString::number(limit));
+	url.replace("{pid}", QString::number(pid));
+	url.replace("{page}", QString::number(page));
+
+	// Previous page replaces
+	url.replace("{min}", QString::number(lastPageMinId));
+	url.replace("{max}", QString::number(lastPageMaxId));
+	url.replace("{min-1}", QString::number(lastPageMinId - 1));
+	url.replace("{max-1}", QString::number(lastPageMaxId - 1));
+	url.replace("{min+1}", QString::number(lastPageMinId + 1));
+	url.replace("{max+1}", QString::number(lastPageMaxId + 1));
+
+	int maxPage = -1;
+	if (site->isLoggedIn() && m_data.contains("Urls/MaxPageLoggedIn"))
+	{ maxPage = m_data.value("Urls/MaxPageLoggedIn").toInt(); }
+	else if (m_data.contains("Urls/MaxPage"))
+	{ maxPage = m_data.value("Urls/MaxPage").toInt(); }
+
+	bool isAltPage = maxPage >= 0 && page > maxPage && page - 1 <= lastPage && lastPage <= page + 1;
+	if (m_data.contains("Urls/NormalPage"))
+	{ url.replace("{cpage}", isAltPage ? "{altpage}" : m_data.value("Urls/NormalPage")); }
+	if (isAltPage)
+	{
+		url.replace("{altpage}", m_data.value("Urls/AltPage" + QString(lastPage > page ? "Prev" : "Next")));
+		url.replace("{pagepart}", "");
+	}
+	else
+	{
+		if (m_data.contains("Urls/PagePart"))
+		{ url.replace("{pagepart}", m_data.value("Urls/PagePart")); }
+		url.replace("{altpage}", "");
 	}
 
 	return url;

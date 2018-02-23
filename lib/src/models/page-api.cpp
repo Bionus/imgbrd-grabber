@@ -28,52 +28,6 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const
 	updateUrls();
 }
 
-QUrl PageApi::parseUrl(QString url, int pid, int p, QString t)
-{
-	if (pid < 0)
-		pid = (this->page() - 1) * this->imagesPerPage();
-	if (p < 0)
-		p = this->page();
-	if (t.isEmpty())
-		t = m_search.join(" ");
-
-	url.replace("{tags}", QUrl::toPercentEncoding(t));
-	url.replace("{limit}", QString::number(m_imagesPerPage));
-
-	int maxPage = -1;
-	if (m_site->isLoggedIn() && m_api->contains("Urls/MaxPageLoggedIn"))
-	{ maxPage = m_api->value("Urls/MaxPageLoggedIn").toInt(); }
-	else if (m_api->contains("Urls/MaxPage"))
-	{ maxPage = m_api->value("Urls/MaxPage").toInt(); }
-
-	m_isAltPage = maxPage >= 0 && p > maxPage && m_page - 1 <= m_lastPage && m_lastPage <= m_page + 1;
-	if (m_api->contains("Urls/NormalPage"))
-	{ url.replace("{cpage}", m_isAltPage ? "{altpage}" : m_api->value("Urls/NormalPage")); }
-	if (m_isAltPage)
-	{
-		url.replace("{altpage}", m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next")));
-		url.replace("{pagepart}", "");
-	}
-	else
-	{
-		if (m_api->contains("Urls/PagePart"))
-		{ url.replace("{pagepart}", m_api->value("Urls/PagePart")); }
-		url.replace("{altpage}", "");
-	}
-	url.replace("{min}", QString::number(m_lastPageMinId));
-	url.replace("{max}", QString::number(m_lastPageMaxId));
-	url.replace("{min-1}", QString::number(m_lastPageMinId-1));
-	url.replace("{max-1}", QString::number(m_lastPageMaxId-1));
-	url.replace("{min+1}", QString::number(m_lastPageMinId+1));
-	url.replace("{max+1}", QString::number(m_lastPageMaxId+1));
-	url.replace("{pid}", QString::number(pid));
-	url.replace("{page}", QString::number(p));
-
-	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
-
-	return m_site->fixUrl(url);
-}
-
 void PageApi::setLastPage(Page *page)
 {
 	m_lastPage = page->page();
@@ -90,38 +44,22 @@ void PageApi::setLastPage(Page *page)
 
 void PageApi::updateUrls()
 {
-	// Default tag is none is given
-	QString t = m_search.join(" ").trimmed();
-	if (m_api->contains("DefaultTag") && t.isEmpty())
-		t = m_api->value("DefaultTag");
-
-	// Find page number
-	bool limited = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit");
-	int p = m_page;
-	m_blim = limited ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-	if (m_smart)
-	{
-		if (m_imagesPerPage > m_blim || limited)
-		{ m_imagesPerPage = m_blim; }
-		p = qFloor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
-	}
-	p = p - 1 + m_api->value("FirstPage").toInt();
-
-	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+	QString url;
+	QString search = m_search.join(" ");
 
 	// URL searches
-	if (m_search.count() == 1 && !t.isEmpty() && isUrl(t))
-	{
-		m_originalUrl = QString(t);
-		m_url = parseUrl(t, pid, p, t).toString();
-		m_urlRegex = QUrl(m_url);
-		return;
-	}
+	if (m_search.count() == 1 && !search.isEmpty() && isUrl(search))
+	{ url = search; }
+	else
+	{ url = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
 
-	QString url = m_api->pageUrl(t, p, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site);
+	// Add site information to URL
+	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
+	url = m_site->fixUrl(url).toString();
+
 	m_originalUrl = QString(url);
-	m_url = parseUrl(url, pid, p, t).toString();
-	m_urlRegex = QUrl(m_url);
+	m_url = QString(url);
+	m_urlRegex = QUrl(url);
 }
 
 void PageApi::load(bool rateLimit)
@@ -226,7 +164,7 @@ void PageApi::parse()
 	{ setImageCount(page.imagesCount, true); }
 	for (const Tag &tag : page.tags)
 	{ m_tags.append(tag); }
-	for (QSharedPointer<Image> img : page.images)
+	for (const QSharedPointer<Image> &img : page.images)
 	{ addImage(img); }
 
 	// If tags have not been retrieved yet
@@ -257,7 +195,7 @@ void PageApi::parse()
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
-	if (m_isAltPage)
+	if (m_isAltPage) // FIXME(Bionus): broken since move to Api class
 		skip = m_site->setting("ignore/alt", 0).toInt();
 	if (m_page == m_site->value("FirstPage").toInt())
 		skip = m_site->setting("ignore/1", 0).toInt();
