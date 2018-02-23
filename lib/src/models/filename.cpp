@@ -596,7 +596,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num";
 	if (profile != nullptr)
 	{ tokens.append(getCustoms(profile->getSettings()).keys()); }
 	QRegularExpression rx("%(.+?)%");
@@ -612,7 +612,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		}
 
 		if (!found)
-			return returnError(orange.arg(QObject::tr("The %%1% token does not exist and will not be replaced."), match.captured(1)), error);
+			return returnError(orange.arg(QObject::tr("The %%1% token does not exist and will not be replaced.").arg(match.captured(1))), error);
 	}
 
 	// Check for invalid windows characters
