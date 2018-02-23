@@ -14,18 +14,9 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	// Getting tags
 	if (contains("Regex/Tags"))
 	{
-		QRegularExpression rxtags(value("Regex/Tags"), QRegularExpression::DotMatchesEverythingOption);
-		QStringList tags = QStringList();
-		auto matches = rxtags.globalMatch(source);
-		while (matches.hasNext())
-		{
-			auto match = matches.next();
-			if (!tags.contains(match.captured(2)))
-			{
-				ret.tags.append(Tag(match.captured(2), match.captured(1), match.captured(3).toInt()));
-				tags.append(match.captured(2));
-			}
-		}
+		QList<Tag> tgs = Tag::FromRegexp(value("Regex/Tags"), source);
+		if (!tgs.isEmpty())
+		{ ret.tags = tgs; }
 	}
 
 	// Getting images
