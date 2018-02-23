@@ -18,10 +18,10 @@ function loginUrl(fields, values) {
     var res = "";
     for (var i in fields) {
         var field = fields[i];
-        res += field.key + "=" + values[field.key] + "&amp;";
+        res += field.key + "=" + values[field.key] + "&";
     }
     return res;
-};
+}
 
 function fixPageUrl(url, page, previous) {
     url = url.replace("{page}", page);
@@ -34,9 +34,9 @@ function fixPageUrl(url, page, previous) {
         url = url.replace("{max+1}", previous.maxId + 1);
     }
     return url;
-};
+}
 
-function pageUrl(page, previous, limit, ifBelow, ifNext, ifPrev) {
+function pageUrl(page, previous, limit, ifBelow, ifPrev, ifNext) {
     if (page < limit || !previous) {
         return fixPageUrl(ifBelow, page, previous);
     }
@@ -51,7 +51,7 @@ var auth = {
         type: "url",
         fields: [
             {
-                key: "pseudo",
+                key: "login",
                 type: "username",
             },
             {
