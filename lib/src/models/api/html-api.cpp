@@ -89,5 +89,20 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 		{ ret.imageCount = cnt; }
 	}
 
+	// Wiki
+	if (contains("Regex/Wiki"))
+	{
+		QRegularExpression rxwiki(value("Regex/Wiki"), QRegularExpression::DotMatchesEverythingOption);
+		auto match = rxwiki.match(source);
+		if (match.hasMatch())
+		{
+			QString wiki = match.captured(1);
+			wiki.remove("/wiki/show?title=");
+			wiki.remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>"));
+			wiki.replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+			ret.wiki = wiki;
+		}
+	}
+
 	return ret;
 }

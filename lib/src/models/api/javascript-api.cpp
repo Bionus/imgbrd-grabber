@@ -147,6 +147,8 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	{ ret.urlNextPage = results.property("urlNextPage").toString(); }
 	if (results.hasProperty("urlPrevPage"))
 	{ ret.urlPrevPage = results.property("urlPrevPage").toString(); }
+	if (results.hasProperty("wiki"))
+	{ ret.wiki = results.property("wiki").toString(); }
 
 	return ret;
 }

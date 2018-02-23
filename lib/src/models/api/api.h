@@ -16,6 +16,7 @@ struct ParsedPage
 	QList<QSharedPointer<Image>> images;
 	QUrl urlNextPage;
 	QUrl urlPrevPage;
+	QString wiki;
 };
 
 class Site;

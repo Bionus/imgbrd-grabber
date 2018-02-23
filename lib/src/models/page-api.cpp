@@ -172,6 +172,8 @@ void PageApi::parse()
 	{ m_urlNextPage = page.urlNextPage; }
 	if (page.urlPrevPage.isValid())
 	{ m_urlPrevPage = page.urlPrevPage; }
+	if (!page.wiki.isEmpty())
+	{ m_wiki = page.wiki; }
 
 	// If tags have not been retrieved yet
 	if (m_tags.isEmpty())
@@ -263,19 +265,6 @@ void PageApi::parseTags()
 	}
 
 	parseNavigation(source);
-
-	// Wiki
-	m_wiki.clear();
-	if (m_site->contains("Regex/Wiki"))
-	{
-		QRegularExpression rxwiki(m_site->value("Regex/Wiki"), QRegularExpression::DotMatchesEverythingOption);
-		auto match = rxwiki.match(source);
-		if (match.hasMatch())
-		{
-			m_wiki = match.captured(1);
-			m_wiki.remove("/wiki/show?title=").remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
-		}
-	}
 
 	m_replyTags->deleteLater();
 	m_replyTags = nullptr;
