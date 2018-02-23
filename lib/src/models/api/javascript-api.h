@@ -1,8 +1,8 @@
 #ifndef JAVASCRIPT_API_H
 #define JAVASCRIPT_API_H
 
-#include "models/api/api.h"
 #include <QJSValue>
+#include "models/api/api.h"
 
 
 class Site;

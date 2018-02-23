@@ -1,8 +1,8 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QDebug>
 #include <QNetworkAccessManager>
 #include "functions.h"
 #include "logger.h"

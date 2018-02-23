@@ -1,10 +1,10 @@
 #ifndef JAVASCRIPT_GRABBER_HELPER_H
 #define JAVASCRIPT_GRABBER_HELPER_H
 
-#include <QObject>
+#include <QDomElement>
 #include <QJSEngine>
 #include <QJSValue>
-#include <QDomElement>
+#include <QObject>
 
 
 class JavascriptGrabberHelper : public QObject
