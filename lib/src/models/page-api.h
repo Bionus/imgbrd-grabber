@@ -47,6 +47,7 @@ class PageApi : public QObject
 		void			setUrl(const QUrl &url);
 		QUrl			nextPage();
 		QUrl			prevPage();
+		bool			isLoaded() const;
 
 	public slots:
 		void parse();
@@ -82,6 +83,7 @@ class PageApi : public QObject
 		QNetworkReply	*m_reply, *m_replyTags;
 		int				m_imagesCount, m_pagesCount, m_pageImageCount;
 		bool			m_imagesCountSafe, m_pagesCountSafe;
+		bool			m_loaded = false;
 };
 
 #endif // PAGE_API_H

@@ -67,6 +67,7 @@ void PageApi::load(bool rateLimit)
 	// Reading reply and resetting vars
 	m_images.clear();
 	m_tags.clear();
+	m_loaded = false;
 	m_pageImageCount = 0;
 	/*m_imagesCount = -1;
 	m_pagesCount = -1;*/
@@ -132,6 +133,7 @@ void PageApi::parse()
 		return;
 	}
 
+	// Detect HTTP 429 usage limit reached
 	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
@@ -140,8 +142,8 @@ void PageApi::parse()
 		return;
 	}
 
+	// Try to read the reply
 	m_source = m_reply->readAll();
-
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
@@ -160,6 +162,8 @@ void PageApi::parse()
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
+
+	// Fill data from parsing result
 	if (page.imageCount >= 0)
 	{ setImageCount(page.imageCount, true); }
 	if (page.pageCount >= 0)
@@ -175,7 +179,11 @@ void PageApi::parse()
 	if (!page.wiki.isEmpty())
 	{ m_wiki = page.wiki; }
 
-	// If tags have not been retrieved yet
+	// Try to get navigation info on HTML pages
+	if (m_format == "Html")
+	{ parseNavigation(m_source); }
+
+	// Complete missing tag information from images' tag if necessary
 	if (m_tags.isEmpty())
 	{
 		QStringList tagsGot;
@@ -193,12 +201,6 @@ void PageApi::parse()
 				}
 			}
 		}
-	}
-
-	// Try to get navigation info on HTML pages
-	if (m_format == "Html")
-	{
-		parseNavigation(m_source);
 	}
 
 	// Remove first n images (according to site settings)
@@ -231,6 +233,7 @@ void PageApi::parse()
 
 	m_reply->deleteLater();
 	m_reply = nullptr;
+	m_loaded = true;
 
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
@@ -320,6 +323,7 @@ QStringList		PageApi::search()	{ return m_search;		}
 QStringList		PageApi::errors()	{ return m_errors;		}
 QUrl			PageApi::nextPage()	{ return m_urlNextPage;	}
 QUrl			PageApi::prevPage()	{ return m_urlPrevPage;	}
+bool			PageApi::isLoaded() const	{ return m_loaded;		}
 
 int PageApi::imagesPerPage()
 { return m_imagesPerPage;	}
