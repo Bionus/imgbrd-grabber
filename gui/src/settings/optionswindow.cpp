@@ -80,7 +80,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		m_filenamesFilenames.append(leFilename);
 		m_filenamesFolders.append(leFolder);
 
-		auto *layout = new QHBoxLayout(this);
+		auto *layout = new QHBoxLayout;
 		layout->addWidget(leCondition);
 		layout->addWidget(leFilename);
 		layout->addWidget(leFolder);
