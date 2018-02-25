@@ -157,7 +157,7 @@ __source = {
             tags: {
                 url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags.json?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                    return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: function(src) {
                     var map = {
@@ -234,7 +234,7 @@ __source = {
             tags: {
                 url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags.xml?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                    return "/tags.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: function(src) {
                     var map = {
@@ -244,7 +244,7 @@ __source = {
                         "typeId": "category",
                     };
 
-                    var data = Grabber.parseXML(src).posts.post;
+                    var data = Grabber.parseXML(src).tags.tag;
 
                     var tags = [];
                     for (var i = 0; i < data.length; ++i) {
@@ -298,7 +298,7 @@ __source = {
             tags: {
                 url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                    return "/tags?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: function(src) {
                     var matches = Grabber.regexMatches('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src);
