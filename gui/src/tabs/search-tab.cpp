@@ -355,8 +355,10 @@ void searchTab::failedLoading(Page *page)
 	if (m_stop)
 		return;
 
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
-		postLoading(page, page->images());
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	addResultsPage(page, QList<QSharedPointer<Image>>(), merged);
+
+	postLoading(page, page->images());
 }
 
 void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs)

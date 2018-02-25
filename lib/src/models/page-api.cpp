@@ -74,6 +74,8 @@ void PageApi::load(bool rateLimit)
 
 	if (m_url.isEmpty() && !m_errors.isEmpty())
 	{
+		for (const QString &err : m_errors)
+		{ log(QString("[%1][%2] %3").arg(m_site->url(), m_format, err), Logger::Warning); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
