@@ -151,9 +151,6 @@ void ZoomWindow::go()
 		timer->setSingleShot(true);
 		m_resizeTimer = timer;
 
-	QString u = m_site->value("Urls/Html/Post");
-		u.replace("{id}", QString::number(m_image->id()));
-
 	QString pos = m_settings->value("tagsposition", "top").toString();
 	if (pos == "auto")
 	{
