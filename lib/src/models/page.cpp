@@ -64,6 +64,8 @@ Page::~Page()
 
 void Page::fallback(bool loadIfPossible)
 {
+	m_errors.clear();
+
 	if (m_currentApi >= m_siteApis.count() - 1)
 	{
 		log(QString("[%1] No valid source of the site returned result.").arg(m_site->url()), Logger::Warning);
@@ -109,7 +111,11 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 	if (status == PageApi::LoadResult::Ok)
 		emit finishedLoading(this);
 	else
+	{
+		if (!api->errors().isEmpty())
+			m_errors.append(api->errors());
 		fallback();
+	}
 }
 void Page::abort()
 {

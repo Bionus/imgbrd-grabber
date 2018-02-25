@@ -28,8 +28,9 @@ bool Api::contains(const QString &key) const	{ return m_data.contains(key);	}
 QString Api::value(const QString &key) const	{ return m_data.value(key);		}
 
 
-QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
+	PageUrl ret;
 	QString url;
 	QString search = tt;
 
@@ -62,6 +63,13 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 		{ url = m_data.value("Urls/Home"); }
 		else
 		{ url = m_data.value("Urls/Tags"); }
+	}
+
+	// Return an error if we are trying to do a search on a non-compatible API
+	if (!search.isEmpty() && !url.contains("{tags}"))
+	{
+		ret.error = tr("Tag search is impossible with the chosen source (%1).").arg(m_name);
+		return ret;
 	}
 
 	int maxPage = -1;
@@ -104,7 +112,8 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	// Add login information
 	url = site->fixLoginUrl(url, value("Urls/Login"));
 
-	return url;
+	ret.url = url;
+	return ret;
 }
 
 

@@ -46,12 +46,18 @@ void PageApi::updateUrls()
 {
 	QString url;
 	QString search = m_search.join(" ");
+	m_errors.clear();
 
 	// URL searches
 	if (m_search.count() == 1 && !search.isEmpty() && isUrl(search))
 	{ url = search; }
 	else
-	{ url = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
+	{
+		PageUrl ret = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site);
+		if (!ret.error.isEmpty())
+		{ m_errors.append(ret.error); }
+		url = ret.url;
+	}
 
 	// Add site information to URL
 	url = m_site->fixUrl(url).toString();
@@ -65,6 +71,12 @@ void PageApi::load(bool rateLimit)
 {
 	if (m_reply != nullptr)
 		return;
+
+	if (m_url.isEmpty() && !m_errors.isEmpty())
+	{
+		emit finishedLoading(this, LoadResult::Error);
+		return;
+	}
 
 	// Reading reply and resetting vars
 	m_images.clear();
@@ -145,6 +157,7 @@ void PageApi::parse()
 	ParsedPage page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage);
 	if (!page.error.isEmpty())
 	{
+		m_errors.append(page.error);
 		log(QString("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
 		emit finishedLoading(this, LoadResult::Error);
 		return;
@@ -227,12 +240,6 @@ void PageApi::parse()
 	m_reply->deleteLater();
 	m_reply = nullptr;
 	m_loaded = true;
-
-	QString t = m_search.join(" ");
-	if (m_site->contains("DefaultTag") && t.isEmpty())
-	{ t = m_api->value("DefaultTag"); }
-	if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
-	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
 }

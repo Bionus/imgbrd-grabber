@@ -15,8 +15,10 @@ JavascriptApi::JavascriptApi(const QMap<QString, QString> &data, const QJSValue 
 	: Api(normalize(key), data), m_source(source), m_key(key)
 {}
 
-QString JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
+	PageUrl ret;
+
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("search", search);
 	query.setProperty("page", page);
@@ -54,16 +56,33 @@ QString JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	// Script errors and exceptions
 	if (result.isError())
 	{
-		log(QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString()), Logger::Error);
-		return QString();
+		QString err = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		ret.error = err;
+		log(err, Logger::Error);
+		return ret;
 	}
 
+	// Parse result
+	QString url;
+	if (result.isObject())
+	{
+		if (result.hasProperty("error"))
+		{
+			ret.error = result.property("error").toString();
+			return ret;
+		}
+
+		url = result.property("url").toString();
+	}
+	else
+	{ url = result.toString(); }
+
 	// Site-ize url
-	QString url = result.toString();
 	url = site->fixLoginUrl(url, this->value("Urls/Login"));
 	url = site->fixUrl(url).toString();
 
-	return url;
+	ret.url = url;
+	return ret;
 }
 
 QList<Tag> JavascriptApi::makeTags(const QJSValue &tags) const
@@ -103,6 +122,9 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
+
+	if (results.hasProperty("error"))
+	{ ret.error = results.property("error").toString(); }
 
 	if (results.hasProperty("tags"))
 	{ ret.tags = makeTags(results.property("tags")); }

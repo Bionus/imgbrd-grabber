@@ -7,6 +7,12 @@
 #include "models/image.h"
 #include "tags/tag.h"
 
+struct PageUrl
+{
+	QString error;
+	QString url;
+};
+
 struct ParsedPage
 {
 	QString error;
@@ -38,7 +44,7 @@ class Api : public QObject
 		QString operator[](const QString &key) const { return value(key); }
 
 		// API
-		virtual QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
+		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const = 0;
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
