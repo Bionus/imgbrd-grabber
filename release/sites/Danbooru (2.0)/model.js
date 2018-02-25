@@ -98,7 +98,7 @@ var auth = {
     },
 };
 
-return {
+__source = {
     name: "Danbooru (2.0)",
     apis: {
         json: {
@@ -155,7 +155,7 @@ return {
                 },
             },
             tags: {
-                url: function() {
+                url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
                 },
@@ -232,7 +232,7 @@ return {
                 },
             },
             tags: {
-                url: function() {
+                url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.xml?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
                 },
@@ -266,37 +266,37 @@ return {
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: function(src) {
-                    var matches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
+                    var tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
                     var tags = {};
-                    for (var i in matches) {
-                        var match = matches[i];
-                        if (!(match["name"] in tags)) {
-                            tags[match["name"]] = {
-                                name: match["name"],
-                                count: countToInt(match["count"]),
-                                typeId: match["typeId"],
+                    for (var tagI in tagMatches) {
+                        var tagMatch = tagMatches[tagI];
+                        if (!(tagMatch["name"] in tags)) {
+                            tags[tagMatch["name"]] = {
+                                name: tagMatch["name"],
+                                count: countToInt(tagMatch["count"]),
+                                typeId: tagMatch["typeId"],
                             };
                         }
                     }
 
-                    var matches = Grabber.regexMatches('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src);
+                    var imgMatches = Grabber.regexMatches('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src);
                     var images = [];
-                    for (var i in matches) {
-                        var match = matches[i];
-                        if ("json" in match) {
-                            var json = JSON.parse(match["json"]);
+                    for (var imgI in imgMatches) {
+                        var imgMatch = imgMatches[imgI];
+                        if ("json" in imgMatch) {
+                            var json = JSON.parse(imgMatch["json"]);
                             for (var key in json) {
-                                match[key] = json[key];
+                                imgMatch[key] = json[key];
                             }
                         }
-                        images.push(buildImage(match));
+                        images.push(buildImage(imgMatch));
                     }
 
                     return { images: images, tags: tags };
                 },
             },
             tags: {
-                url: function() {
+                url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
                 },

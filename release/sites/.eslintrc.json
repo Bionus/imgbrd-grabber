@@ -1,0 +1,10 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 5
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "Grabber": true,
+        "__source": true
+    }
+}

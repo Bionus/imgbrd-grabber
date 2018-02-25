@@ -52,7 +52,7 @@ Source::Source(Profile *profile, const QString &dir)
 			{
 				log(QString("Using Javascript model for %1").arg(m_name), Logger::Debug);
 
-				QString src = "(function() { " + js.readAll() + " })()";
+				QString src = "(function() { " + js.readAll().replace("__source = ", "return ") + " })()";
 
 				auto engine = new QJSEngine(this);
 				engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
