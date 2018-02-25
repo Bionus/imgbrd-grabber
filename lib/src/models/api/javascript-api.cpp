@@ -1,6 +1,7 @@
 #include "models/api/javascript-api.h"
 #include <QJSValueIterator>
 #include "logger.h"
+#include "models/page.h"
 #include "models/site.h"
 
 
@@ -85,9 +86,10 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	return ret;
 }
 
-QList<Tag> JavascriptApi::makeTags(const QJSValue &tags) const
+QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 {
 	QList<Tag> ret;
+	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
 
 	QJSValueIterator it(tags);
 	while (it.hasNext())
@@ -98,9 +100,11 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags) const
 		int id = tag.hasProperty("id") ? tag.property("id").toInt() : 0;
 		QString text = tag.property("tag").toString();
 		QString type = tag.hasProperty("type") ? tag.property("type").toString() : "unknown";
+		int typeId = tag.hasProperty("typeId") ? tag.property("typeId").toInt() : -1;
 		int count = tag.hasProperty("count") ? tag.property("count").toInt() : 0;
 
-		ret.append(Tag(id, text, TagType(type), count));
+		TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		ret.append(Tag(id, text, tagType, count));
 	}
 
 	return ret;
@@ -112,6 +116,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 	ParsedPage ret;
 
+	Site *site = parentPage->site();
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("search").property("parse");
 	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
@@ -127,7 +132,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	{ ret.error = results.property("error").toString(); }
 
 	if (results.hasProperty("tags"))
-	{ ret.tags = makeTags(results.property("tags")); }
+	{ ret.tags = makeTags(results.property("tags"), site); }
 
 	if (results.hasProperty("images"))
 	{
@@ -147,7 +152,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 				QString key = it3.name();
 				if (key == "tags_obj")
-				{ tags = makeTags(it3.value()); }
+				{ tags = makeTags(it3.value(), site); }
 				else
 				{ d[key] = it3.value().toString(); }
 			}

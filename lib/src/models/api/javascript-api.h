@@ -21,7 +21,7 @@ class JavascriptApi : public Api
 		int maxLimit() const override;
 
 	protected:
-		QList<Tag> makeTags(const QJSValue &tags) const;
+		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
 
 	private:
