@@ -154,6 +154,29 @@ return {
                     return { images: images };
                 },
             },
+            tags: {
+                url: function() {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    return "/tags.json?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                },
+                parse: function(src) {
+                    var map = {
+                        "id": "id",
+                        "name": "name",
+                        "count": "post_count",
+                        "typeId": "category",
+                    };
+
+                    var data = JSON.parse(src);
+
+                    var tags = [];
+                    for (var i = 0; i < data.length; ++i) {
+                        tags.push(mapFields(data[i], map));
+                    }
+
+                    return { tags: tags };
+                },
+            },
         },
         xml: {
             name: "XML",
@@ -208,6 +231,29 @@ return {
                     return { images: images };
                 },
             },
+            tags: {
+                url: function() {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    return "/tags.xml?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                },
+                parse: function(src) {
+                    var map = {
+                        "id": "id",
+                        "name": "name",
+                        "count": "post-count",
+                        "typeId": "category",
+                    };
+
+                    var data = Grabber.parseXML(src).posts.post;
+
+                    var tags = [];
+                    for (var i = 0; i < data.length; ++i) {
+                        tags.push(mapFields(data[i], map));
+                    }
+
+                    return { tags: tags };
+                },
+            },
         },
         html: {
             name: "Regex",
@@ -220,15 +266,15 @@ return {
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: function(src) {
-                    var matches = Grabber.regexMatches('<li class="category-(?<type>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<tag>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
+                    var matches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
                     var tags = {};
                     for (var i in matches) {
                         var match = matches[i];
-                        if (!(match["tag"] in tags)) {
-                            tags[match["tag"]] = {
-                                tag: match["tag"],
+                        if (!(match["name"] in tags)) {
+                            tags[match["name"]] = {
+                                name: match["name"],
                                 count: countToInt(match["count"]),
-                                type: match["type"],
+                                typeId: match["typeId"],
                             };
                         }
                     }
@@ -247,6 +293,28 @@ return {
                     }
 
                     return { images: images, tags: tags };
+                },
+            },
+            tags: {
+                url: function() {
+                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    return "/tags?" + loginPart + "limit=" + opts.limit + "page=" + query.page;
+                },
+                parse: function(src) {
+                    var matches = Grabber.regexMatches('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src);
+
+                    var tags = [];
+                    for (var i in matches) {
+                        var match = matches[i];
+                        tags.push({
+                            id: match["id"],
+                            name: match["name"],
+                            count: countToInt(match["count"]),
+                            typeId: match["typeId"],
+                        });
+                    }
+
+                    return { tags: tags };
                 },
             },
         },
