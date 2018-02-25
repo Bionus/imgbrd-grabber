@@ -235,3 +235,5 @@ int Api::maxLimit() const
 
 	return contains("Urls/MaxLimit") ? value("Urls/MaxLimit").toInt() : 0;
 }
+QStringList Api::modifiers() const
+{ return value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts); }

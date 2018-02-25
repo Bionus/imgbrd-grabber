@@ -283,3 +283,18 @@ int JavascriptApi::forcedLimit() const
 { return getJsConst("forcedLimit", 0).toInt(); }
 int JavascriptApi::maxLimit() const
 { return getJsConst("maxLimit", 0).toInt(); }
+
+QStringList JavascriptApi::modifiers() const
+{
+	QStringList ret;
+	QJSValue modifiers = getJsConst("modifiers");
+
+	QJSValueIterator it(modifiers);
+	while (it.hasNext())
+	{
+		it.next();
+		ret.append(it.value().toString());
+	}
+
+	return ret;
+}

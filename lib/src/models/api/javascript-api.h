@@ -22,6 +22,7 @@ class JavascriptApi : public Api
 		bool canLoadTags() const override;
 		int forcedLimit() const override;
 		int maxLimit() const override;
+		QStringList modifiers() const override;
 
 	protected:
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;

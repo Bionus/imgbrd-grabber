@@ -57,6 +57,7 @@ class Api : public QObject
 		virtual bool canLoadTags() const;
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
+		virtual QStringList modifiers() const;
 
 	protected:
 		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>()) const;

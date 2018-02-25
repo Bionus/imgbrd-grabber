@@ -9,6 +9,7 @@
 #include "helpers.h"
 #include "image-context-menu.h"
 #include "mainwindow.h"
+#include "models/api/api.h"
 #include "models/favorite.h"
 #include "models/filename.h"
 #include "models/page.h"
@@ -47,8 +48,8 @@ searchTab::searchTab(Profile *profile, mainWindow *parent)
 	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
 	{
 		Site *site = it.value();
-		if (site->contains("Modifiers"))
-			m_completion.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
+		QStringList modifiers = site->getApis().first()->modifiers();
+		m_completion.append(modifiers);
 	}
 
 	m_completion.removeDuplicates();

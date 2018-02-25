@@ -24,6 +24,9 @@ Profile::Profile(const QString &path)
 	for (const QString &dir : dirs)
 	{
 		Source *source = new Source(this, m_path + "/sites/" + dir);
+		if (source->getApis().isEmpty())
+			continue;
+
 		m_sources.insert(source->getName(), source);
 
 		for (Site *site : source->getSites())

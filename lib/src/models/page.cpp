@@ -25,16 +25,10 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
 	for (Site *ste : sites)
-	{
-		if (ste->contains("Modifiers"))
-		{ modifiers.append(ste->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
-	}
-	if (m_site->contains("Modifiers"))
-	{
-		QStringList mods = m_site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts);
-		for (int j = 0; j < mods.size(); j++)
-		{ modifiers.removeAll(mods[j]); }
-	}
+	{ modifiers.append(ste->getApis().first()->modifiers()); }
+	QStringList mods = m_site->getApis().first()->modifiers();
+	for (int j = 0; j < mods.size(); j++)
+	{ modifiers.removeAll(mods[j]); }
 
 	// Remove modifiers from tags
 	for (int k = 0; k < modifiers.size(); k++)
