@@ -192,3 +192,12 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 
 	return img;
 }
+
+int Api::maxLimit() const
+{
+	if (contains("Urls/Limit"))
+		return value("Urls/Limit").toInt();
+	if (contains("Urls/MaxLimit"))
+		return value("Urls/MaxLimit").toInt();
+	return 0;
+}

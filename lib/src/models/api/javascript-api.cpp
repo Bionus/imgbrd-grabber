@@ -152,3 +152,14 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 	return ret;
 }
+
+QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) const
+{
+	QJSValue api = m_source.property("apis").property(m_key);
+	if (!api.hasProperty(key))
+	{ return def; }
+	return api.property(key);
+}
+
+int JavascriptApi::maxLimit() const
+{ return getJsConst("maxLimit", 0).toInt(); }

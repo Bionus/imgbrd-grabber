@@ -289,13 +289,7 @@ int PageApi::page() const
 int PageApi::pageImageCount() const
 { return m_pageImageCount;	}
 int PageApi::highLimit() const
-{
-	if (m_api->contains("Urls/Limit"))
-		return m_api->value("Urls/Limit").toInt();
-	if (m_api->contains("Urls/MaxLimit"))
-		return m_api->value("Urls/MaxLimit").toInt();
-	return 0;
-}
+{ return m_api->maxLimit(); }
 
 bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess) const

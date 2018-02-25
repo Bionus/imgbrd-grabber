@@ -17,9 +17,13 @@ class JavascriptApi : public Api
 		// API
 		QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
+		int maxLimit() const override;
+
+	protected:
+		QList<Tag> makeTags(const QJSValue &tags) const;
+		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
 
 	private:
-		QList<Tag> makeTags(const QJSValue &tags) const;
 		const QJSValue &m_source;
 		QString m_key;
 };

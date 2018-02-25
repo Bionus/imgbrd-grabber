@@ -40,6 +40,7 @@ class Api : public QObject
 		// API
 		virtual QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first) const = 0;
+		virtual int maxLimit() const;
 
 	protected:
 		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>()) const;
