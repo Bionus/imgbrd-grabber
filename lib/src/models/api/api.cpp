@@ -203,6 +203,18 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	if (d["sample_url"].isEmpty())
 	{ d["sample_url"] = d["preview_url"]; }
 
+	// Page URL
+	if (!d.contains("page_url") || d["page_url"].isEmpty())
+	{
+		QString pageUrl = value("Urls/Html/Post");
+		QString t = parentPage->search().join(" ");
+		if (contains("DefaultTag") && t.isEmpty())
+		{ t = value("DefaultTag"); }
+		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
+		pageUrl.replace("{id}", QString::number(d["id"].toULongLong()));
+		d["page_url"] = pageUrl;
+	}
+
 	QStringList errors;
 
 	// If the file path is wrong (ends with "/.jpg")

@@ -125,20 +125,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
-
-	// Page URL
-	if (!details.contains("page_url") || details["page_url"].isEmpty())
-	{
-		QString pageUrl = m_parentSite->value("Urls/Html/Post");
-		QString t = m_search.join(" ");
-		if (m_parentSite->contains("DefaultTag") && t.isEmpty())
-		{ t = m_parentSite->value("DefaultTag"); }
-		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
-		pageUrl.replace("{id}", QString::number(m_id));
-		m_pageUrl = m_parentSite->fixUrl(pageUrl);
-	}
-	else
-	{ m_pageUrl = m_parentSite->fixUrl(details["page_url"]); }
+	m_pageUrl = m_parentSite->fixUrl(details["page_url"]);
 
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
