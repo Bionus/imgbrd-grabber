@@ -101,6 +101,9 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	url.replace("{pid}", QString::number(pid));
 	url.replace("{page}", QString::number(page));
 
+	// Add login information
+	url = site->fixLoginUrl(url, value("Urls/Login"));
+
 	return url;
 }
 

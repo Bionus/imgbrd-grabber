@@ -54,7 +54,6 @@ void PageApi::updateUrls()
 	{ url = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
 
 	// Add site information to URL
-	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
 	url = m_site->fixUrl(url).toString();
 
 	m_originalUrl = QString(url);
