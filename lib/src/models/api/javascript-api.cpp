@@ -156,9 +156,11 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) const
 {
 	QJSValue api = m_source.property("apis").property(m_key);
-	if (!api.hasProperty(key))
-	{ return def; }
-	return api.property(key);
+	if (api.hasProperty(key))
+	{ return api.property(key); }
+	if (m_source.hasProperty(key))
+	{ return m_source.property(key); }
+	return def;
 }
 
 int JavascriptApi::maxLimit() const
