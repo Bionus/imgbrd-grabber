@@ -108,7 +108,10 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	while (it.hasNext())
 	{
 		it.next();
+
 		QJSValue tag = it.value();
+		if (!tag.isObject())
+			continue;
 
 		int id = tag.hasProperty("id") ? tag.property("id").toInt() : 0;
 		QString text = tag.property("name").toString();
