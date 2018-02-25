@@ -1054,8 +1054,6 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++)
 		{ sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i))); }
 		m_settings->setValue("batch", sizes.join(","));
-		for (auto tab : m_tabs)
-		{ tab->deleteLater(); }
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
 		QFile(m_settings->fileName()).copy(m_profile->getPath() + "/old/settings."+QString(VERSION)+".ini");
