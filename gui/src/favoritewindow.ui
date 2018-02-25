@@ -29,7 +29,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>General</string>
       </attribute>
@@ -98,7 +98,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
+        <layout class="QHBoxLayout" name="layoutImage" stretch="1,0">
          <item>
           <widget class="QLineEdit" name="imageLineEdit">
            <property name="sizePolicy">
@@ -123,19 +123,19 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tabMonitoring">
       <attribute name="title">
        <string>Monitors</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_3">
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="labelMonitoringInterval">
          <property name="text">
           <string>Monitoring interval</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QSpinBox" name="spinMonitoringInterval">
          <property name="suffix">
           <string> min</string>
@@ -145,8 +145,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLabel" name="label_2">
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="labelMonitoringIntervalHelp">
          <property name="text">
           <string>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</string>
          </property>
@@ -154,6 +154,16 @@
           <bool>true</bool>
          </property>
         </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelMonitoringSource">
+         <property name="text">
+          <string>Source</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboMonitoringSource"/>
        </item>
       </layout>
      </widget>

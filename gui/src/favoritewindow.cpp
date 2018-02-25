@@ -6,6 +6,7 @@
 #include <ui_favoritewindow.h>
 #include "functions.h"
 #include "models/profile.h"
+#include "models/site.h"
 
 
 /**
@@ -17,14 +18,22 @@
 favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent)
 	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	ui->tagLineEdit->setText(m_favorite.getName());
 	ui->noteSpinBox->setValue(m_favorite.getNote());
 	ui->lastViewedDateTimeEdit->setDateTime(m_favorite.getLastViewed());
 
+	QStringList sourceKeys = profile->getSites().keys();
+	ui->comboMonitoringSource->addItems(sourceKeys);
+
 	if (!m_favorite.getMonitors().isEmpty())
-	{ ui->spinMonitoringInterval->setValue(qFloor(m_favorite.getMonitors().first().interval() / 60)); }
+	{
+		Monitor monitor = m_favorite.getMonitors().first();
+		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60));
+		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
+	}
 
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -62,7 +71,21 @@ void favoriteWindow::on_openButton_clicked()
 void favoriteWindow::save()
 {
 	Favorite oldFav = m_favorite;
+
+	// Update monitors
+	int interval = ui->spinMonitoringInterval->value() * 60;
+	Site *site = m_profile->getSites().value(ui->comboMonitoringSource->currentText());
 	QList<Monitor> monitors = oldFav.getMonitors();
+	if (interval == 0)
+	{ monitors.clear(); }
+	else if (monitors.isEmpty())
+	{ monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc())); }
+	else
+	{
+		Monitor rep(site, interval, monitors[0].lastCheck());
+		monitors[0] = rep;
+	}
+
 	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime(), monitors);
 	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
 
