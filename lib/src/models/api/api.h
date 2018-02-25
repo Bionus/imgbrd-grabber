@@ -25,6 +25,12 @@ struct ParsedPage
 	QString wiki;
 };
 
+struct ParsedTags
+{
+	QString error;
+	QList<Tag> tags;
+};
+
 class Site;
 
 class Api : public QObject
@@ -46,11 +52,15 @@ class Api : public QObject
 		// API
 		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const = 0;
+		virtual PageUrl tagsUrl(int page, int limit, Site *site) const;
+		virtual ParsedTags parseTags(const QString &source, Site *site) const = 0;
+		virtual bool canLoadTags() const;
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
 
 	protected:
 		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>()) const;
+		QString parseSetImageUrl(Site *site, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, const QString &def = QString()) const;
 
 	private:
 		QString m_name;

@@ -11,16 +11,7 @@
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
 	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(Q_NULLPTR)
 {
-	QString url = m_api->value("Urls/TagApi");
-
-	// Basic information
-	page = page - 1 + m_api->value("FirstPage").toInt();
-	url.replace("{page}", QString::number(page));
-	url.replace("{limit}", QString::number(limit));
-
-	// Login information
-	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
-
+	QString url = api->tagsUrl(page, limit, site).url;
 	m_url = m_site->fixUrl(url);
 }
 
@@ -64,166 +55,27 @@ void TagApi::parse()
 		return;
 	}
 
-	// Initializations
+	// Try to read the reply
 	QString source = m_reply->readAll();
-	QString format = m_api->getName();
-	m_site->tagDatabase()->loadTypes();
-	QMap<int, TagType> tagTypes = m_site->tagDatabase()->tagTypes();
-	m_tags.clear();
-
 	if (source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1] Loading error: %2 (%3)").arg(m_site->url(), m_reply->errorString()).arg(m_reply->error())); }
+		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
 
-	// Tag variables definitions
-	int id;
-	QString name;
-	int count;
-	int typeId;
-	QString ttype;
-
-	// XML
-	if (format == "Xml")
+	// Parse source
+	ParsedTags ret = m_api->parseTags(source, m_site);
+	if (!ret.error.isEmpty())
 	{
-		// Read source
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{
-			log(QString("[%1] Error parsing XML file: %2 (%3 - %4).").arg(m_site->url(), errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
-			emit finishedLoading(this, LoadResult::Error);
-			return;
-		}
-		QDomElement docElem = doc.documentElement();
-
-		// Read tags
-		QDomNodeList nodeList = docElem.elementsByTagName("tag");
-		for (int i = 0; i < nodeList.count(); i++)
-		{
-			QDomNode node = nodeList.at(i);
-			QDomNamedNodeMap attr = node.attributes();
-
-			ttype = "";
-			if (!node.namedItem("post-count").isNull())
-			{
-				id = node.namedItem("id").toElement().text().toInt();
-				name = node.namedItem("name").toElement().text();
-				count = node.namedItem("post-count").toElement().text().toInt();
-				typeId = node.namedItem("category").toElement().text().toInt();
-			}
-			else if (attr.contains("name"))
-			{
-				id = attr.namedItem("id").toAttr().value().toInt();
-				name = attr.namedItem("name").toAttr().value();
-				count = attr.namedItem("count").toAttr().value().toInt();
-				typeId = attr.namedItem("type").toAttr().value().toInt();
-			}
-			else
-			{
-				id = node.namedItem("id").toElement().text().toInt();
-				name = node.namedItem("name").toElement().text();
-				count = node.namedItem("count").toElement().text().toInt();
-				typeId = node.namedItem("type").toElement().text().toInt();
-			}
-
-			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
-			m_tags.append(Tag(id, name, tagType, count));
-		}
+		log(QString("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);
+		emit finishedLoading(this, LoadResult::Error);
+		return;
 	}
 
-	// JSON
-	else if (format == "Json")
-	{
-		// Read source
-		QVariant src = Json::parse(source);
-		if (src.isNull())
-		{
-			log(QString("[%1] Error parsing JSON file: \"%2\"").arg(m_site->url(), source.left(500)), Logger::Warning);
-			emit finishedLoading(this, LoadResult::Error);
-			return;
-		}
-		QMap<QString, QVariant> data = src.toMap();
-
-		// Check for a JSON error message
-		if (data.contains("success") && !data["success"].toBool())
-		{
-			log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url(), data["reason"].toString()), Logger::Warning);
-			emit finishedLoading(this, LoadResult::Error);
-			return;
-		}
-
-		// Read tags
-		QList<QVariant> sourc = src.toList();
-		for (const QVariant &el : sourc)
-		{
-			QMap<QString, QVariant> sc = el.toMap();
-
-			ttype = "";
-			if (sc.contains("short_description"))
-			{
-				id = sc.value("id").toInt();
-				name = sc.value("name").toString();
-				count = sc.value("images").toInt();
-				ttype = sc.value("category").toString();
-			}
-			else if (sc.contains("post_count"))
-			{
-				id = sc.value("id").toInt();
-				name = sc.value("name").toString();
-				count = sc.value("post_count").toInt();
-				typeId = sc.value("category").toInt();
-			}
-			else
-			{
-				id = sc.value("id").toInt();
-				name = sc.value("name").toString();
-				count = sc.value("count").toInt();
-				typeId = sc.value("type").toInt();
-			}
-
-			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
-			m_tags.append(Tag(id, name, tagType, count));
-		}
-	}
-
-	// Regexes
-	else if (format == "Html")
-	{
-		// Read tags
-		QRegularExpression rx(m_site->value("Regex/TagApi"), QRegularExpression::DotMatchesEverythingOption);
-		auto matches = rx.globalMatch(source);
-		while (matches.hasNext())
-		{
-			auto match = matches.next();
-
-			// Parse result using the regex
-			QMap<QString, QString> d;
-			for (const QString &group : rx.namedCaptureGroups())
-			{
-				if (group.isEmpty())
-					continue;
-
-				QString val = match.captured(group);
-				if (!val.isEmpty())
-				{ d[group] = val.trimmed(); }
-			}
-
-			// Map variables
-			id = d.contains("id") ? d["id"].toInt() : 0;
-			name = d["tag"];
-			count = d.contains("count") ? d["count"].toInt() : 0;
-			typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
-			ttype = d["type"];
-
-			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
-			m_tags.append(Tag(id, name, tagType, count));
-		}
-	}
+	m_tags.clear();
+	m_tags.append(ret.tags);
 
 	emit finishedLoading(this, LoadResult::Ok);
 }

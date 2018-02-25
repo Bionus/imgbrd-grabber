@@ -1,6 +1,7 @@
 #include "models/api/html-api.h"
 #include <QRegularExpression>
 #include <QtMath>
+#include "models/site.h"
 #include "vendor/json.h"
 
 
@@ -124,6 +125,44 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 			wiki.replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 			ret.wiki = wiki;
 		}
+	}
+
+	return ret;
+}
+
+ParsedTags HtmlApi::parseTags(const QString &source, Site *site) const
+{
+	ParsedTags ret;
+	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
+
+	// Read tags
+	QRegularExpression rx(value("Regex/TagApi"), QRegularExpression::DotMatchesEverythingOption);
+	auto matches = rx.globalMatch(source);
+	while (matches.hasNext())
+	{
+		auto match = matches.next();
+
+		// Parse result using the regex
+		QMap<QString, QString> d;
+		for (const QString &group : rx.namedCaptureGroups())
+		{
+			if (group.isEmpty())
+				continue;
+
+			QString val = match.captured(group);
+			if (!val.isEmpty())
+			{ d[group] = val.trimmed(); }
+		}
+
+		// Map variables
+		int id = d.contains("id") ? d["id"].toInt() : 0;
+		QString name = d["tag"];
+		int count = d.contains("count") ? d["count"].toInt() : 0;
+		int typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
+		QString ttype = d["type"];
+
+		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		ret.tags.append(Tag(id, name, tagType, count));
 	}
 
 	return ret;

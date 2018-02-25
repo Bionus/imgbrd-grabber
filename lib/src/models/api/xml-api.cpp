@@ -1,5 +1,6 @@
 #include "models/api/xml-api.h"
 #include <QDomDocument>
+#include "models/site.h"
 
 
 XmlApi::XmlApi(const QMap<QString, QString> &data)
@@ -92,6 +93,66 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 		QSharedPointer<Image> img = parseImage(parentPage, d, id + first, tags);
 		if (!img.isNull())
 		{ ret.images.append(img); }
+	}
+
+	return ret;
+}
+
+ParsedTags XmlApi::parseTags(const QString &source, Site *site) const
+{
+	ParsedTags ret;
+	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
+
+	// Tag variables definitions
+	int id;
+	QString name;
+	int count;
+	int typeId;
+	QString ttype;
+
+	// Read source
+	QDomDocument doc;
+	QString errorMsg;
+	int errorLine, errorColumn;
+	if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
+	{
+		ret.error = QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
+		return ret;
+	}
+	QDomElement docElem = doc.documentElement();
+
+	// Read tags
+	QDomNodeList nodeList = docElem.elementsByTagName("tag");
+	for (int i = 0; i < nodeList.count(); i++)
+	{
+		QDomNode node = nodeList.at(i);
+		QDomNamedNodeMap attr = node.attributes();
+
+		ttype = "";
+		if (!node.namedItem("post-count").isNull())
+		{
+			id = node.namedItem("id").toElement().text().toInt();
+			name = node.namedItem("name").toElement().text();
+			count = node.namedItem("post-count").toElement().text().toInt();
+			typeId = node.namedItem("category").toElement().text().toInt();
+		}
+		else if (attr.contains("name"))
+		{
+			id = attr.namedItem("id").toAttr().value().toInt();
+			name = attr.namedItem("name").toAttr().value();
+			count = attr.namedItem("count").toAttr().value().toInt();
+			typeId = attr.namedItem("type").toAttr().value().toInt();
+		}
+		else
+		{
+			id = node.namedItem("id").toElement().text().toInt();
+			name = node.namedItem("name").toElement().text();
+			count = node.namedItem("count").toElement().text().toInt();
+			typeId = node.namedItem("type").toElement().text().toInt();
+		}
+
+		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		ret.tags.append(Tag(id, name, tagType, count));
 	}
 
 	return ret;

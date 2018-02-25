@@ -67,3 +67,13 @@ ParsedPage RssApi::parsePage(Page *parentPage, const QString &source, int first,
 
 	return ret;
 }
+
+ParsedTags RssApi::parseTags(const QString &source, Site *site) const
+{
+	Q_UNUSED(source);
+	Q_UNUSED(site);
+
+	ParsedTags ret;
+	ret.error = "Not implemented";
+	return ret;
+}

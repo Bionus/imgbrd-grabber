@@ -17,10 +17,14 @@ class JavascriptApi : public Api
 		// API
 		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const override;
+		PageUrl tagsUrl(int page, int limit, Site *site) const override;
+		ParsedTags parseTags(const QString &source, Site *site) const override;
+		bool canLoadTags() const override;
 		int forcedLimit() const override;
 		int maxLimit() const override;
 
 	protected:
+		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;
 		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
 

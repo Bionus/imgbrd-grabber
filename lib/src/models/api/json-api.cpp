@@ -1,4 +1,5 @@
 #include "models/api/json-api.h"
+#include "models/site.h"
 #include "vendor/json.h"
 
 
@@ -184,6 +185,70 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 		QSharedPointer<Image> img = parseImage(parentPage, d, id + first, tags);
 		if (!img.isNull())
 		{ ret.images.append(img); }
+	}
+
+	return ret;
+}
+
+ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
+{
+	ParsedTags ret;
+	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
+
+	// Read source
+	QVariant src = Json::parse(source);
+	if (src.isNull())
+	{
+		ret.error = QString("Error parsing JSON file: \"%1\"").arg(source.left(500));
+		return ret;
+	}
+	QMap<QString, QVariant> data = src.toMap();
+
+	// Check for a JSON error message
+	if (data.contains("success") && !data["success"].toBool())
+	{
+		ret.error = QString("JSON error reply: \"%1\"").arg(data["reason"].toString());
+		return ret;
+	}
+
+	// Tag variables definitions
+	int id;
+	QString name;
+	int count;
+	int typeId;
+	QString ttype;
+
+	// Read tags
+	QList<QVariant> sourc = src.toList();
+	for (const QVariant &el : sourc)
+	{
+		QMap<QString, QVariant> sc = el.toMap();
+
+		ttype = "";
+		if (sc.contains("short_description"))
+		{
+			id = sc.value("id").toInt();
+			name = sc.value("name").toString();
+			count = sc.value("images").toInt();
+			ttype = sc.value("category").toString();
+		}
+		else if (sc.contains("post_count"))
+		{
+			id = sc.value("id").toInt();
+			name = sc.value("name").toString();
+			count = sc.value("post_count").toInt();
+			typeId = sc.value("category").toInt();
+		}
+		else
+		{
+			id = sc.value("id").toInt();
+			name = sc.value("name").toString();
+			count = sc.value("count").toInt();
+			typeId = sc.value("type").toInt();
+		}
+
+		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		ret.tags.append(Tag(id, name, tagType, count));
 	}
 
 	return ret;

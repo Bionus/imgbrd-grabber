@@ -16,9 +16,52 @@ JavascriptApi::JavascriptApi(const QMap<QString, QString> &data, const QJSValue 
 	: Api(normalize(key), data), m_source(source), m_key(key)
 {}
 
+
+void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const
+{
+	// Script errors and exceptions
+	if (result.isError())
+	{
+		QString err = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		ret.error = err;
+		log(err, Logger::Error);
+		return;
+	}
+
+	// Parse result
+	QString url;
+	if (result.isObject())
+	{
+		if (result.hasProperty("error"))
+		{
+			ret.error = result.property("error").toString();
+			return;
+		}
+
+		url = result.property("url").toString();
+	}
+	else
+	{ url = result.toString(); }
+
+	// Site-ize url
+	url = site->fixLoginUrl(url, this->value("Urls/Login"));
+	url = site->fixUrl(url).toString();
+
+	ret.url = url;
+}
+
+
 PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
 	PageUrl ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("search").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support search";
+		return ret;
+	}
 
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("search", search);
@@ -50,39 +93,9 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 		previous.setProperty("maxId", lastPageMaxId);
 	}
 
-	QJSValue api = m_source.property("apis").property(m_key);
-	QJSValue urlFunction = api.property("search").property("url");
 	QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts << previous);
+	fillUrlObject(result, site, ret);
 
-	// Script errors and exceptions
-	if (result.isError())
-	{
-		QString err = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
-		ret.error = err;
-		log(err, Logger::Error);
-		return ret;
-	}
-
-	// Parse result
-	QString url;
-	if (result.isObject())
-	{
-		if (result.hasProperty("error"))
-		{
-			ret.error = result.property("error").toString();
-			return ret;
-		}
-
-		url = result.property("url").toString();
-	}
-	else
-	{ url = result.toString(); }
-
-	// Site-ize url
-	url = site->fixLoginUrl(url, this->value("Urls/Login"));
-	url = site->fixUrl(url).toString();
-
-	ret.url = url;
 	return ret;
 }
 
@@ -181,6 +194,77 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 	return ret;
 }
+
+
+bool JavascriptApi::canLoadTags() const
+{
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tags").property("url");
+	return !urlFunction.isUndefined();
+}
+
+PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
+{
+	PageUrl ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tags").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support tag loading";
+		return ret;
+	}
+
+	QJSValue query = m_source.engine()->newObject();
+	query.setProperty("page", page);
+
+	QJSValue opts = m_source.engine()->newObject();
+	opts.setProperty("limit", limit);
+	QJSValue auth = m_source.engine()->newObject();
+	MixedSettings *settings = site->settings();
+	settings->beginGroup("auth");
+	for (const QString &key : settings->childKeys())
+	{
+		QString value = settings->value(key).toString();
+		if (key == "pseudo" && !auth.hasProperty("login"))
+		{ auth.setProperty("login", value); }
+		if (key == "password" && !auth.hasProperty("password_hash"))
+		{ auth.setProperty("password_hash", value); }
+		auth.setProperty(key, value);
+	}
+	settings->endGroup();
+	opts.setProperty("auth", auth);
+
+	QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
+{
+	ParsedTags ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue parseFunction = api.property("tags").property("parse");
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+
+	// Script errors and exceptions
+	if (results.isError())
+	{
+		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	if (results.hasProperty("error"))
+	{ ret.error = results.property("error").toString(); }
+
+	if (results.hasProperty("tags"))
+	{ ret.tags = makeTags(results.property("tags"), site); }
+
+	return ret;
+}
+
 
 QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) const
 {

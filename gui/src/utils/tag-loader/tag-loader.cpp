@@ -40,7 +40,7 @@ QList<Api*> TagLoader::getCompatibleApis(Site *site) const
 {
 	QList<Api*> apis;
 	for (Api *a : site->getApis())
-		if (a->contains("Urls/TagApi"))
+		if (a->canLoadTags())
 			apis.append(a);
 
 	return apis;

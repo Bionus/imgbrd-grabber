@@ -130,6 +130,7 @@ void Site::loadConfig()
 
 	// Tag database
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
+	m_tagDatabase->loadTypes();
 }
 
 Site::~Site()

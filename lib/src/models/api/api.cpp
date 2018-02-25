@@ -116,12 +116,29 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	return ret;
 }
 
-
-QString _parseSetImageUrl(Site *site, const Api *api, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, const QString &def = QString())
+PageUrl Api::tagsUrl(int page, int limit, Site *site) const
 {
-	if (api->contains(settingUrl) && ret.length() < 5)
+	PageUrl ret;
+	QString url = value("Urls/TagApi");
+
+	// Basic information
+	page = page - 1 + value("FirstPage").toInt();
+	url.replace("{page}", QString::number(page));
+	url.replace("{limit}", QString::number(limit));
+
+	// Add login information
+	url = site->fixLoginUrl(url, value("Urls/Login"));
+
+	ret.url = url;
+	return ret;
+}
+
+
+QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces, const QString &def) const
+{
+	if (contains(settingUrl) && ret.length() < 5)
 	{
-		QStringList options = api->value(settingUrl).split('|');
+		QStringList options = value(settingUrl).split('|');
 		for (QString opt : options)
 		{
 			if (opt.contains("{tim}") && d->value("tim").isEmpty())
@@ -141,12 +158,12 @@ QString _parseSetImageUrl(Site *site, const Api *api, const QString &settingUrl,
 			}
 		}
 	}
-	else if (api->contains(settingReplaces) && replaces)
+	else if (contains(settingReplaces) && replaces)
 	{
 		if (ret.isEmpty() && !def.isEmpty())
 			ret = def;
 
-		QStringList reps = api->value(settingReplaces).split('&');
+		QStringList reps = value(settingReplaces).split('&');
 		for (const QString &rep : reps)
 		{
 			QRegularExpression rgx(rep.left(rep.indexOf("->")));
@@ -177,9 +194,9 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	{ d["ext"] = d["ext"].mid(1); }
 
 	// Fix urls
-	d["file_url"] = _parseSetImageUrl(site, this, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
-	d["sample_url"] = _parseSetImageUrl(site, this, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
-	d["preview_url"] = _parseSetImageUrl(site, this, "Urls/Preview", "Urls/PreviewReplaces", d["preview_url"], &d);
+	d["file_url"] = parseSetImageUrl(site, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
+	d["sample_url"] = parseSetImageUrl(site, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
+	d["preview_url"] = parseSetImageUrl(site, "Urls/Preview", "Urls/PreviewReplaces", d["preview_url"], &d);
 
 	if (d["file_url"].isEmpty())
 	{ d["file_url"] = d["preview_url"]; }
@@ -206,6 +223,8 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	return img;
 }
 
+bool Api::canLoadTags() const
+{ return contains("Urls/TagApi"); }
 int Api::forcedLimit() const
 { return contains("Urls/Limit") ? value("Urls/Limit").toInt() : 0; }
 int Api::maxLimit() const

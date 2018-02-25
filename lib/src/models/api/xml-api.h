@@ -11,6 +11,7 @@ class XmlApi : public Api
 	public:
 		explicit XmlApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const override;
+		ParsedTags parseTags(const QString &source, Site *site) const override;
 };
 
 #endif // XML_API_H

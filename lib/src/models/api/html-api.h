@@ -11,6 +11,7 @@ class HtmlApi : public Api
 	public:
 		explicit HtmlApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const override;
+		ParsedTags parseTags(const QString &source, Site *site) const override;
 };
 
 #endif // HTML_API_H
