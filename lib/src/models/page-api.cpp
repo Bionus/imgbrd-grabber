@@ -209,7 +209,7 @@ void PageApi::parse()
 	// Virtual paging
 	int firstImage = 0;
 	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
-	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{cpage}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
+	if (false && !m_originalUrl.contains("{page}") && !m_originalUrl.contains("{cpage}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}")) // TODO(Bionus): add real virtual paging
 	{
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
@@ -230,7 +230,7 @@ void PageApi::parse()
 
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
-	{ t = m_site->value("DefaultTag"); }
+	{ t = m_api->value("DefaultTag"); }
 	if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
 	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
