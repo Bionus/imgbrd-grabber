@@ -73,6 +73,7 @@ class Site : public QObject
 		QList<Api*> getApis(bool filterAuth = false) const;
 		Source *getSource() const;
 		Api *firstValidApi() const;
+		Api *detailsApi() const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);

@@ -1,6 +1,7 @@
 #include "models/api/html-api.h"
 #include <QRegularExpression>
 #include <QtMath>
+#include "functions.h"
 #include "models/site.h"
 #include "vendor/json.h"
 
@@ -163,6 +164,59 @@ ParsedTags HtmlApi::parseTags(const QString &source, Site *site) const
 
 		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 		ret.tags.append(Tag(id, name, tagType, count));
+	}
+
+	return ret;
+}
+
+ParsedDetails HtmlApi::parseDetails(const QString &source, Site *site) const
+{
+	ParsedDetails ret;
+
+	// Pools
+	if (contains("Regex/Pools"))
+	{
+		QRegularExpression rx(value("Regex/Pools"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
+		{
+			auto match = matches.next();
+			QString previous = match.captured(1), id = match.captured(2), name = match.captured(3), next = match.captured(4);
+			ret.pools.append(Pool(id.toInt(), name, 0, next.toInt(), previous.toInt()));
+		}
+	}
+
+	// Tags
+	QString rxtags;
+	if (contains("Regex/ImageTags"))
+	{ rxtags = value("Regex/ImageTags"); }
+	else if (contains("Regex/Tags"))
+	{ rxtags = value("Regex/Tags"); }
+	if (!rxtags.isEmpty())
+	{ ret.tags = Tag::FromRegexp(rxtags, source); }
+
+	// Image url
+	if (contains("Regex/ImageUrl"))
+	{
+		QRegularExpression rx(value("Regex/ImageUrl"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
+		{
+			auto match = matches.next();
+			ret.imageUrl = match.captured(1).replace("&amp;", "&");
+		}
+	}
+
+	// Image date
+	if (contains("Regex/ImageDate"))
+	{
+		QRegularExpression rx(value("Regex/ImageDate"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
+		{
+			auto match = matches.next();
+			ret.createdAt = qDateTimeFromString(match.captured(1));
+		}
 	}
 
 	return ret;

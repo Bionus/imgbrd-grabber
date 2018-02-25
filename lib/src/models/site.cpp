@@ -362,6 +362,13 @@ Api *Site::firstValidApi() const
 			return api;
 	return nullptr;
 }
+Api *Site::detailsApi() const
+{
+	for (Api *api : m_apis)
+		if (api->canLoadDetails())
+			return api;
+	return Q_NULLPTR;
+}
 
 bool Site::autoLogin() const			{ return m_autoLogin;		}
 void Site::setAutoLogin(bool autoLogin)	{ m_autoLogin = autoLogin;	}

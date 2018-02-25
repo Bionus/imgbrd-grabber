@@ -1,7 +1,9 @@
 #include "models/api/javascript-api.h"
 #include <QJSValueIterator>
+#include "functions.h"
 #include "logger.h"
 #include "models/page.h"
+#include "models/pool.h"
 #include "models/site.h"
 
 
@@ -261,9 +263,82 @@ ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
 
 	if (results.hasProperty("error"))
 	{ ret.error = results.property("error").toString(); }
-
 	if (results.hasProperty("tags"))
 	{ ret.tags = makeTags(results.property("tags"), site); }
+
+	return ret;
+}
+
+
+bool JavascriptApi::canLoadDetails() const
+{
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("details").property("url");
+	return !urlFunction.isUndefined();
+}
+
+PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site) const
+{
+	PageUrl ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("details").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support details loading";
+		return ret;
+	}
+
+	QJSValue result = urlFunction.call(QList<QJSValue>() << QString::number(id) << md5);
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) const
+{
+	ParsedDetails ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue parseFunction = api.property("details").property("parse");
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+
+	// Script errors and exceptions
+	if (results.isError())
+	{
+		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	if (results.hasProperty("error"))
+	{ ret.error = results.property("error").toString(); }
+	if (results.hasProperty("tags"))
+	{ ret.tags = makeTags(results.property("tags"), site); }
+	if (results.hasProperty("imageUrl"))
+	{ ret.imageUrl = results.property("imageUrl").toString(); }
+	if (results.hasProperty("createdAt"))
+	{ ret.createdAt = qDateTimeFromString(results.property("createdAt").toString()); }
+
+	if (results.hasProperty("pools"))
+	{
+		QJSValue images = results.property("pools");
+		QJSValueIterator it(images);
+		while (it.hasNext())
+		{
+			it.next();
+
+			QJSValue pool = it.value();
+			if (!pool.isObject())
+				continue;
+
+			int id = pool.hasProperty("id") ? pool.property("id").toInt() : 0;
+			QString name = pool.property("name").toString();
+			int next = pool.hasProperty("next") ? pool.property("next").toInt() : 0;
+			int previous = pool.hasProperty("previous") ? pool.property("previous").toInt() : 0;
+
+			ret.pools.append(Pool(id, name, 0, next, previous));
+		}
+	}
 
 	return ret;
 }

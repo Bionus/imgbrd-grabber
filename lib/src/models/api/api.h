@@ -31,6 +31,15 @@ struct ParsedTags
 	QList<Tag> tags;
 };
 
+struct ParsedDetails
+{
+	QString error;
+	QList<Pool> pools;
+	QList<Tag> tags;
+	QString imageUrl;
+	QDateTime createdAt;
+};
+
 class Site;
 
 class Api : public QObject
@@ -54,7 +63,10 @@ class Api : public QObject
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const = 0;
 		virtual PageUrl tagsUrl(int page, int limit, Site *site) const;
 		virtual ParsedTags parseTags(const QString &source, Site *site) const = 0;
+		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const;
+		virtual ParsedDetails parseDetails(const QString &source, Site *site) const;
 		virtual bool canLoadTags() const;
+		virtual bool canLoadDetails() const;
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
 		virtual QStringList modifiers() const;

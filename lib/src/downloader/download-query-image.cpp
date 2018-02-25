@@ -48,11 +48,6 @@ void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const Q
 	values["tags"] = tags;
 	values["date"] = date;
 	values["file_url"] = fileUrl;
-
-	QString t = site->contains("DefaultTag") ? site->value("DefaultTag") : "";
-	values["page_url"] = site->value("Urls/Html/Post");
-	values["page_url"].replace("{tags}", t);
-	values["page_url"].replace("{id}", QString::number(id));
 }
 
 

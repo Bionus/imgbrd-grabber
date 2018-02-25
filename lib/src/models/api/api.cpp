@@ -133,6 +133,29 @@ PageUrl Api::tagsUrl(int page, int limit, Site *site) const
 	return ret;
 }
 
+PageUrl Api::detailsUrl(qulonglong id, const QString &md5, Site *site) const
+{
+	PageUrl ret;
+
+	QString url = value("Urls/Html/Post");
+	url.replace("{id}", QString::number(id));
+	url.replace("{md5}", md5);
+	url = site->fixLoginUrl(url, value("Urls/Login"));
+
+	ret.url = url;
+	return ret;
+}
+
+ParsedDetails Api::parseDetails(const QString &source, Site *site) const
+{
+	Q_UNUSED(source);
+	Q_UNUSED(site);
+
+	ParsedDetails ret;
+	ret.error = "Not implemented";
+	return ret;
+}
+
 
 QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces, const QString &def) const
 {
@@ -203,18 +226,6 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	if (d["sample_url"].isEmpty())
 	{ d["sample_url"] = d["preview_url"]; }
 
-	// Page URL
-	if (!d.contains("page_url") || d["page_url"].isEmpty())
-	{
-		QString pageUrl = value("Urls/Html/Post");
-		QString t = parentPage->search().join(" ");
-		if (contains("DefaultTag") && t.isEmpty())
-		{ t = value("DefaultTag"); }
-		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
-		pageUrl.replace("{id}", QString::number(d["id"].toULongLong()));
-		d["page_url"] = pageUrl;
-	}
-
 	QStringList errors;
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -237,6 +248,8 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 
 bool Api::canLoadTags() const
 { return contains("Urls/TagApi"); }
+bool Api::canLoadDetails() const
+{ return contains("Urls/Post"); }
 int Api::forcedLimit() const
 { return contains("Urls/Limit") ? value("Urls/Limit").toInt() : 0; }
 int Api::maxLimit() const

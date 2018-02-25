@@ -125,7 +125,16 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
-	m_pageUrl = m_parentSite->fixUrl(details["page_url"]);
+
+	// Page url
+	if (details.contains("page_url"))
+	{ m_pageUrl = site->fixUrl(details["page_url"]).toString(); }
+	else
+	{
+		Api *api = m_parentSite->detailsApi();
+		if (api != Q_NULLPTR)
+		{ m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url; }
+	}
 
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
@@ -283,7 +292,7 @@ void Image::loadDetails(bool rateLimit)
 	if (m_loadingDetails)
 		return;
 
-	if (m_loadedDetails)
+	if (m_loadedDetails || m_pageUrl.isEmpty())
 	{
 		emit finishedLoadingTags();
 		return;
@@ -339,64 +348,37 @@ void Image::parseDetails()
 
 	QString source = QString::fromUtf8(m_loadDetails->readAll());
 
-	// Pools
-	if (m_parentSite->contains("Regex/Pools"))
+	// Get an api able to parse details
+	Api *api = m_parentSite->detailsApi();
+	if (api == Q_NULLPTR)
+		return;
+
+	// Parse source
+	ParsedDetails ret = api->parseDetails(source, m_parentSite);
+	if (!ret.error.isEmpty())
 	{
-		m_pools.clear();
-		QRegularExpression rx(m_parentSite->value("Regex/Pools"));
-		auto matches = rx.globalMatch(source);
-		while (matches.hasNext())
-		{
-			auto match = matches.next();
-			QString previous = match.captured(1), id = match.captured(2), name = match.captured(3), next = match.captured(4);
-			m_pools.append(Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
-		}
+		log(QString("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), Logger::Warning);
+		emit finishedLoadingTags();
+		return;
 	}
 
-	// Tags
-	QString rxtags;
-	if (m_parentSite->contains("Regex/ImageTags"))
-	{ rxtags = m_parentSite->value("Regex/ImageTags"); }
-	else if (m_parentSite->contains("Regex/Tags"))
-	{ rxtags = m_parentSite->value("Regex/Tags"); }
-	if (!rxtags.isEmpty())
-	{
-		QList<Tag> tgs = Tag::FromRegexp(rxtags, source);
-		if (!tgs.isEmpty())
-		{
-			if (m_rating.isEmpty())
-			{
-				int ratingTagIndex = -1;
-				for (int it = 0; it < tgs.count(); ++it)
-				{
-					if (tgs[it].type().name() == "rating")
-					{
-						m_rating = tgs[it].text();
-						ratingTagIndex = it;
-						break;
-					}
-				}
-				if (ratingTagIndex != -1)
-				{ tgs.removeAt(ratingTagIndex); }
-			}
-
-			m_tags = tgs;
-		}
-	}
+	// Fill data from parsing result
+	if (!ret.pools.isEmpty())
+	{ m_pools = ret.pools; }
+	if (!ret.tags.isEmpty())
+	{ m_tags = ret.tags; }
+	if (ret.createdAt.isValid())
+	{ m_createdAt = ret.createdAt; }
 
 	// Image url
-	if ((m_url.isEmpty() || m_parentSite->contains("Regex/ForceImageUrl")) && m_parentSite->contains("Regex/ImageUrl"))
+	if (!ret.imageUrl.isEmpty())
 	{
-		QRegularExpression rx(m_parentSite->value("Regex/ImageUrl"));
 		QString before = m_url;
-		auto matches = rx.globalMatch(source);
-		while (matches.hasNext())
-		{
-			auto match = matches.next();
-			QString newurl = m_parentSite->fixUrl(match.captured(1).replace("&amp;", "&"), QUrl(m_url)).toString();
-			m_url = newurl;
-			m_fileUrl = newurl;
-		}
+
+		QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
+		m_url = newUrl.toString();
+		m_fileUrl = newUrl;
+
 		if (before != m_url)
 		{
 			delete m_extensionRotator;
@@ -406,16 +388,21 @@ void Image::parseDetails()
 		}
 	}
 
-	// Image date
-	if ((!m_createdAt.isValid() || m_parentSite->contains("Regex/ForceImageDate")) && m_parentSite->contains("Regex/ImageDate"))
+	// Get rating from tags
+	if (m_rating.isEmpty())
 	{
-		QRegularExpression rx(m_parentSite->value("Regex/ImageDate"));
-		auto matches = rx.globalMatch(source);
-		while (matches.hasNext())
+		int ratingTagIndex = -1;
+		for (int it = 0; it < m_tags.count(); ++it)
 		{
-			auto match = matches.next();
-			m_createdAt = qDateTimeFromString(match.captured(1));
+			if (m_tags[it].type().name() == "rating")
+			{
+				m_rating = m_tags[it].text();
+				ratingTagIndex = it;
+				break;
+			}
 		}
+		if (ratingTagIndex != -1)
+		{ m_tags.removeAt(ratingTagIndex); }
 	}
 
 	m_loadDetails->deleteLater();

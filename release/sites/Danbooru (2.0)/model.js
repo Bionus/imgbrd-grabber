@@ -25,6 +25,11 @@ function countToInt(str) {
     return Math.floor(count);
 }
 
+function makeTag(match) {
+    match["count"] = countToInt(match["count"]);
+    return match;
+}
+
 function loginUrl(fields, values) {
     var res = "";
     for (var i in fields) {
@@ -272,11 +277,7 @@ __source = {
                     for (var tagI in tagMatches) {
                         var tagMatch = tagMatches[tagI];
                         if (!(tagMatch["name"] in tags)) {
-                            tags[tagMatch["name"]] = {
-                                name: tagMatch["name"],
-                                count: countToInt(tagMatch["count"]),
-                                typeId: tagMatch["typeId"],
-                            };
+                            tags[tagMatch["name"]] = makeTag(tagMatch["name"]);
                         }
                     }
 
@@ -296,6 +297,35 @@ __source = {
                     return { images: images, tags: tags };
                 },
             },
+            details: {
+                url: function(id, md5) {
+                    return "/posts/" + id;
+                },
+                parse: function(src) {
+                    // Pools
+                    var pools = [];
+                    var poolMatches = Grabber.regexMatches('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src);
+                    for (var poolMatch in poolMatches) {
+                        pools.push(poolMatches[poolMatch]);
+                    }
+
+                    // Tags
+                    var tags = [];
+                    var tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
+                    for (var tagMatch in tagMatches) {
+                        tags.push(makeTag(tagMatches[tagMatch]));
+                    }
+
+                    // Image url
+                    var imageUrl = undefined;
+                    var imageUrlMatches = Grabber.regexMatches('<section[^>]* data-file-url="(?<url>[^"]*)"', src);
+                    for (var imageUrlMatch in imageUrlMatches) {
+                        imageUrl = imageUrlMatches[imageUrlMatch]["url"];
+                    }
+
+                    return { pools: pools, tags: tags, imageUrl: imageUrl };
+                },
+            },
             tags: {
                 url: function(query, opts) {
                     var loginPart = loginUrl(auth.url.fields, opts["auth"]);
@@ -306,13 +336,7 @@ __source = {
 
                     var tags = [];
                     for (var i in matches) {
-                        var match = matches[i];
-                        tags.push({
-                            id: match["id"],
-                            name: match["name"],
-                            count: countToInt(match["count"]),
-                            typeId: match["typeId"],
-                        });
+                        tags.push(makeTag(matches[i]));
                     }
 
                     return { tags: tags };

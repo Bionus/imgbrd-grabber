@@ -4,6 +4,7 @@
 #include <ui_adduniquewindow.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"
+#include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
@@ -57,18 +58,10 @@ void AddUniqueWindow::ok(bool close)
 	Site *site = m_sites[ui->comboSites->currentText()];
 
 	m_close = close;
-	bool useDirectLink = true;
-	if (
-		(site->value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
-		(site->value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty()) ||
-		!site->contains("Regex/ImageUrl")
-	)
-	{ useDirectLink = false; }
-	if (useDirectLink)
+	Api *api = site->detailsApi();
+	if (api != Q_NULLPTR)
 	{
-		QString url = site->value("Urls/Html/Post");
-		url.replace("{id}", ui->lineId->text());
-		url.replace("{md5}", ui->lineMd5->text());
+		QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
 
 		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
@@ -76,13 +69,16 @@ void AddUniqueWindow::ok(bool close)
 		details.insert("md5", ui->lineMd5->text());
 		details.insert("website", ui->comboSites->currentText());
 		details.insert("site", QString::number((qintptr)m_sites[ui->comboSites->currentText()]));
+
 		m_image = QSharedPointer<Image>(new Image(site, details, m_profile));
 		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
 		m_image->loadDetails();
 	}
 	else
 	{
-		m_page = new Page(m_profile, m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		QString query = (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text());
+		QStringList search = QStringList() << query << "status:any";
+		m_page = new Page(m_profile, m_sites[ui->comboSites->currentText()], m_sites.values(), search, 1, 1);
 		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 		m_page->load();
 	}
