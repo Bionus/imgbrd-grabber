@@ -163,5 +163,7 @@ QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) cons
 	return def;
 }
 
+int JavascriptApi::forcedLimit() const
+{ return getJsConst("forcedLimit", 0).toInt(); }
 int JavascriptApi::maxLimit() const
 { return getJsConst("maxLimit", 0).toInt(); }

@@ -38,7 +38,8 @@ QString Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	{ search = m_data.value("DefaultTag"); }
 
 	// Find page number
-	int pidLimit = m_data.contains("Urls/Limit") ? m_data.value("Urls/Limit").toInt() : limit;
+	int forced = forcedLimit();
+	int pidLimit = forced > 0 ? forced : limit;
 	int pid = pidLimit * (page - 1);
 	page = page - 1 + m_data.value("FirstPage").toInt();
 
@@ -193,11 +194,13 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	return img;
 }
 
+int Api::forcedLimit() const
+{ return contains("Urls/Limit") ? value("Urls/Limit").toInt() : 0; }
 int Api::maxLimit() const
 {
-	if (contains("Urls/Limit"))
-		return value("Urls/Limit").toInt();
-	if (contains("Urls/MaxLimit"))
-		return value("Urls/MaxLimit").toInt();
-	return 0;
+	int forced = forcedLimit();
+	if (forced > 0)
+		return forced;
+
+	return contains("Urls/MaxLimit") ? value("Urls/MaxLimit").toInt() : 0;
 }

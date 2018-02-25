@@ -17,6 +17,7 @@ class JavascriptApi : public Api
 		// API
 		QString pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
+		int forcedLimit() const override;
 		int maxLimit() const override;
 
 	protected:

@@ -247,7 +247,8 @@ void PageApi::parseNavigation(const QString &source)
 			int pagesCount = cnt;
 			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
 			{
-				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+				int forcedLimit = m_api->forcedLimit();
+				int ppid = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 				pagesCount = qFloor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
 			}
 			setPageCount(pagesCount, true);
@@ -294,7 +295,8 @@ int PageApi::highLimit() const
 bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess) const
 {
-	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int forcedLimit = m_api->forcedLimit();
+	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
 		return m_pagesCount * perPage;
@@ -304,7 +306,8 @@ int PageApi::imagesCount(bool guess) const
 bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess) const
 {
-	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int forcedLimit = m_api->forcedLimit();
+	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return qCeil(static_cast<float>(m_imagesCount) / perPage);
