@@ -6,8 +6,10 @@ JsonApi::JsonApi(const QMap<QString, QString> &data)
 	: Api("Json", data)
 {}
 
-ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first) const
+ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
 {
+	Q_UNUSED(limit);
+
 	ParsedPage ret;
 
 	// Parsing

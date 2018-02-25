@@ -87,8 +87,10 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags) const
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first) const
+ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
 {
+	Q_UNUSED(limit);
+
 	ParsedPage ret;
 
 	QJSValue api = m_source.property("apis").property(m_key);

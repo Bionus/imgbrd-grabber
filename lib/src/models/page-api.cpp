@@ -143,7 +143,7 @@ void PageApi::parse()
 	int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
 
 	// Parse source
-	ParsedPage page = m_api->parsePage(m_parentPage, m_source, first);
+	ParsedPage page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage);
 	if (!page.error.isEmpty())
 	{
 		log(QString("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
@@ -167,11 +167,7 @@ void PageApi::parse()
 	if (!page.wiki.isEmpty())
 	{ m_wiki = page.wiki; }
 
-	// Try to get navigation info on HTML pages
-	if (m_format == "Html")
-	{ parseNavigation(m_source); }
-
-	// Complete missing tag information from images' tag if necessary
+	// Complete missing tag information from images' tags if necessary
 	if (m_tags.isEmpty())
 	{
 		QStringList tagsGot;
@@ -191,11 +187,21 @@ void PageApi::parse()
 		}
 	}
 
+	// Complete image count information from tag count information
+	if (m_imagesCount < 1)
+	{
+		for (const Tag &tag : m_tags)
+		{
+			if (tag.text() == m_search.join(" "))
+			{ setImageCount(tag.count(), false); }
+		}
+	}
+
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
 	if (m_isAltPage) // FIXME(Bionus): broken since move to Api class
 		skip = m_site->setting("ignore/alt", 0).toInt();
-	if (m_page == m_site->value("FirstPage").toInt())
+	if (m_page == 1)
 		skip = m_site->setting("ignore/1", 0).toInt();
 	if (m_images.size() > m_imagesPerPage && m_images.size() > skip)
 		for (int i = 0; i < skip; ++i)
@@ -230,40 +236,6 @@ void PageApi::parse()
 	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
-}
-
-void PageApi::parseNavigation(const QString &source)
-{
-	// Last page
-	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ setPageCount(m_site->value("LastPage").toInt(), true); }
-	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
-	{
-		QRegularExpression rxlast(m_site->value("Regex/LastPage"));
-		auto match = rxlast.match(source);
-		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
-		if (cnt > 0)
-		{
-			int pagesCount = cnt;
-			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
-			{
-				int forcedLimit = m_api->forcedLimit();
-				int ppid = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
-				pagesCount = qFloor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
-			}
-			setPageCount(pagesCount, true);
-		}
-	}
-
-	// Count images
-	if (m_imagesCount < 1)
-	{
-		for (const Tag &tag : m_tags)
-		{
-			if (tag.text() == m_search.join(" "))
-			{ setImageCount(tag.count(), false); }
-		}
-	}
 }
 
 void PageApi::clear()

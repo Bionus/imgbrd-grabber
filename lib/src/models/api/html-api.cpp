@@ -1,5 +1,6 @@
 #include "models/api/html-api.h"
 #include <QRegularExpression>
+#include <QtMath>
 #include "vendor/json.h"
 
 
@@ -7,7 +8,7 @@ HtmlApi::HtmlApi(const QMap<QString, QString> &data)
 	: Api("Html", data)
 {}
 
-ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first) const
+ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
 {
 	ParsedPage ret;
 
@@ -77,6 +78,27 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 		auto match = rxPrevPage.match(source);
 		if (match.hasMatch())
 		{ ret.urlPrevPage = QUrl(match.captured(1)); }
+	}
+
+	// Last page
+	if (contains("LastPage"))
+	{ ret.pageCount = value("LastPage").toInt(); }
+	else if (contains("Regex/LastPage"))
+	{
+		QRegularExpression rxlast(value("Regex/LastPage"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
+		if (cnt > 0)
+		{
+			int pagesCount = cnt;
+			if (value("Urls/Tags").contains("{pid}") || (contains("Urls/PagePart") && value("Urls/PagePart").contains("{pid}")))
+			{
+				int forced = forcedLimit();
+				int ppid = forced > 0 ? forced : limit;
+				pagesCount = qFloor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
+			}
+			ret.pageCount = pagesCount;
+		}
 	}
 
 	// Count images

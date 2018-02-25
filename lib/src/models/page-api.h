@@ -58,7 +58,6 @@ class PageApi : public QObject
 
 	protected:
 		bool addImage(QSharedPointer<Image> img);
-		void parseNavigation(const QString &source);
 		void updateUrls();
 		void setImageCount(int count, bool sure);
 		void setPageCount(int count, bool sure);

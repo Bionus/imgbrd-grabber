@@ -7,8 +7,10 @@ RssApi::RssApi(const QMap<QString, QString> &data)
 	: Api("Rss", data)
 {}
 
-ParsedPage RssApi::parsePage(Page *parentPage, const QString &source, int first) const
+ParsedPage RssApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
 {
+	Q_UNUSED(limit);
+
 	ParsedPage ret;
 
 	// Parsing

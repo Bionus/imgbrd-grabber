@@ -6,8 +6,10 @@ XmlApi::XmlApi(const QMap<QString, QString> &data)
 	: Api("Xml", data)
 {}
 
-ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first) const
+ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
 {
+	Q_UNUSED(limit);
+
 	ParsedPage ret;
 
 	// Parsing
