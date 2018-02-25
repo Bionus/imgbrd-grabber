@@ -25,6 +25,7 @@
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::optionsWindow), m_profile(profile)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	ui->splitter->setSizes(QList<int>() << 160 << ui->stackedWidget->sizeHint().width());
