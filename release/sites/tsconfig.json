@@ -1,21 +1,12 @@
 {
     "compilerOptions": {
-        "alwaysStrict": true,
         "declaration": false,
         "module": "es6",
         "noImplicitReturns": true,
-        "noImplicitAny": true,
         "noUnusedLocals": true,
-        "removeComments": false,
-        "sourceMap": false,
-        "target": "es5",
-        "typeRoots": [
-            "node_modules/@types",
-            "types"
-        ],
-        "types": [],
-        "rootDir": ".",
-        "outDir": "."
+        "strict": true,
+        "strictNullChecks": false,
+        "target": "es5"
     },
     "include": [
         "**/*.ts"
