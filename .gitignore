@@ -2,6 +2,7 @@
 
 *.qm
 e2e/viewer/result.json
+release/sites/helper.js
 release/sites/*/model.js
 release/sites/*/*/settings.ini
 release/sites/*/*/tags.txt
