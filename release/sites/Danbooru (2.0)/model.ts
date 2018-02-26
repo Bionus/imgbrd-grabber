@@ -44,7 +44,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
+                url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
@@ -93,7 +93,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): IUrl | IError | string => {
+                url: (query: any, opts: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
@@ -121,7 +121,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
+                url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
@@ -170,7 +170,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): IUrl | IError | string => {
+                url: (query: any, opts: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
@@ -198,7 +198,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
+                url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
@@ -213,7 +213,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): IUrl | IError | string => {
+                url: (id: number, md5: string): string => {
                     return "/posts/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
@@ -225,7 +225,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): IUrl | IError | string => {
+                url: (query: any, opts: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },

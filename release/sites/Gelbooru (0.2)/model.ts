@@ -8,7 +8,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
+                url: (query: any, opts: any, previous: any): string => {
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + query.page + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
@@ -28,7 +28,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 42,
             search: {
-                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
+                url: (query: any, opts: any, previous: any): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, 476, "&pid={pid}", " id:<{min}&p=1", "&pid={pid}");
                     return "/index.php?page=post&s=list&tags=" + query.search + pagePart;
                 },
@@ -41,7 +41,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): IUrl | IError | string => {
+                url: (id: number, md5: string): string => {
                     return "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {
@@ -52,7 +52,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): IUrl | IError | string => {
+                url: (query: any, opts: any): string => {
                     return "/index.php?page=tags&s=list&pid=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
