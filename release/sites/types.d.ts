@@ -95,5 +95,4 @@ interface ISource {
     apis: { [id: string]: IApi };
 }
 
-declare let __source: ISource;
 declare const Grabber: any;
