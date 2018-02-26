@@ -69,9 +69,15 @@ install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
 # Transpile TS sites into JS
 set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
 add_custom_command(
+	OUTPUT node_modules
+	COMMAND npm install
+	WORKING_DIRECTORY ${SITES_DIR}
+	COMMENT "Installing npm packages..."
+)
+add_custom_command(
 	OUTPUT JavaScript_sites
 	COMMAND npm run build
 	WORKING_DIRECTORY ${SITES_DIR}
 	COMMENT "Transpiling TypeScript sources into JavaScript..."
 )
-add_custom_target(sites ALL DEPENDS JavaScript_sites)
+add_custom_target(sites ALL DEPENDS node_modules JavaScript_sites)
