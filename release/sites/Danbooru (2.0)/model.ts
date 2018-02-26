@@ -1,58 +1,61 @@
-function mapFields(data, map) {
-    var result = {};
+declare let __source: any;
+declare const Grabber: any;
+
+const mapFields = (data: any, map: any): any => {
+    const result: any = {};
     if (typeof data !== "object") {
         return result;
     }
-    for (var to in map) {
-        var from = map[to];
-        var val = from in data ? data[from] : undefined;
+    for (const to in map) {
+        const from = map[to];
+        let val = from in data ? data[from] : undefined;
         if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
             val = val["#text"];
         }
         result[to] = val;
     }
     return result;
-}
+};
 
-function countToInt(str) {
-    var count = str.toLowerCase().trim().replace(",", "");
-    if (count.slice(-1) === "k") {
-        var withoutK = count.substring(0, count.length - 1).trim();
-        count = parseFloat(withoutK, 10) * 1000;
+const countToInt = (str: string): number => {
+    let count: number;
+    const normalized = str.toLowerCase().trim().replace(",", "");
+    if (normalized.slice(-1) === "k") {
+        const withoutK = normalized.substring(0, normalized.length - 1).trim();
+        count = parseFloat(withoutK) * 1000;
     } else {
-        count = parseFloat(count, 10);
+        count = parseFloat(normalized);
     }
     return Math.floor(count);
-}
+};
 
-function makeTag(match) {
+const makeTag = (match: any): any => {
     match["count"] = countToInt(match["count"]);
     return match;
-}
+};
 
-function loginUrl(fields, values) {
-    var res = "";
-    for (var i in fields) {
-        var field = fields[i];
+const loginUrl = (fields: any, values: any): string => {
+    let res = "";
+    for (const field of fields) {
         res += field.key + "=" + values[field.key] + "&";
     }
     return res;
-}
+};
 
-function fixPageUrl(url, page, previous) {
-    url = url.replace("{page}", page);
+const fixPageUrl = (url: string, page: number, previous: any): string => {
+    url = url.replace("{page}", String(page));
     if (previous) {
         url = url.replace("{min}", previous.minId);
         url = url.replace("{max}", previous.maxId);
-        url = url.replace("{min-1}", previous.minId - 1);
-        url = url.replace("{max-1}", previous.maxId - 1);
+        url = url.replace("{min-1}", String(previous.minId - 1));
+        url = url.replace("{max-1}", String(previous.maxId - 1));
         url = url.replace("{min+1}", previous.minId + 1);
         url = url.replace("{max+1}", previous.maxId + 1);
     }
     return url;
-}
+};
 
-function pageUrl(page, previous, limit, ifBelow, ifPrev, ifNext) {
+const pageUrl = (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
     if (page < limit || !previous) {
         return fixPageUrl(ifBelow, page, previous);
     }
@@ -60,14 +63,14 @@ function pageUrl(page, previous, limit, ifBelow, ifPrev, ifNext) {
         return fixPageUrl(ifPrev, page, previous);
     }
     return fixPageUrl(ifNext, page, previous);
-}
+};
 
-function buildImage(data) {
+const buildImage = (data: any): any => {
     data["page_url"] = "/posts/" + data["id"];
     return data;
-}
+};
 
-var auth = {
+const auth = {
     url: {
         type: "url",
         fields: [
@@ -99,26 +102,27 @@ var auth = {
         check: {
             type: "cookie",
             key: "password_hash",
-        }
+        },
     },
 };
 
 __source = {
     name: "Danbooru (2.0)",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "rating:s", "rating:q", "rating:e", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "status:any", "status:deleted", "status:active", "status:flagged", "status:pending", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
+    auth,
     apis: {
         json: {
             name: "JSON",
             auth: [],
             maxLimit: 200,
             search: {
-                url: function(query, opts, previous) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                url: (query: any, opts: any, previous: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: function(src) {
-                    var map = {
+                parse: (src: string) => {
+                    const map = {
                         "created_at": "created_at",
                         "status": "status",
                         "source": "source",
@@ -150,37 +154,37 @@ __source = {
                         "tags_general": "tag_string_general",
                     };
 
-                    var data = JSON.parse(src);
+                    const data = JSON.parse(src);
 
-                    var images = [];
-                    for (var i = 0; i < data.length; ++i) {
-                        images.push(buildImage(mapFields(data[i], map)));
+                    const images = [];
+                    for (const image of data) {
+                        images.push(buildImage(mapFields(image, map)));
                     }
 
-                    return { images: images };
+                    return { images };
                 },
             },
             tags: {
-                url: function(query, opts) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                url: (query: any, opts: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: function(src) {
-                    var map = {
+                parse: (src: string): any => {
+                    const map = {
                         "id": "id",
                         "name": "name",
                         "count": "post_count",
                         "typeId": "category",
                     };
 
-                    var data = JSON.parse(src);
+                    const data = JSON.parse(src);
 
-                    var tags = [];
-                    for (var i = 0; i < data.length; ++i) {
-                        tags.push(mapFields(data[i], map));
+                    const tags = [];
+                    for (const tag of data) {
+                        tags.push(mapFields(tag, map));
                     }
 
-                    return { tags: tags };
+                    return { tags };
                 },
             },
         },
@@ -189,13 +193,13 @@ __source = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: function(query, opts, previous) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                url: (query: any, opts: any, previous: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: function(src) {
-                    var map = {
+                parse: (src: string): any => {
+                    const map = {
                         "created_at": "created-at",
                         "status": "status",
                         "source": "source",
@@ -227,37 +231,37 @@ __source = {
                         "tags_general": "tag-string-general",
                     };
 
-                    var data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.parseXML(src).posts.post;
 
-                    var images = [];
-                    for (var i = 0; i < data.length; ++i) {
-                        images.push(buildImage(mapFields(data[i], map)));
+                    const images = [];
+                    for (const image of data) {
+                        images.push(buildImage(mapFields(image, map)));
                     }
 
-                    return { images: images };
+                    return { images };
                 },
             },
             tags: {
-                url: function(query, opts) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                url: (query: any, opts: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: function(src) {
-                    var map = {
+                parse: (src: string): any => {
+                    const map = {
                         "id": "id",
                         "name": "name",
                         "count": "post-count",
                         "typeId": "category",
                     };
 
-                    var data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.parseXML(src).tags.tag;
 
-                    var tags = [];
-                    for (var i = 0; i < data.length; ++i) {
-                        tags.push(mapFields(data[i], map));
+                    const tags = [];
+                    for (const tag of data) {
+                        tags.push(mapFields(tag, map));
                     }
 
-                    return { tags: tags };
+                    return { tags };
                 },
             },
         },
@@ -266,83 +270,84 @@ __source = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: function(query, opts, previous) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    var pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                url: (query: any, opts: any, previous: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: function(src) {
-                    var tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
-                    var tags = {};
-                    for (var tagI in tagMatches) {
-                        var tagMatch = tagMatches[tagI];
+                parse: (src: string): any => {
+                    // Tags
+                    const tags: any = {};
+                    const tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
+                    for (const tagMatch of tagMatches) {
                         if (!(tagMatch["name"] in tags)) {
-                            tags[tagMatch["name"]] = makeTag(tagMatch["name"]);
+                            tags[tagMatch["name"]] = makeTag(tagMatch);
                         }
                     }
 
-                    var imgMatches = Grabber.regexMatches('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src);
-                    var images = [];
-                    for (var imgI in imgMatches) {
-                        var imgMatch = imgMatches[imgI];
+                    // Images
+                    const images = [];
+                    const imgMatches = Grabber.regexMatches('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src);
+                    for (const imgMatch of imgMatches) {
                         if ("json" in imgMatch) {
-                            var json = JSON.parse(imgMatch["json"]);
-                            for (var key in json) {
+                            const json = JSON.parse(imgMatch["json"]);
+                            for (const key in json) {
                                 imgMatch[key] = json[key];
                             }
                         }
                         images.push(buildImage(imgMatch));
                     }
 
-                    return { images: images, tags: tags };
+                    return { images, tags };
                 },
             },
             details: {
-                url: function(id, md5) {
+                url: (id: number, md5: string): string | any => {
                     return "/posts/" + id;
                 },
-                parse: function(src) {
+                parse: (src: string): any => {
                     // Pools
-                    var pools = [];
-                    var poolMatches = Grabber.regexMatches('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src);
-                    for (var poolMatch in poolMatches) {
-                        pools.push(poolMatches[poolMatch]);
+                    const pools = [];
+                    const poolMatches = Grabber.regexMatches('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src);
+                    for (const poolMatch of poolMatches) {
+                        pools.push(poolMatch);
                     }
 
                     // Tags
-                    var tags = [];
-                    var tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
-                    for (var tagMatch in tagMatches) {
-                        tags.push(makeTag(tagMatches[tagMatch]));
+                    const tags: any = {};
+                    const tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
+                    for (const tagMatch of tagMatches) {
+                        if (!(tagMatch["name"] in tags)) {
+                            tags[tagMatch["name"]] = makeTag(tagMatch);
+                        }
                     }
 
                     // Image url
-                    var imageUrl = undefined;
-                    var imageUrlMatches = Grabber.regexMatches('<section[^>]* data-file-url="(?<url>[^"]*)"', src);
-                    for (var imageUrlMatch in imageUrlMatches) {
-                        imageUrl = imageUrlMatches[imageUrlMatch]["url"];
+                    let imageUrl: string;
+                    const imageUrlMatches = Grabber.regexMatches('<section[^>]* data-file-url="(?<url>[^"]*)"', src);
+                    for (const imageUrlMatch of imageUrlMatches) {
+                        imageUrl = imageUrlMatch["url"];
                     }
 
-                    return { pools: pools, tags: tags, imageUrl: imageUrl };
+                    return { pools, tags, imageUrl };
                 },
             },
             tags: {
-                url: function(query, opts) {
-                    var loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                url: (query: any, opts: any): string | any => {
+                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: function(src) {
-                    var matches = Grabber.regexMatches('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src);
-
-                    var tags = [];
-                    for (var i in matches) {
-                        tags.push(makeTag(matches[i]));
+                parse: (src: string): any => {
+                    // Tags
+                    const tags = [];
+                    const tagMatches = Grabber.regexMatches('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src);
+                    for (const tagMatch of tagMatches) {
+                        tags.push(makeTag(tagMatch));
                     }
 
-                    return { tags: tags };
+                    return { tags };
                 },
             },
         },
     },
-    auth: auth,
-}
+};
