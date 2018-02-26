@@ -231,7 +231,14 @@ __source = {
                         images.push(imgMatch);
                     }
 
-                    return { images, tags };
+                    // Wiki
+                    let wiki: string;
+                    const wikiMatches = Grabber.regexMatches('<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>');
+                    for (const wikiMatch of wikiMatches) {
+                        wiki = wikiMatch["wiki"];
+                    }
+
+                    return { images, tags, wiki };
                 },
             },
             details: {

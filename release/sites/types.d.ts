@@ -29,6 +29,7 @@ interface IError {
 interface IParsedSearch {
     images: Iterable<IImage>;
     tags?: Iterable<ITag>;
+    wiki?: string;
 }
 interface IParsedTags {
     tags: Iterable<ITag>;
