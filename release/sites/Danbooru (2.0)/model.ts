@@ -1,6 +1,3 @@
-declare let __source: any;
-declare const Grabber: any;
-
 const mapFields = (data: any, map: any): any => {
     const result: any = {};
     if (typeof data !== "object") {
@@ -29,7 +26,7 @@ const countToInt = (str: string): number => {
     return Math.floor(count);
 };
 
-const makeTag = (match: any): any => {
+const makeTag = (match: any): ITag => {
     match["count"] = countToInt(match["count"]);
     return match;
 };
@@ -65,12 +62,12 @@ const pageUrl = (page: number, previous: any, limit: number, ifBelow: string, if
     return fixPageUrl(ifNext, page, previous);
 };
 
-const buildImage = (data: any): any => {
+const buildImage = (data: any): IImage => {
     data["page_url"] = "/posts/" + data["id"];
     return data;
 };
 
-const auth = {
+const auth: { [id: string]: IAuth } = {
     url: {
         type: "url",
         fields: [
@@ -116,12 +113,12 @@ __source = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string | any => {
+                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: (src: string) => {
+                parse: (src: string): IParsedSearch => {
                     const map = {
                         "created_at": "created_at",
                         "status": "status",
@@ -156,7 +153,7 @@ __source = {
 
                     const data = JSON.parse(src);
 
-                    const images = [];
+                    const images: IImage[] = [];
                     for (const image of data) {
                         images.push(buildImage(mapFields(image, map)));
                     }
@@ -165,11 +162,11 @@ __source = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string | any => {
+                url: (query: any, opts: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedTags => {
                     const map = {
                         "id": "id",
                         "name": "name",
@@ -179,7 +176,7 @@ __source = {
 
                     const data = JSON.parse(src);
 
-                    const tags = [];
+                    const tags: ITag[] = [];
                     for (const tag of data) {
                         tags.push(mapFields(tag, map));
                     }
@@ -193,12 +190,12 @@ __source = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string | any => {
+                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedSearch => {
                     const map = {
                         "created_at": "created-at",
                         "status": "status",
@@ -233,7 +230,7 @@ __source = {
 
                     const data = Grabber.parseXML(src).posts.post;
 
-                    const images = [];
+                    const images: IImage[] = [];
                     for (const image of data) {
                         images.push(buildImage(mapFields(image, map)));
                     }
@@ -242,11 +239,11 @@ __source = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string | any => {
+                url: (query: any, opts: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedTags => {
                     const map = {
                         "id": "id",
                         "name": "name",
@@ -256,7 +253,7 @@ __source = {
 
                     const data = Grabber.parseXML(src).tags.tag;
 
-                    const tags = [];
+                    const tags: ITag[] = [];
                     for (const tag of data) {
                         tags.push(mapFields(tag, map));
                     }
@@ -270,14 +267,14 @@ __source = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string | any => {
+                url: (query: any, opts: any, previous: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedSearch => {
                     // Tags
-                    const tags: any = {};
+                    const tags: { [name: string]: ITag } = {};
                     const tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
                     for (const tagMatch of tagMatches) {
                         if (!(tagMatch["name"] in tags)) {
@@ -286,7 +283,7 @@ __source = {
                     }
 
                     // Images
-                    const images = [];
+                    const images: IImage[] = [];
                     const imgMatches = Grabber.regexMatches('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src);
                     for (const imgMatch of imgMatches) {
                         if ("json" in imgMatch) {
@@ -302,19 +299,19 @@ __source = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string | any => {
+                url: (id: number, md5: string): IUrl | IError | string => {
                     return "/posts/" + id;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedDetails => {
                     // Pools
-                    const pools = [];
+                    const pools: IPool[] = [];
                     const poolMatches = Grabber.regexMatches('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src);
                     for (const poolMatch of poolMatches) {
                         pools.push(poolMatch);
                     }
 
                     // Tags
-                    const tags: any = {};
+                    const tags: { [name: string]: ITag } = {};
                     const tagMatches = Grabber.regexMatches('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src);
                     for (const tagMatch of tagMatches) {
                         if (!(tagMatch["name"] in tags)) {
@@ -333,13 +330,13 @@ __source = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string | any => {
+                url: (query: any, opts: any): IUrl | IError | string => {
                     const loginPart = loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
-                parse: (src: string): any => {
+                parse: (src: string): IParsedTags => {
                     // Tags
-                    const tags = [];
+                    const tags: ITag[] = [];
                     const tagMatches = Grabber.regexMatches('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src);
                     for (const tagMatch of tagMatches) {
                         tags.push(makeTag(tagMatch));

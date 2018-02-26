@@ -171,6 +171,7 @@ ParsedTags HtmlApi::parseTags(const QString &source, Site *site) const
 
 ParsedDetails HtmlApi::parseDetails(const QString &source, Site *site) const
 {
+	Q_UNUSED(site);
 	ParsedDetails ret;
 
 	// Pools
