@@ -30,6 +30,9 @@ interface IParsedSearch {
     images: Iterable<IImage>;
     tags?: Iterable<ITag>;
     wiki?: string;
+    pageCount?: number;
+    urlNextPage?: string;
+    urlPrevPage?: string;
 }
 interface IParsedTags {
     tags: Iterable<ITag>;

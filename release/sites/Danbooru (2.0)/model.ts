@@ -238,7 +238,14 @@ __source = {
                         wiki = wikiMatch["wiki"];
                     }
 
-                    return { images, tags, wiki };
+                    // Last page
+                    let pageCount: number;
+                    const lastPageMatches = Grabber.regexMatches('>(?<page>[0-9]+)</a></li><li[^<]*><a[^>]* rel="next"');
+                    for (const lastPageMatch of lastPageMatches) {
+                        pageCount = lastPageMatch["page"];
+                    }
+
+                    return { images, tags, wiki, pageCount };
                 },
             },
             details: {
