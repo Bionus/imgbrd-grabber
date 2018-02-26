@@ -56,8 +56,19 @@ Source::Source(Profile *profile, const QString &dir)
 
 				auto engine = new QJSEngine(this);
 				engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
-				m_jsSource = engine->evaluate(src, js.fileName());
 
+				// JavaScript helper file
+				QFile jsHelper(m_dir + "/../helper.js");
+				if (jsHelper.open(QFile::ReadOnly | QFile::Text))
+				{
+					QJSValue helperResult = engine->evaluate(jsHelper.readAll(), jsHelper.fileName());
+					jsHelper.close();
+
+					if (helperResult.isError())
+					{ log(QString("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
+				}
+
+				m_jsSource = engine->evaluate(src, js.fileName());
 				if (m_jsSource.isError())
 				{ log(QString("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 				else

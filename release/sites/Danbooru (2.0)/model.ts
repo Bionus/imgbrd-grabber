@@ -1,70 +1,6 @@
-const mapFields = (data: any, map: any): any => {
-    const result: any = {};
-    if (typeof data !== "object") {
-        return result;
-    }
-    for (const to in map) {
-        const from = map[to];
-        let val = from in data ? data[from] : undefined;
-        if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
-            val = val["#text"];
-        }
-        result[to] = val;
-    }
-    return result;
-};
-
-const countToInt = (str: string): number => {
-    let count: number;
-    const normalized = str.toLowerCase().trim().replace(",", "");
-    if (normalized.slice(-1) === "k") {
-        const withoutK = normalized.substring(0, normalized.length - 1).trim();
-        count = parseFloat(withoutK) * 1000;
-    } else {
-        count = parseFloat(normalized);
-    }
-    return Math.floor(count);
-};
-
 const makeTag = (match: any): ITag => {
-    match["count"] = countToInt(match["count"]);
+    match["count"] = Grabber.countToInt(match["count"]);
     return match;
-};
-
-const loginUrl = (fields: any, values: any): string => {
-    let res = "";
-    for (const field of fields) {
-        res += field.key + "=" + values[field.key] + "&";
-    }
-    return res;
-};
-
-const fixPageUrl = (url: string, page: number, previous: any): string => {
-    url = url.replace("{page}", String(page));
-    if (previous) {
-        url = url.replace("{min}", previous.minId);
-        url = url.replace("{max}", previous.maxId);
-        url = url.replace("{min-1}", String(previous.minId - 1));
-        url = url.replace("{max-1}", String(previous.maxId - 1));
-        url = url.replace("{min+1}", previous.minId + 1);
-        url = url.replace("{max+1}", previous.maxId + 1);
-    }
-    return url;
-};
-
-const pageUrl = (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
-    if (page < limit || !previous) {
-        return fixPageUrl(ifBelow, page, previous);
-    }
-    if (previous.page > page) {
-        return fixPageUrl(ifPrev, page, previous);
-    }
-    return fixPageUrl(ifNext, page, previous);
-};
-
-const buildImage = (data: any): IImage => {
-    data["page_url"] = "/posts/" + data["id"];
-    return data;
 };
 
 const auth: { [id: string]: IAuth } = {
@@ -114,8 +50,8 @@ __source = {
             maxLimit: 200,
             search: {
                 url: (query: any, opts: any, previous: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
@@ -155,7 +91,7 @@ __source = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(buildImage(mapFields(image, map)));
+                        images.push(Grabber.mapFields(image, map));
                     }
 
                     return { images };
@@ -163,7 +99,7 @@ __source = {
             },
             tags: {
                 url: (query: any, opts: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -178,7 +114,7 @@ __source = {
 
                     const tags: ITag[] = [];
                     for (const tag of data) {
-                        tags.push(mapFields(tag, map));
+                        tags.push(Grabber.mapFields(tag, map));
                     }
 
                     return { tags };
@@ -191,8 +127,8 @@ __source = {
             maxLimit: 200,
             search: {
                 url: (query: any, opts: any, previous: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
@@ -232,7 +168,7 @@ __source = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(buildImage(mapFields(image, map)));
+                        images.push(Grabber.mapFields(image, map));
                     }
 
                     return { images };
@@ -240,7 +176,7 @@ __source = {
             },
             tags: {
                 url: (query: any, opts: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -255,7 +191,7 @@ __source = {
 
                     const tags: ITag[] = [];
                     for (const tag of data) {
-                        tags.push(mapFields(tag, map));
+                        tags.push(Grabber.mapFields(tag, map));
                     }
 
                     return { tags };
@@ -268,8 +204,8 @@ __source = {
             maxLimit: 200,
             search: {
                 url: (query: any, opts: any, previous: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                    const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                     return "/posts?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
@@ -292,7 +228,7 @@ __source = {
                                 imgMatch[key] = json[key];
                             }
                         }
-                        images.push(buildImage(imgMatch));
+                        images.push(imgMatch);
                     }
 
                     return { images, tags };
@@ -331,7 +267,7 @@ __source = {
             },
             tags: {
                 url: (query: any, opts: any): IUrl | IError | string => {
-                    const loginPart = loginUrl(auth.url.fields, opts["auth"]);
+                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
