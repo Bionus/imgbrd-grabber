@@ -56,3 +56,50 @@ Grabber.pageUrl = (page: number, previous: any, limit: number, ifBelow: string, 
     }
     return Grabber.fixPageUrl(ifNext, page, previous);
 };
+
+Grabber.regexToImages = (regexp: string, src: string): IImage[] => {
+    const images: IImage[] = [];
+    const matches = Grabber.regexMatches(regexp, src);
+    for (const match of matches) {
+        if ("json" in match) {
+            const json = JSON.parse(match["json"]);
+            for (const key in json) {
+                match[key] = json[key];
+            }
+        }
+        images.push(match);
+    }
+    return images;
+};
+
+Grabber.regexToTags = (regexp: string, src: string): Iterable<ITag> => {
+    const tags: { [name: string]: ITag } = {};
+    const matches = Grabber.regexMatches(regexp, src);
+    for (const match of matches) {
+        if (match["name"] in tags) {
+            continue;
+        }
+        if ("count" in match) {
+            match["count"] = Grabber.countToInt(match["count"]);
+        }
+        tags[match["name"]] = match;
+    }
+    return tags;
+};
+
+Grabber.regexToPools = (regexp: string, src: string): IPool[] => {
+    const pools: IPool[] = [];
+    const matches = Grabber.regexMatches(regexp, src);
+    for (const match of matches) {
+        pools.push(match);
+    }
+    return pools;
+};
+
+Grabber.regexToConst = (key: string, regexp: string, src: string): string => {
+    const matches = Grabber.regexMatches(regexp, src);
+    for (const match of matches) {
+        return match[key];
+    }
+    return undefined;
+};

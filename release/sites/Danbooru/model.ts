@@ -1,8 +1,3 @@
-const makeTag = (match: any): ITag => {
-    match["count"] = Grabber.countToInt(match["count"]);
-    return match;
-};
-
 const auth: { [id: string]: IAuth } = {
     url: {
         type: "url",
@@ -145,43 +140,12 @@ export const source: ISource = {
                     return "/post/index?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    // Tags
-                    const tags: { [name: string]: ITag } = {};
-                    const tagMatches = Grabber.regexMatches('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src);
-                    for (const tagMatch of tagMatches) {
-                        if (!(tagMatch["name"] in tags)) {
-                            tags[tagMatch["name"]] = makeTag(tagMatch);
-                        }
-                    }
-
-                    // Images
-                    const images: IImage[] = [];
-                    const imgMatches = Grabber.regexMatches("Post\\.register\\((?<json>\\{.+?\\})\\);?", src);
-                    for (const imgMatch of imgMatches) {
-                        if ("json" in imgMatch) {
-                            const json = JSON.parse(imgMatch["json"]);
-                            for (const key in json) {
-                                imgMatch[key] = json[key];
-                            }
-                        }
-                        images.push(imgMatch);
-                    }
-
-                    // Wiki
-                    let wiki: string;
-                    const wikiMatches = Grabber.regexMatches('<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>');
-                    for (const wikiMatch of wikiMatches) {
-                        wiki = wikiMatch["wiki"];
-                    }
-
-                    // Last page
-                    let pageCount: number;
-                    const lastPageMatches = Grabber.regexMatches('<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page">');
-                    for (const lastPageMatch of lastPageMatches) {
-                        pageCount = lastPageMatch["page"];
-                    }
-
-                    return { images, tags, wiki, pageCount };
+                    return {
+                        images: Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src),
+                        tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
+                        wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>'),
+                        pageCount: Grabber.regexToConst("page", '<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page">'),
+                    };
                 },
             },
             details: {
@@ -189,30 +153,11 @@ export const source: ISource = {
                     return "/post/show/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    // Pools
-                    const pools: IPool[] = [];
-                    const poolMatches = Grabber.regexMatches('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src);
-                    for (const poolMatch of poolMatches) {
-                        pools.push(poolMatch);
-                    }
-
-                    // Tags
-                    const tags: { [name: string]: ITag } = {};
-                    const tagMatches = Grabber.regexMatches('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src);
-                    for (const tagMatch of tagMatches) {
-                        if (!(tagMatch["name"] in tags)) {
-                            tags[tagMatch["name"]] = makeTag(tagMatch);
-                        }
-                    }
-
-                    // Image url
-                    let imageUrl: string;
-                    const imageUrlMatches = Grabber.regexMatches('<section[^>]* data-file-url="(?<url>[^"]*)"', src);
-                    for (const imageUrlMatch of imageUrlMatches) {
-                        imageUrl = imageUrlMatch["url"];
-                    }
-
-                    return { pools, tags, imageUrl };
+                    return {
+                        pools: Grabber.regexToPools('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src),
+                        tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
+                        imageUrl: Grabber.regexToConst("url", '<section[^>]* data-file-url="(?<url>[^"]*)"', src),
+                    };
                 },
             },
             tags: {
@@ -221,14 +166,9 @@ export const source: ISource = {
                     return "/tag/index?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
-                    // Tags
-                    const tags: ITag[] = [];
-                    const tagMatches = Grabber.regexMatches("<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*(?:<a[^>]+>\\?</a>\\s*)?<a[^>]+>(?<tag>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?<type>.+?)\\s*\\([^()]+\\)\\s*</td>", src);
-                    for (const tagMatch of tagMatches) {
-                        tags.push(makeTag(tagMatch));
-                    }
-
-                    return { tags };
+                    return {
+                        tags: Grabber.regexToTags("<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*(?:<a[^>]+>\\?</a>\\s*)?<a[^>]+>(?<tag>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?<type>.+?)\\s*\\([^()]+\\)\\s*</td>", src),
+                    };
                 },
             },
         },
