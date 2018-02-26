@@ -117,7 +117,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 
 		int id = tag.hasProperty("id") ? tag.property("id").toInt() : 0;
 		QString text = tag.property("name").toString();
-		QString type = tag.hasProperty("type") ? tag.property("type").toString() : "unknown";
+		QString type = tag.hasProperty("type") ? tag.property("type").toString() : "";
 		int typeId = tag.hasProperty("typeId") ? tag.property("typeId").toInt() : -1;
 		int count = tag.hasProperty("count") ? tag.property("count").toInt() : 0;
 
