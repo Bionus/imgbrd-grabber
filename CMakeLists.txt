@@ -77,7 +77,8 @@ add_custom_command(
 add_custom_command(
 	OUTPUT JavaScript_sites
 	COMMAND npm run build
+	DEPENDS node_modules
 	WORKING_DIRECTORY ${SITES_DIR}
 	COMMENT "Transpiling TypeScript sources into JavaScript..."
 )
-add_custom_target(sites ALL DEPENDS node_modules JavaScript_sites)
+add_custom_target(sites ALL DEPENDS JavaScript_sites)
