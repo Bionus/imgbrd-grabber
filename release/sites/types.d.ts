@@ -73,7 +73,8 @@ interface IAuth {
 interface IApi {
     name: string;
     auth: string[];
-    maxLimit: number;
+    maxLimit?: number;
+    forcedLimit?: number;
     search: {
         url: (query: any, opts: any, previous: any) => IUrl | IError | string;
         parse: (src: string) => IParsedSearch;
