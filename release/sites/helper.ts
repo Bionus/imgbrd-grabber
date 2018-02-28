@@ -29,7 +29,10 @@ Grabber.countToInt = (str: string): number => {
 Grabber.loginUrl = (fields: any, values: any): string => {
     let res = "";
     for (const field of fields) {
-        res += field.key + "=" + values[field.key] + "&";
+        const val = values[field.key];
+        if (val) {
+            res += field.key + "=" + val + "&";
+        }
     }
     return res;
 };
