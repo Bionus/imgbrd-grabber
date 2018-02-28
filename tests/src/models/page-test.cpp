@@ -10,6 +10,12 @@ void PageTest::init()
 	m_site = new Site("gelbooru.com", new Source(m_profile, "release/sites/Gelbooru (0.2)"));
 }
 
+void PageTest::cleanup()
+{
+	m_profile->deleteLater();
+	m_site->deleteLater();
+}
+
 
 void PageTest::testIncompatibleModifiers()
 {

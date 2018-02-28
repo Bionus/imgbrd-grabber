@@ -12,6 +12,10 @@ void ImageDownloaderTest::cleanup()
 	{
 		dir.remove(file);
 	}
+
+	delete m_profile;
+	m_source->deleteLater();
+	m_site->deleteLater();
 }
 
 Image *ImageDownloaderTest::createImage(bool noMd5)
@@ -26,10 +30,10 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "/posts/7331";
 
-	auto *profile = new Profile("tests/resources/");
-	auto *source = new Source(profile, "release/sites/Danbooru (2.0)");
-	auto *site = new Site("danbooru.donmai.us", source);
-	return new Image(site, details, profile);
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
+	m_site = new Site("danbooru.donmai.us", m_source);
+	return new Image(m_site, details, m_profile);
 }
 
 

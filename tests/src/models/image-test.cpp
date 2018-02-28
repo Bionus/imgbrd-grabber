@@ -60,7 +60,7 @@ void ImageTest::init()
 
 void ImageTest::cleanup()
 {
-	m_settings->deleteLater();
+	delete m_profile;
 	m_site->deleteLater();
 	m_img->deleteLater();
 }

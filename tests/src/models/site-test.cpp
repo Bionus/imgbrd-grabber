@@ -5,15 +5,8 @@
 
 void SiteTest::init()
 {
-	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.js");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
-	QFile("release/sites/Danbooru (2.0)/model.xml").copy("tests/resources/sites/Danbooru (2.0)/model.xml");
-	QFile("release/sites/Danbooru (2.0)/model.js").copy("tests/resources/sites/Danbooru (2.0)/model.js");
-	QFile("release/sites/Danbooru (2.0)/sites.txt").copy("tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini").copy("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 	m_profile = new Profile("tests/resources/");
 	m_settings = m_profile->getSettings();
@@ -23,7 +16,7 @@ void SiteTest::init()
 
 void SiteTest::cleanup()
 {
-	m_settings->deleteLater();
+	m_profile->deleteLater();
 	m_source->deleteLater();
 	m_site->deleteLater();
 }

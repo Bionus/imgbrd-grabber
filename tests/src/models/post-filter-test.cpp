@@ -53,7 +53,8 @@ void PostFilterTest::init()
 
 void PostFilterTest::cleanup()
 {
-	m_settings->deleteLater();
+	m_profile->deleteLater();
+	m_source->deleteLater();
 	m_site->deleteLater();
 	m_img->deleteLater();
 }

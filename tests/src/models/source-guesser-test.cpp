@@ -11,6 +11,12 @@ void SourceGuesserTest::initTestCase()
 	m_profile = new Profile("tests/resources/");
 }
 
+void SourceGuesserTest::cleanupTestCase()
+{
+	m_profile->deleteLater();
+}
+
+
 void SourceGuesserTest::testNotFound()
 {
 	QList<Source*> sources;

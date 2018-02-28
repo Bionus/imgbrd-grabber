@@ -11,6 +11,7 @@ void TagApiTest::init()
 
 void TagApiTest::cleanup()
 {
+	m_profile->deleteLater();
 	m_site->deleteLater();
 }
 

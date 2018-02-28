@@ -10,6 +10,7 @@ class SourceGuesserTest : public TestSuite
 
 	private slots:
 		void initTestCase();
+		void cleanupTestCase();
 
 		void testNotFound();
 		void testNetworkError();

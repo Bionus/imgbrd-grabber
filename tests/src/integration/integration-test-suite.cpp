@@ -8,7 +8,11 @@
 void IntegrationTestSuite::initTestCase()
 {
 	Logger::getInstance().setLogFile("tests/test_log.log");
+
 	m_downloader = nullptr;
+	m_profile = nullptr;
+	m_source = nullptr;
+	m_site = nullptr;
 }
 
 QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
@@ -31,13 +35,14 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	m_filesToRemove.append(settings.fileName());
 
 	QList<Site*> sites;
-	Profile *profile = new Profile("tests/resources/");
-	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
-	sites.append(ste);
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
+	sites.append(m_site);
 
 	QList<Image*> result;
-	m_downloader = new Downloader(profile,
+	m_downloader = new Downloader(m_profile,
 								  tags.split(' '),
 								  QStringList(),
 								  sites,
@@ -77,10 +82,8 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 
 QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
-	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
-	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	setupSource(site);
+	setupSite(site, source);
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -97,13 +100,14 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	QList<Site*> sites;
-	Profile *profile = new Profile("tests/resources/");
-	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
-	sites.append(ste);
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
+	sites.append(m_site);
 
 	QList<Tag> result;
-	m_downloader = new Downloader(profile,
+	m_downloader = new Downloader(m_profile,
 								  tags.split(' '),
 								  QStringList(),
 								  sites,
@@ -143,10 +147,8 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 
 QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
-	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
-	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	setupSource(site);
+	setupSite(site, source);
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -162,12 +164,13 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	Profile *profile = new Profile("tests/resources/");
-	Site *ste = new Site(source, new Source(profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
 
 	QList<Tag> result;
-	TagApi tagApi(profile, ste, ste->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
 
 	// Wait for tag api
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
@@ -190,6 +193,21 @@ void IntegrationTestSuite::cleanup()
 	{
 		m_downloader->deleteLater();
 		m_downloader = nullptr;
+	}
+	if (m_profile != nullptr)
+	{
+		delete m_profile;
+		m_profile = nullptr;
+	}
+	if (m_source != nullptr)
+	{
+		delete m_source;
+		m_source = nullptr;
+	}
+	if (m_site != nullptr)
+	{
+		delete m_site;
+		m_site = nullptr;
 	}
 
 	for (const QString &file : m_filesToRemove)

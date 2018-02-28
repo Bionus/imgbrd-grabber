@@ -24,6 +24,7 @@ void PageApiTest::init()
 
 void PageApiTest::cleanup()
 {
+	m_profile->deleteLater();
 	m_sites.first()->deleteLater();
 	m_site->deleteLater();
 

@@ -9,9 +9,14 @@ TestSuite::TestSuite()
 
 void TestSuite::setupSource(const QString &site)
 {
+	QFile::remove("tests/resources/sites/helper.js");
+	QFile("release/sites/helper.js").copy("tests/resources/sites/helper.js");
+
 	QDir().mkpath("tests/resources/sites/" + site);
+	QFile::remove("tests/resources/sites/" + site + "/sites.txt");
 	QFile::remove("tests/resources/sites/" + site +"/model.xml");
 	QFile::remove("tests/resources/sites/" + site +"/model.js");
+	QFile("release/sites/" + site +"/sites.txt").copy("tests/resources/sites/" + site +"/sites.txt");
 	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
 	QFile("release/sites/" + site +"/model.js").copy("tests/resources/sites/" + site +"/model.js");
 }
