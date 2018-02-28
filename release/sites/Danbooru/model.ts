@@ -1,3 +1,19 @@
+const makeImage = (data: any): IImage => {
+    if (data && "tags" in data && typeof data["tags"] === "object") {
+        for (const type in data["tags"]) {
+            const children = data["tags"][type];
+            const elts: any = "tag" in children ? children["tag"] : children;
+            let tags: string = "";
+            for (const i in elts) {
+                const tag = elts[i];
+                tags += (tags.length !== 0 ? " " : "") + (typeof tag === "object" ? tag["#text"] : tag);
+            }
+            data["tags_" + type] = tags;
+        }
+    }
+    return data;
+};
+
 const auth: { [id: string]: IAuth } = {
     url: {
         type: "url",
@@ -54,7 +70,7 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(image);
+                        images.push(makeImage(image));
                     }
 
                     return { images };
@@ -98,8 +114,9 @@ export const source: ISource = {
                     const data = Grabber.parseXML(src).posts.post;
 
                     const images: IImage[] = [];
-                    for (const image of data) {
-                        images.push(image["@attributes"]);
+                    for (const dta of data) {
+                        const image: any = "@attributes" in dta && "id" in dta["@attributes"] ? dta["@attributes"] : dta;
+                        images.push(makeImage(image));
                     }
 
                     return { images };
@@ -121,8 +138,9 @@ export const source: ISource = {
                     const data = Grabber.parseXML(src).tags.tag;
 
                     const tags: ITag[] = [];
-                    for (const tag of data) {
-                        tags.push(Grabber.mapFields(tag["@attributes"], map));
+                    for (const dta of data) {
+                        const tag: any = "@attributes" in dta && "id" in dta["@attributes"] ? dta["@attributes"] : dta;
+                        tags.push(Grabber.mapFields(tag, map));
                     }
 
                     return { tags };

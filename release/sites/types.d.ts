@@ -77,15 +77,15 @@ interface IApi {
     forcedLimit?: number;
     search: {
         url: (query: any, opts: any, previous: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedSearch;
+        parse: (src: string) => IParsedSearch | IError;
     };
     details?: {
         url: (id: number, md5: string) => IUrl | IError | string;
-        parse: (src: string) => IParsedDetails;
+        parse: (src: string) => IParsedDetails | IError;
     };
     tags?: {
         url: (query: any, opts: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedTags;
+        parse: (src: string) => IParsedTags | IError;
     };
 }
 interface ISource {

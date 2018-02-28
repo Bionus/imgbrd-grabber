@@ -55,8 +55,6 @@ void E621Test::testJsonTypedTags()
 	QList<Tag> tags = images.first()->tags();
 	QCOMPARE(tags.count(), 22);
 
-	QCOMPARE(tags[0].text(), QString("lumineko"));
-	QCOMPARE(tags[0].type().name(), QString("artist"));
 	QCOMPARE(tags[21].text(), QString("equine"));
 	QCOMPARE(tags[21].type().name(), QString("species"));
 }
