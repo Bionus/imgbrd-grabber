@@ -9,7 +9,8 @@ export const source: ISource = {
             maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + query.page + "&tags=" + query.search;
+                    const page: number = query.page - 1;
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = Grabber.parseXML(src).posts.post;
@@ -29,7 +30,8 @@ export const source: ISource = {
             forcedLimit: 42,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 476, "&pid={pid}", " id:<{min}&p=1", "&pid={pid}");
+                    const page: number = (query.page - 1) * 42;
+                    const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={pid}", " id:<{min}&p=1", "&pid={pid}");
                     return "/index.php?page=post&s=list&tags=" + query.search + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
