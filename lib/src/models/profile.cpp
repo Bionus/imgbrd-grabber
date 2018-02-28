@@ -25,7 +25,10 @@ Profile::Profile(const QString &path)
 	{
 		Source *source = new Source(this, m_path + "/sites/" + dir);
 		if (source->getApis().isEmpty())
+		{
+			source->deleteLater();
 			continue;
+		}
 
 		m_sources.insert(source->getName(), source);
 
