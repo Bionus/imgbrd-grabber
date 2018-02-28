@@ -18,6 +18,7 @@ class TagDatabaseSqlite : public TagDatabase
 	private:
 		QString m_tagFile;
 		QSqlDatabase m_database;
+		mutable QHash<QString, TagType> m_cache;
 		mutable int m_count;
 };
 
