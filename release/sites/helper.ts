@@ -75,17 +75,20 @@ Grabber.regexToImages = (regexp: string, src: string): IImage[] => {
     return images;
 };
 
-Grabber.regexToTags = (regexp: string, src: string): Iterable<ITag> => {
-    const tags: { [name: string]: ITag } = {};
+Grabber.regexToTags = (regexp: string, src: string): ITag[] => {
+    const tags: ITag[] = [];
+    const uniques: { [key: string]: boolean } = {};
+
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
-        if (match["name"] in tags) {
+        if (match["name"] in uniques) {
             continue;
         }
         if ("count" in match) {
             match["count"] = Grabber.countToInt(match["count"]);
         }
-        tags[match["name"]] = match;
+        tags.push(match);
+        uniques[match["name"]] = true;
     }
     return tags;
 };
