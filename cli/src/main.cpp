@@ -10,13 +10,6 @@
 #endif
 
 
-void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
-}
-
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
@@ -73,7 +66,7 @@ int main(int argc, char *argv[])
 	parser.process(app);
 
 	if (!parser.isSet(verboseOption))
-		qInstallMessageHandler(noMessageOutput);
+		Logger::disableMessageOutput();
 
 	Profile *profile = new Profile(savePath());
 	Downloader *downloader = new Downloader(profile,

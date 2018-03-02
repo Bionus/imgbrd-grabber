@@ -17,6 +17,19 @@ void Logger::setLogLevel(LogLevel level)
 	m_level = level;
 }
 
+
+void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+	Q_UNUSED(type);
+	Q_UNUSED(context);
+	Q_UNUSED(message);
+}
+
+void Logger::disableMessageOutput()
+{
+	qInstallMessageHandler(Logger::noMessageOutput);
+}
+
 /**
  * Append text in the log in a new line.
  * @param	l	The message to append.

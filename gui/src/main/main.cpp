@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 
 	bool verbose = parser.isSet(verboseOption);
 	if (!gui && !verbose)
-		qInstallMessageHandler(noMessageOutput);
+		Logger::disableMessageOutput();
 	else if (verbose)
 		Logger::getInstance().setLogLevel(Logger::Debug);
 
