@@ -29,6 +29,9 @@ class Source : public QObject
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
 
+	protected:
+		QJSEngine *jsEngine();
+
 	private:
 		QString m_dir;
 		QString m_name;

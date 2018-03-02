@@ -27,6 +27,30 @@ QString getUpdaterBaseUrl()
 	#endif
 }
 
+QJSEngine *Source::jsEngine()
+{
+	static QJSEngine *engine = Q_NULLPTR;
+
+	if (engine == Q_NULLPTR)
+	{
+		engine = new QJSEngine();
+		engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
+
+		// JavaScript helper file
+		QFile jsHelper(m_dir + "/../helper.js");
+		if (jsHelper.open(QFile::ReadOnly | QFile::Text))
+		{
+			QJSValue helperResult = engine->evaluate(jsHelper.readAll(), jsHelper.fileName());
+			jsHelper.close();
+
+			if (helperResult.isError())
+			{ log(QString("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
+		}
+	}
+
+	return engine;
+}
+
 Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, getUpdaterBaseUrl())
 {
@@ -54,21 +78,7 @@ Source::Source(Profile *profile, const QString &dir)
 
 				QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
 
-				auto engine = new QJSEngine(this);
-				engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
-
-				// JavaScript helper file
-				QFile jsHelper(m_dir + "/../helper.js");
-				if (jsHelper.open(QFile::ReadOnly | QFile::Text))
-				{
-					QJSValue helperResult = engine->evaluate(jsHelper.readAll(), jsHelper.fileName());
-					jsHelper.close();
-
-					if (helperResult.isError())
-					{ log(QString("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
-				}
-
-				m_jsSource = engine->evaluate(src, js.fileName());
+				m_jsSource = jsEngine()->evaluate(src, js.fileName());
 				if (m_jsSource.isError())
 				{ log(QString("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 				else
