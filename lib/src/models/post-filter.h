@@ -4,8 +4,9 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
-#include "loader/token.h"
 
+
+class Token;
 
 class PostFilter
 {

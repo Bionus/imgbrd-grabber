@@ -1,5 +1,6 @@
 #include "login/http-post-login.h"
 #include <QUrlQuery>
+#include "custom-network-access-manager.h"
 #include "models/site.h"
 
 

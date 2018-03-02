@@ -1,5 +1,6 @@
 #include "tag-stylist-test.h"
 #include <QtTest>
+#include "tags/tag.h"
 
 
 void TagStylistTest::init()

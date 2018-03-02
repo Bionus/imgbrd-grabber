@@ -3,13 +3,13 @@
 
 #include <QMap>
 #include <QNetworkReply>
+#include "models/image.h"
 #include "tags/tag.h"
 
 
 class Page;
 class Api;
 class Profile;
-class Image;
 class Site;
 
 class PageApi : public QObject

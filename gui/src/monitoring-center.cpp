@@ -2,7 +2,9 @@
 #include <QEventLoop>
 #include <QTimer>
 #include "logger.h"
+#include "models/favorite.h"
 #include "models/image.h"
+#include "models/monitor.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"

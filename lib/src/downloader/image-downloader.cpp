@@ -1,10 +1,12 @@
 #include "downloader/image-downloader.h"
 #include <QUuid>
+#include "extension-rotator.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
 ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate)

@@ -4,10 +4,9 @@
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include "login/login.h"
-#include "mixed-settings.h"
-#include "models/page.h"
 
 
+class MixedSettings;
 class Site;
 
 class OAuth2Login : public Login

@@ -1,3 +1,4 @@
+#include "custom-network-access-manager.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
 #include "source-guesser-test.h"

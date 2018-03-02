@@ -6,15 +6,15 @@
 #include <QNetworkReply>
 #include <QPixmap>
 #include <QSettings>
-#include "downloader/extension-rotator.h"
 #include "loader/downloadable.h"
 #include "models/pool.h"
 #include "tags/tag.h"
 
 
+class ExtensionRotator;
 class Page;
-class Site;
 class Profile;
+class Site;
 
 class Image : public QObject, public Downloadable
 {

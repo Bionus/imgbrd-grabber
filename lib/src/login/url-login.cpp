@@ -1,5 +1,8 @@
 #include "login/url-login.h"
+#include "mixed-settings.h"
+#include "models/page.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
 UrlLogin::UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)

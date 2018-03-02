@@ -3,11 +3,11 @@
 
 #include <QNetworkReply>
 #include <QSettings>
-#include "custom-network-access-manager.h"
 #include "login/login.h"
-#include "mixed-settings.h"
 
 
+class CustomNetworkAccessManager;
+class MixedSettings;
 class Site;
 
 class HttpLogin : public Login

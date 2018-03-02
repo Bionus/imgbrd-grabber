@@ -6,6 +6,7 @@
 #include <QtSql/QSqlRecord>
 #include <QVariant>
 #include "logger.h"
+#include "tags/tag.h"
 
 
 TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, const QString &tagFile)

@@ -7,11 +7,11 @@
 #include "models/page-api.h"
 
 
-class Image;
-class Site;
 class Api;
-class Tag;
+class Image;
 class Profile;
+class Site;
+class Tag;
 
 class Page : public QObject
 {

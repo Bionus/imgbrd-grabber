@@ -4,10 +4,10 @@
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include "login/login.h"
-#include "mixed-settings.h"
-#include "models/page.h"
 
 
+class MixedSettings;
+class Page;
 class Site;
 
 class UrlLogin : public Login

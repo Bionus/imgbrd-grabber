@@ -2,8 +2,9 @@
 #define TAG_DATABASE_FACTORY_H
 
 #include <QString>
-#include "tags/tag-database.h"
 
+
+class TagDatabase;
 
 class TagDatabaseFactory
 {

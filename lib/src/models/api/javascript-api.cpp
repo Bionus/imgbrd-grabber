@@ -1,10 +1,13 @@
 #include "models/api/javascript-api.h"
+#include <QJSEngine>
 #include <QJSValueIterator>
 #include "functions.h"
 #include "logger.h"
+#include "mixed-settings.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/site.h"
+#include "tags/tag-database.h"
 
 
 QString normalize(QString key)

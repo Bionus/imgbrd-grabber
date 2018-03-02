@@ -13,11 +13,13 @@
 #include "login/http-post-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
+#include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
 #include "vendor/json.h"
 

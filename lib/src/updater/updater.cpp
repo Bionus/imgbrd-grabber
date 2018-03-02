@@ -1,5 +1,6 @@
 #include "updater/updater.h"
 #include <QRegularExpression>
+#include "custom-network-access-manager.h"
 
 
 Updater::Updater()

@@ -44,13 +44,6 @@
 
 
 
-void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
-}
-
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);

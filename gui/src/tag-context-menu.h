@@ -4,10 +4,10 @@
 #include <QMenu>
 #include <QStringList>
 #include <QUrl>
-#include "models/image.h"
-#include "models/profile.h"
 #include "tags/tag.h"
 
+
+class Profile;
 
 class TagContextMenu : public QMenu
 {

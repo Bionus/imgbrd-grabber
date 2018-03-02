@@ -1,7 +1,9 @@
 #include "settings/web-service-window.h"
 #include <QNetworkRequest>
 #include <ui_web-service-window.h>
+#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "reverse-search/reverse-search-engine.h"
 
 
 WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent)

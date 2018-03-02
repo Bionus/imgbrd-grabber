@@ -2,10 +2,11 @@
 #define IMAGE_CONTEXT_MENU_H
 
 #include <QMenu>
-#include "mainwindow.h"
 #include "models/image.h"
 #include "reverse-search/reverse-search-engine.h"
 
+
+class mainWindow;
 
 class ImageContextMenu : public QMenu
 {

@@ -3,6 +3,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QProcess>
+#include "models/profile.h"
 
 
 TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, const QUrl &browserUrl, Profile *profile, bool setImage, QWidget *parent)

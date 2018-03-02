@@ -1,10 +1,12 @@
 #include "loader/loader-query.h"
 #include <QEventLoop>
 #include <QtMath>
+#include "loader/loader-data.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
 LoaderQuery::LoaderQuery(Site *site, const QMap<QString, QVariant> &options)

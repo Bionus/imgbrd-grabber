@@ -10,17 +10,16 @@
 #include <QVariant>
 #include <functional>
 #include "login/login.h"
-#include "mixed-settings.h"
-#include "source.h"
-#include "tags/tag.h"
-#include "tags/tag-database-in-memory.h"
 
 
-class Page;
-class Image;
 class Api;
-class Profile;
 class CustomNetworkAccessManager;
+class Image;
+class MixedSettings;
+class Page;
+class Source;
+class Tag;
+class TagDatabase;
 
 class Site : public QObject
 {

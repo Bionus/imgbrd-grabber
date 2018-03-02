@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QNetworkReply>
-#include "custom-network-access-manager.h"
-#include "reverse-search/reverse-search-engine.h"
 
 
 namespace Ui
@@ -12,6 +10,9 @@ namespace Ui
 	class WebServiceWindow;
 }
 
+
+class CustomNetworkAccessManager;
+class ReverseSearchEngine;
 
 class WebServiceWindow : public QDialog
 {

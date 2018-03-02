@@ -5,6 +5,7 @@
 #include <QSharedPointer>
 #include "downloader/file-downloader.h"
 #include "loader/downloadable.h"
+#include "models/filename.h"
 
 
 class Site;

@@ -7,8 +7,6 @@
 #include "tags/tag-type.h"
 
 
-class Profile;
-
 class Tag
 {
 	public:

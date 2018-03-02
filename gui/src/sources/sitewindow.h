@@ -11,7 +11,6 @@ namespace Ui
 }
 
 
-class Site;
 class Profile;
 class Source;
 

@@ -1,6 +1,7 @@
 #include "tags/tag-database-in-memory.h"
 #include <QFile>
 #include <QTextStream>
+#include "tags/tag.h"
 
 
 TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, const QString &tagFile)

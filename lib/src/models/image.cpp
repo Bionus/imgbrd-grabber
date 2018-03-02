@@ -1,6 +1,7 @@
 #include <QEventLoop>
 #include <QRegularExpression>
 #include "commands/commands.h"
+#include "downloader/extension-rotator.h"
 #include "downloader/file-downloader.h"
 #include "functions.h"
 #include "models/api/api.h"
@@ -10,6 +11,8 @@
 #include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/source.h"
+#include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)

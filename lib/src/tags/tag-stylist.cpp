@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "functions.h"
 #include "models/profile.h"
+#include "tags/tag.h"
 
 
 TagStylist::TagStylist(Profile *profile)

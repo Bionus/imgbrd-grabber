@@ -4,7 +4,6 @@
 #include <qmath.h>
 #include <iostream>
 #include "logger.h"
-#include "models/image.h"
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/site.h"

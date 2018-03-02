@@ -1,6 +1,7 @@
 #include "image-context-menu.h"
 #include <QDesktopServices>
 #include <QSignalMapper>
+#include "mainwindow.h"
 #include "reverse-search/reverse-search-loader.h"
 
 

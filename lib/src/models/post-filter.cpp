@@ -2,6 +2,7 @@
 #include <QDateTime>
 #include <QObject>
 #include "functions.h"
+#include "loader/token.h"
 
 
 int toDate(const QString &text)

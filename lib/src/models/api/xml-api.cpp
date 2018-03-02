@@ -1,6 +1,7 @@
 #include "models/api/xml-api.h"
 #include <QDomDocument>
 #include "models/site.h"
+#include "tags/tag-database.h"
 
 
 XmlApi::XmlApi(const QMap<QString, QString> &data)

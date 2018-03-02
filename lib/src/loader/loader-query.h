@@ -4,10 +4,9 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
-#include "loader/loader-data.h"
 
 
-class Loader;
+struct LoaderData;
 class Site;
 
 class LoaderQuery

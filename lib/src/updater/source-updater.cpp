@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include "custom-network-access-manager.h"
 
 
 SourceUpdater::SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl)

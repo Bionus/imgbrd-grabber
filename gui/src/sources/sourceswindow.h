@@ -4,8 +4,8 @@
 #include <QCheckBox>
 #include <QDialog>
 #include <QLabel>
+#include <QNetworkReply>
 #include <QSettings>
-#include "models/source.h"
 
 
 namespace Ui
@@ -14,9 +14,10 @@ namespace Ui
 }
 
 
+class Profile;
 class QBouton;
 class Site;
-class Profile;
+class Source;
 
 class sourcesWindow : public QDialog
 {

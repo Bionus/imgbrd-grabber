@@ -4,10 +4,10 @@
 #include <QFont>
 #include <QList>
 #include <QString>
-#include "tags/tag.h"
 
 
 class Profile;
+class Tag;
 
 class TagStylist
 {

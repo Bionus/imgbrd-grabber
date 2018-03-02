@@ -1,6 +1,8 @@
 #include "site-test.h"
 #include <QNetworkCookie>
-#include <QtTest>
+#include <QtTest>>
+#include "custom-network-access-manager.h"
+#include "tags/tag.h"
 
 
 void SiteTest::init()

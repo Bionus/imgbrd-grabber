@@ -4,7 +4,9 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <ui_sourceswindow.h>
+#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
 #include "sources/sitewindow.h"

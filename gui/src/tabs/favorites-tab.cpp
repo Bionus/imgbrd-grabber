@@ -12,6 +12,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "ui/fixed-size-grid-layout.h"
 #include "ui/QAffiche.h"
 #include "ui/QBouton.h"
 #include "ui/textedit.h"

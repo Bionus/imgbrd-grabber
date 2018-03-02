@@ -1,5 +1,6 @@
 #include "tag-api-test.h"
 #include <QtTest>
+#include "custom-network-access-manager.h"
 #include "models/source.h"
 
 

@@ -6,12 +6,12 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
-#include "loader/token.h"
 
 
 class Site;
 class Image;
 class Profile;
+class Token;
 
 class Filename
 {

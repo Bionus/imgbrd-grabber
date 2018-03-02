@@ -1,5 +1,6 @@
 #include "tag-database-in-memory-test.h"
 #include <QtTest>
+#include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"
 
 

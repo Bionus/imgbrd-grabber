@@ -1,5 +1,6 @@
 #include "image-downloader-test.h"
 #include <QtTest>
+#include "custom-network-access-manager.h"
 #include "models/image.h"
 #include "models/site.h"
 #include "models/source.h"

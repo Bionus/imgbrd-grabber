@@ -7,6 +7,8 @@
 #include <QSettings>
 #include <ui_sourcessettingswindow.h>
 #include "functions.h"
+#include "models/profile.h"
+#include "models/source.h"
 
 
 SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)

@@ -26,8 +26,6 @@ namespace Ui
 
 
 class searchTab;
-class poolTab;
-class tagTab;
 class favoritesTab;
 class batchWindow;
 class Profile;

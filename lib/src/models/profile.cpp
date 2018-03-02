@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include "commands/commands.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
 Profile::Profile()

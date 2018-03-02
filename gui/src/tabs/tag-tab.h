@@ -15,7 +15,6 @@ namespace Ui
 
 
 class mainWindow;
-class Downloader;
 class TextEdit;
 
 class tagTab : public searchTab

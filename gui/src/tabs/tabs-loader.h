@@ -7,10 +7,7 @@
 
 
 class Profile;
-class Site;
 class searchTab;
-class tagTab;
-class poolTab;
 class mainWindow;
 
 class TabsLoader

@@ -19,7 +19,6 @@ namespace Ui
 }
 
 
-
 class batchWindow : public QDialog
 {
 	Q_OBJECT

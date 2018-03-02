@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "logger.h"
+#include "mixed-settings.h"
 #include "models/site.h"
 
 

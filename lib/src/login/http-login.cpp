@@ -2,6 +2,8 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QUrlQuery>
+#include "custom-network-access-manager.h"
+#include "mixed-settings.h"
 #include "models/site.h"
 
 

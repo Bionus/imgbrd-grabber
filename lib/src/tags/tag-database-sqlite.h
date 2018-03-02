@@ -1,8 +1,10 @@
 #ifndef TAG_DATABASE_SQLITE_H
 #define TAG_DATABASE_SQLITE_H
 
-#include "tags/tag-database.h"
+#include <QHash>
 #include <QSqlDatabase>
+#include "tags/tag-database.h"
+#include "tags/tag-type.h"
 
 
 class TagDatabaseSqlite : public TagDatabase

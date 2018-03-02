@@ -7,6 +7,7 @@
 #include "models/site.h"
 #include "tags/tag.h"
 #include "tags/tag-api.h"
+#include "tags/tag-database.h"
 
 
 TagLoader::TagLoader(Profile *profile, QWidget *parent)

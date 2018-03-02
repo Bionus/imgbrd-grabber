@@ -4,6 +4,7 @@
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
 Api::Api(const QString &name, const QMap<QString, QString> &data)

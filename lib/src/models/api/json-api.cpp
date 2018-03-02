@@ -1,5 +1,6 @@
 #include "models/api/json-api.h"
 #include "models/site.h"
+#include "tags/tag-database.h"
 #include "vendor/json.h"
 
 

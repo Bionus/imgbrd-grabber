@@ -3,10 +3,10 @@
 
 #include <QObject>
 #include <QSystemTrayIcon>
-#include "models/favorite.h"
-#include "models/monitor.h"
 
 
+class Favorite;
+class Monitor;
 class Profile;
 
 class MonitoringCenter : public QObject

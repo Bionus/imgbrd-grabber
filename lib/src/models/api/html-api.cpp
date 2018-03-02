@@ -3,6 +3,7 @@
 #include <QtMath>
 #include "functions.h"
 #include "models/site.h"
+#include "tags/tag-database.h"
 #include "vendor/json.h"
 
 

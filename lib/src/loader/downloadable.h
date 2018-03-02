@@ -4,10 +4,12 @@
 #include <QString>
 #include <QUrl>
 #include "loader/token.h"
-#include "models/filename.h"
 
 
 typedef QPair<QString, QString> QStrP;
+
+class Filename;
+class Profile;
 
 class Downloadable
 {

@@ -5,7 +5,6 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
-#include "models/image.h"
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/site.h"

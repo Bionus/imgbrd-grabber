@@ -13,17 +13,17 @@
 #include <QStackedWidget>
 #include <QWidget>
 #include "models/image.h"
-#include "ui/fixed-size-grid-layout.h"
 
 
-class mainWindow;
-class QBouton;
-class TextEdit;
-class VerticalScrollArea;
-class Profile;
-class Favorite;
 class DownloadQueryGroup;
 class DownloadQueryImage;
+class Favorite;
+class mainWindow;
+class Profile;
+class QBouton;
+class FixedSizeGridLayout;
+class TextEdit;
+class VerticalScrollArea;
 
 class searchTab : public QWidget
 {

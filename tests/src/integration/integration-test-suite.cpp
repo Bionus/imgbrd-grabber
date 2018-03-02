@@ -1,6 +1,7 @@
 #include "integration-test-suite.h"
 #include <QStringList>
 #include <QtTest>
+#include "custom-network-access-manager.h"
 #include "functions.h"
 #include "tags/tag-api.h"
 

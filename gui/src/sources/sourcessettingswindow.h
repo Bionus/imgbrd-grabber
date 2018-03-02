@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QMap>
 #include <QSettings>
-#include "models/profile.h"
 #include "models/site.h"
 
 
@@ -13,6 +12,8 @@ namespace Ui
 	class SourcesSettingsWindow;
 }
 
+
+class Profile;
 
 class SourcesSettingsWindow : public QDialog
 {
