@@ -130,7 +130,7 @@ void favoritesTab::updateFavorites()
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
 	int borderSize = m_settings->value("borders", 3).toInt();
-	for (const Favorite &fav : m_favorites)
+	for (Favorite &fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
@@ -152,8 +152,29 @@ void favoritesTab::updateFavorites()
 			l->addWidget(image);
 		}
 
+		int maxNewImages = 0;
+		bool precise = true;
+		for (const Monitor& monitor : fav.getMonitors())
+		{
+			if (monitor.cumulated() > maxNewImages)
+			{
+				maxNewImages = monitor.cumulated();
+				precise = monitor.preciseCumulated();
+			}
+		}
+
+		QString label;
+		if (display.contains("n"))
+		{
+			label += fav.getName();
+			if (maxNewImages > 0)
+			{ label += QString(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : ""); }
+		}
+		if (display.contains("d"))
+		{ label += "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")"; }
+
 		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
-			caption->setText((display.contains("n") ? fav.getName() : "") + (display.contains("d") ? "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")" : ""));
+			caption->setText(label);
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
@@ -313,7 +334,11 @@ void favoritesTab::setFavoriteViewed(const QString &tag)
 	if (index < 0)
 		return;
 
-	m_favorites[index].setLastViewed(QDateTime::currentDateTime());
+	Favorite &fav = m_favorites[index];
+	fav.setLastViewed(QDateTime::currentDateTime());
+
+	for (Monitor &monitor : fav.getMonitors())
+		monitor.setCumulated(0, true);
 
 	DONE();
 }

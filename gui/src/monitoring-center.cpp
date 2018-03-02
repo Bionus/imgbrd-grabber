@@ -61,6 +61,9 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 	// Update monitor
 	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
+
+	if (newImages > 0)
+	{ emit m_profile->favoritesChanged(); }
 }
 
 void MonitoringCenter::tick()
