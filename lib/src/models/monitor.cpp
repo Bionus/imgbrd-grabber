@@ -37,7 +37,7 @@ int Monitor::cumulated() const
 {
 	return m_cumulated;
 }
-bool Monitor::preciseCumulated()
+bool Monitor::preciseCumulated() const
 {
 	return m_preciseCumulated;
 }
