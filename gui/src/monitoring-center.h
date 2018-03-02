@@ -24,7 +24,7 @@ class MonitoringCenter : public QObject
 		void tick();
 
 	protected:
-		void checkMonitor(const Monitor &monitor, const Favorite &favorite);
+		void checkMonitor(Monitor &monitor, const Favorite &favorite);
 
 	private:
 		Profile *m_profile;
