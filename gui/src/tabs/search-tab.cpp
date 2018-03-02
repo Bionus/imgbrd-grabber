@@ -328,7 +328,7 @@ void searchTab::finishedLoading(Page* page)
 	for (const QSharedPointer<Image> &img : page->images())
 		if (validateImage(img, error))
 			validImages.append(img);
-		else
+		else if (!error.isEmpty())
 			log(error);
 
 	// Remove already existing images for merged results
