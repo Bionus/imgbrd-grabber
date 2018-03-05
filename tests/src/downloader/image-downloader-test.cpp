@@ -6,6 +6,11 @@
 #include "models/source.h"
 
 
+void ImageDownloaderTest::initTestCase()
+{
+	QDir("tests/resources/").mkdir("tmp");
+}
+
 void ImageDownloaderTest::cleanup()
 {
 	QDir dir("tests/resources/tmp/");

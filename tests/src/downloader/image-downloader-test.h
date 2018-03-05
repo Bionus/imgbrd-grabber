@@ -11,6 +11,7 @@ class ImageDownloaderTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		void initTestCase();
 		void cleanup();
 
 		void testSuccessBasic();
