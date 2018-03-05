@@ -14,6 +14,7 @@
 #include <QTimeZone>
 #include <QtMath>
 #include <QUrl>
+#include <QVector>
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
