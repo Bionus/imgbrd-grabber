@@ -1,8 +1,11 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.5.2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
+
+#ifndef MyAppVersion
+# define MyAppVersion "5.5.2"
+#endif
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
