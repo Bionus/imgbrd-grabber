@@ -2,6 +2,7 @@
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
+#define BuildDir "..\build"
 
 #ifndef QtDir
 # define QtDir "C:\Qt\Qt5.10.1\5.10.1\msvc2015\bin"
@@ -80,9 +81,9 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "resources\images\icon.ico";            DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\cli\Grabber-cli.exe";         DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
-Source: "..\build\gui\Grabber.exe";             DestDir: "{app}"; Flags: ignoreversion;
+Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
+Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\release\words.txt";                 DestDir: "{app}";
 Source: "{#OpenSSLDir}\libeay32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
@@ -102,11 +103,11 @@ Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
 Source: "{#OpenSSLDir}\ssleay32.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\crashreporter\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "..\release\crashreporter\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "..\release\crashreporter\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "..\release\crashreporter\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "..\release\crashreporter\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\CrashReporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\CrashReporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\CrashReporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -117,15 +118,15 @@ Source: "{#QtPlugins}\imageformats\qtga.dll";   DestDir: "{app}\imageformats"; F
 Source: "{#QtPlugins}\imageformats\qtiff.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwbmp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwebp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\English.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\French.qm";       DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\Spanish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\languages\languages.ini";   DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\qt\English.qm";      DestDir: "{app}\languages\qt"; Flags: ignoreversion
-Source: "..\release\languages\qt\French.qm";       DestDir: "{app}\languages\qt"; Flags: ignoreversion
-Source: "..\release\languages\qt\Russian.qm";      DestDir: "{app}\languages\qt"; Flags: ignoreversion
+Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
+Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
+Source: "{#QtDir}\..\translations\qtbase_ru.qm";   DestDir: "{app}\languages\qt"; DestName: "Russian.qm"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
