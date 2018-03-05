@@ -38,7 +38,7 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %platform%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - iscc /Q /DMyAppVersion=nightly releases/setup.iss
+  - iscc /Q /DMyAppVersion="nightly" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="C:\Program Files\MySQL\MySQL Server 5.7"  releases/setup.iss
 
 test_script:
   - build\tests\tests.exe
