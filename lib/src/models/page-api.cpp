@@ -66,10 +66,16 @@ void PageApi::updateUrls()
 	m_urlRegex = QUrl(url);
 }
 
-void PageApi::load(bool rateLimit)
+void PageApi::load(bool rateLimit, bool force)
 {
 	if (m_reply != nullptr)
-		return;
+	{
+		if (!force)
+			return;
+
+		m_reply->deleteLater();
+		m_reply = nullptr;
+	}
 
 	if (m_url.isEmpty() && !m_errors.isEmpty())
 	{
@@ -129,7 +135,7 @@ void PageApi::parse()
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
 		log(QString("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
-		load();
+		load(false, true);
 		return;
 	}
 
@@ -138,7 +144,7 @@ void PageApi::parse()
 	if (statusCode == 429)
 	{
 		log(QString("[%1][%2] Limit reached (429). New try.").arg(m_site->url(), m_format), Logger::Warning);
-		load(true);
+		load(true, true);
 		return;
 	}
 
