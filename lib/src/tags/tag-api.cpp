@@ -60,7 +60,7 @@ void TagApi::parse()
 	if (source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error())); }
+		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}

@@ -498,7 +498,7 @@ void searchTab::finishedLoadingPreview()
 	// Loading error
 	if (reply->error() != QNetworkReply::NoError)
 	{
-		log(QString("<b>Error:</b> %1").arg(QString("error loading thumbnail (%1)").arg(reply->errorString())));
+		log(QString("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
 		reply->deleteLater();
 		return;
 	}

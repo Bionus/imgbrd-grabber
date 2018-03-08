@@ -705,7 +705,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 						{
 							f.close();
 							f.remove();
-							log(QString("File saving error: %1)").arg(f.errorString()));
+							log(QString("File saving error: %1)").arg(f.errorString()), Logger::Error);
 							return SaveResult::Error;
 						}
 						f.close();
