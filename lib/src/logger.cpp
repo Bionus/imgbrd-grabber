@@ -23,7 +23,9 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 	static QMap<QtMsgType, LogLevel> messageTypes
 	{
 		{ QtMsgType::QtDebugMsg, Logger::Debug },
-		{ QtMsgType::QtInfoMsg, Logger::Info },
+		#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+			{ QtMsgType::QtInfoMsg, Logger::Info },
+		#endif
 		{ QtMsgType::QtWarningMsg, Logger::Warning },
 		{ QtMsgType::QtCriticalMsg, Logger::Error },
 		{ QtMsgType::QtFatalMsg, Logger::Error },
