@@ -82,6 +82,11 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	log(QString("Path: %1").arg(qApp->applicationDirPath()), Logger::Info);
 	log(QString("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()), Logger::Info);
 
+	if (!QSslSocket::supportsSsl())
+	{ log("Missing SSL libraries", Logger::Error); }
+	else
+	{ log(QString("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info); }
+
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
