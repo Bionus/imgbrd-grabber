@@ -32,9 +32,10 @@ class Logger : public QObject
 		Logger(Logger const&) = delete;
 		void operator=(Logger const&) = delete;
 
-		// Helper to disable Qt log messages
+		// Handlers for Qt log messages
+		static void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
 		static void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
-		static void disableMessageOutput();
+		static void setupMessageOutput(bool log);
 
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);

@@ -131,9 +131,8 @@ int main(int argc, char *argv[])
 	#endif
 
 	bool verbose = parser.isSet(verboseOption);
-	if (!gui && !verbose)
-		Logger::disableMessageOutput();
-	else if (verbose)
+	Logger::setupMessageOutput(gui || verbose);
+	if (verbose)
 		Logger::getInstance().setLogLevel(Logger::Debug);
 
 	#if USE_BREAKPAD && !USE_CLI

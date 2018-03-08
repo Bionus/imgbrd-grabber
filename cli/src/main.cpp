@@ -65,8 +65,7 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	if (!parser.isSet(verboseOption))
-		Logger::disableMessageOutput();
+	Logger::setupMessageOutput(parser.isSet(verboseOption));
 
 	Profile *profile = new Profile(savePath());
 	Downloader *downloader = new Downloader(profile,

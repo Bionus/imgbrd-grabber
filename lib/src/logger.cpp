@@ -18,6 +18,29 @@ void Logger::setLogLevel(LogLevel level)
 }
 
 
+void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+	static QMap<QtMsgType, LogLevel> messageTypes
+	{
+		{ QtMsgType::QtDebugMsg, Logger::Debug },
+		{ QtMsgType::QtInfoMsg, Logger::Info },
+		{ QtMsgType::QtWarningMsg, Logger::Warning },
+		{ QtMsgType::QtCriticalMsg, Logger::Error },
+		{ QtMsgType::QtFatalMsg, Logger::Error },
+		{ QtMsgType::QtSystemMsg, Logger::Error },
+	};
+
+	QString label = "[Qt]";
+	QString category(context.category);
+	if (!category.isEmpty())
+		label += "[" + category + "]";
+	#if defined QT_MESSAGELOGCONTEXT && defined QT_DEBUG && 0
+		label += QString("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
+	#endif
+
+	Logger::getInstance().log(QString("%1 %2").arg(label, message), messageTypes[type]);
+}
+
 void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
 	Q_UNUSED(type);
@@ -25,9 +48,9 @@ void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, 
 	Q_UNUSED(message);
 }
 
-void Logger::disableMessageOutput()
+void Logger::setupMessageOutput(bool log)
 {
-	qInstallMessageHandler(Logger::noMessageOutput);
+	qInstallMessageHandler(log ? Logger::messageOutput : Logger::noMessageOutput);
 }
 
 /**
