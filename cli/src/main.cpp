@@ -65,7 +65,9 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
+#ifndef QT_DEBUG
 	Logger::setupMessageOutput(parser.isSet(verboseOption));
+#endif
 
 	Profile *profile = new Profile(savePath());
 	Downloader *downloader = new Downloader(profile,

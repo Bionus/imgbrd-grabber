@@ -131,7 +131,9 @@ int main(int argc, char *argv[])
 	#endif
 
 	bool verbose = parser.isSet(verboseOption);
-	Logger::setupMessageOutput(gui || verbose);
+	#ifndef QT_DEBUG
+		Logger::setupMessageOutput(gui || verbose);
+	#endif
 	if (verbose)
 		Logger::getInstance().setLogLevel(Logger::Debug);
 
