@@ -76,10 +76,11 @@ void Site::loadConfig()
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
-		sources << m_settings->value("sources/source_1").toString()
-				<< m_settings->value("sources/source_2").toString()
-				<< m_settings->value("sources/source_3").toString()
-				<< m_settings->value("sources/source_4").toString();
+		for (int i = 0; i < 4; ++i)
+		{
+			QString def = defaults.count() > i ? defaults[i] : "";
+			sources << m_settings->value("sources/source_" + QString::number(i + 1), def).toString();
+		}
 		sources.removeAll("");
 		if (sources.isEmpty())
 		{ sources = defaults; }
