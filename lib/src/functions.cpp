@@ -795,3 +795,26 @@ bool isVariantEmpty(const QVariant &value)
 		default: return false;
 	}
 }
+
+QMap<QString, QString> multiMatchToMap(const QRegularExpressionMatch &match, const QStringList &groups)
+{
+	QMap<QString, QString> data;
+	for (QString group : groups)
+	{
+		if (group.isEmpty())
+			continue;
+
+		QString val = match.captured(group);
+		if (val.isEmpty())
+			continue;
+
+		int underscorePos = group.lastIndexOf('_');
+		bool ok;
+		group.midRef(underscorePos + 1).toInt(&ok);
+		if (underscorePos != -1 && ok)
+		{ group = group.left(underscorePos); }
+		data[group] = val;
+	}
+
+	return data;
+}

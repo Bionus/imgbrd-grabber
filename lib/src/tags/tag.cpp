@@ -3,6 +3,7 @@
 #include <QSet>
 #include <QTextDocument>
 #include <QtMath>
+#include "functions.h"
 
 
 Tag::Tag()
@@ -55,27 +56,29 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 
 Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &groups)
 {
+	QMap<QString, QString> data = multiMatchToMap(match, groups);
+
 	// Tag
 	QString tag;
-	if (groups.contains("tag"))
+	if (data.contains("tag"))
 	{
-		tag = match.captured("tag").replace(" ", "_").replace("&amp;", "&").trimmed();
+		tag = data["tag"].replace(" ", "_").replace("&amp;", "&").trimmed();
 	}
 
 	// Type
 	QString type;
-	if (groups.contains("type"))
+	if (data.contains("type"))
 	{
-		type = Tag::GetType(match.captured("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+		type = Tag::GetType(data.value("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 	}
 	if (type.isEmpty())
 	{ type = "unknown"; }
 
 	// Count
 	int count = 0;
-	if (groups.contains("count"))
+	if (data.contains("count"))
 	{
-		QString countStr = match.captured("count").toLower().trimmed();
+		QString countStr = data.value("count").toLower().trimmed();
 		countStr.remove(',');
 		count = countStr.endsWith('k', Qt::CaseInsensitive) ? qFloor(countStr.leftRef(countStr.length() - 1).toFloat() * 1000) : countStr.toInt();
 	}

@@ -30,23 +30,7 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	while (matches.hasNext())
 	{
 		auto match = matches.next();
-		QMap<QString, QString> d;
-		for (QString group : rxImages.namedCaptureGroups())
-		{
-			if (group.isEmpty())
-				continue;
-
-			QString val = match.captured(group);
-			if (!val.isEmpty())
-			{
-				int underscorePos = group.lastIndexOf('_');
-				bool ok;
-				group.midRef(underscorePos + 1).toInt(&ok);
-				if (underscorePos != -1 && ok)
-				{ group = group.left(underscorePos); }
-				d[group] = val;
-			}
-		}
+		QMap<QString, QString> d = multiMatchToMap(match, rxImages.namedCaptureGroups());
 
 		// JSON elements
 		if (d.contains("json") && !d["json"].isEmpty())
