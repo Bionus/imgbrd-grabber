@@ -7,20 +7,20 @@ environment:
   matrix:
     # MSVC x86
     - PLATFORM: amd64_x86
-      QTDIR: C:\Qt\5.7\msvc2015
+      QTDIR: C:\Qt\5.10.0\msvc2015
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
 
     # MSVC x64
     - PLATFORM: amd64
-      QTDIR: C:\Qt\5.7\msvc2015_64
+      QTDIR: C:\Qt\5.10.0\msvc2015_64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
 
     # MinGW
     - PLATFORM: mingw
-      QTDIR: C:\Qt\5.7\mingw53_32
+      QTDIR: C:\Qt\5.10.0\mingw53_32
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
 
