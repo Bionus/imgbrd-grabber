@@ -3,7 +3,7 @@
 #include <QProcess>
 #include <ui_update-dialog.h>
 #include "functions.h"
-#if !defined Q_OS_WIN
+#if !defined(Q_OS_WIN)
 	#include <QDesktopServices>
 #endif
 
@@ -66,7 +66,7 @@ void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available
 
 void UpdateDialog::accept()
 {
-	#if defined Q_OS_WIN
+	#if defined(Q_OS_WIN)
 		downloadUpdate();
 	#else
 		QDesktopServices::openUrl(m_updater.latestUrl());

@@ -12,7 +12,7 @@ FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	#if USE_QSCINTILLA
+	#if defined(USE_QSCINTILLA)
 		m_scintilla = new QsciScintilla(this);
 		QsciLexerJavaScript *lexer = new QsciLexerJavaScript(this);
 		m_scintilla->setLexer(lexer);
@@ -108,7 +108,7 @@ QString FilenameWindow::format()
 {
 	if (ui->radioJavascript->isChecked())
 	{
-		#if USE_QSCINTILLA
+		#if defined(USE_QSCINTILLA)
 			return "javascript:" + m_scintilla->text();
 		#else
 			return "javascript:" + m_scintilla->toPlainText();

@@ -1,4 +1,4 @@
-#if USE_BREAKPAD
+#if defined(USE_BREAKPAD)
 
 #include "crashhandler.h"
 #include <QDir>

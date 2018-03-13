@@ -37,7 +37,7 @@
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
-#if !USE_CLI && USE_BREAKPAD
+#if !defined(USE_CLI) && defined(USE_BREAKPAD)
 	#include <QFileInfo>
 	#include "crashhandler/crashhandler.h"
 #endif
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
 	#endif
@@ -124,20 +124,20 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		bool gui = !parser.isSet(cliOption);
 	#else
 		bool gui = false;
 	#endif
 
 	bool verbose = parser.isSet(verboseOption);
-	#ifndef QT_DEBUG
+	#if !defined(QT_DEBUG)
 		Logger::setupMessageOutput(gui || verbose);
 	#endif
 	if (verbose)
 		Logger::getInstance().setLogLevel(Logger::Debug);
 
-	#if USE_BREAKPAD && !USE_CLI
+	#if defined(USE_BREAKPAD) && !defined(USE_CLI)
 		if (gui)
 		{
 			QDir dir = QFileInfo(argv[0]).dir();
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
 		dwnldr->setQuit(true);
 		QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
 	}
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		else
 		{
 			// Check for updates

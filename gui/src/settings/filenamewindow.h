@@ -5,7 +5,7 @@
 #include <QDialog>
 #include <QMessageBox>
 
-#if USE_QSCINTILLA
+#if defined(USE_QSCINTILLA)
 	#include <Qsci/qscilexerjavascript.h>
 	#include <Qsci/qsciscintilla.h>
 #else
@@ -43,7 +43,7 @@ class FilenameWindow : public QDialog
 	private:
 		Ui::FilenameWindow *ui;
 		Profile *m_profile;
-		#if USE_QSCINTILLA
+		#if defined(USE_QSCINTILLA)
 			QsciScintilla *m_scintilla;
 		#else
 			QTextEdit *m_scintilla;
