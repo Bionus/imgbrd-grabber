@@ -31,15 +31,10 @@ class Image : public QObject, public Downloadable
 		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
 		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
-		QColor		color() const override;
-		QString		tooltip() const override;
-		QList<QStrP> detailsData() const override;
 		QString		md5() const;
 		QString		url() const;
 		QString		rating() const;
 		QString		site() const;
-		QString		filename() const;
-		QString		folder() const;
 		QList<Tag>	tags() const;
 		QList<Tag>	filteredTags(const QStringList &remove) const;
 		QStringList tagsString() const;
@@ -58,8 +53,6 @@ class Image : public QObject, public Downloadable
 		Page		*page() const;
 		const QByteArray &data() const;
 		Site		*parentSite() const;
-		QNetworkReply	*imageReply() const;
-		QNetworkReply	*tagsReply() const;
 		ExtensionRotator *extensionRotator() const;
 		bool		hasTag(QString tag) const;
 		bool		hasAnyTag(const QStringList &tags) const;
@@ -76,6 +69,11 @@ class Image : public QObject, public Downloadable
 		QString		isAnimated() const;
 		void		setTags(const QList<Tag> &tags);
 		bool		isGallery() const;
+
+		// Displayable
+		QColor color() const override;
+		QString tooltip() const override;
+		QList<QStrP> detailsData() const override;
 
 		// Downloadable
 		QString url(Size size) const override;
@@ -125,7 +123,7 @@ class Image : public QObject, public Downloadable
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url;
 		QString	mutable m_md5;
-		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
+		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;

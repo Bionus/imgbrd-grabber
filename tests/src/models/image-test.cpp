@@ -100,8 +100,6 @@ void ImageTest::testCopy()
 
 	QCOMPARE(clone.tokens(m_profile), m_img->tokens(m_profile));
 	QCOMPARE(clone.parentSite(), m_img->parentSite());
-	QCOMPARE(clone.filename(), m_img->filename());
-	QCOMPARE(clone.folder(), m_img->folder());
 	QCOMPARE(clone.page(), m_img->page());
 	QCOMPARE(clone.data(), m_img->data());
 }

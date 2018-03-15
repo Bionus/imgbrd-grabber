@@ -63,8 +63,6 @@ Image::Image(const Image &other)
 	m_rating = other.m_rating;
 	m_source = other.m_source;
 	m_site = other.m_site;
-	m_filename = other.m_filename;
-	m_folder = other.m_folder;
 	m_savePath = other.m_savePath;
 
 	m_pageUrl = other.m_pageUrl;
@@ -96,7 +94,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_parentSite(site), m_extensionRotator(nullptr), m_id(0)
+	: m_profile(profile), m_parentSite(site), m_id(0), m_extensionRotator(nullptr)
 {
 	m_settings = m_profile->getSettings();
 
@@ -115,8 +113,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_author = details.contains("author") ? details["author"] : "";
 	m_name = details.contains("name") ? details["name"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
-	m_filename = details.contains("filename") ? details["filename"] : "";
-	m_folder = details.contains("folder") ? details["folder"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
@@ -432,11 +428,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 {
 	if (!simple)
 	{
-		if (!m_filename.isEmpty())
-		{ fn = m_filename; }
-		if (!m_folder.isEmpty())
-		{ pth = m_folder; }
-
 		if (fn.isEmpty())
 		{ fn = m_settings->value("Save/filename").toString(); }
 		if (pth.isEmpty())
@@ -860,8 +851,6 @@ QString			Image::url() const			{ return m_url;				}
 QString			Image::rating() const		{ return m_rating;			}
 QString			Image::site() const			{ return m_site;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
-QString			Image::filename() const		{ return m_filename;		}
-QString			Image::folder() const		{ return m_folder;			}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
 QList<Pool>		Image::pools() const		{ return m_pools;			}
 qulonglong		Image::id() const			{ return m_id;				}
@@ -876,8 +865,6 @@ QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
-QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
-QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
 bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
