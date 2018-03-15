@@ -634,7 +634,7 @@ void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 	prog->setTextVisible(false);
 	prog->setMaximum(values.total);
 	m_progressBars.append(prog);
-	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+	ui->tableBatchGroups->setCellWidget(row, 10, prog);
 
 	m_allow = true;
 	saveLinkList(m_profile->getPath() + "/restore.igl");
@@ -1776,9 +1776,9 @@ void mainWindow::getAllPerformTags()
 	}
 }
 
-int mainWindow::getRowForSite(int site_id)
+int mainWindow::getRowForSite(int siteId)
 {
-	return site_id - 1;
+	return siteId - 1;
 }
 
 void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
@@ -1857,7 +1857,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 				isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
 				QString rootPath = storage.rootPath();
 				#ifdef Q_OS_WIN
-					drive = QString("%1 (%2)").arg(storage.name()).arg(rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
+					drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
 				#else
 					drive = rootPath;
 				#endif
