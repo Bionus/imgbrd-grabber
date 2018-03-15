@@ -1192,7 +1192,12 @@ void mainWindow::getAll(bool all)
 
 			DownloadQueryImage batch = m_batchs[row];
 			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values.value("tags").split(" "), 1, 1, QStringList(), false, this);
-			m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
+
+			BatchDownloadImage d;
+			d.image = QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page));
+			d.queryImage = &batch;
+
+			m_getAllRemaining.append(d);
 		}
 	}
 	else
@@ -1210,7 +1215,12 @@ void mainWindow::getAll(bool all)
 			dta.insert("folder", batch.path);
 
 			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
-			m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page)));
+
+			BatchDownloadImage d;
+			d.image = QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page));
+			d.queryImage = &batch;
+
+			m_getAllRemaining.append(d);
 		}
 	}
 	m_getAllLimit = m_batchs.size();
@@ -1425,9 +1435,16 @@ void mainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images
 	m_downloaders.removeAll(downloader);
 	m_getAllIgnoredPre += downloader->ignoredCount();
 
-	m_getAllRemaining.append(images);
-
 	int row = downloader->getData().toInt();
+
+	for (const auto &img : images)
+	{
+		BatchDownloadImage d;
+		d.image = img;
+		d.queryGroup = &m_batchPending[row];
+		m_getAllRemaining.append(d);
+	}
+
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
 
@@ -1453,7 +1470,7 @@ void mainWindow::getAllImages()
 {
 	// Si la limite d'images est dépassée, on retire celles en trop
 	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
-		m_getAllRemaining.takeLast()->deleteLater();
+		m_getAllRemaining.takeLast().image->deleteLater();
 
 	log(QString("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
 
@@ -1462,22 +1479,15 @@ void mainWindow::getAllImages()
 	m_progressDialog->setText(tr("Preparing images, please wait..."));
 	m_progressDialog->setCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
+	for (const BatchDownloadImage &download : m_getAllRemaining)
 	{
-		// We find the image's batch ID using its page
-		int n = -1;
-		for (int r = 0; r < m_groupBatchs.count(); r++)
-		{
-			if (m_groupBatchs[r].unk.split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
-			{
-				n = r + 1;
-				break;
-			}
-		}
+		int siteId = download.siteId(m_groupBatchs);
+		QSharedPointer<Image> img = download.image;
 
 		// We add the image
-		m_progressDialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
-		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), m_progressDialog, SLOT(imageUrlChanged(QString, QString)));
-		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
+		m_progressDialog->addImage(img->url(), siteId, img->fileSize());
+		connect(img.data(), SIGNAL(urlChanged(QString, QString)), m_progressDialog, SLOT(imageUrlChanged(QString, QString)));
+		connect(img.data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
 	}
 
 	// Set some values on the batch window
@@ -1565,8 +1575,9 @@ void mainWindow::_getAll()
 	if (!m_getAllRemaining.empty())
 	{
 		// We take the first image to download
-		QSharedPointer<Image> img = m_getAllRemaining.takeFirst();
-		m_getAllDownloading.append(img);
+		BatchDownloadImage download = m_getAllRemaining.takeFirst();
+		QSharedPointer<Image> img = download.image;
+		m_getAllDownloading.append(download);
 
 		// Get the tags first if necessary
 		bool hasUnknownTag = false;
@@ -1586,21 +1597,16 @@ void mainWindow::_getAll()
 		else
 		{
 			// Row
-			int site_id = m_progressDialog->batch(img->url());
-			int row = getRowForSite(site_id);
+			int siteId = download.siteId(m_groupBatchs);
+			int row = getRowForSite(siteId);
+
+			if (siteId >= 0)
+			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png")); }
 
 			// Path
-			QString path = m_settings->value("Save/filename").toString();
-			QString pth = m_settings->value("Save/path").toString();
-			if (site_id >= 0)
-			{
-				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
-				path = m_groupBatchs[site_id - 1].filename;
-				pth = m_groupBatchs[site_id - 1].path;
-			}
-
-			QString imgPath = img->folder().isEmpty() ? pth : img->folder();
-			QStringList paths = img->path(path, imgPath, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
+			QString filename = download.query()->filename;
+			QString path = download.query()->path;
+			QStringList paths = img->path(filename, path, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 			bool notexists = true;
 			for (const QString &p : paths)
@@ -1613,7 +1619,7 @@ void mainWindow::_getAll()
 			// If the file does not already exists
 			if (notexists)
 			{
-				getAllGetImageIfNotBlacklisted(img, site_id);
+				getAllGetImageIfNotBlacklisted(download, siteId);
 			}
 
 			// If the file already exists
@@ -1622,7 +1628,7 @@ void mainWindow::_getAll()
 				m_getAllExists++;
 				log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
 				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
-				getAllImageOk(img, site_id);
+				getAllImageOk(download, siteId);
 			}
 		}
 	}
@@ -1632,39 +1638,47 @@ void mainWindow::_getAll()
 	{ getAllFinished(); }
 }
 
-void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id)
+void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId)
 {
-	// Check if image is blacklisted
-	bool detected = !PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist()).isEmpty();
+	// Early return if we want to download blacklisted images
+	if (download.queryGroup == Q_NULLPTR || download.queryGroup->getBlacklisted)
+	{
+		getAllGetImage(download, siteId);
+		return;
+	}
 
-	if (detected && site_id >= 0 && !m_groupBatchs[site_id - 1].getBlacklisted)
+	// Check if image is blacklisted
+	bool detected = !PostFilter::blacklisted(download.image->tokens(m_profile), m_profile->getBlacklist()).isEmpty();
+	if (detected)
 	{
 		m_getAllIgnored++;
 		log("Image ignored.", Logger::Info);
-		m_progressDialog->loadedImage(img->url(), Image::SaveResult::Ignored);
-		getAllImageOk(img, site_id);
+		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Ignored);
+		getAllImageOk(download, siteId);
+		return;
 	}
-	else
-	{ getAllGetImage(img); }
+
+	// Image is not blacklisted, proceed as usual
+	getAllGetImage(download, siteId);
 }
 
-void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id)
+void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId)
 {
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
-	if (site_id >= 0)
+	if (siteId >= 0)
 	{
-		int row = getRowForSite(site_id);
-		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
-		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
+		int row = getRowForSite(siteId);
+		m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value() + 1);
+		if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum())
 		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 	}
 
-	img->unload();
-	m_downloadTime.remove(img->url());
-	m_downloadTimeLast.remove(img->url());
-	m_getAllDownloading.removeAll(img);
+	download.image->unload();
+	m_downloadTime.remove(download.image->url());
+	m_downloadTimeLast.remove(download.image->url());
+	m_getAllDownloading.removeAll(download);
 
 	_getAll();
 }
@@ -1705,33 +1719,34 @@ void mainWindow::getAllPerformTags()
 
 	log("Tags received", Logger::Info);
 
-	QSharedPointer<Image> img;
-	for (const QSharedPointer<Image> &i : m_getAllDownloading)
-		if (i.data() == sender())
-			img = i;
-	if (img.isNull())
-		return;
-
-	// Row
-	int site_id = m_progressDialog->batch(img->url());
-	int row = getRowForSite(site_id);
-
-	// Getting path
-	QString path = m_settings->value("Save/filename").toString();
-	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
-	if (site_id >= 0)
+	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
+	for (const BatchDownloadImage &i : m_getAllDownloading)
+		if (i.image.data() == sender())
+			downloadPtr = &i;
+	if (downloadPtr == Q_NULLPTR)
 	{
-		path = m_groupBatchs[site_id - 1].filename;
-		p = m_groupBatchs[site_id - 1].page;
+		log("Tags received from unknown sender", Logger::Error);
+		return;
 	}
 
+	BatchDownloadImage download = *downloadPtr;
+	QSharedPointer<Image> img = download.image;
+
+	// Row
+	int siteId = download.siteId(m_groupBatchs);
+	int row = getRowForSite(siteId);
+
+	// Getting path
+	QString filename = download.query()->filename;
+	QString path = download.query()->path;
+
 	// Save path
-	p.replace("\\", "/");
-	if (p.right(1) == "/")
-	{ p = p.left(p.length()-1); }
+	path.replace("\\", "/");
+	if (path.right(1) == "/")
+	{ path = path.left(path.length() - 1); }
 
 	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	QStringList paths = img->path(path, p, cnt, true, false, true, true, true);
+	QStringList paths = img->path(filename, path, cnt, true, false, true, true, true);
 	const QString &pth = paths.at(0); // FIXME
 
 	QFile f(pth);
@@ -1740,7 +1755,7 @@ void mainWindow::getAllPerformTags()
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
 	if (!f.exists())
 	{
-		getAllGetImageIfNotBlacklisted(img, site_id);
+		getAllGetImageIfNotBlacklisted(download, siteId);
 	}
 	else
 	{
@@ -1748,14 +1763,14 @@ void mainWindow::getAllPerformTags()
 		m_getAllExists++;
 		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
 		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
-		if (site_id >= 0)
+		if (siteId >= 0)
 		{
-			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
-			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
+			m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value()+1);
+			if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 		}
 		m_downloadTimeLast.remove(img->url());
-		m_getAllDownloading.removeAll(img);
+		m_getAllDownloading.removeAll(download);
 		m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 		_getAll();
 	}
@@ -1766,8 +1781,10 @@ int mainWindow::getRowForSite(int site_id)
 	return site_id - 1;
 }
 
-void mainWindow::getAllGetImage(QSharedPointer<Image> img)
+void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 {
+	QSharedPointer<Image> img = download.image;
+
 	// If there is already a downloader for this image, we simply restart it
 	if (m_getAllImageDownloaders.contains(img))
 	{
@@ -1776,18 +1793,13 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	}
 
 	// Row
-	int site_id = m_progressDialog->batch(img->url());
-	int row = getRowForSite(site_id);
+	int row = getRowForSite(siteId);
 
 	// Path
-	QString filename = img->filename().isEmpty() ? m_settings->value("Save/filename").toString() : img->filename();
-	QString path = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
-	if (site_id >= 0)
-	{
-		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
-		filename = m_groupBatchs[site_id - 1].filename;
-		path = m_groupBatchs[site_id - 1].path;
-	}
+	QString filename = download.query()->filename;
+	QString path = download.query()->path;
+	if (siteId >= 0)
+	{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png")); }
 
 	// Track download progress
 	m_progressDialog->loadingImage(img->url());
@@ -1811,6 +1823,18 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	// Delete ImageDownloader to prevent leaks
 	m_getAllImageDownloaders[img]->deleteLater();
 	m_getAllImageDownloaders.remove(img);
+
+	// Find related download query
+	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
+	for (const BatchDownloadImage &i : m_getAllDownloading)
+		if (i.image == img)
+			downloadPtr = &i;
+	if (downloadPtr == Q_NULLPTR)
+	{
+		log("Saved image signal received from unknown sender", Logger::Error);
+		return;
+	}
+	BatchDownloadImage download = *downloadPtr;
 
 	// Save error count to compare it later on
 	bool diskError = false;
@@ -1851,7 +1875,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	if (diskError || res == Image::SaveResult::NetworkError)
 	{
 		m_getAllErrors++;
-		m_getAllFailed.append(img);
+		m_getAllFailed.append(download);
 	}
 	else if (res == Image::SaveResult::NotFound)
 	{ m_getAll404s++; }
@@ -1864,18 +1888,18 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 
 	m_progressDialog->loadedImage(img->url(), res);
 
-	int site_id = m_progressDialog->batch(img->url());
-	getAllImageOk(img, site_id);
+	int siteId = download.siteId(m_groupBatchs);
+	getAllImageOk(download, siteId);
 }
 
 void mainWindow::getAllCancel()
 {
 	log("Cancelling downloads...", Logger::Info);
 	m_progressDialog->cancel();
-	for (const QSharedPointer<Image> &image : m_getAllDownloading)
+	for (const BatchDownloadImage &download : m_getAllDownloading)
 	{
-		image->abortTags();
-		image->abortImage();
+		download.image->abortTags();
+		download.image->abortImage();
 	}
 	for (Downloader *downloader : m_downloaders)
 	{
@@ -1891,10 +1915,10 @@ void mainWindow::getAllSkip()
 	log("Skipping downloads...", Logger::Info);
 
 	int count = m_getAllDownloading.count();
-	for (const QSharedPointer<Image> &image : m_getAllDownloading)
+	for (const BatchDownloadImage &download : m_getAllDownloading)
 	{
-		image->abortTags();
-		image->abortImage();
+		download.image->abortTags();
+		download.image->abortImage();
 	}
 	m_getAllSkippedImages.append(m_getAllDownloading);
 	m_getAllDownloading.clear();
@@ -2006,19 +2030,19 @@ void mainWindow::getAllPause()
 	if (m_progressDialog->isPaused())
 	{
 		log("Pausing downloads...", Logger::Info);
-		for (const auto &img : m_getAllDownloading)
+		for (const auto &download : m_getAllDownloading)
 		{
-			img->abortTags();
-			img->abortImage();
+			download.image->abortTags();
+			download.image->abortImage();
 		}
 		m_getAll = false;
 	}
 	else
 	{
 		log("Recovery of downloads...", Logger::Info);
-		for (const auto &img : m_getAllDownloading)
+		for (const auto &download : m_getAllDownloading)
 		{
-			getAllGetImage(img);
+			getAllGetImage(download, download.siteId(m_groupBatchs));
 		}
 		m_getAll = true;
 	}

@@ -14,6 +14,7 @@
 #include <QSystemTrayIcon>
 #include <QTableWidgetItem>
 #include <QTranslator>
+#include "batch-download-image.h"
 #include "downloader/image-downloader.h"
 #include "models/image.h"
 #include "models/site.h"
@@ -91,7 +92,7 @@ class mainWindow : public QMainWindow
 		void getAllFinishedPage(Page *page);
 		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
 		void getAllImages();
-		void getAllGetImage(QSharedPointer<Image> img);
+		void getAllGetImage(const BatchDownloadImage &download, int siteId);
 		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
 		void getAllProgress(QSharedPointer<Image> img, qint64, qint64);
@@ -161,8 +162,8 @@ class mainWindow : public QMainWindow
 
 	protected:
 		int getRowForSite(int site_id);
-		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
-		void getAllImageOk(QSharedPointer<Image> img, int site_id);
+		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
+		void getAllImageOk(const BatchDownloadImage &download, int siteId);
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
 		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
@@ -178,7 +179,7 @@ class mainWindow : public QMainWindow
 		QString				m_currLang, m_link;
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
-		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
+		QList<BatchDownloadImage>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;

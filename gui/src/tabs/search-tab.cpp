@@ -531,7 +531,7 @@ void searchTab::finishedLoadingPreview()
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->page()->site(), m_profile, m_parent);
+				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->parentSite(), m_profile, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -549,7 +549,7 @@ void searchTab::finishedLoadingPreview()
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
-	addResultsImage(img, merge);
+	addResultsImage(img, img->page(), merge);
 }
 
 /**
@@ -913,7 +913,7 @@ void searchTab::contextSaveSelected()
 	for (const QSharedPointer<Image> &img : m_selectedImagesPtrs)
 	{
 		if (m_boutons.contains(img.data()))
-		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
+		{ connect(img.data(), &Image::downloadProgressImage, m_boutons[img.data()], &QBouton::setProgress); }
 
 		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, this, true);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
@@ -921,10 +921,10 @@ void searchTab::contextSaveSelected()
 	}
 }
 
-void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
+void searchTab::addResultsImage(QSharedPointer<Image> img, Page *page, bool merge)
 {
 	// Early return if the layout has already been removed
-	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : img->page();
+	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey))
 	{
 		log("Missing image layout", Logger::Error);
@@ -936,7 +936,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	if (absolutePosition < 0 && !img->md5().isEmpty())
 	{
 		int j = 0;
-		for (const QSharedPointer<Image> &i : img->page()->images())
+		for (const QSharedPointer<Image> &i : page->images())
 		{
 			if (i->md5() == img->md5())
 			{
@@ -954,7 +954,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	else
 	{
 		QString error;
-		for (const QSharedPointer<Image> &i : img->page()->images())
+		for (const QSharedPointer<Image> &i : page->images())
 			if (i == img)
 				break;
 			else if (validateImage(i, error))
