@@ -6,7 +6,7 @@
 
 
 DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Site *site)
-	: site(site)
+	: DownloadQuery(site)
 {
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
@@ -15,13 +15,13 @@ DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Si
 }
 
 DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, const QString &filename, const QString &path)
-	: site(site), filename(filename), path(path)
+	: DownloadQuery(site, filename, path)
 {
 	initFromImage(img);
 }
 
 DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path)
-	: site(site), filename(filename), path(path)
+	: DownloadQuery(site, filename, path)
 {
 	initFromData(id, md5, rating, tags, fileUrl, date);
 }

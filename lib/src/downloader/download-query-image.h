@@ -6,29 +6,27 @@
 #include <QMetaType>
 #include <QSettings>
 #include <QString>
+#include "downloader/download-query.h"
 
 
 class Image;
 class Site;
 
-class DownloadQueryImage
+class DownloadQueryImage : public DownloadQuery
 {
 	public:
 		// Constructors
 		DownloadQueryImage() = default;
-		DownloadQueryImage(QSettings *settings, const Image &img, Site *site);
-		DownloadQueryImage(const Image &img, Site *site, const QString &filename, const QString &path);
-		DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path);
+		explicit DownloadQueryImage(QSettings *settings, const Image &img, Site *site);
+		explicit DownloadQueryImage(const Image &img, Site *site, const QString &filename, const QString &path);
+		explicit DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path);
 
 		// Serialization
-		QString toString(const QString &separator) const;
-		void write(QJsonObject &json) const;
-		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
+		QString toString(const QString &separator) const override;
+		void write(QJsonObject &json) const override;
+		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
 
 		// Public members
-		Site *site;
-		QString filename;
-		QString path;
 		QMap<QString, QString> values;
 
 	private:

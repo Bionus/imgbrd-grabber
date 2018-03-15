@@ -5,22 +5,23 @@
 #include <QMetaType>
 #include <QSettings>
 #include <QString>
+#include "downloader/download-query.h"
 
 
 class Site;
 
-class DownloadQueryGroup
+class DownloadQueryGroup : public DownloadQuery
 {
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = "");
-		DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = "");
+		explicit DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = "");
+		explicit DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = "");
 
 		// Serialization
-		QString toString(const QString &separator) const;
-		void write(QJsonObject &json) const;
-		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
+		QString toString(const QString &separator) const override;
+		void write(QJsonObject &json) const override;
+		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
 
 		// Public members
 		QString tags;
@@ -29,9 +30,6 @@ class DownloadQueryGroup
 		int total;
 		QStringList postFiltering;
 		bool getBlacklisted;
-		Site *site;
-		QString filename;
-		QString path;
 		QString unk;
 };
 

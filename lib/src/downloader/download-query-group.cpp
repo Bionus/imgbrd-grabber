@@ -4,7 +4,7 @@
 
 
 DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk)
-	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), site(site), unk(unk)
+	: DownloadQuery(site), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), unk(unk)
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
@@ -12,7 +12,7 @@ DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, const QString &tags,
 }
 
 DownloadQueryGroup::DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, const QString &unk)
-	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
+	: DownloadQuery(site, filename, path), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), unk(unk)
 { }
 
 
