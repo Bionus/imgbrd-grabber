@@ -42,6 +42,7 @@ Image::Image(const Image &other)
 	: QObject(other.parent())
 {
 	m_parent = other.m_parent;
+	m_isGallery = other.m_isGallery;
 
 	m_id = other.m_id;
 	m_score = other.m_score;
@@ -57,6 +58,7 @@ Image::Image(const Image &other)
 	m_url = other.m_url;
 	m_md5 = other.m_md5;
 	m_author = other.m_author;
+	m_name = other.m_name;
 	m_status = other.m_status;
 	m_rating = other.m_rating;
 	m_source = other.m_source;
@@ -108,8 +110,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	}
 
 	// Other details
+	m_isGallery = details.contains("type") && details["type"] == "gallery";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
+	m_name = details.contains("name") ? details["name"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
@@ -874,6 +878,7 @@ Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
+bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
 void Image::setPreviewImage(const QPixmap &preview)
@@ -975,6 +980,11 @@ QColor Image::color() const
 
 QString Image::tooltip() const
 {
+	if (m_isGallery)
+		return QString("%1%2")
+			.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
+			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
+
 	float size = m_fileSize;
 	QString unit = getUnit(&size);
 

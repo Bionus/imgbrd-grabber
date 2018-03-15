@@ -15,6 +15,9 @@ Grabber.mapFields = (data: any, map: any): any => {
 };
 
 Grabber.countToInt = (str: string): number => {
+    if (!str) {
+        return 0;
+    }
     let count: number;
     const normalized = str.toLowerCase().trim().replace(",", "");
     if (normalized.slice(-1) === "k") {

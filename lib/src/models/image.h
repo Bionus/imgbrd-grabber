@@ -75,6 +75,7 @@ class Image : public QObject, public Downloadable
 		bool		isVideo() const;
 		QString		isAnimated() const;
 		void		setTags(const QList<Tag> &tags);
+		bool		isGallery() const;
 
 		// Downloadable
 		QString url(Size size) const override;
@@ -124,7 +125,7 @@ class Image : public QObject, public Downloadable
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url;
 		QString	mutable m_md5;
-		QString			m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
+		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;
@@ -141,6 +142,7 @@ class Image : public QObject, public Downloadable
 		QNetworkReply::NetworkError m_loadImageError;
 		ExtensionRotator *m_extensionRotator;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
+		bool			m_isGallery = false;
 };
 
 Q_DECLARE_METATYPE(Image)

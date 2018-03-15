@@ -9,6 +9,7 @@ interface ITag {
 }
 interface IImage {
     file_url: string;
+    [key: string]: any;
 }
 interface IPool {
     id?: number;
@@ -31,6 +32,7 @@ interface IParsedSearch {
     tags?: Iterable<ITag>;
     wiki?: string;
     pageCount?: number;
+    imageCount?: number;
     urlNextPage?: string;
     urlPrevPage?: string;
 }
@@ -42,6 +44,9 @@ interface IParsedDetails {
     tags?: Iterable<ITag>;
     imageUrl?: string;
     createdAt?: string;
+}
+interface IParsedGallery {
+    images: Iterable<IImage>;
 }
 
 type IAuthField = IAuthNormalField | IAuthHashField;
@@ -82,6 +87,10 @@ interface IApi {
     details?: {
         url: (id: number, md5: string) => IUrl | IError | string;
         parse: (src: string) => IParsedDetails | IError;
+    };
+    gallery?: {
+        url: (id: number) => IUrl | IError | string;
+        parse: (src: string) => IParsedGallery | IError;
     };
     tags?: {
         url: (query: any, opts: any) => IUrl | IError | string;
