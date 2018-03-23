@@ -40,7 +40,10 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : m_siteApis)
 	{
-		m_pageApis.append(new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
+		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
+		if (m_pageApis.count() == 0)
+		{ connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot); }
+		m_pageApis.append(pageApi);
 		if (api->getName() == "Html" && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}
@@ -140,6 +143,9 @@ void Page::abortTags()
 
 	m_pageApis[m_regexApi]->abort();
 }
+
+void Page::httpsRedirectSlot()
+{ emit httpsRedirect(this); }
 
 
 void Page::clear()

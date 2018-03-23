@@ -55,6 +55,7 @@ class PageApi : public QObject
 	signals:
 		void finishedLoading(PageApi*, LoadResult);
 		void finishedLoadingTags(PageApi*);
+		void httpsRedirect();
 
 	protected:
 		bool addImage(QSharedPointer<Image> img);

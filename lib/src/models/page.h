@@ -53,11 +53,13 @@ class Page : public QObject
 	protected slots:
 		void loadFinished(PageApi *api, PageApi::LoadResult status);
 		void loadTagsFinished(PageApi *api, PageApi::LoadResult status);
+		void httpsRedirectSlot();
 
 	signals:
 		void finishedLoading(Page*);
 		void failedLoading(Page*);
 		void finishedLoadingTags(Page*);
+		void httpsRedirect(Page*);
 
 	private:
 		Site			*m_site;

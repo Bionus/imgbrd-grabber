@@ -362,6 +362,41 @@ void searchTab::failedLoading(Page *page)
 	postLoading(page, page->images());
 }
 
+void searchTab::httpsRedirect(Page *page)
+{
+	QSettings *settings = m_profile->getSettings();
+
+	QString action = settings->value("ssl_autocorrect", "ask").toString();
+	bool setSsl = action == "always";
+
+	if (action == "ask")
+	{
+		QMessageBox box(this);
+		box.setWindowTitle(tr("HTTPS redirection detected"));
+		box.setText(tr("An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.").arg(page->site()->url()));
+		QPushButton *yes = box.addButton(QMessageBox::Yes);
+		QPushButton *always = box.addButton(tr("Always"), QMessageBox::YesRole);
+		QPushButton *neverWebsite = box.addButton(tr("Never for that website"), QMessageBox::NoRole);
+		QPushButton *never = box.addButton(tr("Never"), QMessageBox::NoRole);
+		box.exec();
+
+		if (box.clickedButton() == yes)
+		{ setSsl = true; }
+		else if (box.clickedButton() == always)
+		{
+			setSsl = true;
+			settings->setValue("ssl_autocorrect", "always");
+		}
+		else if (box.clickedButton() == neverWebsite)
+		{ page->site()->setSetting("ssl_never_correct", true, false); }
+		else if (box.clickedButton() == never)
+		{ settings->setValue("ssl_autocorrect", "never"); }
+	}
+
+	if (setSsl)
+	{ page->site()->setSetting("ssl", true, false); }
+}
+
 void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs)
 {
 	m_page++;
@@ -1280,6 +1315,7 @@ void searchTab::loadPage()
 		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
+		connect(page, SIGNAL(httpsRedirect(Page*)), this, SLOT(httpsRedirect(Page*)));
 
 		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website()))

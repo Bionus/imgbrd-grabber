@@ -7,6 +7,7 @@
 #include "models/api/api.h"
 #include "models/page.h"
 #include "models/post-filter.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "vendor/json.h"
 
@@ -134,6 +135,16 @@ void PageApi::parse()
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
 		log(QString("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+
+		// HTTP -> HTTPS redirects
+		bool ssl = m_site->setting("ssl", false).toBool();
+		if (!ssl && newUrl.path() == m_url.path() && newUrl.scheme() == "https" && m_url.scheme() == "http")
+		{
+			bool notThisSite = m_site->setting("ssl_never_correct", false).toBool();
+			if (!notThisSite)
+			{ emit httpsRedirect(); }
+		}
+
 		m_url = newUrl;
 		load(false, true);
 		return;

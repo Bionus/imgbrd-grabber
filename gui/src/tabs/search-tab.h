@@ -114,6 +114,7 @@ class searchTab : public QWidget
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
+		void httpsRedirect(Page *page);
 		void postLoading(Page *page, const QList<QSharedPointer<Image> > &imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
