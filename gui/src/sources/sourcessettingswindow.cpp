@@ -111,7 +111,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		ui->widgetTestLogin->hide();
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+	connect(this, &QDialog::accepted, this, &SourcesSettingsWindow::save);
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()

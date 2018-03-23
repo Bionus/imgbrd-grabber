@@ -20,7 +20,7 @@ FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 		m_scintilla = new QTextEdit(this);
 	#endif
 
-	connect(ui->radioJavascript, SIGNAL(toggled(bool)), m_scintilla, SLOT(setEnabled(bool)));
+	connect(ui->radioJavascript, &QRadioButton::toggled, m_scintilla, &QWidget::setEnabled);
 	ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, m_scintilla);
 
 	if (value.startsWith("javascript:"))

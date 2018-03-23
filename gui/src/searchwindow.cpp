@@ -21,9 +21,9 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		m_calendar->setWindowTitle(tr("Choose a date"));
 		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
 		m_calendar->setSelectedDate(QDateTime::currentDateTime().date());
-		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
-		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
-	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
+		connect(m_calendar, &QCalendarWidget::activated, this, &SearchWindow::setDate);
+		connect(m_calendar, &QCalendarWidget::activated, m_calendar, &QCalendarWidget::close);
+	connect(ui->buttonCalendar, &QPushButton::clicked, m_calendar, &QCalendarWidget::show);
 
 	QStringList favorites;
 	favorites.reserve(profile->getFavorites().count());
@@ -40,7 +40,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 			auto *completer = new QCompleter(completion, m_tags);
 				completer->setCaseSensitivity(Qt::CaseInsensitive);
 			m_tags->setCompleter(completer);
-		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
+		connect(m_tags, &TextEdit::returnPressed, this, &SearchWindow::accept);
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 
 	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";

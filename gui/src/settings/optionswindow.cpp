@@ -315,7 +315,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineCommandsSqlAfter->setText(settings->value("after").toString());
 		settings->endGroup();
 	settings->endGroup();
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+
+	connect(this, &QDialog::accepted, this, &optionsWindow::save);
 }
 
 optionsWindow::~optionsWindow()
@@ -355,7 +356,7 @@ void optionsWindow::on_buttonFavoritesPlus_clicked()
 void optionsWindow::on_buttonCustom_clicked()
 {
 	auto *cw = new CustomWindow(this);
-	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
+	connect(cw, &CustomWindow::validated, this, &optionsWindow::addCustom);
 	cw->show();
 }
 void optionsWindow::addCustom(const QString &name, const QString &tags)
@@ -369,7 +370,7 @@ void optionsWindow::addCustom(const QString &name, const QString &tags)
 void optionsWindow::on_buttonFilenames_clicked()
 {
 	auto *cw = new conditionWindow();
-	connect(cw, SIGNAL(validated(QString, QString, QString)), this, SLOT(addFilename(QString, QString, QString)));
+	connect(cw, &conditionWindow::validated, this, &optionsWindow::addFilename);
 	cw->show();
 }
 void optionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)

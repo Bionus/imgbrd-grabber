@@ -79,7 +79,7 @@ void AddUniqueWindow::ok(bool close)
 		QString query = (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text());
 		QStringList search = QStringList() << query << "status:any";
 		m_page = new Page(m_profile, m_sites[ui->comboSites->currentText()], m_sites.values(), search, 1, 1);
-		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
+		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();
 	}
 }

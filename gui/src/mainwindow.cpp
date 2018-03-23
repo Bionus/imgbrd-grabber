@@ -212,8 +212,8 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
-	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
-	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+	connect(ui->actionQuit, &QAction::triggered, qApp, &QApplication::quit);
+	connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
 
 	// Action on first load
 	if (m_settings->value("firstload", true).toBool())
@@ -462,7 +462,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
-		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
+		connect(closeTab, &QPushButton::clicked, w, &searchTab::deleteLater);
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 
 	if (!background)
@@ -1157,9 +1157,9 @@ void mainWindow::getAll(bool all)
 	if (m_progressDialog == nullptr)
 	{
 		m_progressDialog = new batchWindow(m_profile->getSettings(), this);
-		connect(m_progressDialog, SIGNAL(paused()), this, SLOT(getAllPause()));
-		connect(m_progressDialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-		connect(m_progressDialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
+		connect(m_progressDialog, &batchWindow::paused, this, &mainWindow::getAllPause);
+		connect(m_progressDialog, &batchWindow::rejected, this, &mainWindow::getAllCancel);
+		connect(m_progressDialog, &batchWindow::skipped, this, &mainWindow::getAllSkip);
 	}
 
 	// Reinitialize variables
@@ -1486,8 +1486,8 @@ void mainWindow::getAllImages()
 
 		// We add the image
 		m_progressDialog->addImage(img->url(), siteId, img->fileSize());
-		connect(img.data(), SIGNAL(urlChanged(QString, QString)), m_progressDialog, SLOT(imageUrlChanged(QString, QString)));
-		connect(img.data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
+		connect(img.data(), &Image::urlChanged, m_progressDialog, &batchWindow::imageUrlChanged);
+		connect(img.data(), &Image::urlChanged, this, &mainWindow::imageUrlChanged);
 	}
 
 	// Set some values on the batch window

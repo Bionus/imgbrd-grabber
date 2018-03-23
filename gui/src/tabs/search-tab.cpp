@@ -912,7 +912,7 @@ void searchTab::contextSaveImage(int position)
 		QString path = m_settings->value("Save/path").toString();
 
 		if (m_boutons.contains(img))
-		{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
+		{ connect(img, &Image::downloadProgressImage, m_boutons[img], &QBouton::setProgress); }
 
 		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, this, true);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
@@ -1313,9 +1313,9 @@ void searchTab::loadPage()
 	{
 		// Load results
 		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
-		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
-		connect(page, SIGNAL(httpsRedirect(Page*)), this, SLOT(httpsRedirect(Page*)));
+		connect(page, &Page::finishedLoading, this, &searchTab::finishedLoading);
+		connect(page, &Page::failedLoading, this, &searchTab::failedLoading);
+		connect(page, &Page::httpsRedirect, this, &searchTab::httpsRedirect);
 
 		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website()))
@@ -1338,7 +1338,7 @@ void searchTab::loadPage()
 		m_stop = false;
 		if (m_settings->value("useregexfortags", true).toBool())
 		{
-			connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
+			connect(page, &Page::finishedLoadingTags, this, &searchTab::finishedLoadingTags);
 			page->loadTags();
 		}
 

@@ -35,7 +35,7 @@ favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidg
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+	connect(this, &QDialog::accepted, this, &favoriteWindow::save);
 }
 
 /**

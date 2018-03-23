@@ -141,7 +141,7 @@ void BlacklistFix1::getAll(Page *p)
 		m_getAll.insert(det.value("md5"), det);
 
 		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
-		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
+		connect(page, &Page::finishedLoading, this, &BlacklistFix1::getAll);
 		page->load();
 	}
 	else

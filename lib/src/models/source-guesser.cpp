@@ -37,7 +37,7 @@ Source *SourceGuesser::start()
 				{
 					reply = m_manager->get(QNetworkRequest(getUrl));
 					QEventLoop loop;
-						connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+						connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 					loop.exec();
 
 					getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();

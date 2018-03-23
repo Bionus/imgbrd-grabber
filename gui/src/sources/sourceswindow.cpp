@@ -43,7 +43,7 @@ sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWi
 	addCheckboxes();
 
 	ui->gridLayout->setColumnStretch(0, 1);
-	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
+	connect(ui->checkBox, &QCheckBox::clicked, this, &sourcesWindow::checkClicked);
 	checkUpdate();
 
 	// Presets
@@ -139,7 +139,7 @@ void sourcesWindow::openSite(const QString &site) const
 void sourcesWindow::settingsSite(const QString &site)
 {
 	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
-	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
+	connect(ssw, &SourcesSettingsWindow::siteDeleted, this, &sourcesWindow::deleteSite);
 	ssw->show();
 }
 

@@ -23,7 +23,7 @@ LogWindow::LogWindow(int index, Profile *profile, QWidget *parent)
 		ui->textEditContent->setPlainText(dta["content"].toString());
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+	connect(this, &QDialog::accepted, this, &LogWindow::save);
 }
 
 LogWindow::~LogWindow()

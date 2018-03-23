@@ -244,7 +244,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *favs = new QMenu(tr("Favorites"), menu);
 			auto *favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
-				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(favsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 				for (const Favorite &fav : m_favorites)
 				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
@@ -262,7 +262,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *vils = new QMenu(tr("Kept for later"), menu);
 			auto *vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
-				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(vilsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 				for (const QString &viewItLater : m_viewItLater)
 				{ vilsGroup->addAction(viewItLater); }
 				if (!toPlainText().isEmpty())
@@ -279,7 +279,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *ratings = new QMenu(tr("Ratings"), menu);
 			auto *ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
-				connect(ratingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(ratingsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 					ratingsGroup->addAction(QIcon(":/images/ratings/safe.png"), "rating:safe");
 					ratingsGroup->addAction(QIcon(":/images/ratings/questionable.png"), "rating:questionable");
 					ratingsGroup->addAction(QIcon(":/images/ratings/explicit.png"), "rating:explicit");
@@ -289,7 +289,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *sortings = new QMenu(tr("Sortings"), menu);
 			auto *sortingsGroup = new QActionGroup(favs);
 				sortingsGroup->setExclusive(true);
-				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(sortingsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change");
 					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change_desc");
 					sortingsGroup->addAction(QIcon(":/images/icons/favorite.png"), "order:favcount");

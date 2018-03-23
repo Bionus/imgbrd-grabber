@@ -61,7 +61,7 @@ void startWindow::on_buttonFolder_clicked()
 void startWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
-	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
+	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }
 

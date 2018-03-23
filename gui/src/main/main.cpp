@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 			parser.showHelp();
 
 		dwnldr->setQuit(true);
-		QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
+		QObject::connect(dwnldr, &Downloader::quit, qApp, &QApplication::quit);
 	}
 	#if !defined(USE_CLI)
 		else

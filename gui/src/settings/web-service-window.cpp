@@ -19,7 +19,7 @@ WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidge
 		ui->lineUrl->setText(webService->tpl());
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(getFavicon()));
+	connect(this, &QDialog::accepted, this, &WebServiceWindow::getFavicon);
 }
 
 WebServiceWindow::~WebServiceWindow()

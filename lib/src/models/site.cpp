@@ -307,7 +307,7 @@ void Site::loadTags(int page, int limit)
 {
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
 	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
-	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
+	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
 }
 
 void Site::finishedTags()

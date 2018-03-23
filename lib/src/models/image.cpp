@@ -309,7 +309,7 @@ void Image::loadDetails(bool rateLimit)
 		m_loadDetails->setParent(this);
 		m_loadingDetails = true;
 
-		connect(m_loadDetails, SIGNAL(finished()), this, SLOT(parseDetails()));
+		connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
 	});
 }
 void Image::abortTags()

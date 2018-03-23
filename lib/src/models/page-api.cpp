@@ -97,7 +97,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
 		log(QString("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
-		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
+		connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
 	});
 }
 void PageApi::abort()

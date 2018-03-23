@@ -55,9 +55,9 @@ ZoomWindow::ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointe
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_labelTagsLeft->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		connect(m_labelTagsLeft, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
-		connect(m_labelTagsLeft, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
-		connect(m_labelTagsLeft, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
+		connect(m_labelTagsLeft, &QAffiche::customContextMenuRequested, this, &ZoomWindow::contextMenu);
+		connect(m_labelTagsLeft, &QAffiche::linkActivated, this, &ZoomWindow::openUrl);
+		connect(m_labelTagsLeft, &QAffiche::linkHovered, this, &ZoomWindow::linkHovered);
 		connect(m_labelTagsLeft, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->scrollAreaWidgetContents->layout()->addWidget(m_labelTagsLeft);
 
@@ -65,9 +65,9 @@ ZoomWindow::ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointe
 		m_labelTagsTop->setWordWrap(true);
 		m_labelTagsTop->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_labelTagsTop->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		connect(m_labelTagsTop, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
-		connect(m_labelTagsTop, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
-		connect(m_labelTagsTop, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
+		connect(m_labelTagsTop, &QAffiche::customContextMenuRequested, this, &ZoomWindow::contextMenu);
+		connect(m_labelTagsTop, &QAffiche::linkActivated, this, &ZoomWindow::openUrl);
+		connect(m_labelTagsTop, &QAffiche::linkHovered, this, &ZoomWindow::linkHovered);
 		connect(m_labelTagsTop, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->verticalLayout->insertWidget(0, m_labelTagsTop, 0);
 
@@ -84,7 +84,7 @@ ZoomWindow::ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointe
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 
-	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
+	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
 	connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 
 	m_labelImage->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -214,13 +214,13 @@ void ZoomWindow::imageContextMenu()
 
 	// Reload action
 	QAction *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
-	connect(reloadImageAction, SIGNAL(triggered()), this, SLOT(reloadImage()));
+	connect(reloadImageAction, &QAction::triggered, this, &ZoomWindow::reloadImage);
 
 	// Copy actions
 	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
-	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
+	connect(copyImageAction, &QAction::triggered, this, &ZoomWindow::copyImageFileToClipboard);
 	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
-	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
+	connect(copyDataAction, &QAction::triggered, this, &ZoomWindow::copyImageDataToClipboard);
 
 	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
@@ -269,7 +269,7 @@ void ZoomWindow::openPool(const QString &url)
 	else
 	{
 		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
-		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
+		connect(p, &Page::finishedLoading, this, &ZoomWindow::openPoolId);
 		p->load();
 	}
 }
