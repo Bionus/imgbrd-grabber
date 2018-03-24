@@ -24,6 +24,9 @@ environment:
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
 
+cache:
+  - release\sites\node_modules -> release\sites\package.json
+
 init:
   - git config --global core.autocrlf input
   - if %PLATFORM%==mingw set PATH=%PATH:C:\Program Files\Git\usr\bin;=%

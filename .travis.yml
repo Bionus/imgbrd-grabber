@@ -9,6 +9,10 @@ matrix:
       sudo: required
     - os: osx
 
+cache:
+  directories:
+    - release/sites/node_modules
+
 # Qt packages for Linux
 addons:
   apt:
