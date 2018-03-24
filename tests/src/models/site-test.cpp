@@ -92,6 +92,7 @@ void SiteTest::testGetSites()
 void SiteTest::testLoadTags()
 {
 	// Wait for tags
+	qRegisterMetaType<QList<Tag>>();
 	QSignalSpy spy(m_site, SIGNAL(finishedLoadingTags(QList<Tag>)));
 	m_site->loadTags(3, 20);
 	QVERIFY(spy.wait());
