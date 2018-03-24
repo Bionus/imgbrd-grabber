@@ -33,7 +33,7 @@ addons:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
-      brew install http://git.io/sshpass.rb &&
+      brew install https://raw.githubusercontent.com/hudochenkov/homebrew-sshpass/master/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
