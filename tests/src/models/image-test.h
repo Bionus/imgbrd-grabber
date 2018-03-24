@@ -30,7 +30,6 @@ class ImageTest : public TestSuite
 		void testLoadDetails();
 		void testLoadDetailsAbort();
 		void testLoadDetailsImageUrl();
-		void testPath();
 		void testSave();
 #ifdef Q_OS_WIN
 		void testSaveError();

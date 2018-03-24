@@ -278,31 +278,6 @@ void ImageTest::testLoadDetailsImageUrl()
 	QCOMPARE(m_img->url(), QString("https://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
-void ImageTest::testPath()
-{
-	QStringList path;
-
-	// Simple
-	path = m_img->path("%md5%.%ext%", "", 0, true, true);
-	QCOMPARE(path, QStringList() << "1bc29b36f623ba82aaf6724fd3b16718.jpg");
-
-	// Not simple (settings)
-	m_settings->setValue("Save/filename", "%id%.%ext%");
-	m_settings->setValue("Save/path", QDir::homePath());
-	path = m_img->path("", "", 0, true, false);
-	QCOMPARE(path, QStringList() << "7331.jpg");
-
-	// Not simple (details)
-	m_settings->setValue("Save/filename", "");
-	m_settings->setValue("Save/path", "");
-	m_details["filename"] = "%id%.%ext%";
-	m_details["folder"] = QDir::homePath();
-	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, m_profile);
-	path = m_img->path("%md5%.%ext%", "", 0, true, false);
-	QCOMPARE(path, QStringList() << "7331.jpg");
-}
-
 void ImageTest::testSave()
 {
 	// Delete already existing
