@@ -1,3 +1,4 @@
+#include <QFileInfo>
 #include "functions.h"
 #include "functions-test.h"
 
@@ -160,6 +161,25 @@ void FunctionsTest::testParseMarkdownIssueLinks()
 	QCOMPARE(parseMarkdown("issue #123"), QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>issue #123</a>"));
 	QCOMPARE(parseMarkdown("fix #123"), QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>fix #123</a>"));
 	QCOMPARE(parseMarkdown("issue 123"), QString("issue 123"));
+}
+
+void FunctionsTest::testSetFileCreationDate()
+{
+	QString path = "tests/resources/pages/behoimi.org/results.json";
+	QDateTime date = QDateTime::currentDateTimeUtc();
+
+	setFileCreationDate(path, date);
+
+	QCOMPARE(QFileInfo(path).birthTime().toTime_t(), date.toTime_t());
+}
+void FunctionsTest::testSetFileCreationDateUtf8()
+{
+	QString path = "tests/resources/你好.txt";
+	QDateTime date = QDateTime::currentDateTimeUtc();
+
+	setFileCreationDate(path, date);
+
+	QCOMPARE(QFileInfo(path).birthTime().toTime_t(), date.toTime_t());
 }
 
 

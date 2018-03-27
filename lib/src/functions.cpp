@@ -326,12 +326,14 @@ int levenshtein(QString s1, QString s2)
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
 	#ifdef Q_OS_WIN
-		QByteArray bytePath = path.toLocal8Bit();
-		LPCSTR filename = bytePath.constData();
-		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		wchar_t *filename = new wchar_t[path.length() + 1];
+		path.toWCharArray(filename);
+		filename[path.length()] = 0;
+		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QString("Unable to open file (%1)").arg(GetLastError()), Logger::Error);
+			log(QString("Unable to open file to set creation date (%1)").arg(GetLastError()), Logger::Error);
 			return false;
 		}
 		else

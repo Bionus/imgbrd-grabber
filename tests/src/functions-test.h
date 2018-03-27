@@ -21,6 +21,8 @@ class FunctionsTest : public TestSuite
 		void testIsUrl();
 		void testParseMarkdownHeaders();
 		void testParseMarkdownIssueLinks();
+		void testSetFileCreationDate();
+		void testSetFileCreationDateUtf8();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);
