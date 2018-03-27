@@ -27,21 +27,23 @@ For users interested, a nightly version is built automatically on every commit o
 
 ## Features
 
-[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic-thumb.png" align="right" alt="" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic.png)
-
 ### Browse
+
+[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic.png)
+
 * Tabs to make multiple searchs at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
 * Remove duplicate results from multiple-imageboard searches
 * Auto-completion of tags in the search field
 * Blacklisting of tags to mark or hide images you don’t want to see
 * Proxy support
-* Post-filtering (useful for imageboards limiting the number of tags you can use in a single search)
+* Post-filtering (when the imageboard search is limited)
 * Auto-download images as you search according to a whitelist
 
-[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download-thumb.png" align="right" alt="" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download.png)
-
 ### Download
+
+[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download.png)
+
 * Download thousands of images at once
 * Download single images using their MD5 or ID
 * Command line interface to download images
@@ -52,9 +54,10 @@ For users interested, a nightly version is built automatically on every commit o
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources-thumb.png" align="right" alt="" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources.png)
-
 ### Customize
+
+[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources.png)
+
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
 * Theme support using CSS. See Themes for details.
@@ -64,9 +67,10 @@ For users interested, a nightly version is built automatically on every commit o
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename-thumb.png" align="right" alt="" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png)
-
 ### Organize
+
+[<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png)
+
 * Save images using a custom format, for example %artist%/%copyright%/%character%/%md5%.%ext%, or using Javascript code. See Filename for details.
 * Favorite tags to keep track of new images
 * "View it later" tags to save a search for later
