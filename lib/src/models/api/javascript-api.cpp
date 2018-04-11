@@ -313,13 +313,13 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 		return ret;
 	}
 
-	if (results.hasProperty("error"))
+	if (results.hasProperty("error") && results.property("error").isString())
 	{ ret.error = results.property("error").toString(); }
 	if (results.hasProperty("tags"))
 	{ ret.tags = makeTags(results.property("tags"), site); }
-	if (results.hasProperty("imageUrl"))
+	if (results.hasProperty("imageUrl") && results.property("imageUrl").isString())
 	{ ret.imageUrl = results.property("imageUrl").toString(); }
-	if (results.hasProperty("createdAt"))
+	if (results.hasProperty("createdAt") && results.property("createdAt").isString())
 	{ ret.createdAt = qDateTimeFromString(results.property("createdAt").toString()); }
 
 	if (results.hasProperty("pools"))
