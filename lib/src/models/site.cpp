@@ -231,13 +231,13 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	{
 		QString refHeader;
 		if (referer == "host")
-		{ refHeader = url.scheme()+"://"+url.host(); }
+		{ refHeader = url.scheme() + "://" + url.host(); }
 		else if (referer == "image")
-		{ refHeader = url.toString(); }
+		{ refHeader = fixUrl(url).toString(); }
 		else if (referer == "page" && page)
-		{ refHeader = page->url().toString(); }
+		{ refHeader = fixUrl(page->url()).toString(); }
 		else if (referer == "details" && img)
-		{ refHeader = img->pageUrl().toString(); }
+		{ refHeader = fixUrl(img->pageUrl()).toString(); }
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
