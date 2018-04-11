@@ -631,38 +631,38 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	return true;
 }
 
-bool Filename::needExactTags(Site *site, const QString &api) const
+int Filename::needExactTags(Site *site, const QString &api) const
 {
 	if (site != nullptr && site->contains("Regex/NeedLoad"))
-		return true;
+		return 0;
 
 	bool forceImageUrl = site != nullptr && site->contains("Regex/ForceImageUrl");
 	bool needDate = site != nullptr && (api == "Html" || api == "Rss") && site->contains("Regex/ImageDate");
 	return needExactTags(forceImageUrl, needDate);
 }
-bool Filename::needExactTags(bool forceImageUrl, bool needDate) const
+int Filename::needExactTags(bool forceImageUrl, bool needDate) const
 {
 	// Javascript filenames always need tags as we don't know what they might do
 	if (m_format.startsWith("javascript:"))
-		return true;
+		return 2;
 
 	// If we need the filename and it is returned from the details page
 	if (m_format.contains(QRegularExpression("%filename(?::([^%]+))?%")) && forceImageUrl)
-		return true;
+		return 2;
 
 	// If we need the date and it is returned from the details page
 	if (m_format.contains(QRegularExpression("%date(?::([^%]+))?%")) && needDate)
-		return true;
+		return 2;
 
 	// The filename contains one of the special tags
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "general";
 	for (const QString &token : forbidden)
 		if (m_format.contains(QRegularExpression("%" + token + "(?::([^%]+))?%")))
-			return true;
+			return 1;
 
 	// Namespaces come from detailed tags
 	if (m_format.contains("includenamespace"))
-		return true;
+		return 1;
 
-	return false;
+	return 0;
 }

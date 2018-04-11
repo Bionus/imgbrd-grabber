@@ -1507,8 +1507,9 @@ void mainWindow::getAllImages()
 		Site *site = m_groupBatchs[f].site;
 		Api *api = site->firstValidApi();
 		QString apiName = api == nullptr ? "" : api->getName();
-		if (fn.needExactTags(site, apiName))
-			m_mustGetTags = true;
+		int need = fn.needExactTags(site, apiName);
+		if (need != 0)
+			m_mustGetTags = need;
 	}
 	for (int f = 0; f < m_batchs.size() && !m_mustGetTags; f++)
 	{
@@ -1516,8 +1517,9 @@ void mainWindow::getAllImages()
 		Site *site = m_batchs[f].site;
 		Api *api = site->firstValidApi();
 		QString apiName = api == nullptr ? "" : api->getName();
-		if (fn.needExactTags(site, apiName))
-			m_mustGetTags = true;
+		int need = fn.needExactTags(site, apiName);
+		if (need != 0)
+			m_mustGetTags = need;
 	}
 
 	if (m_mustGetTags)
@@ -1532,14 +1534,15 @@ void mainWindow::getAllImages()
 		_getAll();
 }
 
-bool mainWindow::needExactTags(QSettings *settings)
+int mainWindow::needExactTags(QSettings *settings)
 {
 	auto logFiles = getExternalLogFiles(settings);
 	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
 		Filename fn(it.value().value("content").toString());
-		if (fn.needExactTags())
-			return true;
+		int need = fn.needExactTags();
+		if (need != 0)
+			return need;
 	}
 
 	QStringList settingNames = QStringList()
@@ -1558,11 +1561,12 @@ bool mainWindow::needExactTags(QSettings *settings)
 			continue;
 
 		Filename fn(value);
-		if (fn.needExactTags())
-			return true;
+		int need = fn.needExactTags();
+		if (need != 0)
+			return need;
 	}
 
-	return false;
+	return 0;
 }
 
 void mainWindow::_getAll()
@@ -1589,7 +1593,7 @@ void mainWindow::_getAll()
 				break;
 			}
 		}
-		if (m_mustGetTags && hasUnknownTag)
+		if (m_mustGetTags == 2 || (m_mustGetTags == 1 && hasUnknownTag))
 		{
 			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
 			img->loadDetails();

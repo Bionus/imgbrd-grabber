@@ -105,7 +105,7 @@ class mainWindow : public QMainWindow
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
-		bool needExactTags(QSettings *settings);
+		int needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true);
@@ -172,7 +172,8 @@ class mainWindow : public QMainWindow
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
+		int					m_allow, m_loaded, m_getAll;
+		int					m_mustGetTags;
 		int					m_forcedTab;
 		QSettings			*m_settings;
 		batchWindow			*m_progressDialog;
