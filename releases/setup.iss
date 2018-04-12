@@ -21,6 +21,7 @@
 # define MyAppVersion "5.5.2"
 #endif
 
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -47,12 +48,18 @@ Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
 DisableDirPage=no
+PrivilegesRequired=admin
+ArchitecturesAllowed=x86 x64 ia64
+ArchitecturesInstallIn64BitMode=x64 ia64
+
+; downloading and installing dependencies will only work if the memo/ready page is enabled (default and current behaviour)
+DisableReadyPage=no
+DisableReadyMemo=no
+
 
 [CustomMessages]
 en.IGL=Imageboard-Grabber Links
 fr.IGL=Liens Imageboard-Grabber
-vcredist2015_title=Visual C++ 2015 Redistributable
-vcredist2015_title_x64=Visual C++ 2015 64-Bit Redistributable
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue
@@ -60,15 +67,24 @@ Root: HKCR; Subkey: "Imageboard-Grabber"; ValueType: string; ValueName: ""; Valu
 Root: HKCR; Subkey: "Imageboard-Grabber\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
 Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
 
-[Languages]
-Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
-Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
-Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"
+; Languages
+#include "scripts\lang\english.iss"
+#include "scripts\lang\german.iss"
+#include "scripts\lang\french.iss"
+#include "scripts\lang\italian.iss"
+#include "scripts\lang\dutch.iss"
+
+#ifdef UNICODE
+#include "scripts\lang\chinese.iss"
+#include "scripts\lang\polish.iss"
+#include "scripts\lang\russian.iss"
+#include "scripts\lang\japanese.iss"
+#endif
 
 #include "scripts\products.iss"
+#include "scripts\products\stringversion.iss"
+#include "scripts\products\winversion.iss"
+#include "scripts\products\fileversion.iss"
 #include "scripts\products\msiproduct.iss"
 #include "scripts\products\vcredist2013.iss"
 #include "scripts\products\vcredist2015.iss"
@@ -216,8 +232,14 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [Code]
 function InitializeSetup(): Boolean;
 begin
-  vcredist2013();
-  vcredist2015();
+  initwinversion();
+  
+  SetForceX86(true);
+	vcredist2013('12');
+  SetForceX86(false);
+
+  vcredist2015('14');
+
   Result := true;
 end;
 
