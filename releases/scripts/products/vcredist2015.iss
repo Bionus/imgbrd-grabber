@@ -9,9 +9,11 @@ vcredist2015_title_x64=Microsoft Visual C++ 2015 Update 3 Redistributable (x64)
 
 en.vcredist2015_size=13.7 MB
 de.vcredist2015_size=13,7 MB
+fr.vcredist2015_size=13,7 Mo
 
 en.vcredist2015_size_x64=14.5 MB
 de.vcredist2015_size_x64=14,5 MB
+fr.vcredist2015_size_x64=14,5 Mo
 
 
 [Code]

@@ -1,5 +1,5 @@
-; requires Windows 7 Service Pack 1, Windows 8, Windows 8.1, Windows Server 2003, Windows Server 2008 R2 SP1, Windows Server 2008 Service Pack 2, Windows Server 2012, Windows Server 2012 R2, Windows Vista Service Pack 2, Windows XP
-; http://www.microsoft.com/en-US/download/details.aspx?id=40784
+// requires Windows 7 Service Pack 1, Windows 8, Windows 8.1, Windows Server 2003, Windows Server 2008 R2 SP1, Windows Server 2008 Service Pack 2, Windows Server 2012, Windows Server 2012 R2, Windows Vista Service Pack 2, Windows XP
+// http://www.microsoft.com/en-US/download/details.aspx?id=40784
 
 [CustomMessages]
 vcredist2013_title=Visual C++ 2013 Redistributable
@@ -7,9 +7,11 @@ vcredist2013_title_x64=Visual C++ 2013 64-Bit Redistributable
 
 en.vcredist2013_size=6.2 MB
 de.vcredist2013_size=6,2 MB
+fr.vcredist2015_size=6,2 Mo
 
 en.vcredist2013_size_x64=6.9 MB
 de.vcredist2013_size_x64=6,9 MB
+fr.vcredist2015_size_x64=6,9 Mo
 
 [Code]
 const

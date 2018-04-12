@@ -53,8 +53,6 @@ en.IGL=Imageboard-Grabber Links
 fr.IGL=Liens Imageboard-Grabber
 vcredist2015_title=Visual C++ 2015 Redistributable
 vcredist2015_title_x64=Visual C++ 2015 64-Bit Redistributable
-fr.vcredist2015_size=12.8 Mo
-fr.vcredist2015_size_x64=13.9 Mo
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue
@@ -72,6 +70,7 @@ Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"
 
 #include "scripts\products.iss"
 #include "scripts\products\msiproduct.iss"
+#include "scripts\products\vcredist2013.iss"
 #include "scripts\products\vcredist2015.iss"
 
 [Tasks]
@@ -217,6 +216,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [Code]
 function InitializeSetup(): Boolean;
 begin
+  vcredist2013();
   vcredist2015();
   Result := true;
 end;
