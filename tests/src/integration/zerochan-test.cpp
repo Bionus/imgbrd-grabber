@@ -5,40 +5,46 @@
 
 void ZerochanTest::testHtml()
 {
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html");
-
-	// Convert results
-	QList<qulonglong> ids;
-	ids.reserve(images.count());
-	for (Image *img : images)
+	for (int i = 0; i < 2; ++i)
 	{
-		ids.append(img->id());
-	}
+		QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html", i != 0);
 
-	// Check results
-	ids = ids.mid(0, 3);
-	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
-	QCOMPARE(images.count(), 20);
-	QCOMPARE(ids, expected);
+		// Convert results
+		QList<qulonglong> ids;
+		ids.reserve(images.count());
+		for (Image *img : images)
+		{
+			ids.append(img->id());
+		}
+
+		// Check results
+		ids = ids.mid(0, 3);
+		QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
+		QCOMPARE(images.count(), 20);
+		QCOMPARE(ids, expected);
+	}
 }
 
 void ZerochanTest::testRss()
 {
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss");
-
-	// Convert results
-	QList<qulonglong> ids;
-	ids.reserve(images.count());
-	for (Image *img : images)
+	for (int i = 0; i < 2; ++i)
 	{
-		ids.append(img->id());
-	}
+		QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss", i != 0);
 
-	// Check results
-	ids = ids.mid(0, 3);
-	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
-	QCOMPARE(images.count(), 20);
-	QCOMPARE(ids, expected);
+		// Convert results
+		QList<qulonglong> ids;
+		ids.reserve(images.count());
+		for (Image *img : images)
+		{
+			ids.append(img->id());
+		}
+
+		// Check results
+		ids = ids.mid(0, 3);
+		QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
+		QCOMPARE(images.count(), 20);
+		QCOMPARE(ids, expected);
+	}
 }
 
 
