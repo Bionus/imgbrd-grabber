@@ -170,7 +170,14 @@ void FunctionsTest::testSetFileCreationDate()
 
 	setFileCreationDate(path, date);
 
-	QCOMPARE(QFileInfo(path).birthTime().toTime_t(), date.toTime_t());
+	QDateTime created;
+	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+		created = QFileInfo(path).created();
+	#else
+		created = QFileInfo(path).birthTime();
+	#endif
+
+	QCOMPARE(created.toTime_t(), date.toTime_t());
 }
 void FunctionsTest::testSetFileCreationDateUtf8()
 {
@@ -179,7 +186,14 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 
 	setFileCreationDate(path, date);
 
-	QCOMPARE(QFileInfo(path).birthTime().toTime_t(), date.toTime_t());
+	QDateTime created;
+	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+		created = QFileInfo(path).created();
+	#else
+		created = QFileInfo(path).birthTime();
+	#endif
+
+	QCOMPARE(created.toTime_t(), date.toTime_t());
 }
 
 
