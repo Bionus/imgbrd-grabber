@@ -99,6 +99,8 @@ Source::Source(Profile *profile, const QString &dir)
 			}
 			else
 			{
+				log(QString("Using XML model for %1").arg(m_name), Logger::Debug);
+
 				// Get the list of possible API for this Source
 				QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";
 				QStringList availableApis;
