@@ -241,19 +241,20 @@ void ImageTest::testLoadDetails()
 
 	// Compare result
 	QList<Tag> tags = m_img->tags();
-	QCOMPARE(tags.count(), 23);
+	qDebug() << m_img->tagsString();
+	QCOMPARE(tags.count(), 26);
 	QCOMPARE(tags[0].text(), QString("to_heart_2"));
 	QCOMPARE(tags[0].type().name(), QString("copyright"));
-	QCOMPARE(tags[0].count(), 5900);
+	QCOMPARE(tags[0].count(), 6100);
 	QCOMPARE(tags[1].text(), QString("kousaka_tamaki"));
 	QCOMPARE(tags[1].type().name(), QString("character"));
-	QCOMPARE(tags[1].count(), 2000);
+	QCOMPARE(tags[1].count(), 2100);
 	QCOMPARE(tags[2].text(), QString("date_(senpen)"));
 	QCOMPARE(tags[2].type().name(), QString("artist"));
-	QCOMPARE(tags[2].count(), 251);
+	QCOMPARE(tags[2].count(), 256);
 	QCOMPARE(tags[3].text(), QString("1girl"));
 	QCOMPARE(tags[3].type().name(), QString("general"));
-	QCOMPARE(tags[3].count(), 1679000);
+	QCOMPARE(tags[3].count(), 2125000);
 }
 void ImageTest::testLoadDetailsAbort()
 {
@@ -275,7 +276,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	QVERIFY(spy.wait());
 
 	// Compare result
-	QCOMPARE(m_img->url(), QString("https://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
+	QVERIFY(m_img->url().endsWith("/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testSave()
