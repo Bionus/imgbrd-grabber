@@ -624,19 +624,19 @@ void FilenameTest::testFilenameWithMultipleUnderscores()
 
 void FilenameTest::testNeedExactTags()
 {
-	QCOMPARE(Filename("%md5%.%ext%").needExactTags(false), false);
-	QCOMPARE(Filename("%md5%.%ext%").needExactTags(m_site), false);
-	QCOMPARE(Filename("javascript:md5 + '.' + ext").needExactTags(false), true);
-	QCOMPARE(Filename("%character% %md5%.%ext%").needExactTags(false), true);
-	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(false), true);
+	QCOMPARE(Filename("%md5%.%ext%").needExactTags(false), 0);
+	QCOMPARE(Filename("%md5%.%ext%").needExactTags(m_site), 0);
+	QCOMPARE(Filename("javascript:md5 + '.' + ext").needExactTags(false), 2);
+	QCOMPARE(Filename("%character% %md5%.%ext%").needExactTags(false), 1);
+	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(false), 1);
 
 	Filename filename("%filename%.%ext%");
-	QCOMPARE(filename.needExactTags(false), false);
-	QCOMPARE(filename.needExactTags(true), true);
+	QCOMPARE(filename.needExactTags(false), 0);
+	QCOMPARE(filename.needExactTags(true), 2);
 
 	Filename date("%date%.%ext%");
-	QCOMPARE(date.needExactTags(false, false), false);
-	QCOMPARE(date.needExactTags(false, true), true);
+	QCOMPARE(date.needExactTags(false, false), 0);
+	QCOMPARE(date.needExactTags(false, true), 2);
 }
 
 void FilenameTest::testEscapeMethod()
