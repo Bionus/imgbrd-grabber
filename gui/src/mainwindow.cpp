@@ -1652,11 +1652,11 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	}
 
 	// Check if image is blacklisted
-	bool detected = !PostFilter::blacklisted(download.image->tokens(m_profile), m_profile->getBlacklist()).isEmpty();
-	if (detected)
+	const QStringList &detected = PostFilter::blacklisted(download.image->tokens(m_profile), m_profile->getBlacklist());
+	if (!detected.isEmpty())
 	{
 		m_getAllIgnored++;
-		log("Image ignored.", Logger::Info);
+		log(QString("Image ignored for containing blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
 		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Ignored);
 		getAllImageOk(download, siteId);
 		return;
