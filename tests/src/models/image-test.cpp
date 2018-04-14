@@ -241,7 +241,6 @@ void ImageTest::testLoadDetails()
 
 	// Compare result
 	QList<Tag> tags = m_img->tags();
-	qDebug() << m_img->tagsString();
 	QCOMPARE(tags.count(), 26);
 	QCOMPARE(tags[0].text(), QString("to_heart_2"));
 	QCOMPARE(tags[0].type().name(), QString("copyright"));

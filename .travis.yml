@@ -79,7 +79,7 @@ after_success:
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
@@ -87,7 +87,7 @@ after_success:
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
