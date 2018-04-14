@@ -99,6 +99,9 @@ Source::Source(Profile *profile, const QString &dir)
 			}
 			else
 			{
+				if (enableJs)
+				{ log(QString("Javascript model not found for %1").arg(m_name), Logger::Warning); }
+
 				log(QString("Using XML model for %1").arg(m_name), Logger::Debug);
 
 				// Get the list of possible API for this Source
