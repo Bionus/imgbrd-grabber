@@ -26,7 +26,7 @@ Grabber.countToInt = (str: string): number => {
     } else {
         count = parseFloat(normalized);
     }
-    return Math.floor(count);
+    return Math.round(count);
 };
 
 Grabber.loginUrl = (fields: any, values: any): string => {
