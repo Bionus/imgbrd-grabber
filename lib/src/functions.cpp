@@ -333,7 +333,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QString("Unable to open file to set creation date (%1)").arg(GetLastError()), Logger::Error);
+			log(QString("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
 		else
@@ -345,7 +345,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QString("Unable to change the file creation date (%1)").arg(GetLastError()), Logger::Error);
+				log(QString("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 				return false;
 			}
 		}
@@ -356,7 +356,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QString("Unable to change the file creation date (%d)").arg(errno), Logger::Error);
+			// log(QString("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
 			return false;
 		}
 	#endif
