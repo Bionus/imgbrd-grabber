@@ -131,13 +131,14 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 
 	// Page url
 	if (details.contains("page_url"))
-	{ m_pageUrl = site->fixUrl(details["page_url"]).toString(); }
+	{ m_pageUrl = details["page_url"]; }
 	else
 	{
 		Api *api = m_parentSite->detailsApi();
 		if (api != Q_NULLPTR)
 		{ m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url; }
 	}
+	m_pageUrl = site->fixUrl(m_pageUrl).toString();
 
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
@@ -301,7 +302,7 @@ void Image::loadDetails(bool rateLimit)
 		return;
 	}
 
-	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_parentSite->fixUrl(m_pageUrl), [this](QNetworkReply *reply) {
+	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_pageUrl, [this](QNetworkReply *reply) {
 		if (m_loadDetails != nullptr)
 			m_loadDetails->deleteLater();
 
