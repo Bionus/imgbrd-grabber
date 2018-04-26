@@ -413,6 +413,8 @@ void Image::parseDetails()
 	m_loadDetails = nullptr;
 	m_loadedDetails = true;
 
+	refreshTokens();
+
 	emit finishedLoadingTags();
 }
 
