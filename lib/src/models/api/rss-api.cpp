@@ -68,6 +68,11 @@ ParsedPage RssApi::parsePage(Page *parentPage, const QString &source, int first,
 	return ret;
 }
 
+bool RssApi::canLoadDetails() const
+{
+	return false;
+}
+
 ParsedTags RssApi::parseTags(const QString &source, Site *site) const
 {
 	Q_UNUSED(source);
