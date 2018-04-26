@@ -80,7 +80,13 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 	{
 		QString countStr = data.value("count").toLower().trimmed();
 		countStr.remove(',');
-		count = countStr.endsWith('k', Qt::CaseInsensitive) ? qFloor(countStr.leftRef(countStr.length() - 1).toFloat() * 1000) : countStr.toInt();
+		if (countStr.endsWith('k'))
+		{
+			QStringRef withoutK = countStr.leftRef(countStr.length() - 1).trimmed();
+			count = qRound(withoutK.toFloat() * 1000);
+		}
+		else
+		{ count = countStr.toInt(); }
 	}
 
 	return Tag(tag, type, count);
