@@ -138,9 +138,9 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	ParsedPage ret;
 
 	Site *site = parentPage->site();
-	QJSValue api = m_source.property("apis").property(m_key);
+	const QJSValue &api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("search").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source);
 
 	// Script errors and exceptions
 	if (results.isError())
