@@ -177,6 +177,14 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 
 		if (!moved)
 		{
+			QString dir = path.section(QDir::toNativeSeparators("/"), 0, -2);
+			if (!QDir(dir).exists() && !QDir().mkpath(dir))
+			{
+				log(QString("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+				result[path] = Image::SaveResult::Error;
+				continue;
+			}
+
 			tmp.rename(path);
 			moved = true;
 		}
