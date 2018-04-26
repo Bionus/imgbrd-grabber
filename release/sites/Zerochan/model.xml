@@ -3,7 +3,6 @@
 	<Name>Zerochan</Name>
 	<Urls>
 		<ImageReplaces>\.240\.->.full.&amp;\.600\.->.full.&amp;/240/->/full/&amp;/600/->/full/&amp;/s\d\.zerochan->/static.zerochan</ImageReplaces>
-		<Post>/{id}</Post>
 		<Html>
 			<Tags>/{tags}?{pagepart}{altpage}</Tags>
 			<Post>/{id}</Post>
@@ -21,7 +20,7 @@
 		</Rss>
 	</Urls>
 	<Regex>
-		<Tags><![CDATA[<li[^>]*>\s*<a [^>]+>(?<tag>[^>]+)<\/a>\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)<\/span>|(?<type>[^<]*))\s*<\/li>]]></Tags>
+		<Tags><![CDATA[<li[^>]*>\s*<a [^>]+>(?<tag>[^>]+)<\/a>\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)<\/span>|(?<type_2>[^<]*))\s*<\/li>]]></Tags>
 		<Image><![CDATA[<a href=['"]\/(?<id>[^'"]+)['"][^>]*>[^<]*(?:<b>[^<]*<\/b>)?[^<]*(?:<span>[^<]*<\/span>)?[^<]*(?<image><img\s*src=['"](?<preview_url>[^'"]*)['"][^>]*\/?>)]]></Image>
 		<Count>has ([0-9,]+) .*?images\.</Count>
 		<LastPage>page (?:[0-9,]+) of ([0-9,]+)</LastPage>
