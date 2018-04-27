@@ -157,6 +157,23 @@ ParsedDetails Api::parseDetails(const QString &source, Site *site) const
 	return ret;
 }
 
+PageUrl Api::checkUrl() const
+{
+	PageUrl ret;
+	ret.url = value("Check/Url");
+	return ret;
+}
+
+ParsedCheck Api::parseCheck(const QString &source) const
+{
+	ParsedCheck ret;
+
+	QRegularExpression rx(value("Check/Regex"));
+	ret.ok = rx.match(source).hasMatch();
+
+	return ret;
+}
+
 
 QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces, const QString &def) const
 {
@@ -256,6 +273,8 @@ bool Api::canLoadTags() const
 { return contains("Urls/TagApi"); }
 bool Api::canLoadDetails() const
 { return contains("Urls/Post"); }
+bool Api::canLoadCheck() const
+{ return contains("Check/Url") && contains("Check/Regex"); }
 int Api::forcedLimit() const
 { return contains("Urls/Limit") ? value("Urls/Limit").toInt() : 0; }
 int Api::maxLimit() const

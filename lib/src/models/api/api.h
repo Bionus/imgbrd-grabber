@@ -40,6 +40,12 @@ struct ParsedDetails
 	QDateTime createdAt;
 };
 
+struct ParsedCheck
+{
+	QString error;
+	bool ok;
+};
+
 class Site;
 
 class Api : public QObject
@@ -65,8 +71,11 @@ class Api : public QObject
 		virtual ParsedTags parseTags(const QString &source, Site *site) const = 0;
 		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const;
 		virtual ParsedDetails parseDetails(const QString &source, Site *site) const;
+		virtual PageUrl checkUrl() const;
+		virtual ParsedCheck parseCheck(const QString &source) const;
 		virtual bool canLoadTags() const;
 		virtual bool canLoadDetails() const;
+		virtual bool canLoadCheck() const;
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
 		virtual QStringList modifiers() const;

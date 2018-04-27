@@ -21,9 +21,12 @@ class JavascriptApi : public Api
 		ParsedTags parseTags(const QString &source, Site *site) const override;
 		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const override;
 		ParsedDetails parseDetails(const QString &source, Site *site) const override;
+		PageUrl checkUrl() const override;
+		ParsedCheck parseCheck(const QString &source) const override;
 		bool needAuth() const override;
 		bool canLoadTags() const override;
 		bool canLoadDetails() const override;
+		bool canLoadCheck() const override;
 		int forcedLimit() const override;
 		int maxLimit() const override;
 		QStringList modifiers() const override;

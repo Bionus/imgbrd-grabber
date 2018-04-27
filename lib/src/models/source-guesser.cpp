@@ -25,10 +25,10 @@ Source *SourceGuesser::start()
 		if (source->getApis().isEmpty())
 			continue;
 
-		Api *map = source->getApis().first();
-		if (map->contains("Check/Url") && map->contains("Check/Regex"))
+		Api *api = source->getApis().first();
+		if (api->canLoadCheck())
 		{
-			QString checkUrl = map->value("Check/Url");
+			QString checkUrl = api->checkUrl().url;
 			if (!m_cache.contains(checkUrl))
 			{
 				QUrl getUrl(m_url + checkUrl);
@@ -53,8 +53,7 @@ Source *SourceGuesser::start()
 				m_cache[checkUrl] = reply->readAll();
 			}
 
-			QRegularExpression rx(map->value("Check/Regex"));
-			if (rx.match(m_cache[checkUrl]).hasMatch())
+			if (api->parseCheck(m_cache[checkUrl]).ok)
 			{
 				emit finished(source);
 				return source;

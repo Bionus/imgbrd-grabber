@@ -49,8 +49,11 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 	{ url = result.toString(); }
 
 	// Site-ize url
-	url = site->fixLoginUrl(url);
-	url = site->fixUrl(url).toString();
+	if (site != Q_NULLPTR)
+	{
+		url = site->fixLoginUrl(url);
+		url = site->fixUrl(url).toString();
+	}
 
 	ret.url = url;
 }
@@ -352,6 +355,52 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 			ret.pools.append(Pool(id, name, 0, next, previous));
 		}
 	}
+
+	return ret;
+}
+
+
+bool JavascriptApi::canLoadCheck() const
+{
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("check").property("url");
+	return !urlFunction.isUndefined();
+}
+
+PageUrl JavascriptApi::checkUrl() const
+{
+	PageUrl ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("check").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support checking";
+		return ret;
+	}
+
+	QJSValue result = urlFunction.call();
+	fillUrlObject(result, Q_NULLPTR, ret);
+
+	return ret;
+}
+
+ParsedCheck JavascriptApi::parseCheck(const QString &source) const
+{
+	ParsedCheck ret;
+
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue parseFunction = api.property("check").property("parse");
+	QJSValue result = parseFunction.call(QList<QJSValue>() << source);
+
+	// Script errors and exceptions
+	if (result.isError())
+	{
+		ret.error = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		return ret;
+	}
+
+	ret.ok = result.toBool();
 
 	return ret;
 }
