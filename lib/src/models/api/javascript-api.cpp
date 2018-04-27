@@ -49,7 +49,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 	{ url = result.toString(); }
 
 	// Site-ize url
-	url = site->fixLoginUrl(url, this->value("Urls/Login"));
+	url = site->fixLoginUrl(url);
 	url = site->fixUrl(url).toString();
 
 	ret.url = url;

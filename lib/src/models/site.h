@@ -79,7 +79,7 @@ class Site : public QObject
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false) const;
 		bool canTestLogin() const;
-		QString fixLoginUrl(QString url, const QString &loginPart) const;
+		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
 
 		// XML info getters
 		bool contains(const QString &key) const;
