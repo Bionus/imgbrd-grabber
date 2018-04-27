@@ -197,7 +197,10 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 				const QJSValue &val = it3.value();
 
 				if (it3.value().isUndefined())
-				{ continue; }
+				{
+					log(QString("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
+					continue;
+				}
 
 				if (key == "tags_obj" || (key == "tags" && val.isArray()))
 				{ tags = makeTags(val, site); }

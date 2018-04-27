@@ -22,11 +22,24 @@ QJSValue JavascriptGrabberHelper::regexMatches(QString regex, QString txt)
 		QJSValue jsMatch = m_engine.newObject();
 
 		auto match = matches.next();
-		for (const QString &group : groups)
+		for (QString group : groups)
 		{
-			if (!group.isEmpty())
-			{ jsMatch.setProperty(group, match.captured(group)); }
+			if (group.isEmpty())
+				continue;
+
+			QString val = match.captured(group);
+			if (val.isEmpty())
+				continue;
+
+			int underscorePos = group.lastIndexOf('_');
+			bool ok;
+			group.midRef(underscorePos + 1).toInt(&ok);
+			if (underscorePos != -1 && ok)
+			{ group = group.left(underscorePos); }
+
+			jsMatch.setProperty(group, val);
 		}
+
 		const QStringList &caps = match.capturedTexts();
 		for (int i = 0; i < caps.count(); ++i)
 		{ jsMatch.setProperty(i, match.captured(i)); }
