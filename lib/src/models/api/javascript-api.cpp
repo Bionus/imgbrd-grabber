@@ -367,6 +367,20 @@ QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) cons
 	return def;
 }
 
+bool JavascriptApi::needAuth() const
+{
+	QStringList requiredAuths;
+
+	QJSValueIterator it(getJsConst("forcedLimit"));
+	while (it.hasNext())
+	{
+		it.next();
+		requiredAuths.append(it.value().toString());
+	}
+
+	return !requiredAuths.isEmpty();
+}
+
 int JavascriptApi::forcedLimit() const
 { return getJsConst("forcedLimit", 0).toInt(); }
 int JavascriptApi::maxLimit() const

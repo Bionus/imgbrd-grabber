@@ -51,7 +51,7 @@ class Api : public QObject
 
 		// Getters
 		QString getName() const;
-		bool needAuth() const;
+		virtual bool needAuth() const;
 
 		// Info getters
 		bool contains(const QString &key) const;
