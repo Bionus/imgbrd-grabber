@@ -62,6 +62,14 @@ export const source: ISource = {
                     };
                 },
             },
+            check: {
+                url: (): string => {
+                    return "/";
+                },
+                parse: (src: string): boolean => {
+                    return src.search(/© [0-9]+-[0-9]+ Zerochan/) !== -1;
+                },
+            },
         },
     },
 };

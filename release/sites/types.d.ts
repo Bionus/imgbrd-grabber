@@ -96,6 +96,10 @@ interface IApi {
         url: (query: any, opts: any) => IUrl | IError | string;
         parse: (src: string) => IParsedTags | IError;
     };
+    check?: {
+        url: () => IUrl | IError | string;
+        parse: (src: string) => boolean | IError;
+    };
 }
 interface ISource {
     name: string;

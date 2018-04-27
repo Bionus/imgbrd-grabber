@@ -260,6 +260,15 @@ export const source: ISource = {
                     };
                 },
             },
+            check: {
+                url: (): string => {
+                    return "/";
+                },
+                parse: (src: string): boolean => {
+                    return src.indexOf("Running Danbooru v2") !== -1
+                        || src.search(/Running Danbooru <a[^>]*>v2/) !== -1;
+                },
+            },
         },
     },
 };

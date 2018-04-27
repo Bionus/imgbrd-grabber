@@ -189,6 +189,15 @@ export const source: ISource = {
                     };
                 },
             },
+            check: {
+                url: (): string => {
+                    return "/";
+                },
+                parse: (src: string): boolean => {
+                    return src.indexOf("Running Danbooru 1") !== -1
+                        || src.indexOf("Running MyImouto 1") !== -1;
+                },
+            },
         },
     },
 };

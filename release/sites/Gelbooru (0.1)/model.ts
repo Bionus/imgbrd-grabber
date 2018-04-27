@@ -30,6 +30,15 @@ export const source: ISource = {
                     };
                 },
             },
+            check: {
+                url: (): string => {
+                    return "/";
+                },
+                parse: (src: string): boolean => {
+                    return src.search(/Running Gelbooru(?: Beta)? 0\.1/) !== -1
+                        || src.search(/Running <a[^>]*>Gelbooru<\/a>(?: Beta)? 0\.1/) !== -1;
+                },
+            },
         },
     },
 };
