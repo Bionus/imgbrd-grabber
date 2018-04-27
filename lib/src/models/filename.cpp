@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <algorithm>
 #include "functions.h"
+#include "models/api/api.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -633,25 +634,27 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 int Filename::needExactTags(Site *site, const QString &api) const
 {
-	if (site != nullptr && site->contains("Regex/NeedLoad"))
+	QStringList forcedTokens = site != nullptr
+		? site->getApis().first()->forcedTokens()
+		: QStringList();
+
+	if (forcedTokens.contains("*"))
 		return 2;
 
-	bool forceImageUrl = site != nullptr && site->contains("Regex/ForceImageUrl");
-	bool needDate = site != nullptr && (api == "Html" || api == "Rss") && site->contains("Regex/ImageDate");
-	return needExactTags(forceImageUrl, needDate);
+	return needExactTags(forcedTokens);
 }
-int Filename::needExactTags(bool forceImageUrl, bool needDate) const
+int Filename::needExactTags(QStringList forcedTokens) const
 {
 	// Javascript filenames always need tags as we don't know what they might do
 	if (m_format.startsWith("javascript:"))
 		return 2;
 
 	// If we need the filename and it is returned from the details page
-	if (m_format.contains(QRegularExpression("%filename(?::([^%]+))?%")) && forceImageUrl)
+	if (m_format.contains(QRegularExpression("%filename(?::([^%]+))?%")) && forcedTokens.contains("filename"))
 		return 2;
 
 	// If we need the date and it is returned from the details page
-	if (m_format.contains(QRegularExpression("%date(?::([^%]+))?%")) && needDate)
+	if (m_format.contains(QRegularExpression("%date(?::([^%]+))?%")) && forcedTokens.contains("date"))
 		return 2;
 
 	// The filename contains one of the special tags

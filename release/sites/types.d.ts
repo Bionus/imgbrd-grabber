@@ -104,6 +104,7 @@ interface IApi {
 interface ISource {
     name: string;
     modifiers?: string[];
+    forcedTokens?: string[];
     auth?: { [id: string]: IAuth };
     apis: { [id: string]: IApi };
 }

@@ -30,6 +30,7 @@ class JavascriptApi : public Api
 		int forcedLimit() const override;
 		int maxLimit() const override;
 		QStringList modifiers() const override;
+		QStringList forcedTokens() const override;
 
 	protected:
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;

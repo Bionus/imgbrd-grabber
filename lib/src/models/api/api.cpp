@@ -285,5 +285,17 @@ int Api::maxLimit() const
 
 	return contains("Urls/MaxLimit") ? value("Urls/MaxLimit").toInt() : 0;
 }
+
 QStringList Api::modifiers() const
 { return value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts); }
+QStringList Api::forcedTokens() const
+{
+	QStringList ret;
+	if (contains("Regex/NeedLoad"))
+		ret.append("*");
+	if (contains("Regex/ForceImageUrl"))
+		ret.append("file_url");
+	if ((m_name == "Html" || m_name == "Rss") && contains("Regex/ImageDate"))
+		ret.append("date");
+	return ret;
+}

@@ -1,6 +1,7 @@
 export const source: ISource = {
     name: "Zerochan",
     modifiers: [],
+    forcedTokens: ["filename", "date"],
     auth: {},
     apis: {
         rss: {

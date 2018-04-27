@@ -10,6 +10,20 @@
 #include "tags/tag-database.h"
 
 
+QStringList jsToStringList(const QJSValue &val)
+{
+	QStringList ret;
+
+	QJSValueIterator it(val);
+	while (it.hasNext())
+	{
+		it.next();
+		ret.append(it.value().toString());
+	}
+
+	return ret;
+}
+
 QString normalize(QString key)
 {
 	key = key.toLower();
@@ -418,15 +432,7 @@ QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) cons
 
 bool JavascriptApi::needAuth() const
 {
-	QStringList requiredAuths;
-
-	QJSValueIterator it(getJsConst("forcedLimit"));
-	while (it.hasNext())
-	{
-		it.next();
-		requiredAuths.append(it.value().toString());
-	}
-
+	QStringList requiredAuths = jsToStringList(getJsConst("forcedLimit"));
 	return !requiredAuths.isEmpty();
 }
 
@@ -436,16 +442,6 @@ int JavascriptApi::maxLimit() const
 { return getJsConst("maxLimit", 0).toInt(); }
 
 QStringList JavascriptApi::modifiers() const
-{
-	QStringList ret;
-	QJSValue modifiers = getJsConst("modifiers");
-
-	QJSValueIterator it(modifiers);
-	while (it.hasNext())
-	{
-		it.next();
-		ret.append(it.value().toString());
-	}
-
-	return ret;
-}
+{ return jsToStringList(getJsConst("modifiers")); }
+QStringList JavascriptApi::forcedTokens() const
+{ return jsToStringList(getJsConst("forcedTokens")); }

@@ -79,6 +79,7 @@ class Api : public QObject
 		virtual int forcedLimit() const;
 		virtual int maxLimit() const;
 		virtual QStringList modifiers() const;
+		virtual QStringList forcedTokens() const;
 
 	protected:
 		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>(), bool replaces = true) const;

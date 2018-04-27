@@ -42,7 +42,7 @@ class Filename
 		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 
 		int needExactTags(Site *site, const QString &api = "") const;
-		int needExactTags(bool forceImageUrl = false, bool needDate = false) const;
+		int needExactTags(QStringList forcedTokens = QStringList()) const;
 
 		QList<QMap<QString, Token> > expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const;
 		QString expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth = 0) const;
