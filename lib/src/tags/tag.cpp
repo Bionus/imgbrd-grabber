@@ -6,6 +6,14 @@
 #include "functions.h"
 
 
+QMap<int, QString> stringListToMap(const QStringList &list)
+{
+	QMap<int, QString> ret;
+	for (int i = 0; i < list.count(); ++i)
+		ret.insert(i, list[i]);
+	return ret;
+}
+
 Tag::Tag()
 	: m_type(TagType("unknown")), m_count(0)
 { }
@@ -43,12 +51,12 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 	int sepPos = m_text.indexOf(':');
 	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
-		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
-		QString pre = Tag::GetType(m_text.left(sepPos), QStringList());
+		static QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
+		QString pre = Tag::GetType(m_text.left(sepPos));
 		int prepIndex = prep.indexOf(pre);
 		if (prepIndex != -1)
 		{
-			m_type = TagType(Tag::GetType(prep[prepIndex], prep));
+			m_type = TagType(Tag::GetType(prep[prepIndex], stringListToMap(prep)));
 			m_text = m_text.mid(sepPos + 1);
 		}
 	}
@@ -69,7 +77,8 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 	QString type;
 	if (data.contains("type"))
 	{
-		type = Tag::GetType(data.value("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+		static QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species";
+		type = Tag::GetType(data.value("type").trimmed(), stringListToMap(types));
 	}
 	if (type.isEmpty())
 	{ type = "unknown"; }

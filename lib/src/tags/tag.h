@@ -2,6 +2,7 @@
 #define TAG_H
 
 #include <QFont>
+#include <QMap>
 #include <QString>
 #include <QStringList>
 #include "tags/tag-type.h"
@@ -16,7 +17,7 @@ class Tag
 		explicit Tag(int id, const QString &text, const TagType &type, int count = 0, const QStringList &related = QStringList());
 		static Tag FromCapture(const QRegularExpressionMatch &match, const QStringList &groups);
 		static QList<Tag> FromRegexp(const QString &rx, const QString &source);
-		static QString GetType(QString type, QMap<int, QString> ids);
+		static QString GetType(QString type, QMap<int, QString> ids = QMap<int, QString>());
 		void setId(int id);
 		void setText(const QString &text);
 		void setType(const TagType &type);
