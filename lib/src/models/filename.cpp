@@ -634,7 +634,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 int Filename::needExactTags(Site *site, const QString &api) const
 {
 	if (site != nullptr && site->contains("Regex/NeedLoad"))
-		return 0;
+		return 2;
 
 	bool forceImageUrl = site != nullptr && site->contains("Regex/ForceImageUrl");
 	bool needDate = site != nullptr && (api == "Html" || api == "Rss") && site->contains("Regex/ImageDate");
