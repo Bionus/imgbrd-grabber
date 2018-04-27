@@ -138,20 +138,6 @@ void favoritesTab::updateFavorites()
 		l->setMargin(0);
 		w->setLayout(l);
 
-		if (display.contains("i"))
-		{
-			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
-				image->scale(img, upscale);
-				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2), qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
-				image->setFlat(true);
-				image->setToolTip(xt);
-				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
-				connect(image, SIGNAL(middleClick(QString)), m_parent, SLOT(addTab(QString)));
-				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
-			l->addWidget(image);
-		}
-
 		int maxNewImages = 0;
 		bool precise = true;
 		for (const Monitor& monitor : fav.getMonitors())
@@ -163,11 +149,29 @@ void favoritesTab::updateFavorites()
 			}
 		}
 
+		if (display.contains("i"))
+		{
+			QPixmap img = fav.getImage();
+			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
+				image->scale(img, upscale);
+				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2), qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
+				image->setFlat(true);
+				image->setToolTip(xt);
+				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
+				connect(image, SIGNAL(middleClick(QString)), m_parent, SLOT(addTab(QString)));
+				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
+
+			if (maxNewImages > 0)
+			{ image->setCounter(QString::number(maxNewImages) + (!precise ? "+" : "")); }
+
+			l->addWidget(image);
+		}
+
 		QString label;
 		if (display.contains("n"))
 		{
 			label += fav.getName();
-			if (maxNewImages > 0)
+			if (maxNewImages > 0 && !display.contains("i"))
 			{ label += QString(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : ""); }
 		}
 		if (display.contains("d"))

@@ -5,7 +5,7 @@
 
 
 QBouton::QBouton(const QVariant &id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false)
+	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter("")
 { }
 
 void QBouton::scale(const QPixmap &image, float scale)
@@ -40,11 +40,13 @@ void QBouton::setProgress(qint64 current, qint64 max)
 
 void QBouton::setInvertToggle(bool invertToggle)
 { m_invertToggle = invertToggle; }
+void QBouton::setCounter(const QString &counter)
+{ m_counter = counter; }
 
 void QBouton::paintEvent(QPaintEvent *event)
 {
 	// Used for normal buttons
-	if (!m_resizeInsteadOfCropping && m_border == 0 && m_progressMax == 0)
+	if (!m_resizeInsteadOfCropping && m_border == 0 && m_progressMax == 0 && m_counter.isEmpty())
 	{
 		QPushButton::paintEvent(event);
 		return;
@@ -112,6 +114,25 @@ void QBouton::paintEvent(QPaintEvent *event)
 		pen.setWidth(p*2);
 		painter.setPen(pen);
 		painter.drawRect(qMax(x, 0), qMax(y, 0), qMin(w, size().width()), qMin(h, size().height()));
+	}
+
+	// Draw counter
+	if (!m_counter.isEmpty())
+	{
+		int right = qMax(x, 0) + qMin(w, size().width());
+		int dim = 10 + 5 * m_counter.length();
+		double pad = 2.5;
+		QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
+
+		QPainterPath path;
+		path.addRoundedRect(notif, 5, 5);
+
+		QPen pen(Qt::black, 1);
+		painter.setPen(pen);
+		painter.fillPath(path, QColor(255, 0, 0));
+		painter.drawPath(path);
+
+		painter.drawText(notif, Qt::AlignCenter, m_counter);
 	}
 }
 
