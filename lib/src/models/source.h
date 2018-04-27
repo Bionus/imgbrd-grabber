@@ -34,6 +34,7 @@ class Source : public QObject
 
 	private:
 		QString m_dir;
+		QString m_diskName;
 		QString m_name;
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;

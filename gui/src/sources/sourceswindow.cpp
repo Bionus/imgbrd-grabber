@@ -232,7 +232,7 @@ void sourcesWindow::addCheckboxes()
 			if (t == "icon" || t == "both")
 			{
 				QAffiche *image = new QAffiche(k.at(i), 0, QColor(), this);
-				image->setPixmap(QPixmap(m_sites.value(k.at(i))->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
+				image->setPixmap(QPixmap(site->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
 				image->setCursor(Qt::PointingHandCursor);
 				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
@@ -241,7 +241,7 @@ void sourcesWindow::addCheckboxes()
 			}
 			if (t == "text" || t == "both")
 			{
-				QLabel *type = new QLabel(m_sites.value(k.at(i))->value("Name"), this);
+				QLabel *type = new QLabel(site->getSource()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
 				m_labels << type;
 				n++;

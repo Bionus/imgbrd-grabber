@@ -52,7 +52,7 @@ QJSEngine *Source::jsEngine()
 }
 
 Source::Source(Profile *profile, const QString &dir)
-	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, getUpdaterBaseUrl())
+	: m_dir(dir), m_diskName(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
@@ -83,7 +83,7 @@ Source::Source(Profile *profile, const QString &dir)
 			QFile js(m_dir + "/model.js");
 			if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
-				log(QString("Using Javascript model for %1").arg(m_name), Logger::Debug);
+				log(QString("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
 
 				QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
 
@@ -92,6 +92,8 @@ Source::Source(Profile *profile, const QString &dir)
 				{ log(QString("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 				else
 				{
+					m_name = m_jsSource.property("name").toString();
+
 					// Get the list of APIs for this Source
 					QJSValue apis = m_jsSource.property("apis");
 					QJSValueIterator it(apis);
@@ -117,9 +119,11 @@ Source::Source(Profile *profile, const QString &dir)
 			else
 			{
 				if (enableJs)
-				{ log(QString("Javascript model not found for %1").arg(m_name), Logger::Warning); }
+				{ log(QString("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 
-				log(QString("Using XML model for %1").arg(m_name), Logger::Debug);
+				log(QString("Using XML model for %1").arg(m_diskName), Logger::Debug);
+
+				m_name = details.value("Name");
 
 				// Get the list of possible API for this Source
 				QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";

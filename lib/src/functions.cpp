@@ -371,7 +371,6 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 QMap<QString, QString> domToMap(const QDomElement &dom)
 {
 	QMap<QString, QString> details;
-	dom.firstChildElement("Name").firstChild().nodeValue();
 	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		auto type = n.firstChild().nodeType();
