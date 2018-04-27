@@ -20,7 +20,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<tag>[^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
+		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]*)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<tag>[^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
 		<Image><![CDATA[<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-download-uri="(?<file_url>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-orig-sha512="[^"]*" data-score="(?<score>[^"]*)" data-sha512="(?<md5>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="[^"]*" data-width="(?<width>[^"]*)">.*?<a[^>]*><img[^>]* src="(?<preview_url>[^"]*)"\/><\/a><\/div>]]></Image>
 		<TagApi><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\d+)" data-tag-name="(?<tag>.+?)".+?<span class="tag__count">\s*\((?<count>\d+)\)<\/span>]]></TagApi>
 		<LastPage><![CDATA[<a href="(?:\/images\/page\/|\/tags\/[^\?]*\?[^"]*page=|\/search\/index\?[^"]*page=)(\d+)[^"]*">Last]]></LastPage>
