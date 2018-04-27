@@ -116,7 +116,11 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(completeImage(Grabber.mapFields(image, map)));
+                        const img = Grabber.mapFields(image, map);
+                        if (!img["md5"] || img["md5"].length === 0) {
+                            continue;
+                        }
+                        images.push(completeImage(img));
                     }
 
                     return { images };
@@ -193,7 +197,11 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(completeImage(Grabber.mapFields(image, map)));
+                        const img = Grabber.mapFields(image, map);
+                        if (!img["md5"] || img["md5"].length === 0) {
+                            continue;
+                        }
+                        images.push(completeImage(img));
                     }
 
                     return { images };
