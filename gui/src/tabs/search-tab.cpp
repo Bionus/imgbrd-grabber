@@ -924,7 +924,22 @@ void searchTab::contextSaveImageAs(int position)
 	QSharedPointer<Image> image = m_images.at(position);
 	Image *img = image.data();
 
-	Filename format(m_settings->value("Save/filename").toString());
+	QString fn = m_settings->value("Save/filename").toString();
+	QString tmpPath;
+
+	// If the MD5 is required for the filename, we first download the image
+	if (fn.contains("%md5") && image->md5().isEmpty())
+	{
+		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
+
+		QEventLoop loop;
+		ImageDownloader downloader(image, QStringList() << tmpPath, 1, true, true, this);
+		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
+		downloader.save();
+		loop.exec();
+	}
+
+	Filename format(fn);
 	QStringList filenames = format.path(*img, m_profile);
 	QString filename = filenames.first().section(QDir::separator(), -1);
 	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
@@ -935,10 +950,17 @@ void searchTab::contextSaveImageAs(int position)
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
 
-		auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, this);
-		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
-		downloader->save();
+		if (!tmpPath.isEmpty())
+		{ QFile::rename(tmpPath, path); }
+		else
+		{
+			auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, this);
+			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+			downloader->save();
+		}
 	}
+	else if (!tmpPath.isEmpty())
+	{ QFile::remove(tmpPath); }
 }
 void searchTab::contextSaveSelected()
 {
