@@ -1,5 +1,6 @@
 #include "login/url-login.h"
 #include "mixed-settings.h"
+#include "models/api/api.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -49,7 +50,7 @@ QString UrlLogin::complementUrl(QString url, const QString &loginPart) const
 	// Appkey GET auth
 	if (url.contains("{appkey}"))
 	{
-		QString appkey = m_site->value("AppkeySalt");
+		QString appkey = m_site->getApis().first()->value("AppkeySalt");
 		appkey.replace("%password%", password);
 		appkey.replace("%username%", pseudo.toLower());
 		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());

@@ -158,8 +158,8 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 		// Typed tags (e621)
 		if (sc.contains("tags") && sc["tags"].type() == QVariant::Map)
 		{
-			QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
-			for (auto it = tagTypes.begin(); it != tagTypes.end(); ++it)
+			QMap<QString, QVariant> scTypes = sc["tags"].toMap();
+			for (auto it = scTypes.begin(); it != scTypes.end(); ++it)
 			{
 				TagType tType(it.key());
 				QList<QVariant> tagList = it.value().toList();

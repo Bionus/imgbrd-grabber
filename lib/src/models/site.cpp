@@ -424,14 +424,3 @@ bool Site::isLoggedIn(bool unknown) const
 	return m_loggedIn == LoginStatus::LoggedIn;
 }
 
-
-bool Site::contains(const QString &key) const
-{
-	return !m_apis.isEmpty() && m_apis.first()->contains(key);
-}
-QString Site::value(const QString &key) const
-{
-	if (m_apis.isEmpty())
-		return QString();
-	return m_apis.first()->value(key);
-}

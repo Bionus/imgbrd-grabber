@@ -81,11 +81,6 @@ class Site : public QObject
 		bool canTestLogin() const;
 		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
 
-		// XML info getters
-		bool contains(const QString &key) const;
-		QString value(const QString &key) const;
-		QString operator[](const QString &key) const { return value(key); }
-
 	private:
 		QNetworkReply *getRequest(const QNetworkRequest &request);
 

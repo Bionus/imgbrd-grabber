@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <ui_sourcessettingswindow.h>
 #include "functions.h"
+#include "models/api/api.h"
 #include "models/profile.h"
 #include "models/source.h"
 
@@ -73,7 +74,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
-	if (site->value("PasswordSalt").isEmpty())
+	if (site->getApis().first()->value("PasswordSalt").isEmpty())
 	{ ui->buttonAuthHash->hide(); }
 	else
 	{ ui->lineAuthPassword->setEchoMode(QLineEdit::Normal); }
@@ -130,10 +131,10 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_site->value("PasswordSalt")));
+	QString salt = m_site->getApis().first()->value("PasswordSalt");
+	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(salt));
 	if (!password.isEmpty())
 	{
-		QString salt = m_site->value("PasswordSalt");
 		salt.replace("%password%", password);
 		salt.replace("%value%", password);
 		ui->lineAuthPassword->setText(QCryptographicHash::hash(salt.toUtf8(), QCryptographicHash::Sha1).toHex());

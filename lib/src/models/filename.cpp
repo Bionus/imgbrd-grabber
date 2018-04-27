@@ -634,6 +634,8 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 int Filename::needExactTags(Site *site, const QString &api) const
 {
+	Q_UNUSED(api);
+
 	QStringList forcedTokens = site != nullptr
 		? site->getApis().first()->forcedTokens()
 		: QStringList();
