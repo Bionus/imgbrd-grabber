@@ -203,24 +203,29 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 	return fixed;
 }
 
-QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags) const
+QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags, bool replaces) const
 {
 	Site *site = parentPage->site();
+
+	// Remove dot before extension
+	if (d.contains("ext") && d["ext"][0] == '.')
+	{ d["ext"] = d["ext"].mid(1); }
 
 	// Set default values
 	if (!d.contains("file_url"))
 	{ d["file_url"] = ""; }
 	if (!d.contains("sample_url"))
 	{ d["sample_url"] = ""; }
+	if (!d.contains("preview_url"))
+	{ d["preview_url"] = ""; }
 
-	// Remove dot before extension
-	if (d.contains("ext") && d["ext"][0] == '.')
-	{ d["ext"] = d["ext"].mid(1); }
-
-	// Fix urls
-	d["file_url"] = parseSetImageUrl(site, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
-	d["sample_url"] = parseSetImageUrl(site, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
-	d["preview_url"] = parseSetImageUrl(site, "Urls/Preview", "Urls/PreviewReplaces", d["preview_url"], &d);
+	if (replaces)
+	{
+		// Fix urls
+		d["file_url"] = parseSetImageUrl(site, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
+		d["sample_url"] = parseSetImageUrl(site, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
+		d["preview_url"] = parseSetImageUrl(site, "Urls/Preview", "Urls/PreviewReplaces", d["preview_url"], &d);
+	}
 
 	if (d["file_url"].isEmpty())
 	{ d["file_url"] = d["preview_url"]; }

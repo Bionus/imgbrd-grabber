@@ -1,3 +1,28 @@
+function completeImage(img: IImage): IImage {
+    if (img["ext"] && img["ext"][0] === ".") {
+        img["ext"] = img["ext"].mid(1);
+    }
+
+    if (!img["file_url"] || img["file_url"].length < 5) {
+        img["file_url"] = `/data/${img["md5"]}.${img["ext"]}`;
+    } else {
+        img["file_url"] = img["file_url"]
+            .replace("/preview/", "/")
+            .replace("/ssd/", "/")
+            .replace("/sample/[^.]*sample-", "/");
+    }
+
+    if (!img["sample_url"] || img["sample_url"].length < 5) {
+        img["sample_url"] = `/data/sample/sample-${img["md5"]}.jpg`;
+    }
+
+    if (!img["preview_url"] || img["preview_url"].length < 5) {
+        img["preview_url"] = `/data/preview/${img["md5"]}.jpg`;
+    }
+
+    return img;
+}
+
 const auth: { [id: string]: IAuth } = {
     url: {
         type: "url",
@@ -86,7 +111,7 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(Grabber.mapFields(image, map));
+                        images.push(completeImage(Grabber.mapFields(image, map)));
                     }
 
                     return { images };
@@ -163,7 +188,7 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(Grabber.mapFields(image, map));
+                        images.push(completeImage(Grabber.mapFields(image, map)));
                     }
 
                     return { images };
@@ -206,7 +231,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedSearch => {
                     return {
                         tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
-                        images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src),
+                        images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"\\s+data-uploader="(?<author>[^"]*)"\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki: Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src),
                         pageCount: Grabber.regexToConst("page", '>(?<page>[0-9]+)</a></li><li[^<]*><a[^>]* rel="next"', src),
                     };
