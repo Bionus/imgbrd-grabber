@@ -52,8 +52,6 @@ void SiteTest::testNoApis()
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 0);
-	QCOMPARE(site.contains("Urls/Image"), false);
-	QCOMPARE(site.value("Urls/Image"), QString());
 }
 
 void SiteTest::testFixUrlBasic()

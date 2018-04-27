@@ -631,12 +631,12 @@ void FilenameTest::testNeedExactTags()
 	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(false), 1);
 
 	Filename filename("%filename%.%ext%");
-	QCOMPARE(filename.needExactTags(false), 0);
-	QCOMPARE(filename.needExactTags(true), 2);
+	QCOMPARE(filename.needExactTags(), 0);
+	QCOMPARE(filename.needExactTags(QStringList() << "filename"), 2);
 
 	Filename date("%date%.%ext%");
-	QCOMPARE(date.needExactTags(false, false), 0);
-	QCOMPARE(date.needExactTags(false, true), 2);
+	QCOMPARE(date.needExactTags(), 0);
+	QCOMPARE(date.needExactTags(QStringList() << "date"), 2);
 }
 
 void FilenameTest::testEscapeMethod()

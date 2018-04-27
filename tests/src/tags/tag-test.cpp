@@ -197,7 +197,12 @@ void TagTest::testTypeSpaced()
 
 void TagTest::testGetType()
 {
-	QStringList ids = QStringList() << "type1" << "type2" << "type3";
+	auto ids = QMap<int, QString>
+	{
+		{ 0, "type1" },
+		{ 1, "type2" },
+		{ 2, "type3" },
+	};
 
 	// Basic types
 	QCOMPARE(Tag::GetType("copyright", ids), QString("copyright"));
