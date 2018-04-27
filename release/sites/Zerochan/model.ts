@@ -2,6 +2,10 @@ export const source: ISource = {
     name: "Zerochan",
     modifiers: [],
     forcedTokens: ["filename", "date"],
+    tagFormat: {
+        case: "upper",
+        wordSeparator: " ",
+    },
     auth: {},
     apis: {
         rss: {

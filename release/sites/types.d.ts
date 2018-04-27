@@ -75,6 +75,11 @@ interface IAuth {
     [name: string]: any;
 }
 
+interface ITagFormat {
+    case: "lower" | "upper_first" | "upper" | "caps";
+    wordSeparator: string;
+}
+
 interface IApi {
     name: string;
     auth: string[];
@@ -105,6 +110,7 @@ interface ISource {
     name: string;
     modifiers?: string[];
     forcedTokens?: string[];
+    tagFormat?: ITagFormat;
     auth?: { [id: string]: IAuth };
     apis: { [id: string]: IApi };
 }

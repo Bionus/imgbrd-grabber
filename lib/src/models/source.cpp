@@ -69,6 +69,15 @@ Source::Source(Profile *profile, const QString &dir)
 			QDomElement docElem = doc.documentElement();
 			QMap<QString, QString> details = domToMap(docElem);
 
+			// Tag format mapper
+			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			{
+				{ "lower", TagNameFormat::Lower },
+				{ "upper_first", TagNameFormat::UpperFirst },
+				{ "upper", TagNameFormat::Upper },
+				{ "caps", TagNameFormat::Caps },
+			};
+
 			// Javascript models
 			bool enableJs = m_profile->getSettings()->value("enableJsModels", false).toBool();
 			QFile js(m_dir + "/model.js");
@@ -93,6 +102,14 @@ Source::Source(Profile *profile, const QString &dir)
 					}
 					if (m_apis.isEmpty())
 					{ log(QString("No valid source has been found in the model.js file from %1.").arg(m_name)); }
+
+					// Read tag naming format
+					const QJSValue &tagFormat = m_jsSource.property("tagFormat");
+					if (!tagFormat.isUndefined())
+					{
+						auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
+						m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
+					}
 				}
 
 				js.close();
@@ -134,18 +151,11 @@ Source::Source(Profile *profile, const QString &dir)
 				}
 				else
 				{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
-			}
 
-			// Read tag naming format
-			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
-			{
-				{ "lower", TagNameFormat::Lower },
-				{ "upper_first", TagNameFormat::UpperFirst },
-				{ "upper", TagNameFormat::Upper },
-				{ "caps", TagNameFormat::Caps },
-			};
-			auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
-			m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
+				// Read tag naming format
+				auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
+				m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
+			}
 		}
 
 		file.close();

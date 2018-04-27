@@ -1,6 +1,10 @@
 export const source: ISource = {
     name: "Gelbooru (0.2)",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating"],
+    tagFormat: {
+        case: "lower",
+        wordSeparator: "_",
+    },
     auth: {},
     apis: {
         xml: {
