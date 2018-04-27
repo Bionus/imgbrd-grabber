@@ -30,7 +30,6 @@
 	<Regex>
 		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
 		<Image><![CDATA[<span[^>]* id="?p(?<id>\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+\/preview\/\w{2}\/\w{2}\/(?<md5>[^.]+)\.[^"]+|[^"]+\/download-preview.png)" title="(?<tags>[^"]+)"[^>]+><\/a><\/span>]]></Image>
-		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
 		<LastPage><![CDATA[<link href="[^"]*\?.*?page=(\d+)[^"]*" rel="last" title="Last Page">]]></LastPage>
 		<Count><![CDATA[class="?tag-type-none"? title="Post Count: ([^"]+)"]]></Count>
 		<Pools><![CDATA[<div class="status-notice" id="pool\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(\d+)" >([^<]+)</a>[^<]*(?:<a href="/post/show/(\d+)" >&gt;&gt;</a>)?[^<]*</div>]]></Pools>

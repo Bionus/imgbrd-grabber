@@ -1,4 +1,5 @@
 #include "models/api/json-api.h"
+#include "models/page.h"
 #include "models/site.h"
 #include "tags/tag-database.h"
 #include "vendor/json.h"
@@ -135,23 +136,27 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 		}
 
 		// Tags as objects (Sankaku)
-		if (sc.contains("tags") && contains("Regex/TagTypes"))
+		QMap<int, TagType> tagTypes = parentPage->site()->tagDatabase()->tagTypes();
+		if (sc.contains("tags") && sc["tags"].type() == QVariant::List && !tagTypes.isEmpty())
 		{
 			QList<QVariant> tgs = sc["tags"].toList();
 			if (!tgs.isEmpty())
 			{
-				QStringList tagTypes = value("Regex/TagTypes").split(',');
+				QMap<int, QString> tagTypesIds;
+				for (auto it = tagTypes.begin(); it != tagTypes.end(); ++it)
+					tagTypesIds.insert(it.key(), it.value().name());
+
 				for (const QVariant &tagData : tgs)
 				{
 					QMap<QString, QVariant> tag = tagData.toMap();
 					if (tag.contains("name"))
-						tags.append(Tag(tag["name"].toString(), Tag::GetType(tag["type"].toString(), tagTypes), tag["count"].toInt()));
+						tags.append(Tag(tag["name"].toString(), Tag::GetType(tag["type"].toString(), tagTypesIds), tag["count"].toInt()));
 				}
 			}
 		}
 
 		// Typed tags (e621)
-		if (sc.contains("tags"))
+		if (sc.contains("tags") && sc["tags"].type() == QVariant::Map)
 		{
 			QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
 			for (auto it = tagTypes.begin(); it != tagTypes.end(); ++it)

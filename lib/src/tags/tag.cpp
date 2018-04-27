@@ -115,7 +115,7 @@ QList<Tag> Tag::FromRegexp(const QString &rx, const QString &source)
 	return ret;
 }
 
-QString Tag::GetType(QString type, QStringList ids)
+QString Tag::GetType(QString type, QMap<int, QString> ids)
 {
 	type = type.toLower().trimmed();
 	if (type.contains(", "))
@@ -139,7 +139,7 @@ QString Tag::GetType(QString type, QStringList ids)
 	if (type.length() == 1)
 	{
 		int typeId = type.toInt();
-		if (typeId >= 0 && typeId < ids.count())
+		if (ids.contains(typeId))
 			return ids[typeId];
 	}
 
