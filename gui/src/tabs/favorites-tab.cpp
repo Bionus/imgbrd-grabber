@@ -257,18 +257,25 @@ void favoritesTab::getAll()
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
-		{ actuals.append(keys.at(i)); }
+			actuals.append(keys.at(i));
 	}
-	for (int i = 0; i < actuals.count(); i++)
-	{
-		auto page = m_pages[actuals[i]].first();
-		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
-		int limit = m_sites.value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites.value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
-		int total = qMax(page->images().count(), page->imagesCount());
-		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, postFiltering, m_sites.value(actuals.at(i))));
+	for (const QString &actual : actuals)
+	{
+		QSharedPointer<Page> page = m_pages[actual].first();
+
+		int highLimit = page->highLimit();
+		int currentCount = page->images().count();
+		int total = qMax(currentCount, page->imagesCount());
+		int perPage = highLimit > 0 ? qMin(highLimit, total) : currentCount;
+		if (perPage == 0 && total == 0)
+			continue;
+
+		QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		Site *site = m_sites.value(actual);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
 	}
 }
 

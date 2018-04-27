@@ -217,7 +217,9 @@ void tagTab::getAll()
 
 		QString search = page->search().join(' ');
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites.value(actual)));
+		Site *site = m_sites.value(actual);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
 	}
 }
 
