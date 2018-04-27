@@ -883,9 +883,8 @@ bool Image::shouldDisplaySample() const
 {
 	bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
-	bool displaySample = m_parentSite->getSource()->getApis().first()->value("DisplaySample") == "true";
 
-	return !m_sampleUrl.isEmpty() && (!getOriginals || displaySample || viewSample);
+	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample);
 }
 QUrl Image::getDisplayableUrl() const
 { return shouldDisplaySample() ? m_sampleUrl : m_url; }
