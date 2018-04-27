@@ -10,21 +10,20 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?" + pagePart;
+                    return "/" + query.search + "?s=id&xml&" + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const map = {
-                        "page_url": "link",
-                        "tags": "media:keywords",
-                        "preview_url": "media:thumbnail",
-                        "file_url": "media:content",
-                    };
-
                     const data = Grabber.parseXML(src).rss.channel.item;
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        const img = Grabber.mapFields(image, map);
+                        const img: IImage = {
+                            page_url: image["link"]["#text"],
+                            tags: image["media:keywords"]["#text"].trim().split(", "),
+                            preview_url: image["media:thumbnail"]["#text"] || image["media:thumbnail"]["@attributes"]["url"],
+                            file_url: image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"],
+                        };
+                        img["sample_url"] = img["file_url"];
                         img["id"] = Grabber.regexToConst("id", "/(?<id>\\d+)", img["page_url"]);
                         images.push(img);
                     }
@@ -40,7 +39,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?s=id&xml&" + pagePart;
+                    return "/" + query.search + "?" + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

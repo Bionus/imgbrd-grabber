@@ -115,8 +115,13 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		it.next();
 
 		QJSValue tag = it.value();
-		if (!tag.isObject())
+		if (tag.isString())
+		{
+			ret.append(Tag(tag.toString()));
 			continue;
+		}
+		else if (!tag.isObject())
+		{ continue; }
 
 		int id = tag.hasProperty("id") ? tag.property("id").toInt() : 0;
 		QString text = tag.property("name").toString();
@@ -171,11 +176,16 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 			{
 				it3.next();
 
-				QString key = it3.name();
-				if (key == "tags_obj")
-				{ tags = makeTags(it3.value(), site); }
+				const QString &key = it3.name();
+				const QJSValue &val = it3.value();
+
+				if (it3.value().isUndefined())
+				{ continue; }
+
+				if (key == "tags_obj" || (key == "tags" && val.isArray()))
+				{ tags = makeTags(val, site); }
 				else
-				{ d[key] = it3.value().toString(); }
+				{ d[key] = val.toString(); }
 			}
 
 			if (!d.isEmpty())
