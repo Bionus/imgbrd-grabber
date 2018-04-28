@@ -54,7 +54,7 @@ Grabber.fixPageUrl = (url: string, page: number, previous: any): string => {
 };
 
 Grabber.pageUrl = (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
-    if (page < limit || !previous) {
+    if (page < limit || !previous || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous);
     }
     if (previous.page > page) {
