@@ -229,15 +229,15 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	}
 
 	// Basic properties
-	if (results.hasProperty("imageCount"))
+	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined())
 	{ ret.imageCount = results.property("imageCount").toInt(); }
-	if (results.hasProperty("pageCount"))
+	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined())
 	{ ret.pageCount = results.property("pageCount").toInt(); }
-	if (results.hasProperty("urlNextPage"))
+	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString())
 	{ ret.urlNextPage = results.property("urlNextPage").toString(); }
-	if (results.hasProperty("urlPrevPage"))
+	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString())
 	{ ret.urlPrevPage = results.property("urlPrevPage").toString(); }
-	if (results.hasProperty("wiki"))
+	if (results.hasProperty("wiki") && results.property("wiki").isString())
 	{ ret.wiki = results.property("wiki").toString(); }
 
 	return ret;

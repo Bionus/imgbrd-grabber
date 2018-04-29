@@ -29,14 +29,18 @@ export const source: ISource = {
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).posts.post;
+                    const parsed = Grabber.parseXML(src);
+                    const data = parsed.posts.post;
 
                     const images: IImage[] = [];
                     for (const image of data) {
                         images.push(completeImage(image["@attributes"]));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: parsed.posts["@attributes"]["count"],
+                    };
                 },
             },
         },
