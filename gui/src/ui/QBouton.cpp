@@ -123,15 +123,19 @@ void QBouton::paintEvent(QPaintEvent *event)
 		int dim = 10 + 5 * m_counter.length();
 		double pad = 2.5;
 		QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
+		int radius = qFloor(qMin(dim, 20) / 2);
+
+		painter.setRenderHint(QPainter::Antialiasing);
 
 		QPainterPath path;
-		path.addRoundedRect(notif, 5, 5);
+		path.addRoundedRect(notif, radius, radius);
 
 		QPen pen(Qt::black, 1);
 		painter.setPen(pen);
 		painter.fillPath(path, QColor(255, 0, 0));
 		painter.drawPath(path);
 
+		painter.setPen(QPen(Qt::white));
 		painter.drawText(notif, Qt::AlignCenter, m_counter);
 	}
 }
