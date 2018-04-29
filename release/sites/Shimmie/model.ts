@@ -60,6 +60,19 @@ export const source: ISource = {
                             img["id"] = Grabber.regexToConst("id", "/(?<id>\\d+)", img["page_url"]);
                         }
 
+                        // Some additional fields can be found parsing the HTML description
+                        const desc = image["description"]["#text"];
+                        const matches = Grabber.regexMatches(" // (?<width>\\d+)x(?<height>\\d+) // (?<filesize>[^'\" ]*)(?: // (?<ext>[^'\"&]*))?['\"&]", desc);
+                        if (matches && matches.length > 0) {
+                            const match = matches[0];
+                            img["width"] = match["width"];
+                            img["height"] = match["height"];
+                            img["file_size"] = match["filesize"];
+                            if (match["ext"]) {
+                                img["ext"] = match["ext"];
+                            }
+                        }
+
                         images.push(completeImage(img));
                     }
 
