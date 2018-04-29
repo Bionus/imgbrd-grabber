@@ -14,6 +14,8 @@ void Logger::setLogFile(const QString &path)
 	m_logFile.setFileName(path);
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
 }
+QString Logger::logFile() const
+{ return m_logFile.fileName(); }
 
 void Logger::setLogLevel(LogLevel level)
 {

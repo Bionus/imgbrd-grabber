@@ -44,6 +44,8 @@ class Logger : public QObject
 		void logCommandSql(const QString &);
 		void logUpdate(const QString &);
 
+		QString logFile() const;
+
 	signals:
 		void newLog(const QString &message);
 

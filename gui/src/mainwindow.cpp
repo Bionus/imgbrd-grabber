@@ -75,7 +75,20 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	if (!m_showLog)
 	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
 	else
-	{ connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow); }
+	{
+		QFile logFile(Logger::getInstance().logFile());
+		if (logFile.open(QFile::ReadOnly | QFile::Text))
+		{
+			while (!logFile.atEnd())
+			{
+				QString line = logFile.readLine();
+				logShow(line);
+			}
+			logFile.close();
+		}
+
+		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
+	}
 
 	log("New session started.", Logger::Info);
 	log(QString("Software version: %1.").arg(VERSION), Logger::Info);
