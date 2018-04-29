@@ -268,6 +268,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
+	opts.setProperty("loggedIn", site->isLoggedIn(false));
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
 	settings->beginGroup("auth");
