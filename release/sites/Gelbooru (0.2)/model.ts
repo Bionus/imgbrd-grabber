@@ -1,3 +1,15 @@
+function completeImage(img: IImage): IImage {
+    if (!img["file_url"] || img["file_url"].length < 5) {
+        img["file_url"] = img["preview_url"]
+            .replace("/thumbnails/", "/images/")
+            .replace("/thumbnail_", "/");
+    }
+
+    img["file_url"] = img["preview_url"].replace("/gelbooru.com/", "/simg4.gelbooru.com/");
+
+    return img;
+}
+
 export const source: ISource = {
     name: "Gelbooru (0.2)",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating"],
@@ -21,7 +33,7 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(image["@attributes"]);
+                        images.push(completeImage(image["@attributes"]));
                     }
 
                     return { images };
@@ -40,7 +52,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
-                        images: Grabber.regexToImages('<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src),
+                        images: Grabber.regexToImages('<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src).map(completeImage),
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
                         pageCount: Grabber.regexToConst("page", '<a href="[^"]+pid=(?<page>\\d+)[^"]*" alt="last page"[^>]*>'),
                     };

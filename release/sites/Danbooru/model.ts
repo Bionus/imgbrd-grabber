@@ -1,4 +1,4 @@
-const makeImage = (data: any): IImage => {
+const completeImage = (data: any): IImage => {
     if (data && "tags" in data && typeof data["tags"] === "object") {
         for (const type in data["tags"]) {
             const children = data["tags"][type];
@@ -11,6 +11,11 @@ const makeImage = (data: any): IImage => {
             data["tags_" + type] = tags;
         }
     }
+
+    if (!data["file_url"] || data["file_url"].length < 5) {
+        data["file_url"] = data["preview_url"].replace("/preview/", "/");
+    }
+
     return data;
 };
 
@@ -74,7 +79,7 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(makeImage(image));
+                        images.push(completeImage(image));
                     }
 
                     return { images };
@@ -120,7 +125,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const dta of data) {
                         const image: any = "@attributes" in dta && "id" in dta["@attributes"] ? dta["@attributes"] : dta;
-                        images.push(makeImage(image));
+                        images.push(completeImage(image));
                     }
 
                     return { images };
@@ -163,7 +168,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
-                        images: Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src),
+                        images: Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage),
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
                         wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>'),
                         pageCount: Grabber.regexToConst("page", '<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page">'),
