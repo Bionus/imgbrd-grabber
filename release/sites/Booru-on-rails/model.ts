@@ -59,7 +59,7 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
-                    for (const image of data) {
+                    for (const image of data.search) {
                         const img = Grabber.mapFields(image, map);
                         img["tags"] = image["tags"].split(", ");
                         img["preview_url"] = image["representations"]["thumb"];
@@ -69,7 +69,10 @@ export const source: ISource = {
                         images.push(completeImage(img));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: data.total,
+                    };
                 },
             },
             tags: {
