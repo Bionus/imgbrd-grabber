@@ -189,8 +189,7 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 			.replace("{md5}", d->value("md5"))
 			.replace("{ext}", d->value("ext", "jpg"))
 			.replace("{tim}", d->value("tim"))
-			.replace("{website}", site->url())
-			.replace("{cdn}", QString(site->url()).replace("boards.4chan", "4cdn"));
+			.replace("{website}", site->url());
 
 			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{

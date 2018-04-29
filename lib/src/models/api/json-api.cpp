@@ -63,15 +63,6 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 			for (int i = 0; i < from.count(); i++)
 			{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 		}
-		// 4chan format
-		else if (sc.contains("resto"))
-		{
-			QStringList from, to;
-			from << "now" << "w" << "md5" << "h" << "no" << "com" << "time" << "tim" << "name" << "fsize";
-			to << "created_at" << "width" << "md5" << "height" << "id" << "comment" << "created_at" << "tim" << "author" << "file_size";
-			for (int i = 0; i < from.count(); i++)
-			{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
-		}
 		// Anime-pictures format
 		else if (sc.contains("download_count"))
 		{
