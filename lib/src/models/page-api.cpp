@@ -253,7 +253,7 @@ void PageApi::parse()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
-	log(QString("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 total (%6), %7 pages (%8)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+	log(QString("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 tags (%6), %7 total (%8), %9 pages (%10)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
 	m_reply->deleteLater();
 	m_reply = nullptr;
