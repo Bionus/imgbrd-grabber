@@ -73,7 +73,6 @@ void Logger::log(const QString &l, LogLevel level)
 		setLogFile(savePath("main.log", false, true));
 
 	static const QStringList levels = QStringList() << "Debug" << "Info" << "Warning" << "Error";
-	static const QStringList colors = QStringList() << "#999" << "" << "orange" << "red";
 	QString levelStr = levels[level];
 	QDateTime time = QDateTime::currentDateTime();
 
@@ -82,10 +81,7 @@ void Logger::log(const QString &l, LogLevel level)
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	QString levelColor = colors[level];
 	QString msg = "[" + time.toString("hh:mm:ss.zzz") + "][" + levelStr + "] " + l;
-	if (!levelColor.isEmpty())
-		msg = QString("<span style='color:%1'>%2</span>").arg(levelColor, msg);
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG

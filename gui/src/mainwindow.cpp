@@ -954,7 +954,32 @@ void mainWindow::logShow(const QString &msg)
 	if (!m_showLog)
 		return;
 
-	ui->labelLog->appendHtml(msg);
+	// Find meta delimitations
+	QString htmlMsg = msg;
+	int timeEnd = msg.indexOf(']');
+	int levelEnd = msg.indexOf(']', timeEnd + 1);
+	QString level = msg.mid(timeEnd + 2, levelEnd - timeEnd - 2);
+
+	// Level color
+	static const QMap<QString, QString> colors
+	{
+		{ "Debug", "#999" },
+		{ "Info", "" },
+		{ "Warning", "orange" },
+		{ "Error", "red" },
+	};
+	QString levelColor = colors[level];
+	if (!levelColor.isEmpty())
+	{
+		htmlMsg.insert(msg.size(), "</span>");
+		htmlMsg.insert(timeEnd + 1, QString("<span style='color:%1'>").arg(colors[level]));
+	}
+
+	// Time color
+	htmlMsg.insert(timeEnd + 1, "</span>");
+	htmlMsg.insert(0, "<span style='color:darkgreen'>");
+
+	ui->labelLog->appendHtml(htmlMsg);
 	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
 void mainWindow::logClear()
