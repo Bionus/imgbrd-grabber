@@ -81,7 +81,6 @@ void DanbooruTest::testHtmlTags()
 
 void DanbooruTest::testXmlTags()
 {
-
 	for (int i = 0; i < 2; ++i)
 	{
 		QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "xml", "tags.xml", i != 0);
@@ -96,7 +95,6 @@ void DanbooruTest::testXmlTags()
 
 void DanbooruTest::testJsonTags()
 {
-
 	for (int i = 0; i < 2; ++i)
 	{
 		QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "json", "tags.json", i != 0);

@@ -2,7 +2,6 @@
 #define TAG_STYLIST_TEST_H
 
 #include <QSettings>
-#include "tags/tag-stylist.h"
 #include "test-suite.h"
 
 
