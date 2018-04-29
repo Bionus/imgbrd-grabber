@@ -133,7 +133,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<tag>.+?)".+?<span class="tag__count">\\s*\\((?<count>\\d+)\\)</span>', src),
+                        tags: Grabber.regexToTags('<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\\d+)" data-tag-name="(?<name>.+?)".+?<span class="tag__count">\\s*\\((?<count>\\d+)\\)</span>', src),
                     };
                 },
             },

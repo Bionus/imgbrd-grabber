@@ -160,7 +160,7 @@ export const source: any = {
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*<a.+?>\\?</a>\\s*<a[^>]+>(?<tag>.*?)</a>\\s*</td>\\s*<td>(?<type>.+?)</td>\\s*<td[^>]*><a href="/tag/edit/(?<id>\\d+)">', src),
+                        tags: Grabber.regexToTags('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*<a.+?>\\?</a>\\s*<a[^>]+>(?<name>.*?)</a>\\s*</td>\\s*<td>(?<type>.+?)</td>\\s*<td[^>]*><a href="/tag/edit/(?<id>\\d+)">', src),
                     };
                 },
             },
