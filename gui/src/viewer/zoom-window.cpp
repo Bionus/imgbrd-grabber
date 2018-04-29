@@ -1093,7 +1093,9 @@ void ZoomWindow::urlChanged(const QString &before, const QString &after)
 void ZoomWindow::load(QSharedPointer<Image> image)
 {
 	emit clearLoadQueue();
-	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails);
+
+	if (!m_image.isNull())
+	{ disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails); }
 
 	m_displayImage = QPixmap();
 	m_loadedImage = false;
