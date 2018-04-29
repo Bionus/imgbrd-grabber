@@ -51,9 +51,9 @@ void clearLayout(QLayout *layout)
 	if (layout == nullptr)
 		return;
 
-	QLayoutItem *item;
-	while ((item = layout->takeAt(0)))
+	while (layout->count() > 0)
 	{
+		QLayoutItem *item = layout->takeAt(0);
 		if (item->layout())
 		{
 			clearLayout(item->layout());
