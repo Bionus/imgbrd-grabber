@@ -42,6 +42,7 @@ Site::Site(const QString &url, Source *source)
 	// Cache
 	auto *diskCache = new QNetworkDiskCache(m_manager);
 	diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
+	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
 	m_manager->setCache(diskCache);
 
 	// Cookies
