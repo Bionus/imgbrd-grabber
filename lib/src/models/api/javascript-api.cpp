@@ -140,20 +140,20 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		else if (!tag.isObject())
 		{ continue; }
 
-		int id = tag.hasProperty("id") ? tag.property("id").toInt() : 0;
+		int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
 		QString text = tag.property("name").toString();
-		int count = tag.hasProperty("count") ? tag.property("count").toInt() : 0;
+		int count = tag.hasProperty("count") && !tag.property("id").isUndefined() ? tag.property("count").toInt() : 0;
 
 		QString type;
 		int typeId;
-		if (tag.hasProperty("type"))
+		if (tag.hasProperty("type") && !tag.property("type").isUndefined())
 		{
 			if (tag.property("type").isNumber())
 			{ typeId = tag.property("type").toInt(); }
 			else
 			{ type = tag.property("type").toString(); }
 		}
-		if (tag.hasProperty("typeId"))
+		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined())
 		{ typeId = tag.property("typeId").toInt(); }
 
 		TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));

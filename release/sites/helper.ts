@@ -5,7 +5,7 @@ Grabber.mapFields = (data: any, map: any): any => {
     }
     for (const to in map) {
         const from = map[to];
-        let val = from in data ? data[from] : undefined;
+        let val = from in data && data[from] !== null ? data[from] : undefined;
         if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
             val = val["#text"];
         }
