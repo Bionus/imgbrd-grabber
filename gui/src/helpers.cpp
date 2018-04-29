@@ -59,7 +59,8 @@ void clearLayout(QLayout *layout)
 			clearLayout(item->layout());
 			item->layout()->deleteLater();
 		}
-		item->widget()->deleteLater();
+		if (item->widget())
+		{ item->widget()->deleteLater(); }
 		delete item;
 	}
 }
