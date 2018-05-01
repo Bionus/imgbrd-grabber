@@ -39,7 +39,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
-	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
+	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
