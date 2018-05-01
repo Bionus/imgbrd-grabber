@@ -177,8 +177,11 @@ void batchWindow::setCount(int cnt)
 void batchWindow::addImage(const QString &url, int batch, float size)
 {
 	m_urls.append(url);
-	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
-	id->setIcon(QIcon(":/images/status/pending.png"));
+
+	static QIcon pendingIcon(":/images/status/pending.png");
+	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
+	id->setIcon(pendingIcon);
+
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
@@ -233,7 +236,8 @@ void batchWindow::loadingImage(const QString &url)
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/downloading.png"));
+		static QIcon downloadingIcon(":/images/status/downloading.png");
+		ui->tableWidget->item(i, 0)->setIcon(downloadingIcon);
 
 		// Go to downloading image
 		if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
@@ -283,6 +287,11 @@ void batchWindow::sizeImage(const QString &url, float size)
 }
 void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult result)
 {
+	static QIcon ignoredIcon(":/images/status/ignored.png");
+	static QIcon errorIcon(":/images/status/error.png");
+	static QIcon okIcon(":/images/status/ok.png");
+	static QIcon unknownIcon(":/images/status/unknown.png");
+
 	// Update speed
 	m_speeds.remove(url);
 	drawSpeed();
@@ -298,24 +307,24 @@ void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult resul
 		{
 			case Downloadable::SaveResult::AlreadyExists:
 			case Downloadable::SaveResult::Ignored:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ignored.png"));
+				ui->tableWidget->item(i, 0)->setIcon(ignoredIcon);
 				break;
 
 			case Downloadable::SaveResult::Error:
 			case Downloadable::SaveResult::NotFound:
 			case Downloadable::SaveResult::NetworkError:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
+				ui->tableWidget->item(i, 0)->setIcon(errorIcon);
 				break;
 
 			case Downloadable::SaveResult::Moved:
 			case Downloadable::SaveResult::Copied:
 			case Downloadable::SaveResult::Saved:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
+				ui->tableWidget->item(i, 0)->setIcon(okIcon);
 				ui->tableWidget->item(i, 5)->setText("100 %");
 				break;
 
 			default:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/unknown.png"));
+				ui->tableWidget->item(i, 0)->setIcon(unknownIcon);
 				break;
 		}
 	}
