@@ -1516,7 +1516,6 @@ void mainWindow::getAllImages()
 	m_progressDialog->clearImages();
 	m_progressDialog->setText(tr("Preparing images, please wait..."));
 	m_progressDialog->setCount(m_getAllRemaining.count());
-	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	for (const BatchDownloadImage &download : m_getAllRemaining)
 	{
 		int siteId = download.siteId(m_groupBatchs);
