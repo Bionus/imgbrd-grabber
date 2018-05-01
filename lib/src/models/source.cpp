@@ -10,6 +10,7 @@
 #include "models/api/api.h"
 #include "models/api/html-api.h"
 #include "models/api/javascript-api.h"
+#include "models/api/javascript-console-helper.h"
 #include "models/api/javascript-grabber-helper.h"
 #include "models/api/json-api.h"
 #include "models/api/rss-api.h"
@@ -35,6 +36,7 @@ QJSEngine *Source::jsEngine()
 	{
 		engine = new QJSEngine();
 		engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
+		engine->globalObject().setProperty("console", engine->newQObject(new JavascriptConsoleHelper("[JavaScript] ", engine)));
 
 		// JavaScript helper file
 		QFile jsHelper(m_dir + "/../helper.js");
