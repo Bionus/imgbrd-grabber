@@ -4,11 +4,11 @@
 
 
 JavascriptGrabberHelper::JavascriptGrabberHelper(QJSEngine &engine)
-	: m_engine(engine)
+	: QObject(&engine), m_engine(engine)
 {}
 
 
-QJSValue JavascriptGrabberHelper::regexMatches(QString regex, QString txt)
+QJSValue JavascriptGrabberHelper::regexMatches(const QString &regex, const QString &txt) const
 {
 	QJSValue ret = m_engine.newArray();
 
@@ -16,7 +16,7 @@ QJSValue JavascriptGrabberHelper::regexMatches(QString regex, QString txt)
 	const QStringList &groups = reg.namedCaptureGroups();
 	auto matches = reg.globalMatch(txt);
 
-	int matchI = 0;
+	quint32 matchI = 0;
 	while (matches.hasNext())
 	{
 		QJSValue jsMatch = m_engine.newObject();
@@ -46,10 +46,11 @@ QJSValue JavascriptGrabberHelper::regexMatches(QString regex, QString txt)
 
 		ret.setProperty(matchI++, jsMatch);
 	}
+
 	return ret;
 }
 
-QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node)
+QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 {
 	QJSValue obj = m_engine.newObject();
 
@@ -58,15 +59,16 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node)
 	// Element node
 	if (type == QDomNode::ElementNode)
 	{
-		if (node.attributes().count() > 0)
+		const QDomNamedNodeMap &attributes = node.attributes();
+		if (attributes.count() > 0)
 		{
-			QJSValue attributes = m_engine.newObject();
-			for (int j = 0; j < node.attributes().count(); j++)
+			QJSValue attr = m_engine.newObject();
+			for (int j = 0; j < attributes.count(); j++)
 			{
-				QDomNode attribute = node.attributes().item(j);
-				attributes.setProperty(attribute.nodeName(), attribute.nodeValue());
+				QDomNode attribute = attributes.item(j);
+				attr.setProperty(attribute.nodeName(), attribute.nodeValue());
 			}
-			obj.setProperty("@attributes", attributes);
+			obj.setProperty("@attributes", attr);
 		}
 	}
 
@@ -77,9 +79,10 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node)
 	// Children
 	if (node.hasChildNodes())
 	{
-		for (int i = 0; i < node.childNodes().count(); i++)
+		const QDomNodeList &children = node.childNodes();
+		for (int i = 0; i < children.count(); i++)
 		{
-			const QDomNode &item = node.childNodes().item(i);
+			const QDomNode &item = children.item(i);
 			const QString &nodeName = item.nodeName();
 			if (obj.property(nodeName).isUndefined())
 			{ obj.setProperty(nodeName, _parseXMLRec(item)); }
@@ -87,16 +90,16 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node)
 			{
 				QJSValue prop = obj.property(nodeName);
 
-				if (!obj.property(nodeName).isArray())
+				if (!prop.isArray())
 				{
-					QJSValue old = prop;
-					obj.setProperty(nodeName, m_engine.newArray());
-
-					prop = obj.property(nodeName);
-					prop.property("push").callWithInstance(prop, QList<QJSValue>() << old);
+					QJSValue newProp = m_engine.newArray();
+					newProp.setProperty(0, prop);
+					obj.setProperty(nodeName, newProp);
+					prop = newProp;
 				}
 
-				prop.property("push").callWithInstance(prop, QList<QJSValue>() << _parseXMLRec(item));
+				quint32 length = prop.property("length").toUInt();
+				prop.setProperty(length, _parseXMLRec(item));
 			}
 		}
 	}
@@ -104,7 +107,7 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node)
 	return obj;
 }
 
-QJSValue JavascriptGrabberHelper::parseXML(QString txt)
+QJSValue JavascriptGrabberHelper::parseXML(const QString &txt) const
 {
 	QDomDocument doc;
 	QString errorMsg;
