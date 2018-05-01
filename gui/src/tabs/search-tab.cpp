@@ -394,7 +394,10 @@ void searchTab::httpsRedirect(Page *page)
 	}
 
 	if (setSsl)
-	{ page->site()->setSetting("ssl", true, false); }
+	{
+		log(QString("[%1] Enabling HTTPS").arg(page->site()->url()), Logger::Info);
+		page->site()->setSetting("ssl", true, false);
+	}
 }
 
 void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs)
