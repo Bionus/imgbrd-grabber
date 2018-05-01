@@ -504,8 +504,17 @@ void searchTab::finishedLoadingPreview()
 	if (m_stop)
 		return;
 
-	QSharedPointer<Image> img;
 	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+	// Aborted
+	if (reply->error() == QNetworkReply::OperationCanceledError)
+	{
+		reply->deleteLater();
+		return;
+	}
+
+	// Try to find associated image
+	QSharedPointer<Image> img;
 	if (m_thumbnailsLoading.contains(reply))
 	{
 		img = m_thumbnailsLoading[reply];
@@ -514,13 +523,6 @@ void searchTab::finishedLoadingPreview()
 	else
 	{
 		log(QString("Could not find image related to loaded thumbnail '%1'").arg(reply->url().toString()), Logger::Error);
-		return;
-	}
-
-	// Aborted
-	if (reply->error() == QNetworkReply::OperationCanceledError)
-	{
-		reply->deleteLater();
 		return;
 	}
 
