@@ -268,6 +268,7 @@ void searchTab::clear()
 
 	m_selectedImagesPtrs.clear();
 	m_thumbnailsLoading.clear();
+	m_validImages.clear();
 }
 
 TextEdit *searchTab::createAutocomplete()
@@ -330,6 +331,7 @@ void searchTab::finishedLoading(Page* page)
 			validImages.append(img);
 		else if (!error.isEmpty())
 			log(error);
+	m_validImages.insert(page, validImages);
 
 	// Remove already existing images for merged results
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
@@ -1014,14 +1016,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, Page *page, bool merg
 	if (merge)
 	{ relativePosition = absolutePosition; }
 	else
-	{
-		QString error;
-		for (const QSharedPointer<Image> &i : page->images())
-			if (i == img)
-				break;
-			else if (validateImage(i, error))
-				relativePosition++;
-	}
+	{ relativePosition = m_validImages[page].indexOf(img); }
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
