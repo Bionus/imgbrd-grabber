@@ -2,7 +2,7 @@
 <Site>
 	<Name>Gelbooru (0.2)</Name>
 	<Urls>
-		<ImageReplaces>thumbnail_->&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</ImageReplaces>
+		<ImageReplaces>thumbnail_->&amp;/thumbnails/->//images/&amp;sample_->&amp;/samples/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</ImageReplaces>
 		<Xml>
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 			<MaxLimit>1000</MaxLimit>
