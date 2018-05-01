@@ -157,6 +157,7 @@ Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini"; DestD
 Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Booru-on-rails\derpibooru.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails\derpibooru.org"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\model.xml";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
