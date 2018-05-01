@@ -159,6 +159,11 @@ void PageApi::parse()
 		return;
 	}
 
+	parseActual();
+}
+
+void PageApi::parseActual()
+{
 	// Try to read the reply
 	m_source = m_reply->readAll();
 	if (m_source.isEmpty() || m_reply->error() != QNetworkReply::NoError)
