@@ -60,6 +60,8 @@ DisableReadyMemo=no
 [CustomMessages]
 en.IGL=Imageboard-Grabber Links
 fr.IGL=Liens Imageboard-Grabber
+DependenciesDir=MyProgramDependencies
+WindowsServicePack=Windows %1 Service Pack %2
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue
