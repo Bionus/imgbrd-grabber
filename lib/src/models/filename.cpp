@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <algorithm>
 #include "functions.h"
+#include "post-filter.h"
 #include "models/api/api.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -193,40 +194,10 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 		return result.toBool();
 	}
 
-	// Other conditions require tag tokens
-	if (!tokens.contains("allos"))
-		return false;
-
 	QStringList options = cond.split(' ');
+	QStringList matches = PostFilter::filter(tokens, options);
 
-	// Token conditions
-	int condPer = cond.count('%');
-	if (condPer > 0 && condPer % 2 == 0)
-	{
-		QRegularExpression reg("%([^%]+?)%");
-		auto matches = reg.globalMatch(cond);
-		while (matches.hasNext())
-		{
-			auto match = matches.next();
-			QString token = match.captured(1);
-			if (tokens.contains(token))
-			{
-				options.removeOne(match.captured(0));
-
-				QVariant val = tokens[token].value();
-				if (val.type() == QVariant::StringList)
-				{ options.append(val.toStringList()); }
-			}
-		}
-	}
-
-	// Tag conditions
-	QStringList tags = tokens["allos"].value().toStringList();
-	for (const QString &opt : options)
-		if (tags.contains(opt))
-			return true;
-
-	return false;
+	return matches.isEmpty();
 }
 
 QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const

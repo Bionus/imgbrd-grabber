@@ -550,6 +550,17 @@ void FilenameTest::testConditionalsToken()
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testConditionalsMeta()
+{
+	m_settings->setValue("Filenames/0_fn", "explicit %md5%.%ext%");
+	m_settings->setValue("Filenames/0_dir", QDir::homePath());
+	m_settings->setValue("Filenames/0_cond", "rating:explicit");
+	m_settings->setValue("Filenames/1_fn", "safe %md5%.%ext%");
+	m_settings->setValue("Filenames/1_dir", QDir::homePath());
+	m_settings->setValue("Filenames/1_cond", "rating:safe");
+
+	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "safe 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
 void FilenameTest::testConditionalsCustom()
 {
 	m_settings->setValue("Save/Customs/custom1", "tag4 tag7");
