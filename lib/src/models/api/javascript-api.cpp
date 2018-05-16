@@ -169,10 +169,12 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 	ParsedPage ret;
 
+	m_engineMutex.lock();
 	Site *site = parentPage->site();
 	const QJSValue &api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("search").property("parse");
 	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source);
+	m_engineMutex.unlock();
 
 	// Script errors and exceptions
 	if (results.isError())

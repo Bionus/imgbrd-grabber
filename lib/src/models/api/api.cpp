@@ -262,6 +262,7 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 
 	// Generate image
 	QSharedPointer<Image> img(new Image(site, d, site->getSource()->getProfile(), parentPage));
+	img->moveToThread(this->thread());
 	if (!tags.isEmpty())
 		img->setTags(tags);
 

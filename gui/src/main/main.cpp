@@ -29,6 +29,7 @@
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "mainwindow.h"
+#include "models/page-api.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "updater/update-dialog.h"
@@ -51,6 +52,8 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY

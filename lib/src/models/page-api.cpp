@@ -1,6 +1,7 @@
 #include "models/page-api.h"
 #include <QDomDocument>
 #include <QRegularExpression>
+#include <QtConcurrentRun>
 #include <QtMath>
 #include "functions.h"
 #include "logger.h"
@@ -159,7 +160,7 @@ void PageApi::parse()
 		return;
 	}
 
-	parseActual();
+	QtConcurrent::run(this, &PageApi::parseActual);
 }
 
 void PageApi::parseActual()

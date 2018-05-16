@@ -2,6 +2,7 @@
 #define JAVASCRIPT_API_H
 
 #include <QJSValue>
+#include <QMutex>
 #include "models/api/api.h"
 
 
@@ -40,6 +41,7 @@ class JavascriptApi : public Api
 	private:
 		const QJSValue &m_source;
 		QString m_key;
+		mutable QMutex m_engineMutex;
 };
 
 #endif // JAVASCRIPT_API_H
