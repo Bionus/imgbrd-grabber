@@ -1,6 +1,7 @@
 #include "models/api/javascript-api.h"
 #include <QJSEngine>
 #include <QJSValueIterator>
+#include <QMutexLocker>
 #include "functions.h"
 #include "logger.h"
 #include "mixed-settings.h"
@@ -77,6 +78,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 {
 	PageUrl ret;
 
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("search").property("url");
 	if (urlFunction.isUndefined())
@@ -248,6 +250,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 bool JavascriptApi::canLoadTags() const
 {
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("tags").property("url");
 	return !urlFunction.isUndefined();
@@ -257,6 +260,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 {
 	PageUrl ret;
 
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("tags").property("url");
 	if (urlFunction.isUndefined())
@@ -296,9 +300,11 @@ ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
 {
 	ParsedTags ret;
 
+	m_engineMutex.lock();
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("tags").property("parse");
 	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+	m_engineMutex.unlock();
 
 	// Script errors and exceptions
 	if (results.isError())
@@ -318,6 +324,7 @@ ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
 
 bool JavascriptApi::canLoadDetails() const
 {
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("details").property("url");
 	return !urlFunction.isUndefined();
@@ -327,6 +334,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 {
 	PageUrl ret;
 
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("details").property("url");
 	if (urlFunction.isUndefined())
@@ -345,9 +353,11 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 {
 	ParsedDetails ret;
 
+	m_engineMutex.lock();
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("details").property("parse");
 	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+	m_engineMutex.unlock();
 
 	// Script errors and exceptions
 	if (results.isError())
@@ -392,6 +402,7 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 
 bool JavascriptApi::canLoadCheck() const
 {
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("check").property("url");
 	return !urlFunction.isUndefined();
@@ -401,6 +412,7 @@ PageUrl JavascriptApi::checkUrl() const
 {
 	PageUrl ret;
 
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("check").property("url");
 	if (urlFunction.isUndefined())
@@ -419,9 +431,11 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source) const
 {
 	ParsedCheck ret;
 
+	m_engineMutex.lock();
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("check").property("parse");
 	QJSValue result = parseFunction.call(QList<QJSValue>() << source);
+	m_engineMutex.unlock();
 
 	// Script errors and exceptions
 	if (result.isError())
@@ -438,6 +452,7 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source) const
 
 QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) const
 {
+	QMutexLocker locker(&m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	if (api.hasProperty(key))
 	{ return api.property(key); }
