@@ -81,7 +81,7 @@ Source::Source(Profile *profile, const QString &dir)
 			};
 
 			// Javascript models
-			bool enableJs = m_profile->getSettings()->value("enableJsModels", false).toBool();
+			bool enableJs = m_profile->getSettings()->value("enableJsModels", true).toBool();
 			QFile js(m_dir + "/model.js");
 			if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
