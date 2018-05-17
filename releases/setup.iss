@@ -108,6 +108,7 @@ Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignorev
 Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#OpenSSLDir}\libssl32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\qscintilla2.dll";             DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtDir}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
