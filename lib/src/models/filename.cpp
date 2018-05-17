@@ -370,13 +370,13 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	int cnt = fns.count();
 	for (int i = 0; i < cnt; ++i)
 	{
-		// Trim directory names
-		fns[i] = fns[i].trimmed();
-		fns[i].replace(QRegularExpression(" */ *"), "/");
-
-		// Max filename size option
 		if (shouldFixFilename)
 		{
+			// Trim directory names
+			fns[i] = fns[i].trimmed();
+			fns[i].replace(QRegularExpression(" */ *"), "/");
+
+			// Max filename size option
 			int limit = !maxLength ? 0 : settings->value("Save/limit").toInt();
 			fns[i] = fixFilename(fns[i], folder, limit);
 		}
