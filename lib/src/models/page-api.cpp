@@ -160,7 +160,8 @@ void PageApi::parse()
 		return;
 	}
 
-	QtConcurrent::run(this, &PageApi::parseActual);
+	// QtConcurrent::run(this, &PageApi::parseActual);
+	parseActual();
 }
 
 void PageApi::parseActual()
