@@ -3,6 +3,7 @@
 
 #include <QJSValue>
 #include <QList>
+#include <QMutex>
 #include <QString>
 #include "tags/tag-name-format.h"
 #include "updater/source-updater.h"
@@ -31,6 +32,7 @@ class Source : public QObject
 
 	protected:
 		QJSEngine *jsEngine();
+		QMutex *jsEngineMutex();
 
 	private:
 		QString m_dir;

@@ -13,7 +13,7 @@ class JavascriptApi : public Api
 	Q_OBJECT
 
 	public:
-		explicit JavascriptApi(const QMap<QString, QString> &data, const QJSValue &source, const QString &key);
+		explicit JavascriptApi(const QMap<QString, QString> &data, const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
 		// API
 		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
@@ -41,7 +41,7 @@ class JavascriptApi : public Api
 	private:
 		const QJSValue &m_source;
 		QString m_key;
-		mutable QMutex m_engineMutex;
+		mutable QMutex *m_engineMutex;
 };
 
 #endif // JAVASCRIPT_API_H

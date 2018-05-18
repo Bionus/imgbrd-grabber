@@ -52,6 +52,15 @@ QJSEngine *Source::jsEngine()
 
 	return engine;
 }
+QMutex *Source::jsEngineMutex()
+{
+	static QMutex *mutex = Q_NULLPTR;
+
+	if (mutex == Q_NULLPTR)
+	{ mutex = new QMutex(); }
+
+	return mutex;
+}
 
 Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
@@ -102,7 +111,7 @@ Source::Source(Profile *profile, const QString &dir)
 					while (it.hasNext())
 					{
 						it.next();
-						m_apis.append(new JavascriptApi(details, m_jsSource, it.name()));
+						m_apis.append(new JavascriptApi(details, m_jsSource, jsEngineMutex(), it.name()));
 					}
 					if (m_apis.isEmpty())
 					{ log(QString("No valid source has been found in the model.js file from %1.").arg(m_name)); }

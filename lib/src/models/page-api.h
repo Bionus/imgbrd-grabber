@@ -15,6 +15,7 @@ class Site;
 class PageApi : public QObject
 {
 	Q_OBJECT
+	Q_ENUMS(LoadResult)
 
 	public:
 		enum LoadResult
@@ -82,5 +83,7 @@ class PageApi : public QObject
 		bool			m_imagesCountSafe, m_pagesCountSafe;
 		bool			m_loaded = false;
 };
+
+Q_DECLARE_METATYPE(PageApi::LoadResult)
 
 #endif // PAGE_API_H
