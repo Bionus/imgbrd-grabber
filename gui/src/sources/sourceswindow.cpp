@@ -46,6 +46,11 @@ sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWi
 	connect(ui->checkBox, &QCheckBox::clicked, this, &sourcesWindow::checkClicked);
 	checkUpdate();
 
+	// Set default preset font italic
+	QFont font = ui->comboPresets->itemData(0, Qt::FontRole).value<QFont>();
+	font.setItalic(true);
+	ui->comboPresets->setItemData(0, font, Qt::FontRole);
+
 	// Presets
 	m_presets = loadPresets(m_profile->getSettings());
 	ui->comboPresets->addItems(m_presets.keys());
