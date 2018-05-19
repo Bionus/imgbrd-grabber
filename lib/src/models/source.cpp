@@ -48,6 +48,8 @@ QJSEngine *Source::jsEngine()
 			if (helperResult.isError())
 			{ log(QString("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
 		}
+		else
+		{ log("JavaScript helper file could not be opened", Logger::Error); }
 	}
 
 	return engine;
