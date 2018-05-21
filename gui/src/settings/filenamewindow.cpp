@@ -127,7 +127,6 @@ void FilenameWindow::done(int r)
 		Site *site = sites.first();
 
 		QMap<QString, QString> info;
-		info.insert("site", QString::number((qintptr)site));
 		info.insert("tags_general", "general_1 general_2");
 		info.insert("tags_artist", "artist_1 artist_2");
 		info.insert("tags_model", "model_1 model_2");

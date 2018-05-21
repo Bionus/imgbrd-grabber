@@ -62,7 +62,6 @@ Image::Image(const Image &other)
 	m_status = other.m_status;
 	m_rating = other.m_rating;
 	m_source = other.m_source;
-	m_site = other.m_site;
 	m_savePath = other.m_savePath;
 
 	m_pageUrl = other.m_pageUrl;
@@ -99,8 +98,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_settings = m_profile->getSettings();
 
 	// Parents
-	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
-	//m_parentSite = parent != nullptr ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : nullptr);
 	if (m_parentSite == nullptr)
 	{
 		log("Image has nullptr parent, aborting creation.");
@@ -852,7 +849,6 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 
 QString			Image::url() const			{ return m_url;				}
 QString			Image::rating() const		{ return m_rating;			}
-QString			Image::site() const			{ return m_site;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
 QList<Pool>		Image::pools() const		{ return m_pools;			}
