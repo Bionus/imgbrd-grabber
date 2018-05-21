@@ -3,6 +3,7 @@
 #include <QFile>
 #include <qmath.h>
 #include <iostream>
+#include "downloader/image-downloader.h"
 #include "logger.h"
 #include "models/page.h"
 #include "models/post-filter.h"
@@ -228,10 +229,11 @@ void Downloader::loadNext()
 	if (!m_images.isEmpty())
 	{
 		QSharedPointer<Image> image = m_images.takeFirst();
-		m_imagesDownloading.append(image);
 		log("Loading image '"+image->url()+"'");
-		connect(image.data(), &Image::finishedImage, this, &Downloader::finishedLoadingImage);
-		image->loadImage();
+		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false);
+		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
+		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
+		dwl->save();
 		return;
 	}
 }
@@ -353,37 +355,14 @@ void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
 
 	loadNext();
 }
-void Downloader::finishedLoadingImage()
+void Downloader::finishedLoadingImage(QSharedPointer<Image> image, const QMap<QString, Image::SaveResult> &result)
 {
 	if (m_cancelled)
 		return;
 
-	QSharedPointer<Image> image;
-	for (const QSharedPointer<Image> &i : m_imagesDownloading)
-		if (i.data() == sender())
-			image = i;
-	if (image.isNull())
-		return;
-	m_imagesDownloading.removeAll(image);
-
 	log(QString("Received image '%1'").arg(image->url()));
 
-	if (m_quit)
-	{
-		QStringList paths = image->path(m_filename, m_location);
-		for (QString path : paths)
-		{
-			path = (m_location.endsWith('/') ? m_location.left(m_location.length() - 1) : m_location) + "/" + (path.startsWith('/') ? path.right(path.length() - 1) : path);
-			QFile f(QDir::toNativeSeparators(path));
-			if (f.open(QFile::WriteOnly))
-			{
-				f.write(image->data());
-				f.close();
-				log(QString("Saved to '%1'").arg(path));
-			}
-		}
-	}
-	else
+	if (!m_quit)
 		emit finishedImage(image);
 
 	if (--m_waiting > 0)

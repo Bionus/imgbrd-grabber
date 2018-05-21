@@ -55,7 +55,7 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
-		void finishedLoadingImage();
+		void finishedLoadingImage(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
 		void cancel();
 		void clear();
 
@@ -71,7 +71,7 @@ class Downloader : public QObject
 		QStringList m_blacklistedTags;
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
-		QList<QSharedPointer<Image>> m_images, m_imagesDownloading;
+		QList<QSharedPointer<Image>> m_images;
 		QList<QPair<Site*, int> > m_pagesP, m_oPagesP;
 		QList<Tag> m_results;
 		QVariant m_data;
