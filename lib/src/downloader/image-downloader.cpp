@@ -37,7 +37,7 @@ void ImageDownloader::loadedSave()
 	if (m_paths.isEmpty())
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
 
-	QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false, false);
+	QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false);
 	bool needLoading = false;
 	bool saveOk = false;
 	for (Image::SaveResult res : result)

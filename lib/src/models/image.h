@@ -27,10 +27,10 @@ class Image : public QObject, public Downloadable
 		int			value() const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList	stylishedTags(Profile *profile) const;
-		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false, bool postSave = true);
+		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
 		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
-		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
-		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
+		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
 		QString		md5() const;
 		QString		url() const;
 		QString		rating() const;

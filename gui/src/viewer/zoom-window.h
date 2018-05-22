@@ -53,8 +53,8 @@ class ZoomWindow : public QWidget
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
-		QStringList saveImageNow(bool fav = false);
-		QString saveImageAs();
+		QStringList saveImageNow(bool fav = false, bool saveAs = false);
+		void saveImageAs();
 		void openUrl(const QString &);
 		void openPool(const QString &);
 		void openPoolId(Page*);
@@ -137,6 +137,7 @@ class ZoomWindow : public QWidget
 		QString m_source;
 		QString m_imagePath;
 		QTime m_lastWheelEvent;
+		QString m_saveAsPending;
 
 		QAffiche *m_fullScreen;
 		QTimer m_slideshow;

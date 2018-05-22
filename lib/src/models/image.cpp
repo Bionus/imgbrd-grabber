@@ -630,7 +630,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return stylist.stylished(m_tags);
 }
 
-Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary, bool postSave)
+Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSave)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -664,52 +664,27 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 			{
 				if (m_data.isEmpty())
 				{
-					if (!loadIfNecessary || m_loadedImage)
-						return SaveResult::NotLoaded;
+					log("Trying to save a not loaded image", Logger::Warning);
+					return SaveResult::NotLoaded;
+				}
 
-					log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(path));
-					QEventLoop loopImage;
-					FileDownloader fileDownloader(this);
-					connect(&fileDownloader, &FileDownloader::writeError, &loopImage, &QEventLoop::quit);
-					connect(&fileDownloader, &FileDownloader::networkError, &loopImage, &QEventLoop::quit);
-					connect(&fileDownloader, &FileDownloader::success, &loopImage, &QEventLoop::quit);
-					loadImage(false);
-					if (!fileDownloader.start(m_loadImage, path))
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+
+				if (f.open(QFile::WriteOnly))
+				{
+					if (f.write(m_data) < 0)
 					{
-						log("Unable to open file");
+						f.close();
+						f.remove();
+						log(QString("File saving error: %1)").arg(f.errorString()), Logger::Error);
 						return SaveResult::Error;
 					}
-					loopImage.exec();
-
-					// Handle network errors
-					if (m_loadImageError != QNetworkReply::NoError)
-					{
-						f.remove();
-						if (m_loadImageError == QNetworkReply::ContentNotFoundError)
-						{ return SaveResult::NotFound; }
-						return SaveResult::NetworkError;
-					}
+					f.close();
 				}
 				else
 				{
-					log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
-
-					if (f.open(QFile::WriteOnly))
-					{
-						if (f.write(m_data) < 0)
-						{
-							f.close();
-							f.remove();
-							log(QString("File saving error: %1)").arg(f.errorString()), Logger::Error);
-							return SaveResult::Error;
-						}
-						f.close();
-					}
-					else
-					{
-						log("Unable to open file");
-						return SaveResult::Error;
-					}
+					log("Unable to open file");
+					return SaveResult::Error;
 				}
 			}
 		}
@@ -806,17 +781,17 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 
 	setSavePath(path);
 }
-QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (const QString &path : paths)
-		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
+		res.insert(path, save(path, force, false, addMd5, startCommands, count));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
-	return save(paths, addMd5, startCommands, count, false, loadIfNecessary);
+	return save(paths, addMd5, startCommands, count, false);
 }
 
 QList<Tag> Image::filteredTags(const QStringList &remove) const
@@ -1248,7 +1223,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 Image::SaveResult Image::preSave(const QString &path)
 {
-	return save(path, false, false, false, false, 0, false, false);
+	return save(path, false, false, false, false, 1, false);
 }
 
 void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)

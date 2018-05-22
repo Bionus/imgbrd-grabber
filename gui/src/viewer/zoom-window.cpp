@@ -241,7 +241,7 @@ void ZoomWindow::copyImageFileToClipboard()
 	QString path = m_imagePath;
 	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false, false, 1, true);
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 
@@ -635,35 +635,42 @@ void ZoomWindow::pendingUpdate()
 	if (!m_loadedImage && !m_tooBig)
 		return;
 
-	bool fav = (m_mustSave == 3 || m_mustSave == 4);
-	Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
-
 	// If the image is loaded but we need their tags and we don't have them, we wait
-	if (!m_loadedDetails && fn.needExactTags(m_site))
-		return;
+	if (m_mustSave != 6)
+	{
+		bool fav = (m_mustSave == 3 || m_mustSave == 4);
+		Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
+
+		if (!m_loadedDetails && fn.needExactTags(m_site))
+			return;
+	}
 
 	switch (m_mustSave)
 	{
-		case 1:
+		case 1: // Save
 			saveImageNow();
 			break;
 
-		case 2:
+		case 2: // Save and quit
 			if (!saveImageNow().isEmpty())
 				close();
 			break;
 
-		case 3:
+		case 3: // Save (fav)
 			saveImageNow(true);
 			break;
 
-		case 4:
+		case 4: // Save and quit (fav)
 			if (!saveImageNow(true).isEmpty())
 				close();
 			break;
 
-		case 5:
+		case 5: // Open image in viewer
 			openFile(true);
+			break;
+
+		case 6: // Save as
+			saveImageNow(false, true);
 			break;
 	}
 
@@ -832,34 +839,41 @@ void ZoomWindow::saveImage(bool fav)
 }
 void ZoomWindow::saveImageFav()
 { saveImage(true); }
-QStringList ZoomWindow::saveImageNow(bool fav)
+QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 {
-	QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
-	if (pth.right(1) == "/")
-	{ pth = pth.left(pth.length()-1); }
+	QStringList paths;
+	QMap<QString, Image::SaveResult> results;
 
-	if (pth.isEmpty() || m_settings->value("Save/filename").toString().isEmpty())
+	if (saveAs)
+	{ results = m_image->save(QStringList() << m_saveAsPending, true, false, 1, true); }
+	else
 	{
-		int reply;
-		if (pth.isEmpty())
-		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save folder! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
-		else
-		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
-		if (reply == QMessageBox::Yes)
+		QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
+		if (pth.right(1) == "/")
+		{ pth = pth.left(pth.length()-1); }
+
+		if (pth.isEmpty() || m_settings->value("Save/filename").toString().isEmpty())
 		{
-			auto *options = new optionsWindow(m_profile, parentWidget());
-			//options->onglets->setCurrentIndex(3);
-			options->setWindowModality(Qt::ApplicationModal);
-			options->show();
-			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
+			int reply;
+			if (pth.isEmpty())
+			{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save folder! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
+			else
+			{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
+			if (reply == QMessageBox::Yes)
+			{
+				auto *options = new optionsWindow(m_profile, parentWidget());
+				//options->onglets->setCurrentIndex(3);
+				options->setWindowModality(Qt::ApplicationModal);
+				options->show();
+				connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
+			}
+			return QStringList();
 		}
-		return QStringList();
+
+		results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
 	}
 
-	QStringList paths;
-	QMap<QString, Image::SaveResult> results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth, true, false, 1, true);
-	auto it = results.begin();
-	while (it != results.end())
+	for (auto it = results.begin(); it != results.end(); ++it)
 	{
 		Image::SaveResult res = it.value();
 		paths.append(it.key());
@@ -893,8 +907,6 @@ QStringList ZoomWindow::saveImageNow(bool fav)
 				return QStringList();
 				break;
 		}
-
-		++it;
 	}
 
 	if (m_mustSave == 2 || m_mustSave == 4)
@@ -904,7 +916,7 @@ QStringList ZoomWindow::saveImageNow(bool fav)
 	return paths;
 }
 
-QString ZoomWindow::saveImageAs()
+void ZoomWindow::saveImageAs()
 {
 	Filename format(m_settings->value("Save/filename").toString());
 	QStringList filenames = format.path(*m_image, m_profile);
@@ -915,13 +927,12 @@ QString ZoomWindow::saveImageAs()
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
-		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
+		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
 
-		m_image->save(path, true, true, true, false, 1, true);
-		m_imagePath = path;
+		m_saveAsPending = path;
+		m_mustSave = 6;
+		pendingUpdate();
 	}
-
-	return path;
 }
 
 
@@ -1215,7 +1226,7 @@ void ZoomWindow::openFile(bool now)
 	QString path = m_imagePath;
 	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false, false, 1, true);
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 
