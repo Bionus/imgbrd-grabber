@@ -245,16 +245,19 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	tokens.insert("count", Token(counter));
 
 	// Conditional filenames
-	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-	for (auto it = filenames.begin(); it != filenames.end(); ++it)
+	if (complex)
 	{
-		if (matchConditionalFilename(it.key(), settings, tokens))
+		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
+		for (auto it = filenames.begin(); it != filenames.end(); ++it)
 		{
-			const QPair<QString, QString> &result = it.value();
-			if (!result.first.isEmpty())
-			{ filename = result.first; }
-			if (!result.second.isEmpty())
-			{ folder = result.second; }
+			if (matchConditionalFilename(it.key(), settings, tokens))
+			{
+				const QPair<QString, QString> &result = it.value();
+				if (!result.first.isEmpty())
+				{ filename = result.first; }
+				if (!result.second.isEmpty())
+				{ folder = result.second; }
+			}
 		}
 	}
 
