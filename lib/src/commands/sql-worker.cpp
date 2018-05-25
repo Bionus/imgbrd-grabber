@@ -22,10 +22,18 @@ bool SqlWorker::connect()
 		return true;
 
 	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
-	db.setHostName(m_host);
 	db.setDatabaseName(m_database);
 	db.setUserName(m_user);
 	db.setPassword(m_password);
+
+	int portSeparator = m_host.lastIndexOf(':');
+	if (portSeparator > 0)
+	{
+		db.setHostName(m_host.left(portSeparator));
+		db.setPort(m_host.mid(portSeparator + 1).toInt());
+	}
+	else
+	{ db.setHostName(m_host); }
 
 	if (!db.open())
 	{
