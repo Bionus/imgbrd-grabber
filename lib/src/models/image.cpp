@@ -663,10 +663,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 			else
 			{
 				if (m_data.isEmpty())
-				{
-					log("Trying to save a not loaded image", Logger::Warning);
-					return SaveResult::NotLoaded;
-				}
+				{ return SaveResult::NotLoaded; }
 
 				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 
