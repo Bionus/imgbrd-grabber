@@ -1101,6 +1101,14 @@ void ZoomWindow::urlChanged(const QString &before, const QString &after)
 }
 
 
+void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site)
+{
+	m_images = images;
+	m_site = site;
+
+	load(image);
+}
+
 void ZoomWindow::load(QSharedPointer<Image> image)
 {
 	emit clearLoadQueue();

@@ -74,6 +74,7 @@ class ZoomWindow : public QWidget
 		void updateWindowTitle();
 		void showLoadingError(const QString &error);
 		void setButtonState(bool fav, SaveButtonState state);
+		void reuse(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site);
 
 		// Context menus
 		void imageContextMenu();

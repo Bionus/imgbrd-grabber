@@ -6,6 +6,7 @@
 #include <QLayout>
 #include <QList>
 #include <QMap>
+#include <QPointer>
 #include <QProgressBar>
 #include <QPushButton>
 #include <QSignalMapper>
@@ -24,6 +25,7 @@ class QBouton;
 class FixedSizeGridLayout;
 class TextEdit;
 class VerticalScrollArea;
+class ZoomWindow;
 
 class searchTab : public QWidget
 {
@@ -84,6 +86,7 @@ class searchTab : public QWidget
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
+		void openImage(QSharedPointer<Image> image);
 		// Pagination
 		void firstPage();
 		void previousPage();
@@ -168,6 +171,7 @@ class searchTab : public QWidget
 		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;
 		int m_endlessLoadOffset;
 		bool m_pageMergedMode;
+		QPointer<ZoomWindow> m_lastZoomWindow;
 
 		// History
 		bool m_from_history;

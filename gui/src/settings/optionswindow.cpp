@@ -227,6 +227,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	{ ui->comboTheme->addItem(theme, theme); }
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
+	ui->checkSingleDetailsWindow->setChecked(settings->value("Zoom/singleWindow", false).toBool());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
@@ -1004,6 +1005,7 @@ void optionsWindow::save()
 	if (themeLoader.setTheme(theme))
 	{ settings->setValue("theme", theme); }
 
+	settings->setValue("Zoom/singleWindow", ui->checkSingleDetailsWindow->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());

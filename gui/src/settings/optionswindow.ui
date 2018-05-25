@@ -1876,14 +1876,14 @@
       </widget>
       <widget class="QWidget" name="pageImageWindow">
        <layout class="QFormLayout" name="formLayout_22">
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QLabel" name="labelTagsPosition">
           <property name="text">
            <string>Tag list position</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="1" column="1">
          <widget class="QComboBox" name="comboTagsPosition">
           <item>
            <property name="text">
@@ -1902,24 +1902,24 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="labelPreload">
           <property name="text">
            <string>Preloading</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QSpinBox" name="spinPreload"/>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="labelSlideshow">
           <property name="text">
            <string>Slideshow</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinSlideshow">
           <property name="suffix">
            <string>s</string>
@@ -1929,7 +1929,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkImageCloseMiddleClick">
           <property name="text">
            <string>Middle click to close window</string>
@@ -1939,7 +1939,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkImageNavigateScroll">
           <property name="text">
            <string>Enable scroll wheel navigation</string>
@@ -1949,21 +1949,21 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkZoomShowTagCount">
           <property name="text">
            <string>Show tag count</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelImageTagOrder">
           <property name="text">
            <string>Tag order</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QComboBox" name="comboImageTagOrder">
           <item>
            <property name="text">
@@ -1982,14 +1982,14 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
            <string>Image position</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionImage">
           <item>
            <widget class="QComboBox" name="comboImagePositionImageV">
@@ -2037,14 +2037,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelImagePositionAnimation">
           <property name="text">
            <string>Animation position</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionAnimation">
           <item>
            <widget class="QComboBox" name="comboImagePositionAnimationV">
@@ -2092,14 +2092,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="labelImagePositionVideo">
           <property name="text">
            <string>Video position</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionVideo">
           <item>
            <widget class="QComboBox" name="comboImagePositionVideoV">
@@ -2147,14 +2147,14 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label_88">
           <property name="text">
            <string>Background color</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
           <item>
            <widget class="QLineEdit" name="lineImageBackgroundColor"/>
@@ -2167,6 +2167,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSingleDetailsWindow">
+          <property name="text">
+           <string>Use a single image window</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

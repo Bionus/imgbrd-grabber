@@ -572,12 +572,7 @@ void searchTab::finishedLoadingPreview()
 			if (reponse == QMessageBox::Yes)
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
-			{
-				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->parentSite(), m_profile, m_parent);
-				zoom->show();
-				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
-			}
+			{ openImage(img); }
 		}
 		else
 		{ download = true; }
@@ -1146,10 +1141,24 @@ void searchTab::webZoom(int id)
 		{ return; }
 	}
 
+	openImage(image);
+}
+
+void searchTab::openImage(QSharedPointer<Image> image)
+{
+	if (m_settings->value("Zoom/singleWindow", false).toBool() && m_lastZoomWindow)
+	{
+		m_lastZoomWindow->reuse(m_images, image, image->page()->site());
+		m_lastZoomWindow->activateWindow();
+		return;
+	}
+
 	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent);
-	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
+	zoom->show();
+
+	m_lastZoomWindow = zoom;
 }
 
 
