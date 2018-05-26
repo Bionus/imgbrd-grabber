@@ -14,7 +14,7 @@ class Downloader : public QObject
 	public:
 		Downloader() = default;
 		~Downloader() override;
-		Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QStringList &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous = nullptr);
+		Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QList<QStringList> &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(const QList<QSharedPointer<Image>> &images);
 		void loadNext();
@@ -68,7 +68,7 @@ class Downloader : public QObject
 		QString m_location, m_filename, m_user, m_password;
 		bool m_blacklist, m_noDuplicates;
 		QString m_tagsFormat;
-		QStringList m_blacklistedTags;
+		QList<QStringList> m_blacklistedTags;
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images;

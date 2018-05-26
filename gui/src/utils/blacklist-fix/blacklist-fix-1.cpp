@@ -20,9 +20,13 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
-	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
+
+	QString blacklist;
+	for (const QStringList &tags : profile->getBlacklist())
+	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	ui->textBlacklist->setPlainText(blacklist);
 
 	resize(size().width(), 0);
 }
@@ -146,7 +150,11 @@ void BlacklistFix1::getAll(Page *p)
 	}
 	else
 	{
-		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), ui->lineBlacklist->text().split(" "));
+		QList<QStringList> blacklist;
+		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
+		{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+
+		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();
 		bf2->show();
 	}

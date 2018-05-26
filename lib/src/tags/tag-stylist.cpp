@@ -39,7 +39,7 @@ QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) co
 
 	// Guess the correct tag family
 	QString key = tlist.contains(tag.type().name()+"s") ? tag.type().name() + "s" : "generals";
-	if (m_profile->getBlacklist().contains(tag.text(), Qt::CaseInsensitive))
+	if (m_profile->getBlacklist().contains(QStringList() << tag.text()))
 		key = "blacklisteds";
 	if (m_profile->getIgnored().contains(tag.text(), Qt::CaseInsensitive))
 		key = "ignoreds";

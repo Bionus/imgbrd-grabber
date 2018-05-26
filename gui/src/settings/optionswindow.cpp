@@ -39,8 +39,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
-	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
-	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
 	QStringList wl = QStringList() << "never" << "image" << "page";
@@ -101,6 +99,13 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
 	settings->endGroup();
+
+	// Blacklist
+	QString blacklist;
+	for (const QStringList &tags : profile->getBlacklist())
+	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	ui->textBlacklist->setPlainText(blacklist);
+	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
 	// Monitoring
 	settings->beginGroup("Monitoring");
@@ -784,8 +789,6 @@ void optionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
-	m_profile->setBlacklistedTags(ui->lineBlacklist->text().split(' ', QString::SkipEmptyParts));
-	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("ignoredtags", ui->lineIgnored->text());
 	settings->setValue("add", ui->lineAdd->text());
@@ -848,6 +851,13 @@ void optionsWindow::save()
 	settings->beginGroup("Log");
 		settings->setValue("show", ui->checkShowLog->isChecked());
 	settings->endGroup();
+
+	// Blacklist
+	QList<QStringList> blacklist;
+	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
+	{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+	m_profile->setBlacklistedTags(blacklist);
+	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Monitoring
 	settings->beginGroup("Monitoring");

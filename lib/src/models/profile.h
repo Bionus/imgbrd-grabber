@@ -55,7 +55,7 @@ class Profile : public QObject
 		void removeSite(Site *site);
 
 		// Blacklist management
-		void setBlacklistedTags(const QStringList &tags);
+		void setBlacklistedTags(const QList<QStringList> &tags);
 		void addBlacklistedTag(const QString &tag);
 		void removeBlacklistedTag(const QString &tag);
 
@@ -68,7 +68,7 @@ class Profile : public QObject
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		QStringList &getCustomAutoComplete();
-		QStringList &getBlacklist();
+		QList<QStringList> &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
@@ -95,7 +95,7 @@ class Profile : public QObject
 		Commands		*m_commands;
 		QStringList		m_autoComplete;
 		QStringList		m_customAutoComplete;
-		QStringList		m_blacklistedTags;
+		QList<QStringList>		m_blacklistedTags;
 		QHash<QString, QString>	m_md5s;
 		QMap<QString, Source*>	m_sources;
 		QMap<QString, Site*>	m_sites;

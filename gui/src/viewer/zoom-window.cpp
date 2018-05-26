@@ -1190,8 +1190,7 @@ int ZoomWindow::firstNonBlacklisted(int direction)
 	index = (index + m_images.count() + direction) % m_images.count();
 
 	// Skip blacklisted images
-	auto blacklistedtags = m_profile->getBlacklist();
-	while (!PostFilter::blacklisted(m_images[index]->tokens(m_profile), blacklistedtags).isEmpty() && index != first)
+	while (!PostFilter::blacklisted(m_images[index]->tokens(m_profile), m_profile->getBlacklist()).isEmpty() && index != first)
 	{
 		index = (index + m_images.count() + direction) % m_images.count();
 	}

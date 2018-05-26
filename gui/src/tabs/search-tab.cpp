@@ -560,8 +560,10 @@ void searchTab::finishedLoadingPreview()
 	img->setPreviewImage(preview);
 
 	// Download whitelist images on thumbnail view
+	QList<QStringList> whitelistedTags;
+	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" "))
+	{ whitelistedTags.append(QStringList() << tag); }
 	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
-	QStringList whitelistedTags(m_settings->value("whitelistedtags").toString().split(" "));
 	QStringList whitelisted = PostFilter::blacklisted(img->tokens(m_profile), whitelistedTags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
 	{

@@ -60,19 +60,27 @@ void PostFilterTest::cleanup()
 }
 
 
+QList<QStringList> makeBlacklist(const QStringList &tags)
+{
+	QList<QStringList> blacklist;
+	for (const QString &tag : tags)
+	{ blacklist.append(QStringList() << tag); }
+	return blacklist;
+}
+
 void PostFilterTest::testBlacklisted()
 {
 	auto tokens = m_img->tokens(m_profile);
 
 	// Basic
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "tag8" << "tag7"), QStringList());
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "tag1" << "tag7"), QStringList() << "tag1");
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "character1" << "artist1"), QStringList() << "character1" << "artist1");
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "tag8" << "tag7")), QStringList());
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "tag1" << "tag7")), QStringList() << "tag1");
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "character1" << "artist1")), QStringList() << "character1" << "artist1");
 
 	// Invert
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "tag8" << "tag7", false), QStringList() << "tag8" << "tag7");
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "tag1" << "tag7", false), QStringList() << "tag7");
-	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "character1" << "artist1", false), QStringList());
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "tag8" << "tag7"), false), QStringList() << "tag8" << "tag7");
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "tag1" << "tag7"), false), QStringList() << "tag7");
+	QCOMPARE(PostFilter::blacklisted(tokens, makeBlacklist(QStringList() << "character1" << "artist1"), false), QStringList());
 }
 
 void PostFilterTest::testMatchToken()

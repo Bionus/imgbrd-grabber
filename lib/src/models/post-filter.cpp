@@ -177,13 +177,19 @@ QStringList PostFilter::filter(const QMap<QString, Token> &tokens, const QString
 	return ret;
 }
 
-QStringList PostFilter::blacklisted(const QMap<QString, Token> &tokens, const QStringList &blacklistedTags, bool invert)
+QStringList PostFilter::blacklisted(const QMap<QString, Token> &tokens, const QList<QStringList> &blacklistedTags, bool invert)
 {
 	QStringList detected;
-	for (const QString &tag : blacklistedTags)
+	for (const QStringList &tags : blacklistedTags)
 	{
-		if (!match(tokens, tag, invert).isEmpty())
-			detected.append(tag);
+		bool allDetected = true;
+		for (const QString &tag : tags)
+		{
+			if (match(tokens, tag, invert).isEmpty())
+				allDetected = false;
+		}
+		if (allDetected)
+			detected.append(tags.join(' '));
 	}
 	return detected;
 }

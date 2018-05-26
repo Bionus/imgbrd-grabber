@@ -30,7 +30,7 @@ bool SqlWorker::connect()
 	if (portSeparator > 0)
 	{
 		db.setHostName(m_host.left(portSeparator));
-		db.setPort(m_host.mid(portSeparator + 1).toInt());
+		db.setPort(m_host.midRef(portSeparator + 1).toInt());
 	}
 	else
 	{ db.setHostName(m_host); }

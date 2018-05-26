@@ -39,7 +39,8 @@ LoaderData LoaderQuery::next()
 	int limit = m_options["limit"].toInt();
 	QStringList postFiltering = m_options["postFiltering"].toStringList();
 	bool getBlacklisted = m_options["getBlacklisted"].toBool();
-	QStringList blacklist = m_options["blacklist"].toStringList();
+	// QStringList blacklist = m_options["blacklist"].toStringList();
+	QList<QStringList> blacklist;
 
 	// Load results
 	QEventLoop loop;
