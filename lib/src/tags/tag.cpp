@@ -155,7 +155,7 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	return type;
 }
 
-void Tag::setId(int id)					{ m_id = id;		}
+void Tag::setId(int id)						{ m_id = id;		}
 void Tag::setText(const QString &text)		{ m_text = text;	}
 void Tag::setType(const TagType &type)		{ m_type = type;	}
 void Tag::setCount(int count)				{ m_count = count;	}
@@ -181,5 +181,6 @@ bool sortTagsByCount(const Tag &s1, const Tag &s2)
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
+	return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) == 0
+		&& (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
 }
