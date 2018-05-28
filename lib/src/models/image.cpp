@@ -141,14 +141,14 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	setRating(details.contains("rating") ? details["rating"] : "");
 
 	// Tags
-	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species";
+	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species" << "meta";
 	for (const QString &typ : types)
 	{
 		QString key = "tags_" + typ;
 		if (!details.contains(key))
 			continue;
 
-		TagType ttype(typ);
+		TagType ttype(typ == "meta" ? "general" : "meta"); // TODO(Bionus): add support for "meta" tag type
 		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
 		for (QString tg : t)
 		{

@@ -110,6 +110,7 @@ export const source: ISource = {
                         "tags_character": "tag_string_character",
                         "tags_copyright": "tag_string_copyright",
                         "tags_general": "tag_string_general",
+                        "tags_meta": "tag_string_meta",
                     };
 
                     const data = JSON.parse(src);
@@ -191,6 +192,7 @@ export const source: ISource = {
                         "tags_character": "tag-string-character",
                         "tags_copyright": "tag-string-copyright",
                         "tags_general": "tag-string-general",
+                        "tags_meta": "tag-string-meta",
                     };
 
                     const data = Grabber.parseXML(src).posts.post;
