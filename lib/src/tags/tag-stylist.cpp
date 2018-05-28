@@ -34,8 +34,8 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
  */
 QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) const
 {
-	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
-	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
+	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "species" << "metas" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
+	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#ee6600" << "#ee6600" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
 
 	// Guess the correct tag family
 	QString key = tlist.contains(tag.type().name()+"s") ? tag.type().name() + "s" : "generals";
