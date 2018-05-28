@@ -34,6 +34,7 @@ void FilenameTest::init()
 	m_details["tags_copyright"] = "copyright1 copyright2";
 	m_details["tags_character"] = "character1 character2";
 	m_details["tags_species"] = "";
+	m_details["tags_meta"] = "";
 	m_details["created_at"] = "1471513944";
 	m_details["rating"] = "safe";
 
