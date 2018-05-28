@@ -406,6 +406,15 @@ void FilenameTest::testPathSpecies()
 	assertPath("%species%.%ext%", "test_species.jpg");
 }
 
+void FilenameTest::testPathMeta()
+{
+	m_img->deleteLater();
+	m_details["tags_meta"] = "test_meta";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertPath("%meta%.%ext%", "test_meta.jpg");
+}
+
 void FilenameTest::testPathNoJpeg()
 {
 	m_img->deleteLater();

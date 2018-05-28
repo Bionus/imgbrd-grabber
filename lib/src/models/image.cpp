@@ -148,7 +148,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		if (!details.contains(key))
 			continue;
 
-		TagType ttype(typ == "meta" ? "general" : "meta"); // TODO(Bionus): add support for "meta" tag type
+		TagType ttype(typ);
 		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
 		for (QString tg : t)
 		{
@@ -1202,6 +1202,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("character", Token(details["character"], "replaceAll", "unknown", "group"));
 	tokens.insert("model", Token(details["model"], "replaceAll", "unknown", "multiple"));
 	tokens.insert("species", Token(details["species"], "replaceAll", "unknown", "multiple"));
+	tokens.insert("meta", Token(details["meta"], "replaceAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' '), ""));
 	tokens.insert("tags", Token(details["alls"]));

@@ -51,7 +51,7 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 	int sepPos = m_text.indexOf(':');
 	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
-		static QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
+		static QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "meta" << "unknown" << "oc";
 		QString pre = Tag::GetType(m_text.left(sepPos));
 		int prepIndex = prep.indexOf(pre);
 		if (prepIndex != -1)
@@ -77,7 +77,7 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 	QString type;
 	if (data.contains("type"))
 	{
-		static QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species";
+		static QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species" << "meta";
 		type = Tag::GetType(data.value("type").trimmed(), stringListToMap(types));
 	}
 	if (type.isEmpty())
@@ -169,7 +169,7 @@ QStringList	Tag::related() const	{ return m_related;	}
 
 bool sortTagsByType(const Tag &s1, const Tag &s2)
 {
-	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";
+	static QStringList typeOrder = QStringList() << "unknown" << "model" << "meta" << "species" << "artist" << "character" << "copyright";
 	int t1 = typeOrder.indexOf(s1.type().name());
 	int t2 = typeOrder.indexOf(s2.type().name());
 	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;

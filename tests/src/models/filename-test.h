@@ -60,6 +60,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumAboveTen();
 		void testPathOptionSort();
 		void testPathSpecies();
+		void testPathMeta();
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();

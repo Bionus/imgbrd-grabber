@@ -105,6 +105,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Meta tags</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Custom token</string>
         </property>
        </item>
@@ -1497,6 +1502,117 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page">
+       <layout class="QFormLayout" name="formLayout_51">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_147">
+          <property name="text">
+           <string>If empty</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineMetasIfNone">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_146">
+          <property name="text">
+           <string>Separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineMetasSeparator">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_145">
+          <property name="text">
+           <string>If more than n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinMetasMoreThanN">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepN">
+          <property name="text">
+           <string>Keep n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="spinMetasKeepN"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepNThenAdd">
+          <property name="text">
+           <string>Keep n tags, then add</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="1,1">
+          <item>
+           <widget class="QSpinBox" name="spinMetasKeepNThenAdd"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineMetasKeepNThenAdd">
+            <property name="text">
+             <string notr="true"> (+ %count%)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QRadioButton" name="radioMetasReplaceAll">
+          <property name="text">
+           <string>Replace all tags by</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="lineMetasReplaceAll">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QRadioButton" name="radioMetasMultiple">
+          <property name="text">
+           <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSaveCustomSymbols">
        <layout class="QFormLayout" name="layoutCustom">
         <item row="0" column="0" colspan="2">
@@ -2261,14 +2377,14 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="labelColoringModels">
           <property name="text">
            <string>Models</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="layoutColoringModels" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringModels"/>
@@ -2289,14 +2405,14 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelColoringGenerals">
           <property name="text">
            <string>Generals</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <layout class="QHBoxLayout" name="layoutColoringGenerals" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringGenerals"/>
@@ -2317,14 +2433,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelColoringFavorites">
           <property name="text">
            <string>Favorites</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutColoringFavorites">
           <item>
            <widget class="QLineEdit" name="lineColoringFavorites"/>
@@ -2345,14 +2461,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="labelColoringBlacklisteds">
           <property name="text">
            <string>Blacklisted</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutColoringBlacklisteds">
           <item>
            <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
@@ -2373,14 +2489,14 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="labelColoringIgnoreds">
           <property name="text">
            <string>Ignored</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
           <item>
            <widget class="QLineEdit" name="lineColoringIgnoreds"/>
@@ -2429,14 +2545,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelColoringKeptForLater">
           <property name="text">
            <string>Kept for later</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutColoringKeptForLater">
           <item>
            <widget class="QLineEdit" name="lineColoringKeptForLater"/>
@@ -2457,6 +2573,34 @@
           </item>
          </layout>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelColoringMetas">
+          <property name="text">
+           <string>Metas</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringMetas">
+          <item>
+           <widget class="QLineEdit" name="lineColoringMetas"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
        <zorder>labelColoringArtists</zorder>
        <zorder>labelColoringSeries</zorder>
@@ -2469,6 +2613,8 @@
        <zorder>labelColoringCircles</zorder>
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
+       <zorder>labelColoringMetas</zorder>
+       <zorder>horizontalLayoutWidget</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
@@ -3316,12 +3462,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>57</y>
+     <x>360</x>
+     <y>41</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>95</y>
+     <x>360</x>
+     <y>64</y>
     </hint>
    </hints>
   </connection>
@@ -3352,8 +3498,8 @@
      <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>70</y>
+     <x>360</x>
+     <y>43</y>
     </hint>
    </hints>
   </connection>
@@ -3412,8 +3558,8 @@
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>38</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
@@ -3428,12 +3574,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>341</x>
-     <y>102</y>
+     <x>350</x>
+     <y>67</y>
     </hint>
     <hint type="destinationlabel">
-     <x>341</x>
-     <y>117</y>
+     <x>350</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -3444,12 +3590,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>410</x>
-     <y>101</y>
+     <x>350</x>
+     <y>67</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>149</y>
+     <x>350</x>
+     <y>113</y>
     </hint>
    </hints>
   </connection>

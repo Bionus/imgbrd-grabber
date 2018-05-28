@@ -207,6 +207,20 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(speciesMultiple == "replaceAll")	{ ui->radioSpeciesReplaceAll->setChecked(true);		}
 		else if	(speciesMultiple == "multiple")		{ ui->radioSpeciesMultiple->setChecked(true);		}
 
+		ui->lineMetasIfNone->setText(settings->value("meta_empty", "none").toString());
+		ui->spinMetasMoreThanN->setValue(settings->value("meta_multiple_limit", 1).toInt());
+		ui->spinMetasKeepN->setValue(settings->value("meta_multiple_keepN", 1).toInt());
+		ui->spinMetasKeepNThenAdd->setValue(settings->value("meta_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineMetasKeepNThenAdd->setText(settings->value("meta_multiple_keepNThenAdd_add", " (+ %count%)").toString());
+		ui->lineMetasSeparator->setText(settings->value("meta_sep", "+").toString());
+		ui->lineMetasReplaceAll->setText(settings->value("meta_value", "multiple").toString());
+		QString metaMultiple = settings->value("meta_multiple", "keepAll").toString();
+		if		(metaMultiple == "keepAll")			{ ui->radioMetasKeepAll->setChecked(true);		}
+		else if	(metaMultiple == "keepN")			{ ui->radioMetasKeepN->setChecked(true);		}
+		else if	(metaMultiple == "keepNThenAdd")	{ ui->radioMetasKeepNThenAdd->setChecked(true);	}
+		else if	(metaMultiple == "replaceAll")		{ ui->radioMetasReplaceAll->setChecked(true);	}
+		else if	(metaMultiple == "multiple")		{ ui->radioMetasMultiple->setChecked(true);		}
+
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings->value("simultaneous", 1).toInt());
 	settings->endGroup();
@@ -262,6 +276,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringCopyrights->setText(settings->value("copyrights", "#aa00aa").toString());
 			ui->lineColoringCharacters->setText(settings->value("characters", "#00aa00").toString());
 			ui->lineColoringSpecies->setText(settings->value("species", "#ee6600").toString());
+			ui->lineColoringMetas->setText(settings->value("metas", "#ee6600").toString());
 			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
@@ -275,6 +290,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringCopyrights->setFont(qFontFromString(settings->value("copyrights").toString()));
 			ui->lineColoringCharacters->setFont(qFontFromString(settings->value("characters").toString()));
 			ui->lineColoringSpecies->setFont(qFontFromString(settings->value("species").toString()));
+			ui->lineColoringMetas->setFont(qFontFromString(settings->value("metas").toString()));
 			ui->lineColoringModels->setFont(qFontFromString(settings->value("models").toString()));
 			ui->lineColoringGenerals->setFont(qFontFromString(settings->value("generals").toString()));
 			ui->lineColoringFavorites->setFont(qFontFromString(settings->value("favorites").toString()));
@@ -684,6 +700,8 @@ void optionsWindow::on_lineColoringCharacters_textChanged()
 { setColor(ui->lineColoringCharacters); }
 void optionsWindow::on_lineColoringSpecies_textChanged()
 { setColor(ui->lineColoringSpecies); }
+void optionsWindow::on_lineColoringMetas_textChanged()
+{ setColor(ui->lineColoringMetas); }
 void optionsWindow::on_lineColoringModels_textChanged()
 { setColor(ui->lineColoringModels); }
 void optionsWindow::on_lineColoringGenerals_textChanged()
@@ -709,6 +727,8 @@ void optionsWindow::on_buttonColoringCharactersColor_clicked()
 { setColor(ui->lineColoringCharacters, true); }
 void optionsWindow::on_buttonColoringSpeciesColor_clicked()
 { setColor(ui->lineColoringSpecies, true); }
+void optionsWindow::on_buttonColoringMetasColor_clicked()
+{ setColor(ui->lineColoringMetas, true); }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
 { setColor(ui->lineColoringModels, true); }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
@@ -734,6 +754,8 @@ void optionsWindow::on_buttonColoringCharactersFont_clicked()
 { setFont(ui->lineColoringCharacters); }
 void optionsWindow::on_buttonColoringSpeciesFont_clicked()
 { setFont(ui->lineColoringSpecies); }
+void optionsWindow::on_buttonColoringMetasFont_clicked()
+{ setFont(ui->lineColoringMetas); }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
 { setFont(ui->lineColoringModels); }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
@@ -988,6 +1010,21 @@ void optionsWindow::save()
 		settings->setValue("species_sep", ui->lineSpeciesSeparator->text());
 		settings->setValue("species_value", ui->lineSpeciesReplaceAll->text());
 
+		settings->setValue("meta_empty", ui->lineMetasIfNone->text());
+		QString metaMultiple;
+		if		(ui->radioMetasKeepAll->isChecked())		{ metaMultiple = "keepAll";			}
+		else if	(ui->radioMetasKeepN->isChecked())			{ metaMultiple = "keepN";			}
+		else if	(ui->radioMetasKeepNThenAdd->isChecked())	{ metaMultiple = "keepNThenAdd";	}
+		else if	(ui->radioMetasReplaceAll->isChecked())		{ metaMultiple = "replaceAll";		}
+		else if	(ui->radioMetasMultiple->isChecked())		{ metaMultiple = "multiple";		}
+		settings->setValue("meta_multiple", metaMultiple);
+		settings->setValue("meta_multiple_limit", ui->spinMetasMoreThanN->value());
+		settings->setValue("meta_multiple_keepN", ui->spinMetasKeepN->value());
+		settings->setValue("meta_multiple_keepNThenAdd_keep", ui->spinMetasKeepNThenAdd->value());
+		settings->setValue("meta_multiple_keepNThenAdd_add", ui->lineMetasKeepNThenAdd->text());
+		settings->setValue("meta_sep", ui->lineMetasSeparator->text());
+		settings->setValue("meta_value", ui->lineMetasReplaceAll->text());
+
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
@@ -1045,6 +1082,7 @@ void optionsWindow::save()
 			settings->setValue("copyrights", ui->lineColoringCopyrights->text());
 			settings->setValue("characters", ui->lineColoringCharacters->text());
 			settings->setValue("species", ui->lineColoringSpecies->text());
+			settings->setValue("metas", ui->lineColoringMetas->text());
 			settings->setValue("models", ui->lineColoringModels->text());
 			settings->setValue("generals", ui->lineColoringGenerals->text());
 			settings->setValue("favorites", ui->lineColoringFavorites->text());
@@ -1058,6 +1096,7 @@ void optionsWindow::save()
 			settings->setValue("copyrights", ui->lineColoringCopyrights->font().toString());
 			settings->setValue("characters", ui->lineColoringCharacters->font().toString());
 			settings->setValue("species", ui->lineColoringSpecies->font().toString());
+			settings->setValue("metas", ui->lineColoringMetas->font().toString());
 			settings->setValue("models", ui->lineColoringModels->font().toString());
 			settings->setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings->setValue("favorites", ui->lineColoringFavorites->font().toString());
