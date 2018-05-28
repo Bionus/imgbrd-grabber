@@ -151,6 +151,15 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 
 void ImageDownloader::success()
 {
+	// Handle network redirects
+	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_url = redir.toString();
+		loadImage();
+		return;
+	}
+
 	emit saved(m_image, postSaving());
 }
 
