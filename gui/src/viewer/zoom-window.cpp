@@ -489,7 +489,10 @@ void ZoomWindow::replyFinishedDetails()
 		QString fext = m_source.section('.', -1);
 		m_url = m_url.section('.', 0, -2) + "." + fext;
 		m_image->setFileExtension(fext);
+
 		m_finished = true;
+		m_loadedImage = true;
+		pendingUpdate();
 
 		draw();
 	}
@@ -720,9 +723,6 @@ void ZoomWindow::draw()
 	{
 		m_displayImage = QPixmap();
 		m_displayImage.load(m_source);
-
-		m_loadedImage = true;
-		pendingUpdate();
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
