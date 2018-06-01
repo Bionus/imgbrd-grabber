@@ -707,9 +707,15 @@ void ZoomWindow::draw()
 	if (!m_isAnimated.isEmpty())
 	{
 		m_displayMovie = new QMovie(filename, m_isAnimated.toLatin1(), this);
+		m_displayMovie->start();
+		const QSize &movieSize = m_displayMovie->currentPixmap().size();
+		const QSize &imageSize = m_labelImage->size();
+		if (imageSize.width() < movieSize.width() || imageSize.height() < movieSize.height())
+		{
+			m_displayMovie->setScaledSize(movieSize.scaled(imageSize, Qt::KeepAspectRatio));
+		}
 		m_labelImage->setMovie(m_displayMovie);
 		m_stackedWidget->setCurrentWidget(m_labelImage);
-		m_displayMovie->start();
 
 		m_displayImage = QPixmap();
 
