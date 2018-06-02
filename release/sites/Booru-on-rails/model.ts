@@ -1,6 +1,19 @@
 function completeImage(img: IImage): IImage {
-    if (!img["preview_url"] && img["preview_url"].length >= 5) {
-        img["preview_url"] = img["preview_url"]
+    if (img["json_uris"]) {
+        const uris = JSON.parse(img["json_uris"].replace(/&quot;/g, '"'));
+        if ("thumb_small" in uris && uris["thumb_small"].length > 5) {
+            img["preview_url"] = uris["thumb_small"];
+        }
+        if ("large" in uris && uris["large"].length > 5) {
+            img["sample_url"] = uris["large"];
+        }
+        if ("full" in uris && uris["full"].length > 5) {
+            img["file_url"] = uris["full"];
+        }
+    }
+
+    if (!img["preview_url"] && img["file_url"].length >= 5) {
+        img["preview_url"] = img["file_url"]
             .replace("full", "thumb")
             .replace(".svg", ".png");
     }
@@ -113,7 +126,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
-                        images: Grabber.regexToImages('<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-download-uri="(?<file_url>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-orig-sha512="[^"]*" data-score="(?<score>[^"]*)" data-sha512="(?<md5>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="[^"]*" data-width="(?<width>[^"]*)">.*?<a[^>]*><img[^>]* src="(?<preview_url>[^"]*)"/></a></div>', src).map(completeImage),
+                        images: Grabber.regexToImages('<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-score="(?<score>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="(?<json_uris>[^"]*)" data-width="(?<width>[^"]*)">.*?<a[^>]*><picture><img[^>]* src="(?<preview_url>[^"]*)"[^>]*>', src).map(completeImage),
                         pageCount: Grabber.regexToConst("page", '<a href="(?:/images/page/|/tags/[^\\?]*\\?[^"]*page=|/search/index\\?[^"]*page=)(?<image>\\d+)[^"]*">Last', src),
                         imageCount: Grabber.regexToConst("count", "of <strong>(?<count>[^<]+)</strong> total", src),
                     };
