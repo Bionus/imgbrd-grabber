@@ -4,6 +4,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QNetworkAccessManager>
+#include <QTimer>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
@@ -105,33 +106,38 @@ int main(int argc, char *argv[])
 				{ siteSearch = override.value("search").toArray(); }
 			}
 
-			QString search = siteSearch[0].toString();
-			int pagei = siteSearch[1].toDouble();
-			int limit = siteSearch[2].toDouble();
-
-			Page *page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);
-
 			for (const QString &apiName : siteApis.keys())
 			{
 				qDebug() << "###" << "API" << apiName;
 				QJsonObject apiJson;
+				QJsonArray checks = siteApis.value(apiName).toArray();
+
+				QJsonArray apiSearch = siteSearch;
+				if (checks.count() > 4)
+				{ apiSearch = checks[4].toArray(); }
+
+				QString search = apiSearch[0].toString();
+				int pagei = apiSearch[1].toDouble();
+				int limit = apiSearch[2].toDouble();
 
 				Api *api = Q_NULLPTR;
 				for (Api *a : site->getApis())
 					if (a->getName().toLower() == apiName.toLower())
 						api = a;
+				if (api == Q_NULLPTR)
+					continue;
 
+				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);
 				auto pageApi = new PageApi(page, profile, site, api, search.split(' '), pagei, limit);
 				QEventLoop loop;
 				QObject::connect(pageApi, &PageApi::finishedLoading, &loop, &QEventLoop::quit);
-				pageApi->load();
+				QTimer::singleShot(1, pageApi, SLOT(load()));
 				loop.exec();
 
 				apiJson["status"] = "ok";
 				QStringList message;
 
 				// Checks
-				QJsonArray checks = siteApis.value(apiName).toArray();
 				if (!jsonCompare(pageApi->errors().join(", "), checks[0]))
 				{
 					apiJson["status"] = "error";
@@ -165,6 +171,9 @@ int main(int argc, char *argv[])
 				}
 				else
 				{ siteJson[apiName] = apiJson["status"]; }
+
+				pageApi->deleteLater();
+				page->deleteLater();
 			}
 			sourceJson[site->url()] = siteJson;
 		}
