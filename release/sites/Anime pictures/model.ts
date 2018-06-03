@@ -1,19 +1,19 @@
 function completeImage(img: IImage): IImage {
     if (img["ext"] && img["ext"][0] === ".") {
-        img["ext"] = img["ext"].mid(1);
+        img["ext"] = img["ext"].substring(1);
     }
 
     img["file_url"] = `/pictures/download_image/${img["id"]}.${img["ext"]}`;
 
-    if (!img["sample_url"] || img["sample_url"].length < 5) {
+    if ((!img["sample_url"] || img["sample_url"].length < 5) && img["preview_url"] && img["preview_url"].length >= 5) {
         img["sample_url"] = img["preview_url"]
             .replace("_cp.", "_bp.")
             .replace("_sp.", "_bp.");
     }
 
     img["file_url"] = img["file_url"].replace(".jpg.webp", ".jpg");
-    img["sample_url"] = img["sample_url"].replace(".jpg.webp", ".jpg");
-    img["preview_url"] = img["preview_url"].replace(".jpg.webp", ".jpg");
+    img["sample_url"] = (img["sample_url"] || "").replace(".jpg.webp", ".jpg");
+    img["preview_url"] = (img["preview_url"] || "").replace(".jpg.webp", ".jpg");
 
     return img;
 }
@@ -74,11 +74,15 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
-                    for (const image of data) {
+                    for (const image of data.posts) {
                         images.push(completeImage(Grabber.mapFields(image, map)));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: data["posts_count"],
+                        pageCount: data["max_pages"],
+                    };
                 },
             },
         },
@@ -93,7 +97,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
-                        images: Grabber.regexToImages('<span[^>]*data-pubtime="(?<created_at>[^"]+)">\\s*<a href="(?<page_url>/pictures/view_post/(?<id>\\d+)[^"]+)"\\s*title="Anime picture (?<width>\\d+)x(?<height>\\d+)"[^>]*>\\s*<picture>\\s*<source[^>]*>\\s*<img\\s*id="[^"]*"\\s*class="img_sp"\\s*src="(?<preview_url>[^"]+)"[^>]*>', src).map(completeImage),
+                        images: Grabber.regexToImages('<span[^>]*data-pubtime="(?<created_at>[^"]+)">\\s*<a href="(?<page_url>/pictures/view_post/(?<id>\\d+)[^"]+)"(?:\\s*title="Anime picture (?<width>\\d+)x(?<height>\\d+)")?[^>]*>\\s*(?:<picture[^>]*>\\s*<source[^>]*>\\s*<img\\s*id="[^"]*"\\s*class="img_sp"\\s*src="(?<preview_url>[^"]+)"[^>]*>)?', src).map(completeImage),
                         pageCount: Grabber.regexToConst("page", "page of (?<page>\\d+)", src),
                     };
                 },
