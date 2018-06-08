@@ -357,6 +357,8 @@ void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
 }
 void Downloader::finishedLoadingImage(QSharedPointer<Image> image, const QMap<QString, Image::SaveResult> &result)
 {
+	Q_UNUSED(result);
+
 	if (m_cancelled)
 		return;
 

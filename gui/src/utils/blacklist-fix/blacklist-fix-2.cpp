@@ -18,10 +18,9 @@ BlacklistFix2::BlacklistFix2(const QList<QMap<QString, QString>> &details, const
 		QString color = "blue";
 		if (m_details.at(i).contains("tags"))
 		{
-			found.clear();
 			QMap<QString, Token> tokens;
 			tokens.insert("allos", Token(tags));
-			QStringList found = PostFilter::blacklisted(tokens, m_blacklist);
+			found = PostFilter::blacklisted(tokens, m_blacklist);
 			color = found.empty() ? "green" : "red";
 		}
 		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i+1));
