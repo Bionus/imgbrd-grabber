@@ -8,6 +8,8 @@
 
 class FixedSizeGridLayout : public QLayout
 {
+	Q_OBJECT
+
 	public:
 		explicit FixedSizeGridLayout(QWidget *parent, int hSpacing = -1, int vSpacing = -1);
 		explicit FixedSizeGridLayout(int hSpacing = -1, int vSpacing = -1);
@@ -32,7 +34,7 @@ class FixedSizeGridLayout : public QLayout
 		void setGeometry(const QRect &rect) override;
 
 	private:
-		int doLayout(const QRect &rect, bool testOnly) const;
+		int doLayout(QRect rect, bool testOnly) const;
 		int smartSpacing(QStyle::PixelMetric pm) const;
 		int widgetSpacing(int spacing, QWidget *widget, Qt::Orientation orientation) const;
 

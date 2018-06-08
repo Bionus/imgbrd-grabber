@@ -1,14 +1,14 @@
-#include "startwindow.h"
+#include "settings/startwindow.h"
 #include <QFileDialog>
 #include <QSettings>
 #include <QStandardPaths>
-#include "ui_startwindow.h"
-#include "optionswindow.h"
-#include "filenamewindow.h"
+#include <ui_startwindow.h>
+#include "functions.h"
+#include "helpers.h"
 #include "language-loader.h"
 #include "models/profile.h"
-#include "helpers.h"
-#include "functions.h"
+#include "settings/filenamewindow.h"
+#include "settings/optionswindow.h"
 
 
 /**
@@ -16,8 +16,8 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
+startWindow::startWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
@@ -26,12 +26,12 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (const QString &language : languages.keys())
-	{ ui->comboLanguage->addItem(languages[language], language); }
+	for (auto it = languages.begin(); it != languages.end(); ++it)
+	{ ui->comboLanguage->addItem(it.value(), it.key()); }
 	ui->comboLanguage->setCurrentText("English");
 
 	// Sources
-	QStringList sources = m_sites->keys();
+	QStringList sources = profile->getSites().keys();
 	ui->comboSource->addItems(sources);
 	if (sources.contains("danbooru.donmai.us"))
 	{ ui->comboSource->setCurrentText("danbooru.donmai.us"); }
@@ -61,7 +61,7 @@ void startWindow::on_buttonFolder_clicked()
 void startWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
-	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
+	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }
 

@@ -1,5 +1,6 @@
-#include "updater.h"
+#include "updater/updater.h"
 #include <QRegularExpression>
+#include "custom-network-access-manager.h"
 
 
 Updater::Updater()
@@ -19,7 +20,7 @@ int Updater::compareVersions(QString a, QString b)
 	if (aPos != -1)
 	{
 		aSubType = a[aPos].toLatin1();
-		aSub = a.mid(aPos + 1).toInt();
+		aSub = a.midRef(aPos + 1).toInt();
 		a = a.left(aPos);
 	}
 
@@ -29,7 +30,7 @@ int Updater::compareVersions(QString a, QString b)
 	if (bPos != -1)
 	{
 		bSubType = b[bPos].toLatin1();
-		bSub = b.mid(bPos + 1).toInt();
+		bSub = b.midRef(bPos + 1).toInt();
 		b = b.left(bPos);
 	}
 

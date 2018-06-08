@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <QString>
 #include <QSettings>
+#include <QString>
 
 struct MysqlSettings
 {
@@ -26,10 +26,10 @@ class Commands
 		~Commands();
 		bool start();
 		bool before();
-		bool image(const Image &img, QString path);
-		bool tag(const Image &img, Tag tag, bool after);
+		bool image(const Image &img, const QString &path);
+		bool tag(const Image &img, const Tag &tag, bool after);
 		bool after();
-		bool sqlExec(QString sql);
+		bool sqlExec(const QString &sql);
 
 	private:
 		Profile *m_profile;

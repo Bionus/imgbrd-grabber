@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>154</height>
+    <width>331</width>
+    <height>197</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,103 +20,154 @@
    <string>Edit a favorite</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout_2">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="tagLabel">
-       <property name="whatsThis">
-        <string>Tag corresponding to the favorite. It is not often useful to change it.</string>
-       </property>
-       <property name="text">
-        <string>Tag</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="tagLineEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="noteLabel">
-       <property name="whatsThis">
-        <string>Between 0 and 100, the note can be used to sort the favorites in preference order.</string>
-       </property>
-       <property name="text">
-        <string>Note</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="noteSpinBox">
-       <property name="suffix">
-        <string> %</string>
-       </property>
-       <property name="maximum">
-        <number>100</number>
-       </property>
-       <property name="value">
-        <number>50</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="lastViewedLabel">
-       <property name="whatsThis">
-        <string>Last time you clicked on &quot;Mark as viewed&quot;.</string>
-       </property>
-       <property name="text">
-        <string>Last view</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QDateTimeEdit" name="lastViewedDateTimeEdit">
-       <property name="displayFormat">
-        <string>yyyy/MM/dd HH:mm:ss</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="imageLabel">
-       <property name="whatsThis">
-        <string>Image whose icon will be displayed in the favorites list.</string>
-       </property>
-       <property name="text">
-        <string>Image</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
-       <item>
-        <widget class="QLineEdit" name="imageLineEdit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+     <widget class="QWidget" name="tabGeneral">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="tagLabel">
+         <property name="whatsThis">
+          <string>Tag corresponding to the favorite. It is not often useful to change it.</string>
          </property>
-         <property name="readOnly">
-          <bool>false</bool>
+         <property name="text">
+          <string>Tag</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="openButton">
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="tagLineEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="noteLabel">
+         <property name="whatsThis">
+          <string>Between 0 and 100, the note can be used to sort the favorites in preference order.</string>
+         </property>
          <property name="text">
-          <string>Browse</string>
+          <string>Note</string>
          </property>
         </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="noteSpinBox">
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>50</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lastViewedLabel">
+         <property name="whatsThis">
+          <string>Last time you clicked on &quot;Mark as viewed&quot;.</string>
+         </property>
+         <property name="text">
+          <string>Last view</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDateTimeEdit" name="lastViewedDateTimeEdit">
+         <property name="displayFormat">
+          <string>yyyy/MM/dd HH:mm:ss</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="imageLabel">
+         <property name="whatsThis">
+          <string>Image whose icon will be displayed in the favorites list.</string>
+         </property>
+         <property name="text">
+          <string>Image</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="layoutImage" stretch="1,0">
+         <item>
+          <widget class="QLineEdit" name="imageLineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="openButton">
+           <property name="text">
+            <string>Browse</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+     <widget class="QWidget" name="tabMonitoring">
+      <attribute name="title">
+       <string>Monitors</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelMonitoringInterval">
+         <property name="text">
+          <string>Monitoring interval</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spinMonitoringInterval">
+         <property name="suffix">
+          <string> min</string>
+         </property>
+         <property name="maximum">
+          <number>100000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="labelMonitoringIntervalHelp">
+         <property name="text">
+          <string>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelMonitoringSource">
+         <property name="text">
+          <string>Source</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboMonitoringSource"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -155,9 +206,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
-  <include location="../resources.qrc"/>
-  <include location="../resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

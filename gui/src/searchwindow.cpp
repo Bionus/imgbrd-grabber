@@ -1,11 +1,11 @@
 #include "searchwindow.h"
-#include "ui_searchwindow.h"
+#include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
-#include <QCryptographicHash>
-#include "ui/textedit.h"
-#include "models/profile.h"
+#include <ui_searchwindow.h>
 #include "functions.h"
+#include "models/profile.h"
+#include "ui/textedit.h"
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
@@ -21,11 +21,12 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		m_calendar->setWindowTitle(tr("Choose a date"));
 		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
 		m_calendar->setSelectedDate(QDateTime::currentDateTime().date());
-		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
-		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
-	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
+		connect(m_calendar, &QCalendarWidget::activated, this, &SearchWindow::setDate);
+		connect(m_calendar, &QCalendarWidget::activated, m_calendar, &QCalendarWidget::close);
+	connect(ui->buttonCalendar, &QPushButton::clicked, m_calendar, &QCalendarWidget::show);
 
 	QStringList favorites;
+	favorites.reserve(profile->getFavorites().count());
 	for (const Favorite &fav : profile->getFavorites())
 		favorites.append(fav.getName());
 	m_tags = new TextEdit(profile, this);
@@ -39,7 +40,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 			auto *completer = new QCompleter(completion, m_tags);
 				completer->setCaseSensitivity(Qt::CaseInsensitive);
 			m_tags->setCompleter(completer);
-		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
+		connect(m_tags, &TextEdit::returnPressed, this, &SearchWindow::accept);
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 
 	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
@@ -83,7 +84,7 @@ SearchWindow::~SearchWindow()
 	delete ui;
 }
 
-QString SearchWindow::generateSearch(QString additional) const
+QString SearchWindow::generateSearch(const QString &additional) const
 {
 	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";

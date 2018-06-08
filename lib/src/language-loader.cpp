@@ -1,9 +1,9 @@
 #include "language-loader.h"
-#include <QSettings>
 #include <QDir>
+#include <QSettings>
 
 
-LanguageLoader::LanguageLoader(QString path)
+LanguageLoader::LanguageLoader(const QString &path)
 	: m_path(path)
 {}
 

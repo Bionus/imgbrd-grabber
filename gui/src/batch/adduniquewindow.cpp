@@ -1,16 +1,15 @@
-#include <QSettings>
+#include "batch/adduniquewindow.h"
 #include <QFileDialog>
-#include "adduniquewindow.h"
-#include "ui_adduniquewindow.h"
-#include "functions.h"
-#include "helpers.h"
-#include "vendor/json.h"
-#include "models/page.h"
-#include "models/filename.h"
-#include "models/site.h"
-#include "models/profile.h"
-#include "models/image.h"
+#include <QSettings>
+#include <ui_adduniquewindow.h>
 #include "downloader/download-query-image.h"
+#include "helpers.h"
+#include "models/api/api.h"
+#include "models/filename.h"
+#include "models/image.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
 
 
 /**
@@ -18,13 +17,14 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites), m_profile(profile)
+AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(profile->getSites()), m_profile(profile)
 {
 	ui->setupUi(this);
 
-	ui->comboSites->addItems(m_sites.keys());
-	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected));
+	auto items = m_sites.keys();
+	ui->comboSites->addItems(items);
+	ui->comboSites->setCurrentIndex(items.indexOf(selected->url()));
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
@@ -40,7 +40,7 @@ void AddUniqueWindow::on_buttonFolder_clicked()
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
-void AddUniqueWindow::on_lineFilename_textChanged(QString text)
+void AddUniqueWindow::on_lineFilename_textChanged(const QString &text)
 {
 	QString message;
 	Filename fn(text);
@@ -58,33 +58,26 @@ void AddUniqueWindow::ok(bool close)
 	Site *site = m_sites[ui->comboSites->currentText()];
 
 	m_close = close;
-	bool useDirectLink = true;
-	if (
-		(site->value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
-		(site->value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty()) ||
-		!site->contains("Regex/ImageUrl")
-	)
-	{ useDirectLink = false; }
-	if (useDirectLink)
+	Api *api = site->detailsApi();
+	if (api != Q_NULLPTR)
 	{
-		QString url = site->value("Urls/Html/Post");
-		url.replace("{id}", ui->lineId->text());
-		url.replace("{md5}", ui->lineMd5->text());
+		QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
 
-		QMap<QString,QString> details = QMap<QString,QString>();
+		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
 		details.insert("id", ui->lineId->text());
 		details.insert("md5", ui->lineMd5->text());
-		details.insert("website", ui->comboSites->currentText());
-		details.insert("site", QString::number((qintptr)m_sites[ui->comboSites->currentText()]));
+
 		m_image = QSharedPointer<Image>(new Image(site, details, m_profile));
 		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
 		m_image->loadDetails();
 	}
 	else
 	{
-		m_page = new Page(m_profile, m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
-		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
+		QString query = (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text());
+		QStringList search = QStringList() << query << "status:any";
+		m_page = new Page(m_profile, site, m_sites.values(), search, 1, 1);
+		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();
 	}
 }

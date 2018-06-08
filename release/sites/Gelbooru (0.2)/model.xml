@@ -2,7 +2,7 @@
 <Site>
 	<Name>Gelbooru (0.2)</Name>
 	<Urls>
-		<ImageReplaces>thumbnail_->&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</ImageReplaces>
+		<ImageReplaces>thumbnail_->&amp;/thumbnails/->//images/&amp;sample_->&amp;/samples/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</ImageReplaces>
 		<Xml>
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 			<MaxLimit>1000</MaxLimit>
@@ -21,10 +21,10 @@
 	</Urls>
 	<Regex>
 		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)</span>[^<]*</li>]]></Tags>
-		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id_2>\d+)"?)[^>]*>\s*<img [^>]*src="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>|<img\s+class="preview"\s+src="(?<preview_url_2>[^"]+\/thumbnail_(?<md5_2>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags_2>[^"]+)"[^>]*\/?>]]></Image>
+		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id_2>\d+)"?)[^>]*>\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>|<img\s+class="preview"\s+src="(?<preview_url_2>[^"]+\/thumbnail_(?<md5_2>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags_2>[^"]+)"[^>]*\/?>]]></Image>
 		<TagApi><![CDATA[<tr>\s*<td>(?<count>\d+)<\/td>\s*<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<tag>.+?)<\/a><\/span><\/td>]]></TagApi>
-		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
-        <LastPage>&lt;a href=&quot;[^&quot;]+pid=(\d+)[^&quot;]*&quot; alt=&quot;last page&quot;[^&gt;]*&gt;</LastPage>
+		<ImageUrl><![CDATA[<img[^>]+src="([^"]+)"[^>]+onclick="Note\.toggle\(\);"[^>]*/>]]></ImageUrl>
+        <LastPage><![CDATA[<a href="[^"]+pid=(\d+)[^"]*" alt="last page"[^>]*>]]></LastPage>
 	</Regex>
 	<Check>
 		<Url>/</Url>

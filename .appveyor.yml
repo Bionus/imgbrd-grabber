@@ -7,22 +7,25 @@ environment:
   matrix:
     # MSVC x86
     - PLATFORM: amd64_x86
-      QTDIR: C:\Qt\5.7\msvc2015
+      QTDIR: C:\Qt\5.10.1\msvc2015
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
 
     # MSVC x64
     - PLATFORM: amd64
-      QTDIR: C:\Qt\5.7\msvc2015_64
+      QTDIR: C:\Qt\5.10.1\msvc2015_64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
 
     # MinGW
     - PLATFORM: mingw
-      QTDIR: C:\Qt\5.7\mingw53_32
+      QTDIR: C:\Qt\5.10.1\mingw53_32
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
+
+cache:
+  - release\sites\node_modules -> release\sites\package.json
 
 init:
   - git config --global core.autocrlf input
@@ -30,6 +33,7 @@ init:
   - if %platform%==mingw set PATH=C:\Qt\Tools\mingw492_32\bin;%PATH%
   - set PATH=%QTDIR%\bin;%PATH%
   - if not %PLATFORM%==mingw call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
+  - set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 
 build_script:
   - mkdir build
@@ -37,13 +41,13 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %platform%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - copy build\gui\Grabber.exe release\Grabber.exe
+  - iscc /Q /DMyAppVersion="nightly" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="C:\Program Files\MySQL\MySQL Server 5.7"  releases/setup.iss
 
 test_script:
   - build\tests\tests.exe
 
 artifacts:
-  - path: release\Grabber.exe
+  - path: releases\Grabber_nightly.exe
 
 deploy:
   - provider: GitHub
@@ -52,15 +56,13 @@ deploy:
     draft: false
     prerelease: true
     force_update: true
-    artifact: release\Grabber.exe
+    artifact: releases\Grabber_nightly.exe
     description: |
       Nightly automated builds from the develop branch.
       Automatically uploaded by AppVeyor, **use at your own risk**!
 
       **Head:** $(APPVEYOR_REPO_COMMIT)
       **Date:** $(APPVEYOR_REPO_COMMIT_TIMESTAMP)
-
-      *Note: you need to first install Grabber normally before using nightly releases. Then, replace the existing `Grabber.exe` file in your installation folder by this one.*
     auth_token:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:

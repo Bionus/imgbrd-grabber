@@ -1,8 +1,8 @@
 #ifndef MIXED_SETTINGS_H
 #define MIXED_SETTINGS_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 #include <QSettings>
 
 
@@ -11,7 +11,7 @@ class MixedSettings : public QObject
 	Q_OBJECT
 
 	public:
-		explicit MixedSettings(QList<QSettings*> settings);
+		explicit MixedSettings(const QList<QSettings*> &settings);
 		~MixedSettings() override;
 
 		QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;

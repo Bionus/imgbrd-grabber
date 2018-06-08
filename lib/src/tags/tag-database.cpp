@@ -1,10 +1,10 @@
 #include "tag-database.h"
 #include <QFile>
-#include <QTextStream>
 #include <QStringList>
+#include <QTextStream>
 
 
-TagDatabase::TagDatabase(QString typeFile)
+TagDatabase::TagDatabase(const QString &typeFile)
 	: m_typeFile(typeFile)
 {}
 

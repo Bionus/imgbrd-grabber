@@ -1,11 +1,12 @@
 #include "tag-context-menu.h"
-#include <QProcess>
-#include <QDesktopServices>
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
+#include <QProcess>
+#include "models/profile.h"
 
 
-TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)
+TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, const QUrl &browserUrl, Profile *profile, bool setImage, QWidget *parent)
 	: QMenu(parent), m_tag(tag), m_allTags(allTags), m_browserUrl(browserUrl), m_profile(profile)
 {
 	// Favorites
@@ -25,7 +26,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	{ addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
 	// Blacklist
-	if (profile->getBlacklist().contains(m_tag))
+	if (profile->getBlacklist().contains(QStringList() << m_tag))
 	{ addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
 	else
 	{ addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
@@ -112,6 +113,7 @@ void TagContextMenu::copyTagToClipboard()
 void TagContextMenu::copyAllTagsToClipboard()
 {
 	QStringList tags;
+	tags.reserve(m_allTags.count());
 	for (const Tag &tag : m_allTags)
 		tags.append(tag.text());
 

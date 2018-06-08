@@ -6,22 +6,65 @@
 #endif
 
 
-void Logger::setLogFile(QString path)
+void Logger::setLogFile(const QString &path)
 {
+	if (m_logFile.isOpen())
+	{ m_logFile.close(); }
+
 	m_logFile.setFileName(path);
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
 }
+QString Logger::logFile() const
+{ return m_logFile.fileName(); }
 
 void Logger::setLogLevel(LogLevel level)
 {
 	m_level = level;
 }
 
+
+void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+	static QMap<QtMsgType, LogLevel> messageTypes
+	{
+		{ QtMsgType::QtDebugMsg, Logger::Debug },
+		#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+			{ QtMsgType::QtInfoMsg, Logger::Info },
+		#endif
+		{ QtMsgType::QtWarningMsg, Logger::Warning },
+		{ QtMsgType::QtCriticalMsg, Logger::Error },
+		{ QtMsgType::QtFatalMsg, Logger::Error },
+		{ QtMsgType::QtSystemMsg, Logger::Error },
+	};
+
+	QString label = "[Qt]";
+	QString category(context.category);
+	if (!category.isEmpty())
+		label += "[" + category + "]";
+	#if defined QT_MESSAGELOGCONTEXT && defined QT_DEBUG && 0
+		label += QString("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
+	#endif
+
+	Logger::getInstance().log(QString("%1 %2").arg(label, message), messageTypes[type]);
+}
+
+void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+	Q_UNUSED(type);
+	Q_UNUSED(context);
+	Q_UNUSED(message);
+}
+
+void Logger::setupMessageOutput(bool log)
+{
+	qInstallMessageHandler(log ? Logger::messageOutput : Logger::noMessageOutput);
+}
+
 /**
  * Append text in the log in a new line.
  * @param	l	The message to append.
  */
-void Logger::log(QString l, LogLevel level)
+void Logger::log(const QString &l, LogLevel level)
 {
 	if (level < m_level)
 		return;
@@ -30,7 +73,6 @@ void Logger::log(QString l, LogLevel level)
 		setLogFile(savePath("main.log", false, true));
 
 	static const QStringList levels = QStringList() << "Debug" << "Info" << "Warning" << "Error";
-	static const QStringList colors = QStringList() << "#999" << "" << "orange" << "red";
 	QString levelStr = levels[level];
 	QDateTime time = QDateTime::currentDateTime();
 
@@ -39,10 +81,7 @@ void Logger::log(QString l, LogLevel level)
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	QString levelColor = colors[level];
 	QString msg = "[" + time.toString("hh:mm:ss.zzz") + "][" + levelStr + "] " + l;
-	if (!levelColor.isEmpty())
-		msg = QString("<span style='color:%1'>%2</span>").arg(levelColor).arg(msg);
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG
@@ -50,7 +89,7 @@ void Logger::log(QString l, LogLevel level)
 	#endif
 }
 
-void Logger::logCommand(QString l)
+void Logger::logCommand(const QString &l)
 {
 	if (!m_fCommandsLog.isOpen())
 	{
@@ -62,7 +101,7 @@ void Logger::logCommand(QString l)
 	m_fCommandsLog.flush();
 }
 
-void Logger::logCommandSql(QString l)
+void Logger::logCommandSql(const QString &l)
 {
 	if (!m_fCommandsSqlLog.isOpen())
 	{
@@ -78,7 +117,7 @@ void Logger::logCommandSql(QString l)
  * Append text in the log at the end of the current line.
  * @param	l	The message to append.
  */
-void Logger::logUpdate(QString l)
+void Logger::logUpdate(const QString &l)
 {
 	Q_UNUSED(l);
 
@@ -91,7 +130,7 @@ void Logger::logUpdate(QString l)
 }
 
 
-void log(QString l, Logger::LogLevel level)
+void log(const QString &l, Logger::LogLevel level)
 {
 	LOG(l, level);
 }

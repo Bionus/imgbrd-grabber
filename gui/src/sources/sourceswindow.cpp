@@ -1,13 +1,18 @@
-#include "sourceswindow.h"
-#include "ui_sourceswindow.h"
-#include <QMessageBox>
+#include "sources/sourceswindow.h"
 #include <QCloseEvent>
+#include <QDesktopServices>
 #include <QInputDialog>
-#include "ui/QBouton.h"
-#include "sitewindow.h"
-#include "sourcessettingswindow.h"
-#include "models/source.h"
+#include <QMessageBox>
+#include <ui_sourceswindow.h>
+#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "sources/sitewindow.h"
+#include "sources/sourcessettingswindow.h"
+#include "ui/QAffiche.h"
+#include "ui/QBouton.h"
 
 
 /**
@@ -16,8 +21,8 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(sites)
+sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent)
+	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -38,15 +43,13 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 	addCheckboxes();
 
 	ui->gridLayout->setColumnStretch(0, 1);
-	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
+	connect(ui->checkBox, &QCheckBox::clicked, this, &sourcesWindow::checkClicked);
 	checkUpdate();
 
-	QStringList keys = m_sites->keys();
-	for (int i = 0; i < m_sites->size(); i++)
-	{
-		Source *source = m_sites->value(keys[i])->getSource();
-		m_sources[source->getName()] = source;
-	}
+	// Set default preset font italic
+	QFont font = ui->comboPresets->itemData(0, Qt::FontRole).value<QFont>();
+	font.setItalic(true);
+	ui->comboPresets->setItemData(0, font, Qt::FontRole);
 
 	// Presets
 	m_presets = loadPresets(m_profile->getSettings());
@@ -54,6 +57,9 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 
 	// Check for updates in the model files
 	checkForUpdates();
+
+	// Check if there is any reported problem for one of the sources
+	checkForSourceIssues();
 
 	ui->buttonOk->setFocus();
 }
@@ -120,17 +126,25 @@ void sourcesWindow::checkClicked()
  */
 void sourcesWindow::valid()
 {
-	for (int i = 0; i < m_selected.count(); i++)
-		m_selected[i] = m_checks.at(i)->isChecked();
+	QList<Site*> selected;
+	QStringList keys = m_sites.keys();
+	for (int i = 0; i < keys.count(); i++)
+		if (m_checks.at(i)->isChecked())
+			selected.append(m_sites.value(keys[i]));
 
-	emit valid(m_selected);
+	emit valid(selected);
 	this->close();
 }
 
-void sourcesWindow::settingsSite(QString site)
+void sourcesWindow::openSite(const QString &site) const
 {
-	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites->value(site), this);
-	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
+	QDesktopServices::openUrl(QUrl(m_sites.value(site)->fixUrl("/")));
+}
+
+void sourcesWindow::settingsSite(const QString &site)
+{
+	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
+	connect(ssw, &SourcesSettingsWindow::siteDeleted, this, &sourcesWindow::deleteSite);
 	ssw->show();
 }
 
@@ -138,9 +152,9 @@ void sourcesWindow::settingsSite(QString site)
  * Delete a site from the sources list.
  * @param	site	The url of the site to delete.
  */
-void sourcesWindow::deleteSite(QString site)
+void sourcesWindow::deleteSite(const QString &site)
 {
-	int i = m_sites->keys().indexOf(site);
+	int i = m_sites.keys().indexOf(site);
 
 	m_checks.at(i)->hide();
 	ui->gridLayout->removeWidget(m_checks.at(i));
@@ -155,8 +169,10 @@ void sourcesWindow::deleteSite(QString site)
 		m_labels.removeAt(i);
 	}
 
-	m_sites->remove(site);
-	m_selected.removeAt(i);
+	Site *obj = m_sites.value(site);
+	m_profile->removeSite(obj);
+
+	m_selected.removeAll(obj);
 }
 
 /**
@@ -164,23 +180,13 @@ void sourcesWindow::deleteSite(QString site)
  */
 void sourcesWindow::addSite()
 {
-	auto *sw = new SiteWindow(m_profile, m_sites, this);
+	auto *sw = new SiteWindow(m_profile, this);
 	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
 	sw->show();
 }
 
 void sourcesWindow::updateCheckboxes()
 {
-	QStringList k = m_sites->keys();
-	for (int i = 0; i < k.count(); i++)
-	{
-		if (m_checks.at(i)->text() != k.at(i))
-		{
-			m_selected.insert(i, true);
-			break;
-		}
-	}
-
 	removeCheckboxes();
 	addCheckboxes();
 }
@@ -214,12 +220,13 @@ void sourcesWindow::addCheckboxes()
 {
 	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
-	QStringList k = m_sites->keys();
+	QStringList k = m_sites.keys();
 	for (int i = 0; i < k.count(); i++)
 	{
+		Site *site = m_sites.value(k.at(i));
 		auto *check = new QCheckBox(this);
-			check->setChecked(m_selected.size() > i && m_selected[i]);
-			check->setText(k.at(i));
+			check->setChecked(m_selected.contains(site));
+			check->setText(site->url());
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
 			m_checks << check;
 			ui->gridLayout->addWidget(check, i, 0);
@@ -229,15 +236,17 @@ void sourcesWindow::addCheckboxes()
 		{
 			if (t == "icon" || t == "both")
 			{
-				QLabel *image = new QLabel(this);
-				image->setPixmap(QPixmap(m_sites->value(k.at(i))->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
+				QAffiche *image = new QAffiche(k.at(i), 0, QColor(), this);
+				image->setPixmap(QPixmap(site->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
+				image->setCursor(Qt::PointingHandCursor);
+				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
 				n++;
 			}
 			if (t == "text" || t == "both")
 			{
-				QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"), this);
+				QLabel *type = new QLabel(site->getSource()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
 				m_labels << type;
 				n++;
@@ -281,24 +290,16 @@ void sourcesWindow::checkAll(int check)
 		m_checks.at(i)->setChecked(check == 2);
 }
 
-/**
- * Accessor for the "selected" variable.
- *
- * @return A bool list corresponding to selected websites.
- */
-QList<bool> sourcesWindow::getSelected()
-{ return m_selected; }
-
 void sourcesWindow::checkForUpdates()
 {
-	for (Source *source : m_sources.values())
+	for (auto it = m_sources.begin(); it != m_sources.end(); ++it)
 	{
-		SourceUpdater *updater = source->getUpdater();
-		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
-		updater->checkForUpdates();
+		const SourceUpdater &updater = it.value()->getUpdater();
+		connect(&updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
+		updater.checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
+void sourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
 {
 	if (!isNew)
 		return;
@@ -306,10 +307,45 @@ void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
 	Source *source = m_sources[sourceName];
 	for (Site *site : source->getSites())
 	{
-		int pos = m_sites->values().indexOf(site);
+		int pos = m_sites.values().indexOf(site);
 
 		m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
 		m_labels[pos]->setToolTip(tr("An update for this source is available."));
+	}
+}
+
+void sourcesWindow::checkForSourceIssues()
+{
+	auto *accessManager = new CustomNetworkAccessManager(this);
+	m_checkForSourceReply = accessManager->get(QNetworkRequest(QUrl(SOURCE_ISSUES_URL)));
+
+	connect(m_checkForSourceReply, &QNetworkReply::finished, this, &sourcesWindow::checkForSourceIssuesReceived);
+}
+void sourcesWindow::checkForSourceIssuesReceived()
+{
+	if (m_checkForSourceReply->error() != QNetworkReply::NoError)
+		return;
+
+	QString source = m_checkForSourceReply->readAll();
+	QStringList issues = source.split("\n");
+
+	for (const QString &issue : issues)
+	{
+		int index = issue.indexOf(':');
+		if (issue.isEmpty() || index < 0)
+			return;
+
+		const QString &site = issue.left(index).trimmed();
+		const QString &desc = issue.mid(index + 1).trimmed();
+
+		int pos = m_sites.keys().indexOf(site);
+		if (pos != -1)
+		{
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
+			m_labels[pos]->setToolTip(desc);
+			m_checks[pos]->setStyleSheet("QCheckBox { color: red; }");
+			m_checks[pos]->setToolTip(desc);
+		}
 	}
 }
 
@@ -348,20 +384,25 @@ QList<Site*> sourcesWindow::selected() const
 {
 	QList<Site*> selected;
 
-	const QStringList &keys = m_sites->keys();
+	const QStringList &keys = m_sites.keys();
 	for (int i = 0; i < keys.count(); ++i)
 		if (m_checks[i]->isChecked())
-			selected.append(m_sites->value(keys[i]));
+			selected.append(m_sites.value(keys[i]));
 
 	return selected;
 }
 
 void sourcesWindow::addPreset()
 {
-	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"));
+	bool ok;
+	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, "", &ok);
+	if (!ok || name.isEmpty())
+		return;
 
+	const QList<Site*> &selectedSites = selected();
 	QStringList sel;
-	for (Site *site : selected())
+	sel.reserve(selectedSites.count());
+	for (Site *site : selectedSites)
 		sel.append(site->url());
 	m_presets.insert(name, sel);
 
@@ -379,8 +420,11 @@ void sourcesWindow::deletePreset()
 
 void sourcesWindow::editPreset()
 {
+	bool ok;
 	QString oldName = ui->comboPresets->currentText();
-	QString newName = QInputDialog::getText(this, tr("Edit preset"), tr("Name"), QLineEdit::Normal, oldName);
+	QString newName = QInputDialog::getText(this, tr("Edit preset"), tr("Name"), QLineEdit::Normal, oldName, &ok);
+	if (!ok || newName.isEmpty())
+		return;
 
 	m_presets.insert(newName, m_presets[oldName]);
 	m_presets.remove(oldName);
@@ -393,8 +437,10 @@ void sourcesWindow::editPreset()
 
 void sourcesWindow::savePreset()
 {
+	const QList<Site*> &selectedSites = selected();
 	QStringList sel;
-	for (Site *site : selected())
+	sel.reserve(selectedSites.count());
+	for (Site *site : selectedSites)
 		sel.append(site->url());
 	m_presets[ui->comboPresets->currentText()] = sel;
 
@@ -402,17 +448,17 @@ void sourcesWindow::savePreset()
 }
 
 
-void sourcesWindow::selectPreset(QString name)
+void sourcesWindow::selectPreset(const QString &name)
 {
 	bool isPreset = ui->comboPresets->currentIndex() > 0;
 
 	if (isPreset)
 	{
 		const QStringList &preset = m_presets[name];
-		const QStringList &keys = m_sites->keys();
+		const QStringList &keys = m_sites.keys();
 		for (int i = 0; i < keys.count(); ++i)
 		{
-			Site *site = m_sites->value(keys[i]);
+			Site *site = m_sites.value(keys[i]);
 			m_checks[i]->setChecked(preset.contains(site->url()));
 		}
 	}

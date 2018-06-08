@@ -1,10 +1,11 @@
+#include "utils/empty-dirs-fix/empty-dirs-fix-2.h"
 #include <QMessageBox>
-#include "empty-dirs-fix-2.h"
-#include "ui_empty-dirs-fix-2.h"
+#include <ui_empty-dirs-fix-2.h>
 
 
 
-EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2)
+EmptyDirsFix2::EmptyDirsFix2(const QStringList &folders, QWidget *parent)
+	: QDialog(parent), ui(new Ui::EmptyDirsFix2)
 {
 	ui->setupUi(this);
 
@@ -29,8 +30,9 @@ bool EmptyDirsFix2::removeDir(QString path)
 
 void EmptyDirsFix2::deleteSel()
 {
-	QStringList folders;
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
+	QStringList folders;
+	folders.reserve(sel.count());
 	for (QListWidgetItem *s : sel)
 	{ folders.append(s->text()); }
 

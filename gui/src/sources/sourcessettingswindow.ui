@@ -658,7 +658,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="label_24">
              <property name="text">
-              <string>Username</string>
+              <string>Username field</string>
              </property>
             </widget>
            </item>
@@ -668,7 +668,7 @@
            <item row="2" column="0">
             <widget class="QLabel" name="label_23">
              <property name="text">
-              <string>Password</string>
+              <string>Password field</string>
              </property>
             </widget>
            </item>

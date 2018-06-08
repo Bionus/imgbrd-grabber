@@ -1,18 +1,18 @@
-#include "download-query-group.h"
+#include "downloader/download-query-group.h"
 #include <QJsonArray>
 #include "models/site.h"
 
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
-	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), site(site), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk)
+	: DownloadQuery(site), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), unk(unk)
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool blacklisted, Site *site, QString filename, QString path, QString unk)
-	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, const QString &unk)
+	: DownloadQuery(site, filename, path), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), unk(unk)
 { }
 
 
@@ -44,8 +44,9 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 
 bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
-	QStringList tgs;
 	QJsonArray jsonTags = json["tags"].toArray();
+	QStringList tgs;
+	tgs.reserve(jsonTags.count());
 	for (auto tag : jsonTags)
 		tgs.append(tag.toString());
 

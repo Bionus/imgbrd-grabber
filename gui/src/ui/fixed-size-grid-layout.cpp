@@ -99,8 +99,7 @@ int FixedSizeGridLayout::heightForWidth(int width) const
 QSize FixedSizeGridLayout::minimumSize() const
 {
 	QSize size;
-	QLayoutItem *item;
-	foreach (item, m_items)
+	for (QLayoutItem *item : m_items)
 		size = size.expandedTo(item->minimumSize());
 
 	size += QSize(2 * margin(), 2 * margin());
@@ -119,7 +118,7 @@ void FixedSizeGridLayout::setGeometry(const QRect &rect)
 }
 
 
-int FixedSizeGridLayout::doLayout(const QRect &rect, bool testOnly) const
+int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 {
 	int left, top, right, bottom;
 	getContentsMargins(&left, &top, &right, &bottom);

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "declaration": false,
+        "module": "es6",
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "target": "es5"
+    },
+    "include": [
+        "**/*.ts"
+    ],
+    "exclude": []
+}

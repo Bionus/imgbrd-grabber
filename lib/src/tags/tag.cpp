@@ -1,25 +1,32 @@
 #include "tag.h"
-#include <QTextDocument>
-#include <QSettings>
-#include <QSet>
 #include <QRegularExpression>
-#include "models/favorite.h"
-#include "models/profile.h"
+#include <QSet>
+#include <QTextDocument>
+#include <QtMath>
+#include "functions.h"
 
+
+QMap<int, QString> stringListToMap(const QStringList &list)
+{
+	QMap<int, QString> ret;
+	for (int i = 0; i < list.count(); ++i)
+		ret.insert(i, list[i]);
+	return ret;
+}
 
 Tag::Tag()
 	: m_type(TagType("unknown")), m_count(0)
 { }
 
-Tag::Tag(QString text, QString type, int count, QStringList related)
+Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
 	: Tag(text, TagType(type), count, related)
 { }
 
-Tag::Tag(QString text, TagType type, int count, QStringList related)
+Tag::Tag(const QString &text, const TagType &type, int count, const QStringList &related)
 	: Tag(0, text, type, count, related)
 { }
 
-Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
+Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStringList &related)
 	: m_id(id), m_type(type), m_count(count), m_related(related)
 {
 	static QStringList weakTypes = QStringList() << "unknown" << "origin";
@@ -44,12 +51,12 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 	int sepPos = m_text.indexOf(':');
 	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
-		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
-		QString pre = Tag::GetType(m_text.left(sepPos), QStringList());
+		static QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "meta" << "unknown" << "oc";
+		QString pre = Tag::GetType(m_text.left(sepPos));
 		int prepIndex = prep.indexOf(pre);
 		if (prepIndex != -1)
 		{
-			m_type = TagType(Tag::GetType(prep[prepIndex], prep));
+			m_type = TagType(Tag::GetType(prep[prepIndex], stringListToMap(prep)));
 			m_text = m_text.mid(sepPos + 1);
 		}
 	}
@@ -57,35 +64,44 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 
 Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &groups)
 {
+	QMap<QString, QString> data = multiMatchToMap(match, groups);
+
 	// Tag
 	QString tag;
-	if (groups.contains("tag"))
+	if (data.contains("tag"))
 	{
-		tag = match.captured("tag").replace(" ", "_").replace("&amp;", "&").trimmed();
+		tag = data["tag"].replace(" ", "_").replace("&amp;", "&").trimmed();
 	}
 
 	// Type
 	QString type;
-	if (groups.contains("type"))
+	if (data.contains("type"))
 	{
-		type = Tag::GetType(match.captured("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+		static QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species" << "meta";
+		type = Tag::GetType(data.value("type").trimmed(), stringListToMap(types));
 	}
 	if (type.isEmpty())
 	{ type = "unknown"; }
 
 	// Count
 	int count = 0;
-	if (groups.contains("count"))
+	if (data.contains("count"))
 	{
-		QString countStr = match.captured("count").toLower().trimmed();
+		QString countStr = data.value("count").toLower().trimmed();
 		countStr.remove(',');
-		count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+		if (countStr.endsWith('k'))
+		{
+			QStringRef withoutK = countStr.leftRef(countStr.length() - 1).trimmed();
+			count = qRound(withoutK.toFloat() * 1000);
+		}
+		else
+		{ count = countStr.toInt(); }
 	}
 
 	return Tag(tag, type, count);
 }
 
-QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
+QList<Tag> Tag::FromRegexp(const QString &rx, const QString &source)
 {
 	QRegularExpression rxtags(rx);
 
@@ -108,7 +124,7 @@ QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
 	return ret;
 }
 
-QString Tag::GetType(QString type, QStringList ids)
+QString Tag::GetType(QString type, QMap<int, QString> ids)
 {
 	type = type.toLower().trimmed();
 	if (type.contains(", "))
@@ -132,14 +148,14 @@ QString Tag::GetType(QString type, QStringList ids)
 	if (type.length() == 1)
 	{
 		int typeId = type.toInt();
-		if (typeId >= 0 && typeId < ids.count())
+		if (ids.contains(typeId))
 			return ids[typeId];
 	}
 
 	return type;
 }
 
-void Tag::setId(int id)					{ m_id = id;		}
+void Tag::setId(int id)						{ m_id = id;		}
 void Tag::setText(const QString &text)		{ m_text = text;	}
 void Tag::setType(const TagType &type)		{ m_type = type;	}
 void Tag::setCount(int count)				{ m_count = count;	}
@@ -151,19 +167,20 @@ TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
 
-bool sortTagsByType(Tag s1, Tag s2)
+bool sortTagsByType(const Tag &s1, const Tag &s2)
 {
-	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";
+	static QStringList typeOrder = QStringList() << "unknown" << "model" << "meta" << "species" << "artist" << "character" << "copyright";
 	int t1 = typeOrder.indexOf(s1.type().name());
 	int t2 = typeOrder.indexOf(s2.type().name());
 	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
 }
-bool sortTagsByName(Tag s1, Tag s2)
+bool sortTagsByName(const Tag &s1, const Tag &s2)
 { return s1.text().localeAwareCompare(s2.text()) < 0; }
-bool sortTagsByCount(Tag s1, Tag s2)
+bool sortTagsByCount(const Tag &s1, const Tag &s2)
 { return s1.count() > s2.count(); }
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
+	return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) == 0
+		&& (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
 }

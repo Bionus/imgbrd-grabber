@@ -1,22 +1,25 @@
-#include <QtTest>
 #include "tag-api-test.h"
+#include <QtTest>
+#include "custom-network-access-manager.h"
 #include "models/source.h"
 
 
 void TagApiTest::init()
 {
-	m_site = new Site("danbooru.donmai.us", new Source(&profile, "release/sites/Danbooru (2.0)"));
+	m_profile = new Profile("tests/resources/");
+	m_site = new Site("danbooru.donmai.us", new Source(m_profile, "release/sites/Danbooru (2.0)"));
 }
 
 void TagApiTest::cleanup()
 {
+	m_profile->deleteLater();
 	m_site->deleteLater();
 }
 
 
 void TagApiTest::testBasic()
 {
-	TagApi tagApi(&profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
 
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
 

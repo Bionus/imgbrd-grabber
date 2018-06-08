@@ -1,8 +1,8 @@
 #ifndef TAG_DATABASE_TEST_SUITE_H
 #define TAG_DATABASE_TEST_SUITE_H
 
-#include "test-suite.h"
 #include "tags/tag-database.h"
+#include "test-suite.h"
 
 
 class TagDatabaseTestSuite : public TestSuite

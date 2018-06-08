@@ -1,21 +1,22 @@
-#include "program-updater.h"
-#include <QNetworkRequest>
-#include <QNetworkReply>
+#include "updater/program-updater.h"
 #include <QDir>
 #include <QFile>
-#include "vendor/json.h"
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include "custom-network-access-manager.h"
 #include "logger.h"
+#include "vendor/json.h"
 
 
 ProgramUpdater::ProgramUpdater()
 	: ProgramUpdater("https://api.github.com/repos/Bionus/imgbrd-grabber")
 { }
 
-ProgramUpdater::ProgramUpdater(QString baseUrl)
-	: m_baseUrl(baseUrl), m_checkForUpdatesReply(Q_NULLPTR), m_downloadReply(Q_NULLPTR)
+ProgramUpdater::ProgramUpdater(const QString &baseUrl)
+	: m_baseUrl(baseUrl), m_downloadReply(Q_NULLPTR)
 { }
 
-void ProgramUpdater::checkForUpdates()
+void ProgramUpdater::checkForUpdates() const
 {
 	#ifdef NIGHTLY
 		QUrl url(m_baseUrl + "/releases/tags/nightly");
@@ -24,13 +25,14 @@ void ProgramUpdater::checkForUpdates()
 	#endif
 	QNetworkRequest request(url);
 
-	m_checkForUpdatesReply = m_networkAccessManager->get(request);
-	connect(m_checkForUpdatesReply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
+	auto *reply = m_networkAccessManager->get(request);
+	connect(reply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
 }
 
 void ProgramUpdater::checkForUpdatesDone()
 {
-	m_source = m_checkForUpdatesReply->readAll();
+	auto *reply = dynamic_cast<QNetworkReply*>(sender());
+	m_source = reply->readAll();
 
 	QVariant json = Json::parse(m_source);
 	QMap<QString, QVariant> lastRelease = json.toMap();

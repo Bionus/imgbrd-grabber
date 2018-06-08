@@ -18,7 +18,7 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -28,7 +28,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -105,6 +105,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Meta tags</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Custom token</string>
         </property>
        </item>
@@ -138,6 +143,16 @@
          <string>Log</string>
         </property>
        </item>
+      </item>
+      <item>
+       <property name="text">
+        <string>Blacklist</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Monitoring</string>
+       </property>
       </item>
       <item>
        <property name="text">
@@ -211,143 +226,6 @@
           </item>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Blacklist</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="lineBlacklist"/>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>&lt;i&gt;Separate tags with spaces.&lt;/i&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkHideBlacklisted">
-          <property name="text">
-           <string>Ignore images containing a blacklisted tag</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_48">
-          <property name="text">
-           <string>Whitelist</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QLineEdit" name="lineWhitelist"/>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_50">
-          <property name="text">
-           <string>Download</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QComboBox" name="comboWhitelist">
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Don't download automatically</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>When loading image</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>When loading thumbnail</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QLabel" name="label_51">
-          <property name="text">
-           <string>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_49">
-          <property name="text">
-           <string>Ignored tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QLineEdit" name="lineIgnored"/>
-        </item>
-        <item row="11" column="0" colspan="2">
-         <widget class="QLabel" name="label_52">
-          <property name="text">
-           <string>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkDownloadBlacklisted">
-          <property name="text">
-           <string>Download images containing blacklisted tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="label_64">
-          <property name="text">
-           <string>Adds</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="1">
-         <widget class="QLineEdit" name="lineAdd"/>
-        </item>
-        <item row="14" column="0" colspan="2">
-         <widget class="QLabel" name="label_65">
-          <property name="text">
-           <string>&lt;i&gt;These tags will be automatically added to every search.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkConfirmClose">
-          <property name="text">
-           <string>Ask for confirmation before closing the window</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelCheckForUpdates">
           <property name="text">
@@ -387,13 +265,112 @@
           </item>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_48">
+          <property name="text">
+           <string>Whitelist</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="lineWhitelist"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_50">
+          <property name="text">
+           <string>Download</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QComboBox" name="comboWhitelist">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Don't download automatically</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>When loading image</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>When loading thumbnail</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="label_51">
+          <property name="text">
+           <string>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_49">
+          <property name="text">
+           <string>Ignored tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="lineIgnored"/>
+        </item>
+        <item row="7" column="0" colspan="2">
+         <widget class="QLabel" name="label_52">
+          <property name="text">
+           <string>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkDownloadBlacklisted">
+          <property name="text">
+           <string>Download images containing blacklisted tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_64">
+          <property name="text">
+           <string>Adds</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLineEdit" name="lineAdd"/>
+        </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="QLabel" name="label_65">
+          <property name="text">
+           <string>&lt;i&gt;These tags will be automatically added to every search.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkConfirmClose">
+          <property name="text">
+           <string>Ask for confirmation before closing the window</string>
+          </property>
+         </widget>
+        </item>
        </layout>
        <zorder>label</zorder>
        <zorder>comboLanguages</zorder>
-       <zorder>label_5</zorder>
-       <zorder>lineBlacklist</zorder>
-       <zorder>checkHideBlacklisted</zorder>
-       <zorder>label_6</zorder>
        <zorder>label_48</zorder>
        <zorder>label_50</zorder>
        <zorder>lineWhitelist</zorder>
@@ -405,7 +382,6 @@
        <zorder>checkDownloadBlacklisted</zorder>
        <zorder>label_63</zorder>
        <zorder>comboStart</zorder>
-       <zorder>label_2</zorder>
        <zorder>label_64</zorder>
        <zorder>label_65</zorder>
        <zorder>lineAdd</zorder>
@@ -959,9 +935,6 @@
       <widget class="QWidget" name="pageSaveConditionals">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QVBoxLayout" name="layoutConditionals"/>
-        </item>
-        <item>
          <widget class="QPushButton" name="buttonFilenames">
           <property name="text">
            <string>Add a conditional filename</string>
@@ -969,17 +942,72 @@
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
           </property>
-         </spacer>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>369</width>
+             <height>377</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="layoutConditionals"/>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1474,6 +1502,117 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page">
+       <layout class="QFormLayout" name="formLayout_51">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_147">
+          <property name="text">
+           <string>If empty</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineMetasIfNone">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_146">
+          <property name="text">
+           <string>Separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineMetasSeparator">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_145">
+          <property name="text">
+           <string>If more than n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinMetasMoreThanN">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepN">
+          <property name="text">
+           <string>Keep n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="spinMetasKeepN"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QRadioButton" name="radioMetasKeepNThenAdd">
+          <property name="text">
+           <string>Keep n tags, then add</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="1,1">
+          <item>
+           <widget class="QSpinBox" name="spinMetasKeepNThenAdd"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineMetasKeepNThenAdd">
+            <property name="text">
+             <string notr="true"> (+ %count%)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QRadioButton" name="radioMetasReplaceAll">
+          <property name="text">
+           <string>Replace all tags by</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="lineMetasReplaceAll">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QRadioButton" name="radioMetasMultiple">
+          <property name="text">
+           <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSaveCustomSymbols">
        <layout class="QFormLayout" name="layoutCustom">
         <item row="0" column="0" colspan="2">
@@ -1698,6 +1837,49 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResultsFixedWidthLayout">
+          <property name="text">
+           <string>Use a fixed-image-width layout</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelInfiniteScroll">
+          <property name="text">
+           <string>Infinite scroll</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboInfiniteScroll">
+          <item>
+           <property name="text">
+            <string>Disabled</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Button</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Scroll</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkInfiniteScrollRememberPage">
+          <property name="text">
+           <string>Remember page number when infinite scrolling</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
@@ -1746,7 +1928,7 @@
          </widget>
         </item>
         <item row="9" column="0" colspan="2">
-         <widget class="QLabel" name="label_66">
+         <widget class="QLabel" name="labelGetUnloadedPages">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
           </property>
@@ -1755,46 +1937,20 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkResultsFixedWidthLayout">
+        <item row="10" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkInvertToggle">
           <property name="text">
-           <string>Use a fixed-image-width layout</string>
+           <string>Invert Click and Ctrl+Click actions</string>
           </property>
-          <property name="checked">
+         </widget>
+        </item>
+        <item row="11" column="0" colspan="2">
+         <widget class="QLabel" name="labelInvertToggle">
+          <property name="text">
+           <string>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="labelInfiniteScroll">
-          <property name="text">
-           <string>Infinite scroll</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="comboInfiniteScroll">
-          <item>
-           <property name="text">
-            <string>Disabled</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Button</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Scroll</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkInfiniteScrollRememberPage">
-          <property name="text">
-           <string>Remember page number when infinite scrolling</string>
           </property>
          </widget>
         </item>
@@ -1802,14 +1958,14 @@
       </widget>
       <widget class="QWidget" name="pageImageWindow">
        <layout class="QFormLayout" name="formLayout_22">
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QLabel" name="labelTagsPosition">
           <property name="text">
            <string>Tag list position</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="1" column="1">
          <widget class="QComboBox" name="comboTagsPosition">
           <item>
            <property name="text">
@@ -1828,24 +1984,24 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="labelPreload">
           <property name="text">
            <string>Preloading</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QSpinBox" name="spinPreload"/>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="labelSlideshow">
           <property name="text">
            <string>Slideshow</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinSlideshow">
           <property name="suffix">
            <string>s</string>
@@ -1855,7 +2011,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkImageCloseMiddleClick">
           <property name="text">
            <string>Middle click to close window</string>
@@ -1865,7 +2021,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkImageNavigateScroll">
           <property name="text">
            <string>Enable scroll wheel navigation</string>
@@ -1875,21 +2031,21 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkZoomShowTagCount">
           <property name="text">
            <string>Show tag count</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelImageTagOrder">
           <property name="text">
            <string>Tag order</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QComboBox" name="comboImageTagOrder">
           <item>
            <property name="text">
@@ -1908,14 +2064,14 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
            <string>Image position</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionImage">
           <item>
            <widget class="QComboBox" name="comboImagePositionImageV">
@@ -1963,14 +2119,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelImagePositionAnimation">
           <property name="text">
            <string>Animation position</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionAnimation">
           <item>
            <widget class="QComboBox" name="comboImagePositionAnimationV">
@@ -2018,14 +2174,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="labelImagePositionVideo">
           <property name="text">
            <string>Video position</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionVideo">
           <item>
            <widget class="QComboBox" name="comboImagePositionVideoV">
@@ -2073,14 +2229,14 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label_88">
           <property name="text">
            <string>Background color</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
           <item>
            <widget class="QLineEdit" name="lineImageBackgroundColor"/>
@@ -2093,6 +2249,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSingleDetailsWindow">
+          <property name="text">
+           <string>Use a single image window</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -2214,14 +2377,14 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="labelColoringModels">
           <property name="text">
            <string>Models</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="layoutColoringModels" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringModels"/>
@@ -2242,14 +2405,14 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelColoringGenerals">
           <property name="text">
            <string>Generals</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <layout class="QHBoxLayout" name="layoutColoringGenerals" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringGenerals"/>
@@ -2270,14 +2433,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelColoringFavorites">
           <property name="text">
            <string>Favorites</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutColoringFavorites">
           <item>
            <widget class="QLineEdit" name="lineColoringFavorites"/>
@@ -2298,14 +2461,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="labelColoringBlacklisteds">
           <property name="text">
            <string>Blacklisted</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutColoringBlacklisteds">
           <item>
            <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
@@ -2326,14 +2489,14 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="labelColoringIgnoreds">
           <property name="text">
            <string>Ignored</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
           <item>
            <widget class="QLineEdit" name="lineColoringIgnoreds"/>
@@ -2382,14 +2545,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelColoringKeptForLater">
           <property name="text">
            <string>Kept for later</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutColoringKeptForLater">
           <item>
            <widget class="QLineEdit" name="lineColoringKeptForLater"/>
@@ -2410,6 +2573,34 @@
           </item>
          </layout>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelColoringMetas">
+          <property name="text">
+           <string>Metas</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringMetas">
+          <item>
+           <widget class="QLineEdit" name="lineColoringMetas"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringMetasFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
        <zorder>labelColoringArtists</zorder>
        <zorder>labelColoringSeries</zorder>
@@ -2422,6 +2613,7 @@
        <zorder>labelColoringCircles</zorder>
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
+       <zorder>labelColoringMetas</zorder>
        <zorder>horizontalLayoutWidget</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
@@ -2578,6 +2770,107 @@
           <property name="checked">
            <bool>true</bool>
           </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageBlacklist">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="labelBlacklist">
+          <property name="text">
+           <string>Blacklisted tags</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textBlacklist"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelBlacklistHelp">
+          <property name="text">
+           <string>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkHideBlacklisted">
+          <property name="text">
+           <string>Ignore images containing a blacklisted tag</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelHideBlacklisted">
+          <property name="text">
+           <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageMonitoring">
+       <layout class="QFormLayout" name="formLayout_12">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelMonitoringStartupDelay">
+          <property name="text">
+           <string>Delay on startup</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinMonitoringStartupDelay">
+          <property name="suffix">
+           <string> s</string>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Tray icon</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_21">
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringMinimizeToTray">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Minimize to tray</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringCloseToTray">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Close to tray</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringEnableTray">
+             <property name="text">
+              <string>Enable system tray icon</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -2925,8 +3218,6 @@
   <tabstop>buttonBox</tabstop>
   <tabstop>comboLanguages</tabstop>
   <tabstop>comboStart</tabstop>
-  <tabstop>lineBlacklist</tabstop>
-  <tabstop>checkHideBlacklisted</tabstop>
   <tabstop>lineWhitelist</tabstop>
   <tabstop>comboWhitelist</tabstop>
   <tabstop>lineIgnored</tabstop>
@@ -2949,7 +3240,6 @@
   <tabstop>buttonFilenamePlus</tabstop>
   <tabstop>lineFavorites</tabstop>
   <tabstop>buttonFavoritesPlus</tabstop>
-  <tabstop>buttonFilenames</tabstop>
   <tabstop>lineArtistsIfNone</tabstop>
   <tabstop>lineArtistsSeparator</tabstop>
   <tabstop>lineCopyrightsIfNone</tabstop>
@@ -3172,12 +3462,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>57</y>
+     <x>360</x>
+     <y>41</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>95</y>
+     <x>360</x>
+     <y>64</y>
     </hint>
    </hints>
   </connection>
@@ -3208,8 +3498,8 @@
      <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>70</y>
+     <x>360</x>
+     <y>43</y>
     </hint>
    </hints>
   </connection>
@@ -3268,12 +3558,44 @@
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>482</x>
-     <y>43</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
      <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMonitoringEnableTray</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMonitoringMinimizeToTray</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>67</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>90</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMonitoringEnableTray</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMonitoringCloseToTray</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>67</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>113</y>
     </hint>
    </hints>
   </connection>

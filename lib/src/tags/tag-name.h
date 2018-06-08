@@ -1,17 +1,17 @@
 #ifndef TAG_NAME_H
 #define TAG_NAME_H
 
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
-#include "qmetatype.h"
-#include "tag-name-format.h"
+#include "tags/tag-name-format.h"
 
 
 class TagName
 {
 	public:
 		TagName();
-		explicit TagName(QString name, TagNameFormat format = TagNameFormat::Normalized());
+		explicit TagName(const QString &name, const TagNameFormat &format = TagNameFormat::Normalized());
 		QString normalized() const;
 		QString formatted(const TagNameFormat &format) const;
 

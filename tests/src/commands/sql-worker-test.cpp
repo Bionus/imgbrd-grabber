@@ -1,8 +1,8 @@
-#include <QtTest>
+#include "sql-worker-test.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "sql-worker-test.h"
+#include <QtTest>
 #include "commands/sql-worker.h"
 
 

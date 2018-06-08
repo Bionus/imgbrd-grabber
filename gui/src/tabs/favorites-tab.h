@@ -1,9 +1,9 @@
 #ifndef FAVORITES_TAB_H
 #define FAVORITES_TAB_H
 
-#include <QWidget>
 #include <QMap>
-#include "search-tab.h"
+#include <QWidget>
+#include "tabs/search-tab.h"
 
 
 namespace Ui
@@ -20,10 +20,10 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit favoritesTab(Profile *profile, mainWindow *parent);
 		~favoritesTab() override;
 		Ui::favoritesTab *ui;
-		QList<bool> sources() override;
+		QList<Site*> sources() override;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;
 
@@ -32,7 +32,7 @@ class favoritesTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
+		void setTags(const QString &tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		bool validateImage(const QSharedPointer<Image> &img, QString &error) override;
@@ -40,19 +40,19 @@ class favoritesTab : public searchTab
 		void getPage();
 		void getAll();
 		// Favorites
-		void favoriteProperties(QString);
+		void favoriteProperties(const QString &name);
 		void updateFavorites();
-		void loadFavorite(QString);
+		void loadFavorite(const QString &name);
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
-		void setFavoriteViewed(QString);
+		void setFavoriteViewed(const QString &tag);
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void focusSearch() override;
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
-		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr) override;
+		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr) override;
 		void updateTitle() override;
 
 	private:

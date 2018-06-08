@@ -1,24 +1,24 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#include <QList>
 #include <QObject>
 #include <QString>
-#include <QList>
 #include "models/page-api.h"
 
 
-class Image;
-class Site;
 class Api;
-class Tag;
+class Image;
 class Profile;
+class Site;
+class Tag;
 
 class Page : public QObject
 {
 	Q_OBJECT
 
 	public:
-		explicit Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
+		explicit Page(Profile *profile, Site *site, const QList<Site *> &sites, QStringList tags = QStringList(), int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		~Page() override;
 		void		setLastPage(Page *page);
 		void		fallback(bool loadIfPossible = true);
@@ -40,8 +40,8 @@ class Page : public QObject
 		int			highLimit();
 		int			page();
 		int			pageImageCount();
-		int			minId();
-		int			maxId();
+		qulonglong	minId() const;
+		qulonglong	maxId() const;
 		QUrl		nextPage();
 		QUrl		prevPage();
 
@@ -52,12 +52,14 @@ class Page : public QObject
 
 	protected slots:
 		void loadFinished(PageApi *api, PageApi::LoadResult status);
-		void loadTagsFinished(PageApi *api);
+		void loadTagsFinished(PageApi *api, PageApi::LoadResult status);
+		void httpsRedirectSlot();
 
 	signals:
 		void finishedLoading(Page*);
 		void failedLoading(Page*);
 		void finishedLoadingTags(Page*);
+		void httpsRedirect(Page*);
 
 	private:
 		Site			*m_site;
@@ -66,7 +68,8 @@ class Page : public QObject
 		QList<PageApi*>	m_pageApis;
 		int				m_regexApi;
 		QStringList		m_postFiltering, m_errors, m_search;
-		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_lastPage, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		qulonglong		m_lastPageMinId, m_lastPageMaxId;
 		bool			m_smart;
 		QString			m_format, m_website, m_source, m_originalUrl;
 };

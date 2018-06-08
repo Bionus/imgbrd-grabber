@@ -1,10 +1,12 @@
 #include "favoritewindow.h"
-#include "ui_favoritewindow.h"
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
-#include "models/profile.h"
+#include <QtMath>
+#include <ui_favoritewindow.h>
 #include "functions.h"
+#include "models/profile.h"
+#include "models/site.h"
 
 
 /**
@@ -13,16 +15,27 @@
  * @param	Favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
+favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent)
 	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	ui->tagLineEdit->setText(m_favorite.getName());
 	ui->noteSpinBox->setValue(m_favorite.getNote());
 	ui->lastViewedDateTimeEdit->setDateTime(m_favorite.getLastViewed());
 
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+	QStringList sourceKeys = profile->getSites().keys();
+	ui->comboMonitoringSource->addItems(sourceKeys);
+
+	if (!m_favorite.getMonitors().isEmpty())
+	{
+		Monitor monitor = m_favorite.getMonitors().first();
+		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60));
+		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
+	}
+
+	connect(this, &QDialog::accepted, this, &favoriteWindow::save);
 }
 
 /**
@@ -58,7 +71,22 @@ void favoriteWindow::on_openButton_clicked()
 void favoriteWindow::save()
 {
 	Favorite oldFav = m_favorite;
-	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
+
+	// Update monitors
+	int interval = ui->spinMonitoringInterval->value() * 60;
+	Site *site = m_profile->getSites().value(ui->comboMonitoringSource->currentText());
+	QList<Monitor> monitors = oldFav.getMonitors();
+	if (interval == 0)
+	{ monitors.clear(); }
+	else if (monitors.isEmpty())
+	{ monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc())); }
+	else
+	{
+		Monitor rep(site, interval, monitors[0].lastCheck());
+		monitors[0] = rep;
+	}
+
+	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime(), monitors);
 	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
 
 	if (oldFav.getName() != m_favorite.getName())

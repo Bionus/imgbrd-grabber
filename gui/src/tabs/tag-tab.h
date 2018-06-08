@@ -1,11 +1,11 @@
 #ifndef TAG_TAB_H
 #define TAG_TAB_H
 
-#include <QWidget>
-#include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "search-tab.h"
+#include <QMap>
+#include <QWidget>
+#include "tabs/search-tab.h"
 
 
 namespace Ui
@@ -15,7 +15,6 @@ namespace Ui
 
 
 class mainWindow;
-class Downloader;
 class TextEdit;
 
 class tagTab : public searchTab
@@ -23,7 +22,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit tagTab(Profile *profile, mainWindow *parent);
 		~tagTab() override;
 		Ui::tagTab *ui;
 		QString tags() const override;
@@ -35,7 +34,7 @@ class tagTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
+		void setTags(const QString &tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		// Batch

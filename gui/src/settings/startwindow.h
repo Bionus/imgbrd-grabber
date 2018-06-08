@@ -10,7 +10,6 @@ namespace Ui
 }
 
 
-class Site;
 class Profile;
 
 class startWindow : public QDialog
@@ -18,7 +17,7 @@ class startWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit startWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
 		~startWindow() override;
 
 	public slots:
@@ -28,15 +27,13 @@ class startWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 
 	signals:
-		void sourceChanged(QString);
-		void languageChanged(QString);
+		void sourceChanged(const QString &);
+		void languageChanged(const QString &);
 		void settingsChanged();
 
 	private:
 		Ui::startWindow *ui;
 		Profile *m_profile;
-		QMap<QString, Site*> *m_sites;
-
 };
 
 #endif // STARTWINDOW_H

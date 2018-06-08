@@ -1,10 +1,9 @@
 #ifndef TEST_SUITE_H
 #define TEST_SUITE_H
 
-#include <QtTest>
-#include <QObject>
 #include <QList>
-
+#include <QObject>
+#include <QtTest>
 #include "models/profile.h"
 
 
@@ -46,13 +45,10 @@ class TestSuite : public QObject
 	Q_OBJECT
 
 	public:
-		explicit TestSuite();
-		void setupSource(QString site);
-		void setupSite(QString site, QString source);
-		static QList<QObject*> &getSuites();
-
-	protected:
-		Profile profile;
+		TestSuite();
+		void setupSource(const QString &site);
+		void setupSite(const QString &site, const QString &source);
+		static QList<TestSuite*> &getSuites();
 };
 
 #endif // TEST_SUITE_H

@@ -4,17 +4,17 @@
 #include <QMenu>
 #include <QStringList>
 #include <QUrl>
-#include "models/profile.h"
-#include "models/image.h"
 #include "tags/tag.h"
 
+
+class Profile;
 
 class TagContextMenu : public QMenu
 {
 	Q_OBJECT
 
 	public:
-		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = Q_NULLPTR);
+		TagContextMenu(const QString &tag, const QList<Tag> &allTags, const QUrl &browserUrl, Profile *profile, bool setImage = false, QWidget *parent = Q_NULLPTR);
 
 	protected slots:
 		void favorite();

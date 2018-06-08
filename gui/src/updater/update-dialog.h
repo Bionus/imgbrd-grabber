@@ -30,9 +30,9 @@ class UpdateDialog : public QDialog
 		void resizeToFit();
 
 	private slots:
-		void checkForUpdatesDone(QString newVersion, bool available, QString changelog);
+		void checkForUpdatesDone(const QString &newVersion, bool available, const QString &changelog);
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-		void downloadFinished(QString path);
+		void downloadFinished(const QString &path);
 
 	private:
 		Ui::UpdateDialog	*ui;

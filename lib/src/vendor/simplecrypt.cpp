@@ -76,7 +76,7 @@ QByteArray SimpleCrypt::encryptToByteArray(const QString& plaintext)
     return encryptToByteArray(plaintextArray);
 }
 
-QByteArray SimpleCrypt::encryptToByteArray(QByteArray plaintext)
+QByteArray SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
 {
     if (m_keyParts.isEmpty()) {
         qWarning() << "No key set.";
@@ -144,7 +144,7 @@ QString SimpleCrypt::encryptToString(const QString& plaintext)
     return cypherString;
 }
 
-QString SimpleCrypt::encryptToString(QByteArray plaintext)
+QString SimpleCrypt::encryptToString(const QByteArray &plaintext)
 {
     QByteArray cypher = encryptToByteArray(plaintext);
     QString cypherString = QString::fromLatin1(cypher.toBase64());
@@ -160,7 +160,7 @@ QString SimpleCrypt::decryptToString(const QString &cyphertext)
     return plaintext;
 }
 
-QString SimpleCrypt::decryptToString(QByteArray cypher)
+QString SimpleCrypt::decryptToString(const QByteArray &cypher)
 {
     QByteArray ba = decryptToByteArray(cypher);
     QString plaintext = QString::fromUtf8(ba, ba.size());
@@ -176,7 +176,7 @@ QByteArray SimpleCrypt::decryptToByteArray(const QString& cyphertext)
     return ba;
 }
 
-QByteArray SimpleCrypt::decryptToByteArray(QByteArray cypher)
+QByteArray SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
 {
     if (m_keyParts.isEmpty()) {
         qWarning() << "No key set.";

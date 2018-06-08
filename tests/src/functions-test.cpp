@@ -1,5 +1,6 @@
-#include "functions-test.h"
+#include <QFileInfo>
 #include "functions.h"
+#include "functions-test.h"
 
 
 void FunctionsTest::testFixFilenameWindows()
@@ -39,11 +40,11 @@ void FunctionsTest::testFormatFilesize()
 {
 	QStringList units = FILESIZE_UNITS;
 
-	QCOMPARE(formatFilesize(800), QString("%1 %2").arg("800").arg(units[0]));
-	QCOMPARE(formatFilesize(1500), QString("%1 %2").arg("1.46").arg(units[1]));
-	QCOMPARE(formatFilesize(2048), QString("%1 %2").arg("2").arg(units[1]));
-	QCOMPARE(formatFilesize(5000000), QString("%1 %2").arg("4.77").arg(units[2]));
-	QCOMPARE(formatFilesize(7340032), QString("%1 %2").arg("7").arg(units[2]));
+	QCOMPARE(formatFilesize(800), QString("%1 %2").arg("800", units[0]));
+	QCOMPARE(formatFilesize(1500), QString("%1 %2").arg("1.46", units[1]));
+	QCOMPARE(formatFilesize(2048), QString("%1 %2").arg("2", units[1]));
+	QCOMPARE(formatFilesize(5000000), QString("%1 %2").arg("4.77", units[2]));
+	QCOMPARE(formatFilesize(7340032), QString("%1 %2").arg("7", units[2]));
 }
 
 void FunctionsTest::testGetExtension()
@@ -162,8 +163,41 @@ void FunctionsTest::testParseMarkdownIssueLinks()
 	QCOMPARE(parseMarkdown("issue 123"), QString("issue 123"));
 }
 
+void FunctionsTest::testSetFileCreationDate()
+{
+	QString path = "tests/resources/pages/behoimi.org/results.json";
+	QDateTime date = QDateTime::currentDateTimeUtc();
 
-void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
+	setFileCreationDate(path, date);
+
+	QDateTime created;
+	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+		created = QFileInfo(path).created();
+	#else
+		created = QFileInfo(path).birthTime();
+	#endif
+
+	QCOMPARE(created.toTime_t(), date.toTime_t());
+}
+void FunctionsTest::testSetFileCreationDateUtf8()
+{
+	QString path = "tests/resources/你好.txt";
+	QDateTime date = QDateTime::currentDateTimeUtc();
+
+	setFileCreationDate(path, date);
+
+	QDateTime created;
+	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+		created = QFileInfo(path).created();
+	#else
+		created = QFileInfo(path).birthTime();
+	#endif
+
+	QCOMPARE(created.toTime_t(), date.toTime_t());
+}
+
+
+void FunctionsTest::assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected)
 {
 	QString actual;
 	switch (platform)

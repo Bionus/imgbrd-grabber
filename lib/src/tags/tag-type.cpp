@@ -1,11 +1,11 @@
-#include "tag-type.h"
+#include "tags/tag-type.h"
 #include <QMap>
 
 
 TagType::TagType()
 	: TagType("unknown")
 {}
-TagType::TagType(QString name)
+TagType::TagType(const QString &name)
 	: m_name(name)
 {}
 

@@ -2,10 +2,9 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
-#include <QSettings>
 #include <QMap>
+#include <QSettings>
 #include "models/site.h"
-#include "models/profile.h"
 
 
 namespace Ui
@@ -13,6 +12,8 @@ namespace Ui
 	class SourcesSettingsWindow;
 }
 
+
+class Profile;
 
 class SourcesSettingsWindow : public QDialog
 {
@@ -32,7 +33,10 @@ class SourcesSettingsWindow : public QDialog
 		void loginTested(Site*, Site::LoginResult);
 
 	signals:
-		void siteDeleted(QString);
+		void siteDeleted(const QString &);
+
+	protected:
+		void setLoginStatus(const QString &msg);
 
 	private:
 		Ui::SourcesSettingsWindow *ui;

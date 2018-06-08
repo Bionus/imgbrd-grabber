@@ -1,8 +1,8 @@
 #ifndef FAVORITE_TEST_H
 #define FAVORITE_TEST_H
 
-#include "test-suite.h"
 #include "models/favorite.h"
+#include "test-suite.h"
 
 
 class FavoriteTest : public TestSuite

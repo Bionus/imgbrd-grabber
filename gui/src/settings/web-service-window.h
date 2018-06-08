@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QNetworkReply>
-#include "reverse-search/reverse-search-engine.h"
-#include "custom-network-access-manager.h"
 
 
 namespace Ui
@@ -12,6 +10,9 @@ namespace Ui
 	class WebServiceWindow;
 }
 
+
+class CustomNetworkAccessManager;
+class ReverseSearchEngine;
 
 class WebServiceWindow : public QDialog
 {
@@ -27,7 +28,7 @@ class WebServiceWindow : public QDialog
 		void save();
 
 	signals:
-		void validated(ReverseSearchEngine webService, QByteArray favicon);
+		void validated(const ReverseSearchEngine &webService, const QByteArray &favicon);
 
 	private:
 		Ui::WebServiceWindow *ui;

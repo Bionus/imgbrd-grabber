@@ -1,22 +1,14 @@
 #include <QCoreApplication>
-#include <QtGlobal>
 #include "downloader/downloader.h"
-#include "models/site.h"
-#include "models/profile.h"
 #include "functions.h"
+#include "models/profile.h"
+#include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
 
-
-void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
-}
 
 int main(int argc, char *argv[])
 {
@@ -73,14 +65,15 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	if (!parser.isSet(verboseOption))
-		qInstallMessageHandler(noMessageOutput);
+#ifndef QT_DEBUG
+	Logger::setupMessageOutput(parser.isSet(verboseOption));
+#endif
 
 	Profile *profile = new Profile(savePath());
 	Downloader *downloader = new Downloader(profile,
 										parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 										parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-										Site::getSites(profile, parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+										profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 										parser.value(pageOption).toInt(),
 										parser.value(limitOption).toInt(),
 										parser.value(perPageOption).toInt(),

@@ -8,11 +8,12 @@
 class Token
 {
 	public:
-		explicit Token() = default;
+		Token() = default;
 		explicit Token(const QVariant &value, const QVariant &def = QVariant());
 		explicit Token(const QVariant &value, const QString &whatToDoDefault, const QString &emptyDefault, const QString &multipleDefault);
 
 		QVariant value() const;
+		template <typename T> T value() const { return m_value.value<T>(); }
 		QString toString() const;
 
 		QString whatToDoDefault() const;
@@ -25,5 +26,8 @@ class Token
 		QString m_emptyDefault;
 		QString m_multipleDefault;
 };
+
+bool operator==(const Token &lhs, const Token &rhs);
+bool operator!=(const Token &lhs, const Token &rhs);
 
 #endif // TOKEN_H

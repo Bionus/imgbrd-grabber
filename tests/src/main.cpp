@@ -1,9 +1,8 @@
 #include <QTest>
-#include "test-suite.h"
+#include <iostream>
 #include "custom-network-access-manager.h"
 #include "functions.h"
-#include <iostream>
-
+#include "test-suite.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,15 +13,16 @@ int main(int argc, char *argv[])
 	#endif
 
 	QStringList testSuites;
+	testSuites.reserve(argc - 1);
 	for (int i = 1; i < argc; ++i)
 		testSuites.append(argv[i]);
 
-	QMap<QString,int> results;
+	QMap<QString, int> results;
 	int failed = 0;
 
 	setTestModeEnabled(true);
 
-	for (QObject *suite : TestSuite::getSuites())
+	for (TestSuite *suite : TestSuite::getSuites())
 	{
 		if (!testSuites.isEmpty() && !testSuites.contains(suite->metaObject()->className()))
 			continue;
@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	for (const QString &key : results.keys())
+	for (auto it = results.begin(); it != results.end(); ++it)
 	{
-		std::cout << '[' << (results.value(key) != 0 ? "FAIL" : "OK") << "] " << key.toStdString() << std::endl;
+		std::cout << '[' << (it.value() != 0 ? "FAIL" : "OK") << "] " << it.key().toStdString() << std::endl;
 	}
 
 	return failed;

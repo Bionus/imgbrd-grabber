@@ -1,4 +1,4 @@
-#include "extension-rotator.h"
+#include "downloader/extension-rotator.h"
 
 
 ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
@@ -8,8 +8,8 @@ ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
 	m_next = other.m_next;
 }
 
-ExtensionRotator::ExtensionRotator(QString initialExtension, QStringList extensions)
-	: m_initialExtension(initialExtension), m_extensions(extensions)
+ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent)
+	: QObject(parent), m_initialExtension(initialExtension), m_extensions(extensions)
 {
 	int index = extensions.indexOf(initialExtension);
 
@@ -18,6 +18,11 @@ ExtensionRotator::ExtensionRotator(QString initialExtension, QStringList extensi
 		m_next = 0;
 	else
 		m_next = index + 1;
+}
+
+ExtensionRotator::~ExtensionRotator()
+{
+	m_extensions.clear();
 }
 
 QString ExtensionRotator::next()

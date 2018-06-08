@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
-#include "rename-existing-file.h"
+#include "utils/rename-existing/rename-existing-file.h"
 
 
 namespace Ui
@@ -17,9 +17,9 @@ class RenameExisting2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent = Q_NULLPTR);
+		explicit RenameExisting2(const QList<RenameExistingFile> &details, const QString &folder, QWidget *parent = Q_NULLPTR);
 		~RenameExisting2() override;
-		void deleteDir(QString path);
+		void deleteDir(const QString &path);
 
 	private slots:
 		void on_buttonCancel_clicked();

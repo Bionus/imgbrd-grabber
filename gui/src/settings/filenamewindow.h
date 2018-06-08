@@ -1,13 +1,13 @@
-#ifndef FILENAMEWINDOW_H
-#define FILENAMEWINDOW_H
+#ifndef FILENAME_WINDOW_H
+#define FILENAME_WINDOW_H
 
+#include <QCloseEvent>
 #include <QDialog>
 #include <QMessageBox>
-#include <QCloseEvent>
 
-#if USE_QSCINTILLA
-	#include <Qsci/qsciscintilla.h>
+#if defined(USE_QSCINTILLA)
 	#include <Qsci/qscilexerjavascript.h>
+	#include <Qsci/qsciscintilla.h>
 #else
 	#include <QTextEdit>
 #endif
@@ -38,17 +38,16 @@ class FilenameWindow : public QDialog
 		void done(int r) override;
 
 	signals:
-		void validated(QString);
+		void validated(const QString &format);
 
 	private:
 		Ui::FilenameWindow *ui;
 		Profile *m_profile;
-		#if USE_QSCINTILLA
+		#if defined(USE_QSCINTILLA)
 			QsciScintilla *m_scintilla;
 		#else
 			QTextEdit *m_scintilla;
 		#endif
-
 };
 
-#endif // FILENAMEWINDOW_H
+#endif // FILENAME_WINDOW_H

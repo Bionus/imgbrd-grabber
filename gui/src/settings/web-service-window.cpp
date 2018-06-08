@@ -1,9 +1,9 @@
-#include "web-service-window.h"
-#include "ui_web-service-window.h"
-#include <QNetworkAccessManager>
+#include "settings/web-service-window.h"
 #include <QNetworkRequest>
-#include <QFile>
+#include <ui_web-service-window.h>
+#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "reverse-search/reverse-search-engine.h"
 
 
 WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent)
@@ -19,7 +19,7 @@ WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidge
 		ui->lineUrl->setText(webService->tpl());
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(getFavicon()));
+	connect(this, &QDialog::accepted, this, &WebServiceWindow::getFavicon);
 }
 
 WebServiceWindow::~WebServiceWindow()

@@ -1,25 +1,25 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QString>
-#include <QVariant>
-#include <QSettings>
-#include <QMap>
 #include <QList>
+#include <QMap>
 #include <QNetworkReply>
+#include <QSettings>
+#include <QString>
 #include <QUrl>
+#include <QVariant>
 #include <functional>
-#include "tags/tag.h"
-#include "tags/tag-database-in-memory.h"
-#include "source.h"
-#include "mixed-settings.h"
+#include "login/login.h"
 
 
-class Page;
-class Image;
 class Api;
-class Profile;
 class CustomNetworkAccessManager;
+class Image;
+class MixedSettings;
+class Page;
+class Source;
+class Tag;
+class TagDatabase;
 
 class Site : public QObject
 {
@@ -50,10 +50,9 @@ class Site : public QObject
 			LoggedIn = 3,
 		};
 
-		Site(QString url, Source *source);
+		Site(const QString &url, Source *source);
 		~Site() override;
 		void loadConfig();
-		void initManager();
 		QString type() const;
 		QString name() const;
 		QString url() const;
@@ -61,42 +60,33 @@ class Site : public QObject
 		QVariant setting(const QString &key, const QVariant &def = QVariant());
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
 		void syncSettings();
+		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		static QList<Site*> getSites(Profile *profile, QStringList sources);
-		static QMap<QString, Site *> getAllSites(Profile *profile);
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
-		QUrl fixUrl(const QString &url) const;
-		QUrl fixUrl(const QString &url, const QUrl &old) const;
+		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
 		// Api
 		QList<Api*> getApis(bool filterAuth = false) const;
 		Source *getSource() const;
 		Api *firstValidApi() const;
+		Api *detailsApi() const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false) const;
-		QString username() const;
-		QString password() const;
-		void setUsername(const QString &username);
-		void setPassword(const QString &password);
 		bool canTestLogin() const;
-
-		// XML info getters
-		bool contains(const QString &key) const;
-		QString value(const QString &key) const;
-		QString operator[](const QString &key) const { return value(key); }
+		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
 
 	private:
 		QNetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);
-		void loginFinished();
+		void loginFinished(Login::Result result);
 		void loadTags(int page, int limit);
 		void finishedTags();
 		void getCallback();
@@ -105,9 +95,9 @@ class Site : public QObject
 		void resetCookieJar();
 
 	signals:
-		void loggedIn(Site*, Site::LoginResult);
-		void finished(QNetworkReply*);
-		void finishedLoadingTags(QList<Tag>);
+		void loggedIn(Site *site, Site::LoginResult result);
+		void finished(QNetworkReply *reply);
+		void finishedLoadingTags(const QList<Tag> &tags);
 
 	private:
 		QString m_type;
@@ -123,11 +113,9 @@ class Site : public QObject
 		TagDatabase *m_tagDatabase;
 
 		// Login
-		QNetworkReply *m_loginReply;
-		Page *m_loginPage;
+		Login *m_login;
 		LoginStatus m_loggedIn;
-		bool m_loginCheck, m_autoLogin;
-		QString m_username, m_password;
+		bool m_autoLogin;
 
 		// Async
 		std::function<void(QNetworkReply*)> m_lastCallback;

@@ -1,6 +1,9 @@
 # Grabber
 
 *.qm
+e2e/viewer/result.json
+release/sites/helper.js
+release/sites/*/model.js
 release/sites/*/*/settings.ini
 release/sites/*/*/tags.txt
 release/sites/*/*/tags.db
@@ -10,6 +13,7 @@ tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
 tests/resources/*.txt
+tests/resources/favorites.*
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/
@@ -28,13 +32,13 @@ symbols/
 *.lib
 *.sql
 *.zip
-build/
-build_linux/
+build*/
 debug/
 {gui,cli}/release/
 cache/
 release/*.txt
 release/*.ini
+release/*.json
 release/lastdump
 release/crashes/
 release/thumbs/
@@ -46,6 +50,11 @@ releases/release.sh
 releases/translation_tools.rar
 CrashReporter/debug/
 CrashReporter/release/
+
+
+# NPM
+
+node_modules/
 
 
 # CMake

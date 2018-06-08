@@ -1,6 +1,6 @@
-#include <QtTest>
-#include <QStringList>
 #include "danbooru-test.h"
+#include <QStringList>
+#include <QtTest>
 #include "functions.h"
 
 
@@ -10,6 +10,7 @@ void DanbooruTest::testHtml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -17,7 +18,7 @@ void DanbooruTest::testHtml()
 
 	// Check results
 	md5s = md5s.mid(0, 3);
-	QStringList expected = QStringList() << "b9e420f7d473b4c1b70b97304760d980" << "0eff70b9a01c59e134a1b11e763647da" << "57595a142730c917e534863c4033d06e";
+	QStringList expected = QStringList() << "12a54c9a24868a6c717759f1dfef5864" << "b46086a869da3443181f7798c6918058" << "9aeff7f9ffddb7c6db36133be4ad4ca3";
 	QCOMPARE(images.count(), 20);
 	QCOMPARE(md5s, expected);
 }
@@ -28,6 +29,7 @@ void DanbooruTest::testXml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -46,12 +48,12 @@ void DanbooruTest::testPageTags()
 
 	QCOMPARE(tags.count(), 25);
 
-	QCOMPARE(tags[0].text(), QString("1girl"));
-	QCOMPARE(tags[0].count(), 1964000);
-	QCOMPARE(tags[1].text(), QString("solo"));
-	QCOMPARE(tags[1].count(), 1635000);
-	QCOMPARE(tags[2].text(), QString("long_hair"));
-	QCOMPARE(tags[2].count(), 1240000);
+	QCOMPARE(tags[0].text(), QString("solo"));
+	QCOMPARE(tags[0].count(), 1805000);
+	QCOMPARE(tags[1].text(), QString("looking_at_viewer"));
+	QCOMPARE(tags[1].count(), 707000);
+	QCOMPARE(tags[2].text(), QString("1girl"));
+	QCOMPARE(tags[2].count(), 2177000);
 }
 
 void DanbooruTest::testHtmlTags()

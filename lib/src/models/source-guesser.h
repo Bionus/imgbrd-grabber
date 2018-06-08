@@ -1,9 +1,9 @@
 #ifndef SOURCE_GUESSER_H
 #define SOURCE_GUESSER_H
 
-#include <QObject>
 #include <QList>
 #include <QMap>
+#include <QObject>
 #include <QUrl>
 
 
@@ -15,7 +15,7 @@ class SourceGuesser : public QObject
 	Q_OBJECT
 
 	public:
-		SourceGuesser(QString url, QList<Source*> sources);
+		SourceGuesser(const QString &url, const QList<Source*> &sources);
 		Source *start();
 
 	signals:

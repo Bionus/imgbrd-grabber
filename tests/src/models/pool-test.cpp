@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "pool-test.h"
+#include <QtTest>
 
 
 void PoolTest::testGetId()

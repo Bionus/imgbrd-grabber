@@ -1,14 +1,13 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <QMap>
-#include <QStringList>
 #include <QDateTime>
-#include <QSettings>
-#include <QDomElement>
-#include <QString>
 #include <QDir>
-#include "models/favorite.h"
+#include <QDomElement>
+#include <QMap>
+#include <QSettings>
+#include <QString>
+#include <QStringList>
 #include "logger.h"
 
 
@@ -29,34 +28,35 @@
 
 
 QDateTime	qDateTimeFromString(QString s);
-QString		savePath(QString s = "", bool exists = false, bool writable = false);
+QString		savePath(const QString &s = "", bool exists = false, bool writable = false);
 bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
 QString		getUnit(float *size);
 QString		formatFilesize(float size);
-QString		getExtension(QUrl url);
-QString		getExtension(QString url);
-QString		setExtension(QString url, QString extension);
-bool		isUrl(QString str);
+QString		getExtension(const QUrl &url);
+QString		getExtension(const QString &url);
+QString		setExtension(QString url, const QString &extension);
+bool		isUrl(const QString &str);
 bool		isVariantEmpty(const QVariant &value);
+QMap<QString, QString>	multiMatchToMap(const QRegularExpressionMatch &match, const QStringList &groups);
 
-bool		setFileCreationDate(QString path, QDateTime time);
+bool		setFileCreationDate(const QString &path, const QDateTime &time);
 void		shutDown(int timeout = 0);
 void		openTray();
 
 QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameWindows(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameLinux(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
 
-QMap<QString,QString>		domToMap(QDomElement);
+QMap<QString, QString>		domToMap(const QDomElement &);
 
-QMap<QString,QStringList>	getCustoms(QSettings *settings);
-QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
+QMap<QString, QStringList>	getCustoms(QSettings *settings);
+QMap<QString, QPair<QString, QString>>	getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 QStringList								getExternalLogFilesSuffixes(QSettings *settings);
 
-QStringList removeWildards(QStringList elements, QStringList remove);
+QStringList removeWildards(const QStringList &elements, const QStringList &remove);
 QString getExtensionFromHeader(const QByteArray &data12);
 
 void setTestModeEnabled(bool testMode);
@@ -65,6 +65,7 @@ bool isTestModeEnabled();
 QString parseMarkdown(QString str);
 
 QString qFontToCss(const QFont &font);
+QFont qFontFromString(const QString &str);
 
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
@@ -77,11 +78,5 @@ QList<T> reversed(const QList<T> & in)
 	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));
 	return result;
 }
-inline bool sortByNote(const Favorite &s1, const Favorite &s2)
-{ return s1.getNote() < s2.getNote(); }
-inline bool sortByName(const Favorite &s1, const Favorite &s2)
-{ return s1.getName().toLower() < s2.getName().toLower(); }
-inline bool sortByLastviewed(const Favorite &s1, const Favorite &s2)
-{ return s1.getLastViewed() < s2.getLastViewed(); }
 
 #endif // FUNCTIONS_H

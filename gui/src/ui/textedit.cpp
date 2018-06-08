@@ -1,14 +1,14 @@
 #include "textedit.h"
-#include <QApplication>
-#include <QStyleOptionFrameV2>
-#include <QWheelEvent>
 #include <QAbstractItemView>
-#include <QScrollBar>
+#include <QApplication>
 #include <QMenu>
+#include <QScrollBar>
+#include <QStyleOptionFrameV2>
 #include <QTextDocumentFragment>
-#include "models/profile.h"
+#include <QWheelEvent>
 #include "functions.h"
 #include "logger.h"
+#include "models/profile.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)
@@ -69,7 +69,7 @@ void TextEdit::doColor()
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
 		regexExclude(" -([^ ]+)"),
-		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
+		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
 		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),
 		regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
 	txt.replace(regexOr, R"( <span style="color:green">~\1</span>)");
@@ -84,13 +84,13 @@ void TextEdit::doColor()
 	for (int i = 0; i < txt.length(); ++i)
 	{
 		if (txt[i] == ' ' && depth == 0)
-			txt[i] = (char)29;
+			txt[i] = QChar(29);
 		else if (txt[i] == '<')
 			depth++;
 		else if (txt[i] == '>')
 			depth--;
 	}
-	txt.replace((char)29, "&nbsp;");
+	txt.replace(QChar(29), "&nbsp;");
 
 	// Setup cursor
 	QTextCursor crsr = textCursor();
@@ -244,7 +244,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *favs = new QMenu(tr("Favorites"), menu);
 			auto *favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
-				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(favsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 				for (const Favorite &fav : m_favorites)
 				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
@@ -262,7 +262,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *vils = new QMenu(tr("Kept for later"), menu);
 			auto *vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
-				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(vilsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 				for (const QString &viewItLater : m_viewItLater)
 				{ vilsGroup->addAction(viewItLater); }
 				if (!toPlainText().isEmpty())
@@ -279,7 +279,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *ratings = new QMenu(tr("Ratings"), menu);
 			auto *ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
-				connect(ratingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(ratingsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 					ratingsGroup->addAction(QIcon(":/images/ratings/safe.png"), "rating:safe");
 					ratingsGroup->addAction(QIcon(":/images/ratings/questionable.png"), "rating:questionable");
 					ratingsGroup->addAction(QIcon(":/images/ratings/explicit.png"), "rating:explicit");
@@ -289,7 +289,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 		auto *sortings = new QMenu(tr("Sortings"), menu);
 			auto *sortingsGroup = new QActionGroup(favs);
 				sortingsGroup->setExclusive(true);
-				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				connect(sortingsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
 					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change");
 					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change_desc");
 					sortingsGroup->addAction(QIcon(":/images/icons/favorite.png"), "order:favcount");
@@ -319,6 +319,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 void TextEdit::setFavorite()
 {
 	m_profile->addFavorite(Favorite(toPlainText()));
+	emit addedFavorite(toPlainText());
 }
 void TextEdit::unsetFavorite()
 {

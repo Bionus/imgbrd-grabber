@@ -1,9 +1,9 @@
 #ifndef PAGE_TEST_H
 #define PAGE_TEST_H
 
-#include "test-suite.h"
-#include "models/site.h"
 #include "models/page.h"
+#include "models/site.h"
+#include "test-suite.h"
 
 
 class PageTest : public TestSuite
@@ -12,13 +12,14 @@ class PageTest : public TestSuite
 
 	private slots:
 		void init();
+		void cleanup();
 
 		void testIncompatibleModifiers();
 		void testLoadAbort();
 		void testLoadTagsAbort();
 
 	private:
-		QSettings *m_settings;
+		Profile *m_profile;
 		QList<Site*> m_sites;
 		Site *m_site;
 };

@@ -1,8 +1,8 @@
 #ifndef HEADER_TEXTEDIT
 #define HEADER_TEXTEDIT
 
-#include <QTextEdit>
 #include <QCompleter>
+#include <QTextEdit>
 
 
 class Profile;
@@ -39,6 +39,7 @@ class TextEdit : public QTextEdit
 
 	signals:
 		void returnPressed();
+		void addedFavorite(const QString &name);
 
 	private:
 		QCompleter		*c;

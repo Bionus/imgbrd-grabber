@@ -1,9 +1,9 @@
 #ifndef TAG_TEST_H
 #define TAG_TEST_H
 
-#include "test-suite.h"
-#include "tags/tag.h"
 #include <QSettings>
+#include "tags/tag.h"
+#include "test-suite.h"
 
 
 class TagTest : public TestSuite
@@ -15,6 +15,9 @@ class TagTest : public TestSuite
 		void cleanup();
 
 		void testDefaultConstructor();
+		void testId();
+		void testIdDefault();
+		void testSetId();
 		void testText();
 		void testSetText();
 		void testCount();
@@ -25,6 +28,7 @@ class TagTest : public TestSuite
 		void testTypeArtistEnding();
 		void testTypePrefix();
 		void testTypePrefixSpecies();
+		void testSetType();
 		void testShortType();
 		void testCompare();
 		void testSortTagsByType();

@@ -1,30 +1,31 @@
-#include "optionswindow.h"
-#include <QNetworkProxy>
-#include <QSettings>
+#include "settings/optionswindow.h"
+#include <QColorDialog>
 #include <QDir>
 #include <QFileDialog>
-#include <QColorDialog>
 #include <QFontDialog>
-#include <QSqlDatabase>
+#include <QNetworkProxy>
+#include <QSettings>
 #include <QSignalMapper>
-#include "ui_optionswindow.h"
-#include "customwindow.h"
-#include "conditionwindow.h"
-#include "filenamewindow.h"
-#include "log-window.h"
-#include "web-service-window.h"
-#include "language-loader.h"
-#include "theme-loader.h"
-#include "models/site.h"
-#include "models/profile.h"
-#include "reverse-search/reverse-search-loader.h"
-#include "helpers.h"
+#include <QSqlDatabase>
+#include <ui_optionswindow.h>
 #include "functions.h"
+#include "helpers.h"
+#include "language-loader.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "settings/conditionwindow.h"
+#include "settings/customwindow.h"
+#include "settings/filenamewindow.h"
+#include "settings/log-window.h"
+#include "settings/web-service-window.h"
+#include "theme-loader.h"
 
 
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::optionsWindow), m_profile(profile)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	ui->splitter->setSizes(QList<int>() << 160 << ui->stackedWidget->sizeHint().width());
@@ -33,13 +34,11 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (const QString &language : languages.keys())
-	{ ui->comboLanguages->addItem(languages[language], language); }
+	for (auto it = languages.begin(); it != languages.end(); ++it)
+	{ ui->comboLanguages->addItem(it.value(), it.key()); }
 
 	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
-	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
-	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
 	QStringList wl = QStringList() << "never" << "image" << "page";
@@ -53,6 +52,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkShowTagWarning->setChecked(settings->value("showtagwarning", true).toBool());
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
+	ui->checkInvertToggle->setChecked(settings->value("invertToggle", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
 	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24*60*60).toInt()));
@@ -66,20 +66,20 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
 
-	QMap<QString,QPair<QString,QString>> filenames = getFilenames(settings);
+	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
-	for (int i = 0; i < filenames.size(); i++)
+	for (auto it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		QLineEdit *leCondition = new QLineEdit(filenames.keys().at(i));
-		QLineEdit *leFilename = new QLineEdit(filenames.values().at(i).first);
-		QLineEdit *leFolder = new QLineEdit(filenames.values().at(i).second);
+		QLineEdit *leCondition = new QLineEdit(it.key());
+		QLineEdit *leFilename = new QLineEdit(it.value().first);
+		QLineEdit *leFolder = new QLineEdit(it.value().second);
 
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);
 		m_filenamesFolders.append(leFolder);
 
-		auto *layout = new QHBoxLayout(this);
+		auto *layout = new QHBoxLayout;
 		layout->addWidget(leCondition);
 		layout->addWidget(leFilename);
 		layout->addWidget(leFolder);
@@ -95,7 +95,25 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
-	ui->checkShowLog->setChecked(settings->value("Log/show", true).toBool());
+	// Log
+	settings->beginGroup("Log");
+		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
+	settings->endGroup();
+
+	// Blacklist
+	QString blacklist;
+	for (const QStringList &tags : profile->getBlacklist())
+	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	ui->textBlacklist->setPlainText(blacklist);
+	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
+
+	// Monitoring
+	settings->beginGroup("Monitoring");
+		ui->spinMonitoringStartupDelay->setValue(settings->value("startupDelay", 0).toInt());
+		ui->checkMonitoringEnableTray->setChecked(settings->value("enableTray", false).toBool());
+		ui->checkMonitoringMinimizeToTray->setChecked(settings->value("minimizeToTray", false).toBool());
+		ui->checkMonitoringCloseToTray->setChecked(settings->value("closeToTray", false).toBool());
+	settings->endGroup();
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings->value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(settings->value("thumbnailUpscale", 1.0f).toFloat() * 100);
@@ -189,6 +207,20 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(speciesMultiple == "replaceAll")	{ ui->radioSpeciesReplaceAll->setChecked(true);		}
 		else if	(speciesMultiple == "multiple")		{ ui->radioSpeciesMultiple->setChecked(true);		}
 
+		ui->lineMetasIfNone->setText(settings->value("meta_empty", "none").toString());
+		ui->spinMetasMoreThanN->setValue(settings->value("meta_multiple_limit", 1).toInt());
+		ui->spinMetasKeepN->setValue(settings->value("meta_multiple_keepN", 1).toInt());
+		ui->spinMetasKeepNThenAdd->setValue(settings->value("meta_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineMetasKeepNThenAdd->setText(settings->value("meta_multiple_keepNThenAdd_add", " (+ %count%)").toString());
+		ui->lineMetasSeparator->setText(settings->value("meta_sep", "+").toString());
+		ui->lineMetasReplaceAll->setText(settings->value("meta_value", "multiple").toString());
+		QString metaMultiple = settings->value("meta_multiple", "keepAll").toString();
+		if		(metaMultiple == "keepAll")			{ ui->radioMetasKeepAll->setChecked(true);		}
+		else if	(metaMultiple == "keepN")			{ ui->radioMetasKeepN->setChecked(true);		}
+		else if	(metaMultiple == "keepNThenAdd")	{ ui->radioMetasKeepNThenAdd->setChecked(true);	}
+		else if	(metaMultiple == "replaceAll")		{ ui->radioMetasReplaceAll->setChecked(true);	}
+		else if	(metaMultiple == "multiple")		{ ui->radioMetasMultiple->setChecked(true);		}
+
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings->value("simultaneous", 1).toInt());
 	settings->endGroup();
@@ -198,10 +230,10 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
 	i = 0;
-	for (const QString &key : customs.keys())
+	for (auto it = customs.begin(); it != customs.end(); ++it)
 	{
-		auto *leName = new QLineEdit(key);
-		auto *leTags = new QLineEdit(customs[key].join(" "));
+		auto *leName = new QLineEdit(it.key());
+		auto *leTags = new QLineEdit(it.value().join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
 		ui->layoutCustom->insertRow(i++, leName, leTags);
@@ -214,6 +246,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	{ ui->comboTheme->addItem(theme, theme); }
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
+	ui->checkSingleDetailsWindow->setChecked(settings->value("Zoom/singleWindow", false).toBool());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
@@ -243,6 +276,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringCopyrights->setText(settings->value("copyrights", "#aa00aa").toString());
 			ui->lineColoringCharacters->setText(settings->value("characters", "#00aa00").toString());
 			ui->lineColoringSpecies->setText(settings->value("species", "#ee6600").toString());
+			ui->lineColoringMetas->setText(settings->value("metas", "#ee6600").toString());
 			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
@@ -251,29 +285,18 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
-			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontKeptForLater, fontBlacklisteds, fontIgnoreds;
-			fontArtists.fromString(settings->value("artists").toString());
-			fontCircles.fromString(settings->value("circles").toString());
-			fontCopyrights.fromString(settings->value("copyrights").toString());
-			fontCharacters.fromString(settings->value("characters").toString());
-			fontSpecies.fromString(settings->value("species").toString());
-			fontModels.fromString(settings->value("models").toString());
-			fontGenerals.fromString(settings->value("generals").toString());
-			fontFavorites.fromString(settings->value("favorites").toString());
-			fontKeptForLater.fromString(settings->value("keptForLater").toString());
-			fontBlacklisteds.fromString(settings->value("blacklisteds").toString());
-			fontIgnoreds.fromString(settings->value("ignoreds").toString());
-			ui->lineColoringArtists->setFont(fontArtists);
-			ui->lineColoringCircles->setFont(fontCircles);
-			ui->lineColoringCopyrights->setFont(fontCopyrights);
-			ui->lineColoringCharacters->setFont(fontCharacters);
-			ui->lineColoringSpecies->setFont(fontSpecies);
-			ui->lineColoringModels->setFont(fontModels);
-			ui->lineColoringGenerals->setFont(fontGenerals);
-			ui->lineColoringFavorites->setFont(fontFavorites);
-			ui->lineColoringKeptForLater->setFont(fontKeptForLater);
-			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
-			ui->lineColoringIgnoreds->setFont(fontIgnoreds);
+			ui->lineColoringArtists->setFont(qFontFromString(settings->value("artists").toString()));
+			ui->lineColoringCircles->setFont(qFontFromString(settings->value("circles").toString()));
+			ui->lineColoringCopyrights->setFont(qFontFromString(settings->value("copyrights").toString()));
+			ui->lineColoringCharacters->setFont(qFontFromString(settings->value("characters").toString()));
+			ui->lineColoringSpecies->setFont(qFontFromString(settings->value("species").toString()));
+			ui->lineColoringMetas->setFont(qFontFromString(settings->value("metas").toString()));
+			ui->lineColoringModels->setFont(qFontFromString(settings->value("models").toString()));
+			ui->lineColoringGenerals->setFont(qFontFromString(settings->value("generals").toString()));
+			ui->lineColoringFavorites->setFont(qFontFromString(settings->value("favorites").toString()));
+			ui->lineColoringKeptForLater->setFont(qFontFromString(settings->value("keptForLater").toString()));
+			ui->lineColoringBlacklisteds->setFont(qFontFromString(settings->value("blacklisteds").toString()));
+			ui->lineColoringIgnoreds->setFont(qFontFromString(settings->value("ignoreds").toString()));
 		settings->endGroup();
 	settings->endGroup();
 
@@ -314,7 +337,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineCommandsSqlAfter->setText(settings->value("after").toString());
 		settings->endGroup();
 	settings->endGroup();
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+
+	connect(this, &QDialog::accepted, this, &optionsWindow::save);
 }
 
 optionsWindow::~optionsWindow()
@@ -354,10 +378,10 @@ void optionsWindow::on_buttonFavoritesPlus_clicked()
 void optionsWindow::on_buttonCustom_clicked()
 {
 	auto *cw = new CustomWindow(this);
-	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
+	connect(cw, &CustomWindow::validated, this, &optionsWindow::addCustom);
 	cw->show();
 }
-void optionsWindow::addCustom(QString name, QString tags)
+void optionsWindow::addCustom(const QString &name, const QString &tags)
 {
 	auto *leName = new QLineEdit(name);
 	auto *leTags = new QLineEdit(tags);
@@ -368,10 +392,10 @@ void optionsWindow::addCustom(QString name, QString tags)
 void optionsWindow::on_buttonFilenames_clicked()
 {
 	auto *cw = new conditionWindow();
-	connect(cw, SIGNAL(validated(QString, QString, QString)), this, SLOT(addFilename(QString, QString, QString)));
+	connect(cw, &conditionWindow::validated, this, &optionsWindow::addFilename);
 	cw->show();
 }
-void optionsWindow::addFilename(QString condition, QString filename, QString folder)
+void optionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
 {
 	auto *leCondition = new QLineEdit(condition);
 	auto *leFilename = new QLineEdit(filename);
@@ -398,20 +422,21 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
 	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
-	for (int i : logFiles.keys())
+	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		auto logFile = logFiles[i];
+		int i = it.key();
+		auto logFile = it.value();
 
 		auto *label = new QLabel(logFile["name"].toString());
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutLogFiles->addWidget(label, i, 0);
 
-		auto *buttonEdit = new QPushButton("Edit");
+		auto *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditLogFile->setMapping(buttonEdit, i);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonEdit, i, 1);
 
-		auto *buttonDelete = new QPushButton("Remove");
+		auto *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveLogFile->setMapping(buttonDelete, i);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonDelete, i, 2);
@@ -461,8 +486,8 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 
 	settings->beginGroup(QString::number(index));
 
-	for (const QString &key : logFile.keys())
-	{ settings->setValue(key, logFile[key]); }
+	for (auto it = logFile.begin(); it != logFile.end(); ++it)
+	{ settings->setValue(it.key(), it.value()); }
 
 	settings->endGroup();
 	settings->endGroup();
@@ -517,12 +542,12 @@ void optionsWindow::showWebServices()
 			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
 		}
 
-		QPushButton *buttonEdit = new QPushButton("Edit");
+		QPushButton *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditWebService->setMapping(buttonEdit, id);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonEdit, j, 4);
 
-		QPushButton *buttonDelete = new QPushButton("Remove");
+		QPushButton *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
@@ -562,7 +587,7 @@ void optionsWindow::removeWebService(int id)
 	showWebServices();
 }
 
-void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
+void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
 {
 	bool isNew = rse.id() < 0;
 
@@ -622,7 +647,7 @@ void optionsWindow::moveDownWebService(int id)
 	swapWebServices(i, i + 1);
 }
 
-int sortByOrder(ReverseSearchEngine a, ReverseSearchEngine b)
+int sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
 { return a.order() < b.order(); }
 void optionsWindow::swapWebServices(int a, int b)
 {
@@ -662,7 +687,7 @@ void optionsWindow::setFont(QLineEdit *lineEdit)
 	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
-		lineEdit->setFont(police);
+	{ lineEdit->setFont(police); }
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()
@@ -675,6 +700,8 @@ void optionsWindow::on_lineColoringCharacters_textChanged()
 { setColor(ui->lineColoringCharacters); }
 void optionsWindow::on_lineColoringSpecies_textChanged()
 { setColor(ui->lineColoringSpecies); }
+void optionsWindow::on_lineColoringMetas_textChanged()
+{ setColor(ui->lineColoringMetas); }
 void optionsWindow::on_lineColoringModels_textChanged()
 { setColor(ui->lineColoringModels); }
 void optionsWindow::on_lineColoringGenerals_textChanged()
@@ -700,6 +727,8 @@ void optionsWindow::on_buttonColoringCharactersColor_clicked()
 { setColor(ui->lineColoringCharacters, true); }
 void optionsWindow::on_buttonColoringSpeciesColor_clicked()
 { setColor(ui->lineColoringSpecies, true); }
+void optionsWindow::on_buttonColoringMetasColor_clicked()
+{ setColor(ui->lineColoringMetas, true); }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
 { setColor(ui->lineColoringModels, true); }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
@@ -725,6 +754,8 @@ void optionsWindow::on_buttonColoringCharactersFont_clicked()
 { setFont(ui->lineColoringCharacters); }
 void optionsWindow::on_buttonColoringSpeciesFont_clicked()
 { setFont(ui->lineColoringSpecies); }
+void optionsWindow::on_buttonColoringMetasFont_clicked()
+{ setFont(ui->lineColoringMetas); }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
 { setFont(ui->lineColoringModels); }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
@@ -738,7 +769,7 @@ void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
 
-void optionsWindow::on_buttonImageBackgroundColor_textChanged()
+void optionsWindow::on_lineImageBackgroundColor_textChanged()
 { setColor(ui->lineImageBackgroundColor); }
 void optionsWindow::on_buttonImageBackgroundColor_clicked()
 { setColor(ui->lineImageBackgroundColor, true); }
@@ -780,8 +811,6 @@ void optionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
-	m_profile->setBlacklistedTags(ui->lineBlacklist->text().split(' ', QString::SkipEmptyParts));
-	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("ignoredtags", ui->lineIgnored->text());
 	settings->setValue("add", ui->lineAdd->text());
@@ -804,6 +833,7 @@ void optionsWindow::save()
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
+	settings->setValue("invertToggle", ui->checkInvertToggle->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
@@ -839,12 +869,28 @@ void optionsWindow::save()
 		m_profile->emitFavorite();
 	}
 
+	// Log
 	settings->beginGroup("Log");
 		settings->setValue("show", ui->checkShowLog->isChecked());
 	settings->endGroup();
 
+	// Blacklist
+	QList<QStringList> blacklist;
+	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
+	{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+	m_profile->setBlacklistedTags(blacklist);
+	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
+
+	// Monitoring
+	settings->beginGroup("Monitoring");
+		settings->setValue("startupDelay", ui->spinMonitoringStartupDelay->value());
+		settings->setValue("enableTray", ui->checkMonitoringEnableTray->isChecked());
+		settings->setValue("minimizeToTray", ui->checkMonitoringMinimizeToTray->isChecked());
+		settings->setValue("closeToTray", ui->checkMonitoringCloseToTray->isChecked());
+	settings->endGroup();
+
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
-	settings->setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
+	settings->setValue("thumbnailUpscale", static_cast<float>(ui->spinThumbnailUpscale->value()) / 100.0f);
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
@@ -964,6 +1010,21 @@ void optionsWindow::save()
 		settings->setValue("species_sep", ui->lineSpeciesSeparator->text());
 		settings->setValue("species_value", ui->lineSpeciesReplaceAll->text());
 
+		settings->setValue("meta_empty", ui->lineMetasIfNone->text());
+		QString metaMultiple;
+		if		(ui->radioMetasKeepAll->isChecked())		{ metaMultiple = "keepAll";			}
+		else if	(ui->radioMetasKeepN->isChecked())			{ metaMultiple = "keepN";			}
+		else if	(ui->radioMetasKeepNThenAdd->isChecked())	{ metaMultiple = "keepNThenAdd";	}
+		else if	(ui->radioMetasReplaceAll->isChecked())		{ metaMultiple = "replaceAll";		}
+		else if	(ui->radioMetasMultiple->isChecked())		{ metaMultiple = "multiple";		}
+		settings->setValue("meta_multiple", metaMultiple);
+		settings->setValue("meta_multiple_limit", ui->spinMetasMoreThanN->value());
+		settings->setValue("meta_multiple_keepN", ui->spinMetasKeepN->value());
+		settings->setValue("meta_multiple_keepNThenAdd_keep", ui->spinMetasKeepNThenAdd->value());
+		settings->setValue("meta_multiple_keepNThenAdd_add", ui->lineMetasKeepNThenAdd->text());
+		settings->setValue("meta_sep", ui->lineMetasSeparator->text());
+		settings->setValue("meta_value", ui->lineMetasReplaceAll->text());
+
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
@@ -991,6 +1052,7 @@ void optionsWindow::save()
 	if (themeLoader.setTheme(theme))
 	{ settings->setValue("theme", theme); }
 
+	settings->setValue("Zoom/singleWindow", ui->checkSingleDetailsWindow->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
@@ -1020,6 +1082,7 @@ void optionsWindow::save()
 			settings->setValue("copyrights", ui->lineColoringCopyrights->text());
 			settings->setValue("characters", ui->lineColoringCharacters->text());
 			settings->setValue("species", ui->lineColoringSpecies->text());
+			settings->setValue("metas", ui->lineColoringMetas->text());
 			settings->setValue("models", ui->lineColoringModels->text());
 			settings->setValue("generals", ui->lineColoringGenerals->text());
 			settings->setValue("favorites", ui->lineColoringFavorites->text());
@@ -1033,6 +1096,7 @@ void optionsWindow::save()
 			settings->setValue("copyrights", ui->lineColoringCopyrights->font().toString());
 			settings->setValue("characters", ui->lineColoringCharacters->font().toString());
 			settings->setValue("species", ui->lineColoringSpecies->font().toString());
+			settings->setValue("metas", ui->lineColoringMetas->font().toString());
 			settings->setValue("models", ui->lineColoringModels->font().toString());
 			settings->setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings->setValue("favorites", ui->lineColoringFavorites->font().toString());

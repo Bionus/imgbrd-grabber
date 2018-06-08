@@ -1,7 +1,7 @@
-#include "downloadable-downloader.h"
-#include "models/site.h"
-#include "models/image.h"
+#include "loader/downloadable-downloader.h"
 #include "logger.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)
@@ -19,7 +19,7 @@ void DownloadableDownloader::setPath(const QStringList &paths)
 	m_paths = paths;
 }
 
-void DownloadableDownloader::setResult(QStringList keys, Downloadable::SaveResult value)
+void DownloadableDownloader::setResult(const QStringList &keys, Downloadable::SaveResult value)
 {
 	for (const QString &key : keys)
 		m_result.insert(key, value);
@@ -33,7 +33,7 @@ void DownloadableDownloader::save()
 
 void DownloadableDownloader::preloaded()
 {
-	QString url = m_downloadable->url();
+	QString url = m_downloadable->url(Downloadable::Size::Full);
 	QStringList paths = !m_paths.isEmpty() ? m_paths : m_downloadable->paths(m_filename, m_folder, m_count);
 
 	// Sometimes we don't even need to download the image to save it
@@ -59,7 +59,7 @@ void DownloadableDownloader::preloaded()
 	// Load the image directly on the disk
 	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url);
-	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, "image", Q_NULLPTR); // TODO
+	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, "image", Q_NULLPTR); // TODO(Bionus)
 	QObject::connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::networkError, this, &DownloadableDownloader::networkError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::success, this, &DownloadableDownloader::success, Qt::UniqueConnection);
@@ -79,7 +79,7 @@ void DownloadableDownloader::writeError()
 	emit saved(m_downloadable, m_result);
 }
 
-void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, QString errorString)
+void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, const QString &errorString)
 {
 	// Ignore cancel errors
 	if (error == QNetworkReply::OperationCanceledError)

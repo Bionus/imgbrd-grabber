@@ -2,8 +2,8 @@
 #define EMPTY_DIRS_FIX_1_H
 
 #include <QDialog>
-#include <QStringList>
 #include <QDir>
+#include <QStringList>
 
 
 namespace Ui
@@ -26,8 +26,8 @@ class EmptyDirsFix1 : public QDialog
 		void next();
 
 	private:
-		QStringList mkList(QDir dir);
-		bool isEmpty(QDir dir);
+		QStringList mkList(const QDir &dir);
+		bool isEmpty(const QDir &dir);
 
 	private:
 		Ui::EmptyDirsFix1 *ui;

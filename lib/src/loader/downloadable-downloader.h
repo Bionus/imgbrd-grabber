@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "downloadable.h"
 #include "downloader/file-downloader.h"
+#include "loader/downloadable.h"
+#include "models/filename.h"
 
 
 class Site;
@@ -22,15 +23,14 @@ class DownloadableDownloader : public QObject
 	protected slots:
 		void preloaded();
 		void writeError();
-		void networkError(QNetworkReply::NetworkError error, QString errorString);
+		void networkError(QNetworkReply::NetworkError error, const QString &errorString);
 		void success();
 
 	signals:
-		void saved(QSharedPointer<Downloadable> downloadable, QMap<QString, Downloadable::SaveResult> result);
+		void saved(QSharedPointer<Downloadable> downloadable, const QMap<QString, Downloadable::SaveResult> &result);
 
 	protected:
-		void setResult(QStringList keys, Downloadable::SaveResult value);
-		void postSave();
+		void setResult(const QStringList &keys, Downloadable::SaveResult value);
 
 	private:
 		QSharedPointer<Downloadable> m_downloadable;

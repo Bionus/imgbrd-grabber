@@ -1,8 +1,8 @@
 #ifndef ADDUNIQUEWINDOW_H
 #define ADDUNIQUEWINDOW_H
 
-#include <QMap>
 #include <QDialog>
+#include <QMap>
 
 
 namespace Ui
@@ -22,7 +22,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(QString, QMap<QString,Site*> sites, Profile *profile, QWidget *parent);
+		AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent = Q_NULLPTR);
 
 	public slots:
 		void add();
@@ -31,7 +31,7 @@ class AddUniqueWindow : public QDialog
 		void addLoadedImage();
 		void addImage(QSharedPointer<Image> img);
 		void on_buttonFolder_clicked();
-		void on_lineFilename_textChanged(QString);
+		void on_lineFilename_textChanged(const QString &);
 
 	signals:
 		void sendData(const DownloadQueryImage &);
@@ -39,7 +39,7 @@ class AddUniqueWindow : public QDialog
 	private:
 		Ui::AddUniqueWindow		*ui;
 		Page					*m_page;
-		QMap<QString,Site*>		m_sites;
+		QMap<QString, Site*>	m_sites;
 		bool					m_close;
 		Profile					*m_profile;
 		QSharedPointer<Image>	m_image;

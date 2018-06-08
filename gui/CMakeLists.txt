@@ -19,15 +19,15 @@ if (DEFINED ENV{APPVEYOR})
 endif()
 
 # Qt libraries
+find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Xml REQUIRED)
-set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Network Qt5::Script Qt5::Sql Qt5::Widgets Qt5::Xml)
+set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
 
 # Windows specials
 if(WIN32)

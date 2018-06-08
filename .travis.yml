@@ -9,6 +9,10 @@ matrix:
       sudo: required
     - os: osx
 
+cache:
+  directories:
+    - release/sites/node_modules
+
 # Qt packages for Linux
 addons:
   apt:
@@ -18,7 +22,7 @@ addons:
       - sqlite3
       - libqt5sql5-sqlite
       - qtbase5-dev
-      - qtscript5-dev
+      - qtdeclarative5-dev
       - qtmultimedia5-dev
       - qttools5-dev
       - qttools5-dev-tools
@@ -29,7 +33,7 @@ addons:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
-      brew install http://git.io/sshpass.rb &&
+      brew install https://raw.githubusercontent.com/hudochenkov/homebrew-sshpass/master/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
@@ -75,7 +79,7 @@ after_success:
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
@@ -83,7 +87,7 @@ after_success:
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi

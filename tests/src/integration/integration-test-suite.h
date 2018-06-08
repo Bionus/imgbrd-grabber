@@ -2,11 +2,11 @@
 #define INTEGRATION_TEST_SUITE_H
 
 #include <QSettings>
-#include "test-suite.h"
 #include "downloader/downloader.h"
-#include "models/source.h"
-#include "models/site.h"
 #include "models/image.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "test-suite.h"
 
 
 class IntegrationTestSuite : public TestSuite
@@ -18,13 +18,15 @@ class IntegrationTestSuite : public TestSuite
 		void cleanup();
 
 	protected:
-		QList<Image*> getImages(QString site, QString source, QString format, QString tags, QString file = "");
-		QList<Tag> getPageTags(QString site, QString source, QString format, QString tags, QString file = "");
-		QList<Tag> getTags(QString site, QString source, QString format, QString file = "");
+		QList<Image*> getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file);
+		QList<Tag> getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file);
+		QList<Tag> getTags(const QString &site, const QString &source, const QString &format, const QString &file);
 
 	protected:
-		Downloader	*m_downloader;
-		Site		*m_site;
+		Downloader *m_downloader;
+		Profile *m_profile;
+		Source *m_source;
+		Site *m_site;
 		QStringList m_filesToRemove;
 };
 

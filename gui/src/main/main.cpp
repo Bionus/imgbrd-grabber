@@ -27,29 +27,23 @@
 #include <QApplication>
 #include <QDir>
 #include "downloader/downloader.h"
-#include "models/profile.h"
-#include "models/site.h"
 #include "functions.h"
 #include "mainwindow.h"
+#include "models/page-api.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "updater/update-dialog.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
-#if !USE_CLI && USE_BREAKPAD
+#if !defined(USE_CLI) && defined(USE_BREAKPAD)
 	#include <QFileInfo>
 	#include "crashhandler/crashhandler.h"
 #endif
 
 
-
-void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
-}
 
 int main(int argc, char *argv[])
 {
@@ -58,6 +52,8 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY
@@ -84,7 +80,7 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
 	#endif
@@ -131,19 +127,20 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		bool gui = !parser.isSet(cliOption);
 	#else
 		bool gui = false;
 	#endif
 
 	bool verbose = parser.isSet(verboseOption);
-	if (!gui && !verbose)
-		qInstallMessageHandler(noMessageOutput);
-	else if (verbose)
+	#if !defined(QT_DEBUG)
+		Logger::setupMessageOutput(gui || verbose);
+	#endif
+	if (verbose)
 		Logger::getInstance().setLogLevel(Logger::Debug);
 
-	#if USE_BREAKPAD && !USE_CLI
+	#if defined(USE_BREAKPAD) && !defined(USE_CLI)
 		if (gui)
 		{
 			QDir dir = QFileInfo(argv[0]).dir();
@@ -161,7 +158,7 @@ int main(int argc, char *argv[])
 		Downloader *dwnldr = new Downloader(profile,
 											parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 											parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
-											Site::getSites(profile, parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+											profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 											parser.value(pageOption).toInt(),
 											parser.value(limitOption).toInt(),
 											parser.value(perpageOption).toInt(),
@@ -177,19 +174,21 @@ int main(int argc, char *argv[])
 
 		if (parser.isSet(returnCountOption))
 			dwnldr->getPageCount();
-		if (parser.isSet(returnTagsOption))
+		else if (parser.isSet(returnTagsOption))
 			dwnldr->getPageTags();
-		if (parser.isSet(returnPureTagsOption))
+		else if (parser.isSet(returnPureTagsOption))
 			dwnldr->getTags();
-		if (parser.isSet(returnImagesOption))
+		else if (parser.isSet(returnImagesOption))
 			dwnldr->getUrls();
-		if (parser.isSet(downloadOption))
+		else if (parser.isSet(downloadOption))
 			dwnldr->getImages();
+		else
+			parser.showHelp();
 
 		dwnldr->setQuit(true);
-		QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
+		QObject::connect(dwnldr, &Downloader::quit, qApp, &QApplication::quit);
 	}
-	#if !USE_CLI
+	#if !defined(USE_CLI)
 		else
 		{
 			// Check for updates

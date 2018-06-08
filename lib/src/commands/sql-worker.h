@@ -11,12 +11,12 @@ class SqlWorker : public QThread
 	Q_OBJECT
 
 	public:
-		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = Q_NULLPTR);
+		SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent = Q_NULLPTR);
 		bool connect();
-		static QString escape(QVariant val);
+		static QString escape(const QVariant &val);
 
 	public slots:
-		bool execute(QString sql);
+		bool execute(const QString &sql);
 
 	private:
 		QString m_driver;

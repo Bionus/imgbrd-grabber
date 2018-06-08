@@ -1,12 +1,15 @@
-#include "sourcessettingswindow.h"
-#include "ui_sourcessettingswindow.h"
-#include <QMessageBox>
-#include <QInputDialog>
-#include <QFile>
+#include "sources/sourcessettingswindow.h"
 #include <QCryptographicHash>
-#include <QSettings>
+#include <QFile>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QNetworkCookie>
+#include <QSettings>
+#include <ui_sourcessettingswindow.h>
 #include "functions.h"
+#include "models/api/api.h"
+#include "models/profile.h"
+#include "models/source.h"
 
 
 SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)
@@ -71,7 +74,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
-	if (site->value("PasswordSalt").isEmpty())
+	if (site->getApis().first()->value("PasswordSalt").isEmpty())
 	{ ui->buttonAuthHash->hide(); }
 	else
 	{ ui->lineAuthPassword->setEchoMode(QLineEdit::Normal); }
@@ -109,7 +112,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		ui->widgetTestLogin->hide();
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(save()));
+	connect(this, &QDialog::accepted, this, &SourcesSettingsWindow::save);
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
@@ -128,9 +131,14 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_site->value("PasswordSalt")));
+	QString salt = m_site->getApis().first()->value("PasswordSalt");
+	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(salt));
 	if (!password.isEmpty())
-	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
+	{
+		salt.replace("%password%", password);
+		salt.replace("%value%", password);
+		ui->lineAuthPassword->setText(QCryptographicHash::hash(salt.toUtf8(), QCryptographicHash::Sha1).toHex());
+	}
 }
 
 void SourcesSettingsWindow::deleteSite()
@@ -157,8 +165,7 @@ void SourcesSettingsWindow::testLogin()
 {
 	save();
 
-	ui->labelTestCredentials->setText("<i>Connexion...</li>");
-	ui->labelTestLogin->setText("<i>Connexion...</li>");
+	setLoginStatus(tr("Connection..."));
 
 	connect(m_site, &Site::loggedIn, this, &SourcesSettingsWindow::loginTested);
 	m_site->login(true);
@@ -169,20 +176,24 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 	switch (result)
 	{
 		case Site::LoginResult::Success:
-			ui->labelTestCredentials->setText("<i>" + tr("Success!") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Success!") + "</i>");
+			setLoginStatus(tr("Success!"));
 			break;
 
 		case Site::LoginResult::Error:
-			ui->labelTestCredentials->setText("<i>" + tr("Failure") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Failure") + "</i>");
+			setLoginStatus(tr("Failure"));
 			break;
 
 		default:
-			ui->labelTestCredentials->setText("<i>" + tr("Unable to test") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Unable to test") + "</i>");
+			setLoginStatus(tr("Unable to test"));
 			break;
 	}
+}
+
+void SourcesSettingsWindow::setLoginStatus(const QString &msg)
+{
+	QString italic = QString("<i>%1</li>").arg(msg);
+	ui->labelTestCredentials->setText(italic);
+	ui->labelTestLogin->setText(italic);
 }
 
 void SourcesSettingsWindow::save()
@@ -260,7 +271,7 @@ void SourcesSettingsWindow::save()
 
 		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
 	}
-	m_site->setSetting("headers", headers, QMap<QString,QVariant>());
+	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
 
 	m_site->syncSettings();
 

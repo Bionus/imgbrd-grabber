@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "tag-name-test.h"
+#include <QtTest>
 
 
 void TagNameTest::testNormalizedValid()

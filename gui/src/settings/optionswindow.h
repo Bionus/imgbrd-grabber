@@ -2,8 +2,8 @@
 #define OPTIONSWINDOW_H
 
 #include <QDialog>
-#include <QTreeWidgetItem>
 #include <QSettings>
+#include <QTreeWidgetItem>
 #include "reverse-search/reverse-search-engine.h"
 
 
@@ -35,6 +35,7 @@ class optionsWindow : public QDialog
 		void on_lineColoringCopyrights_textChanged();
 		void on_lineColoringCharacters_textChanged();
 		void on_lineColoringSpecies_textChanged();
+		void on_lineColoringMetas_textChanged();
 		void on_lineColoringModels_textChanged();
 		void on_lineColoringGenerals_textChanged();
 		void on_lineColoringFavorites_textChanged();
@@ -46,6 +47,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringCopyrightsColor_clicked();
 		void on_buttonColoringCharactersColor_clicked();
 		void on_buttonColoringSpeciesColor_clicked();
+		void on_buttonColoringMetasColor_clicked();
 		void on_buttonColoringModelsColor_clicked();
 		void on_buttonColoringGeneralsColor_clicked();
 		void on_buttonColoringFavoritesColor_clicked();
@@ -57,6 +59,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringCopyrightsFont_clicked();
 		void on_buttonColoringCharactersFont_clicked();
 		void on_buttonColoringSpeciesFont_clicked();
+		void on_buttonColoringMetasFont_clicked();
 		void on_buttonColoringModelsFont_clicked();
 		void on_buttonColoringGeneralsFont_clicked();
 		void on_buttonColoringFavoritesFont_clicked();
@@ -68,11 +71,11 @@ class optionsWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
-		void on_buttonImageBackgroundColor_textChanged();
+		void on_lineImageBackgroundColor_textChanged();
 		void on_buttonImageBackgroundColor_clicked();
-		void addCustom(QString, QString);
+		void addCustom(const QString &, const QString &);
 		void on_buttonFilenames_clicked();
-		void addFilename(QString, QString, QString);
+		void addFilename(const QString &, const QString &, const QString &);
 
 		// Log files
 		void addLogFile();
@@ -86,7 +89,7 @@ class optionsWindow : public QDialog
 		void showWebServices();
 		void editWebService(int id);
 		void removeWebService(int id);
-		void setWebService(ReverseSearchEngine rse, QByteArray favicon);
+		void setWebService(ReverseSearchEngine rse, const QByteArray &favicon);
 		void moveUpWebService(int id);
 		void moveDownWebService(int id);
 		void swapWebServices(int a, int b);
@@ -94,7 +97,7 @@ class optionsWindow : public QDialog
 		void save();
 
 	signals:
-		void languageChanged(QString);
+		void languageChanged(const QString &lang);
 		void settingsChanged();
 
 	private:

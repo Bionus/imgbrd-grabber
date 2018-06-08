@@ -1,0 +1,47 @@
+body {
+    padding: 25px;
+    background-color: #eee;
+}
+#wrapper {
+    width: 600px;
+    max-width: 100%;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #fff;
+    margin: auto;
+}
+h1 {
+    margin-bottom: 10px;
+    font-size: 2em;
+}
+h2 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 1.4em;
+}
+
+table {
+    width: 500px;
+    max-width: 100%;
+}
+table tr td {
+    padding: 5px 0;
+    text-align: center;
+}
+table tr td:first-child {
+    text-align: left;
+}
+table tr td img[title] {
+    cursor: help;
+    padding-bottom: 2px;
+    border-bottom: 1px dotted #333;
+}
+
+table tr th {
+    width: 50px;
+    text-align: center;
+    font-weight: normal;
+}
+table tr th:first-child {
+    width: auto;
+}

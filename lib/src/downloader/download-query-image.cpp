@@ -1,12 +1,12 @@
-#include "download-query-image.h"
+#include "downloader/download-query-image.h"
 #include <QJsonArray>
-#include "tags/tag.h"
 #include "models/image.h"
 #include "models/site.h"
+#include "tags/tag.h"
 
 
 DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Site *site)
-	: site(site)
+	: DownloadQuery(site)
 {
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
@@ -14,14 +14,14 @@ DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Si
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, QString filename, QString path)
-	: site(site), filename(filename), path(path)
+DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, const QString &filename, const QString &path)
+	: DownloadQuery(site, filename, path)
 {
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path)
-	: site(site), filename(filename), path(path)
+DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path)
+	: DownloadQuery(site, filename, path)
 {
 	initFromData(id, md5, rating, tags, fileUrl, date);
 }
@@ -29,13 +29,14 @@ DownloadQueryImage::DownloadQueryImage(int id, const QString &md5, const QString
 void DownloadQueryImage::initFromImage(const Image &img)
 {
 	QStringList tags;
+	tags.reserve(img.tags().count());
 	for (const Tag &tag : img.tags())
 		tags.append(tag.text());
 
 	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate));
 }
 
-void DownloadQueryImage::initFromData(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
+void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
 {
 	values["filename"] = filename;
 	values["path"] = path;
@@ -47,11 +48,6 @@ void DownloadQueryImage::initFromData(int id, const QString &md5, const QString 
 	values["tags"] = tags;
 	values["date"] = date;
 	values["file_url"] = fileUrl;
-
-	QString t = site->contains("DefaultTag") ? site->value("DefaultTag") : "";
-	values["page_url"] = site->value("Urls/Html/Post");
-	values["page_url"].replace("{tags}", t);
-	values["page_url"].replace("{id}", QString::number(id));
 }
 
 
@@ -84,8 +80,9 @@ void DownloadQueryImage::write(QJsonObject &json) const
 
 bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
-	QStringList tags;
 	QJsonArray jsonTags = json["tags"].toArray();
+	QStringList tags;
+	tags.reserve(jsonTags.count());
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
 

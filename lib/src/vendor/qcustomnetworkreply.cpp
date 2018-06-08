@@ -30,6 +30,11 @@ void QCustomNetworkReply::setHttpStatusCode( int code, const QByteArray &statusT
     setAttribute( QNetworkRequest::HttpReasonPhraseAttribute, statusText );
 }
 
+void QCustomNetworkReply::setNetworkError( QNetworkReply::NetworkError errorCode, const QString &errorString )
+{
+	setError(errorCode, errorString);
+}
+
 void QCustomNetworkReply::setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value )
 {
     QNetworkReply::setHeader( header, value );

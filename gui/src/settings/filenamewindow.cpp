@@ -1,9 +1,10 @@
-#include "filenamewindow.h"
+#include "settings/filenamewindow.h"
 #include <QDesktopServices>
-#include "ui_filenamewindow.h"
-#include "models/image.h"
-#include "models/site.h"
+#include <ui_filenamewindow.h>
 #include "models/filename.h"
+#include "models/image.h"
+#include "models/profile.h"
+#include "models/site.h"
 
 
 FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
@@ -11,7 +12,7 @@ FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	#if USE_QSCINTILLA
+	#if defined(USE_QSCINTILLA)
 		m_scintilla = new QsciScintilla(this);
 		QsciLexerJavaScript *lexer = new QsciLexerJavaScript(this);
 		m_scintilla->setLexer(lexer);
@@ -19,7 +20,7 @@ FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 		m_scintilla = new QTextEdit(this);
 	#endif
 
-	connect(ui->radioJavascript, SIGNAL(toggled(bool)), m_scintilla, SLOT(setEnabled(bool)));
+	connect(ui->radioJavascript, &QRadioButton::toggled, m_scintilla, &QWidget::setEnabled);
 	ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, m_scintilla);
 
 	if (value.startsWith("javascript:"))
@@ -107,7 +108,7 @@ QString FilenameWindow::format()
 {
 	if (ui->radioJavascript->isChecked())
 	{
-		#if USE_QSCINTILLA
+		#if defined(USE_QSCINTILLA)
 			return "javascript:" + m_scintilla->text();
 		#else
 			return "javascript:" + m_scintilla->toPlainText();
@@ -119,14 +120,13 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> sites = Site::getAllSites(m_profile);
+	QMap<QString, Site*> sites = m_profile->getSites();
 
 	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{
-		Site *site = sites.value(sites.keys().first());
+		Site *site = sites.first();
 
 		QMap<QString, QString> info;
-		info.insert("site", QString::number((qintptr)site));
 		info.insert("tags_general", "general_1 general_2");
 		info.insert("tags_artist", "artist_1 artist_2");
 		info.insert("tags_model", "model_1 model_2");
@@ -138,7 +138,7 @@ void FilenameWindow::done(int r)
 
 		if (det.isEmpty())
 		{
-			QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
+			int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
 			if (reply == QMessageBox::Cancel)
 			{
 				return;

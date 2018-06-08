@@ -1,21 +1,27 @@
-#include "site.h"
-#include <QFile>
+#include "models/site.h"
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QStringList>
-#include <QUrlQuery>
-#include <QDir>
 #include <QTimer>
-#include "page.h"
-#include "image.h"
-#include "source.h"
-#include "profile.h"
-#include "api.h"
+#include <QUrlQuery>
 #include "custom-network-access-manager.h"
+#include "logger.h"
+#include "login/http-get-login.h"
+#include "login/http-post-login.h"
+#include "login/oauth2-login.h"
+#include "login/url-login.h"
+#include "mixed-settings.h"
+#include "models/api/api.h"
+#include "models/image.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/source.h"
+#include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
 #include "vendor/json.h"
-#include "logger.h"
 
 #ifdef QT_DEBUG
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
@@ -26,9 +32,22 @@
 
 
 
-Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
+Site::Site(const QString &url, Source *source)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
+	// Create the access manager and get its slots
+	m_manager = new CustomNetworkAccessManager(this);
+	connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+
+	// Cache
+	auto *diskCache = new QNetworkDiskCache(m_manager);
+	diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
+	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
+	m_manager->setCache(diskCache);
+
+	// Cookies
+	resetCookieJar();
+
 	loadConfig();
 }
 
@@ -58,10 +77,11 @@ void Site::loadConfig()
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
-		sources << m_settings->value("sources/source_1").toString()
-				<< m_settings->value("sources/source_2").toString()
-				<< m_settings->value("sources/source_3").toString()
-				<< m_settings->value("sources/source_4").toString();
+		for (int i = 0; i < 4; ++i)
+		{
+			QString def = defaults.count() > i ? defaults[i] : "";
+			sources << m_settings->value("sources/source_" + QString::number(i + 1), def).toString();
+		}
 		sources.removeAll("");
 		if (sources.isEmpty())
 		{ sources = defaults; }
@@ -81,8 +101,20 @@ void Site::loadConfig()
 	}
 
 	// Auth information
-	m_username = m_settings->value("auth/pseudo", "").toString();
-	m_password = m_settings->value("auth/password", "").toString();
+	QString type = m_settings->value("login/type", "url").toString();
+	if (type == "url")
+		m_login = new UrlLogin(this, m_manager, m_settings);
+	else if (type == "oauth2")
+		m_login = new OAuth2Login(this, m_manager, m_settings);
+	else if (type == "post")
+		m_login = new HttpPostLogin(this, m_manager, m_settings);
+	else if (type == "get")
+		m_login = new HttpGetLogin(this, m_manager, m_settings);
+	else
+	{
+		m_login = nullptr;
+		log(QString("Invalid login type '%1'").arg(type), Logger::Error);
+	}
 
 	// Cookies
 	m_cookies.clear();
@@ -102,6 +134,7 @@ void Site::loadConfig()
 
 	// Tag database
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
+	m_tagDatabase->loadTypes();
 }
 
 Site::~Site()
@@ -110,27 +143,6 @@ Site::~Site()
 	delete m_tagDatabase;
 }
 
-
-/**
- * Initialize the network manager.
- */
-void Site::initManager()
-{
-	if (m_manager == nullptr)
-	{
-		// Create the access manager and get its slots
-		m_manager = new CustomNetworkAccessManager(this);
-		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
-
-		// Cache
-		auto *diskCache = new QNetworkDiskCache(m_manager);
-		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
-		m_manager->setCache(diskCache);
-
-		// Cookies
-		resetCookieJar();
-	}
-}
 
 /**
  * Initialize or reset the site's cookie jar.
@@ -168,7 +180,6 @@ void Site::login(bool force)
 	}
 
 	log(QString("[%1] Logging in...").arg(m_url), Logger::Info);
-	initManager();
 
 	// Clear cookies if we want to force a re-login
 	if (force)
@@ -176,107 +187,35 @@ void Site::login(bool force)
 
 	m_loggedIn = LoginStatus::Pending;
 
-	QString type = m_settings->value("login/type", "url").toString();
-	if (type == "url")
-	{
-		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
-		if (maxPageAnonymous <= 0)
-		{
-			emit loggedIn(this, LoginResult::Impossible);
-			return;
-		}
-
-		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), maxPageAnonymous);
-		connect(m_loginPage, &Page::finishedLoading, this, &Site::loginFinished);
-		connect(m_loginPage, &Page::failedLoading, this, &Site::loginFinished);
-		m_loginPage->load();
-
-		return;
-	}
-
-	// Cannot post login information without an URL
-	QString loginUrl = m_settings->value("login/"+type+"/url", "").toString();
-	if (loginUrl.isEmpty())
+	if (!m_login->isTestable())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
 		return;
 	}
 
-	QUrlQuery query;
-	query.addQueryItem(m_settings->value("login/"+type+"/pseudo", "").toString(), m_username);
-	query.addQueryItem(m_settings->value("login/"+type+"/password", "").toString(), m_password);
-
-	m_settings->beginGroup("login/fields");
-		QStringList keys = m_settings->childKeys();
-		for (const QString &key : keys)
-			query.addQueryItem(key, setting(key).toString());
-	m_settings->endGroup();
-
-	if (type == "post")
-	{
-		QUrl postData;
-		postData.setQuery(query);
-
-		QNetworkRequest request(fixUrl(loginUrl));
-		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-		m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
-		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
-	}
-	else
-	{
-		QUrl url = fixUrl(loginUrl);
-		url.setQuery(query);
-
-		QNetworkRequest request(url);
-		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-
-		m_loginReply = getRequest(request);
-		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
-	}
+	connect(m_login, &Login::loggedIn, this, &Site::loginFinished);
+	m_login->login();
 }
 
 bool Site::canTestLogin() const
 {
-	QString type = m_settings->value("login/type", "url").toString();
-
-	if (type == "url")
-		return m_settings->value("login/maxPage", 0).toInt() > 0;
-
-	// Cannot post login information without an URL
-	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
+	return m_login != nullptr && m_login->isTestable();
 }
 
 /**
  * Called when the login try is finished.
  */
-void Site::loginFinished()
+void Site::loginFinished(Login::Result result)
 {
-	QString type = m_settings->value("login/type", "url").toString();
-	bool ok = false;
-	if (type == "url")
-	{
-		ok = !m_loginPage->images().isEmpty();
-	}
-	else
-	{
-		QString cookieName = m_settings->value("login/"+type+"/cookie", "").toString();
-
-		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
-		for (const QNetworkCookie &cookie : cookies)
-		{
-			if (cookie.name() == cookieName && !cookie.value().isEmpty())
-			{ ok = true; }
-		}
-	}
+	bool ok = result == Login::Result::Success;
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
-	log(QString("[%1] Login finished: %2.").arg(m_url).arg(ok ? "success" : "failure"));
+	log(QString("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
 	emit loggedIn(this, ok ? LoginResult::Success : LoginResult::Error);
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
+QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img)
 {
 	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown)
 		login();
@@ -293,19 +232,21 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	{
 		QString refHeader;
 		if (referer == "host")
-		{ refHeader = url.scheme()+"://"+url.host(); }
+		{ refHeader = url.scheme() + "://" + url.host(); }
 		else if (referer == "image")
-		{ refHeader = url.toString(); }
+		{ refHeader = fixUrl(url).toString(); }
 		else if (referer == "page" && page)
-		{ refHeader = page->url().toString(); }
+		{ refHeader = fixUrl(page->url()).toString(); }
 		else if (referer == "details" && img)
-		{ refHeader = img->pageUrl().toString(); }
+		{ refHeader = fixUrl(img->pageUrl()).toString(); }
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
-	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-	for (const QString &key : headers.keys())
-	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
+	m_login->complementRequest(&request);
+
+	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
+	for (auto it = headers.begin(); it != headers.end(); ++it)
+	{ request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1()); }
 
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
@@ -314,7 +255,6 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
-	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return request;
 }
@@ -328,12 +268,12 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
  * @param img	The related image
  * @return		The equivalent network request
  */
-void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)> callback, Page *page, QString ref, Image *img)
+void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply*)> &callback, Page *page, const QString &ref, Image *img)
 {
 	m_lastCallback = callback;
 	m_callbackRequest = this->makeRequest(url, page, ref, img);
 
-	int sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
+	qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
 	int def = (type == QueryType::Retry ? 60 : 0);
@@ -351,7 +291,7 @@ void Site::getCallback()
 	m_lastCallback(this->getRequest(m_callbackRequest));
 }
 
-QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
+QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
 {
 	QNetworkRequest request = this->makeRequest(url, page, ref, img);
 	return this->getRequest(request);
@@ -364,37 +304,11 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 }
 
 
-QList<Site*> Site::getSites(Profile *profile, QStringList sources)
-{
-	QMap<QString, Site*> sites = Site::getAllSites(profile);
-
-	QList<Site*> ret;
-	for (const QString &source : sources)
-		if (sites.contains(source))
-			ret.append(sites.value(source));
-
-	return ret;
-}
-QMap<QString, Site*> Site::getAllSites(Profile *profile)
-{
-	QMap<QString, Site*> ret;
-
-	QList<Source*> *sources = Source::getAllSources(profile);
-	for (Source *source : *sources)
-		for (Site *site : source->getSites())
-			ret.insert(site->url(), site);
-
-	return ret;
-}
-
-
 void Site::loadTags(int page, int limit)
 {
-	initManager();
-
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
 	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
-	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
+	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
 }
 
 void Site::finishedTags()
@@ -406,6 +320,7 @@ void Site::finishedTags()
 	if (!src.isNull())
 	{
 		QList<QVariant> sourc = src.toList();
+		tags.reserve(sourc.count());
 		for (int id = 0; id < sourc.count(); id++)
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
@@ -422,6 +337,7 @@ void Site::finishedTags()
 QVariant Site::setting(const QString &key, const QVariant &def)	{ return m_settings->value(key, def); }
 void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def)	{ m_settings->setValue(key, value, def); }
 void Site::syncSettings() { m_settings->sync(); }
+MixedSettings *Site::settings() const { return m_settings; }
 TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
 QString Site::name() const { return m_name;	}
@@ -450,19 +366,20 @@ Api *Site::firstValidApi() const
 			return api;
 	return nullptr;
 }
-
-
-bool Site::autoLogin() const	{ return m_autoLogin;	}
-QString Site::username() const	{ return m_username;	}
-QString Site::password() const	{ return m_password;	}
-
-void Site::setAutoLogin(bool autoLogin)	        { m_autoLogin = autoLogin;	}
-void Site::setUsername(const QString &username)	{ m_username = username;	}
-void Site::setPassword(const QString &password)	{ m_password = password;	}
-
-QUrl Site::fixUrl(const QString &url) const
+Api *Site::detailsApi() const
 {
-	return this->fixUrl(url, QUrl());
+	for (Api *api : m_apis)
+		if (api->canLoadDetails())
+			return api;
+	return Q_NULLPTR;
+}
+
+bool Site::autoLogin() const			{ return m_autoLogin;		}
+void Site::setAutoLogin(bool autoLogin)	{ m_autoLogin = autoLogin;	}
+
+QString Site::fixLoginUrl(QString url, const QString &loginPart) const
+{
+	return m_login->complementUrl(url, loginPart);
 }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
@@ -476,7 +393,11 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
 	if (url.startsWith("/"))
-	{ return QUrl(protocol + "://" + m_url + url); }
+	{
+		QString baseUrl = m_url.mid(m_url.indexOf('/'));
+		QString right = url.startsWith(baseUrl) ? url.mid(baseUrl.length()) : url;
+		return QUrl(protocol + "://" + m_url + right);
+	}
 
 	if (!url.startsWith("http"))
 	{
@@ -498,28 +419,9 @@ QList<QNetworkCookie> Site::cookies() const
 
 bool Site::isLoggedIn(bool unknown) const
 {
-	QString type = m_settings->value("login/type", "url").toString();
-	int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
-
-	if (type == "url" && !m_username.isEmpty() && !m_password.isEmpty() && maxPageAnonymous <= 0)
-		return true;
-
 	if (unknown)
 		return m_loggedIn != LoginStatus::LoggedOut;
 
 	return m_loggedIn == LoginStatus::LoggedIn;
 }
 
-
-bool Site::contains(const QString &key) const
-{
-	if (m_apis.isEmpty())
-		return false;
-	return m_apis.first()->contains(key);
-}
-QString Site::value(const QString &key) const
-{
-	if (m_apis.isEmpty())
-		return QString();
-	return m_apis.first()->value(key);
-}

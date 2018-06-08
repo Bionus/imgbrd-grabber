@@ -58,7 +58,7 @@
       <widget class="QComboBox" name="comboPresets">
        <item>
         <property name="text">
-         <string notr="true"/>
+         <string notr="true">- No preset selected -</string>
         </property>
        </item>
       </widget>

@@ -1,13 +1,13 @@
+#include "commands/sql-worker.h"
 #include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
-#include <QtSql/QSqlDriver>
-#include "sql-worker.h"
+#include <QtSql/QSqlQuery>
 #include "logger.h"
 
 
-SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent)
+SqlWorker::SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent)
 	: QThread(parent), m_driver(driver), m_host(host), m_user(user), m_password(password), m_database(database)
 {
 	m_enabled = (m_driver == "QSQLITE" && !m_database.isEmpty())
@@ -22,10 +22,18 @@ bool SqlWorker::connect()
 		return true;
 
 	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
-	db.setHostName(m_host);
 	db.setDatabaseName(m_database);
 	db.setUserName(m_user);
 	db.setPassword(m_password);
+
+	int portSeparator = m_host.lastIndexOf(':');
+	if (portSeparator > 0)
+	{
+		db.setHostName(m_host.left(portSeparator));
+		db.setPort(m_host.midRef(portSeparator + 1).toInt());
+	}
+	else
+	{ db.setHostName(m_host); }
 
 	if (!db.open())
 	{
@@ -37,7 +45,7 @@ bool SqlWorker::connect()
 	return true;
 }
 
-QString SqlWorker::escape(QVariant val)
+QString SqlWorker::escape(const QVariant &val)
 {
 	QSqlDriver *driver = QSqlDatabase::database().driver();
 	if (driver == nullptr)
@@ -50,7 +58,7 @@ QString SqlWorker::escape(QVariant val)
 	return driver->formatValue(f);
 }
 
-bool SqlWorker::execute(QString sql)
+bool SqlWorker::execute(const QString &sql)
 {
 	if (!m_enabled || !connect())
 		return false;

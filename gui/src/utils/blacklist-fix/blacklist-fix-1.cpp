@@ -1,28 +1,32 @@
-#include <QSettings>
+#include "utils/blacklist-fix/blacklist-fix-1.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "blacklist-fix-1.h"
-#include "blacklist-fix-2.h"
-#include "ui_blacklist-fix-1.h"
+#include <QSettings>
+#include <ui_blacklist-fix-1.h>
+#include "helpers.h"
+#include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
-#include "models/image.h"
-#include "helpers.h"
+#include "utils/blacklist-fix/blacklist-fix-2.h"
 
 
-BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(sites)
+BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
-	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
+
+	QString blacklist;
+	for (const QStringList &tags : profile->getBlacklist())
+	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	ui->textBlacklist->setPlainText(blacklist);
 
 	resize(size().width(), 0);
 }
@@ -61,8 +65,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	}
 
 	// Get all files from the destination directory
-	typedef QPair<QString,QString> QStringPair;
-	QVector<QStringPair> files = QVector<QStringPair>();
+	QVector<QPair<QString, QString>> files;
 	QDirIterator it(dir, QDirIterator::Subdirectories);
 	while (it.hasNext())
 	{
@@ -70,12 +73,12 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		if (!it.fileInfo().isDir())
 		{
 			int len = it.filePath().length() - dir.absolutePath().length() - 1;
-			files.append(QPair<QString,QString>(it.filePath().right(len), it.filePath()));
+			files.append(QPair<QString, QString>(it.filePath().right(len), it.filePath()));
 		}
 	}
 
 	// Parse all files
-	for (QStringPair file : files)
+	for (const QPair<QString, QString> &file : files)
 	{
 		QString md5 = "";
 		if (ui->radioForce->isChecked())
@@ -107,7 +110,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 			}
 		}
 
-		QMap<QString,QString> det;
+		QMap<QString, QString> det;
 		det.insert("md5", md5);
 		det.insert("path", file.first);
 		det.insert("path_full", file.second);
@@ -142,12 +145,16 @@ void BlacklistFix1::getAll(Page *p)
 		m_getAll.insert(det.value("md5"), det);
 
 		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
-		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
+		connect(page, &Page::finishedLoading, this, &BlacklistFix1::getAll);
 		page->load();
 	}
 	else
 	{
-		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), ui->lineBlacklist->text().split(" "));
+		QList<QStringList> blacklist;
+		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
+		{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+
+		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();
 		bf2->show();
 	}

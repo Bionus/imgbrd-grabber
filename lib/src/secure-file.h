@@ -1,16 +1,16 @@
 #ifndef SECURE_FILE_H
 #define SECURE_FILE_H
 
-#include <QString>
 #include <QFile>
+#include <QString>
 #include "vendor/simplecrypt.h"
 
 
 class SecureFile
 {
 	public:
-		SecureFile(QString filename, QString key);
-		void write(QByteArray data);
+		SecureFile(const QString &filename, const QString &key);
+		void write(const QByteArray &data);
 		QByteArray readAll();
 
 	private:

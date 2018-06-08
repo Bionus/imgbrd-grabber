@@ -1,23 +1,26 @@
-#include "tag-stylist.h"
-#include "models/profile.h"
+#include "tags/tag-stylist.h"
+#include <algorithm>
 #include "functions.h"
+#include "models/profile.h"
+#include "tags/tag.h"
 
 
 TagStylist::TagStylist(Profile *profile)
 	: m_profile(profile)
 {}
 
-QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, QString sort) const
+QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, const QString &sort) const
 {
 	// Sort tag list
 	if (sort == "type")
-		qSort(tags.begin(), tags.end(), sortTagsByType);
+		std::sort(tags.begin(), tags.end(), sortTagsByType);
 	else if (sort == "name")
-		qSort(tags.begin(), tags.end(), sortTagsByName);
+		std::sort(tags.begin(), tags.end(), sortTagsByName);
 	else if (sort == "count")
-		qSort(tags.begin(), tags.end(), sortTagsByCount);
+		std::sort(tags.begin(), tags.end(), sortTagsByCount);
 
 	QStringList t;
+	t.reserve(tags.count());
 	for (const Tag &tag : tags)
 		t.append(stylished(tag, count, noUnderscores));
 
@@ -31,12 +34,12 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
  */
 QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) const
 {
-	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
-	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
+	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "species" << "metas" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
+	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#ee6600" << "#ee6600" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
 
 	// Guess the correct tag family
 	QString key = tlist.contains(tag.type().name()+"s") ? tag.type().name() + "s" : "generals";
-	if (m_profile->getBlacklist().contains(tag.text(), Qt::CaseInsensitive))
+	if (m_profile->getBlacklist().contains(QStringList() << tag.text()))
 		key = "blacklisteds";
 	if (m_profile->getIgnored().contains(tag.text(), Qt::CaseInsensitive))
 		key = "ignoreds";

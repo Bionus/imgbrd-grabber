@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.6.0)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -27,9 +27,10 @@ endif()
 project(Grabber)
 set(USE_SSL 1)
 
-add_definitions(-DVERSION="5.5.2")
+add_definitions(-DVERSION="6.0.0")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
+add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bionus/imgbrd-grabber/SourceIssues.md")
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
 # SSL
@@ -55,6 +56,7 @@ add_subdirectory(lib)
 add_subdirectory(gui)
 add_subdirectory(cli)
 add_subdirectory(tests)
+add_subdirectory(e2e EXCLUDE_FROM_ALL)
 add_subdirectory(CrashReporter)
 
 add_subdirectory(languages)
@@ -63,3 +65,25 @@ install(DIRECTORY release/ DESTINATION share/Grabber/
 		PATTERN "*.desktop" EXCLUDE
 		PATTERN "*.exe" EXCLUDE)
 install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
+
+# Transpile TS sites into JS
+set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
+set(NODE_MODULES_DIR "${SITES_DIR}/node_modules")
+file(GLOB_RECURSE SITES_TS_FILES "${SITES_DIR}/**.ts")
+list(FILTER SITES_TS_FILES EXCLUDE REGEX ".*.d.ts$")
+list(FILTER SITES_TS_FILES EXCLUDE REGEX "node_modules")
+add_custom_command(
+	OUTPUT ${NODE_MODULES_DIR}
+	DEPENDS "${SITES_DIR}/package.json"
+	COMMAND npm install
+	WORKING_DIRECTORY ${SITES_DIR}
+	COMMENT "Installing npm packages..."
+)
+add_custom_command(
+	OUTPUT JavaScript_sites
+	COMMAND npm run build
+	DEPENDS ${NODE_MODULES_DIR} ${SITES_TS_FILES}
+	WORKING_DIRECTORY ${SITES_DIR}
+	COMMENT "Transpiling TypeScript sources into JavaScript..."
+)
+add_custom_target(sites ALL DEPENDS JavaScript_sites)

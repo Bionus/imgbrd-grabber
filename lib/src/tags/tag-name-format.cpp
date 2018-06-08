@@ -1,11 +1,11 @@
-#include "tag-name.h"
+#include "tags/tag-name-format.h"
 #include <QMap>
 
 
 TagNameFormat::TagNameFormat()
 {}
 
-TagNameFormat::TagNameFormat(CaseFormat caseFormat, QString wordSeparator)
+TagNameFormat::TagNameFormat(CaseFormat caseFormat, const QString &wordSeparator)
 	: m_caseFormat(caseFormat), m_wordSeparator(wordSeparator)
 {}
 
@@ -28,6 +28,7 @@ QString TagNameFormat::wordSeparator() const
 QString TagNameFormat::formatted(const QStringList &words) const
 {
 	QStringList res;
+	res.reserve(words.count());
 	for (int i = 0; i < words.length(); ++i)
 		res.append(formatted(words[i], i));
 

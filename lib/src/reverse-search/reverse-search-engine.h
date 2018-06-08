@@ -10,7 +10,7 @@ class ReverseSearchEngine
 {
 	public:
 		ReverseSearchEngine() = default;
-		ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order);
+		ReverseSearchEngine(int id, const QString &icon, const QString &name, const QString &tpl, int order);
 		void searchByUrl(const QUrl &url) const;
 
 		int id() const;

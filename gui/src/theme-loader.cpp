@@ -1,9 +1,9 @@
 #include "theme-loader.h"
-#include <QDir>
 #include <QApplication>
+#include <QDir>
 
 
-ThemeLoader::ThemeLoader(QString path)
+ThemeLoader::ThemeLoader(const QString &path)
 	: m_path(path)
 {}
 
@@ -13,7 +13,7 @@ QStringList ThemeLoader::getAllThemes() const
 }
 
 
-bool ThemeLoader::setTheme(QString name)
+bool ThemeLoader::setTheme(const QString &name)
 {
 	QString dir = QString(m_path).replace('\\', '/') + name + "/";
 

@@ -1,16 +1,16 @@
-#include "tag-tab.h"
-#include "ui_tag-tab.h"
+#include "tabs/tag-tab.h"
 #include <QJsonArray>
-#include "ui/textedit.h"
+#include <ui_tag-tab.h>
+#include "downloader/download-query-group.h"
+#include "helpers.h"
 #include "models/page.h"
 #include "models/site.h"
-#include "downloader/download-query-group.h"
 #include "searchwindow.h"
-#include "helpers.h"
+#include "ui/textedit.h"
 
 
-tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::tagTab)
+tagTab::tagTab(Profile *profile, mainWindow *parent)
+	: searchTab(profile, parent), ui(new Ui::tagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -122,25 +122,29 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 	ui->checkMergeResults->setChecked(json["mergeResults"].toBool());
 
 	// Post filtering
-	QStringList postFilters;
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	QStringList postFilters;
+	postFilters.reserve(jsonPostFilters.count());
 	for (auto tag : jsonPostFilters)
 		postFilters.append(tag.toString());
 	setPostFilter(postFilters.join(' '));
 
 	// Sources
-	QStringList selectedSources;
 	QJsonArray jsonSelectedSources = json["sites"].toArray();
+	QStringList selectedSources;
+	selectedSources.reserve(jsonSelectedSources.count());
 	for (auto site : jsonSelectedSources)
 		selectedSources.append(site.toString());
-	QList<bool> selectedSourcesBool;
-	for (Site *site : *m_sites)
-		selectedSourcesBool.append(selectedSources.contains(site->url()));
-	saveSources(selectedSourcesBool, false);
+	QList<Site*> selectedSourcesObj;
+	for (Site *site : m_sites)
+		if (selectedSources.contains(site->url()))
+			selectedSourcesObj.append(site);
+	saveSources(selectedSourcesObj, false);
 
 	// Tags
-	QStringList tags;
 	QJsonArray jsonTags = json["tags"].toArray();
+	QStringList tags;
+	tags.reserve(jsonTags.count());
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
 	setTags(tags.join(' '), preload);
@@ -149,7 +153,7 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 }
 
 
-void tagTab::setTags(QString tags, bool preload)
+void tagTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
@@ -165,7 +169,7 @@ void tagTab::getPage()
 	if (m_pages.empty())
 		return;
 
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -184,7 +188,7 @@ void tagTab::getPage()
 
 			QString search = page->search().join(' ');
 			QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 		}
 	}
 }
@@ -193,7 +197,7 @@ void tagTab::getAll()
 	if (m_pages.empty())
 		return;
 
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -202,7 +206,7 @@ void tagTab::getAll()
 
 	for (const QString &actual : actuals)
 	{
-		Page *page = m_pages[actual].first();
+		QSharedPointer<Page> page = m_pages[actual].first();
 
 		int highLimit = page->highLimit();
 		int currentCount = page->images().count();
@@ -213,7 +217,9 @@ void tagTab::getAll()
 
 		QString search = page->search().join(' ');
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites->value(actual)));
+		Site *site = m_sites.value(actual);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
 	}
 }
 

@@ -2,7 +2,7 @@
 #include "ui_aboutwindow.h"
 
 
-AboutWindow::AboutWindow(QString version, QWidget *parent)
+AboutWindow::AboutWindow(const QString &version, QWidget *parent)
 	: QDialog(parent), ui(new Ui::AboutWindow), m_updater()
 {
 	ui->setupUi(this);
@@ -20,7 +20,7 @@ AboutWindow::~AboutWindow()
 	delete ui;
 }
 
-void AboutWindow::finished(QString newVersion, bool available)
+void AboutWindow::finished(const QString &newVersion, bool available)
 {
 	QString msg = available ? tr("A new version is available: %1").arg(newVersion) : tr("Grabber is up to date");
 	ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">" + msg + "</p>");

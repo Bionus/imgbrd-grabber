@@ -17,11 +17,11 @@ class AboutWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit AboutWindow(QString v, QWidget *parent = Q_NULLPTR);
+		explicit AboutWindow(const QString &v, QWidget *parent = Q_NULLPTR);
 		~AboutWindow() override;
 
 	public slots:
-		void finished(QString newVersion, bool available);
+		void finished(const QString &newVersion, bool available);
 
 	private:
 		Ui::AboutWindow *ui;

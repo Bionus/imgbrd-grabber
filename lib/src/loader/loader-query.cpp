@@ -1,14 +1,27 @@
-#include "loader-query.h"
+#include "loader/loader-query.h"
 #include <QEventLoop>
 #include <QtMath>
+#include "loader/loader-data.h"
 #include "models/image.h"
 #include "models/page.h"
+#include "models/post-filter.h"
 #include "models/site.h"
+#include "models/source.h"
 
 
-LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
+LoaderQuery::LoaderQuery(Site *site, const QMap<QString, QVariant> &options)
 	: m_site(site), m_options(options), m_finished(false), m_offset(0)
 {}
+
+bool LoaderQuery::start()
+{
+	QEventLoop loop;
+	QObject::connect(m_site, &Site::loggedIn, &loop, &QEventLoop::quit);
+	m_site->login();
+	loop.exec();
+
+	return true;
+}
 
 LoaderData LoaderQuery::next()
 {
@@ -26,7 +39,8 @@ LoaderData LoaderQuery::next()
 	int limit = m_options["limit"].toInt();
 	QStringList postFiltering = m_options["postFiltering"].toStringList();
 	bool getBlacklisted = m_options["getBlacklisted"].toBool();
-	QStringList blacklist = m_options["blacklist"].toStringList();
+	// QStringList blacklist = m_options["blacklist"].toStringList();
+	QList<QStringList> blacklist;
 
 	// Load results
 	QEventLoop loop;
@@ -40,7 +54,7 @@ LoaderData LoaderQuery::next()
 	for (const QSharedPointer<Image> &img : request.images())
 	{
 		// Skip blacklisted images
-		if (!getBlacklisted && !img->blacklisted(blacklist).empty())
+		if (!getBlacklisted && !PostFilter::blacklisted(img->tokens(profile), blacklist).empty())
 		{
 			ret.ignored.append(img);
 			continue;
@@ -50,7 +64,7 @@ LoaderData LoaderQuery::next()
 	}
 
 	// Paging
-	int pageCount = qCeil((float)limit / perPage);
+	int pageCount = qCeil(static_cast<float>(limit) / perPage);
 	m_offset++;
 	m_finished = m_offset == pageCount;
 

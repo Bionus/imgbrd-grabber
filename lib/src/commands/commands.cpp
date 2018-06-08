@@ -1,11 +1,11 @@
-#include "commands.h"
-#include <QProcess>
+#include "commands/commands.h"
 #include <QDir>
+#include <QProcess>
+#include "commands/sql-worker.h"
+#include "functions.h"
 #include "models/filename.h"
 #include "models/profile.h"
 #include "tags/tag.h"
-#include "sql-worker.h"
-#include "functions.h"
 
 
 
@@ -53,7 +53,7 @@ bool Commands::before()
 	return true;
 }
 
-bool Commands::image(const Image &img, QString path)
+bool Commands::image(const Image &img, const QString &path)
 {
 	// Normal commands
 	if (!m_commandImage.isEmpty())
@@ -95,7 +95,7 @@ bool Commands::image(const Image &img, QString path)
 	return true;
 }
 
-bool Commands::tag(const Image &img, Tag tag, bool after)
+bool Commands::tag(const Image &img, const Tag &tag, bool after)
 {
 	QString original = QString(tag.text()).replace(" ", "_");
 
@@ -153,7 +153,7 @@ bool Commands::after()
 	return true;
 }
 
-bool Commands::sqlExec(QString sql)
+bool Commands::sqlExec(const QString &sql)
 {
 	QMetaObject::invokeMethod(m_sqlWorker, "execute", Qt::QueuedConnection, Q_ARG(QString, sql));
 	return true;

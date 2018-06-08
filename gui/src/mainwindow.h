@@ -1,21 +1,23 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QMainWindow>
-#include <QSettings>
-#include <QProcess>
-#include <QTranslator>
-#include <QSet>
-#include <QQueue>
+#include <QAtomicInt>
 #include <QLinkedList>
-#include <QTableWidgetItem>
+#include <QMainWindow>
+#include <QProcess>
 #include <QProgressBar>
-#include <QAtomicInteger>
-#include "models/site.h"
-#include "models/image.h"
+#include <QQueue>
+#include <QSet>
+#include <QSettings>
+#include <QSystemTrayIcon>
+#include <QTableWidgetItem>
+#include <QTranslator>
+#include "batch-download-image.h"
 #include "downloader/image-downloader.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 namespace Ui
@@ -25,8 +27,6 @@ namespace Ui
 
 
 class searchTab;
-class poolTab;
-class tagTab;
 class favoritesTab;
 class batchWindow;
 class Profile;
@@ -34,6 +34,7 @@ class Downloader;
 class Favorite;
 class DownloadQueryGroup;
 class DownloadQueryImage;
+class MonitoringCenter;
 
 class mainWindow : public QMainWindow
 {
@@ -46,7 +47,7 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void logShow(QString msg);
+		void logShow(const QString &msg);
 		void logClear();
 		void logOpen();
 		// Menus
@@ -64,28 +65,18 @@ class mainWindow : public QMainWindow
 		void renameExisting();
 		void utilTagLoader();
 		// Language
-		void loadLanguage(const QString&, bool shutup = false);
+		void loadLanguage(const QString&, bool quiet = false);
 		void changeEvent(QEvent*) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
-		/*void loadFavorite(int);
-		void favoriteProperties(int);
-		void viewed();
-		void setFavoriteViewed(QString);
-		void favoritesBack();
-		void checkFavorites();
-		void loadNextFavorite();*/
-		// Download
-		/*void web(QString tags = "");
-		void finishedLoading(Page*);
-		void finishedLoadingPreview(QSharedPointer<Image>);
-		void webZoom(int);*/
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
 		void batchClearSelGroups();
 		void batchClearSelUniques();
+		void batchRemoveGroups(QList<int> rows);
+		void batchRemoveUniques(QList<int> rows);
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
@@ -99,12 +90,12 @@ class mainWindow : public QMainWindow
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
-		void getAllFinishedImages(QList<QSharedPointer<Image>> images);
+		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
 		void getAllImages();
-		void getAllGetImage(QSharedPointer<Image> img);
+		void getAllGetImage(const BatchDownloadImage &download, int siteId);
 		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
-		void getAllProgress(qint64, qint64);
+		void getAllProgress(QSharedPointer<Image> img, qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
@@ -114,11 +105,11 @@ class mainWindow : public QMainWindow
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
-		bool needExactTags(QSettings *settings);
+		int needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		void addTab(QString tag = "", bool background = false, bool save = true);
-		void addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addTab(const QString &tag = "", bool background = false, bool save = true);
+		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true);
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
@@ -132,13 +123,17 @@ class mainWindow : public QMainWindow
 		void tabNext();
 		void tabPrev();
 		// Tag list
-		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
-		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
-		void loadTagTab(QString tag);
-		void loadTagNoTab(QString tag);
-		void linkHovered(QString tag);
+		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true);
+		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true);
+		void loadTagTab(const QString &tag);
+		void loadTagNoTab(const QString &tag);
+		void linkHovered(const QString &tag);
 		void contextMenu();
 		void openInNewTab();
+		// System tray
+		void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+		void trayMessageClicked();
+		void trayClose();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
@@ -146,20 +141,20 @@ class mainWindow : public QMainWindow
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
-		bool saveLinkList(QString filename);
-		bool loadLinkList(QString filename);
+		bool saveLinkList(const QString &filename);
+		bool loadLinkList(const QString &filename);
 		void on_buttonSaveSettings_clicked();
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
-		void loadSites();
-		void imageUrlChanged(QString, QString);
+		void imageUrlChanged(const QString &, const QString &);
 		void updateCompleters();
-		void setSource(QString site);
-		void setTags(QList<Tag> tags, searchTab *from = nullptr);
+		void setSource(const QString &site);
+		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
-		QIcon& getIcon(QString path);
-		void setWiki(QString);
+		QIcon& getIcon(const QString &path);
+		void setWiki(const QString &);
+		void siteDeleted(Site *site);
 
 		// Drag & drop
 		void dragEnterEvent(QDragEnterEvent *event) override;
@@ -167,29 +162,29 @@ class mainWindow : public QMainWindow
 
 	protected:
 		int getRowForSite(int site_id);
-		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
-		void getAllImageOk(QSharedPointer<Image> img, int site_id);
-		QList<Site*> getSelectedSites();
+		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
+		void getAllImageOk(const BatchDownloadImage &download, int siteId);
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
-		void addTableItem(QTableWidget *table, int row, int col, QString text);
+		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
 
 	private:
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
+		int					m_allow, m_loaded, m_getAll;
+		int					m_mustGetTags;
 		int					m_forcedTab;
 		QSettings			*m_settings;
-		batchWindow			*m_progressdialog;
+		batchWindow			*m_progressDialog;
 		QString				m_currLang, m_link;
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
-		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
+		QList<BatchDownloadImage>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
-		QList<bool>			m_selectedSources;
+		QList<Site*>		m_selectedSites;
 		favoritesTab		*m_favoritesTab;
 		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
@@ -197,17 +192,22 @@ class mainWindow : public QMainWindow
 		QMap<int, DownloadQueryGroup>	m_batchPending;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
-		QList<Downloader*>  m_downloaders, m_downloadersDone;
+		QList<Downloader*>  m_downloaders;
+		Downloader			*m_lastDownloader;
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
-		QMap<QString, Site*>	m_sites;
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
-		QAtomicInteger<int> m_getAllCurrentlyProcessing;
+		QAtomicInt m_getAllCurrentlyProcessing;
+
+		// System tray
+		QSystemTrayIcon *m_trayIcon;
+		bool m_closeFromTray = false;
+		MonitoringCenter *m_monitoringCenter;
 };
 
-#endif // MAINWINDOW_H
+#endif // MAIN_WINDOW_H

@@ -16,12 +16,12 @@
 		</Rss>
 	</Urls>
 	<Regex>
-		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<tag>[^<]+)</a>[^<]*</li>|<a class=['"]tag_name['"] href=['"]([^'"]+)(?:/1)?['"]>(?<tag>[^<]+)</a>]]></Tags>
-		<Image><![CDATA[<a(?: class=['"][^'"]*['"])? href=['"][^'">]*\/post\/view\/(?<id>[^'"]+)['"][^>]*>[^<]*(?<image><img(?: id=['"](?:[^'"]*)['"])? title=['"](?<tags>[^'"\/]*)(?: \/\/ (?<width>[^'"]+)x(?<height>[^'"]+) \/\/ (?<filesize>[^'"]*) \/\/ (?<ext>[^'"]*))?['"] alt=['"][^'"]*['"](?: height=['"][^'"]*['"])? width=['"][^'"]*['"](?: height=['"][^'"]*['"])?[^>]*(?:src|data-original)=['"][^'"]*(?<preview_url>\/_thumbs\/(?<md5>[^\/]*)\/[^'"]*\.jpg|\/thumb\/(?<md5_2>[^'"]*)\.jpg|questionable\.jpg)['"][^>]*>).*?<\/a>|<a href=['"][^'">]*\/i(?<id_2>[^'"]+)['"](?: class=['"][^'"]*['"])?[^>]*>[^<]*(?<image_2><img(?: id=['"](?:[^'"]*)['"])? src=['"][^'"]*(?<preview_url_2>\/_thumbs\/(?<md5_3>[^'"]*)(?:_th)?\.jpg|\/thumb\/(?<md5_4>[^'"]*)\.jpg|questionable\.jpg)['"] title=['"](?<tags_2>[^'"\/]+) \/\/ (?<width_2>[^'"]+)x(?<height_2>[^'"]+) \/\/ (?<filesize_2>[^'"]*) \/\/ (?<ext_2>[^'"]*)['"] alt=['"][^'"]*['"] ?\/?>)[^<]*<\/a>]]></Image>
-		<LastPage>&lt;a href=['&quot;]/post/list(?:/[^/]+)?/(\d*)['&quot;]&gt;Last&lt;/a&gt;</LastPage>
-		<ImageUrl>&lt;img.+?id=['&quot;]main_image['&quot;] src=['&quot;]([^']+)['&quot;][^&gt;]*&gt;</ImageUrl>
+		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<tag>[^<]+)</a>[^<]*</li>|<a class=['"]tag_name['"] href=['"]([^'"]+)(?:/1)?['"]>(?<tag_2>[^<]+)</a>]]></Tags>
+		<Image><![CDATA[<a(?: class=['"][^'"]*['"])? href=['"][^'">]*\/post\/view\/(?<id>[^'"]+)['"][^>]*>[^<]*(?<image><img(?: id=['"](?:[^'"]*)['"])? title=['"](?<tags>[^'"\/]*)(?: \/\/ (?<width>[^'"]+)x(?<height>[^'"]+) \/\/ (?<filesize>[^'"]*)(?: \/\/ (?<ext>[^'"]*))?)?['"] alt=['"][^'"]*['"](?: height=['"][^'"]*['"])? width=['"][^'"]*['"](?: height=['"][^'"]*['"])?[^>]*(?:src|data-original)=['"][^'"]*(?<preview_url>\/_thumbs\/(?<md5>[^\/]*)\/[^'"]*\.jpg|\/thumb\/(?<md5_2>[^'"]*)\.jpg|questionable\.jpg)['"][^>]*>).*?<\/a>|<a href=['"][^'">]*\/i(?<id_2>[^'"]+)['"](?: class=['"][^'"]*['"])?[^>]*>[^<]*(?<image_2><img(?: id=['"](?:[^'"]*)['"])? src=['"][^'"]*(?<preview_url_2>\/_thumbs\/(?<md5_3>[^'"]*)(?:_th)?\.jpg|\/thumb\/(?<md5_4>[^'"]*)\.jpg|questionable\.jpg)['"] title=['"](?<tags_2>[^'"\/]+) \/\/ (?<width_2>[^'"]+)x(?<height_2>[^'"]+) \/\/ (?<filesize_2>[^'"]*)(?: \/\/ (?<ext_2>[^'"]*))?['"] alt=['"][^'"]*['"] ?\/?>)[^<]*<\/a>]]></Image>
+		<LastPage><![CDATA[<a href=['"]/post/list(?:/[^/]+)?/(\d*)['"]>Last</a>]]></LastPage>
+		<ImageUrl><![CDATA[<img.+?id=['"]main_image['"] src=['"]([^']+)['"][^>]*>]]></ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
-		<ImageDate>&lt;time datetime=['&quot;]([^'&quot;]+)['&quot;]&gt;</ImageDate>
+		<ImageDate><![CDATA[<time datetime=['"]([^'"]+)['"]>]]></ImageDate>
 	</Regex>
 	<Check>
 		<Url>/</Url>

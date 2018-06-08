@@ -1,9 +1,9 @@
+#include "batch/batchwindow.h"
+#include <QClipboard>
+#include <QCloseEvent>
 #include <QSettings>
 #include <QTime>
-#include <QCloseEvent>
-#include <QClipboard>
-#include "batchwindow.h"
-#include "ui_batchwindow.h"
+#include <ui_batchwindow.h>
 #include "functions.h"
 
 
@@ -157,6 +157,7 @@ void batchWindow::copyToClipboard()
 	if (count < 1)
 	{
 		count = ui->tableWidget->rowCount();
+		urls.reserve(count);
 		for (int i = 0; i < count; i++)
 		{ urls.append(ui->tableWidget->item(i, 2)->text()); }
 	}
@@ -173,11 +174,14 @@ void batchWindow::copyToClipboard()
 
 void batchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
-void batchWindow::addImage(QString url, int batch, float size)
+void batchWindow::addImage(const QString &url, int batch, float size)
 {
 	m_urls.append(url);
-	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
-	id->setIcon(QIcon(":/images/status/pending.png"));
+
+	static QIcon pendingIcon(":/images/status/pending.png");
+	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
+	id->setIcon(pendingIcon);
+
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
@@ -207,21 +211,21 @@ void batchWindow::updateColumns()
 	ui->tableWidget->resizeColumnToContents(0);
 	ui->tableWidget->repaint();
 }
-int batchWindow::indexOf(QString url)
+int batchWindow::indexOf(const QString &url)
 {
 	int i = m_urls.indexOf(url);
 	if (i < 0 || ui->tableWidget->item(i, 1) == Q_NULLPTR)
 		return -1;
 	return i;
 }
-int batchWindow::batch(QString url)
+int batchWindow::batch(const QString &url)
 {
 	int i = indexOf(url);
 	if (i == -1)
 		return -1;
 	return ui->tableWidget->item(i, 1)->text().toInt();
 }
-void batchWindow::loadingImage(QString url)
+void batchWindow::loadingImage(const QString &url)
 {
 	if (m_start->isNull())
 		m_start->start();
@@ -232,7 +236,8 @@ void batchWindow::loadingImage(QString url)
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/downloading.png"));
+		static QIcon downloadingIcon(":/images/status/downloading.png");
+		ui->tableWidget->item(i, 0)->setIcon(downloadingIcon);
 
 		// Go to downloading image
 		if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
@@ -242,7 +247,7 @@ void batchWindow::loadingImage(QString url)
 		}
 	}
 }
-void batchWindow::imageUrlChanged(QString before, QString after)
+void batchWindow::imageUrlChanged(const QString &before, const QString &after)
 {
 	int i = indexOf(before);
 	if (i != -1)
@@ -254,15 +259,15 @@ void batchWindow::imageUrlChanged(QString before, QString after)
 		ui->tableWidget->item(i, 5)->setText("0 %");
 	}
 }
-void batchWindow::statusImage(QString url, int percent)
+void batchWindow::statusImage(const QString &url, int percent)
 {
 	int i = indexOf(url);
 	if (i != -1)
 		ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
 }
-void batchWindow::speedImage(QString url, float speed)
+void batchWindow::speedImage(const QString &url, float speed)
 {
-	m_speeds[url] = (int)speed;
+	m_speeds[url] = static_cast<int>(speed);
 	QString unit = getUnit(&speed)+"/s";
 
 	int i = indexOf(url);
@@ -271,7 +276,7 @@ void batchWindow::speedImage(QString url, float speed)
 
 	drawSpeed();
 }
-void batchWindow::sizeImage(QString url, float size)
+void batchWindow::sizeImage(const QString &url, float size)
 {
 	int i = indexOf(url);
 	if (i != -1)
@@ -280,8 +285,13 @@ void batchWindow::sizeImage(QString url, float size)
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	}
 }
-void batchWindow::loadedImage(QString url, Downloadable::SaveResult result)
+void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult result)
 {
+	static QIcon ignoredIcon(":/images/status/ignored.png");
+	static QIcon errorIcon(":/images/status/error.png");
+	static QIcon okIcon(":/images/status/ok.png");
+	static QIcon unknownIcon(":/images/status/unknown.png");
+
 	// Update speed
 	m_speeds.remove(url);
 	drawSpeed();
@@ -297,24 +307,24 @@ void batchWindow::loadedImage(QString url, Downloadable::SaveResult result)
 		{
 			case Downloadable::SaveResult::AlreadyExists:
 			case Downloadable::SaveResult::Ignored:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ignored.png"));
+				ui->tableWidget->item(i, 0)->setIcon(ignoredIcon);
 				break;
 
 			case Downloadable::SaveResult::Error:
 			case Downloadable::SaveResult::NotFound:
 			case Downloadable::SaveResult::NetworkError:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
+				ui->tableWidget->item(i, 0)->setIcon(errorIcon);
 				break;
 
 			case Downloadable::SaveResult::Moved:
 			case Downloadable::SaveResult::Copied:
 			case Downloadable::SaveResult::Saved:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
+				ui->tableWidget->item(i, 0)->setIcon(okIcon);
 				ui->tableWidget->item(i, 5)->setText("100 %");
 				break;
 
 			default:
-				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/unknown.png"));
+				ui->tableWidget->item(i, 0)->setIcon(unknownIcon);
 				break;
 		}
 	}
@@ -327,31 +337,32 @@ void batchWindow::drawSpeed()
 	m_time->restart();
 
 	float speed = 0;
-	for (int sp : m_speeds.values())
-	{ speed += sp; }
+	for (auto sp = m_speeds.begin(); sp != m_speeds.end(); ++sp)
+	{ speed += sp.value(); }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(speed); }
 	QString unit = getUnit(&speed)+"/s";
 
-	float speedMean = 0, count = qMin(m_mean.count(), 60);
+	float speedMean = 0;
+	int count = qMin(m_mean.count(), 60);
 	if (count > 0)
 	{
 		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
 		{ speedMean += m_mean[i]; }
-		speedMean = (int)(speedMean/count);
+		speedMean = static_cast<int>(speedMean/count);
 	}
 	QString unitMean = getUnit(&speedMean)+"/s";
 
 	int elapsed = m_start->elapsed();
-	int remaining = m_images > 0 ? (int)((elapsed * m_imagesCount) / m_images) : 0;
+	int remaining = m_images > 0 ? (elapsed * m_imagesCount) / m_images : 0;
 	QTime tElapsed, tRemaining;
 	tElapsed = tElapsed.addMSecs(elapsed);
 	tRemaining = tRemaining.addMSecs(remaining);
 	QString fElapsed = elapsed > 3600000 ? tr("h 'h' m 'm' s 's'") : (elapsed > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 	QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 
-	ui->labelSpeed->setText(QLocale::system().toString((float)speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
-	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString((float)speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
+	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
 void batchWindow::on_buttonDetails_clicked(bool visible)
@@ -369,7 +380,7 @@ void batchWindow::on_buttonDetails_clicked(bool visible)
 	}
 }
 
-void batchWindow::setText(QString text)
+void batchWindow::setText(const QString &text)
 { ui->labelMessage->setText(text); }
 
 void batchWindow::setCurrentValue(int val)

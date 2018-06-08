@@ -1,0 +1,17 @@
+{
+    "name": "sites",
+    "description": "Grabber site files",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Bionus/imgbrd-grabber.git"
+    },
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "check": "tslint -c tslint.json -p tsconfig.json"
+    },
+    "devDependencies": {
+        "tslint": "^5.9.1",
+        "typescript": "^2.7.2"
+    }
+}

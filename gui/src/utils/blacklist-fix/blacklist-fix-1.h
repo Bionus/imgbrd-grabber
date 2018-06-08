@@ -20,7 +20,7 @@ class BlacklistFix1 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit BlacklistFix1(Profile *profile, QMap<QString, Site*> sites, QWidget *parent = Q_NULLPTR);
+		explicit BlacklistFix1(Profile *profile, QWidget *parent = Q_NULLPTR);
 		~BlacklistFix1() override;
 
 	private slots:

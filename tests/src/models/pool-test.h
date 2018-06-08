@@ -1,8 +1,8 @@
 #ifndef POOL_TEST_H
 #define POOL_TEST_H
 
-#include "test-suite.h"
 #include "models/pool.h"
+#include "test-suite.h"
 
 
 class PoolTest : public TestSuite

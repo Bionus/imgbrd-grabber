@@ -1,20 +1,20 @@
-#include <QSettings>
+#include "utils/rename-existing/rename-existing-1.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "rename-existing-1.h"
-#include "rename-existing-2.h"
-#include "ui_rename-existing-1.h"
-#include "models/page.h"
-#include "models/profile.h"
-#include "models/image.h"
+#include <QSettings>
+#include <ui_rename-existing-1.h>
 #include "functions.h"
 #include "helpers.h"
+#include "models/image.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "utils/rename-existing/rename-existing-2.h"
 
 
-RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(sites)
+RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 
@@ -114,9 +114,9 @@ void RenameExisting1::on_buttonContinue_clicked()
 			det.path = QDir::toNativeSeparators(path);
 			if (!file.second.isEmpty()) {
 				QStringList children;
-				for (const QString &child : file.second) {
-					children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child)));
-				}
+				children.reserve(file.second.count());
+				for (const QString &child : file.second)
+				{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
 				det.children = children;
 			}
 			m_details.append(det);

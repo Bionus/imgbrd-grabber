@@ -1,8 +1,8 @@
 #ifndef VERTICAL_SCROLL_AREA_H
 #define VERTICAL_SCROLL_AREA_H
 
-#include <QScrollArea>
 #include <QResizeEvent>
+#include <QScrollArea>
 #include <QWheelEvent>
 
 

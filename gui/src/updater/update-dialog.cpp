@@ -1,9 +1,9 @@
-#include "update-dialog.h"
-#include "ui_update-dialog.h"
+#include "updater/update-dialog.h"
 #include <QMessageBox>
 #include <QProcess>
+#include <ui_update-dialog.h>
 #include "functions.h"
-#if !defined Q_OS_WIN || defined NIGHTLY
+#if !defined(Q_OS_WIN)
 	#include <QDesktopServices>
 #endif
 
@@ -13,7 +13,8 @@ UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
+	ui->checkShowChangelog->hide();
+	ui->scrollArea->hide();
 	ui->progressDownload->hide();
 	resize(300, 0);
 
@@ -41,7 +42,7 @@ void UpdateDialog::checkForUpdates()
 	m_updater.checkForUpdates();
 }
 
-void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
+void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available, const QString &changelog)
 {
 	if (!available)
 	{
@@ -56,7 +57,7 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 		ui->labelChangelog->setText(parseMarkdown(changelog));
 	}
 	ui->checkShowChangelog->setVisible(hasChangelog);
-	ui->scrollArea->setVisible(hasChangelog);
+	ui->scrollArea->setVisible(hasChangelog && ui->checkShowChangelog->isChecked());
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
@@ -65,7 +66,7 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 
 void UpdateDialog::accept()
 {
-	#if defined Q_OS_WIN && !defined NIGHTLY
+	#if defined(Q_OS_WIN)
 		downloadUpdate();
 	#else
 		QDesktopServices::openUrl(m_updater.latestUrl());
@@ -89,7 +90,7 @@ void UpdateDialog::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressDownload->setValue(bytesReceived);
 }
 
-void UpdateDialog::downloadFinished(QString path)
+void UpdateDialog::downloadFinished(const QString &path)
 {
 	ui->progressDownload->setValue(ui->progressDownload->maximum());
 

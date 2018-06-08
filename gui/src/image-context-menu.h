@@ -4,8 +4,9 @@
 #include <QMenu>
 #include "models/image.h"
 #include "reverse-search/reverse-search-engine.h"
-#include "mainwindow.h"
 
+
+class mainWindow;
 
 class ImageContextMenu : public QMenu
 {

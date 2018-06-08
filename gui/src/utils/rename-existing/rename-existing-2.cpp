@@ -1,11 +1,11 @@
+#include "utils/rename-existing/rename-existing-2.h"
 #include <QDir>
 #include <QFile>
-#include "rename-existing-2.h"
-#include "ui_rename-existing-2.h"
+#include <ui_rename-existing-2.h>
 #include "functions.h"
 
 
-RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
+RenameExisting2::RenameExisting2(const QList<RenameExistingFile> &details, const QString &folder, QWidget *parent)
 	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(details), m_folder(folder)
 {
 	ui->setupUi(this);
@@ -50,7 +50,7 @@ void RenameExisting2::on_buttonCancel_clicked()
 	close();
 }
 
-void RenameExisting2::deleteDir(QString path)
+void RenameExisting2::deleteDir(const QString &path)
 {
 	if (path == m_folder)
 		return;
@@ -65,7 +65,6 @@ void RenameExisting2::deleteDir(QString path)
 	}
 }
 
-#include <QDebug>
 void RenameExisting2::on_buttonOk_clicked()
 {
 	// Move all images
@@ -83,12 +82,10 @@ void RenameExisting2::on_buttonOk_clicked()
 
 		// Move file
 		QFile::rename(image.path, image.newPath);
-		qDebug() << "parent" << image.path << image.newPath;
 		for (const QString &child : image.children)
 		{
 			QString newPath = QString(child).replace(image.path, image.newPath);
 			QFile::rename(child, newPath);
-			qDebug() << "child" << child << newPath;
 		}
 
 		// Delete old path if necessary

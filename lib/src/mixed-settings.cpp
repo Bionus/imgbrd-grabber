@@ -1,7 +1,7 @@
 #include "mixed-settings.h"
 
 
-MixedSettings::MixedSettings(QList<QSettings *> settings)
+MixedSettings::MixedSettings(const QList<QSettings*> &settings)
 	: m_settings(settings)
 {}
 

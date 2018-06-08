@@ -1,5 +1,4 @@
 #include "token.h"
-#include <QDateTime>
 #include "functions.h"
 
 
@@ -28,3 +27,10 @@ QString Token::emptyDefault() const
 
 QString Token::multipleDefault() const
 { return m_multipleDefault; }
+
+
+bool operator==(const Token &lhs, const Token &rhs)
+{ return lhs.value() == rhs.value(); }
+
+bool operator!=(const Token &lhs, const Token &rhs)
+{ return !(lhs == rhs); }

@@ -1,10 +1,13 @@
 #include "helpers.h"
+#include <QDir>
 #include <QMessageBox>
 #include <QProcess>
-#include <QDir>
-#include <QStringList>
-#include <QDesktopServices>
-#include <QUrl>
+#if defined(Q_OS_MAC)
+	#include <QStringList>
+#elif !defined(Q_OS_WIN)
+	#include <QDesktopServices>
+	#include <QUrl>
+#endif
 
 
 /**
@@ -12,7 +15,7 @@
  * @param	parent	The parent widget
  * @param	error	The error message
  */
-void error(QWidget *parent, QString error)
+void error(QWidget *parent, const QString &error)
 {
 	QMessageBox::critical(parent, QObject::tr("Error"), error);
 }
@@ -48,15 +51,16 @@ void clearLayout(QLayout *layout)
 	if (layout == nullptr)
 		return;
 
-	QLayoutItem *item;
-	while ((item = layout->takeAt(0)))
+	while (layout->count() > 0)
 	{
+		QLayoutItem *item = layout->takeAt(0);
 		if (item->layout())
 		{
 			clearLayout(item->layout());
 			item->layout()->deleteLater();
 		}
-		item->widget()->deleteLater();
+		if (item->widget())
+		{ item->widget()->deleteLater(); }
 		delete item;
 	}
 }

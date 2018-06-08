@@ -1,19 +1,20 @@
 #include "functions.h"
-#include <QSettings>
-#include <QFile>
-#include <QDir>
-#include <QFileInfo>
-#include <QFont>
-#include <QProcess>
-#include <QStandardPaths>
 #include <QCoreApplication>
 #include <QDesktopServices>
-#include <QUrl>
-#include <QLocale>
-#include <QTimeZone>
-#include <QRegularExpression>
+#include <QDir>
 #include <QDirIterator>
-#include <cmath>
+#include <QFile>
+#include <QFileInfo>
+#include <QFont>
+#include <QLocale>
+#include <QProcess>
+#include <QRegularExpression>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QTimeZone>
+#include <QtMath>
+#include <QUrl>
+#include <QVector>
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
@@ -23,8 +24,6 @@
 	#include <QDebug>
 #endif
 
-using namespace std;
-
 
 /**
  * Load custom tokens from settings.
@@ -32,7 +31,7 @@ using namespace std;
  */
 QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
-	QMap<QString,QStringList> tokens;
+	QMap<QString, QStringList> tokens;
 	settings->beginGroup("Save/Customs");
 	QStringList keys = settings->childKeys();
 	for (int i = 0; i < keys.size(); i++)
@@ -45,9 +44,9 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
+QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
 {
-	QMap<QString,QPair<QString,QString>> tokens;
+	QMap<QString, QPair<QString, QString>> tokens;
 
 	settings->beginGroup("Filenames");
 	int count = settings->childKeys().count() / 3;
@@ -55,7 +54,7 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	{
 		if (settings->contains(QString::number(i) + "_cond"))
 		{
-			QPair<QString,QString> pair;
+			QPair<QString, QString> pair;
 			pair.first = settings->value(QString::number(i) + "_fn").toString();
 			pair.second = settings->value(QString::number(i) + "_dir").toString();
 			tokens.insert(settings->value(QString::number(i) + "_cond").toString(), pair);
@@ -66,7 +65,7 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
-QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
+QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings)
 {
 	QMap<int, QMap<QString, QVariant>> ret;
 
@@ -89,9 +88,9 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	QStringList suffixes;
 
 	auto logFiles = getExternalLogFiles(settings);
-	for (int key : logFiles.keys())
+	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		const QMap<QString, QVariant> &logFile = logFiles.value(key);
+		const QMap<QString, QVariant> &logFile = it.value();
 		if (logFile["locationType"].toInt() == 2)
 		{ suffixes.append(logFile["suffix"].toString()); }
 	}
@@ -99,7 +98,7 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	return suffixes;
 }
 
-QStringList removeWildards(QStringList elements, QStringList remove)
+QStringList removeWildards(const QStringList &elements, const QStringList &remove)
 {
 	QStringList tags;
 
@@ -135,7 +134,7 @@ QDateTime qDateTimeFromString(QString str)
 {
 	QDateTime date;
 
-	int toInt = str.toInt();
+	uint toInt = str.toUInt();
 	if (toInt != 0)
 	{
 		date.setTime_t(toInt);
@@ -163,7 +162,7 @@ QDateTime qDateTimeFromString(QString str)
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
 		else
 			decay = str.right(6).remove(':').toFloat() / 100;
-		date.setOffsetFromUtc(3600 * decay);
+		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 	else
 	{
@@ -178,15 +177,15 @@ QDateTime qDateTimeFromString(QString str)
 		}
 
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
-		int year = str.mid(26, 4).toInt();
+		int year = str.midRef(26, 4).toInt();
 		int month = months.indexOf(str.mid(4, 3)) + 1;
-		int day = str.mid(8, 2).toInt();
-		float decay = str.mid(20, 5).toFloat() / 100;
+		int day = str.midRef(8, 2).toInt();
+		float decay = str.midRef(20, 5).toFloat() / 100;
 
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
-		date.setOffsetFromUtc(3600 * decay);
+		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 
 	return date;
@@ -229,7 +228,7 @@ bool validSavePath(const QString &file, bool writable)
  * @param	exists	If the file must already exist beforehand.
  * @return			The absolute path to the file.
  */
-QString savePath(QString file, bool exists, bool writable)
+QString savePath(const QString &file, bool exists, bool writable)
 {
 	QString check = exists ? file : "settings.ini";
 
@@ -275,7 +274,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	// Directly copy files using Qt function
 	if (!QFileInfo(srcFilePath).isDir())
-		return QFile::copy(srcFilePath, tgtFilePath);
+		return QFile(srcFilePath).copy(tgtFilePath);
 
 	// Try to create the target directory
 	QDir targetDir(tgtFilePath);
@@ -285,7 +284,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	QDir sourceDir(srcFilePath);
 	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	foreach (const QString &fileName, fileNames)
+	for (const QString &fileName : fileNames)
 	{
 		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
 		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
@@ -304,34 +303,37 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
  */
 int levenshtein(QString s1, QString s2)
 {
-	const size_t len1 = s1.size(), len2 = s2.size();
-	QVector<QVector<unsigned int> > d(len1 + 1, QVector<unsigned int>(len2 + 1));
+	const int len1 = s1.size(), len2 = s2.size();
+	QVector<QVector<int>> d(len1 + 1, QVector<int>(len2 + 1));
 
 	d[0][0] = 0;
-	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
-	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+	for (int i = 1; i <= len1; ++i) d[i][0] = i;
+	for (int i = 1; i <= len2; ++i) d[0][i] = i;
 
-	for(unsigned int i = 1; i <= len1; ++i)
-		for (unsigned int j = 1; j <= len2; ++j)
-			d[i][j] = qMin(
-				qMin(
-					d[i - 1][j] + 1,
-					d[i][j - 1] + 1
-				),
-				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1)
-			);
+	for (int i = 1; i <= len1; ++i)
+	{
+		for (int j = 1; j <= len2; ++j)
+		{
+			const int a = qMin(d[i - 1][j] + 1, d[i][j - 1] + 1);
+			const int b = d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1);
+			d[i][j] = qMin(a, b);
+		}
+	}
 
 	return d[len1][len2];
 }
 
-bool setFileCreationDate(QString path, QDateTime datetime)
+bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
 	#ifdef Q_OS_WIN
-		LPCSTR filename = path.toStdString().c_str();
-		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		wchar_t *filename = new wchar_t[path.length() + 1];
+		path.toWCharArray(filename);
+		filename[path.length()] = 0;
+		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QString("Unable to open file (%1)").arg(GetLastError()), Logger::Error);
+			log(QString("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
 		else
@@ -343,7 +345,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QString("Unable to change the file creation date (%1)").arg(GetLastError()), Logger::Error);
+				log(QString("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 				return false;
 			}
 		}
@@ -354,7 +356,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QString("Unable to change the file creation date (%d)").arg(errno), Logger::Error);
+			// log(QString("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
 			return false;
 		}
 	#endif
@@ -366,10 +368,9 @@ bool setFileCreationDate(QString path, QDateTime datetime)
  * @param	dom		The DOM element to convert.
  * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
  */
-QMap<QString,QString> domToMap(QDomElement dom)
+QMap<QString, QString> domToMap(const QDomElement &dom)
 {
-	QMap<QString,QString> details;
-	dom.firstChildElement("Name").firstChild().nodeValue();
+	QMap<QString, QString> details;
 	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		auto type = n.firstChild().nodeType();
@@ -377,7 +378,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
 		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
 		else
 		{
-			QMap<QString,QString> r = domToMap(n.toElement());
+			QMap<QString, QString> r = domToMap(n.toElement());
 			QStringList k = r.keys();
 			for (int i = 0; i < r.count(); i++)
 			{ details[n.nodeName()+"/"+k.at(i)] = r.value(k.at(i)); }
@@ -422,9 +423,9 @@ void openTray()
 	#endif
 }
 
-QString getExtension(QUrl url)
+QString getExtension(const QUrl &url)
 { return getExtension(url.toString()); }
-QString getExtension(QString url)
+QString getExtension(const QString &url)
 {
 	QString ext;
 	int pPos = url.lastIndexOf('.');
@@ -437,7 +438,7 @@ QString getExtension(QString url)
 	return ext;
 }
 
-QString setExtension(QString url, QString extension)
+QString setExtension(QString url, const QString &extension)
 {
 	int pPos = url.lastIndexOf('.');
 	if (pPos != -1 && pPos > url.indexOf('/', 7))
@@ -451,7 +452,7 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-bool isUrl(QString str)
+bool isUrl(const QString &str)
 {
 	static QRegularExpression regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
 	return regexUrl.match(str).hasMatch();
@@ -472,7 +473,7 @@ QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 	#endif
 }
 
-QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidChars)
+QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, bool invalidChars)
 {
 	Q_UNUSED(invalidChars);
 
@@ -538,7 +539,7 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidCh
 	#define MAX_PATH 260
 #endif
 
-QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalidChars)
+QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength, bool invalidChars)
 {
 	// Fix parameters
 	QString sep = "\\";
@@ -685,8 +686,7 @@ QString parseMarkdown(QString str)
 	str.replace("\\r\\n", "\\n");
 
 	// Headers
-	QRegularExpression header("^(#+)([^#].*)$");
-	header.setPatternOptions(QRegularExpression::MultilineOption);
+	QRegularExpression header("^(#+)([^#].*)$", QRegularExpression::MultilineOption);
 	auto matches = header.globalMatch(str);
 	while (matches.hasNext()) {
 		auto match = matches.next();
@@ -737,6 +737,15 @@ QString qFontToCss(const QFont &font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
+QFont qFontFromString(const QString &str)
+{
+	QFont font;
+	font.fromString(str);
+	if (font.family().isEmpty())
+	{ font.setFamily(font.defaultFamily()); }
+	return font;
+}
+
 bool isFileParentWithSuffix(const QString &fileName, const QString &parent, const QStringList &suffixes)
 {
 	for (const QString &suffix : suffixes)
@@ -784,6 +793,29 @@ bool isVariantEmpty(const QVariant &value)
 		case QVariant::Type::Map: return value.toMap().isEmpty();
 		case QVariant::Type::String: return value.toString().isEmpty();
 		case QVariant::Type::StringList: return value.toStringList().isEmpty();
+		default: return false;
 	}
-	return false;
+}
+
+QMap<QString, QString> multiMatchToMap(const QRegularExpressionMatch &match, const QStringList &groups)
+{
+	QMap<QString, QString> data;
+	for (QString group : groups)
+	{
+		if (group.isEmpty())
+			continue;
+
+		QString val = match.captured(group);
+		if (val.isEmpty())
+			continue;
+
+		int underscorePos = group.lastIndexOf('_');
+		bool ok;
+		group.midRef(underscorePos + 1).toInt(&ok);
+		if (underscorePos != -1 && ok)
+		{ group = group.left(underscorePos); }
+		data[group] = val;
+	}
+
+	return data;
 }

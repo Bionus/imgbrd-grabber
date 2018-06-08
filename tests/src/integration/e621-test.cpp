@@ -1,6 +1,6 @@
-#include <QtTest>
-#include <QStringList>
 #include "e621-test.h"
+#include <QStringList>
+#include <QtTest>
 #include "functions.h"
 
 
@@ -10,6 +10,8 @@ void E621Test::testSwfUrls()
 
 	// Convert results
 	QStringList md5s, urls;
+	md5s.reserve(images.count());
+	urls.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -53,8 +55,6 @@ void E621Test::testJsonTypedTags()
 	QList<Tag> tags = images.first()->tags();
 	QCOMPARE(tags.count(), 22);
 
-	QCOMPARE(tags[0].text(), QString("lumineko"));
-	QCOMPARE(tags[0].type().name(), QString("artist"));
 	QCOMPARE(tags[21].text(), QString("equine"));
 	QCOMPARE(tags[21].type().name(), QString("species"));
 }

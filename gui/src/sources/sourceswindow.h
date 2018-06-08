@@ -1,11 +1,11 @@
 #ifndef SOURCESWINDOW_H
 #define SOURCESWINDOW_H
 
-#include <QDialog>
 #include <QCheckBox>
-#include <QSettings>
+#include <QDialog>
 #include <QLabel>
-#include "models/source.h"
+#include <QNetworkReply>
+#include <QSettings>
 
 
 namespace Ui
@@ -14,30 +14,33 @@ namespace Ui
 }
 
 
+class Profile;
 class QBouton;
 class Site;
-class Profile;
+class Source;
 
 class sourcesWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = Q_NULLPTR);
+		explicit sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent = Q_NULLPTR);
 		~sourcesWindow() override;
-		QList<bool> getSelected();
 
 	public slots:
 		void valid();
 		void closeEvent(QCloseEvent *) override;
 		void checkAll(int check = 2);
 		void addSite();
-		void settingsSite(QString);
-		void deleteSite(QString);
+		void settingsSite(const QString &site);
+		void deleteSite(const QString &site);
+		void openSite(const QString &site) const;
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();
-		void checkForUpdatesReceived(QString source, bool isNew);
+		void checkForUpdatesReceived(const QString &source, bool isNew);
+		void checkForSourceIssues();
+		void checkForSourceIssuesReceived();
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();
@@ -50,22 +53,23 @@ class sourcesWindow : public QDialog
 		void deletePreset();
 		void editPreset();
 		void savePreset();
-		void selectPreset(QString name);
+		void selectPreset(const QString &name);
 
 	signals:
 		void closed();
-		void valid(QList<bool>);
+		void valid(const QList<Site*> &selectedSites);
 
 	private:
 		Ui::sourcesWindow *ui;
 		Profile *m_profile;
-		QList<bool> m_selected;
+		QList<Site*> m_selected;
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
-		QMap<QString, Site*> *m_sites;
-		QMap<QString, Source*> m_sources;
+		const QMap<QString, Site*> &m_sites;
+		const QMap<QString, Source*> &m_sources;
 		QMap<QString, QStringList> m_presets;
+		QNetworkReply *m_checkForSourceReply;
 };
 
 #endif // SOURCESWINDOW_H
