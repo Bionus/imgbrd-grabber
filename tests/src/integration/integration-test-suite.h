@@ -18,9 +18,9 @@ class IntegrationTestSuite : public TestSuite
 		void cleanup();
 
 	protected:
-		QList<Image*> getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file, bool javaScript);
-		QList<Tag> getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file, bool javaScript);
-		QList<Tag> getTags(const QString &site, const QString &source, const QString &format, const QString &file, bool javaScript);
+		QList<Image*> getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file);
+		QList<Tag> getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file);
+		QList<Tag> getTags(const QString &site, const QString &source, const QString &format, const QString &file);
 
 	protected:
 		Downloader *m_downloader;

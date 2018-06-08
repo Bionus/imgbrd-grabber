@@ -16,7 +16,7 @@ void IntegrationTestSuite::initTestCase()
 	m_site = nullptr;
 }
 
-QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file, bool javaScript)
+QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(site);
 	setupSite(site, source);
@@ -37,7 +37,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 
 	m_profile = new Profile("tests/resources/");
 	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", javaScript);
+	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
 	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
@@ -85,7 +85,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file, bool javaScript)
+QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(site);
 	setupSite(site, source);
@@ -106,7 +106,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 
 	m_profile = new Profile("tests/resources/");
 	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", javaScript);
+	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
 	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
@@ -154,7 +154,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file, bool javaScript)
+QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file)
 {
 	setupSource(site);
 	setupSite(site, source);
@@ -175,7 +175,7 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 
 	m_profile = new Profile("tests/resources/");
 	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", javaScript);
+	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
 	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
