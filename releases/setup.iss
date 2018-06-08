@@ -18,7 +18,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "5.5.2"
+# define MyAppVersion "6.0.0"
 #endif
 
 
