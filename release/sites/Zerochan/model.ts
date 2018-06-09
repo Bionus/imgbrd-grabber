@@ -32,7 +32,7 @@ export const source: ISource = {
                     return "/" + query.search + "?s=id&xml&" + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).rss.channel.item;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).rss.channel.item);
 
                     const images: IImage[] = [];
                     for (const image of data) {

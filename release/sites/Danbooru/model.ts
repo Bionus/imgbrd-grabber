@@ -125,7 +125,7 @@ export const source: ISource = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.typedXML(Grabber.parseXML(src)).posts.post;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).posts.post);
 
                     const images: IImage[] = [];
                     for (const dta of data) {
@@ -149,7 +149,7 @@ export const source: ISource = {
                         "typeId": "type",
                     };
 
-                    const data = Grabber.typedXML(Grabber.parseXML(src)).tags.tag;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const dta of data) {

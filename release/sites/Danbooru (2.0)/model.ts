@@ -195,7 +195,7 @@ export const source: ISource = {
                         "tags_meta": "tag-string-meta",
                     };
 
-                    const data = Grabber.typedXML(Grabber.parseXML(src)).posts.post;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).posts.post);
 
                     const images: IImage[] = [];
                     for (const image of data) {
@@ -222,7 +222,7 @@ export const source: ISource = {
                         "typeId": "category",
                     };
 
-                    const data = Grabber.typedXML(Grabber.parseXML(src)).tags.tag;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const tag of data) {

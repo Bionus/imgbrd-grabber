@@ -31,7 +31,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
-                    const data = parsed.posts.post;
+                    const data = Grabber.makeArray(parsed.posts.post);
 
                     const images: IImage[] = [];
                     for (const image of data) {

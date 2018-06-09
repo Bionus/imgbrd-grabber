@@ -41,7 +41,7 @@ export const source: ISource = {
                     return "/rss/images/" + query.page;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).rss.channel.item;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).rss.channel.item);
 
                     const images: IImage[] = [];
                     for (const image of data) {

@@ -1,3 +1,10 @@
+Grabber.makeArray = (val: any): any[] => {
+    if (!Array.isArray(val)) {
+        return [ val ];
+    }
+    return val;
+};
+
 Grabber.mapObject = (obj: any, fn: (v: any) => any): any => {
     const ret: any = {};
     for (const k in obj) {

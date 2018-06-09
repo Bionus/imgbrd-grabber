@@ -88,7 +88,7 @@ export const source: any = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).posts.post);
 
                     const images: IImage[] = [];
                     for (const dta of data) {
@@ -112,7 +112,7 @@ export const source: any = {
                         "typeId": "type",
                     };
 
-                    const data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const dta of data) {
