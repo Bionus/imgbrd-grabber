@@ -163,7 +163,7 @@ class mainWindow : public QMainWindow
 	protected:
 		int getRowForSite(int site_id);
 		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
-		void getAllImageOk(const BatchDownloadImage &download, int siteId);
+		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
 		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
