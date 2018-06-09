@@ -1902,7 +1902,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 				QDir destinationDir = QFileInfo(path).absoluteDir();
 				QStorageInfo storage(destinationDir);
-				isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
+				isDriveFull = storage.isValid() && (storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024);
 				QString rootPath = storage.rootPath();
 				#ifdef Q_OS_WIN
 					drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
