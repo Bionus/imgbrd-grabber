@@ -59,6 +59,7 @@ class batchWindow : public QDialog
 		void cancel();
 		void drawSpeed();
 		void imageUrlChanged(const QString &before, const QString &after);
+		void scrollTo(int i);
 		void pause();
 		void skip();
 
