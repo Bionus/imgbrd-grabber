@@ -79,6 +79,14 @@ void ImageDownloader::loadImage()
 	m_reply->setParent(this);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
+	// Create download root directory
+	if (!m_path.isEmpty() && !QDir(m_path).exists() && !QDir().mkpath(m_path))
+	{
+		log(QString("Impossible to create the destination folder: %1.").arg(m_path), Logger::Error);
+		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
+		return;
+	}
+
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))
 	{
