@@ -32,7 +32,8 @@ void ImageDownloader::save()
 
 void ImageDownloader::loadedSave()
 {
-	m_temporaryPath = m_path + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+	QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+	m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 
 	if (m_paths.isEmpty())
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
