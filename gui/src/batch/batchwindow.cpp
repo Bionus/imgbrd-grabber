@@ -282,7 +282,10 @@ void batchWindow::sizeImage(const QString &url, float size)
 	if (i != -1)
 	{
 		QString unit = getUnit(&size);
-		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
+		QString label = size > 0
+			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " "+unit
+			: "";
+		ui->tableWidget->item(i, 3)->setText(label);
 	}
 }
 void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult result)
