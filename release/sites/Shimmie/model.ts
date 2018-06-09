@@ -52,7 +52,8 @@ export const source: ISource = {
                             created_at: image["pubDate"]["#text"],
                         };
 
-                        const info = image["title"]["#text"].split(" - ");
+                        const txt = image["title"]["#text"];
+                        const info = (Array.isArray(txt) ? txt.join(" ") : txt).split(" - ");
                         if (info.length === 2) {
                             img["id"] = parseInt(info[0], 10);
                             img["tags"] = info[1].toLowerCase().split(" ");
