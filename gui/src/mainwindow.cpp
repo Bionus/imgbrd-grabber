@@ -1751,7 +1751,14 @@ void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived,
 		m_progressDialog->speedImage(url, speed);
 	}
 
-	m_progressDialog->statusImage(url, bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
+	int percent = 0;
+	if (bytesTotal> 0)
+	{
+		qreal pct = (qreal)bytesReceived / (qreal)bytesTotal;
+		percent = qFloor(pct * 100);
+	}
+
+	m_progressDialog->statusImage(url, percent);
 }
 void mainWindow::getAllPerformTags()
 {
