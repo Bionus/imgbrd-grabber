@@ -35,7 +35,9 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const image of data) {
-                        images.push(completeImage(image["@attributes"]));
+                        if (image && "@attributes" in image) {
+                            images.push(completeImage(image["@attributes"]));
+                        }
                     }
 
                     return {
@@ -52,7 +54,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const page: number = (query.page - 1) * 42;
-                    const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={pid}", " id:<{min}&p=1", "&pid={pid}");
+                    const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
                     return "/index.php?page=post&s=list&tags=" + query.search + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
