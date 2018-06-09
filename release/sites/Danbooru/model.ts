@@ -147,7 +147,7 @@ export const source: ISource = {
                         "typeId": "type",
                     };
 
-                    const data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.typedXML(Grabber.parseXML(src)).tags.tag;
 
                     const tags: ITag[] = [];
                     for (const dta of data) {

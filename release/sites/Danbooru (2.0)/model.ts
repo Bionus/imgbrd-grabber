@@ -222,7 +222,7 @@ export const source: ISource = {
                         "typeId": "category",
                     };
 
-                    const data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.typedXML(Grabber.parseXML(src)).tags.tag;
 
                     const tags: ITag[] = [];
                     for (const tag of data) {
