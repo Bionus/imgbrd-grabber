@@ -298,28 +298,39 @@ int PageApi::highLimit() const
 bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess) const
 {
-	int forcedLimit = m_api->forcedLimit();
-	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+	if (m_imagesCountSafe)
+		return m_imagesCount;
 
-	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
-		return m_pagesCount * perPage;
+	if (m_pagesCount == 1)
+		return m_images.count();
 
-	if (!m_imagesCountSafe && !guess)
+	if (!guess)
 		return -1;
+
+	if (m_imagesCount < 0 && m_pagesCount >= 0)
+	{
+		int forcedLimit = m_api->forcedLimit();
+		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+		return m_pagesCount * perPage;
+	}
 
 	return m_imagesCount;
 }
 bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess) const
 {
-	int forcedLimit = m_api->forcedLimit();
-	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+	if (m_pagesCountSafe)
+		return m_pagesCount;
 
-	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
-		return qCeil(static_cast<float>(m_imagesCount) / perPage);
-
-	if (!m_pagesCountSafe && !guess)
+	if (!guess)
 		return -1;
+
+	if (m_pagesCount < 0 && m_imagesCount >= 0)
+	{
+		int forcedLimit = m_api->forcedLimit();
+		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+		return qCeil(static_cast<float>(m_imagesCount) / perPage);
+	}
 
 	return m_pagesCount;
 }
