@@ -304,6 +304,9 @@ int PageApi::imagesCount(bool guess) const
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
 		return m_pagesCount * perPage;
 
+	if (!m_imagesCountSafe && !guess)
+		return -1;
+
 	return m_imagesCount;
 }
 bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
@@ -314,6 +317,9 @@ int PageApi::pagesCount(bool guess) const
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return qCeil(static_cast<float>(m_imagesCount) / perPage);
+
+	if (!m_pagesCountSafe && !guess)
+		return -1;
 
 	return m_pagesCount;
 }
