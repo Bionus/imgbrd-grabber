@@ -1,11 +1,14 @@
 const completeImage = (data: any): IImage => {
     if (data && "tags" in data && typeof data["tags"] === "object") {
         for (const type in data["tags"]) {
-            const children = data["tags"][type];
-            const elts: any = "tag" in children ? children["tag"] : children;
+            let children = data["tags"][type];
+            children = "tag" in children ? children["tag"] : children;
+            if (!Array.isArray(children)) {
+                children = [children];
+            }
             let tags: string = "";
-            for (const i in elts) {
-                const tag = elts[i];
+            for (const i in children) {
+                const tag = children[i];
                 tags += (tags.length !== 0 ? " " : "") + (typeof tag === "object" ? tag["#text"] : tag);
             }
             data["tags_" + type] = tags;
@@ -120,7 +123,7 @@ export const source: ISource = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.typedXML(Grabber.parseXML(src)).posts.post;
 
                     const images: IImage[] = [];
                     for (const dta of data) {

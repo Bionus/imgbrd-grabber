@@ -1,3 +1,47 @@
+Grabber.mapObject = (obj: any, fn: (v: any) => any): any => {
+    const ret: any = {};
+    for (const k in obj) {
+        ret[k] = fn(obj[k]);
+    }
+    return ret;
+};
+
+Grabber.typedXML = (val: any) => {
+    if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
+        const txt = val["#text"];
+
+        const isNil = "@attributes" in val && "nil" in val["@attributes"] && val["@attributes"]["nil"] === "true";
+        if (isNil) {
+            return null;
+        }
+
+        const type = "@attributes" in val && "type" in val["@attributes"] ? val["@attributes"]["type"] : undefined;
+        if (type === "integer") {
+            return parseInt(txt, 10);
+        } else if (type === "array") {
+            delete val["@attributes"]["type"];
+            if (Object.keys(val["@attributes"]).length === 0) {
+                delete val["@attributes"];
+            }
+            return Grabber.mapObject(val, Grabber.typedXML);
+        }
+
+        if (type || txt) {
+            return txt;
+        }
+    }
+
+    if (val && val instanceof Array) {
+        return val.map(Grabber.typedXML);
+    }
+
+    if (val && typeof val === "object") {
+        return Grabber.mapObject(val, Grabber.typedXML);
+    }
+
+    return val;
+};
+
 Grabber.mapFields = (data: any, map: any): any => {
     const result: any = {};
     if (typeof data !== "object") {
@@ -5,11 +49,7 @@ Grabber.mapFields = (data: any, map: any): any => {
     }
     for (const to in map) {
         const from = map[to];
-        let val = from in data && data[from] !== null ? data[from] : undefined;
-        if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
-            val = val["#text"];
-        }
-        result[to] = val;
+        result[to] = from in data && data[from] !== null ? data[from] : undefined;
     }
     return result;
 };

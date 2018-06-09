@@ -195,7 +195,7 @@ export const source: ISource = {
                         "tags_meta": "tag-string-meta",
                     };
 
-                    const data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.typedXML(Grabber.parseXML(src)).posts.post;
 
                     const images: IImage[] = [];
                     for (const image of data) {
