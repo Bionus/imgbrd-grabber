@@ -9,7 +9,9 @@ const completeImage = (data: any): IImage => {
             let tags: string = "";
             for (const i in children) {
                 const tag = children[i];
-                tags += (tags.length !== 0 ? " " : "") + (typeof tag === "object" ? tag["#text"] : tag);
+                if (typeof tag !== "object" || "#text" in tag) {
+                    tags += (tags.length !== 0 ? " " : "") + (typeof tag === "object" ? tag["#text"] : tag);
+                }
             }
             data["tags_" + type] = tags;
         }
