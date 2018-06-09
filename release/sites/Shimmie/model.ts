@@ -7,8 +7,8 @@ function completeImage(img: IImage): IImage {
 
     if (!img["file_url"] || img["file_url"].length < 5) {
         img["file_url"] = hasMd5
-            ? `/_images/${img["md5"]}.${img["ext"]}`
-            : `/_images/${img["id"]}.${img["ext"]}`;
+            ? `/_images/${img["md5"]}.${img["ext"] || "jpg"}`
+            : `/_images/${img["id"]}.${img["ext"] || "jpg"}`;
     }
 
     if (!img["preview_url"] || img["preview_url"].length < 5) {
@@ -41,7 +41,7 @@ export const source: ISource = {
                     return "/rss/images/" + query.page;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).rss.channel.item;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).rss.channel.item);
 
                     const images: IImage[] = [];
                     for (const image of data) {
@@ -52,7 +52,8 @@ export const source: ISource = {
                             created_at: image["pubDate"]["#text"],
                         };
 
-                        const info = image["title"]["#text"].split(" - ");
+                        const txt = image["title"]["#text"];
+                        const info = (Array.isArray(txt) ? txt.join(" ") : txt).split(" - ");
                         if (info.length === 2) {
                             img["id"] = parseInt(info[0], 10);
                             img["tags"] = info[1].toLowerCase().split(" ");

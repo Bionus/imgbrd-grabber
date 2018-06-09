@@ -1703,8 +1703,15 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	getAllGetImage(download, siteId);
 }
 
-void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId)
+void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry)
 {
+	download.image->unload();
+	m_downloadTime.remove(download.image->url());
+	m_downloadTimeLast.remove(download.image->url());
+
+	if (retry)
+		return;
+
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
@@ -1716,11 +1723,7 @@ void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId)
 		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 	}
 
-	download.image->unload();
-	m_downloadTime.remove(download.image->url());
-	m_downloadTimeLast.remove(download.image->url());
 	m_getAllDownloading.removeAll(download);
-
 	_getAll();
 }
 
@@ -1751,7 +1754,14 @@ void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived,
 		m_progressDialog->speedImage(url, speed);
 	}
 
-	m_progressDialog->statusImage(url, bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
+	int percent = 0;
+	if (bytesTotal> 0)
+	{
+		qreal pct = (qreal)bytesReceived / (qreal)bytesTotal;
+		percent = qFloor(pct * 100);
+	}
+
+	m_progressDialog->statusImage(url, percent);
 }
 void mainWindow::getAllPerformTags()
 {
@@ -1888,32 +1898,36 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 		if (it.value() == Image::SaveResult::Error)
 		{
 			diskError = true;
-			m_progressDialog->pause();
 
-			bool isDriveFull = false;
-			QString drive;
-			#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-				QDir destinationDir = QFileInfo(path).absoluteDir();
-				QStorageInfo storage(destinationDir);
-				isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
-				QString rootPath = storage.rootPath();
-				#ifdef Q_OS_WIN
-					drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
-				#else
-					drive = rootPath;
+			if (!m_progressDialog->isPaused())
+			{
+				m_progressDialog->pause();
+
+				bool isDriveFull = false;
+				QString drive;
+				#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+					QDir destinationDir = QFileInfo(path).absoluteDir();
+					QStorageInfo storage(destinationDir);
+					isDriveFull = storage.isValid() && (storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024);
+					QString rootPath = storage.rootPath();
+					#ifdef Q_OS_WIN
+						drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
+					#else
+						drive = rootPath;
+					#endif
 				#endif
-			#endif
 
-			QString msg;
-			if (isDriveFull)
-			{ msg = tr("Not enough space on the destination drive \"%1\".\nPlease free some space before resuming the download.").arg(drive); }
-			else
-			{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
-			QMessageBox::critical(m_progressDialog, tr("Error"), msg);
+				QString msg;
+				if (isDriveFull)
+				{ msg = tr("Not enough space on the destination drive \"%1\".\nPlease free some space before resuming the download.").arg(drive); }
+				else
+				{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
+				QMessageBox::critical(m_progressDialog, tr("Error"), msg);
+			}
 		}
 	}
 
-	if (diskError || res == Image::SaveResult::NetworkError)
+	if (res == Image::SaveResult::NetworkError)
 	{
 		m_getAllErrors++;
 		m_getAllFailed.append(download);
@@ -1924,13 +1938,13 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	{ m_getAllExists++; }
 	else if (res == Image::SaveResult::Ignored)
 	{ m_getAllIgnored++; }
-	else
+	else if (!diskError)
 	{ m_getAllDownloaded++; }
 
 	m_progressDialog->loadedImage(img->url(), res);
 
 	int siteId = download.siteId(m_groupBatchs);
-	getAllImageOk(download, siteId);
+	getAllImageOk(download, siteId, diskError);
 }
 
 void mainWindow::getAllCancel()

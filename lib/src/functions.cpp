@@ -325,6 +325,8 @@ int levenshtein(QString s1, QString s2)
 
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
+	if (!datetime.isValid())
+	{ return false; }
 	#ifdef Q_OS_WIN
 		wchar_t *filename = new wchar_t[path.length() + 1];
 		path.toWCharArray(filename);

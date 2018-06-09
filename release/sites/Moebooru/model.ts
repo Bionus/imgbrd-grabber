@@ -88,7 +88,7 @@ export const source: any = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).posts.post);
 
                     const images: IImage[] = [];
                     for (const dta of data) {
@@ -112,7 +112,7 @@ export const source: any = {
                         "typeId": "type",
                     };
 
-                    const data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.makeArray(Grabber.parseXML(src).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const dta of data) {
@@ -138,7 +138,7 @@ export const source: any = {
                         tags: Grabber.regexToTags('<li class="(?:[^"]* )?tag-type-(?<type>[^" ]+)"[^>]*>(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)k?</span>[^<]*</li>', src),
                         images: Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage),
                         wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>', src),
-                        pageCount: Grabber.regexToConst("page", '><link href="[^"]*\\?.*?page=(\\d+)[^"]*" rel="last" title="Last Page">', src),
+                        pageCount: Grabber.regexToConst("page", '<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page"', src),
                     };
                 },
             },

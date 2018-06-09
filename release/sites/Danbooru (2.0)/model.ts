@@ -4,7 +4,7 @@ function completeImage(img: IImage): IImage {
     }
 
     if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = `/data/${img["md5"]}.${img["ext"]}`;
+        img["file_url"] = `/data/${img["md5"]}.${img["ext"] || "jpg"}`;
     } else {
         img["file_url"] = img["file_url"]
             .replace("/preview/", "/")
@@ -195,7 +195,7 @@ export const source: ISource = {
                         "tags_meta": "tag-string-meta",
                     };
 
-                    const data = Grabber.parseXML(src).posts.post;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).posts.post);
 
                     const images: IImage[] = [];
                     for (const image of data) {
@@ -222,7 +222,7 @@ export const source: ISource = {
                         "typeId": "category",
                     };
 
-                    const data = Grabber.parseXML(src).tags.tag;
+                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const tag of data) {

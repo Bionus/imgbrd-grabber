@@ -32,7 +32,8 @@ void ImageDownloader::save()
 
 void ImageDownloader::loadedSave()
 {
-	m_temporaryPath = m_path + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+	QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+	m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 
 	if (m_paths.isEmpty())
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
@@ -77,6 +78,14 @@ void ImageDownloader::loadImage()
 	m_reply = site->get(site->fixUrl(m_url), m_image->page(), "image", m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
+
+	// Create download root directory
+	if (!m_path.isEmpty() && !QDir(m_path).exists() && !QDir().mkpath(m_path))
+	{
+		log(QString("Impossible to create the destination folder: %1.").arg(m_path), Logger::Error);
+		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
+		return;
+	}
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))

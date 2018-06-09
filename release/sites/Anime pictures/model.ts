@@ -3,7 +3,7 @@ function completeImage(img: IImage): IImage {
         img["ext"] = img["ext"].substring(1);
     }
 
-    img["file_url"] = `/pictures/download_image/${img["id"]}.${img["ext"]}`;
+    img["file_url"] = `/pictures/download_image/${img["id"]}.${img["ext"] || "jpg"}`;
 
     if ((!img["sample_url"] || img["sample_url"].length < 5) && img["preview_url"] && img["preview_url"].length >= 5) {
         img["sample_url"] = img["preview_url"]

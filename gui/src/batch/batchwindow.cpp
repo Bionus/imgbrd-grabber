@@ -238,13 +238,16 @@ void batchWindow::loadingImage(const QString &url)
 	{
 		static QIcon downloadingIcon(":/images/status/downloading.png");
 		ui->tableWidget->item(i, 0)->setIcon(downloadingIcon);
-
-		// Go to downloading image
-		if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
-		{
-			ui->tableWidget->scrollToItem(ui->tableWidget->item(i, 0));
-			m_lastDownloading = i;
-		}
+		scrollTo(i);
+	}
+}
+void batchWindow::scrollTo(int i)
+{
+	// Go to downloading image
+	if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
+	{
+		ui->tableWidget->scrollToItem(ui->tableWidget->item(i, 0));
+		m_lastDownloading = i;
 	}
 }
 void batchWindow::imageUrlChanged(const QString &before, const QString &after)
@@ -282,7 +285,10 @@ void batchWindow::sizeImage(const QString &url, float size)
 	if (i != -1)
 	{
 		QString unit = getUnit(&size);
-		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
+		QString label = size > 0
+			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " "+unit
+			: "";
+		ui->tableWidget->item(i, 3)->setText(label);
 	}
 }
 void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult result)
@@ -300,6 +306,7 @@ void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult resul
 	int i = indexOf(url);
 	if (i != -1)
 	{
+		scrollTo(i);
 		ui->tableWidget->item(i, 4)->setText("");
 		ui->tableWidget->item(i, 5)->setText("");
 

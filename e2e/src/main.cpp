@@ -73,6 +73,9 @@ int main(int argc, char *argv[])
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
+	auto oldBlacklist = profile->getBlacklist();
+	profile->setBlacklistedTags(QList<QStringList>());
+
 	QJsonObject root = input.object();
 	QJsonArray rootSearch = root.value("search").toArray();
 	QJsonObject sources = root.value("sources").toObject();
@@ -181,6 +184,8 @@ int main(int argc, char *argv[])
 	}
 
 	manager->deleteLater();
+
+	profile->setBlacklistedTags(oldBlacklist);
 
 	QJsonDocument outDoc(allJson);
 	QFile fOut(parser.value(outputOption));
