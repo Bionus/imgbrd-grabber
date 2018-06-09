@@ -26,7 +26,7 @@ Grabber.typedXML = (val: any) => {
             return Grabber.mapObject(val, Grabber.typedXML);
         }
 
-        if (type || txt) {
+        if (txt !== undefined) {
             return txt;
         }
     }
