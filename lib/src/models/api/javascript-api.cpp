@@ -209,7 +209,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 				const QString &key = it3.name();
 				const QJSValue &val = it3.value();
 
-				if (it3.value().isUndefined())
+				if (val.isUndefined())
 				{
 					log(QString("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
 					continue;

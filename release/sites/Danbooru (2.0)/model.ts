@@ -4,7 +4,7 @@ function completeImage(img: IImage): IImage {
     }
 
     if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = `/data/${img["md5"]}.${img["ext"]}`;
+        img["file_url"] = `/data/${img["md5"]}.${img["ext"] || "jpg"}`;
     } else {
         img["file_url"] = img["file_url"]
             .replace("/preview/", "/")
