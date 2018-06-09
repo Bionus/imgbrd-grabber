@@ -37,6 +37,7 @@ export const source: any = {
         json: {
             name: "JSON",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
@@ -81,6 +82,7 @@ export const source: any = {
         xml: {
             name: "XML",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
@@ -131,6 +133,7 @@ export const source: any = {
         html: {
             name: "Regex",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
