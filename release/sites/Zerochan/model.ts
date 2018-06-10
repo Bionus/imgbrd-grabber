@@ -32,7 +32,8 @@ export const source: ISource = {
                     return "/" + query.search + "?s=id&xml&" + pagePart;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.makeArray(Grabber.parseXML(src).rss.channel.item);
+                    const parsed = Grabber.parseXML(src);
+                    const data = Grabber.makeArray(parsed.rss.channel.item);
 
                     const images: IImage[] = [];
                     for (const image of data) {
@@ -46,7 +47,10 @@ export const source: ISource = {
                         images.push(completeImage(img));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", parsed.rss.channel.description["#text"]),
+                    };
                 },
             },
         },
@@ -64,7 +68,7 @@ export const source: ISource = {
                         tags: Grabber.regexToTags("<li[^>]*>\\s*<a [^>]+>(?<name>[^>]+)</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>", src),
                         images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*src=['\"](?<preview_url>[^'\"]*)['\"][^>]*/?>)", src).map(completeImage),
                         pageCount: Grabber.regexToConst("page", "page (?:[0-9,]+) of (?<page>[0-9,]+)", src),
-                        imageCount: Grabber.regexToConst("count", "has (?<count>[0-9,]+) .*?images\\.", src),
+                        imageCount: Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? images", src),
                     };
                 },
             },
