@@ -236,7 +236,7 @@ void PageApi::parseActual()
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
-	if (m_isAltPage) // FIXME(Bionus): broken since move to Api class
+	if (false && m_isAltPage) // FIXME(Bionus): broken since move to Api class
 		skip = m_site->setting("ignore/alt", 0).toInt();
 	if (m_page == 1)
 		skip = m_site->setting("ignore/1", 0).toInt();
