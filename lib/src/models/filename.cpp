@@ -82,7 +82,7 @@ QString Filename::expandConditionals(const QString &text, const QStringList &tag
 QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings) const
 {
 	QList<Token> ret;
-	QStringList value = token.value().toStringList();
+	const QStringList &value = token.value().toStringList();
 
 	if (token.whatToDoDefault().isEmpty())
 	{
@@ -206,9 +206,10 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	ret.append(tokens);
 
 	bool isJavascript = filename.startsWith("javascript:");
-	for (const QString &key : tokens.keys())
+	for (auto it = tokens.begin(); it != tokens.end(); ++it)
 	{
-		const Token &token = tokens[key];
+		const QString &key = it.key();
+		const Token &token = it.value();
 		if (token.value().type() != QVariant::StringList)
 			continue;
 

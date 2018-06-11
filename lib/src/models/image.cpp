@@ -93,7 +93,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_parentSite(site), m_id(0), m_extensionRotator(nullptr)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
 {
 	m_settings = m_profile->getSettings();
 
@@ -161,13 +161,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
 
 		// Automatically find tag separator and split the list
-		QStringList t;
 		int commas = tgs.count(", ");
 		int spaces = tgs.count(" ");
-		if (commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2))
-		{ t = tgs.split(", ", QString::SkipEmptyParts); }
-		else
-		{ t = tgs.split(" ", QString::SkipEmptyParts); }
+		const QStringList &t = commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2)
+			? tgs.split(", ", QString::SkipEmptyParts)
+			: tgs.split(" ", QString::SkipEmptyParts);
 
 		for (QString tg : t)
 		{
@@ -451,7 +449,7 @@ void Image::loadImage(bool inMemory, bool force)
 
 	if (m_fileSize > MAX_LOAD_FILESIZE && inMemory)
 	{
-		emit finishedImage((QNetworkReply::NetworkError)500, "");
+		emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), "");
 		return;
 	}
 
@@ -497,7 +495,7 @@ void Image::finishedImageS(bool inMemory)
 		m_loadImage->deleteLater();
 		m_loadImage = nullptr;
 		if (m_fileSize > MAX_LOAD_FILESIZE)
-		{ emit finishedImage((QNetworkReply::NetworkError)500, ""); }
+		{ emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), ""); }
 		else
 		{ emit finishedImage(QNetworkReply::OperationCanceledError, ""); }
 		return;

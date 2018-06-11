@@ -52,7 +52,7 @@ void Downloader::getPageCount()
 	m_duplicates = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		Page *page = new Page(m_profile, site, m_sites, m_tags, m_page, m_perPage, m_postFiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageCount);
@@ -78,7 +78,7 @@ void Downloader::finishedLoadingPageCount(Page *page)
 	}
 
 	int total = 0;
-	for (Page *p : m_pagesC)
+	for (Page *p : qAsConst(m_pagesC))
 		total += p->imagesCount();
 
 	if (m_quit)
@@ -98,7 +98,7 @@ void Downloader::getPageTags()
 	m_waiting = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		Page *page = new Page(m_profile, site, m_sites, m_tags, m_page, m_perPage, m_postFiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageTags);
@@ -126,7 +126,8 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	QList<Tag> list;
 	for (auto p : m_pagesT)
 	{
-		for (const Tag &tag : p->tags())
+		const QList<Tag> &pageTags = p->tags();
+		for (const Tag &tag : pageTags)
 		{
 			bool found = false;
 			for (auto &t : list)
@@ -164,9 +165,9 @@ void Downloader::getTags()
 	m_waiting = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
-		int pages = qCeil(static_cast<float>(m_max) / m_perPage);
+		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
 			pages = 1;
 		connect(site, &Site::finishedLoadingTags, this, &Downloader::finishedLoadingTags);
@@ -275,7 +276,7 @@ void Downloader::getImages()
 
 	for (Site *site : m_sites)
 	{
-		int pages = qCeil(static_cast<float>(m_max) / m_perPage);
+		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
@@ -392,7 +393,7 @@ void Downloader::getUrls()
 
 	for (Site *site : m_sites)
 	{
-		int pages = qCeil(static_cast<float>(m_max) / m_perPage);
+		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
@@ -514,7 +515,7 @@ int Downloader::duplicatesCount() const
 { return m_duplicates; }
 int Downloader::pagesCount() const
 {
-	int pages = qCeil(static_cast<float>(m_max) / m_perPage);
+	int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 	if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
 		pages = 1;
 	return pages * m_sites.size();

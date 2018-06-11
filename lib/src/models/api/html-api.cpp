@@ -82,7 +82,7 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 			{
 				int forced = forcedLimit();
 				int ppid = forced > 0 ? forced : limit;
-				pagesCount = qFloor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
+				pagesCount = qFloor(static_cast<qreal>(pagesCount) / static_cast<qreal>(ppid)) + 1;
 			}
 			ret.pageCount = pagesCount;
 		}

@@ -51,7 +51,8 @@ LoaderData LoaderQuery::next()
 	loop.exec();
 
 	// Add results to the data object
-	for (const QSharedPointer<Image> &img : request.images())
+	const QList<QSharedPointer<Image>> &images = request.images();
+	for (const QSharedPointer<Image> &img : images)
 	{
 		// Skip blacklisted images
 		if (!getBlacklisted && !PostFilter::blacklisted(img->tokens(profile), blacklist).empty())
@@ -64,7 +65,7 @@ LoaderData LoaderQuery::next()
 	}
 
 	// Paging
-	int pageCount = qCeil(static_cast<float>(limit) / perPage);
+	int pageCount = qCeil(static_cast<qreal>(limit) / perPage);
 	m_offset++;
 	m_finished = m_offset == pageCount;
 

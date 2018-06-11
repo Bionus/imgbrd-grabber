@@ -81,7 +81,7 @@ void PageApi::load(bool rateLimit, bool force)
 
 	if (m_url.isEmpty() && !m_errors.isEmpty())
 	{
-		for (const QString &err : m_errors)
+		for (const QString &err : qAsConst(m_errors))
 		{ log(QString("[%1][%2] %3").arg(m_site->url(), m_format, err), Logger::Warning); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
@@ -193,9 +193,9 @@ void PageApi::parseActual()
 	{ setImageCount(page.imageCount, true); }
 	if (page.pageCount >= 0)
 	{ setPageCount(page.pageCount, true); }
-	for (const Tag &tag : page.tags)
+	for (const Tag &tag : qAsConst(page.tags))
 	{ m_tags.append(tag); }
-	for (const QSharedPointer<Image> &img : page.images)
+	for (const QSharedPointer<Image> &img : qAsConst(page.images))
 	{ addImage(img); }
 	if (page.urlNextPage.isValid())
 	{ m_urlNextPage = page.urlNextPage; }
@@ -227,7 +227,7 @@ void PageApi::parseActual()
 	// Complete image count information from tag count information
 	if (m_imagesCount < 1)
 	{
-		for (const Tag &tag : m_tags)
+		for (const Tag &tag : qAsConst(m_tags))
 		{
 			if (tag.text() == m_search.join(" "))
 			{ setImageCount(tag.count(), false); }
@@ -329,7 +329,7 @@ int PageApi::pagesCount(bool guess) const
 	{
 		int forcedLimit = m_api->forcedLimit();
 		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
-		return qCeil(static_cast<float>(m_imagesCount) / perPage);
+		return qCeil(static_cast<qreal>(m_imagesCount) / perPage);
 	}
 
 	return m_pagesCount;
@@ -360,7 +360,7 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(qCeil(static_cast<float>(count) / m_imagesPerPage), true); }
+		{ setPageCount(qCeil(static_cast<qreal>(count) / m_imagesPerPage), true); }
 	}
 }
 

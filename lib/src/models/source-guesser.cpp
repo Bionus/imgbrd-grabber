@@ -20,7 +20,7 @@ Source *SourceGuesser::start()
 	m_cache.clear();
 	int current = 0;
 
-	for (Source *source : m_sources)
+	for (Source *source : qAsConst(m_sources))
 	{
 		if (source->getApis().isEmpty())
 			continue;

@@ -96,7 +96,8 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
 	settings->beginGroup("auth");
-	for (const QString &key : settings->childKeys())
+	const QStringList &authKeys = settings->childKeys();
+	for (const QString &key : authKeys)
 	{
 		QString value = settings->value(key).toString();
 		if (key == "pseudo" && !auth.hasProperty("login"))
@@ -277,7 +278,8 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
 	settings->beginGroup("auth");
-	for (const QString &key : settings->childKeys())
+	const QStringList &authKeys = settings->childKeys();
+	for (const QString &key : authKeys)
 	{
 		QString value = settings->value(key).toString();
 		if (key == "pseudo" && !auth.hasProperty("login"))

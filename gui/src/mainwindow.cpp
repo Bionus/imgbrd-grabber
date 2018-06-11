@@ -1365,9 +1365,9 @@ void mainWindow::getAllFinishedLogins()
 		DownloadQueryGroup b = j.value();
 
 		int constImagesPerPack = usePacking ? realConstImagesPerPack : b.total;
-		int pagesPerPack = qCeil(static_cast<float>(constImagesPerPack) / b.perpage);
+		int pagesPerPack = qCeil(static_cast<qreal>(constImagesPerPack) / b.perpage);
 		int imagesPerPack = pagesPerPack * b.perpage;
-		int packs = qCeil(static_cast<float>(b.total) / imagesPerPack);
+		int packs = qCeil(static_cast<qreal>(b.total) / imagesPerPack);
 		total += b.total;
 
 		int lastPageImages = b.total % imagesPerPack;

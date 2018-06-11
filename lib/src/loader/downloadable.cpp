@@ -12,9 +12,10 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 		// Custom tokens (if the tokens contain tags)
 		if (tokens.contains("tags"))
 		{
+			const QStringList &tags = tokens["tags"].value().toStringList();
 			QMap<QString, QStringList> scustom = getCustoms(profile->getSettings());
 			QMap<QString, QStringList> custom;
-			for (const QString &tag : tokens["tags"].value().toStringList())
+			for (const QString &tag : tags)
 			{
 				for (auto it = scustom.begin(); it != scustom.end(); ++it)
 				{

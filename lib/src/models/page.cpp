@@ -38,7 +38,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	// Generate pages
 	m_siteApis = m_site->getApis(true);
 	m_pageApis.reserve(m_siteApis.count());
-	for (Api *api : m_siteApis)
+	for (Api *api : qAsConst(m_siteApis))
 	{
 		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
 		if (m_pageApis.count() == 0)
@@ -85,7 +85,7 @@ void Page::setLastPage(Page *page)
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
 
-	for (PageApi *api : m_pageApis)
+	for (PageApi *api : qAsConst(m_pageApis))
 		api->setLastPage(page);
 
 	m_currentApi--;
@@ -150,7 +150,7 @@ void Page::httpsRedirectSlot()
 
 void Page::clear()
 {
-	for (PageApi *pageApi : m_pageApis)
+	for (PageApi *pageApi : qAsConst(m_pageApis))
 		pageApi->clear();
 }
 
@@ -172,7 +172,7 @@ int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
 
 bool Page::hasSource()
 {
-	for (auto pageApi : m_pageApis)
+	for (auto pageApi : qAsConst(m_pageApis))
 		if (!pageApi->source().isEmpty())
 			return true;
 	return false;

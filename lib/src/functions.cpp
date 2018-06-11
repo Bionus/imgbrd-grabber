@@ -155,13 +155,13 @@ QDateTime qDateTimeFromString(QString str)
 	}
 	else if (str[0].isDigit())
 	{
-		float decay = 0;
+		qreal decay = 0;
 
 		date = QDateTime::fromString(str.left(19), "yyyy-MM-dd'T'HH:mm:ss");
 		if (!date.isValid())
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
 		else
-			decay = str.right(6).remove(':').toFloat() / 100;
+			decay = str.right(6).remove(':').toDouble() / 100;
 		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 	else
@@ -180,7 +180,7 @@ QDateTime qDateTimeFromString(QString str)
 		int year = str.midRef(26, 4).toInt();
 		int month = months.indexOf(str.mid(4, 3)) + 1;
 		int day = str.midRef(8, 2).toInt();
-		float decay = str.midRef(20, 5).toFloat() / 100;
+		qreal decay = str.midRef(20, 5).toDouble() / 100;
 
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
 		date.setDate(QDate(year, month, day));

@@ -93,7 +93,7 @@ void Site::loadConfig()
 
 	// Apis
 	m_apis.clear();
-	for (const QString &src : sources)
+	for (const QString &src : qAsConst(sources))
 	{
 		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
 		if (api != nullptr && !m_apis.contains(api))
@@ -155,7 +155,7 @@ void Site::resetCookieJar()
 
 	m_cookieJar = new QNetworkCookieJar(m_manager);
 
-	for (const QNetworkCookie &cookie : m_cookies)
+	for (const QNetworkCookie &cookie : qAsConst(m_cookies))
 	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
