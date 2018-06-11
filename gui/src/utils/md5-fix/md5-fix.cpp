@@ -94,7 +94,7 @@ void md5Fix::on_buttonStart_clicked()
 				{
 					pos += 4;
 					reg.replace(regx.cap(0), "(.+)");
-					if (regx.cap(1) == "md5")
+					if (regx.cap(1) == QLatin1String("md5"))
 					{ id = cur; }
 					cur++;
 				}

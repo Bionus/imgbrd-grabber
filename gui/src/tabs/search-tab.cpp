@@ -602,7 +602,7 @@ double getImageKnownTagProportion(const QSharedPointer<Image> &img)
 	int known = 0;
 	for (const Tag &tag : img->tags())
 	{
-		if (tag.type().name() != QStringLiteral("unknown"))
+		if (tag.type().name() != QLatin1String("unknown"))
 			known++;
 	}
 
@@ -1426,7 +1426,7 @@ bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
-		error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
+		error = QStringLiteral("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
 		return false;
 	}
 

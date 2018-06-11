@@ -335,7 +335,7 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	{
 		// Load an IGL file
 		QFileInfo info(args[0]);
-		if (info.suffix() == QStringLiteral("igl"))
+		if (info.suffix() == QLatin1String("igl"))
 		{
 			loadLinkList(info.absoluteFilePath());
 			m_forcedTab = m_tabs.size() + 1;
@@ -1911,7 +1911,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 					isDriveFull = storage.isValid() && (storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024);
 					QString rootPath = storage.rootPath();
 					#ifdef Q_OS_WIN
-						drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
+						drive = QStringLiteral("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
 					#else
 						drive = rootPath;
 					#endif

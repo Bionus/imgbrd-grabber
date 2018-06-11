@@ -99,7 +99,7 @@ void tagTab::load()
 
 void tagTab::write(QJsonObject &json) const
 {
-	json["type"] = QString("tag");
+	json["type"] = QStringLiteral("tag");
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();

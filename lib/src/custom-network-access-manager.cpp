@@ -28,10 +28,10 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 		// Error testing
-		if (path == QStringLiteral("404") || path == QStringLiteral("500"))
+		if (path == QLatin1String("404") || path == QLatin1String("500"))
 		{
 			auto *reply = new QCustomNetworkReply(this);
-			if (path == QStringLiteral("404"))
+			if (path == QLatin1String("404"))
 			{
 				reply->setHttpStatusCode(404, "Not Found");
 				reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
@@ -57,7 +57,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 			if (!f.open(QFile::ReadOnly))
 			{
 				// LCOV_EXCL_START
-				if (ext != QStringLiteral("jpg") && ext != QStringLiteral("png"))
+				if (ext != QLatin1String("jpg") && ext != QLatin1String("png"))
 				{
 					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
 					return nullptr;

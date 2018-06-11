@@ -99,7 +99,7 @@ QList<Site*> poolTab::loadSites() const
 
 void poolTab::write(QJsonObject &json) const
 {
-	json["type"] = QString("pool");
+	json["type"] = QStringLiteral("pool");
 	json["pool"] = ui->spinPool->value();
 	json["site"] = ui->comboSites->currentText();
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));

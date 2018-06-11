@@ -40,7 +40,7 @@ void OAuth2Login::loginFinished()
 	QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
 	QJsonObject jsonObject = jsonDocument.object();
 
-	if (jsonObject.value("token_type").toString() == QStringLiteral("bearer"))
+	if (jsonObject.value("token_type").toString() == QLatin1String("bearer"))
 	{
 		m_token = jsonObject.value("access_token").toString();
 		emit loggedIn(Result::Success);

@@ -20,7 +20,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 	int errorLine, errorColumn;
 	if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
 	{
-		ret.error = QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
+		ret.error = QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
 		return ret;
 	}
 	QDomElement docElem = doc.documentElement();
@@ -28,7 +28,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 	// Getting last page
 	int count = docElem.attributes().namedItem("count").nodeValue().toInt();
 	QString database = docElem.attributes().namedItem("type").nodeValue();
-	if (count == 0 && database == "array")
+	if (count == 0 && database == QLatin1String("array"))
 	{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 	if (count > 0)
 	{ ret.imageCount = count; }
@@ -40,7 +40,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 		QDomNode node = nodeList.at(id + first);
 		QMap<QString, QString> d;
 		QList<Tag> tags;
-		if (database == "array")
+		if (database == QLatin1String("array"))
 		{
 			if (node.namedItem("md5").isNull())
 				continue;
@@ -117,7 +117,7 @@ ParsedTags XmlApi::parseTags(const QString &source, Site *site) const
 	int errorLine, errorColumn;
 	if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
 	{
-		ret.error = QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
+		ret.error = QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
 		return ret;
 	}
 	QDomElement docElem = doc.documentElement();

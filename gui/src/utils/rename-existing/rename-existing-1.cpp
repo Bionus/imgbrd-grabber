@@ -93,7 +93,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 			{
 				pos += regx.matchedLength();
 				reg.replace(regx.cap(0), QStringLiteral("(.+)"));
-				if (regx.cap(1) == QStringLiteral("md5"))
+				if (regx.cap(1) == QLatin1String("md5"))
 				{ id = cur; }
 				cur++;
 			}

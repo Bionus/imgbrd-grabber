@@ -198,7 +198,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Complete missing tag type information
 	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
-	for (Tag const &tag : m_tags)
+	for (Tag const &tag : qAsConst(m_tags))
 		if (tag.type().name() == "unknown")
 			unknownTags.append(tag.text());
 	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
@@ -215,7 +215,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		if (ext != realExt)
 		{ setFileExtension(realExt); }
 	}
-	else if (ext == "jpg" && !m_previewUrl.isEmpty())
+	else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty())
 	{
 		bool fixed = false;
 		QString previewExt = getExtension(details["preview_url"]);
@@ -223,7 +223,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		{
 			// Guess extension from sample url
 			QString sampleExt = getExtension(details["sample_url"]);
-			if (sampleExt != "jpg" && sampleExt != "png" && sampleExt != ext && previewExt == ext)
+			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext)
 			{
 				m_url = setExtension(m_url, sampleExt);
 				fixed = true;
@@ -233,20 +233,20 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		// Guess the extension from the tags
 		if (!fixed)
 		{
-			if ((hasTag("swf") || hasTag("flash")) && ext != "swf")
-			{ setFileExtension("swf"); }
-			else if ((hasTag("gif") || hasTag("animated_gif")) && ext != "webm" && ext != "mp4")
-			{ setFileExtension("gif"); }
-			else if (hasTag("mp4") && ext != "gif" && ext != "webm")
-			{ setFileExtension("mp4"); }
-			else if (hasTag("animated_png") && ext != "webm" && ext != "mp4")
-			{ setFileExtension("png"); }
-			else if ((hasTag("webm") || hasTag("animated")) && ext != "gif" && ext != "mp4")
-			{ setFileExtension("webm"); }
+			if ((hasTag(QStringLiteral("swf")) || hasTag(QStringLiteral("flash"))) && ext != QLatin1String("swf"))
+			{ setFileExtension(QStringLiteral("swf")); }
+			else if ((hasTag(QStringLiteral("gif")) || hasTag(QStringLiteral("animated_gif"))) && ext != QLatin1String("webm") && ext != QLatin1String("mp4"))
+			{ setFileExtension(QStringLiteral("gif")); }
+			else if (hasTag(QStringLiteral("mp4")) && ext != QLatin1String("gif") && ext != QLatin1String("webm"))
+			{ setFileExtension(QStringLiteral("mp4")); }
+			else if (hasTag(QStringLiteral("animated_png")) && ext != QLatin1String("webm") && ext != QLatin1String("mp4"))
+			{ setFileExtension(QStringLiteral("png")); }
+			else if ((hasTag(QStringLiteral("webm")) || hasTag(QStringLiteral("animated"))) && ext != QLatin1String("gif") && ext != QLatin1String("mp4"))
+			{ setFileExtension(QStringLiteral("webm")); }
 		}
 	}
 	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
-	{ m_url = setExtension(m_url, "gif"); }
+	{ m_url = setExtension(m_url, QStringLiteral("gif")); }
 
 	// Remove ? in urls
 	m_url = removeCacheUrl(m_url);
@@ -766,10 +766,10 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 	Commands &commands = m_profile->getCommands();
 	if (startCommands)
 	{ commands.before(); }
-		for (const Tag &tag : tags())
+		for (const Tag &tag : qAsConst(m_tags))
 		{ commands.tag(*this, tag, false); }
 		commands.image(*this, path);
-		for (const Tag &tag : tags())
+		for (const Tag &tag : qAsConst(m_tags))
 		{ commands.tag(*this, tag, true); }
 	if (startCommands)
 	{ commands.after(); }
@@ -936,14 +936,14 @@ QColor Image::color() const
 QString Image::tooltip() const
 {
 	if (m_isGallery)
-		return QString("%1%2")
+		return QStringLiteral("%1%2")
 			.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
 
 	double size = m_fileSize;
 	QString unit = getUnit(&size);
 
-	return QString("%1%2%3%4%5%6%7%8")
+	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(stylishedTags(m_profile).join(" ")))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 		.arg(m_rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(m_rating))
@@ -1076,8 +1076,8 @@ QString Image::isAnimated() const
 	if (ext == "gif" || ext == "apng")
 		return ext;
 
-	if (ext == "png" && (hasTag("animated") || hasTag("animated_png")))
-		return "apng";
+	if (ext == "png" && (hasTag(QStringLiteral("animated")) || hasTag(QStringLiteral("animated_png"))))
+		return QStringLiteral("apng");
 
 	return QString();
 }

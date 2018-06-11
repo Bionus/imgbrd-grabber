@@ -19,7 +19,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 	QVariant src = Json::parse(source);
 	if (src.isNull())
 	{
-		ret.error = QString("Error parsing JSON file: \"%1\"").arg(source.left(500));
+		ret.error = QStringLiteral("Error parsing JSON file: \"%1\"").arg(source.left(500));
 		return ret;
 	}
 
@@ -27,7 +27,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 	QMap<QString, QVariant> data = src.toMap();
 	if (data.contains("success") && !data["success"].toBool())
 	{
-		ret.error = QString("JSON error reply: \"%1\"").arg(data["reason"].toString());
+		ret.error = QStringLiteral("JSON error reply: \"%1\"").arg(data["reason"].toString());
 		return ret;
 	}
 
@@ -196,7 +196,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 	QVariant src = Json::parse(source);
 	if (src.isNull())
 	{
-		ret.error = QString("Error parsing JSON file: \"%1\"").arg(source.left(500));
+		ret.error = QStringLiteral("Error parsing JSON file: \"%1\"").arg(source.left(500));
 		return ret;
 	}
 	QMap<QString, QVariant> data = src.toMap();
@@ -204,7 +204,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 	// Check for a JSON error message
 	if (data.contains("success") && !data["success"].toBool())
 	{
-		ret.error = QString("JSON error reply: \"%1\"").arg(data["reason"].toString());
+		ret.error = QStringLiteral("JSON error reply: \"%1\"").arg(data["reason"].toString());
 		return ret;
 	}
 

@@ -45,7 +45,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 		if (m_pageApis.count() == 0)
 		{ connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot); }
 		m_pageApis.append(pageApi);
-		if (api->getName() == QStringLiteral("Html") && m_regexApi < 0)
+		if (api->getName() == QLatin1String("Html") && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}
 	m_currentApi = -1;

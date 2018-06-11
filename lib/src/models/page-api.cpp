@@ -240,7 +240,7 @@ void PageApi::parseActual()
 		skip = m_site->setting("ignore/alt", 0).toInt();
 	if (m_page == 1)
 		skip = m_site->setting("ignore/1", 0).toInt();
-	if (m_api->getName() == QStringLiteral("Html") && m_images.size() > skip)
+	if (m_api->getName() == QLatin1String("Html") && m_images.size() > skip)
 		for (int i = 0; i < skip; ++i)
 			m_images.removeFirst();
 

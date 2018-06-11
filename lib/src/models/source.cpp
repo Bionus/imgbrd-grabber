@@ -151,13 +151,13 @@ Source::Source(Profile *profile, const QString &dir)
 					for (const QString &apiName : availableApis)
 					{
 						Api *api = nullptr;
-						if (apiName == QStringLiteral("Html"))
+						if (apiName == QLatin1String("Html"))
 						{ api = new HtmlApi(details); }
-						else if (apiName == QStringLiteral("Json"))
+						else if (apiName == QLatin1String("Json"))
 						{ api = new JsonApi(details); }
-						else if (apiName == QStringLiteral("Rss"))
+						else if (apiName == QLatin1String("Rss"))
 						{ api = new RssApi(details); }
-						else if (apiName == QStringLiteral("Xml"))
+						else if (apiName == QLatin1String("Xml"))
 						{ api = new XmlApi(details); }
 
 						if (api != nullptr)
