@@ -31,6 +31,8 @@ void DetailsWindow::setImage(QSharedPointer<Image> image)
 			auto label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
 			auto field = new QLabel(row.second, this);
 			field->setWordWrap(true);
+			field->setOpenExternalLinks(true);
+			field->setTextInteractionFlags(Qt::TextBrowserInteraction);
 			ui->formLayout->addRow(label, field);
 		}
 	}
