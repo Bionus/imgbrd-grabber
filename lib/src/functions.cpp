@@ -480,7 +480,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 	Q_UNUSED(invalidChars);
 
 	// Fix parameters
-	QString sep = QDir::separator();
+	QString sep = QStringLiteral("/");
 	QString filename = path + fn;
 
 	// Divide filename
