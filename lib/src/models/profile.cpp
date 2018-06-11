@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "commands/commands.h"
+#include "functions.h"
 #include "models/site.h"
 #include "models/source.h"
 

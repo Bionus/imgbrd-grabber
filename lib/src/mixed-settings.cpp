@@ -1,4 +1,5 @@
 #include "mixed-settings.h"
+#include "functions.h"
 
 
 MixedSettings::MixedSettings(const QList<QSettings*> &settings)

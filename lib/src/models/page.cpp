@@ -1,4 +1,5 @@
 #include "models/page.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"

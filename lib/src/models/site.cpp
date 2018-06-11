@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QUrlQuery>
 #include "custom-network-access-manager.h"
+#include "functions.h"
 #include "logger.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"

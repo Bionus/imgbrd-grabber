@@ -1,4 +1,5 @@
 #include "downloader/file-downloader.h"
+#include "functions.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 

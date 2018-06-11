@@ -4,6 +4,7 @@
 #include <qmath.h>
 #include <iostream>
 #include "downloader/image-downloader.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/page.h"
 #include "models/post-filter.h"

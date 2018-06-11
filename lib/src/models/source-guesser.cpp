@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include "custom-network-access-manager.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/source.h"

@@ -206,10 +206,9 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	ret.append(tokens);
 
 	bool isJavascript = filename.startsWith("javascript:");
-	for (auto it = tokens.begin(); it != tokens.end(); ++it)
+	for (const QString &key : tokens.keys())
 	{
-		const QString &key = it.key();
-		const Token &token = it.value();
+		const Token &token = tokens[key];
 		if (token.value().type() != QVariant::StringList)
 			continue;
 
