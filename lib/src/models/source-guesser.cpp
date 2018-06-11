@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include "custom-network-access-manager.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/source.h"
@@ -20,7 +21,7 @@ Source *SourceGuesser::start()
 	m_cache.clear();
 	int current = 0;
 
-	for (Source *source : m_sources)
+	for (Source *source : qAsConst(m_sources))
 	{
 		if (source->getApis().isEmpty())
 			continue;
@@ -45,7 +46,7 @@ Source *SourceGuesser::start()
 
 				if (reply->error() != 0)
 				{
-					log(QString("Error getting the test page: %1.").arg(reply->errorString()), Logger::Error);
+					log(QStringLiteral("Error getting the test page: %1.").arg(reply->errorString()), Logger::Error);
 					emit progress(++current);
 					continue;
 				}

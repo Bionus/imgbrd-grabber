@@ -117,6 +117,7 @@ class Image : public QObject, public Downloadable
 		void urlChanged(const QString &before, const QString &after);
 
 	private:
+		Profile			*m_profile;
 		Page			*m_parent;
 		qulonglong		m_id;
 		int				m_score, m_parentId, m_fileSize, m_authorId;
@@ -133,7 +134,6 @@ class Image : public QObject, public Downloadable
 		QList<Tag>		m_tags;
 		QList<Pool>		m_pools;
 		QTime			m_timer;
-		Profile			*m_profile;
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;

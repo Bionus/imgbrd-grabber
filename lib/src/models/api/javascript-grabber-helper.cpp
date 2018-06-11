@@ -68,7 +68,7 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 				QDomNode attribute = attributes.item(j);
 				attr.setProperty(attribute.nodeName(), attribute.nodeValue());
 			}
-			obj.setProperty("@attributes", attr);
+			obj.setProperty(QStringLiteral("@attributes"), attr);
 		}
 	}
 
@@ -98,7 +98,7 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 					prop = newProp;
 				}
 
-				quint32 length = prop.property("length").toUInt();
+				quint32 length = prop.property(QStringLiteral("length")).toUInt();
 				prop.setProperty(length, _parseXMLRec(item));
 			}
 		}
@@ -114,7 +114,7 @@ QJSValue JavascriptGrabberHelper::parseXML(const QString &txt) const
 	int errorLine, errorColumn;
 	if (!doc.setContent(txt, false, &errorMsg, &errorLine, &errorColumn))
 	{
-		log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error);
+		log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error);
 		return QJSValue(QJSValue::UndefinedValue);
 	}
 

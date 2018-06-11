@@ -11,6 +11,15 @@
 #include "logger.h"
 
 
+// qAsConst
+#if (QT_VERSION < QT_VERSION_CHECK(5, 7, 0))
+	template <typename T>
+	Q_DECL_CONSTEXPR typename std::add_const<T>::type &qAsConst(T &t) Q_DECL_NOTHROW { return t; }
+
+	template <typename T>
+	void qAsConst(const T &&) Q_DECL_EQ_DELETE;
+#endif
+
 // Filesize units
 #if defined(Q_OS_WIN)
 	// 1 KB = 1024 B
@@ -32,8 +41,8 @@ QString		savePath(const QString &s = "", bool exists = false, bool writable = fa
 bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
-QString		getUnit(float *size);
-QString		formatFilesize(float size);
+QString		getUnit(double *size);
+QString		formatFilesize(double size);
 QString		getExtension(const QUrl &url);
 QString		getExtension(const QString &url);
 QString		setExtension(QString url, const QString &extension);

@@ -37,11 +37,11 @@ void UrlLogin::loginFinished()
 
 QString UrlLogin::complementUrl(QString url, const QString &loginPart) const
 {
-	QString pseudo = m_settings->value("auth/pseudo", "").toString();
-	QString password = m_settings->value("auth/password", "").toString();
+	QString pseudo = m_settings->value("auth/pseudo").toString();
+	QString password = m_settings->value("auth/password").toString();
 
 	bool hasLoginString = !loginPart.isEmpty() && (!pseudo.isEmpty() || !password.isEmpty());
-	url.replace("{login}", hasLoginString ? loginPart : "");
+	url.replace("{login}", hasLoginString ? loginPart : QString());
 
 	// Basic GET auth
 	url.replace("{pseudo}", pseudo);

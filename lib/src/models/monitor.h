@@ -12,7 +12,7 @@ class Monitor
 {
 	public:
 		Monitor(Site *site, int interval, const QDateTime &lastCheck, int cumulated = 0, bool preciseCumulated = true);
-		int secsToNextCheck() const;
+		qint64 secsToNextCheck() const;
 
 		// Getters and setters
 		Site *site() const;

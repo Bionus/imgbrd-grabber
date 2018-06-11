@@ -24,7 +24,7 @@ class QBouton : public QPushButton
 		void setProgress(qint64 current, qint64 max);
 		void setInvertToggle(bool invertToggle);
 		void setCounter(const QString &counter);
-		void scale(const QPixmap &image, float scale);
+		void scale(const QPixmap &image, qreal scale);
 		void paintEvent(QPaintEvent *event) override;
 
 	signals:

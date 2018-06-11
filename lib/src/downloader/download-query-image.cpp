@@ -28,9 +28,11 @@ DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const 
 
 void DownloadQueryImage::initFromImage(const Image &img)
 {
+	const QList<Tag> &imgTags = img.tags();
+
 	QStringList tags;
-	tags.reserve(img.tags().count());
-	for (const Tag &tag : img.tags())
+	tags.reserve(imgTags.count());
+	for (const Tag &tag : imgTags)
 		tags.append(tag.text());
 
 	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate));

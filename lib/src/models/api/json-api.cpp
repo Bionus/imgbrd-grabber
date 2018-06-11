@@ -104,7 +104,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 				int maxBitrate = -1;
 				auto videoInfo = media.value("video_info").toMap();
 				auto variants = videoInfo.value("variants").toList();
-				for (QVariant variant : variants)
+				for (const QVariant &variant : variants)
 				{
 					auto variantInfo = variant.toMap();
 					int bitrate = variantInfo.value("bitrate").toInt();
@@ -221,7 +221,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 	{
 		QMap<QString, QVariant> sc = el.toMap();
 
-		ttype = "";
+		ttype.clear();
 		if (sc.contains("short_description"))
 		{
 			id = sc.value("id").toInt();

@@ -59,19 +59,19 @@ bool Commands::image(const Image &img, const QString &path)
 	if (!m_commandImage.isEmpty())
 	{
 		Filename fn(m_commandImage);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QString("Execution of \"%1\"").arg(exec));
+			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QString("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -80,7 +80,7 @@ bool Commands::image(const Image &img, const QString &path)
 	{
 		Filename fn(m_mysqlSettings.image);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
@@ -104,7 +104,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 	{
 		Filename fn(command);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
@@ -113,12 +113,12 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 				.replace("%type%", tag.type().name())
 				.replace("%number%", QString::number(tag.type().number()));
 
-			log(QString("Execution of \"%1\"").arg(exec));
+			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QString("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -128,7 +128,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 		start();
 
 		Filename fn(commandSql);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{

@@ -43,10 +43,10 @@ QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) co
 		key = "blacklisteds";
 	if (m_profile->getIgnored().contains(tag.text(), Qt::CaseInsensitive))
 		key = "ignoreds";
-	for (const QString &t : m_profile->getKeptForLater())
+	for (const QString &t : qAsConst(m_profile->getKeptForLater()))
 		if (t == tag.text())
 			key = "keptForLater";
-	for (const Favorite &fav : m_profile->getFavorites())
+	for (const Favorite &fav : qAsConst(m_profile->getFavorites()))
 		if (fav.getName() == tag.text())
 			key = "favorites";
 

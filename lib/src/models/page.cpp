@@ -1,4 +1,5 @@
 #include "models/page.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
@@ -38,13 +39,13 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	// Generate pages
 	m_siteApis = m_site->getApis(true);
 	m_pageApis.reserve(m_siteApis.count());
-	for (Api *api : m_siteApis)
+	for (Api *api : qAsConst(m_siteApis))
 	{
 		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
 		if (m_pageApis.count() == 0)
 		{ connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot); }
 		m_pageApis.append(pageApi);
-		if (api->getName() == "Html" && m_regexApi < 0)
+		if (api->getName() == QStringLiteral("Html") && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}
 	m_currentApi = -1;
@@ -65,7 +66,7 @@ void Page::fallback(bool loadIfPossible)
 
 	if (m_currentApi >= m_siteApis.count() - 1)
 	{
-		log(QString("[%1] No valid source of the site returned result.").arg(m_site->url()), Logger::Warning);
+		log(QStringLiteral("[%1] No valid source of the site returned result.").arg(m_site->url()), Logger::Warning);
 		m_errors.append(tr("No valid source of the site returned result."));
 		emit failedLoading(this);
 		return;
@@ -73,7 +74,7 @@ void Page::fallback(bool loadIfPossible)
 
 	m_currentApi++;
 	if (m_currentApi > 0)
-		log(QString("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url(), m_siteApis[m_currentApi - 1]->getName(), m_siteApis[m_currentApi]->getName()), Logger::Warning);
+		log(QStringLiteral("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url(), m_siteApis[m_currentApi - 1]->getName(), m_siteApis[m_currentApi]->getName()), Logger::Warning);
 
 	if (loadIfPossible)
 		load();
@@ -85,7 +86,7 @@ void Page::setLastPage(Page *page)
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
 
-	for (PageApi *api : m_pageApis)
+	for (PageApi *api : qAsConst(m_pageApis))
 		api->setLastPage(page);
 
 	m_currentApi--;
@@ -150,7 +151,7 @@ void Page::httpsRedirectSlot()
 
 void Page::clear()
 {
-	for (PageApi *pageApi : m_pageApis)
+	for (PageApi *pageApi : qAsConst(m_pageApis))
 		pageApi->clear();
 }
 
@@ -165,11 +166,18 @@ int				Page::pageImageCount()	{ return m_pageApis[m_currentApi]->pageImageCount(
 QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
 QUrl			Page::friendlyUrl()	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url();	}
-QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
 QList<Tag>		Page::tags()		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
 QUrl			Page::nextPage()	{ return m_pageApis[m_currentApi]->nextPage();	}
 QUrl			Page::prevPage()	{ return m_pageApis[m_currentApi]->prevPage();	}
 int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
+
+bool Page::hasSource()
+{
+	for (auto pageApi : qAsConst(m_pageApis))
+		if (!pageApi->source().isEmpty())
+			return true;
+	return false;
+}
 
 int Page::imagesCount(bool guess)
 {

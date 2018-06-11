@@ -92,7 +92,7 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 		if (countStr.endsWith('k'))
 		{
 			QStringRef withoutK = countStr.leftRef(countStr.length() - 1).trimmed();
-			count = qRound(withoutK.toFloat() * 1000);
+			count = qRound(withoutK.toDouble() * 1000);
 		}
 		else
 		{ count = countStr.toInt(); }

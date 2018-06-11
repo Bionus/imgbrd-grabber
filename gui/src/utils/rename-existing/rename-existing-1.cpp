@@ -56,7 +56,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 	}
 
 	// Make sure the input is valid
-	if (!ui->radioForce->isChecked() && !ui->lineFilenameOrigin->text().contains("%md5%"))
+	if (!ui->radioForce->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%md5%")))
 	{
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonContinue->setEnabled(true);
@@ -77,7 +77,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 		QString fileName = file.first;
 		QString path = dir.absoluteFilePath(fileName);
 
-		QString md5 = "";
+		QString md5;
 		if (ui->radioForce->isChecked())
 		{
 			QFile fle(path);
@@ -92,8 +92,8 @@ void RenameExisting1::on_buttonContinue_clicked()
 			while ((pos = regx.indexIn(ui->lineFilenameOrigin->text(), pos)) != -1)
 			{
 				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), "(.+)");
-				if (regx.cap(1) == "md5")
+				reg.replace(regx.cap(0), QStringLiteral("(.+)"));
+				if (regx.cap(1) == QStringLiteral("md5"))
 				{ id = cur; }
 				cur++;
 			}

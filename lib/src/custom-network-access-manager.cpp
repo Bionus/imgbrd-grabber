@@ -19,7 +19,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 	{
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		QString filename = request.url().fileName();
-		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
+		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : QStringLiteral("html");
 		QString host = request.url().host();
 		QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
 
@@ -28,18 +28,18 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 		// Error testing
-		if (path == "404" || path == "500")
+		if (path == QStringLiteral("404") || path == QStringLiteral("500"))
 		{
 			auto *reply = new QCustomNetworkReply(this);
-			if (path == "404")
+			if (path == QStringLiteral("404"))
 			{
 				reply->setHttpStatusCode(404, "Not Found");
-				reply->setNetworkError(QNetworkReply::ContentNotFoundError, "Not Found");
+				reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
 			}
 			else
 			{
 				reply->setHttpStatusCode(500, "Internal Server Error");
-				reply->setNetworkError(QNetworkReply::UnknownNetworkError, "Internal Server Error");
+				reply->setNetworkError(QNetworkReply::UnknownNetworkError, QStringLiteral("Internal Server Error"));
 			}
 			reply->setContentType("text/html");
 			reply->setContent(QByteArray());
@@ -57,14 +57,14 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 			if (!f.open(QFile::ReadOnly))
 			{
 				// LCOV_EXCL_START
-				if (ext != "jpg" && ext != "png")
+				if (ext != QStringLiteral("jpg") && ext != QStringLiteral("png"))
 				{
 					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
 					return nullptr;
 				}
 				// LCOV_EXCL_STOP
 
-				f.setFileName("tests/resources/image_1x1.png");
+				f.setFileName(QStringLiteral("tests/resources/image_1x1.png"));
 
 				// LCOV_EXCL_START
 				if (!f.open(QFile::ReadOnly))
@@ -85,7 +85,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		return reply;
 	}
 
-	log(QString("Loading <a href=\"%1\">%1</a>").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
+	log(QStringLiteral("Loading <a href=\"%1\">%1</a>").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
 	return QNetworkAccessManager::get(request);
 }
 

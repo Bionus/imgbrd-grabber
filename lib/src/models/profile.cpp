@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "commands/commands.h"
+#include "functions.h"
 #include "models/site.h"
 #include "models/source.h"
 
@@ -135,7 +136,8 @@ Profile::Profile(const QString &path)
 	m_commands = new Commands(this);
 
 	// Blacklisted tags
-	for (const QString &bl : m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts))
+	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
+	for (const QString &bl : blacklist)
 	{ m_blacklistedTags.append(QStringList() << bl); }
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text))
@@ -199,7 +201,7 @@ void Profile::sync()
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
-		for (const QStringList &bl : m_blacklistedTags)
+		for (const QStringList &bl : qAsConst(m_blacklistedTags))
 		{ fileBlacklist.write((bl.join(' ') + "\n").toUtf8()); }
 		fileBlacklist.close();
 	}
@@ -216,7 +218,7 @@ void Profile::syncFavorites()
 	{
 		// Generate JSON array
 		QJsonArray favoritesJson;
-		for (const Favorite &fav : m_favorites)
+		for (const Favorite &fav : qAsConst(m_favorites))
 		{
 			QJsonObject unique;
 			fav.toJson(unique);

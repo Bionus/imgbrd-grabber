@@ -24,20 +24,20 @@ bool TagDatabaseSqlite::load()
 		return false;
 
 	// Load and connect to the database
-	m_database = QSqlDatabase::addDatabase("QSQLITE");
+	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
 	m_database.setDatabaseName(m_tagFile);
 	if (!m_database.open())
 	{
-		log(QString("Could not open tag database: %1").arg(m_database.lastError().text()), Logger::Error);
+		log(QStringLiteral("Could not open tag database: %1").arg(m_database.lastError().text()), Logger::Error);
 		return false;
 	}
 
 	// Create schema if necessary
 	QSqlQuery createQuery(m_database);
-	createQuery.prepare("CREATE TABLE IF NOT EXISTS tags (id INT, tag VARCHAR(255), ttype INT);");
+	createQuery.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS tags (id INT, tag VARCHAR(255), ttype INT);"));
 	if (!createQuery.exec())
 	{
-		log(QString("Could not create tag database schema: %1").arg(createQuery.lastError().text()), Logger::Error);
+		log(QStringLiteral("Could not create tag database schema: %1").arg(createQuery.lastError().text()), Logger::Error);
 		return false;
 	}
 
@@ -57,10 +57,10 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 		tagTypes.insert(it.value().name(), it.key());
 
 	QSqlQuery clearQuery(m_database);
-	clearQuery.prepare("DELETE FROM tags");
+	clearQuery.prepare(QStringLiteral("DELETE FROM tags"));
 	if (!clearQuery.exec())
 	{
-		log(QString("SQL error when clearing tags: %1").arg(clearQuery.lastError().text()), Logger::Error);
+		log(QStringLiteral("SQL error when clearing tags: %1").arg(clearQuery.lastError().text()), Logger::Error);
 		return;
 	}
 
@@ -68,7 +68,7 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 		return;
 
 	QSqlQuery addQuery(m_database);
-	addQuery.prepare("INSERT INTO tags (id, tag, ttype) VALUES (:id, :tag, :ttype)");
+	addQuery.prepare(QStringLiteral("INSERT INTO tags (id, tag, ttype) VALUES (:id, :tag, :ttype)"));
 
 	for (const Tag &tag : tags)
 	{
@@ -78,7 +78,7 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 		addQuery.bindValue(":ttype", tagTypes.contains(type) ? tagTypes[type] : -1);
 		if (!addQuery.exec())
 		{
-			log(QString("SQL error when adding tag: %1").arg(addQuery.lastError().text()), Logger::Error);
+			log(QStringLiteral("SQL error when adding tag: %1").arg(addQuery.lastError().text()), Logger::Error);
 			return;
 		}
 	}
@@ -119,7 +119,7 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) c
 	query.setForwardOnly(true);
 	if (!query.exec(sql))
 	{
-		log(QString("SQL error when getting tags: %1").arg(query.lastError().text()), Logger::Error);
+		log(QStringLiteral("SQL error when getting tags: %1").arg(query.lastError().text()), Logger::Error);
 		return ret;
 	}
 
@@ -142,10 +142,10 @@ int TagDatabaseSqlite::count() const
 		return m_count;
 
 	QSqlQuery query(m_database);
-	QString sql = "SELECT COUNT(*) FROM tags";
+	QString sql = QStringLiteral("SELECT COUNT(*) FROM tags");
 	if (!query.exec(sql) || !query.next())
 	{
-		log(QString("SQL error when getting tag count: %1").arg(query.lastError().text()), Logger::Error);
+		log(QStringLiteral("SQL error when getting tag count: %1").arg(query.lastError().text()), Logger::Error);
 		return -1;
 	}
 

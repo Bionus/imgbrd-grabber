@@ -1,4 +1,5 @@
 #include "mixed-settings.h"
+#include "functions.h"
 
 
 MixedSettings::MixedSettings(const QList<QSettings*> &settings)
@@ -7,14 +8,14 @@ MixedSettings::MixedSettings(const QList<QSettings*> &settings)
 
 MixedSettings::~MixedSettings()
 {
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting : qAsConst(m_settings))
 		setting->deleteLater();
 }
 
 
 QVariant MixedSettings::value(const QString &key, const QVariant &defaultValue) const
 {
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting : qAsConst(m_settings))
 	{
 		QVariant val = setting->value(key);
 		if (val.isValid())
@@ -60,25 +61,25 @@ void MixedSettings::setValue(const QString &key, const QVariant &value, const QV
 QStringList MixedSettings::childKeys() const
 {
 	QStringList keys;
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting : qAsConst(m_settings))
 		keys.append(setting->childKeys());
 	return keys;
 }
 
 void MixedSettings::beginGroup(const QString &prefix)
 {
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting : qAsConst(m_settings))
 		setting->beginGroup(prefix);
 }
 
 void MixedSettings::endGroup()
 {
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting :qAsConst( m_settings))
 		setting->endGroup();
 }
 
 void MixedSettings::sync()
 {
-	for (QSettings *setting : m_settings)
+	for (QSettings *setting : qAsConst(m_settings))
 		setting->sync();
 }

@@ -1,4 +1,5 @@
 #include "downloader/file-downloader.h"
+#include "functions.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 
@@ -59,7 +60,7 @@ void FileDownloader::replyFinished()
 		return;
 	}
 
-	for (const QString &copy : m_copies)
+	for (const QString &copy : qAsConst(m_copies))
 		m_file.copy(copy);
 
 	emit success();

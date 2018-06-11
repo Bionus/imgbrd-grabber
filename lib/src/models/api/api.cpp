@@ -183,7 +183,7 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 		for (QString opt : options)
 		{
 			if (opt.contains("{tim}") && d->value("tim").isEmpty())
-				return "";
+				return QString();
 
 			opt.replace("{id}", d->value("id"))
 			.replace("{md5}", d->value("md5"))
@@ -213,7 +213,7 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 	QString fixed = site->fixUrl(ret).toString();
 
 	// Clean fake webp files
-	if (fixed.endsWith(".jpg.webp"))
+	if (fixed.endsWith(QStringLiteral(".jpg.webp")))
 		fixed = fixed.left(fixed.length() - 5);
 
 	return fixed;
@@ -252,11 +252,11 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 
 	// If the file path is wrong (ends with "/.jpg")
 	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
-	{ errors.append("file url"); }
+	{ errors.append(QStringLiteral("file url")); }
 
 	if (!errors.isEmpty())
 	{
-		log(QString("[%1][%2] Image #%3 ignored. Reason: %4.").arg(site->url(), m_name, QString::number(position + 1), errors.join(", ")), Logger::Info);
+		log(QStringLiteral("[%1][%2] Image #%3 ignored. Reason: %4.").arg(site->url(), m_name, QString::number(position + 1), errors.join(", ")), Logger::Info);
 		return QSharedPointer<Image>();
 	}
 

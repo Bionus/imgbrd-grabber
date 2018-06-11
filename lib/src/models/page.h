@@ -30,7 +30,7 @@ class Page : public QObject
 		int			pagesCount(bool guess = true);
 		QUrl		url();
 		QUrl		friendlyUrl();
-		QString		source();
+		bool		hasSource();
 		QString		website();
 		QString		wiki();
 		QList<Tag>	tags();

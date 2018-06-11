@@ -103,7 +103,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	// Blacklist
 	QString blacklist;
 	for (const QStringList &tags : profile->getBlacklist())
-	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	{ blacklist += (blacklist.isEmpty() ? QString() : "\n") + tags.join(' '); }
 	ui->textBlacklist->setPlainText(blacklist);
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
@@ -116,7 +116,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->endGroup();
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings->value("resizeInsteadOfCropping", true).toBool());
-	ui->spinThumbnailUpscale->setValue(settings->value("thumbnailUpscale", 1.0f).toFloat() * 100);
+	ui->spinThumbnailUpscale->setValue(qRound(settings->value("thumbnailUpscale", 1.0).toDouble() * 100));
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
@@ -267,7 +267,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboImagePositionAnimationH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionAnimationH", "left").toString()));
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
-	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", "").toString());
+	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -528,7 +528,7 @@ void optionsWindow::showWebServices()
 
 		if (j > 0)
 		{
-			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), "");
+			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
 			mapperMoveUpWebService->setMapping(buttonMoveUp, id);
 			connect(buttonMoveUp, SIGNAL(clicked(bool)), mapperMoveUpWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveUp, j, 2);
@@ -536,7 +536,7 @@ void optionsWindow::showWebServices()
 
 		if (j < m_webServices.count() - 1)
 		{
-			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), "");
+			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
 			mapperMoveDownWebService->setMapping(buttonMoveDown, id);
 			connect(buttonMoveDown, SIGNAL(clicked(bool)), mapperMoveDownWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
@@ -890,7 +890,7 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
-	settings->setValue("thumbnailUpscale", static_cast<float>(ui->spinThumbnailUpscale->value()) / 100.0f);
+	settings->setValue("thumbnailUpscale", static_cast<double>(ui->spinThumbnailUpscale->value()) / 100.0);
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
@@ -913,7 +913,7 @@ void optionsWindow::save()
 		QDir pth = QDir(folder);
 		if (!pth.exists())
 		{
-			QString op = "";
+			QString op;
 			while (!pth.exists() && pth.path() != op)
 			{
 				op = pth.path();
@@ -929,7 +929,7 @@ void optionsWindow::save()
 		pth = QDir(folder);
 		if (!pth.exists())
 		{
-			QString op = "";
+			QString op;
 			while (!pth.exists() && pth.path() != op)
 			{
 				op = pth.path();
@@ -1152,15 +1152,15 @@ void optionsWindow::save()
 			QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
 			QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
 			QNetworkProxy::setApplicationProxy(proxy);
-			log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 		}
 		else
-		{ log(QString("Enabling system-wide proxy.")); }
+		{ log(QStringLiteral("Enabling system-wide proxy.")); }
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-		log("Disabling application proxy.");
+		log(QStringLiteral("Disabling application proxy."));
 	}
 
 	QString lang = ui->comboLanguages->currentData().toString();

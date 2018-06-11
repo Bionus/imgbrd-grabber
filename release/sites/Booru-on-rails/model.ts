@@ -49,6 +49,7 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
+                    opts["auth"]["key"] = opts["auth"]["password"];
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
                         return "/images.json?" + loginPart + "page=" + query.page + "&nocomments=1&nofav=1";
@@ -70,9 +71,10 @@ export const source: ISource = {
                     };
 
                     const data = JSON.parse(src);
+                    const results = "search" in data ? data.search : data.images;
 
                     const images: IImage[] = [];
-                    for (const image of data.search) {
+                    for (const image of results) {
                         const img = Grabber.mapFields(image, map);
                         img["tags"] = image["tags"].split(", ");
                         img["preview_url"] = image["representations"]["thumb"];
@@ -90,6 +92,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
+                    opts["auth"]["key"] = opts["auth"]["password"];
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
                 },
@@ -118,6 +121,7 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
+                    opts["auth"]["key"] = opts["auth"]["password"];
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
                         return "/images/page/" + query.page + "?" + loginPart;
@@ -144,6 +148,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
+                    opts["auth"]["key"] = opts["auth"]["password"];
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     return "/tags?" + loginPart + "page=" + query.page;
                 },

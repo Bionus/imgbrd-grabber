@@ -125,7 +125,8 @@ export const source: ISource = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).posts.post);
+                    const parsed = Grabber.typedXML(Grabber.parseXML(src));
+                    const data = Grabber.makeArray(parsed.posts.post);
 
                     const images: IImage[] = [];
                     for (const dta of data) {
@@ -133,7 +134,10 @@ export const source: ISource = {
                         images.push(completeImage(image));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: parsed.posts["@attributes"]["count"],
+                    };
                 },
             },
             tags: {

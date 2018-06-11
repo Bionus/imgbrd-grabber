@@ -32,7 +32,7 @@
 QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
 	QMap<QString, QStringList> tokens;
-	settings->beginGroup("Save/Customs");
+	settings->beginGroup(QStringLiteral("Save/Customs"));
 	QStringList keys = settings->childKeys();
 	for (int i = 0; i < keys.size(); i++)
 	{ tokens.insert(keys.at(i), settings->value(keys.at(i)).toString().split(' ')); }
@@ -48,7 +48,7 @@ QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
 {
 	QMap<QString, QPair<QString, QString>> tokens;
 
-	settings->beginGroup("Filenames");
+	settings->beginGroup(QStringLiteral("Filenames"));
 	int count = settings->childKeys().count() / 3;
 	for (int i = 0; i < count; i++)
 	{
@@ -69,7 +69,7 @@ QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings)
 {
 	QMap<int, QMap<QString, QVariant>> ret;
 
-	settings->beginGroup("LogFiles");
+	settings->beginGroup(QStringLiteral("LogFiles"));
 	for (const QString &group : settings->childGroups())
 	{
 		settings->beginGroup(group);
@@ -141,35 +141,35 @@ QDateTime qDateTimeFromString(QString str)
 	}
 	else if (str.length() == 19)
 	{
-		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm:ss");
+		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm:ss"));
 		if (!date.isValid())
-			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm:ss");
+			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str.length() == 16)
 	{
-		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm");
+		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm"));
 		if (!date.isValid())
-			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm");
+			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm"));
 		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str[0].isDigit())
 	{
-		float decay = 0;
+		qreal decay = 0;
 
-		date = QDateTime::fromString(str.left(19), "yyyy-MM-dd'T'HH:mm:ss");
+		date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy-MM-dd'T'HH:mm:ss"));
 		if (!date.isValid())
-			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
+			date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy/MM/dd HH:mm:ss"));
 		else
-			decay = str.right(6).remove(':').toFloat() / 100;
+			decay = str.right(6).remove(':').toDouble() / 100;
 		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 	else
 	{
 		QLocale myLoc(QLocale::English);
-		date = myLoc.toDateTime(str, "ddd MMM dd HH:mm:ss yyyy");
+		date = myLoc.toDateTime(str, QStringLiteral("ddd MMM dd HH:mm:ss yyyy"));
 		if (!date.isValid())
-			date = myLoc.toDateTime(str, "ddd MMM  d HH:mm:ss yyyy");
+			date = myLoc.toDateTime(str, QStringLiteral("ddd MMM  d HH:mm:ss yyyy"));
 		if (date.isValid())
 		{
 			date.setTimeSpec(Qt::UTC);
@@ -180,9 +180,9 @@ QDateTime qDateTimeFromString(QString str)
 		int year = str.midRef(26, 4).toInt();
 		int month = months.indexOf(str.mid(4, 3)) + 1;
 		int day = str.midRef(8, 2).toInt();
-		float decay = str.midRef(20, 5).toFloat() / 100;
+		qreal decay = str.midRef(20, 5).toDouble() / 100;
 
-		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
+		QTime time = QTime::fromString(str.mid(11, 8), QStringLiteral("HH:mm:ss"));
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
 		date.setOffsetFromUtc(qFloor(3600 * decay));
@@ -191,7 +191,7 @@ QDateTime qDateTimeFromString(QString str)
 	return date;
 }
 
-QString getUnit(float *value)
+QString getUnit(double *value)
 {
 	QStringList units = FILESIZE_UNITS;
 	int multiplier = FILESIZE_MULTIPLIER;
@@ -206,19 +206,19 @@ QString getUnit(float *value)
 	return units[power];
 }
 
-QString formatFilesize(float size)
+QString formatFilesize(double size)
 {
 	QString unit = getUnit(&size);
-	float round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
-	float roundedSize = static_cast<float>(static_cast<int>(size * round + 0.5)) / round;
-	return QString("%1 %2").arg(roundedSize).arg(unit);
+	double round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
+	double roundedSize = static_cast<double>(static_cast<int>(size * round + 0.5)) / round;
+	return QStringLiteral("%1 %2").arg(roundedSize).arg(unit);
 }
 
 bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);
 	QFileInfo info(nativeFile);
-	bool isWritable = info.isWritable() && !nativeFile.startsWith("C:\\Program Files");
+	bool isWritable = info.isWritable() && !nativeFile.startsWith(QStringLiteral("C:\\Program Files"));
 	return info.exists() && (!writable || isWritable);
 }
 
@@ -230,7 +230,7 @@ bool validSavePath(const QString &file, bool writable)
  */
 QString savePath(const QString &file, bool exists, bool writable)
 {
-	QString check = exists ? file : "settings.ini";
+	QString check = exists ? file : QStringLiteral("settings.ini");
 
 	if (isTestModeEnabled())
 	{
@@ -335,7 +335,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QString("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
 		else
@@ -347,7 +347,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QString("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+				log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 				return false;
 			}
 		}
@@ -358,7 +358,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QString("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
+			// log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
 			return false;
 		}
 	#endif
@@ -396,7 +396,7 @@ QMap<QString, QString> domToMap(const QDomElement &dom)
  */
 QString stripTags(QString str)
 {
-	static QRegularExpression strip("<[^>]*>");
+	static QRegularExpression strip(QStringLiteral("<[^>]*>"));
 	return str.remove(strip);
 }
 
@@ -407,9 +407,9 @@ QString stripTags(QString str)
 void shutDown(int timeout)
 {
 	#if defined(Q_OS_WIN)
-		QProcess::startDetached("shutdown -s -f -t "+QString::number(timeout));
+		QProcess::startDetached("shutdown -s -f -t " + QString::number(timeout));
 	#else
-		QProcess::startDetached("shutdown "+QString::number(timeout));
+		QProcess::startDetached("shutdown " + QString::number(timeout));
 	#endif
 }
 
@@ -419,9 +419,9 @@ void shutDown(int timeout)
 void openTray()
 {
 	#if defined(Q_OS_WIN)
-		QProcess::startDetached("CDR.exe open");
+		QProcess::startDetached(QStringLiteral("CDR.exe open"));
 	#else
-		QProcess::startDetached("eject cdrom");
+		QProcess::startDetached(QStringLiteral("eject cdrom"));
 	#endif
 }
 
@@ -456,13 +456,13 @@ QString setExtension(QString url, const QString &extension)
 
 bool isUrl(const QString &str)
 {
-	static QRegularExpression regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	static QRegularExpression regexUrl(QStringLiteral("^https?://[^\\s/$.?#].[^\\s]*$"));
 	return regexUrl.match(str).hasMatch();
 }
 
 QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 {
-	QString sep = QDir::toNativeSeparators("/");
+	QString sep = QDir::separator();
 	fn = QDir::toNativeSeparators(fn);
 	path = QDir::toNativeSeparators(path);
 	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
@@ -480,7 +480,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 	Q_UNUSED(invalidChars);
 
 	// Fix parameters
-	QString sep = "/";
+	QString sep = QStringLiteral("/");
 	QString filename = path + fn;
 
 	// Divide filename
@@ -510,7 +510,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 
 	// Join parts back
 	QString dirpart = parts.join(sep);
-	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
 	// A filename cannot exceed a certain length
 	int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
@@ -526,13 +526,13 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 		index = filename.indexOf(sep, index + 1);
 
 	// Put extension and drive back
-	filename = filename + (!ext.isEmpty() ? "." + ext : "");
+	filename = filename + (!ext.isEmpty() ? "." + ext : QString());
 	if (!fn.isEmpty())
 		filename = filename.right(filename.length() - index - 1);
 
 	QFileInfo fi(filename);
 	QString suffix = fi.suffix();
-	filename = (fi.path() != "." ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + (suffix.isEmpty() ? "" : "." + fi.suffix());
+	filename = (fi.path() != "." ? fi.path() + "/" : QString()) + fi.completeBaseName().left(245) + (suffix.isEmpty() ? QString() : "." + fi.suffix());
 
 	return filename;
 }
@@ -544,13 +544,13 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength, bool invalidChars)
 {
 	// Fix parameters
-	QString sep = "\\";
+	QString sep = QStringLiteral("\\");
 	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
 	QString filename = path + fn;
 
 	// Drive
-	QString drive = "";
-	if (filename.mid(1, 2) == ":\\")
+	QString drive;
+	if (filename.mid(1, 2) == QStringLiteral(":\\"))
 	{
 		drive = filename.left(3);
 		filename = filename.right(filename.length() - 3);
@@ -600,7 +600,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength
 	QString dirpart = parts.join(sep);
 	if (dirpart.length() > maxlength - 12)
 	{ dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed(); }
-	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
 	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 	if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
@@ -614,7 +614,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength
 	index += drive.length();
 
 	// Put extension and drive back
-	filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
+	filename = drive + filename + (!ext.isEmpty() ? "." + ext : QString());
 	if (!fn.isEmpty())
 	{ filename = filename.right(filename.length() - index - 1); }
 
@@ -633,39 +633,39 @@ QString getExtensionFromHeader(const QByteArray &data12)
 
 	// GIF
 	if (data6 == "GIF87a" || data6 == "GIF89a")
-		return "gif";
+		return QStringLiteral("gif");
 
 	// PNG
 	if (data8 == "\211PNG\r\n\032\n")
-		return "png";
+		return QStringLiteral("png");
 
 	// JPG
 	if (data3 == "\255\216\255")
-		return "jpg";
+		return QStringLiteral("jpg");
 
 	// BMP
 	if (data2 == "BM")
-		return "bmp";
+		return QStringLiteral("bmp");
 
 	// WEBM
 	if (data4 == "\026\069\223\163")
-		return "webm";
+		return QStringLiteral("webm");
 
 	// MP4
 	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
-		return "mp4";
+		return QStringLiteral("mp4");
 
 	// SWF
 	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
-		return "swf";
+		return QStringLiteral("swf");
 
 	// FLV
 	if (data4 == "FLV\001")
-		return "flv";
+		return QStringLiteral("flv");
 
 	// ICO
 	if (data4 == QByteArray("\000\000\001\000", 4))
-		return "ico";
+		return QStringLiteral("ico");
 
 	return QString();
 }
@@ -688,7 +688,7 @@ QString parseMarkdown(QString str)
 	str.replace("\\r\\n", "\\n");
 
 	// Headers
-	QRegularExpression header("^(#+)([^#].*)$", QRegularExpression::MultilineOption);
+	QRegularExpression header(QStringLiteral("^(#+)([^#].*)$"), QRegularExpression::MultilineOption);
 	auto matches = header.globalMatch(str);
 	while (matches.hasNext()) {
 		auto match = matches.next();
@@ -699,7 +699,7 @@ QString parseMarkdown(QString str)
 
 	// Issue links
 	QRegularExpression issueLinks("(issue|fix) #(\\d+)");
-	str.replace(issueLinks, "<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/\\2'>\\1 #\\2</a>");
+	str.replace(issueLinks, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + "/issues/\\2'>\\1 #\\2</a>");
 
 	// Line breaks to HTML
 	str.replace("\n", "<br/>");

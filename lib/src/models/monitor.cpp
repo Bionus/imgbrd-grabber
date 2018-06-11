@@ -6,7 +6,7 @@ Monitor::Monitor(Site *site, int interval, const QDateTime &lastCheck, int cumul
 	: m_site(site), m_interval(interval), m_lastCheck(lastCheck), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated)
 {}
 
-int Monitor::secsToNextCheck() const
+qint64 Monitor::secsToNextCheck() const
 {
 	auto now = QDateTime::currentDateTimeUtc();
 	return now.secsTo(m_lastCheck.addSecs(m_interval));

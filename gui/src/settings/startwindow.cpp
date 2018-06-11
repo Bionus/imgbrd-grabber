@@ -83,7 +83,7 @@ void startWindow::save()
 	QDir pth = QDir(ui->lineFolder->text());
 	if (!pth.exists())
 	{
-		QString op = "";
+		QString op;
 		while (!pth.exists() && pth.path() != op)
 		{
 			op = pth.path();

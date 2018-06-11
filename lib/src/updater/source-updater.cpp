@@ -36,6 +36,9 @@ void SourceUpdater::checkForUpdatesDone()
 			QString compare = current.readAll();
 			current.close();
 
+			compare.replace("\r\n", "\n");
+			source.replace("\r\n", "\n");
+
 			if (compare != source)
 				isNew = true;
 		}

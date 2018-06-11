@@ -210,8 +210,9 @@ void tagTab::getAll()
 
 		int highLimit = page->highLimit();
 		int currentCount = page->images().count();
-		int total = qMax(currentCount, page->imagesCount());
-		int perPage = highLimit > 0 ? qMin(highLimit, total) : currentCount;
+		int imageCount = page->imagesCount();
+		int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+		int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if (perPage == 0 && total == 0)
 			continue;
 

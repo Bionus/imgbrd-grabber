@@ -33,7 +33,7 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	if (fixedWidthLayout)
 	{
 		int borderSize = m_settings->value("borders", 3).toInt();
-		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 	}
 	QWidget *layoutWidget = new QWidget;
@@ -77,7 +77,7 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 
-	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+	static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
 		ui->comboOrder->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboAsc->setCurrentIndex(static_cast<int>(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
@@ -97,7 +97,7 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
-		QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+		static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
 		m_settings->setValue("order", assoc[ui->comboOrder->currentIndex()]);
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	m_settings->endGroup();
@@ -128,8 +128,10 @@ void favoritesTab::updateFavorites()
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
-	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+	qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	int borderSize = m_settings->value("borders", 3).toInt();
+	int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+
 	for (Favorite &fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -140,7 +142,7 @@ void favoritesTab::updateFavorites()
 
 		int maxNewImages = 0;
 		bool precise = true;
-		for (const Monitor& monitor : fav.getMonitors())
+		for (const Monitor& monitor : qAsConst(fav.getMonitors()))
 		{
 			if (monitor.cumulated() > maxNewImages)
 			{
@@ -154,7 +156,7 @@ void favoritesTab::updateFavorites()
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->scale(img, upscale);
-				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2), qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
+				image->setFixedSize(dim, dim);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -162,7 +164,7 @@ void favoritesTab::updateFavorites()
 				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
 
 			if (maxNewImages > 0)
-			{ image->setCounter(QString::number(maxNewImages) + (!precise ? "+" : "")); }
+			{ image->setCounter(QString::number(maxNewImages) + (!precise ? "+" : QString())); }
 
 			l->addWidget(image);
 		}
@@ -172,7 +174,7 @@ void favoritesTab::updateFavorites()
 		{
 			label += fav.getName();
 			if (maxNewImages > 0 && !display.contains("i"))
-			{ label += QString(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : ""); }
+			{ label += QStringLiteral(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : QString()); }
 		}
 		if (display.contains("d"))
 		{ label += "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")"; }
@@ -182,7 +184,7 @@ void favoritesTab::updateFavorites()
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
-			caption->setFixedWidth(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+			caption->setFixedWidth(dim);
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
@@ -270,8 +272,9 @@ void favoritesTab::getAll()
 
 		int highLimit = page->highLimit();
 		int currentCount = page->images().count();
-		int total = qMax(currentCount, page->imagesCount());
-		int perPage = highLimit > 0 ? qMin(highLimit, total) : currentCount;
+		int imageCount = page->imagesCount();
+		int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+		int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if (perPage == 0 && total == 0)
 			continue;
 
@@ -328,7 +331,7 @@ void favoritesTab::viewed()
 		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
-			for (const Favorite &fav : m_favorites)
+			for (const Favorite &fav : qAsConst(m_favorites))
 			{ setFavoriteViewed(fav.getName()); }
 		}
 	}
@@ -339,7 +342,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(const QString &tag)
 {
-	log(QString("Marking \"%1\" as viewed...").arg(tag));
+	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(tag));
 	if (index < 0)
@@ -361,7 +364,7 @@ void favoritesTab::favoritesBack()
 
 	if (!m_currentTags.isEmpty() || m_currentFav != -1)
 	{
-		m_currentTags = "";
+		m_currentTags = QString();
 		m_currentFav = -1;
 		ui->widgetFavorites->show();
 	}

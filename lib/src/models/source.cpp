@@ -46,10 +46,10 @@ QJSEngine *Source::jsEngine()
 			jsHelper.close();
 
 			if (helperResult.isError())
-			{ log(QString("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
+			{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error); }
 		}
 		else
-		{ log("JavaScript helper file could not be opened", Logger::Error); }
+		{ log(QStringLiteral("JavaScript helper file could not be opened"), Logger::Error); }
 	}
 
 	return engine;
@@ -76,7 +76,7 @@ Source::Source(Profile *profile, const QString &dir)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
+		{ log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
 		else
 		{
 			QDomElement docElem = doc.documentElement();
@@ -96,13 +96,13 @@ Source::Source(Profile *profile, const QString &dir)
 			QFile js(m_dir + "/model.js");
 			if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
-				log(QString("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
+				log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
 
 				QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
 
 				m_jsSource = jsEngine()->evaluate(src, js.fileName());
 				if (m_jsSource.isError())
-				{ log(QString("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
+				{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 				else
 				{
 					m_name = m_jsSource.property("name").toString();
@@ -116,7 +116,7 @@ Source::Source(Profile *profile, const QString &dir)
 						m_apis.append(new JavascriptApi(details, m_jsSource, jsEngineMutex(), it.name()));
 					}
 					if (m_apis.isEmpty())
-					{ log(QString("No valid source has been found in the model.js file from %1.").arg(m_name)); }
+					{ log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name)); }
 
 					// Read tag naming format
 					const QJSValue &tagFormat = m_jsSource.property("tagFormat");
@@ -132,9 +132,9 @@ Source::Source(Profile *profile, const QString &dir)
 			else
 			{
 				if (enableJs)
-				{ log(QString("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
+				{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 
-				log(QString("Using XML model for %1").arg(m_diskName), Logger::Debug);
+				log(QStringLiteral("Using XML model for %1").arg(m_diskName), Logger::Debug);
 
 				m_name = details.value("Name");
 
@@ -151,23 +151,23 @@ Source::Source(Profile *profile, const QString &dir)
 					for (const QString &apiName : availableApis)
 					{
 						Api *api = nullptr;
-						if (apiName == "Html")
+						if (apiName == QStringLiteral("Html"))
 						{ api = new HtmlApi(details); }
-						else if (apiName == "Json")
+						else if (apiName == QStringLiteral("Json"))
 						{ api = new JsonApi(details); }
-						else if (apiName == "Rss")
+						else if (apiName == QStringLiteral("Rss"))
 						{ api = new RssApi(details); }
-						else if (apiName == "Xml")
+						else if (apiName == QStringLiteral("Xml"))
 						{ api = new XmlApi(details); }
 
 						if (api != nullptr)
 						{ m_apis.append(api); }
 						else
-						{ log(QString("Unknown API type '%1'").arg(apiName), Logger::Error); }
+						{ log(QStringLiteral("Unknown API type '%1'").arg(apiName), Logger::Error); }
 					}
 				}
 				else
-				{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
+				{ log(QStringLiteral("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
 
 				// Read tag naming format
 				auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
@@ -178,7 +178,7 @@ Source::Source(Profile *profile, const QString &dir)
 		file.close();
 	}
 	else
-	{ log(QString("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
+	{ log(QStringLiteral("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
@@ -195,7 +195,7 @@ Source::Source(Profile *profile, const QString &dir)
 		}
 	}
 	if (m_sites.isEmpty())
-	{ log(QString("No site for source %1").arg(m_name), Logger::Debug); }
+	{ log(QStringLiteral("No site for source %1").arg(m_name), Logger::Debug); }
 }
 
 Source::~Source()

@@ -57,9 +57,9 @@ void DownloadableDownloader::preloaded()
 	}
 
 	// Load the image directly on the disk
-	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url);
-	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, "image", Q_NULLPTR); // TODO(Bionus)
+	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, QStringLiteral("image"), Q_NULLPTR); // TODO(Bionus)
 	QObject::connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::networkError, this, &DownloadableDownloader::networkError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::success, this, &DownloadableDownloader::success, Qt::UniqueConnection);
@@ -67,7 +67,7 @@ void DownloadableDownloader::preloaded()
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(reply, m_paths))
 	{
-		log("Unable to open file", Logger::Error);
+		log(QStringLiteral("Unable to open file"), Logger::Error);
 		setResult(m_paths, Downloadable::SaveResult::Error);
 		emit saved(m_downloadable, m_result);
 	}
@@ -91,7 +91,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 	}
 	else
 	{
-		log(QString("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
+		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
 		setResult(m_paths, Downloadable::SaveResult::NetworkError);
 	}
 

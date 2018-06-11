@@ -81,8 +81,8 @@ void PageApi::load(bool rateLimit, bool force)
 
 	if (m_url.isEmpty() && !m_errors.isEmpty())
 	{
-		for (const QString &err : m_errors)
-		{ log(QString("[%1][%2] %3").arg(m_site->url(), m_format, err), Logger::Warning); }
+		for (const QString &err : qAsConst(m_errors))
+		{ log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, err), Logger::Warning); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -96,7 +96,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
-		log(QString("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
 		connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
 	});
@@ -118,7 +118,7 @@ bool PageApi::addImage(QSharedPointer<Image> img)
 	if (!filters.isEmpty())
 	{
 		img->deleteLater();
-		log(QString("[%1][%2] Image filtered. Reason: %3.").arg(m_site->url(), m_format, filters.join(", ")), Logger::Info);
+		log(QStringLiteral("[%1][%2] Image filtered. Reason: %3.").arg(m_site->url(), m_format, filters.join(", ")), Logger::Info);
 		return false;
 	}
 
@@ -128,14 +128,14 @@ bool PageApi::addImage(QSharedPointer<Image> img)
 
 void PageApi::parse()
 {
-	log(QString("[%1][%2] Receiving page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1][%2] Receiving page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
-		log(QString("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 
 		// HTTP -> HTTPS redirects
 		bool ssl = m_site->setting("ssl", false).toBool();
@@ -155,7 +155,7 @@ void PageApi::parse()
 	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
-		log(QString("[%1][%2] Limit reached (429). New try.").arg(m_site->url(), m_format), Logger::Warning);
+		log(QStringLiteral("[%1][%2] Limit reached (429). New try.").arg(m_site->url(), m_format), Logger::Warning);
 		load(true, true);
 		return;
 	}
@@ -171,7 +171,7 @@ void PageApi::parseActual()
 	if (m_source.isEmpty() || m_reply->error() != QNetworkReply::NoError)
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
+		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -183,7 +183,7 @@ void PageApi::parseActual()
 	if (!page.error.isEmpty())
 	{
 		m_errors.append(page.error);
-		log(QString("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
+		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -193,9 +193,9 @@ void PageApi::parseActual()
 	{ setImageCount(page.imageCount, true); }
 	if (page.pageCount >= 0)
 	{ setPageCount(page.pageCount, true); }
-	for (const Tag &tag : page.tags)
+	for (const Tag &tag : qAsConst(page.tags))
 	{ m_tags.append(tag); }
-	for (const QSharedPointer<Image> &img : page.images)
+	for (const QSharedPointer<Image> &img : qAsConst(page.images))
 	{ addImage(img); }
 	if (page.urlNextPage.isValid())
 	{ m_urlNextPage = page.urlNextPage; }
@@ -227,7 +227,7 @@ void PageApi::parseActual()
 	// Complete image count information from tag count information
 	if (m_imagesCount < 1)
 	{
-		for (const Tag &tag : m_tags)
+		for (const Tag &tag : qAsConst(m_tags))
 		{
 			if (tag.text() == m_search.join(" "))
 			{ setImageCount(tag.count(), false); }
@@ -236,11 +236,11 @@ void PageApi::parseActual()
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
-	if (m_isAltPage) // FIXME(Bionus): broken since move to Api class
+	if (false && m_isAltPage) // FIXME(Bionus): broken since move to Api class
 		skip = m_site->setting("ignore/alt", 0).toInt();
 	if (m_page == 1)
 		skip = m_site->setting("ignore/1", 0).toInt();
-	if (m_images.size() > m_imagesPerPage && m_images.size() > skip)
+	if (m_api->getName() == QStringLiteral("Html") && m_images.size() > skip)
 		for (int i = 0; i < skip; ++i)
 			m_images.removeFirst();
 
@@ -260,7 +260,7 @@ void PageApi::parseActual()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
-	log(QString("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 tags (%6), %7 total (%8), %9 pages (%10)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+	log(QStringLiteral("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 tags (%6), %7 total (%8), %9 pages (%10)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
 	m_reply->deleteLater();
 	m_reply = nullptr;
@@ -298,22 +298,39 @@ int PageApi::highLimit() const
 bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess) const
 {
-	int forcedLimit = m_api->forcedLimit();
-	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+	if (m_imagesCountSafe)
+		return m_imagesCount;
 
-	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
+	if (m_pagesCount == 1)
+		return m_images.count();
+
+	if (!guess)
+		return -1;
+
+	if (m_imagesCount < 0 && m_pagesCount >= 0)
+	{
+		int forcedLimit = m_api->forcedLimit();
+		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 		return m_pagesCount * perPage;
+	}
 
 	return m_imagesCount;
 }
 bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess) const
 {
-	int forcedLimit = m_api->forcedLimit();
-	int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+	if (m_pagesCountSafe)
+		return m_pagesCount;
 
-	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
-		return qCeil(static_cast<float>(m_imagesCount) / perPage);
+	if (!guess)
+		return -1;
+
+	if (m_pagesCount < 0 && m_imagesCount >= 0)
+	{
+		int forcedLimit = m_api->forcedLimit();
+		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+		return qCeil(static_cast<qreal>(m_imagesCount) / perPage);
+	}
 
 	return m_pagesCount;
 }
@@ -343,7 +360,11 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(qCeil(static_cast<float>(count) / m_imagesPerPage), true); }
+		{
+			int forcedLimit = m_api->forcedLimit();
+			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			setPageCount(qCeil(static_cast<qreal>(count) / perPage), true);
+		}
 	}
 }
 
@@ -355,6 +376,10 @@ void PageApi::setPageCount(int count, bool sure)
 		m_pagesCountSafe = sure;
 
 		if (sure)
-		{ setImageCount(count * m_imagesPerPage, false); }
+		{
+			int forcedLimit = m_api->forcedLimit();
+			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			setImageCount(count * perPage, false);
+		}
 	}
 }

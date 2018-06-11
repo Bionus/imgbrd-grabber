@@ -37,6 +37,7 @@ export const source: any = {
         json: {
             name: "JSON",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
@@ -81,6 +82,7 @@ export const source: any = {
         xml: {
             name: "XML",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
@@ -88,7 +90,8 @@ export const source: any = {
                     return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
-                    const data = Grabber.makeArray(Grabber.parseXML(src).posts.post);
+                    const parsed = Grabber.parseXML(src);
+                    const data = Grabber.makeArray(parsed.posts.post);
 
                     const images: IImage[] = [];
                     for (const dta of data) {
@@ -96,7 +99,10 @@ export const source: any = {
                         images.push(completeImage(image));
                     }
 
-                    return { images };
+                    return {
+                        images,
+                        imageCount: parsed.posts["@attributes"]["count"],
+                    };
                 },
             },
             tags: {
@@ -127,6 +133,7 @@ export const source: any = {
         html: {
             name: "Regex",
             auth: [],
+            maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
@@ -134,11 +141,16 @@ export const source: any = {
                     return "/post/index?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
+                    const images = Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage);
+                    let pageCount = Grabber.regexToConst("page", '>(?<page>\\d+)</a>\\s*<a class="next_page" rel="next" href="', src);
+                    if (pageCount === undefined && /<div id="paginator">\s*<\/div>/.test(src)) {
+                        pageCount = 1;
+                    }
                     return {
                         tags: Grabber.regexToTags('<li class="(?:[^"]* )?tag-type-(?<type>[^" ]+)"[^>]*>(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)k?</span>[^<]*</li>', src),
-                        images: Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage),
+                        images,
                         wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>', src),
-                        pageCount: Grabber.regexToConst("page", '<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page"', src),
+                        pageCount,
                     };
                 },
             },

@@ -20,15 +20,18 @@ export const source: ISource = {
         html: {
             name: "Regex",
             auth: [],
-            maxLimit: 200,
+            forcedLimit: 20,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 476, "&pid={pid}", " id:<{min}&p=1", "&pid={pid}");
-                    return "/index.php?page=post&s=list&tags=" + query.search + pagePart;
+                    const page: number = (query.page - 1) * 20;
+                    const search = query.search && query.search.length > 0 ? query.search : "all";
+                    return "/index.php?page=post&s=list&tags=" + search + "&pid=" + page;
                 },
                 parse: (src: string): IParsedSearch => {
+                    const pageCount = Grabber.regexToConst("page", '<a href="[^"]+pid=(?<page>\\d+)" alt="last page">&gt;&gt;</a>', src);
                     return {
                         images: Grabber.regexToImages('<span class="thumb"><a id="p(?<id>\\d+)" href="[^"]+"><img src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\\.[^"]+)" alt="post" border="0" title=" *(?<tags>[^"]*) *score:(?<score>[^ "]+) *rating:(?<rating>[^ "]+) *"/></a>[^<]*(?:<script type="text/javascript">[^<]*//<!\\[CDATA\\[[^<]*posts\\[[^]]+\\] = \\{\'tags\':\'(?<tags_2>[^\']+)\'\\.split\\(/ /g\\), \'rating\':\'(?<rating_2>[^\']+)\', \'score\':(?<score_2>[^,]+), \'user\':\'(?<author>[^\']+)\'\\}[^<]*//\\]\\]>[^<]*</script>)?</span>', src).map(completeImage),
+                        pageCount: pageCount ? (parseInt(pageCount, 10) / 20) + 1 : undefined,
                         tags: Grabber.regexToTags('<li><a[^>]*>\\+</a><a [^>]*>-</a> <span [^>]*>\\? <a href="[^"]*">(?<name>[^<]+)</a> (?<count>\\d+)</span></li>', src),
                     };
                 },
