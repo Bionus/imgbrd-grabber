@@ -360,7 +360,11 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(qCeil(static_cast<qreal>(count) / m_imagesPerPage), true); }
+		{
+			int forcedLimit = m_api->forcedLimit();
+			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			setPageCount(qCeil(static_cast<qreal>(count) / perPage), true);
+		}
 	}
 }
 
@@ -372,6 +376,10 @@ void PageApi::setPageCount(int count, bool sure)
 		m_pagesCountSafe = sure;
 
 		if (sure)
-		{ setImageCount(count * m_imagesPerPage, false); }
+		{
+			int forcedLimit = m_api->forcedLimit();
+			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			setImageCount(count * perPage, false);
+		}
 	}
 }
