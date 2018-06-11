@@ -165,11 +165,18 @@ int				Page::pageImageCount()	{ return m_pageApis[m_currentApi]->pageImageCount(
 QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
 QUrl			Page::friendlyUrl()	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url();	}
-QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
 QList<Tag>		Page::tags()		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
 QUrl			Page::nextPage()	{ return m_pageApis[m_currentApi]->nextPage();	}
 QUrl			Page::prevPage()	{ return m_pageApis[m_currentApi]->prevPage();	}
 int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
+
+bool Page::hasSource()
+{
+	for (auto pageApi : m_pageApis)
+		if (!pageApi->source().isEmpty())
+			return true;
+	return false;
+}
 
 int Page::imagesCount(bool guess)
 {

@@ -164,7 +164,7 @@ QStringList searchTab::reasonsToFail(Page* page, const QStringList &completion, 
 	QStringList reasons = QStringList();
 
 	// If the request yielded no source, the server may be offline
-	if (page->source().isEmpty())
+	if (!page->hasSource())
 	{ reasons.append(tr("server offline")); }
 
 	// Some sources do not allow more than two tags per search
