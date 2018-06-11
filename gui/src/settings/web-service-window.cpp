@@ -71,7 +71,7 @@ void WebServiceWindow::save()
 	// Emit the success signal
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
-	emit validated(ReverseSearchEngine(id, "", name, url, order), faviconData);
+	emit validated(ReverseSearchEngine(id, QString(), name, url, order), faviconData);
 
 	deleteLater();
 }

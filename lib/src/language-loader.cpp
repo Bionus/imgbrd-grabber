@@ -12,7 +12,7 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 	QSettings fullLanguages(m_path + "languages.ini", QSettings::IniFormat);
 	fullLanguages.setIniCodec("UTF-8");
 
-	QStringList languageFiles = QDir(m_path).entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languageFiles = QDir(m_path).entryList(QStringList() << QStringLiteral("*.qm"), QDir::Files);
 	QMap<QString, QString> languages;
 	for (const QString &languageFile : languageFiles)
 	{

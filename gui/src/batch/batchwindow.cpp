@@ -80,7 +80,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 void batchWindow::pause()
 {
 	m_paused = !m_paused;
-	ui->labelSpeed->setText(m_paused ? tr("Paused") : "");
+	ui->labelSpeed->setText(m_paused ? tr("Paused") : QString());
 	ui->buttonPause->setText(m_paused ? tr("Resume") : tr("Pause"));
 
 	#ifdef Q_OS_WIN
@@ -114,7 +114,7 @@ void batchWindow::clear()
 
 	ui->progressTotal->setValue(0);
 	ui->progressTotal->setMaximum(100);
-	ui->labelImages->setText("0/0");
+	ui->labelImages->setText(QStringLiteral("0/0"));
 	ui->cancelButton->setText(tr("Cancel"));
 
 	#ifdef Q_OS_WIN
@@ -137,10 +137,10 @@ void batchWindow::clearImages()
 
 	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
-	ui->labelMessage->setText("");
+	ui->labelMessage->setText(QString());
 	ui->progressCurrent->setValue(0);
 	ui->progressCurrent->setMaximum(100);
-	ui->labelSpeed->setText("");
+	ui->labelSpeed->setText(QString());
 
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
@@ -169,7 +169,7 @@ void batchWindow::copyToClipboard()
 			{ urls.append(selected.at(i)->text()); }
 		}
 	}
-	qApp->clipboard()->setText(urls.join("\n"));
+	qApp->clipboard()->setText(urls.join('\n'));
 }
 
 void batchWindow::setCount(int cnt)
@@ -186,9 +186,9 @@ void batchWindow::addImage(const QString &url, int batch, double size)
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
 	QString unit = getUnit(&size);
-	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
+	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(size > 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " " + unit : QString()));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
-	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem("0 %"));
+	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem(QStringLiteral("0 %")));
 
 	/* auto *progressBar = new QProgressBar(this);
 	progressBar->setTextVisible(false);
@@ -257,8 +257,8 @@ void batchWindow::imageUrlChanged(const QString &before, const QString &after)
 	{
 		m_urls[i] = after;
 		ui->tableWidget->item(i, 2)->setText(after);
-		ui->tableWidget->item(i, 3)->setText("");
-		ui->tableWidget->item(i, 4)->setText("");
+		ui->tableWidget->item(i, 3)->setText(QString());
+		ui->tableWidget->item(i, 4)->setText(QString());
 		ui->tableWidget->item(i, 5)->setText("0 %");
 	}
 }
@@ -287,7 +287,7 @@ void batchWindow::sizeImage(const QString &url, double size)
 		QString unit = getUnit(&size);
 		QString label = size > 0
 			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " "+unit
-			: "";
+			: QString();
 		ui->tableWidget->item(i, 3)->setText(label);
 	}
 }
@@ -307,8 +307,8 @@ void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult resul
 	if (i != -1)
 	{
 		scrollTo(i);
-		ui->tableWidget->item(i, 4)->setText("");
-		ui->tableWidget->item(i, 5)->setText("");
+		ui->tableWidget->item(i, 4)->setText(QString());
+		ui->tableWidget->item(i, 5)->setText(QString());
 
 		switch (result)
 		{
@@ -347,8 +347,8 @@ void batchWindow::drawSpeed()
 	for (auto sp = m_speeds.begin(); sp != m_speeds.end(); ++sp)
 	{ speed += sp.value(); }
 	if (m_speeds.size() == m_maxSpeeds)
-	{ m_mean.append(speed); }
-	QString unit = getUnit(&speed)+"/s";
+	{ m_mean.append(qRound(speed)); }
+	QString unit = getUnit(&speed) + "/s";
 
 	double speedMean = 0;
 	int count = qMin(m_mean.count(), 60);
@@ -398,7 +398,7 @@ void batchWindow::setCurrentMax(int max)
 void batchWindow::setTotalValue(int val)
 {
 	m_images = val;
-	ui->labelImages->setText(QString("%1/%2").arg(m_images).arg(m_imagesCount));
+	ui->labelImages->setText(QStringLiteral("%1/%2").arg(m_images).arg(m_imagesCount));
 	ui->progressTotal->setValue(val);
 
 	if (val >= m_imagesCount)
@@ -411,7 +411,7 @@ void batchWindow::setTotalValue(int val)
 void batchWindow::setTotalMax(int max)
 {
 	m_imagesCount = max;
-	ui->labelImages->setText(QString("0/%2").arg(max));
+	ui->labelImages->setText(QStringLiteral("0/%2").arg(max));
 	ui->progressTotal->setMaximum(max);
 
 	#ifdef Q_OS_WIN

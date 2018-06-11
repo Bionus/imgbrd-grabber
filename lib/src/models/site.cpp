@@ -80,7 +80,7 @@ void Site::loadConfig()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			QString def = defaults.count() > i ? defaults[i] : "";
+			QString def = defaults.count() > i ? defaults[i] : QString();
 			sources << m_settings->value("sources/source_" + QString::number(i + 1), def).toString();
 		}
 		sources.removeAll("");
@@ -114,12 +114,12 @@ void Site::loadConfig()
 	else
 	{
 		m_login = nullptr;
-		log(QString("Invalid login type '%1'").arg(type), Logger::Error);
+		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
 	}
 
 	// Cookies
 	m_cookies.clear();
-	QList<QVariant> settingsCookies = m_settings->value("cookies", "").toList();
+	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
 	for (const QVariant &variant : settingsCookies)
 	{
 		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
@@ -180,7 +180,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(QString("[%1] Logging in...").arg(m_url), Logger::Info);
+	log(QStringLiteral("[%1] Logging in...").arg(m_url), Logger::Info);
 
 	// Clear cookies if we want to force a re-login
 	if (force)
@@ -211,7 +211,7 @@ void Site::loginFinished(Login::Result result)
 	bool ok = result == Login::Result::Success;
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
-	log(QString("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
+	log(QStringLiteral("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
 	emit loggedIn(this, ok ? LoginResult::Success : LoginResult::Error);
 }
 
@@ -226,7 +226,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		url.setScheme("https");
 
 	QNetworkRequest request(url);
-	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
+	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : QString())).toString();
 	if (referer.isEmpty() && !ref.isEmpty())
 	{ referer = m_settings->value("referer", "none").toString(); }
 	if (referer != "none" && (referer != "page" || page != Q_NULLPTR))
@@ -252,7 +252,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
 	if (userAgent.isEmpty())
-		userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%";
+		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
@@ -307,7 +307,7 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 
 void Site::loadTags(int page, int limit)
 {
-	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
+	QString protocol = (m_settings->value("ssl", false).toBool() ? QStringLiteral("https") : QStringLiteral("http"));
 	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
 }
@@ -389,7 +389,7 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 		return QUrl();
 
 	bool ssl = m_settings->value("ssl", false).toBool();
-	QString protocol = (ssl ? "https" : "http");
+	QString protocol = (ssl ? QStringLiteral("https") : QStringLiteral("http"));
 
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }

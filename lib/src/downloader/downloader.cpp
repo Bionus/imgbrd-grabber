@@ -70,7 +70,7 @@ void Downloader::finishedLoadingPageCount(Page *page)
 	if (m_cancelled)
 		return;
 
-	log(QString("Received page count '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
+	log(QStringLiteral("Received page count '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -116,7 +116,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	if (m_cancelled)
 		return;
 
-	log(QString("Received tags '%1' (%2)").arg(page->url().toString(), QString::number(page->tags().count())));
+	log(QStringLiteral("Received tags '%1' (%2)").arg(page->url().toString(), QString::number(page->tags().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -190,7 +190,7 @@ void Downloader::loadNext()
 	if (!m_oPagesP.isEmpty())
 	{
 		QPair<Site*, int> tag = m_oPagesP.takeFirst();
-		log("Loading tags");
+		log(QStringLiteral("Loading tags"));
 		tag.first->loadTags(tag.second, m_perPage);
 		return;
 	}
@@ -244,7 +244,7 @@ void Downloader::finishedLoadingTags(const QList<Tag> &tags)
 	if (m_cancelled)
 		return;
 
-	log(QString("Received pure tags (%1)").arg(tags.count()));
+	log(QStringLiteral("Received pure tags (%1)").arg(tags.count()));
 
 	m_results.append(tags);
 	if (--m_waiting > 0)
@@ -301,7 +301,7 @@ void Downloader::finishedLoadingImages(Page *page)
 	if (m_cancelled)
 		return;
 
-	log(QString("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
+	log(QStringLiteral("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 	emit finishedImagesPage(page);
 
 	if (--m_waiting > 0)
@@ -364,7 +364,7 @@ void Downloader::finishedLoadingImage(QSharedPointer<Image> image, const QMap<QS
 	if (m_cancelled)
 		return;
 
-	log(QString("Received image '%1'").arg(image->url()));
+	log(QStringLiteral("Received image '%1'").arg(image->url()));
 
 	if (!m_quit)
 		emit finishedImage(image);
@@ -376,7 +376,7 @@ void Downloader::finishedLoadingImage(QSharedPointer<Image> image, const QMap<QS
 	}
 
 	if (m_quit)
-		returnString("Downloaded images successfully.");
+		returnString(QStringLiteral("Downloaded images successfully."));
 }
 
 void Downloader::getUrls()
@@ -415,7 +415,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 	if (m_cancelled)
 		return;
 
-	log(QString("Received url page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
+	log(QStringLiteral("Received url page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 	emit finishedUrlsPage(page);
 
 	if (--m_waiting > 0)

@@ -78,7 +78,7 @@ void md5Fix::on_buttonStart_clicked()
 			QString fileName = file.first;
 			QString path = dir.absoluteFilePath(fileName);
 
-			QString md5 = "";
+			QString md5;
 			if (ui->radioForce->isChecked())
 			{
 				QFile fle(path);

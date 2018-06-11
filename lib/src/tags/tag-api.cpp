@@ -24,7 +24,7 @@ TagApi::~TagApi()
 void TagApi::load(bool rateLimit)
 {
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
-		log(QString("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
 		if (m_reply != nullptr)
 			m_reply->deleteLater();
@@ -42,14 +42,14 @@ void TagApi::abort()
 
 void TagApi::parse()
 {
-	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
 	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
-		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;
@@ -60,7 +60,7 @@ void TagApi::parse()
 	if (source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
+		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -69,7 +69,7 @@ void TagApi::parse()
 	ParsedTags ret = m_api->parseTags(source, m_site);
 	if (!ret.error.isEmpty())
 	{
-		log(QString("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);
+		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}

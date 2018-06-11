@@ -13,17 +13,17 @@ HttpLogin::HttpLogin(const QString &type, Site *site, CustomNetworkAccessManager
 
 bool HttpLogin::isTestable() const
 {
-	return !m_settings->value("login/" + m_type + "/url", "").toString().isEmpty();
+	return !m_settings->value("login/" + m_type + "/url").toString().isEmpty();
 }
 
 void HttpLogin::login()
 {
-	QString username = m_settings->value("auth/pseudo", "").toString();
-	QString password = m_settings->value("auth/password", "").toString();
+	QString username = m_settings->value("auth/pseudo").toString();
+	QString password = m_settings->value("auth/password").toString();
 
 	QUrlQuery query;
-	query.addQueryItem(m_settings->value("login/" + m_type + "/pseudo", "").toString(), username);
-	query.addQueryItem(m_settings->value("login/" + m_type + "/password", "").toString(), password);
+	query.addQueryItem(m_settings->value("login/" + m_type + "/pseudo").toString(), username);
+	query.addQueryItem(m_settings->value("login/" + m_type + "/password").toString(), password);
 
 	m_settings->beginGroup("login/fields");
 		QStringList keys = m_settings->childKeys();
@@ -31,7 +31,7 @@ void HttpLogin::login()
 		{ query.addQueryItem(key, m_settings->value(key).toString()); }
 	m_settings->endGroup();
 
-	QString loginUrl = m_settings->value("login/" + m_type + "/url", "").toString();
+	QString loginUrl = m_settings->value("login/" + m_type + "/url").toString();
 	m_loginReply = getReply(loginUrl, query);
 
 	connect(m_loginReply, &QNetworkReply::finished, this, &HttpLogin::loginFinished);
@@ -39,7 +39,7 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
-	QString cookieName = m_settings->value("login/" + m_type + "/cookie", "").toString();
+	QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
 
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
 	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());

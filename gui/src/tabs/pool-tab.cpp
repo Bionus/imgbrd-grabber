@@ -218,6 +218,6 @@ void poolTab::changeEvent(QEvent *event)
 void poolTab::updateTitle()
 {
 	QString search = m_search->toPlainText().trimmed();
-	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
+	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? QString() : " - " + QString(search).replace("&", "&&")));
 	emit titleChanged(this);
 }

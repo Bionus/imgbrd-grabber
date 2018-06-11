@@ -10,7 +10,7 @@
 SqlWorker::SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent)
 	: QThread(parent), m_driver(driver), m_host(host), m_user(user), m_password(password), m_database(database)
 {
-	m_enabled = (m_driver == "QSQLITE" && !m_database.isEmpty())
+	m_enabled = (m_driver == QStringLiteral("QSQLITE") && !m_database.isEmpty())
 			  || (!m_host.isEmpty() && !m_user.isEmpty() && !m_database.isEmpty());
 
 	m_started = false;
@@ -37,7 +37,7 @@ bool SqlWorker::connect()
 
 	if (!db.open())
 	{
-		log(QString("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
+		log(QStringLiteral("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
 		return false;
 	}
 
@@ -63,7 +63,7 @@ bool SqlWorker::execute(const QString &sql)
 	if (!m_enabled || !connect())
 		return false;
 
-	log(QString("SQL execution of \"%1\"").arg(sql));
+	log(QStringLiteral("SQL execution of \"%1\"").arg(sql));
 	Logger::getInstance().logCommandSql(sql);
 
 	QSqlQuery query;

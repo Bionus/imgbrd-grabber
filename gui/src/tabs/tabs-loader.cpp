@@ -91,7 +91,7 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 		}
 
 		default:
-			log(QString("Unknown tabs file version: %1").arg(version), Logger::Warning);
+			log(QStringLiteral("Unknown tabs file version: %1").arg(version), Logger::Warning);
 			return false;
 	}
 }

@@ -221,7 +221,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 	{
 		QMap<QString, QVariant> sc = el.toMap();
 
-		ttype = "";
+		ttype.clear();
 		if (sc.contains("short_description"))
 		{
 			id = sc.value("id").toInt();

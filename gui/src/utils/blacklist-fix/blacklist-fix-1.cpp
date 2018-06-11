@@ -25,7 +25,7 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
 
 	QString blacklist;
 	for (const QStringList &tags : profile->getBlacklist())
-	{ blacklist += (blacklist.isEmpty() ? "" : "\n") + tags.join(' '); }
+	{ blacklist += (blacklist.isEmpty() ? QString() : "\n") + tags.join(' '); }
 	ui->textBlacklist->setPlainText(blacklist);
 
 	resize(size().width(), 0);
@@ -80,7 +80,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	// Parse all files
 	for (const QPair<QString, QString> &file : files)
 	{
-		QString md5 = "";
+		QString md5;
 		if (ui->radioForce->isChecked())
 		{
 			QFile fle(file.second);

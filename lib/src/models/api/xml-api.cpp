@@ -129,7 +129,7 @@ ParsedTags XmlApi::parseTags(const QString &source, Site *site) const
 		QDomNode node = nodeList.at(i);
 		QDomNamedNodeMap attr = node.attributes();
 
-		ttype = "";
+		ttype.clear();
 		if (!node.namedItem("post-count").isNull())
 		{
 			id = node.namedItem("id").toElement().text().toInt();

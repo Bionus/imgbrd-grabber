@@ -37,15 +37,15 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 		{ QtMsgType::QtSystemMsg, Logger::Error },
 	};
 
-	QString label = "[Qt]";
+	QString label = QStringLiteral("[Qt]");
 	QString category(context.category);
 	if (!category.isEmpty())
 		label += "[" + category + "]";
 	#if defined QT_MESSAGELOGCONTEXT && defined QT_DEBUG && 0
-		label += QString("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
+		label += QStringLiteral("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
 	#endif
 
-	Logger::getInstance().log(QString("%1 %2").arg(label, message), messageTypes[type]);
+	Logger::getInstance().log(QStringLiteral("%1 %2").arg(label, message), messageTypes[type]);
 }
 
 void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
@@ -70,22 +70,27 @@ void Logger::log(const QString &l, LogLevel level)
 		return;
 
 	if (!m_logFile.isOpen())
-		setLogFile(savePath("main.log", false, true));
+		setLogFile(savePath(QStringLiteral("main.log"), false, true));
 
-	static const QStringList levels = QStringList() << "Debug" << "Info" << "Warning" << "Error";
-	QString levelStr = levels[level];
+	static const QString timeFormat = QStringLiteral("hh:mm:ss.zzz");
+	static const QStringList levels = QStringList()
+		<< QStringLiteral("Debug")
+		<< QStringLiteral("Info")
+		<< QStringLiteral("Warning")
+		<< QStringLiteral("Error");
+	const QString &levelStr = levels[level];
 	QDateTime time = QDateTime::currentDateTime();
 
 	// Write ASCII log to file
-	m_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"]["+levelStr+"] "+stripTags(l)+"\n").toUtf8());
+	m_logFile.write(QString("[" + time.toString(timeFormat) + "][" + levelStr + "] " + stripTags(l) + "\n").toUtf8());
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	QString msg = "[" + time.toString("hh:mm:ss.zzz") + "][" + levelStr + "] " + l;
+	QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG
-		qDebug() << time.toString("hh:mm:ss.zzz") << levelStr << l;
+		qDebug() << time.toString(timeFormat) << levelStr << l;
 	#endif
 }
 
@@ -93,7 +98,7 @@ void Logger::logCommand(const QString &l)
 {
 	if (!m_fCommandsLog.isOpen())
 	{
-		m_fCommandsLog.setFileName(savePath("commands.log", false, true));
+		m_fCommandsLog.setFileName(savePath(QStringLiteral("commands.log"), false, true));
 		m_fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
@@ -105,7 +110,7 @@ void Logger::logCommandSql(const QString &l)
 {
 	if (!m_fCommandsSqlLog.isOpen())
 	{
-		m_fCommandsSqlLog.setFileName(savePath("commands.sql", false, true));
+		m_fCommandsSqlLog.setFileName(savePath(QStringLiteral("commands.sql"), false, true));
 		m_fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 

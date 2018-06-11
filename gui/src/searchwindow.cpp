@@ -72,7 +72,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	{
 		QRegularExpression reg("date:([^ ]+)");
 		auto match = reg.match(tags);
-		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), "MM/dd/yyyy"));
+		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), QStringLiteral("MM/dd/yyyy")));
 		ui->lineDate->setText(match.captured(1));
 		tags.remove(match.captured(0));
 	}
@@ -90,7 +90,7 @@ QString SearchWindow::generateSearch(const QString &additional) const
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
 	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
-	QString prefix = !additional.isEmpty() ? additional + " " : "";
+	QString prefix = !additional.isEmpty() ? additional + " " : QString();
 	QString search = prefix + m_tags->toPlainText();
 	if (ui->comboStatus->currentIndex() != 0)
 		search += " status:" + status.at(ui->comboStatus->currentIndex() - 1);
@@ -106,7 +106,7 @@ QString SearchWindow::generateSearch(const QString &additional) const
 
 void SearchWindow::setDate(QDate d)
 {
-	ui->lineDate->setText(d.toString("MM/dd/yyyy"));
+	ui->lineDate->setText(d.toString(QStringLiteral("MM/dd/yyyy")));
 }
 
 void SearchWindow::accept()
@@ -117,15 +117,15 @@ void SearchWindow::accept()
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
 	QFile f(path);
-	QString md5 = "";
+	QString md5;
 	if (f.exists())
 	{
 		f.open(QFile::ReadOnly);
 		md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
 	}
 
-	emit accepted(generateSearch(!md5.isEmpty() ? "md5:"+md5 : ""));
+	emit accepted(generateSearch(!md5.isEmpty() ? "md5:" + md5 : QString()));
 	QDialog::accept();
 }

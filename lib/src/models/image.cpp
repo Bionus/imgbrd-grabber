@@ -100,7 +100,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Parents
 	if (m_parentSite == nullptr)
 	{
-		log("Image has nullptr parent, aborting creation.");
+		log(QStringLiteral("Image has nullptr parent, aborting creation."));
 		return;
 	}
 
@@ -340,7 +340,7 @@ void Image::parseDetails()
 	int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
-		log("Details limit reached (429). New try.");
+		log(QStringLiteral("Details limit reached (429). New try."));
 		loadDetails(true);
 		return;
 	}
@@ -356,7 +356,7 @@ void Image::parseDetails()
 	ParsedDetails ret = api->parseDetails(source, m_parentSite);
 	if (!ret.error.isEmpty())
 	{
-		log(QString("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), Logger::Warning);
+		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), Logger::Warning);
 		emit finishedLoadingTags();
 		return;
 	}
@@ -525,12 +525,12 @@ void Image::finishedImageS(bool inMemory)
 			{
 				setUrl(m_sampleUrl.toString());
 				m_tryingSample = true;
-				log("Image not found. New try with its sample...");
+				log(QStringLiteral("Image not found. New try with its sample..."));
 			}
 			else
 			{
 				m_url = setExtension(m_url, newext);
-				log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
+				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
 			}
 
 			loadImage();
@@ -538,7 +538,7 @@ void Image::finishedImageS(bool inMemory)
 		}
 		else
 		{
-			log("Image not found.");
+			log(QStringLiteral("Image not found."));
 		}
 	}
 	else if (inMemory)
@@ -646,7 +646,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 			QDir path_to_file(p), dir;
 			if (!path_to_file.exists() && !dir.mkpath(p))
 			{
-				log(QString("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
+				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
 				return SaveResult::Error;
 			}
 		}
@@ -655,7 +655,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		{
 			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path, m_savePath));
+				log(QStringLiteral("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path, m_savePath));
 				QFile(m_savePath).copy(path);
 			}
 			else
@@ -663,7 +663,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 				if (m_data.isEmpty())
 				{ return SaveResult::NotLoaded; }
 
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+				log(QStringLiteral("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -671,28 +671,28 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 					{
 						f.close();
 						f.remove();
-						log(QString("File saving error: %1)").arg(f.errorString()), Logger::Error);
+						log(QStringLiteral("File saving error: %1)").arg(f.errorString()), Logger::Error);
 						return SaveResult::Error;
 					}
 					f.close();
 				}
 				else
 				{
-					log("Unable to open file");
+					log(QStringLiteral("Unable to open file"));
 					return SaveResult::Error;
 				}
 			}
 		}
 		else if (whatToDo == "copy")
 		{
-			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+			log(QStringLiteral("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
 			QFile(md5Duplicate).copy(path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(QString("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+			log(QStringLiteral("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
@@ -700,7 +700,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else
 		{
-			log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
+			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
 			return SaveResult::Ignored;
 		}
 
@@ -885,7 +885,7 @@ void Image::setData(const QByteArray &d)
 		QString currentExt = getExtension(m_url);
 		if (!ext.isEmpty() && ext != currentExt)
 		{
-			log(QString("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Logger::Info);
+			log(QStringLiteral("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Logger::Info);
 			setFileExtension(ext);
 		}
 	}

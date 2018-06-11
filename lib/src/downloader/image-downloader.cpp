@@ -73,16 +73,16 @@ void ImageDownloader::loadImage()
 	{ m_reply->deleteLater(); }
 
 	// Load the image directly on the disk
-	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	Site *site = m_image->parentSite();
-	m_reply = site->get(site->fixUrl(m_url), m_image->page(), "image", m_image.data());
+	m_reply = site->get(site->fixUrl(m_url), m_image->page(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
 	// Create download root directory
 	if (!m_path.isEmpty() && !QDir(m_path).exists() && !QDir().mkpath(m_path))
 	{
-		log(QString("Impossible to create the destination folder: %1.").arg(m_path), Logger::Error);
+		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(m_path), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -90,7 +90,7 @@ void ImageDownloader::loadImage()
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))
 	{
-		log("Unable to open file", Logger::Error);
+		log(QStringLiteral("Unable to open file"), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -123,7 +123,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		ExtensionRotator *extensionRotator = m_image->extensionRotator();
 
 		bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
-		QString newext = extensionRotator != nullptr ? extensionRotator->next() : "";
+		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
 		bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
@@ -134,12 +134,12 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 			{
 				m_url = m_image->url(Image::Size::Sample);
 				m_tryingSample = true;
-				log("Image not found. New try with its sample...");
+				log(QStringLiteral("Image not found. New try with its sample..."));
 			}
 			else
 			{
 				m_url = setExtension(m_url, newext);
-				log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
+				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
 			}
 
 			m_image->setUrl(m_url);
@@ -147,13 +147,13 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		}
 		else
 		{
-			log("Image not found.");
+			log(QStringLiteral("Image not found."));
 			emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound));
 		}
 	}
 	else if (error != QNetworkReply::OperationCanceledError)
 	{
-		log(QString("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
 	}
 }
@@ -195,10 +195,10 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 
 		if (!moved)
 		{
-			QString dir = path.section(QDir::toNativeSeparators("/"), 0, -2);
+			QString dir = path.section(QDir::separator(), 0, -2);
 			if (!QDir(dir).exists() && !QDir().mkpath(dir))
 			{
-				log(QString("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
 				result[path] = Image::SaveResult::Error;
 				continue;
 			}

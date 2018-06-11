@@ -59,7 +59,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	while ((pos = date.indexIn(text, pos)) != -1)
 	{
 		QString cap = date.cap(1);
-		QString format = "";
+		QString format;
 		for (QChar c : cap)
 		{
 			if (c == 'Y')
@@ -134,7 +134,7 @@ void FilenameWindow::done(int r)
 		info.insert("tags_copyright", "copyright_1 copyright_2");
 
 		Image image(site, info, m_profile);
-		QStringList det = image.path(format(), "");
+		QStringList det = image.path(format(), QString());
 
 		if (det.isEmpty())
 		{

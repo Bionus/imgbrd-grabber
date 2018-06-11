@@ -18,7 +18,7 @@ MonitoringCenter::MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, 
 
 void MonitoringCenter::start()
 {
-	log("Monitoring starting", Logger::Info);
+	log(QStringLiteral("Monitoring starting"), Logger::Info);
 
 	m_stop = false;
 	int secsDelay = m_profile->getSettings()->value("Monitoring/startupDelay", 0).toInt();
@@ -72,7 +72,7 @@ void MonitoringCenter::tick()
 		return;
 
 	int minNextMonitoring = -1;
-	log("Monitoring tick", Logger::Info);
+	log(QStringLiteral("Monitoring tick"), Logger::Info);
 
 	for (Favorite &fav : m_profile->getFavorites())
 	{
@@ -95,16 +95,16 @@ void MonitoringCenter::tick()
 	// Re-run this method as soon as one of the monitoring timeout expires
 	if (minNextMonitoring > 0)
 	{
-		log(QString("Next monitoring will be in %1 seconds").arg(minNextMonitoring), Logger::Info);
+		log(QStringLiteral("Next monitoring will be in %1 seconds").arg(minNextMonitoring), Logger::Info);
 		QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(tick()));
 	}
 	else
-	{ log("Monitoring finished", Logger::Info); }
+	{ log(QStringLiteral("Monitoring finished"), Logger::Info); }
 }
 
 void MonitoringCenter::stop()
 {
 	m_stop = true;
 
-	log("Monitoring stopped", Logger::Info);
+	log(QStringLiteral("Monitoring stopped"), Logger::Info);
 }

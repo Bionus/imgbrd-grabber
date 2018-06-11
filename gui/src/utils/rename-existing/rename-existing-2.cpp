@@ -77,7 +77,7 @@ void RenameExisting2::on_buttonOk_clicked()
 		{
 			QDir dir;
 			if (!dir.mkpath(path))
-			{ log("Could not create destination directory", Logger::Error); }
+			{ log(QStringLiteral("Could not create destination directory"), Logger::Error); }
 		}
 
 		// Move file

@@ -94,7 +94,7 @@ searchTab::~searchTab()
 
 void searchTab::setSelectedSources(QSettings *settings)
 {
-	QStringList sav = settings->value("sites", "").toStringList();
+	QStringList sav = settings->value("sites").toStringList();
 	for (const QString &key : sav)
 	{
 		if (!m_sites.contains(key))
@@ -106,7 +106,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 
 void searchTab::optionsChanged()
 {
-	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()), Logger::Debug);
+	log(QStringLiteral("Updating settings for tab \"%1\".").arg(windowTitle()), Logger::Debug);
 	// ui->retranslateUi(this);
 
 	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
@@ -232,7 +232,7 @@ void searchTab::clear()
 	// Clear page details
 	m_tags.clear();
 	m_parent->setTags(m_tags, this);
-	m_parent->setWiki("");
+	m_parent->setWiki(QString());
 
 	// Clear layout
 	for (int i = 0; i < ui_layoutResults->rowCount(); ++i)
@@ -397,7 +397,7 @@ void searchTab::httpsRedirect(Page *page)
 
 	if (setSsl)
 	{
-		log(QString("[%1] Enabling HTTPS").arg(page->site()->url()), Logger::Info);
+		log(QStringLiteral("[%1] Enabling HTTPS").arg(page->site()->url()), Logger::Info);
 		page->site()->setSetting("ssl", true, false);
 	}
 }
@@ -524,7 +524,7 @@ void searchTab::finishedLoadingPreview()
 	}
 	else
 	{
-		log(QString("Could not find image related to loaded thumbnail '%1'").arg(reply->url().toString()), Logger::Error);
+		log(QStringLiteral("Could not find image related to loaded thumbnail '%1'").arg(reply->url().toString()), Logger::Error);
 		return;
 	}
 
@@ -540,7 +540,7 @@ void searchTab::finishedLoadingPreview()
 	// Loading error
 	if (reply->error() != QNetworkReply::NoError)
 	{
-		log(QString("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
+		log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
 		reply->deleteLater();
 		return;
 	}
@@ -551,9 +551,9 @@ void searchTab::finishedLoadingPreview()
 	reply->deleteLater();
 	if (preview.isNull())
 	{
-		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error);
-		if (img->hasTag("flash"))
-		{ preview.load(":/images/flash.png"); }
+		log(QStringLiteral("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error);
+		if (img->hasTag(QStringLiteral("flash")))
+		{ preview.load(QStringLiteral(":/images/flash.png")); }
 		else
 		{ return; }
 	}
@@ -602,7 +602,7 @@ double getImageKnownTagProportion(const QSharedPointer<Image> &img)
 	int known = 0;
 	for (const Tag &tag : img->tags())
 	{
-		if (tag.type().name() != "unknown")
+		if (tag.type().name() != QStringLiteral("unknown"))
 			known++;
 	}
 
@@ -749,11 +749,11 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 		for (const auto &ps : qAsConst(m_pages))
 		{
 			auto p = ps.last();
-			links += QString(!links.isEmpty() ? ", " : "") + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
+			links += QString(!links.isEmpty() ? ", " : QString()) + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
 		}
 	}
 
-	QString page = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+	QString page = firstPage != lastPage ? QStringLiteral("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
 	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(sumImages));
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
@@ -786,12 +786,12 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 			ui_labelMeant->setText(meant);
 		}
 		QString msg = noResultsMessage == nullptr ? tr("No result") : noResultsMessage;
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Possible reasons: %1").arg(reasons.join(", ")) : ""));
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Possible reasons: %1").arg(reasons.join(", ")) : QString()));
 	}
 	else
 	{
-		QString pageCountStr = pageCount > 0 ? (page->pagesCount(false) == -1 ? "~" : "") + QString::number(pageCount) : "?";
-		QString imageCountStr = imageCount > 0 ? (page->imagesCount(false) == -1 ? "~" : "") + QString::number(imageCount) : "?";
+		QString pageCountStr = pageCount > 0 ? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount) : "?";
+		QString imageCountStr = imageCount > 0 ? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount) : "?";
 		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
 		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr));
 	}
@@ -951,7 +951,7 @@ void searchTab::contextSaveImageAs(int position)
 	Filename format(fn);
 	QStringList filenames = format.path(*img, m_profile);
 	QString filename = filenames.first().section(QDir::separator(), -1);
-	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
+	QString lastDir = m_settings->value("Zoom/lastDir").toString();
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!path.isEmpty())
@@ -993,7 +993,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, Page *page, bool merg
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey))
 	{
-		log("Missing image layout", Logger::Error);
+		log(QStringLiteral("Missing image layout"), Logger::Error);
 		return;
 	}
 
@@ -1096,7 +1096,7 @@ void searchTab::getSel()
 
 void searchTab::updateCheckboxes()
 {
-	log(QString("Updating checkboxes."));
+	log(QStringLiteral("Updating checkboxes."));
 
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
@@ -1246,7 +1246,7 @@ void searchTab::openSourcesWindow()
 
 void searchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 {
-	log("Saving sources...");
+	log(QStringLiteral("Saving sources..."));
 
 	QStringList sav;
 	sav.reserve(sel.count());
@@ -1271,7 +1271,7 @@ void searchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 
 void searchTab::loadTags(QStringList tags)
 {
-	log("Loading results...");
+	log(QStringLiteral("Loading results..."));
 
 	// Enable or disable scroll mode
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();

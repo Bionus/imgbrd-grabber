@@ -77,7 +77,7 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 
-	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+	static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
 		ui->comboOrder->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboAsc->setCurrentIndex(static_cast<int>(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
@@ -97,7 +97,7 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
-		QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+		static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
 		m_settings->setValue("order", assoc[ui->comboOrder->currentIndex()]);
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	m_settings->endGroup();
@@ -164,7 +164,7 @@ void favoritesTab::updateFavorites()
 				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
 
 			if (maxNewImages > 0)
-			{ image->setCounter(QString::number(maxNewImages) + (!precise ? "+" : "")); }
+			{ image->setCounter(QString::number(maxNewImages) + (!precise ? "+" : QString())); }
 
 			l->addWidget(image);
 		}
@@ -174,7 +174,7 @@ void favoritesTab::updateFavorites()
 		{
 			label += fav.getName();
 			if (maxNewImages > 0 && !display.contains("i"))
-			{ label += QString(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : ""); }
+			{ label += QStringLiteral(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : QString()); }
 		}
 		if (display.contains("d"))
 		{ label += "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")"; }
@@ -342,7 +342,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(const QString &tag)
 {
-	log(QString("Marking \"%1\" as viewed...").arg(tag));
+	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(tag));
 	if (index < 0)
@@ -364,7 +364,7 @@ void favoritesTab::favoritesBack()
 
 	if (!m_currentTags.isEmpty() || m_currentFav != -1)
 	{
-		m_currentTags = "";
+		m_currentTags = QString();
 		m_currentFav = -1;
 		ui->widgetFavorites->show();
 	}

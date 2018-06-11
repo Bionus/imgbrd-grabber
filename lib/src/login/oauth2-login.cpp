@@ -18,8 +18,8 @@ bool OAuth2Login::isTestable() const
 void OAuth2Login::login()
 {
 	// Get user application credentials
-	QString consumerKey = m_settings->value("auth/consumerKey", "").toString();
-	QString consumerSecret = m_settings->value("auth/consumerSecret", "").toString();
+	QString consumerKey = m_settings->value("auth/consumerKey").toString();
+	QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 	QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
 	QByteArray base64BearerCredentials = bearerCredentials.toBase64();
 
@@ -27,7 +27,7 @@ void OAuth2Login::login()
 	QNetworkRequest request(m_site->fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
 	request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
-	QString body = "grant_type=client_credentials";
+	QString body = QStringLiteral("grant_type=client_credentials");
 
 	// Post request and wait for a reply
 	m_tokenReply = m_manager->post(request, body.toUtf8());
@@ -40,14 +40,14 @@ void OAuth2Login::loginFinished()
 	QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
 	QJsonObject jsonObject = jsonDocument.object();
 
-	if (jsonObject.value("token_type").toString() == "bearer")
+	if (jsonObject.value("token_type").toString() == QStringLiteral("bearer"))
 	{
 		m_token = jsonObject.value("access_token").toString();
 		emit loggedIn(Result::Success);
 		return;
 	}
 	else
-	{ log(QString("[%1] Wrong OAuth2 token type received.").arg(m_site->url())); }
+	{ log(QStringLiteral("[%1] Wrong OAuth2 token type received.").arg(m_site->url())); }
 
 	emit loggedIn(Result::Failure);
 }

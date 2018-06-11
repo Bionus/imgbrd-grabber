@@ -42,7 +42,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 	// Script errors and exceptions
 	if (result.isError())
 	{
-		QString err = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		QString err = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
 		ret.error = err;
 		log(err, Logger::Error);
 		return;
@@ -212,11 +212,11 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 				if (val.isUndefined())
 				{
-					log(QString("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
+					log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
 					continue;
 				}
 
-				if (key == "tags_obj" || (key == "tags" && val.isArray()))
+				if (key == QStringLiteral("tags_obj") || (key == QStringLiteral("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
 				else
 				{ d[key] = val.toString(); }

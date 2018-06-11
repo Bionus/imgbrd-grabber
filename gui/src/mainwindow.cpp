@@ -90,15 +90,15 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
 	}
 
-	log("New session started.", Logger::Info);
-	log(QString("Software version: %1.").arg(VERSION), Logger::Info);
-	log(QString("Path: %1").arg(qApp->applicationDirPath()), Logger::Info);
-	log(QString("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()), Logger::Info);
+	log(QStringLiteral("New session started."), Logger::Info);
+	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
+	log(QStringLiteral("Path: %1").arg(qApp->applicationDirPath()), Logger::Info);
+	log(QStringLiteral("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()), Logger::Info);
 
 	if (!QSslSocket::supportsSsl())
-	{ log("Missing SSL libraries", Logger::Error); }
+	{ log(QStringLiteral("Missing SSL libraries"), Logger::Error); }
 	else
-	{ log(QString("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info); }
+	{ log(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info); }
 
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
@@ -153,10 +153,10 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 			QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
 			QNetworkProxy proxy(type, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
 			QNetworkProxy::setApplicationProxy(proxy);
-			log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()), Logger::Info);
+			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()), Logger::Info);
 		}
 		else
-		{ log("Enabling system-wide proxy.", Logger::Info); }
+		{ log(QStringLiteral("Enabling system-wide proxy."), Logger::Info); }
 	}
 
 	m_progressDialog = nullptr;
@@ -164,7 +164,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-	log("Loading sources", Logger::Debug);
+	log(QStringLiteral("Loading sources"), Logger::Debug);
 	if (sites.empty())
 	{
 		QMessageBox::critical(this, tr("No source found"), tr("No source found. Do you have a configuration problem? Try to reinstall the program."));
@@ -174,11 +174,11 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 	else
 	{
-		QString srsc = "";
+		QString srsc;
 		QStringList keys = sites.keys();
 		for (const QString &key : keys)
 		{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
-		log(QString("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
+		log(QStringLiteral("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
 	}
 
 	// System tray icon
@@ -239,10 +239,10 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_restore = m_settings->value("start", "none").toString() == "restore";
 	if (crashed)
 	{
-		log("It seems that Imgbrd-Grabber hasn't shut down properly last time.", Logger::Warning);
+		log(QStringLiteral("It seems that Imgbrd-Grabber hasn't shut down properly last time."), Logger::Warning);
 
 		QString msg = tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?");
-		QMessageBox dlg(QMessageBox::Question, "Grabber", msg, QMessageBox::Yes | QMessageBox::No);
+		QMessageBox dlg(QMessageBox::Question, QStringLiteral("Grabber"), msg, QMessageBox::Yes | QMessageBox::No);
 		dlg.setWindowIcon(windowIcon());
 		dlg.setDefaultButton(QMessageBox::Yes);
 
@@ -324,7 +324,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	updateKeepForLater();
 
 	m_currentTab = nullptr;
-	log("End of initialization", Logger::Debug);
+	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
 
 void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString> &params)
@@ -335,7 +335,7 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	{
 		// Load an IGL file
 		QFileInfo info(args[0]);
-		if (info.suffix() == "igl")
+		if (info.suffix() == QStringLiteral("igl"))
 		{
 			loadLinkList(info.absoluteFilePath());
 			m_forcedTab = m_tabs.size() + 1;
@@ -352,7 +352,7 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
 	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
 	{
-		loadTag(tags.join(" "), true, false, false);
+		loadTag(tags.join(' '), true, false, false);
 	}
 }
 
@@ -666,7 +666,7 @@ void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 	if (m_batchs.contains(query))
 		return;
 
-	log(QString("Adding single image: %1").arg(query.values["file_url"]), Logger::Info);
+	log(QStringLiteral("Adding single image: %1").arg(query.values["file_url"]), Logger::Info);
 
 	m_batchs.append(query);
 	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount() + 1);
@@ -1012,7 +1012,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
 
 		if (!quiet)
 		{
-			log(QString("Translating texts in %1...").arg(m_currLang), Logger::Info);
+			log(QStringLiteral("Translating texts in %1...").arg(m_currLang), Logger::Info);
 			ui->retranslateUi(this);
 			DONE();
 		}
@@ -1087,7 +1087,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		{ m_settings->setValue("confirm_close", false); }
 	}
 
-	log("Saving...", Logger::Debug);
+	log(QStringLiteral("Saving..."), Logger::Debug);
 		saveLinkList(m_profile->getPath() + "/restore.igl");
 		saveTabs(m_profile->getPath() + "/tabs.txt");
 		m_settings->setValue("state", saveState());
@@ -1114,7 +1114,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 
 void mainWindow::options()
 {
-	log("Opening options window...", Logger::Debug);
+	log(QStringLiteral("Opening options window..."), Logger::Debug);
 
 	auto *options = new optionsWindow(m_profile, this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
@@ -1177,7 +1177,7 @@ void mainWindow::getAll(bool all)
 	// Initial checks
 	if (m_getAll)
 	{
-		log("Batch download start cancelled because another one is already running.", Logger::Warning);
+		log(QStringLiteral("Batch download start cancelled because another one is already running."), Logger::Warning);
 		return;
 	}
 	if (m_settings->value("Save/path").toString().isEmpty())
@@ -1190,7 +1190,7 @@ void mainWindow::getAll(bool all)
 		error(this, tr("You did not specify a filename!"));
 		return;
 	}
-	log("Batch download started.", Logger::Info);
+	log(QStringLiteral("Batch download started."), Logger::Info);
 
 	if (m_progressDialog == nullptr)
 	{
@@ -1244,7 +1244,7 @@ void mainWindow::getAll(bool all)
 		{
 			if (batch.values.value("file_url").isEmpty())
 			{
-				log("No file URL provided in image download query", Logger::Warning);
+				log(QStringLiteral("No file URL provided in image download query"), Logger::Warning);
 				continue;
 			}
 
@@ -1510,7 +1510,7 @@ void mainWindow::getAllImages()
 	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
 		m_getAllRemaining.takeLast().image->deleteLater();
 
-	log(QString("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
+	log(QStringLiteral("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
 
 	// We add the images to the download dialog
 	m_progressDialog->clearImages();
@@ -1560,9 +1560,9 @@ void mainWindow::getAllImages()
 	}
 
 	if (m_mustGetTags)
-		log("Downloading images details.", Logger::Info);
+		log(QStringLiteral("Downloading images details."), Logger::Info);
 	else
-		log("Downloading images directly.", Logger::Info);
+		log(QStringLiteral("Downloading images directly."), Logger::Info);
 
 	// We start the simultaneous downloads
 	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
@@ -1667,7 +1667,7 @@ void mainWindow::_getAll()
 			else
 			{
 				m_getAllExists++;
-				log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
+				log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
 				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 				getAllImageOk(download, siteId);
 			}
@@ -1693,7 +1693,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	if (!detected.isEmpty())
 	{
 		m_getAllIgnored++;
-		log(QString("Image ignored for containing blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
+		log(QStringLiteral("Image ignored for containing blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
 		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Ignored);
 		getAllImageOk(download, siteId);
 		return;
@@ -1768,7 +1768,7 @@ void mainWindow::getAllPerformTags()
 	if (m_progressDialog->cancelled())
 		return;
 
-	log("Tags received", Logger::Info);
+	log(QStringLiteral("Tags received"), Logger::Info);
 
 	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
 	for (const BatchDownloadImage &i : m_getAllDownloading)
@@ -1776,7 +1776,7 @@ void mainWindow::getAllPerformTags()
 			downloadPtr = &i;
 	if (downloadPtr == Q_NULLPTR)
 	{
-		log("Tags received from unknown sender", Logger::Error);
+		log(QStringLiteral("Tags received from unknown sender"), Logger::Error);
 		return;
 	}
 
@@ -1812,7 +1812,7 @@ void mainWindow::getAllPerformTags()
 	{
 		m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 		m_getAllExists++;
-		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
+		log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
 		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 		if (siteId >= 0)
 		{
@@ -1860,7 +1860,7 @@ void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 	m_downloadTimeLast[img->url()].start();
 
 	// Start loading and saving image
-	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
+	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved, Qt::UniqueConnection);
@@ -1882,7 +1882,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			downloadPtr = &i;
 	if (downloadPtr == Q_NULLPTR)
 	{
-		log("Saved image signal received from unknown sender", Logger::Error);
+		log(QStringLiteral("Saved image signal received from unknown sender"), Logger::Error);
 		return;
 	}
 	BatchDownloadImage download = *downloadPtr;
@@ -1949,7 +1949,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 
 void mainWindow::getAllCancel()
 {
-	log("Cancelling downloads...", Logger::Info);
+	log(QStringLiteral("Cancelling downloads..."), Logger::Info);
 	m_progressDialog->cancel();
 	for (const BatchDownloadImage &download : m_getAllDownloading)
 	{
@@ -1967,7 +1967,7 @@ void mainWindow::getAllCancel()
 
 void mainWindow::getAllSkip()
 {
-	log("Skipping downloads...", Logger::Info);
+	log(QStringLiteral("Skipping downloads..."), Logger::Info);
 
 	int count = m_getAllDownloading.count();
 	for (const BatchDownloadImage &download : m_getAllDownloading)
@@ -1995,7 +1995,7 @@ void mainWindow::getAllFinished()
 		return;
 	}
 
-	log("Images download finished.", Logger::Info);
+	log(QStringLiteral("Images download finished."), Logger::Info);
 	m_progressDialog->setTotalValue(m_progressDialog->totalMax());
 
 	// Delete objects
@@ -2077,14 +2077,14 @@ void mainWindow::getAllFinished()
 	// End of batch download
 	m_profile->getCommands().after();
 	ui->widgetDownloadButtons->setEnabled(true);
-	log("Batch download finished", Logger::Info);
+	log(QStringLiteral("Batch download finished"), Logger::Info);
 }
 
 void mainWindow::getAllPause()
 {
 	if (m_progressDialog->isPaused())
 	{
-		log("Pausing downloads...", Logger::Info);
+		log(QStringLiteral("Pausing downloads..."), Logger::Info);
 		for (const auto &download : m_getAllDownloading)
 		{
 			download.image->abortTags();
@@ -2094,7 +2094,7 @@ void mainWindow::getAllPause()
 	}
 	else
 	{
-		log("Recovery of downloads...", Logger::Info);
+		log(QStringLiteral("Recovery of downloads..."), Logger::Info);
 		for (const auto &download : m_getAllDownloading)
 		{
 			getAllGetImage(download, download.siteId(m_groupBatchs));

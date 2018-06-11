@@ -9,7 +9,7 @@
 
 
 ProgramUpdater::ProgramUpdater()
-	: ProgramUpdater("https://api.github.com/repos/Bionus/imgbrd-grabber")
+	: ProgramUpdater(QStringLiteral("https://api.github.com/repos/Bionus/imgbrd-grabber"))
 { }
 
 ProgramUpdater::ProgramUpdater(const QString &baseUrl)
@@ -70,7 +70,7 @@ void ProgramUpdater::downloadUpdate()
 	QUrl url(lastAsset["browser_download_url"].toString());
 	m_updateFilename = url.fileName();
 	QNetworkRequest request(url);
-	log(QString("Downloading installer from \"%1\".").arg(url.toString()));
+	log(QStringLiteral("Downloading installer from \"%1\".").arg(url.toString()));
 
 	m_downloadReply = m_networkAccessManager->get(request);
 	connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
@@ -82,7 +82,7 @@ void ProgramUpdater::downloadDone()
 	QUrl redirection = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty())
 	{
-		log(QString("Installer download redirected to \"%1\".").arg(redirection.toString()));
+		log(QStringLiteral("Installer download redirected to \"%1\".").arg(redirection.toString()));
 		QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
@@ -93,13 +93,13 @@ void ProgramUpdater::downloadDone()
 	QFile file(QDir::tempPath() + QDir::separator() + m_updateFilename);
 	if (!file.open(QFile::WriteOnly | QFile::Truncate))
 	{
-		log(QString("Error opening installer file \"%1\".").arg(file.fileName()));
+		log(QStringLiteral("Error opening installer file \"%1\".").arg(file.fileName()));
 		return;
 	}
 
 	file.write(m_downloadReply->readAll());
 	file.close();
-	log(QString("Installer file written to \"%1\"").arg(file.fileName()));
+	log(QStringLiteral("Installer file written to \"%1\"").arg(file.fileName()));
 
 	emit downloadFinished(file.fileName());
 }

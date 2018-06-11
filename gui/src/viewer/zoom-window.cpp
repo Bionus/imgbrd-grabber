@@ -152,20 +152,20 @@ void ZoomWindow::go()
 		m_resizeTimer = timer;
 
 	QString pos = m_settings->value("tagsposition", "top").toString();
-	if (pos == "auto")
+	if (pos == QStringLiteral("auto"))
 	{
 		if (!m_image->size().isEmpty())
 		{
 			if (static_cast<double>(m_image->width()) / static_cast<double>(m_image->height()) >= 4.0 / 3.0)
-			{ pos = "top"; }
+			{ pos = QStringLiteral("top"); }
 			else
-			{ pos = "left"; }
+			{ pos = QStringLiteral("left"); }
 		}
 		else
-		{ pos = "top"; }
+		{ pos = QStringLiteral("top"); }
 	}
 
-	if (pos == "top")
+	if (pos == QStringLiteral("top"))
 	{
 		ui->widgetLeft->hide();
 		m_labelTagsTop->show();
@@ -265,7 +265,7 @@ void ZoomWindow::openUrl(const QString &url)
 { emit linkClicked(url); }
 void ZoomWindow::openPool(const QString &url)
 {
-	if (url.startsWith("pool:"))
+	if (url.startsWith(QStringLiteral("pool:")))
 	{ emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->parentSite()->url()); }
 	else
 	{
@@ -310,7 +310,7 @@ void ZoomWindow::openSaveDir(bool fav)
 		path = QDir::toNativeSeparators(path);
 
 		QStringList files = m_image->path(fn, path);
-		QString file = files.empty() ? "" : files.at(0);
+		QString file = files.empty() ? QString() : files.at(0);
 		QString pth = file.section(QDir::separator(), 0, -2);
 		QString url = path + QDir::separator() + pth;
 
@@ -373,7 +373,7 @@ void ZoomWindow::setfavorite()
 
 void ZoomWindow::load(bool force)
 {
-	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
+	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
 
 	m_source.clear();
 
@@ -440,7 +440,7 @@ void ZoomWindow::replyFinishedDetails()
 		pools.reserve(imgPools.count());
 		for (const Pool &p : imgPools)
 		{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
-		ui->labelPools->setText(pools.join("<br />"));
+		ui->labelPools->setText(pools.join(QStringLiteral("<br />")));
 		ui->labelPools->show();
 	}
 
@@ -479,7 +479,7 @@ void ZoomWindow::replyFinishedDetails()
 	{
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
-		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
+		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Update save button state
 		SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
@@ -517,7 +517,7 @@ void ZoomWindow::colore()
 	{ m_labelTagsTop->setText(tags); }
 	else
 	{
-		m_labelTagsLeft->setText(t.join("<br/>"));
+		m_labelTagsLeft->setText(t.join(QStringLiteral("<br/>")));
 		ui->scrollArea->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
 	}
 
@@ -533,7 +533,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 	// Update actual button label
 	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
-	button->setToolTip("");
+	button->setToolTip(QString());
 	switch (state)
 	{
 		case SaveButtonState::Save:
@@ -591,7 +591,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QString &errorString)
 {
-	log(QString("Image received from <a href=\"%1\">%1</a>").arg(m_url));
+	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url));
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
@@ -1149,7 +1149,7 @@ void ZoomWindow::load(QSharedPointer<Image> image)
 				continue;
 
 			preloaded.insert(pos);
-			log(QString("Preloading data for image #%1").arg(pos));
+			log(QStringLiteral("Preloading data for image #%1").arg(pos));
 			m_images[pos]->loadDetails();
 			m_images[pos]->loadImage();
 		}
@@ -1179,7 +1179,7 @@ void ZoomWindow::updateWindowTitle()
 
 	// Image size
 	if (!m_image->size().isEmpty())
-		infos.append(QString("%1 x %2").arg(m_image->size().width()).arg(m_image->size().height()));
+		infos.append(QStringLiteral("%1 x %2").arg(m_image->size().width()).arg(m_image->size().height()));
 
 	// Update title if there are infos to show
 	QString title;
@@ -1187,7 +1187,7 @@ void ZoomWindow::updateWindowTitle()
 		title = tr("Image");
 	else
 		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
-	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
+	setWindowTitle(QStringLiteral("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
 int ZoomWindow::firstNonBlacklisted(int direction)

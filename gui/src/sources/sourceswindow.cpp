@@ -395,7 +395,7 @@ QList<Site*> sourcesWindow::selected() const
 void sourcesWindow::addPreset()
 {
 	bool ok;
-	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, "", &ok);
+	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, QString(), &ok);
 	if (!ok || name.isEmpty())
 		return;
 
@@ -407,7 +407,7 @@ void sourcesWindow::addPreset()
 	m_presets.insert(name, sel);
 
 	ui->comboPresets->clear();
-	ui->comboPresets->addItem("");
+	ui->comboPresets->addItem(QString());
 	ui->comboPresets->addItems(m_presets.keys());
 	ui->comboPresets->setCurrentText(name);
 }
@@ -430,7 +430,7 @@ void sourcesWindow::editPreset()
 	m_presets.remove(oldName);
 
 	ui->comboPresets->clear();
-	ui->comboPresets->addItem("");
+	ui->comboPresets->addItem(QString());
 	ui->comboPresets->addItems(m_presets.keys());
 	ui->comboPresets->setCurrentText(newName);
 }
