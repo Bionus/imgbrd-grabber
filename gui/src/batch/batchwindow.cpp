@@ -174,7 +174,7 @@ void batchWindow::copyToClipboard()
 
 void batchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
-void batchWindow::addImage(const QString &url, int batch, float size)
+void batchWindow::addImage(const QString &url, int batch, double size)
 {
 	m_urls.append(url);
 
@@ -268,7 +268,7 @@ void batchWindow::statusImage(const QString &url, int percent)
 	if (i != -1)
 		ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
 }
-void batchWindow::speedImage(const QString &url, float speed)
+void batchWindow::speedImage(const QString &url, double speed)
 {
 	m_speeds[url] = static_cast<int>(speed);
 	QString unit = getUnit(&speed)+"/s";
@@ -279,7 +279,7 @@ void batchWindow::speedImage(const QString &url, float speed)
 
 	drawSpeed();
 }
-void batchWindow::sizeImage(const QString &url, float size)
+void batchWindow::sizeImage(const QString &url, double size)
 {
 	int i = indexOf(url);
 	if (i != -1)
@@ -343,14 +343,14 @@ void batchWindow::drawSpeed()
 	{ return; }
 	m_time->restart();
 
-	float speed = 0;
+	double speed = 0;
 	for (auto sp = m_speeds.begin(); sp != m_speeds.end(); ++sp)
 	{ speed += sp.value(); }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(speed); }
 	QString unit = getUnit(&speed)+"/s";
 
-	float speedMean = 0;
+	double speedMean = 0;
 	int count = qMin(m_mean.count(), 60);
 	if (count > 0)
 	{

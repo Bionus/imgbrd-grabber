@@ -41,8 +41,8 @@ QString		savePath(const QString &s = "", bool exists = false, bool writable = fa
 bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
-QString		getUnit(float *size);
-QString		formatFilesize(float size);
+QString		getUnit(double *size);
+QString		formatFilesize(double size);
 QString		getExtension(const QUrl &url);
 QString		getExtension(const QString &url);
 QString		setExtension(QString url, const QString &extension);

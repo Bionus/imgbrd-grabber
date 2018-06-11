@@ -940,7 +940,7 @@ QString Image::tooltip() const
 			.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
 
-	float size = m_fileSize;
+	double size = m_fileSize;
 	QString unit = getUnit(&size);
 
 	return QString("%1%2%3%4%5%6%7%8")

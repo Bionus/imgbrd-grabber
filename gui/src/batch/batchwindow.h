@@ -47,11 +47,11 @@ class batchWindow : public QDialog
 		void setCurrentMax(int max);
 		void setTotalValue(int val);
 		void setTotalMax(int max);
-		void addImage(const QString &, int, float);
-		void sizeImage(const QString &, float);
+		void addImage(const QString &, int, double);
+		void sizeImage(const QString &, double);
 		void loadingImage(const QString &url);
 		void statusImage(const QString &, int);
-		void speedImage(const QString &, float);
+		void speedImage(const QString &, double);
 		void loadedImage(const QString &url, Downloadable::SaveResult result);
 		void on_buttonDetails_clicked(bool visible);
 		void closeEvent(QCloseEvent *) override;

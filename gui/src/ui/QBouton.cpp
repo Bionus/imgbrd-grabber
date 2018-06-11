@@ -8,10 +8,10 @@ QBouton::QBouton(const QVariant &id, bool resizeInsteadOfCropping, bool smartSiz
 	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter("")
 { }
 
-void QBouton::scale(const QPixmap &image, float scale)
+void QBouton::scale(const QPixmap &image, qreal scale)
 {
 	QSize size;
-	if (scale - 1.0f > 0.001f)
+	if (scale - 1.0 > 0.001)
 	{
 		size = image.size() * scale;
 		setIcon(image.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
@@ -94,7 +94,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		int lineHeight = 6;
 		int a = p + lineHeight/2;
 
-		float ratio = static_cast<float>(m_progress) / m_progressMax;
+		qreal ratio = static_cast<qreal>(m_progress) / m_progressMax;
 		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
 		QPoint p2(qFloor(p1.x() + (iconSize.width() - a) * ratio), p1.y());
 
@@ -151,9 +151,9 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 	// Calculate ratio to resize by keeping proportions
 	if (m_resizeInsteadOfCropping)
 	{
-		float coef = wOnly
-					 ? qMin(1.0f, static_cast<float>(regionWidth) / static_cast<float>(w))
-					 : qMin(1.0f, qMin(static_cast<float>(regionWidth) / static_cast<float>(w), static_cast<float>(regionHeight) / static_cast<float>(h)));
+		qreal coef = wOnly
+					 ? qMin(1.0, static_cast<qreal>(regionWidth) / static_cast<qreal>(w))
+					 : qMin(1.0, qMin(static_cast<qreal>(regionWidth) / static_cast<qreal>(w), static_cast<qreal>(regionHeight) / static_cast<qreal>(h)));
 		w *= coef;
 		h *= coef;
 	}

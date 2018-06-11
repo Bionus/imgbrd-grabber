@@ -33,7 +33,7 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	if (fixedWidthLayout)
 	{
 		int borderSize = m_settings->value("borders", 3).toInt();
-		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 	}
 	QWidget *layoutWidget = new QWidget;
@@ -128,8 +128,10 @@ void favoritesTab::updateFavorites()
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
-	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+	qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	int borderSize = m_settings->value("borders", 3).toInt();
+	int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+
 	for (Favorite &fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -140,7 +142,7 @@ void favoritesTab::updateFavorites()
 
 		int maxNewImages = 0;
 		bool precise = true;
-		for (const Monitor& monitor : fav.getMonitors())
+		for (const Monitor& monitor : qAsConst(fav.getMonitors()))
 		{
 			if (monitor.cumulated() > maxNewImages)
 			{
@@ -154,7 +156,7 @@ void favoritesTab::updateFavorites()
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->scale(img, upscale);
-				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2), qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
+				image->setFixedSize(dim, dim);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -182,7 +184,7 @@ void favoritesTab::updateFavorites()
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
-			caption->setFixedWidth(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+			caption->setFixedWidth(dim);
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
@@ -329,7 +331,7 @@ void favoritesTab::viewed()
 		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
-			for (const Favorite &fav : m_favorites)
+			for (const Favorite &fav : qAsConst(m_favorites))
 			{ setFavoriteViewed(fav.getName()); }
 		}
 	}

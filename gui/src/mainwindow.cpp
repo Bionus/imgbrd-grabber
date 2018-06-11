@@ -298,7 +298,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	else
 	{
 		m_waitForLogin += m_selectedSites.count();
-		for (Site *site : m_selectedSites)
+		for (Site *site : qAsConst(m_selectedSites))
 			site->login();
 	}
 
@@ -498,7 +498,7 @@ bool mainWindow::loadTabs(const QString &filename)
 		return false;
 
 	bool preload = m_settings->value("preloadAllTabs", false).toBool();
-	for (auto tab : tabs)
+	for (auto tab : qAsConst(tabs))
 	{
 		addSearchTab(tab, true, false);
 		if (!preload)
@@ -756,7 +756,7 @@ void mainWindow::batchRemoveGroups(QList<int> rows)
 	qSort(rows);
 
 	int rem = 0;
-	for (int i : rows)
+	for (int i : qAsConst(rows))
 	{
 		int pos = i - rem;
 		m_progressBars[pos]->deleteLater();
@@ -773,7 +773,7 @@ void mainWindow::batchRemoveUniques(QList<int> rows)
 	qSort(rows);
 
 	int rem = 0;
-	for (int i : rows)
+	for (int i : qAsConst(rows))
 	{
 		int pos = i - rem;
 		ui->tableBatchUniques->removeRow(pos);
@@ -923,7 +923,7 @@ void mainWindow::updateFavorites()
 	{ m_favorites = reversed(m_favorites); }
 	QString format = tr("MM/dd/yyyy");
 
-	for (const Favorite &fav : m_favorites)
+	for (const Favorite &fav : qAsConst(m_favorites))
 	{
 		QLabel *lab = new QLabel(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
@@ -1750,14 +1750,14 @@ void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived,
 	{
 		m_downloadTimeLast[url].restart();
 		int elapsed = m_downloadTime[url].elapsed();
-		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
+		double speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
 		m_progressDialog->speedImage(url, speed);
 	}
 
 	int percent = 0;
 	if (bytesTotal> 0)
 	{
-		qreal pct = (qreal)bytesReceived / (qreal)bytesTotal;
+		qreal pct = static_cast<qreal>(bytesReceived) / static_cast<qreal>(bytesTotal);
 		percent = qFloor(pct * 100);
 	}
 

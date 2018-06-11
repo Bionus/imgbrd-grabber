@@ -191,7 +191,7 @@ QDateTime qDateTimeFromString(QString str)
 	return date;
 }
 
-QString getUnit(float *value)
+QString getUnit(double *value)
 {
 	QStringList units = FILESIZE_UNITS;
 	int multiplier = FILESIZE_MULTIPLIER;
@@ -206,11 +206,11 @@ QString getUnit(float *value)
 	return units[power];
 }
 
-QString formatFilesize(float size)
+QString formatFilesize(double size)
 {
 	QString unit = getUnit(&size);
-	float round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
-	float roundedSize = static_cast<float>(static_cast<int>(size * round + 0.5)) / round;
+	double round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
+	double roundedSize = static_cast<double>(static_cast<int>(size * round + 0.5)) / round;
 	return QString("%1 %2").arg(roundedSize).arg(unit);
 }
 

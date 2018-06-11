@@ -156,7 +156,8 @@ void ZoomWindow::go()
 	{
 		if (!m_image->size().isEmpty())
 		{
-			if (static_cast<float>(m_image->width()) / static_cast<float>(m_image->height()) >= 4./3.) { pos = "top"; }
+			if (static_cast<double>(m_image->width()) / static_cast<double>(m_image->height()) >= 4.0 / 3.0)
+			{ pos = "top"; }
 			else
 			{ pos = "left"; }
 		}
@@ -1063,13 +1064,13 @@ void ZoomWindow::showThumbnail()
 {
 	QSize size = m_image->size();
 	if (size.isEmpty())
-	{ size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat(); }
+	{ size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0).toDouble(); }
 
 	// Videos get a static resizable overlay
 	if (m_image->isVideo())
 	{
 		// A video thumbnail should not be upscaled to more than three times its size
-		QSize maxSize = QSize(500, 500) * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		QSize maxSize = QSize(500, 500) * m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		if (size.width() > maxSize.width() || size.height() > maxSize.height())
 		{ size.scale(maxSize, Qt::KeepAspectRatio); }
 
