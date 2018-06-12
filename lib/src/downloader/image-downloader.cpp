@@ -32,12 +32,26 @@ void ImageDownloader::save()
 
 void ImageDownloader::loadedSave()
 {
-	QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
-	m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-
+	// Get the download path from the image if possible
 	if (m_paths.isEmpty())
+	{
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
 
+		Profile *profile = m_image->parentSite()->getSource()->getProfile();
+		if (!Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
+		{
+			m_temporaryPath = m_paths.first();
+		}
+	}
+
+	// Use a random temporary file if we need the MD5 or equivalent
+	if (m_temporaryPath.isEmpty())
+	{
+		QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+		m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+	}
+
+	// Try to save the image if it's already loaded or exists somewhere else on disk
 	QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false);
 	bool needLoading = false;
 	bool saveOk = false;
@@ -80,9 +94,10 @@ void ImageDownloader::loadImage()
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
 	// Create download root directory
-	if (!m_path.isEmpty() && !QDir(m_path).exists() && !QDir().mkpath(m_path))
+	QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
+	if (!QDir(rootDir).exists() && !QDir().mkpath(rootDir))
 	{
-		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(m_path), Logger::Error);
+		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(rootDir), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 		return;
 	}
