@@ -21,7 +21,7 @@ SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
 	ui->checkBox->setChecked(true);
 
 	m_sources = profile->getSources().values();
-	for (Source *source : m_sources)
+	for (Source *source : qAsConst(m_sources))
 	{
 		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
 	}
@@ -64,7 +64,7 @@ void SiteWindow::accept()
 	}
 
 	Source *src = nullptr;
-	for (Source *source : m_sources)
+	for (Source *source : qAsConst(m_sources))
 	{
 		if (source->getName() == ui->comboBox->currentText())
 		{
@@ -77,20 +77,18 @@ void SiteWindow::accept()
 
 void SiteWindow::finish(Source *src)
 {
-	if (ui->checkBox->isChecked())
+	if (src == nullptr)
 	{
+		error(this, tr("Unable to guess site's type. Are you sure about the url?"));
+		ui->comboBox->setDisabled(false);
+		ui->checkBox->setChecked(false);
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 		ui->progressBar->hide();
-
-		if (src == nullptr)
-		{
-			error(this, tr("Unable to guess site's type. Are you sure about the url?"));
-			ui->comboBox->setDisabled(false);
-			ui->checkBox->setChecked(false);
-			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-			ui->progressBar->hide();
-			return;
-		}
+		return;
 	}
+
+	if (ui->checkBox->isChecked())
+	{ ui->progressBar->hide(); }
 
 	// Remove unnecessary prefix
 	bool ssl = false;

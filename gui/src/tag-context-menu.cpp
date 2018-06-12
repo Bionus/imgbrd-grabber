@@ -114,7 +114,7 @@ void TagContextMenu::copyAllTagsToClipboard()
 {
 	QStringList tags;
 	tags.reserve(m_allTags.count());
-	for (const Tag &tag : m_allTags)
+	for (const Tag &tag : qAsConst(m_allTags))
 		tags.append(tag.text());
 
 	QApplication::clipboard()->setText(tags.join(' '));

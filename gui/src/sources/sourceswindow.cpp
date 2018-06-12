@@ -90,7 +90,7 @@ void sourcesWindow::checkUpdate()
 {
 	bool oneChecked = false;
 	bool oneUnchecked = false;
-	for (QCheckBox *check : m_checks)
+	for (QCheckBox *check : qAsConst(m_checks))
 	{
 		if (check->isChecked())
 		{ oneChecked = true; }
@@ -438,6 +438,7 @@ void sourcesWindow::editPreset()
 void sourcesWindow::savePreset()
 {
 	const QList<Site*> &selectedSites = selected();
+
 	QStringList sel;
 	sel.reserve(selectedSites.count());
 	for (Site *site : selectedSites)

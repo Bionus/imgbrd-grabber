@@ -178,7 +178,7 @@ Source::Source(Profile *profile, const QString &dir)
 		file.close();
 	}
 	else
-	{ log(QStringLiteral("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
+	{ log(QStringLiteral("Impossible to open the model file '%1'").arg(m_dir + "/model.xml"), Logger::Warning); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");

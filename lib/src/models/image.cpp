@@ -642,7 +642,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		// Only create the destination directory if we're going to put a file there
 		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
 		{
-			QString p = path.section(QDir::toNativeSeparators("/"), 0, -2);
+			QString p = path.section(QDir::separator(), 0, -2);
 			QDir path_to_file(p), dir;
 			if (!path_to_file.exists() && !dir.mkpath(p))
 			{

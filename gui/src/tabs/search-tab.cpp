@@ -957,7 +957,7 @@ void searchTab::contextSaveImageAs(int position)
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
-		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
+		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
 
 		if (!tmpPath.isEmpty())
 		{ QFile::rename(tmpPath, path); }
