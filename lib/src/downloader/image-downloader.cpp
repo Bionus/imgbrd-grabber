@@ -40,7 +40,7 @@ void ImageDownloader::loadedSave()
 		Profile *profile = m_image->parentSite()->getSource()->getProfile();
 		if (!Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
 		{
-			m_temporaryPath = m_paths.first();
+			m_temporaryPath = m_paths.first() + ".tmp";
 		}
 	}
 
