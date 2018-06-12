@@ -606,6 +606,14 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	return true;
 }
 
+bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
+{
+    return (
+        (m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+        (m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
+    );
+}
+
 int Filename::needExactTags(Site *site, const QString &api) const
 {
 	Q_UNUSED(api);

@@ -643,6 +643,31 @@ void FilenameTest::testFilenameWithMultipleUnderscores()
 	assertPath("%filename%", "__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2");
 }
 
+void FilenameTest::testNeedTemporaryFile()
+{
+	QMap<QString, Token> tokens;
+
+	tokens =
+	{
+		{ "md5", Token("", "") },
+		{ "filesize", Token(0, 0) },
+		{ "id", Token(0, 0) },
+	};
+	QCOMPARE(Filename("%md5%.%ext%").needTemporaryFile(tokens), true);
+	QCOMPARE(Filename("%id% (%filesize%).%ext%").needTemporaryFile(tokens), true);
+	QCOMPARE(Filename("%id%.%ext%").needTemporaryFile(tokens), false);
+
+	tokens =
+	{
+		{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718", "") },
+		{ "filesize", Token(123, 0) },
+		{ "id", Token(456, 0) },
+	};
+	QCOMPARE(Filename("%md5%.%ext%").needTemporaryFile(tokens), false);
+	QCOMPARE(Filename("%id% (%filesize%).%ext%").needTemporaryFile(tokens), false);
+	QCOMPARE(Filename("%id%.%ext%").needTemporaryFile(tokens), false);
+}
+
 void FilenameTest::testNeedExactTags()
 {
 	QCOMPARE(Filename("%md5%.%ext%").needExactTags(false), 0);
