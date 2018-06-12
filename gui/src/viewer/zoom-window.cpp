@@ -687,7 +687,7 @@ void ZoomWindow::draw()
 	if (m_image->isVideo())
 		return;
 
-	QString fn = m_url.section('/', -1).toLower();
+	QString fn = m_url.section('/', -1).section('?', 0, 0).toLower();
 
 	// We need a filename to display animations, so we get it if we're not already loading from a file
 	QString filename;
