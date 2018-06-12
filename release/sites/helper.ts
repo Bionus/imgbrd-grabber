@@ -66,7 +66,7 @@ Grabber.countToInt = (str: string): number => {
         return 0;
     }
     let count: number;
-    const normalized = str.toLowerCase().trim().replace(",", "");
+    const normalized = str.toLowerCase().trim().replace(/,/g, "");
     if (normalized.slice(-1) === "k") {
         const withoutK = normalized.substring(0, normalized.length - 1).trim();
         count = parseFloat(withoutK) * 1000;
