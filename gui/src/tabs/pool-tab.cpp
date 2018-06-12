@@ -158,7 +158,7 @@ void poolTab::getAll()
 	int imageCount = page->imagesCount();
 	int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-	if (perPage == 0 && total == 0)
+	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
 	QString search = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
