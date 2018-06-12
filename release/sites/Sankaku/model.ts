@@ -76,12 +76,14 @@ export const source: ISource = {
                     return "/post/index?" + loginPart + pagePart + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
+                    const searchImageCounts = Grabber.regexMatches('class="?tag-count"? title="Post Count: (?<count>[0-9,]+)"', src);
+                    const lastPage = Grabber.regexToConst("page", '<span class="?current"?>\\s*(?<page>[0-9,]+)\\s*</span>\\s*>>\\s*</div>', src);
                     return {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
                         images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map(completeImage),
                         wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>', src),
-                        pageCount: Grabber.regexToConst("page", '<link href="[^"]*\\?.*?page=(?<page>\\d+)[^"]*" rel="last" title="Last Page">', src),
-                        imageCount: Grabber.regexToConst("count", 'class="?tag-type-none"? title="Post Count: (?<count>[^"]+)"', src),
+                        pageCount: lastPage ? Grabber.countToInt(lastPage) : undefined,
+                        imageCount: searchImageCounts.length === 1 ? Grabber.countToInt(searchImageCounts[0].count) : undefined,
                     };
                 },
             },
