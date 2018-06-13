@@ -27,9 +27,13 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 100,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?s=id&xml&" + pagePart;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
+                        return "/" + query.search + "?s=id&xml&" + pagePart;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -59,9 +63,13 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 22,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?" + pagePart;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
+                        return "/" + query.search + "?" + pagePart;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

@@ -101,13 +101,16 @@ Grabber.fixPageUrl = (url: string, page: number, previous: any): string => {
 };
 
 Grabber.pageUrl = (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
-    if (page < limit || !previous || limit < 0) {
+    if (page <= limit || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous);
     }
-    if (previous.page > page) {
+    if (previous && previous.page === page + 1) {
         return Grabber.fixPageUrl(ifPrev, page, previous);
     }
-    return Grabber.fixPageUrl(ifNext, page, previous);
+    if (previous && previous.page === page - 1) {
+        return Grabber.fixPageUrl(ifNext, page, previous);
+    }
+    throw new Error("You need valid previous page information to browse that far");
 };
 
 Grabber.regexToImages = (regexp: string, src: string): IImage[] => {

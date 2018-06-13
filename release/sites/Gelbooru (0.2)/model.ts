@@ -52,10 +52,15 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 42,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const page: number = (query.page - 1) * 42;
-                    const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
-                    return "/index.php?page=post&s=list&tags=" + query.search + pagePart;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const page: number = (query.page - 1) * 42;
+                        const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                        const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
+                        return "/index.php?page=post&s=list&tags=" + search + pagePart;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

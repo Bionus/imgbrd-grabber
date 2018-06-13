@@ -22,9 +22,13 @@ export const source: ISource = {
             auth: ["oauth2"],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const pageUrl = Grabber.pageUrl(query.page, previous, 2, "", "since_id={max}", "max_id={min-1}");
-                    return "/1.1/statuses/user_timeline.json?include_rts=true&screen_name=" + query.search + pageUrl;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "since_id={max}", "max_id={min-1}");
+                        return "/1.1/statuses/user_timeline.json?include_rts=true&screen_name=" + query.search + pageUrl;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);

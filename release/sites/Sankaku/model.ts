@@ -70,10 +70,14 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 20,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 25, "page={page}", "prev={max}", "next={min-1}");
-                    return "/post/index?" + loginPart + pagePart + "&tags=" + query.search;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                        const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
+                        return "/post/index?" + loginPart + pagePart + "&tags=" + query.search;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const searchImageCounts = Grabber.regexMatches('class="?tag-count"? title="Post Count: (?<count>[0-9,]+)"', src);
