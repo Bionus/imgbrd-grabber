@@ -340,10 +340,10 @@ void searchTab::finishedLoading(Page* page)
 	m_images.append(imgs);
 
 	int maxPage = page->pagesCount();
-	if (maxPage < m_pagemax || m_pagemax == -1)
+	if (maxPage > m_pagemax || m_pagemax == -1)
 		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	addResultsPage(page, imgs, merged);
 
@@ -472,10 +472,10 @@ void searchTab::finishedLoadingTags(Page *page)
 	}
 
 	int maxPage = page->pagesCount();
-	if (maxPage < m_pagemax || m_pagemax == -1)
+	if (maxPage > m_pagemax || m_pagemax == -1)
 		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
