@@ -77,7 +77,7 @@ class Site : public QObject
 		// Login
 		void setAutoLogin(bool autoLogin);
 		bool autoLogin() const;
-		bool isLoggedIn(bool unknown = false) const;
+		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
 		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
 
