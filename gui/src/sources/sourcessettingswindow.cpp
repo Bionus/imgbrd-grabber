@@ -191,7 +191,7 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
-	QString italic = QString("<i>%1</li>").arg(msg);
+	QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestCredentials->setText(italic);
 	ui->labelTestLogin->setText(italic);
 }

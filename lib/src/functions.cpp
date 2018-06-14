@@ -218,7 +218,7 @@ bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);
 	QFileInfo info(nativeFile);
-	bool isWritable = info.isWritable() && !nativeFile.startsWith(QStringLiteral("C:\\Program Files"));
+	bool isWritable = info.isWritable() && !nativeFile.startsWith(QLatin1String("C:\\Program Files"));
 	return info.exists() && (!writable || isWritable);
 }
 
@@ -550,7 +550,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength
 
 	// Drive
 	QString drive;
-	if (filename.mid(1, 2) == QStringLiteral(":\\"))
+	if (filename.mid(1, 2) == QLatin1String(":\\"))
 	{
 		drive = filename.left(3);
 		filename = filename.right(filename.length() - 3);

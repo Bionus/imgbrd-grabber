@@ -74,10 +74,14 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                    return "/post/index.json?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                        const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
+                        return "/post/index.json?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -119,10 +123,14 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                    return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                        const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
+                        return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.typedXML(Grabber.parseXML(src));
@@ -170,10 +178,14 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                    return "/post/index?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
+                        const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
+                        return "/post/index?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + query.search;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

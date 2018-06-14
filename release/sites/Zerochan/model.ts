@@ -27,9 +27,13 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 100,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?s=id&xml&" + pagePart;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
+                        return "/" + query.search + "?s=id&xml&" + pagePart;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -49,7 +53,7 @@ export const source: ISource = {
 
                     return {
                         images,
-                        imageCount: Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", parsed.rss.channel.description["#text"]),
+                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", parsed.rss.channel.description["#text"])),
                     };
                 },
             },
@@ -59,16 +63,20 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 22,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                    return "/" + query.search + "?" + pagePart;
+                url: (query: any, opts: any, previous: any): string | IError => {
+                    try {
+                        const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
+                        return "/" + query.search + "?" + pagePart;
+                    } catch (e) {
+                        return { error: e.message };
+                    }
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
                         tags: Grabber.regexToTags("<li[^>]*>\\s*<a [^>]+>(?<name>[^>]+)</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>", src),
                         images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*src=['\"](?<preview_url>[^'\"]*)['\"][^>]*/?>)", src).map(completeImage),
-                        pageCount: Grabber.regexToConst("page", "page (?:[0-9,]+) of (?<page>[0-9,]+)", src),
-                        imageCount: Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? images", src),
+                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", "page (?:[0-9,]+) of (?<page>[0-9,]+)", src)),
+                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", src)),
                     };
                 },
             },

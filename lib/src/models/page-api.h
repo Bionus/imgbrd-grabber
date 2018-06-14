@@ -26,25 +26,25 @@ class PageApi : public QObject
 
 		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags = QStringList(), int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		void			setLastPage(Page *page);
-		QList<QSharedPointer<Image>> images() const;
+		const QList<QSharedPointer<Image>> &images() const;
 		bool			isImageCountSure() const;
 		bool			isPageCountSure() const;
 		int				imagesCount(bool guess = true) const;
 		int				pagesCount(bool guess = true) const;
-		QUrl			url() const;
-		QString			source() const;
-		QString			wiki() const;
-		QList<Tag>		tags() const;
-		QStringList		search() const;
-		QStringList		errors() const;
+		const QUrl			&url() const;
+		const QString		&source() const;
+		const QString		&wiki() const;
+		const QList<Tag>	&tags() const;
+		const QStringList	&search() const;
+		const QStringList	&errors() const;
 		int				imagesPerPage() const;
 		int				highLimit() const;
 		int				page() const;
 		int				pageImageCount() const;
 		qulonglong		minId() const;
 		qulonglong		maxId() const;
-		QUrl			nextPage() const;
-		QUrl			prevPage() const;
+		const QUrl		&nextPage() const;
+		const QUrl		&prevPage() const;
 		bool			isLoaded() const;
 
 	public slots:

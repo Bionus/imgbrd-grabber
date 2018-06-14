@@ -340,10 +340,10 @@ void searchTab::finishedLoading(Page* page)
 	m_images.append(imgs);
 
 	int maxPage = page->pagesCount();
-	if (maxPage < m_pagemax || m_pagemax == -1)
+	if (maxPage > m_pagemax || m_pagemax == -1)
 		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	addResultsPage(page, imgs, merged);
 
@@ -472,10 +472,10 @@ void searchTab::finishedLoadingTags(Page *page)
 	}
 
 	int maxPage = page->pagesCount();
-	if (maxPage < m_pagemax || m_pagemax == -1)
+	if (maxPage > m_pagemax || m_pagemax == -1)
 		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
@@ -602,7 +602,7 @@ double getImageKnownTagProportion(const QSharedPointer<Image> &img)
 	int known = 0;
 	for (const Tag &tag : img->tags())
 	{
-		if (tag.type().name() != QStringLiteral("unknown"))
+		if (tag.type().name() != QLatin1String("unknown"))
 			known++;
 	}
 
@@ -957,7 +957,7 @@ void searchTab::contextSaveImageAs(int position)
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
-		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
+		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
 
 		if (!tmpPath.isEmpty())
 		{ QFile::rename(tmpPath, path); }
@@ -1426,7 +1426,7 @@ bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
-		error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
+		error = QStringLiteral("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
 		return false;
 	}
 

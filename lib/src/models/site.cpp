@@ -418,10 +418,13 @@ QList<QNetworkCookie> Site::cookies() const
 	return m_cookies;
 }
 
-bool Site::isLoggedIn(bool unknown) const
+bool Site::isLoggedIn(bool unknown, bool pending) const
 {
 	if (unknown)
 		return m_loggedIn != LoginStatus::LoggedOut;
+
+	if (pending && m_loggedIn == LoginStatus::Pending)
+		return true;
 
 	return m_loggedIn == LoginStatus::LoggedIn;
 }

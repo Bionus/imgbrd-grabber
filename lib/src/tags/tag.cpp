@@ -15,7 +15,7 @@ QMap<int, QString> stringListToMap(const QStringList &list)
 }
 
 Tag::Tag()
-	: m_type(TagType("unknown")), m_count(0)
+	: m_type(TagType(QStringLiteral("unknown"))), m_count(0)
 { }
 
 Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
@@ -29,7 +29,7 @@ Tag::Tag(const QString &text, const TagType &type, int count, const QStringList 
 Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStringList &related)
 	: m_id(id), m_type(type), m_count(count), m_related(related)
 {
-	static QStringList weakTypes = QStringList() << "unknown" << "origin";
+	static QStringList weakTypes = QStringList() << QStringLiteral("unknown") << QStringLiteral("origin");
 
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
@@ -42,16 +42,25 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
 	// Some artist names end with " (artist)" so we can guess their type
-	if (m_text.endsWith("(artist)") && weakTypes.contains(m_type.name()))
+	if (m_text.endsWith(QLatin1String("(artist)")) && weakTypes.contains(m_type.name()))
 	{
-		m_type = TagType("artist");
+		m_type = TagType(QStringLiteral("artist"));
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
 	int sepPos = m_text.indexOf(':');
 	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
-		static QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "meta" << "unknown" << "oc";
+		static QStringList prep = QStringList()
+			<< QStringLiteral("artist")
+			<< QStringLiteral("copyright")
+			<< QStringLiteral("character")
+			<< QStringLiteral("model")
+			<< QStringLiteral("species")
+			<< QStringLiteral("meta")
+			<< QStringLiteral("unknown")
+			<< QStringLiteral("oc");
+
 		QString pre = Tag::GetType(m_text.left(sepPos));
 		int prepIndex = prep.indexOf(pre);
 		if (prepIndex != -1)
@@ -130,20 +139,20 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type.contains(", "))
 		type = type.split(", ").at(0).trimmed();
 
-	if (type == "series")
-		return "copyright";
-	if (type == "mangaka")
-		return "artist";
-	if (type == "game")
-		return "copyright";
-	if (type == "studio")
-		return "circle";
-	if (type == "source")
-		return "general";
-	if (type == "character group")
-		return "general";
-	if (type == "oc")
-		return "character";
+	if (type == QLatin1String("series"))
+		return QStringLiteral("copyright");
+	if (type == QLatin1String("mangaka"))
+		return QStringLiteral("artist");
+	if (type == QLatin1String("game"))
+		return QStringLiteral("copyright");
+	if (type == QLatin1String("studio"))
+		return QStringLiteral("circle");
+	if (type == QLatin1String("source"))
+		return QStringLiteral("general");
+	if (type == QLatin1String("character group"))
+		return QStringLiteral("general");
+	if (type == QLatin1String("oc"))
+		return QStringLiteral("character");
 
 	if (type.length() == 1)
 	{
@@ -169,7 +178,15 @@ QStringList	Tag::related() const	{ return m_related;	}
 
 bool sortTagsByType(const Tag &s1, const Tag &s2)
 {
-	static QStringList typeOrder = QStringList() << "unknown" << "model" << "meta" << "species" << "artist" << "character" << "copyright";
+	static QStringList typeOrder = QStringList()
+		<< QStringLiteral("unknown")
+		<< QStringLiteral("model")
+		<< QStringLiteral("meta")
+		<< QStringLiteral("species")
+		<< QStringLiteral("artist")
+		<< QStringLiteral("character")
+		<< QStringLiteral("copyright");
+
 	int t1 = typeOrder.indexOf(s1.type().name());
 	int t2 = typeOrder.indexOf(s2.type().name());
 	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
@@ -181,6 +198,7 @@ bool sortTagsByCount(const Tag &s1, const Tag &s2)
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
+	const QLatin1String unknown("unknown");
 	return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) == 0
-		&& (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
+		&& (t1.type() == t2.type() || t1.type().name() == unknown || t2.type().name() == unknown);
 }

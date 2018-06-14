@@ -41,6 +41,8 @@ class Filename
 		 */
 		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 
+		bool needTemporaryFile(const QMap<QString, Token> &tokens) const;
+
 		int needExactTags(Site *site, const QString &api = "") const;
 		int needExactTags(const QStringList &forcedTokens = QStringList()) const;
 

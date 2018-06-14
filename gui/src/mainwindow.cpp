@@ -335,7 +335,7 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	{
 		// Load an IGL file
 		QFileInfo info(args[0]);
-		if (info.suffix() == QStringLiteral("igl"))
+		if (info.suffix() == QLatin1String("igl"))
 		{
 			loadLinkList(info.absoluteFilePath());
 			m_forcedTab = m_tabs.size() + 1;
@@ -1240,7 +1240,7 @@ void mainWindow::getAll(bool all)
 	}
 	else
 	{
-		for (const DownloadQueryImage &batch : m_batchs)
+		for (const DownloadQueryImage &batch : qAsConst(m_batchs))
 		{
 			if (batch.values.value("file_url").isEmpty())
 			{
@@ -1314,7 +1314,7 @@ void mainWindow::getAllLogin()
 
 	m_getAllLogins.clear();
 	QQueue<Site*> logins;
-	for (Downloader *downloader : m_downloaders)
+	for (Downloader *downloader : qAsConst(m_downloaders))
 	{
 		for (Site *site : downloader->getSites())
 		{
@@ -1435,7 +1435,7 @@ void mainWindow::getAllGetPages()
 
 	int max = 0;
 	int packSize = 0;
-	for (Downloader *downloader : m_downloaders)
+	for (Downloader *downloader : qAsConst(m_downloaders))
 	{
 		downloader->getImages();
 		max += downloader->pagesCount();
@@ -1516,7 +1516,7 @@ void mainWindow::getAllImages()
 	m_progressDialog->clearImages();
 	m_progressDialog->setText(tr("Preparing images, please wait..."));
 	m_progressDialog->setCount(m_getAllRemaining.count());
-	for (const BatchDownloadImage &download : m_getAllRemaining)
+	for (const BatchDownloadImage &download : qAsConst(m_getAllRemaining))
 	{
 		int siteId = download.siteId(m_groupBatchs);
 		QSharedPointer<Image> img = download.image;
@@ -1771,7 +1771,7 @@ void mainWindow::getAllPerformTags()
 	log(QStringLiteral("Tags received"), Logger::Info);
 
 	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
-	for (const BatchDownloadImage &i : m_getAllDownloading)
+	for (const BatchDownloadImage &i : qAsConst(m_getAllDownloading))
 		if (i.image.data() == sender())
 			downloadPtr = &i;
 	if (downloadPtr == Q_NULLPTR)
@@ -1877,7 +1877,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 
 	// Find related download query
 	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
-	for (const BatchDownloadImage &i : m_getAllDownloading)
+	for (const BatchDownloadImage &i : qAsConst(m_getAllDownloading))
 		if (i.image == img)
 			downloadPtr = &i;
 	if (downloadPtr == Q_NULLPTR)
@@ -1911,7 +1911,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 					isDriveFull = storage.isValid() && (storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024);
 					QString rootPath = storage.rootPath();
 					#ifdef Q_OS_WIN
-						drive = QString("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
+						drive = QStringLiteral("%1 (%2)").arg(storage.name(), rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
 					#else
 						drive = rootPath;
 					#endif
@@ -1951,12 +1951,12 @@ void mainWindow::getAllCancel()
 {
 	log(QStringLiteral("Cancelling downloads..."), Logger::Info);
 	m_progressDialog->cancel();
-	for (const BatchDownloadImage &download : m_getAllDownloading)
+	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading))
 	{
 		download.image->abortTags();
 		download.image->abortImage();
 	}
-	for (Downloader *downloader : m_downloaders)
+	for (Downloader *downloader : qAsConst(m_downloaders))
 	{
 		downloader->cancel();
 	}
@@ -1970,7 +1970,7 @@ void mainWindow::getAllSkip()
 	log(QStringLiteral("Skipping downloads..."), Logger::Info);
 
 	int count = m_getAllDownloading.count();
-	for (const BatchDownloadImage &download : m_getAllDownloading)
+	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading))
 	{
 		download.image->abortTags();
 		download.image->abortImage();
@@ -2085,7 +2085,7 @@ void mainWindow::getAllPause()
 	if (m_progressDialog->isPaused())
 	{
 		log(QStringLiteral("Pausing downloads..."), Logger::Info);
-		for (const auto &download : m_getAllDownloading)
+		for (const auto &download : qAsConst(m_getAllDownloading))
 		{
 			download.image->abortTags();
 			download.image->abortImage();
@@ -2095,7 +2095,7 @@ void mainWindow::getAllPause()
 	else
 	{
 		log(QStringLiteral("Recovery of downloads..."), Logger::Info);
-		for (const auto &download : m_getAllDownloading)
+		for (const auto &download : qAsConst(m_getAllDownloading))
 		{
 			getAllGetImage(download, download.siteId(m_groupBatchs));
 		}
@@ -2138,7 +2138,7 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 	{ return; }
 
 	save = QDir::toNativeSeparators(save);
-	m_settings->setValue("linksLastDir", save.section(QDir::toNativeSeparators("/"), 0, -2));
+	m_settings->setValue("linksLastDir", save.section(QDir::separator(), 0, -2));
 
 	if (saveLinkList(save))
 	{ QMessageBox::information(this, tr("Save link list"), tr("Link list saved successfully!")); }
@@ -2172,11 +2172,11 @@ bool mainWindow::loadLinkList(const QString &filename)
 	log(tr("Loading %n download(s)", "", newBatchs.count() + newGroupBatchs.count()), Logger::Info);
 
 	m_allow = false;
-	for (const auto &queryImage : newBatchs)
+	for (const auto &queryImage : qAsConst(newBatchs))
 	{
 		batchAddUnique(queryImage, false);
 	}
-	for (auto queryGroup : newGroupBatchs)
+	for (auto queryGroup : qAsConst(newGroupBatchs))
 	{
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 		QString last = queryGroup.unk;

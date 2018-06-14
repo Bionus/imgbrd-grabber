@@ -10,7 +10,7 @@
 SqlWorker::SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent)
 	: QThread(parent), m_driver(driver), m_host(host), m_user(user), m_password(password), m_database(database)
 {
-	m_enabled = (m_driver == QStringLiteral("QSQLITE") && !m_database.isEmpty())
+	m_enabled = (m_driver == QLatin1String("QSQLITE") && !m_database.isEmpty())
 			  || (!m_host.isEmpty() && !m_user.isEmpty() && !m_database.isEmpty());
 
 	m_started = false;

@@ -99,7 +99,7 @@ void tagTab::load()
 
 void tagTab::write(QJsonObject &json) const
 {
-	json["type"] = QString("tag");
+	json["type"] = QStringLiteral("tag");
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
@@ -213,7 +213,7 @@ void tagTab::getAll()
 		int imageCount = page->imagesCount();
 		int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 		int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-		if (perPage == 0 && total == 0)
+		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 			continue;
 
 		QString search = page->search().join(' ');

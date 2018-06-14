@@ -1,5 +1,7 @@
 #include "settings/filenamewindow.h"
 #include <QDesktopServices>
+#include <QRegExp>
+#include <QRegularExpression>
 #include <ui_filenamewindow.h>
 #include "models/filename.h"
 #include "models/image.h"

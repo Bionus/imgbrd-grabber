@@ -93,6 +93,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
 	settings->beginGroup("auth");
@@ -100,9 +101,9 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	for (const QString &key : authKeys)
 	{
 		QString value = settings->value(key).toString();
-		if (key == "pseudo" && !auth.hasProperty("login"))
+		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
 		{ auth.setProperty("login", value); }
-		if (key == "password" && !auth.hasProperty("password_hash"))
+		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
 		{ auth.setProperty("password_hash", value); }
 		auth.setProperty(key, value);
 	}
@@ -181,7 +182,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	// Script errors and exceptions
 	if (results.isError())
 	{
-		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
@@ -216,7 +217,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 					continue;
 				}
 
-				if (key == QStringLiteral("tags_obj") || (key == QStringLiteral("tags") && val.isArray()))
+				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
 				else
 				{ d[key] = val.toString(); }
@@ -274,7 +275,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
-	opts.setProperty("loggedIn", site->isLoggedIn(false));
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
 	settings->beginGroup("auth");
@@ -282,9 +283,9 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	for (const QString &key : authKeys)
 	{
 		QString value = settings->value(key).toString();
-		if (key == "pseudo" && !auth.hasProperty("login"))
+		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
 		{ auth.setProperty("login", value); }
-		if (key == "password" && !auth.hasProperty("password_hash"))
+		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
 		{ auth.setProperty("password_hash", value); }
 		auth.setProperty(key, value);
 	}
@@ -309,7 +310,7 @@ ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
 	// Script errors and exceptions
 	if (results.isError())
 	{
-		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
@@ -361,7 +362,7 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 	// Script errors and exceptions
 	if (results.isError())
 	{
-		ret.error = QString("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
@@ -438,7 +439,7 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source) const
 	// Script errors and exceptions
 	if (result.isError())
 	{
-		ret.error = QString("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
 		return ret;
 	}
 

@@ -56,7 +56,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 					infos[2].toInt(),
 					infos[3].toInt(),
 					QStringList(),
-					infos[4] != QStringLiteral("false"),
+					infos[4] != QLatin1String("false"),
 					sites[source],
 					infos[6],
 					infos[7]

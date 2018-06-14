@@ -78,6 +78,7 @@ class FilenameTest : public TestSuite
 		void testReplaceBlanks();
 		void testCommand();
 		void testFilenameWithMultipleUnderscores();
+		void testNeedTemporaryFile();
 		void testNeedExactTags();
 		void testEscapeMethod();
 

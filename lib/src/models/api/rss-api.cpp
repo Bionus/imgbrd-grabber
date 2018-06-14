@@ -19,7 +19,7 @@ ParsedPage RssApi::parsePage(Page *parentPage, const QString &source, int first,
 	int errorLine, errorColumn;
 	if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
 	{
-		ret.error = QString("Error parsing RSS file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
+		ret.error = QStringLiteral("Error parsing RSS file: %1 (%2 - %3).").arg(errorMsg).arg(errorLine).arg(errorColumn);
 		return ret;
 	}
 	QDomElement docElem = doc.documentElement();

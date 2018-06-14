@@ -152,7 +152,7 @@ void ZoomWindow::go()
 		m_resizeTimer = timer;
 
 	QString pos = m_settings->value("tagsposition", "top").toString();
-	if (pos == QStringLiteral("auto"))
+	if (pos == QLatin1String("auto"))
 	{
 		if (!m_image->size().isEmpty())
 		{
@@ -165,7 +165,7 @@ void ZoomWindow::go()
 		{ pos = QStringLiteral("top"); }
 	}
 
-	if (pos == QStringLiteral("top"))
+	if (pos == QLatin1String("top"))
 	{
 		ui->widgetLeft->hide();
 		m_labelTagsTop->show();
@@ -265,7 +265,7 @@ void ZoomWindow::openUrl(const QString &url)
 { emit linkClicked(url); }
 void ZoomWindow::openPool(const QString &url)
 {
-	if (url.startsWith(QStringLiteral("pool:")))
+	if (url.startsWith(QLatin1String("pool:")))
 	{ emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->parentSite()->url()); }
 	else
 	{
@@ -687,7 +687,7 @@ void ZoomWindow::draw()
 	if (m_image->isVideo())
 		return;
 
-	QString fn = m_url.section('/', -1).toLower();
+	QString fn = m_url.section('/', -1).section('?', 0, 0).toLower();
 
 	// We need a filename to display animations, so we get it if we're not already loading from a file
 	QString filename;

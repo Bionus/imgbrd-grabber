@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>E-Hentai</Name>
+	<Urls>
+		<Xml>
+			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
+			<Tags>/posts.xml?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts.xml?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<MaxLimit>200</MaxLimit>
+			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags.xml?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags.xml?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
+		</Xml>
+		<Json>
+			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
+			<Tags>/posts.json?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts.json?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<MaxLimit>200</MaxLimit>
+			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags.json?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags.json?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
+		</Json>
+		<Html>
+			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
+			<Tags>/posts?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags={tags}</Tags>
+			<Pools>/posts?{login}limit={limit}&amp;page={pagepart}{altpage}&amp;tags=pool:{pool} {tags}</Pools>
+			<Post>/posts/{id}</Post>
+			<MaxPage>1000</MaxPage>
+			<PagePart>{page}</PagePart>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
+		</Html>
+	</Urls>
+	<Check>
+		<Url>/</Url>
+		<Regex>Running Danbooru v2|Running Danbooru &lt;a[^&gt;]*&gt;v2</Regex>
+	</Check>
+	<FirstPage>0</FirstPage>
+</Site>

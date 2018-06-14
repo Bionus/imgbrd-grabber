@@ -213,7 +213,7 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 	QString fixed = site->fixUrl(ret).toString();
 
 	// Clean fake webp files
-	if (fixed.endsWith(QStringLiteral(".jpg.webp")))
+	if (fixed.endsWith(QLatin1String(".jpg.webp")))
 		fixed = fixed.left(fixed.length() - 5);
 
 	return fixed;

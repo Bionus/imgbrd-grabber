@@ -28,7 +28,7 @@ QString Filename::expandConditionals(const QString &text, const QStringList &tag
 		QString cap = match.captured(1);
 		if (!cap.isEmpty() && !cap.startsWith('<'))
 		{
-			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
+			cap += QStringLiteral(">").repeated(cap.count('<') - cap.count('>'));
 			ret.replace("<" + cap + ">", this->expandConditionals(cap, tags, tokens, settings, depth + 1));
 		}
 	}
@@ -97,20 +97,20 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	else if (value.size() > settings->value(key + "_multiple_limit", 1).toInt())
 	{
 		QString whatToDo = settings->value(key + "_multiple", token.whatToDoDefault()).toString();
-		if (whatToDo == QStringLiteral("keepAll"))
+		if (whatToDo == QLatin1String("keepAll"))
 		{ ret.append(Token(value)); }
-		else if (whatToDo == QStringLiteral("multiple"))
+		else if (whatToDo == QLatin1String("multiple"))
 		{
 			ret.reserve(ret.count() + value.count());
 			for (const QString &val : value)
 			{ ret.append(Token(val)); }
 		}
-		else if (whatToDo == QStringLiteral("keepN"))
+		else if (whatToDo == QLatin1String("keepN"))
 		{
 			int keepN = settings->value(key + "_multiple_keepN", 1).toInt();
 			ret.append(Token(QStringList(value.mid(0, qMax(1, keepN)))));
 		}
-		else if (whatToDo == QStringLiteral("keepNThenAdd"))
+		else if (whatToDo == QLatin1String("keepNThenAdd"))
 		{
 			int keepN = settings->value(key + "_multiple_keepNThenAdd_keep", 1).toInt();
 			QString thenAdd = settings->value(key + "_multiple_keepNThenAdd_add", " (+ %count%)").toString();
@@ -205,7 +205,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	QList<QMap<QString, Token>> ret;
 	ret.append(tokens);
 
-	bool isJavascript = filename.startsWith("javascript:");
+	bool isJavascript = filename.startsWith(QLatin1String("javascript:"));
 	for (const QString &key : tokens.keys())
 	{
 		const Token &token = tokens[key];
@@ -461,7 +461,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 			QStringList filtered, filteredNamespaces;
 			for (int i = 0; i < vals.count(); ++i)
 			{
-				QString nspace = key == "all" ? namespaces[i] : key;
+				const QString &nspace = key == "all" ? namespaces[i] : key;
 				if (!ignored.contains(nspace))
 				{
 					filtered.append(vals[i]);
@@ -547,9 +547,9 @@ bool Filename::returnError(const QString &msg, QString *error) const
 }
 bool Filename::isValid(Profile *profile, QString *error) const
 {
-	QString red = "<span style=\"color:red\">%1</span>";
-	QString orange = "<span style=\"color:orange\">%1</span>";
-	QString green = "<span style=\"color:green\">%1</span>";
+	static const QString red = QStringLiteral("<span style=\"color:red\">%1</span>");
+	static const QString orange = QStringLiteral("<span style=\"color:orange\">%1</span>");
+	static const QString green = QStringLiteral("<span style=\"color:green\">%1</span>");
 
 	// Field must be filled
 	if (m_format.isEmpty())
@@ -604,6 +604,14 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	// All tests passed
 	returnError(green.arg(QObject::tr("Valid filename!")), error);
 	return true;
+}
+
+bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
+{
+    return (
+        (m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+        (m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
+    );
 }
 
 int Filename::needExactTags(Site *site, const QString &api) const
