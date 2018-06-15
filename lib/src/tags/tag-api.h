@@ -24,7 +24,7 @@ class TagApi : public QObject
 		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = Q_NULLPTR);
 		~TagApi() override;
 		void load(bool rateLimit = false);
-		QList<Tag> tags() const;
+		const QList<Tag> &tags() const;
 
 	public slots:
 		void abort();

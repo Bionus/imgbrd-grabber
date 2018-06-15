@@ -504,7 +504,7 @@ void Downloader::returnStringList(const QStringList &ret)
 
 void Downloader::setData(const QVariant &data)
 { m_data = data; }
-QVariant Downloader::getData() const
+const QVariant &Downloader::getData() const
 { return m_data; }
 
 void Downloader::cancel()
@@ -526,7 +526,5 @@ int Downloader::imagesMax() const
 Page *Downloader::lastPage() const
 { return m_lastPage; }
 
-QList<Page*> Downloader::getPages() const
-{ return m_pages; }
-QList<Site*> Downloader::getSites() const
+const QList<Site*> &Downloader::getSites() const
 { return m_sites; }

@@ -37,7 +37,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	m_search = tags;
 
 	// Generate pages
-	m_siteApis = m_site->getApis(true);
+	m_siteApis = m_site->getLoggedInApis();
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis))
 	{

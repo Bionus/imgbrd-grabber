@@ -24,9 +24,8 @@ class Downloader : public QObject
 		void getPageTags();
 		void getImages();
 		void getUrls();
-		QVariant getData() const;
-		QList<Page*> getPages() const;
-		QList<Site*> getSites() const;
+		const QVariant &getData() const;
+		const QList<Site*> &getSites() const;
 		int ignoredCount() const;
 		int duplicatesCount() const;
 		int pagesCount() const;

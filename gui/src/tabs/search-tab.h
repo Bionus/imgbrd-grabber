@@ -38,14 +38,14 @@ class searchTab : public QWidget
 		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
 		virtual QString tags() const = 0;
-		QList<Tag> results();
-		QString wiki();
+		const QList<Tag> &results();
+		const QString &wiki();
 		int imagesPerPage();
 		int columns();
-		QString postFilter();
+		const QString &postFilter();
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
-		QStringList selectedImages();
+		const QStringList &selectedImages();
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);

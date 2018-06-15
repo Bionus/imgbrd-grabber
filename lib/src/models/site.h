@@ -53,10 +53,10 @@ class Site : public QObject
 		Site(const QString &url, Source *source);
 		~Site() override;
 		void loadConfig();
-		QString type() const;
-		QString name() const;
-		QString url() const;
-		QList<QNetworkCookie> cookies() const;
+		const QString &type() const;
+		const QString &name() const;
+		const QString &url() const;
+		const QList<QNetworkCookie> &cookies() const;
 		QVariant setting(const QString &key, const QVariant &def = QVariant());
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
 		void syncSettings();
@@ -69,7 +69,9 @@ class Site : public QObject
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
 		// Api
-		QList<Api*> getApis(bool filterAuth = false) const;
+		const QList<Api*> &getApis() const;
+		QList<Api*> getLoggedInApis() const;
+
 		Source *getSource() const;
 		Api *firstValidApi() const;
 		Api *detailsApi() const;

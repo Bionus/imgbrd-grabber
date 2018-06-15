@@ -817,18 +817,18 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-QString			Image::url() const			{ return m_url;				}
-QString			Image::rating() const		{ return m_rating;			}
+const QString	&Image::url() const			{ return m_url;				}
+const QString	&Image::rating() const		{ return m_rating;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
-QList<Tag>		Image::tags() const			{ return m_tags;			}
-QList<Pool>		Image::pools() const		{ return m_pools;			}
+const QList<Tag>	&Image::tags() const	{ return m_tags;			}
+const QList<Pool>	&Image::pools() const	{ return m_pools;			}
 qulonglong		Image::id() const			{ return m_id;				}
 int				Image::fileSize() const		{ return m_fileSize;		}
 int				Image::width() const		{ return m_size.width();	}
 int				Image::height() const		{ return m_size.height();	}
-QDateTime		Image::createdAt() const	{ return m_createdAt;		}
-QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
-QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
+const QDateTime	&Image::createdAt() const	{ return m_createdAt;		}
+const QUrl		&Image::fileUrl() const		{ return m_fileUrl;			}
+const QUrl		&Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}

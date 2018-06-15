@@ -80,7 +80,7 @@ void TagApi::parse()
 	emit finishedLoading(this, LoadResult::Ok);
 }
 
-QList<Tag> TagApi::tags() const
+const QList<Tag> &TagApi::tags() const
 {
 	return m_tags;
 }

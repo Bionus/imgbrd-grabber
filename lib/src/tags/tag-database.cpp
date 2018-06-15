@@ -37,7 +37,7 @@ void TagDatabase::loadTypes()
 	f.close();
 }
 
-QMap<int, TagType> TagDatabase::tagTypes() const
+const QMap<int, TagType> &TagDatabase::tagTypes() const
 {
 	return m_tagTypes;
 }

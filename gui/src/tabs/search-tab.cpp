@@ -1461,12 +1461,12 @@ void searchTab::setFavoriteImage(const QString &name)
 
 QList<Site*> searchTab::sources()
 { return m_selectedSources; }
-QStringList searchTab::selectedImages()
+const QStringList &searchTab::selectedImages()
 { return m_selectedImages; }
 
-QList<Tag> searchTab::results()
+const QList<Tag> &searchTab::results()
 { return m_tags; }
-QString searchTab::wiki()
+const QString &searchTab::wiki()
 { return m_wiki; }
 
 void searchTab::onLoad()
@@ -1511,5 +1511,5 @@ int searchTab::imagesPerPage()
 { return ui_spinImagesPerPage->value(); }
 int searchTab::columns()
 { return ui_spinColumns->value(); }
-QString searchTab::postFilter()
+const QString &searchTab::postFilter()
 { return m_postFiltering->toPlainText(); }

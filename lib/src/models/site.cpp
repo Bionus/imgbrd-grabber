@@ -341,16 +341,14 @@ void Site::syncSettings() { m_settings->sync(); }
 MixedSettings *Site::settings() const { return m_settings; }
 TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
-QString Site::name() const { return m_name;	}
-QString Site::url() const	{ return m_url;	}
-QString Site::type() const	{ return m_type;	}
+const QString &Site::name() const { return m_name;	}
+const QString &Site::url() const	{ return m_url;	}
+const QString &Site::type() const	{ return m_type;	}
 
 Source *Site::getSource() const	{ return m_source;		}
-QList<Api*> Site::getApis(bool filterAuth) const
+const QList<Api *> &Site::getApis() const { return m_apis;	}
+QList<Api *> Site::getLoggedInApis() const
 {
-	if (!filterAuth)
-		return m_apis;
-
 	QList<Api*> ret;
 	bool loggedIn = isLoggedIn(true);
 	for (Api *api : m_apis)
@@ -413,7 +411,7 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 	return QUrl(url);
 }
 
-QList<QNetworkCookie> Site::cookies() const
+const QList<QNetworkCookie> &Site::cookies() const
 {
 	return m_cookies;
 }
