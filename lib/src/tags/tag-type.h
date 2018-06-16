@@ -10,7 +10,7 @@ class TagType
 	public:
 		TagType();
 		explicit TagType(const QString &name);
-		QString name() const;
+		const QString &name() const;
 		int number() const;
 
 	private:

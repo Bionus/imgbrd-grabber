@@ -1,6 +1,5 @@
 #include "batch/adduniquewindow.h"
 #include <QFileDialog>
-#include <QSettings>
 #include <ui_adduniquewindow.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"
@@ -61,7 +60,7 @@ void AddUniqueWindow::ok(bool close)
 	Api *api = site->detailsApi();
 	if (api != Q_NULLPTR)
 	{
-		QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
+		const QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
 
 		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
@@ -74,8 +73,8 @@ void AddUniqueWindow::ok(bool close)
 	}
 	else
 	{
-		QString query = (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text());
-		QStringList search = QStringList() << query << "status:any";
+		const QString query = (ui->lineId->text().isEmpty() ? "md5:" + ui->lineMd5->text() : "id:" + ui->lineId->text());
+		const QStringList search = QStringList() << query << "status:any";
 		m_page = new Page(m_profile, site, m_sites.values(), search, 1, 1);
 		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();

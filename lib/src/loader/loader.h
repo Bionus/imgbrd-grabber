@@ -1,8 +1,6 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-#include <QMap>
-#include <QString>
 #include <QVariant>
 
 

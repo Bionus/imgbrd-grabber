@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QSettings>
-#include <QStringList>
 
 
 namespace Ui

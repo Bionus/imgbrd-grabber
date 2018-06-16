@@ -1,8 +1,6 @@
 #ifndef PAGE_API_H
 #define PAGE_API_H
 
-#include <QMap>
-#include <QNetworkReply>
 #include "models/image.h"
 #include "tags/tag.h"
 

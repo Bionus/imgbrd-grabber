@@ -1,4 +1,5 @@
 #include "threads/resizer.h"
+#include <QImage>
 
 
 Resizer::Resizer(QObject *parent)

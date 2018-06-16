@@ -4,7 +4,6 @@
 #include <QFont>
 #include <QMap>
 #include <QString>
-#include <QStringList>
 #include "tags/tag-type.h"
 
 
@@ -23,18 +22,18 @@ class Tag
 		void setType(const TagType &type);
 		void setCount(int count);
 		void setRelated(const QStringList &related);
-		int			id()		const;
-		QString		text()		const;
-		TagType		type()		const;
-		int			count()		const;
-		QStringList	related()	const;
+		int id() const;
+		const QString &text() const;
+		const TagType &type() const;
+		int count() const;
+		const QStringList &related() const;
 
 	private:
-		int			m_id;
-		QString		m_text;
-		TagType		m_type;
-		int			m_count;
-		QStringList	m_related;
+		int m_id;
+		QString m_text;
+		TagType m_type;
+		int m_count;
+		QStringList m_related;
 };
 
 bool sortTagsByType(const Tag &, const Tag &);

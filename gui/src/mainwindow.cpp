@@ -51,7 +51,6 @@
 #include "tags/tag-stylist.h"
 #include "theme-loader.h"
 #include "ui/QAffiche.h"
-#include "updater/update-dialog.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
@@ -1518,7 +1517,7 @@ void mainWindow::getAllImages()
 	m_progressDialog->setCount(m_getAllRemaining.count());
 	for (const BatchDownloadImage &download : qAsConst(m_getAllRemaining))
 	{
-		int siteId = download.siteId(m_groupBatchs);
+		const int siteId = download.siteId(m_groupBatchs);
 		QSharedPointer<Image> img = download.image;
 
 		// We add the image

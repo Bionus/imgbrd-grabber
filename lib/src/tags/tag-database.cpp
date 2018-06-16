@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
+#include "tag-type.h"
 
 
 TagDatabase::TagDatabase(const QString &typeFile)

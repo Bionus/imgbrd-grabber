@@ -4,7 +4,7 @@
 
 
 ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject* parent)
-	: QObject(parent), m_waiting(false), m_cancelNext(false), m_hasNext(false), m_next(QByteArray())
+	: QObject(parent), m_next(QByteArray()), m_waiting(false), m_cancelNext(false), m_hasNext(false)
 {
 	connect(this, &ImageLoaderQueue::loadImage, imageLoader, &ImageLoader::load);
 	connect(imageLoader, &ImageLoader::finished, this, &ImageLoaderQueue::loadingSuccess);

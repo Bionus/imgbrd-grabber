@@ -28,8 +28,8 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 	for (const QString &group : webGroups)
 	{
 		m_settings->beginGroup(group);
-		int id = group.toInt();
-		int order = m_settings->value("order").toInt();
+		const int id = group.toInt();
+		const int order = m_settings->value("order").toInt();
 		ret.insert(order, ReverseSearchEngine(id, savePath("webservices/" + group + ".ico"), m_settings->value("name").toString(), m_settings->value("url").toString(), order));
 		m_settings->endGroup();
 	}

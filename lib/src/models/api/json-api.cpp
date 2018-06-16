@@ -1,3 +1,4 @@
+#include "models/api/api.h"
 #include "models/api/json-api.h"
 #include "models/page.h"
 #include "models/site.h"
@@ -40,12 +41,11 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 	for (int i = 0; i < postsKey.count() && sourc.isEmpty(); ++i)
 	{ sourc = data.value(postsKey[i]).toList(); }
 
-	QMap<QString, QVariant> sc;
 	for (int id = 0; id < sourc.count(); id++)
 	{
 		QList<Tag> tags;
 
-		sc = sourc.at(id + first).toMap();
+		QMap<QString, QVariant> sc = sourc.at(id + first).toMap();
 		QMap<QString, QString> d;
 		if (sc.contains("tag_string"))
 		{
@@ -107,7 +107,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 				for (const QVariant &variant : variants)
 				{
 					auto variantInfo = variant.toMap();
-					int bitrate = variantInfo.value("bitrate").toInt();
+					const int bitrate = variantInfo.value("bitrate").toInt();
 					if (bitrate > maxBitrate)
 					{
 						maxBitrate = bitrate;
@@ -152,7 +152,7 @@ ParsedPage JsonApi::parsePage(Page *parentPage, const QString &source, int first
 			QMap<QString, QVariant> scTypes = sc["tags"].toMap();
 			for (auto it = scTypes.begin(); it != scTypes.end(); ++it)
 			{
-				TagType tType(it.key());
+				const TagType tType(it.key());
 				QList<QVariant> tagList = it.value().toList();
 				for (const QVariant &iTag : tagList)
 				{ tags.append(Tag(iTag.toString(), tType)); }
@@ -244,7 +244,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 			typeId = sc.value("type").toInt();
 		}
 
-		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 

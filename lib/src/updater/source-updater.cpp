@@ -15,8 +15,8 @@ SourceUpdater::SourceUpdater(const QString &source, const QString &directory, co
 
 void SourceUpdater::checkForUpdates() const
 {
-	QUrl url(m_baseUrl + m_source + "/model.xml");
-	QNetworkRequest request(url);
+	const QUrl url(m_baseUrl + m_source + "/model.xml");
+	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
 	connect(reply, &QNetworkReply::finished, this, &SourceUpdater::checkForUpdatesDone);

@@ -1,7 +1,6 @@
 #ifndef DOWNLOAD_QUERY_LOADER_H
 #define DOWNLOAD_QUERY_LOADER_H
 
-#include <QList>
 #include <QMap>
 #include <QString>
 

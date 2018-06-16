@@ -1,8 +1,6 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QList>
-#include <QMap>
 #include <QNetworkReply>
 #include <QSettings>
 #include <QString>

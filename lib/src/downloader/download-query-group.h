@@ -2,7 +2,6 @@
 #define DOWNLOAD_QUERY_GROUP_H
 
 #include <QJsonObject>
-#include <QMetaType>
 #include <QSettings>
 #include <QString>
 #include "downloader/download-query.h"
@@ -15,8 +14,8 @@ class DownloadQueryGroup : public DownloadQuery
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		explicit DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = "");
-		explicit DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = "");
+		explicit DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = QString());
+		explicit DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = QString());
 
 		// Serialization
 		QString toString(const QString &separator) const override;

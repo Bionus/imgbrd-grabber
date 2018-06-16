@@ -33,7 +33,7 @@ void DownloadableDownloader::save()
 
 void DownloadableDownloader::preloaded()
 {
-	QString url = m_downloadable->url(Downloadable::Size::Full);
+	const QString url = m_downloadable->url(Downloadable::Size::Full);
 	QStringList paths = !m_paths.isEmpty() ? m_paths : m_downloadable->paths(m_filename, m_folder, m_count);
 
 	// Sometimes we don't even need to download the image to save it
@@ -60,9 +60,9 @@ void DownloadableDownloader::preloaded()
 	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url);
 	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, QStringLiteral("image"), Q_NULLPTR); // TODO(Bionus)
-	QObject::connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
-	QObject::connect(&m_fileDownloader, &FileDownloader::networkError, this, &DownloadableDownloader::networkError, Qt::UniqueConnection);
-	QObject::connect(&m_fileDownloader, &FileDownloader::success, this, &DownloadableDownloader::success, Qt::UniqueConnection);
+	connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
+	connect(&m_fileDownloader, &FileDownloader::networkError, this, &DownloadableDownloader::networkError, Qt::UniqueConnection);
+	connect(&m_fileDownloader, &FileDownloader::success, this, &DownloadableDownloader::success, Qt::UniqueConnection);
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(reply, m_paths))

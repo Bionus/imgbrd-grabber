@@ -1,4 +1,6 @@
 #include "models/api/javascript-grabber-helper.h"
+#include <QDomNode>
+#include <QJSEngine>
 #include <QRegularExpression>
 #include "logger.h"
 
@@ -54,7 +56,7 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 {
 	QJSValue obj = m_engine.newObject();
 
-	auto type = node.nodeType();
+	const auto type = node.nodeType();
 
 	// Element node
 	if (type == QDomNode::ElementNode)

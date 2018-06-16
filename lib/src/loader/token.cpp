@@ -12,20 +12,20 @@ Token::Token(const QVariant &value, const QString &whatToDoDefault, const QStrin
 {}
 
 
-QVariant Token::value() const
+const QVariant &Token::value() const
 { return m_value; }
 
 QString Token::toString() const
 { return m_value.toString(); }
 
 
-QString Token::whatToDoDefault() const
+const QString &Token::whatToDoDefault() const
 { return m_whatToDoDefault; }
 
-QString Token::emptyDefault() const
+const QString &Token::emptyDefault() const
 { return m_emptyDefault; }
 
-QString Token::multipleDefault() const
+const QString &Token::multipleDefault() const
 { return m_multipleDefault; }
 
 

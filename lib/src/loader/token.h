@@ -1,7 +1,6 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include <QString>
 #include <QVariant>
 
 
@@ -12,13 +11,13 @@ class Token
 		explicit Token(const QVariant &value, const QVariant &def = QVariant());
 		explicit Token(const QVariant &value, const QString &whatToDoDefault, const QString &emptyDefault, const QString &multipleDefault);
 
-		QVariant value() const;
+		const QVariant &value() const;
 		template <typename T> T value() const { return m_value.value<T>(); }
 		QString toString() const;
 
-		QString whatToDoDefault() const;
-		QString emptyDefault() const;
-		QString multipleDefault() const;
+		const QString &whatToDoDefault() const;
+		const QString &emptyDefault() const;
+		const QString &multipleDefault() const;
 
 	private:
 		QVariant m_value;

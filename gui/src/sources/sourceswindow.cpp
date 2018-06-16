@@ -331,7 +331,7 @@ void sourcesWindow::checkForSourceIssuesReceived()
 
 	for (const QString &issue : issues)
 	{
-		int index = issue.indexOf(':');
+		const int index = issue.indexOf(':');
 		if (issue.isEmpty() || index < 0)
 			return;
 
@@ -353,12 +353,12 @@ QMap<QString, QStringList> sourcesWindow::loadPresets(QSettings *settings) const
 {
 	QMap<QString, QStringList> ret;
 
-	int size = settings->beginReadArray("SourcePresets");
+	const int size = settings->beginReadArray("SourcePresets");
 	for (int i = 0; i < size; ++i)
 	{
 		settings->setArrayIndex(i);
-		QString name = settings->value("name").toString();
-		QStringList sources = settings->value("sources").toStringList();
+		const QString name = settings->value("name").toString();
+		const QStringList sources = settings->value("sources").toStringList();
 		ret.insert(name, sources);
 	}
 	settings->endArray();

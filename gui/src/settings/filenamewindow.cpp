@@ -1,7 +1,7 @@
 #include "settings/filenamewindow.h"
 #include <QDesktopServices>
+#include <QMessageBox>
 #include <QRegExp>
-#include <QRegularExpression>
 #include <ui_filenamewindow.h>
 #include "models/filename.h"
 #include "models/image.h"
@@ -62,7 +62,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	{
 		QString cap = date.cap(1);
 		QString format;
-		for (QChar c : cap)
+		for (const QChar &c : cap)
 		{
 			if (c == 'Y')
 			{ format += "' + date.getFullYear() + '"; }
@@ -140,7 +140,7 @@ void FilenameWindow::done(int r)
 
 		if (det.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
+			const int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
 			if (reply == QMessageBox::Cancel)
 			{
 				return;

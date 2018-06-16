@@ -2,7 +2,6 @@
 #define LOG_WINDOW_H
 
 #include <QDialog>
-#include <QMap>
 #include <QVariant>
 
 

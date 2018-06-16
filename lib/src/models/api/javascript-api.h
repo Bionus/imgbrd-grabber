@@ -4,8 +4,10 @@
 #include <QJSValue>
 #include <QMutex>
 #include "models/api/api.h"
+#include "tags/tag.h"
 
 
+class Page;
 class Site;
 
 class JavascriptApi : public Api

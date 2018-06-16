@@ -2,10 +2,7 @@
 #define LOADER_DATA_H
 
 #include <QList>
-#include <QPair>
 #include <QSharedPointer>
-#include <QStringList>
-#include <QUrl>
 #include "loader/downloadable.h"
 
 

@@ -1,6 +1,4 @@
 #include "post-filter.h"
-#include <QDateTime>
-#include <QObject>
 #include "functions.h"
 #include "loader/token.h"
 
@@ -28,8 +26,8 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 	// Tokens
 	if (filter.startsWith('%') && filter.endsWith('%'))
 	{
-		QString key = filter.mid(1, filter.length() - 2);
-		bool cond = tokens.contains(key) && !isVariantEmpty(tokens[key].value());
+		const QString key = filter.mid(1, filter.length() - 2);
+		const bool cond = tokens.contains(key) && !isVariantEmpty(tokens[key].value());
 
 		if (cond && invert)
 		{ return QObject::tr("image has a \"%1\" token").arg(key); }
@@ -40,7 +38,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 	// Meta-tags
 	else if (filter.contains(":"))
 	{
-		QString type = filter.section(':', 0, 0).toLower();
+		const QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
 		if (!tokens.contains(type))
 		{
@@ -48,7 +46,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 			return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, keys.join("\", \""));
 		}
 
-		QVariant token = tokens[type].value();
+		const QVariant &token = tokens[type].value();
 		if (token.type() == QVariant::Int || token.type() == QVariant::DateTime || token.type() == QVariant::ULongLong)
 		{
 			int input = 0;
@@ -112,7 +110,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 				if (assoc.contains(filter))
 					filter = assoc[filter];
 
-				bool cond = !filter.isEmpty() && token.toString().toLower().startsWith(filter.at(0));
+				const bool cond = !filter.isEmpty() && token.toString().toLower().startsWith(filter.at(0));
 				if (!cond && !invert)
 				{ return QObject::tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)
@@ -121,7 +119,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 			else if (type == "source")
 			{
 				QRegExp rx(filter + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
-				bool cond = rx.exactMatch(token.toString());
+				const bool cond = rx.exactMatch(token.toString());
 				if (!cond && !invert)
 				{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
 				if (cond && invert)
@@ -129,9 +127,9 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 			}
 			else
 			{
-				QString input = token.toString();
+				const QString input = token.toString();
 
-				bool cond = input == filter;
+				const bool cond = input == filter;
 
 				if (!cond && !invert)
 				{ return QObject::tr("image's %1 does not match").arg(type); }

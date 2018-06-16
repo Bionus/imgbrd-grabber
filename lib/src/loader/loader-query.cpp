@@ -33,14 +33,14 @@ LoaderData LoaderQuery::next()
 
 	// Options
 	Profile *profile = m_site->getSource()->getProfile();
-	QStringList tags = m_options["tags"].toStringList();
-	int page = m_options["page"].toInt();
-	int perPage = m_options["perPage"].toInt();
-	int limit = m_options["limit"].toInt();
-	QStringList postFiltering = m_options["postFiltering"].toStringList();
-	bool getBlacklisted = m_options["getBlacklisted"].toBool();
-	// QStringList blacklist = m_options["blacklist"].toStringList();
-	QList<QStringList> blacklist;
+	const QStringList tags = m_options["tags"].toStringList();
+	const int page = m_options["page"].toInt();
+	const int perPage = m_options["perPage"].toInt();
+	const int limit = m_options["limit"].toInt();
+	const QStringList postFiltering = m_options["postFiltering"].toStringList();
+	const bool getBlacklisted = m_options["getBlacklisted"].toBool();
+	// const QStringList blacklist = m_options["blacklist"].toStringList();
+	const QList<QStringList> blacklist;
 
 	// Load results
 	QEventLoop loop;
@@ -65,7 +65,7 @@ LoaderData LoaderQuery::next()
 	}
 
 	// Paging
-	int pageCount = qCeil(static_cast<qreal>(limit) / perPage);
+	const int pageCount = qCeil(static_cast<qreal>(limit) / perPage);
 	m_offset++;
 	m_finished = m_offset == pageCount;
 

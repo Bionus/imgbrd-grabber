@@ -1,6 +1,7 @@
 #ifndef DOWNLOADABLE_H
 #define DOWNLOADABLE_H
 
+#include <QColor>
 #include <QString>
 #include <QUrl>
 #include "loader/token.h"

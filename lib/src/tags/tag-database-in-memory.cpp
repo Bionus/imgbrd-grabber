@@ -67,7 +67,7 @@ bool TagDatabaseInMemory::save()
 		i.next();
 
 		TagType tagType = i.value();
-		int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
+		const int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
 
 		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
 	}

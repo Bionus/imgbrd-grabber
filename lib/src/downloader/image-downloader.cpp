@@ -1,9 +1,11 @@
 #include "downloader/image-downloader.h"
 #include <QUuid>
 #include "extension-rotator.h"
+#include "file-downloader.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
+#include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -47,7 +49,7 @@ void ImageDownloader::loadedSave()
 	// Use a random temporary file if we need the MD5 or equivalent
 	if (m_temporaryPath.isEmpty())
 	{
-		QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+		const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
 		m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 	}
 
@@ -94,7 +96,7 @@ void ImageDownloader::loadImage()
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
 	// Create download root directory
-	QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
+	const QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
 	if (!QDir(rootDir).exists() && !QDir().mkpath(rootDir))
 	{
 		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(rootDir), Logger::Error);
@@ -137,11 +139,11 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		QSettings *settings = m_image->parentSite()->getSource()->getProfile()->getSettings();
 		ExtensionRotator *extensionRotator = m_image->extensionRotator();
 
-		bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
+		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
 		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
-		bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
-		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
+		const bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
+		const bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
 
 		if (m_rotate && (!isLast || (shouldFallback && !m_tryingSample)))
 		{
@@ -210,7 +212,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 
 		if (!moved)
 		{
-			QString dir = path.section(QDir::separator(), 0, -2);
+			const QString dir = path.section(QDir::separator(), 0, -2);
 			if (!QDir(dir).exists() && !QDir().mkpath(dir))
 			{
 				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);

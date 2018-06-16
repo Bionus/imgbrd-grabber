@@ -2,8 +2,6 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
-#include <QMap>
-#include <QSettings>
 #include "models/site.h"
 
 

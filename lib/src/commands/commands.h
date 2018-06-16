@@ -24,12 +24,12 @@ class Commands
 	public:
 		explicit Commands(Profile *profile);
 		~Commands();
-		bool start();
-		bool before();
+		bool start() const;
+		bool before() const;
 		bool image(const Image &img, const QString &path);
 		bool tag(const Image &img, const Tag &tag, bool after);
-		bool after();
-		bool sqlExec(const QString &sql);
+		bool after() const;
+		bool sqlExec(const QString &sql) const;
 
 	private:
 		Profile *m_profile;

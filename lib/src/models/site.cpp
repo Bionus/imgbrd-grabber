@@ -1,12 +1,9 @@
 #include "models/site.h"
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QStringList>
 #include <QTimer>
-#include <QUrlQuery>
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
@@ -54,7 +51,7 @@ Site::Site(const QString &url, Source *source)
 
 void Site::loadConfig()
 {
-	QString siteDir = m_source->getPath() + "/" + m_url + "/";
+	const QString siteDir = m_source->getPath() + "/" + m_url + "/";
 
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
@@ -80,7 +77,7 @@ void Site::loadConfig()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			QString def = defaults.count() > i ? defaults[i] : QString();
+			const QString def = defaults.count() > i ? defaults[i] : QString();
 			sources << m_settings->value("sources/source_" + QString::number(i + 1), def).toString();
 		}
 		sources.removeAll("");
@@ -102,7 +99,7 @@ void Site::loadConfig()
 	}
 
 	// Auth information
-	QString type = m_settings->value("login/type", "url").toString();
+	const QString type = m_settings->value("login/type", "url").toString();
 	if (type == "url")
 		m_login = new UrlLogin(this, m_manager, m_settings);
 	else if (type == "oauth2")
@@ -208,7 +205,7 @@ bool Site::canTestLogin() const
  */
 void Site::loginFinished(Login::Result result)
 {
-	bool ok = result == Login::Result::Success;
+	const bool ok = result == Login::Result::Success;
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
 	log(QStringLiteral("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
@@ -276,8 +273,8 @@ void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QN
 
 	qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
-	QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
-	int def = (type == QueryType::Retry ? 60 : 0);
+	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
+	const int def = (type == QueryType::Retry ? 60 : 0);
 	int ms = setting("download/throttle_" + key, def).toInt() * 1000;
 	ms -= sinceLastRequest;
 
@@ -294,7 +291,7 @@ void Site::getCallback()
 
 QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
 {
-	QNetworkRequest request = this->makeRequest(url, page, ref, img);
+	const QNetworkRequest request = this->makeRequest(url, page, ref, img);
 	return this->getRequest(request);
 }
 
@@ -307,14 +304,14 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 
 void Site::loadTags(int page, int limit)
 {
-	QString protocol = (m_settings->value("ssl", false).toBool() ? QStringLiteral("https") : QStringLiteral("http"));
+	const QString protocol = (m_settings->value("ssl", false).toBool() ? QStringLiteral("https") : QStringLiteral("http"));
 	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
 }
 
 void Site::finishedTags()
 {
-	QString source = m_tagsReply->readAll();
+	const QString source = m_tagsReply->readAll();
 	m_tagsReply->deleteLater();
 	QList<Tag> tags;
 	QVariant src = Json::parse(source);
@@ -325,7 +322,7 @@ void Site::finishedTags()
 		for (int id = 0; id < sourc.count(); id++)
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
-			int cat = sc.value("category").toInt();
+			const int cat = sc.value("category").toInt();
 			tags.append(Tag(sc.value("name").toString(),
 							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
 							sc.value("post_count").toInt(),
@@ -350,7 +347,7 @@ const QList<Api *> &Site::getApis() const { return m_apis;	}
 QList<Api *> Site::getLoggedInApis() const
 {
 	QList<Api*> ret;
-	bool loggedIn = isLoggedIn(true);
+	const bool loggedIn = isLoggedIn(true);
 	for (Api *api : m_apis)
 		if (!api->needAuth() || loggedIn)
 			ret.append(api);
@@ -359,7 +356,7 @@ QList<Api *> Site::getLoggedInApis() const
 }
 Api *Site::firstValidApi() const
 {
-	bool loggedIn = isLoggedIn(true);
+	const bool loggedIn = isLoggedIn(true);
 	for (Api *api : m_apis)
 		if (!api->needAuth() || loggedIn)
 			return api;
@@ -386,8 +383,8 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 	if (url.isEmpty())
 		return QUrl();
 
-	bool ssl = m_settings->value("ssl", false).toBool();
-	QString protocol = (ssl ? QStringLiteral("https") : QStringLiteral("http"));
+	const bool ssl = m_settings->value("ssl", false).toBool();
+	const QString protocol = (ssl ? QStringLiteral("https") : QStringLiteral("http"));
 
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }

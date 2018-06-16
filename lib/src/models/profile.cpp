@@ -1,9 +1,8 @@
 #include "models/profile.h"
-#include <QDir>
-#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSet>
 #include "commands/commands.h"
 #include "functions.h"
 #include "models/site.h"
@@ -43,7 +42,7 @@ Profile::Profile(const QString &path)
 	QFile fileFavoritesJson(m_path + "/favorites.json");
 	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text))
 	{
-		QByteArray data = fileFavoritesJson.readAll();
+		const QByteArray data = fileFavoritesJson.readAll();
 		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 		QJsonObject object = loadDoc.object();
 
@@ -257,8 +256,8 @@ void Profile::syncIgnored()
 
 QString Profile::tempPath() const
 {
-	QString tmp = QDir::tempPath();
-	QString subDir = "Grabber";
+	const QString tmp = QDir::tempPath();
+	const QString subDir = "Grabber";
 	QDir(tmp).mkpath(subDir);
 	return tmp + QDir::separator() + subDir;
 }
@@ -322,11 +321,11 @@ void Profile::removeIgnored(const QString &tag)
 QPair<QString, QString> Profile::md5Action(const QString &md5)
 {
 	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
-	bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
 
-	bool contains = !md5.isEmpty() && m_md5s.contains(md5);
+	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
 	QString path = contains ? m_md5s[md5] : QString();
-	bool exists = contains && QFile::exists(path);
+	const bool exists = contains && QFile::exists(path);
 
 	if (contains && !exists)
 	{

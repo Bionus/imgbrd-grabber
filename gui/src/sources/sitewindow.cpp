@@ -1,5 +1,4 @@
 #include "sources/sitewindow.h"
-#include <QFile>
 #include <QPushButton>
 #include <ui_sitewindow.h>
 #include "functions.h"

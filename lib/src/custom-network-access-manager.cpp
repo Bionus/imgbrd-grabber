@@ -1,6 +1,6 @@
 #include "custom-network-access-manager.h"
 #include <QDebug>
-#include <QFile>
+#include <QNetworkReply>
 #include "functions.h"
 #include "vendor/qcustomnetworkreply.h"
 
@@ -23,7 +23,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		QString host = request.url().host();
 		QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
 
-		bool fromQueue = !CustomNetworkAccessManager::NextFiles.isEmpty();
+		const bool fromQueue = !CustomNetworkAccessManager::NextFiles.isEmpty();
 		if (fromQueue)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
@@ -47,8 +47,8 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		}
 
 		QFile f(path);
-		bool opened = f.open(QFile::ReadOnly);
-		bool logFilename = !opened || !fromQueue;
+		const bool opened = f.open(QFile::ReadOnly);
+		const bool logFilename = !opened || !fromQueue;
 		if (!opened)
 		{
 			md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
@@ -75,7 +75,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 
 		if (logFilename)
 		{ qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName()); }
-		QByteArray content = f.readAll();
+		const QByteArray content = f.readAll();
 
 		auto *reply = new QCustomNetworkReply(this);
 		reply->setHttpStatusCode(200, "OK");

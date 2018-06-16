@@ -1,4 +1,5 @@
 #include "models/monitor.h"
+#include <QMap>
 #include "models/site.h"
 
 
@@ -60,10 +61,10 @@ void Monitor::toJson(QJsonObject &json) const
 Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
 	Site *site = sites.value(json["site"].toString());
-	int interval = json["interval"].toInt();
-	QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
-	int cumulated = json["cumulated"].toInt();
-	bool preciseCumulated = json["preciseCumulated"].toBool();
+	const int interval = json["interval"].toInt();
+	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
+	const int cumulated = json["cumulated"].toInt();
+	const bool preciseCumulated = json["preciseCumulated"].toBool();
 
 	return Monitor(site, interval, lastCheck, cumulated, preciseCumulated);
 }

@@ -1,9 +1,13 @@
+#include <QCryptographicHash>
 #include <QEventLoop>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QRegularExpression>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
-#include "downloader/file-downloader.h"
+#include "favorite.h"
 #include "functions.h"
+#include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
@@ -11,9 +15,9 @@
 #include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "models/source.h"
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
+#include "tags/tag-type.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
 
@@ -144,11 +148,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species" << "meta";
 	for (const QString &typ : types)
 	{
-		QString key = "tags_" + typ;
+		const QString key = "tags_" + typ;
 		if (!details.contains(key))
 			continue;
 
-		TagType ttype(typ);
+		const TagType ttype(typ);
 		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
 		for (QString tg : t)
 		{
@@ -161,8 +165,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
 
 		// Automatically find tag separator and split the list
-		int commas = tgs.count(", ");
-		int spaces = tgs.count(" ");
+		const int commas = tgs.count(", ");
+		const int spaces = tgs.count(" ");
 		const QStringList &t = commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2)
 			? tgs.split(", ", QString::SkipEmptyParts)
 			: tgs.split(" ", QString::SkipEmptyParts);
@@ -171,10 +175,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		{
 			tg.replace("&amp;", "&");
 
-			int colon = tg.indexOf(':');
+			const int colon = tg.indexOf(':');
 			if (colon != -1)
 			{
-				QString tp = tg.left(colon).toLower();
+				const QString tp = tg.left(colon).toLower();
 				if (tp == "user")
 				{ m_author = tg.mid(colon + 1); }
 				else if (tp == "score")
@@ -208,21 +212,21 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
-	QString ext = getExtension(m_url);
+	const QString ext = getExtension(m_url);
 	if (details.contains("ext") && !details["ext"].isEmpty())
 	{
-		QString realExt = details["ext"];
+		const QString realExt = details["ext"];
 		if (ext != realExt)
 		{ setFileExtension(realExt); }
 	}
 	else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty())
 	{
 		bool fixed = false;
-		QString previewExt = getExtension(details["preview_url"]);
+		const QString previewExt = getExtension(details["preview_url"]);
 		if (!m_sampleUrl.isEmpty())
 		{
 			// Guess extension from sample url
-			QString sampleExt = getExtension(details["sample_url"]);
+			const QString sampleExt = getExtension(details["sample_url"]);
 			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext)
 			{
 				m_url = setExtension(m_url, sampleExt);
@@ -255,7 +259,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
-	bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals))
 		m_url = m_sampleUrl.toString();
 
@@ -267,8 +271,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
 	// Setup extension rotator
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	QStringList extensions = animated
+	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	const QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
@@ -337,7 +341,7 @@ void Image::parseDetails()
 		return;
 	}
 
-	int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	const int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
 		log(QStringLiteral("Details limit reached (429). New try."));
@@ -345,7 +349,7 @@ void Image::parseDetails()
 		return;
 	}
 
-	QString source = QString::fromUtf8(m_loadDetails->readAll());
+	const QString source = QString::fromUtf8(m_loadDetails->readAll());
 
 	// Get an api able to parse details
 	Api *api = m_parentSite->detailsApi();
@@ -372,7 +376,7 @@ void Image::parseDetails()
 	// Image url
 	if (!ret.imageUrl.isEmpty())
 	{
-		QString before = m_url;
+		const QString before = m_url;
 
 		QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
 		m_url = newUrl.toString();
@@ -513,11 +517,11 @@ void Image::finishedImageS(bool inMemory)
 
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
 	{
-		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
+		const bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString newext = m_extensionRotator != nullptr ? m_extensionRotator->next() : "";
 
-		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
-		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
+		const bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
+		const bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
 
 		if (!isLast || (shouldFallback && !m_tryingSample))
 		{
@@ -549,8 +553,8 @@ void Image::finishedImageS(bool inMemory)
 		{ m_fileSize = m_data.size(); }
 	}
 
-	QNetworkReply::NetworkError error = m_loadImage->error();
-	QString errorString = m_loadImage->errorString();
+	const QNetworkReply::NetworkError error = m_loadImage->error();
+	const QString errorString = m_loadImage->errorString();
 
 	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
 	m_loadImageError = error;
@@ -635,16 +639,16 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 	QFile f(path);
 	if (!f.exists() || force)
 	{
-		QPair<QString, QString> md5action = m_profile->md5Action(md5());
-		QString whatToDo = md5action.first;
-		QString md5Duplicate = md5action.second;
+		const QPair<QString, QString> md5action = m_profile->md5Action(md5());
+		const QString &whatToDo = md5action.first;
+		const QString &md5Duplicate = md5action.second;
 
 		// Only create the destination directory if we're going to put a file there
 		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
 		{
-			QString p = path.section(QDir::separator(), 0, -2);
-			QDir path_to_file(p), dir;
-			if (!path_to_file.exists() && !dir.mkpath(p))
+			const QString p = path.section(QDir::separator(), 0, -2);
+			QDir pathToFile(p), dir;
+			if (!pathToFile.exists() && !dir.mkpath(p))
 			{
 				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
 				return SaveResult::Error;
@@ -724,11 +728,11 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 		for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 		{
 			auto logFile = it.value();
-			QString textfileFormat = logFile["content"].toString();
+			const QString textfileFormat = logFile["content"].toString();
 			QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
 			if (!cont.isEmpty())
 			{
-				int locationType = logFile["locationType"].toInt();
+				const int locationType = logFile["locationType"].toInt();
 				QString contents = cont.first();
 
 				// File path
@@ -746,7 +750,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
-				bool append = fileTags.exists();
+				const bool append = fileTags.exists();
 				if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
 				{
 					if (append)
@@ -785,7 +789,7 @@ QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addM
 }
 QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
 {
-	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
+	const QStringList paths = this->path(filename, path, count, true, false, true, true, true);
 	return save(paths, addMd5, startCommands, count, false);
 }
 
@@ -847,8 +851,8 @@ void Image::setSavePath(const QString &path)
 
 bool Image::shouldDisplaySample() const
 {
-	bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
+	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	const bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
 
 	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample);
 }
@@ -878,11 +882,11 @@ void Image::setData(const QByteArray &d)
 	m_data = d;
 
 	// Detect file extension from data headers
-	bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
+	const bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
 	if (headerDetection)
 	{
 		QString ext = getExtensionFromHeader(m_data.left(12));
-		QString currentExt = getExtension(m_url);
+		const QString currentExt = getExtension(m_url);
 		if (!ext.isEmpty() && ext != currentExt)
 		{
 			log(QStringLiteral("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Logger::Info);
@@ -941,7 +945,7 @@ QString Image::tooltip() const
 			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
 
 	double size = m_fileSize;
-	QString unit = getUnit(&size);
+	const QString unit = getUnit(&size);
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(stylishedTags(m_profile).join(" ")))
@@ -956,9 +960,9 @@ QString Image::tooltip() const
 
 QList<QStrP> Image::detailsData() const
 {
-	QString unknown = tr("<i>Unknown</i>");
-	QString yes = tr("yes");
-	QString no = tr("no");
+	const QString unknown = tr("<i>Unknown</i>");
+	const QString yes = tr("yes");
+	const QString no = tr("no");
 
 	return {
 		QStrP(tr("Tags"), stylishedTags(m_profile).join(' ')),
@@ -1066,7 +1070,7 @@ void Image::setFileExtension(const QString &ext)
 
 bool Image::isVideo() const
 {
-	QString ext = getExtension(m_url).toLower();
+	const QString ext = getExtension(m_url).toLower();
 	return ext == "mp4" || ext == "webm";
 }
 QString Image::isAnimated() const
@@ -1113,7 +1117,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
-	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, Token> tokens;
 
@@ -1160,7 +1164,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	QMap<QString, QStringList> details;
 	for (const Tag &tag : filteredTags(remove))
 	{
-		QString t = tag.text();
+		const QString t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);
@@ -1225,7 +1229,7 @@ Image::SaveResult Image::preSave(const QString &path)
 void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)
 {
 	const QString &path = result.firstKey();
-	Image::SaveResult res = result[path];
+	const Image::SaveResult res = result[path];
 
 	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
 }

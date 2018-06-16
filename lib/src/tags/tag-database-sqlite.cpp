@@ -72,7 +72,7 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 
 	for (const Tag &tag : tags)
 	{
-		QString type = tag.type().name();
+		const QString &type = tag.type().name();
 		addQuery.bindValue(":id", tag.id());
 		addQuery.bindValue(":tag", tag.text());
 		addQuery.bindValue(":ttype", tagTypes.contains(type) ? tagTypes[type] : -1);
@@ -114,7 +114,7 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) c
 		return ret;
 
 	// Execute query
-	QString sql = "SELECT tag, ttype FROM tags WHERE tag IN (" + formatted.join(",") + ")";
+	const QString sql = "SELECT tag, ttype FROM tags WHERE tag IN (" + formatted.join(",") + ")";
 	QSqlQuery query(m_database);
 	query.setForwardOnly(true);
 	if (!query.exec(sql))
@@ -123,12 +123,12 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) c
 		return ret;
 	}
 
-	int idTag = query.record().indexOf("tag");
-	int idTtype = query.record().indexOf("ttype");
+	const int idTag = query.record().indexOf("tag");
+	const int idTtype = query.record().indexOf("ttype");
 	while (query.next())
 	{
-		QString tag = query.value(idTag).toString();
-		TagType type = m_tagTypes[query.value(idTtype).toInt()];
+		const QString tag = query.value(idTag).toString();
+		const TagType type = m_tagTypes[query.value(idTtype).toInt()];
 		ret.insert(tag, type);
 		m_cache.insert(tag, type);
 	}
@@ -142,7 +142,7 @@ int TagDatabaseSqlite::count() const
 		return m_count;
 
 	QSqlQuery query(m_database);
-	QString sql = QStringLiteral("SELECT COUNT(*) FROM tags");
+	const QString sql = QStringLiteral("SELECT COUNT(*) FROM tags");
 	if (!query.exec(sql) || !query.next())
 	{
 		log(QStringLiteral("SQL error when getting tag count: %1").arg(query.lastError().text()), Logger::Error);

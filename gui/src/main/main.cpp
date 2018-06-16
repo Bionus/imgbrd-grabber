@@ -25,7 +25,6 @@
 
 
 #include <QApplication>
-#include <QDir>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "mainwindow.h"
@@ -70,8 +69,8 @@ int main(int argc, char *argv[])
 	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
 	for (const QString &tgt : toCopy)
 	{
-		QString from = savePath(tgt, true, false);
-		QString to = savePath(tgt, true, true);
+		const QString from = savePath(tgt, true, false);
+		const QString to = savePath(tgt, true, true);
 		if (!QDir(to).exists() && QDir(from).exists())
 			copyRecursively(from, to);
 	}
@@ -81,24 +80,24 @@ int main(int argc, char *argv[])
 	parser.addVersionOption();
 
 	#if !defined(USE_CLI)
-		QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
+	const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
 	#endif
-	QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
-	QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
-	QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
-	QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
-	QCommandLineOption perpageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
-	QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
-	QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
-	QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
-	QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
-	QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
-	QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
-	QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
-	QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
-	QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
-	QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
+	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
+	const QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
+	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
+	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
+	const QCommandLineOption perpageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
+	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
+	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
+	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
+	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
+	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
+	const QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
+	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
+	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
+	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
+	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -114,11 +113,11 @@ int main(int argc, char *argv[])
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
-	QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
-	QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
-	QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
-	QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
-	QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
+	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
+	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
+	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
+	const QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
+	const QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
 	parser.addOption(returnCountOption);
 	parser.addOption(returnTagsOption);
 	parser.addOption(returnPureTagsOption);
@@ -128,12 +127,12 @@ int main(int argc, char *argv[])
 	parser.process(app);
 
 	#if !defined(USE_CLI)
-		bool gui = !parser.isSet(cliOption);
+		const bool gui = !parser.isSet(cliOption);
 	#else
-		bool gui = false;
+		const bool gui = false;
 	#endif
 
-	bool verbose = parser.isSet(verboseOption);
+		const bool verbose = parser.isSet(verboseOption);
 	#if !defined(QT_DEBUG)
 		Logger::setupMessageOutput(gui || verbose);
 	#endif
@@ -193,7 +192,7 @@ int main(int argc, char *argv[])
 		{
 			// Check for updates
 			QSettings *settings = profile->getSettings();
-			int cfuInterval = settings->value("check_for_updates", 24*60*60).toInt();
+			const int cfuInterval = settings->value("check_for_updates", 24*60*60).toInt();
 			QDateTime lastCfu = settings->value("last_check_for_updates", QDateTime()).toDateTime();
 			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
 			{

@@ -1,11 +1,6 @@
 #include "models/source.h"
-#include <QDir>
-#include <QDomDocument>
-#include <QFile>
-#include <QFileInfo>
 #include <QJSValue>
 #include <QJSValueIterator>
-#include <QStringList>
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/html-api.h"
@@ -71,7 +66,7 @@ Source::Source(Profile *profile, const QString &dir)
 	QFile file(m_dir + "/model.xml");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		QString fileContents = file.readAll();
+		const QString fileContents = file.readAll();
 		QDomDocument doc;
 		QString errorMsg;
 		int errorLine, errorColumn;
@@ -92,7 +87,7 @@ Source::Source(Profile *profile, const QString &dir)
 			};
 
 			// Javascript models
-			bool enableJs = m_profile->getSettings()->value("enableJsModels", true).toBool();
+			const bool enableJs = m_profile->getSettings()->value("enableJsModels", true).toBool();
 			QFile js(m_dir + "/model.js");
 			if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
@@ -122,7 +117,7 @@ Source::Source(Profile *profile, const QString &dir)
 					const QJSValue &tagFormat = m_jsSource.property("tagFormat");
 					if (!tagFormat.isUndefined())
 					{
-						auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
+						const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
 						m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
 					}
 				}
@@ -170,7 +165,7 @@ Source::Source(Profile *profile, const QString &dir)
 				{ log(QStringLiteral("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
 
 				// Read tag naming format
-				auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
+				const auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
 				m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
 			}
 		}

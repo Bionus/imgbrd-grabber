@@ -2,7 +2,6 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "logger.h"
@@ -23,8 +22,8 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	// Version 1 and 2 are plain text
 	if (header.startsWith("[IGL "))
 	{
-		QString fieldSeparator(QChar(29));
-		QString lineSeparator(QChar(28));
+		const QChar fieldSeparator(29);
+		const QChar lineSeparator(28);
 
 		// Read the remaining file
 		QString links = f.readAll();
@@ -38,7 +37,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 			QStringList infos = link.split(fieldSeparator);
 			if (infos.size() == 9)
 			{
-				QString source = infos[6];
+				const QString &source = infos[6];
 				if (!sites.contains(source))
 					continue;
 
@@ -46,7 +45,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 			}
 			else
 			{
-				QString source = infos[5];
+				const QString &source = infos[5];
 				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 					continue;
 
@@ -70,11 +69,11 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	// Other versions are JSON-based
 	f.reset();
 
-	QByteArray data = f.readAll();
+	const QByteArray data = f.readAll();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 
-	int version = object["version"].toInt();
+	const int version = object["version"].toInt();
 	switch (version)
 	{
 		case 3:

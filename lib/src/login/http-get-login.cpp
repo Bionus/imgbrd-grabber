@@ -12,7 +12,7 @@ QNetworkReply *HttpGetLogin::getReply(const QString &loginUrl, const QUrlQuery &
 {
 	QUrl url = m_site->fixUrl(loginUrl);
 	url.setQuery(query);
-	QNetworkRequest request(url);
+	const QNetworkRequest request(url);
 
 	return m_manager->get(request);
 }

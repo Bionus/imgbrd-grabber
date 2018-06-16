@@ -1,5 +1,4 @@
 #include "commands/sql-worker.h"
-#include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
@@ -26,7 +25,7 @@ bool SqlWorker::connect()
 	db.setUserName(m_user);
 	db.setPassword(m_password);
 
-	int portSeparator = m_host.lastIndexOf(':');
+	const int portSeparator = m_host.lastIndexOf(':');
 	if (portSeparator > 0)
 	{
 		db.setHostName(m_host.left(portSeparator));

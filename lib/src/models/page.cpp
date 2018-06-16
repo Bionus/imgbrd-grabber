@@ -1,9 +1,9 @@
 #include "models/page.h"
+#include <QUrl>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
-#include "vendor/json.h"
 
 
 Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
@@ -183,7 +183,7 @@ int Page::imagesCount(bool guess) const
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->imagesCount(guess);
+		const int count = m_pageApis[m_regexApi]->imagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
@@ -193,7 +193,7 @@ int Page::pagesCount(bool guess) const
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->pagesCount(guess);
+		const int count = m_pageApis[m_regexApi]->pagesCount(guess);
 		if (count >= 0)
 			return count;
 	}

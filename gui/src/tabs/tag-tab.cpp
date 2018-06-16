@@ -1,8 +1,8 @@
 #include "tabs/tag-tab.h"
+#include <QCloseEvent>
 #include <QJsonArray>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
-#include "helpers.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "searchwindow.h"
@@ -93,7 +93,7 @@ void tagTab::load()
 			search.prepend("md5:");
 	}
 
-	QStringList tags = search.split(" ", QString::SkipEmptyParts);
+	const QStringList tags = search.split(" ", QString::SkipEmptyParts);
 	loadTags(tags);
 }
 
@@ -175,19 +175,19 @@ void tagTab::getPage()
 		if (m_checkboxes.at(i)->isChecked())
 		{ actuals.append(keys.at(i)); }
 	}
-	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		if (m_pages.contains(actuals[i]))
 		{
-			auto page = m_pages[actuals[i]].first();
+			const auto &page = m_pages[actuals[i]].first();
 
-			int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->images().count() > ui->spinImagesPerPage->value() ? page->images().count() : ui->spinImagesPerPage->value());
+			const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->images().count() > ui->spinImagesPerPage->value() ? page->images().count() : ui->spinImagesPerPage->value());
 			if (perpage <= 0 || page->images().count() <= 0)
 				continue;
 
-			QString search = page->search().join(' ');
-			QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+			const QString search = page->search().join(' ');
+			const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 		}
 	}
@@ -206,18 +206,18 @@ void tagTab::getAll()
 
 	for (const QString &actual : actuals)
 	{
-		QSharedPointer<Page> page = m_pages[actual].first();
+		const auto &page = m_pages[actual].first();
 
-		int highLimit = page->highLimit();
-		int currentCount = page->images().count();
-		int imageCount = page->imagesCount();
-		int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
-		int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
+		const int highLimit = page->highLimit();
+		const int currentCount = page->images().count();
+		const int imageCount = page->imagesCount();
+		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 			continue;
 
-		QString search = page->search().join(' ');
-		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		const QString search = page->search().join(' ');
+		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 		Site *site = m_sites.value(actual);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));

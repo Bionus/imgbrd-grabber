@@ -1,4 +1,5 @@
 #include "models/api/javascript-console-helper.h"
+#include <QObject>
 #include "logger.h"
 
 

@@ -2,8 +2,8 @@
 #include <QRegularExpression>
 #include <QSet>
 #include <QTextDocument>
-#include <QtMath>
 #include "functions.h"
+#include "tag-type.h"
 
 
 QMap<int, QString> stringListToMap(const QStringList &list)
@@ -37,7 +37,7 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 	m_text = htmlEncoded.toPlainText().replace(' ', '_');
 
 	// Sometimes a type is found with multiple words, only the first is relevant
-	int typeSpace = m_type.name().indexOf(' ');
+	const int typeSpace = m_type.name().indexOf(' ');
 	if (typeSpace != -1)
 	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
@@ -48,7 +48,7 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
-	int sepPos = m_text.indexOf(':');
+	const int sepPos = m_text.indexOf(':');
 	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
 		static QStringList prep = QStringList()
@@ -61,8 +61,8 @@ Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStr
 			<< QStringLiteral("unknown")
 			<< QStringLiteral("oc");
 
-		QString pre = Tag::GetType(m_text.left(sepPos));
-		int prepIndex = prep.indexOf(pre);
+		const QString pre = Tag::GetType(m_text.left(sepPos));
+		const int prepIndex = prep.indexOf(pre);
 		if (prepIndex != -1)
 		{
 			m_type = TagType(Tag::GetType(prep[prepIndex], stringListToMap(prep)));
@@ -120,7 +120,7 @@ QList<Tag> Tag::FromRegexp(const QString &rx, const QString &source)
 	auto matches = rxtags.globalMatch(source);
 	while (matches.hasNext())
 	{
-		auto match = matches.next();
+		const auto &match = matches.next();
 		Tag tag = Tag::FromCapture(match, rxtags.namedCaptureGroups());
 
 		if (!got.contains(tag.text()))
@@ -156,7 +156,7 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 
 	if (type.length() == 1)
 	{
-		int typeId = type.toInt();
+		const int typeId = type.toInt();
 		if (ids.contains(typeId))
 			return ids[typeId];
 	}
@@ -170,11 +170,11 @@ void Tag::setType(const TagType &type)		{ m_type = type;	}
 void Tag::setCount(int count)				{ m_count = count;	}
 void Tag::setRelated(const QStringList &r)	{ m_related = r;	}
 
-int			Tag::id() const			{ return m_id;		}
-QString		Tag::text() const		{ return m_text;	}
-TagType		Tag::type() const		{ return m_type;	}
-int			Tag::count() const		{ return m_count;	}
-QStringList	Tag::related() const	{ return m_related;	}
+int Tag::id() const						{ return m_id;		}
+const QString &Tag::text() const		{ return m_text;	}
+const TagType &Tag::type() const		{ return m_type;	}
+int Tag::count() const					{ return m_count;	}
+const QStringList &Tag::related() const	{ return m_related;	}
 
 bool sortTagsByType(const Tag &s1, const Tag &s2)
 {
@@ -187,8 +187,8 @@ bool sortTagsByType(const Tag &s1, const Tag &s2)
 		<< QStringLiteral("character")
 		<< QStringLiteral("copyright");
 
-	int t1 = typeOrder.indexOf(s1.type().name());
-	int t2 = typeOrder.indexOf(s2.type().name());
+	const int t1 = typeOrder.indexOf(s1.type().name());
+	const int t2 = typeOrder.indexOf(s2.type().name());
 	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
 }
 bool sortTagsByName(const Tag &s1, const Tag &s2)

@@ -1,7 +1,6 @@
 #ifndef IMAGE_LOADER_QUEUE_H
 #define IMAGE_LOADER_QUEUE_H
 
-#include <QByteArray>
 #include <QPixmap>
 
 

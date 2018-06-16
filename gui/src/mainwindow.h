@@ -3,14 +3,10 @@
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QAtomicInt>
 #include <QLinkedList>
 #include <QMainWindow>
-#include <QProcess>
 #include <QProgressBar>
 #include <QQueue>
-#include <QSet>
-#include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTableWidgetItem>
 #include <QTranslator>

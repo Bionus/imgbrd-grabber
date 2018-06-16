@@ -1,13 +1,14 @@
 #include "danbooru-downloader-importer.h"
 #include <QFileInfo>
 #include <QRegularExpression>
+#include <QSettings>
 
 
 DanbooruDownloaderImporter::DanbooruDownloaderImporter()
 	: m_firefoxProfilePath(QString())
 {
 	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
-	QString path = QFileInfo(cfg.fileName()).absolutePath() + "/Firefox";
+	const QString path = QFileInfo(cfg.fileName()).absolutePath() + "/Firefox";
 	if (QFile::exists(path + "/profiles.ini"))
 	{
 		QSettings profiles(path + "/profiles.ini", QSettings::IniFormat);
@@ -26,7 +27,7 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	if (prefs.exists() && prefs.open(QIODevice::ReadOnly | QIODevice::Text))
 		return;
 
-	QString source = prefs.readAll();
+	const QString source = prefs.readAll();
 	QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
 	QMap<QString, QString> firefox, assoc;
 	assoc["blacklist"] = "blacklistedtags";

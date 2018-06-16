@@ -1,8 +1,8 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QTimer>
 #include "functions.h"
@@ -13,6 +13,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "tags/tag.h"
 
 
 bool opCompare(QString op, int left, int right)
@@ -44,13 +45,13 @@ bool jsonCompare(QVariant value, QJsonValue opt)
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication app(argc, argv);
+	const QCoreApplication app(argc, argv);
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
 
-	QCommandLineOption inputOption(QStringList() << "i" << "input", "Input JSON configuration file", "input");
-	QCommandLineOption outputOption(QStringList() << "o" << "output", "Output JSON result file", "output");
+	const QCommandLineOption inputOption(QStringList() << "i" << "input", "Input JSON configuration file", "input");
+	const QCommandLineOption outputOption(QStringList() << "o" << "output", "Output JSON result file", "output");
 	parser.addOption(inputOption);
 	parser.addOption(outputOption);
 	parser.process(app);
@@ -73,12 +74,12 @@ int main(int argc, char *argv[])
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
-	auto oldBlacklist = profile->getBlacklist();
+	const auto oldBlacklist = profile->getBlacklist();
 	profile->setBlacklistedTags(QList<QStringList>());
 
-	QJsonObject root = input.object();
-	QJsonArray rootSearch = root.value("search").toArray();
-	QJsonObject sources = root.value("sources").toObject();
+	const QJsonObject root = input.object();
+	const QJsonArray rootSearch = root.value("search").toArray();
+	const QJsonObject sources = root.value("sources").toObject();
 
 	for (const QString &sourceName : sources.keys())
 	{
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 		Source *source = allSources.value(sourceName);
 		QJsonObject sites = sources.value(sourceName).toObject();
 
-		QJsonObject sourceApis = sites.value("apis").toObject();
+		const QJsonObject sourceApis = sites.value("apis").toObject();
 		QJsonArray sourceSearch = rootSearch;
 		if (sites.contains("search"))
 		{ sourceSearch = sites.value("search").toArray(); }
@@ -119,9 +120,9 @@ int main(int argc, char *argv[])
 				if (checks.count() > 4)
 				{ apiSearch = checks[4].toArray(); }
 
-				QString search = apiSearch[0].toString();
-				int pagei = apiSearch[1].toDouble();
-				int limit = apiSearch[2].toDouble();
+				const QString search = apiSearch[0].toString();
+				const int pagei = apiSearch[1].toDouble();
+				const int limit = apiSearch[2].toDouble();
 
 				Api *api = Q_NULLPTR;
 				for (Api *a : site->getApis())

@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QLayout>
 #include <QList>
-#include <QMap>
 #include <QPointer>
 #include <QProgressBar>
 #include <QPushButton>
@@ -38,14 +37,14 @@ class searchTab : public QWidget
 		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
 		virtual QString tags() const = 0;
-		const QList<Tag> &results();
-		const QString &wiki();
+		const QList<Tag> &results() const;
+		const QString &wiki() const;
 		int imagesPerPage();
 		int columns();
-		const QString &postFilter();
+		QString postFilter();
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
-		const QStringList &selectedImages();
+		const QStringList &selectedImages() const;
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);

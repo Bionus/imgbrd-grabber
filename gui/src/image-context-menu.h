@@ -6,6 +6,7 @@
 #include "reverse-search/reverse-search-engine.h"
 
 
+class QSettings;
 class mainWindow;
 
 class ImageContextMenu : public QMenu

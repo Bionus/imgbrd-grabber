@@ -3,7 +3,6 @@
 
 #include <QCloseEvent>
 #include <QDialog>
-#include <QMessageBox>
 
 #if defined(USE_QSCINTILLA)
 	#include <Qsci/qscilexerjavascript.h>

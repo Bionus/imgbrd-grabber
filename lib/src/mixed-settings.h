@@ -1,8 +1,6 @@
 #ifndef MIXED_SETTINGS_H
 #define MIXED_SETTINGS_H
 
-#include <QList>
-#include <QObject>
 #include <QSettings>
 
 

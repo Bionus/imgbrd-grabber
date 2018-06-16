@@ -26,14 +26,14 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	ui->setupUi(this);
 
 	// Promote favorites layout into fixed-size grid layout
-	int hSpace = m_settings->value("Margins/horizontal", 6).toInt();
-	int vSpace = m_settings->value("Margins/vertical", 6).toInt();
+	const int hSpace = m_settings->value("Margins/horizontal", 6).toInt();
+	const int vSpace = m_settings->value("Margins/vertical", 6).toInt();
 	m_favoritesLayout = new FixedSizeGridLayout(hSpace, vSpace);
-	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	if (fixedWidthLayout)
 	{
-		int borderSize = m_settings->value("borders", 3).toInt();
-		qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
+		const int borderSize = m_settings->value("borders", 3).toInt();
+		const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 	}
 	QWidget *layoutWidget = new QWidget;
@@ -111,9 +111,9 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 
 void favoritesTab::updateFavorites()
 {
-	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
-	QString order = assoc[ui->comboOrder->currentIndex()];
-	bool reverse = (ui->comboAsc->currentIndex() == 1);
+	static const QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+	const QString &order = assoc[ui->comboOrder->currentIndex()];
+	const bool reverse = (ui->comboAsc->currentIndex() == 1);
 
 	if (order == "note")
 	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote); }
@@ -124,17 +124,17 @@ void favoritesTab::updateFavorites()
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
 
-	QString format = tr("MM/dd/yyyy");
+	const QString format = tr("MM/dd/yyyy");
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
-	qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
-	int borderSize = m_settings->value("borders", 3).toInt();
-	int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
+	const int borderSize = m_settings->value("borders", 3).toInt();
+	const int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
 
 	for (Favorite &fav : m_favorites)
 	{
-		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		auto *l = new QVBoxLayout;
 		l->setMargin(0);
@@ -246,13 +246,13 @@ void favoritesTab::getPage()
 		if (m_checkboxes.at(i)->isChecked())
 		{ actuals.append(keys.at(i)); }
 	}
-	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		auto page = m_pages[actuals[i]].first();
-		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
-		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
-		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		const auto &page = m_pages[actuals[i]].first();
+		const QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
+		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 	}
@@ -268,18 +268,18 @@ void favoritesTab::getAll()
 
 	for (const QString &actual : actuals)
 	{
-		QSharedPointer<Page> page = m_pages[actual].first();
+		const auto &page = m_pages[actual].first();
 
-		int highLimit = page->highLimit();
-		int currentCount = page->images().count();
-		int imageCount = page->imagesCount();
-		int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
-		int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
+		const int highLimit = page->highLimit();
+		const int currentCount = page->images().count();
+		const int imageCount = page->imagesCount();
+		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 			continue;
 
-		QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
-		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
+		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 		Site *site = m_sites.value(actual);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
@@ -295,7 +295,7 @@ QString favoritesTab::tags() const
 
 void favoritesTab::loadFavorite(const QString &name)
 {
-	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
+	const int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
 		return;
 
@@ -328,7 +328,7 @@ void favoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
+		const int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			for (const Favorite &fav : qAsConst(m_favorites))
@@ -344,7 +344,7 @@ void favoritesTab::setFavoriteViewed(const QString &tag)
 {
 	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
-	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(tag));
+	const int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(tag));
 	if (index < 0)
 		return;
 
@@ -371,11 +371,11 @@ void favoritesTab::favoritesBack()
 }
 void favoritesTab::favoriteProperties(const QString &name)
 {
-	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
+	const int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
 		return;
 
-	Favorite fav = m_favorites[index];
+	const Favorite fav = m_favorites[index];
 	favoriteWindow *fwin = new favoriteWindow(m_profile, fav, this);
 	fwin->show();
 }

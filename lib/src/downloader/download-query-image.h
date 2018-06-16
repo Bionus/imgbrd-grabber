@@ -3,7 +3,6 @@
 
 #include <QJsonObject>
 #include <QMap>
-#include <QMetaType>
 #include <QSettings>
 #include <QString>
 #include "downloader/download-query.h"

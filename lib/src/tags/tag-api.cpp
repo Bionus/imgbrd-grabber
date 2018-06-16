@@ -1,17 +1,15 @@
 #include "tags/tag-api.h"
-#include <QDomDocument>
 #include <QRegularExpression>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
-#include "vendor/json.h"
 
 
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
 	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(Q_NULLPTR)
 {
-	QString url = api->tagsUrl(page, limit, site).url;
+	const QString url = api->tagsUrl(page, limit, site).url;
 	m_url = m_site->fixUrl(url);
 }
 

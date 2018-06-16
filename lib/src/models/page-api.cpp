@@ -1,16 +1,17 @@
 #include "models/page-api.h"
-#include <QDomDocument>
+#include <QNetworkReply>
 #include <QRegularExpression>
 #include <QtConcurrentRun>
 #include <QtMath>
 #include "functions.h"
+#include "image.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "vendor/json.h"
+#include "tags/tag.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
@@ -46,7 +47,7 @@ void PageApi::setLastPage(Page *page)
 void PageApi::updateUrls()
 {
 	QString url;
-	QString search = m_search.join(" ");
+	QString search = m_search.join(' ');
 	m_errors.clear();
 
 	// URL searches
@@ -138,10 +139,10 @@ void PageApi::parse()
 		log(QStringLiteral("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 
 		// HTTP -> HTTPS redirects
-		bool ssl = m_site->setting("ssl", false).toBool();
+		const bool ssl = m_site->setting("ssl", false).toBool();
 		if (!ssl && newUrl.path() == m_url.path() && newUrl.scheme() == "https" && m_url.scheme() == "http")
 		{
-			bool notThisSite = m_site->setting("ssl_never_correct", false).toBool();
+			const bool notThisSite = m_site->setting("ssl_never_correct", false).toBool();
 			if (!notThisSite)
 			{ emit httpsRedirect(); }
 		}
@@ -152,7 +153,7 @@ void PageApi::parse()
 	}
 
 	// Detect HTTP 429 usage limit reached
-	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
 		log(QStringLiteral("[%1][%2] Limit reached (429). New try.").arg(m_site->url(), m_format), Logger::Warning);
@@ -178,7 +179,7 @@ void PageApi::parseActual()
 		return;
 	}
 
-	int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
+	const int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
 
 	// Parse source
 	ParsedPage page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage);
@@ -320,8 +321,8 @@ int PageApi::imagesCount(bool guess) const
 
 	if (m_imagesCount < 0 && m_pagesCount >= 0)
 	{
-		int forcedLimit = m_api->forcedLimit();
-		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+		const int forcedLimit = m_api->forcedLimit();
+		const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 		return m_pagesCount * perPage;
 	}
 
@@ -338,8 +339,8 @@ int PageApi::pagesCount(bool guess) const
 
 	if (m_pagesCount < 0 && m_imagesCount >= 0)
 	{
-		int forcedLimit = m_api->forcedLimit();
-		int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+		const int forcedLimit = m_api->forcedLimit();
+		const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 		return qCeil(static_cast<qreal>(m_imagesCount) / perPage);
 	}
 
@@ -372,8 +373,8 @@ void PageApi::setImageCount(int count, bool sure)
 
 		if (sure)
 		{
-			int forcedLimit = m_api->forcedLimit();
-			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			const int forcedLimit = m_api->forcedLimit();
+			const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 			setPageCount(qCeil(static_cast<qreal>(count) / perPage), true);
 		}
 	}
@@ -388,8 +389,8 @@ void PageApi::setPageCount(int count, bool sure)
 
 		if (sure)
 		{
-			int forcedLimit = m_api->forcedLimit();
-			int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+			const int forcedLimit = m_api->forcedLimit();
+			const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
 			setImageCount(count * perPage, false);
 		}
 	}

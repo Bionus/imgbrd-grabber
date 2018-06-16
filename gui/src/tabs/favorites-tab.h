@@ -1,8 +1,6 @@
 #ifndef FAVORITES_TAB_H
 #define FAVORITES_TAB_H
 
-#include <QMap>
-#include <QWidget>
 #include "tabs/search-tab.h"
 
 

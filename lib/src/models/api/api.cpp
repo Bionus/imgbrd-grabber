@@ -2,7 +2,6 @@
 #include <QRegularExpression>
 #include "logger.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/site.h"
 #include "models/source.h"
 
@@ -15,7 +14,7 @@ Api::Api(const QString &name, const QMap<QString, QString> &data)
 	{
 		if (it.key().startsWith(prefix))
 		{
-			QString k = it.key().right(it.key().length() - prefix.length() - 1);
+			const QString k = it.key().right(it.key().length() - prefix.length() - 1);
 			m_data["Urls/" + k] = it.value();
 		}
 	}
@@ -40,9 +39,9 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	{ search = m_data.value("DefaultTag"); }
 
 	// Find page number
-	int forced = forcedLimit();
-	int pidLimit = forced > 0 ? forced : limit;
-	int pid = pidLimit * (page - 1);
+	const int forced = forcedLimit();
+	const int pidLimit = forced > 0 ? forced : limit;
+	const int pid = pidLimit * (page - 1);
 	page = page - 1 + m_data.value("FirstPage").toInt();
 
 	// Custom URL for pool search
@@ -79,7 +78,7 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	else if (m_data.contains("Urls/MaxPage"))
 	{ maxPage = m_data.value("Urls/MaxPage").toInt(); }
 
-	bool isAltPage = maxPage >= 0 && page > maxPage && page - 1 <= lastPage && lastPage <= page + 1;
+	const bool isAltPage = maxPage >= 0 && page > maxPage && page - 1 <= lastPage && lastPage <= page + 1;
 	if (m_data.contains("Urls/NormalPage"))
 	{ url.replace("{cpage}", isAltPage ? "{altpage}" : m_data.value("Urls/NormalPage")); }
 	if (isAltPage)
@@ -206,7 +205,7 @@ QString Api::parseSetImageUrl(Site *site, const QString &settingUrl, const QStri
 		QStringList reps = value(settingReplaces).split('&');
 		for (const QString &rep : reps)
 		{
-			QRegularExpression rgx(rep.left(rep.indexOf("->")));
+			const QRegularExpression rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
@@ -279,7 +278,7 @@ int Api::forcedLimit() const
 { return contains("Urls/Limit") ? value("Urls/Limit").toInt() : 0; }
 int Api::maxLimit() const
 {
-	int forced = forcedLimit();
+	const int forced = forcedLimit();
 	if (forced > 0)
 		return forced;
 

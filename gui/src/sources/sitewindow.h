@@ -2,7 +2,6 @@
 #define SITE_WINDOW_H
 
 #include <QDialog>
-#include <QMap>
 
 
 namespace Ui

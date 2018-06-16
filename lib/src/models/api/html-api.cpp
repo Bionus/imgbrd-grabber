@@ -2,6 +2,7 @@
 #include <QRegularExpression>
 #include <QtMath>
 #include "functions.h"
+#include "models/api/api.h"
 #include "models/site.h"
 #include "tags/tag-database.h"
 #include "vendor/json.h"
@@ -29,7 +30,7 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	int id = 0;
 	while (matches.hasNext())
 	{
-		auto match = matches.next();
+		const auto &match = matches.next();
 		QMap<QString, QString> d = multiMatchToMap(match, rxImages.namedCaptureGroups());
 
 		// JSON elements
@@ -74,14 +75,14 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	{
 		QRegularExpression rxlast(value("Regex/LastPage"));
 		auto match = rxlast.match(source);
-		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
+		const int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{
 			int pagesCount = cnt;
 			if (value("Urls/Tags").contains("{pid}") || (contains("Urls/PagePart") && value("Urls/PagePart").contains("{pid}")))
 			{
-				int forced = forcedLimit();
-				int ppid = forced > 0 ? forced : limit;
+				const int forced = forcedLimit();
+				const int ppid = forced > 0 ? forced : limit;
 				pagesCount = qFloor(static_cast<qreal>(pagesCount) / static_cast<qreal>(ppid)) + 1;
 			}
 			ret.pageCount = pagesCount;
@@ -93,7 +94,7 @@ ParsedPage HtmlApi::parsePage(Page *parentPage, const QString &source, int first
 	{
 		QRegularExpression rxlast(value("Regex/Count"));
 		auto match = rxlast.match(source);
-		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
+		const int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{ ret.imageCount = cnt; }
 	}

@@ -1,6 +1,7 @@
 #include "models/api/javascript-api.h"
 #include <QJSEngine>
 #include <QJSValueIterator>
+#include <QMap>
 #include <QMutexLocker>
 #include "functions.h"
 #include "logger.h"
@@ -42,7 +43,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 	// Script errors and exceptions
 	if (result.isError())
 	{
-		QString err = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		const QString err = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
 		ret.error = err;
 		log(err, Logger::Error);
 		return;
@@ -100,7 +101,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	const QStringList &authKeys = settings->childKeys();
 	for (const QString &key : authKeys)
 	{
-		QString value = settings->value(key).toString();
+		const QString value = settings->value(key).toString();
 		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
 		{ auth.setProperty("login", value); }
 		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
@@ -119,7 +120,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 		previous.setProperty("maxId", lastPageMaxId);
 	}
 
-	QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts << previous);
+	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts << previous);
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -135,7 +136,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	{
 		it.next();
 
-		QJSValue tag = it.value();
+		const QJSValue tag = it.value();
 		if (tag.isString())
 		{
 			ret.append(Tag(tag.toString()));
@@ -144,9 +145,9 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		else if (!tag.isObject())
 		{ continue; }
 
-		int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
-		QString text = tag.property("name").toString();
-		int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
+		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
+		const QString text = tag.property("name").toString();
+		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
 
 		QString type;
 		int typeId;
@@ -160,7 +161,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined())
 		{ typeId = tag.property("typeId").toInt(); }
 
-		TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 		ret.append(Tag(id, text, tagType, count));
 	}
 
@@ -194,7 +195,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 	if (results.hasProperty("images"))
 	{
-		QJSValue images = results.property("images");
+		const QJSValue images = results.property("images");
 		QJSValueIterator it(images);
 		while (it.hasNext())
 		{
@@ -282,7 +283,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	const QStringList &authKeys = settings->childKeys();
 	for (const QString &key : authKeys)
 	{
-		QString value = settings->value(key).toString();
+		const QString value = settings->value(key).toString();
 		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
 		{ auth.setProperty("login", value); }
 		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
@@ -292,7 +293,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	settings->endGroup();
 	opts.setProperty("auth", auth);
 
-	QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -344,7 +345,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 		return ret;
 	}
 
-	QJSValue result = urlFunction.call(QList<QJSValue>() << QString::number(id) << md5);
+	const QJSValue result = urlFunction.call(QList<QJSValue>() << QString::number(id) << md5);
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -377,7 +378,7 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 
 	if (results.hasProperty("pools"))
 	{
-		QJSValue images = results.property("pools");
+		const QJSValue images = results.property("pools");
 		QJSValueIterator it(images);
 		while (it.hasNext())
 		{
@@ -387,10 +388,10 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 			if (!pool.isObject())
 				continue;
 
-			int id = pool.hasProperty("id") ? pool.property("id").toInt() : 0;
-			QString name = pool.property("name").toString();
-			int next = pool.hasProperty("next") ? pool.property("next").toInt() : 0;
-			int previous = pool.hasProperty("previous") ? pool.property("previous").toInt() : 0;
+			const int id = pool.hasProperty("id") ? pool.property("id").toInt() : 0;
+			const QString name = pool.property("name").toString();
+			const int next = pool.hasProperty("next") ? pool.property("next").toInt() : 0;
+			const int previous = pool.hasProperty("previous") ? pool.property("previous").toInt() : 0;
 
 			ret.pools.append(Pool(id, name, 0, next, previous));
 		}
@@ -421,7 +422,7 @@ PageUrl JavascriptApi::checkUrl() const
 		return ret;
 	}
 
-	QJSValue result = urlFunction.call();
+	const QJSValue result = urlFunction.call();
 	fillUrlObject(result, Q_NULLPTR, ret);
 
 	return ret;
@@ -440,6 +441,7 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source) const
 	if (result.isError())
 	{
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
+		ret.ok = false;
 		return ret;
 	}
 

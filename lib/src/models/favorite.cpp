@@ -1,5 +1,4 @@
 #include "models/favorite.h"
-#include <QDir>
 #include <QJsonArray>
 #include "functions.h"
 
@@ -65,9 +64,11 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 {
 	QStringList xp = text.split("|");
 
-	QString tag = xp.takeFirst();
-	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
-	QDateTime lastViewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+	const QString tag = xp.takeFirst();
+	const int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+	const QDateTime lastViewed = xp.isEmpty()
+		? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0))
+		: QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))
@@ -93,9 +94,9 @@ void Favorite::toJson(QJsonObject &json) const
 }
 Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
-	QString tag = json["tag"].toString();
-	int note = json["note"].toInt();
-	QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
+	const QString tag = json["tag"].toString();
+	const int note = json["note"].toInt();
+	const QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))

@@ -1,6 +1,7 @@
 #include "tags/tag-stylist.h"
 #include <algorithm>
 #include "functions.h"
+#include "models/favorite.h"
 #include "models/profile.h"
 #include "tags/tag.h"
 
@@ -52,11 +53,11 @@ QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) co
 
 	QFont font;
 	font.fromString(m_profile->getSettings()->value("Coloring/Fonts/" + key).toString());
-	QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
-	QString style = "color:" + color + "; " + qFontToCss(font);
+	const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+	const QString style = "color:" + color + "; " + qFontToCss(font);
 
-	QString ret;
-	ret = "<a href=\"" + tag.text() + "\" style=\"" + style + "\">" + (noUnderscores ? tag.text().replace('_', ' ') : tag.text()) + "</a>";
+	QString txt = tag.text();
+	QString ret = "<a href=\"" + tag.text() + "\" style=\"" + style + "\">" + (noUnderscores ? txt.replace('_', ' ') : tag.text()) + "</a>";
 	if (count && tag.count() > 0)
 		ret += " <span style=\"color:#aaa\">(" + QString("%L1").arg(tag.count()) + ")</span>";
 

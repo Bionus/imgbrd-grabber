@@ -1,4 +1,5 @@
 #include "downloader/file-downloader.h"
+#include <QNetworkReply>
 #include "functions.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
@@ -16,7 +17,7 @@ bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 {
 	m_copies = paths;
 	m_file.setFileName(m_copies.takeFirst());
-	bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
+	const bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
 	m_writeError = false;
 	m_reply = reply;
@@ -46,10 +47,10 @@ void FileDownloader::replyReadyRead()
 void FileDownloader::replyFinished()
 {
 	QByteArray data = m_reply->readAll();
-	qint64 written = m_file.write(data);
+	const qint64 written = m_file.write(data);
 	m_file.close();
 
-	bool failedLastWrite = data.length() > 0 && written < 0;
+	const bool failedLastWrite = data.length() > 0 && written < 0;
 	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite)
 	{
 		m_file.remove();

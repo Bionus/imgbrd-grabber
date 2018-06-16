@@ -66,7 +66,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 		postFiltering.append(tag.toString());
 
 	// Get site
-	QString siteName = json["site"].toString();
+	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName))
 	{
 		return false;

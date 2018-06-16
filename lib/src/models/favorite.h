@@ -1,8 +1,6 @@
 #ifndef FAVORITE_H
 #define FAVORITE_H
 
-#include <QDateTime>
-#include <QJsonObject>
 #include <QPixmap>
 #include <QString>
 #include "models/monitor.h"

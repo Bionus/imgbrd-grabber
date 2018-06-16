@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Source status</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <pre id="status"></pre>
+        </div>
+
+        <script type="text/javascript">
+            $.ajax({
+                url: "result.json",
+                dataType: "json",
+                beforeSend: function(xhr) {
+                    xhr.overrideMimeType("text/json");
+                },
+                success: function(data) {
+                    var date = new Date();
+                    var dateStr = date.getFullYear() + "-" + ("0" + date.getMonth()).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+                    var timeStr = date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2);
+                    var html = "# Source status\n";
+                    html += "Last check on the " + dateStr + " at " + timeStr + ".\n";
+                    for (var source in data) {
+                        var sites = data[source];
+                        if (Object.keys(sites).length == 0) {
+                            continue;
+                        }
+
+                        html += "## " + source + "\n";
+
+                        var first = true;
+                        for (var site in sites) {
+                            var stts = data[source][site];
+
+                            if (first) {
+                                html += "| |";
+                                for (var api in stts) {
+                                    html += " " + api + " |";
+                                }
+                                html += "\n";
+                                html += "| --- |";
+                                for (var api in stts) {
+                                    html += " --- |";
+                                }
+                                html += "\n";
+                                first = false;
+                            }
+
+                            html += "| " + site + " |";
+                            for (var api in stts) {
+                                var state = stts[api];
+                                if (typeof state !== "object") {
+                                    state = { status: state };
+                                }
+                                var assoc = {
+                                    error: "x",
+                                    warning: "warning",
+                                    ok: "heavy_check_mark",
+                                };
+                                html += " :" + assoc[state.status] + ":" + (state.message && state.message.length > 0 ? " <span title='" + state.message + "'>?</span>" : "") + " |";
+                            }
+                            html += "\n";
+                        }
+                    }
+                    $("#status").text(html);
+                }
+            });
+        </script>
+    </body>
+</html>

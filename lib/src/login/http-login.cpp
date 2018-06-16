@@ -1,6 +1,7 @@
 #include "login/http-login.h"
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QNetworkReply>
 #include <QUrlQuery>
 #include "custom-network-access-manager.h"
 #include "mixed-settings.h"
@@ -18,8 +19,8 @@ bool HttpLogin::isTestable() const
 
 void HttpLogin::login()
 {
-	QString username = m_settings->value("auth/pseudo").toString();
-	QString password = m_settings->value("auth/password").toString();
+	const QString username = m_settings->value("auth/pseudo").toString();
+	const QString password = m_settings->value("auth/password").toString();
 
 	QUrlQuery query;
 	query.addQueryItem(m_settings->value("login/" + m_type + "/pseudo").toString(), username);
@@ -39,7 +40,7 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
-	QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
+	const QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
 
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
 	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());

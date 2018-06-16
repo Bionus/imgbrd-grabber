@@ -1,8 +1,6 @@
 #ifndef POST_FILTER_H
 #define POST_FILTER_H
 
-#include <QMap>
-#include <QString>
 #include <QStringList>
 
 

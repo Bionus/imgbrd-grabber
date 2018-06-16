@@ -10,18 +10,18 @@ class Pool
 		explicit Pool(int id, const QString &name, int current, int next = 0, int previous = 0);
 
 		// Getters
-		int		id() const;
-		QString name() const;
-		int		current() const;
-		int		next() const;
-		int		previous() const;
+		int id() const;
+		const QString &name() const;
+		int current() const;
+		int next() const;
+		int previous() const;
 
 	private:
-		int		m_id;
-		QString	m_name;
-		int		m_current;
-		int		m_next;
-		int		m_previous;
+		int m_id;
+		QString m_name;
+		int m_current;
+		int m_next;
+		int m_previous;
 };
 
 #endif // POOL_H

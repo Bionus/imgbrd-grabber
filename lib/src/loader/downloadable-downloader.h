@@ -1,8 +1,8 @@
 #ifndef DOWNLOADABLE_DOWNLOADER_H
 #define DOWNLOADABLE_DOWNLOADER_H
 
+#include <QNetworkReply>
 #include <QObject>
-#include <QSharedPointer>
 #include "downloader/file-downloader.h"
 #include "loader/downloadable.h"
 #include "models/filename.h"

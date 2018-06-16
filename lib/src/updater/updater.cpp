@@ -16,7 +16,7 @@ int Updater::compareVersions(QString a, QString b)
 {
 	int aSub = 0;
 	char aSubType = ' ';
-	int aPos = a.indexOf(QRegularExpression("[a-z]"));
+	const int aPos = a.indexOf(QRegularExpression("[a-z]"));
 	if (aPos != -1)
 	{
 		aSubType = a[aPos].toLatin1();
@@ -26,7 +26,7 @@ int Updater::compareVersions(QString a, QString b)
 
 	int bSub = 0;
 	char bSubType = ' ';
-	int bPos = b.indexOf(QRegularExpression("[a-z]"));
+	const int bPos = b.indexOf(QRegularExpression("[a-z]"));
 	if (bPos != -1)
 	{
 		bSubType = b[bPos].toLatin1();
@@ -42,8 +42,8 @@ int Updater::compareVersions(QString a, QString b)
 
 	for (int i = 0; i < aSem.count(); ++i)
 	{
-		int aPart = aSem[i].toInt();
-		int bPart = bSem[i].toInt();
+		const int aPart = aSem[i].toInt();
+		const int bPart = bSem[i].toInt();
 
 		if (aPart > bPart)
 			return 1;

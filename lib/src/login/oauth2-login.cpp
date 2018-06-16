@@ -1,6 +1,7 @@
 #include "login/oauth2-login.h"
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/site.h"

@@ -1,6 +1,10 @@
 #include "models/api/rss-api.h"
+#include <QDateTime>
 #include <QDomDocument>
 #include <QRegularExpression>
+#include <QSharedPointer>
+#include "models/api/api.h"
+#include "models/page.h"
 
 
 RssApi::RssApi(const QMap<QString, QString> &data)

@@ -1,10 +1,7 @@
 #ifndef TAG_TAB_H
 #define TAG_TAB_H
 
-#include <QCalendarWidget>
 #include <QJsonObject>
-#include <QMap>
-#include <QWidget>
 #include "tabs/search-tab.h"
 
 

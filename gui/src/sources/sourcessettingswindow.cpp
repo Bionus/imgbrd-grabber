@@ -1,6 +1,5 @@
 #include "sources/sourcessettingswindow.h"
 #include <QCryptographicHash>
-#include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QNetworkCookie>
@@ -52,12 +51,12 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(site->setting("sources/usedefault", true).toBool());
-	QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
+	static const QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
 	QStringList sources = QStringList() << "";
 	QStringList opts = QStringList() << "";
 	for (Api *api : site->getApis())
 	{
-		QString name = api->getName().toLower();
+		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 		opts.append(api->getName());
 	}
@@ -71,9 +70,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->lineAuthPassword->setText(site->setting("auth/password", "").toString());
 
 	// Login
-	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
-	QString type = site->setting("login/type", defaultType).toString();
+	static const QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
+	const QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
+	const QString type = site->setting("login/type", defaultType).toString();
 	ui->comboLoginType->setCurrentIndex(types.indexOf(type));
 	ui->lineLoginGetUrl->setText(site->setting("login/get/url", type != "get" ? "" : site->setting("login/url", "").toString()).toString());
 	ui->lineLoginGetPseudo->setText(site->setting("login/get/pseudo", type != "get" ? "" : site->setting("login/pseudo", "").toString()).toString());
@@ -160,7 +159,7 @@ void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 
 void SourcesSettingsWindow::deleteSite()
 {
-	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
+	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		QFile f(m_site->getSource()->getPath() + "/sites.txt");
@@ -208,7 +207,7 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
-	QString italic = QStringLiteral("<i>%1</li>").arg(msg);
+	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestCredentials->setText(italic);
 	ui->labelTestLogin->setText(italic);
 }
@@ -238,7 +237,7 @@ void SourcesSettingsWindow::save()
 	QStringList sources = QStringList() << "";
 	for (Api *api : m_site->getApis())
 	{
-		QString name = api->getName().toLower();
+		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 	}
 	QStringList chosen = QStringList()

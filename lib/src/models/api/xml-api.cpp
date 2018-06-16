@@ -1,5 +1,6 @@
 #include "models/api/xml-api.h"
 #include <QDomDocument>
+#include "models/api/api.h"
 #include "models/site.h"
 #include "tags/tag-database.h"
 
@@ -27,7 +28,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 
 	// Getting last page
 	int count = docElem.attributes().namedItem("count").nodeValue().toInt();
-	QString database = docElem.attributes().namedItem("type").nodeValue();
+	const QString database = docElem.attributes().namedItem("type").nodeValue();
 	if (count == 0 && database == QLatin1String("array"))
 	{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 	if (count > 0)
@@ -72,7 +73,7 @@ ParsedPage XmlApi::parsePage(Page *parentPage, const QString &source, int first,
 				for (int typeId = 0; typeId < tagTypes.count(); ++typeId)
 				{
 					QDomNode tagType = tagTypes.at(typeId);
-					TagType tType(tagType.nodeName());
+					const TagType tType(tagType.nodeName());
 					QDomNodeList tagList = tagType.childNodes();
 					for (int iTag = 0; iTag < tagList.count(); ++iTag)
 					{ tags.append(Tag(tagList.at(iTag).toElement().text(), tType)); }
@@ -152,7 +153,7 @@ ParsedTags XmlApi::parseTags(const QString &source, Site *site) const
 			typeId = node.namedItem("type").toElement().text().toInt();
 		}
 
-		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 

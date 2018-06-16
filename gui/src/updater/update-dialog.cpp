@@ -29,7 +29,7 @@ UpdateDialog::~UpdateDialog()
 void UpdateDialog::resizeToFit()
 {
 	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
-	int width = ui->labelUpdateAvailable->size().width();
+	const int width = ui->labelUpdateAvailable->size().width();
 
 	ui->labelUpdateAvailable->setMinimumWidth(width);
 	adjustSize();
@@ -50,7 +50,7 @@ void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available
 		return;
 	}
 
-	bool hasChangelog = !changelog.isEmpty();
+	const bool hasChangelog = !changelog.isEmpty();
 	if (hasChangelog)
 	{
 		ui->labelChangelog->setTextFormat(Qt::RichText);

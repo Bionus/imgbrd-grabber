@@ -2,7 +2,6 @@
 #define TAG_NAME_FORMAT_H
 
 #include <QMetaType>
-#include <QString>
 #include <QStringList>
 
 

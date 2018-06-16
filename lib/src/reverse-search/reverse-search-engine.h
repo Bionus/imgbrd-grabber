@@ -3,7 +3,6 @@
 
 #include <QIcon>
 #include <QString>
-#include <QUrl>
 
 
 class ReverseSearchEngine
@@ -15,8 +14,8 @@ class ReverseSearchEngine
 
 		int id() const;
 		QIcon icon() const;
-		QString name() const;
-		QString tpl() const;
+		const QString &name() const;
+		const QString &tpl() const;
 		int order() const;
 
 		void setId(int id);

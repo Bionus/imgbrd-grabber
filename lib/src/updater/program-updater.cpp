@@ -19,11 +19,11 @@ ProgramUpdater::ProgramUpdater(const QString &baseUrl)
 void ProgramUpdater::checkForUpdates() const
 {
 	#ifdef NIGHTLY
-		QUrl url(m_baseUrl + "/releases/tags/nightly");
+		const QUrl url(m_baseUrl + "/releases/tags/nightly");
 	#else
-		QUrl url(m_baseUrl + "/releases/latest");
+		const QUrl url(m_baseUrl + "/releases/latest");
 	#endif
-	QNetworkRequest request(url);
+	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
 	connect(reply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
@@ -45,7 +45,7 @@ void ProgramUpdater::checkForUpdatesDone()
 		latest = latest.left(8);
 	#else
 		QString latest = lastRelease["name"].toString().mid(1);
-		bool isNew = compareVersions(latest, QString(VERSION)) > 0;
+		const bool isNew = compareVersions(latest, QString(VERSION)) > 0;
 		changelog = lastRelease["body"].toString();
 	#endif
 
@@ -69,7 +69,7 @@ void ProgramUpdater::downloadUpdate()
 
 	QUrl url(lastAsset["browser_download_url"].toString());
 	m_updateFilename = url.fileName();
-	QNetworkRequest request(url);
+	const QNetworkRequest request(url);
 	log(QStringLiteral("Downloading installer from \"%1\".").arg(url.toString()));
 
 	m_downloadReply = m_networkAccessManager->get(request);
@@ -83,7 +83,7 @@ void ProgramUpdater::downloadDone()
 	if (!redirection.isEmpty())
 	{
 		log(QStringLiteral("Installer download redirected to \"%1\".").arg(redirection.toString()));
-		QNetworkRequest request(redirection);
+		const QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);

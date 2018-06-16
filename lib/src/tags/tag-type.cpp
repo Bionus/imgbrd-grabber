@@ -9,7 +9,7 @@ TagType::TagType(const QString &name)
 	: m_name(name)
 {}
 
-QString TagType::name() const
+const QString &TagType::name() const
 {
 	return m_name;
 }
