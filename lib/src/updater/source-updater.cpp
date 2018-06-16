@@ -45,4 +45,5 @@ void SourceUpdater::checkForUpdatesDone()
 	}
 
 	emit finished(m_source, isNew);
+	reply->deleteLater();
 }

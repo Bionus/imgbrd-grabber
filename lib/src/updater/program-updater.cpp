@@ -51,6 +51,7 @@ void ProgramUpdater::checkForUpdatesDone()
 
 	m_newVersion = latest;
 	emit finished(latest, isNew, changelog);
+	reply->deleteLater();
 }
 
 

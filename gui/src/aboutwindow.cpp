@@ -5,6 +5,7 @@
 AboutWindow::AboutWindow(const QString &version, QWidget *parent)
 	: QDialog(parent), ui(new Ui::AboutWindow), m_updater()
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	ui->labelCurrent->setText(version);
@@ -22,6 +23,6 @@ AboutWindow::~AboutWindow()
 
 void AboutWindow::finished(const QString &newVersion, bool available)
 {
-	QString msg = available ? tr("A new version is available: %1").arg(newVersion) : tr("Grabber is up to date");
+	const QString msg = available ? tr("A new version is available: %1").arg(newVersion) : tr("Grabber is up to date");
 	ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">" + msg + "</p>");
 }

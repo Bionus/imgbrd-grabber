@@ -207,6 +207,7 @@ int main(int argc, char *argv[])
 				updateDialog->checkForUpdates();
 				el->exec();
 				el->deleteLater();
+				updateDialog->deleteLater();
 
 				if (shouldQuit)
 					return 0;

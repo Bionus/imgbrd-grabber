@@ -31,7 +31,7 @@
 
 
 Site::Site(const QString &url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new CustomNetworkAccessManager(this);
@@ -100,6 +100,8 @@ void Site::loadConfig()
 
 	// Auth information
 	const QString type = m_settings->value("login/type", "url").toString();
+	if (m_login != nullptr)
+		m_login->deleteLater();
 	if (type == "url")
 		m_login = new UrlLogin(this, m_manager, m_settings);
 	else if (type == "oauth2")
@@ -131,6 +133,8 @@ void Site::loadConfig()
 		resetCookieJar();
 
 	// Tag database
+	if (m_tagDatabase != nullptr)
+	{ delete m_tagDatabase; }
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 	m_tagDatabase->loadTypes();
 }
