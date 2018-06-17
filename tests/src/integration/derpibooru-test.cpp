@@ -50,7 +50,7 @@ void DerpibooruTest::testHtmlTags()
 
 	QCOMPARE(tags[1].text(), QString("solo"));
 	QCOMPARE(tags[1].count(), 599506);
-	QCOMPARE(tags[1].type().name(), QString("unknown"));
+	QCOMPARE(tags[1].type().isUnknown(), true);
 }
 
 void DerpibooruTest::testJsonTags()
@@ -61,7 +61,7 @@ void DerpibooruTest::testJsonTags()
 
 	QCOMPARE(tags[1].text(), QString("solo"));
 	QCOMPARE(tags[1].count(), 599506);
-	QCOMPARE(tags[1].type().name(), QString("unknown"));
+	QCOMPARE(tags[1].type().isUnknown(), true);
 }
 
 

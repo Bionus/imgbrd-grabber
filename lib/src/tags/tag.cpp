@@ -15,7 +15,7 @@ QMap<int, QString> stringListToMap(const QStringList &list)
 }
 
 Tag::Tag()
-	: m_type(TagType(QStringLiteral("unknown"))), m_count(0)
+	: m_type(TagType()), m_count(0)
 { }
 
 Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
@@ -89,8 +89,6 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 		static QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species" << "meta";
 		type = Tag::GetType(data.value("type").trimmed(), stringListToMap(types));
 	}
-	if (type.isEmpty())
-	{ type = "unknown"; }
 
 	// Count
 	int count = 0;
@@ -198,7 +196,6 @@ bool sortTagsByCount(const Tag &s1, const Tag &s2)
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	const QLatin1String unknown("unknown");
 	return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) == 0
-		&& (t1.type() == t2.type() || t1.type().name() == unknown || t2.type().name() == unknown);
+		&& (t1.type() == t2.type() || t1.type().isUnknown() || t2.type().isUnknown());
 }

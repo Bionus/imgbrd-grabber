@@ -153,7 +153,7 @@ ParsedTags XmlApi::parseTags(const QString &source, Site *site) const
 			typeId = node.namedItem("type").toElement().text().toInt();
 		}
 
-		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 

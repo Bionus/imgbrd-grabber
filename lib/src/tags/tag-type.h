@@ -10,10 +10,12 @@ class TagType
 	public:
 		TagType();
 		explicit TagType(const QString &name);
+		bool isUnknown() const;
 		const QString &name() const;
 		int number() const;
 
 	private:
+		bool m_isUnknown;
 		QString m_name;
 };
 

@@ -1623,7 +1623,7 @@ void mainWindow::_getAll()
 		bool hasUnknownTag = false;
 		for (const Tag &tag : img->tags())
 		{
-			if (tag.type().name() == "unknown")
+			if (tag.type().isUnknown())
 			{
 				hasUnknownTag = true;
 				break;

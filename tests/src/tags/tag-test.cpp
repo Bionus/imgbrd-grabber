@@ -67,7 +67,7 @@ void TagTest::testTypeArtistEnding()
 }
 void TagTest::testTypePrefix()
 {
-	Tag tag("artist:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+	Tag tag("artist:tag_text", "", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QCOMPARE(tag.type().name(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));

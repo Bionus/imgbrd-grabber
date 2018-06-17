@@ -148,7 +148,7 @@ ParsedTags HtmlApi::parseTags(const QString &source, Site *site) const
 		int typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
 		QString ttype = d["type"];
 
-		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 

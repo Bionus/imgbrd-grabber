@@ -161,7 +161,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined())
 		{ typeId = tag.property("typeId").toInt(); }
 
-		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.append(Tag(id, text, tagType, count));
 	}
 

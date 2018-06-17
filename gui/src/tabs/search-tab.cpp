@@ -605,7 +605,7 @@ double getImageKnownTagProportion(const QSharedPointer<Image> &img)
 	int known = 0;
 	for (const Tag &tag : img->tags())
 	{
-		if (tag.type().name() != QLatin1String("unknown"))
+		if (!tag.type().isUnknown())
 			known++;
 	}
 

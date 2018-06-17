@@ -244,7 +244,7 @@ ParsedTags JsonApi::parseTags(const QString &source, Site *site) const
 			typeId = sc.value("type").toInt();
 		}
 
-		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
+		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 

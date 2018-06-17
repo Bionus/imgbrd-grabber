@@ -203,7 +203,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
 	for (Tag const &tag : qAsConst(m_tags))
-		if (tag.type().name() == "unknown")
+		if (tag.type().isUnknown())
 			unknownTags.append(tag.text());
 	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
 	for (Tag &tag : m_tags)
