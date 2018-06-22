@@ -275,7 +275,7 @@ void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QN
 	m_lastCallback = callback;
 	m_callbackRequest = this->makeRequest(url, page, ref, img);
 
-	qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
+	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
 	const int def = (type == QueryType::Retry ? 60 : 0);
@@ -394,8 +394,8 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 	{ return QUrl(protocol + ":" + url); }
 	if (url.startsWith("/"))
 	{
-		QString baseUrl = m_url.mid(m_url.indexOf('/'));
-		QString right = url.startsWith(baseUrl) ? url.mid(baseUrl.length()) : url;
+		const QString baseUrl = m_url.mid(m_url.indexOf('/'));
+		const QString right = url.startsWith(baseUrl) ? url.mid(baseUrl.length()) : url;
 		return QUrl(protocol + "://" + m_url + right);
 	}
 

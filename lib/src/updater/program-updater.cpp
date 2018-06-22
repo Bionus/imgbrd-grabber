@@ -3,7 +3,6 @@
 #include <QFile>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include "custom-network-access-manager.h"
 #include "logger.h"
 #include "vendor/json.h"
 
@@ -37,16 +36,16 @@ void ProgramUpdater::checkForUpdatesDone()
 	QVariant json = Json::parse(m_source);
 	QMap<QString, QVariant> lastRelease = json.toMap();
 
-	QString changelog;
 	#if defined NIGHTLY
 		QString latest = lastRelease["target_commitish"].toString();
 		QString current = QString(NIGHTLY_COMMIT);
 		bool isNew = !current.isEmpty() && latest != current;
 		latest = latest.left(8);
+		QString changelog;
 	#else
-		QString latest = lastRelease["name"].toString().mid(1);
+		const QString latest = lastRelease["name"].toString().mid(1);
 		const bool isNew = compareVersions(latest, QString(VERSION)) > 0;
-		changelog = lastRelease["body"].toString();
+		const QString changelog = lastRelease["body"].toString();
 	#endif
 
 	m_newVersion = latest;

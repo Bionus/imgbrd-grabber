@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "downloader/file-downloader.h"
+#include "loader/downloadable.h"
 #include "models/image.h"
 
 

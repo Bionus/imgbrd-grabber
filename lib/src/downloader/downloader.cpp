@@ -32,7 +32,7 @@ void Downloader::clear()
 }
 
 Downloader::Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QList<QStringList> &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous)
-	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postFiltering(postFiltering), m_sites(sources), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(tagsFormat), m_blacklistedTags(blacklistedTags), m_quit(false), m_previous(previous), m_cancelled(false)
+	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postFiltering(postFiltering), m_sites(sources), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(tagsFormat), m_blacklistedTags(blacklistedTags), m_cancelled(false), m_quit(false), m_previous(previous)
 { }
 
 void Downloader::setQuit(bool quit)

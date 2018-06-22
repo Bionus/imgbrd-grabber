@@ -74,7 +74,7 @@ Source::Source(Profile *profile, const QString &dir)
 		{ log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
 		else
 		{
-			QDomElement docElem = doc.documentElement();
+			const QDomElement docElem = doc.documentElement();
 			QMap<QString, QString> details = domToMap(docElem);
 
 			// Tag format mapper
@@ -93,7 +93,7 @@ Source::Source(Profile *profile, const QString &dir)
 			{
 				log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
 
-				QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
+				const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
 
 				m_jsSource = jsEngine()->evaluate(src, js.fileName());
 				if (m_jsSource.isError())
@@ -103,7 +103,7 @@ Source::Source(Profile *profile, const QString &dir)
 					m_name = m_jsSource.property("name").toString();
 
 					// Get the list of APIs for this Source
-					QJSValue apis = m_jsSource.property("apis");
+					const QJSValue apis = m_jsSource.property("apis");
 					QJSValueIterator it(apis);
 					while (it.hasNext())
 					{

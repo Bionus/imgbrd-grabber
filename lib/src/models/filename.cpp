@@ -345,8 +345,8 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			{
 				const int mid = QDir::toNativeSeparators(cFilename).lastIndexOf(QDir::separator());
 				QDir dir(folder + (mid >= 0 ? QDir::separator() + cFilename.left(mid) : QString()));
-				QString cRight = mid >= 0 ? cFilename.right(cFilename.length() - mid - 1) : cFilename;
-				QString filter = QString(cRight).replace(hasNum, "*");
+				const QString cRight = mid >= 0 ? cFilename.right(cFilename.length() - mid - 1) : cFilename;
+				const QString filter = QString(cRight).replace(hasNum, "*");
 				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
 
 				// Sort files naturally
@@ -358,9 +358,9 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				int num = 1;
 				if (!files.isEmpty())
 				{
-					QString last = files.last().fileName();
-					int pos = cRight.indexOf(hasNum);
-					int len = last.length() - cRight.length() + 5;
+					const QString last = files.last().fileName();
+					const int pos = cRight.indexOf(hasNum);
+					const int len = last.length() - cRight.length() + 5;
 					num = last.midRef(pos, len).toInt() + 1;
 				}
 				cFilename.replace(hasNum, optionedValue(num, "num", numOptions, settings, namespaces));
