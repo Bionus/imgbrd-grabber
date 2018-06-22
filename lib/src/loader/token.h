@@ -11,7 +11,7 @@ class Token
 		explicit Token(const QVariant &value, const QVariant &def = QVariant());
 		explicit Token(const QVariant &value, const QString &whatToDoDefault, const QString &emptyDefault, const QString &multipleDefault);
 
-		const QVariant &value() const;
+		QVariant value() const;
 		template <typename T> T value() const { return m_value.value<T>(); }
 		QString toString() const;
 

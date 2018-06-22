@@ -12,7 +12,7 @@ Token::Token(const QVariant &value, const QString &whatToDoDefault, const QStrin
 {}
 
 
-const QVariant &Token::value() const
+QVariant Token::value() const
 { return m_value; }
 
 QString Token::toString() const
