@@ -175,6 +175,9 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 
 bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const
 {
+	if (cond.isEmpty())
+		return false;
+
 	// Javascript conditions
 	if (cond.startsWith("javascript:"))
 	{
@@ -197,7 +200,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 	const QStringList options = cond.split(' ');
 	const QStringList matches = PostFilter::filter(tokens, options);
 
-	return matches.isEmpty();
+	return matches.count() < options.count();
 }
 
 QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const
