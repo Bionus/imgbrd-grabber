@@ -80,7 +80,7 @@ export const source: ISource = {
                     }
                 },
                 parse: (src: string): IParsedSearch => {
-                    const searchImageCounts = Grabber.regexMatches('class="?tag-count"? title="Post Count: (?<count>[0-9,]+)"', src);
+                    const searchImageCounts = Grabber.regexMatches('class="?tag-(?:count|type-none)"? title="Post Count: (?<count>[0-9,]+)"', src);
                     const lastPage = Grabber.regexToConst("page", '<span class="?current"?>\\s*(?<page>[0-9,]+)\\s*</span>\\s*>>\\s*</div>', src);
                     return {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
