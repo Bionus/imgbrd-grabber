@@ -3,6 +3,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QProcess>
+#include "functions.h"
 #include "models/profile.h"
 
 

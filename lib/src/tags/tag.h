@@ -4,6 +4,7 @@
 #include <QFont>
 #include <QMap>
 #include <QString>
+#include <QStringList>
 #include "tags/tag-type.h"
 
 
