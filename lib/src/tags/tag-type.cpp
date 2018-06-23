@@ -6,7 +6,7 @@ TagType::TagType()
 	: m_isUnknown(true), m_name("unknown")
 {}
 TagType::TagType(const QString &name)
-	: m_isUnknown(name.isEmpty() || name == "unknown"), m_name(name)
+	: m_isUnknown(name.isEmpty() || name == "unknown"), m_name(name.isEmpty() ? "unknown" : name)
 {}
 
 bool TagType::isUnknown() const
