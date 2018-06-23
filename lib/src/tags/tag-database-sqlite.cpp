@@ -13,6 +13,9 @@ TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, const QString &tag
 	: TagDatabase(typeFile), m_tagFile(tagFile), m_count(-1)
 {}
 
+TagDatabaseSqlite::~TagDatabaseSqlite()
+{}
+
 bool TagDatabaseSqlite::load()
 {
 	// Don't reload databases

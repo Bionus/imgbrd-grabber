@@ -8,6 +8,9 @@ TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, const QString 
 	: TagDatabase(typeFile), m_tagFile(tagFile)
 {}
 
+TagDatabaseInMemory::~TagDatabaseInMemory()
+{}
+
 bool TagDatabaseInMemory::load()
 {
 	// Don't reload databases

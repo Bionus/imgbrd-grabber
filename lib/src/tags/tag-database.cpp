@@ -9,6 +9,9 @@ TagDatabase::TagDatabase(const QString &typeFile)
 	: m_typeFile(typeFile)
 {}
 
+TagDatabase::~TagDatabase()
+{}
+
 bool TagDatabase::load()
 {
 	loadTypes();

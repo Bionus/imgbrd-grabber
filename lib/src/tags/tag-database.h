@@ -11,6 +11,7 @@ class Tag;
 class TagDatabase
 {
 	public:
+		virtual ~TagDatabase();
 		void loadTypes();
 		virtual bool load();
 		virtual bool save() = 0;

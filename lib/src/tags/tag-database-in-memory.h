@@ -9,6 +9,7 @@ class TagDatabaseInMemory : public TagDatabase
 {
 	public:
 		TagDatabaseInMemory(const QString &typeFile, const QString &tagFile);
+		~TagDatabaseInMemory() override;
 		bool load() override;
 		bool save() override;
 		void setTags(const QList<Tag> &tags) override;
