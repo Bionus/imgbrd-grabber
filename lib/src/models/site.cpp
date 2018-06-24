@@ -342,6 +342,13 @@ void Site::syncSettings() { m_settings->sync(); }
 MixedSettings *Site::settings() const { return m_settings; }
 TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
+QString Site::baseUrl() const
+{
+	const bool ssl = m_settings->value("ssl", false).toBool();
+	const QString protocol = (ssl ? QStringLiteral("https") : QStringLiteral("http"));
+	return protocol + "://" + m_url;
+}
+
 const QString &Site::name() const { return m_name;	}
 const QString &Site::url() const	{ return m_url;	}
 const QString &Site::type() const	{ return m_type;	}

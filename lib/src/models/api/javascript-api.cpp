@@ -94,6 +94,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
+	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();
@@ -276,6 +277,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
+	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 	QJSValue auth = m_source.engine()->newObject();
 	MixedSettings *settings = site->settings();

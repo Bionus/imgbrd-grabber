@@ -53,6 +53,7 @@ class Site : public QObject
 		void loadConfig();
 		const QString &type() const;
 		const QString &name() const;
+		QString baseUrl() const;
 		const QString &url() const;
 		const QList<QNetworkCookie> &cookies() const;
 		QVariant setting(const QString &key, const QVariant &def = QVariant());
