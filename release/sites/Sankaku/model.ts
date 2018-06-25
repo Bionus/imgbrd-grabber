@@ -48,8 +48,11 @@ export const source: ISource = {
             maxLimit: 200,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//chan.", "//capi-beta.")
+                        .replace("//idol.", "//iapi.");
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + query.search;
+                    return baseUrl + "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
