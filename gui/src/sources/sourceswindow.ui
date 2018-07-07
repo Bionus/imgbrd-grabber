@@ -55,13 +55,7 @@
    <item>
     <layout class="QHBoxLayout" name="layoutPresets" stretch="1,0">
      <item>
-      <widget class="QComboBox" name="comboPresets">
-       <item>
-        <property name="text">
-         <string notr="true">- No preset selected -</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboPresets"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="layoutPresetsButtons">

@@ -46,14 +46,9 @@ sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWi
 	connect(ui->checkBox, &QCheckBox::clicked, this, &sourcesWindow::checkClicked);
 	checkUpdate();
 
-	// Set default preset font italic
-	QFont font = ui->comboPresets->itemData(0, Qt::FontRole).value<QFont>();
-	font.setItalic(true);
-	ui->comboPresets->setItemData(0, font, Qt::FontRole);
-
 	// Presets
 	m_presets = loadPresets(m_profile->getSettings());
-	ui->comboPresets->addItems(m_presets.keys());
+	showPresets();
 
 	// Check for updates in the model files
 	checkForUpdates();
@@ -392,6 +387,19 @@ QList<Site*> sourcesWindow::selected() const
 	return selected;
 }
 
+void sourcesWindow::showPresets()
+{
+	// Reset combo box and re-add items
+	ui->comboPresets->clear();
+	ui->comboPresets->addItem(tr("- No preset selected -"));
+	ui->comboPresets->addItems(m_presets.keys());
+
+	// Set default preset font italic
+	QFont font = ui->comboPresets->itemData(0, Qt::FontRole).value<QFont>();
+	font.setItalic(true);
+	ui->comboPresets->setItemData(0, font, Qt::FontRole);
+}
+
 void sourcesWindow::addPreset()
 {
 	bool ok;
@@ -406,9 +414,7 @@ void sourcesWindow::addPreset()
 		sel.append(site->url());
 	m_presets.insert(name, sel);
 
-	ui->comboPresets->clear();
-	ui->comboPresets->addItem(QString());
-	ui->comboPresets->addItems(m_presets.keys());
+	showPresets();
 	ui->comboPresets->setCurrentText(name);
 }
 
@@ -429,9 +435,7 @@ void sourcesWindow::editPreset()
 	m_presets.insert(newName, m_presets[oldName]);
 	m_presets.remove(oldName);
 
-	ui->comboPresets->clear();
-	ui->comboPresets->addItem(QString());
-	ui->comboPresets->addItems(m_presets.keys());
+	showPresets();
 	ui->comboPresets->setCurrentText(newName);
 }
 

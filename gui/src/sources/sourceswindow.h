@@ -49,6 +49,7 @@ class sourcesWindow : public QDialog
 		// Presets
 		QMap<QString, QStringList> loadPresets(QSettings *settings) const;
 		void savePresets(QSettings *settings) const;
+		void showPresets();
 		void addPreset();
 		void deletePreset();
 		void editPreset();
