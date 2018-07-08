@@ -757,7 +757,8 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	}
 
 	const QString page = firstPage != lastPage ? QStringLiteral("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(sumImages));
+	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(tr("max %1").arg(sumImages));
+	txt->setText(QString(links + " - " + countLabel));
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
@@ -793,10 +794,16 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 	else
 	{
-		const QString pageCountStr = pageCount > 0 ? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount) : "?";
-		const QString imageCountStr = imageCount > 0 ? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount) : "?";
 		const QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr));
+		const QString pageCountStr = pageCount > 0
+			? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount)
+			: (page->maxPagesCount() == -1 ? "?" : QString::number(page->maxPagesCount()));
+		const QString imageCountStr = imageCount > 0
+			? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
+			: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
+
+		const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - " + countLabel);
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())

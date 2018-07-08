@@ -210,7 +210,7 @@ void tagTab::getAll()
 
 		const int highLimit = page->highLimit();
 		const int currentCount = page->images().count();
-		const int imageCount = page->imagesCount();
+		const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
