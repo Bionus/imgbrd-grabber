@@ -209,6 +209,16 @@ void PageApi::parseActual()
 	if (!page.wiki.isEmpty())
 	{ m_wiki = page.wiki; }
 
+	// Complete image count information from tag count information
+	if (m_imagesCount < 1)
+	{
+		for (const Tag &tag : qAsConst(m_tags))
+		{
+			if (tag.text() == m_search.join(" "))
+			{ setImageCount(tag.count(), false); }
+		}
+	}
+
 	// Complete missing tag information from images' tags if necessary
 	if (m_tags.isEmpty())
 	{
@@ -226,16 +236,6 @@ void PageApi::parseActual()
 					tagsGot.append(tags[t].text());
 				}
 			}
-		}
-	}
-
-	// Complete image count information from tag count information
-	if (m_imagesCount < 1)
-	{
-		for (const Tag &tag : qAsConst(m_tags))
-		{
-			if (tag.text() == m_search.join(" "))
-			{ setImageCount(tag.count(), false); }
 		}
 	}
 
