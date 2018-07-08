@@ -64,7 +64,7 @@ class searchTab : public QWidget
 		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url);
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
-		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
+		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);
 
 	protected slots:
 		void contextSaveImage(int position);
@@ -85,7 +85,7 @@ class searchTab : public QWidget
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
-		void openImage(QSharedPointer<Image> image);
+		void openImage(const QSharedPointer<Image> &image);
 		// Pagination
 		void firstPage();
 		void previousPage();
@@ -107,7 +107,7 @@ class searchTab : public QWidget
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr);
-		void addResultsImage(QSharedPointer<Image> img, Page *page, bool merge = false);
+		void addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge = false);
 		void finishedLoadingPreview();
 		// Merged
 		QList<QSharedPointer<Image>> mergeResults(int page, const QList<QSharedPointer<Image> > &results);
@@ -120,9 +120,9 @@ class searchTab : public QWidget
 		void postLoading(Page *page, const QList<QSharedPointer<Image> > &imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
-		void selectImage(QSharedPointer<Image> img);
-		void unselectImage(QSharedPointer<Image> img);
-		void toggleImage(QSharedPointer<Image> img);
+		void selectImage(const QSharedPointer<Image> &img);
+		void unselectImage(const QSharedPointer<Image> &img);
+		void toggleImage(const QSharedPointer<Image> &img);
 		void toggleImage(int id, bool toggle, bool range);
 		// Others
 		void optionsChanged();

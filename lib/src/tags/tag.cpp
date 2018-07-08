@@ -15,7 +15,7 @@ QMap<int, QString> stringListToMap(const QStringList &list)
 }
 
 Tag::Tag()
-	: m_type(TagType()), m_count(0)
+	: m_id(0), m_type(TagType()), m_count(0)
 { }
 
 Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
@@ -26,8 +26,8 @@ Tag::Tag(const QString &text, const TagType &type, int count, const QStringList 
 	: Tag(0, text, type, count, related)
 { }
 
-Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStringList &related)
-	: m_id(id), m_type(type), m_count(count), m_related(related)
+Tag::Tag(int id, const QString &text, TagType type, int count, QStringList related)
+	: m_id(id), m_type(std::move(type)), m_count(count), m_related(std::move(related))
 {
 	static QStringList weakTypes = QStringList() << QStringLiteral("unknown") << QStringLiteral("origin");
 
@@ -166,7 +166,7 @@ void Tag::setId(int id)						{ m_id = id;		}
 void Tag::setText(const QString &text)		{ m_text = text;	}
 void Tag::setType(const TagType &type)		{ m_type = type;	}
 void Tag::setCount(int count)				{ m_count = count;	}
-void Tag::setRelated(const QStringList &r)	{ m_related = r;	}
+void Tag::setRelated(const QStringList &related)	{ m_related = related;	}
 
 int Tag::id() const						{ return m_id;		}
 const QString &Tag::text() const		{ return m_text;	}

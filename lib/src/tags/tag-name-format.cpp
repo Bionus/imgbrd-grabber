@@ -2,11 +2,8 @@
 #include <QMap>
 
 
-TagNameFormat::TagNameFormat()
-{}
-
-TagNameFormat::TagNameFormat(CaseFormat caseFormat, const QString &wordSeparator)
-	: m_caseFormat(caseFormat), m_wordSeparator(wordSeparator)
+TagNameFormat::TagNameFormat(CaseFormat caseFormat, QString wordSeparator)
+	: m_caseFormat(caseFormat), m_wordSeparator(std::move(wordSeparator))
 {}
 
 TagNameFormat &TagNameFormat::Normalized()

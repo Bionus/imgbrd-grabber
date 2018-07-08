@@ -185,7 +185,7 @@ Source::Source(Profile *profile, const QString &dir)
 			if (line.isEmpty())
 				continue;
 
-			Site *site = new Site(line, this);
+			auto site = new Site(line, this);
 			m_sites.append(site);
 		}
 	}

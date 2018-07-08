@@ -11,7 +11,7 @@ class Tag;
 class TagDatabase
 {
 	public:
-		virtual ~TagDatabase();
+		virtual ~TagDatabase() = default;
 		void loadTypes();
 		virtual bool load();
 		virtual bool save() = 0;
@@ -21,7 +21,7 @@ class TagDatabase
 		const QMap<int, TagType> &tagTypes() const;
 
 	protected:
-		explicit TagDatabase(const QString &typeFile);
+		explicit TagDatabase(QString typeFile);
 
 	protected:
 		QMap<int, TagType> m_tagTypes;

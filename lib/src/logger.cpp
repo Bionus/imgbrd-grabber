@@ -86,7 +86,7 @@ void Logger::log(const QString &l, LogLevel level)
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
+	const QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG

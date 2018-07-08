@@ -17,7 +17,7 @@
  * @param	parent		The parent window
  */
 AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(profile->getSites()), m_profile(profile)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(Q_NULLPTR), m_sites(profile->getSites()), m_close(Q_NULLPTR), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -102,7 +102,7 @@ void AddUniqueWindow::addLoadedImage()
 {
 	addImage(m_image);
 }
-void AddUniqueWindow::addImage(QSharedPointer<Image> img)
+void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
 	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 

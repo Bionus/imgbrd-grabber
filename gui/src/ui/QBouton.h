@@ -10,7 +10,7 @@ class QBouton : public QPushButton
 	Q_OBJECT
 
 	public:
-		explicit QBouton(const QVariant &id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
+		explicit QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		QVariant id();
 		void mousePressEvent(QMouseEvent *event) override;
 		QSize sizeHint() const override;

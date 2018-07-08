@@ -48,7 +48,7 @@ class Site : public QObject
 			LoggedIn = 3,
 		};
 
-		Site(const QString &url, Source *source);
+		Site(QString url, Source *source);
 		~Site() override;
 		void loadConfig();
 		const QString &type() const;

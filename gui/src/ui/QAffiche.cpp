@@ -10,7 +10,7 @@ QAffiche::QAffiche(const QVariant &id, int border, QColor color, QWidget *parent
 	m_pressed = false;
 	m_id = id;
 	m_border = border;
-	m_color = color;
+	m_color = std::move(color);
 	setText(QString());
 }
 

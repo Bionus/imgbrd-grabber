@@ -30,8 +30,8 @@
 
 
 
-Site::Site(const QString &url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+Site::Site(QString url, Source *source)
+	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(Q_NULLPTR), m_manager(Q_NULLPTR), m_cookieJar(Q_NULLPTR), m_updateReply(Q_NULLPTR), m_tagsReply(Q_NULLPTR), m_tagDatabase(Q_NULLPTR), m_login(Q_NULLPTR), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new CustomNetworkAccessManager(this);
@@ -133,8 +133,7 @@ void Site::loadConfig()
 		resetCookieJar();
 
 	// Tag database
-	if (m_tagDatabase != nullptr)
-	{ delete m_tagDatabase; }
+	delete m_tagDatabase;
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 	m_tagDatabase->loadTypes();
 }
@@ -386,7 +385,7 @@ void Site::setAutoLogin(bool autoLogin)	{ m_autoLogin = autoLogin;	}
 
 QString Site::fixLoginUrl(QString url, const QString &loginPart) const
 {
-	return m_login->complementUrl(url, loginPart);
+	return m_login->complementUrl(std::move(url), loginPart);
 }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const

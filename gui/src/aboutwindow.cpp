@@ -3,7 +3,7 @@
 
 
 AboutWindow::AboutWindow(const QString &version, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AboutWindow), m_updater()
+	: QDialog(parent), ui(new Ui::AboutWindow)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);

@@ -5,11 +5,8 @@
 #include "tag-type.h"
 
 
-TagDatabase::TagDatabase(const QString &typeFile)
-	: m_typeFile(typeFile)
-{}
-
-TagDatabase::~TagDatabase()
+TagDatabase::TagDatabase(QString typeFile)
+	: m_typeFile(std::move(typeFile))
 {}
 
 bool TagDatabase::load()

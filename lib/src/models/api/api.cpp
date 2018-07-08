@@ -6,8 +6,8 @@
 #include "models/source.h"
 
 
-Api::Api(const QString &name, const QMap<QString, QString> &data)
-	: QObject(), m_name(name), m_data(data)
+Api::Api(QString name, QMap<QString, QString> data)
+	: m_name(std::move(name)), m_data(std::move(data))
 {
 	QString prefix = "Urls/" + m_name;
 	for (auto it = m_data.begin(); it != m_data.end(); ++it)

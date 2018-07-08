@@ -33,7 +33,7 @@ void EmptyDirsFix1::next()
 		return;
 	}
 
-	EmptyDirsFix2 *edf2 = new EmptyDirsFix2(dirs);
+	auto *edf2 = new EmptyDirsFix2(dirs);
 	close();
 	edf2->show();
 }

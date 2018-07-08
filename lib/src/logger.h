@@ -39,7 +39,7 @@ class Logger : public QObject
 
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
-		void log(const QString &, LogLevel type = Info);
+		void log(const QString &, LogLevel level = Info);
 		void logCommand(const QString &);
 		void logCommandSql(const QString &);
 		void logUpdate(const QString &);

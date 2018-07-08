@@ -253,7 +253,7 @@ void searchTab::clear()
 	// Abort current loadings
 	for (const auto &pages : qAsConst(m_pages))
 	{
-		for (auto page : pages)
+		for (const auto &page : pages)
 		{
 			page->abort();
 			page->abortTags();
@@ -500,7 +500,7 @@ void searchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const 
 	QNetworkReply *reply = site->get(site->fixUrl(url), page, "preview");
 	reply->setParent(this);
 
-	m_thumbnailsLoading[reply] = img;
+	m_thumbnailsLoading[reply] = std::move(img);
 	connect(reply, &QNetworkReply::finished, this, &searchTab::finishedLoadingPreview);
 }
 
@@ -509,7 +509,7 @@ void searchTab::finishedLoadingPreview()
 	if (m_stop)
 		return;
 
-	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+	auto *reply = qobject_cast<QNetworkReply*>(sender());
 
 	// Aborted
 	if (reply->error() == QNetworkReply::OperationCanceledError)
@@ -881,7 +881,7 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 	return profile->md5Exists(img->md5());
 }
 
-void searchTab::thumbnailContextMenu(int position, QSharedPointer<Image> img)
+void searchTab::thumbnailContextMenu(int position, const QSharedPointer<Image> &img)
 {
 	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
 	QAction *first = menu->actions().first();
@@ -997,7 +997,7 @@ void searchTab::contextSaveSelected()
 	}
 }
 
-void searchTab::addResultsImage(QSharedPointer<Image> img, Page *page, bool merge)
+void searchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge)
 {
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
@@ -1161,7 +1161,7 @@ void searchTab::webZoom(int id)
 	openImage(image);
 }
 
-void searchTab::openImage(QSharedPointer<Image> image)
+void searchTab::openImage(const QSharedPointer<Image> &image)
 {
 	if (m_settings->value("Zoom/singleWindow", false).toBool() && m_lastZoomWindow)
 	{
@@ -1188,7 +1188,7 @@ void searchTab::mouseReleaseEvent(QMouseEvent *e)
 }
 
 
-void searchTab::selectImage(QSharedPointer<Image> img)
+void searchTab::selectImage(const QSharedPointer<Image> &img)
 {
 	if (!m_selectedImagesPtrs.contains(img))
 	{
@@ -1197,7 +1197,7 @@ void searchTab::selectImage(QSharedPointer<Image> img)
 	}
 }
 
-void searchTab::unselectImage(QSharedPointer<Image> img)
+void searchTab::unselectImage(const QSharedPointer<Image> &img)
 {
 	if (m_selectedImagesPtrs.contains(img))
 	{
@@ -1207,7 +1207,7 @@ void searchTab::unselectImage(QSharedPointer<Image> img)
 	}
 }
 
-void searchTab::toggleImage(QSharedPointer<Image> img)
+void searchTab::toggleImage(const QSharedPointer<Image> &img)
 {
 	const bool selected = m_selectedImagesPtrs.contains(img);
 	m_boutons[img.data()]->setChecked(!selected);
@@ -1249,7 +1249,7 @@ void searchTab::toggleImage(int id, bool toggle, bool range)
 
 void searchTab::openSourcesWindow()
 {
-	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, this);
+	auto adv = new sourcesWindow(m_profile, m_selectedSources, this);
 	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
 	adv->show();
 }

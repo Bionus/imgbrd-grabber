@@ -3,8 +3,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(Site *site, int interval, const QDateTime &lastCheck, int cumulated, bool preciseCumulated)
-	: m_site(site), m_interval(interval), m_lastCheck(lastCheck), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated)
+Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, int cumulated, bool preciseCumulated)
+	: m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated)
 {}
 
 qint64 Monitor::secsToNextCheck() const

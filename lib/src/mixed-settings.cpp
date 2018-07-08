@@ -2,8 +2,8 @@
 #include "functions.h"
 
 
-MixedSettings::MixedSettings(const QList<QSettings*> &settings)
-	: m_settings(settings)
+MixedSettings::MixedSettings(QList<QSettings*> settings)
+	: m_settings(std::move(settings))
 {}
 
 MixedSettings::~MixedSettings()

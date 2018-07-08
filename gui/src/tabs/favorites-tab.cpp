@@ -376,7 +376,7 @@ void favoritesTab::favoriteProperties(const QString &name)
 		return;
 
 	const Favorite fav = m_favorites[index];
-	favoriteWindow *fwin = new favoriteWindow(m_profile, fav, this);
+	auto fwin = new favoriteWindow(m_profile, fav, this);
 	fwin->show();
 }
 

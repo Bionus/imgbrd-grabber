@@ -9,7 +9,7 @@ class Token
 	public:
 		Token() = default;
 		explicit Token(const QVariant &value, const QVariant &def = QVariant());
-		explicit Token(const QVariant &value, const QString &whatToDoDefault, const QString &emptyDefault, const QString &multipleDefault);
+		explicit Token(QVariant value, QString whatToDoDefault, QString emptyDefault, QString multipleDefault);
 		explicit Token(std::function<QVariant()> func, bool cacheResult = true);
 
 		QVariant value() const;
@@ -26,7 +26,7 @@ class Token
 		QString m_emptyDefault;
 		QString m_multipleDefault;
 		std::function<QVariant()> m_func = nullptr;
-		bool m_cacheResult;
+		bool m_cacheResult = false;
 };
 
 bool operator==(const Token &lhs, const Token &rhs);

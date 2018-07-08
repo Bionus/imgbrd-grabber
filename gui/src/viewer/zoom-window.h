@@ -39,7 +39,7 @@ class ZoomWindow : public QWidget
 			Delete
 		};
 
-		ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -47,7 +47,7 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, const QString &errorString = "");
+		void replyFinishedZoom(QNetworkReply::NetworkError err = QNetworkReply::NoError, const QString &errorString = "");
 		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
@@ -74,7 +74,7 @@ class ZoomWindow : public QWidget
 		void updateWindowTitle();
 		void showLoadingError(const QString &error);
 		void setButtonState(bool fav, SaveButtonState state);
-		void reuse(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site);
+		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 
 		// Context menus
 		void imageContextMenu();
@@ -90,7 +90,7 @@ class ZoomWindow : public QWidget
 		void toggleSlideshow();
 
 		// Navigation
-		void load(QSharedPointer<Image> image);
+		void load(const QSharedPointer<Image> &image);
 		void next();
 		void previous();
 

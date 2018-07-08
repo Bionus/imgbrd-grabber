@@ -18,9 +18,9 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 	if (isTestModeEnabled())
 	{
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-		QString filename = request.url().fileName();
-		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : QStringLiteral("html");
-		QString host = request.url().host();
+		const QString filename = request.url().fileName();
+		const QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : QStringLiteral("html");
+		const QString host = request.url().host();
 		QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
 
 		const bool fromQueue = !CustomNetworkAccessManager::NextFiles.isEmpty();
@@ -92,7 +92,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 /**
  * Log SSL errors in debug mode only.
  *
- * @param qnr		The network reply who generated the SSL errors
+ * @param reply		The network reply who generated the SSL errors
  * @param errors	The list of SSL errors that occurred
  */
 void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors)

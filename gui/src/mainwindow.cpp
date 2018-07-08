@@ -357,7 +357,7 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 
 void mainWindow::initialLoginsFinished()
 {
-	Site *site = qobject_cast<Site*>(sender());
+	auto site = qobject_cast<Site*>(sender());
 	disconnect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
 
 	m_waitForLogin--;
@@ -893,13 +893,13 @@ Site* mainWindow::getSelectedSiteOrDefault()
 
 void mainWindow::addGroup()
 {
-	AddGroupWindow *wAddGroup = new AddGroupWindow(getSelectedSiteOrDefault(), m_profile, this);
+	auto wAddGroup = new AddGroupWindow(getSelectedSiteOrDefault(), m_profile, this);
 	connect(wAddGroup, &AddGroupWindow::sendData, this, &mainWindow::batchAddGroup);
 	wAddGroup->show();
 }
 void mainWindow::addUnique()
 {
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(getSelectedSiteOrDefault(), m_profile, this);
+	auto wAddUnique = new AddUniqueWindow(getSelectedSiteOrDefault(), m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
@@ -1453,7 +1453,7 @@ void mainWindow::getAllGetPages()
  */
 void mainWindow::getAllFinishedPage(Page *page)
 {
-	Downloader *d = qobject_cast<Downloader*>(sender());
+	auto *d = qobject_cast<Downloader*>(sender());
 
 	int pos = d->getData().toInt();
 	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
@@ -1468,11 +1468,11 @@ void mainWindow::getAllFinishedPage(Page *page)
  */
 void mainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images)
 {
-	Downloader *downloader = qobject_cast<Downloader*>(sender());
+	auto *downloader = qobject_cast<Downloader*>(sender());
 	m_downloaders.removeAll(downloader);
 	m_getAllIgnoredPre += downloader->ignoredCount();
 
-	int row = downloader->getData().toInt();
+	const int row = downloader->getData().toInt();
 
 	for (const auto &img : images)
 	{

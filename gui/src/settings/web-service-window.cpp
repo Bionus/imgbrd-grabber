@@ -7,7 +7,7 @@
 
 
 WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent)
-	: QDialog(parent), ui(new Ui::WebServiceWindow), m_webService(webService)
+	: QDialog(parent), ui(new Ui::WebServiceWindow), m_webService(webService), m_faviconReply(Q_NULLPTR)
 {
 	ui->setupUi(this);
 

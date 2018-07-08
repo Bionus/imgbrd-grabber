@@ -4,8 +4,8 @@
 #include <QtMath>
 
 
-QBouton::QBouton(const QVariant &id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
+QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
+	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(std::move(color)), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
 { }
 
 void QBouton::scale(const QPixmap &image, qreal scale)
@@ -119,11 +119,11 @@ void QBouton::paintEvent(QPaintEvent *event)
 	// Draw counter
 	if (!m_counter.isEmpty())
 	{
-		int right = qMax(x, 0) + qMin(w, size().width());
-		int dim = 10 + 5 * m_counter.length();
-		double pad = 2.5;
-		QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
-		int radius = qFloor(qMin(dim, 20) / 2);
+		const int right = qMax(x, 0) + qMin(w, size().width());
+		const int dim = 10 + 5 * m_counter.length();
+		const double pad = 2.5;
+		const QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
+		const int radius = qFloor(qMin(dim, 20) / 2.0);
 
 		painter.setRenderHint(QPainter::Antialiasing);
 
@@ -151,9 +151,9 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 	// Calculate ratio to resize by keeping proportions
 	if (m_resizeInsteadOfCropping)
 	{
-		qreal coef = wOnly
-					 ? qMin(1.0, static_cast<qreal>(regionWidth) / static_cast<qreal>(w))
-					 : qMin(1.0, qMin(static_cast<qreal>(regionWidth) / static_cast<qreal>(w), static_cast<qreal>(regionHeight) / static_cast<qreal>(h)));
+		const qreal coef = wOnly
+			? qMin(1.0, static_cast<qreal>(regionWidth) / static_cast<qreal>(w))
+			: qMin(1.0, qMin(static_cast<qreal>(regionWidth) / static_cast<qreal>(w), static_cast<qreal>(regionHeight) / static_cast<qreal>(h)));
 		w *= coef;
 		h *= coef;
 	}

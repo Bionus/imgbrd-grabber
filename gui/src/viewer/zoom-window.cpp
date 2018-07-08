@@ -25,8 +25,8 @@
 #include "viewer/details-window.h"
 
 
-ZoomWindow::ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
+ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent)
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(Q_NULLPTR), m_finished(false), m_size(0), m_source(), m_fullScreen(nullptr), m_images(std::move(images)), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -341,7 +341,7 @@ void ZoomWindow::contextMenu(QPoint)
 		return;
 
 	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << m_link);
-	TagContextMenu *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
+	auto *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &ZoomWindow::openInNewTab);
 	connect(menu, &TagContextMenu::setFavoriteImage, this, &ZoomWindow::setfavorite);
 	menu->exec(QCursor::pos());
@@ -401,7 +401,7 @@ void ZoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	bool isAnimated = m_image->isVideo() || !m_isAnimated.isEmpty();
+	const bool isAnimated = m_image->isVideo() || !m_isAnimated.isEmpty();
 	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
@@ -1108,7 +1108,7 @@ void ZoomWindow::urlChanged(const QString &before, const QString &after)
 }
 
 
-void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site)
+void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site)
 {
 	m_images = images;
 	m_site = site;
@@ -1116,7 +1116,7 @@ void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, QSharedPointe
 	load(image);
 }
 
-void ZoomWindow::load(QSharedPointer<Image> image)
+void ZoomWindow::load(const QSharedPointer<Image> &image)
 {
 	emit clearLoadQueue();
 

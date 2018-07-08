@@ -69,9 +69,9 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	m_filenamesFilenames = QList<QLineEdit*>();
 	for (auto it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		QLineEdit *leCondition = new QLineEdit(it.key());
-		QLineEdit *leFilename = new QLineEdit(it.value().first);
-		QLineEdit *leFolder = new QLineEdit(it.value().second);
+		auto leCondition = new QLineEdit(it.key());
+		auto leFilename = new QLineEdit(it.value().first);
+		auto leFolder = new QLineEdit(it.value().second);
 
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);

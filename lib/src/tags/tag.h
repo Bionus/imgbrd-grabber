@@ -14,7 +14,7 @@ class Tag
 		Tag();
 		explicit Tag(const QString &text, const QString &type = "unknown", int count = 0, const QStringList &related = QStringList());
 		explicit Tag(const QString &text, const TagType &type, int count = 0, const QStringList &related = QStringList());
-		explicit Tag(int id, const QString &text, const TagType &type, int count = 0, const QStringList &related = QStringList());
+		explicit Tag(int id, const QString &text, TagType type, int count = 0, QStringList related = QStringList());
 		static Tag FromCapture(const QRegularExpressionMatch &match, const QStringList &groups);
 		static QList<Tag> FromRegexp(const QString &rx, const QString &source);
 		static QString GetType(QString type, QMap<int, QString> ids = QMap<int, QString>());

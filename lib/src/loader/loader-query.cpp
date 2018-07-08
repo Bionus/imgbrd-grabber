@@ -9,8 +9,8 @@
 #include "models/source.h"
 
 
-LoaderQuery::LoaderQuery(Site *site, const QMap<QString, QVariant> &options)
-	: m_site(site), m_options(options), m_finished(false), m_offset(0)
+LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
+	: m_site(site), m_options(std::move(options)), m_finished(false), m_offset(0)
 {}
 
 bool LoaderQuery::start()

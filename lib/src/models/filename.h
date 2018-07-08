@@ -17,7 +17,7 @@ class Filename
 {
 	public:
 		Filename() = default;
-		explicit Filename(const QString &format);
+		explicit Filename(QString format);
 		QString getFormat() const;
 		void setFormat(const QString &format);
 		void setEscapeMethod(QString (*)(const QVariant &));
@@ -30,7 +30,7 @@ class Filename
 		 * @param complex Whether the filename is complex or not (contains conditionals).
 		 * @return The filename of the image, with any token replaced.
 		 */
-		QStringList path(const Image& img, Profile *settings, const QString &pth = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
+		QStringList path(const Image &img, Profile *settings, const QString &pth = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
 		QStringList	path(QMap<QString, Token> tokens, Profile *settings, QString folder = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
 
 		/**

@@ -11,7 +11,7 @@ class SourceUpdater : public Updater
 	Q_OBJECT
 
 	public:
-		SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl);
+		SourceUpdater(QString source, QString directory, QString baseUrl);
 
 	public slots:
 		void checkForUpdates() const override;

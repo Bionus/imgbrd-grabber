@@ -10,8 +10,8 @@
 #include "models/source.h"
 
 
-SourceGuesser::SourceGuesser(const QString &url, const QList<Source *> &sources)
-	: m_url(url), m_sources(sources)
+SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
+	: m_url(std::move(url)), m_sources(std::move(sources))
 {
 	m_manager = new CustomNetworkAccessManager(this);
 }
@@ -64,6 +64,6 @@ Source *SourceGuesser::start()
 		}
 	}
 
-	emit finished(nullptr);
-	return nullptr;
+	emit finished(Q_NULLPTR);
+	return Q_NULLPTR;
 }

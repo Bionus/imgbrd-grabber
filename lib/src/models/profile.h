@@ -16,8 +16,8 @@ class Profile : public QObject
 
 	public:
 		Profile();
-		Profile(QSettings *settings, const QList<Favorite> &favorites, const QStringList &keptForLater = QStringList(), const QString &path = QString());
-		explicit Profile(const QString &path);
+		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
+		explicit Profile(QString path);
 		~Profile() override;
 		void sync();
 

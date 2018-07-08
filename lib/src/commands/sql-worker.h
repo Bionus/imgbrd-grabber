@@ -10,7 +10,7 @@ class SqlWorker : public QThread
 	Q_OBJECT
 
 	public:
-		SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent = Q_NULLPTR);
+		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = Q_NULLPTR);
 		bool connect();
 		static QString escape(const QVariant &val);
 

@@ -50,7 +50,7 @@ class Api : public QObject
 	Q_OBJECT
 
 	public:
-		Api(const QString &name, const QMap<QString, QString> &data);
+		Api(QString name, QMap<QString, QString> data);
 
 		// Getters
 		QString getName() const;

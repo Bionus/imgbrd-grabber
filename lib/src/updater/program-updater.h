@@ -11,7 +11,7 @@ class ProgramUpdater : public Updater
 
 	public:
 		ProgramUpdater();
-		explicit ProgramUpdater(const QString &baseUrl);
+		explicit ProgramUpdater(QString baseUrl);
 		QUrl latestUrl() const;
 
 	public slots:

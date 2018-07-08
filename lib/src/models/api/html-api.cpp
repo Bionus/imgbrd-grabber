@@ -142,13 +142,13 @@ ParsedTags HtmlApi::parseTags(const QString &source, Site *site) const
 		}
 
 		// Map variables
-		int id = d.contains("id") ? d["id"].toInt() : 0;
-		QString name = d["tag"];
-		int count = d.contains("count") ? d["count"].toInt() : 0;
-		int typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
-		QString ttype = d["type"];
+		const int id = d.contains("id") ? d["id"].toInt() : 0;
+		const QString name = d["tag"];
+		const int count = d.contains("count") ? d["count"].toInt() : 0;
+		const int typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
+		const QString ttype = d["type"];
 
-		TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
+		const TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.tags.append(Tag(id, name, tagType, count));
 	}
 
@@ -168,8 +168,11 @@ ParsedDetails HtmlApi::parseDetails(const QString &source, Site *site) const
 		while (matches.hasNext())
 		{
 			auto match = matches.next();
-			QString previous = match.captured(1), id = match.captured(2), name = match.captured(3), next = match.captured(4);
-			ret.pools.append(Pool(id.toInt(), name, 0, next.toInt(), previous.toInt()));
+			const int previous = match.captured(1).toInt();
+			const int id = match.captured(2).toInt();
+			const QString name = match.captured(3);
+			const int next = match.captured(4).toInt();
+			ret.pools.append(Pool(id, name, 0, next, previous));
 		}
 	}
 

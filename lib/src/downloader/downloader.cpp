@@ -31,8 +31,8 @@ void Downloader::clear()
 	m_oPagesT.clear();
 }
 
-Downloader::Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QList<QStringList> &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous)
-	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postFiltering(postFiltering), m_sites(sources), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(tagsFormat), m_blacklistedTags(blacklistedTags), m_cancelled(false), m_quit(false), m_previous(previous)
+Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, QList<QStringList> blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
+	: m_profile(profile), m_lastPage(Q_NULLPTR), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(std::move(tagsFormat)), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
 { }
 
 void Downloader::setQuit(bool quit)
@@ -230,7 +230,7 @@ void Downloader::loadNext()
 
 	if (!m_images.isEmpty())
 	{
-		QSharedPointer<Image> image = m_images.takeFirst();
+		const QSharedPointer<Image> image = m_images.takeFirst();
 		log("Loading image '"+image->url()+"'");
 		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false);
 		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
@@ -357,7 +357,7 @@ void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
 
 	loadNext();
 }
-void Downloader::finishedLoadingImage(QSharedPointer<Image> image, const QMap<QString, Image::SaveResult> &result)
+void Downloader::finishedLoadingImage(const QSharedPointer<Image> &image, const QMap<QString, Image::SaveResult> &result)
 {
 	Q_UNUSED(result);
 

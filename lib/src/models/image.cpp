@@ -38,7 +38,7 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject(), m_profile(nullptr), m_extensionRotator(nullptr)
+	: m_profile(Q_NULLPTR), m_extensionRotator(Q_NULLPTR)
 { }
 
 // TODO(Bionus): clean up this mess
@@ -97,7 +97,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(Q_NULLPTR)
 {
 	m_settings = m_profile->getSettings();
 
@@ -875,11 +875,11 @@ void Image::setUrl(const QString &u)
 	m_url = u;
 	refreshTokens();
 }
-void Image::setSize(QSize size)	{ m_size = size; refreshTokens();	}
-void Image::setFileSize(int s)	{ m_fileSize = s; refreshTokens();	}
-void Image::setData(const QByteArray &d)
+void Image::setSize(QSize size)		{ m_size = size; refreshTokens();		}
+void Image::setFileSize(int size)	{ m_fileSize = size; refreshTokens();	}
+void Image::setData(const QByteArray &data)
 {
-	m_data = d;
+	m_data = data;
 
 	// Detect file extension from data headers
 	const bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
@@ -1164,7 +1164,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	QMap<QString, QStringList> details;
 	for (const Tag &tag : filteredTags(remove))
 	{
-		const QString t = tag.text();
+		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);

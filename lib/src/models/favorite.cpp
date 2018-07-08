@@ -3,14 +3,14 @@
 #include "functions.h"
 
 
-Favorite::Favorite(const QString &name)
-	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
+Favorite::Favorite(QString name)
+	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
 {}
-Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath)
-	: Favorite(name, note, lastViewed, QList<Monitor>(), imagePath)
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
+	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath))
 {}
-Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QList<Monitor> &monitors, const QString &imagePath)
-	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_monitors(monitors), m_imagePath(imagePath)
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath)
+	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath))
 {}
 
 void Favorite::setImagePath(const QString &imagePath)

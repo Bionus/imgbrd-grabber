@@ -28,11 +28,6 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 	return t;
 }
 
-/**
- * Return the colored tag.
- * @param favs The list of the user's favorite tags.
- * @return The HTML colored tag.
- */
 QString TagStylist::stylished(const Tag &tag, bool count, bool noUnderscores) const
 {
 	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "species" << "metas" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";

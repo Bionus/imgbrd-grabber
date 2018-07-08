@@ -4,11 +4,8 @@
 #include "tags/tag.h"
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, const QString &tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile)
-{}
-
-TagDatabaseInMemory::~TagDatabaseInMemory()
+TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
+	: TagDatabase(typeFile), m_tagFile(std::move(tagFile))
 {}
 
 bool TagDatabaseInMemory::load()

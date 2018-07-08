@@ -128,7 +128,7 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
  * @param	str				The date string.
  * @return	The converted date as a QDateTime.
  */
-QDateTime qDateTimeFromString(QString str)
+QDateTime qDateTimeFromString(const QString &str)
 {
 	QDateTime date;
 
@@ -189,15 +189,15 @@ QDateTime qDateTimeFromString(QString str)
 	return date;
 }
 
-QString getUnit(double *value)
+QString getUnit(double *size)
 {
 	QStringList units = FILESIZE_UNITS;
 	const int multiplier = FILESIZE_MULTIPLIER;
 
 	int power = 0;
-	while (*value >= multiplier && power < units.count() - 1)
+	while (*size >= multiplier && power < units.count() - 1)
 	{
-		*value /= 1024;
+		*size /= 1024;
 		power++;
 	}
 
@@ -208,7 +208,7 @@ QString formatFilesize(double size)
 {
 	const QString unit = getUnit(&size);
 	const double round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
-	const double roundedSize = static_cast<double>(static_cast<int>(size * round + 0.5)) / round;
+	const double roundedSize = qRound(size * round) / round;
 	return QStringLiteral("%1 %2").arg(roundedSize).arg(unit);
 }
 
@@ -326,10 +326,10 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 	if (!datetime.isValid())
 	{ return false; }
 	#ifdef Q_OS_WIN
-		wchar_t *filename = new wchar_t[path.length() + 1];
+		auto *filename = new wchar_t[path.length() + 1];
 		path.toWCharArray(filename);
 		filename[path.length()] = 0;
-		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		const HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
@@ -338,7 +338,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		}
 		else
 		{
-			LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
+			const LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
 			FILETIME pcreationtime;
 			pcreationtime.dwLowDateTime = (DWORD) ll;
 			pcreationtime.dwHighDateTime = ll >> 32;
@@ -458,22 +458,22 @@ bool isUrl(const QString &str)
 	return regexUrl.match(str).hasMatch();
 }
 
-QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
+QString fixFilename(QString filename, QString path, int maxLength, bool invalidChars)
 {
 	const QString sep = QDir::separator();
-	fn = QDir::toNativeSeparators(fn);
+	filename = QDir::toNativeSeparators(filename);
 	path = QDir::toNativeSeparators(path);
-	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
+	if (!path.endsWith(sep) && !path.isEmpty() && !filename.isEmpty())
 		path += sep;
 
 	#ifdef Q_OS_WIN
-		return fixFilenameWindows(fn, path, maxlength, invalidChars);
+		return fixFilenameWindows(filename, path, maxLength, invalidChars);
 	#else
-		return fixFilenameLinux(fn, path, maxlength, invalidChars);
+		return fixFilenameLinux(filename, path, maxLength, invalidChars);
 	#endif
 }
 
-QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, bool invalidChars)
+QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, bool invalidChars)
 {
 	Q_UNUSED(invalidChars);
 
@@ -512,8 +512,8 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 
 	// A filename cannot exceed a certain length
 	const int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
-	if (file.length() > maxlength - extlen)
-		file = file.left(maxlength - extlen).trimmed();
+	if (file.length() > maxLength - extlen)
+		file = file.left(maxLength - extlen).trimmed();
 	if (file.length() > 255 - extlen)
 		file = file.left(255 - extlen).trimmed();
 
@@ -539,11 +539,11 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, 
 	#define MAX_PATH 260
 #endif
 
-QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength, bool invalidChars)
+QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength, bool invalidChars)
 {
 	// Fix parameters
 	const QString sep = QStringLiteral("\\");
-	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
+	maxLength = maxLength == 0 ? MAX_PATH : maxLength;
 	QString filename = path + fn;
 
 	// Drive
@@ -590,19 +590,19 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength
 		part = part.trimmed();
 
 		// A part should still allow creating a file
-		if (part.length() > maxlength - 12)
-		{ part = part.left(qMax(0, maxlength - 12)).trimmed(); }
+		if (part.length() > maxLength - 12)
+		{ part = part.left(qMax(0, maxLength - 12)).trimmed(); }
 	}
 
 	// Join parts back
 	QString dirpart = parts.join(sep);
-	if (dirpart.length() > maxlength - 12)
-	{ dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed(); }
+	if (dirpart.length() > maxLength - 12)
+	{ dirpart = dirpart.left(qMax(0, maxLength - 12)).trimmed(); }
 	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
 	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
-	if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-	{ filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed(); }
+	if (filename.length() > maxLength - 1 - 3 - ext.length() - 1)
+	{ filename = filename.left(qMax(0, maxLength - 1 - 3 - ext.length() - 1)).trimmed(); }
 
 	// Get separation between filename and path
 	int index = -1;

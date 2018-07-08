@@ -16,7 +16,7 @@
 #include "tags/tag.h"
 
 
-bool opCompare(QString op, int left, int right)
+bool opCompare(const QString &op, int left, int right)
 {
 	if (right == -1)
 		return true;
@@ -27,7 +27,7 @@ bool opCompare(QString op, int left, int right)
 	return left == right;
 }
 
-bool jsonCompare(QVariant value, QJsonValue opt)
+bool jsonCompare(const QVariant &value, QJsonValue opt)
 {
 	QString op = "=";
 	if (opt.isArray())

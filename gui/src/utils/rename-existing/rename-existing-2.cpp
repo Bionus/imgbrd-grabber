@@ -5,8 +5,8 @@
 #include "functions.h"
 
 
-RenameExisting2::RenameExisting2(const QList<RenameExistingFile> &details, const QString &folder, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(details), m_folder(folder)
+RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(std::move(details)), m_folder(std::move(folder))
 {
 	ui->setupUi(this);
 

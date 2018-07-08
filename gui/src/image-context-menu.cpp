@@ -6,7 +6,7 @@
 
 
 ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent)
-	: QMenu(parent), m_settings(settings), m_image(img), m_mainWindow(mw)
+	: QMenu(parent), m_settings(settings), m_image(std::move(img)), m_mainWindow(mw)
 {
 	// Load reverse search engines
 	ReverseSearchLoader loader(m_settings);

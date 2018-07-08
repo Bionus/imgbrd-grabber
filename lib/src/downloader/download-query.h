@@ -13,7 +13,7 @@ class DownloadQuery
 		// Constructors
 		DownloadQuery() = default;
 		explicit DownloadQuery(Site *site);
-		explicit DownloadQuery(Site *site, const QString &filename, const QString &path);
+		explicit DownloadQuery(Site *site, QString filename, QString path);
 
 		// Serialization
 		virtual QString toString(const QString &separator) const = 0;

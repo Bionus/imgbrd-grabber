@@ -16,7 +16,7 @@ DetailsWindow::~DetailsWindow()
 	delete ui;
 }
 
-void DetailsWindow::setImage(QSharedPointer<Image> image)
+void DetailsWindow::setImage(const QSharedPointer<Image> &image)
 {
 	clearLayout(ui->formLayout);
 

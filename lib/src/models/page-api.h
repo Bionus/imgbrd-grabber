@@ -22,7 +22,7 @@ class PageApi : public QObject
 			Error
 		};
 
-		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags = QStringList(), int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
+		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		void			setLastPage(Page *page);
 		const QList<QSharedPointer<Image>> &images() const;
 		bool			isImageCountSure() const;
@@ -59,7 +59,7 @@ class PageApi : public QObject
 		void httpsRedirect();
 
 	protected:
-		bool addImage(QSharedPointer<Image> img);
+		bool addImage(const QSharedPointer<Image> &img);
 		void updateUrls();
 		void parseActual();
 		void setImageCount(int count, bool sure);

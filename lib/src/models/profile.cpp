@@ -10,13 +10,13 @@
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr)
+	: m_settings(Q_NULLPTR), m_commands(Q_NULLPTR)
 {}
-Profile::Profile(QSettings *settings, const QList<Favorite> &favorites, const QStringList &keptForLater, const QString &path)
-	: m_path(path), m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater), m_commands(nullptr)
+Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(Q_NULLPTR)
 {}
-Profile::Profile(const QString &path)
-	: m_path(path)
+Profile::Profile(QString path)
+	: m_path(std::move(path))
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 

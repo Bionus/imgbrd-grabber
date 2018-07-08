@@ -14,8 +14,8 @@ class DownloadQueryGroup : public DownloadQuery
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		explicit DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = QString());
-		explicit DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = QString());
+		explicit DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = QString());
+		explicit DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk = QString());
 
 		// Serialization
 		QString toString(const QString &separator) const override;

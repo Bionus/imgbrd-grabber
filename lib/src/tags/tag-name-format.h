@@ -16,8 +16,8 @@ class TagNameFormat
 			Caps, // SOME_TAG
 		};
 
-		TagNameFormat();
-		TagNameFormat(CaseFormat caseFormat, const QString &wordSeparator);
+		TagNameFormat() = default;
+		TagNameFormat(CaseFormat caseFormat, QString wordSeparator);
 		static TagNameFormat &Normalized();
 		CaseFormat caseFormat() const;
 		QString wordSeparator() const;

@@ -5,8 +5,8 @@
 #include "custom-network-access-manager.h"
 
 
-SourceUpdater::SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl)
-	: m_source(source), m_directory(directory), m_baseUrl(baseUrl)
+SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
+	: m_source(std::move(source)), m_directory(std::move(directory)), m_baseUrl(std::move(baseUrl))
 {
 	if (!m_baseUrl.endsWith("/"))
 		m_baseUrl += "/";

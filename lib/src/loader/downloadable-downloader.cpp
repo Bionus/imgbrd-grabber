@@ -5,7 +5,7 @@
 
 
 DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)
-	: QObject(parent), m_downloadable(downloadable), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags)
+	: QObject(parent), m_downloadable(std::move(downloadable)), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags)
 {}
 
 void DownloadableDownloader::setPath(const Filename &filename, const QString &folder)

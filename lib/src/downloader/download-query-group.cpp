@@ -3,16 +3,16 @@
 #include "models/site.h"
 
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk)
-	: DownloadQuery(site), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
+	: DownloadQuery(site), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), unk(std::move(unk))
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, const QString &unk)
-	: DownloadQuery(site, filename, path), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, QString unk)
+	: DownloadQuery(site, filename, path), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(blacklisted), unk(std::move(unk))
 { }
 
 

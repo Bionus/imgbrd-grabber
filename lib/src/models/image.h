@@ -34,7 +34,6 @@ class Image : public QObject, public Downloadable
 		QString		md5() const;
 		const QString		&url() const;
 		const QString &rating() const;
-		QString		site() const;
 		const QList<Tag> &tags() const;
 		QList<Tag>	filteredTags(const QStringList &remove) const;
 		QStringList tagsString() const;

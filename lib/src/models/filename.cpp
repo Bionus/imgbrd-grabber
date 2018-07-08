@@ -12,8 +12,8 @@
 #include "post-filter.h"
 
 
-Filename::Filename(const QString &format)
-	: m_format(format)
+Filename::Filename(QString format)
+	: m_format(std::move(format))
 { }
 
 QString Filename::expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
@@ -237,7 +237,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	return ret;
 }
 
-QStringList Filename::path(const Image& img, Profile *profile, const QString &pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
+QStringList Filename::path(const Image &img, Profile *profile, const QString &pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 { return path(img.tokens(profile), profile, pth, counter, complex, maxLength, shouldFixFilename, getFull, keepInvalidTokens); }
 QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
@@ -454,7 +454,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 	else if (val.type() == QVariant::StringList)
 	{
 		QStringList vals = val.toStringList();
-		QString mainSeparator = settings->value("Save/separator", " ").toString();
+		const QString mainSeparator = settings->value("Save/separator", " ").toString();
 		QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
 
 		// Namespaces

@@ -11,9 +11,9 @@ class Site;
 class Favorite
 {
 	public:
-		explicit Favorite(const QString &name);
-		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath = "");
-		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QList<Monitor> &monitors, const QString &imagePath = "");
+		explicit Favorite(QString name);
+		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
+		Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath = "");
 
 		// Getters and setters
 		void setNote(int note);

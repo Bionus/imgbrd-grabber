@@ -36,8 +36,8 @@
 #endif
 
 
-QDateTime	qDateTimeFromString(QString s);
-QString		savePath(const QString &s = "", bool exists = false, bool writable = false);
+QDateTime	qDateTimeFromString(const QString &str);
+QString		savePath(const QString &file = "", bool exists = false, bool writable = false);
 bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
@@ -50,13 +50,13 @@ bool		isUrl(const QString &str);
 bool		isVariantEmpty(const QVariant &value);
 QMap<QString, QString>	multiMatchToMap(const QRegularExpressionMatch &match, const QStringList &groups);
 
-bool		setFileCreationDate(const QString &path, const QDateTime &time);
+bool		setFileCreationDate(const QString &path, const QDateTime &datetime);
 void		shutDown(int timeout = 0);
 void		openTray();
 
-QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameWindows(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameLinux(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilename(QString filename, QString path = "", int maxLength = 0, bool invalidChars = true);
+QString fixFilenameWindows(const QString &filename, const QString &path = "", int maxLength = 0, bool invalidChars = true);
+QString fixFilenameLinux(const QString &filename, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
 QMap<QString, QString>		domToMap(const QDomElement &);
 

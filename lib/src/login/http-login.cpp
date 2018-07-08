@@ -8,8 +8,8 @@
 #include "models/site.h"
 
 
-HttpLogin::HttpLogin(const QString &type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
-	: m_type(type), m_site(site), m_manager(manager), m_settings(settings)
+HttpLogin::HttpLogin(QString type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+	: m_type(std::move(type)), m_site(site), m_loginReply(Q_NULLPTR), m_manager(manager), m_settings(settings)
 {}
 
 bool HttpLogin::isTestable() const
@@ -32,7 +32,13 @@ void HttpLogin::login()
 		{ query.addQueryItem(key, m_settings->value(key).toString()); }
 	m_settings->endGroup();
 
-	QString loginUrl = m_settings->value("login/" + m_type + "/url").toString();
+	if (m_loginReply != Q_NULLPTR)
+	{
+		m_loginReply->abort();
+		m_loginReply->deleteLater();
+	}
+
+	const QString loginUrl = m_settings->value("login/" + m_type + "/url").toString();
 	m_loginReply = getReply(loginUrl, query);
 
 	connect(m_loginReply, &QNetworkReply::finished, this, &HttpLogin::loginFinished);

@@ -14,8 +14,8 @@
 #include "tags/tag.h"
 
 
-PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(Q_NULLPTR), m_replyTags(Q_NULLPTR)
 {
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
@@ -23,7 +23,6 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const
 	m_imagesCountSafe = false;
 	m_pagesCountSafe = false;
 
-	m_search = tags;
 	m_page = page;
 	m_pool = pool;
 	m_format = m_api->getName();
@@ -110,7 +109,7 @@ void PageApi::abort()
 		m_reply->abort();
 }
 
-bool PageApi::addImage(QSharedPointer<Image> img)
+bool PageApi::addImage(const QSharedPointer<Image> &img)
 {
 	if (img.isNull())
 		return false;

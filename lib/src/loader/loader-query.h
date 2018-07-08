@@ -10,7 +10,7 @@ class Site;
 class LoaderQuery
 {
 	public:
-		explicit LoaderQuery(Site *site, const QMap<QString, QVariant> &options);
+		explicit LoaderQuery(Site *site, QMap<QString, QVariant> options);
 		bool start();
 		LoaderData next();
 		bool hasNext() const;

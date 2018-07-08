@@ -3,8 +3,8 @@
 #include "logger.h"
 
 
-JavascriptConsoleHelper::JavascriptConsoleHelper(const QString &prefix, QObject *parent)
-	: QObject(parent), m_prefix(prefix)
+JavascriptConsoleHelper::JavascriptConsoleHelper(QString prefix, QObject *parent)
+	: QObject(parent), m_prefix(std::move(prefix))
 {}
 
 

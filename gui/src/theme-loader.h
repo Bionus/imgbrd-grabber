@@ -8,7 +8,7 @@
 class ThemeLoader
 {
 	public:
-		explicit ThemeLoader(const QString &path);
+		explicit ThemeLoader(QString path);
 		QStringList getAllThemes() const;
 		bool setTheme(const QString &name);
 
