@@ -18,6 +18,7 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const
 	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
+	m_maxImagesCount = -1;
 	m_pagesCount = -1;
 	m_imagesCountSafe = false;
 	m_pagesCountSafe = false;
@@ -94,6 +95,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_loaded = false;
 	m_pageImageCount = 0;
 	/*m_imagesCount = -1;
+	m_maxImagesCount = -1;
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
@@ -212,10 +214,22 @@ void PageApi::parseActual()
 	// Complete image count information from tag count information
 	if (m_imagesCount < 1)
 	{
+		int found = 0;
+		int min = -1;
 		for (const Tag &tag : qAsConst(m_tags))
 		{
-			if (tag.text() == m_search.join(" "))
-			{ setImageCount(tag.count(), false); }
+			if (m_search.contains(tag.text()))
+			{
+				found++;
+				if (min == -1 || min > tag.count())
+				{ min = tag.count(); }
+			}
+		}
+		if (m_search.count() == found)
+		{
+			if (m_search.count() == 1)
+			{ setImageCount(min, false); }
+			setImageMaxCount(min);
 		}
 	}
 
@@ -328,6 +342,8 @@ int PageApi::imagesCount(bool guess) const
 
 	return m_imagesCount;
 }
+int PageApi::maxImagesCount() const
+{ return m_maxImagesCount; }
 bool PageApi::isPageCountSure() const { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess) const
 {
@@ -345,6 +361,15 @@ int PageApi::pagesCount(bool guess) const
 	}
 
 	return m_pagesCount;
+}
+int PageApi::maxPagesCount() const
+{
+	if (m_maxImagesCount < 0)
+		return -1;
+
+	const int forcedLimit = m_api->forcedLimit();
+	const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+	return qCeil(static_cast<qreal>(m_maxImagesCount) / perPage);
 }
 
 qulonglong PageApi::maxId() const
@@ -379,6 +404,8 @@ void PageApi::setImageCount(int count, bool sure)
 		}
 	}
 }
+void PageApi::setImageMaxCount(int maxCount)
+{ m_maxImagesCount = maxCount; }
 
 void PageApi::setPageCount(int count, bool sure)
 {

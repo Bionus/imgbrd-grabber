@@ -27,7 +27,9 @@ class Page : public QObject
 		const QList<QSharedPointer<Image>> &images() const;
 		Site		*site() const;
 		int			imagesCount(bool guess = true) const;
+		int			maxImagesCount() const;
 		int			pagesCount(bool guess = true) const;
+		int			maxPagesCount() const;
 		const QUrl	&url() const;
 		const QUrl	&friendlyUrl() const;
 		bool		hasSource() const;

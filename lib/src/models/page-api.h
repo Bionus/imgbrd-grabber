@@ -28,7 +28,9 @@ class PageApi : public QObject
 		bool			isImageCountSure() const;
 		bool			isPageCountSure() const;
 		int				imagesCount(bool guess = true) const;
+		int				maxImagesCount() const;
 		int				pagesCount(bool guess = true) const;
+		int				maxPagesCount() const;
 		const QUrl			&url() const;
 		const QString		&source() const;
 		const QString		&wiki() const;
@@ -61,6 +63,7 @@ class PageApi : public QObject
 		void updateUrls();
 		void parseActual();
 		void setImageCount(int count, bool sure);
+		void setImageMaxCount(int maxCount);
 		void setPageCount(int count, bool sure);
 
 	private:
@@ -77,7 +80,7 @@ class PageApi : public QObject
 		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
-		int				m_imagesCount, m_pagesCount, m_pageImageCount;
+		int				m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
 		bool			m_imagesCountSafe, m_pagesCountSafe;
 		bool			m_loaded = false;
 };

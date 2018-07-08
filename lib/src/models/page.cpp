@@ -189,6 +189,16 @@ int Page::imagesCount(bool guess) const
 	}
 	return m_pageApis[m_currentApi]->imagesCount(guess);
 }
+int Page::maxImagesCount() const
+{
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
+	{
+		const int count = m_pageApis[m_regexApi]->maxImagesCount();
+		if (count >= 0)
+			return count;
+	}
+	return m_pageApis[m_currentApi]->maxImagesCount();
+}
 int Page::pagesCount(bool guess) const
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
@@ -198,6 +208,16 @@ int Page::pagesCount(bool guess) const
 			return count;
 	}
 	return m_pageApis[m_currentApi]->pagesCount(guess);
+}
+int Page::maxPagesCount() const
+{
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
+	{
+		const int count = m_pageApis[m_regexApi]->maxPagesCount();
+		if (count >= 0)
+			return count;
+	}
+	return m_pageApis[m_currentApi]->maxPagesCount();
 }
 
 qulonglong Page::maxId() const
