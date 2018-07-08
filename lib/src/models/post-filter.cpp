@@ -45,7 +45,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 		if (type == QStringLiteral("grabber"))
 		{
 			const QStringList &vals = tokens[type].value().toStringList();
-			bool cond = vals.contains(filter, Qt::CaseInsensitive);
+			const bool cond = vals.contains(filter, Qt::CaseInsensitive);
 
 			if (!cond && !invert)
 			{ return QObject::tr("image is not \"%1\"").arg(filter); }

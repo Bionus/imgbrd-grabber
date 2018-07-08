@@ -33,7 +33,7 @@ QJSValue JavascriptGrabberHelper::regexMatches(const QString &regex, const QStri
 			if (val.isEmpty())
 				continue;
 
-			int underscorePos = group.lastIndexOf('_');
+			const int underscorePos = group.lastIndexOf('_');
 			bool ok;
 			group.midRef(underscorePos + 1).toInt(&ok);
 			if (underscorePos != -1 && ok)
@@ -100,7 +100,7 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 					prop = newProp;
 				}
 
-				quint32 length = prop.property(QStringLiteral("length")).toUInt();
+				const quint32 length = prop.property(QStringLiteral("length")).toUInt();
 				prop.setProperty(length, _parseXMLRec(item));
 			}
 		}

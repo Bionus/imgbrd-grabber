@@ -210,7 +210,7 @@ void Profile::sync()
 	if (m_settings != nullptr)
 		m_settings->sync();
 }
-void Profile::syncFavorites()
+void Profile::syncFavorites() const
 {
 	QFile fileFavorites(m_path + "/favorites.json");
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -235,7 +235,7 @@ void Profile::syncFavorites()
 		fileFavorites.close();
 	}
 }
-void Profile::syncKeptForLater()
+void Profile::syncKeptForLater() const
 {
 	QFile fileKfl(m_path + "/viewitlater.txt");
 	if (fileKfl.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -244,7 +244,7 @@ void Profile::syncKeptForLater()
 		fileKfl.close();
 	}
 }
-void Profile::syncIgnored()
+void Profile::syncIgnored() const
 {
 	QFile fileIgnored(m_path + "/ignore.txt");
 	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))

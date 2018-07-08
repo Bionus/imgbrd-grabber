@@ -29,7 +29,7 @@ Source *SourceGuesser::start()
 		Api *api = source->getApis().first();
 		if (api->canLoadCheck())
 		{
-			QString checkUrl = api->checkUrl().url;
+			const QString checkUrl = api->checkUrl().url;
 			if (!m_cache.contains(checkUrl))
 			{
 				QUrl getUrl(m_url + checkUrl);

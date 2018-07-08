@@ -56,9 +56,9 @@ class Site : public QObject
 		QString baseUrl() const;
 		const QString &url() const;
 		const QList<QNetworkCookie> &cookies() const;
-		QVariant setting(const QString &key, const QVariant &def = QVariant());
-		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
-		void syncSettings();
+		QVariant setting(const QString &key, const QVariant &def = QVariant()) const;
+		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
+		void syncSettings() const;
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);

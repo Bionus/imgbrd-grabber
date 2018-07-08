@@ -19,16 +19,16 @@ bool OAuth2Login::isTestable() const
 void OAuth2Login::login()
 {
 	// Get user application credentials
-	QString consumerKey = m_settings->value("auth/consumerKey").toString();
-	QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
-	QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
-	QByteArray base64BearerCredentials = bearerCredentials.toBase64();
+	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
+	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
+	const QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
+	const QByteArray base64BearerCredentials = bearerCredentials.toBase64();
 
 	// Create request
 	QNetworkRequest request(m_site->fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
 	request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
-	QString body = QStringLiteral("grant_type=client_credentials");
+	const QString body = QStringLiteral("grant_type=client_credentials");
 
 	// Post request and wait for a reply
 	m_tokenReply = m_manager->post(request, body.toUtf8());

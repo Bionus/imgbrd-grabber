@@ -373,7 +373,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		}
 	}
 
-	int cnt = fns.count();
+	const int cnt = fns.count();
 	for (int i = 0; i < cnt; ++i)
 	{
 		if (shouldFixFilename)
@@ -429,7 +429,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 		QStringList opts = ops.split(QRegularExpression("(?<!\\\\),"), QString::SkipEmptyParts);
 		for (const QString &opt : opts)
 		{
-			int index = opt.indexOf('=');
+			const int index = opt.indexOf('=');
 			if (index != -1)
 			{
 				QString v = opt.mid(index + 1);
@@ -483,7 +483,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 			QStringList namespaced;
 			for (int i = 0; i < vals.count(); ++i)
 			{
-				QString nspace = key == "all" ? namespaces[i] : key;
+				const QString nspace = key == "all" ? namespaces[i] : key;
 				namespaced.append((!excluded.contains(nspace) ? nspace + ":" : QString()) + vals[i]);
 			}
 			vals = namespaced;

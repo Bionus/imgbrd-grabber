@@ -71,9 +71,9 @@ class Profile : public QObject
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 
 	private:
-		void syncFavorites();
-		void syncKeptForLater();
-		void syncIgnored();
+		void syncFavorites() const;
+		void syncKeptForLater() const;
+		void syncIgnored() const;
 
 	signals:
 		void favoritesChanged();

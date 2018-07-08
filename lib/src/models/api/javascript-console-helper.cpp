@@ -8,27 +8,27 @@ JavascriptConsoleHelper::JavascriptConsoleHelper(const QString &prefix, QObject 
 {}
 
 
-void JavascriptConsoleHelper::debug(const QString &msg)
+void JavascriptConsoleHelper::debug(const QString &msg) const
 {
 	LOG(m_prefix + msg, Logger::Debug);
 }
 
-void JavascriptConsoleHelper::error(const QString &msg)
+void JavascriptConsoleHelper::error(const QString &msg) const
 {
 	LOG(m_prefix + msg, Logger::Error);
 }
 
-void JavascriptConsoleHelper::info(const QString &msg)
+void JavascriptConsoleHelper::info(const QString &msg) const
 {
 	LOG(m_prefix + msg, Logger::Info);
 }
 
-void JavascriptConsoleHelper::log(const QString &msg)
+void JavascriptConsoleHelper::log(const QString &msg) const
 {
 	LOG(m_prefix + msg, Logger::Info);
 }
 
-void JavascriptConsoleHelper::warn(const QString &msg)
+void JavascriptConsoleHelper::warn(const QString &msg) const
 {
 	LOG(m_prefix + msg, Logger::Warning);
 }
