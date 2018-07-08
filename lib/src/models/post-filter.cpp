@@ -40,6 +40,22 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 	{
 		const QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
+
+		// Grabber specials
+		if (type == QStringLiteral("grabber"))
+		{
+			const QStringList &vals = tokens[type].value().toStringList();
+			bool cond = vals.contains(filter, Qt::CaseInsensitive);
+
+			if (!cond && !invert)
+			{ return QObject::tr("image is not \"%1\"").arg(filter); }
+			if (cond && invert)
+			{ return QObject::tr("image is \"%1\"").arg(filter); }
+
+			return QString();
+		}
+
+		// Meta tokens
 		if (!tokens.contains(type))
 		{
 			QStringList keys = tokens.keys();

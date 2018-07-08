@@ -1,5 +1,6 @@
 #include "loader/downloadable.h"
 #include "functions.h"
+#include "models/filename.h"
 #include "models/profile.h"
 
 
@@ -29,6 +30,33 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 			for (auto it = custom.begin(); it != custom.end(); ++it)
 			{ tokens.insert(it.key(), Token(it.value())); }
 		}
+
+		// Use a lazy token for Grabber meta-tags as it can be expensive to calculate
+		tokens.insert("grabber", Token([profile, tokens]() {
+			QString pth = profile->getSettings()->value("Save/path").toString();
+			Filename filename(profile->getSettings()->value("Save/filename").toString());
+			QStringList paths = filename.path(tokens, profile, pth);
+			bool alreadyExists = false;
+			for (const QString &path : paths)
+			{
+				if (QFile::exists(path))
+				{
+					alreadyExists = true;
+					break;
+				}
+			}
+			bool inMd5List = !profile->md5Action(tokens["md5"].value().toString()).second.isEmpty();
+
+			// Generate corresponding combination
+			QStringList metas;
+			if (alreadyExists)
+			{ metas.append("alreadyExists"); }
+			if (inMd5List)
+			{ metas.append("inMd5List"); }
+			if (alreadyExists || inMd5List)
+			{ metas.append("downloaded"); }
+			return metas;
+		}));
 
 		m_tokens = tokens;
 	}
