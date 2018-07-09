@@ -12,8 +12,8 @@
 #include "image-context-menu.h"
 #include "mainwindow.h"
 #include "models/filename.h"
+#include "models/filtering/post-filter.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "settings/optionswindow.h"
@@ -131,7 +131,7 @@ void ZoomWindow::go()
 	bool whitelisted = false;
 	if (!m_settings->value("whitelistedtags").toString().isEmpty())
 	{
-		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ");
+		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts);
 		for (const Tag &t : m_image->tags())
 		{
 			if (whitelist.contains(t.text()))
@@ -1197,7 +1197,7 @@ int ZoomWindow::firstNonBlacklisted(int direction)
 	index = (index + m_images.count() + direction) % m_images.count();
 
 	// Skip blacklisted images
-	while (!PostFilter::blacklisted(m_images[index]->tokens(m_profile), m_profile->getBlacklist()).isEmpty() && index != first)
+	while (!m_profile->getBlacklist().match(m_images[index]->tokens(m_profile)).isEmpty() && index != first)
 	{
 		index = (index + m_images.count() + direction) % m_images.count();
 	}

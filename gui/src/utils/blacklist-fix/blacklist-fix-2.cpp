@@ -2,10 +2,10 @@
 #include <QFile>
 #include <ui_blacklist-fix-2.h>
 #include "loader/token.h"
-#include "models/post-filter.h"
+#include "models/filtering/post-filter.h"
 
 
-BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, QList<QStringList> blacklist, QWidget *parent)
+BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist blacklist, QWidget *parent)
 	: QDialog(parent), ui(new Ui::BlacklistFix2), m_details(std::move(details)), m_blacklist(std::move(blacklist))
 {
 	ui->setupUi(this);
@@ -20,7 +20,7 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, QList<QStrin
 		{
 			QMap<QString, Token> tokens;
 			tokens.insert("allos", Token(tags));
-			found = PostFilter::blacklisted(tokens, m_blacklist);
+			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
 		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i+1));

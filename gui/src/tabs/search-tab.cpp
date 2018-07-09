@@ -15,8 +15,8 @@
 #include "models/api/api.h"
 #include "models/favorite.h"
 #include "models/filename.h"
+#include "models/filtering/post-filter.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "sources/sourceswindow.h"
@@ -563,11 +563,11 @@ void searchTab::finishedLoadingPreview()
 	img->setPreviewImage(preview);
 
 	// Download whitelist images on thumbnail view
-	QList<QStringList> whitelistedTags;
-	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" "))
-	{ whitelistedTags.append(QStringList() << tag); }
-	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
-	QStringList whitelisted = PostFilter::blacklisted(img->tokens(m_profile), whitelistedTags);
+	Blacklist whitelistedTags;
+	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts))
+	{ whitelistedTags.add(tag); }
+	QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
+	QStringList whitelisted = whitelistedTags.match(img->tokens(m_profile));
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
 	{
 		bool download = false;
@@ -1150,7 +1150,7 @@ void searchTab::webZoom(int id)
 
 	const QSharedPointer<Image> &image = m_images.at(id);
 
-	QStringList detected = PostFilter::blacklisted(image->tokens(m_profile), m_profile->getBlacklist());
+	QStringList detected = m_profile->getBlacklist().match(image->tokens(m_profile));
 	if (!detected.isEmpty())
 	{
 		const int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
@@ -1433,7 +1433,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 
 bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
+	QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
 		error = QStringLiteral("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");

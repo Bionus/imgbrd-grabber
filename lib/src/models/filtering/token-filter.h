@@ -1,0 +1,18 @@
+#ifndef TOKEN_FILTER_H
+#define TOKEN_FILTER_H
+
+#include "filter.h"
+
+
+class TokenFilter : public Filter
+{
+	public:
+		explicit TokenFilter(QString token, bool invert = false);
+		QString match(const QMap<QString, Token> &tokens, bool invert = false) const override;
+		QString toString() const override;
+
+	private:
+		QString m_token;
+};
+
+#endif // TOKEN_FILTER_H

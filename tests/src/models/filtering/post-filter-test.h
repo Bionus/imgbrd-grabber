@@ -15,16 +15,7 @@ class PostFilterTest : public TestSuite
 		void init();
 		void cleanup();
 
-		void testBlacklisted();
-		void testMatchToken();
-		void testMatchTag();
-		void testMatchUnknown();
-		void testMatchMathematical();
-		void testMatchDate();
-		void testMatchRating();
-		void testMatchSource();
 		void testFilterNumeric();
-		void testFilterString();
 		void testFilterSpecial();
 		void testFilterInvert();
 

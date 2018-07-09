@@ -99,10 +99,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->endGroup();
 
 	// Blacklist
-	QString blacklist;
-	for (const QStringList &tags : profile->getBlacklist())
-	{ blacklist += (blacklist.isEmpty() ? QString() : "\n") + tags.join(' '); }
-	ui->textBlacklist->setPlainText(blacklist);
+	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
 	// Monitoring
@@ -873,9 +870,9 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	// Blacklist
-	QList<QStringList> blacklist;
+	Blacklist blacklist;
 	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
-	{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+	{ blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 

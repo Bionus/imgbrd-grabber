@@ -6,10 +6,10 @@
 #include <algorithm>
 #include "functions.h"
 #include "models/api/api.h"
+#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "post-filter.h"
 
 
 Filename::Filename(QString format)

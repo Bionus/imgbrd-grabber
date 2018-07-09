@@ -27,7 +27,7 @@ TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, co
 	{ addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
 	// Blacklist
-	if (profile->getBlacklist().contains(QStringList() << m_tag))
+	if (profile->getBlacklist().contains(m_tag))
 	{ addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
 	else
 	{ addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }

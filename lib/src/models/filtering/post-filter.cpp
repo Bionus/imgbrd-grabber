@@ -3,7 +3,7 @@
 #include "loader/token.h"
 
 
-int toDate(const QString &text)
+static int toDate(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
 	if (date.isValid())
@@ -189,21 +189,4 @@ QStringList PostFilter::filter(const QMap<QString, Token> &tokens, const QString
 			ret.append(err);
 	}
 	return ret;
-}
-
-QStringList PostFilter::blacklisted(const QMap<QString, Token> &tokens, const QList<QStringList> &blacklistedTags, bool invert)
-{
-	QStringList detected;
-	for (const QStringList &tags : blacklistedTags)
-	{
-		bool allDetected = true;
-		for (const QString &tag : tags)
-		{
-			if (match(tokens, tag, invert).isEmpty())
-				allDetected = false;
-		}
-		if (allDetected)
-			detected.append(tags.join(' '));
-	}
-	return detected;
 }

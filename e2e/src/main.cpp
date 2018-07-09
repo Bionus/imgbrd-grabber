@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	auto allSites = profile->getSites();
 
 	const auto oldBlacklist = profile->getBlacklist();
-	profile->setBlacklistedTags(QList<QStringList>());
+	profile->setBlacklistedTags(Blacklist());
 
 	const QJsonObject root = input.object();
 	const QJsonArray rootSearch = root.value("search").toArray();

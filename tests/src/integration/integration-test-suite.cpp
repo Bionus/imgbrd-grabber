@@ -59,7 +59,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 								  "",
 								  "",
 								  false,
-								  QList<QStringList>(),
+								  Blacklist(),
 								  false,
 								  0,
 								  "%tag %count %type");
@@ -128,7 +128,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 								  "",
 								  "",
 								  false,
-								  QList<QStringList>(),
+								  Blacklist(),
 								  false,
 								  0,
 								  "%tag %count %type");

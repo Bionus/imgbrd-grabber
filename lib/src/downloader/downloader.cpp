@@ -6,8 +6,8 @@
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
+#include "models/filtering/post-filter.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/site.h"
 
 
@@ -31,7 +31,7 @@ void Downloader::clear()
 	m_oPagesT.clear();
 }
 
-Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, QList<QStringList> blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
+Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
 	: m_profile(profile), m_lastPage(Q_NULLPTR), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(std::move(tagsFormat)), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
 { }
 
@@ -319,7 +319,7 @@ void Downloader::finishedLoadingImages(Page *page)
 			// Blacklisted tags
 			if (!m_blacklist)
 			{
-				if (!PostFilter::blacklisted(img->tokens(m_profile), m_blacklistedTags).empty())
+				if (!m_blacklistedTags.match(img->tokens(m_profile)).empty())
 				{
 					++m_ignored;
 					continue;
@@ -433,7 +433,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 			// Blacklisted tags
 			if (!m_blacklist)
 			{
-				if (!PostFilter::blacklisted(img->tokens(m_profile), m_blacklistedTags).empty())
+				if (!m_blacklistedTags.match(img->tokens(m_profile)).empty())
 				{
 					++m_ignored;
 					continue;

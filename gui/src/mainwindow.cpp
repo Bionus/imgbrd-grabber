@@ -36,8 +36,8 @@
 #include "models/api/api.h"
 #include "models/favorite.h"
 #include "models/filename.h"
+#include "models/filtering/post-filter.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/profile.h"
 #include "monitoring-center.h"
 #include "settings/optionswindow.h"
@@ -1688,7 +1688,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	}
 
 	// Check if image is blacklisted
-	const QStringList &detected = PostFilter::blacklisted(download.image->tokens(m_profile), m_profile->getBlacklist());
+	const QStringList &detected = m_profile->getBlacklist().match(download.image->tokens(m_profile));
 	if (!detected.isEmpty())
 	{
 		m_getAllIgnored++;

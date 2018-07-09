@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QString>
 #include "models/favorite.h"
+#include "models/filtering/blacklist.h"
 
 
 class Commands;
@@ -52,7 +53,7 @@ class Profile : public QObject
 		void removeSite(Site *site);
 
 		// Blacklist management
-		void setBlacklistedTags(const QList<QStringList> &tags);
+		void setBlacklistedTags(const Blacklist &blacklist);
 		void addBlacklistedTag(const QString &tag);
 		void removeBlacklistedTag(const QString &tag);
 
@@ -65,7 +66,7 @@ class Profile : public QObject
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		QStringList &getCustomAutoComplete();
-		QList<QStringList> &getBlacklist();
+		Blacklist &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
@@ -92,7 +93,7 @@ class Profile : public QObject
 		Commands		*m_commands;
 		QStringList		m_autoComplete;
 		QStringList		m_customAutoComplete;
-		QList<QStringList>		m_blacklistedTags;
+		Blacklist		m_blacklist;
 		QHash<QString, QString>	m_md5s;
 		QMap<QString, Source*>	m_sources;
 		QMap<QString, Site*>	m_sites;

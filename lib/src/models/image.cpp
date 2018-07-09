@@ -10,9 +10,9 @@
 #include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filename.h"
+#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag-database.h"
@@ -910,7 +910,7 @@ void Image::setTags(const QList<Tag> &tags)
 QColor Image::color() const
 {
 	// Blacklisted
-	QStringList detected = PostFilter::blacklisted(tokens(m_profile), m_profile->getBlacklist());
+	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
 	if (!detected.isEmpty())
 		return QColor(0, 0, 0);
 

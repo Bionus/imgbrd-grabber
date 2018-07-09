@@ -137,13 +137,13 @@ Profile::Profile(QString path)
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
 	for (const QString &bl : blacklist)
-	{ m_blacklistedTags.append(QStringList() << bl); }
+	{ m_blacklist.add(bl); }
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text))
 	{
 		QString line;
 		while (!(line = fileBlacklist.readLine()).isEmpty())
-			m_blacklistedTags.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_blacklist.add(line.trimmed().split(" ", QString::SkipEmptyParts));
 
 		fileBlacklist.close();
 	}
@@ -200,8 +200,7 @@ void Profile::sync()
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
-		for (const QStringList &bl : qAsConst(m_blacklistedTags))
-		{ fileBlacklist.write((bl.join(' ') + "\n").toUtf8()); }
+		fileBlacklist.write(m_blacklist.toString().toUtf8());
 		fileBlacklist.close();
 	}
 	m_settings->remove("blacklistedtags");
@@ -410,21 +409,21 @@ void Profile::removeSite(Site *site)
 }
 
 
-void Profile::setBlacklistedTags(const QList<QStringList> &tags)
+void Profile::setBlacklistedTags(const Blacklist &blacklist)
 {
-	m_blacklistedTags = tags;
+	m_blacklist = blacklist;
 	emit blacklistChanged();
 }
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
-	m_blacklistedTags.append(QStringList() << tag);
+	m_blacklist.add(tag);
 	emit blacklistChanged();
 }
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
-	m_blacklistedTags.removeAll(QStringList() << tag);
+	m_blacklist.remove(tag);
 	emit blacklistChanged();
 }
 
@@ -437,7 +436,7 @@ QStringList &Profile::getIgnored()				{ return m_ignored;				}
 Commands &Profile::getCommands()				{ return *m_commands;			}
 QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
 QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
-QList<QStringList> &Profile::getBlacklist()		{ return m_blacklistedTags;		}
+Blacklist &Profile::getBlacklist()				{ return m_blacklist;			}
 const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
 const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
 

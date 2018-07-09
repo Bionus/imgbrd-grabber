@@ -2,9 +2,10 @@
 #include <QEventLoop>
 #include <QtMath>
 #include "loader/loader-data.h"
+#include "models/filtering/blacklist.h"
+#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/site.h"
 #include "models/source.h"
 
@@ -40,7 +41,7 @@ LoaderData LoaderQuery::next()
 	const QStringList postFiltering = m_options["postFiltering"].toStringList();
 	const bool getBlacklisted = m_options["getBlacklisted"].toBool();
 	// const QStringList blacklist = m_options["blacklist"].toStringList();
-	const QList<QStringList> blacklist;
+	const Blacklist blacklist;
 
 	// Load results
 	QEventLoop loop;
@@ -55,7 +56,7 @@ LoaderData LoaderQuery::next()
 	for (const QSharedPointer<Image> &img : images)
 	{
 		// Skip blacklisted images
-		if (!getBlacklisted && !PostFilter::blacklisted(img->tokens(profile), blacklist).empty())
+		if (!getBlacklisted && !blacklist.match(img->tokens(profile)).empty())
 		{
 			ret.ignored.append(img);
 			continue;
