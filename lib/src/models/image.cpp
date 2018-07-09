@@ -1049,15 +1049,17 @@ void Image::unload()
 
 void Image::setRating(const QString &rating)
 {
-	QMap<QString, QString> assoc;
-		assoc["s"] = "safe";
-		assoc["q"] = "questionable";
-		assoc["e"] = "explicit";
+	static QMap<QString, QString> assoc =
+	{
+		{ "s", "safe" },
+		{ "q", "questionable" },
+		{ "e", "explicit" }
+	};
 
-	if (assoc.contains(rating))
-	{ m_rating = assoc.value(rating); }
-	else
-	{ m_rating = rating.toLower(); }
+	m_rating = assoc.contains(rating)
+		? assoc[rating]
+		: rating.toLower();
+
 	refreshTokens();
 }
 
