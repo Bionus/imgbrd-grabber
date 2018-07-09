@@ -1,7 +1,6 @@
 #include "tag.h"
 #include <QRegularExpression>
 #include <QSet>
-#include <QTextDocument>
 #include "functions.h"
 #include "tag-type.h"
 
@@ -32,9 +31,7 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 	static QStringList weakTypes = QStringList() << QStringLiteral("unknown") << QStringLiteral("origin");
 
 	// Decode HTML entities in the tag text
-	QTextDocument htmlEncoded;
-	htmlEncoded.setHtml(text);
-	m_text = htmlEncoded.toPlainText().replace(' ', '_');
+	m_text = decodeHtmlEntities(text).replace(' ', '_');
 
 	// Sometimes a type is found with multiple words, only the first is relevant
 	const int typeSpace = m_type.name().indexOf(' ');

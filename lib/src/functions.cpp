@@ -21,6 +21,7 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
+#include "vendor/html-entities.h"
 
 
 /**
@@ -819,4 +820,13 @@ QMap<QString, QString> multiMatchToMap(const QRegularExpressionMatch &match, con
 	}
 
 	return data;
+}
+
+QString decodeHtmlEntities(const QString &html)
+{
+	QByteArray data = html.toUtf8();
+	const char *src = data.constData();
+	auto *dest = new char[strlen(src) + 1];
+	decode_html_entities_utf8(dest, src);
+	return QString::fromUtf8(dest);
 }

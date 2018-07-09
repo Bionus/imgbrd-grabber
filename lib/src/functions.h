@@ -72,6 +72,7 @@ void setTestModeEnabled(bool testMode);
 bool isTestModeEnabled();
 
 QString parseMarkdown(QString str);
+QString decodeHtmlEntities(const QString &html);
 
 QString qFontToCss(const QFont &font);
 QFont qFontFromString(const QString &str);
