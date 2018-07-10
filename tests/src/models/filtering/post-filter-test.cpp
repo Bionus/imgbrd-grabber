@@ -67,11 +67,11 @@ void PostFilterTest::testFilterNumeric()
 	QStringList filters;
 
 	// No match
-	filters = PostFilter::filter(tokens, QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01");
+	filters = PostFilter(QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01").match(tokens);
 	QCOMPARE(filters, QStringList());
 
 	// All match
-	filters = PostFilter::filter(tokens, QStringList() << "id:>10000" << "width:<=100" << "date:>=2017-01-01");
+	filters = PostFilter(QStringList() << "id:>10000" << "width:<=100" << "date:>=2017-01-01").match(tokens);
 	QCOMPARE(filters, QStringList() << "image's id does not match" << "image's width does not match" << "image's date does not match");
 }
 
@@ -82,11 +82,11 @@ void PostFilterTest::testFilterSpecial()
 	QStringList filters;
 
 	// No match
-	filters = PostFilter::filter(tokens, QStringList() << "rating:s" << "rating:safe" << "source:http://google.com");
+	filters = PostFilter(QStringList() << "rating:s" << "rating:safe" << "source:http://google.com").match(tokens);
 	QCOMPARE(filters, QStringList());
 
 	// All match
-	filters = PostFilter::filter(tokens, QStringList() << "rating:e" << "rating:explicit" << "source:http://test.com");
+	filters = PostFilter(QStringList() << "rating:e" << "rating:explicit" << "source:http://test.com").match(tokens);
 	QCOMPARE(filters, QStringList() << "image is not \"explicit\"" << "image is not \"explicit\"" << "image's source does not starts with \"http://test.com\"");
 }
 
@@ -97,11 +97,11 @@ void PostFilterTest::testFilterInvert()
 	QStringList filters;
 
 	// No match
-	filters = PostFilter::filter(tokens, QStringList() << "-id:>10000" << "-width:<=100" << "-date:>=2017-01-01");
+	filters = PostFilter(QStringList() << "-id:>10000" << "-width:<=100" << "-date:>=2017-01-01").match(tokens);
 	QCOMPARE(filters, QStringList());
 
 	// All match
-	filters = PostFilter::filter(tokens, QStringList() << "-id:<=10000" << "-width:>100" << "-date:<2017-01-01");
+	filters = PostFilter(QStringList() << "-id:<=10000" << "-width:>100" << "-date:<2017-01-01").match(tokens);
 	QCOMPARE(filters, QStringList() << "image's id match" << "image's width match" << "image's date match");
 }
 

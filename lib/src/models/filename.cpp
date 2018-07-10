@@ -197,10 +197,10 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 		return result.toBool();
 	}
 
-	const QStringList options = cond.split(' ');
-	const QStringList matches = PostFilter::filter(tokens, options);
+	const PostFilter filter(cond.split(' '));
+	const QStringList matches = filter.match(tokens);
 
-	return matches.count() < options.count();
+	return matches.count() < filter.count();
 }
 
 QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const
