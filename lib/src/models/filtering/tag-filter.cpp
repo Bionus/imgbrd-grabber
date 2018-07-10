@@ -6,7 +6,10 @@
 
 TagFilter::TagFilter(QString tag, bool invert)
 	: Filter(invert), m_tag(std::move(tag))
-{}
+{
+	if (m_tag.contains('*'))
+	{ m_regexp.reset(new QRegExp(m_tag, Qt::CaseInsensitive, QRegExp::Wildcard)); }
+}
 
 QString TagFilter::toString() const
 {
@@ -24,8 +27,8 @@ QString TagFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	bool cond = false;
 	for (const QString &tag : tags)
 	{
-		QRegExp reg(m_tag, Qt::CaseInsensitive, QRegExp::Wildcard);
-		if (reg.exactMatch(tag))
+		bool match = m_regexp.isNull() ? tag == m_tag : m_regexp->exactMatch(tag);
+		if (match)
 		{
 			cond = true;
 			break;

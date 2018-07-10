@@ -2,6 +2,8 @@
 #define TAG_FILTER_H
 
 #include "filter.h"
+#include <QRegExp>
+#include <QScopedPointer>
 
 
 class TagFilter : public Filter
@@ -13,6 +15,7 @@ class TagFilter : public Filter
 
 	private:
 		QString m_tag;
+		QScopedPointer<QRegExp> m_regexp;
 };
 
 #endif // TAG_FILTER_H
