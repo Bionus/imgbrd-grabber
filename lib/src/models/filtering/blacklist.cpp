@@ -1,6 +1,7 @@
 #include "blacklist.h"
 #include "filter.h"
 #include "filter-factory.h"
+#include "functions.h"
 
 
 Blacklist::Blacklist(const QStringList &tags)
@@ -79,7 +80,7 @@ QStringList Blacklist::match(const QMap<QString, Token> &tokens, bool invert) co
 	{
 		bool allDetected = true;
 		QStringList res;
-		for (const auto &filter : filters)
+		for (const QSharedPointer<Filter> &filter : filters)
 		{
 			if (filter->match(tokens, invert).isEmpty())
 			{
