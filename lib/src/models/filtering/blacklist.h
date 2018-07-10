@@ -2,6 +2,7 @@
 #define BLACKLIST_H
 
 #include <QMap>
+#include <QSharedPointer>
 
 
 class Filter;
@@ -12,7 +13,6 @@ class Blacklist
 	public:
 		Blacklist() = default;
 		explicit Blacklist(const QStringList &tags);
-		~Blacklist();
 
 		bool contains(const QString &tag) const;
 		void add(const QString &tag);
@@ -26,7 +26,7 @@ class Blacklist
 		int indexOf(const QString &tag) const;
 
 	private:
-		QList<QList<Filter*>> m_filters;
+		QList<QList<QSharedPointer<Filter>>> m_filters;
 };
 
 #endif // BLACKLIST_H

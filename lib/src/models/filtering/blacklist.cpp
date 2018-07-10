@@ -9,17 +9,11 @@ Blacklist::Blacklist(const QStringList &tags)
 		add(tag);
 }
 
-Blacklist::~Blacklist()
-{
-	for (const QList<Filter*> &filters : qAsConst(m_filters))
-		qDeleteAll(filters);
-}
-
 int Blacklist::indexOf(const QString &tag) const
 {
 	for (int i = 0; i < m_filters.count(); ++i)
 	{
-		const QList<Filter*> &filters = m_filters[i];
+		const auto &filters = m_filters[i];
 		if (filters.count() == 1 && QString::compare(filters[0]->toString(), tag, Qt::CaseInsensitive) == 0)
 			return i;
 	}
@@ -33,18 +27,18 @@ bool Blacklist::contains(const QString &tag) const
 
 void Blacklist::add(const QString &tag)
 {
-	Filter *filter = FilterFactory::build(tag);
-	if (filter != Q_NULLPTR)
-		m_filters.append(QList<Filter*>() << filter);
+	auto filter = QSharedPointer<Filter>(FilterFactory::build(tag));
+	if (!filter.isNull())
+		m_filters.append(QList<QSharedPointer<Filter>>() << filter);
 }
 
 void Blacklist::add(const QStringList &tags)
 {
-	QList<Filter*> filters;
+	QList<QSharedPointer<Filter>> filters;
 	for (const QString &tag : tags)
 	{
-		Filter *filter = FilterFactory::build(tag);
-		if (filter != Q_NULLPTR)
+		auto filter = QSharedPointer<Filter>(FilterFactory::build(tag));
+		if (!filter.isNull())
 			filters.append(filter);
 	}
 
@@ -58,7 +52,6 @@ bool Blacklist::remove(const QString &tag)
 	if (index == -1)
 		return false;
 
-	qDeleteAll(m_filters[index]);
 	m_filters.removeAt(index);
 	return true;
 }
@@ -66,7 +59,7 @@ bool Blacklist::remove(const QString &tag)
 QString Blacklist::toString() const
 {
 	QString ret;
-	for (const QList<Filter*> &filters : qAsConst(m_filters))
+	for (const auto &filters : qAsConst(m_filters))
 	{
 		for (int i = 0; i < filters.count(); ++i)
 		{
@@ -82,11 +75,11 @@ QString Blacklist::toString() const
 QStringList Blacklist::match(const QMap<QString, Token> &tokens, bool invert) const
 {
 	QStringList detected;
-	for (const QList<Filter*> &filters : qAsConst(m_filters))
+	for (const auto &filters : qAsConst(m_filters))
 	{
 		bool allDetected = true;
 		QStringList res;
-		for (Filter *filter : filters)
+		for (const auto &filter : filters)
 		{
 			if (filter->match(tokens, invert).isEmpty())
 			{
