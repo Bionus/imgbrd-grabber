@@ -74,7 +74,7 @@ void MixedSettings::beginGroup(const QString &prefix)
 
 void MixedSettings::endGroup()
 {
-	for (QSettings *setting : qAsConst( m_settings))
+	for (QSettings *setting : qAsConst(m_settings))
 		setting->endGroup();
 }
 
