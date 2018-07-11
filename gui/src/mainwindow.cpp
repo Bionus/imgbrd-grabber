@@ -1133,13 +1133,13 @@ void mainWindow::optionsClosed()
 	}
 }
 
-void mainWindow::setSource(const QString &source)
+void mainWindow::setSource(const QString &site)
 {
-	if (!m_profile->getSites().contains(source))
+	if (!m_profile->getSites().contains(site))
 		return;
 
 	m_selectedSites.clear();
-	m_selectedSites.append(m_profile->getSites().value(source));
+	m_selectedSites.append(m_profile->getSites().value(site));
 
 	if (m_tabs.isEmpty())
 		return;
@@ -1733,9 +1733,9 @@ void mainWindow::imageUrlChanged(const QString &before, const QString &after)
 	m_downloadTime.insert(after, m_downloadTime[before]);
 	m_downloadTime.remove(before);
 }
-void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
+void mainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	QString url = img->url();
+	const QString url = img->url();
 	if (img->fileSize() == 0)
 	{
 		img->setFileSize(bytesTotal);
@@ -1748,15 +1748,15 @@ void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived,
 	if (m_downloadTimeLast[url].elapsed() >= 1000)
 	{
 		m_downloadTimeLast[url].restart();
-		int elapsed = m_downloadTime[url].elapsed();
-		double speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
+		const int elapsed = m_downloadTime[url].elapsed();
+		const double speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
 		m_progressDialog->speedImage(url, speed);
 	}
 
 	int percent = 0;
 	if (bytesTotal> 0)
 	{
-		qreal pct = static_cast<qreal>(bytesReceived) / static_cast<qreal>(bytesTotal);
+		const qreal pct = static_cast<qreal>(bytesReceived) / static_cast<qreal>(bytesTotal);
 		percent = qFloor(pct * 100);
 	}
 
@@ -1868,7 +1868,7 @@ void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
-void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result)
+void mainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result)
 {
 	// Delete ImageDownloader to prevent leaks
 	m_getAllImageDownloaders[img]->deleteLater();
@@ -1888,7 +1888,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 
 	// Save error count to compare it later on
 	bool diskError = false;
-	auto res = result.first();
+	const auto res = result.first();
 
 	// Disk writing errors
 	for (auto it = result.begin(); it != result.end(); ++it)
@@ -1902,7 +1902,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			{
 				m_progressDialog->pause();
 
-				bool isDriveFull = false;
+				bool isDriveFull;
 				QString drive;
 				#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 					QDir destinationDir = QFileInfo(path).absoluteDir();
@@ -1914,6 +1914,8 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 					#else
 						drive = rootPath;
 					#endif
+				#else
+					isDriveFull = false;
 				#endif
 
 				QString msg;

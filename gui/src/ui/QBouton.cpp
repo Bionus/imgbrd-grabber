@@ -25,7 +25,7 @@ void QBouton::scale(const QPixmap &image, qreal scale)
 	resize(size);
 }
 
-QVariant QBouton::id()
+QVariant QBouton::id() const
 { return m_id; }
 void QBouton::setId(const QVariant &id)
 { m_id = id; }
@@ -53,9 +53,9 @@ void QBouton::paintEvent(QPaintEvent *event)
 	}
 
 	QPainter painter(this);
-	QRect region = m_smartSizeHint ? contentsRect() : event->rect();
-	QSize iconSize = getIconSize(region.width(), region.height());
-	int p = m_border;
+	const QRect region = m_smartSizeHint ? contentsRect() : event->rect();
+	const QSize iconSize = getIconSize(region.width(), region.height());
+	const int p = m_border;
 	int x = region.x();
 	int y = region.y();
 	int w = iconSize.width() + 2*p;
@@ -73,7 +73,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	}
 
 	// Draw image
-	QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
+	const QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
 	if (w > h)
 	{
 		icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop, mode);
@@ -91,10 +91,10 @@ void QBouton::paintEvent(QPaintEvent *event)
 	// Draw progress
 	if (m_progressMax > 0 && m_progress > 0 && m_progress != m_progressMax)
 	{
-		int lineHeight = 6;
-		int a = p + lineHeight/2;
+		const int lineHeight = 6;
+		const int a = p + lineHeight/2;
 
-		qreal ratio = static_cast<qreal>(m_progress) / m_progressMax;
+		const qreal ratio = static_cast<qreal>(m_progress) / m_progressMax;
 		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
 		QPoint p2(qFloor(p1.x() + (iconSize.width() - a) * ratio), p1.y());
 
@@ -130,7 +130,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		QPainterPath path;
 		path.addRoundedRect(notif, radius, radius);
 
-		QPen pen(Qt::black, 1);
+		const QPen pen(Qt::black, 1);
 		painter.setPen(pen);
 		painter.fillPath(path, QColor(255, 0, 0));
 		painter.drawPath(path);
@@ -158,7 +158,7 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 		h *= coef;
 	}
 
-	return QSize(w, h);
+	return { w, h };
 }
 
 void QBouton::resizeEvent(QResizeEvent *event)
@@ -182,11 +182,11 @@ QSize QBouton::sizeHint() const
 void QBouton::mousePressEvent(QMouseEvent *event)
 {
 	// Ignore clicks outside the thumbnail
-	QSize imgSize = sizeHint();
-	QSize size = this->size();
-	int wMargin = (size.width() - imgSize.width()) / 2;
-	int hMargin = (size.height() - imgSize.height()) / 2;
-	QPoint pos = event->pos();
+	const QSize imgSize = sizeHint();
+	const QSize size = this->size();
+	const int wMargin = (size.width() - imgSize.width()) / 2;
+	const int hMargin = (size.height() - imgSize.height()) / 2;
+	const QPoint pos = event->pos();
 	if (pos.x() < wMargin
 			|| pos.y() < hMargin
 			|| pos.x() > imgSize.width() + wMargin
@@ -195,11 +195,11 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton)
 	{
-		bool ctrlPressed = event->modifiers() & Qt::ControlModifier;
+		const bool ctrlPressed = event->modifiers() & Qt::ControlModifier;
 		if (ctrlPressed != m_invertToggle)
 		{
 			this->toggle();
-			bool range = event->modifiers() & Qt::ShiftModifier;
+			const bool range = event->modifiers() & Qt::ShiftModifier;
 			emit this->toggled(m_id, this->isChecked(), range);
 			emit this->toggled(m_id.toString(), this->isChecked(), range);
 			emit this->toggled(m_id.toInt(), this->isChecked(), range);

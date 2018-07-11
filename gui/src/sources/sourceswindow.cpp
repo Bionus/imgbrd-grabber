@@ -2,7 +2,6 @@
 #include <QCloseEvent>
 #include <QDesktopServices>
 #include <QInputDialog>
-#include <QMessageBox>
 #include <ui_sourceswindow.h>
 #include "custom-network-access-manager.h"
 #include "functions.h"
@@ -15,12 +14,6 @@
 #include "ui/QBouton.h"
 
 
-/**
- * Constructor of the sourcesWindow, generating checkboxes and delete buttons
- * @param	selected	Bool list of currently selected websites, in the alphabetical order
- * @param	sites		QStringList of sites names
- * @param	parent		The parent window
- */
 sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent)
 	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(Q_NULLPTR)
 {

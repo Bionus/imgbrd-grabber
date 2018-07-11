@@ -15,7 +15,7 @@ QString MetaFilter::toString() const
 
 bool MetaFilter::compare(const Filter& rhs) const
 {
-	auto other = dynamic_cast<const MetaFilter*>(&rhs);
+	const auto other = dynamic_cast<const MetaFilter*>(&rhs);
 	if (other == Q_NULLPTR)
 		return false;
 
@@ -56,7 +56,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	if (!tokens.contains(m_type))
 	{
 		QStringList keys = tokens.keys();
-		return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(m_type, keys.join("\", \""));
+		return QObject::tr(R"(unknown type "%1" (available types: "%2"))").arg(m_type, keys.join("\", \""));
 	}
 
 	const QVariant &token = tokens[m_type].value();

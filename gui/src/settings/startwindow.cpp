@@ -11,11 +11,6 @@
 #include "settings/optionswindow.h"
 
 
-/**
- * Constructor of the startWindow class, completing its window.
- *
- * @param parent	The parent window
- */
 startWindow::startWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile)
 {

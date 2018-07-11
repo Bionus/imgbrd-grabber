@@ -55,8 +55,8 @@ void		shutDown(int timeout = 0);
 void		openTray();
 
 QString fixFilename(QString filename, QString path = "", int maxLength = 0, bool invalidChars = true);
-QString fixFilenameWindows(const QString &filename, const QString &path = "", int maxLength = 0, bool invalidChars = true);
-QString fixFilenameLinux(const QString &filename, const QString &path = "", int maxLength = 0, bool invalidChars = true);
+QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
+QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
 QMap<QString, QString>		domToMap(const QDomElement &);
 

@@ -14,7 +14,7 @@ class TextEdit : public QTextEdit
 
 	public:
 		explicit TextEdit(Profile *profile, QWidget *parent = Q_NULLPTR);
-		void setCompleter(QCompleter *c);
+		void setCompleter(QCompleter *completer);
 		QCompleter *completer() const;
 		QSize sizeHint() const override;
 		void doColor();

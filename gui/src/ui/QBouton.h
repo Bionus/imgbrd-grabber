@@ -11,7 +11,7 @@ class QBouton : public QPushButton
 
 	public:
 		explicit QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
-		QVariant id();
+		QVariant id() const;
 		void mousePressEvent(QMouseEvent *event) override;
 		QSize sizeHint() const override;
 		void resizeEvent(QResizeEvent *event) override;

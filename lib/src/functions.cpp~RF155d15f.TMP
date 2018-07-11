@@ -341,7 +341,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		{
 			const LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
 			FILETIME pcreationtime;
-			pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
+			pcreationtime.dwLowDateTime = (DWORD) ll;
 			pcreationtime.dwHighDateTime = ll >> 32;
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
@@ -699,7 +699,7 @@ QString parseMarkdown(QString str)
 
 	// Issue links
 	static const QRegularExpression issueLinks("(issue|fix) #(\\d+)");
-	str.replace(issueLinks, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + R"(/issues/\2'>\1 #\2</a>)");
+	str.replace(issueLinks, "<a href='" + QStringLiteral(PROJECT_GITHUB_URL) + "/issues/\\2'>\\1 #\\2</a>");
 
 	// Line breaks to HTML
 	str.replace("\n", "<br/>");

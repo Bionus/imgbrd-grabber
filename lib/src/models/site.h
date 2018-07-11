@@ -61,9 +61,9 @@ class Site : public QObject
 		void syncSettings() const;
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
-		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
-		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 

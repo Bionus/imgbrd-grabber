@@ -40,7 +40,7 @@ struct ParsedDetails
 struct ParsedCheck
 {
 	QString error;
-	bool ok;
+	bool ok = false;
 };
 
 class Site;

@@ -97,7 +97,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(Q_NULLPTR)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(Q_NULLPTR), m_loadImageError(QNetworkReply::NetworkError::NoError)
 {
 	m_settings = m_profile->getSettings();
 
@@ -417,15 +417,6 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-/**
- * Return the filename of the image according to the user's settings.
- * @param fn The user's filename.
- * @param pth The user's root save path.
- * @param counter Current image count (used for batch downloads).
- * @param complex Whether the filename is complex or not (contains conditionals).
- * @param simple True to force using the fn and pth parameters.
- * @return The filename of the image, with any token replaced.
- */
 QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxLength, bool shouldFixFilename, bool getFull) const
 {
 	if (!simple)
@@ -912,7 +903,7 @@ QColor Image::color() const
 	// Blacklisted
 	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
 	if (!detected.isEmpty())
-		return QColor(0, 0, 0);
+		return { 0, 0, 0 };
 
 	// Favorited (except for exact favorite search)
 	auto favorites = m_profile->getFavorites();
@@ -920,21 +911,21 @@ QColor Image::color() const
 		if (!m_parent->search().contains(tag.text()))
 			for (const Favorite &fav : favorites)
 				if (fav.getName() == tag.text())
-					return QColor(255, 192, 203);
+				{ return { 255, 192, 203 }; }
 
 	// Image with a parent
 	if (m_parentId != 0)
-		return QColor(204, 204, 0);
+		return { 204, 204, 0 };
 
 	// Image with children
 	if (m_hasChildren)
-		return QColor(0, 255, 0);
+		return { 0, 255, 0 };
 
 	// Pending image
 	if (m_status == "pending")
-		return QColor(0, 0, 255);
+		return { 0, 0, 255 };
 
-	return QColor();
+	return {};
 }
 
 QString Image::tooltip() const

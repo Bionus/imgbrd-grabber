@@ -197,7 +197,7 @@ void poolTab::setSite(const QString &site)
 
 void poolTab::focusSearch()
 {
-	ui->spinPool->focusWidget();
+	ui->spinPool->setFocus();
 }
 
 QString poolTab::tags() const

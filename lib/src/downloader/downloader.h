@@ -55,7 +55,7 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
-		void finishedLoadingImage(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result);
+		void finishedLoadingImage(const QSharedPointer<Image> &image, const QMap<QString, Image::SaveResult> &result);
 		void cancel();
 		void clear();
 

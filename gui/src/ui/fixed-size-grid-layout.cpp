@@ -3,11 +3,11 @@
 
 
 FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent, int hSpacing, int vSpacing)
-	: QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing)
+	: QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing), m_fixedWidth(150)
 {}
 
 FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
-	: m_hSpace(hSpacing), m_vSpace(vSpacing)
+	: m_hSpace(hSpacing), m_vSpace(vSpacing), m_fixedWidth(150)
 {}
 
 FixedSizeGridLayout::~FixedSizeGridLayout()
@@ -92,8 +92,7 @@ bool FixedSizeGridLayout::hasHeightForWidth() const
 
 int FixedSizeGridLayout::heightForWidth(int width) const
 {
-	int height = doLayout(QRect(0, 0, width, 0), true);
-	return height;
+	return doLayout(QRect(0, 0, width, 0), true);
 }
 
 QSize FixedSizeGridLayout::minimumSize() const
@@ -133,8 +132,8 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
 		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
-		int nbElements = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
-		int totalSpace = w - (m_fixedWidth * nbElements);
+		const int nbElements = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
+		const int totalSpace = w - (m_fixedWidth * nbElements);
 		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElements - 1));
 
 		int nextX = x + item->sizeHint().width() + spaceX;

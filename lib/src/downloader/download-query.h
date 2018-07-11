@@ -12,6 +12,7 @@ class DownloadQuery
 	public:
 		// Constructors
 		DownloadQuery() = default;
+		virtual ~DownloadQuery() = default;
 		explicit DownloadQuery(Site *site);
 		explicit DownloadQuery(Site *site, QString filename, QString path);
 

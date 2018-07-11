@@ -61,7 +61,7 @@ void BlacklistFix2::on_buttonOk_clicked()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
-	int count = selected.size();
+	const int count = selected.size();
 	QSet<int> toDelete = QSet<int>();
 	for (int i = 0; i < count; i++)
 	{ toDelete.insert(selected.at(i)->row()); }

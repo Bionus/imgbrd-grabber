@@ -8,7 +8,7 @@
 
 
 OAuth2Login::OAuth2Login(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
-	: m_site(site), m_manager(manager), m_settings(settings)
+	: m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
 {}
 
 bool OAuth2Login::isTestable() const

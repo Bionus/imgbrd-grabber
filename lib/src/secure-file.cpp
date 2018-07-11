@@ -10,7 +10,7 @@ SecureFile::SecureFile(const QString &filename, const QString &key)
 
 quint64 SecureFile::generateIntKey(const QString &key) const
 {
-	const auto data = QByteArray::fromRawData((const char*)key.utf16(), key.length() * 2);
+	const auto data = QByteArray::fromRawData(reinterpret_cast<const char*>(key.utf16()), key.length() * 2);
 	QByteArray hash = QCryptographicHash::hash(data, QCryptographicHash::Md5);
 	Q_ASSERT(hash.size() == 16);
 	QDataStream stream(hash);

@@ -56,9 +56,6 @@ int main(int argc, char *argv[])
 	parser.addOption(outputOption);
 	parser.process(app);
 
-	parser.value(inputOption);
-	parser.value(outputOption);
-
 	Logger::getInstance().setLogLevel(Logger::Warning);
 
 	QFile f(parser.value(inputOption));

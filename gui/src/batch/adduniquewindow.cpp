@@ -11,11 +11,6 @@
 #include "models/site.h"
 
 
-/**
- * Constructor of the AddUniqueWindow class, generating its window.
- * @param	favorites	List of favorites tags, needed for coloration
- * @param	parent		The parent window
- */
 AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(Q_NULLPTR), m_sites(profile->getSites()), m_close(Q_NULLPTR), m_profile(profile)
 {
@@ -81,10 +76,6 @@ void AddUniqueWindow::ok(bool close)
 	}
 }
 
-/**
- * Signal triggered when the search is finished.
- * @param r		The QNetworkReply associated with the search
- */
 void AddUniqueWindow::replyFinished(Page *p)
 {
 	if (p->images().isEmpty())

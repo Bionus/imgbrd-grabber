@@ -75,8 +75,8 @@ void md5Fix::on_buttonStart_clicked()
 		// Parse all files
 		for (const auto &file : files)
 		{
-			QString fileName = file.first;
-			QString path = dir.absoluteFilePath(fileName);
+			const QString fileName = file.first;
+			const QString path = dir.absoluteFilePath(fileName);
 
 			QString md5;
 			if (ui->radioForce->isChecked())

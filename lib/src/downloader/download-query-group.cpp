@@ -11,8 +11,8 @@ DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int pa
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, QString unk)
-	: DownloadQuery(site, filename, path), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(blacklisted), unk(std::move(unk))
+DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
+	: DownloadQuery(site, filename, path), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
 { }
 
 

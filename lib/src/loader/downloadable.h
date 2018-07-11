@@ -35,6 +35,7 @@ class Downloadable
 			Full
 		};
 
+		virtual ~Downloadable() = default;
 		virtual void preload(const Filename &filename) = 0;
 		virtual QString url(Size size) const = 0;
 		virtual QStringList paths(const Filename &filename, const QString &folder, int count) const = 0;

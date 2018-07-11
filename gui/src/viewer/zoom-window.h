@@ -72,7 +72,7 @@ class ZoomWindow : public QWidget
 		void updateButtonPlus();
 		void openFile(bool now = false);
 		void updateWindowTitle();
-		void showLoadingError(const QString &error);
+		void showLoadingError(const QString &message);
 		void setButtonState(bool fav, SaveButtonState state);
 		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 

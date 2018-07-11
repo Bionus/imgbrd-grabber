@@ -7,7 +7,6 @@
 #include <QTextDocumentFragment>
 #include <QWheelEvent>
 #include "functions.h"
-#include "logger.h"
 #include "models/profile.h"
 
 
@@ -27,9 +26,9 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 QSize TextEdit::sizeHint() const
 {
 	QFontMetrics fm(font());
-	int h = qMax(fm.height(), 14) + 4;
-	int w = fm.width(QLatin1Char('x')) * 17 + 4;
-	QStyleOptionFrameV2 opt;
+	const int h = qMax(fm.height(), 14) + 4;
+	const int w = fm.width(QLatin1Char('x')) * 17 + 4;
+	QStyleOptionFrame opt;
 	opt.initFrom(this);
 	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));
 }
@@ -53,16 +52,16 @@ void TextEdit::doColor()
 	// Color favorite tags
 	QFont fontFavorites;
 	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
-	QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
-	QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
+	const QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
+	const QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
 	for (const Favorite &fav : m_favorites)
 		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
 
 	// Color kept for later tags
 	QFont fontKeptForLater;
 	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
-	QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
-	QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
+	const QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
+	const QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
 	for (const QString &tag : m_viewItLater)
 		txt.replace(" "+tag+" ", " <span style=\""+styleKeptForLater+"\">"+tag+"</span> ");
 
@@ -81,22 +80,22 @@ void TextEdit::doColor()
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);
 	int depth = 0;
-	for (int i = 0; i < txt.length(); ++i)
+	for (QChar &ch : txt)
 	{
-		if (txt[i] == ' ' && depth == 0)
-			txt[i] = QChar(29);
-		else if (txt[i] == '<')
+		if (ch == ' ' && depth == 0)
+			ch = QChar(29);
+		else if (ch == '<')
 			depth++;
-		else if (txt[i] == '>')
+		else if (ch == '>')
 			depth--;
 	}
 	txt.replace(QChar(29), "&nbsp;");
 
 	// Setup cursor
 	QTextCursor crsr = textCursor();
-	int pos = crsr.columnNumber();
-	int start = crsr.selectionStart();
-	int end = crsr.selectionEnd();
+	const int pos = crsr.columnNumber();
+	const int start = crsr.selectionStart();
+	const int end = crsr.selectionEnd();
 	setHtml(txt);
 
 	//If the cursor is at the right side of (if any) selected text
@@ -151,7 +150,7 @@ void TextEdit::insertCompletion(const QString& completion)
 		return;
 
 	QTextCursor tc = textCursor();
-	int extra = completion.length() - c->completionPrefix().length();
+	const int extra = completion.length() - c->completionPrefix().length();
 	tc.movePosition(QTextCursor::Left);
 	tc.movePosition(QTextCursor::EndOfWord);
 	tc.insertText(completion.right(extra));
@@ -162,9 +161,9 @@ QString TextEdit::textUnderCursor() const
 {
 	QTextCursor tc = textCursor();
 	QString txt = ' ' + toPlainText() + ' ';
-	int pos = tc.position();
-	int i2 = txt.indexOf(' ', pos);
-	int i1 = txt.lastIndexOf(' ', i2 - 1) + 1;
+	const int pos = tc.position();
+	const int i2 = txt.indexOf(' ', pos);
+	const int i1 = txt.lastIndexOf(' ', i2 - 1) + 1;
 	return txt.mid(i1, i2 - i1);
 }
 
@@ -204,7 +203,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 	}
 
-	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
+	const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
 	if (!c || !isShortcut) // do not process the shortcut when we have a completer
 	{
 		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
@@ -221,7 +220,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		return;
 
 	static QString eow(" ");
-	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+	const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
 	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))

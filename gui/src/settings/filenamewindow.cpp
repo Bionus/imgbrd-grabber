@@ -107,7 +107,7 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename#javascript"));
 }
 
-QString FilenameWindow::format()
+QString FilenameWindow::format() const
 {
 	if (ui->radioJavascript->isChecked())
 	{

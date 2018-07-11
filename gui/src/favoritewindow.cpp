@@ -11,7 +11,7 @@
 /**
  * Constructor of the favoriteWindow class, completing its window.
  * @param	profile		The current user profile
- * @param	Favorite	The favorite we are setting options for
+ * @param	favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
 favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)

@@ -21,11 +21,6 @@ ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStrin
 		m_next = index + 1;
 }
 
-ExtensionRotator::~ExtensionRotator()
-{
-	m_extensions.clear();
-}
-
 QString ExtensionRotator::next()
 {
 	// Always return an empty string for empty lists

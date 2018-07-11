@@ -18,7 +18,7 @@ QString TagFilter::toString() const
 
 bool TagFilter::compare(const Filter& rhs) const
 {
-	auto other = dynamic_cast<const TagFilter*>(&rhs);
+	const auto other = dynamic_cast<const TagFilter*>(&rhs);
 	if (other == Q_NULLPTR)
 		return false;
 
@@ -36,7 +36,7 @@ QString TagFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	bool cond = false;
 	for (const QString &tag : tags)
 	{
-		bool match = m_regexp.isNull() ? tag == m_tag : m_regexp->exactMatch(tag);
+		const bool match = m_regexp.isNull() ? tag == m_tag : m_regexp->exactMatch(tag);
 		if (match)
 		{
 			cond = true;

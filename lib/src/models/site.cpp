@@ -260,15 +260,6 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	return request;
 }
 
-/**
- * Get an URL from the site.
- *
- * @param url	The URL to get
- * @param page	The related page
- * @param ref	The type of referer to use (page, image, etc.)
- * @param img	The related image
- * @return		The equivalent network request
- */
 void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply*)> &callback, Page *page, const QString &ref, Image *img)
 {
 	m_lastCallback = callback;

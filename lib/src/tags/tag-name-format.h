@@ -27,7 +27,7 @@ class TagNameFormat
 		QString formatted(const QString &word, int index) const;
 
 	private:
-		CaseFormat m_caseFormat;
+		CaseFormat m_caseFormat = CaseFormat::Lower;
 		QString m_wordSeparator;
 };
 

@@ -419,7 +419,7 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
 	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		int i = it.key();
+		const int i = it.key();
 		auto logFile = it.value();
 
 		auto *label = new QLabel(logFile["name"].toString());
@@ -584,7 +584,7 @@ void optionsWindow::removeWebService(int id)
 
 void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
 {
-	bool isNew = rse.id() < 0;
+	const bool isNew = rse.id() < 0;
 
 	// Generate new ID for new web services
 	if (isNew)
@@ -679,7 +679,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 void optionsWindow::setFont(QLineEdit *lineEdit)
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
+	const QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
 	{ lineEdit->setFont(police); }
@@ -1042,7 +1042,7 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	// Themes
-	QString theme = ui->comboTheme->currentText();
+	const QString theme = ui->comboTheme->currentText();
 	ThemeLoader themeLoader(savePath("themes/", true));
 	if (themeLoader.setTheme(theme))
 	{ settings->setValue("theme", theme); }
@@ -1144,8 +1144,8 @@ void optionsWindow::save()
 
 		if (!useSystem)
 		{
-			QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-			QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
+			const QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
+			const QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 		}
@@ -1158,7 +1158,7 @@ void optionsWindow::save()
 		log(QStringLiteral("Disabling application proxy."));
 	}
 
-	QString lang = ui->comboLanguages->currentData().toString();
+	const QString lang = ui->comboLanguages->currentData().toString();
 	if (settings->value("language", "English").toString() != lang)
 	{
 		settings->setValue("language", lang);

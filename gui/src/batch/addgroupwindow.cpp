@@ -7,10 +7,6 @@
 #include "ui/textedit.h"
 
 
-/**
- * Constructor of the AddGroupWindow class, generating its window.
- * @param	parent		The parent window
- */
 AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::AddGroupWindow), m_sites(profile->getSites()), m_settings(profile->getSettings())
 {

@@ -89,9 +89,9 @@ class mainWindow : public QMainWindow
 		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
 		void getAllImages();
 		void getAllGetImage(const BatchDownloadImage &download, int siteId);
-		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
+		void getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
-		void getAllProgress(QSharedPointer<Image> img, qint64, qint64);
+		void getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
@@ -157,7 +157,7 @@ class mainWindow : public QMainWindow
 		void dropEvent(QDropEvent* event) override;
 
 	protected:
-		int getRowForSite(int site_id);
+		int getRowForSite(int siteId);
 		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
 		Site* getSelectedSiteOrDefault();

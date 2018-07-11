@@ -28,7 +28,7 @@ void DetailsWindow::setImage(const QSharedPointer<Image> &image)
 		}
 		else
 		{
-			auto label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
+			const auto label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
 			auto field = new QLabel(row.second, this);
 			field->setWordWrap(true);
 			field->setOpenExternalLinks(true);

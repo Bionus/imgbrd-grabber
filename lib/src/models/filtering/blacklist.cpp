@@ -49,7 +49,7 @@ void Blacklist::add(const QStringList &tags)
 
 bool Blacklist::remove(const QString &tag)
 {
-	int index = indexOf(tag);
+	const int index = indexOf(tag);
 	if (index == -1)
 		return false;
 

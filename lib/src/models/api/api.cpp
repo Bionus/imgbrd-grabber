@@ -28,15 +28,16 @@ bool Api::contains(const QString &key) const	{ return m_data.contains(key);	}
 QString Api::value(const QString &key) const	{ return m_data.value(key);		}
 
 
-PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+PageUrl Api::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
 {
 	PageUrl ret;
 	QString url;
-	QString search = tt;
+	QString srch = search;
 
 	// Default tag is none is given
-	if (m_data.contains("DefaultTag") && search.isEmpty())
-	{ search = m_data.value("DefaultTag"); }
+	if (m_data.contains("DefaultTag") && srch.isEmpty())
+	{
+		srch = m_data.value("DefaultTag"); }
 
 	// Find page number
 	const int forced = forcedLimit();
@@ -48,7 +49,7 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	if (m_data.contains("Urls/Pools"))
 	{
 		QRegularExpression poolRx("pool:(\\d+)");
-		auto match = poolRx.match(search);
+		auto match = poolRx.match(srch);
 		if (match.hasMatch())
 		{
 			url = m_data.value("Urls/Pools");
@@ -59,14 +60,14 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	// Home URL for empty searches
 	if (url.isEmpty())
 	{
-		if (search.isEmpty() && m_data.contains("Urls/Home"))
+		if (srch.isEmpty() && m_data.contains("Urls/Home"))
 		{ url = m_data.value("Urls/Home"); }
 		else
 		{ url = m_data.value("Urls/Tags"); }
 	}
 
 	// Return an error if we are trying to do a search on a non-compatible API
-	if (!search.isEmpty() && !url.contains("{tags}"))
+	if (!srch.isEmpty() && !url.contains("{tags}"))
 	{
 		ret.error = tr("Tag search is impossible with the chosen source (%1).").arg(m_name);
 		return ret;
@@ -94,7 +95,7 @@ PageUrl Api::pageUrl(const QString &tt, int page, int limit, int lastPage, int l
 	}
 
 	// Basic replaces
-	url.replace("{tags}", QUrl::toPercentEncoding(search));
+	url.replace("{tags}", QUrl::toPercentEncoding(srch));
 	url.replace("{limit}", QString::number(limit));
 
 	// Previous page replaces

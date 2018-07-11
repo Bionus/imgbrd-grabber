@@ -826,7 +826,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 }
 
-QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+QBouton *searchTab::createImageThumbnail(int position, const QSharedPointer<Image> &img)
 {
 	const QColor &color = img->color();
 
@@ -1024,11 +1024,9 @@ void searchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	}
 
 	// Calculate relative position compared to validated images
-	int relativePosition = 0;
-	if (merge)
-	{ relativePosition = absolutePosition; }
-	else
-	{ relativePosition = m_validImages[page].indexOf(img); }
+	int relativePosition = merge
+		? absolutePosition
+		: m_validImages[page].indexOf(img);
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
