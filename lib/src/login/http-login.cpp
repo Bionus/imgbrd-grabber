@@ -9,7 +9,7 @@
 
 
 HttpLogin::HttpLogin(QString type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
-	: m_type(std::move(type)), m_site(site), m_loginReply(Q_NULLPTR), m_manager(manager), m_settings(settings)
+	: m_type(std::move(type)), m_site(site), m_loginReply(nullptr), m_manager(manager), m_settings(settings)
 {}
 
 bool HttpLogin::isTestable() const
@@ -32,7 +32,7 @@ void HttpLogin::login()
 		{ query.addQueryItem(key, m_settings->value(key).toString()); }
 	m_settings->endGroup();
 
-	if (m_loginReply != Q_NULLPTR)
+	if (m_loginReply != nullptr)
 	{
 		m_loginReply->abort();
 		m_loginReply->deleteLater();

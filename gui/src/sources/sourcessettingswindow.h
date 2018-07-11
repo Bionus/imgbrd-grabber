@@ -18,7 +18,7 @@ class SourcesSettingsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = Q_NULLPTR);
+		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = nullptr);
 		~SourcesSettingsWindow() override;
 
 	public slots:

@@ -14,7 +14,7 @@ class TagContextMenu : public QMenu
 	Q_OBJECT
 
 	public:
-		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = Q_NULLPTR);
+		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = nullptr);
 
 	protected slots:
 		void favorite();

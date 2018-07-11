@@ -22,7 +22,7 @@ class Image : public QObject, public Downloadable
 
 	public:
 		Image();
-		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = Q_NULLPTR);
+		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
 		int			value() const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;

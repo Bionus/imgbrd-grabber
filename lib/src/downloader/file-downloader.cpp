@@ -6,7 +6,7 @@
 
 
 FileDownloader::FileDownloader(QObject *parent)
-	: QObject(parent), m_reply(Q_NULLPTR), m_writeError(false)
+	: QObject(parent), m_reply(nullptr), m_writeError(false)
 {}
 
 bool FileDownloader::start(QNetworkReply *reply, const QString &path)

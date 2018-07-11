@@ -45,7 +45,7 @@ LoaderData LoaderQuery::next()
 
 	// Load results
 	QEventLoop loop;
-	Page request(profile, m_site, QList<Site*>() << m_site, tags, page + m_offset, perPage, postFiltering, true, Q_NULLPTR);
+	Page request(profile, m_site, QList<Site*>() << m_site, tags, page + m_offset, perPage, postFiltering, true, nullptr);
 	QObject::connect(&request, &Page::finishedLoading, &loop, &QEventLoop::quit);
 	QObject::connect(&request, &Page::failedLoading, &loop, &QEventLoop::quit);
 	request.load(false);

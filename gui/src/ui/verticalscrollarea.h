@@ -11,7 +11,7 @@ class VerticalScrollArea : public QScrollArea
 	Q_OBJECT
 
 	public:
-		explicit VerticalScrollArea(QWidget *parent = Q_NULLPTR);
+		explicit VerticalScrollArea(QWidget *parent = nullptr);
 		void resizeEvent(QResizeEvent *event) override;
 		void setScrollEnabled(bool enabled);
 		void wheelEvent(QWheelEvent* e) override;

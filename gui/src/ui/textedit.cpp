@@ -11,7 +11,7 @@
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)
-	: QTextEdit(parent), c(Q_NULLPTR), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
+	: QTextEdit(parent), c(nullptr), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
 {
 	setTabChangesFocus(true);
 	setWordWrapMode(QTextOption::NoWrap);
@@ -129,7 +129,7 @@ void TextEdit::setCompleter(QCompleter *completer)
 
 	// Disconnect the previous completer
 	if (c)
-		QObject::disconnect(c, Q_NULLPTR, this, Q_NULLPTR);
+		QObject::disconnect(c, nullptr, this, nullptr);
 
 	// Set the new completer and connect it to the field
 	c = completer;

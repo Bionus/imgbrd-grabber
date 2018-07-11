@@ -70,7 +70,7 @@ void QAffiche::leaveEvent(QEvent* e)
 void QAffiche::resizeEvent(QResizeEvent* e)
 {
 	QMovie *mov = movie();
-	if (mov != Q_NULLPTR)
+	if (mov != nullptr)
 	{
 		const QSize &movieSize = mov->currentPixmap().size();
 		const QSize &newSize = e->size();

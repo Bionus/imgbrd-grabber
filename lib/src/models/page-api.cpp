@@ -15,7 +15,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(std::move(tags)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(Q_NULLPTR), m_replyTags(Q_NULLPTR)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(std::move(tags)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;

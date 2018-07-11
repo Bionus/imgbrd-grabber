@@ -17,7 +17,7 @@ class startWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit startWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit startWindow(Profile *profile, QWidget *parent = nullptr);
 		~startWindow() override;
 
 	public slots:

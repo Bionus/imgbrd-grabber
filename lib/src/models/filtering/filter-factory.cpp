@@ -38,5 +38,5 @@ Filter *FilterFactory::build(QString filter)
 		return new TagFilter(filter.trimmed(), invert);
 	}
 
-	return Q_NULLPTR;
+	return nullptr;
 }

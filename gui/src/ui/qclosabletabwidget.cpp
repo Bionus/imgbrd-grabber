@@ -14,7 +14,7 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 	if (o == tabBar() && e->type() == QEvent::MouseButtonPress)
 	{
 		auto *mouseEvent = dynamic_cast<QMouseEvent*>(e);
-		if (mouseEvent != Q_NULLPTR && mouseEvent->button() == Qt::MiddleButton)
+		if (mouseEvent != nullptr && mouseEvent->button() == Qt::MiddleButton)
 		{
 			const int index = tabBar()->tabAt(mouseEvent->pos());
 			QWidget *w = widget(index);

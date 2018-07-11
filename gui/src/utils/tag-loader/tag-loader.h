@@ -20,7 +20,7 @@ class TagLoader : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit TagLoader(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit TagLoader(Profile *profile, QWidget *parent = nullptr);
 		~TagLoader() override;
 
 	protected:

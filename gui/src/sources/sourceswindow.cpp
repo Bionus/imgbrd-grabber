@@ -15,7 +15,7 @@
 
 
 sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent)
-	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(Q_NULLPTR)
+	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(nullptr)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);

@@ -1681,7 +1681,7 @@ void mainWindow::_getAll()
 void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId)
 {
 	// Early return if we want to download blacklisted images
-	if (download.queryGroup == Q_NULLPTR || download.queryGroup->getBlacklisted)
+	if (download.queryGroup == nullptr || download.queryGroup->getBlacklisted)
 	{
 		getAllGetImage(download, siteId);
 		return;
@@ -1769,11 +1769,11 @@ void mainWindow::getAllPerformTags()
 
 	log(QStringLiteral("Tags received"), Logger::Info);
 
-	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
+	const BatchDownloadImage *downloadPtr = nullptr;
 	for (const BatchDownloadImage &i : qAsConst(m_getAllDownloading))
 		if (i.image.data() == sender())
 			downloadPtr = &i;
-	if (downloadPtr == Q_NULLPTR)
+	if (downloadPtr == nullptr)
 	{
 		log(QStringLiteral("Tags received from unknown sender"), Logger::Error);
 		return;
@@ -1875,11 +1875,11 @@ void mainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QStr
 	m_getAllImageDownloaders.remove(img);
 
 	// Find related download query
-	const BatchDownloadImage *downloadPtr = Q_NULLPTR;
+	const BatchDownloadImage *downloadPtr = nullptr;
 	for (const BatchDownloadImage &i : qAsConst(m_getAllDownloading))
 		if (i.image == img)
 			downloadPtr = &i;
-	if (downloadPtr == Q_NULLPTR)
+	if (downloadPtr == nullptr)
 	{
 		log(QStringLiteral("Saved image signal received from unknown sender"), Logger::Error);
 		return;

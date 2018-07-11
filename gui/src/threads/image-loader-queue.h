@@ -11,7 +11,7 @@ class ImageLoaderQueue : public QObject
 	Q_OBJECT
 
 	public:
-		explicit ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = Q_NULLPTR);
+		explicit ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = nullptr);
 
 	public slots:
 		void load(const QByteArray &data);

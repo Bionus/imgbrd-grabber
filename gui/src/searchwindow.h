@@ -19,7 +19,7 @@ class SearchWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SearchWindow(QString tags, Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit SearchWindow(QString tags, Profile *profile, QWidget *parent = nullptr);
 		~SearchWindow() override;
 
 	private:

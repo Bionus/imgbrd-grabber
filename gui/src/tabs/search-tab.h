@@ -57,7 +57,7 @@ class searchTab : public QWidget
 		void setSelectedSources(QSettings *settings);
 		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page> > > &pages);
 		void addHistory(const QString &tags, int page, int ipp, int cols);
-		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = Q_NULLPTR);
+		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url);

@@ -14,7 +14,7 @@ class CrashReporterWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		explicit CrashReporterWindow(QWidget *parent = Q_NULLPTR);
+		explicit CrashReporterWindow(QWidget *parent = nullptr);
 		~CrashReporterWindow() override;
 
 	public slots:

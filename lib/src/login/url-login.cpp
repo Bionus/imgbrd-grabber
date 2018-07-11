@@ -7,7 +7,7 @@
 
 
 UrlLogin::UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
-	: m_site(site), m_manager(manager), m_settings(settings), m_page(Q_NULLPTR)
+	: m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
 {}
 
 bool UrlLogin::isTestable() const
@@ -17,7 +17,7 @@ bool UrlLogin::isTestable() const
 
 void UrlLogin::login()
 {
-	if (m_page != Q_NULLPTR)
+	if (m_page != nullptr)
 	{
 		m_page->abort();
 		m_page->deleteLater();

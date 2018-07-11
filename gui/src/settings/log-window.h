@@ -18,7 +18,7 @@ class LogWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit LogWindow(int index, Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit LogWindow(int index, Profile *profile, QWidget *parent = nullptr);
 		~LogWindow() override;
 
 	protected slots:

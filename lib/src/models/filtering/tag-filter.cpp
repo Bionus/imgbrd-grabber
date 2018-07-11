@@ -19,7 +19,7 @@ QString TagFilter::toString() const
 bool TagFilter::compare(const Filter& rhs) const
 {
 	const auto other = dynamic_cast<const TagFilter*>(&rhs);
-	if (other == Q_NULLPTR)
+	if (other == nullptr)
 		return false;
 
 	return m_tag == other->m_tag;

@@ -13,7 +13,7 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		explicit TextEdit(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit TextEdit(Profile *profile, QWidget *parent = nullptr);
 		void setCompleter(QCompleter *completer);
 		QCompleter *completer() const;
 		QSize sizeHint() const override;

@@ -85,7 +85,7 @@ void ImageDownloader::loadImage()
 	connect(&m_fileDownloader, &FileDownloader::writeError, this, &ImageDownloader::writeError, Qt::UniqueConnection);
 
 	// Delete previous replies for retries
-	if (m_reply != Q_NULLPTR)
+	if (m_reply != nullptr)
 	{ m_reply->deleteLater(); }
 
 	// Load the image directly on the disk

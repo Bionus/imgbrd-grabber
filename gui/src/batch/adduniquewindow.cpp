@@ -12,7 +12,7 @@
 
 
 AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(Q_NULLPTR), m_sites(profile->getSites()), m_close(Q_NULLPTR), m_profile(profile)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(nullptr), m_sites(profile->getSites()), m_close(nullptr), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -53,7 +53,7 @@ void AddUniqueWindow::ok(bool close)
 
 	m_close = close;
 	Api *api = site->detailsApi();
-	if (api != Q_NULLPTR)
+	if (api != nullptr)
 	{
 		const QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
 

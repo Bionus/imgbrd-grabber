@@ -23,7 +23,7 @@ class batchWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit batchWindow(QSettings *settings, QWidget *parent = Q_NULLPTR);
+		explicit batchWindow(QSettings *settings, QWidget *parent = nullptr);
 		~batchWindow() override;
 		int currentValue() const;
 		int currentMax() const;

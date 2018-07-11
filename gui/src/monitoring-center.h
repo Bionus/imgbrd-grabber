@@ -14,7 +14,7 @@ class MonitoringCenter : public QObject
 	Q_OBJECT
 
 	public:
-		explicit MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent = Q_NULLPTR);
+		explicit MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
 
 	public slots:
 		void start();

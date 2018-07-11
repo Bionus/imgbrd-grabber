@@ -65,7 +65,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 	{ url = result.toString(); }
 
 	// Site-ize url
-	if (site != Q_NULLPTR)
+	if (site != nullptr)
 	{
 		url = site->fixLoginUrl(url);
 		url = site->fixUrl(url).toString();
@@ -425,7 +425,7 @@ PageUrl JavascriptApi::checkUrl() const
 	}
 
 	const QJSValue result = urlFunction.call();
-	fillUrlObject(result, Q_NULLPTR, ret);
+	fillUrlObject(result, nullptr, ret);
 
 	return ret;
 }

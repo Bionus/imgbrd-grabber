@@ -17,7 +17,7 @@ class RenameExisting2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent = Q_NULLPTR);
+		explicit RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent = nullptr);
 		~RenameExisting2() override;
 		void deleteDir(const QString &path);
 

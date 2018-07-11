@@ -64,6 +64,6 @@ Source *SourceGuesser::start()
 		}
 	}
 
-	emit finished(Q_NULLPTR);
-	return Q_NULLPTR;
+	emit finished(nullptr);
+	return nullptr;
 }

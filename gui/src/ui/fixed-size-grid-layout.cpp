@@ -13,7 +13,7 @@ FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
 FixedSizeGridLayout::~FixedSizeGridLayout()
 {
 	QLayoutItem *item;
-	while ((item = takeAt(0)) != Q_NULLPTR)
+	while ((item = takeAt(0)) != nullptr)
 		delete item;
 }
 
@@ -58,7 +58,7 @@ QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 	if (index >= 0 && index < m_items.size())
 		return m_items.takeAt(index);
 
-	return Q_NULLPTR;
+	return nullptr;
 }
 
 
@@ -82,7 +82,7 @@ int FixedSizeGridLayout::verticalSpacing() const
 
 Qt::Orientations FixedSizeGridLayout::expandingDirections() const
 {
-	return Q_NULLPTR;
+	return nullptr;
 }
 
 bool FixedSizeGridLayout::hasHeightForWidth() const
@@ -163,8 +163,8 @@ int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 	if (parent->isWidgetType())
 	{
 		auto *pw = dynamic_cast<QWidget*>(parent);
-		if (pw != Q_NULLPTR)
-			return pw->style()->pixelMetric(pm, Q_NULLPTR, pw);
+		if (pw != nullptr)
+			return pw->style()->pixelMetric(pm, nullptr, pw);
 	}
 
 	return dynamic_cast<QLayout*>(parent)->spacing();

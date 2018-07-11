@@ -216,7 +216,7 @@ void batchWindow::updateColumns()
 int batchWindow::indexOf(const QString &url)
 {
 	const int i = m_urls.indexOf(url);
-	if (i < 0 || ui->tableWidget->item(i, 1) == Q_NULLPTR)
+	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr)
 		return -1;
 	return i;
 }

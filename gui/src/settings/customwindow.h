@@ -14,7 +14,7 @@ class CustomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit CustomWindow(QWidget *parent = Q_NULLPTR);
+		explicit CustomWindow(QWidget *parent = nullptr);
 		~CustomWindow() override;
 
 	public slots:

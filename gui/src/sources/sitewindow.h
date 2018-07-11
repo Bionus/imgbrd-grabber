@@ -18,7 +18,7 @@ class SiteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SiteWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit SiteWindow(Profile *profile, QWidget *parent = nullptr);
 		~SiteWindow() override;
 
 	public slots:

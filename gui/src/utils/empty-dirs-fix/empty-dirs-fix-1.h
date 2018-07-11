@@ -19,7 +19,7 @@ class EmptyDirsFix1 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit EmptyDirsFix1(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit EmptyDirsFix1(Profile *profile, QWidget *parent = nullptr);
 		~EmptyDirsFix1() override;
 
 	public slots:

@@ -121,11 +121,11 @@ int main(int argc, char *argv[])
 				const int pagei = apiSearch[1].toDouble();
 				const int limit = apiSearch[2].toDouble();
 
-				Api *api = Q_NULLPTR;
+				Api *api = nullptr;
 				for (Api *a : site->getApis())
 					if (a->getName().toLower() == apiName.toLower())
 						api = a;
-				if (api == Q_NULLPTR)
+				if (api == nullptr)
 					continue;
 
 				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);

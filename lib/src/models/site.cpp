@@ -31,7 +31,7 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(Q_NULLPTR), m_manager(Q_NULLPTR), m_cookieJar(Q_NULLPTR), m_updateReply(Q_NULLPTR), m_tagsReply(Q_NULLPTR), m_tagDatabase(Q_NULLPTR), m_login(Q_NULLPTR), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_updateReply(nullptr), m_tagsReply(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
 	m_manager = new CustomNetworkAccessManager(this);
@@ -229,7 +229,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : QString())).toString();
 	if (referer.isEmpty() && !ref.isEmpty())
 	{ referer = m_settings->value("referer", "none").toString(); }
-	if (referer != "none" && (referer != "page" || page != Q_NULLPTR))
+	if (referer != "none" && (referer != "page" || page != nullptr))
 	{
 		QString refHeader;
 		if (referer == "host")
@@ -368,7 +368,7 @@ Api *Site::detailsApi() const
 	for (Api *api : m_apis)
 		if (api->canLoadDetails())
 			return api;
-	return Q_NULLPTR;
+	return nullptr;
 }
 
 bool Site::autoLogin() const			{ return m_autoLogin;		}

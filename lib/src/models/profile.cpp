@@ -10,10 +10,10 @@
 
 
 Profile::Profile()
-	: m_settings(Q_NULLPTR), m_commands(Q_NULLPTR)
+	: m_settings(nullptr), m_commands(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(Q_NULLPTR)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(std::move(path))

@@ -7,7 +7,7 @@
 
 
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
-	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(Q_NULLPTR)
+	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(nullptr)
 {
 	const QString url = api->tagsUrl(page, limit, site).url;
 	m_url = m_site->fixUrl(url);

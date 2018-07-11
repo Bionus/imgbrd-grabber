@@ -21,7 +21,7 @@ class AddGroupWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(Site *selected, Profile *profile, QWidget *parent = Q_NULLPTR);
+		AddGroupWindow(Site *selected, Profile *profile, QWidget *parent = nullptr);
 
 	public slots:
 		void ok();

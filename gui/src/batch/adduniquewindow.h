@@ -22,7 +22,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent = Q_NULLPTR);
+		AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent = nullptr);
 
 	public slots:
 		void add();

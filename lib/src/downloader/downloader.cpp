@@ -32,7 +32,7 @@ void Downloader::clear()
 }
 
 Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
-	: m_profile(profile), m_lastPage(Q_NULLPTR), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(std::move(tagsFormat)), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
+	: m_profile(profile), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(std::move(tagsFormat)), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
 { }
 
 void Downloader::setQuit(bool quit)

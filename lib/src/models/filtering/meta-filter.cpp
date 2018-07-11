@@ -16,7 +16,7 @@ QString MetaFilter::toString() const
 bool MetaFilter::compare(const Filter& rhs) const
 {
 	const auto other = dynamic_cast<const MetaFilter*>(&rhs);
-	if (other == Q_NULLPTR)
+	if (other == nullptr)
 		return false;
 
 	return m_type == other->m_type && m_val == other->m_val;

@@ -25,9 +25,9 @@ QString getUpdaterBaseUrl()
 
 QJSEngine *Source::jsEngine()
 {
-	static QJSEngine *engine = Q_NULLPTR;
+	static QJSEngine *engine = nullptr;
 
-	if (engine == Q_NULLPTR)
+	if (engine == nullptr)
 	{
 		engine = new QJSEngine();
 		engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
@@ -51,9 +51,9 @@ QJSEngine *Source::jsEngine()
 }
 QMutex *Source::jsEngineMutex()
 {
-	static QMutex *mutex = Q_NULLPTR;
+	static QMutex *mutex = nullptr;
 
-	if (mutex == Q_NULLPTR)
+	if (mutex == nullptr)
 	{ mutex = new QMutex(); }
 
 	return mutex;

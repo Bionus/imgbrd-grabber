@@ -14,7 +14,7 @@ class conditionWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit conditionWindow(QWidget *parent = Q_NULLPTR);
+		explicit conditionWindow(QWidget *parent = nullptr);
 		~conditionWindow() override;
 
 	public slots:

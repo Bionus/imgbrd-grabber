@@ -20,7 +20,7 @@ class optionsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit optionsWindow(Profile *profile, QWidget *parent = nullptr);
 		~optionsWindow() override;
 		void setColor(QLineEdit *lineEdit, bool button = false);
 		void setFont(QLineEdit *lineEdit);

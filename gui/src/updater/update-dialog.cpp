@@ -9,7 +9,7 @@
 
 
 UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
-	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
+	: QDialog(nullptr), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -96,7 +96,7 @@ void UpdateDialog::downloadFinished(const QString &path)
 
 	QProcess::startDetached(path);
 
-	if (m_parent != Q_NULLPTR)
+	if (m_parent != nullptr)
 	{ m_parent->close(); }
 
 	*m_shouldQuit = true;

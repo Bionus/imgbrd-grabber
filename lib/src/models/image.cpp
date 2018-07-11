@@ -38,7 +38,7 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: m_profile(Q_NULLPTR), m_extensionRotator(Q_NULLPTR)
+	: m_profile(nullptr), m_extensionRotator(nullptr)
 { }
 
 // TODO(Bionus): clean up this mess
@@ -97,7 +97,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(Q_NULLPTR), m_loadImageError(QNetworkReply::NetworkError::NoError)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_loadImageError(QNetworkReply::NetworkError::NoError)
 {
 	m_settings = m_profile->getSettings();
 
@@ -136,7 +136,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	else
 	{
 		Api *api = m_parentSite->detailsApi();
-		if (api != Q_NULLPTR)
+		if (api != nullptr)
 		{ m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url; }
 	}
 	m_pageUrl = site->fixUrl(m_pageUrl).toString();
@@ -353,7 +353,7 @@ void Image::parseDetails()
 
 	// Get an api able to parse details
 	Api *api = m_parentSite->detailsApi();
-	if (api == Q_NULLPTR)
+	if (api == nullptr)
 		return;
 
 	// Parse source

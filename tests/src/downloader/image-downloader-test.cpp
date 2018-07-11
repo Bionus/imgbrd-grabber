@@ -46,7 +46,7 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 void ImageDownloaderTest::testSuccessBasic()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Saved);
@@ -57,7 +57,7 @@ void ImageDownloaderTest::testSuccessBasic()
 void ImageDownloaderTest::testSuccessLoadTags()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, true, false);
+	ImageDownloader downloader(img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/to heart 2.jpg"), Image::SaveResult::Saved);
@@ -68,7 +68,7 @@ void ImageDownloaderTest::testSuccessLoadTags()
 void ImageDownloaderTest::testOpenError()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "///", "///root/toto", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "///", "///root/toto", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("//root/toto/"), Image::SaveResult::Error);
@@ -79,7 +79,7 @@ void ImageDownloaderTest::testOpenError()
 void ImageDownloaderTest::testNotFound()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NotFound);
@@ -92,7 +92,7 @@ void ImageDownloaderTest::testNotFound()
 void ImageDownloaderTest::testNetworkError()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NetworkError);
@@ -105,7 +105,7 @@ void ImageDownloaderTest::testNetworkError()
 void ImageDownloaderTest::testOriginalMd5()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.jpg"), Image::SaveResult::Saved);
@@ -116,7 +116,7 @@ void ImageDownloaderTest::testOriginalMd5()
 void ImageDownloaderTest::testGeneratedMd5()
 {
 	QSharedPointer<Image> img(createImage(true));
-	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, false);
+	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/956ddde86fb5ce85218b21e2f49e5c50.jpg"), Image::SaveResult::Saved);
@@ -127,7 +127,7 @@ void ImageDownloaderTest::testGeneratedMd5()
 void ImageDownloaderTest::testRotateExtension()
 {
 	QSharedPointer<Image> img(createImage());
-	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false, true);
+	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, true);
 
 	QMap<QString, Image::SaveResult> expected;
 	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.png"), Image::SaveResult::Saved);

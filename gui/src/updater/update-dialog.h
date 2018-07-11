@@ -17,7 +17,7 @@ class UpdateDialog : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = Q_NULLPTR);
+		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = nullptr);
 		~UpdateDialog() override;
 
 	signals:

@@ -14,7 +14,7 @@ class ImageContextMenu : public QMenu
 	Q_OBJECT
 
 	public:
-		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = Q_NULLPTR);
+		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = nullptr);
 
 	protected slots:
 		void openInBrowser();

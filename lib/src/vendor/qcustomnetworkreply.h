@@ -9,7 +9,7 @@ class QCustomNetworkReply : public QNetworkReply
     Q_OBJECT
 
 	public:
-		explicit QCustomNetworkReply(QObject *parent = Q_NULLPTR);
+		explicit QCustomNetworkReply(QObject *parent = nullptr);
 		~QCustomNetworkReply() override;
 
 		void setHttpStatusCode(int code, const QByteArray &statusText = QByteArray());
