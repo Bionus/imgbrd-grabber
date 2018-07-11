@@ -491,7 +491,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 		if (options.contains("separator"))
 		{ tagSeparator = fixSeparator(options["separator"]); }
 		if (options.contains("sort"))
-		{ qSort(vals); }
+		{ std::sort(vals.begin(), vals.end()); }
 
 		// Clean each value separately
 		for (QString &t : vals)

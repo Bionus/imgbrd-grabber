@@ -1,5 +1,6 @@
 #include "tag-test.h"
 #include <QtTest>
+#include <algorithm>
 
 
 void TagTest::init()
@@ -145,7 +146,7 @@ void TagTest::testSortTagsByType()
 	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
 	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(tagList.begin(), tagList.end(), sortTagsByType);
+	std::sort(tagList.begin(), tagList.end(), sortTagsByType);
 
 	QCOMPARE(tagList[0].text(), QString("third"));
 	QCOMPARE(tagList[1].text(), QString("second"));
@@ -162,7 +163,7 @@ void TagTest::testSortTagsByName()
 	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
 	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(tagList.begin(), tagList.end(), sortTagsByName);
+	std::sort(tagList.begin(), tagList.end(), sortTagsByName);
 
 	QCOMPARE(tagList[0].text(), QString("first"));
 	QCOMPARE(tagList[1].text(), QString("fourth"));
@@ -179,7 +180,7 @@ void TagTest::testSortTagsByCount()
 	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
 	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(tagList.begin(), tagList.end(), sortTagsByCount);
+	std::sort(tagList.begin(), tagList.end(), sortTagsByCount);
 
 	QCOMPARE(tagList[0].text(), QString("first"));
 	QCOMPARE(tagList[1].text(), QString("second"));

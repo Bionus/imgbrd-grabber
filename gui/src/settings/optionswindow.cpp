@@ -5,6 +5,7 @@
 #include <QNetworkProxy>
 #include <QSignalMapper>
 #include <QSqlDatabase>
+#include <algorithm>
 #include <ui_optionswindow.h>
 #include "functions.h"
 #include "helpers.h"
@@ -651,7 +652,7 @@ void optionsWindow::swapWebServices(int a, int b)
 	m_webServices[a].setOrder(pos);
 
 	// Re-order web services
-	qSort(m_webServices.begin(), m_webServices.end(), sortByOrder);
+	std::sort(m_webServices.begin(), m_webServices.end(), sortByOrder);
 	m_webServicesIds.clear();
 	for (int i = 0; i < m_webServices.count(); ++i)
 		m_webServicesIds.insert(m_webServices[i].id(), i);

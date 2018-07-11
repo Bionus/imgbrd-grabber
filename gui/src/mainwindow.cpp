@@ -752,7 +752,7 @@ void mainWindow::batchClearSelUniques()
 }
 void mainWindow::batchRemoveGroups(QList<int> rows)
 {
-	qSort(rows);
+	std::sort(rows.begin(), rows.end());
 
 	int rem = 0;
 	for (int i : qAsConst(rows))
@@ -769,7 +769,7 @@ void mainWindow::batchRemoveGroups(QList<int> rows)
 }
 void mainWindow::batchRemoveUniques(QList<int> rows)
 {
-	qSort(rows);
+	std::sort(rows.begin(), rows.end());
 
 	int rem = 0;
 	for (int i : qAsConst(rows))

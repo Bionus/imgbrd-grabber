@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QSet>
 #include <QtMath>
+#include <algorithm>
 #include "downloader/download-query-image.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
@@ -156,7 +157,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 	}
 
 	// We sort tags by frequency
-	qSort(tagList.begin(), tagList.end(), sortTagsByCount);
+	std::sort(tagList.begin(), tagList.end(), sortTagsByCount);
 
 	m_tags = tagList;
 	m_parent->setTags(m_tags, this);
