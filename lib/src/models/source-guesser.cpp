@@ -23,9 +23,6 @@ Source *SourceGuesser::start()
 
 	for (Source *source : qAsConst(m_sources))
 	{
-		if (source->getApis().isEmpty())
-			continue;
-
 		Api *api = source->getApis().first();
 		if (api->canLoadCheck())
 		{
