@@ -65,7 +65,6 @@ Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &s
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
 	const int cumulated = json["cumulated"].toInt();
 	const bool preciseCumulated = json["preciseCumulated"].toBool();
-
 	return Monitor(site, interval, lastCheck, cumulated, preciseCumulated);
 }
 

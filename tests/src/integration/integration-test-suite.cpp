@@ -36,10 +36,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	m_filesToRemove.append(settings.fileName());
 
 	m_profile = new Profile("tests/resources/");
-	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
-	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
 	QList<Site*> sites;
 	m_site = new Site(source, m_source);
@@ -105,10 +102,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	m_profile = new Profile("tests/resources/");
-	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
-	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
 	QList<Site*> sites;
 	m_site = new Site(source, m_source);
@@ -174,10 +168,7 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	m_profile = new Profile("tests/resources/");
-	bool oldJavaScript = m_profile->getSettings()->value("enableJsModels", true).toBool();
-	m_profile->getSettings()->setValue("enableJsModels", true);
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
-	m_profile->getSettings()->setValue("enableJsModels", oldJavaScript);
 
 	m_site = new Site(source, m_source);
 	m_site->setAutoLogin(false);

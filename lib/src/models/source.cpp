@@ -3,13 +3,9 @@
 #include <QJSValueIterator>
 #include "functions.h"
 #include "models/api/api.h"
-#include "models/api/html-api.h"
 #include "models/api/javascript-api.h"
 #include "models/api/javascript-console-helper.h"
 #include "models/api/javascript-grabber-helper.h"
-#include "models/api/json-api.h"
-#include "models/api/rss-api.h"
-#include "models/api/xml-api.h"
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -87,9 +83,8 @@ Source::Source(Profile *profile, const QString &dir)
 			};
 
 			// Javascript models
-			const bool enableJs = m_profile->getSettings()->value("enableJsModels", true).toBool();
 			QFile js(m_dir + "/model.js");
-			if (enableJs && js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
+			if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
 				log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
 
@@ -125,49 +120,7 @@ Source::Source(Profile *profile, const QString &dir)
 				js.close();
 			}
 			else
-			{
-				if (enableJs)
-				{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
-
-				log(QStringLiteral("Using XML model for %1").arg(m_diskName), Logger::Debug);
-
-				m_name = details.value("Name");
-
-				// Get the list of possible API for this Source
-				QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";
-				QStringList availableApis;
-				for (const QString &api : possibleApis)
-					if (details.contains("Urls/" + api + "/Tags"))
-						availableApis.append(api);
-
-				if (!availableApis.isEmpty())
-				{
-					m_apis.reserve(availableApis.count());
-					for (const QString &apiName : availableApis)
-					{
-						Api *api = nullptr;
-						if (apiName == QLatin1String("Html"))
-						{ api = new HtmlApi(details); }
-						else if (apiName == QLatin1String("Json"))
-						{ api = new JsonApi(details); }
-						else if (apiName == QLatin1String("Rss"))
-						{ api = new RssApi(details); }
-						else if (apiName == QLatin1String("Xml"))
-						{ api = new XmlApi(details); }
-
-						if (api != nullptr)
-						{ m_apis.append(api); }
-						else
-						{ log(QStringLiteral("Unknown API type '%1'").arg(apiName), Logger::Error); }
-					}
-				}
-				else
-				{ log(QStringLiteral("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
-
-				// Read tag naming format
-				const auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
-				m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
-			}
+			{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 		}
 
 		file.close();

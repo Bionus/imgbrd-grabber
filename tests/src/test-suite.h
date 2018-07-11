@@ -46,8 +46,8 @@ class TestSuite : public QObject
 
 	public:
 		TestSuite();
-		void setupSource(const QString &site);
-		void setupSite(const QString &site, const QString &source);
+		void setupSource(const QString &site, QString dir = QString());
+		void setupSite(const QString &site, const QString &source, QString dir = QString());
 		static QList<TestSuite*> &getSuites();
 };
 

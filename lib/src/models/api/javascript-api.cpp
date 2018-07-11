@@ -228,7 +228,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 			if (!d.isEmpty())
 			{
 				const int id = d["id"].toInt();
-				QSharedPointer<Image> img = parseImage(parentPage, d, id + first, tags, false);
+				QSharedPointer<Image> img = parseImage(parentPage, d, id + first, tags);
 				if (!img.isNull())
 				{ ret.images.append(img); }
 			}
