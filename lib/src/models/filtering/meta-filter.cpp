@@ -13,6 +13,15 @@ QString MetaFilter::toString() const
 	return QString(m_invert ? "-" : "") % m_type % ":" % m_val;
 }
 
+bool MetaFilter::compare(const Filter& rhs) const
+{
+	auto other = dynamic_cast<const MetaFilter*>(&rhs);
+	if (other == Q_NULLPTR)
+		return false;
+
+	return m_type == other->m_type && m_val == other->m_val;
+}
+
 static int toDate(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");

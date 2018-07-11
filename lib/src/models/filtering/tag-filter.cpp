@@ -16,6 +16,15 @@ QString TagFilter::toString() const
 	return QString(m_invert ? "-" : "") % m_tag;
 }
 
+bool TagFilter::compare(const Filter& rhs) const
+{
+	auto other = dynamic_cast<const TagFilter*>(&rhs);
+	if (other == Q_NULLPTR)
+		return false;
+
+	return m_tag == other->m_tag;
+}
+
 QString TagFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 {
 	if (m_invert)

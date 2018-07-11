@@ -13,6 +13,9 @@ class Filter
 		virtual QString match(const QMap<QString, Token> &tokens, bool invert = false) const = 0;
 		virtual QString toString() const = 0;
 
+		bool operator==(const Filter &rhs);
+		virtual bool compare(const Filter& rhs) const = 0;
+
 	protected:
 		bool m_invert;
 };

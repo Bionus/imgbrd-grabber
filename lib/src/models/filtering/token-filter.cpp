@@ -12,6 +12,15 @@ QString TokenFilter::toString() const
 	return QString(m_invert ? "-" : "") % "%" % m_token % "%";
 }
 
+bool TokenFilter::compare(const Filter& rhs) const
+{
+	auto other = dynamic_cast<const TokenFilter*>(&rhs);
+	if (other == Q_NULLPTR)
+		return false;
+
+	return m_token == other->m_token;
+}
+
 QString TokenFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 {
 	if (m_invert)
