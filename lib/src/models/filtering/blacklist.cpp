@@ -62,13 +62,14 @@ QString Blacklist::toString() const
 	QString ret;
 	for (const auto &filters : qAsConst(m_filters))
 	{
+		if (!ret.isEmpty())
+		{ ret.append("\n"); }
 		for (int i = 0; i < filters.count(); ++i)
 		{
 			if (i != 0)
 			{ ret.append(' '); }
 			ret.append(filters[i]->toString());
 		}
-		ret.append("\n");
 	}
 	return ret;
 }

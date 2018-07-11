@@ -4,6 +4,16 @@
 #include "models/filtering/blacklist.h"
 
 
+void BlacklistTest::testToString()
+{
+	Blacklist blacklist;
+	blacklist.add("tag1");
+	blacklist.add(QStringList() << "tag2" << "tag3");
+	blacklist.add("tag4");
+
+	QCOMPARE(blacklist.toString(), QString("tag1\ntag2 tag3\ntag4"));
+}
+
 void BlacklistTest::testContains()
 {
 	Blacklist blacklist(QStringList() << "tag1" << "tag2");

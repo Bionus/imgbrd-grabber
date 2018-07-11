@@ -9,6 +9,7 @@ class BlacklistTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		void testToString();
 		void testContains();
 		void testRemove();
 		void testMatch();
