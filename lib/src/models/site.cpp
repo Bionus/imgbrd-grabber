@@ -1,4 +1,7 @@
 #include "models/site.h"
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
@@ -19,7 +22,6 @@
 #include "models/source.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
-#include "vendor/json.h"
 
 #ifdef QT_DEBUG
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
@@ -305,17 +307,17 @@ void Site::loadTags(int page, int limit)
 
 void Site::finishedTags()
 {
-	const QString source = m_tagsReply->readAll();
+	const QByteArray source = m_tagsReply->readAll();
 	m_tagsReply->deleteLater();
 	QList<Tag> tags;
-	QVariant src = Json::parse(source);
+	QJsonDocument src = QJsonDocument::fromJson(source);
 	if (!src.isNull())
 	{
-		QList<QVariant> sourc = src.toList();
+		QJsonArray sourc = src.array();
 		tags.reserve(sourc.count());
 		for (int id = 0; id < sourc.count(); id++)
 		{
-			QMap<QString, QVariant> sc = sourc.at(id).toMap();
+			QJsonObject sc = sourc[id].toObject();
 			const int cat = sc.value("category").toInt();
 			tags.append(Tag(sc.value("name").toString(),
 							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),

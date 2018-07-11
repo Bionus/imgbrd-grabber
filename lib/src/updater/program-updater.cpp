@@ -1,10 +1,12 @@
 #include "updater/program-updater.h"
 #include <QDir>
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include "logger.h"
-#include "vendor/json.h"
 
 
 ProgramUpdater::ProgramUpdater()
@@ -33,8 +35,8 @@ void ProgramUpdater::checkForUpdatesDone()
 	auto *reply = dynamic_cast<QNetworkReply*>(sender());
 	m_source = reply->readAll();
 
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
 
 	#if defined NIGHTLY
 		QString latest = lastRelease["target_commitish"].toString();
@@ -56,16 +58,16 @@ void ProgramUpdater::checkForUpdatesDone()
 
 QUrl ProgramUpdater::latestUrl() const
 {
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
 	return QUrl(lastRelease["html_url"].toString());
 }
 
 void ProgramUpdater::downloadUpdate()
 {
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
-	QMap<QString, QVariant> lastAsset = lastRelease["assets"].toList().first().toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
+	QJsonObject lastAsset = lastRelease["assets"].toArray().first().toObject();
 
 	QUrl url(lastAsset["browser_download_url"].toString());
 	m_updateFilename = url.fileName();

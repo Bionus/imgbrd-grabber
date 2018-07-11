@@ -30,7 +30,7 @@ class ProgramUpdater : public Updater
 	private:
 		QString m_baseUrl;
 		QNetworkReply *m_downloadReply;
-		QString m_source;
+		QByteArray m_source;
 		QString m_newVersion;
 		QString m_updateFilename;
 };
