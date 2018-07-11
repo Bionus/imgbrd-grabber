@@ -34,4 +34,7 @@ class Monitor
 		bool m_preciseCumulated;
 };
 
+bool operator==(const Monitor &lhs, const Monitor &rhs);
+bool operator!=(const Monitor &lhs, const Monitor &rhs);
+
 #endif // MONITORING_H

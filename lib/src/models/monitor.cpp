@@ -68,3 +68,16 @@ Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &s
 
 	return Monitor(site, interval, lastCheck, cumulated, preciseCumulated);
 }
+
+
+bool operator==(const Monitor &lhs, const Monitor &rhs)
+{
+	return lhs.site() == rhs.site()
+		&& lhs.interval() == rhs.interval()
+		&& lhs.lastCheck() == rhs.lastCheck()
+		&& lhs.cumulated() == rhs.cumulated()
+		&& lhs.preciseCumulated() == rhs.preciseCumulated();
+}
+
+bool operator!=(const Monitor &lhs, const Monitor &rhs)
+{ return !(lhs == rhs); }

@@ -915,7 +915,7 @@ void mainWindow::updateFavorites()
 	if (order == "note")
 	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote); }
 	else if (order == "lastviewed")
-	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastviewed); }
+	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastViewed); }
 	else
 	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByName); }
 	if (reverse)

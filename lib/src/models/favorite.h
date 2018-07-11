@@ -41,7 +41,7 @@ class Favorite
 
 		static bool sortByNote(const Favorite &s1, const Favorite &s2);
 		static bool sortByName(const Favorite &s1, const Favorite &s2);
-		static bool sortByLastviewed(const Favorite &s1, const Favorite &s2);
+		static bool sortByLastViewed(const Favorite &s1, const Favorite &s2);
 
 	private:
 		QString		m_name;

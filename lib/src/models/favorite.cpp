@@ -114,7 +114,7 @@ bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)
 { return s1.getNote() < s2.getNote(); }
 bool Favorite::sortByName(const Favorite &s1, const Favorite &s2)
 { return s1.getName().toLower() < s2.getName().toLower(); }
-bool Favorite::sortByLastviewed(const Favorite &s1, const Favorite &s2)
+bool Favorite::sortByLastViewed(const Favorite &s1, const Favorite &s2)
 { return s1.getLastViewed() < s2.getLastViewed(); }
 
 
