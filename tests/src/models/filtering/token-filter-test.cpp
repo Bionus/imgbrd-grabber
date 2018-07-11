@@ -10,6 +10,13 @@ void TokenFilterTest::testToString()
 	QCOMPARE(TokenFilter("test", true).toString(), QString("-%test%"));
 }
 
+void TokenFilterTest::testCompare()
+{
+	QCOMPARE(TokenFilter("test") == TokenFilter("test"), true);
+	QCOMPARE(TokenFilter("test") == TokenFilter("test", true), false);
+	QCOMPARE(TokenFilter("test") == TokenFilter("another test"), false);
+}
+
 void TokenFilterTest::testMatchInt()
 {
 	QMap<QString, Token> tokens;

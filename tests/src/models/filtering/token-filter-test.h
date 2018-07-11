@@ -10,6 +10,7 @@ class TokenFilterTest : public TestSuite
 
 	private slots:
 		void testToString();
+		void testCompare();
 		void testMatchInt();
 		void testMatchString();
 		void testMatchStringList();

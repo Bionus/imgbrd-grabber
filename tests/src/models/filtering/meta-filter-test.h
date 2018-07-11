@@ -10,6 +10,7 @@ class MetaFilterTest : public TestSuite
 
 	private slots:
 		void testToString();
+		void testCompare();
 		void testMatchInvalidToken();
 		void testMatchGrabber();
 		void testMatchMathematical();

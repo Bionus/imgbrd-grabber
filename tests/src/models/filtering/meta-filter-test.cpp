@@ -10,6 +10,14 @@ void MetaFilterTest::testToString()
 	QCOMPARE(MetaFilter("meta", "val", true).toString(), QString("-meta:val"));
 }
 
+void MetaFilterTest::testCompare()
+{
+	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("meta", "val"), true);
+	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("meta", "val", true), false);
+	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("another meta", "val"), false);
+	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("meta", "another val"), false);
+}
+
 void MetaFilterTest::testMatchInvalidToken()
 {
 	QMap<QString, Token> tokens;
@@ -43,6 +51,8 @@ void MetaFilterTest::testMatchMathematical()
 
 	// Basic
 	QCOMPARE(MetaFilter("id", ">1000").match(tokens), QString());
+	QCOMPARE(MetaFilter("id", ">=1000").match(tokens), QString());
+	QCOMPARE(MetaFilter("id", "<1000").match(tokens), QString("image's id does not match"));
 	QCOMPARE(MetaFilter("id", "<=1000").match(tokens), QString("image's id does not match"));
 	QCOMPARE(MetaFilter("id", "1000..").match(tokens), QString());
 	QCOMPARE(MetaFilter("id", "..1000").match(tokens), QString("image's id does not match"));
@@ -51,6 +61,8 @@ void MetaFilterTest::testMatchMathematical()
 
 	// Invert
 	QCOMPARE(MetaFilter("id", ">1000", true).match(tokens), QString("image's id match"));
+	QCOMPARE(MetaFilter("id", ">=1000", true).match(tokens), QString("image's id match"));
+	QCOMPARE(MetaFilter("id", "<1000", true).match(tokens), QString());
 	QCOMPARE(MetaFilter("id", "<=1000", true).match(tokens), QString());
 	QCOMPARE(MetaFilter("id", "1000..", true).match(tokens), QString("image's id match"));
 	QCOMPARE(MetaFilter("id", "..1000", true).match(tokens), QString());

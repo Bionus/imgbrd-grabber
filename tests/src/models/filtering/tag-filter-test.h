@@ -10,7 +10,9 @@ class TagFilterTest : public TestSuite
 
 	private slots:
 		void testToString();
-		void testMatch();
+		void testCompare();
+		void testMatchExact();
+		void testMatchWildcard();
 };
 
 #endif // TAG_FILTER_TEST_H
