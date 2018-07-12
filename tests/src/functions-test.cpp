@@ -19,6 +19,26 @@ void FunctionsTest::testFixFilenameLinux()
 	assertFixFilename(1, "folder/image.jpg", "/home/test/", "folder/image.jpg");
 }
 
+static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
+{
+	QFont font(name);
+	if (usePixels)
+		font.setPixelSize(size);
+	else
+		font.setPointSize(size);
+	font.setWeight(weight);
+	font.setStyle(style);
+	return font;
+}
+void FunctionsTest::testFontToCss()
+{
+	QCOMPARE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleNormal)), QString("font-family:'Arial'; font-size:12pt; font-style:normal; font-weight:400; text-decoration:none;"));
+	QCOMPARE(qFontToCss(makeFont("Arial", 12, true, QFont::Normal, QFont::StyleNormal)), QString("font-family:'Arial'; font-size:12px; font-style:normal; font-weight:400; text-decoration:none;"));
+	QCOMPARE(qFontToCss(makeFont("Arial", 12, false, QFont::Bold, QFont::StyleNormal)), QString("font-family:'Arial'; font-size:12pt; font-style:normal; font-weight:600; text-decoration:none;"));
+	QCOMPARE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleItalic)), QString("font-family:'Arial'; font-size:12pt; font-style:italic; font-weight:400; text-decoration:none;"));
+	QCOMPARE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleOblique)), QString("font-family:'Arial'; font-size:12pt; font-style:oblique; font-weight:400; text-decoration:none;"));
+}
+
 void FunctionsTest::testGetUnit()
 {
 	QStringList units = FILESIZE_UNITS;

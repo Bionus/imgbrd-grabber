@@ -11,6 +11,7 @@ class FunctionsTest : public TestSuite
 	private slots:
 		void testFixFilenameWindows();
 		void testFixFilenameLinux();
+		void testFontToCss();
 		void testGetUnit();
 		void testFormatFilesize();
 		void testGetExtension();
