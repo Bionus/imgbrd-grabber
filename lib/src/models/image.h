@@ -32,7 +32,7 @@ class Image : public QObject, public Downloadable
 		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
 		QString		md5() const;
-		const QString		&url() const;
+		const QUrl	&url() const;
 		const QString &rating() const;
 		const QList<Tag> &tags() const;
 		QList<Tag>	filteredTags(const QStringList &remove) const;
@@ -56,7 +56,7 @@ class Image : public QObject, public Downloadable
 		bool		hasTag(QString tag) const;
 		bool		hasAnyTag(const QStringList &tags) const;
 		bool		hasAllTags(const QStringList &tags) const;
-		void		setUrl(const QString &);
+		void		setUrl(const QUrl &url);
 		void		setData(const QByteArray &data);
 		void		setSize(QSize size);
 		void		setFileSize(int size);
@@ -75,7 +75,7 @@ class Image : public QObject, public Downloadable
 		QList<QStrP> detailsData() const override;
 
 		// Downloadable
-		QString url(Size size) const override;
+		QUrl url(Size size) const override;
 		void preload(const Filename &filename) override;
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
@@ -113,7 +113,7 @@ class Image : public QObject, public Downloadable
 		void finishedLoadingTags();
 		void finishedImage(QNetworkReply::NetworkError, const QString &);
 		void downloadProgressImage(qint64, qint64);
-		void urlChanged(const QString &before, const QString &after);
+		void urlChanged(const QUrl &before, const QUrl &after);
 
 	private:
 		Profile			*m_profile;
@@ -121,7 +121,7 @@ class Image : public QObject, public Downloadable
 		qulonglong		m_id;
 		int				m_score, m_parentId, m_fileSize, m_authorId;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
-		QString			m_url;
+		QUrl			m_url;
 		QString	mutable m_md5;
 		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;

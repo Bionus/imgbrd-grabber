@@ -44,7 +44,6 @@ class searchTab : public QWidget
 		QString postFilter();
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
-		const QStringList &selectedImages() const;
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
@@ -60,7 +59,7 @@ class searchTab : public QWidget
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
-		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url);
+		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url);
 		QBouton *createImageThumbnail(int position, const QSharedPointer<Image> &img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);
@@ -142,7 +141,7 @@ class searchTab : public QWidget
 		qulonglong			m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;
 		QMap<Image*, QBouton*>	m_boutons;
-		QStringList			m_selectedImages;
+		QList<QUrl>			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<Site*>		m_selectedSources;
 		QSignalMapper		*m_checkboxesSignalMapper;

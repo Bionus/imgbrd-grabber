@@ -91,7 +91,7 @@ void ImageDownloader::loadImage()
 	// Load the image directly on the disk
 	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	Site *site = m_image->parentSite();
-	m_reply = site->get(site->fixUrl(m_url), m_image->page(), QStringLiteral("image"), m_image.data());
+	m_reply = site->get(site->fixUrl(m_url.toString()), m_image->page(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
@@ -156,7 +156,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 			else
 			{
 				m_url = setExtension(m_url, newext);
-				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
+				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
 			}
 
 			m_image->setUrl(m_url);
@@ -170,7 +170,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 	}
 	else if (error != QNetworkReply::OperationCanceledError)
 	{
-		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
 	}
 }
@@ -181,7 +181,7 @@ void ImageDownloader::success()
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_url = redir.toString();
+		m_url = redir;
 		loadImage();
 		return;
 	}

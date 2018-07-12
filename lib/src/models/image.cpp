@@ -22,17 +22,17 @@
 #define MAX_LOAD_FILESIZE (1024*1024*50)
 
 
-QString removeCacheUrl(QString url)
+QUrl removeCacheUrl(QUrl url)
 {
-	QString get = url.section('?', 1, 1);
-	if (get.isEmpty())
+	const QString query = url.query();
+	if (query.isEmpty())
 		return url;
 
 	// Only remove ?integer
 	bool ok;
-	get.toInt(&ok);
+	query.toInt(&ok);
 	if (ok)
-		return url.section('?', 0, 0);
+		url.setQuery(QString());
 
 	return url;
 }
@@ -211,7 +211,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			tag.setType(dbTypes[tag.text()]);
 
 	// Get file url and try to improve it to save bandwidth
-	m_url = m_fileUrl.toString();
+	m_url = m_fileUrl;
 	const QString ext = getExtension(m_url);
 	if (details.contains("ext") && !details["ext"].isEmpty())
 	{
@@ -222,11 +222,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty())
 	{
 		bool fixed = false;
-		const QString previewExt = getExtension(details["preview_url"]);
+		const QString previewExt = getExtension(QUrl(details["preview_url"]));
 		if (!m_sampleUrl.isEmpty())
 		{
 			// Guess extension from sample url
-			const QString sampleExt = getExtension(details["sample_url"]);
+			const QString sampleExt = getExtension(QUrl(details["sample_url"]));
 			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext)
 			{
 				m_url = setExtension(m_url, sampleExt);
@@ -249,14 +249,14 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			{ setFileExtension(QStringLiteral("webm")); }
 		}
 	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif"))
 	{ m_url = setExtension(m_url, QStringLiteral("gif")); }
 
 	// Remove ? in urls
 	m_url = removeCacheUrl(m_url);
-	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
-	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
-	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
+	m_fileUrl = removeCacheUrl(m_fileUrl);
+	m_sampleUrl = removeCacheUrl(m_sampleUrl);
+	m_previewUrl = removeCacheUrl(m_previewUrl);
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
 	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
@@ -376,10 +376,10 @@ void Image::parseDetails()
 	// Image url
 	if (!ret.imageUrl.isEmpty())
 	{
-		const QString before = m_url;
+		const QUrl before = m_url;
 
 		QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
-		m_url = newUrl.toString();
+		m_url = newUrl;
 		m_fileUrl = newUrl;
 
 		if (before != m_url)
@@ -452,7 +452,7 @@ void Image::loadImage(bool inMemory, bool force)
 		m_loadImage->deleteLater();
 
 	if (force)
-		setUrl(fileUrl().toString());
+		setUrl(m_fileUrl);
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
@@ -501,7 +501,7 @@ void Image::finishedImageS(bool inMemory)
 	{
 		m_loadImage->deleteLater();
 		m_loadImage = nullptr;
-		m_url = redir.toString();
+		m_url = redir;
 		loadImage();
 		return;
 	}
@@ -518,14 +518,14 @@ void Image::finishedImageS(bool inMemory)
 		{
 			if (isLast)
 			{
-				setUrl(m_sampleUrl.toString());
+				setUrl(m_sampleUrl);
 				m_tryingSample = true;
 				log(QStringLiteral("Image not found. New try with its sample..."));
 			}
 			else
 			{
 				m_url = setExtension(m_url, newext);
-				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
+				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
 			}
 
 			loadImage();
@@ -695,7 +695,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else
 		{
-			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
+			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url().toString(), md5Duplicate));
 			return SaveResult::Ignored;
 		}
 
@@ -812,7 +812,7 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-const QString	&Image::url() const			{ return m_url;				}
+const QUrl		&Image::url() const			{ return m_url;				}
 const QString	&Image::rating() const		{ return m_rating;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
 const QList<Tag>	&Image::tags() const	{ return m_tags;			}
@@ -859,11 +859,11 @@ QStringList Image::tagsString() const
 	return tags;
 }
 
-void Image::setUrl(const QString &u)
+void Image::setUrl(const QUrl &url)
 {
 	setFileSize(0);
-	emit urlChanged(m_url, u);
-	m_url = u;
+	emit urlChanged(m_url, url);
+	m_url = url;
 	refreshTokens();
 }
 void Image::setSize(QSize size)		{ m_size = size; refreshTokens();		}
@@ -1057,7 +1057,7 @@ void Image::setRating(const QString &rating)
 void Image::setFileExtension(const QString &ext)
 {
 	m_url = setExtension(m_url, ext);
-	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
+	m_fileUrl = setExtension(m_fileUrl, ext);
 	refreshTokens();
 }
 
@@ -1080,12 +1080,12 @@ QString Image::isAnimated() const
 }
 
 
-QString Image::url(Size size) const
+QUrl Image::url(Size size) const
 {
 	switch (size)
 	{
-		case Size::Thumbnail: return m_previewUrl.toString();
-		case Size::Sample: return m_sampleUrl.toString();
+		case Size::Thumbnail: return m_previewUrl;
+		case Size::Sample: return m_sampleUrl;
 		default: return m_url;
 	}
 }
@@ -1120,7 +1120,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("pool", Token(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 
 	// Metadata
-	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
+	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.fileName().section('.', 0, -2).toUtf8()), ""));
 	tokens.insert("website", Token(m_parentSite->url(), ""));
 	tokens.insert("websitename", Token(m_parentSite->name(), ""));
 	tokens.insert("md5", Token(md5(), ""));

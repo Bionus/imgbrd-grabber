@@ -49,7 +49,7 @@ class ImageDownloader : public QObject
 		bool m_rotate;
 
 		QNetworkReply *m_reply = nullptr;
-		QString m_url = "";
+		QUrl m_url;
 		bool m_tryingSample = false;
 };
 

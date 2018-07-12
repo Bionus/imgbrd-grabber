@@ -231,7 +231,7 @@ void Downloader::loadNext()
 	if (!m_images.isEmpty())
 	{
 		const QSharedPointer<Image> image = m_images.takeFirst();
-		log("Loading image '"+image->url()+"'");
+		log(QString("Loading image '%1'").arg(image->url().toString()));
 		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false);
 		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
 		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
@@ -364,7 +364,7 @@ void Downloader::finishedLoadingImage(const QSharedPointer<Image> &image, const 
 	if (m_cancelled)
 		return;
 
-	log(QStringLiteral("Received image '%1'").arg(image->url()));
+	log(QStringLiteral("Received image '%1'").arg(image->url().toString()));
 
 	if (!m_quit)
 		emit finishedImage(image);
@@ -461,7 +461,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 	int i = 0;
 	for (const QSharedPointer<Image> &img : images)
 		if (m_max <= 0 || i++ < m_max)
-			urls.append(img->url());
+			urls.append(img->url().toString());
 
 	if (m_quit)
 		returnStringList(urls);

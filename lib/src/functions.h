@@ -44,8 +44,7 @@ QString		stripTags(QString);
 QString		getUnit(double *size);
 QString		formatFilesize(double size);
 QString		getExtension(const QUrl &url);
-QString		getExtension(const QString &url);
-QString		setExtension(QString url, const QString &extension);
+QUrl		setExtension(QUrl url, const QString &extension);
 bool		isUrl(const QString &str);
 bool		isVariantEmpty(const QVariant &value);
 

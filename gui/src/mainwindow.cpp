@@ -1726,7 +1726,7 @@ void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, b
 	_getAll();
 }
 
-void mainWindow::imageUrlChanged(const QString &before, const QString &after)
+void mainWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 {
 	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
 	m_downloadTimeLast.remove(before);
@@ -1735,7 +1735,7 @@ void mainWindow::imageUrlChanged(const QString &before, const QString &after)
 }
 void mainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	const QString url = img->url();
+	const QUrl url = img->url();
 	if (img->fileSize() == 0)
 	{
 		img->setFileSize(bytesTotal);

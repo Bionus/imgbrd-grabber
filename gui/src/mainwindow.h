@@ -143,7 +143,7 @@ class mainWindow : public QMainWindow
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
-		void imageUrlChanged(const QString &, const QString &);
+		void imageUrlChanged(const QUrl &before, const QUrl &after);
 		void updateCompleters();
 		void setSource(const QString &site);
 		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
@@ -182,7 +182,7 @@ class mainWindow : public QMainWindow
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<Site*>		m_selectedSites;
 		favoritesTab		*m_favoritesTab;
-		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
+		QMap<QUrl, QTime>				m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
 		QMap<int, DownloadQueryGroup>	m_batchPending;

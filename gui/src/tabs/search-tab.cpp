@@ -494,11 +494,11 @@ void searchTab::finishedLoadingTags(Page *page)
 		setPageLabelText(m_siteLabels[page->site()], page, imgs);
 }
 
-void searchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url)
+void searchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url)
 {
 	Site *site = page->site();
 
-	QNetworkReply *reply = site->get(site->fixUrl(url), page, "preview");
+	QNetworkReply *reply = site->get(site->fixUrl(url.toString()), page, "preview");
 	reply->setParent(this);
 
 	m_thumbnailsLoading[reply] = std::move(img);
@@ -536,7 +536,7 @@ void searchTab::finishedLoadingPreview()
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty())
 	{
-		loadImageThumbnail(img->page(), img, redirection.toString());
+		loadImageThumbnail(img->page(), img, redirection);
 		reply->deleteLater();
 		return;
 	}
@@ -555,7 +555,7 @@ void searchTab::finishedLoadingPreview()
 	reply->deleteLater();
 	if (preview.isNull())
 	{
-		log(QStringLiteral("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error);
+		log(QStringLiteral("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail).toString()), Logger::Error);
 		if (img->hasTag(QStringLiteral("flash")))
 		{ preview.load(QStringLiteral(":/images/flash.png")); }
 		else
@@ -1470,8 +1470,6 @@ void searchTab::setFavoriteImage(const QString &name)
 
 QList<Site*> searchTab::sources()
 { return m_selectedSources; }
-const QStringList &searchTab::selectedImages() const
-{ return m_selectedImages; }
 
 const QList<Tag> &searchTab::results() const
 { return m_tags; }

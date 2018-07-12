@@ -49,17 +49,19 @@ void FunctionsTest::testFormatFilesize()
 
 void FunctionsTest::testGetExtension()
 {
-	QCOMPARE(getExtension(""), QString(""));
-	QCOMPARE(getExtension("http://test.com/file"), QString(""));
-	QCOMPARE(getExtension("http://test.com/file.jpg"), QString("jpg"));
-	QCOMPARE(getExtension("http://test.com/file.jpg?toto=1"), QString("jpg"));
+	QCOMPARE(getExtension(QUrl("")), QString(""));
+	QCOMPARE(getExtension(QUrl("http://test.com/file")), QString(""));
+	QCOMPARE(getExtension(QUrl("http://test.com/some.dir/file")), QString(""));
+	QCOMPARE(getExtension(QUrl("http://test.com/file.jpg")), QString("jpg"));
+	QCOMPARE(getExtension(QUrl("http://test.com/file.jpg?toto=1")), QString("jpg"));
+	QCOMPARE(getExtension(QUrl("http://test.com/file.jpg?toto=1")), QString("jpg"));
 }
 void FunctionsTest::testSetExtension()
 {
-	QCOMPARE(setExtension("", "png"), QString(""));
-	QCOMPARE(setExtension("http://test.com/file", "png"), QString("http://test.com/file"));
-	QCOMPARE(setExtension("http://test.com/file.jpg", "png"), QString("http://test.com/file.png"));
-	QCOMPARE(setExtension("http://test.com/file.jpg?toto=1", "png"), QString("http://test.com/file.png?toto=1"));
+	QCOMPARE(setExtension(QUrl(""), "png"), QString(""));
+	QCOMPARE(setExtension(QUrl("http://test.com/file"), "png"), QString("http://test.com/file"));
+	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg"), "png"), QString("http://test.com/file.png"));
+	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png"), QString("http://test.com/file.png?toto=1"));
 }
 
 void FunctionsTest::testLevenshtein()

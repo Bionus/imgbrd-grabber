@@ -425,31 +425,25 @@ void openTray()
 }
 
 QString getExtension(const QUrl &url)
-{ return getExtension(url.toString()); }
-QString getExtension(const QString &url)
 {
-	QString ext;
-	const int pPos = url.lastIndexOf('.');
-	if (pPos != -1 && pPos > url.indexOf('/', 7))
-	{
-		ext = url.right(url.length() - pPos - 1);
-		if (ext.contains('?'))
-			ext = ext.section('?', 0, -2);
-	}
-	return ext;
+	const QString filename = url.fileName();
+	const int lastDot = filename.lastIndexOf('.');
+
+	if (lastDot != -1)
+		return filename.mid(lastDot + 1);
+
+	return QString();
 }
 
-QString setExtension(QString url, const QString &extension)
+QUrl setExtension(QUrl url, const QString &extension)
 {
-	const int pPos = url.lastIndexOf('.');
-	if (pPos != -1 && pPos > url.indexOf('/', 7))
-	{
-		const int qPos = url.indexOf('?', pPos);
-		if (qPos != -1)
-			url.replace(pPos + 1, qPos - pPos - 1, extension);
-		else
-			url = url.left(pPos) + "." + extension;
-	}
+	QString path = url.path();
+
+	const int lastSlash = path.lastIndexOf('/');
+	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
+	if (lastDot != -1)
+		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension);
+
 	return url;
 }
 

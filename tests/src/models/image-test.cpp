@@ -275,7 +275,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	QVERIFY(spy.wait());
 
 	// Compare result
-	QVERIFY(m_img->url().endsWith("/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
+	QCOMPARE(m_img->url().fileName(), QString("__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testSave()
@@ -394,7 +394,7 @@ void ImageTest::testSetUrl()
 	QString url = "http://google.fr";
 
 	QCOMPARE(m_img->url() != url, true);
-	m_img->setUrl(url);
+	m_img->setUrl(QUrl(url));
 	QCOMPARE(m_img->url(), url);
 }
 

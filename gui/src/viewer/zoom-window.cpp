@@ -144,7 +144,7 @@ void ZoomWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
-	m_url = m_image->getDisplayableUrl().toString();
+	m_url = m_image->getDisplayableUrl();
 
 	auto *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -374,7 +374,7 @@ void ZoomWindow::setfavorite()
 
 void ZoomWindow::load(bool force)
 {
-	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
+	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a>").arg(m_url.toString()));
 
 	m_source.clear();
 
@@ -489,7 +489,7 @@ void ZoomWindow::replyFinishedDetails()
 
 		// Fix extension when it should be guessed
 		const QString fext = m_source.section('.', -1);
-		m_url = m_url.section('.', 0, -2) + "." + fext;
+		m_url = setExtension(m_url, fext);
 		m_image->setFileExtension(fext);
 
 		m_finished = true;
@@ -592,7 +592,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QString &errorString)
 {
-	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url));
+	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
@@ -613,14 +613,14 @@ void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QStrin
 	{
 		m_tooBig = true;
 		if (!m_image->isVideo())
-		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url())); }
+		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString())); }
 	}
 	else if (err == QNetworkReply::ContentNotFoundError)
 	{ showLoadingError("Image not found."); }
 	else if (err == QNetworkReply::UnknownContentError)
 	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString, m_image->url())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString, m_image->url().toString())); }
 }
 
 void ZoomWindow::showLoadingError(const QString &message)
@@ -688,7 +688,7 @@ void ZoomWindow::draw()
 	if (m_image->isVideo())
 		return;
 
-	const QString fn = m_url.section('/', -1).section('?', 0, 0).toLower();
+	const QString fn = m_url.fileName().toLower();
 
 	// We need a filename to display animations, so we get it if we're not already loading from a file
 	QString filename;
@@ -1100,7 +1100,7 @@ void ZoomWindow::showThumbnail()
 	}
 }
 
-void ZoomWindow::urlChanged(const QString &before, const QString &after)
+void ZoomWindow::urlChanged(const QUrl &before, const QUrl &after)
 {
 	Q_UNUSED(before);
 	m_url = after;
