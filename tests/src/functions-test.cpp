@@ -3,6 +3,19 @@
 #include "functions-test.h"
 
 
+void FunctionsTest::testCopyRecursively()
+{
+	QString from = QDir::toNativeSeparators("tests/resources/recurse/");
+	QString to = QDir::toNativeSeparators("tests/resources/tmp/recurse/");
+
+	QDir(to).removeRecursively();
+
+	QCOMPARE(copyRecursively(from, to), true);
+	QCOMPARE(QFile::exists(to + "test.txt"), true);
+	QCOMPARE(QFile::exists(to + "test/test1.txt"), true);
+	QCOMPARE(QFile::exists(to + "test/test2.txt"), true);
+}
+
 void FunctionsTest::testFixFilenameWindows()
 {
 	assertFixFilename(0, "", "C:\\test\\image.jpg", "C:\\test\\image.jpg");

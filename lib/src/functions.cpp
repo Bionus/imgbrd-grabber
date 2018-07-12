@@ -278,7 +278,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 	// Try to create the target directory
 	QDir targetDir(tgtFilePath);
 	targetDir.cdUp();
-	if (!targetDir.mkdir(QFileInfo(tgtFilePath).fileName()))
+	if (!targetDir.mkdir(QDir(tgtFilePath).dirName()))
 		return false;
 
 	QDir sourceDir(srcFilePath);
