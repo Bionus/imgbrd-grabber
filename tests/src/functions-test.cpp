@@ -141,10 +141,10 @@ void FunctionsTest::testGetExtension()
 }
 void FunctionsTest::testSetExtension()
 {
-	QCOMPARE(setExtension(QUrl(""), "png"), QString(""));
-	QCOMPARE(setExtension(QUrl("http://test.com/file"), "png"), QString("http://test.com/file"));
-	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg"), "png"), QString("http://test.com/file.png"));
-	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png"), QString("http://test.com/file.png?toto=1"));
+	QCOMPARE(setExtension(QUrl(""), "png"), QUrl(""));
+	QCOMPARE(setExtension(QUrl("http://test.com/file"), "png"), QUrl("http://test.com/file"));
+	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg"), "png"), QUrl("http://test.com/file.png"));
+	QCOMPARE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png"), QUrl("http://test.com/file.png?toto=1"));
 }
 
 void FunctionsTest::testLevenshtein()

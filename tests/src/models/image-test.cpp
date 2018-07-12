@@ -72,12 +72,12 @@ void ImageTest::testConstructor()
 
 	// Default
 	img = new Image();
-	QCOMPARE(img->url(), QString());
+	QCOMPARE(img->url(), QUrl());
 	img->deleteLater();
 
 	// Without parent site
 	img = new Image(nullptr, m_details, m_profile);
-	QCOMPARE((int)img->id(), 0);
+	QCOMPARE(static_cast<int>(img->id()), 0);
 	img->deleteLater();
 
 	// With a given page URL
@@ -391,10 +391,10 @@ void ImageTest::testSaveLog()
 
 void ImageTest::testSetUrl()
 {
-	QString url = "http://google.fr";
+	QUrl url("http://google.fr");
 
 	QCOMPARE(m_img->url() != url, true);
-	m_img->setUrl(QUrl(url));
+	m_img->setUrl(url);
 	QCOMPARE(m_img->url(), url);
 }
 
