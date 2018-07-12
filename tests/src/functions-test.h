@@ -12,6 +12,7 @@ class FunctionsTest : public TestSuite
 		void testFixFilenameWindows();
 		void testFixFilenameLinux();
 		void testFontToCss();
+		void testIsVariantEmpty();
 		void testGetUnit();
 		void testFormatFilesize();
 		void testGetExtension();

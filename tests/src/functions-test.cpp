@@ -39,6 +39,36 @@ void FunctionsTest::testFontToCss()
 	QCOMPARE(qFontToCss(makeFont("Arial", 12, false, QFont::Normal, QFont::StyleOblique)), QString("font-family:'Arial'; font-size:12pt; font-style:oblique; font-weight:400; text-decoration:none;"));
 }
 
+void FunctionsTest::testIsVariantEmpty()
+{
+	// Int
+	QCOMPARE(isVariantEmpty(QVariant(0)), true);
+	QCOMPARE(isVariantEmpty(QVariant(1)), false);
+
+	// List
+	QCOMPARE(isVariantEmpty(QList<QVariant>()), true);
+	QCOMPARE(isVariantEmpty(QList<QVariant>() << 0), false);
+	QCOMPARE(isVariantEmpty(QList<QVariant>() << 1), false);
+
+	// Map
+	QCOMPARE(isVariantEmpty(QMap<QString, QVariant>()), true);
+	QCOMPARE(isVariantEmpty(QMap<QString, QVariant> {{ "", 0 }}), false);
+	QCOMPARE(isVariantEmpty(QMap<QString, QVariant> {{ "", 1 }}), false);
+
+	// String
+	QCOMPARE(isVariantEmpty(QString()), true);
+	QCOMPARE(isVariantEmpty(QString("")), true);
+	QCOMPARE(isVariantEmpty(QString("test")), false);
+
+	// String list
+	QCOMPARE(isVariantEmpty(QStringList()), true);
+	QCOMPARE(isVariantEmpty(QStringList() << ""), false);
+	QCOMPARE(isVariantEmpty(QStringList() << "test"), false);
+
+	// Others
+	QCOMPARE(isVariantEmpty(QRect(1, 2, 3, 4)), false);
+}
+
 void FunctionsTest::testGetUnit()
 {
 	QStringList units = FILESIZE_UNITS;
