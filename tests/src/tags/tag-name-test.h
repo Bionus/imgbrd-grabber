@@ -13,6 +13,7 @@ class TagNameTest : public TestSuite
 		void testNormalizedValid();
 		void testNormalizedInvalid();
 		void testFormatted();
+		void testCompare();
 };
 
 #endif // TAG_NAME_TEST_H
