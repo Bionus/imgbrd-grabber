@@ -32,6 +32,26 @@ void FunctionsTest::testFixFilenameLinux()
 	assertFixFilename(1, "folder/image.jpg", "/home/test/", "folder/image.jpg");
 }
 
+static QByteArray readFile(const QString &path)
+{
+	QFile f(path);
+	if (!f.open(QFile::ReadOnly))
+		return QByteArray();
+
+	return f.readAll();
+}
+void FunctionsTest::testGetExtensionFromHeader()
+{
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/gif.gif")), QString("gif"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/png.png")), QString("png"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/jpg.jpg")), QString("jpg"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/bmp.bmp")), QString("bmp"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/webm.webm")), QString("webm"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/mp4.mp4")), QString("mp4"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/swf.swf")), QString("swf"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/ico.ico")), QString("ico"));
+}
+
 static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
 {
 	QFont font(name);

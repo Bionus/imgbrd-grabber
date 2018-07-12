@@ -633,7 +633,7 @@ QString getExtensionFromHeader(const QByteArray &data12)
 		return QStringLiteral("png");
 
 	// JPG
-	if (data3 == "\255\216\255")
+	if (data3 == "\377\330\377")
 		return QStringLiteral("jpg");
 
 	// BMP
@@ -641,7 +641,7 @@ QString getExtensionFromHeader(const QByteArray &data12)
 		return QStringLiteral("bmp");
 
 	// WEBM
-	if (data4 == "\026\069\223\163")
+	if (data4 == "\032\105\337\243")
 		return QStringLiteral("webm");
 
 	// MP4
