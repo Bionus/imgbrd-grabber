@@ -48,7 +48,6 @@ QString		getExtension(const QString &url);
 QString		setExtension(QString url, const QString &extension);
 bool		isUrl(const QString &str);
 bool		isVariantEmpty(const QVariant &value);
-QMap<QString, QString>	multiMatchToMap(const QRegularExpressionMatch &match, const QStringList &groups);
 
 bool		setFileCreationDate(const QString &path, const QDateTime &datetime);
 void		shutDown(int timeout = 0);
