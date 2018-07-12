@@ -126,7 +126,7 @@ void sourcesWindow::valid()
 
 void sourcesWindow::openSite(const QString &site) const
 {
-	QDesktopServices::openUrl(QUrl(m_sites.value(site)->fixUrl("/")));
+	QDesktopServices::openUrl(m_sites.value(site)->fixUrl("/"));
 }
 
 void sourcesWindow::settingsSite(const QString &site)
