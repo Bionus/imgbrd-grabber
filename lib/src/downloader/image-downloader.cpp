@@ -56,19 +56,18 @@ void ImageDownloader::loadedSave()
 	{
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
 
+		// Use a random temporary file if we need the MD5 or equivalent
 		Profile *profile = m_image->parentSite()->getSource()->getProfile();
-		if (!Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
+		if (Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
 		{
-			m_temporaryPath = m_paths.first() + ".tmp";
+			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 		}
 	}
 
-	// Use a random temporary file if we need the MD5 or equivalent
+	// Directly use the image path as temporary file  if possible
 	if (m_temporaryPath.isEmpty())
-	{
-		const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
-		m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-	}
+	{ m_temporaryPath = m_paths.first() + ".tmp"; }
 
 	// Try to save the image if it's already loaded or exists somewhere else on disk
 	if (!m_force)
