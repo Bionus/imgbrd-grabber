@@ -19,6 +19,7 @@ class QAffiche;
 class Profile;
 class mainWindow;
 class DetailsWindow;
+class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
 
@@ -151,6 +152,8 @@ class ZoomWindow : public QWidget
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
 		SaveButtonState m_saveButonState, m_saveButonStateFav;
+
+		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
 		// Display
 		QString m_isAnimated;

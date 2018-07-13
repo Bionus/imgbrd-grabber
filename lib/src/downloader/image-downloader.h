@@ -15,6 +15,7 @@ class ImageDownloader : public QObject
 		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = false, bool rotate = true, bool force = false);
 		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false);
 		~ImageDownloader();
+		bool isRunning() const;
 
 	public slots:
 		void save();

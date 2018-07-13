@@ -25,6 +25,11 @@ ImageDownloader::~ImageDownloader()
 		m_reply->deleteLater();
 }
 
+bool ImageDownloader::isRunning() const
+{
+	return m_reply != nullptr && m_reply->isRunning();
+}
+
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image

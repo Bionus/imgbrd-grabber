@@ -388,14 +388,20 @@ void ZoomWindow::load(bool force)
 		m_image->setUrl(m_url);
 	}
 
-	const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-	auto dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
+	ImageDownloader *dwl = m_imageDownloaders.value(m_image, nullptr);
+	if (dwl == nullptr)
+	{
+		const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+		dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
+		m_imageDownloaders.insert(m_image, dwl);
+	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress);
 	connect(dwl, &ImageDownloader::saved, this, &ZoomWindow::replyFinishedZoom);
-	connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 
 	m_imageTime.start();
-	dwl->save();
+
+	if (!dwl->isRunning())
+	{ dwl->save(); }
 }
 
 #define PERCENT 0.05
@@ -597,8 +603,6 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result)
 {
-	Q_UNUSED(img);
-
 	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
 	Image::SaveResult res = result.first();
 
@@ -1037,7 +1041,12 @@ void ZoomWindow::closeEvent(QCloseEvent *e)
 	m_settings->sync();
 
 	m_image->abortTags();
-	m_image->abortImage();
+
+	for (auto it = m_imageDownloaders.begin(); it != m_imageDownloaders.end(); ++it)
+	{
+		it.value()->abort();
+		it.value()->deleteLater();
+	}
 
 	e->accept();
 }
@@ -1130,10 +1139,18 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	{
 		QSet<int> preloaded;
 		const int index = m_images.indexOf(m_image);
-		for (int i = index - preload; i <= index + preload; ++i)
+		for (int i = index - preload - 1; i <= index + preload + 1; ++i)
 		{
+			bool forAbort = i == index - preload - 1 || i == index + preload + 1;
 			int pos = (i + m_images.count()) % m_images.count();
 			if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
+				continue;
+
+			QSharedPointer<Image> img = m_images[pos];
+			bool downloaderExists = m_imageDownloaders.contains(img);
+			if (downloaderExists && forAbort)
+				m_imageDownloaders[img]->abort();
+			if (downloaderExists || forAbort)
 				continue;
 
 			preloaded.insert(pos);
@@ -1141,8 +1158,9 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 			m_images[pos]->loadDetails();
 
 			const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-			auto dwl = new ImageDownloader(m_images[pos], QStringList() << fn, 1, false, false, this);
-			connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
+			auto dwl = new ImageDownloader(img, QStringList() << fn, 1, false, false, this);
+			m_imageDownloaders.insert(img, dwl);
+			dwl->save();
 		}
 	}
 
@@ -1199,7 +1217,6 @@ int ZoomWindow::firstNonBlacklisted(int direction)
 void ZoomWindow::next()
 {
 	m_image->abortTags();
-	m_image->abortImage();
 
 	const int index = firstNonBlacklisted(+1);
 	load(m_images[index]);
@@ -1208,7 +1225,6 @@ void ZoomWindow::next()
 void ZoomWindow::previous()
 {
 	m_image->abortTags();
-	m_image->abortImage();
 
 	const int index = firstNonBlacklisted(-1);
 	load(m_images[index]);
