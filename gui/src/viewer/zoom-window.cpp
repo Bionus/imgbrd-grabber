@@ -382,23 +382,28 @@ void ZoomWindow::load(bool force)
 	ui->progressBarDownload->setValue(0);
 	ui->progressBarDownload->show();
 
-	connect(m_image.data(), &Image::downloadProgressImage, this, &ZoomWindow::downloadProgress);
-	connect(m_image.data(), &Image::finishedImage, this, &ZoomWindow::replyFinishedZoom);
-
 	if (m_image->shouldDisplaySample())
 	{
 		m_saveUrl = m_image->url();
 		m_image->setUrl(m_url);
 	}
 
+	const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+	auto dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
+	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress);
+	connect(dwl, &ImageDownloader::saved, this, &ZoomWindow::replyFinishedZoom);
+	connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
+
 	m_imageTime.start();
-	m_image->loadImage(true, force);
+	dwl->save();
 }
 
 #define PERCENT 0.05
 #define TIME 500
-void ZoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+void ZoomWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
 {
+	Q_UNUSED(img);
+
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
@@ -590,9 +595,12 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	}
 }
 
-void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QString &errorString)
+void ZoomWindow::replyFinishedZoom(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result)
 {
+	Q_UNUSED(img);
+
 	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
+	Image::SaveResult res = result.first();
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
@@ -600,27 +608,30 @@ void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QStrin
 	if (m_image->shouldDisplaySample())
 	{ m_image->setUrl(m_saveUrl); }
 
-	if (err == QNetworkReply::NoError)
-	{
-		m_url = m_image->url();
-		m_loadedImage = true;
-
-		updateWindowTitle();
-		pendingUpdate();
-		draw();
-	}
-	else if (err == 500)
+	if (res == 500)
 	{
 		m_tooBig = true;
 		if (!m_image->isVideo())
 		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString())); }
 	}
-	else if (err == QNetworkReply::ContentNotFoundError)
+	else if (res == Image::SaveResult::NotFound)
 	{ showLoadingError("Image not found."); }
-	else if (err == QNetworkReply::UnknownContentError)
+	else if (res == Image::SaveResult::NetworkError)
 	{ showLoadingError("Error loading the image."); }
-	else if (err != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString, m_image->url().toString())); }
+	else if (res == Image::SaveResult::Error)
+	{ showLoadingError("Error saving the image."); }
+	else
+	{
+		m_url = m_image->url();
+		m_source = result.firstKey();
+		m_loadedImage = true;
+
+		img->setTemporaryPath(m_source);
+
+		updateWindowTitle();
+		pendingUpdate();
+		draw();
+	}
 }
 
 void ZoomWindow::showLoadingError(const QString &message)
@@ -688,27 +699,10 @@ void ZoomWindow::draw()
 	if (m_image->isVideo())
 		return;
 
-	const QString fn = m_url.fileName().toLower();
-
-	// We need a filename to display animations, so we get it if we're not already loading from a file
-	QString filename;
-	if (!m_source.isEmpty())
-	{ filename = m_source; }
-	else if (!m_isAnimated.isEmpty())
-	{
-		filename = QDir::temp().absoluteFilePath("grabber-" + fn);
-		QFile f(filename);
-		if (f.open(QFile::WriteOnly))
-		{
-			f.write(m_image->data());
-			f.close();
-		}
-	}
-
 	// GIF (using QLabel support for QMovie)
 	if (!m_isAnimated.isEmpty())
 	{
-		m_displayMovie = new QMovie(filename, m_isAnimated.toLatin1(), this);
+		m_displayMovie = new QMovie(m_source, m_isAnimated.toLatin1(), this);
 		m_displayMovie->start();
 		const QSize &movieSize = m_displayMovie->currentPixmap().size();
 		const QSize &imageSize = m_labelImage->size();
@@ -723,11 +717,10 @@ void ZoomWindow::draw()
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setMovie(m_displayMovie); }
-		return;
 	}
 
 	// Images
-	if (!m_source.isEmpty())
+	else
 	{
 		m_displayImage = QPixmap();
 		m_displayImage.load(m_source);
@@ -735,10 +728,6 @@ void ZoomWindow::draw()
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
-	}
-	else
-	{
-		emit loadImage(m_image->data());
 	}
 }
 
@@ -1150,7 +1139,10 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 			preloaded.insert(pos);
 			log(QStringLiteral("Preloading data for image #%1").arg(pos));
 			m_images[pos]->loadDetails();
-			m_images[pos]->loadImage();
+
+			const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+			auto dwl = new ImageDownloader(m_images[pos], QStringList() << fn, 1, false, false, this);
+			connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 		}
 	}
 
