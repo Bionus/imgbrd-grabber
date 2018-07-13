@@ -131,7 +131,6 @@ QMap<QString, Image::SaveResult> ImageDownloader::makeMap(const QStringList &key
 
 void ImageDownloader::writeError()
 {
-	m_image->abortImage();
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 }
 

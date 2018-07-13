@@ -79,7 +79,6 @@ Image::Image(const Image &other)
 	m_data = other.m_data;
 
 	m_loadDetails = other.m_loadDetails;
-	m_loadImage = other.m_loadImage;
 
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
@@ -90,14 +89,11 @@ Image::Image(const Image &other)
 	m_parentSite = other.m_parentSite;
 
 	m_extensionRotator = other.m_extensionRotator;
-	m_loadingPreview = other.m_loadingPreview;
 	m_loadingDetails = other.m_loadingDetails;
-	m_loadingImage = other.m_loadingImage;
-	m_tryingSample = other.m_tryingSample;
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_loadImageError(QNetworkReply::NetworkError::NoError)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
 {
 	m_settings = m_profile->getSettings();
 
@@ -280,13 +276,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Tech details
 	m_parent = parent;
 	m_loadDetails = nullptr;
-	m_loadImage = nullptr;
-	m_loadingPreview = false;
 	m_loadingDetails = false;
 	m_loadedDetails = false;
-	m_loadedImage = false;
-	m_loadingImage = false;
-	m_tryingSample = false;
 	m_pools = QList<Pool>();
 }
 
@@ -435,169 +426,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 	Filename filename(fn);
 	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
-}
-
-void Image::loadImage(bool inMemory, bool force)
-{
-	if (m_loadingImage)
-		return;
-
-	if (m_loadedImage && !force)
-	{
-		emit finishedImage(QNetworkReply::NoError, "");
-		return;
-	}
-
-	if (m_fileSize > MAX_LOAD_FILESIZE && inMemory)
-	{
-		emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), "");
-		return;
-	}
-
-	if (m_loadImage != nullptr)
-		m_loadImage->deleteLater();
-
-	if (force)
-		setUrl(m_fileUrl);
-
-	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
-	m_loadImage->setParent(this);
-	m_loadingImage = true;
-	m_loadedImage = false;
-	m_data.clear();
-
-	if (inMemory)
-	{
-		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
-		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
-	}
-	else
-	{
-		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageBasic);
-		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageBasic);
-	}
-}
-
-void Image::finishedImageBasic()
-{
-	finishedImageS(false);
-}
-void Image::finishedImageInMemory()
-{
-	finishedImageS(true);
-}
-void Image::finishedImageS(bool inMemory)
-{
-	m_loadingImage = false;
-
-	// Aborted
-	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
-	{
-		m_loadImage->deleteLater();
-		m_loadImage = nullptr;
-		if (m_fileSize > MAX_LOAD_FILESIZE)
-		{ emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), ""); }
-		else
-		{ emit finishedImage(QNetworkReply::OperationCanceledError, ""); }
-		return;
-	}
-
-	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
-	{
-		m_loadImage->deleteLater();
-		m_loadImage = nullptr;
-		m_url = redir;
-		loadImage();
-		return;
-	}
-
-	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
-	{
-		const bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
-		QString newext = m_extensionRotator != nullptr ? m_extensionRotator->next() : "";
-
-		const bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
-		const bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
-
-		if (!isLast || (shouldFallback && !m_tryingSample))
-		{
-			if (isLast)
-			{
-				setUrl(m_sampleUrl);
-				m_tryingSample = true;
-				log(QStringLiteral("Image not found. New try with its sample..."));
-			}
-			else
-			{
-				m_url = setExtension(m_url, newext);
-				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
-			}
-
-			loadImage();
-			return;
-		}
-		else
-		{
-			log(QStringLiteral("Image not found."));
-		}
-	}
-	else if (inMemory)
-	{
-		m_data.append(m_loadImage->readAll());
-
-		if (m_fileSize <= 0)
-		{ m_fileSize = m_data.size(); }
-	}
-
-	const QNetworkReply::NetworkError error = m_loadImage->error();
-	const QString errorString = m_loadImage->errorString();
-
-	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
-	m_loadImageError = error;
-	m_loadImage->deleteLater();
-	m_loadImage = nullptr;
-
-	emit finishedImage(m_loadImageError, errorString);
-}
-
-void Image::downloadProgressImageBasic(qint64 v1, qint64 v2)
-{
-	downloadProgressImageS(v1, v2, false);
-}
-void Image::downloadProgressImageInMemory(qint64 v1, qint64 v2)
-{
-	downloadProgressImageS(v1, v2, true);
-}
-void Image::downloadProgressImageS(qint64 v1, qint64 v2, bool inMemory)
-{
-	// Set filesize if not set
-	if (m_fileSize == 0 || m_fileSize < v2 / 2)
-		m_fileSize = v2;
-
-	if (m_loadImage == nullptr || v2 <= 0)
-		return;
-
-	if (inMemory)
-	{
-		if (m_fileSize > MAX_LOAD_FILESIZE)
-		{
-			m_loadImage->abort();
-			return;
-		}
-
-		m_data.append(m_loadImage->readAll());
-	}
-
-	emit downloadProgressImage(v1, v2);
-}
-void Image::abortImage()
-{
-	if (m_loadingImage && m_loadImage->isRunning())
-	{
-		m_loadImage->abort();
-		m_loadingImage = false;
-	}
 }
 
 /**
@@ -1045,12 +873,6 @@ bool Image::hasAllTags(const QStringList &tags) const
 		if (!this->hasTag(tag))
 			return false;
 	return true;
-}
-
-void Image::unload()
-{
-	m_loadedImage = false;
-	m_data.clear();
 }
 
 void Image::setRating(const QString &rating)

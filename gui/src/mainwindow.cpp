@@ -1704,7 +1704,6 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 
 void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry)
 {
-	download.image->unload();
 	m_downloadTime.remove(download.image->url());
 	m_downloadTimeLast.remove(download.image->url());
 
@@ -1955,7 +1954,10 @@ void mainWindow::getAllCancel()
 	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading))
 	{
 		download.image->abortTags();
-		download.image->abortImage();
+	}
+	for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+	{
+		it.value()->abort();
 	}
 	for (Downloader *downloader : qAsConst(m_downloaders))
 	{
@@ -1974,7 +1976,10 @@ void mainWindow::getAllSkip()
 	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading))
 	{
 		download.image->abortTags();
-		download.image->abortImage();
+	}
+	for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+	{
+		it.value()->abort();
 	}
 	m_getAllSkippedImages.append(m_getAllDownloading);
 	m_getAllDownloading.clear();
@@ -2089,7 +2094,10 @@ void mainWindow::getAllPause()
 		for (const auto &download : qAsConst(m_getAllDownloading))
 		{
 			download.image->abortTags();
-			download.image->abortImage();
+		}
+		for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+		{
+			it.value()->abort();
 		}
 		m_getAll = false;
 	}

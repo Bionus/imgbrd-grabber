@@ -96,19 +96,8 @@ class Image : public QObject, public Downloadable
 
 	public slots:
 		void loadDetails(bool rateLimit = false);
-		void loadImage(bool inMemory = true, bool force = false);
 		void abortTags();
-		void abortImage();
 		void parseDetails();
-		void unload();
-
-	private slots:
-		void finishedImageBasic();
-		void finishedImageInMemory();
-		void finishedImageS(bool inMemory);
-		void downloadProgressImageBasic(qint64, qint64);
-		void downloadProgressImageInMemory(qint64, qint64);
-		void downloadProgressImageS(qint64, qint64, bool inMemory);
 
 	signals:
 		void finishedLoadingPreview();
@@ -131,16 +120,15 @@ class Image : public QObject, public Downloadable
 		QPixmap			m_imagePreview;
 		QDateTime		m_createdAt;
 		QByteArray		m_data;
-		QNetworkReply	*m_loadDetails, *m_loadImage;
+		QNetworkReply	*m_loadDetails;
 		QList<Tag>		m_tags;
 		QList<Pool>		m_pools;
 		QTime			m_timer;
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;
-		QNetworkReply::NetworkError m_loadImageError;
 		ExtensionRotator *m_extensionRotator;
-		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
+		bool			m_loadingDetails, m_loadedDetails;
 		bool			m_isGallery = false;
 };
 

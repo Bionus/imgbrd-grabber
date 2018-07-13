@@ -165,15 +165,6 @@ void ImageTest::testStylishedTags()
 	QCOMPARE(tags[8], QString("<a href=\"tag3\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag3</a>"));*/
 }
 
-void ImageTest::testUnload()
-{
-	m_img->setData(QString("test").toLatin1());
-	QCOMPARE(m_img->data().isEmpty(), false);
-
-	m_img->unload();
-	QCOMPARE(m_img->data().isEmpty(), true);
-}
-
 void ImageTest::testValue()
 {
 	// Guess from image size
@@ -212,24 +203,6 @@ void ImageTest::testValue()
 	m_img->deleteLater();
 	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 500 * 500);
-}
-
-void ImageTest::testLoadImage()
-{
-	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedImage(QNetworkReply::NetworkError, QString)));
-	m_img->loadImage();
-	QVERIFY(spy.wait());
-
-	// Compare result
-	QCOMPARE(m_img->data().isEmpty(), false);
-}
-void ImageTest::testLoadImageAbort()
-{
-	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
-	m_img->loadImage();
-	m_img->abortImage();
-	QVERIFY(!spy.wait(1000));
 }
 
 void ImageTest::testLoadDetails()
