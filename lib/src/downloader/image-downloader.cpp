@@ -19,6 +19,12 @@ ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, i
 	: QObject(parent), m_image(std::move(img)), m_fileDownloader(this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
+ImageDownloader::~ImageDownloader()
+{
+	if (m_reply != nullptr)
+		m_reply->deleteLater();
+}
+
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
