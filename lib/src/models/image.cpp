@@ -670,6 +670,9 @@ void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
 void Image::setTemporaryPath(const QString &path)
 {
+	if (m_temporaryPath == path)
+		return;
+
 	setSavePath(path);
 
 	if (!m_temporaryPath.isEmpty())
