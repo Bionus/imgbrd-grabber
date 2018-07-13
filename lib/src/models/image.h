@@ -24,6 +24,7 @@ class Image : public QObject, public Downloadable
 		Image();
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
+		~Image();
 		int			value() const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList	stylishedTags(Profile *profile) const;
@@ -61,6 +62,7 @@ class Image : public QObject, public Downloadable
 		void		setSize(QSize size);
 		void		setFileSize(int size);
 		void		setFileExtension(const QString &ext);
+		void		setTemporaryPath(const QString &path);
 		void		setSavePath(const QString &path);
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
@@ -123,7 +125,7 @@ class Image : public QObject, public Downloadable
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl			m_url;
 		QString	mutable m_md5;
-		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_savePath;
+		QString			m_author, m_name, m_status, m_rating, m_source, m_site, m_temporaryPath, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;

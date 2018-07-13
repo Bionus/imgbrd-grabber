@@ -290,6 +290,12 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
+Image::~Image()
+{
+	if (!m_temporaryPath.isEmpty())
+		QFile::remove(m_temporaryPath);
+}
+
 void Image::loadDetails(bool rateLimit)
 {
 	if (m_loadingDetails)
@@ -834,6 +840,15 @@ ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
+void Image::setTemporaryPath(const QString &path)
+{
+	setSavePath(path);
+
+	if (!m_temporaryPath.isEmpty())
+		QFile::remove(m_temporaryPath);
+
+	m_temporaryPath = path;
+}
 void Image::setSavePath(const QString &path)
 {
 	m_savePath = path;
