@@ -395,8 +395,8 @@ void ZoomWindow::load(bool force)
 		dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
-	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress);
-	connect(dwl, &ImageDownloader::saved, this, &ZoomWindow::replyFinishedZoom);
+	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
+	connect(dwl, &ImageDownloader::saved, this, &ZoomWindow::replyFinishedZoom, Qt::UniqueConnection);
 
 	m_imageTime.start();
 
