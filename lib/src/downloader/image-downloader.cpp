@@ -11,12 +11,12 @@
 #include "models/source.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate, bool force)
+	: QObject(parent), m_image(std::move(img)), m_fileDownloader(this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate, bool force)
+	: QObject(parent), m_image(std::move(img)), m_fileDownloader(this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
 void ImageDownloader::save()
@@ -54,24 +54,27 @@ void ImageDownloader::loadedSave()
 	}
 
 	// Try to save the image if it's already loaded or exists somewhere else on disk
-	QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false);
-	bool needLoading = false;
-	bool saveOk = false;
-	for (Image::SaveResult res : result)
+	if (!m_force)
 	{
-		if (res == Image::SaveResult::NotLoaded)
-			needLoading = true;
-		else if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
-			saveOk = true;
-	}
+		QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false);
+		bool needLoading = false;
+		bool saveOk = false;
+		for (Image::SaveResult res : result)
+		{
+			if (res == Image::SaveResult::NotLoaded)
+				needLoading = true;
+			else if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
+				saveOk = true;
+		}
 
-	// If we don't need any loading, we can return already
-	if (!needLoading)
-	{
-		if (saveOk)
-		{ result = postSaving(result); }
-		emit saved(m_image, result);
-		return;
+		// If we don't need any loading, we can return already
+		if (!needLoading)
+		{
+			if (saveOk)
+			{ result = postSaving(result); }
+			emit saved(m_image, result);
+			return;
+		}
 	}
 
 	m_url = m_image->url(Image::Size::Full);
