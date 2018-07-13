@@ -118,6 +118,9 @@ void ImageDownloader::loadImage()
 
 void ImageDownloader::downloadProgressImage(qint64 v1, qint64 v2)
 {
+	if (m_image->fileSize() == 0 || m_image->fileSize() < v2 / 2)
+		m_image->setFileSize(v2);
+
 	emit downloadProgress(m_image, v1, v2);
 }
 
