@@ -17,6 +17,7 @@ class ImageDownloader : public QObject
 
 	public slots:
 		void save();
+		void abort();
 
 	protected:
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);

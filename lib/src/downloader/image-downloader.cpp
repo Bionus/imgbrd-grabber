@@ -32,6 +32,12 @@ void ImageDownloader::save()
 	m_image->loadDetails();
 }
 
+void ImageDownloader::abort()
+{
+	if (m_reply != nullptr && m_reply->isRunning())
+		m_reply->abort();
+}
+
 void ImageDownloader::loadedSave()
 {
 	// Get the download path from the image if possible
