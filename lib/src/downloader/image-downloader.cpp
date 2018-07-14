@@ -72,22 +72,16 @@ void ImageDownloader::loadedSave()
 	// Try to save the image if it's already loaded or exists somewhere else on disk
 	if (!m_force)
 	{
-		QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false);
-		bool needLoading = false;
-		bool saveOk = false;
-		for (Image::SaveResult res : result)
-		{
-			if (res == Image::SaveResult::NotLoaded)
-				needLoading = true;
-			else if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
-				saveOk = true;
-		}
+		Image::SaveResult res = m_image->preSave(m_temporaryPath);
 
 		// If we don't need any loading, we can return already
-		if (!needLoading)
+		if (res != Image::SaveResult::NotLoaded)
 		{
-			if (saveOk)
+			QMap<QString, Image::SaveResult> result {{ m_temporaryPath, res }};
+
+			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
 			{ result = postSaving(result); }
+
 			emit saved(m_image, result);
 			return;
 		}
