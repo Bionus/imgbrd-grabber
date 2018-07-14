@@ -64,6 +64,7 @@ class Image : public QObject, public Downloadable
 		void		setFileExtension(const QString &ext);
 		void		setTemporaryPath(const QString &path);
 		void		setSavePath(const QString &path);
+		QString		savePath() const;
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;

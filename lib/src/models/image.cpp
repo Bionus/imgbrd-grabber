@@ -688,6 +688,8 @@ void Image::setSavePath(const QString &path)
 		refreshTokens();
 	}
 }
+QString Image::savePath() const
+{ return m_savePath; }
 
 bool Image::shouldDisplaySample() const
 {

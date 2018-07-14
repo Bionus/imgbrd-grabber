@@ -1151,7 +1151,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 			bool downloaderExists = m_imageDownloaders.contains(img);
 			if (downloaderExists && forAbort)
 				m_imageDownloaders[img]->abort();
-			if (downloaderExists || forAbort)
+			if (downloaderExists || forAbort || (!img->savePath().isEmpty() && QFile::exists(img->savePath())))
 				continue;
 
 			preloaded.insert(pos);
