@@ -244,7 +244,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 		if (!result.contains(path))
 		{ result[path] = Image::SaveResult::Saved; }
 
-		m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false);
+		m_image->postSave(path, result[path], m_addMd5, m_startCommands, m_count);
 	}
 
 	if (!moved)

@@ -51,7 +51,8 @@ void DownloadableDownloader::preloaded()
 	// If we don't need any loading, we return early
 	if (m_paths.isEmpty())
 	{
-		m_downloadable->postSave(m_result, m_addMd5, m_startCommands, m_count);
+		for (auto it = m_result.begin(); it != m_result.end(); ++it)
+		{ m_downloadable->postSave(it.key(), it.value(), m_addMd5, m_startCommands, m_count); }
 		emit saved(m_downloadable, m_result);
 		return;
 	}
@@ -101,6 +102,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 void DownloadableDownloader::success()
 {
 	setResult(m_paths, Downloadable::SaveResult::Saved);
-	m_downloadable->postSave(m_result, m_addMd5, m_startCommands, m_count);
+	for (const QString &path : m_paths)
+	{ m_downloadable->postSave(path, Downloadable::SaveResult::Saved, m_addMd5, m_startCommands, m_count); }
 	emit saved(m_downloadable, m_result);
 }

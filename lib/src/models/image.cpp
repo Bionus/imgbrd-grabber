@@ -1059,10 +1059,7 @@ Image::SaveResult Image::preSave(const QString &path)
 	return save(path, false, false, false, false, 1, false);
 }
 
-void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)
+void Image::postSave(const QString &path, SaveResult res, bool addMd5, bool startCommands, int count)
 {
-	const QString &path = result.firstKey();
-	const Image::SaveResult res = result[path];
-
 	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
 }
