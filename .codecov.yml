@@ -12,9 +12,11 @@ coverage:
     changes: false
 
   ignore:
-    - "tests/*"
-    - "vendor/*"
+    - "build/*"
     - "CrashReporter/*"
+    - "e2e/*"
+    - "lib/src/vendor/*"
+    - "tests/*"
 
 comment:
   layout: "header, diff"
