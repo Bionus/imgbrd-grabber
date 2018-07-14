@@ -93,9 +93,9 @@ void PageApi::load(bool rateLimit, bool force)
 	m_tags.clear();
 	m_loaded = false;
 	m_pageImageCount = 0;
-	/*m_imagesCount = -1;
+	m_imagesCount = -1;
 	m_maxImagesCount = -1;
-	m_pagesCount = -1;*/
+	m_pagesCount = -1;
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
 		log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
@@ -211,7 +211,7 @@ void PageApi::parseActual()
 	{ m_wiki = page.wiki; }
 
 	// Complete image count information from tag count information
-	if (m_imagesCount < 1)
+	if (m_imagesCount < 1 || !m_imagesCountSafe)
 	{
 		int found = 0;
 		int min = -1;
@@ -227,7 +227,12 @@ void PageApi::parseActual()
 		if (m_search.count() == found)
 		{
 			if (m_search.count() == 1)
-			{ setImageCount(min, false); }
+			{
+				const int forcedLimit = m_api->forcedLimit();
+				const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
+				const int expectedPageCount = qCeil(static_cast<qreal>(min) / perPage);
+				setImageCount(min, m_pagesCountSafe && expectedPageCount == m_pagesCount);
+			}
 			setImageMaxCount(min);
 		}
 	}
