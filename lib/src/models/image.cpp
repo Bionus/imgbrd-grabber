@@ -670,10 +670,10 @@ void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
 void Image::setTemporaryPath(const QString &path)
 {
+	setSavePath(path);
+
 	if (m_temporaryPath == path)
 		return;
-
-	setSavePath(path);
 
 	if (!m_temporaryPath.isEmpty())
 		QFile::remove(m_temporaryPath);
@@ -682,8 +682,11 @@ void Image::setTemporaryPath(const QString &path)
 }
 void Image::setSavePath(const QString &path)
 {
-	m_savePath = path;
-	refreshTokens();
+	if (path != m_savePath)
+	{
+		m_savePath = path;
+		refreshTokens();
+	}
 }
 
 bool Image::shouldDisplaySample() const

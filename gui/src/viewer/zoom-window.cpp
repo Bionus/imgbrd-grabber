@@ -239,15 +239,8 @@ void ZoomWindow::reloadImage()
 }
 void ZoomWindow::copyImageFileToClipboard()
 {
-	QString path = m_imagePath;
-	if (path.isEmpty() || !QFile::exists(path))
-	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
-		path = files.firstKey();
-	}
-
 	auto *mimeData = new QMimeData();
-	mimeData->setUrls({ QUrl::fromLocalFile(path) });
+	mimeData->setUrls({ QUrl::fromLocalFile(m_imagePath) });
 	QApplication::clipboard()->setMimeData(mimeData);
 }
 void ZoomWindow::copyImageDataToClipboard()
@@ -627,10 +620,10 @@ void ZoomWindow::replyFinishedZoom(QSharedPointer<Image> img, const QMap<QString
 	else
 	{
 		m_url = m_image->url();
-		m_source = result.firstKey();
+		m_imagePath = result.firstKey();
 		m_loadedImage = true;
 
-		img->setTemporaryPath(m_source);
+		img->setTemporaryPath(m_imagePath);
 
 		updateWindowTitle();
 		pendingUpdate();
@@ -786,7 +779,7 @@ Qt::Alignment ZoomWindow::getAlignments(const QString &type)
 
 void ZoomWindow::saveNQuit()
 {
-	if (!m_imagePath.isEmpty())
+	if (!m_source.isEmpty())
 	{
 		close();
 		return;
@@ -798,7 +791,7 @@ void ZoomWindow::saveNQuit()
 }
 void ZoomWindow::saveNQuitFav()
 {
-	if (!m_imagePath.isEmpty())
+	if (!m_source.isEmpty())
 	{
 		close();
 		return;
@@ -825,11 +818,17 @@ void ZoomWindow::saveImage(bool fav)
 
 		case SaveButtonState::Delete:
 		{
-			QFile f(m_imagePath);
-			if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
-			{ m_image->setData(f.readAll()); }
-			f.remove();
-			m_imagePath = "";
+			QString ip = m_imagePath;
+			QString s = m_source;
+			bool eq = m_imagePath == m_source;
+			if (m_imagePath.isEmpty() || m_imagePath == m_source)
+			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp"; }
+			if (QFile::exists(m_imagePath))
+			{ QFile::remove(m_source); }
+			else
+			{ QFile::rename(m_source, m_imagePath); }
+			m_image->setTemporaryPath(m_imagePath);
+			m_source = "";
 			setButtonState(fav, SaveButtonState::Save);
 			break;
 		}
@@ -846,7 +845,7 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 	QMap<QString, Image::SaveResult> results;
 
 	if (saveAs)
-	{ results = m_image->save(QStringList() << m_saveAsPending, true, false, 1, true); }
+	{ QFile::copy(m_imagePath, m_saveAsPending); }
 	else
 	{
 		QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
@@ -871,6 +870,7 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 			return QStringList();
 		}
 
+		// SAVE
 		results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
 	}
 
@@ -878,7 +878,7 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 	{
 		const Image::SaveResult res = it.value();
 		paths.append(it.key());
-		m_imagePath = it.key();
+		m_source = it.key();
 
 		switch (res)
 		{
@@ -896,7 +896,7 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 
 			case Image::SaveResult::Ignored:
 				setButtonState(fav, SaveButtonState::ExistsMd5);
-				m_imagePath = m_profile->md5Exists(m_image->md5());
+				m_source = m_profile->md5Exists(m_image->md5());
 				break;
 
 			case Image::SaveResult::AlreadyExists:
@@ -1122,6 +1122,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 
 	m_displayImage = QPixmap();
 	m_loadedImage = false;
+	m_source = "";
 	m_imagePath = "";
 	m_image = image;
 	m_isAnimated = image->isAnimated();
@@ -1244,14 +1245,7 @@ void ZoomWindow::openFile(bool now)
 		return;
 	}
 
-	QString path = m_imagePath;
-	if (path.isEmpty() || !QFile::exists(path))
-	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
-		path = files.firstKey();
-	}
-
-	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(m_imagePath));
 }
 
 void ZoomWindow::mouseReleaseEvent(QMouseEvent *e)
