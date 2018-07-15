@@ -503,6 +503,20 @@ void ZoomWindow::replyFinishedDetails()
 		draw();
 	}
 
+
+	// If the image already has an associated file on disk
+	else if (!m_image->savePath().isEmpty() && QFile::exists(m_image->savePath()))
+	{
+		m_imagePath = m_image->savePath();
+		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_imagePath));
+
+		m_finished = true;
+		m_loadedImage = true;
+		pendingUpdate();
+
+		draw();
+	}
+
 	// If the file does not exist, we have to load it
 	else
 	{
