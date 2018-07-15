@@ -713,7 +713,7 @@ void ZoomWindow::draw()
 	// GIF (using QLabel support for QMovie)
 	if (!m_isAnimated.isEmpty())
 	{
-		m_displayMovie = new QMovie(m_source, m_isAnimated.toLatin1(), this);
+		m_displayMovie = new QMovie(m_imagePath, m_isAnimated.toLatin1(), this);
 		m_displayMovie->start();
 		const QSize &movieSize = m_displayMovie->currentPixmap().size();
 		const QSize &imageSize = m_labelImage->size();
@@ -734,7 +734,7 @@ void ZoomWindow::draw()
 	else
 	{
 		m_displayImage = QPixmap();
-		m_displayImage.load(m_source);
+		m_displayImage.load(m_imagePath);
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
@@ -832,9 +832,6 @@ void ZoomWindow::saveImage(bool fav)
 
 		case SaveButtonState::Delete:
 		{
-			QString ip = m_imagePath;
-			QString s = m_source;
-			bool eq = m_imagePath == m_source;
 			if (m_imagePath.isEmpty() || m_imagePath == m_source)
 			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp"; }
 			if (QFile::exists(m_imagePath))
