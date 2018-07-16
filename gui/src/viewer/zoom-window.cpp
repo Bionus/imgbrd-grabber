@@ -675,21 +675,13 @@ void ZoomWindow::pendingUpdate()
 	switch (m_mustSave)
 	{
 		case 1: // Save
+		case 2: // Save and quit
 			saveImageNow();
 			break;
 
-		case 2: // Save and quit
-			if (!saveImageNow().isEmpty())
-				close();
-			break;
-
 		case 3: // Save (fav)
-			saveImageNow(true);
-			break;
-
 		case 4: // Save and quit (fav)
-			if (!saveImageNow(true).isEmpty())
-				close();
+			saveImageNow(true);
 			break;
 
 		case 5: // Open image in viewer
@@ -850,20 +842,20 @@ void ZoomWindow::saveImage(bool fav)
 }
 void ZoomWindow::saveImageFav()
 { saveImage(true); }
-QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
+void ZoomWindow::saveImageNow(bool fav, bool saveAs)
 {
-	QStringList paths;
 	QMap<QString, Image::SaveResult> results;
 
 	if (saveAs)
 	{ QFile::copy(m_imagePath, m_saveAsPending); }
 	else
 	{
+		QString fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
 		QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
 		if (pth.right(1) == "/")
 		{ pth = pth.left(pth.length()-1); }
 
-		if (pth.isEmpty() || m_settings->value("Save/filename").toString().isEmpty())
+		if (pth.isEmpty() || fn.isEmpty())
 		{
 			int reply;
 			if (pth.isEmpty())
@@ -878,17 +870,16 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 				options->show();
 				connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
 			}
-			return QStringList();
+			return;
 		}
 
 		// SAVE
-		results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
+		results = m_image->save(fn, pth);
 	}
 
 	for (auto it = results.begin(); it != results.end(); ++it)
 	{
 		const Image::SaveResult res = it.value();
-		paths.append(it.key());
 		m_source = it.key();
 
 		switch (res)
@@ -916,7 +907,7 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 
 			default:
 				error(this, tr("Error saving image."));
-				return QStringList();
+				return;
 		}
 	}
 
@@ -924,7 +915,6 @@ QStringList ZoomWindow::saveImageNow(bool fav, bool saveAs)
 		close();
 
 	m_mustSave = 0;
-	return paths;
 }
 
 void ZoomWindow::saveImageAs()

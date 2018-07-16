@@ -54,7 +54,7 @@ class ZoomWindow : public QWidget
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
-		QStringList saveImageNow(bool fav = false, bool saveAs = false);
+		void saveImageNow(bool fav = false, bool saveAs = false);
 		void saveImageAs();
 		void openUrl(const QString &);
 		void openPool(const QString &);
