@@ -80,7 +80,7 @@ void ImageDownloader::loadedSave()
 			QMap<QString, Image::SaveResult> result {{ m_temporaryPath, res }};
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
-			{ result = postSaving(result); }
+			{ result = postSaving(res); }
 
 			emit saved(m_image, result);
 			return;
@@ -204,7 +204,7 @@ void ImageDownloader::success()
 	emit saved(m_image, postSaving());
 }
 
-QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image::SaveResult> result)
+QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
 	m_image->setSavePath(m_temporaryPath);
 
@@ -214,6 +214,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 	QFile tmp(m_temporaryPath);
 	bool moved = false;
 
+	QMap<QString, Image::SaveResult> result;
 	for (int i = 0; i < m_paths.count(); ++i)
 	{
 		const QString &path = m_paths[i];
@@ -242,7 +243,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image
 		{ tmp.copy(path); }
 
 		if (!result.contains(path))
-		{ result[path] = Image::SaveResult::Saved; }
+		{ result[path] = saveResult; }
 
 		m_image->postSave(path, result[path], m_addMd5, m_startCommands, m_count);
 	}
