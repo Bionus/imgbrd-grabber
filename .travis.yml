@@ -31,7 +31,9 @@ addons:
 
 # Install coveralls sender
 before_install:
-  - pip install --user cpp-coveralls
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      pip install --user cpp-coveralls
+    ; fi
 
 # Qt packages for OS X
 install:
