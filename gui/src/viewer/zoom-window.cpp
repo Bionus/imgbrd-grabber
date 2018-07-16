@@ -676,23 +676,18 @@ void ZoomWindow::pendingUpdate()
 	switch (m_pendingAction)
 	{
 		case PendingSave:
-			saveImageNow();
-			break;
-
 		case PendingSaveFav:
-			saveImageNow(true);
+		case PendingSaveAs:
+			saveImageNow();
 			break;
 
 		case PendingOpen:
 			openFile(true);
 			break;
 
-		case PendingSaveAs:
-			saveImageNow(false, true);
-			break;
+		default:
+			return;
 	}
-
-	m_pendingAction = PendingNothing;
 }
 
 void ZoomWindow::draw()
@@ -843,42 +838,51 @@ void ZoomWindow::saveImage(bool fav)
 }
 void ZoomWindow::saveImageFav()
 { saveImage(true); }
-void ZoomWindow::saveImageNow(bool fav, bool saveAs)
+void ZoomWindow::saveImageNow()
 {
-	QMap<QString, Image::SaveResult> results;
-
-	if (saveAs)
-	{ QFile::copy(m_imagePath, m_saveAsPending); }
-	else
+	if (m_pendingAction == PendingSaveAs)
 	{
-		QString fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
-		QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
-		if (pth.right(1) == "/")
-		{ pth = pth.left(pth.length()-1); }
-
-		if (pth.isEmpty() || fn.isEmpty())
-		{
-			int reply;
-			if (pth.isEmpty())
-			{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save folder! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
-			else
-			{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
-			if (reply == QMessageBox::Yes)
-			{
-				auto *options = new optionsWindow(m_profile, parentWidget());
-				//options->onglets->setCurrentIndex(3);
-				options->setWindowModality(Qt::ApplicationModal);
-				options->show();
-				connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
-			}
-			return;
-		}
-
-		// SAVE
-		results = m_image->save(fn, pth);
+		QFile::copy(m_imagePath, m_saveAsPending);
+		saveImageNowSaved(m_image, QMap<QString, Image::SaveResult>());
+		return;
 	}
 
-	for (auto it = results.begin(); it != results.end(); ++it)
+	const bool fav = m_pendingAction == PendingSaveFav;
+	QString fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
+	QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
+	if (pth.right(1) == "/")
+	{ pth = pth.left(pth.length()-1); }
+
+	if (pth.isEmpty() || fn.isEmpty())
+	{
+		int reply;
+		if (pth.isEmpty())
+		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save folder! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
+		else
+		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
+		if (reply == QMessageBox::Yes)
+		{
+			auto *options = new optionsWindow(m_profile, parentWidget());
+			//options->onglets->setCurrentIndex(3);
+			options->setWindowModality(Qt::ApplicationModal);
+			options->show();
+			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
+		}
+		return;
+	}
+
+	auto downloader = new ImageDownloader(m_image, fn, pth, 1, true, true, this);
+	connect(downloader, &ImageDownloader::saved, this, &ZoomWindow::saveImageNowSaved);
+	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+	downloader->save();
+}
+void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result)
+{
+	Q_UNUSED(img);
+
+	const bool fav = m_pendingAction == PendingSaveFav;
+
+	for (auto it = result.begin(); it != result.end(); ++it)
 	{
 		const Image::SaveResult res = it.value();
 		m_source = it.key();
@@ -915,6 +919,7 @@ void ZoomWindow::saveImageNow(bool fav, bool saveAs)
 	if (m_pendingClose)
 		close();
 
+	m_pendingAction = PendingNothing;
 	m_pendingClose = false;
 }
 
@@ -1248,6 +1253,7 @@ void ZoomWindow::openFile(bool now)
 	}
 
 	QDesktopServices::openUrl(QUrl::fromLocalFile(m_imagePath));
+	m_pendingAction = PendingNothing;
 }
 
 void ZoomWindow::mouseReleaseEvent(QMouseEvent *e)
