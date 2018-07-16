@@ -31,7 +31,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
-	m_mustSave = 0;
+	m_pendingAction = PendingNothing;
+	m_pendingClose = false;
 
 	restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
 	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool());
@@ -655,7 +656,7 @@ void ZoomWindow::showLoadingError(const QString &message)
 void ZoomWindow::pendingUpdate()
 {
 	// If we don't want to save, nothing to do
-	if (m_mustSave == 0)
+	if (m_pendingAction == PendingNothing)
 		return;
 
 	// If the image is not even loaded, we cannot save it (unless it's a big file)
@@ -663,37 +664,35 @@ void ZoomWindow::pendingUpdate()
 		return;
 
 	// If the image is loaded but we need their tags and we don't have them, we wait
-	if (m_mustSave != 6)
+	if (m_pendingAction != PendingSaveAs)
 	{
-		const bool fav = (m_mustSave == 3 || m_mustSave == 4);
+		const bool fav = m_pendingAction == PendingSaveFav;
 		Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
 
 		if (!m_loadedDetails && fn.needExactTags(m_site))
 			return;
 	}
 
-	switch (m_mustSave)
+	switch (m_pendingAction)
 	{
-		case 1: // Save
-		case 2: // Save and quit
+		case PendingSave:
 			saveImageNow();
 			break;
 
-		case 3: // Save (fav)
-		case 4: // Save and quit (fav)
+		case PendingSaveFav:
 			saveImageNow(true);
 			break;
 
-		case 5: // Open image in viewer
+		case PendingOpen:
 			openFile(true);
 			break;
 
-		case 6: // Save as
+		case PendingSaveAs:
 			saveImageNow(false, true);
 			break;
 	}
 
-	m_mustSave = 0;
+	m_pendingAction = PendingNothing;
 }
 
 void ZoomWindow::draw()
@@ -792,7 +791,8 @@ void ZoomWindow::saveNQuit()
 	}
 
 	setButtonState(false, SaveButtonState::Saving);
-	m_mustSave = 2;
+	m_pendingAction = PendingSave;
+	m_pendingClose = true;
 	pendingUpdate();
 }
 void ZoomWindow::saveNQuitFav()
@@ -804,7 +804,8 @@ void ZoomWindow::saveNQuitFav()
 	}
 
 	setButtonState(true, SaveButtonState::Saving);
-	m_mustSave = 4;
+	m_pendingAction = PendingSaveFav;
+	m_pendingClose = true;
 	pendingUpdate();
 }
 
@@ -815,7 +816,7 @@ void ZoomWindow::saveImage(bool fav)
 	{
 		case SaveButtonState::Save:
 			setButtonState(fav, SaveButtonState::Saving);
-			m_mustSave = fav ? 3 : 1;
+			m_pendingAction = fav ? PendingSaveFav : PendingSave;
 			pendingUpdate();
 			break;
 
@@ -911,10 +912,10 @@ void ZoomWindow::saveImageNow(bool fav, bool saveAs)
 		}
 	}
 
-	if (m_mustSave == 2 || m_mustSave == 4)
+	if (m_pendingClose)
 		close();
 
-	m_mustSave = 0;
+	m_pendingClose = false;
 }
 
 void ZoomWindow::saveImageAs()
@@ -931,7 +932,7 @@ void ZoomWindow::saveImageAs()
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
 
 		m_saveAsPending = path;
-		m_mustSave = 6;
+		m_pendingAction = PendingSaveAs;
 		pendingUpdate();
 	}
 }
@@ -1241,7 +1242,7 @@ void ZoomWindow::openFile(bool now)
 {
 	if (!now)
 	{
-		m_mustSave = 5;
+		m_pendingAction = PendingOpen;
 		pendingUpdate();
 		return;
 	}

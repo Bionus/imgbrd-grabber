@@ -39,6 +39,14 @@ class ZoomWindow : public QWidget
 			ExistsDisk,
 			Delete
 		};
+		enum PendingAction
+		{
+			PendingNothing,
+			PendingSave,
+			PendingSaveFav,
+			PendingSaveAs,
+			PendingOpen,
+		};
 
 		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
@@ -127,7 +135,9 @@ class ZoomWindow : public QWidget
 		QSharedPointer<Image> m_image;
 		QMap<QString, QString> regex, m_details;
 		Site *m_site;
-		int m_timeout, m_mustSave;
+		int m_timeout;
+		PendingAction m_pendingAction;
+		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QString id;
 		QUrl m_url, m_saveUrl;
