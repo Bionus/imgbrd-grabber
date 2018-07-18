@@ -28,7 +28,7 @@ class SourcesSettingsWindow : public QDialog
 		void addHeader();
 		void save();
 		void testLogin();
-		void loginTested(Site*, Site::LoginResult);
+		void loginTested(Site *site, Site::LoginResult result);
 
 	signals:
 		void siteDeleted(const QString &);

@@ -441,11 +441,11 @@ int Image::value() const
 	// Get from tags
 	if (hasTag("incredibly_absurdres"))
 		return 10000 * 10000;
-	else if (hasTag("absurdres"))
+	if (hasTag("absurdres"))
 		return 3200 * 2400;
-	else if (hasTag("highres"))
+	if (hasTag("highres"))
 		return 1600 * 1200;
-	else if (hasTag("lowres"))
+	if (hasTag("lowres"))
 		return 500 * 500;
 
 	return 1200 * 900;
@@ -937,7 +937,7 @@ QUrl Image::url(Size size) const
 
 void Image::preload(const Filename &filename)
 {
-	if (!filename.needExactTags(m_parentSite))
+	if (filename.needExactTags(m_parentSite) == 0)
 		return;
 
 	QEventLoop loop;

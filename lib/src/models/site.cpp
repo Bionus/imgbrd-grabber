@@ -238,9 +238,9 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		{ refHeader = url.scheme() + "://" + url.host(); }
 		else if (referer == "image")
 		{ refHeader = fixUrl(url).toString(); }
-		else if (referer == "page" && page)
+		else if (referer == "page" && page != nullptr)
 		{ refHeader = fixUrl(page->url()).toString(); }
-		else if (referer == "details" && img)
+		else if (referer == "details" && img != nullptr)
 		{ refHeader = fixUrl(img->pageUrl()).toString(); }
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}

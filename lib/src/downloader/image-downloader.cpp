@@ -33,7 +33,7 @@ bool ImageDownloader::isRunning() const
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
-	if (!m_loadTags || !m_paths.isEmpty() || !Filename(m_filename).needExactTags(m_image->parentSite()))
+	if (!m_loadTags || !m_paths.isEmpty() || Filename(m_filename).needExactTags(m_image->parentSite()) == 0)
 	{
 		loadedSave();
 		return;

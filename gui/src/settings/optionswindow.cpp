@@ -87,7 +87,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
 	int i = settings->value("Sources/Letters", 3).toInt();
-	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
+	ui->comboSourcesLetters->setCurrentIndex((i < 0 ? 1 : 0) + (i < -1 ? 1 : 0));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
 	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
@@ -643,7 +643,7 @@ void optionsWindow::moveDownWebService(int id)
 	swapWebServices(i, i + 1);
 }
 
-int sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
+bool sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
 { return a.order() < b.order(); }
 void optionsWindow::swapWebServices(int a, int b)
 {
@@ -787,8 +787,10 @@ void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current,
 	}
 }
 
-void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
+void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
+	Q_UNUSED(previous);
+
 	bool found = false;
 	int index = 0;
 

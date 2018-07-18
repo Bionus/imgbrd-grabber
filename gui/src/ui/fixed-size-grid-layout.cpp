@@ -64,20 +64,16 @@ QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 
 int FixedSizeGridLayout::horizontalSpacing() const
 {
-	if (m_hSpace >= 0) {
-		return m_hSpace;
-	} else {
-		return smartSpacing(QStyle::PM_LayoutHorizontalSpacing);
-	}
+	return m_hSpace >= 0
+		? m_hSpace
+		: smartSpacing(QStyle::PM_LayoutHorizontalSpacing);
 }
 
 int FixedSizeGridLayout::verticalSpacing() const
 {
-	if (m_vSpace >= 0) {
-		return m_vSpace;
-	} else {
-		return smartSpacing(QStyle::PM_LayoutVerticalSpacing);
-	}
+	return m_vSpace >= 0
+		? m_vSpace
+		: smartSpacing(QStyle::PM_LayoutVerticalSpacing);
 }
 
 Qt::Orientations FixedSizeGridLayout::expandingDirections() const
@@ -157,7 +153,7 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 {
 	QObject *parent = this->parent();
-	if (!parent)
+	if (parent == nullptr)
 		return -1;
 
 	if (parent->isWidgetType())

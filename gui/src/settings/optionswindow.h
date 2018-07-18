@@ -26,7 +26,7 @@ class optionsWindow : public QDialog
 		void setFont(QLineEdit *lineEdit);
 
 	public slots:
-		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
+		void updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();

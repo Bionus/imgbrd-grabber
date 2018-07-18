@@ -56,7 +56,7 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
+		void replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result);
 		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
@@ -71,7 +71,7 @@ class ZoomWindow : public QWidget
 		void openSaveDir(bool fav = false);
 		void openSaveDirFav();
 		void linkHovered(const QString &);
-		void contextMenu(QPoint);
+		void contextMenu(const QPoint &pos);
 		void openInNewTab();
 		void setfavorite();
 		void downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal);

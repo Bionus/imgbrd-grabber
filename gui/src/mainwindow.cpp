@@ -16,7 +16,7 @@
 #endif
 #if defined(Q_OS_WIN)
 	#include <cfloat>
-	#include "windows.h"
+	#include "Windows.h"
 #endif
 #include <qmath.h>
 #include <ui_mainwindow.h>
@@ -171,14 +171,12 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		this->deleteLater();
 		return;
 	}
-	else
-	{
-		QString srsc;
-		QStringList keys = sites.keys();
-		for (const QString &key : keys)
-		{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
-		log(QStringLiteral("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
-	}
+
+	QString srsc;
+	QStringList keys = sites.keys();
+	for (const QString &key : keys)
+	{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
+	log(QStringLiteral("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
 
 	// System tray icon
 	if (m_settings->value("Monitoring/enableTray", false).toBool())
@@ -467,7 +465,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 	if (title.isEmpty())
 	{ title = "New tab"; }
 
-	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty()) : m_tabs.count();
+	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty() ? 1 : 0) : m_tabs.count();
 	int index = ui->tabWidget->insertTab(pos, w, title);
 	m_tabs.append(w);
 
@@ -486,7 +484,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 bool mainWindow::saveTabs(const QString &filename)
 {
-	return TabsLoader::save(filename, m_tabs, reinterpret_cast<searchTab*>(m_currentTab));
+	return TabsLoader::save(filename, m_tabs, qobject_cast<searchTab*>(m_currentTab));
 }
 bool mainWindow::loadTabs(const QString &filename)
 {
@@ -1184,7 +1182,7 @@ void mainWindow::getAll(bool all)
 		error(this, tr("You did not specify a save folder!"));
 		return;
 	}
-	else if (m_settings->value("Save/filename").toString().isEmpty())
+	if (m_settings->value("Save/filename").toString().isEmpty())
 	{
 		error(this, tr("You did not specify a filename!"));
 		return;
@@ -1537,7 +1535,7 @@ void mainWindow::getAllImages()
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO(Bionus): having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
 	m_mustGetTags = needExactTags(m_settings);
-	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
+	for (int f = 0; f < m_groupBatchs.size() && m_mustGetTags == 0; f++)
 	{
 		Filename fn(m_groupBatchs[f].filename);
 		Site *site = m_groupBatchs[f].site;
@@ -1547,7 +1545,7 @@ void mainWindow::getAllImages()
 		if (need != 0)
 			m_mustGetTags = need;
 	}
-	for (int f = 0; f < m_batchs.size() && !m_mustGetTags; f++)
+	for (int f = 0; f < m_batchs.size() && m_mustGetTags == 0; f++)
 	{
 		Filename fn(m_batchs[f].filename);
 		Site *site = m_batchs[f].site;
@@ -1558,7 +1556,7 @@ void mainWindow::getAllImages()
 			m_mustGetTags = need;
 	}
 
-	if (m_mustGetTags)
+	if (m_mustGetTags != 0)
 		log(QStringLiteral("Downloading images details."), Logger::Info);
 	else
 		log(QStringLiteral("Downloading images directly."), Logger::Info);

@@ -219,7 +219,7 @@ QStringList searchTab::reasonsToFail(Page* page, const QStringList &completion, 
 		if (c > 0)
 		{
 			QStringList res = results.values(), cl = clean.values();
-			*meant = "<a href=\"" + cl.join(" ").toHtmlEscaped() + "\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>";
+			*meant = QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(cl.join(" ").toHtmlEscaped(), res.join(" "));
 		}
 	}
 
@@ -869,7 +869,7 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 	const QString path = settings->value("Save/path").toString().replace("\\", "/");
 	const QString fn = settings->value("Save/filename").toString();
 
-	if (!Filename(fn).needExactTags(img->parentSite()))
+	if (Filename(fn).needExactTags(img->parentSite()) == 0)
 	{
 		QStringList files = img->path(fn, path, 0, true, false, true, true, true);
 		for (const QString &file : files)
@@ -1162,7 +1162,7 @@ void searchTab::webZoom(int id)
 
 void searchTab::openImage(const QSharedPointer<Image> &image)
 {
-	if (m_settings->value("Zoom/singleWindow", false).toBool() && m_lastZoomWindow)
+	if (m_settings->value("Zoom/singleWindow", false).toBool() && !m_lastZoomWindow.isNull())
 	{
 		m_lastZoomWindow->reuse(m_images, image, image->page()->site());
 		m_lastZoomWindow->activateWindow();

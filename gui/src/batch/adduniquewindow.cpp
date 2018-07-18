@@ -12,7 +12,7 @@
 
 
 AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(nullptr), m_sites(profile->getSites()), m_close(nullptr), m_profile(profile)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(nullptr), m_sites(profile->getSites()), m_close(false), m_profile(profile)
 {
 	ui->setupUi(this);
 

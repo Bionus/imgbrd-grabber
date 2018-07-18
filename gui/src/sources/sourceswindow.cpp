@@ -14,24 +14,12 @@
 #include "ui/QBouton.h"
 
 
-sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent)
-	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(nullptr)
+sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent)
+	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(std::move(selected)), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(nullptr)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 	restoreGeometry(m_profile->getSettings()->value("Sources/geometry").toByteArray());
-
-	bool checkall = true;
-	for (int i = 0; i < selected.count(); i++)
-	{
-		if (!selected.at(i))
-		{
-			checkall = false;
-			break;
-		}
-	}
-	if (checkall)
-	{ ui->checkBox->setChecked(true); }
 
 	addCheckboxes();
 

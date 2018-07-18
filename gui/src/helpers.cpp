@@ -54,12 +54,12 @@ void clearLayout(QLayout *layout)
 	while (layout->count() > 0)
 	{
 		QLayoutItem *item = layout->takeAt(0);
-		if (item->layout())
+		if (item->layout() != nullptr)
 		{
 			clearLayout(item->layout());
 			item->layout()->deleteLater();
 		}
-		if (item->widget())
+		if (item->widget() != nullptr)
 		{ item->widget()->deleteLater(); }
 		delete item;
 	}

@@ -124,11 +124,11 @@ void TextEdit::setText(const QString &text)
 
 void TextEdit::setCompleter(QCompleter *completer)
 {
-	if (!completer)
+	if (completer == nullptr)
 		return;
 
 	// Disconnect the previous completer
-	if (c)
+	if (c != nullptr)
 		QObject::disconnect(c, nullptr, this, nullptr);
 
 	// Set the new completer and connect it to the field
@@ -169,7 +169,7 @@ QString TextEdit::textUnderCursor() const
 
 void TextEdit::focusInEvent(QFocusEvent *e)
 {
-	if (c)
+	if (c != nullptr)
 		c->setWidget(this);
 
 	QTextEdit::focusInEvent(e);
@@ -177,7 +177,7 @@ void TextEdit::focusInEvent(QFocusEvent *e)
 
 void TextEdit::keyPressEvent(QKeyEvent *e)
 {
-	if (c && c->popup()->isVisible())
+	if (c != nullptr && c->popup()->isVisible())
 	{
 		// The following keys are forwarded by the completer to the widget
 		QString curr = c->popup()->currentIndex().data().toString(), under = textUnderCursor();
@@ -204,7 +204,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 
 	const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
-	if (!c || !isShortcut) // do not process the shortcut when we have a completer
+	if (c == nullptr || !isShortcut) // do not process the shortcut when we have a completer
 	{
 		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
 		{
@@ -216,7 +216,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	doColor();
 
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-	if (!c || (ctrlOrShift && e->text().isEmpty()))
+	if (c == nullptr || (ctrlOrShift && e->text().isEmpty()))
 		return;
 
 	static QString eow(" ");
@@ -237,8 +237,10 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	c->complete(cr);
 }
 
-void TextEdit::customContextMenuRequested(QPoint)
+void TextEdit::customContextMenuRequested(const QPoint &pos)
 {
+	Q_UNUSED(pos);
+
 	auto *menu = new QMenu(this);
 		auto *favs = new QMenu(tr("Favorites"), menu);
 			auto *favsGroup = new QActionGroup(favs);

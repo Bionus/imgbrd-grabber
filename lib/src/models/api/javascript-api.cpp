@@ -143,7 +143,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			ret.append(Tag(tag.toString()));
 			continue;
 		}
-		else if (!tag.isObject())
+		if (!tag.isObject())
 		{ continue; }
 
 		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;

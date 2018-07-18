@@ -330,8 +330,10 @@ void ZoomWindow::openSaveDirFav()
 
 void ZoomWindow::linkHovered(const QString &url)
 { m_link = url; }
-void ZoomWindow::contextMenu(QPoint)
+void ZoomWindow::contextMenu(const QPoint &pos)
 {
+	Q_UNUSED(pos);
+
 	if (m_link.isEmpty())
 		return;
 
@@ -609,7 +611,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	}
 }
 
-void ZoomWindow::replyFinishedZoom(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result)
+void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result)
 {
 	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
 	Image::SaveResult res = result.first();
@@ -669,7 +671,7 @@ void ZoomWindow::pendingUpdate()
 		const bool fav = m_pendingAction == PendingSaveFav;
 		Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
 
-		if (!m_loadedDetails && fn.needExactTags(m_site))
+		if (!m_loadedDetails && fn.needExactTags(m_site) != 0)
 			return;
 	}
 

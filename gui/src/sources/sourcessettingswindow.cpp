@@ -187,8 +187,10 @@ void SourcesSettingsWindow::testLogin()
 	m_site->login(true);
 }
 
-void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
+void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 {
+	Q_UNUSED(site);
+
 	switch (result)
 	{
 		case Site::LoginResult::Success:

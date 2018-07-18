@@ -41,16 +41,15 @@ void OAuth2Login::loginFinished()
 	QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
 	QJsonObject jsonObject = jsonDocument.object();
 
-	if (jsonObject.value("token_type").toString() == QLatin1String("bearer"))
+	if (jsonObject.value("token_type").toString() != QLatin1String("bearer"))
 	{
-		m_token = jsonObject.value("access_token").toString();
-		emit loggedIn(Result::Success);
+		log(QStringLiteral("[%1] Wrong OAuth2 token type received.").arg(m_site->url()));
+		emit loggedIn(Result::Failure);
 		return;
 	}
-	else
-	{ log(QStringLiteral("[%1] Wrong OAuth2 token type received.").arg(m_site->url())); }
 
-	emit loggedIn(Result::Failure);
+	m_token = jsonObject.value("access_token").toString();
+	emit loggedIn(Result::Success);
 }
 
 void OAuth2Login::complementRequest(QNetworkRequest *request) const

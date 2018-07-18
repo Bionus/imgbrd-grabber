@@ -14,7 +14,7 @@
 #include <QUrl>
 #include <QVector>
 #ifdef Q_OS_WIN
-	#include <windows.h>
+	#include <Windows.h>
 #else
 	#include <utime.h>
 #endif
@@ -330,26 +330,25 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		auto *filename = new wchar_t[path.length() + 1];
 		path.toWCharArray(filename);
 		filename[path.length()] = 0;
-		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
 			log(QStringLiteral("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
-		else
-		{
-			const LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
-			FILETIME pcreationtime;
-			pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
-			pcreationtime.dwHighDateTime = ll >> 32;
 
-			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
-			{
-				log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
-				return false;
-			}
+		const LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
+		FILETIME pcreationtime;
+		pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
+		pcreationtime.dwHighDateTime = ll >> 32;
+
+		if (!SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime))
+		{
+			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			return false;
 		}
+
 		CloseHandle(hfile);
 	#else
 		struct utimbuf timebuffer;
