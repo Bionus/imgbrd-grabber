@@ -59,7 +59,7 @@
 
 
 mainWindow::mainWindow(Profile *profile)
-	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
@@ -157,8 +157,6 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		else
 		{ log(QStringLiteral("Enabling system-wide proxy."), Logger::Info); }
 	}
-
-	m_progressDialog = nullptr;
 
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -320,7 +318,6 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	updateFavorites();
 	updateKeepForLater();
 
-	m_currentTab = nullptr;
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
 
