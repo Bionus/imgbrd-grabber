@@ -236,7 +236,7 @@ void searchTab::clear()
 	// Clear page details
 	m_tags.clear();
 	m_parent->setTags(m_tags, this);
-	m_parent->setWiki(QString());
+	m_parent->setWiki(QString(), this);
 
 	// Clear layout
 	for (int i = 0; i < ui_layoutResults->rowCount(); ++i)
@@ -472,7 +472,7 @@ void searchTab::finishedLoadingTags(Page *page)
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = page->wiki();
-		m_parent->setWiki(m_wiki);
+		m_parent->setWiki(m_wiki, this);
 	}
 
 	const int maxPage = page->pagesCount();

@@ -149,7 +149,7 @@ class mainWindow : public QMainWindow
 		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(const QString &path);
-		void setWiki(const QString &);
+		void setWiki(const QString &wiki, searchTab *from = nullptr);
 		void siteDeleted(Site *site);
 
 		// Drag & drop

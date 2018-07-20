@@ -2218,8 +2218,11 @@ bool mainWindow::loadLinkList(const QString &filename)
 	return true;
 }
 
-void mainWindow::setWiki(const QString &wiki)
+void mainWindow::setWiki(const QString &wiki, searchTab *from)
 {
+	if (from != nullptr && from != m_currentTab)
+		return;
+
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
 
