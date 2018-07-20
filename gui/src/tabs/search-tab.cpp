@@ -471,7 +471,7 @@ void searchTab::finishedLoadingTags(Page *page)
 	// Wiki
 	if (!page->wiki().isEmpty())
 	{
-		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
+		m_wiki = page->wiki();
 		m_parent->setWiki(m_wiki);
 	}
 
