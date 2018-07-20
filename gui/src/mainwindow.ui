@@ -495,7 +495,7 @@ QTextEdit {
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>36</height>
+          <height>33</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockInternetScrollLayout_1">
@@ -583,7 +583,7 @@ QTextEdit {
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>35</height>
+          <height>33</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockKflScrollLayout_1">
@@ -704,7 +704,7 @@ QTextEdit {
           <x>0</x>
           <y>0</y>
           <width>203</width>
-          <height>44</height>
+          <height>36</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -804,7 +804,7 @@ QTextEdit {
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>36</height>
+          <height>34</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -821,6 +821,9 @@ QTextEdit {
            </property>
            <property name="wordWrap">
             <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextBrowserInteraction</set>
            </property>
           </widget>
          </item>
