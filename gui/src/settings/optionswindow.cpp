@@ -313,6 +313,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->widgetProxy->setEnabled(settings->value("use", false).toBool());
 		ui->lineProxyHostName->setText(settings->value("hostName").toString());
 		ui->spinProxyPort->setValue(settings->value("port").toInt());
+		ui->lineProxyUser->setText(settings->value("user").toString());
+		ui->lineProxyPassword->setText(settings->value("password").toString());
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
@@ -1120,6 +1122,8 @@ void optionsWindow::save()
 		settings->setValue("type", ptypes.at(ui->comboProxyType->currentIndex()));
 		settings->setValue("hostName", ui->lineProxyHostName->text());
 		settings->setValue("port", ui->spinProxyPort->value());
+		settings->setValue("user", ui->lineProxyUser->text());
+		settings->setValue("password", ui->lineProxyPassword->text());
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
@@ -1147,8 +1151,16 @@ void optionsWindow::save()
 
 		if (!useSystem)
 		{
-			const QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-			const QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
+			const QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http"
+				? QNetworkProxy::HttpProxy
+				: QNetworkProxy::Socks5Proxy;
+			const QNetworkProxy proxy(
+				type,
+				settings->value("Proxy/hostName").toString(),
+				settings->value("Proxy/port").toInt(),
+				settings->value("Proxy/user").toString(),
+				settings->value("Proxy/password").toString()
+			);
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 		}

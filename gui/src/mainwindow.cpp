@@ -149,8 +149,16 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 		if (!useSystem)
 		{
-			QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-			QNetworkProxy proxy(type, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
+			const QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http"
+				? QNetworkProxy::HttpProxy
+				: QNetworkProxy::Socks5Proxy;
+			const QNetworkProxy proxy(
+				type,
+				m_settings->value("Proxy/hostName").toString(),
+				m_settings->value("Proxy/port").toInt(),
+				m_settings->value("Proxy/user").toString(),
+				m_settings->value("Proxy/password").toString()
+			);
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()), Logger::Info);
 		}
