@@ -18,7 +18,6 @@ class DownloadQueryGroup : public DownloadQuery
 		explicit DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk = QString());
 
 		// Serialization
-		QString toString(const QString &separator) const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
 

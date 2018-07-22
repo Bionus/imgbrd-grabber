@@ -17,7 +17,6 @@ class DownloadQuery
 		explicit DownloadQuery(Site *site, QString filename, QString path);
 
 		// Serialization
-		virtual QString toString(const QString &separator) const = 0;
 		virtual void write(QJsonObject &json) const = 0;
 		virtual bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) = 0;
 

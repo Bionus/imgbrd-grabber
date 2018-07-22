@@ -54,19 +54,6 @@ void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const Q
 }
 
 
-QString DownloadQueryImage::toString(const QString &separator) const
-{
-	return values["id"] + separator +
-			values["md5"] + separator +
-			values["rating"] + separator +
-			values["tags"] + separator +
-			values["file_url"] + separator +
-			values["date"] + separator +
-			site->url() + separator +
-			filename + separator +
-			path;
-}
-
 void DownloadQueryImage::write(QJsonObject &json) const
 {
 	json["id"] = values["id"].toInt();
