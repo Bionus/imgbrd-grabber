@@ -52,6 +52,7 @@ class Image : public QObject, public Downloadable
 		void		setPreviewImage(const QPixmap &preview);
 		Page		*page() const;
 		const QByteArray &data() const;
+		const QStringList &search() const;
 		Site		*parentSite() const;
 		ExtensionRotator *extensionRotator() const;
 		bool		hasTag(QString tag) const;

@@ -663,6 +663,7 @@ QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
+const QStringList&Image::search() const		{ return m_search;			}
 bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 

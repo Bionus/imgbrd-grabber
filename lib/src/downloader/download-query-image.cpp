@@ -20,10 +20,10 @@ DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, const QStri
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path)
+DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path, const QStringList &search)
 	: DownloadQuery(site, filename, path)
 {
-	initFromData(id, md5, rating, tags, fileUrl, date);
+	initFromData(id, md5, rating, tags, fileUrl, date, search);
 }
 
 void DownloadQueryImage::initFromImage(const Image &img)
@@ -35,10 +35,10 @@ void DownloadQueryImage::initFromImage(const Image &img)
 	for (const Tag &tag : imgTags)
 		tags.append(tag.text());
 
-	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate));
+	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate), img.search());
 }
 
-void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
+void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, const QStringList &search)
 {
 	values["filename"] = filename;
 	values["path"] = path;
@@ -50,6 +50,7 @@ void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const Q
 	values["tags"] = tags;
 	values["date"] = date;
 	values["file_url"] = fileUrl;
+	values["search"] = search.join(' ');
 }
 
 
@@ -74,6 +75,7 @@ void DownloadQueryImage::write(QJsonObject &json) const
 	json["tags"] = QJsonArray::fromStringList(values["tags"].split(' ', QString::SkipEmptyParts));
 	json["file_url"] = values["file_url"];
 	json["date"] = values["date"];
+	json["search"] = values["search"];
 
 	json["site"] = site->url();
 	json["filename"] = QString(filename).replace("\n", "\\n");
@@ -94,6 +96,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site 
 	values["tags"] = tags.join(' ');
 	values["file_url"] = json["file_url"].toString();
 	values["date"] = json["date"].toString();
+	values["search"] = json["search"].toString();
 
 	filename = json["filename"].toString().replace("\\n", "\n");
 	path = json["path"].toString();

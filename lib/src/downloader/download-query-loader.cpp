@@ -41,7 +41,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 				if (!sites.contains(source))
 					continue;
 
-				uniques.append(DownloadQueryImage(infos[0].toULongLong(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8]));
+				uniques.append(DownloadQueryImage(infos[0].toULongLong(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8], QStringList()));
 			}
 			else
 			{

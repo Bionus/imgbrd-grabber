@@ -212,6 +212,11 @@
           </column>
           <column>
            <property name="text">
+            <string>Search</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
             <string>Site</string>
            </property>
           </column>

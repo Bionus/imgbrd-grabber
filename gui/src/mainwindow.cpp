@@ -680,9 +680,10 @@ void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 	addTableItem(ui->tableBatchUniques, row, 3, query.values["tags"]);
 	addTableItem(ui->tableBatchUniques, row, 4, query.values["file_url"]);
 	addTableItem(ui->tableBatchUniques, row, 5, query.values["date"]);
-	addTableItem(ui->tableBatchUniques, row, 6, query.site->name());
-	addTableItem(ui->tableBatchUniques, row, 7, query.filename);
-	addTableItem(ui->tableBatchUniques, row, 8, query.path);
+	addTableItem(ui->tableBatchUniques, row, 6, query.values["search"]);
+	addTableItem(ui->tableBatchUniques, row, 7, query.site->name());
+	addTableItem(ui->tableBatchUniques, row, 8, query.filename);
+	addTableItem(ui->tableBatchUniques, row, 9, query.path);
 
 	if (save)
 	{ saveLinkList(m_profile->getPath() + "/restore.igl"); }
@@ -1231,7 +1232,7 @@ void mainWindow::getAll(bool all)
 			tdl.append(row);
 
 			DownloadQueryImage batch = m_batchs[row];
-			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values.value("tags").split(" "), 1, 1, QStringList(), false, this);
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(" "), 1, 1, QStringList(), false, this);
 
 			BatchDownloadImage d;
 			d.image = QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page));
@@ -1254,7 +1255,7 @@ void mainWindow::getAll(bool all)
 			dta.insert("filename", batch.filename);
 			dta.insert("folder", batch.path);
 
-			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(" "), 1, 1, QStringList(), false, this);
 
 			BatchDownloadImage d;
 			d.image = QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page));
