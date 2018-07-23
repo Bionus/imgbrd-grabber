@@ -265,7 +265,7 @@ void batchWindow::statusImage(const QUrl &url, int percent)
 {
 	const int i = indexOf(url);
 	if (i != -1)
-		ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
+		ui->tableWidget->item(i, 5)->setText(QString::number(percent) + " %");
 }
 void batchWindow::speedImage(const QUrl &url, double speed)
 {
@@ -274,7 +274,7 @@ void batchWindow::speedImage(const QUrl &url, double speed)
 
 	int i = indexOf(url);
 	if (i != -1)
-		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0) + " " + unit);
 
 	drawSpeed();
 }
@@ -285,7 +285,7 @@ void batchWindow::sizeImage(const QUrl &url, double size)
 	{
 		const QString unit = getUnit(&size);
 		const QString label = size > 0
-			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " "+unit
+			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " " + unit
 			: QString();
 		ui->tableWidget->item(i, 3)->setText(label);
 	}
@@ -355,7 +355,7 @@ void batchWindow::drawSpeed()
 	{
 		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
 		{ speedMean += m_mean[i]; }
-		speedMean = static_cast<int>(speedMean/count);
+		speedMean = static_cast<int>(speedMean / count);
 	}
 	const QString unitMean = getUnit(&speedMean) + "/s";
 
@@ -367,7 +367,7 @@ void batchWindow::drawSpeed()
 	const QString fElapsed = elapsed > 3600000 ? tr("h 'h' m 'm' s 's'") : (elapsed > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 	const QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 
-	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0) + " " + unit);
 	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 

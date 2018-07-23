@@ -306,8 +306,10 @@ int levenshtein(QString s1, QString s2)
 	QVector<QVector<int>> d(len1 + 1, QVector<int>(len2 + 1));
 
 	d[0][0] = 0;
-	for (int i = 1; i <= len1; ++i) d[i][0] = i;
-	for (int i = 1; i <= len2; ++i) d[0][i] = i;
+	for (int i = 1; i <= len1; ++i)
+		d[i][0] = i;
+	for (int i = 1; i <= len2; ++i)
+		d[0][i] = i;
 
 	for (int i = 1; i <= len1; ++i)
 	{
@@ -381,7 +383,7 @@ QMap<QString, QString> domToMap(const QDomElement &dom)
 			QMap<QString, QString> r = domToMap(n.toElement());
 			QStringList k = r.keys();
 			for (int i = 0; i < r.count(); i++)
-			{ details[n.nodeName()+"/"+k.at(i)] = r.value(k.at(i)); }
+			{ details[n.nodeName() + "/" + k.at(i)] = r.value(k.at(i)); }
 		}
 	}
 	return details;

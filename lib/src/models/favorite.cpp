@@ -42,8 +42,8 @@ bool Favorite::setImage(const QPixmap &img)
 
 	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
-			.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-			.save(m_imagePath, "PNG");
+		.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+		.save(m_imagePath, "PNG");
 }
 QPixmap Favorite::getImage() const
 {
@@ -118,7 +118,7 @@ bool Favorite::sortByLastViewed(const Favorite &s1, const Favorite &s2)
 { return s1.getLastViewed() < s2.getLastViewed(); }
 
 
-bool operator==(const Favorite& lhs, const Favorite& rhs)
+bool operator==(const Favorite &lhs, const Favorite &rhs)
 { return lhs.getName().toLower() == rhs.getName().toLower(); }
-bool operator!=(const Favorite& lhs, const Favorite& rhs)
+bool operator!=(const Favorite &lhs, const Favorite &rhs)
 { return !(lhs == rhs); }

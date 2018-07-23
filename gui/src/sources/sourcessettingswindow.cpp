@@ -164,13 +164,13 @@ void SourcesSettingsWindow::deleteSite()
 	{
 		QFile f(m_site->getSource()->getPath() + "/sites.txt");
 		f.open(QIODevice::ReadOnly);
-			QString sites = f.readAll();
+		QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 		QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
 		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
-			f.write(stes.join("\r\n").toLatin1());
+		f.write(stes.join("\r\n").toLatin1());
 		f.close();
 		close();
 		emit siteDeleted(m_site->url());

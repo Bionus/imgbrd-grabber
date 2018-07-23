@@ -21,7 +21,8 @@ TagApi::~TagApi()
 
 void TagApi::load(bool rateLimit)
 {
-	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply * reply)
+	{
 		log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
 		if (m_reply != nullptr)

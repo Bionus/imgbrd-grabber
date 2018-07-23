@@ -155,21 +155,21 @@ int main(int argc, char *argv[])
 	if (!gui)
 	{
 		Downloader *dwnldr = new Downloader(profile,
-											parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-											parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
-											profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
-											parser.value(pageOption).toInt(),
-											parser.value(limitOption).toInt(),
-											parser.value(perpageOption).toInt(),
-											parser.value(pathOption),
-											parser.value(filenameOption),
-											parser.value(userOption),
-											parser.value(passwordOption),
-											parser.isSet(blacklistOption),
-											profile->getBlacklist(),
-											parser.isSet(noDuplicatesOption),
-											parser.value(tagsMinOption).toInt(),
-											parser.value(tagsFormatOption));
+			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
+			parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
+			profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+			parser.value(pageOption).toInt(),
+			parser.value(limitOption).toInt(),
+			parser.value(perpageOption).toInt(),
+			parser.value(pathOption),
+			parser.value(filenameOption),
+			parser.value(userOption),
+			parser.value(passwordOption),
+			parser.isSet(blacklistOption),
+			profile->getBlacklist(),
+			parser.isSet(noDuplicatesOption),
+			parser.value(tagsMinOption).toInt(),
+			parser.value(tagsFormatOption));
 
 		if (parser.isSet(returnCountOption))
 			dwnldr->getPageCount();

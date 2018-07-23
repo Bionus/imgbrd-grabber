@@ -201,7 +201,7 @@ void Downloader::loadNext()
 		if (m_lastPage != nullptr)
 		{ page->setLastPage(m_lastPage); }
 		m_lastPage = page;
-		log("Loading count '"+page->url().toString()+"'");
+		log("Loading count '" + page->url().toString() + "'");
 		page->loadTags();
 		return;
 	}
@@ -212,7 +212,7 @@ void Downloader::loadNext()
 		if (m_lastPage != nullptr)
 		{ page->setLastPage(m_lastPage); }
 		m_lastPage = page;
-		log("Loading tags '"+page->url().toString()+"'");
+		log("Loading tags '" + page->url().toString() + "'");
 		page->loadTags();
 		return;
 	}
@@ -223,7 +223,7 @@ void Downloader::loadNext()
 		if (m_lastPage != nullptr)
 		{ page->setLastPage(m_lastPage); }
 		m_lastPage = page;
-		log("Loading images '"+page->url().toString()+"'");
+		log("Loading images '" + page->url().toString() + "'");
 		page->load();
 		return;
 	}

@@ -12,7 +12,7 @@ QString TokenFilter::toString() const
 	return QString(m_invert ? "-" : "") % "%" % m_token % "%";
 }
 
-bool TokenFilter::compare(const Filter& rhs) const
+bool TokenFilter::compare(const Filter &rhs) const
 {
 	const auto other = dynamic_cast<const TokenFilter*>(&rhs);
 	if (other == nullptr)

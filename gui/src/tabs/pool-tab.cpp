@@ -85,7 +85,7 @@ void poolTab::load()
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
-	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
+	tags.prepend("pool:" + QString::number(ui->spinPool->value()));
 
 	loadTags(tags);
 }
@@ -143,7 +143,7 @@ void poolTab::getPage()
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
-	const QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
+	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
@@ -161,7 +161,7 @@ void poolTab::getAll()
 	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
-	const QString search = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
+	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 

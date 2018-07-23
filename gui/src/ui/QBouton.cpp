@@ -58,8 +58,8 @@ void QBouton::paintEvent(QPaintEvent *event)
 	const int p = m_border;
 	int x = region.x();
 	int y = region.y();
-	int w = iconSize.width() + 2*p;
-	int h = iconSize.height() + 2*p;
+	int w = iconSize.width() + 2 * p;
+	int h = iconSize.height() + 2 * p;
 
 	// Ignore invalid images
 	if (w == 0 || h == 0)
@@ -76,13 +76,13 @@ void QBouton::paintEvent(QPaintEvent *event)
 	const QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
 	if (w > h)
 	{
-		icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop, mode);
-		h = h-((h*2*p)/w)+2*p-1;
+		icon().paint(&painter, x + p, y + p, w - 2 * p, w - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
+		h = h - ((h * 2 * p) / w) + 2 * p - 1;
 	}
 	else
 	{
-		icon().paint(&painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop, mode);
-		w = w-((w*2*p)/h)+2*p-1;
+		icon().paint(&painter, x + p, y + p, h - 2 * p, h - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
+		w = w - ((w * 2 * p) / h) + 2 * p - 1;
 	}
 
 	// Clip borders overflows
@@ -92,7 +92,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	if (m_progressMax > 0 && m_progress > 0 && m_progress != m_progressMax)
 	{
 		const int lineHeight = 6;
-		const int a = p + lineHeight/2;
+		const int a = p + lineHeight / 2;
 
 		const qreal ratio = static_cast<qreal>(m_progress) / m_progressMax;
 		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
@@ -111,7 +111,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	if (p > 0 && m_penColor.isValid())
 	{
 		QPen pen(m_penColor);
-		pen.setWidth(p*2);
+		pen.setWidth(p * 2);
 		painter.setPen(pen);
 		painter.drawRect(qMax(x, 0), qMax(y, 0), qMin(w, size().width()), qMin(h, size().height()));
 	}

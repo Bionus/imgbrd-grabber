@@ -527,7 +527,8 @@ void mainWindow::tabClosed(searchTab *tab)
 	QJsonObject obj;
 	tab->write(obj);
 	m_closedTabs.append(obj);
-	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX) {
+	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX)
+	{
 		m_closedTabs.removeFirst();
 	}
 	ui->actionRestoreLastClosedTab->setEnabled(true);
@@ -692,7 +693,7 @@ void mainWindow::saveFolder()
 {
 	QString path = m_settings->value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
-	{ path = path.left(path.length()-1); }
+	{ path = path.left(path.length() - 1); }
 	QDir dir(path);
 	if (dir.exists())
 	{ showInGraphicalShell(path); }
@@ -820,7 +821,7 @@ void mainWindow::batchMove(int diff)
 		selection.select(index, index);
 	}
 
-	auto* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
+	auto *selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
@@ -887,7 +888,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 	}
 }
 
-Site* mainWindow::getSelectedSiteOrDefault()
+Site *mainWindow::getSelectedSiteOrDefault()
 {
 	if (m_selectedSites.isEmpty())
 		return m_profile->getSites().first();
@@ -1002,7 +1003,7 @@ void mainWindow::logClear()
 void mainWindow::logOpen()
 { QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
-void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
+void mainWindow::loadLanguage(const QString &rLanguage, bool quiet)
 {
 	if (m_currLang != rLanguage)
 	{
@@ -1010,8 +1011,8 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
 
-		m_translator.load(savePath("languages/"+m_currLang+".qm", true));
-		m_qtTranslator.load(savePath("languages/qt/"+m_currLang+".qm", true));
+		m_translator.load(savePath("languages/" + m_currLang + ".qm", true));
+		m_qtTranslator.load(savePath("languages/qt/" + m_currLang + ".qm", true));
 
 		if (!quiet)
 		{
@@ -1023,7 +1024,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
 }
 
 // Update interface language
-void mainWindow::changeEvent(QEvent* event)
+void mainWindow::changeEvent(QEvent *event)
 {
 	// Translation
 	if (event->type() == QEvent::LocaleChange)
@@ -1130,7 +1131,7 @@ void mainWindow::options()
 
 void mainWindow::optionsClosed()
 {
-	for (searchTab* tab : m_tabs)
+	for (searchTab *tab : m_tabs)
 	{
 		tab->optionsChanged();
 		tab->updateCheckboxes();
@@ -1381,22 +1382,22 @@ void mainWindow::getAllFinishedLogins()
 		for (int i = 0; i < packs; ++i)
 		{
 			Downloader *downloader = new Downloader(m_profile,
-													b.tags.split(' '),
-													b.postFiltering,
-													QList<Site*>() << b.site,
-													b.page + i * pagesPerPack,
-													(i == packs - 1 ? lastPageImages : imagesPerPack),
-													b.perpage,
-													b.path,
-													b.filename,
-													nullptr,
-													nullptr,
-													b.getBlacklisted,
-													m_profile->getBlacklist(),
-													false,
-													0,
-													"",
-													previous);
+				b.tags.split(' '),
+				b.postFiltering,
+				QList<Site *>() << b.site,
+				b.page + i * pagesPerPack,
+				(i == packs - 1 ? lastPageImages : imagesPerPack),
+				b.perpage,
+				b.path,
+				b.filename,
+				nullptr,
+				nullptr,
+				b.getBlacklisted,
+				m_profile->getBlacklist(),
+				false,
+				0,
+				"",
+				previous);
 			downloader->setData(j.key());
 			downloader->setQuit(false);
 
@@ -1757,7 +1758,7 @@ void mainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesRe
 	}
 
 	int percent = 0;
-	if (bytesTotal> 0)
+	if (bytesTotal > 0)
 	{
 		const qreal pct = static_cast<qreal>(bytesReceived) / static_cast<qreal>(bytesTotal);
 		percent = qFloor(pct * 100);
@@ -1818,7 +1819,7 @@ void mainWindow::getAllPerformTags()
 		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 		if (siteId >= 0)
 		{
-			m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value()+1);
+			m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value() + 1);
 			if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 		}
@@ -2193,7 +2194,7 @@ bool mainWindow::loadLinkList(const QString &filename)
 	{
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 		QString last = queryGroup.unk;
-		int max = last.rightRef(last.indexOf("/")+1).toInt(), val = last.leftRef(last.indexOf("/")).toInt();
+		int max = last.rightRef(last.indexOf("/") + 1).toInt(), val = last.leftRef(last.indexOf("/")).toInt();
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);
@@ -2208,7 +2209,7 @@ bool mainWindow::loadLinkList(const QString &filename)
 
 		queryGroup.unk = "true";
 		m_groupBatchs.append(queryGroup);
-		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/"+QString(val == max ? "ok" : (val > 0 ? "downloading" : "pending"))+".png"), "");
+		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/" + QString(val == max ? "ok" : (val > 0 ? "downloading" : "pending")) + ".png"), "");
 		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 		it->setTextAlignment(Qt::AlignCenter);
 		ui->tableBatchGroups->setItem(row, 0, it);
@@ -2256,7 +2257,7 @@ void mainWindow::siteDeleted(Site *site)
 	batchRemoveUniques(uniquesRows);
 }
 
-QIcon& mainWindow::getIcon(const QString &path)
+QIcon &mainWindow::getIcon(const QString &path)
 {
 	if (!m_icons.contains(path))
 		m_icons.insert(path, QIcon(path));
@@ -2426,7 +2427,7 @@ void mainWindow::trayClose()
 
 void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-	const QMimeData* mimeData = event->mimeData();
+	const QMimeData *mimeData = event->mimeData();
 
 	// Drop a text containing an URL
 	if (mimeData->hasText())
@@ -2456,9 +2457,9 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 	}
 }
 
-void mainWindow::dropEvent(QDropEvent* event)
+void mainWindow::dropEvent(QDropEvent *event)
 {
-	const QMimeData* mimeData = event->mimeData();
+	const QMimeData *mimeData = event->mimeData();
 
 	// Drop a text containing an URL
 	if (mimeData->hasText())

@@ -142,7 +142,7 @@ void favoritesTab::updateFavorites()
 
 		int maxNewImages = 0;
 		bool precise = true;
-		for (const Monitor& monitor : qAsConst(fav.getMonitors()))
+		for (const Monitor &monitor : qAsConst(fav.getMonitors()))
 		{
 			if (monitor.cumulated() > maxNewImages)
 			{
@@ -177,7 +177,7 @@ void favoritesTab::updateFavorites()
 			{ label += QStringLiteral(" <b style='color:red'>(%1%2)</b>").arg(maxNewImages).arg(!precise ? "+" : QString()); }
 		}
 		if (display.contains("d"))
-		{ label += "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")"; }
+		{ label += "<br/>(" + QString::number(fav.getNote()) + " % - " + fav.getLastViewed().toString(format) + ")"; }
 
 		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
 			caption->setText(label);
@@ -250,7 +250,7 @@ void favoritesTab::getPage()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		const auto &page = m_pages[actuals[i]].first();
-		const QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
+		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 

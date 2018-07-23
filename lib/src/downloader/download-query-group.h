@@ -31,8 +31,8 @@ class DownloadQueryGroup : public DownloadQuery
 		QString unk;
 };
 
-bool operator==(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
-bool operator!=(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
+bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);
+bool operator!=(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);
 
 Q_DECLARE_METATYPE(DownloadQueryGroup)
 

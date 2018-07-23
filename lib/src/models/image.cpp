@@ -92,7 +92,7 @@ Image::Image(const Image &other)
 	m_loadingDetails = other.m_loadingDetails;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
+Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
 {
 	m_settings = m_profile->getSettings();
@@ -662,8 +662,8 @@ QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
-const QByteArray&Image::data() const		{ return m_data;			}
-const QStringList&Image::search() const		{ return m_search;			}
+const QByteArray &Image::data() const		{ return m_data;			}
+const QStringList &Image::search() const	{ return m_search;			}
 bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
@@ -807,7 +807,8 @@ QList<QStrP> Image::detailsData() const
 	const QString yes = tr("yes");
 	const QString no = tr("no");
 
-	return {
+	return
+	{
 		QStrP(tr("Tags"), stylishedTags(m_profile).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
@@ -817,7 +818,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
-		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width())+"x"+QString::number(m_size.height()) : unknown),
+		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width()) + "x" + QString::number(m_size.height()) : unknown),
 		QStrP(tr("Filesize"), m_fileSize != 0 ? formatFilesize(m_fileSize) : unknown),
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),

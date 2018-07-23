@@ -9,8 +9,8 @@ class CrashHandlerPrivate;
 class CrashHandler
 {
 	public:
-		static CrashHandler* instance();
-		void Init(const QString&  reportPath);
+		static CrashHandler *instance();
+		void Init(const QString  &reportPath);
 		void setReportCrashesToSystem(bool report);
 		bool writeMinidump();
 
@@ -18,7 +18,7 @@ class CrashHandler
 		CrashHandler();
 		~CrashHandler();
 		Q_DISABLE_COPY(CrashHandler)
-		CrashHandlerPrivate* d;
+		CrashHandlerPrivate *d;
 };
 
 #endif // CRASHHANDLER_H

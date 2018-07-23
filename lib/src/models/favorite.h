@@ -51,7 +51,7 @@ class Favorite
 		QString		m_imagePath;
 };
 
-bool operator==(const Favorite& lhs, const Favorite& rhs);
-bool operator!=(const Favorite& lhs, const Favorite& rhs);
+bool operator==(const Favorite &lhs, const Favorite &rhs);
+bool operator!=(const Favorite &lhs, const Favorite &rhs);
 
 #endif // FAVORITE_H

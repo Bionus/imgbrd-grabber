@@ -32,7 +32,8 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 		}
 
 		// Use a lazy token for Grabber meta-tags as it can be expensive to calculate
-		tokens.insert("grabber", Token([profile, tokens]() {
+		tokens.insert("grabber", Token([profile, tokens]()
+		{
 			const QString pth = profile->getSettings()->value("Save/path").toString();
 			Filename filename(profile->getSettings()->value("Save/filename").toString());
 			QStringList paths = filename.path(tokens, profile, pth);

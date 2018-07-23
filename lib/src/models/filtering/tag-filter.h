@@ -12,7 +12,7 @@ class TagFilter : public Filter
 		explicit TagFilter(QString tag, bool invert = false);
 		QString match(const QMap<QString, Token> &tokens, bool invert = false) const override;
 		QString toString() const override;
-		bool compare(const Filter& rhs) const override;
+		bool compare(const Filter &rhs) const override;
 
 	private:
 		QString m_tag;

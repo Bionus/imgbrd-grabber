@@ -27,10 +27,10 @@ Commands::Commands(Profile *profile)
 	settings->endGroup();
 
 	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
-								settings->value("Exec/SQL/host").toString(),
-								settings->value("Exec/SQL/user").toString(),
-								settings->value("Exec/SQL/password").toString(),
-								settings->value("Exec/SQL/database").toString());
+		settings->value("Exec/SQL/host").toString(),
+		settings->value("Exec/SQL/user").toString(),
+		settings->value("Exec/SQL/password").toString(),
+		settings->value("Exec/SQL/database").toString());
 	m_sqlWorker->setObjectName("SqlThread");
 }
 

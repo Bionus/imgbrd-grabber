@@ -41,7 +41,7 @@ void VerticalScrollArea::updateWidgetSize()
 	}
 }
 
-void VerticalScrollArea::wheelEvent(QWheelEvent* e)
+void VerticalScrollArea::wheelEvent(QWheelEvent *e)
 {
 	QScrollBar *scrollBar = verticalScrollBar();
 

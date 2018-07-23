@@ -163,7 +163,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 	m_parent->setTags(m_tags, this);
 }
 
-QStringList searchTab::reasonsToFail(Page* page, const QStringList &completion, QString *meant)
+QStringList searchTab::reasonsToFail(Page *page, const QStringList &completion, QString *meant)
 {
 	QStringList reasons = QStringList();
 
@@ -203,7 +203,7 @@ QStringList searchTab::reasonsToFail(Page* page, const QStringList &completion, 
 				{
 					if (results[tag].isEmpty())
 					{ c++; }
-					results[tag] = "<b>"+comp+"</b>";
+					results[tag] = "<b>" + comp + "</b>";
 					clean[tag] = comp;
 					lev = d;
 				}
@@ -318,7 +318,7 @@ void searchTab::setEndlessLoadingMode(bool enabled)
 	m_endlessLoadingEnabled = enabled;
 }
 
-void searchTab::finishedLoading(Page* page)
+void searchTab::finishedLoading(Page *page)
 {
 	if (m_stop)
 		return;
@@ -753,7 +753,7 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 		for (const auto &ps : qAsConst(m_pages))
 		{
 			const auto &p = ps.last();
-			links += QString(!links.isEmpty() ? ", " : QString()) + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
+			links += QString(!links.isEmpty() ? ", " : QString()) + "<a href=\"" + p->url().toString().toHtmlEscaped() + "\">" + p->site()->name() + "</a>";
 		}
 	}
 
@@ -804,7 +804,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 			: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
 
 		const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - " + countLabel);
+		txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel);
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
@@ -823,7 +823,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	// Show warnings
 	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
 	{
-		txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>"));
+		txt->setText(txt->text() + "<br/>" + page->errors().join("<br/>"));
 	}
 }
 
@@ -858,7 +858,7 @@ QBouton *searchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	}
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-	connect(l, SIGNAL(toggled(int,bool,bool)), this, SLOT(toggleImage(int,bool,bool)));
+	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
 
 	return l;
 }
@@ -1126,8 +1126,8 @@ void searchTab::updateCheckboxes()
 		if (n < 0)
 		{
 			m = url.indexOf('.');
-			if (n < -1 && url.indexOf('.', m+1) != -1)
-			{ m = url.indexOf('.', m+1); }
+			if (n < -1 && url.indexOf('.', m + 1) != -1)
+			{ m = url.indexOf('.', m + 1); }
 		}
 
 		QCheckBox *c = new QCheckBox(url.left(m), this);
@@ -1171,7 +1171,7 @@ void searchTab::openImage(const QSharedPointer<Image> &image)
 
 	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent);
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-	connect(zoom, SIGNAL(poolClicked(int,QString)), m_parent, SLOT(addPoolTab(int,QString)));
+	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 	zoom->show();
 
 	m_lastZoomWindow = zoom;
@@ -1435,7 +1435,7 @@ bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 	QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
-		error = QStringLiteral("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
+		error = QStringLiteral("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\"" + detected.join(", ") + "\"");
 		return false;
 	}
 

@@ -14,9 +14,9 @@ QAffiche::QAffiche(const QVariant &id, int border, QColor color, QWidget *parent
 	setText(QString());
 }
 
-void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
+void QAffiche::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	if(e->button() == Qt::LeftButton)
+	if (e->button() == Qt::LeftButton)
 	{
 		emit doubleClicked();
 		emit doubleClicked(m_id.toInt());
@@ -24,7 +24,7 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
 	QLabel::mouseDoubleClickEvent(e);
 }
 
-void QAffiche::mousePressEvent(QMouseEvent* e)
+void QAffiche::mousePressEvent(QMouseEvent *e)
 {
 	m_lastPressed = e->button();
 	m_pressed = e->button() == Qt::LeftButton || e->button() == Qt::MidButton;
@@ -33,7 +33,7 @@ void QAffiche::mousePressEvent(QMouseEvent* e)
 	QLabel::mousePressEvent(e);
 }
 
-void QAffiche::mouseReleaseEvent(QMouseEvent* e)
+void QAffiche::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos()))
 	{
@@ -53,21 +53,21 @@ void QAffiche::mouseReleaseEvent(QMouseEvent* e)
 	QLabel::mouseReleaseEvent(e);
 }
 
-void QAffiche::enterEvent(QEvent* e)
+void QAffiche::enterEvent(QEvent *e)
 {
 	emit mouseOver();
 	emit mouseOver(m_id.toInt());
 	QLabel::enterEvent(e);
 }
 
-void QAffiche::leaveEvent(QEvent* e)
+void QAffiche::leaveEvent(QEvent *e)
 {
 	emit mouseOut();
 	emit mouseOut(m_id.toInt());
 	QLabel::leaveEvent(e);
 }
 
-void QAffiche::resizeEvent(QResizeEvent* e)
+void QAffiche::resizeEvent(QResizeEvent *e)
 {
 	QMovie *mov = movie();
 	if (mov != nullptr)

@@ -11,7 +11,8 @@
 
 #define UNICODE_MAX 0x10FFFFul
 
-static const char *const NAMED_ENTITIES[][2] = {
+static const char *const NAMED_ENTITIES[][2] =
+{
 	{ "AElig;", "Æ" },
 	{ "Aacute;", "Á" },
 	{ "Acirc;", "Â" },
@@ -286,20 +287,20 @@ static size_t putc_utf8(unsigned long cp, char *buffer)
 {
 	unsigned char *bytes = (unsigned char *)buffer;
 
-	if(cp <= 0x007Ful)
+	if (cp <= 0x007Ful)
 	{
 		bytes[0] = (unsigned char)cp;
 		return 1;
 	}
 
-	if(cp <= 0x07FFul)
+	if (cp <= 0x07FFul)
 	{
 		bytes[1] = (unsigned char)((2 << 6) | (cp & 0x3F));
 		bytes[0] = (unsigned char)((6 << 5) | (cp >> 6));
 		return 2;
 	}
 
-	if(cp <= 0xFFFFul)
+	if (cp <= 0xFFFFul)
 	{
 		bytes[2] = (unsigned char)(( 2 << 6) | ( cp       & 0x3F));
 		bytes[1] = (unsigned char)(( 2 << 6) | ((cp >> 6) & 0x3F));
@@ -307,7 +308,7 @@ static size_t putc_utf8(unsigned long cp, char *buffer)
 		return 3;
 	}
 
-	if(cp <= 0x10FFFFul)
+	if (cp <= 0x10FFFFul)
 	{
 		bytes[3] = (unsigned char)(( 2 << 6) | ( cp        & 0x3F));
 		bytes[2] = (unsigned char)(( 2 << 6) | ((cp >>  6) & 0x3F));
@@ -323,9 +324,10 @@ static bool parse_entity(
 	const char *current, char **to, const char **from)
 {
 	const char *end = strchr(current, ';');
-	if(!end) return 0;
+	if (!end)
+		return 0;
 
-	if(current[1] == '#')
+	if (current[1] == '#')
 	{
 		char *tail = NULL;
 		int errno_save = errno;
@@ -337,7 +339,8 @@ static bool parse_entity(
 
 		bool fail = errno || tail != end || cp > UNICODE_MAX;
 		errno = errno_save;
-		if(fail) return 0;
+		if (fail)
+			return 0;
 
 		*to += putc_utf8(cp, *to);
 		*from = end + 1;
@@ -347,7 +350,8 @@ static bool parse_entity(
 	else
 	{
 		const char *entity = get_named_entity(&current[1]);
-		if(!entity) return 0;
+		if (!entity)
+			return 0;
 
 		size_t len = strlen(entity);
 		memcpy(*to, entity, len);
@@ -361,17 +365,18 @@ static bool parse_entity(
 
 size_t decode_html_entities_utf8(char *dest, const char *src)
 {
-	if(!src) src = dest;
+	if (!src)
+		src = dest;
 
 	char *to = dest;
 	const char *from = src;
 
-	for(const char *current; (current = strchr(from, '&'));)
+	for (const char *current; (current = strchr(from, '&'));)
 	{
 		memmove(to, from, (size_t)(current - from));
 		to += current - from;
 
-		if(parse_entity(current, &to, &from))
+		if (parse_entity(current, &to, &from))
 			continue;
 
 		from = current;

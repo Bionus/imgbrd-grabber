@@ -3,7 +3,7 @@
 #include "threads/image-loader.h"
 
 
-ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject* parent)
+ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent)
 	: QObject(parent), m_next(QByteArray()), m_waiting(false), m_cancelNext(false), m_hasNext(false)
 {
 	connect(this, &ImageLoaderQueue::loadImage, imageLoader, &ImageLoader::load);

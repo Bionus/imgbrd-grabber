@@ -97,7 +97,8 @@ void PageApi::load(bool rateLimit, bool force)
 	m_maxImagesCount = -1;
 	m_pagesCount = -1;
 
-	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply * reply)
+	{
 		log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
 		connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
@@ -247,7 +248,7 @@ void PageApi::parseActual()
 			for (int t = 0; t < tags.count(); t++)
 			{
 				if (tagsGot.contains(tags[t].text()))
-				{ m_tags[tagsGot.indexOf(tags[t].text())].setCount(m_tags[tagsGot.indexOf(tags[t].text())].count()+1); }
+				{ m_tags[tagsGot.indexOf(tags[t].text())].setCount(m_tags[tagsGot.indexOf(tags[t].text())].count() + 1); }
 				else
 				{
 					m_tags.append(tags[t]);

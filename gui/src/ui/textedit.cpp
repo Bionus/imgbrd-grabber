@@ -55,7 +55,7 @@ void TextEdit::doColor()
 	const QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
 	const QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
 	for (const Favorite &fav : m_favorites)
-		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
+		txt.replace(" " + fav.getName() + " ", " <span style=\"" + styleFavorites + "\">" + fav.getName() + "</span> ");
 
 	// Color kept for later tags
 	QFont fontKeptForLater;
@@ -63,7 +63,7 @@ void TextEdit::doColor()
 	const QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
 	const QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
 	for (const QString &tag : m_viewItLater)
-		txt.replace(" "+tag+" ", " <span style=\""+styleKeptForLater+"\">"+tag+"</span> ");
+		txt.replace(" " + tag + " ", " <span style=\"" + styleKeptForLater + "\">" + tag + "</span> ");
 
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
@@ -144,7 +144,7 @@ QCompleter *TextEdit::completer() const
 	return c;
 }
 
-void TextEdit::insertCompletion(const QString& completion)
+void TextEdit::insertCompletion(const QString &completion)
 {
 	if (c->widget() != this)
 		return;
@@ -223,7 +223,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
-	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
 	{
 		c->popup()->hide();
 		return;

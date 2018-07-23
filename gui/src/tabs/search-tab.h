@@ -54,7 +54,7 @@ class searchTab : public QWidget
 
 	protected:
 		void setSelectedSources(QSettings *settings);
-		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page> > > &pages);
+		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>> &pages);
 		void addHistory(const QString &tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
@@ -108,14 +108,14 @@ class searchTab : public QWidget
 		void addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge = false);
 		void finishedLoadingPreview();
 		// Merged
-		QList<QSharedPointer<Image>> mergeResults(int page, const QList<QSharedPointer<Image> > &results);
+		QList<QSharedPointer<Image>> mergeResults(int page, const QList<QSharedPointer<Image>> &results);
 		void addMergedMd5(int page, const QString &md5);
 		bool containsMergedMd5(int page, const QString &md5);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
 		void httpsRedirect(Page *page);
-		void postLoading(Page *page, const QList<QSharedPointer<Image> > &imgs);
+		void postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
 		void selectImage(const QSharedPointer<Image> &img);

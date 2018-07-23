@@ -23,8 +23,8 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
-		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i+1));
-		id->setIcon(QIcon(":/images/colors/"+color+".png"));
+		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i + 1));
+		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
 		ui->tableWidget->setItem(i, 0, id);
 		QLabel *preview = new QLabel();
 		preview->setPixmap(QPixmap(m_details.at(i).value("path_full")).scaledToHeight(50, Qt::SmoothTransformation));
@@ -68,7 +68,7 @@ void BlacklistFix2::on_buttonOk_clicked()
 	int rem = 0;
 	for (int i : toDelete)
 	{
-		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt()-1).value("path_full"));
+		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt() - 1).value("path_full"));
 		ui->tableWidget->removeRow(i - rem);
 		rem++;
 	}

@@ -80,7 +80,7 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 
 
 template <typename T>
-QList<T> reversed(const QList<T> & in)
+QList<T> reversed(const QList<T> &in)
 {
 	QList<T> result;
 	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));

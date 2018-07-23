@@ -103,9 +103,9 @@ bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site 
 bool operator==(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs)
 {
 	return lhs.values == rhs.values
-			&& lhs.site == rhs.site
-			&& lhs.filename == rhs.filename
-			&& lhs.path == rhs.path;
+		&& lhs.site == rhs.site
+		&& lhs.filename == rhs.filename
+		&& lhs.path == rhs.path;
 }
 
 bool operator!=(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs)

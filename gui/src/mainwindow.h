@@ -61,8 +61,8 @@ class mainWindow : public QMainWindow
 		void renameExisting();
 		void utilTagLoader();
 		// Language
-		void loadLanguage(const QString&, bool quiet = false);
-		void changeEvent(QEvent*) override;
+		void loadLanguage(const QString &, bool quiet = false);
+		void changeEvent(QEvent *) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
@@ -80,13 +80,13 @@ class mainWindow : public QMainWindow
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
-		void batchAddGroup(const DownloadQueryGroup& values);
+		void batchAddGroup(const DownloadQueryGroup &values);
 		void updateGroupCount();
 		void batchAddUnique(const DownloadQueryImage &query, bool save = true);
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
-		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
+		void getAllFinishedImages(const QList<QSharedPointer<Image>> &images);
 		void getAllImages();
 		void getAllGetImage(const BatchDownloadImage &download, int siteId);
 		void getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result);
@@ -131,7 +131,7 @@ class mainWindow : public QMainWindow
 		void trayMessageClicked();
 		void trayClose();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void onFirstLoad();
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
@@ -148,19 +148,19 @@ class mainWindow : public QMainWindow
 		void setSource(const QString &site);
 		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
-		QIcon& getIcon(const QString &path);
+		QIcon &getIcon(const QString &path);
 		void setWiki(const QString &wiki, searchTab *from = nullptr);
 		void siteDeleted(Site *site);
 
 		// Drag & drop
 		void dragEnterEvent(QDragEnterEvent *event) override;
-		void dropEvent(QDropEvent* event) override;
+		void dropEvent(QDropEvent *event) override;
 
 	protected:
 		int getRowForSite(int siteId);
 		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
-		Site* getSelectedSiteOrDefault();
+		Site *getSelectedSiteOrDefault();
 		void initialLoginsDone();
 		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
 

@@ -263,7 +263,7 @@ void ZoomWindow::openPool(const QString &url)
 	{ emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->parentSite()->url()); }
 	else
 	{
-		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
+		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:" + url, 1, 1, QStringList(), false, this);
 		connect(p, &Page::finishedLoading, this, &ZoomWindow::openPoolId);
 		p->load();
 	}
@@ -301,7 +301,7 @@ void ZoomWindow::openSaveDir(bool fav)
 		const QString fn = m_settings->value("Save/filename" + QString(fav ? "_favorites" : "")).toString();
 
 		if (path.right(1) == "/")
-		{ path = path.left(path.length()-1); }
+		{ path = path.left(path.length() - 1); }
 		path = QDir::toNativeSeparators(path);
 
 		const QStringList files = m_image->path(fn, path);
@@ -850,10 +850,10 @@ void ZoomWindow::saveImageNow()
 	}
 
 	const bool fav = m_pendingAction == PendingSaveFav;
-	QString fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
-	QString pth = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
+	QString fn = m_settings->value("Save/filename" + QString(fav ? "_favorites" : "")).toString();
+	QString pth = m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
 	if (pth.right(1) == "/")
-	{ pth = pth.left(pth.length()-1); }
+	{ pth = pth.left(pth.length() - 1); }
 
 	if (pth.isEmpty() || fn.isEmpty())
 	{

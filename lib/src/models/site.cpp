@@ -66,9 +66,9 @@ void Site::loadConfig()
 	QSettings *pSettings = m_source->getProfile()->getSettings();
 	QStringList defaults;
 	defaults << pSettings->value("source_1").toString()
-			 << pSettings->value("source_2").toString()
-			 << pSettings->value("source_3").toString()
-			 << pSettings->value("source_4").toString();
+		<< pSettings->value("source_2").toString()
+		<< pSettings->value("source_3").toString()
+		<< pSettings->value("source_4").toString();
 	defaults.removeAll("");
 	if (defaults.isEmpty())
 	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
@@ -228,7 +228,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		url.setScheme("https");
 
 	QNetworkRequest request(url);
-	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : QString())).toString();
+	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString())).toString();
 	if (referer.isEmpty() && !ref.isEmpty())
 	{ referer = m_settings->value("referer", "none").toString(); }
 	if (referer != "none" && (referer != "page" || page != nullptr))
@@ -301,7 +301,7 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 void Site::loadTags(int page, int limit)
 {
 	const QString protocol = (m_settings->value("ssl", false).toBool() ? QStringLiteral("https") : QStringLiteral("http"));
-	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
+	m_tagsReply = get(QUrl(protocol + "://" + m_url + "/tags.json?search[hide_empty]=yes&limit=" + QString::number(limit) + "&page=" + QString::number(page)));
 	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
 }
 
@@ -320,9 +320,9 @@ void Site::finishedTags()
 			QJsonObject sc = sourc[id].toObject();
 			const int cat = sc.value("category").toInt();
 			tags.append(Tag(sc.value("name").toString(),
-							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
-							sc.value("post_count").toInt(),
-							sc.value("related_tags").toString().split(' ')));
+					cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
+					sc.value("post_count").toInt(),
+					sc.value("related_tags").toString().split(' ')));
 		}
 	}
 	emit finishedLoadingTags(tags);

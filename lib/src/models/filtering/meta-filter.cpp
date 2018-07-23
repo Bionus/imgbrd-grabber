@@ -74,34 +74,34 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		if (token.type() == QVariant::DateTime)
 		{
 			if (m_val.startsWith("..") || m_val.startsWith("<="))
-			{ cond = input <= toDate(m_val.right(m_val.size()-2)); }
+			{ cond = input <= toDate(m_val.right(m_val.size() - 2)); }
 			else if (m_val.endsWith(".."))
-			{ cond = input >= toDate(m_val.left(m_val.size()-2)); }
+			{ cond = input >= toDate(m_val.left(m_val.size() - 2)); }
 			else if (m_val.startsWith(">="))
-			{ cond = input >= toDate(m_val.right(m_val.size()-2)); }
+			{ cond = input >= toDate(m_val.right(m_val.size() - 2)); }
 			else if (m_val.startsWith("<"))
-			{ cond = input < toDate(m_val.right(m_val.size()-1)); }
+			{ cond = input < toDate(m_val.right(m_val.size() - 1)); }
 			else if (m_val.startsWith(">"))
-			{ cond = input > toDate(m_val.right(m_val.size()-1)); }
+			{ cond = input > toDate(m_val.right(m_val.size() - 1)); }
 			else if (m_val.contains(".."))
-			{ cond = input >= toDate(m_val.left(m_val.indexOf(".."))) && input <= toDate(m_val.right(m_val.size()-m_val.indexOf("..")-2));	}
+			{ cond = input >= toDate(m_val.left(m_val.indexOf(".."))) && input <= toDate(m_val.right(m_val.size() - m_val.indexOf("..") - 2));	}
 			else
 			{ cond = input == toDate(m_val); }
 		}
 		else
 		{
 			if (m_val.startsWith("..") || m_val.startsWith("<="))
-			{ cond = input <= m_val.rightRef(m_val.size()-2).toInt(); }
+			{ cond = input <= m_val.rightRef(m_val.size() - 2).toInt(); }
 			else if (m_val.endsWith(".."))
-			{ cond = input >= m_val.leftRef(m_val.size()-2).toInt(); }
+			{ cond = input >= m_val.leftRef(m_val.size() - 2).toInt(); }
 			else if (m_val.startsWith(">="))
-			{ cond = input >= m_val.rightRef(m_val.size()-2).toInt(); }
+			{ cond = input >= m_val.rightRef(m_val.size() - 2).toInt(); }
 			else if (m_val.startsWith("<"))
-			{ cond = input < m_val.rightRef(m_val.size()-1).toInt(); }
+			{ cond = input < m_val.rightRef(m_val.size() - 1).toInt(); }
 			else if (m_val.startsWith(">"))
-			{ cond = input > m_val.rightRef(m_val.size()-1).toInt(); }
+			{ cond = input > m_val.rightRef(m_val.size() - 1).toInt(); }
 			else if (m_val.contains(".."))
-			{ cond = input >= m_val.leftRef(m_val.indexOf("..")).toInt() && input <= m_val.rightRef(m_val.size()-m_val.indexOf("..")-2).toInt();	}
+			{ cond = input >= m_val.leftRef(m_val.indexOf("..")).toInt() && input <= m_val.rightRef(m_val.size() - m_val.indexOf("..") - 2).toInt();	}
 			else
 			{ cond = input == m_val.toInt(); }
 		}

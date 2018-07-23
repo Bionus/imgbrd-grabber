@@ -215,7 +215,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 		if (token.value().type() != QVariant::StringList)
 			continue;
 
-		const bool hasToken = !isJavascript && filename.contains(QRegularExpression("%"+key+"(?::[^%]+)?%"));
+		const bool hasToken = !isJavascript && filename.contains(QRegularExpression("%" + key + "(?::[^%]+)?%"));
 		const bool hasVar = isJavascript && filename.contains(key);
 		if (!hasToken && !hasVar)
 			continue;
@@ -585,7 +585,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		bool found = false;
 		for (int i = 0; i < tokens.length(); i++)
 		{
-			if (QRegularExpression("%"+tokens[i]+"(?::[^%]+)?%").match(match.captured(0)).hasMatch())
+			if (QRegularExpression("%" + tokens[i] + "(?::[^%]+)?%").match(match.captured(0)).hasMatch())
 				found = true;
 		}
 
