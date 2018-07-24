@@ -305,7 +305,8 @@ void SourcesSettingsWindow::save()
 	QMap<QString, QVariant> headers;
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
 	{
-		if (ui->tableHeaders->item(i, 0)->text().isEmpty())
+		QTableWidgetItem *item = ui->tableHeaders->item(i, 0);
+		if (item == nullptr || item->text().isEmpty())
 			continue;
 
 		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
