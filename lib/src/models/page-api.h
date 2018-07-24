@@ -50,6 +50,7 @@ class PageApi : public QObject
 
 	public slots:
 		void load(bool rateLimit = false, bool force = false);
+		void loadNow();
 		void parse();
 		void abort();
 		void clear();

@@ -63,7 +63,7 @@ class Site : public QObject
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
 		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		int msToRequest(QueryType type) const;
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
@@ -90,7 +90,6 @@ class Site : public QObject
 		void loginFinished(Login::Result result);
 		void loadTags(int page, int limit);
 		void finishedTags();
-		void getCallback();
 
 	protected:
 		void resetCookieJar();

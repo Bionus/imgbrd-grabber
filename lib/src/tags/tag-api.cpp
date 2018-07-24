@@ -1,5 +1,6 @@
 #include "tags/tag-api.h"
 #include <QRegularExpression>
+#include <QTimer>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
@@ -21,16 +22,28 @@ TagApi::~TagApi()
 
 void TagApi::load(bool rateLimit)
 {
-	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply * reply)
+	// Load the request with a possible delay
+	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(loadNow())); }
+	else
+	{ loadNow(); }
+}
+
+void TagApi::loadNow()
+{
+	log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+
+	if (m_reply != nullptr)
 	{
-		log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+		if (m_reply->isRunning())
+			m_reply->abort();
 
-		if (m_reply != nullptr)
-			m_reply->deleteLater();
+		m_reply->deleteLater();
+	}
 
-		m_reply = reply;
-		connect(m_reply, &QNetworkReply::finished, this, &TagApi::parse);
-	});
+	m_reply = m_site->get(m_url);
+	connect(m_reply, &QNetworkReply::finished, this, &TagApi::parse);
 }
 
 void TagApi::abort()

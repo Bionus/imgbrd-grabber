@@ -3,6 +3,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QTimer>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
 #include "favorite.h"
@@ -298,16 +299,28 @@ void Image::loadDetails(bool rateLimit)
 		return;
 	}
 
-	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_pageUrl, [this](QNetworkReply *reply) {
-		if (m_loadDetails != nullptr)
-			m_loadDetails->deleteLater();
+	// Load the request with a possible delay
+	int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(loadDetailsNow())); }
+	else
+	{ loadDetailsNow(); }
+}
+void Image::loadDetailsNow()
+{
+	if (m_loadDetails != nullptr)
+	{
+		if (m_loadDetails->isRunning())
+			m_loadDetails->abort();
 
-		m_loadDetails = reply;
-		m_loadDetails->setParent(this);
-		m_loadingDetails = true;
+		m_loadDetails->deleteLater();
+	}
 
-		connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
-	});
+	m_loadDetails = m_parentSite->get(m_pageUrl);
+	m_loadDetails->setParent(this);
+	m_loadingDetails = true;
+
+	connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
 }
 void Image::abortTags()
 {

@@ -262,11 +262,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	return request;
 }
 
-void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply*)> &callback, Page *page, const QString &ref, Image *img)
+int Site::msToRequest(QueryType type) const
 {
-	m_lastCallback = callback;
-	m_callbackRequest = this->makeRequest(url, page, ref, img);
-
 	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
@@ -274,15 +271,7 @@ void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QN
 	int ms = setting("download/throttle_" + key, def).toInt() * 1000;
 	ms -= sinceLastRequest;
 
-	if (ms > 0)
-	{ QTimer::singleShot(ms, this, SLOT(getCallback())); }
-	else
-	{ getCallback(); }
-}
-
-void Site::getCallback()
-{
-	m_lastCallback(this->getRequest(m_callbackRequest));
+	return ms;
 }
 
 QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)

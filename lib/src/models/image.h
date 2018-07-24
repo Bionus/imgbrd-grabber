@@ -98,6 +98,7 @@ class Image : public QObject, public Downloadable
 
 	public slots:
 		void loadDetails(bool rateLimit = false);
+		void loadDetailsNow();
 		void abortTags();
 		void parseDetails();
 

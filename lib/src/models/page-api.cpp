@@ -2,6 +2,7 @@
 #include <QNetworkReply>
 #include <QRegularExpression>
 #include <QtConcurrentRun>
+#include <QTimer>
 #include <QtMath>
 #include "functions.h"
 #include "image.h"
@@ -76,6 +77,9 @@ void PageApi::load(bool rateLimit, bool force)
 		if (!force)
 			return;
 
+		if (m_reply->isRunning())
+			m_reply->abort();
+
 		m_reply->deleteLater();
 		m_reply = nullptr;
 	}
@@ -97,12 +101,18 @@ void PageApi::load(bool rateLimit, bool force)
 	m_maxImagesCount = -1;
 	m_pagesCount = -1;
 
-	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply * reply)
-	{
-		log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
-		m_reply = reply;
-		connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
-	});
+	// Load the request with a possible delay
+	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(loadNow())); }
+	else
+	{ loadNow(); }
+}
+void PageApi::loadNow()
+{
+	log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
+	m_reply = m_site->get(m_url);
+	connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
 }
 void PageApi::abort()
 {
