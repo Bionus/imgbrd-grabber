@@ -245,7 +245,10 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString())
 	{ ret.urlPrevPage = results.property("urlPrevPage").toString(); }
 	if (results.hasProperty("wiki") && results.property("wiki").isString())
-	{ ret.wiki = results.property("wiki").toString(); }
+	{
+		ret.wiki = results.property("wiki").toString();
+		ret.wiki = ret.wiki.replace("href=\"/", "href=\"" + site->baseUrl() + "/");
+	}
 
 	return ret;
 }
