@@ -16,6 +16,7 @@
 #ifdef Q_OS_WIN
 	#include <Windows.h>
 #else
+	#include <errno.h>
 	#include <utime.h>
 #endif
 #ifdef QT_DEBUG
@@ -358,7 +359,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
 			return false;
 		}
 	#endif

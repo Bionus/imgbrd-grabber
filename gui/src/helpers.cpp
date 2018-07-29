@@ -34,7 +34,6 @@ void showInGraphicalShell(const QString &pathIn)
 		param += QDir::toNativeSeparators(pathIn);
 		QProcess::startDetached("explorer.exe "+param);
 	#elif defined(Q_OS_MAC)
-		// Q_UNUSED(parent)
 		QStringList scriptArgs;
 		scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(pathIn);
 		QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
@@ -42,7 +41,7 @@ void showInGraphicalShell(const QString &pathIn)
 		scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
 		QProcess::execute("/usr/bin/osascript", scriptArgs);
 	#else
-		QDesktopServices::openUrl(QUrl("file:///"+pathIn));
+		QDesktopServices::openUrl(QUrl("file:///" + pathIn));
 	#endif
 }
 
