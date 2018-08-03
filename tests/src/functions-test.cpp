@@ -299,4 +299,4 @@ void FunctionsTest::assertFixFilename(int platform, const QString &filename, con
 	QCOMPARE(actual, expected);
 }
 
-static FunctionsTest instance;
+QTEST_MAIN(FunctionsTest)

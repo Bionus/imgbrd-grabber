@@ -39,4 +39,4 @@ void SourceUpdaterTest::testChanged()
 #endif
 
 
-static SourceUpdaterTest instance;
+QTEST_MAIN(SourceUpdaterTest)

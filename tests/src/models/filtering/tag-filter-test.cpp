@@ -46,4 +46,4 @@ void TagFilterTest::testMatchWildcard()
 }
 
 
-static TagFilterTest instance;
+QTEST_MAIN(TagFilterTest)

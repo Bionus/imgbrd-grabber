@@ -228,4 +228,4 @@ void TagTest::testGetType()
 }
 
 
-static TagTest instance;
+QTEST_MAIN(TagTest)

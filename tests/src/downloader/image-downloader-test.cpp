@@ -168,4 +168,4 @@ void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloa
 }
 
 
-static ImageDownloaderTest instance;
+QTEST_MAIN(ImageDownloaderTest)

@@ -7,6 +7,9 @@
 #include "models/profile.h"
 
 
+#define QTEST_MAIN(CLASS_NAME) static CLASS_NAME instance;
+
+
 #ifdef _MSC_VER
 	#include <crtdbg.h>
 

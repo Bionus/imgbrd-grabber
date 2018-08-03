@@ -740,4 +740,5 @@ void FilenameTest::assertExpand(const QString &format, const QString &expected)
 	QCOMPARE(actual, expected);
 }
 
-static FilenameTest instance;
+
+QTEST_MAIN(FilenameTest)

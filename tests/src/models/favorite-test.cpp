@@ -272,4 +272,4 @@ void FavoriteTest::testSortByLastViewed()
 }
 
 
-static FavoriteTest instance;
+QTEST_MAIN(FavoriteTest)

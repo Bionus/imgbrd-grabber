@@ -54,4 +54,4 @@ void BlacklistTest::testMatch()
 }
 
 
-static BlacklistTest instance;
+QTEST_MAIN(BlacklistTest)

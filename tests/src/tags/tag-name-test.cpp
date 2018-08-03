@@ -45,4 +45,4 @@ void TagNameTest::testCompare()
 }
 
 
-static TagNameTest instance;
+QTEST_MAIN(TagNameTest)

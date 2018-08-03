@@ -12,33 +12,28 @@ int main(int argc, char *argv[])
 		QGuiApplication a(argc, argv);
 	#endif
 
+	// A possible format to filter by test suite it to pass their names as arguments
 	QStringList testSuites;
-	testSuites.reserve(argc - 1);
 	for (int i = 1; i < argc; ++i)
-		testSuites.append(argv[i]);
+	{
+		QString arg(argv[i]);
+		if (!arg.startsWith('-') && !arg.startsWith("test"))
+			testSuites.append(argv[i]);
+	}
 
-	QMap<QString, int> results;
-	int failed = 0;
-
+	// Used for networking and finding test resource files
 	setTestModeEnabled(true);
 
+	// Run all selected test suites
+	int errorCode = 0;
 	for (TestSuite *suite : TestSuite::getSuites())
 	{
 		if (!testSuites.isEmpty() && !testSuites.contains(suite->metaObject()->className()))
 			continue;
 
-		int result = QTest::qExec(suite);
-		results.insert(suite->metaObject()->className(), result);
-		if (result != 0)
-		{
-			failed++;
-		}
+		errorCode |= QTest::qExec(suite, argc, argv);
+		std::cout << std::endl;
 	}
 
-	for (auto it = results.begin(); it != results.end(); ++it)
-	{
-		std::cout << '[' << (it.value() != 0 ? "FAIL" : "OK") << "] " << it.key().toStdString() << std::endl;
-	}
-
-	return failed;
+	return errorCode;
 }

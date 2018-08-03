@@ -69,4 +69,4 @@ void TokenFilterTest::testMatchStringList()
 }
 
 
-static TokenFilterTest instance;
+QTEST_MAIN(TokenFilterTest)

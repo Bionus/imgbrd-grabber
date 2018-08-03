@@ -35,4 +35,4 @@ void TokenTest::testLazyWithoutCaching()
 }
 
 
-static TokenTest instance;
+QTEST_MAIN(TokenTest)

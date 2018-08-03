@@ -46,4 +46,4 @@ void PageTest::testLoadTagsAbort()
 }
 
 
-static PageTest instance;
+QTEST_MAIN(PageTest)

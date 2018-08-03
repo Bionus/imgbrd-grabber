@@ -77,4 +77,4 @@ void ExtensionRotatorTest::testCopyConstructor()
 }
 
 
-static ExtensionRotatorTest instance;
+QTEST_MAIN(ExtensionRotatorTest)

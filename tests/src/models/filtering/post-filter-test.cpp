@@ -106,4 +106,4 @@ void PostFilterTest::testFilterInvert()
 }
 
 
-static PostFilterTest instance;
+QTEST_MAIN(PostFilterTest)

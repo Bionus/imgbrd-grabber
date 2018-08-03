@@ -55,4 +55,4 @@ void UpdaterTest::testCompareAlphaToOld()
 }
 
 
-static UpdaterTest instance;
+QTEST_MAIN(UpdaterTest)

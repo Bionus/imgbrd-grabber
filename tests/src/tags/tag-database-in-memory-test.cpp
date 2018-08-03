@@ -113,4 +113,4 @@ void TagDatabaseInMemoryTest::saveData()
 }
 
 
-static TagDatabaseInMemoryTest instance;
+QTEST_MAIN(TagDatabaseInMemoryTest)

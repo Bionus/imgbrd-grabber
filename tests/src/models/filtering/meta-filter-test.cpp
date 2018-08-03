@@ -135,4 +135,4 @@ void MetaFilterTest::testMatchString()
 }
 
 
-static MetaFilterTest instance;
+QTEST_MAIN(MetaFilterTest)

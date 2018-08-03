@@ -44,4 +44,4 @@ void SankakuTest::testAnimatedUrls()
 }
 
 
-static SankakuTest instance;
+QTEST_MAIN(SankakuTest)

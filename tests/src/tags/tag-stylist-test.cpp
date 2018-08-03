@@ -143,4 +143,4 @@ void TagStylistTest::assertSort(const QString &sort, const QStringList &expected
 }
 
 
-static TagStylistTest instance;
+QTEST_MAIN(TagStylistTest)

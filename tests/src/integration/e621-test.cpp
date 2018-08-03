@@ -93,4 +93,4 @@ void E621Test::testJsonTags()
 }
 
 
-static E621Test instance;
+QTEST_MAIN(E621Test)

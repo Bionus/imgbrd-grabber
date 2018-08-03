@@ -66,4 +66,4 @@ void PageApiTest::testParseUrlAltPage()
 }
 
 
-static PageApiTest instance;
+QTEST_MAIN(PageApiTest)

@@ -65,4 +65,4 @@ void DerpibooruTest::testJsonTags()
 }
 
 
-static DerpibooruTest instance;
+QTEST_MAIN(DerpibooruTest)

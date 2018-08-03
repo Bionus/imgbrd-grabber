@@ -77,4 +77,4 @@ void SqlWorkerTest::testExecCreateAndInsert()
 }
 
 
-static SqlWorkerTest instance;
+QTEST_MAIN(SqlWorkerTest)

@@ -73,4 +73,4 @@ void SourceGuesserTest::testDanbooru2()
 }
 
 
-static SourceGuesserTest instance;
+QTEST_MAIN(SourceGuesserTest)

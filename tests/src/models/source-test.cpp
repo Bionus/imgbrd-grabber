@@ -90,4 +90,4 @@ void SourceTest::testIgnoreEmptySites()
 }
 
 
-static SourceTest instance;
+QTEST_MAIN(SourceTest)

@@ -93,4 +93,4 @@ void MixedSettingsTest::testChildKeys()
 }
 
 
-static MixedSettingsTest instance;
+QTEST_MAIN(MixedSettingsTest)

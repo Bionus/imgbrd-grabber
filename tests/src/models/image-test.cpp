@@ -372,4 +372,4 @@ void ImageTest::testSetUrl()
 }
 
 
-static ImageTest instance;
+QTEST_MAIN(ImageTest)

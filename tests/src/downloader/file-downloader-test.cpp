@@ -76,4 +76,4 @@ void FileDownloaderTest::testFailedStart()
 }
 
 
-static FileDownloaderTest instance;
+QTEST_MAIN(FileDownloaderTest)

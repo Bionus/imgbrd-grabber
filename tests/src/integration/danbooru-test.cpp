@@ -90,4 +90,4 @@ void DanbooruTest::testJsonTags()
 }
 
 
-static DanbooruTest instance;
+QTEST_MAIN(DanbooruTest)
