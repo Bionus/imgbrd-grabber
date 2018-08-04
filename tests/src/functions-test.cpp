@@ -3,6 +3,20 @@
 #include "functions-test.h"
 
 
+QDateTime fileCreationDate(const QString &path)
+{
+	QFileInfo fi(path);
+	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+		return fi.created();
+	#else
+		QDateTime d = fi.birthTime();
+		if (d.isValid())
+			return d;
+		return fi.metadataChangeTime();
+	#endif
+}
+
+
 void FunctionsTest::testCopyRecursively()
 {
 	QString from = QDir::toNativeSeparators("tests/resources/recurse/");
@@ -255,13 +269,7 @@ void FunctionsTest::testSetFileCreationDate()
 
 	setFileCreationDate(path, date);
 
-	QDateTime created;
-	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-		created = QFileInfo(path).created();
-	#else
-		created = QFileInfo(path).birthTime();
-	#endif
-
+	QDateTime created = fileCreationDate(path);
 	QCOMPARE(created.toTime_t(), date.toTime_t());
 }
 void FunctionsTest::testSetFileCreationDateUtf8()
@@ -271,13 +279,7 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 
 	setFileCreationDate(path, date);
 
-	QDateTime created;
-	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-		created = QFileInfo(path).created();
-	#else
-		created = QFileInfo(path).birthTime();
-	#endif
-
+	QDateTime created = fileCreationDate(path);
 	QCOMPARE(created.toTime_t(), date.toTime_t());
 }
 
