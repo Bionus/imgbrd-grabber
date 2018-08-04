@@ -12,10 +12,6 @@ set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Test Qt5::Widgets)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 include_directories("src/" "../lib/src/")
 
-if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4005") # Suppress "macro redifinition" warnings
-endif()
-
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
