@@ -264,6 +264,7 @@ void FunctionsTest::testParseMarkdownIssueLinks()
 
 void FunctionsTest::testSetFileCreationDate()
 {
+#if !defined(Q_OS_MACOS)
 	QString path = "tests/resources/pages/behoimi.org/results.json";
 	QDateTime date = QDateTime::currentDateTimeUtc();
 
@@ -271,9 +272,11 @@ void FunctionsTest::testSetFileCreationDate()
 
 	QDateTime created = fileCreationDate(path);
 	QCOMPARE(created.toTime_t(), date.toTime_t());
+#endif
 }
 void FunctionsTest::testSetFileCreationDateUtf8()
 {
+#if !defined(Q_OS_MACOS)
 	QString path = "tests/resources/你好.txt";
 	QDateTime date = QDateTime::currentDateTimeUtc();
 
@@ -281,6 +284,7 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 
 	QDateTime created = fileCreationDate(path);
 	QCOMPARE(created.toTime_t(), date.toTime_t());
+#endif
 }
 
 
