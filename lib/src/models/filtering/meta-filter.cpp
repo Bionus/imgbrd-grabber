@@ -24,15 +24,15 @@ bool MetaFilter::compare(const Filter& rhs) const
 	return m_type == other->m_type && m_val == other->m_val;
 }
 
-static int dateToInt(const QString &text)
+static QDateTime stringToDate(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
 	if (date.isValid())
-	{ return date.toString("yyyyMMdd").toInt(); }
+	{ return date; }
 	date = QDateTime::fromString(text, "MM/dd/yyyy");
 	if (date.isValid())
-	{ return date.toString("yyyyMMdd").toInt(); }
-	return 0;
+	{ return date; }
+	return QDateTime();
 }
 
 static int stringToInt(const QString &text)
@@ -148,14 +148,12 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		int input = 0;
 		if (token.type() == QVariant::Int)
 		{ input = token.toInt(); }
-		else if (token.type() == QVariant::DateTime)
-		{ input = token.toDateTime().toString("yyyyMMdd").toInt(); }
 		else if (token.type() == QVariant::ULongLong)
 		{ input = token.toULongLong(); }
 
 		bool cond;
 		if (token.type() == QVariant::DateTime)
-		{ cond = rangeCheck(dateToInt, input, m_val); }
+		{ cond = rangeCheck(stringToDate, token.toDateTime(), m_val); }
 		else
 		{ cond = rangeCheck(stringToInt, input, m_val); }
 
