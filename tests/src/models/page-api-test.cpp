@@ -26,6 +26,7 @@ void PageApiTest::cleanup()
 {
 	m_profile->deleteLater();
 	m_sites.first()->deleteLater();
+	m_sites.clear();
 	m_site->deleteLater();
 
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
@@ -66,4 +67,4 @@ void PageApiTest::testParseUrlAltPage()
 }
 
 
-static PageApiTest instance;
+QTEST_MAIN(PageApiTest)

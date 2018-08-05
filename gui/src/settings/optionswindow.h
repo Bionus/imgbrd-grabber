@@ -20,13 +20,13 @@ class optionsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit optionsWindow(Profile *profile, QWidget *parent = nullptr);
 		~optionsWindow() override;
 		void setColor(QLineEdit *lineEdit, bool button = false);
 		void setFont(QLineEdit *lineEdit);
 
 	public slots:
-		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
+		void updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();

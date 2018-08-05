@@ -4,8 +4,8 @@
 #include "tags/tag.h"
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, const QString &tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile)
+TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
+	: TagDatabase(typeFile), m_tagFile(std::move(tagFile))
 {}
 
 bool TagDatabaseInMemory::load()
@@ -67,7 +67,7 @@ bool TagDatabaseInMemory::save()
 		i.next();
 
 		TagType tagType = i.value();
-		int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
+		const int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
 
 		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
 	}

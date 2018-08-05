@@ -1,40 +1,45 @@
+#include <QCryptographicHash>
 #include <QEventLoop>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QTimer>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
-#include "downloader/file-downloader.h"
+#include "favorite.h"
 #include "functions.h"
+#include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filename.h"
+#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/page.h"
-#include "models/post-filter.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "models/source.h"
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
+#include "tags/tag-type.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
 
 
-QString removeCacheUrl(QString url)
+QUrl removeCacheUrl(QUrl url)
 {
-	QString get = url.section('?', 1, 1);
-	if (get.isEmpty())
+	const QString query = url.query();
+	if (query.isEmpty())
 		return url;
 
 	// Only remove ?integer
 	bool ok;
-	get.toInt(&ok);
+	query.toInt(&ok);
 	if (ok)
-		return url.section('?', 0, 0);
+		url.setQuery(QString());
 
 	return url;
 }
 
 Image::Image()
-	: QObject(), m_profile(nullptr), m_extensionRotator(nullptr)
+	: m_profile(nullptr), m_extensionRotator(nullptr)
 { }
 
 // TODO(Bionus): clean up this mess
@@ -75,7 +80,6 @@ Image::Image(const Image &other)
 	m_data = other.m_data;
 
 	m_loadDetails = other.m_loadDetails;
-	m_loadImage = other.m_loadImage;
 
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
@@ -86,13 +90,10 @@ Image::Image(const Image &other)
 	m_parentSite = other.m_parentSite;
 
 	m_extensionRotator = other.m_extensionRotator;
-	m_loadingPreview = other.m_loadingPreview;
 	m_loadingDetails = other.m_loadingDetails;
-	m_loadingImage = other.m_loadingImage;
-	m_tryingSample = other.m_tryingSample;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
+Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
 {
 	m_settings = m_profile->getSettings();
@@ -132,7 +133,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	else
 	{
 		Api *api = m_parentSite->detailsApi();
-		if (api != Q_NULLPTR)
+		if (api != nullptr)
 		{ m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url; }
 	}
 	m_pageUrl = site->fixUrl(m_pageUrl).toString();
@@ -144,11 +145,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species" << "meta";
 	for (const QString &typ : types)
 	{
-		QString key = "tags_" + typ;
+		const QString key = "tags_" + typ;
 		if (!details.contains(key))
 			continue;
 
-		TagType ttype(typ);
+		const TagType ttype(typ);
 		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
 		for (QString tg : t)
 		{
@@ -161,8 +162,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
 
 		// Automatically find tag separator and split the list
-		int commas = tgs.count(", ");
-		int spaces = tgs.count(" ");
+		const int commas = tgs.count(", ");
+		const int spaces = tgs.count(" ");
 		const QStringList &t = commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2)
 			? tgs.split(", ", QString::SkipEmptyParts)
 			: tgs.split(" ", QString::SkipEmptyParts);
@@ -171,10 +172,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		{
 			tg.replace("&amp;", "&");
 
-			int colon = tg.indexOf(':');
+			const int colon = tg.indexOf(':');
 			if (colon != -1)
 			{
-				QString tp = tg.left(colon).toLower();
+				const QString tp = tg.left(colon).toLower();
 				if (tp == "user")
 				{ m_author = tg.mid(colon + 1); }
 				else if (tp == "score")
@@ -199,7 +200,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
 	for (Tag const &tag : qAsConst(m_tags))
-		if (tag.type().name() == "unknown")
+		if (tag.type().isUnknown())
 			unknownTags.append(tag.text());
 	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
 	for (Tag &tag : m_tags)
@@ -207,22 +208,22 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			tag.setType(dbTypes[tag.text()]);
 
 	// Get file url and try to improve it to save bandwidth
-	m_url = m_fileUrl.toString();
-	QString ext = getExtension(m_url);
+	m_url = m_fileUrl;
+	const QString ext = getExtension(m_url);
 	if (details.contains("ext") && !details["ext"].isEmpty())
 	{
-		QString realExt = details["ext"];
+		const QString realExt = details["ext"];
 		if (ext != realExt)
 		{ setFileExtension(realExt); }
 	}
 	else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty())
 	{
 		bool fixed = false;
-		QString previewExt = getExtension(details["preview_url"]);
+		const QString previewExt = getExtension(QUrl(details["preview_url"]));
 		if (!m_sampleUrl.isEmpty())
 		{
 			// Guess extension from sample url
-			QString sampleExt = getExtension(details["sample_url"]);
+			const QString sampleExt = getExtension(QUrl(details["sample_url"]));
 			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext)
 			{
 				m_url = setExtension(m_url, sampleExt);
@@ -245,17 +246,17 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			{ setFileExtension(QStringLiteral("webm")); }
 		}
 	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif"))
 	{ m_url = setExtension(m_url, QStringLiteral("gif")); }
 
 	// Remove ? in urls
 	m_url = removeCacheUrl(m_url);
-	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
-	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
-	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
+	m_fileUrl = removeCacheUrl(m_fileUrl);
+	m_sampleUrl = removeCacheUrl(m_sampleUrl);
+	m_previewUrl = removeCacheUrl(m_previewUrl);
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
-	bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals))
 		m_url = m_sampleUrl.toString();
 
@@ -267,8 +268,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
 	// Setup extension rotator
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	QStringList extensions = animated
+	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	const QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
@@ -276,14 +277,15 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Tech details
 	m_parent = parent;
 	m_loadDetails = nullptr;
-	m_loadImage = nullptr;
-	m_loadingPreview = false;
 	m_loadingDetails = false;
 	m_loadedDetails = false;
-	m_loadedImage = false;
-	m_loadingImage = false;
-	m_tryingSample = false;
 	m_pools = QList<Pool>();
+}
+
+Image::~Image()
+{
+	if (!m_temporaryPath.isEmpty())
+		QFile::remove(m_temporaryPath);
 }
 
 void Image::loadDetails(bool rateLimit)
@@ -297,16 +299,28 @@ void Image::loadDetails(bool rateLimit)
 		return;
 	}
 
-	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_pageUrl, [this](QNetworkReply *reply) {
-		if (m_loadDetails != nullptr)
-			m_loadDetails->deleteLater();
+	// Load the request with a possible delay
+	int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(loadDetailsNow())); }
+	else
+	{ loadDetailsNow(); }
+}
+void Image::loadDetailsNow()
+{
+	if (m_loadDetails != nullptr)
+	{
+		if (m_loadDetails->isRunning())
+			m_loadDetails->abort();
 
-		m_loadDetails = reply;
-		m_loadDetails->setParent(this);
-		m_loadingDetails = true;
+		m_loadDetails->deleteLater();
+	}
 
-		connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
-	});
+	m_loadDetails = m_parentSite->get(m_pageUrl);
+	m_loadDetails->setParent(this);
+	m_loadingDetails = true;
+
+	connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
 }
 void Image::abortTags()
 {
@@ -337,7 +351,7 @@ void Image::parseDetails()
 		return;
 	}
 
-	int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	const int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
 		log(QStringLiteral("Details limit reached (429). New try."));
@@ -345,11 +359,11 @@ void Image::parseDetails()
 		return;
 	}
 
-	QString source = QString::fromUtf8(m_loadDetails->readAll());
+	const QString source = QString::fromUtf8(m_loadDetails->readAll());
 
 	// Get an api able to parse details
 	Api *api = m_parentSite->detailsApi();
-	if (api == Q_NULLPTR)
+	if (api == nullptr)
 		return;
 
 	// Parse source
@@ -372,10 +386,10 @@ void Image::parseDetails()
 	// Image url
 	if (!ret.imageUrl.isEmpty())
 	{
-		QString before = m_url;
+		const QUrl before = m_url;
 
 		QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
-		m_url = newUrl.toString();
+		m_url = newUrl;
 		m_fileUrl = newUrl;
 
 		if (before != m_url)
@@ -413,15 +427,6 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-/**
- * Return the filename of the image according to the user's settings.
- * @param fn The user's filename.
- * @param pth The user's root save path.
- * @param counter Current image count (used for batch downloads).
- * @param complex Whether the filename is complex or not (contains conditionals).
- * @param simple True to force using the fn and pth parameters.
- * @return The filename of the image, with any token replaced.
- */
 QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxLength, bool shouldFixFilename, bool getFull) const
 {
 	if (!simple)
@@ -434,169 +439,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 	Filename filename(fn);
 	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
-}
-
-void Image::loadImage(bool inMemory, bool force)
-{
-	if (m_loadingImage)
-		return;
-
-	if (m_loadedImage && !force)
-	{
-		emit finishedImage(QNetworkReply::NoError, "");
-		return;
-	}
-
-	if (m_fileSize > MAX_LOAD_FILESIZE && inMemory)
-	{
-		emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), "");
-		return;
-	}
-
-	if (m_loadImage != nullptr)
-		m_loadImage->deleteLater();
-
-	if (force)
-		setUrl(fileUrl().toString());
-
-	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
-	m_loadImage->setParent(this);
-	m_loadingImage = true;
-	m_loadedImage = false;
-	m_data.clear();
-
-	if (inMemory)
-	{
-		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
-		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
-	}
-	else
-	{
-		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageBasic);
-		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageBasic);
-	}
-}
-
-void Image::finishedImageBasic()
-{
-	finishedImageS(false);
-}
-void Image::finishedImageInMemory()
-{
-	finishedImageS(true);
-}
-void Image::finishedImageS(bool inMemory)
-{
-	m_loadingImage = false;
-
-	// Aborted
-	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
-	{
-		m_loadImage->deleteLater();
-		m_loadImage = nullptr;
-		if (m_fileSize > MAX_LOAD_FILESIZE)
-		{ emit finishedImage(static_cast<QNetworkReply::NetworkError>(500), ""); }
-		else
-		{ emit finishedImage(QNetworkReply::OperationCanceledError, ""); }
-		return;
-	}
-
-	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
-	{
-		m_loadImage->deleteLater();
-		m_loadImage = nullptr;
-		m_url = redir.toString();
-		loadImage();
-		return;
-	}
-
-	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
-	{
-		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
-		QString newext = m_extensionRotator != nullptr ? m_extensionRotator->next() : "";
-
-		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
-		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
-
-		if (!isLast || (shouldFallback && !m_tryingSample))
-		{
-			if (isLast)
-			{
-				setUrl(m_sampleUrl.toString());
-				m_tryingSample = true;
-				log(QStringLiteral("Image not found. New try with its sample..."));
-			}
-			else
-			{
-				m_url = setExtension(m_url, newext);
-				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
-			}
-
-			loadImage();
-			return;
-		}
-		else
-		{
-			log(QStringLiteral("Image not found."));
-		}
-	}
-	else if (inMemory)
-	{
-		m_data.append(m_loadImage->readAll());
-
-		if (m_fileSize <= 0)
-		{ m_fileSize = m_data.size(); }
-	}
-
-	QNetworkReply::NetworkError error = m_loadImage->error();
-	QString errorString = m_loadImage->errorString();
-
-	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
-	m_loadImageError = error;
-	m_loadImage->deleteLater();
-	m_loadImage = nullptr;
-
-	emit finishedImage(m_loadImageError, errorString);
-}
-
-void Image::downloadProgressImageBasic(qint64 v1, qint64 v2)
-{
-	downloadProgressImageS(v1, v2, false);
-}
-void Image::downloadProgressImageInMemory(qint64 v1, qint64 v2)
-{
-	downloadProgressImageS(v1, v2, true);
-}
-void Image::downloadProgressImageS(qint64 v1, qint64 v2, bool inMemory)
-{
-	// Set filesize if not set
-	if (m_fileSize == 0 || m_fileSize < v2 / 2)
-		m_fileSize = v2;
-
-	if (m_loadImage == nullptr || v2 <= 0)
-		return;
-
-	if (inMemory)
-	{
-		if (m_fileSize > MAX_LOAD_FILESIZE)
-		{
-			m_loadImage->abort();
-			return;
-		}
-
-		m_data.append(m_loadImage->readAll());
-	}
-
-	emit downloadProgressImage(v1, v2);
-}
-void Image::abortImage()
-{
-	if (m_loadingImage && m_loadImage->isRunning())
-	{
-		m_loadImage->abort();
-		m_loadingImage = false;
-	}
 }
 
 /**
@@ -612,11 +454,11 @@ int Image::value() const
 	// Get from tags
 	if (hasTag("incredibly_absurdres"))
 		return 10000 * 10000;
-	else if (hasTag("absurdres"))
+	if (hasTag("absurdres"))
 		return 3200 * 2400;
-	else if (hasTag("highres"))
+	if (hasTag("highres"))
 		return 1600 * 1200;
-	else if (hasTag("lowres"))
+	if (hasTag("lowres"))
 		return 500 * 500;
 
 	return 1200 * 900;
@@ -635,16 +477,16 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 	QFile f(path);
 	if (!f.exists() || force)
 	{
-		QPair<QString, QString> md5action = m_profile->md5Action(md5());
-		QString whatToDo = md5action.first;
-		QString md5Duplicate = md5action.second;
+		const QPair<QString, QString> md5action = m_profile->md5Action(md5());
+		const QString &whatToDo = md5action.first;
+		const QString &md5Duplicate = md5action.second;
 
 		// Only create the destination directory if we're going to put a file there
 		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
 		{
-			QString p = path.section(QDir::separator(), 0, -2);
-			QDir path_to_file(p), dir;
-			if (!path_to_file.exists() && !dir.mkpath(p))
+			const QString p = path.section(QDir::separator(), 0, -2);
+			QDir pathToFile(p), dir;
+			if (!pathToFile.exists() && !dir.mkpath(p))
 			{
 				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
 				return SaveResult::Error;
@@ -700,7 +542,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else
 		{
-			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
+			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url().toString(), md5Duplicate));
 			return SaveResult::Ignored;
 		}
 
@@ -724,11 +566,11 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 		for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 		{
 			auto logFile = it.value();
-			QString textfileFormat = logFile["content"].toString();
+			const QString textfileFormat = logFile["content"].toString();
 			QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
 			if (!cont.isEmpty())
 			{
-				int locationType = logFile["locationType"].toInt();
+				const int locationType = logFile["locationType"].toInt();
 				QString contents = cont.first();
 
 				// File path
@@ -746,7 +588,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
-				bool append = fileTags.exists();
+				const bool append = fileTags.exists();
 				if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
 				{
 					if (append)
@@ -785,7 +627,7 @@ QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addM
 }
 QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
 {
-	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
+	const QStringList paths = this->path(filename, path, count, true, false, true, true, true);
 	return save(paths, addMd5, startCommands, count, false);
 }
 
@@ -817,38 +659,56 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-QString			Image::url() const			{ return m_url;				}
-QString			Image::rating() const		{ return m_rating;			}
+const QUrl		&Image::url() const			{ return m_url;				}
+const QString	&Image::rating() const		{ return m_rating;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
-QList<Tag>		Image::tags() const			{ return m_tags;			}
-QList<Pool>		Image::pools() const		{ return m_pools;			}
+const QList<Tag>	&Image::tags() const	{ return m_tags;			}
+const QList<Pool>	&Image::pools() const	{ return m_pools;			}
 qulonglong		Image::id() const			{ return m_id;				}
 int				Image::fileSize() const		{ return m_fileSize;		}
 int				Image::width() const		{ return m_size.width();	}
 int				Image::height() const		{ return m_size.height();	}
-QDateTime		Image::createdAt() const	{ return m_createdAt;		}
-QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
-QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
+const QDateTime	&Image::createdAt() const	{ return m_createdAt;		}
+const QUrl		&Image::fileUrl() const		{ return m_fileUrl;			}
+const QUrl		&Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
-const QByteArray&Image::data() const		{ return m_data;			}
+const QByteArray &Image::data() const		{ return m_data;			}
+const QStringList &Image::search() const	{ return m_search;			}
 bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
+void Image::setTemporaryPath(const QString &path)
+{
+	setSavePath(path);
+
+	if (m_temporaryPath == path)
+		return;
+
+	if (!m_temporaryPath.isEmpty())
+		QFile::remove(m_temporaryPath);
+
+	m_temporaryPath = path;
+}
 void Image::setSavePath(const QString &path)
 {
-	m_savePath = path;
-	refreshTokens();
+	if (path != m_savePath)
+	{
+		m_savePath = path;
+		refreshTokens();
+	}
 }
+QString Image::savePath() const
+{ return m_savePath; }
 
 bool Image::shouldDisplaySample() const
 {
-	bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
+	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	const bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
 
 	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample);
 }
@@ -864,25 +724,25 @@ QStringList Image::tagsString() const
 	return tags;
 }
 
-void Image::setUrl(const QString &u)
+void Image::setUrl(const QUrl &url)
 {
 	setFileSize(0);
-	emit urlChanged(m_url, u);
-	m_url = u;
+	emit urlChanged(m_url, url);
+	m_url = url;
 	refreshTokens();
 }
-void Image::setSize(QSize size)	{ m_size = size; refreshTokens();	}
-void Image::setFileSize(int s)	{ m_fileSize = s; refreshTokens();	}
-void Image::setData(const QByteArray &d)
+void Image::setSize(QSize size)		{ m_size = size; refreshTokens();		}
+void Image::setFileSize(int size)	{ m_fileSize = size; refreshTokens();	}
+void Image::setData(const QByteArray &data)
 {
-	m_data = d;
+	m_data = data;
 
 	// Detect file extension from data headers
-	bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
+	const bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
 	if (headerDetection)
 	{
 		QString ext = getExtensionFromHeader(m_data.left(12));
-		QString currentExt = getExtension(m_url);
+		const QString currentExt = getExtension(m_url);
 		if (!ext.isEmpty() && ext != currentExt)
 		{
 			log(QStringLiteral("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Logger::Info);
@@ -906,9 +766,9 @@ void Image::setTags(const QList<Tag> &tags)
 QColor Image::color() const
 {
 	// Blacklisted
-	QStringList detected = PostFilter::blacklisted(tokens(m_profile), m_profile->getBlacklist());
+	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
 	if (!detected.isEmpty())
-		return QColor(0, 0, 0);
+		return { 0, 0, 0 };
 
 	// Favorited (except for exact favorite search)
 	auto favorites = m_profile->getFavorites();
@@ -916,21 +776,21 @@ QColor Image::color() const
 		if (!m_parent->search().contains(tag.text()))
 			for (const Favorite &fav : favorites)
 				if (fav.getName() == tag.text())
-					return QColor(255, 192, 203);
+				{ return { 255, 192, 203 }; }
 
 	// Image with a parent
 	if (m_parentId != 0)
-		return QColor(204, 204, 0);
+		return { 204, 204, 0 };
 
 	// Image with children
 	if (m_hasChildren)
-		return QColor(0, 255, 0);
+		return { 0, 255, 0 };
 
 	// Pending image
 	if (m_status == "pending")
-		return QColor(0, 0, 255);
+		return { 0, 0, 255 };
 
-	return QColor();
+	return {};
 }
 
 QString Image::tooltip() const
@@ -941,7 +801,7 @@ QString Image::tooltip() const
 			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
 
 	double size = m_fileSize;
-	QString unit = getUnit(&size);
+	const QString unit = getUnit(&size);
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(stylishedTags(m_profile).join(" ")))
@@ -956,11 +816,12 @@ QString Image::tooltip() const
 
 QList<QStrP> Image::detailsData() const
 {
-	QString unknown = tr("<i>Unknown</i>");
-	QString yes = tr("yes");
-	QString no = tr("no");
+	const QString unknown = tr("<i>Unknown</i>");
+	const QString yes = tr("yes");
+	const QString no = tr("no");
 
-	return {
+	return
+	{
 		QStrP(tr("Tags"), stylishedTags(m_profile).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
@@ -970,7 +831,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
-		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width())+"x"+QString::number(m_size.height()) : unknown),
+		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width()) + "x" + QString::number(m_size.height()) : unknown),
 		QStrP(tr("Filesize"), m_fileSize != 0 ? formatFilesize(m_fileSize) : unknown),
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
@@ -1037,36 +898,32 @@ bool Image::hasAllTags(const QStringList &tags) const
 	return true;
 }
 
-void Image::unload()
-{
-	m_loadedImage = false;
-	m_data.clear();
-}
-
 void Image::setRating(const QString &rating)
 {
-	QMap<QString, QString> assoc;
-		assoc["s"] = "safe";
-		assoc["q"] = "questionable";
-		assoc["e"] = "explicit";
+	static QMap<QString, QString> assoc =
+	{
+		{ "s", "safe" },
+		{ "q", "questionable" },
+		{ "e", "explicit" }
+	};
 
-	if (assoc.contains(rating))
-	{ m_rating = assoc.value(rating); }
-	else
-	{ m_rating = rating.toLower(); }
+	m_rating = assoc.contains(rating)
+		? assoc[rating]
+		: rating.toLower();
+
 	refreshTokens();
 }
 
 void Image::setFileExtension(const QString &ext)
 {
 	m_url = setExtension(m_url, ext);
-	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
+	m_fileUrl = setExtension(m_fileUrl, ext);
 	refreshTokens();
 }
 
 bool Image::isVideo() const
 {
-	QString ext = getExtension(m_url).toLower();
+	const QString ext = getExtension(m_url).toLower();
 	return ext == "mp4" || ext == "webm";
 }
 QString Image::isAnimated() const
@@ -1083,19 +940,19 @@ QString Image::isAnimated() const
 }
 
 
-QString Image::url(Size size) const
+QUrl Image::url(Size size) const
 {
 	switch (size)
 	{
-		case Size::Thumbnail: return m_previewUrl.toString();
-		case Size::Sample: return m_sampleUrl.toString();
+		case Size::Thumbnail: return m_previewUrl;
+		case Size::Sample: return m_sampleUrl;
 		default: return m_url;
 	}
 }
 
 void Image::preload(const Filename &filename)
 {
-	if (!filename.needExactTags(m_parentSite))
+	if (filename.needExactTags(m_parentSite) == 0)
 		return;
 
 	QEventLoop loop;
@@ -1113,7 +970,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
-	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, Token> tokens;
 
@@ -1123,7 +980,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("pool", Token(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 
 	// Metadata
-	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
+	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.fileName().section('.', 0, -2).toUtf8()), ""));
 	tokens.insert("website", Token(m_parentSite->url(), ""));
 	tokens.insert("websitename", Token(m_parentSite->name(), ""));
 	tokens.insert("md5", Token(md5(), ""));
@@ -1160,7 +1017,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	QMap<QString, QStringList> details;
 	for (const Tag &tag : filteredTags(remove))
 	{
-		QString t = tag.text();
+		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);
@@ -1222,10 +1079,7 @@ Image::SaveResult Image::preSave(const QString &path)
 	return save(path, false, false, false, false, 1, false);
 }
 
-void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)
+void Image::postSave(const QString &path, SaveResult res, bool addMd5, bool startCommands, int count)
 {
-	const QString &path = result.firstKey();
-	Image::SaveResult res = result[path];
-
 	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
 }

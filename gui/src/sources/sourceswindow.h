@@ -24,7 +24,7 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent = Q_NULLPTR);
+		explicit sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent = nullptr);
 		~sourcesWindow() override;
 
 	public slots:
@@ -49,6 +49,7 @@ class sourcesWindow : public QDialog
 		// Presets
 		QMap<QString, QStringList> loadPresets(QSettings *settings) const;
 		void savePresets(QSettings *settings) const;
+		void showPresets();
 		void addPreset();
 		void deletePreset();
 		void editPreset();

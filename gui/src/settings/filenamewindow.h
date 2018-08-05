@@ -3,7 +3,6 @@
 
 #include <QCloseEvent>
 #include <QDialog>
-#include <QMessageBox>
 
 #if defined(USE_QSCINTILLA)
 	#include <Qsci/qscilexerjavascript.h>
@@ -26,9 +25,9 @@ class FilenameWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = Q_NULLPTR);
+		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = nullptr);
 		~FilenameWindow() override;
-		QString format();
+		QString format() const;
 
 	public slots:
 		void on_lineClassic_textChanged(QString);

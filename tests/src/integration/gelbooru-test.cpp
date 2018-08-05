@@ -68,4 +68,4 @@ void GelbooruTest::testHtmlTags()
 }
 
 
-static GelbooruTest instance;
+QTEST_MAIN(GelbooruTest)

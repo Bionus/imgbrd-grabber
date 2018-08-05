@@ -2,8 +2,8 @@
 #include "functions.h"
 
 
-MixedSettings::MixedSettings(const QList<QSettings*> &settings)
-	: m_settings(settings)
+MixedSettings::MixedSettings(QList<QSettings*> settings)
+	: m_settings(std::move(settings))
 {}
 
 MixedSettings::~MixedSettings()
@@ -74,7 +74,7 @@ void MixedSettings::beginGroup(const QString &prefix)
 
 void MixedSettings::endGroup()
 {
-	for (QSettings *setting :qAsConst( m_settings))
+	for (QSettings *setting : qAsConst(m_settings))
 		setting->endGroup();
 }
 

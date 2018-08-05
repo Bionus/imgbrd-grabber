@@ -8,11 +8,11 @@ HttpGetLogin::HttpGetLogin(Site *site, CustomNetworkAccessManager *manager, Mixe
 	: HttpLogin("get", site, manager, settings)
 {}
 
-QNetworkReply *HttpGetLogin::getReply(const QString &loginUrl, const QUrlQuery &query) const
+QNetworkReply *HttpGetLogin::getReply(const QString &url, const QUrlQuery &query) const
 {
-	QUrl url = m_site->fixUrl(loginUrl);
-	url.setQuery(query);
-	QNetworkRequest request(url);
+	QUrl fixedUrl = m_site->fixUrl(url);
+	fixedUrl.setQuery(query);
+	const QNetworkRequest request(fixedUrl);
 
 	return m_manager->get(request);
 }

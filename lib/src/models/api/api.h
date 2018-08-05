@@ -1,9 +1,6 @@
 #ifndef API_H
 #define API_H
 
-#include <QMap>
-#include <QObject>
-#include <QString>
 #include "models/image.h"
 #include "tags/tag.h"
 
@@ -43,7 +40,7 @@ struct ParsedDetails
 struct ParsedCheck
 {
 	QString error;
-	bool ok;
+	bool ok = false;
 };
 
 class Site;
@@ -53,11 +50,11 @@ class Api : public QObject
 	Q_OBJECT
 
 	public:
-		Api(const QString &name, const QMap<QString, QString> &data);
+		Api(QString name, QMap<QString, QString> data);
 
 		// Getters
 		QString getName() const;
-		virtual bool needAuth() const;
+		virtual bool needAuth() const = 0;
 
 		// Info getters
 		bool contains(const QString &key) const;
@@ -65,25 +62,24 @@ class Api : public QObject
 		QString operator[](const QString &key) const { return value(key); }
 
 		// API
-		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const;
+		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const = 0;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const = 0;
-		virtual PageUrl tagsUrl(int page, int limit, Site *site) const;
+		virtual PageUrl tagsUrl(int page, int limit, Site *site) const = 0;
 		virtual ParsedTags parseTags(const QString &source, Site *site) const = 0;
-		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const;
-		virtual ParsedDetails parseDetails(const QString &source, Site *site) const;
-		virtual PageUrl checkUrl() const;
-		virtual ParsedCheck parseCheck(const QString &source) const;
-		virtual bool canLoadTags() const;
-		virtual bool canLoadDetails() const;
-		virtual bool canLoadCheck() const;
-		virtual int forcedLimit() const;
-		virtual int maxLimit() const;
-		virtual QStringList modifiers() const;
-		virtual QStringList forcedTokens() const;
+		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const = 0;
+		virtual ParsedDetails parseDetails(const QString &source, Site *site) const = 0;
+		virtual PageUrl checkUrl() const = 0;
+		virtual ParsedCheck parseCheck(const QString &source) const = 0;
+		virtual bool canLoadTags() const = 0;
+		virtual bool canLoadDetails() const = 0;
+		virtual bool canLoadCheck() const = 0;
+		virtual int forcedLimit() const = 0;
+		virtual int maxLimit() const = 0;
+		virtual QStringList modifiers() const = 0;
+		virtual QStringList forcedTokens() const = 0;
 
 	protected:
-		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>(), bool replaces = true) const;
-		QString parseSetImageUrl(Site *site, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, const QString &def = QString()) const;
+		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>()) const;
 
 	private:
 		QString m_name;

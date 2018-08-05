@@ -33,7 +33,7 @@ void EmptyDirsFix1::next()
 		return;
 	}
 
-	EmptyDirsFix2 *edf2 = new EmptyDirsFix2(dirs);
+	auto *edf2 = new EmptyDirsFix2(dirs);
 	close();
 	edf2->show();
 }
@@ -44,10 +44,10 @@ QStringList EmptyDirsFix1::mkList(const QDir &dir)
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (int i = 0; i < dirs.size(); i++)
 	{
-		if (isEmpty(QDir(dir.path()+"/"+dirs.at(i))))
-		{ ret.append(dir.path()+"/"+dirs.at(i)); }
+		if (isEmpty(QDir(dir.path() + "/" + dirs.at(i))))
+		{ ret.append(dir.path() + "/" + dirs.at(i)); }
 		else
-		{ mkList(QDir(dir.path()+"/"+dirs.at(i))); }
+		{ mkList(QDir(dir.path() + "/" + dirs.at(i))); }
 	}
 	return ret;
 }
@@ -61,6 +61,6 @@ bool EmptyDirsFix1::isEmpty(const QDir &dir)
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	bool empty = true;
 	for (int i = 0; i < dirs.size(); i++)
-	{ empty = empty && isEmpty(QDir(dir.path()+"/"+dirs.at(i))); }
+	{ empty = empty && isEmpty(QDir(dir.path() + "/" + dirs.at(i))); }
 	return empty;
 }

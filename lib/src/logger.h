@@ -24,22 +24,22 @@ class Logger : public QObject
 		};
 
 		// Singleton pattern
-		static Logger& getInstance()
+		static Logger &getInstance()
 		{
 			static Logger instance;
 			return instance;
 		}
-		Logger(Logger const&) = delete;
-		void operator=(Logger const&) = delete;
+		Logger(Logger const &) = delete;
+		void operator=(Logger const &) = delete;
 
 		// Handlers for Qt log messages
-		static void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
-		static void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
+		static void messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
+		static void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
 		static void setupMessageOutput(bool log);
 
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
-		void log(const QString &, LogLevel type = Info);
+		void log(const QString &, LogLevel level = Info);
 		void logCommand(const QString &);
 		void logCommandSql(const QString &);
 		void logUpdate(const QString &);

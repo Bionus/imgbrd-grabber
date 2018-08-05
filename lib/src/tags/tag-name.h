@@ -2,16 +2,14 @@
 #define TAG_NAME_H
 
 #include <QMetaType>
-#include <QString>
-#include <QStringList>
 #include "tags/tag-name-format.h"
 
 
 class TagName
 {
 	public:
-		TagName();
-		explicit TagName(const QString &name, const TagNameFormat &format = TagNameFormat::Normalized());
+		TagName() = default;
+		explicit TagName(QString name, TagNameFormat format = TagNameFormat::Normalized());
 		QString normalized() const;
 		QString formatted(const TagNameFormat &format) const;
 

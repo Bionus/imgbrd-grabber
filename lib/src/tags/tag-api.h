@@ -21,12 +21,13 @@ class TagApi : public QObject
 			Error
 		};
 
-		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = Q_NULLPTR);
+		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = nullptr);
 		~TagApi() override;
 		void load(bool rateLimit = false);
-		QList<Tag> tags() const;
+		const QList<Tag> &tags() const;
 
 	public slots:
+		void loadNow();
 		void abort();
 
 	protected slots:

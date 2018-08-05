@@ -2,7 +2,6 @@
 #define DOWNLOAD_QUERY_GROUP_H
 
 #include <QJsonObject>
-#include <QMetaType>
 #include <QSettings>
 #include <QString>
 #include "downloader/download-query.h"
@@ -15,11 +14,10 @@ class DownloadQueryGroup : public DownloadQuery
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		explicit DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = "");
-		explicit DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = "");
+		explicit DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = QString());
+		explicit DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk = QString());
 
 		// Serialization
-		QString toString(const QString &separator) const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
 
@@ -33,8 +31,8 @@ class DownloadQueryGroup : public DownloadQuery
 		QString unk;
 };
 
-bool operator==(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
-bool operator!=(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
+bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);
+bool operator!=(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);
 
 Q_DECLARE_METATYPE(DownloadQueryGroup)
 

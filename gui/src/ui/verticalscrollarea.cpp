@@ -29,18 +29,19 @@ void VerticalScrollArea::setScrollEnabled(bool enabled)
 
 void VerticalScrollArea::updateWidgetSize()
 {
-	if (widget())
+	QWidget *w = widget();
+	if (w != nullptr)
 	{
 		int maxWidth = width();
 		if (m_scrollEnabled && verticalScrollBar()->isVisible())
 			maxWidth -= verticalScrollBar()->width();
-		widget()->setMaximumWidth(maxWidth);
+		w->setMaximumWidth(maxWidth);
 
-		widget()->setMaximumHeight(m_scrollEnabled ? QWIDGETSIZE_MAX : height());
+		w->setMaximumHeight(m_scrollEnabled ? QWIDGETSIZE_MAX : height());
 	}
 }
 
-void VerticalScrollArea::wheelEvent(QWheelEvent* e)
+void VerticalScrollArea::wheelEvent(QWheelEvent *e)
 {
 	QScrollBar *scrollBar = verticalScrollBar();
 

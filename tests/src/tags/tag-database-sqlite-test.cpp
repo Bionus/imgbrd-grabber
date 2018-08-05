@@ -8,4 +8,4 @@ TagDatabaseSqliteTest::TagDatabaseSqliteTest()
 {}
 
 
-static TagDatabaseSqliteTest instance;
+QTEST_MAIN(TagDatabaseSqliteTest)

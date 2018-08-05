@@ -1,9 +1,8 @@
 #include "models/profile.h"
-#include <QDir>
-#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSet>
 #include "commands/commands.h"
 #include "functions.h"
 #include "models/site.h"
@@ -13,11 +12,11 @@
 Profile::Profile()
 	: m_settings(nullptr), m_commands(nullptr)
 {}
-Profile::Profile(QSettings *settings, const QList<Favorite> &favorites, const QStringList &keptForLater, const QString &path)
-	: m_path(path), m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater), m_commands(nullptr)
+Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr)
 {}
-Profile::Profile(const QString &path)
-	: m_path(path)
+Profile::Profile(QString path)
+	: m_path(std::move(path))
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
@@ -43,7 +42,7 @@ Profile::Profile(const QString &path)
 	QFile fileFavoritesJson(m_path + "/favorites.json");
 	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text))
 	{
-		QByteArray data = fileFavoritesJson.readAll();
+		const QByteArray data = fileFavoritesJson.readAll();
 		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 		QJsonObject object = loadDoc.object();
 
@@ -138,13 +137,13 @@ Profile::Profile(const QString &path)
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
 	for (const QString &bl : blacklist)
-	{ m_blacklistedTags.append(QStringList() << bl); }
+	{ m_blacklist.add(bl); }
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text))
 	{
 		QString line;
 		while (!(line = fileBlacklist.readLine()).isEmpty())
-			m_blacklistedTags.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_blacklist.add(line.trimmed().split(" ", QString::SkipEmptyParts));
 
 		fileBlacklist.close();
 	}
@@ -201,8 +200,7 @@ void Profile::sync()
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
-		for (const QStringList &bl : qAsConst(m_blacklistedTags))
-		{ fileBlacklist.write((bl.join(' ') + "\n").toUtf8()); }
+		fileBlacklist.write(m_blacklist.toString().toUtf8());
 		fileBlacklist.close();
 	}
 	m_settings->remove("blacklistedtags");
@@ -211,7 +209,7 @@ void Profile::sync()
 	if (m_settings != nullptr)
 		m_settings->sync();
 }
-void Profile::syncFavorites()
+void Profile::syncFavorites() const
 {
 	QFile fileFavorites(m_path + "/favorites.json");
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -236,7 +234,7 @@ void Profile::syncFavorites()
 		fileFavorites.close();
 	}
 }
-void Profile::syncKeptForLater()
+void Profile::syncKeptForLater() const
 {
 	QFile fileKfl(m_path + "/viewitlater.txt");
 	if (fileKfl.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -245,7 +243,7 @@ void Profile::syncKeptForLater()
 		fileKfl.close();
 	}
 }
-void Profile::syncIgnored()
+void Profile::syncIgnored() const
 {
 	QFile fileIgnored(m_path + "/ignore.txt");
 	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -257,8 +255,8 @@ void Profile::syncIgnored()
 
 QString Profile::tempPath() const
 {
-	QString tmp = QDir::tempPath();
-	QString subDir = "Grabber";
+	const QString tmp = QDir::tempPath();
+	const QString subDir = "Grabber";
 	QDir(tmp).mkpath(subDir);
 	return tmp + QDir::separator() + subDir;
 }
@@ -322,11 +320,11 @@ void Profile::removeIgnored(const QString &tag)
 QPair<QString, QString> Profile::md5Action(const QString &md5)
 {
 	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
-	bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
 
-	bool contains = !md5.isEmpty() && m_md5s.contains(md5);
+	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
 	QString path = contains ? m_md5s[md5] : QString();
-	bool exists = contains && QFile::exists(path);
+	const bool exists = contains && QFile::exists(path);
 
 	if (contains && !exists)
 	{
@@ -411,21 +409,21 @@ void Profile::removeSite(Site *site)
 }
 
 
-void Profile::setBlacklistedTags(const QList<QStringList> &tags)
+void Profile::setBlacklistedTags(const Blacklist &blacklist)
 {
-	m_blacklistedTags = tags;
+	m_blacklist = blacklist;
 	emit blacklistChanged();
 }
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
-	m_blacklistedTags.append(QStringList() << tag);
+	m_blacklist.add(tag);
 	emit blacklistChanged();
 }
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
-	m_blacklistedTags.removeAll(QStringList() << tag);
+	m_blacklist.remove(tag);
 	emit blacklistChanged();
 }
 
@@ -438,7 +436,7 @@ QStringList &Profile::getIgnored()				{ return m_ignored;				}
 Commands &Profile::getCommands()				{ return *m_commands;			}
 QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
 QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
-QList<QStringList> &Profile::getBlacklist()		{ return m_blacklistedTags;		}
+Blacklist &Profile::getBlacklist()				{ return m_blacklist;			}
 const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
 const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
 

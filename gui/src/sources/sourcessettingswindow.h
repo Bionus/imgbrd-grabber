@@ -2,8 +2,6 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
-#include <QMap>
-#include <QSettings>
 #include "models/site.h"
 
 
@@ -20,7 +18,7 @@ class SourcesSettingsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = Q_NULLPTR);
+		explicit SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent = nullptr);
 		~SourcesSettingsWindow() override;
 
 	public slots:
@@ -30,7 +28,7 @@ class SourcesSettingsWindow : public QDialog
 		void addHeader();
 		void save();
 		void testLogin();
-		void loginTested(Site*, Site::LoginResult);
+		void loginTested(Site *site, Site::LoginResult result);
 
 	signals:
 		void siteDeleted(const QString &);

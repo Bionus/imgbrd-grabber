@@ -3,13 +3,26 @@
 
 
 TagType::TagType()
-	: TagType("unknown")
+	: m_isUnknown(true), m_name("unknown")
 {}
 TagType::TagType(const QString &name)
-	: m_name(name)
-{}
+	: m_isUnknown(name.isEmpty() || name == "unknown"), m_name(name.isEmpty() ? "unknown" : name)
+{
+	// Sometimes a type is found with multiple words, only the first is relevant
+	if (!m_isUnknown)
+	{
+		const int typeSpace = m_name.indexOf(' ');
+		if (typeSpace != -1)
+		{ m_name = m_name.left(typeSpace); }
+	}
+}
 
-QString TagType::name() const
+bool TagType::isUnknown() const
+{
+	return m_isUnknown;
+}
+
+const QString &TagType::name() const
 {
 	return m_name;
 }
@@ -27,10 +40,11 @@ int TagType::number() const
 		{ "photo_set", 6 },
 	};
 
-	return shortTypes.contains(m_name) ? shortTypes[m_name] : -1;
+	return !m_isUnknown && shortTypes.contains(m_name) ? shortTypes[m_name] : -1;
 }
 
 bool operator==(const TagType &a, const TagType &b)
 {
-	return a.name() == b.name();
+	return (a.isUnknown() && b.isUnknown())
+		|| a.name() == b.name();
 }

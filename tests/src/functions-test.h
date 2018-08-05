@@ -9,8 +9,12 @@ class FunctionsTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		void testCopyRecursively();
 		void testFixFilenameWindows();
 		void testFixFilenameLinux();
+		void testGetExtensionFromHeader();
+		void testFontToCss();
+		void testIsVariantEmpty();
 		void testGetUnit();
 		void testFormatFilesize();
 		void testGetExtension();

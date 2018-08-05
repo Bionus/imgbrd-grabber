@@ -1,7 +1,6 @@
 #ifndef SQL_WORKER_H
 #define SQL_WORKER_H
 
-#include <QString>
 #include <QThread>
 #include <QVariant>
 
@@ -11,7 +10,7 @@ class SqlWorker : public QThread
 	Q_OBJECT
 
 	public:
-		SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent = Q_NULLPTR);
+		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = nullptr);
 		bool connect();
 		static QString escape(const QVariant &val);
 

@@ -9,7 +9,7 @@
 
 
 UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
-	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
+	: QDialog(nullptr), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -29,7 +29,7 @@ UpdateDialog::~UpdateDialog()
 void UpdateDialog::resizeToFit()
 {
 	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
-	int width = ui->labelUpdateAvailable->size().width();
+	const int width = ui->labelUpdateAvailable->size().width();
 
 	ui->labelUpdateAvailable->setMinimumWidth(width);
 	adjustSize();
@@ -50,7 +50,7 @@ void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available
 		return;
 	}
 
-	bool hasChangelog = !changelog.isEmpty();
+	const bool hasChangelog = !changelog.isEmpty();
 	if (hasChangelog)
 	{
 		ui->labelChangelog->setTextFormat(Qt::RichText);
@@ -96,7 +96,7 @@ void UpdateDialog::downloadFinished(const QString &path)
 
 	QProcess::startDetached(path);
 
-	if (m_parent != Q_NULLPTR)
+	if (m_parent != nullptr)
 	{ m_parent->close(); }
 
 	*m_shouldQuit = true;

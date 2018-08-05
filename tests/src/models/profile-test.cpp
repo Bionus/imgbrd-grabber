@@ -216,4 +216,4 @@ void ProfileTest::testMd5ActionKeepDeleted()
 
 
 
-static ProfileTest instance;
+QTEST_MAIN(ProfileTest)

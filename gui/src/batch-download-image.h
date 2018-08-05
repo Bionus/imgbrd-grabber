@@ -16,8 +16,8 @@ class BatchDownloadImage
 
 		// Public members
 		QSharedPointer<Image> image;
-		const DownloadQueryGroup *queryGroup = Q_NULLPTR;
-		const DownloadQueryImage *queryImage = Q_NULLPTR;
+		const DownloadQueryGroup *queryGroup = nullptr;
+		const DownloadQueryImage *queryImage = nullptr;
 };
 
 bool operator==(const BatchDownloadImage &lhs, const BatchDownloadImage &rhs);

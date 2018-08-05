@@ -23,7 +23,7 @@ void Logger::setLogLevel(LogLevel level)
 }
 
 
-void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	static QMap<QtMsgType, LogLevel> messageTypes
 	{
@@ -48,7 +48,7 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 	Logger::getInstance().log(QStringLiteral("%1 %2").arg(label, message), messageTypes[type]);
 }
 
-void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
 	Q_UNUSED(type);
 	Q_UNUSED(context);
@@ -86,7 +86,7 @@ void Logger::log(const QString &l, LogLevel level)
 	m_logFile.flush();
 
 	// Emit colored HTML log
-	QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
+	const QString msg = "[" + time.toString(timeFormat) + "][" + levelStr + "] " + l;
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG
@@ -102,7 +102,7 @@ void Logger::logCommand(const QString &l)
 		m_fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
-	m_fCommandsLog.write(QString(l+"\r\n").toUtf8());
+	m_fCommandsLog.write(QString(l + "\r\n").toUtf8());
 	m_fCommandsLog.flush();
 }
 
@@ -114,7 +114,7 @@ void Logger::logCommandSql(const QString &l)
 		m_fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
-	m_fCommandsSqlLog.write(QString(l+"\r\n").toUtf8());
+	m_fCommandsSqlLog.write(QString(l + "\r\n").toUtf8());
 	m_fCommandsSqlLog.flush();
 }
 

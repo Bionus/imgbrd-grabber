@@ -1,5 +1,4 @@
 #include "commands/commands.h"
-#include <QDir>
 #include <QProcess>
 #include "commands/sql-worker.h"
 #include "functions.h"
@@ -28,10 +27,10 @@ Commands::Commands(Profile *profile)
 	settings->endGroup();
 
 	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
-								settings->value("Exec/SQL/host").toString(),
-								settings->value("Exec/SQL/user").toString(),
-								settings->value("Exec/SQL/password").toString(),
-								settings->value("Exec/SQL/database").toString());
+		settings->value("Exec/SQL/host").toString(),
+		settings->value("Exec/SQL/user").toString(),
+		settings->value("Exec/SQL/password").toString(),
+		settings->value("Exec/SQL/database").toString());
 	m_sqlWorker->setObjectName("SqlThread");
 }
 
@@ -40,12 +39,12 @@ Commands::~Commands()
 	m_sqlWorker->deleteLater();
 }
 
-bool Commands::start()
+bool Commands::start() const
 {
 	return m_sqlWorker->connect();
 }
 
-bool Commands::before()
+bool Commands::before() const
 {
 	if (!m_mysqlSettings.before.isEmpty())
 		return sqlExec(m_mysqlSettings.before);
@@ -69,7 +68,7 @@ bool Commands::image(const Image &img, const QString &path)
 			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
-			int code = QProcess::execute(exec);
+			const int code = QProcess::execute(exec);
 			if (code != 0)
 				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
@@ -97,7 +96,7 @@ bool Commands::image(const Image &img, const QString &path)
 
 bool Commands::tag(const Image &img, const Tag &tag, bool after)
 {
-	QString original = QString(tag.text()).replace(" ", "_");
+	const QString original = QString(tag.text()).replace(" ", "_");
 
 	QString command = after ? m_commandTagAfter : m_commandTagBefore;
 	if (!command.isEmpty())
@@ -116,7 +115,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
-			int code = QProcess::execute(exec);
+			const int code = QProcess::execute(exec);
 			if (code != 0)
 				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
@@ -145,7 +144,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 	return true;
 }
 
-bool Commands::after()
+bool Commands::after() const
 {
 	if (!m_mysqlSettings.after.isEmpty())
 		return sqlExec(m_mysqlSettings.after);
@@ -153,7 +152,7 @@ bool Commands::after()
 	return true;
 }
 
-bool Commands::sqlExec(const QString &sql)
+bool Commands::sqlExec(const QString &sql) const
 {
 	QMetaObject::invokeMethod(m_sqlWorker, "execute", Qt::QueuedConnection, Q_ARG(QString, sql));
 	return true;

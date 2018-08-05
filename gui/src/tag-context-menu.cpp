@@ -3,11 +3,12 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QProcess>
+#include "functions.h"
 #include "models/profile.h"
 
 
-TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, const QUrl &browserUrl, Profile *profile, bool setImage, QWidget *parent)
-	: QMenu(parent), m_tag(tag), m_allTags(allTags), m_browserUrl(browserUrl), m_profile(profile)
+TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)
+	: QMenu(parent), m_tag(std::move(tag)), m_allTags(std::move(allTags)), m_browserUrl(std::move(browserUrl)), m_profile(profile)
 {
 	// Favorites
 	if (profile->getFavorites().contains(Favorite(m_tag)))
@@ -26,7 +27,7 @@ TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, co
 	{ addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
 	// Blacklist
-	if (profile->getBlacklist().contains(QStringList() << m_tag))
+	if (profile->getBlacklist().contains(m_tag))
 	{ addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
 	else
 	{ addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
@@ -99,8 +100,7 @@ void TagContextMenu::openInNewTab()
 }
 void TagContextMenu::openInNewWindow()
 {
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
 }
 void TagContextMenu::openInBrowser()
 {

@@ -1,7 +1,7 @@
 #include "threads/image-loader.h"
 
 
-ImageLoader::ImageLoader(QObject* parent)
+ImageLoader::ImageLoader(QObject *parent)
 	: QObject(parent)
 { }
 

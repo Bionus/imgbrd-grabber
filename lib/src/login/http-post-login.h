@@ -1,6 +1,7 @@
 #ifndef HTTP_POST_LOGIN_H
 #define HTTP_POST_LOGIN_H
 
+#include <QNetworkReply>
 #include "login/http-login.h"
 
 

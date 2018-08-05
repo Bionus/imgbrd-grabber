@@ -15,7 +15,7 @@ void E621Test::testSwfUrls()
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
-		urls.append(img->url());
+		urls.append(img->url().toString());
 	}
 
 	// Check results
@@ -93,4 +93,4 @@ void E621Test::testJsonTags()
 }
 
 
-static E621Test instance;
+QTEST_MAIN(E621Test)

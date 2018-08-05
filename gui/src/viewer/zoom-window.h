@@ -19,6 +19,7 @@ class QAffiche;
 class Profile;
 class mainWindow;
 class DetailsWindow;
+class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
 
@@ -38,8 +39,16 @@ class ZoomWindow : public QWidget
 			ExistsDisk,
 			Delete
 		};
+		enum PendingAction
+		{
+			PendingNothing,
+			PendingSave,
+			PendingSaveFav,
+			PendingSaveAs,
+			PendingOpen,
+		};
 
-		ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -47,13 +56,14 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, const QString &errorString = "");
+		void replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result);
 		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
-		QStringList saveImageNow(bool fav = false, bool saveAs = false);
+		void saveImageNow();
+		void saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
 		void saveImageAs();
 		void openUrl(const QString &);
 		void openPool(const QString &);
@@ -61,20 +71,20 @@ class ZoomWindow : public QWidget
 		void openSaveDir(bool fav = false);
 		void openSaveDirFav();
 		void linkHovered(const QString &);
-		void contextMenu(QPoint);
+		void contextMenu(const QPoint &pos);
 		void openInNewTab();
 		void setfavorite();
-		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+		void downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void urlChanged(const QString &before, const QString &after);
+		void urlChanged(const QUrl &before, const QUrl &after);
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
 		void openFile(bool now = false);
 		void updateWindowTitle();
-		void showLoadingError(const QString &error);
+		void showLoadingError(const QString &message);
 		void setButtonState(bool fav, SaveButtonState state);
-		void reuse(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site);
+		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 
 		// Context menus
 		void imageContextMenu();
@@ -90,7 +100,7 @@ class ZoomWindow : public QWidget
 		void toggleSlideshow();
 
 		// Navigation
-		void load(QSharedPointer<Image> image);
+		void load(const QSharedPointer<Image> &image);
 		void next();
 		void previous();
 
@@ -126,9 +136,13 @@ class ZoomWindow : public QWidget
 		QSharedPointer<Image> m_image;
 		QMap<QString, QString> regex, m_details;
 		Site *m_site;
-		int m_timeout, m_mustSave;
+		int m_timeout;
+		PendingAction m_pendingAction;
+		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
-		QString id, m_url, m_saveUrl, rating, score, user;
+		QString id;
+		QUrl m_url, m_saveUrl;
+		QString rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
@@ -149,6 +163,8 @@ class ZoomWindow : public QWidget
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
 		SaveButtonState m_saveButonState, m_saveButonStateFav;
+
+		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
 		// Display
 		QString m_isAnimated;

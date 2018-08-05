@@ -42,4 +42,4 @@ void ZerochanTest::testRss()
 }
 
 
-static ZerochanTest instance;
+QTEST_MAIN(ZerochanTest)

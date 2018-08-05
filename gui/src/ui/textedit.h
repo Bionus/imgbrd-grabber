@@ -13,8 +13,8 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		explicit TextEdit(Profile *profile, QWidget *parent = Q_NULLPTR);
-		void setCompleter(QCompleter *c);
+		explicit TextEdit(Profile *profile, QWidget *parent = nullptr);
+		void setCompleter(QCompleter *completer);
 		QCompleter *completer() const;
 		QSize sizeHint() const override;
 		void doColor();
@@ -31,7 +31,7 @@ class TextEdit : public QTextEdit
 	private slots:
 		void insertCompletion(const QString &completion);
 		void insertFav(QAction *act);
-		void customContextMenuRequested(QPoint);
+		void customContextMenuRequested(const QPoint &pos);
 		void setFavorite();
 		void unsetFavorite();
 		void setKfl();

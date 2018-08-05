@@ -1,8 +1,6 @@
 #ifndef FAVORITE_H
 #define FAVORITE_H
 
-#include <QDateTime>
-#include <QJsonObject>
 #include <QPixmap>
 #include <QString>
 #include "models/monitor.h"
@@ -13,9 +11,9 @@ class Site;
 class Favorite
 {
 	public:
-		explicit Favorite(const QString &name);
-		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath = "");
-		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QList<Monitor> &monitors, const QString &imagePath = "");
+		explicit Favorite(QString name);
+		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
+		Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath = "");
 
 		// Getters and setters
 		void setNote(int note);
@@ -43,7 +41,7 @@ class Favorite
 
 		static bool sortByNote(const Favorite &s1, const Favorite &s2);
 		static bool sortByName(const Favorite &s1, const Favorite &s2);
-		static bool sortByLastviewed(const Favorite &s1, const Favorite &s2);
+		static bool sortByLastViewed(const Favorite &s1, const Favorite &s2);
 
 	private:
 		QString		m_name;
@@ -53,7 +51,7 @@ class Favorite
 		QString		m_imagePath;
 };
 
-bool operator==(const Favorite& lhs, const Favorite& rhs);
-bool operator!=(const Favorite& lhs, const Favorite& rhs);
+bool operator==(const Favorite &lhs, const Favorite &rhs);
+bool operator!=(const Favorite &lhs, const Favorite &rhs);
 
 #endif // FAVORITE_H

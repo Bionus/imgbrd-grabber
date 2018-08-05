@@ -42,7 +42,7 @@ void EmptyDirsFix2::deleteSel()
 		return;
 	}
 
-	int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
+	const int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes)
 	{
 		for (int i = 0; i < folders.size(); i++)

@@ -5,8 +5,8 @@
 #include "custom-network-access-manager.h"
 
 
-SourceUpdater::SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl)
-	: m_source(source), m_directory(directory), m_baseUrl(baseUrl)
+SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
+	: m_source(std::move(source)), m_directory(std::move(directory)), m_baseUrl(std::move(baseUrl))
 {
 	if (!m_baseUrl.endsWith("/"))
 		m_baseUrl += "/";
@@ -15,8 +15,8 @@ SourceUpdater::SourceUpdater(const QString &source, const QString &directory, co
 
 void SourceUpdater::checkForUpdates() const
 {
-	QUrl url(m_baseUrl + m_source + "/model.xml");
-	QNetworkRequest request(url);
+	const QUrl url(m_baseUrl + m_source + "/model.xml");
+	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
 	connect(reply, &QNetworkReply::finished, this, &SourceUpdater::checkForUpdatesDone);
@@ -45,4 +45,5 @@ void SourceUpdater::checkForUpdatesDone()
 	}
 
 	emit finished(m_source, isNew);
+	reply->deleteLater();
 }

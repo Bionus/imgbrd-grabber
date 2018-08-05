@@ -1,19 +1,23 @@
-Grabber.makeArray = (val: any): any[] => {
+function addHelper(name: string, value: any): void {
+    Object.defineProperty(Grabber, name, { value });
+}
+
+addHelper("makeArray", (val: any): any[] => {
     if (!Array.isArray(val)) {
         return [ val ];
     }
     return val;
-};
+});
 
-Grabber.mapObject = (obj: any, fn: (v: any) => any): any => {
+addHelper("mapObject", (obj: any, fn: (v: any) => any): any => {
     const ret: any = {};
     for (const k in obj) {
         ret[k] = fn(obj[k]);
     }
     return ret;
-};
+});
 
-Grabber.typedXML = (val: any) => {
+addHelper("typedXML", (val: any) => {
     if (val && typeof val === "object" && ("#text" in val || "@attributes" in val)) {
         const txt = val["#text"];
 
@@ -47,9 +51,9 @@ Grabber.typedXML = (val: any) => {
     }
 
     return val;
-};
+});
 
-Grabber.mapFields = (data: any, map: any): any => {
+addHelper("mapFields", (data: any, map: any): any => {
     const result: any = {};
     if (typeof data !== "object") {
         return result;
@@ -59,9 +63,9 @@ Grabber.mapFields = (data: any, map: any): any => {
         result[to] = from in data && data[from] !== null ? data[from] : undefined;
     }
     return result;
-};
+});
 
-Grabber.countToInt = (str: string): number => {
+addHelper("countToInt", (str: string): number => {
     if (!str) {
         return 0;
     }
@@ -74,9 +78,9 @@ Grabber.countToInt = (str: string): number => {
         count = parseFloat(normalized);
     }
     return Math.round(count);
-};
+});
 
-Grabber.loginUrl = (fields: any, values: any): string => {
+addHelper("loginUrl", (fields: any, values: any): string => {
     let res = "";
     for (const field of fields) {
         const val = values[field.key];
@@ -85,9 +89,9 @@ Grabber.loginUrl = (fields: any, values: any): string => {
         }
     }
     return res;
-};
+});
 
-Grabber.fixPageUrl = (url: string, page: number, previous: any): string => {
+addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
     url = url.replace("{page}", String(page));
     if (previous) {
         url = url.replace("{min}", previous.minId);
@@ -98,9 +102,9 @@ Grabber.fixPageUrl = (url: string, page: number, previous: any): string => {
         url = url.replace("{max+1}", previous.maxId + 1);
     }
     return url;
-};
+});
 
-Grabber.pageUrl = (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
+addHelper("pageUrl", (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
     if (page <= limit || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous);
     }
@@ -111,9 +115,9 @@ Grabber.pageUrl = (page: number, previous: any, limit: number, ifBelow: string, 
         return Grabber.fixPageUrl(ifNext, page, previous);
     }
     throw new Error("You need valid previous page information to browse that far");
-};
+});
 
-Grabber.regexToImages = (regexp: string, src: string): IImage[] => {
+addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
     const images: IImage[] = [];
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
@@ -126,9 +130,9 @@ Grabber.regexToImages = (regexp: string, src: string): IImage[] => {
         images.push(match);
     }
     return images;
-};
+});
 
-Grabber.regexToTags = (regexp: string, src: string): ITag[] => {
+addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
     const tags: ITag[] = [];
     const uniques: { [key: string]: boolean } = {};
 
@@ -144,21 +148,21 @@ Grabber.regexToTags = (regexp: string, src: string): ITag[] => {
         uniques[match["name"]] = true;
     }
     return tags;
-};
+});
 
-Grabber.regexToPools = (regexp: string, src: string): IPool[] => {
+addHelper("regexToPools", (regexp: string, src: string): IPool[] => {
     const pools: IPool[] = [];
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
         pools.push(match);
     }
     return pools;
-};
+});
 
-Grabber.regexToConst = (key: string, regexp: string, src: string): string => {
+addHelper("regexToConst", (key: string, regexp: string, src: string): string => {
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
         return match[key];
     }
     return undefined;
-};
+});

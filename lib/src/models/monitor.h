@@ -3,7 +3,6 @@
 
 #include <QDateTime>
 #include <QJsonObject>
-#include <QMap>
 
 
 class Site;
@@ -11,7 +10,7 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(Site *site, int interval, const QDateTime &lastCheck, int cumulated = 0, bool preciseCumulated = true);
+		Monitor(Site *site, int interval, QDateTime lastCheck, int cumulated = 0, bool preciseCumulated = true);
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
@@ -34,5 +33,8 @@ class Monitor
 		int m_cumulated;
 		bool m_preciseCumulated;
 };
+
+bool operator==(const Monitor &lhs, const Monitor &rhs);
+bool operator!=(const Monitor &lhs, const Monitor &rhs);
 
 #endif // MONITORING_H

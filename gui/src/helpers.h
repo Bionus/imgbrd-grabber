@@ -2,7 +2,6 @@
 #define HELPERS_H
 
 #include <QLayout>
-#include <QString>
 #include <QWidget>
 
 

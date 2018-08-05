@@ -3,8 +3,8 @@
 #include <QDir>
 
 
-ThemeLoader::ThemeLoader(const QString &path)
-	: m_path(path)
+ThemeLoader::ThemeLoader(QString path)
+	: m_path(std::move(path))
 {}
 
 QStringList ThemeLoader::getAllThemes() const

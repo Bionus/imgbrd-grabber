@@ -10,7 +10,7 @@ class QAffiche : public QLabel
 	Q_OBJECT
 
 	public:
-		explicit QAffiche(const QVariant &id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
+		explicit QAffiche(const QVariant &id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = nullptr);
 		void setImage(const QImage &);
 		void setImage(const QPixmap &);
 		Qt::MouseButton lastPressed();

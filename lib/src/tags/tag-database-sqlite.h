@@ -10,7 +10,8 @@
 class TagDatabaseSqlite : public TagDatabase
 {
 	public:
-		TagDatabaseSqlite(const QString &typeFile, const QString &tagFile);
+		TagDatabaseSqlite(const QString &typeFile, QString tagFile);
+		~TagDatabaseSqlite() override = default;
 		bool load() override;
 		bool save() override;
 		void setTags(const QList<Tag> &tags) override;

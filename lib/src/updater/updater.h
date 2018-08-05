@@ -2,9 +2,8 @@
 #define UPDATER_H
 
 #include <QObject>
+#include "custom-network-access-manager.h"
 
-
-class CustomNetworkAccessManager;
 
 class Updater : public QObject
 {

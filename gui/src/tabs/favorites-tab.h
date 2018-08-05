@@ -1,8 +1,6 @@
 #ifndef FAVORITES_TAB_H
 #define FAVORITES_TAB_H
 
-#include <QMap>
-#include <QWidget>
 #include "tabs/search-tab.h"
 
 
@@ -49,7 +47,7 @@ class favoritesTab : public searchTab
 		void setFavoriteViewed(const QString &tag);
 		void viewed();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void focusSearch() override;
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr) override;

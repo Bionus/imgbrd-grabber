@@ -2,7 +2,6 @@
 #define TAG_NAME_FORMAT_H
 
 #include <QMetaType>
-#include <QString>
 #include <QStringList>
 
 
@@ -17,8 +16,8 @@ class TagNameFormat
 			Caps, // SOME_TAG
 		};
 
-		TagNameFormat();
-		TagNameFormat(CaseFormat caseFormat, const QString &wordSeparator);
+		TagNameFormat() = default;
+		TagNameFormat(CaseFormat caseFormat, QString wordSeparator);
 		static TagNameFormat &Normalized();
 		CaseFormat caseFormat() const;
 		QString wordSeparator() const;
@@ -28,7 +27,7 @@ class TagNameFormat
 		QString formatted(const QString &word, int index) const;
 
 	private:
-		CaseFormat m_caseFormat;
+		CaseFormat m_caseFormat = CaseFormat::Lower;
 		QString m_wordSeparator;
 };
 

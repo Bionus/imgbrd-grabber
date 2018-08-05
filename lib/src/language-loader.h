@@ -8,7 +8,7 @@
 class LanguageLoader
 {
 	public:
-		explicit LanguageLoader(const QString &path);
+		explicit LanguageLoader(QString path);
 		QMap<QString, QString> getAllLanguages() const;
 
 	private:

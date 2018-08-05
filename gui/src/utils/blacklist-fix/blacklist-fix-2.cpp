@@ -2,11 +2,11 @@
 #include <QFile>
 #include <ui_blacklist-fix-2.h>
 #include "loader/token.h"
-#include "models/post-filter.h"
+#include "models/filtering/post-filter.h"
 
 
-BlacklistFix2::BlacklistFix2(const QList<QMap<QString, QString>> &details, const QList<QStringList> &blacklist, QWidget *parent)
-	: QDialog(parent), ui(new Ui::BlacklistFix2), m_details(details), m_blacklist(blacklist)
+BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist blacklist, QWidget *parent)
+	: QDialog(parent), ui(new Ui::BlacklistFix2), m_details(std::move(details)), m_blacklist(std::move(blacklist))
 {
 	ui->setupUi(this);
 
@@ -20,11 +20,11 @@ BlacklistFix2::BlacklistFix2(const QList<QMap<QString, QString>> &details, const
 		{
 			QMap<QString, Token> tokens;
 			tokens.insert("allos", Token(tags));
-			found = PostFilter::blacklisted(tokens, m_blacklist);
+			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
-		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i+1));
-		id->setIcon(QIcon(":/images/colors/"+color+".png"));
+		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i + 1));
+		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
 		ui->tableWidget->setItem(i, 0, id);
 		QLabel *preview = new QLabel();
 		preview->setPixmap(QPixmap(m_details.at(i).value("path_full")).scaledToHeight(50, Qt::SmoothTransformation));
@@ -61,14 +61,14 @@ void BlacklistFix2::on_buttonOk_clicked()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
-	int count = selected.size();
+	const int count = selected.size();
 	QSet<int> toDelete = QSet<int>();
 	for (int i = 0; i < count; i++)
 	{ toDelete.insert(selected.at(i)->row()); }
 	int rem = 0;
 	for (int i : toDelete)
 	{
-		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt()-1).value("path_full"));
+		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt() - 1).value("path_full"));
 		ui->tableWidget->removeRow(i - rem);
 		rem++;
 	}

@@ -1,5 +1,6 @@
 #include "favorite-test.h"
 #include <QtTest>
+#include <algorithm>
 #include "functions.h"
 
 
@@ -74,6 +75,17 @@ void FavoriteTest::testSetImagePath()
 	fav.setImagePath("test/newimage.jpg");
 
 	QCOMPARE(fav.getImagePath(), QString("test/newimage.jpg"));
+}
+
+void FavoriteTest::testGetMonitors()
+{
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+	Monitor monitor(nullptr, 60, date);
+	Favorite fav("fate/stay_night", 50, date, QList<Monitor>() << monitor, "test/test.jpg");
+	fav.setImagePath("test/newimage.jpg");
+
+	QCOMPARE(fav.getMonitors().count(), 1);
+	QCOMPARE(fav.getMonitors().first(), monitor);
 }
 
 void FavoriteTest::testEquals()
@@ -211,5 +223,53 @@ void FavoriteTest::testFromString()
 	QCOMPARE(actual.getLastViewed(), expected.getLastViewed());
 }
 
+void FavoriteTest::testSortByNote()
+{
+	QList<Favorite> favorites =
+	{
+		Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
+		Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
+		Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+	};
 
-static FavoriteTest instance;
+	std::sort(favorites.begin(), favorites.end(), Favorite::sortByNote);
+
+	QCOMPARE(favorites[0].getName(), QString("f3"));
+	QCOMPARE(favorites[1].getName(), QString("f1"));
+	QCOMPARE(favorites[2].getName(), QString("f2"));
+}
+
+void FavoriteTest::testSortByName()
+{
+	QList<Favorite> favorites =
+	{
+		Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
+		Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
+		Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+	};
+
+	std::sort(favorites.begin(), favorites.end(), Favorite::sortByName);
+
+	QCOMPARE(favorites[0].getName(), QString("f1"));
+	QCOMPARE(favorites[1].getName(), QString("f2"));
+	QCOMPARE(favorites[2].getName(), QString("f3"));
+}
+
+void FavoriteTest::testSortByLastViewed()
+{
+	QList<Favorite> favorites =
+	{
+		Favorite("f1", 2, QDateTime(QDate(2018, 1, 3))),
+		Favorite("f2", 3, QDateTime(QDate(2018, 1, 1))),
+		Favorite("f3", 1, QDateTime(QDate(2018, 1, 2)))
+	};
+
+	std::sort(favorites.begin(), favorites.end(), Favorite::sortByLastViewed);
+
+	QCOMPARE(favorites[0].getName(), QString("f2"));
+	QCOMPARE(favorites[1].getName(), QString("f3"));
+	QCOMPARE(favorites[2].getName(), QString("f1"));
+}
+
+
+QTEST_MAIN(FavoriteTest)

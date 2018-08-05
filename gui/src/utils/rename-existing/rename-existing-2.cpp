@@ -5,18 +5,18 @@
 #include "functions.h"
 
 
-RenameExisting2::RenameExisting2(const QList<RenameExistingFile> &details, const QString &folder, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(details), m_folder(folder)
+RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(std::move(details)), m_folder(std::move(folder))
 {
 	ui->setupUi(this);
 
-	bool thumbnails = details.count() < 50;
+	const bool showThumbnails = details.count() < 50;
 
 	int i = 0;
 	ui->tableWidget->setRowCount(m_details.size());
 	for (const RenameExistingFile &image : m_details)
 	{
-		if (thumbnails)
+		if (showThumbnails)
 		{
 			QLabel *preview = new QLabel();
 			preview->setPixmap(QPixmap(image.path).scaledToHeight(50, Qt::SmoothTransformation));
@@ -35,7 +35,7 @@ RenameExisting2::RenameExisting2(const QList<RenameExistingFile> &details, const
 	headerView->setSectionResizeMode(1, QHeaderView::Stretch);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 
-	if (!thumbnails)
+	if (!showThumbnails)
 		ui->tableWidget->removeColumn(0);
 }
 
@@ -60,7 +60,7 @@ void RenameExisting2::deleteDir(const QString &path)
 	{
 		directory.removeRecursively();
 
-		QString parent = path.left(path.lastIndexOf(QDir::separator()));
+		const QString parent = path.left(path.lastIndexOf(QDir::separator()));
 		deleteDir(parent);
 	}
 }
@@ -71,7 +71,7 @@ void RenameExisting2::on_buttonOk_clicked()
 	for (const RenameExistingFile &image : m_details)
 	{
 		// Create hierarchy
-		QString path = image.newPath.left(image.newPath.lastIndexOf(QDir::separator()));
+		const QString path = image.newPath.left(image.newPath.lastIndexOf(QDir::separator()));
 		QDir directory(path);
 		if (!directory.exists())
 		{
@@ -84,12 +84,12 @@ void RenameExisting2::on_buttonOk_clicked()
 		QFile::rename(image.path, image.newPath);
 		for (const QString &child : image.children)
 		{
-			QString newPath = QString(child).replace(image.path, image.newPath);
+			const QString newPath = QString(child).replace(image.path, image.newPath);
 			QFile::rename(child, newPath);
 		}
 
 		// Delete old path if necessary
-		QString oldDir = image.path.left(image.path.lastIndexOf(QDir::separator()));
+		const QString oldDir = image.path.left(image.path.lastIndexOf(QDir::separator()));
 		deleteDir(oldDir);
 	}
 

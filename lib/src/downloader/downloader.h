@@ -2,6 +2,7 @@
 #define DOWNLOADER_H
 
 #include <QVariant>
+#include "models/filtering/blacklist.h"
 #include "models/image.h"
 
 
@@ -14,7 +15,7 @@ class Downloader : public QObject
 	public:
 		Downloader() = default;
 		~Downloader() override;
-		Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QList<QStringList> &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous = nullptr);
+		Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(const QList<QSharedPointer<Image>> &images);
 		void loadNext();
@@ -24,9 +25,8 @@ class Downloader : public QObject
 		void getPageTags();
 		void getImages();
 		void getUrls();
-		QVariant getData() const;
-		QList<Page*> getPages() const;
-		QList<Site*> getSites() const;
+		const QVariant &getData() const;
+		const QList<Site*> &getSites() const;
 		int ignoredCount() const;
 		int duplicatesCount() const;
 		int pagesCount() const;
@@ -55,7 +55,7 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
-		void finishedLoadingImage(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
+		void finishedLoadingImage(const QSharedPointer<Image> &image, const QMap<QString, Image::SaveResult> &result);
 		void cancel();
 		void clear();
 
@@ -68,7 +68,7 @@ class Downloader : public QObject
 		QString m_location, m_filename, m_user, m_password;
 		bool m_blacklist, m_noDuplicates;
 		QString m_tagsFormat;
-		QList<QStringList> m_blacklistedTags;
+		Blacklist m_blacklistedTags;
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images;

@@ -1,13 +1,13 @@
 #include "models/page.h"
+#include <QUrl>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
-#include "vendor/json.h"
 
 
 Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(-1), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -37,11 +37,12 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	m_search = tags;
 
 	// Generate pages
-	m_siteApis = m_site->getApis(true);
+	PostFilter postFilter(postFiltering);
+	m_siteApis = m_site->getLoggedInApis();
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis))
 	{
-		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
+		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
 		if (m_pageApis.count() == 0)
 		{ connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot); }
 		m_pageApis.append(pageApi);
@@ -183,21 +184,41 @@ int Page::imagesCount(bool guess) const
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->imagesCount(guess);
+		const int count = m_pageApis[m_regexApi]->imagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
 	return m_pageApis[m_currentApi]->imagesCount(guess);
 }
+int Page::maxImagesCount() const
+{
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
+	{
+		const int count = m_pageApis[m_regexApi]->maxImagesCount();
+		if (count >= 0)
+			return count;
+	}
+	return m_pageApis[m_currentApi]->maxImagesCount();
+}
 int Page::pagesCount(bool guess) const
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->pagesCount(guess);
+		const int count = m_pageApis[m_regexApi]->pagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
 	return m_pageApis[m_currentApi]->pagesCount(guess);
+}
+int Page::maxPagesCount() const
+{
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
+	{
+		const int count = m_pageApis[m_regexApi]->maxPagesCount();
+		if (count >= 0)
+			return count;
+	}
+	return m_pageApis[m_currentApi]->maxPagesCount();
 }
 
 qulonglong Page::maxId() const

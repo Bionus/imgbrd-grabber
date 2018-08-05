@@ -5,6 +5,6 @@ DownloadQuery::DownloadQuery(Site *site)
 	: site(site)
 {}
 
-DownloadQuery::DownloadQuery(Site *site, const QString &filename, const QString &path)
-	: site(site), filename(filename), path(path)
+DownloadQuery::DownloadQuery(Site *site, QString filename, QString path)
+	: site(site), filename(std::move(filename)), path(std::move(path))
 {}

@@ -1,6 +1,5 @@
 #include "batch/adduniquewindow.h"
 #include <QFileDialog>
-#include <QSettings>
 #include <ui_adduniquewindow.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"
@@ -12,13 +11,8 @@
 #include "models/site.h"
 
 
-/**
- * Constructor of the AddUniqueWindow class, generating its window.
- * @param	favorites	List of favorites tags, needed for coloration
- * @param	parent		The parent window
- */
 AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(profile->getSites()), m_profile(profile)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_page(nullptr), m_sites(profile->getSites()), m_close(false), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -59,9 +53,9 @@ void AddUniqueWindow::ok(bool close)
 
 	m_close = close;
 	Api *api = site->detailsApi();
-	if (api != Q_NULLPTR)
+	if (api != nullptr)
 	{
-		QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
+		const QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
 
 		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
@@ -74,18 +68,14 @@ void AddUniqueWindow::ok(bool close)
 	}
 	else
 	{
-		QString query = (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text());
-		QStringList search = QStringList() << query << "status:any";
+		const QString query = (ui->lineId->text().isEmpty() ? "md5:" + ui->lineMd5->text() : "id:" + ui->lineId->text());
+		const QStringList search = QStringList() << query << "status:any";
 		m_page = new Page(m_profile, site, m_sites.values(), search, 1, 1);
 		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();
 	}
 }
 
-/**
- * Signal triggered when the search is finished.
- * @param r		The QNetworkReply associated with the search
- */
 void AddUniqueWindow::replyFinished(Page *p)
 {
 	if (p->images().isEmpty())
@@ -103,7 +93,7 @@ void AddUniqueWindow::addLoadedImage()
 {
 	addImage(m_image);
 }
-void AddUniqueWindow::addImage(QSharedPointer<Image> img)
+void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
 	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 

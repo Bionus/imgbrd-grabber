@@ -1,8 +1,8 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QTimer>
 #include "functions.h"
@@ -13,9 +13,10 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "tags/tag.h"
 
 
-bool opCompare(QString op, int left, int right)
+bool opCompare(const QString &op, int left, int right)
 {
 	if (right == -1)
 		return true;
@@ -26,7 +27,7 @@ bool opCompare(QString op, int left, int right)
 	return left == right;
 }
 
-bool jsonCompare(QVariant value, QJsonValue opt)
+bool jsonCompare(const QVariant &value, QJsonValue opt)
 {
 	QString op = "=";
 	if (opt.isArray())
@@ -44,19 +45,16 @@ bool jsonCompare(QVariant value, QJsonValue opt)
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication app(argc, argv);
+	const QCoreApplication app(argc, argv);
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
 
-	QCommandLineOption inputOption(QStringList() << "i" << "input", "Input JSON configuration file", "input");
-	QCommandLineOption outputOption(QStringList() << "o" << "output", "Output JSON result file", "output");
+	const QCommandLineOption inputOption(QStringList() << "i" << "input", "Input JSON configuration file", "input");
+	const QCommandLineOption outputOption(QStringList() << "o" << "output", "Output JSON result file", "output");
 	parser.addOption(inputOption);
 	parser.addOption(outputOption);
 	parser.process(app);
-
-	parser.value(inputOption);
-	parser.value(outputOption);
 
 	Logger::getInstance().setLogLevel(Logger::Warning);
 
@@ -73,22 +71,23 @@ int main(int argc, char *argv[])
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
 
-	auto oldBlacklist = profile->getBlacklist();
-	profile->setBlacklistedTags(QList<QStringList>());
+	const auto oldBlacklist = profile->getBlacklist();
+	profile->setBlacklistedTags(Blacklist());
 
-	QJsonObject root = input.object();
-	QJsonArray rootSearch = root.value("search").toArray();
-	QJsonObject sources = root.value("sources").toObject();
+	const QJsonObject root = input.object();
+	const QJsonArray rootSearch = root.value("search").toArray();
+	const QJsonObject sources = root.value("sources").toObject();
 
-	for (const QString &sourceName : sources.keys())
+	for (auto it = sources.begin(); it != sources.end(); ++it)
 	{
+		const QString &sourceName = it.key();
 		qDebug() << "#" << "Source" << sourceName;
 		QJsonObject sourceJson;
 
 		Source *source = allSources.value(sourceName);
-		QJsonObject sites = sources.value(sourceName).toObject();
+		QJsonObject sites = it.value().toObject();
 
-		QJsonObject sourceApis = sites.value("apis").toObject();
+		const QJsonObject sourceApis = sites.value("apis").toObject();
 		QJsonArray sourceSearch = rootSearch;
 		if (sites.contains("search"))
 		{ sourceSearch = sites.value("search").toArray(); }
@@ -109,25 +108,26 @@ int main(int argc, char *argv[])
 				{ siteSearch = override.value("search").toArray(); }
 			}
 
-			for (const QString &apiName : siteApis.keys())
+			for (auto ita = siteApis.begin(); ita != siteApis.end(); ++ita)
 			{
+				const QString &apiName = ita.key();
 				qDebug() << "###" << "API" << apiName;
 				QJsonObject apiJson;
-				QJsonArray checks = siteApis.value(apiName).toArray();
+				QJsonArray checks = ita.value(api).toArray();
 
 				QJsonArray apiSearch = siteSearch;
 				if (checks.count() > 4)
 				{ apiSearch = checks[4].toArray(); }
 
-				QString search = apiSearch[0].toString();
-				int pagei = apiSearch[1].toDouble();
-				int limit = apiSearch[2].toDouble();
+				const QString search = apiSearch[0].toString();
+				const int pagei = apiSearch[1].toDouble();
+				const int limit = apiSearch[2].toDouble();
 
-				Api *api = Q_NULLPTR;
+				Api *api = nullptr;
 				for (Api *a : site->getApis())
 					if (a->getName().toLower() == apiName.toLower())
 						api = a;
-				if (api == Q_NULLPTR)
+				if (api == nullptr)
 					continue;
 
 				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);

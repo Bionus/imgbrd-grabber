@@ -14,7 +14,7 @@
 
 
 RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites())
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(false)
 {
 	ui->setupUi(this);
 
@@ -74,8 +74,8 @@ void RenameExisting1::on_buttonContinue_clicked()
 	// Parse all files
 	for (const auto &file : files)
 	{
-		QString fileName = file.first;
-		QString path = dir.absoluteFilePath(fileName);
+		const QString fileName = file.first;
+		const QString path = dir.absoluteFilePath(fileName);
 
 		QString md5;
 		if (ui->radioForce->isChecked())
@@ -112,7 +112,8 @@ void RenameExisting1::on_buttonContinue_clicked()
 			RenameExistingFile det;
 			det.md5 = md5;
 			det.path = QDir::toNativeSeparators(path);
-			if (!file.second.isEmpty()) {
+			if (!file.second.isEmpty())
+			{
 				QStringList children;
 				children.reserve(file.second.count());
 				for (const QString &child : file.second)
@@ -125,9 +126,9 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 	// Check if filename requires details
 	m_filename.setFormat(ui->lineFilenameDestination->text());
-	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()));
+	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText())) != 0;
 
-	int response = QMessageBox::question(this, tr("Rename existing images"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	const int response = QMessageBox::question(this, tr("Rename existing images"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes)
 	{
 		// Show progress bar
@@ -147,7 +148,7 @@ void RenameExisting1::getAll(Page *p)
 {
 	if (!p->images().isEmpty())
 	{
-		QSharedPointer<Image> img = p->images().at(0);
+		const QSharedPointer<Image> img = p->images().at(0);
 
 		if (m_needDetails)
 		{
@@ -181,7 +182,7 @@ void RenameExisting1::loadNext()
 {
 	if (!m_details.isEmpty())
 	{
-		RenameExistingFile det = m_details.takeFirst();
+		const RenameExistingFile det = m_details.takeFirst();
 		m_getAll.insert(det.md5, det);
 
 		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.md5), 1, 1);

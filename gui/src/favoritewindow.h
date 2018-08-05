@@ -1,7 +1,6 @@
 #ifndef FAVORITEWINDOW_H
 #define FAVORITEWINDOW_H
 
-#include <QDateTime>
 #include <QDialog>
 #include "models/favorite.h"
 
@@ -19,7 +18,7 @@ class favoriteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent);
+		favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
 		~favoriteWindow() override;
 
 	public slots:

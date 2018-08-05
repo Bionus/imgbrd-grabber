@@ -1,8 +1,6 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QList>
-#include <QMap>
 #include <QNetworkReply>
 #include <QSettings>
 #include <QString>
@@ -50,26 +48,29 @@ class Site : public QObject
 			LoggedIn = 3,
 		};
 
-		Site(const QString &url, Source *source);
+		Site(QString url, Source *source);
 		~Site() override;
 		void loadConfig();
-		QString type() const;
-		QString name() const;
-		QString url() const;
-		QList<QNetworkCookie> cookies() const;
-		QVariant setting(const QString &key, const QVariant &def = QVariant());
-		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
-		void syncSettings();
+		const QString &type() const;
+		const QString &name() const;
+		QString baseUrl() const;
+		const QString &url() const;
+		const QList<QNetworkCookie> &cookies() const;
+		QVariant setting(const QString &key, const QVariant &def = QVariant()) const;
+		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
+		void syncSettings() const;
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
-		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
-		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		int msToRequest(QueryType type) const;
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
 		// Api
-		QList<Api*> getApis(bool filterAuth = false) const;
+		const QList<Api*> &getApis() const;
+		QList<Api*> getLoggedInApis() const;
+
 		Source *getSource() const;
 		Api *firstValidApi() const;
 		Api *detailsApi() const;
@@ -89,7 +90,6 @@ class Site : public QObject
 		void loginFinished(Login::Result result);
 		void loadTags(int page, int limit);
 		void finishedTags();
-		void getCallback();
 
 	protected:
 		void resetCookieJar();

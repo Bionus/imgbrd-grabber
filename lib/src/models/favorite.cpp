@@ -1,17 +1,16 @@
 #include "models/favorite.h"
-#include <QDir>
 #include <QJsonArray>
 #include "functions.h"
 
 
-Favorite::Favorite(const QString &name)
-	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
+Favorite::Favorite(QString name)
+	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
 {}
-Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath)
-	: Favorite(name, note, lastViewed, QList<Monitor>(), imagePath)
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
+	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath))
 {}
-Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QList<Monitor> &monitors, const QString &imagePath)
-	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_monitors(monitors), m_imagePath(imagePath)
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath)
+	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath))
 {}
 
 void Favorite::setImagePath(const QString &imagePath)
@@ -43,8 +42,8 @@ bool Favorite::setImage(const QPixmap &img)
 
 	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
-			.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-			.save(m_imagePath, "PNG");
+		.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+		.save(m_imagePath, "PNG");
 }
 QPixmap Favorite::getImage() const
 {
@@ -65,9 +64,11 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 {
 	QStringList xp = text.split("|");
 
-	QString tag = xp.takeFirst();
-	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
-	QDateTime lastViewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+	const QString tag = xp.takeFirst();
+	const int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+	const QDateTime lastViewed = xp.isEmpty()
+		? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0))
+		: QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))
@@ -93,9 +94,9 @@ void Favorite::toJson(QJsonObject &json) const
 }
 Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
-	QString tag = json["tag"].toString();
-	int note = json["note"].toInt();
-	QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
+	const QString tag = json["tag"].toString();
+	const int note = json["note"].toInt();
+	const QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))
@@ -113,11 +114,11 @@ bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)
 { return s1.getNote() < s2.getNote(); }
 bool Favorite::sortByName(const Favorite &s1, const Favorite &s2)
 { return s1.getName().toLower() < s2.getName().toLower(); }
-bool Favorite::sortByLastviewed(const Favorite &s1, const Favorite &s2)
+bool Favorite::sortByLastViewed(const Favorite &s1, const Favorite &s2)
 { return s1.getLastViewed() < s2.getLastViewed(); }
 
 
-bool operator==(const Favorite& lhs, const Favorite& rhs)
+bool operator==(const Favorite &lhs, const Favorite &rhs)
 { return lhs.getName().toLower() == rhs.getName().toLower(); }
-bool operator!=(const Favorite& lhs, const Favorite& rhs)
+bool operator!=(const Favorite &lhs, const Favorite &rhs)
 { return !(lhs == rhs); }

@@ -1,10 +1,7 @@
 #ifndef POOL_TAB_H
 #define POOL_TAB_H
 
-#include <QCalendarWidget>
 #include <QJsonObject>
-#include <QMap>
-#include <QWidget>
 #include "tabs/search-tab.h"
 
 
@@ -43,7 +40,7 @@ class poolTab : public searchTab
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void on_buttonSearch_clicked();
 		void setSite(const QString &site);
 		void focusSearch() override;

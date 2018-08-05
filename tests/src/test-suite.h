@@ -8,6 +8,23 @@
 
 
 #ifdef _MSC_VER
+	#pragma warning(push)
+	#pragma warning(disable: 4005)
+#else
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wmacro-redefined"
+#endif
+
+#define QTEST_MAIN(CLASS_NAME) static CLASS_NAME instance;
+
+#ifdef _MSC_VER
+	#pragma warning(pop)
+#else
+	#pragma GCC diagnostic pop
+#endif
+
+
+#ifdef _MSC_VER
 	#include <crtdbg.h>
 
 	struct MemoryLeakChecker
@@ -46,8 +63,8 @@ class TestSuite : public QObject
 
 	public:
 		TestSuite();
-		void setupSource(const QString &site);
-		void setupSite(const QString &site, const QString &source);
+		void setupSource(const QString &site, QString dir = QString());
+		void setupSite(const QString &site, const QString &source, QString dir = QString());
 		static QList<TestSuite*> &getSuites();
 };
 

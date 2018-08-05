@@ -1,10 +1,7 @@
 #ifndef TAG_TAB_H
 #define TAG_TAB_H
 
-#include <QCalendarWidget>
 #include <QJsonObject>
-#include <QMap>
-#include <QWidget>
 #include "tabs/search-tab.h"
 
 
@@ -41,7 +38,7 @@ class tagTab : public searchTab
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void on_buttonSearch_clicked();
 		void focusSearch() override;
 		void updateTitle() override;

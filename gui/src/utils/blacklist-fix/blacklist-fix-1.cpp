@@ -23,10 +23,7 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 
-	QString blacklist;
-	for (const QStringList &tags : profile->getBlacklist())
-	{ blacklist += (blacklist.isEmpty() ? QString() : "\n") + tags.join(' '); }
-	ui->textBlacklist->setPlainText(blacklist);
+	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 
 	resize(size().width(), 0);
 }
@@ -150,9 +147,9 @@ void BlacklistFix1::getAll(Page *p)
 	}
 	else
 	{
-		QList<QStringList> blacklist;
+		Blacklist blacklist;
 		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
-		{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+		{ blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
 
 		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();

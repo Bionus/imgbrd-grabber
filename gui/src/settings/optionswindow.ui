@@ -969,8 +969,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>369</width>
-             <height>377</height>
+             <width>65</width>
+             <height>16</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -2614,7 +2614,6 @@
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
        <zorder>labelColoringMetas</zorder>
-       <zorder>horizontalLayoutWidget</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
@@ -2956,6 +2955,30 @@
                <widget class="QSpinBox" name="spinProxyPort">
                 <property name="maximum">
                  <number>99999</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="labelProxyUser">
+                <property name="text">
+                 <string>User</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="labelProxyPassword">
+                <property name="text">
+                 <string>Password</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineProxyUser"/>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="lineProxyPassword">
+                <property name="echoMode">
+                 <enum>QLineEdit::Password</enum>
                 </property>
                </widget>
               </item>

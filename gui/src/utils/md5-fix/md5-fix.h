@@ -18,7 +18,7 @@ class md5Fix : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit md5Fix(Profile *profile, QWidget *parent = Q_NULLPTR);
+		explicit md5Fix(Profile *profile, QWidget *parent = nullptr);
 		~md5Fix() override;
 
 	private slots:

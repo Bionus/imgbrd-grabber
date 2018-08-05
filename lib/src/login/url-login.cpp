@@ -7,7 +7,7 @@
 
 
 UrlLogin::UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
-	: m_site(site), m_manager(manager), m_settings(settings)
+	: m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
 {}
 
 bool UrlLogin::isTestable() const
@@ -17,7 +17,13 @@ bool UrlLogin::isTestable() const
 
 void UrlLogin::login()
 {
-	int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+	if (m_page != nullptr)
+	{
+		m_page->abort();
+		m_page->deleteLater();
+	}
+
+	const int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
 	m_page = new Page(m_site->getSource()->getProfile(), m_site, QList<Site*>() << m_site, QStringList(), maxPageAnonymous);
 	connect(m_page, &Page::finishedLoading, this, &UrlLogin::loginFinished);
 	connect(m_page, &Page::failedLoading, this, &UrlLogin::loginFinished);
@@ -40,7 +46,7 @@ QString UrlLogin::complementUrl(QString url, const QString &loginPart) const
 	QString pseudo = m_settings->value("auth/pseudo").toString();
 	QString password = m_settings->value("auth/password").toString();
 
-	bool hasLoginString = !loginPart.isEmpty() && (!pseudo.isEmpty() || !password.isEmpty());
+	const bool hasLoginString = !loginPart.isEmpty() && (!pseudo.isEmpty() || !password.isEmpty());
 	url.replace("{login}", hasLoginString ? loginPart : QString());
 
 	// Basic GET auth

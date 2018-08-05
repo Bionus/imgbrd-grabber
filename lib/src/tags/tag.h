@@ -14,27 +14,25 @@ class Tag
 		Tag();
 		explicit Tag(const QString &text, const QString &type = "unknown", int count = 0, const QStringList &related = QStringList());
 		explicit Tag(const QString &text, const TagType &type, int count = 0, const QStringList &related = QStringList());
-		explicit Tag(int id, const QString &text, const TagType &type, int count = 0, const QStringList &related = QStringList());
-		static Tag FromCapture(const QRegularExpressionMatch &match, const QStringList &groups);
-		static QList<Tag> FromRegexp(const QString &rx, const QString &source);
+		explicit Tag(int id, const QString &text, TagType type, int count = 0, QStringList related = QStringList());
 		static QString GetType(QString type, QMap<int, QString> ids = QMap<int, QString>());
 		void setId(int id);
 		void setText(const QString &text);
 		void setType(const TagType &type);
 		void setCount(int count);
 		void setRelated(const QStringList &related);
-		int			id()		const;
-		QString		text()		const;
-		TagType		type()		const;
-		int			count()		const;
-		QStringList	related()	const;
+		int id() const;
+		const QString &text() const;
+		const TagType &type() const;
+		int count() const;
+		const QStringList &related() const;
 
 	private:
-		int			m_id;
-		QString		m_text;
-		TagType		m_type;
-		int			m_count;
-		QStringList	m_related;
+		int m_id;
+		QString m_text;
+		TagType m_type;
+		int m_count;
+		QStringList m_related;
 };
 
 bool sortTagsByType(const Tag &, const Tag &);

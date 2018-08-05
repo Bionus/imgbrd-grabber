@@ -1,8 +1,8 @@
 #include "tabs/pool-tab.h"
+#include <QCloseEvent>
 #include <QJsonArray>
 #include <ui_pool-tab.h>
 #include "downloader/download-query-group.h"
-#include "helpers.h"
 #include "mainwindow.h"
 #include "models/page.h"
 #include "models/site.h"
@@ -85,7 +85,7 @@ void poolTab::load()
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
-	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
+	tags.prepend("pool:" + QString::number(ui->spinPool->value()));
 
 	loadTags(tags);
 }
@@ -139,30 +139,30 @@ bool poolTab::read(const QJsonObject &json, bool preload)
 
 void poolTab::getPage()
 {
-	auto page = m_pages[ui->comboSites->currentText()].first();
+	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
-	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
-	int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
-	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
-	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
 void poolTab::getAll()
 {
-	QSharedPointer<Page> page = m_pages[ui->comboSites->currentText()].first();
+	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
-	int highLimit = page->highLimit();
-	int currentCount = page->images().count();
-	int imageCount = page->imagesCount();
-	int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
-	int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
+	const int highLimit = page->highLimit();
+	const int currentCount = page->images().count();
+	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
+	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
-	QString search = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
-	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
@@ -183,21 +183,21 @@ void poolTab::setPool(int id, const QString &site)
 {
 	activateWindow();
 	ui->spinPool->setValue(id);
-	int index = ui->comboSites->findText(site);
+	const int index = ui->comboSites->findText(site);
 	if (index != -1)
 	{ ui->comboSites->setCurrentIndex(index); }
 	load();
 }
 void poolTab::setSite(const QString &site)
 {
-	int index = ui->comboSites->findText(site);
+	const int index = ui->comboSites->findText(site);
 	if (index != -1)
 	{ ui->comboSites->setCurrentIndex(index); }
 }
 
 void poolTab::focusSearch()
 {
-	ui->spinPool->focusWidget();
+	ui->spinPool->setFocus();
 }
 
 QString poolTab::tags() const

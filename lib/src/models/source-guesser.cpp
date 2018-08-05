@@ -10,8 +10,8 @@
 #include "models/source.h"
 
 
-SourceGuesser::SourceGuesser(const QString &url, const QList<Source *> &sources)
-	: m_url(url), m_sources(sources)
+SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
+	: m_url(std::move(url)), m_sources(std::move(sources))
 {
 	m_manager = new CustomNetworkAccessManager(this);
 }
@@ -23,13 +23,10 @@ Source *SourceGuesser::start()
 
 	for (Source *source : qAsConst(m_sources))
 	{
-		if (source->getApis().isEmpty())
-			continue;
-
 		Api *api = source->getApis().first();
 		if (api->canLoadCheck())
 		{
-			QString checkUrl = api->checkUrl().url;
+			const QString checkUrl = api->checkUrl().url;
 			if (!m_cache.contains(checkUrl))
 			{
 				QUrl getUrl(m_url + checkUrl);
@@ -38,7 +35,7 @@ Source *SourceGuesser::start()
 				{
 					reply = m_manager->get(QNetworkRequest(getUrl));
 					QEventLoop loop;
-						connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+					connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 					loop.exec();
 
 					getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();

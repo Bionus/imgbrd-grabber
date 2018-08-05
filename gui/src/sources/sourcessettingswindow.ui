@@ -1045,7 +1045,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>84</x>
-     <y>287</y>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -1061,27 +1061,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>438</x>
-     <y>287</y>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>345</x>
      <y>208</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAccept</sender>
-   <signal>clicked()</signal>
-   <receiver>SourcesSettingsWindow</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>519</x>
-     <y>287</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>368</x>
-     <y>205</y>
     </hint>
    </hints>
   </connection>
@@ -1092,8 +1076,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>453</x>
-     <y>216</y>
+     <x>507</x>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -1108,12 +1092,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>168</x>
-     <y>56</y>
+     <x>101</x>
+     <y>42</y>
     </hint>
     <hint type="destinationlabel">
-     <x>153</x>
-     <y>98</y>
+     <x>101</x>
+     <y>65</y>
     </hint>
    </hints>
   </connection>
@@ -1124,8 +1108,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>453</x>
-     <y>120</y>
+     <x>507</x>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel">
      <x>273</x>
@@ -1140,8 +1124,8 @@
    <slot>addCookie()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>244</y>
+     <x>101</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
      <x>470</x>
@@ -1156,8 +1140,8 @@
    <slot>addHeader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>143</x>
-     <y>244</y>
+     <x>101</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
      <x>43</x>
@@ -1172,12 +1156,28 @@
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>102</x>
-     <y>49</y>
+     <x>146</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
-     <x>93</x>
-     <y>89</y>
+     <x>101</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAccept</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>490</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>529</x>
+     <y>256</y>
     </hint>
    </hints>
   </connection>
@@ -1187,5 +1187,6 @@
   <slot>testLogin()</slot>
   <slot>addCookie()</slot>
   <slot>addHeader()</slot>
+  <slot>save()</slot>
  </slots>
 </ui>

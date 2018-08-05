@@ -1,5 +1,4 @@
 #include "commands/sql-worker.h"
-#include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
@@ -7,11 +6,11 @@
 #include "logger.h"
 
 
-SqlWorker::SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent)
-	: QThread(parent), m_driver(driver), m_host(host), m_user(user), m_password(password), m_database(database)
+SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent)
+	: QThread(parent), m_driver(std::move(driver)), m_host(std::move(host)), m_user(std::move(user)), m_password(std::move(password)), m_database(std::move(database))
 {
 	m_enabled = (m_driver == QLatin1String("QSQLITE") && !m_database.isEmpty())
-			  || (!m_host.isEmpty() && !m_user.isEmpty() && !m_database.isEmpty());
+		|| (!m_host.isEmpty() && !m_user.isEmpty() && !m_database.isEmpty());
 
 	m_started = false;
 }
@@ -26,7 +25,7 @@ bool SqlWorker::connect()
 	db.setUserName(m_user);
 	db.setPassword(m_password);
 
-	int portSeparator = m_host.lastIndexOf(':');
+	const int portSeparator = m_host.lastIndexOf(':');
 	if (portSeparator > 0)
 	{
 		db.setHostName(m_host.left(portSeparator));

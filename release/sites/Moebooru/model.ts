@@ -149,7 +149,6 @@ export const source: any = {
                     return {
                         tags: Grabber.regexToTags('<li class="(?:[^"]* )?tag-type-(?<type>[^" ]+)"[^>]*>(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)k?</span>[^<]*</li>', src),
                         images,
-                        wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>', src),
                         pageCount,
                     };
                 },

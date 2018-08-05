@@ -1,17 +1,16 @@
 #include "tags/tag-api.h"
-#include <QDomDocument>
 #include <QRegularExpression>
+#include <QTimer>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
-#include "vendor/json.h"
 
 
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
-	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(Q_NULLPTR)
+	: QObject(parent), m_profile(profile), m_site(site), m_api(api), m_page(page), m_limit(limit), m_reply(nullptr)
 {
-	QString url = api->tagsUrl(page, limit, site).url;
+	const QString url = api->tagsUrl(page, limit, site).url;
 	m_url = m_site->fixUrl(url);
 }
 
@@ -23,15 +22,28 @@ TagApi::~TagApi()
 
 void TagApi::load(bool rateLimit)
 {
-	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
-		log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+	// Load the request with a possible delay
+	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(loadNow())); }
+	else
+	{ loadNow(); }
+}
 
-		if (m_reply != nullptr)
-			m_reply->deleteLater();
+void TagApi::loadNow()
+{
+	log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
-		m_reply = reply;
-		connect(m_reply, &QNetworkReply::finished, this, &TagApi::parse);
-	});
+	if (m_reply != nullptr)
+	{
+		if (m_reply->isRunning())
+			m_reply->abort();
+
+		m_reply->deleteLater();
+	}
+
+	m_reply = m_site->get(m_url);
+	connect(m_reply, &QNetworkReply::finished, this, &TagApi::parse);
 }
 
 void TagApi::abort()
@@ -80,7 +92,7 @@ void TagApi::parse()
 	emit finishedLoading(this, LoadResult::Ok);
 }
 
-QList<Tag> TagApi::tags() const
+const QList<Tag> &TagApi::tags() const
 {
 	return m_tags;
 }

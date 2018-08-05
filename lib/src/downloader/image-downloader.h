@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "downloader/file-downloader.h"
+#include "loader/downloadable.h"
 #include "models/image.h"
 
 
@@ -11,15 +12,18 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR, bool loadTags = false, bool rotate = true);
-		ImageDownloader(QSharedPointer<Image> img, const QStringList &paths, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR, bool rotate = true);
+		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = false, bool rotate = true, bool force = false);
+		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false);
+		~ImageDownloader();
+		bool isRunning() const;
 
 	public slots:
 		void save();
+		void abort();
 
 	protected:
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
-		QMap<QString, Downloadable::SaveResult> postSaving(QMap<QString, Downloadable::SaveResult> result = QMap<QString, Downloadable::SaveResult>());
+		QMap<QString, Downloadable::SaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
 
 	signals:
 		void downloadProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);
@@ -46,9 +50,10 @@ class ImageDownloader : public QObject
 		bool m_startCommands;
 		bool m_writeError;
 		bool m_rotate;
+		bool m_force;
 
-		QNetworkReply *m_reply = Q_NULLPTR;
-		QString m_url = "";
+		QNetworkReply *m_reply = nullptr;
+		QUrl m_url;
 		bool m_tryingSample = false;
 };
 

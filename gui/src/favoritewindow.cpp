@@ -1,7 +1,6 @@
 #include "favoritewindow.h"
 #include <QFile>
 #include <QFileDialog>
-#include <QSettings>
 #include <QtMath>
 #include <ui_favoritewindow.h>
 #include "functions.h"
@@ -12,11 +11,11 @@
 /**
  * Constructor of the favoriteWindow class, completing its window.
  * @param	profile		The current user profile
- * @param	Favorite	The favorite we are setting options for
+ * @param	favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent)
-	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
+favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
+	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(std::move(favorite))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -31,7 +30,7 @@ favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidg
 	if (!m_favorite.getMonitors().isEmpty())
 	{
 		Monitor monitor = m_favorite.getMonitors().first();
-		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60));
+		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60.0));
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
 	}
 

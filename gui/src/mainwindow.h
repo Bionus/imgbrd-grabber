@@ -3,14 +3,10 @@
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QAtomicInt>
 #include <QLinkedList>
 #include <QMainWindow>
-#include <QProcess>
 #include <QProgressBar>
 #include <QQueue>
-#include <QSet>
-#include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTableWidgetItem>
 #include <QTranslator>
@@ -65,8 +61,8 @@ class mainWindow : public QMainWindow
 		void renameExisting();
 		void utilTagLoader();
 		// Language
-		void loadLanguage(const QString&, bool quiet = false);
-		void changeEvent(QEvent*) override;
+		void loadLanguage(const QString &, bool quiet = false);
+		void changeEvent(QEvent *) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
@@ -84,18 +80,18 @@ class mainWindow : public QMainWindow
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
-		void batchAddGroup(const DownloadQueryGroup& values);
+		void batchAddGroup(const DownloadQueryGroup &values);
 		void updateGroupCount();
 		void batchAddUnique(const DownloadQueryImage &query, bool save = true);
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
-		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
+		void getAllFinishedImages(const QList<QSharedPointer<Image>> &images);
 		void getAllImages();
 		void getAllGetImage(const BatchDownloadImage &download, int siteId);
-		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
+		void getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
-		void getAllProgress(QSharedPointer<Image> img, qint64, qint64);
+		void getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
@@ -135,7 +131,7 @@ class mainWindow : public QMainWindow
 		void trayMessageClicked();
 		void trayClose();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void onFirstLoad();
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
@@ -147,24 +143,24 @@ class mainWindow : public QMainWindow
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
-		void imageUrlChanged(const QString &, const QString &);
+		void imageUrlChanged(const QUrl &before, const QUrl &after);
 		void updateCompleters();
 		void setSource(const QString &site);
 		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
-		QIcon& getIcon(const QString &path);
-		void setWiki(const QString &);
+		QIcon &getIcon(const QString &path);
+		void setWiki(const QString &wiki, searchTab *from = nullptr);
 		void siteDeleted(Site *site);
 
 		// Drag & drop
 		void dragEnterEvent(QDragEnterEvent *event) override;
-		void dropEvent(QDropEvent* event) override;
+		void dropEvent(QDropEvent *event) override;
 
 	protected:
-		int getRowForSite(int site_id);
+		int getRowForSite(int siteId);
 		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
-		Site* getSelectedSiteOrDefault();
+		Site *getSelectedSiteOrDefault();
 		void initialLoginsDone();
 		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
 
@@ -172,7 +168,7 @@ class mainWindow : public QMainWindow
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		int					m_allow, m_loaded, m_getAll;
+		bool				m_allow, m_loaded, m_getAll;
 		int					m_mustGetTags;
 		int					m_forcedTab;
 		QSettings			*m_settings;
@@ -186,7 +182,7 @@ class mainWindow : public QMainWindow
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<Site*>		m_selectedSites;
 		favoritesTab		*m_favoritesTab;
-		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
+		QMap<QUrl, QTime>				m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
 		QMap<int, DownloadQueryGroup>	m_batchPending;

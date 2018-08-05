@@ -1,6 +1,5 @@
 #include "sources/sourcessettingswindow.h"
 #include <QCryptographicHash>
-#include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QNetworkCookie>
@@ -11,6 +10,17 @@
 #include "models/profile.h"
 #include "models/source.h"
 
+
+void setSource(QComboBox *combo, const QStringList &opts, const QStringList &vals, const QStringList &defs, Site *site, QSettings *settings, int index)
+{
+	const QString &def = defs[index];
+	const QString &global = settings->value("source_" + QString::number(index + 1), def).toString();
+	const QString &local = site->setting("sources/source_" + QString::number(index + 1), global).toString();
+
+	combo->clear();
+	combo->addItems(opts);
+	combo->setCurrentIndex(qMax(0, vals.indexOf(local)));
+}
 
 SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)
 	: QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site), m_globalSettings(profile->getSettings())
@@ -41,20 +51,28 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(site->setting("sources/usedefault", true).toBool());
-	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
-	ui->comboSources1->setCurrentIndex(sources.indexOf(site->setting("sources/source_1", m_globalSettings->value("source_1", sources[0]).toString()).toString()));
-	ui->comboSources2->setCurrentIndex(sources.indexOf(site->setting("sources/source_2", m_globalSettings->value("source_2", sources[1]).toString()).toString()));
-	ui->comboSources3->setCurrentIndex(sources.indexOf(site->setting("sources/source_3", m_globalSettings->value("source_3", sources[2]).toString()).toString()));
-	ui->comboSources4->setCurrentIndex(sources.indexOf(site->setting("sources/source_4", m_globalSettings->value("source_4", sources[3]).toString()).toString()));
+	static const QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "";
+	QStringList opts = QStringList() << "";
+	for (Api *api : site->getApis())
+	{
+		const QString name = api->getName().toLower();
+		sources.append(name == "html" ? "regex" : name);
+		opts.append(api->getName());
+	}
+	setSource(ui->comboSources1, opts, sources, defs, site, m_globalSettings, 0);
+	setSource(ui->comboSources2, opts, sources, defs, site, m_globalSettings, 1);
+	setSource(ui->comboSources3, opts, sources, defs, site, m_globalSettings, 2);
+	setSource(ui->comboSources4, opts, sources, defs, site, m_globalSettings, 3);
 
 	// Credentials
 	ui->lineAuthPseudo->setText(site->setting("auth/pseudo", "").toString());
 	ui->lineAuthPassword->setText(site->setting("auth/password", "").toString());
 
 	// Login
-	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
-	QString type = site->setting("login/type", defaultType).toString();
+	static const QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
+	const QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
+	const QString type = site->setting("login/type", defaultType).toString();
 	ui->comboLoginType->setCurrentIndex(types.indexOf(type));
 	ui->lineLoginGetUrl->setText(site->setting("login/get/url", type != "get" ? "" : site->setting("login/url", "").toString()).toString());
 	ui->lineLoginGetPseudo->setText(site->setting("login/get/pseudo", type != "get" ? "" : site->setting("login/pseudo", "").toString()).toString());
@@ -111,8 +129,6 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		ui->widgetTestCredentials->hide();
 		ui->widgetTestLogin->hide();
 	}
-
-	connect(this, &QDialog::accepted, this, &SourcesSettingsWindow::save);
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
@@ -143,18 +159,18 @@ void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 
 void SourcesSettingsWindow::deleteSite()
 {
-	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
+	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		QFile f(m_site->getSource()->getPath() + "/sites.txt");
 		f.open(QIODevice::ReadOnly);
-			QString sites = f.readAll();
+		QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 		QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
 		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
-			f.write(stes.join("\r\n").toLatin1());
+		f.write(stes.join("\r\n").toLatin1());
 		f.close();
 		close();
 		emit siteDeleted(m_site->url());
@@ -171,8 +187,10 @@ void SourcesSettingsWindow::testLogin()
 	m_site->login(true);
 }
 
-void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
+void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 {
+	Q_UNUSED(site);
+
 	switch (result)
 	{
 		case Site::LoginResult::Success:
@@ -191,7 +209,7 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
-	QString italic = QStringLiteral("<i>%1</li>").arg(msg);
+	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestCredentials->setText(italic);
 	ui->labelTestLogin->setText(italic);
 }
@@ -217,13 +235,34 @@ void SourcesSettingsWindow::save()
 	m_site->setSetting("download/throttle_retry", ui->spinThrottleRetry->value(), 0);
 	m_site->setSetting("download/throttle_thumbnail", ui->spinThrottleThumbnail->value(), 0);
 
-	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
+	QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "";
+	for (Api *api : m_site->getApis())
+	{
+		const QString name = api->getName().toLower();
+		sources.append(name == "html" ? "regex" : name);
+	}
+	QStringList chosen = QStringList()
+		<< sources[ui->comboSources1->currentIndex()]
+		<< sources[ui->comboSources2->currentIndex()]
+		<< sources[ui->comboSources3->currentIndex()]
+		<< sources[ui->comboSources4->currentIndex()];
 	m_site->setSetting("sources/usedefault", ui->checkSourcesDefault->isChecked(), true);
-	m_site->setSetting("sources/source_1", sources[qMax(0, ui->comboSources1->currentIndex())], m_globalSettings->value("source_1", sources[0]).toString());
-	m_site->setSetting("sources/source_2", sources[qMax(0, ui->comboSources2->currentIndex())], m_globalSettings->value("source_2", sources[1]).toString());
-	m_site->setSetting("sources/source_3", sources[qMax(0, ui->comboSources3->currentIndex())], m_globalSettings->value("source_3", sources[2]).toString());
-	m_site->setSetting("sources/source_4", sources[qMax(0, ui->comboSources4->currentIndex())], m_globalSettings->value("source_4", sources[3]).toString());
+	m_site->setSetting("sources/source_1", chosen[0], m_globalSettings->value("source_1", defs[0]).toString());
+	m_site->setSetting("sources/source_2", chosen[1], m_globalSettings->value("source_2", defs[1]).toString());
+	m_site->setSetting("sources/source_3", chosen[2], m_globalSettings->value("source_3", defs[2]).toString());
+	m_site->setSetting("sources/source_4", chosen[3], m_globalSettings->value("source_4", defs[3]).toString());
 
+	// Ensure at least one source is selected
+	bool allEmpty = true;
+	for (const QString &chos : qAsConst(chosen))
+		if (!chos.isEmpty())
+			allEmpty = false;
+	if (allEmpty)
+	{
+		QMessageBox::critical(this, tr("Error"), tr("You should at least select one source"));
+		return;
+	}
 
 	m_site->setSetting("auth/pseudo", ui->lineAuthPseudo->text(), "");
 	m_site->setSetting("auth/password", ui->lineAuthPassword->text(), "");
@@ -266,7 +305,8 @@ void SourcesSettingsWindow::save()
 	QMap<QString, QVariant> headers;
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
 	{
-		if (ui->tableHeaders->item(i, 0)->text().isEmpty())
+		QTableWidgetItem *item = ui->tableHeaders->item(i, 0);
+		if (item == nullptr || item->text().isEmpty())
 			continue;
 
 		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
@@ -274,6 +314,7 @@ void SourcesSettingsWindow::save()
 	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
 
 	m_site->syncSettings();
-
 	m_site->loadConfig();
+
+	accept();
 }

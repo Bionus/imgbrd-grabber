@@ -48,8 +48,11 @@ export const source: ISource = {
             maxLimit: 200,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//chan.", "//capi-beta.")
+                        .replace("//idol.", "//iapi.");
                     const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + query.search;
+                    return baseUrl + "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + query.search;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -80,12 +83,14 @@ export const source: ISource = {
                     }
                 },
                 parse: (src: string): IParsedSearch => {
-                    const searchImageCounts = Grabber.regexMatches('class="?tag-count"? title="Post Count: (?<count>[0-9,]+)"', src);
+                    const searchImageCounts = Grabber.regexMatches('class="?tag-(?:count|type-none)"? title="Post Count: (?<count>[0-9,]+)"', src);
                     const lastPage = Grabber.regexToConst("page", '<span class="?current"?>\\s*(?<page>[0-9,]+)\\s*</span>\\s*>>\\s*</div>', src);
+                    let wiki = Grabber.regexToConst("wiki", '<div id="?wiki-excerpt"?[^>]*>(?<wiki>.+?)</div>', src);
+                    wiki = wiki ? wiki.replace(/href="\/wiki\/show\?title=([^"]+)"/g, 'href="$1"') : undefined;
                     return {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<\\?]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
                         images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map(completeImage),
-                        wiki: Grabber.regexToConst("wiki", '<div id="sidebar-wiki"(?:[^>]+)>(?<wiki>.+?)</div>', src),
+                        wiki,
                         pageCount: lastPage ? Grabber.countToInt(lastPage) : undefined,
                         imageCount: searchImageCounts.length === 1 ? Grabber.countToInt(searchImageCounts[0].count) : undefined,
                     };

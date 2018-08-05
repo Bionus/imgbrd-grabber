@@ -36,12 +36,12 @@ void SankakuTest::testAnimatedUrls()
 	// Check results
 	QCOMPARE(images.count(), 20);
 	QCOMPARE(images[0]->md5(), QString("6e7901eea2a5a2d2b96244593ed190df"));
-	QCOMPARE(images[0]->url(), QString("https://is.sankakucomplex.com/data/6e/79/6e7901eea2a5a2d2b96244593ed190df.gif"));
+	QCOMPARE(images[0]->url(), QUrl("https://is.sankakucomplex.com/data/6e/79/6e7901eea2a5a2d2b96244593ed190df.gif"));
 	QCOMPARE(images[1]->md5(), QString("97b3355a7af0bfabc67f2678a4a837fd"));
-	QCOMPARE(images[1]->url(), QString("https://is.sankakucomplex.com/data/97/b3/97b3355a7af0bfabc67f2678a4a837fd.gif"));
+	QCOMPARE(images[1]->url(), QUrl("https://is.sankakucomplex.com/data/97/b3/97b3355a7af0bfabc67f2678a4a837fd.gif"));
 	QCOMPARE(images[2]->md5(), QString("d9f7f5089da4a677846d77da2c146088"));
-	QCOMPARE(images[2]->url(), QString("https://is.sankakucomplex.com/data/d9/f7/d9f7f5089da4a677846d77da2c146088.webm"));
+	QCOMPARE(images[2]->url(), QUrl("https://is.sankakucomplex.com/data/d9/f7/d9f7f5089da4a677846d77da2c146088.webm"));
 }
 
 
-static SankakuTest instance;
+QTEST_MAIN(SankakuTest)

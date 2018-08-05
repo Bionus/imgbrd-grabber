@@ -39,4 +39,4 @@ void TagApiTest::testBasic()
 }
 
 
-static TagApiTest instance;
+QTEST_MAIN(TagApiTest)

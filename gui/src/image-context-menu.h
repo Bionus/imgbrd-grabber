@@ -6,6 +6,7 @@
 #include "reverse-search/reverse-search-engine.h"
 
 
+class QSettings;
 class mainWindow;
 
 class ImageContextMenu : public QMenu
@@ -13,7 +14,7 @@ class ImageContextMenu : public QMenu
 	Q_OBJECT
 
 	public:
-		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = Q_NULLPTR);
+		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = nullptr);
 
 	protected slots:
 		void openInBrowser();

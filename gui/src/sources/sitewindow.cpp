@@ -1,5 +1,4 @@
 #include "sources/sitewindow.h"
-#include <QFile>
 #include <QPushButton>
 #include <ui_sitewindow.h>
 #include "functions.h"
@@ -113,7 +112,7 @@ void SiteWindow::finish(Source *src)
 	// Save new sites
 	QFile f(src->getPath() + "/sites.txt");
 	f.open(QIODevice::ReadOnly);
-		QString sites = f.readAll();
+	QString sites = f.readAll();
 	f.close();
 	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
@@ -121,7 +120,7 @@ void SiteWindow::finish(Source *src)
 	stes.removeDuplicates();
 	stes.sort();
 	f.open(QIODevice::WriteOnly);
-		f.write(stes.join("\r\n").toLatin1());
+	f.write(stes.join("\r\n").toLatin1());
 	f.close();
 
 	m_profile->addSite(site);

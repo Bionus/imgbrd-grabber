@@ -1,12 +1,11 @@
 #include "settings/optionswindow.h"
 #include <QColorDialog>
-#include <QDir>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QNetworkProxy>
-#include <QSettings>
 #include <QSignalMapper>
 #include <QSqlDatabase>
+#include <algorithm>
 #include <ui_optionswindow.h>
 #include "functions.h"
 #include "helpers.h"
@@ -54,8 +53,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
 	ui->checkInvertToggle->setChecked(settings->value("invertToggle", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
-	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
-	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24*60*60).toInt()));
+	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
+	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24 * 60 * 60).toInt()));
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -71,9 +70,9 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	m_filenamesFilenames = QList<QLineEdit*>();
 	for (auto it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		QLineEdit *leCondition = new QLineEdit(it.key());
-		QLineEdit *leFilename = new QLineEdit(it.value().first);
-		QLineEdit *leFolder = new QLineEdit(it.value().second);
+		auto leCondition = new QLineEdit(it.key());
+		auto leFilename = new QLineEdit(it.value().first);
+		auto leFolder = new QLineEdit(it.value().second);
 
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);
@@ -88,7 +87,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
 	int i = settings->value("Sources/Letters", 3).toInt();
-	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
+	ui->comboSourcesLetters->setCurrentIndex((i < 0 ? 1 : 0) + (i < -1 ? 1 : 0));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
 	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
@@ -101,10 +100,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->endGroup();
 
 	// Blacklist
-	QString blacklist;
-	for (const QStringList &tags : profile->getBlacklist())
-	{ blacklist += (blacklist.isEmpty() ? QString() : "\n") + tags.join(' '); }
-	ui->textBlacklist->setPlainText(blacklist);
+	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
 	// Monitoring
@@ -157,7 +153,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineArtistsKeepNThenAdd->setText(settings->value("artist_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineArtistsSeparator->setText(settings->value("artist_sep", "+").toString());
 		ui->lineArtistsReplaceAll->setText(settings->value("artist_value", "multiple artists").toString());
-		QString artistMultiple = settings->value("artist_multiple", "replaceAll").toString();
+		const QString artistMultiple = settings->value("artist_multiple", "replaceAll").toString();
 		if		(artistMultiple == "keepAll")		{ ui->radioArtistsKeepAll->setChecked(true);		}
 		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
 		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
@@ -172,7 +168,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineCopyrightsKeepNThenAdd->setText(settings->value("copyright_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCopyrightsSeparator->setText(settings->value("copyright_sep", "+").toString());
 		ui->lineCopyrightsReplaceAll->setText(settings->value("copyright_value", "crossover").toString());
-		QString copyrightMultiple = settings->value("copyright_multiple", "replaceAll").toString();
+		const QString copyrightMultiple = settings->value("copyright_multiple", "replaceAll").toString();
 		if		(copyrightMultiple == "keepAll")		{ ui->radioCopyrightsKeepAll->setChecked(true);			}
 		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
 		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
@@ -186,7 +182,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineCharactersKeepNThenAdd->setText(settings->value("character_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCharactersSeparator->setText(settings->value("character_sep", "+").toString());
 		ui->lineCharactersReplaceAll->setText(settings->value("character_value", "group").toString());
-		QString characterMultiple = settings->value("character_multiple", "replaceAll").toString();
+		const QString characterMultiple = settings->value("character_multiple", "replaceAll").toString();
 		if		(characterMultiple == "keepAll")		{ ui->radioCharactersKeepAll->setChecked(true);			}
 		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
 		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
@@ -200,7 +196,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineSpeciesKeepNThenAdd->setText(settings->value("species_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineSpeciesSeparator->setText(settings->value("species_sep", "+").toString());
 		ui->lineSpeciesReplaceAll->setText(settings->value("species_value", "multiple").toString());
-		QString speciesMultiple = settings->value("species_multiple", "keepAll").toString();
+		const QString speciesMultiple = settings->value("species_multiple", "keepAll").toString();
 		if		(speciesMultiple == "keepAll")		{ ui->radioSpeciesKeepAll->setChecked(true);		}
 		else if	(speciesMultiple == "keepN")		{ ui->radioSpeciesKeepN->setChecked(true);			}
 		else if	(speciesMultiple == "keepNThenAdd")	{ ui->radioSpeciesKeepNThenAdd->setChecked(true);	}
@@ -214,7 +210,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineMetasKeepNThenAdd->setText(settings->value("meta_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineMetasSeparator->setText(settings->value("meta_sep", "+").toString());
 		ui->lineMetasReplaceAll->setText(settings->value("meta_value", "multiple").toString());
-		QString metaMultiple = settings->value("meta_multiple", "keepAll").toString();
+		const QString metaMultiple = settings->value("meta_multiple", "keepAll").toString();
 		if		(metaMultiple == "keepAll")			{ ui->radioMetasKeepAll->setChecked(true);		}
 		else if	(metaMultiple == "keepN")			{ ui->radioMetasKeepN->setChecked(true);		}
 		else if	(metaMultiple == "keepNThenAdd")	{ ui->radioMetasKeepNThenAdd->setChecked(true);	}
@@ -317,6 +313,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->widgetProxy->setEnabled(settings->value("use", false).toBool());
 		ui->lineProxyHostName->setText(settings->value("hostName").toString());
 		ui->spinProxyPort->setValue(settings->value("port").toInt());
+		ui->lineProxyUser->setText(settings->value("user").toString());
+		ui->lineProxyPassword->setText(settings->value("password").toString());
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
@@ -424,7 +422,7 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
 	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		int i = it.key();
+		const int i = it.key();
 		auto logFile = it.value();
 
 		auto *label = new QLabel(logFile["name"].toString());
@@ -589,7 +587,7 @@ void optionsWindow::removeWebService(int id)
 
 void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
 {
-	bool isNew = rse.id() < 0;
+	const bool isNew = rse.id() < 0;
 
 	// Generate new ID for new web services
 	if (isNew)
@@ -631,7 +629,7 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 
 void optionsWindow::moveUpWebService(int id)
 {
-	int i = m_webServicesIds[id];
+	const int i = m_webServicesIds[id];
 	if (i == 0)
 		return;
 
@@ -640,23 +638,23 @@ void optionsWindow::moveUpWebService(int id)
 
 void optionsWindow::moveDownWebService(int id)
 {
-	int i = m_webServicesIds[id];
+	const int i = m_webServicesIds[id];
 	if (i == m_webServicesIds.count() - 1)
 		return;
 
 	swapWebServices(i, i + 1);
 }
 
-int sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
+bool sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
 { return a.order() < b.order(); }
 void optionsWindow::swapWebServices(int a, int b)
 {
-	int pos = m_webServices[b].order();
+	const int pos = m_webServices[b].order();
 	m_webServices[b].setOrder(m_webServices[a].order());
 	m_webServices[a].setOrder(pos);
 
 	// Re-order web services
-	qSort(m_webServices.begin(), m_webServices.end(), sortByOrder);
+	std::sort(m_webServices.begin(), m_webServices.end(), sortByOrder);
 	m_webServicesIds.clear();
 	for (int i = 0; i < m_webServices.count(); ++i)
 		m_webServicesIds.insert(m_webServices[i].id(), i);
@@ -667,7 +665,7 @@ void optionsWindow::swapWebServices(int a, int b)
 
 void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
-	QString text = lineEdit->text();
+	const QString text = lineEdit->text();
 	QColor color = button
 		? QColorDialog::getColor(QColor(text), this, tr("Choose a color"))
 		: QColor(text);
@@ -684,7 +682,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 void optionsWindow::setFont(QLineEdit *lineEdit)
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
+	const QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
 	{ lineEdit->setFont(police); }
@@ -774,7 +772,7 @@ void optionsWindow::on_lineImageBackgroundColor_textChanged()
 void optionsWindow::on_buttonImageBackgroundColor_clicked()
 { setColor(ui->lineImageBackgroundColor, true); }
 
-void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
+void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
 	if (current == sel)
 	{
@@ -791,8 +789,10 @@ void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current,
 	}
 }
 
-void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
+void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
+	Q_UNUSED(previous);
+
 	bool found = false;
 	int index = 0;
 
@@ -858,7 +858,7 @@ void optionsWindow::save()
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings->setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
-	int i = ui->comboSourcesLetters->currentIndex();
+	const int i = ui->comboSourcesLetters->currentIndex();
 	settings->setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
 	settings->setValue("preloadAllTabs", ui->checkPreloadAllTabs->isChecked());
 
@@ -875,9 +875,9 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	// Blacklist
-	QList<QStringList> blacklist;
+	Blacklist blacklist;
 	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
-	{ blacklist.append(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+	{ blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
@@ -1047,7 +1047,7 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	// Themes
-	QString theme = ui->comboTheme->currentText();
+	const QString theme = ui->comboTheme->currentText();
 	ThemeLoader themeLoader(savePath("themes/", true));
 	if (themeLoader.setTheme(theme))
 	{ settings->setValue("theme", theme); }
@@ -1122,6 +1122,8 @@ void optionsWindow::save()
 		settings->setValue("type", ptypes.at(ui->comboProxyType->currentIndex()));
 		settings->setValue("hostName", ui->lineProxyHostName->text());
 		settings->setValue("port", ui->spinProxyPort->value());
+		settings->setValue("user", ui->lineProxyUser->text());
+		settings->setValue("password", ui->lineProxyPassword->text());
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
@@ -1144,13 +1146,21 @@ void optionsWindow::save()
 
 	if (settings->value("Proxy/use", false).toBool())
 	{
-		bool useSystem = settings->value("Proxy/useSystem", false).toBool();
+		const bool useSystem = settings->value("Proxy/useSystem", false).toBool();
 		QNetworkProxyFactory::setUseSystemConfiguration(useSystem);
 
 		if (!useSystem)
 		{
-			QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-			QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
+			const QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http"
+				? QNetworkProxy::HttpProxy
+				: QNetworkProxy::Socks5Proxy;
+			const QNetworkProxy proxy(
+				type,
+				settings->value("Proxy/hostName").toString(),
+				settings->value("Proxy/port").toInt(),
+				settings->value("Proxy/user").toString(),
+				settings->value("Proxy/password").toString()
+			);
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 		}
@@ -1163,7 +1173,7 @@ void optionsWindow::save()
 		log(QStringLiteral("Disabling application proxy."));
 	}
 
-	QString lang = ui->comboLanguages->currentData().toString();
+	const QString lang = ui->comboLanguages->currentData().toString();
 	if (settings->value("language", "English").toString() != lang)
 	{
 		settings->setValue("language", lang);

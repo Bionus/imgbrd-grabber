@@ -3,8 +3,8 @@
 #include <QSettings>
 
 
-LanguageLoader::LanguageLoader(const QString &path)
-	: m_path(path)
+LanguageLoader::LanguageLoader(QString path)
+	: m_path(std::move(path))
 {}
 
 QMap<QString, QString> LanguageLoader::getAllLanguages() const
@@ -16,8 +16,8 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 	QMap<QString, QString> languages;
 	for (const QString &languageFile : languageFiles)
 	{
-		QString lang = languageFile.left(languageFile.length() - 3);
-		QString fullLang = fullLanguages.value(lang, lang).toString();
+		const QString lang = languageFile.left(languageFile.length() - 3);
+		const QString fullLang = fullLanguages.value(lang, lang).toString();
 		languages[lang] = fullLang;
 	}
 

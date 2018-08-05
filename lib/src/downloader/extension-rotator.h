@@ -13,8 +13,7 @@ class ExtensionRotator : public QObject
 	public:
 		ExtensionRotator() = default;
 		explicit ExtensionRotator(const ExtensionRotator &other);
-		explicit ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent = Q_NULLPTR);
-		~ExtensionRotator();
+		explicit ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent = nullptr);
 		QString next();
 
 	private:

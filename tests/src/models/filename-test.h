@@ -70,6 +70,7 @@ class FilenameTest : public TestSuite
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();
+		void testConditionalsMultipleTags();
 		void testConditionalsToken();
 		void testConditionalsMeta();
 		void testConditionalsCustom();

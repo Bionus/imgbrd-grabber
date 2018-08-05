@@ -15,7 +15,7 @@
 bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, mainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
-	bool preload = settings->value("preloadAllTabs", false).toBool();
+	const bool preload = settings->value("preloadAllTabs", false).toBool();
 
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -69,11 +69,11 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 	}
 
 	// Other versions are JSON-based
-	QByteArray data = f.readAll();
+	const QByteArray data = f.readAll();
 	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 	QJsonObject object = loadDoc.object();
 
-	int version = object["version"].toInt();
+	const int version = object["version"].toInt();
 	switch (version)
 	{
 		case 2:

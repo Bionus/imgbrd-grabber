@@ -2,7 +2,7 @@
 #define IMAGE_DOWNLOADER_TEST_H
 
 #include "downloader/image-downloader.h"
-#include <QNetworkAccessManager>
+#include "models/source.h"
 #include "test-suite.h"
 
 

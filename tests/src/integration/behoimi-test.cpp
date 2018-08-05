@@ -109,4 +109,4 @@ void BehoimiTest::testJsonTags()
 }
 
 
-static BehoimiTest instance;
+QTEST_MAIN(BehoimiTest)

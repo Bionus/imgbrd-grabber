@@ -1,14 +1,15 @@
 #include "login/http-login.h"
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QNetworkReply>
 #include <QUrlQuery>
 #include "custom-network-access-manager.h"
 #include "mixed-settings.h"
 #include "models/site.h"
 
 
-HttpLogin::HttpLogin(const QString &type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
-	: m_type(type), m_site(site), m_manager(manager), m_settings(settings)
+HttpLogin::HttpLogin(QString type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+	: m_type(std::move(type)), m_site(site), m_loginReply(nullptr), m_manager(manager), m_settings(settings)
 {}
 
 bool HttpLogin::isTestable() const
@@ -18,8 +19,8 @@ bool HttpLogin::isTestable() const
 
 void HttpLogin::login()
 {
-	QString username = m_settings->value("auth/pseudo").toString();
-	QString password = m_settings->value("auth/password").toString();
+	const QString username = m_settings->value("auth/pseudo").toString();
+	const QString password = m_settings->value("auth/password").toString();
 
 	QUrlQuery query;
 	query.addQueryItem(m_settings->value("login/" + m_type + "/pseudo").toString(), username);
@@ -31,7 +32,13 @@ void HttpLogin::login()
 		{ query.addQueryItem(key, m_settings->value(key).toString()); }
 	m_settings->endGroup();
 
-	QString loginUrl = m_settings->value("login/" + m_type + "/url").toString();
+	if (m_loginReply != nullptr)
+	{
+		m_loginReply->abort();
+		m_loginReply->deleteLater();
+	}
+
+	const QString loginUrl = m_settings->value("login/" + m_type + "/url").toString();
 	m_loginReply = getReply(loginUrl, query);
 
 	connect(m_loginReply, &QNetworkReply::finished, this, &HttpLogin::loginFinished);
@@ -39,7 +46,7 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
-	QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
+	const QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
 
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
 	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());

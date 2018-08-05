@@ -23,10 +23,7 @@ class ImageTest : public TestSuite
 		void testMd5FromData();
 		//void testMd5FromFile();
 		void testStylishedTags();
-		void testUnload();
 		void testValue();
-		void testLoadImage();
-		void testLoadImageAbort();
 		void testLoadDetails();
 		void testLoadDetailsAbort();
 		void testLoadDetailsImageUrl();

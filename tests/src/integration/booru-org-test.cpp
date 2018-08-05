@@ -38,4 +38,4 @@ void BooruOrgTest::testPageTags()
 }
 
 
-static BooruOrgTest instance;
+QTEST_MAIN(BooruOrgTest)

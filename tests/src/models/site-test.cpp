@@ -227,4 +227,4 @@ void SiteTest::testLoginPost()
 }
 
 
-static SiteTest instance;
+QTEST_MAIN(SiteTest)

@@ -72,12 +72,12 @@ void ImageTest::testConstructor()
 
 	// Default
 	img = new Image();
-	QCOMPARE(img->url(), QString());
+	QCOMPARE(img->url(), QUrl());
 	img->deleteLater();
 
 	// Without parent site
 	img = new Image(nullptr, m_details, m_profile);
-	QCOMPARE((int)img->id(), 0);
+	QCOMPARE(static_cast<int>(img->id()), 0);
 	img->deleteLater();
 
 	// With a given page URL
@@ -155,7 +155,7 @@ void ImageTest::testStylishedTags()
 	QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#00aa00; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
 	QCOMPARE(tags[7], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));*/
 
-	m_profile->setBlacklistedTags(QList<QStringList>() << (QStringList() << "character1") << (QStringList() << "tag1"));
+	m_profile->setBlacklistedTags(Blacklist(QStringList() << "character1" << "tag1"));
 	m_profile->getIgnored() = QStringList() << "copyright1" << "tag2";
 	tags = m_img->stylishedTags(m_profile);
 
@@ -163,15 +163,6 @@ void ImageTest::testStylishedTags()
 	/*QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
 	QCOMPARE(tags[3], QString("<a href=\"copyright1\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">copyright1</a>"));
 	QCOMPARE(tags[8], QString("<a href=\"tag3\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag3</a>"));*/
-}
-
-void ImageTest::testUnload()
-{
-	m_img->setData(QString("test").toLatin1());
-	QCOMPARE(m_img->data().isEmpty(), false);
-
-	m_img->unload();
-	QCOMPARE(m_img->data().isEmpty(), true);
 }
 
 void ImageTest::testValue()
@@ -212,24 +203,6 @@ void ImageTest::testValue()
 	m_img->deleteLater();
 	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 500 * 500);
-}
-
-void ImageTest::testLoadImage()
-{
-	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedImage(QNetworkReply::NetworkError, QString)));
-	m_img->loadImage();
-	QVERIFY(spy.wait());
-
-	// Compare result
-	QCOMPARE(m_img->data().isEmpty(), false);
-}
-void ImageTest::testLoadImageAbort()
-{
-	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
-	m_img->loadImage();
-	m_img->abortImage();
-	QVERIFY(!spy.wait(1000));
 }
 
 void ImageTest::testLoadDetails()
@@ -275,7 +248,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	QVERIFY(spy.wait());
 
 	// Compare result
-	QVERIFY(m_img->url().endsWith("/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
+	QCOMPARE(m_img->url().fileName(), QString("__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testSave()
@@ -391,7 +364,7 @@ void ImageTest::testSaveLog()
 
 void ImageTest::testSetUrl()
 {
-	QString url = "http://google.fr";
+	QUrl url("http://google.fr");
 
 	QCOMPARE(m_img->url() != url, true);
 	m_img->setUrl(url);
@@ -399,4 +372,4 @@ void ImageTest::testSetUrl()
 }
 
 
-static ImageTest instance;
+QTEST_MAIN(ImageTest)

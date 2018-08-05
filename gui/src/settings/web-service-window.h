@@ -19,7 +19,7 @@ class WebServiceWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent = Q_NULLPTR);
+		explicit WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent = nullptr);
 		~WebServiceWindow() override;
 
 	protected slots:

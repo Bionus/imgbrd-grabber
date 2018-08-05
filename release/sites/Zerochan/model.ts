@@ -1,13 +1,14 @@
 function completeImage(img: IImage): IImage {
     if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = img["preview_url"]
-            .replace(".240.", ".full.")
-            .replace(".600.", ".full.")
-            .replace("/240/", "/full/")
-            .replace("/600/", "/full/");
+        img["file_url"] = img["preview_url"];
     }
 
-    img["file_url"] = img["file_url"].replace(/\/s\d+\.zerochan/, "/static.zerochan");
+    img["file_url"] = img["file_url"]
+        .replace(/\/s\d+\.zerochan/, "/static.zerochan")
+        .replace(".240.", ".full.")
+        .replace(".600.", ".full.")
+        .replace("/240/", "/full/")
+        .replace("/600/", "/full/");
 
     return img;
 }

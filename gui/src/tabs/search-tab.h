@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QLayout>
 #include <QList>
-#include <QMap>
 #include <QPointer>
 #include <QProgressBar>
 #include <QPushButton>
@@ -38,14 +37,13 @@ class searchTab : public QWidget
 		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
 		virtual QString tags() const = 0;
-		QList<Tag> results();
-		QString wiki();
+		const QList<Tag> &results() const;
+		const QString &wiki() const;
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
-		QStringList selectedImages();
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
@@ -56,16 +54,15 @@ class searchTab : public QWidget
 
 	protected:
 		void setSelectedSources(QSettings *settings);
-		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page> > > &pages);
+		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>> &pages);
 		void addHistory(const QString &tags, int page, int ipp, int cols);
-		QStringList reasonsToFail(Page *page, const QStringList &complete = QStringList(), QString *meant = nullptr);
+		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
-		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
-		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url);
-		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
+		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url);
+		QBouton *createImageThumbnail(int position, const QSharedPointer<Image> &img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
-		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
+		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);
 
 	protected slots:
 		void contextSaveImage(int position);
@@ -86,7 +83,7 @@ class searchTab : public QWidget
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
-		void openImage(QSharedPointer<Image> image);
+		void openImage(const QSharedPointer<Image> &image);
 		// Pagination
 		void firstPage();
 		void previousPage();
@@ -108,22 +105,22 @@ class searchTab : public QWidget
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr);
-		void addResultsImage(QSharedPointer<Image> img, Page *page, bool merge = false);
+		void addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge = false);
 		void finishedLoadingPreview();
 		// Merged
-		QList<QSharedPointer<Image>> mergeResults(int page, const QList<QSharedPointer<Image> > &results);
+		QList<QSharedPointer<Image>> mergeResults(int page, const QList<QSharedPointer<Image>> &results);
 		void addMergedMd5(int page, const QString &md5);
 		bool containsMergedMd5(int page, const QString &md5);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
 		void httpsRedirect(Page *page);
-		void postLoading(Page *page, const QList<QSharedPointer<Image> > &imgs);
+		void postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
-		void selectImage(QSharedPointer<Image> img);
-		void unselectImage(QSharedPointer<Image> img);
-		void toggleImage(QSharedPointer<Image> img);
+		void selectImage(const QSharedPointer<Image> &img);
+		void unselectImage(const QSharedPointer<Image> &img);
+		void toggleImage(const QSharedPointer<Image> &img);
 		void toggleImage(int id, bool toggle, bool range);
 		// Others
 		void optionsChanged();
@@ -144,7 +141,7 @@ class searchTab : public QWidget
 		qulonglong			m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;
 		QMap<Image*, QBouton*>	m_boutons;
-		QStringList			m_selectedImages;
+		QList<QUrl>			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<Site*>		m_selectedSources;
 		QSignalMapper		*m_checkboxesSignalMapper;

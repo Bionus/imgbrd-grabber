@@ -53,4 +53,4 @@ void TagNameFormatTest::testUnknown()
 }
 
 
-static TagNameFormatTest instance;
+QTEST_MAIN(TagNameFormatTest)

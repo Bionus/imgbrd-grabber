@@ -3,30 +3,18 @@
 #include "models/site.h"
 
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk)
-	: DownloadQuery(site), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
+	: DownloadQuery(site), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), unk(std::move(unk))
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool blacklisted, Site *site, const QString &filename, const QString &path, const QString &unk)
-	: DownloadQuery(site, filename, path), tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
+	: DownloadQuery(site, filename, path), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
 { }
 
-
-QString DownloadQueryGroup::toString(const QString &separator) const
-{
-	return tags + separator +
-			QString::number(page) + separator +
-			QString::number(perpage) + separator +
-			QString::number(total) + separator +
-			(getBlacklisted ? "true" : "false") + separator +
-			site->url() + separator +
-			QString(filename).replace("\n", "\\n") + separator +
-			path + separator;
-}
 
 void DownloadQueryGroup::write(QJsonObject &json) const
 {
@@ -66,7 +54,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 		postFiltering.append(tag.toString());
 
 	// Get site
-	QString siteName = json["site"].toString();
+	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName))
 	{
 		return false;
@@ -83,19 +71,19 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 }
 
 
-bool operator==(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs)
+bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs)
 {
 	return lhs.tags == rhs.tags
-			&& lhs.page == rhs.page
-			&& lhs.perpage == rhs.perpage
-			&& lhs.total == rhs.total
-			&& lhs.getBlacklisted == rhs.getBlacklisted
-			&& lhs.site == rhs.site
-			&& lhs.filename == rhs.filename
-			&& lhs.path == rhs.path;
+		&& lhs.page == rhs.page
+		&& lhs.perpage == rhs.perpage
+		&& lhs.total == rhs.total
+		&& lhs.getBlacklisted == rhs.getBlacklisted
+		&& lhs.site == rhs.site
+		&& lhs.filename == rhs.filename
+		&& lhs.path == rhs.path;
 }
 
-bool operator!=(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs)
+bool operator!=(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs)
 {
 	return !(lhs == rhs);
 }

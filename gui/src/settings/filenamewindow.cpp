@@ -1,5 +1,6 @@
 #include "settings/filenamewindow.h"
 #include <QDesktopServices>
+#include <QMessageBox>
 #include <QRegExp>
 #include <QRegularExpression>
 #include <ui_filenamewindow.h>
@@ -62,7 +63,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	{
 		QString cap = date.cap(1);
 		QString format;
-		for (QChar c : cap)
+		for (const QChar &c : cap)
 		{
 			if (c == 'Y')
 			{ format += "' + date.getFullYear() + '"; }
@@ -84,7 +85,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		pos += date.matchedLength();
 	}
 
-	QString value = "'"+text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
+	QString value = "'" + text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed() + "'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
 	if (value.startsWith("'' + "))
@@ -106,7 +107,7 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename#javascript"));
 }
 
-QString FilenameWindow::format()
+QString FilenameWindow::format() const
 {
 	if (ui->radioJavascript->isChecked())
 	{
@@ -140,7 +141,7 @@ void FilenameWindow::done(int r)
 
 		if (det.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
+			const int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
 			if (reply == QMessageBox::Cancel)
 			{
 				return;

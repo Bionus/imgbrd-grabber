@@ -1,29 +1,30 @@
 #include "updater/program-updater.h"
 #include <QDir>
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include "custom-network-access-manager.h"
 #include "logger.h"
-#include "vendor/json.h"
 
 
 ProgramUpdater::ProgramUpdater()
 	: ProgramUpdater(QStringLiteral("https://api.github.com/repos/Bionus/imgbrd-grabber"))
 { }
 
-ProgramUpdater::ProgramUpdater(const QString &baseUrl)
-	: m_baseUrl(baseUrl), m_downloadReply(Q_NULLPTR)
+ProgramUpdater::ProgramUpdater(QString baseUrl)
+	: m_baseUrl(std::move(baseUrl)), m_downloadReply(nullptr)
 { }
 
 void ProgramUpdater::checkForUpdates() const
 {
 	#ifdef NIGHTLY
-		QUrl url(m_baseUrl + "/releases/tags/nightly");
+		const QUrl url(m_baseUrl + "/releases/tags/nightly");
 	#else
-		QUrl url(m_baseUrl + "/releases/latest");
+		const QUrl url(m_baseUrl + "/releases/latest");
 	#endif
-	QNetworkRequest request(url);
+	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
 	connect(reply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
@@ -34,42 +35,43 @@ void ProgramUpdater::checkForUpdatesDone()
 	auto *reply = dynamic_cast<QNetworkReply*>(sender());
 	m_source = reply->readAll();
 
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
 
-	QString changelog;
 	#if defined NIGHTLY
 		QString latest = lastRelease["target_commitish"].toString();
 		QString current = QString(NIGHTLY_COMMIT);
 		bool isNew = !current.isEmpty() && latest != current;
 		latest = latest.left(8);
+		QString changelog;
 	#else
-		QString latest = lastRelease["name"].toString().mid(1);
-		bool isNew = compareVersions(latest, QString(VERSION)) > 0;
-		changelog = lastRelease["body"].toString();
+		const QString latest = lastRelease["name"].toString().mid(1);
+		const bool isNew = compareVersions(latest, QString(VERSION)) > 0;
+		const QString changelog = lastRelease["body"].toString();
 	#endif
 
 	m_newVersion = latest;
 	emit finished(latest, isNew, changelog);
+	reply->deleteLater();
 }
 
 
 QUrl ProgramUpdater::latestUrl() const
 {
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
 	return QUrl(lastRelease["html_url"].toString());
 }
 
 void ProgramUpdater::downloadUpdate()
 {
-	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toMap();
-	QMap<QString, QVariant> lastAsset = lastRelease["assets"].toList().first().toMap();
+	QJsonDocument json = QJsonDocument::fromJson(m_source);
+	QJsonObject lastRelease = json.object();
+	QJsonObject lastAsset = lastRelease["assets"].toArray().first().toObject();
 
 	QUrl url(lastAsset["browser_download_url"].toString());
 	m_updateFilename = url.fileName();
-	QNetworkRequest request(url);
+	const QNetworkRequest request(url);
 	log(QStringLiteral("Downloading installer from \"%1\".").arg(url.toString()));
 
 	m_downloadReply = m_networkAccessManager->get(request);
@@ -83,7 +85,7 @@ void ProgramUpdater::downloadDone()
 	if (!redirection.isEmpty())
 	{
 		log(QStringLiteral("Installer download redirected to \"%1\".").arg(redirection.toString()));
-		QNetworkRequest request(redirection);
+		const QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);

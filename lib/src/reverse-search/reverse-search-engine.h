@@ -3,20 +3,19 @@
 
 #include <QIcon>
 #include <QString>
-#include <QUrl>
 
 
 class ReverseSearchEngine
 {
 	public:
 		ReverseSearchEngine() = default;
-		ReverseSearchEngine(int id, const QString &icon, const QString &name, const QString &tpl, int order);
+		ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order);
 		void searchByUrl(const QUrl &url) const;
 
 		int id() const;
 		QIcon icon() const;
-		QString name() const;
-		QString tpl() const;
+		const QString &name() const;
+		const QString &tpl() const;
 		int order() const;
 
 		void setId(int id);

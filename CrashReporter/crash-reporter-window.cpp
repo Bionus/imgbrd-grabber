@@ -1,8 +1,9 @@
+#include <QApplication>
 #include <QDesktopServices>
 #include <QUrl>
-#include <QFile>
 #include <QDir>
 #include <QProcess>
+#include <QMainWindow>
 #include <QSettings>
 #include <QTranslator>
 #include "crash-reporter-window.h"
@@ -15,7 +16,7 @@ QString savePath(const QString &file, bool exists = false)
 		Q_UNUSED(exists);
 		return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
 	#else
-		QString check = exists ? file : "settings.ini";
+		const QString &check = exists ? file : "settings.ini";
 		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
 		{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
 		if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
@@ -35,8 +36,8 @@ CrashReporterWindow::CrashReporterWindow(QWidget *parent) : QMainWindow(parent),
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	// Translate UI
-	QString lang = settings.value("language", "English").toString();
-	QLocale locale = QLocale(lang);
+	const QString lang = settings.value("language", "English").toString();
+	const QLocale locale = QLocale(lang);
 	QLocale::setDefault(locale);
 	auto *translator = new QTranslator(this);
 	if (translator->load("crashreporter/"+lang))
