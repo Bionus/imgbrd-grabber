@@ -134,5 +134,25 @@ void MetaFilterTest::testMatchString()
 	QCOMPARE(MetaFilter("meta", "nok", true).match(tokens), QString());
 }
 
+void MetaFilterTest::testMatchAge()
+{
+	QMap<QString, Token> tokens;
+	QCOMPARE(MetaFilter("age", "1year..1day").match(tokens), QString("An image needs a date to be filtered by age"));
+
+	tokens.insert("date", Token(QDateTime(QDate(2016, 8, 18))));
+	tokens.insert("TESTS_now", Token(QDateTime(QDate(2016, 10, 16))));
+
+	// Basic
+	QCOMPARE(MetaFilter("age", ">=2hours").match(tokens), QString());
+	QCOMPARE(MetaFilter("age", ">1day").match(tokens), QString());
+	QCOMPARE(MetaFilter("age", ">1mo").match(tokens), QString());
+	QCOMPARE(MetaFilter("age", ">=1y").match(tokens), QString("image's age does not match"));
+	QCOMPARE(MetaFilter("age", "<1year").match(tokens), QString());
+
+	// Invert
+	QCOMPARE(MetaFilter("age", ">=1y", true).match(tokens), QString());
+	QCOMPARE(MetaFilter("age", "<1year", true).match(tokens), QString("image's age match"));
+}
+
 
 QTEST_MAIN(MetaFilterTest)

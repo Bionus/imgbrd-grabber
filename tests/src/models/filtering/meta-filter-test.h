@@ -18,6 +18,7 @@ class MetaFilterTest : public TestSuite
 		void testMatchRating();
 		void testMatchSource();
 		void testMatchString();
+		void testMatchAge();
 };
 
 #endif // META_FILTER_TEST_H

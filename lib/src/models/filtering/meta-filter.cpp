@@ -1,7 +1,9 @@
 #include "meta-filter.h"
 #include <QDateTime>
 #include <QRegExp>
+#include <QRegularExpression>
 #include <QStringBuilder>
+#include <QTimeZone>
 
 
 MetaFilter::MetaFilter(QString type, QString val, bool invert)
@@ -22,7 +24,7 @@ bool MetaFilter::compare(const Filter& rhs) const
 	return m_type == other->m_type && m_val == other->m_val;
 }
 
-static int toDate(const QString &text)
+static int dateToInt(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
 	if (date.isValid())
@@ -31,6 +33,68 @@ static int toDate(const QString &text)
 	if (date.isValid())
 	{ return date.toString("yyyyMMdd").toInt(); }
 	return 0;
+}
+
+static int stringToInt(const QString &text)
+{ return text.toInt(); }
+
+// FIXME(Bionus): remove globals
+static QDateTime ageToDateImage;
+static QDateTime ageToDateTestNow;
+static QDateTime ageToDate(const QString &text)
+{
+	static QRegularExpression rx("^(\\d+)(\\w+)$");
+	auto match = rx.match(text);
+	if (!match.hasMatch())
+		return QDateTime();
+
+	const int count = match.captured(1).toInt();
+	const QString type = match.captured(2);
+
+	// Define "now" with the correct timezone
+	QDateTime base;
+	if (ageToDateTestNow.isValid())
+	{ base = ageToDateTestNow; }
+	else
+	{
+		base = QDateTime::currentDateTimeUtc();
+		base.setTimeZone(ageToDateImage.timeZone());
+	}
+
+	if (type.startsWith("y"))
+		return base.addYears(-count);
+	if (type.startsWith("mo"))
+		return base.addMonths(-count);
+	if (type.startsWith("w"))
+		return base.addDays(-(count * 7));
+	if (type.startsWith("d"))
+		return base.addDays(-count);
+	if (type.startsWith("h"))
+		return base.addSecs(-(count * 60 * 60));
+	if (type.startsWith("mi"))
+		return base.addSecs(-(count * 60));
+	if (type.startsWith("s"))
+		return base.addSecs(-count);
+
+	return QDateTime();
+}
+
+template <typename T>
+static bool rangeCheck(T (*converter)(const QString &), T input, const QString &val)
+{
+	if (val.startsWith("..") || val.startsWith("<="))
+	{ return input <= converter(val.right(val.size() - 2)); }
+	if (val.endsWith(".."))
+	{ return input >= converter(val.left(val.size() - 2)); }
+	if (val.startsWith(">="))
+	{ return input >= converter(val.right(val.size() - 2)); }
+	if (val.startsWith("<"))
+	{ return input < converter(val.right(val.size() - 1)); }
+	if (val.startsWith(">"))
+	{ return input > converter(val.right(val.size() - 1)); }
+	if (val.contains(".."))
+	{ return input >= converter(val.left(val.indexOf(".."))) && input <= converter(val.right(val.size() - val.indexOf("..") - 2));	}
+	return input == converter(val);
 }
 
 QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
@@ -48,6 +112,25 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		{ return QObject::tr("image is not \"%1\"").arg(m_val); }
 		if (cond && invert)
 		{ return QObject::tr("image is \"%1\"").arg(m_val); }
+
+		return QString();
+	}
+
+	// Non-token metas
+	if (m_type == "age")
+	{
+		if (!tokens.contains("date"))
+		{ return QObject::tr("An image needs a date to be filtered by age"); }
+
+		const QDateTime &date = tokens["date"].value().toDateTime();
+		ageToDateImage = date;
+		ageToDateTestNow = tokens["TESTS_now"].value().toDateTime();
+		bool cond = rangeCheck(ageToDate, date, m_val);
+
+		if (cond && !invert)
+		{ return QObject::tr("image's %1 does not match").arg(m_type); }
+		if (!cond && invert)
+		{ return QObject::tr("image's %1 match").arg(m_type); }
 
 		return QString();
 	}
@@ -72,39 +155,9 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 
 		bool cond;
 		if (token.type() == QVariant::DateTime)
-		{
-			if (m_val.startsWith("..") || m_val.startsWith("<="))
-			{ cond = input <= toDate(m_val.right(m_val.size() - 2)); }
-			else if (m_val.endsWith(".."))
-			{ cond = input >= toDate(m_val.left(m_val.size() - 2)); }
-			else if (m_val.startsWith(">="))
-			{ cond = input >= toDate(m_val.right(m_val.size() - 2)); }
-			else if (m_val.startsWith("<"))
-			{ cond = input < toDate(m_val.right(m_val.size() - 1)); }
-			else if (m_val.startsWith(">"))
-			{ cond = input > toDate(m_val.right(m_val.size() - 1)); }
-			else if (m_val.contains(".."))
-			{ cond = input >= toDate(m_val.left(m_val.indexOf(".."))) && input <= toDate(m_val.right(m_val.size() - m_val.indexOf("..") - 2));	}
-			else
-			{ cond = input == toDate(m_val); }
-		}
+		{ cond = rangeCheck(dateToInt, input, m_val); }
 		else
-		{
-			if (m_val.startsWith("..") || m_val.startsWith("<="))
-			{ cond = input <= m_val.rightRef(m_val.size() - 2).toInt(); }
-			else if (m_val.endsWith(".."))
-			{ cond = input >= m_val.leftRef(m_val.size() - 2).toInt(); }
-			else if (m_val.startsWith(">="))
-			{ cond = input >= m_val.rightRef(m_val.size() - 2).toInt(); }
-			else if (m_val.startsWith("<"))
-			{ cond = input < m_val.rightRef(m_val.size() - 1).toInt(); }
-			else if (m_val.startsWith(">"))
-			{ cond = input > m_val.rightRef(m_val.size() - 1).toInt(); }
-			else if (m_val.contains(".."))
-			{ cond = input >= m_val.leftRef(m_val.indexOf("..")).toInt() && input <= m_val.rightRef(m_val.size() - m_val.indexOf("..") - 2).toInt();	}
-			else
-			{ cond = input == m_val.toInt(); }
-		}
+		{ cond = rangeCheck(stringToInt, input, m_val); }
 
 		if (!cond && !invert)
 		{ return QObject::tr("image's %1 does not match").arg(m_type); }
