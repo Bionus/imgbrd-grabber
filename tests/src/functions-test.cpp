@@ -287,6 +287,30 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 #endif
 }
 
+void FunctionsTest::testGetExternalLogFilesSuffixes()
+{
+	auto *profile = new Profile("tests/resources/");
+	auto *settings = profile->getSettings();
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList());
+
+	settings->setValue("LogFiles/0/locationType", 1);
+	settings->setValue("LogFiles/0/uniquePath", "path");
+	settings->setValue("LogFiles/0/content", "id: %id%");
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList());
+
+	settings->setValue("LogFiles/0/locationType", 2);
+	settings->setValue("LogFiles/0/suffix", ".xml");
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList() << ".xml");
+
+	settings->remove("LogFiles/0/locationType");
+	settings->remove("LogFiles/0/suffix");
+	settings->remove("LogFiles/0/uniquePath");
+	settings->remove("LogFiles/0/content");
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected)
 {

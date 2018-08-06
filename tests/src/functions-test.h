@@ -27,6 +27,7 @@ class FunctionsTest : public TestSuite
 		void testParseMarkdownIssueLinks();
 		void testSetFileCreationDate();
 		void testSetFileCreationDateUtf8();
+		void testGetExternalLogFilesSuffixes();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);
