@@ -11,6 +11,7 @@ class MixedSettingsTest : public TestSuite
 	private slots:
 		void init();
 
+		void testEmptySettings();
 		void testValueFirstValid();
 		void testValueDefault();
 		void testSetValueResetToParent();
