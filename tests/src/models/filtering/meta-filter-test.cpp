@@ -1,6 +1,7 @@
 #include "meta-filter-test.h"
 #include <QtTest>
 #include "models/filtering/meta-filter.h"
+#include "models/filtering/tag-filter.h"
 #include "loader/token.h"
 
 
@@ -16,6 +17,7 @@ void MetaFilterTest::testCompare()
 	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("meta", "val", true), false);
 	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("another meta", "val"), false);
 	QCOMPARE(MetaFilter("meta", "val") == MetaFilter("meta", "another val"), false);
+	QCOMPARE(MetaFilter("meta", "val") == TagFilter("tag"), false);
 }
 
 void MetaFilterTest::testMatchInvalidToken()
