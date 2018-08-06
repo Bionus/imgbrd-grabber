@@ -479,7 +479,7 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 		if (childGroups.isEmpty())
 		{ index = 0; }
 		else
-		{ index = settings->childGroups().last().toInt() + 1; }
+		{ index = childGroups.last().toInt() + 1; }
 	}
 
 	settings->beginGroup(QString::number(index));

@@ -1346,8 +1346,10 @@ void mainWindow::getAllLogin()
 		site->login();
 	}
 }
-void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
+void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult result)
 {
+	Q_UNUSED(result);
+
 	if (m_getAllLogins.empty())
 	{ return; }
 
