@@ -36,7 +36,7 @@ class RenameExisting1 : public QDialog
 		Profile									*m_profile;
 		QMap<QString, Site*>					m_sites;
 		Filename								m_filename;
-		bool									m_needDetails;
+		int										m_needDetails;
 		QList<RenameExistingFile>				m_details;
 		QList<QSharedPointer<Image>>			m_getTags;
 		QMap<QString, RenameExistingFile>		m_getAll;

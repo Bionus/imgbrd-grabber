@@ -14,7 +14,7 @@
 
 
 RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(false)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(0)
 {
 	ui->setupUi(this);
 
@@ -126,7 +126,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 	// Check if filename requires details
 	m_filename.setFormat(ui->lineFilenameDestination->text());
-	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText())) != 0;
+	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()));
 
 	const int response = QMessageBox::question(this, tr("Rename existing images"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes)
