@@ -32,13 +32,15 @@ class RenameExisting1 : public QDialog
 		void on_buttonContinue_clicked();
 
 	private:
+		void setImageResult(Image *img);
+
+	private:
 		Ui::RenameExisting1						*ui;
 		Profile									*m_profile;
 		QMap<QString, Site*>					m_sites;
 		Filename								m_filename;
 		int										m_needDetails;
 		QList<RenameExistingFile>				m_details;
-		QList<QSharedPointer<Image>>			m_getTags;
 		QMap<QString, RenameExistingFile>		m_getAll;
 };
 

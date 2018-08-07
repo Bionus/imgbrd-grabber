@@ -44,7 +44,6 @@ void RenameExisting1::on_buttonContinue_clicked()
 {
 	ui->buttonContinue->setEnabled(false);
 	m_details.clear();
-	m_getTags.clear();
 
 	// Check that directory exists
 	QDir dir(ui->lineFolder->text());
@@ -146,35 +145,38 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 void RenameExisting1::getAll(Page *p)
 {
-	if (!p->images().isEmpty())
+	if (p->images().isEmpty())
 	{
-		const QSharedPointer<Image> img = p->images().at(0);
+		log(tr("No image found when renaming image '%1'").arg(p->search().join(' ')), Logger::Warning);
+		ui->progressBar->setValue(ui->progressBar->value() + 1);
+		loadNext();
+		return;
+	}
 
-		if (m_needDetails)
-		{
-			m_getTags.append(img);
-		}
-		else
-		{
-			m_getAll[img->md5()].newPath = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
-			ui->progressBar->setValue(ui->progressBar->value() + 1);
-		}
+	const QSharedPointer<Image> img = p->images().at(0);
+	if (m_needDetails == 2 || (m_needDetails == 1 && img->hasUnknownTag()))
+	{
+		connect(img.data(), &Image::finishedLoadingTags, this, &RenameExisting1::getTags);
+		img->loadDetails();
 	}
 	else
 	{
-		ui->progressBar->setValue(ui->progressBar->value() + 1);
+		setImageResult(img.data());
 	}
-
-	loadNext();
 }
 
 void RenameExisting1::getTags()
 {
 	auto *img = dynamic_cast<Image*>(sender());
+	setImageResult(img);
+}
 
-	m_getAll[img->md5()].newPath = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+void RenameExisting1::setImageResult(Image *img)
+{
+	QStringList paths = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true);
+	m_getAll[img->md5()].newPath = paths.first();
+
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
-
 	loadNext();
 }
 
@@ -188,15 +190,6 @@ void RenameExisting1::loadNext()
 		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.md5), 1, 1);
 		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
-
-		return;
-	}
-
-	if (!m_getTags.isEmpty())
-	{
-		QSharedPointer<Image> img = m_getTags.takeFirst();
-		connect(img.data(), &Image::finishedLoadingTags, this, &RenameExisting1::getTags);
-		img->loadDetails();
 
 		return;
 	}
