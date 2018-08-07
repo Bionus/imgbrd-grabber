@@ -47,6 +47,10 @@ addHelper("typedXML", (val: any) => {
     }
 
     if (val && typeof val === "object") {
+        if (Object.keys(val).length === 0) {
+            return "";
+        }
+
         return Grabber.mapObject(val, Grabber.typedXML);
     }
 
