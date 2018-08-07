@@ -221,6 +221,8 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
+				else if (val.isArray())
+				{ d[key] = jsToStringList(val).join(' '); }
 				else
 				{ d[key] = val.toString(); }
 			}
