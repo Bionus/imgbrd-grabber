@@ -679,6 +679,7 @@ const QByteArray &Image::data() const		{ return m_data;			}
 const QStringList &Image::search() const	{ return m_search;			}
 bool			Image::isGallery() const	{ return m_isGallery;		}
 ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
+QString			Image::extension() const	{ return getExtension(m_url).toLower();		}
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
@@ -1072,7 +1073,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
 
 	// Extension
-	QString ext = getExtension(m_url);
+	QString ext = extension();
 	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
 		ext = "jpg";
 	tokens.insert("ext", Token(ext, "jpg"));

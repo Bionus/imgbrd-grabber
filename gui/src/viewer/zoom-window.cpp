@@ -387,8 +387,8 @@ void ZoomWindow::load(bool force)
 	ImageDownloader *dwl = m_imageDownloaders.value(m_image, nullptr);
 	if (dwl == nullptr)
 	{
-		const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-		dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
+		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+		dwl = new ImageDownloader(m_image, fn, m_profile->tempPath(), 1, false, false, this, true, force);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
@@ -823,7 +823,7 @@ void ZoomWindow::saveImage(bool fav)
 		case SaveButtonState::Delete:
 		{
 			if (m_imagePath.isEmpty() || m_imagePath == m_source)
-			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp"; }
+			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + "." + m_image->extension(); }
 			if (QFile::exists(m_imagePath))
 			{ QFile::remove(m_source); }
 			else
@@ -1167,8 +1167,8 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 			log(QStringLiteral("Preloading data for image #%1").arg(pos));
 			m_images[pos]->loadDetails();
 
-			const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-			auto dwl = new ImageDownloader(img, QStringList() << fn, 1, false, false, this);
+			const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+			auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, this);
 			m_imageDownloaders.insert(img, dwl);
 			dwl->save();
 		}

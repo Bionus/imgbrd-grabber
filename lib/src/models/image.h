@@ -73,6 +73,7 @@ class Image : public QObject, public Downloadable
 		QString		isAnimated() const;
 		void		setTags(const QList<Tag> &tags);
 		bool		isGallery() const;
+		QString		extension() const;
 
 		// Displayable
 		QColor color() const override;
