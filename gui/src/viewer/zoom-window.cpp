@@ -1143,35 +1143,32 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	if (isVisible())
 	{ showThumbnail(); }
 
-	// Preload gallery images
+	// Preload and abort next and previous images
 	const int preload = m_settings->value("preload", 0).toInt();
-	if (preload > 0)
+	QSet<int> preloaded;
+	const int index = m_images.indexOf(m_image);
+	for (int i = index - preload - 1; i <= index + preload + 1; ++i)
 	{
-		QSet<int> preloaded;
-		const int index = m_images.indexOf(m_image);
-		for (int i = index - preload - 1; i <= index + preload + 1; ++i)
-		{
-			bool forAbort = i == index - preload - 1 || i == index + preload + 1;
-			int pos = (i + m_images.count()) % m_images.count();
-			if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
-				continue;
+		bool forAbort = i == index - preload - 1 || i == index + preload + 1;
+		int pos = (i + m_images.count()) % m_images.count();
+		if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
+			continue;
 
-			QSharedPointer<Image> img = m_images[pos];
-			bool downloaderExists = m_imageDownloaders.contains(img);
-			if (downloaderExists && forAbort)
-				m_imageDownloaders[img]->abort();
-			if (downloaderExists || forAbort || (!img->savePath().isEmpty() && QFile::exists(img->savePath())))
-				continue;
+		QSharedPointer<Image> img = m_images[pos];
+		bool downloaderExists = m_imageDownloaders.contains(img);
+		if (downloaderExists && forAbort)
+			m_imageDownloaders[img]->abort();
+		if (downloaderExists || forAbort || (!img->savePath().isEmpty() && QFile::exists(img->savePath())))
+			continue;
 
-			preloaded.insert(pos);
-			log(QStringLiteral("Preloading data for image #%1").arg(pos));
-			m_images[pos]->loadDetails();
+		preloaded.insert(pos);
+		log(QStringLiteral("Preloading data for image #%1").arg(pos));
+		m_images[pos]->loadDetails();
 
-			const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-			auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, this);
-			m_imageDownloaders.insert(img, dwl);
-			dwl->save();
-		}
+		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+		auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, this);
+		m_imageDownloaders.insert(img, dwl);
+		dwl->save();
 	}
 
 	// Reset buttons
