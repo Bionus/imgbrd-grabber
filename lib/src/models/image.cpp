@@ -199,7 +199,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	// Complete missing tag type information
 	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
-	for (Tag const &tag : qAsConst(m_tags))
+	for (const Tag &tag : qAsConst(m_tags))
 		if (tag.type().isUnknown())
 			unknownTags.append(tag.text());
 	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
@@ -896,6 +896,13 @@ bool Image::hasAllTags(const QStringList &tags) const
 		if (!this->hasTag(tag))
 			return false;
 	return true;
+}
+bool Image::hasUnknownTag() const
+{
+	for (const Tag &tag : qAsConst(m_tags))
+		if (tag.type().isUnknown())
+			return true;
+	return false;
 }
 
 void Image::setRating(const QString &rating)

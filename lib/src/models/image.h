@@ -58,6 +58,7 @@ class Image : public QObject, public Downloadable
 		bool		hasTag(QString tag) const;
 		bool		hasAnyTag(const QStringList &tags) const;
 		bool		hasAllTags(const QStringList &tags) const;
+		bool		hasUnknownTag() const;
 		void		setUrl(const QUrl &url);
 		void		setData(const QByteArray &data);
 		void		setSize(QSize size);
