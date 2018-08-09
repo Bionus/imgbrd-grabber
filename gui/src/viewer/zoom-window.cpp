@@ -291,9 +291,9 @@ void ZoomWindow::openPoolId(Page *p)
 void ZoomWindow::openSaveDir(bool fav)
 {
 	// If the file was already saved, we focus on it
-	if (!m_imagePath.isEmpty())
+	if (!m_source.isEmpty())
 	{
-		showInGraphicalShell(m_imagePath);
+		showInGraphicalShell(m_source);
 	}
 	else
 	{
