@@ -677,6 +677,31 @@ bool isTestModeEnabled()
 }
 
 
+QString fixCloudflareEmail(const QString &a)
+{
+	QString s;
+	int r = a.midRef(0, 2).toInt(nullptr, 16);
+	for (int j = 2; a.length() - j; j += 2)
+	{
+		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
+		s += QString(QChar(c));
+	}
+	return s;
+}
+QString fixCloudflareEmails(QString html)
+{
+	static QRegularExpression rx("<span class=\"__cf_email__\" data-cfemail=\"([^\"]+)\">\\[[^<]+\\]<\\/span>");
+	auto matches = rx.globalMatch(html);
+	while (matches.hasNext())
+	{
+		auto match = matches.next();
+		const QString email = fixCloudflareEmail(match.captured(1));
+		html.replace(match.captured(0), email);
+	}
+	return html;
+}
+
+
 QString parseMarkdown(QString str)
 {
 	// Windows EOL

@@ -311,6 +311,17 @@ void FunctionsTest::testGetExternalLogFilesSuffixes()
 	settings->remove("LogFiles/0/content");
 }
 
+void FunctionsTest::testFixCloudflareEmail()
+{
+	QCOMPARE(fixCloudflareEmail("145d505b58595447405146"), QString("IDOLM@STER"));
+	QCOMPARE(fixCloudflareEmail("cc9cbea3a6a9afb8e1a5818c9f"), QString("Project-iM@S"));
+}
+void FunctionsTest::testFixCloudflareEmails()
+{
+	QCOMPARE(fixCloudflareEmails(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls"><span class="__cf_email__" data-cfemail="145d505b58595447405146">[email&#160;protected]</span> Cinderella Girls</a>)"), QString(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls">IDOLM@STER Cinderella Girls</a>)"));
+	QCOMPARE(fixCloudflareEmails(R"(Koshimizu Sachiko on <span class="__cf_email__" data-cfemail="cc9cbea3a6a9afb8e1a5818c9f">[email&#160;protected]</span>)"), QString("Koshimizu Sachiko on Project-iM@S"));
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected)
 {

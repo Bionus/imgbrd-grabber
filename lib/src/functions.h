@@ -69,6 +69,9 @@ QString getExtensionFromHeader(const QByteArray &data12);
 void setTestModeEnabled(bool testMode);
 bool isTestModeEnabled();
 
+QString fixCloudflareEmail(const QString &a);
+QString fixCloudflareEmails(QString html);
+
 QString parseMarkdown(QString str);
 QString decodeHtmlEntities(const QString &html);
 

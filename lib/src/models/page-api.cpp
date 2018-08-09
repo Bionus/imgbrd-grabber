@@ -219,7 +219,7 @@ void PageApi::parseActual()
 	if (page.urlPrevPage.isValid())
 	{ m_urlPrevPage = page.urlPrevPage; }
 	if (!page.wiki.isEmpty())
-	{ m_wiki = page.wiki; }
+	{ m_wiki = fixCloudflareEmails(page.wiki); }
 
 	// Complete image count information from tag count information
 	if (m_imagesCount < 1 || !m_imagesCountSafe)

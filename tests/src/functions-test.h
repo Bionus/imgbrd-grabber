@@ -28,6 +28,8 @@ class FunctionsTest : public TestSuite
 		void testSetFileCreationDate();
 		void testSetFileCreationDateUtf8();
 		void testGetExternalLogFilesSuffixes();
+		void testFixCloudflareEmail();
+		void testFixCloudflareEmails();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);
