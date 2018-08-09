@@ -235,7 +235,25 @@ void PageApi::parseActual()
 				{ min = tag.count(); }
 			}
 		}
-		if (m_search.count() == found)
+		int searchTagsCount = 0;
+		if (m_search.count() > found)
+		{
+			const QStringList modifiers = m_api->modifiers();
+			for (const QString &search : qAsConst(m_search))
+			{
+				for (const QString &modifier : modifiers)
+				{
+					if (search.startsWith(modifier))
+					{
+						searchTagsCount++;
+						break;
+					}
+				}
+			}
+		}
+		else
+		{ searchTagsCount = m_search.count(); }
+		if (searchTagsCount == found)
 		{
 			if (m_search.count() == 1)
 			{
