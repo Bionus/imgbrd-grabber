@@ -437,6 +437,8 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 
 void ZoomWindow::replyFinishedDetails()
 {
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails);
+
 	m_loadedDetails = true;
 	colore();
 
@@ -1125,9 +1127,6 @@ void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, const QShared
 void ZoomWindow::load(const QSharedPointer<Image> &image)
 {
 	emit clearLoadQueue();
-
-	if (!m_image.isNull())
-	{ disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails); }
 
 	m_displayImage = QPixmap();
 	m_loadedImage = false;
