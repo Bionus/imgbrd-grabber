@@ -798,7 +798,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		const QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
 		const QString pageCountStr = pageCount > 0
 			? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount)
-			: (page->maxPagesCount() == -1 ? "?" : QString::number(page->maxPagesCount()));
+			: (page->maxPagesCount() == -1 ? "?" : tr("max %1").arg(page->maxPagesCount()));
 		const QString imageCountStr = imageCount > 0
 			? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
 			: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
