@@ -61,7 +61,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	m_settings->setValue("Batch/scrollToDownload", ui->checkScrollToDownload->isChecked());
 	m_settings->sync();
 
-	if (m_images < m_imagesCount)
+	if (m_images < m_imagesCount || m_imagesCount == -1)
 	{
 		cancel();
 		emit rejected();
@@ -108,7 +108,7 @@ void batchWindow::clear()
 	m_cancel = false;
 	m_paused = false;
 
-	m_imagesCount = 0;
+	m_imagesCount = -1;
 	m_images = 0;
 
 	ui->progressTotal->setValue(0);
