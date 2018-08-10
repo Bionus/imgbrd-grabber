@@ -2,12 +2,17 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_WIN)
+	#include <Windows.h>
+	#include <ShlObj.h>
+	#include <comdef.h>
+#elif defined(Q_OS_MAC)
 	#include <QStringList>
-#elif !defined(Q_OS_WIN)
+#else
 	#include <QDesktopServices>
 	#include <QUrl>
 #endif
+#include "logger.h"
 
 
 /**
@@ -28,11 +33,24 @@ void showInGraphicalShell(const QString &pathIn)
 {
 	// Mac & Windows support folder or file.
 	#if defined(Q_OS_WIN)
-		QString param;
-		if (!QFileInfo(pathIn).isDir())
-		{ param = QLatin1String("/select,"); }
-		param += QDir::toNativeSeparators(pathIn);
-		QProcess::startDetached("explorer.exe "+param);
+		QString path = QDir::toNativeSeparators(pathIn).toStdString().c_str();
+		auto *filename = new wchar_t[path.length() + 1];
+		path.toWCharArray(filename);
+		filename[path.length()] = 0;
+		ITEMIDLIST *pidl = nullptr;
+		SFGAOF out;
+		HRESULT hr = SHParseDisplayName(filename, nullptr, &pidl, SFGAO_FILESYSTEM, &out);
+		if (SUCCEEDED(hr))
+		{
+			SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
+			ILFree(pidl);
+		}
+		else
+		{
+			LPCTSTR errMsg = _com_error(hr).ErrorMessage();
+			QString msg = QString::fromLatin1(errMsg);
+			log(QString("Error parsing path display name for '%1': %2").arg(pathIn, msg), Logger::Error);
+		}
 	#elif defined(Q_OS_MAC)
 		QStringList scriptArgs;
 		scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(pathIn);
