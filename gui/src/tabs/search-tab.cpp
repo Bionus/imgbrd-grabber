@@ -544,7 +544,18 @@ void searchTab::finishedLoadingPreview()
 	// Loading error
 	if (reply->error() != QNetworkReply::NoError)
 	{
-		log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
+		const QString ext = getExtension(reply->url());
+		if (ext != "jpg")
+		{
+			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(reply->errorString()), Logger::Warning);
+			const QUrl newUrl = setExtension(reply->url(), "jpg");
+			loadImageThumbnail(img->page(), img, newUrl);
+		}
+		else
+		{
+			log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
+		}
+
 		reply->deleteLater();
 		return;
 	}
