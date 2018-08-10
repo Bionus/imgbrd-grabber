@@ -343,12 +343,7 @@ void searchTab::finishedLoading(Page *page)
 
 	m_images.append(imgs);
 
-	const int maxPage = page->pagesCount();
-	if (maxPage > m_pagemax || m_pagemax == -1)
-		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
-
+	updatePaginationButtons(page);
 	addResultsPage(page, imgs, merged);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
@@ -464,6 +459,21 @@ void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 	ui_buttonGetSel->setDisabled(m_images.empty());
 }
 
+void searchTab::updatePaginationButtons(Page *page)
+{
+	// Update max page counter
+	int pageCount = page->pagesCount();
+	int maxPages = page->maxPagesCount();
+	if (pageCount <= 0 && maxPages > 0)
+		pageCount = maxPages;
+	if (pageCount > m_pagemax || m_pagemax == -1)
+		m_pagemax = pageCount;
+
+	// Enable/disable buttons
+	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+}
+
 void searchTab::finishedLoadingTags(Page *page)
 {
 	setTagsFromPages(m_pages);
@@ -475,11 +485,7 @@ void searchTab::finishedLoadingTags(Page *page)
 		m_parent->setWiki(m_wiki, this);
 	}
 
-	const int maxPage = page->pagesCount();
-	if (maxPage > m_pagemax || m_pagemax == -1)
-		m_pagemax = maxPage;
-	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	updatePaginationButtons(page);
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
@@ -1315,6 +1321,10 @@ void searchTab::loadTags(QStringList tags)
 	ui_buttonGetAll->setEnabled(false);
 	ui_buttonGetPage->setEnabled(false);
 	ui_buttonGetSel->setEnabled(false);
+
+	// Disable pagination buttons
+	ui_buttonNextPage->setEnabled(false);
+	ui_buttonLastPage->setEnabled(false);
 
 	// Get the search values
 	const QString search = tags.join(" ");
