@@ -45,11 +45,15 @@ if(USE_SSL)
 	endif()
 endif()
 
-# Enable code coverage on the Travis Linux build
-if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+# Enable code coverage on GCC
+if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
 	include(cmake/CodeCoverage.cmake)
 	setup_target_for_coverage(coverage tests coverage)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
+# Add a bunch of definitions for Travis builds
+if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-DTRAVIS=1)
 	if("$ENV{TRAVIS_OS_NAME}" STREQUAL "osx")
 		add_definitions(-DTRAVIS_OS_OSX=1)
