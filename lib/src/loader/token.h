@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 #include <QVariant>
+#include <functional>
 
 
 class Token
