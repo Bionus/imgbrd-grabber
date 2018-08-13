@@ -67,6 +67,7 @@ class PageApi : public QObject
 		void setImageCount(int count, bool sure);
 		void setImageMaxCount(int maxCount);
 		void setPageCount(int count, bool sure);
+		void setReply(QNetworkReply *reply);
 
 	private:
 		Page			*m_parentPage;

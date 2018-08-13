@@ -70,6 +70,19 @@ void PageApi::updateUrls()
 	m_urlRegex = QUrl(url);
 }
 
+void PageApi::setReply(QNetworkReply *reply)
+{
+	if (m_reply != nullptr)
+	{
+		if (m_reply->isRunning())
+			m_reply->abort();
+
+		m_reply->deleteLater();
+	}
+
+	m_reply = reply;
+}
+
 void PageApi::load(bool rateLimit, bool force)
 {
 	if (m_reply != nullptr)
@@ -77,11 +90,7 @@ void PageApi::load(bool rateLimit, bool force)
 		if (!force)
 			return;
 
-		if (m_reply->isRunning())
-			m_reply->abort();
-
-		m_reply->deleteLater();
-		m_reply = nullptr;
+		setReply(nullptr);
 	}
 
 	if (m_url.isEmpty() && !m_errors.isEmpty())
@@ -111,7 +120,7 @@ void PageApi::load(bool rateLimit, bool force)
 void PageApi::loadNow()
 {
 	log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
-	m_reply = m_site->get(m_url);
+	setReply(m_site->get(m_url));
 	connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
 }
 void PageApi::abort()
@@ -141,6 +150,9 @@ bool PageApi::addImage(const QSharedPointer<Image> &img)
 
 void PageApi::parse()
 {
+	if (m_reply == nullptr)
+		return;
+
 	log(QStringLiteral("[%1][%2] Receiving page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
@@ -185,8 +197,7 @@ void PageApi::parseActual()
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
 		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
-		m_reply->deleteLater();
-		m_reply = nullptr;
+		setReply(nullptr);
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -199,8 +210,7 @@ void PageApi::parseActual()
 	{
 		m_errors.append(page.error);
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
-		m_reply->deleteLater();
-		m_reply = nullptr;
+		setReply(nullptr);
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -319,8 +329,7 @@ void PageApi::parseActual()
 
 	log(QStringLiteral("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 tags (%6), %7 total (%8), %9 pages (%10)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
-	m_reply->deleteLater();
-	m_reply = nullptr;
+	setReply(nullptr);
 	m_loaded = true;
 
 	emit finishedLoading(this, LoadResult::Ok);
