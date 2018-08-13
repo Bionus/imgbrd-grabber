@@ -86,6 +86,7 @@ class PageApi : public QObject
 		QNetworkReply	*m_reply, *m_replyTags;
 		int				m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
 		bool			m_imagesCountSafe, m_pagesCountSafe;
+		bool			m_loading = false;
 		bool			m_loaded = false;
 };
 

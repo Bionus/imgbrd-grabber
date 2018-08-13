@@ -85,7 +85,7 @@ void PageApi::setReply(QNetworkReply *reply)
 
 void PageApi::load(bool rateLimit, bool force)
 {
-	if (m_reply != nullptr)
+	if (m_loading)
 	{
 		if (!force)
 			return;
@@ -105,6 +105,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_images.clear();
 	m_tags.clear();
 	m_loaded = false;
+	m_loading = true;
 	m_pageImageCount = 0;
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
@@ -331,6 +332,7 @@ void PageApi::parseActual()
 
 	setReply(nullptr);
 	m_loaded = true;
+	m_loading = false;
 
 	emit finishedLoading(this, LoadResult::Ok);
 }
