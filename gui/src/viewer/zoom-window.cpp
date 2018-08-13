@@ -846,6 +846,8 @@ void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs)
 	{
+		if (QFile::exists(m_saveAsPending))
+		{ QFile::remove(m_saveAsPending); }
 		bool ok = QFile::copy(m_imagePath, m_saveAsPending);
 		auto result = ok ? Image::SaveResult::Saved : Image::SaveResult::Error;
 		m_image->postSave(m_saveAsPending, result, true, true, 1);
