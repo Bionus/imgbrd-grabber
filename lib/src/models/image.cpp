@@ -1043,12 +1043,12 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		for (const QString &cop : details["copyright"])
 		{
 			bool found = false;
-			for (int r = 0; r < copyrights.size(); ++r)
+			for (QString &copyright : copyrights)
 			{
-				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+				if (copyright.left(cop.size()) == cop.left(copyright.size()))
 				{
-					if (cop.size() < copyrights.at(r).size())
-					{ copyrights[r] = cop; }
+					if (cop.size() < copyright.size())
+					{ copyright = cop; }
 					found = true;
 				}
 			}

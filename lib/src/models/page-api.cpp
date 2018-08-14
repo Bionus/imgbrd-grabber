@@ -279,17 +279,19 @@ void PageApi::parseActual()
 	if (m_tags.isEmpty())
 	{
 		QStringList tagsGot;
-		for (int i = 0; i < m_images.count(); i++)
+		for (const QSharedPointer<Image> &img : qAsConst(m_images))
 		{
-			QList<Tag> tags = m_images.at(i)->tags();
-			for (int t = 0; t < tags.count(); t++)
+			for (const Tag &tag : img->tags())
 			{
-				if (tagsGot.contains(tags[t].text()))
-				{ m_tags[tagsGot.indexOf(tags[t].text())].setCount(m_tags[tagsGot.indexOf(tags[t].text())].count() + 1); }
+				if (tagsGot.contains(tag.text()))
+				{
+					const int index = tagsGot.indexOf(tag.text());
+					m_tags[index].setCount(m_tags[index].count() + 1);
+				}
 				else
 				{
-					m_tags.append(tags[t]);
-					tagsGot.append(tags[t].text());
+					m_tags.append(tag);
+					tagsGot.append(tag.text());
 				}
 			}
 		}

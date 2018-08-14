@@ -33,9 +33,9 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
 	QMap<QString, QStringList> tokens;
 	settings->beginGroup(QStringLiteral("Save/Customs"));
-	QStringList keys = settings->childKeys();
-	for (int i = 0; i < keys.size(); i++)
-	{ tokens.insert(keys.at(i), settings->value(keys.at(i)).toString().split(' ')); }
+	const QStringList keys = settings->childKeys();
+	for (const QString &key : keys)
+	{ tokens.insert(key, settings->value(key).toString().split(' ')); }
 	settings->endGroup();
 	return tokens;
 }

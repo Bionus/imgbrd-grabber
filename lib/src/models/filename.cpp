@@ -577,15 +577,15 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num";
 	if (profile != nullptr)
 	{ tokens.append(getCustoms(profile->getSettings()).keys()); }
-	QRegularExpression rx("%(.+?)%");
+	static const QRegularExpression rx("%(.+?)%");
 	auto matches = rx.globalMatch(m_format);
 	while (matches.hasNext())
 	{
 		auto match = matches.next();
 		bool found = false;
-		for (int i = 0; i < tokens.length(); i++)
+		for (const QString &token : tokens)
 		{
-			if (QRegularExpression("%" + tokens[i] + "(?::[^%]+)?%").match(match.captured(0)).hasMatch())
+			if (QRegularExpression("%" + token + "(?::[^%]+)?%").match(match.captured(0)).hasMatch())
 				found = true;
 		}
 

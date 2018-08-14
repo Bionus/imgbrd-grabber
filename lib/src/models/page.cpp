@@ -27,13 +27,13 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	QStringList modifiers = QStringList();
 	for (Site *ste : sites)
 	{ modifiers.append(ste->getApis().first()->modifiers()); }
-	QStringList mods = m_site->getApis().first()->modifiers();
-	for (int j = 0; j < mods.size(); j++)
-	{ modifiers.removeAll(mods[j]); }
+	const QStringList mods = m_site->getApis().first()->modifiers();
+	for (const QString &mod : mods)
+	{ modifiers.removeAll(mod); }
 
 	// Remove modifiers from tags
-	for (int k = 0; k < modifiers.size(); k++)
-	{ tags.removeAll(modifiers[k]); }
+	for (const QString &mod : modifiers)
+	{ tags.removeAll(mod); }
 	m_search = tags;
 
 	// Generate pages
