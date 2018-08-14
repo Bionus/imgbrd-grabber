@@ -331,7 +331,7 @@ void PageApi::parseActual()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
-	log(QStringLiteral("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 tags (%6), %7 total (%8), %9 pages (%10)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+	log(QStringLiteral("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images (%5), %6 tags (%7), %8 total (%9), %10 pages (%11)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(m_pageImageCount).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
 	setReply(nullptr);
 	m_loaded = true;
@@ -373,7 +373,7 @@ int PageApi::imagesCount(bool guess) const
 		return m_imagesCount;
 
 	if (m_pagesCount == 1)
-		return m_images.count();
+		return m_pageImageCount;
 
 	if (!guess)
 		return -1;
