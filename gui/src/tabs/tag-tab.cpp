@@ -182,8 +182,8 @@ void tagTab::getPage()
 		{
 			const auto &page = m_pages[actuals[i]].first();
 
-			const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->images().count() > ui->spinImagesPerPage->value() ? page->images().count() : ui->spinImagesPerPage->value());
-			if (perpage <= 0 || page->images().count() <= 0)
+			const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
+			if (perpage <= 0 || page->pageImageCount() <= 0)
 				continue;
 
 			const QString search = page->search().join(' ');
@@ -209,7 +209,7 @@ void tagTab::getAll()
 		const auto &page = m_pages[actual].first();
 
 		const int highLimit = page->highLimit();
-		const int currentCount = page->images().count();
+		const int currentCount = page->pageImageCount();
 		const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;

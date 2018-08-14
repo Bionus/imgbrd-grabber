@@ -142,7 +142,7 @@ void poolTab::getPage()
 	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
-	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
@@ -154,7 +154,7 @@ void poolTab::getAll()
 	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
 	const int highLimit = page->highLimit();
-	const int currentCount = page->images().count();
+	const int currentCount = page->pageImageCount();
 	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;

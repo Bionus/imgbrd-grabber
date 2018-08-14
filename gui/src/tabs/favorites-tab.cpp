@@ -251,7 +251,7 @@ void favoritesTab::getPage()
 	{
 		const auto &page = m_pages[actuals[i]].first();
 		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
-		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
@@ -271,7 +271,7 @@ void favoritesTab::getAll()
 		const auto &page = m_pages[actual].first();
 
 		const int highLimit = page->highLimit();
-		const int currentCount = page->images().count();
+		const int currentCount = page->pageImageCount();
 		const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
