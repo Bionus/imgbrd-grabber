@@ -563,7 +563,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 	if (!basic)
 	{
 		auto logFiles = getExternalLogFiles(m_settings);
-		for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
+		for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 		{
 			auto logFile = it.value();
 			const QString textfileFormat = logFile["content"].toString();

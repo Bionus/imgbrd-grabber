@@ -58,7 +58,7 @@ bool TagDatabaseInMemory::save()
 
 	// Inverted tag type map to get the tag type ID from its name
 	QMap<QString, int> tagTypes;
-	for (auto it = m_tagTypes.begin(); it != m_tagTypes.end(); ++it)
+	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it)
 		tagTypes.insert(it.value().name(), it.key());
 
 	QHashIterator<QString, TagType> i(m_database);

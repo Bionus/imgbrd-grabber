@@ -248,7 +248,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	m_login->complementRequest(&request);
 
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
-	for (auto it = headers.begin(); it != headers.end(); ++it)
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
 	{ request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1()); }
 
 	// User-Agent header tokens and default value

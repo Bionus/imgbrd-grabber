@@ -49,7 +49,7 @@ searchTab::searchTab(Profile *profile, mainWindow *parent)
 		m_completion.append(fav.getName());
 
 	// Modifiers
-	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
 		Site *site = it.value();
 		const QStringList modifiers = site->getApis().first()->modifiers();
@@ -260,7 +260,7 @@ void searchTab::clear()
 			page->abortTags();
 		}
 	}
-	for (auto it = m_thumbnailsLoading.begin(); it != m_thumbnailsLoading.end(); ++it)
+	for (auto it = m_thumbnailsLoading.constBegin(); it != m_thumbnailsLoading.constEnd(); ++it)
 	{
 		QNetworkReply *reply = it.key();
 		if (reply->isRunning())
@@ -1130,7 +1130,7 @@ void searchTab::updateCheckboxes()
 	const int n = m_settings->value("Sources/Letters", 3).toInt();
 	int m = n;
 
-	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
 		Site *site = it.value();
 		QString url = site->url();

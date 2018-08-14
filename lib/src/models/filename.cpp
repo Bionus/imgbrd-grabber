@@ -136,7 +136,7 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 {
 	QJSValue obj = engine.globalObject();
 
-	for (auto it = tokens.begin(); it != tokens.end(); ++it)
+	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it)
 	{
 		const QString &key = it.key();
 		QVariant val = it.value().value();
@@ -251,7 +251,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	if (complex)
 	{
 		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-		for (auto it = filenames.begin(); it != filenames.end(); ++it)
+		for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
 		{
 			if (matchConditionalFilename(it.key(), settings, tokens))
 			{

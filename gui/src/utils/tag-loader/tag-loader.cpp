@@ -16,7 +16,7 @@ TagLoader::TagLoader(Profile *profile, QWidget *parent)
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
 		Site *site = it.value();
 		if (!getCompatibleApis(site).isEmpty())

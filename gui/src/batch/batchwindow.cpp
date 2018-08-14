@@ -343,7 +343,7 @@ void batchWindow::drawSpeed()
 	m_time->restart();
 
 	double speed = 0;
-	for (auto sp = m_speeds.begin(); sp != m_speeds.end(); ++sp)
+	for (auto sp = m_speeds.constBegin(); sp != m_speeds.constEnd(); ++sp)
 	{ speed += sp.value(); }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(qRound(speed)); }

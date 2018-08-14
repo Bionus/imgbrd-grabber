@@ -268,7 +268,7 @@ void sourcesWindow::checkAll(int check)
 
 void sourcesWindow::checkForUpdates()
 {
-	for (auto it = m_sources.begin(); it != m_sources.end(); ++it)
+	for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it)
 	{
 		const SourceUpdater &updater = it.value()->getUpdater();
 		connect(&updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);

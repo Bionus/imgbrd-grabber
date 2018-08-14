@@ -51,7 +51,7 @@ void DownloadableDownloader::preloaded()
 	// If we don't need any loading, we return early
 	if (m_paths.isEmpty())
 	{
-		for (auto it = m_result.begin(); it != m_result.end(); ++it)
+		for (auto it = m_result.constBegin(); it != m_result.constEnd(); ++it)
 		{ m_downloadable->postSave(it.key(), it.value(), m_addMd5, m_startCommands, m_count); }
 		emit saved(m_downloadable, m_result);
 		return;

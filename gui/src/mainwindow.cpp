@@ -1366,7 +1366,7 @@ void mainWindow::getAllFinishedLogins()
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
 
 	int total = 0;
-	for (auto j = m_batchPending.begin(); j != m_batchPending.end(); ++j)
+	for (auto j = m_batchPending.constBegin(); j != m_batchPending.constEnd(); ++j)
 	{
 		DownloadQueryGroup b = j.value();
 
@@ -1580,7 +1580,7 @@ void mainWindow::getAllImages()
 int mainWindow::needExactTags(QSettings *settings)
 {
 	auto logFiles = getExternalLogFiles(settings);
-	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 	{
 		Filename fn(it.value().value("content").toString());
 		int need = fn.needExactTags();
@@ -1897,7 +1897,7 @@ void mainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QStr
 	const auto res = result.first();
 
 	// Disk writing errors
-	for (auto it = result.begin(); it != result.end(); ++it)
+	for (auto it = result.constBegin(); it != result.constEnd(); ++it)
 	{
 		const QString &path = it.key();
 		if (it.value() == Image::SaveResult::Error)
@@ -1962,7 +1962,7 @@ void mainWindow::getAllCancel()
 	{
 		download.image->abortTags();
 	}
-	for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it)
 	{
 		it.value()->abort();
 	}
@@ -1984,7 +1984,7 @@ void mainWindow::getAllSkip()
 	{
 		download.image->abortTags();
 	}
-	for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it)
 	{
 		it.value()->abort();
 	}
@@ -2102,7 +2102,7 @@ void mainWindow::getAllPause()
 		{
 			download.image->abortTags();
 		}
-		for (auto it = m_getAllImageDownloaders.begin(); it != m_getAllImageDownloaders.end(); ++it)
+		for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it)
 		{
 			it.value()->abort();
 		}

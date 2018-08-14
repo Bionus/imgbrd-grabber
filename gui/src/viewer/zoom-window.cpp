@@ -890,7 +890,7 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString
 
 	const bool fav = m_pendingAction == PendingSaveFav;
 
-	for (auto it = result.begin(); it != result.end(); ++it)
+	for (auto it = result.constBegin(); it != result.constEnd(); ++it)
 	{
 		const Image::SaveResult res = it.value();
 		m_source = it.key();
@@ -1057,7 +1057,7 @@ void ZoomWindow::closeEvent(QCloseEvent *e)
 
 	m_image->abortTags();
 
-	for (auto it = m_imageDownloaders.begin(); it != m_imageDownloaders.end(); ++it)
+	for (auto it = m_imageDownloaders.constBegin(); it != m_imageDownloaders.constEnd(); ++it)
 	{
 		it.value()->abort();
 		it.value()->deleteLater();

@@ -33,7 +33,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (auto it = languages.begin(); it != languages.end(); ++it)
+	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it)
 	{ ui->comboLanguages->addItem(it.value(), it.key()); }
 
 	QSettings *settings = profile->getSettings();
@@ -68,7 +68,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
-	for (auto it = filenames.begin(); it != filenames.end(); ++it)
+	for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
 	{
 		auto leCondition = new QLineEdit(it.key());
 		auto leFilename = new QLineEdit(it.value().first);
@@ -226,7 +226,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
 	i = 0;
-	for (auto it = customs.begin(); it != customs.end(); ++it)
+	for (auto it = customs.constBegin(); it != customs.constEnd(); ++it)
 	{
 		auto *leName = new QLineEdit(it.key());
 		auto *leTags = new QLineEdit(it.value().join(" "));
@@ -420,7 +420,7 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
 	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
-	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 	{
 		const int i = it.key();
 		auto logFile = it.value();
@@ -484,7 +484,7 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 
 	settings->beginGroup(QString::number(index));
 
-	for (auto it = logFile.begin(); it != logFile.end(); ++it)
+	for (auto it = logFile.constBegin(); it != logFile.constEnd(); ++it)
 	{ settings->setValue(it.key(), it.value()); }
 
 	settings->endGroup();

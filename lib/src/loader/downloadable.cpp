@@ -18,7 +18,7 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 			QMap<QString, QStringList> custom;
 			for (const QString &tag : tags)
 			{
-				for (auto it = scustom.begin(); it != scustom.end(); ++it)
+				for (auto it = scustom.constBegin(); it != scustom.constEnd(); ++it)
 				{
 					const QString &key = it.key();
 					if (!custom.contains(key))
@@ -27,7 +27,7 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 					{ custom[key].append(tag); }
 				}
 			}
-			for (auto it = custom.begin(); it != custom.end(); ++it)
+			for (auto it = custom.constBegin(); it != custom.constEnd(); ++it)
 			{ tokens.insert(it.key(), Token(it.value())); }
 		}
 

@@ -88,7 +88,7 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	QStringList suffixes;
 
 	auto logFiles = getExternalLogFiles(settings);
-	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 	{
 		const QMap<QString, QVariant> &logFile = it.value();
 		if (logFile["locationType"].toInt() == 2)
