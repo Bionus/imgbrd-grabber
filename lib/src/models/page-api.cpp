@@ -306,7 +306,10 @@ void PageApi::parseActual()
 		if (m_images.size() >= skip)
 		{
 			for (int i = 0; i < skip; ++i)
+			{
 				m_images.removeFirst();
+				m_pageImageCount--;
+			}
 		}
 		else
 		{ log(QStringLiteral("Wanting to skip %1 images but only %2 returned").arg(skip).arg(m_images.size()), Logger::Warning); }
