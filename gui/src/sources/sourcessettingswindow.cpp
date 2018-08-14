@@ -179,7 +179,7 @@ void SourcesSettingsWindow::deleteSite()
 
 void SourcesSettingsWindow::testLogin()
 {
-	save();
+	saveSettings();
 
 	setLoginStatus(tr("Connection..."));
 
@@ -214,7 +214,7 @@ void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 	ui->labelTestLogin->setText(italic);
 }
 
-void SourcesSettingsWindow::save()
+void SourcesSettingsWindow::saveSettings()
 {
 	m_site->setSetting("name", ui->lineSiteName->text(), m_site->url());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
@@ -315,6 +315,10 @@ void SourcesSettingsWindow::save()
 
 	m_site->syncSettings();
 	m_site->loadConfig();
+}
 
+void SourcesSettingsWindow::save()
+{
+	saveSettings();
 	accept();
 }

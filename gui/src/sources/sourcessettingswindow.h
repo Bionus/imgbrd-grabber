@@ -34,6 +34,7 @@ class SourcesSettingsWindow : public QDialog
 		void siteDeleted(const QString &);
 
 	protected:
+		void saveSettings();
 		void setLoginStatus(const QString &msg);
 
 	private:
