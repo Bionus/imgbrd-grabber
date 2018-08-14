@@ -8,7 +8,17 @@ AboutWindow::AboutWindow(const QString &version, QWidget *parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
-	ui->labelCurrent->setText(version);
+	// Set window title according to the current build
+	QString labelVersion = version;
+	#ifdef NIGHTLY
+		QString commit(NIGHTLY_COMMIT);
+		if (!commit.isEmpty())
+			labelVersion += QString(" - nightly (%1)").arg(commit.left(8));
+		else
+			labelVersion += " - nightly";
+	#endif
+	ui->labelCurrent->setText(labelVersion);
+
 	ui->labelCreator->setText(ui->labelCreator->text().replace("{website}", PROJECT_WEBSITE_URL));
 	setFixedSize(400, 228);
 
