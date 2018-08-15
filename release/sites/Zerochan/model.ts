@@ -51,6 +51,7 @@ export const source: ISource = {
                             height: image["media:content"]["@attributes"]["height"],
                         };
                         img["id"] = Grabber.regexToConst("id", "/(?<id>\\d+)", img["page_url"]);
+                        img["sample_url"] = img["file_url"];
                         images.push(completeImage(img));
                     }
 
