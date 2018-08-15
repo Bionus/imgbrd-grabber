@@ -85,6 +85,28 @@ export const source: ISource = {
                     };
                 },
             },
+            details: {
+                url: (id: number, md5: string): string => {
+                    return "/pictures/view_post/" + id + "?lang=en&type=json";
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src);
+
+                    const tags: ITag[] = data["tags_full"].map((tag: any) => {
+                        return {
+                            name: tag["name"],
+                            count: tag["num"],
+                            typeId: tag["type"],
+                        };
+                    });
+
+                    return {
+                        tags,
+                        createdAt: data["pubtime"],
+                        imageUrl: data["file_url"],
+                    };
+                },
+            },
         },
         html: {
             name: "Regex",
