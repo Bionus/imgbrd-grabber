@@ -88,6 +88,7 @@ void ImageDownloader::loadedSave()
 	}
 
 	m_url = m_image->url(Image::Size::Full);
+	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	loadImage();
 }
 
@@ -102,7 +103,6 @@ void ImageDownloader::loadImage()
 	{ m_reply->deleteLater(); }
 
 	// Load the image directly on the disk
-	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	Site *site = m_image->parentSite();
 	m_reply = site->get(site->fixUrl(m_url.toString()), m_image->page(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
