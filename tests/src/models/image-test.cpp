@@ -145,26 +145,6 @@ void ImageTest::testMd5FromData()
 	QCOMPARE(m_img->md5(), QString("956ddde86fb5ce85218b21e2f49e5c50"));
 }*/
 
-void ImageTest::testStylishedTags()
-{
-	m_profile->getIgnored() = QStringList();
-	QStringList tags = m_img->stylishedTags(m_profile);
-
-	QCOMPARE(tags.count(), 9);
-	/*QCOMPARE(tags[0], QString("<a href=\"artist1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">artist1</a>"));
-	QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#00aa00; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
-	QCOMPARE(tags[7], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));*/
-
-	m_profile->setBlacklistedTags(Blacklist(QStringList() << "character1" << "tag1"));
-	m_profile->getIgnored() = QStringList() << "copyright1" << "tag2";
-	tags = m_img->stylishedTags(m_profile);
-
-	QCOMPARE(tags.count(), 9);
-	/*QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
-	QCOMPARE(tags[3], QString("<a href=\"copyright1\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">copyright1</a>"));
-	QCOMPARE(tags[8], QString("<a href=\"tag3\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag3</a>"));*/
-}
-
 void ImageTest::testValue()
 {
 	// Guess from image size

@@ -22,7 +22,6 @@ class ImageTest : public TestSuite
 		void testHasAllTags();
 		void testMd5FromData();
 		//void testMd5FromFile();
-		void testStylishedTags();
 		void testValue();
 		void testLoadDetails();
 		void testLoadDetailsAbort();

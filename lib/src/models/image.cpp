@@ -464,12 +464,6 @@ int Image::value() const
 	return 1200 * 900;
 }
 
-QStringList Image::stylishedTags(Profile *profile) const
-{
-	TagStylist stylist(profile);
-	return stylist.stylished(m_tags);
-}
-
 Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSave)
 {
 	SaveResult res = SaveResult::Saved;
@@ -805,7 +799,7 @@ QString Image::tooltip() const
 	const QString unit = getUnit(&size);
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
-		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(stylishedTags(m_profile).join(" ")))
+		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 		.arg(m_rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(m_rating))
 		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
@@ -823,7 +817,7 @@ QList<QStrP> Image::detailsData() const
 
 	return
 	{
-		QStrP(tr("Tags"), stylishedTags(m_profile).join(' ')),
+		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
