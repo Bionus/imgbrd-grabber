@@ -222,7 +222,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 		QFile f(path);
 		if (f.exists())
 		{
-			result[path] = Image::SaveResult::AlreadyExists;
+			result[path] = Image::SaveResult::AlreadyExistsDisk;
 			continue;
 		}
 

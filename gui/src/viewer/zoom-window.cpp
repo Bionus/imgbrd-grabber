@@ -909,12 +909,12 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString
 				setButtonState(fav, SaveButtonState::Moved);
 				break;
 
-			case Image::SaveResult::Ignored:
+			case Image::SaveResult::AlreadyExistsMd5:
 				setButtonState(fav, SaveButtonState::ExistsMd5);
 				m_source = m_profile->md5Exists(m_image->md5());
 				break;
 
-			case Image::SaveResult::AlreadyExists:
+			case Image::SaveResult::AlreadyExistsDisk:
 				setButtonState(fav, SaveButtonState::ExistsDisk);
 				break;
 

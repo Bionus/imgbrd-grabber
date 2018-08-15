@@ -289,7 +289,7 @@ void ImageTest::testSaveAlreadyExists()
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
-	QCOMPARE(res.first(), Image::AlreadyExists);
+	QCOMPARE(res.first(), Image::AlreadyExistsDisk);
 }
 void ImageTest::testSaveDuplicate()
 {
@@ -307,7 +307,7 @@ void ImageTest::testSaveDuplicate()
 	m_settings->setValue("Save/md5Duplicates", "ignore");
 	res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 	QCOMPARE(res.count(), 1);
-	QCOMPARE(res.first(), Image::Ignored);
+	QCOMPARE(res.first(), Image::AlreadyExistsMd5);
 	QCOMPARE(file.exists(), false);
 
 	m_settings->setValue("Save/md5Duplicates", "copy");

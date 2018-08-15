@@ -17,8 +17,9 @@ class Downloadable
 	public:
 		enum SaveResult
 		{
-			AlreadyExists,
-			Ignored,
+			AlreadyExistsDisk,
+			AlreadyExistsMd5,
+			Blacklisted,
 			Moved,
 			Copied,
 			Saved,

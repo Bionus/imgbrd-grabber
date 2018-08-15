@@ -1704,7 +1704,7 @@ void MainWindow::_getAll()
 			{
 				m_getAllExists++;
 				log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
-				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
+				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExistsDisk);
 				getAllImageOk(download, siteId);
 			}
 		}
@@ -1730,7 +1730,7 @@ void MainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	{
 		m_getAllIgnored++;
 		log(QStringLiteral("Image ignored for containing blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
-		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Ignored);
+		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Blacklisted);
 		getAllImageOk(download, siteId);
 		return;
 	}
@@ -1844,7 +1844,7 @@ void MainWindow::getAllPerformTags()
 		m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 		m_getAllExists++;
 		log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
-		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
+		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExistsDisk);
 		if (siteId >= 0)
 		{
 			m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value() + 1);
@@ -1967,9 +1967,9 @@ void MainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QStr
 	}
 	else if (res == Image::SaveResult::NotFound)
 	{ m_getAll404s++; }
-	else if (res == Image::SaveResult::AlreadyExists)
+	else if (res == Image::SaveResult::AlreadyExistsDisk)
 	{ m_getAllExists++; }
-	else if (res == Image::SaveResult::Ignored)
+	else if (res == Image::SaveResult::Blacklisted || res == Image::SaveResult::AlreadyExistsMd5)
 	{ m_getAllIgnored++; }
 	else if (!diskError)
 	{ m_getAllDownloaded++; }

@@ -543,14 +543,14 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		else
 		{
 			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url().toString(), md5Duplicate));
-			return SaveResult::Ignored;
+			return SaveResult::AlreadyExistsMd5;
 		}
 
 		if (postSave)
 		{ postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
 	}
 	else
-	{ res = SaveResult::AlreadyExists; }
+	{ res = SaveResult::AlreadyExistsDisk; }
 
 	return res;
 }
