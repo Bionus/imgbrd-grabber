@@ -1571,35 +1571,6 @@ void MainWindow::getAllImages()
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 	m_progressDialog->setTotalMax(m_getAllImagesCount);
 
-	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
-	// TODO(Bionus): having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
-	m_mustGetTags = needExactTags(m_settings);
-	for (int f = 0; f < m_groupBatchs.size() && m_mustGetTags == 0; f++)
-	{
-		Filename fn(m_groupBatchs[f].filename);
-		Site *site = m_groupBatchs[f].site;
-		Api *api = site->firstValidApi();
-		QString apiName = api == nullptr ? "" : api->getName();
-		int need = fn.needExactTags(site, apiName);
-		if (need != 0)
-			m_mustGetTags = need;
-	}
-	for (int f = 0; f < m_batchs.size() && m_mustGetTags == 0; f++)
-	{
-		Filename fn(m_batchs[f].filename);
-		Site *site = m_batchs[f].site;
-		Api *api = site->firstValidApi();
-		QString apiName = api == nullptr ? "" : api->getName();
-		int need = fn.needExactTags(site, apiName);
-		if (need != 0)
-			m_mustGetTags = need;
-	}
-
-	if (m_mustGetTags != 0)
-		log(QStringLiteral("Downloading images details."), Logger::Info);
-	else
-		log(QStringLiteral("Downloading images directly."), Logger::Info);
-
 	// We start the simultaneous downloads
 	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
 	m_getAllCurrentlyProcessing.store(count);
@@ -1653,52 +1624,10 @@ void MainWindow::_getAll()
 	{
 		// We take the first image to download
 		BatchDownloadImage download = m_getAllRemaining.takeFirst();
-		QSharedPointer<Image> img = download.image;
 		m_getAllDownloading.append(download);
 
-		// Get the tags first if necessary
-		if (m_mustGetTags == 2 || (m_mustGetTags == 1 && img->hasUnknownTag()))
-		{
-			connect(img.data(), &Image::finishedLoadingTags, this, &MainWindow::getAllPerformTags);
-			img->loadDetails();
-		}
-		else
-		{
-			// Row
-			int siteId = download.siteId(m_groupBatchs);
-			int row = getRowForSite(siteId);
-
-			if (siteId >= 0)
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png")); }
-
-			// Path
-			QString filename = download.query()->filename;
-			QString path = download.query()->path;
-			QStringList paths = img->path(filename, path, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
-
-			bool notexists = true;
-			for (const QString &p : paths)
-			{
-				QFile f(p);
-				if (f.exists())
-				{ notexists = false; }
-			}
-
-			// If the file does not already exists
-			if (notexists)
-			{
-				getAllGetImage(download, siteId);
-			}
-
-			// If the file already exists
-			else
-			{
-				m_getAllExists++;
-				log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
-				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExistsDisk);
-				getAllImageOk(download, siteId);
-			}
-		}
+		int siteId = download.siteId(m_groupBatchs);
+		getAllGetImage(download, siteId);
 	}
 
 	// When the batch download finishes
@@ -1760,59 +1689,6 @@ void MainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesRe
 
 	m_progressDialog->sizeImage(url, bytesTotal);
 	m_progressDialog->statusImage(url, percent);
-}
-void MainWindow::getAllPerformTags()
-{
-	if (m_progressDialog->cancelled())
-		return;
-
-	log(QStringLiteral("Tags received"), Logger::Info);
-
-	const BatchDownloadImage *downloadPtr = nullptr;
-	for (const BatchDownloadImage &i : qAsConst(m_getAllDownloading))
-		if (i.image.data() == sender())
-			downloadPtr = &i;
-	if (downloadPtr == nullptr)
-	{
-		log(QStringLiteral("Tags received from unknown sender"), Logger::Error);
-		return;
-	}
-
-	BatchDownloadImage download = *downloadPtr;
-	QSharedPointer<Image> img = download.image;
-
-	// Row
-	int siteId = download.siteId(m_groupBatchs);
-	int row = getRowForSite(siteId);
-
-	// Getting path
-	QString filename = download.query()->filename;
-	QString path = download.query()->path;
-
-	// Save path
-	path.replace("\\", "/");
-	if (path.right(1) == "/")
-	{ path = path.left(path.length() - 1); }
-
-	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	QStringList paths = img->path(filename, path, cnt, true, false, true, true, true);
-	const QString &pth = paths.at(0); // FIXME
-
-	QFile f(pth);
-	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
-	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".gif");	}
-	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
-	if (!f.exists())
-	{
-		getAllGetImage(download, siteId);
-	}
-	else
-	{
-		m_getAllExists++;
-		log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
-		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExistsDisk);
-		getAllImageOk(download, siteId);
-	}
 }
 
 int MainWindow::getRowForSite(int siteId)

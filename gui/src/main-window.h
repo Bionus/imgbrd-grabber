@@ -90,7 +90,6 @@ class MainWindow : public QMainWindow
 		void getAllImages();
 		void getAllGetImage(const BatchDownloadImage &download, int siteId);
 		void getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result);
-		void getAllPerformTags();
 		void getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal);
 		void getAllCancel();
 		void getAllPause();
@@ -168,7 +167,6 @@ class MainWindow : public QMainWindow
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_loaded, m_getAll;
-		int					m_mustGetTags;
 		int					m_forcedTab;
 		QSettings			*m_settings;
 		BatchWindow			*m_progressDialog;
