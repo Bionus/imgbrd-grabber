@@ -435,7 +435,11 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 
 	// Load thumbnails
 	for (const auto &img : imgs)
-	{ loadImageThumbnail(page, img, img->url(Image::Size::Thumbnail)); }
+	{
+		const QUrl thumbnailUrl = img->url(Image::Size::Thumbnail);
+		if (thumbnailUrl.isValid())
+		{ loadImageThumbnail(page, img, thumbnailUrl); }
+	}
 
 	// Re-enable endless loading if all sources have reached the last page
 	if (finished)
