@@ -388,7 +388,7 @@ void ZoomWindow::load(bool force)
 	if (dwl == nullptr)
 	{
 		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		dwl = new ImageDownloader(m_image, fn, m_profile->tempPath(), 1, false, false, this, true, force);
+		dwl = new ImageDownloader(m_image, fn, m_profile->tempPath(), 1, false, false, this, false, true, force);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
