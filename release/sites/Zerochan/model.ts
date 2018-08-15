@@ -47,6 +47,8 @@ export const source: ISource = {
                             tags: image["media:keywords"]["#text"].trim().split(", "),
                             preview_url: image["media:thumbnail"]["#text"] || image["media:thumbnail"]["@attributes"]["url"],
                             file_url: image["media:content"]["#text"] || image["media:content"]["@attributes"]["url"],
+                            width: image["media:content"]["@attributes"]["width"],
+                            height: image["media:content"]["@attributes"]["height"],
                         };
                         img["id"] = Grabber.regexToConst("id", "/(?<id>\\d+)", img["page_url"]);
                         images.push(completeImage(img));
