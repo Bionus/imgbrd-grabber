@@ -1067,7 +1067,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 		QMessageBox msgBox(this);
 		msgBox.setText(tr("Are you sure you want to quit?"));
 		msgBox.setIcon(QMessageBox::Warning);
-		QCheckBox dontShowCheckBox(tr("Don't keep for later"));
+		QCheckBox dontShowCheckBox(tr("Don't ask me again"));
 		dontShowCheckBox.setCheckable(true);
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 		msgBox.setCheckBox(&dontShowCheckBox);
@@ -1300,7 +1300,37 @@ void MainWindow::getAll(bool all)
 		}
 	}
 
-	if (m_batchPending.isEmpty() && m_getAllRemaining.isEmpty())
+
+
+	// Confirm before downloading possibly more than 10,000 images
+	bool tooBig = false;
+	if (m_getAllLimit > 10000 && m_settings->value("confirm_big_downloads", true).toBool())
+	{
+		QMessageBox msgBox(this);
+		msgBox.setText(tr("You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?").arg(m_getAllLimit));
+		msgBox.setIcon(QMessageBox::Warning);
+		QCheckBox dontAskCheckBox(tr("Don't ask me again"));
+		dontAskCheckBox.setCheckable(true);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+		msgBox.setCheckBox(&dontAskCheckBox);
+#else
+		msgBox.addButton(&dontShowCheckBox, QMessageBox::ResetRole);
+#endif
+		msgBox.addButton(QMessageBox::Yes);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Cancel);
+		int response = msgBox.exec();
+
+		// Don't close on "cancel"
+		if (response != QMessageBox::Yes)
+		{ tooBig = true; }
+
+		// Remember checkbox
+		else if (dontAskCheckBox.checkState() == Qt::Checked)
+		{ m_settings->setValue("confirm_big_downloads", false); }
+	}
+
+	if (tooBig || (m_batchPending.isEmpty() && m_getAllRemaining.isEmpty()))
 	{
 		m_getAll = false;
 		ui->widgetDownloadButtons->setEnabled(true);
