@@ -1742,11 +1742,6 @@ void MainWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 void MainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal)
 {
 	const QUrl url = img->url();
-	if (img->fileSize() == 0)
-	{
-		img->setFileSize(bytesTotal);
-		m_progressDialog->sizeImage(url, bytesTotal);
-	}
 
 	if (!m_downloadTimeLast.contains(url))
 		return;
@@ -1766,6 +1761,7 @@ void MainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesRe
 		percent = qFloor(pct * 100);
 	}
 
+	m_progressDialog->sizeImage(url, bytesTotal);
 	m_progressDialog->statusImage(url, percent);
 }
 void MainWindow::getAllPerformTags()
