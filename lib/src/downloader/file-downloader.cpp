@@ -51,7 +51,7 @@ void FileDownloader::replyFinished()
 	m_file.close();
 
 	const bool failedLastWrite = data.length() > 0 && written < 0;
-	const bool invalidHtml = !m_allowHtmlResponses && data.startsWith("<!DOCTYPE");
+	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
 	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite || invalidHtml)
 	{
 		m_file.remove();

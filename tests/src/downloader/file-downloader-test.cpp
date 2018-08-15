@@ -75,5 +75,24 @@ void FileDownloaderTest::testFailedStart()
 	QVERIFY(!downloader.start(reply, dest));
 }
 
+void FileDownloaderTest::testInvalidHtml()
+{
+	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(PROJECT_WEBSITE_URL)));
+	QString dest = "test.html";
+
+	FileDownloader downloader(false);
+	QSignalSpy spy(&downloader, SIGNAL(networkError(QNetworkReply::NetworkError, QString)));
+	QVERIFY(downloader.start(reply, dest));
+	QVERIFY(spy.wait());
+
+	QList<QVariant> arguments = spy.takeFirst();
+	QNetworkReply::NetworkError code = arguments[0].value<QNetworkReply::NetworkError>();
+	QString error = arguments[1].toString();
+
+	QCOMPARE(code, QNetworkReply::ContentNotFoundError);
+	QCOMPARE(error, QString("Invalid HTML content returned"));
+	QVERIFY(!QFile::exists(dest));
+}
+
 
 QTEST_MAIN(FileDownloaderTest)

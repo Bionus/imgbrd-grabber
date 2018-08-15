@@ -15,6 +15,7 @@ class FileDownloaderTest : public TestSuite
 		void testSuccessMultiple();
 		void testNetworkError();
 		void testFailedStart();
+		void testInvalidHtml();
 
 	private:
 		QString m_successUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/gui/resources/images/icon.png";
