@@ -900,6 +900,8 @@ bool Image::hasAllTags(const QStringList &tags) const
 }
 bool Image::hasUnknownTag() const
 {
+	if (m_tags.isEmpty())
+		return true;
 	for (const Tag &tag : qAsConst(m_tags))
 		if (tag.type().isUnknown())
 			return true;
