@@ -125,5 +125,7 @@ void Md5Fix::on_buttonStart_clicked()
 
 	ui->buttonStart->setEnabled(true);
 
+	m_profile->sync();
+
 	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", count));
 }
