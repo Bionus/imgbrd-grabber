@@ -1687,7 +1687,7 @@ void MainWindow::_getAll()
 			// If the file does not already exists
 			if (notexists)
 			{
-				getAllGetImageIfNotBlacklisted(download, siteId);
+				getAllGetImage(download, siteId);
 			}
 
 			// If the file already exists
@@ -1704,30 +1704,6 @@ void MainWindow::_getAll()
 	// When the batch download finishes
 	else if (m_getAllCurrentlyProcessing.fetchAndAddRelaxed(-1) == 1 && m_getAll)
 	{ getAllFinished(); }
-}
-
-void MainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId)
-{
-	// Early return if we want to download blacklisted images
-	if (download.queryGroup == nullptr || download.queryGroup->getBlacklisted)
-	{
-		getAllGetImage(download, siteId);
-		return;
-	}
-
-	// Check if image is blacklisted
-	const QStringList &detected = m_profile->getBlacklist().match(download.image->tokens(m_profile));
-	if (!detected.isEmpty())
-	{
-		m_getAllIgnored++;
-		log(QStringLiteral("Image ignored for containing blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
-		m_progressDialog->loadedImage(download.image->url(), Image::SaveResult::Blacklisted);
-		getAllImageOk(download, siteId);
-		return;
-	}
-
-	// Image is not blacklisted, proceed as usual
-	getAllGetImage(download, siteId);
 }
 
 void MainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry)
@@ -1828,24 +1804,14 @@ void MainWindow::getAllPerformTags()
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
 	if (!f.exists())
 	{
-		getAllGetImageIfNotBlacklisted(download, siteId);
+		getAllGetImage(download, siteId);
 	}
 	else
 	{
-		m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 		m_getAllExists++;
 		log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
 		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExistsDisk);
-		if (siteId >= 0)
-		{
-			m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value() + 1);
-			if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
-		}
-		m_downloadTimeLast.remove(img->url());
-		m_getAllDownloading.removeAll(download);
-		m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
-		_getAll();
+		getAllImageOk(download, siteId);
 	}
 }
 

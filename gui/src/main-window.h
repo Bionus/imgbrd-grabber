@@ -158,7 +158,6 @@ class MainWindow : public QMainWindow
 
 	protected:
 		int getRowForSite(int siteId);
-		void getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
 		Site *getSelectedSiteOrDefault();
 		void initialLoginsDone();
