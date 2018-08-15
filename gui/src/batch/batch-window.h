@@ -14,17 +14,17 @@
 
 namespace Ui
 {
-	class batchWindow;
+	class BatchWindow;
 }
 
 
-class batchWindow : public QDialog
+class BatchWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit batchWindow(QSettings *settings, QWidget *parent = nullptr);
-		~batchWindow() override;
+		explicit BatchWindow(QSettings *settings, QWidget *parent = nullptr);
+		~BatchWindow() override;
 		int currentValue() const;
 		int currentMax() const;
 		int totalValue() const;
@@ -68,7 +68,7 @@ class batchWindow : public QDialog
 		void skipped();
 
 	private:
-		Ui::batchWindow			*ui;
+		Ui::BatchWindow			*ui;
 		QSettings				*m_settings;
 		QSize					m_currentSize;
 		int						m_imagesCount, m_items, m_images, m_maxSpeeds, m_lastDownloading;

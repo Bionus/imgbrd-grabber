@@ -1,10 +1,10 @@
-#include "sources/sourcessettingswindow.h"
+#include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QNetworkCookie>
 #include <QSettings>
-#include <ui_sourcessettingswindow.h>
+#include <ui_sources-settings-window.h>
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/profile.h"

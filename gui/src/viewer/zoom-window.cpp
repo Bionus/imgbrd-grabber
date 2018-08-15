@@ -10,13 +10,13 @@
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
-#include "mainwindow.h"
+#include "main-window.h"
 #include "models/filename.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "settings/optionswindow.h"
+#include "settings/options-window.h"
 #include "tag-context-menu.h"
 #include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
@@ -25,7 +25,7 @@
 #include "viewer/details-window.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent)
+ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent)
 	: QWidget(nullptr, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -870,7 +870,7 @@ void ZoomWindow::saveImageNow()
 		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			auto *options = new optionsWindow(m_profile, parentWidget());
+			auto *options = new OptionsWindow(m_profile, parentWidget());
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();

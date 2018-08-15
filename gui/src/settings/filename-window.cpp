@@ -1,9 +1,9 @@
-#include "settings/filenamewindow.h"
+#include "settings/filename-window.h"
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QRegExp>
 #include <QRegularExpression>
-#include <ui_filenamewindow.h>
+#include <ui_filename-window.h>
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"

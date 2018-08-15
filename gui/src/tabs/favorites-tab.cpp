@@ -4,10 +4,10 @@
 #include <ui_favorites-tab.h>
 #include <algorithm>
 #include "downloader/download-query-group.h"
-#include "favoritewindow.h"
+#include "favorite-window.h"
 #include "functions.h"
 #include "helpers.h"
-#include "mainwindow.h"
+#include "main-window.h"
 #include "models/favorite.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -20,8 +20,8 @@
 #define FAVORITES_THUMB_SIZE 150
 
 
-favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
-	: searchTab(profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
+FavoritesTab::FavoritesTab(Profile *profile, MainWindow *parent)
+	: SearchTab(profile, parent), ui(new Ui::FavoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -83,17 +83,17 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	ui->widgetResults->hide();
 
-	connect(m_profile, &Profile::favoritesChanged, this, &favoritesTab::updateFavorites);
+	connect(m_profile, &Profile::favoritesChanged, this, &FavoritesTab::updateFavorites);
 	updateFavorites();
 }
 
-favoritesTab::~favoritesTab()
+FavoritesTab::~FavoritesTab()
 {
 	close();
 	delete ui;
 }
 
-void favoritesTab::closeEvent(QCloseEvent *e)
+void FavoritesTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
@@ -109,7 +109,7 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 
 
 
-void favoritesTab::updateFavorites()
+void FavoritesTab::updateFavorites()
 {
 	static const QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	const QString &order = assoc[ui->comboOrder->currentIndex()];
@@ -196,38 +196,38 @@ void favoritesTab::updateFavorites()
 }
 
 
-void favoritesTab::load()
+void FavoritesTab::load()
 {
 	updateTitle();
 
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
-bool favoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
+bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && searchTab::validateImage(img, error);
+	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && SearchTab::validateImage(img, error);
 }
 
-void favoritesTab::write(QJsonObject &json) const
+void FavoritesTab::write(QJsonObject &json) const
 {
 	Q_UNUSED(json);
 }
 
 
-void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
+void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
-void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
+void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
-void favoritesTab::setTags(const QString &tags, bool preload)
+void FavoritesTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_currentTags = tags;
@@ -238,7 +238,7 @@ void favoritesTab::setTags(const QString &tags, bool preload)
 		updateTitle();
 }
 
-void favoritesTab::getPage()
+void FavoritesTab::getPage()
 {
 	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
@@ -257,7 +257,7 @@ void favoritesTab::getPage()
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 	}
 }
-void favoritesTab::getAll()
+void FavoritesTab::getAll()
 {
 	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
@@ -287,13 +287,13 @@ void favoritesTab::getAll()
 }
 
 
-QList<Site*> favoritesTab::sources()
+QList<Site*> FavoritesTab::sources()
 { return m_selectedSources; }
 
-QString favoritesTab::tags() const
+QString FavoritesTab::tags() const
 { return m_currentTags;	}
 
-void favoritesTab::loadFavorite(const QString &name)
+void FavoritesTab::loadFavorite(const QString &name)
 {
 	const int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
@@ -306,14 +306,14 @@ void favoritesTab::loadFavorite(const QString &name)
 	ui->widgetResults->show();
 	load();
 }
-void favoritesTab::checkFavorites()
+void FavoritesTab::checkFavorites()
 {
 	ui->widgetFavorites->show();
 	m_currentFav = -1;
 	m_currentTags = QString();
 	loadNextFavorite();
 }
-void favoritesTab::loadNextFavorite()
+void FavoritesTab::loadNextFavorite()
 {
 	if (m_currentFav + 1 >= m_favorites.count())
 		return;
@@ -324,7 +324,7 @@ void favoritesTab::loadNextFavorite()
 
 	load();
 }
-void favoritesTab::viewed()
+void FavoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
@@ -340,7 +340,7 @@ void favoritesTab::viewed()
 
 	m_profile->emitFavorite();
 }
-void favoritesTab::setFavoriteViewed(const QString &tag)
+void FavoritesTab::setFavoriteViewed(const QString &tag)
 {
 	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
@@ -356,7 +356,7 @@ void favoritesTab::setFavoriteViewed(const QString &tag)
 
 	DONE();
 }
-void favoritesTab::favoritesBack()
+void FavoritesTab::favoritesBack()
 {
 	ui->widgetResults->hide();
 	ui->widgetFavorites->show();
@@ -369,22 +369,22 @@ void favoritesTab::favoritesBack()
 		ui->widgetFavorites->show();
 	}
 }
-void favoritesTab::favoriteProperties(const QString &name)
+void FavoritesTab::favoriteProperties(const QString &name)
 {
 	const int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
 		return;
 
 	const Favorite fav = m_favorites[index];
-	auto fwin = new favoriteWindow(m_profile, fav, this);
+	auto fwin = new FavoriteWindow(m_profile, fav, this);
 	fwin->show();
 }
 
-void favoritesTab::focusSearch()
+void FavoritesTab::focusSearch()
 { }
 
 
-void favoritesTab::changeEvent(QEvent *event)
+void FavoritesTab::changeEvent(QEvent *event)
 {
 	// Automatically retranslate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
@@ -397,7 +397,7 @@ void favoritesTab::changeEvent(QEvent *event)
 	QWidget::changeEvent(event);
 }
 
-void favoritesTab::updateTitle()
+void FavoritesTab::updateTitle()
 {
 	// No-op, the Favorites tab never changes its title
 }

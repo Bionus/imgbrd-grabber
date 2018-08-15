@@ -1,21 +1,21 @@
-#include "favoritewindow.h"
+#include "favorite-window.h"
 #include <QFile>
 #include <QFileDialog>
 #include <QtMath>
-#include <ui_favoritewindow.h>
+#include <ui_favorite-window.h>
 #include "functions.h"
 #include "models/profile.h"
 #include "models/site.h"
 
 
 /**
- * Constructor of the favoriteWindow class, completing its window.
+ * Constructor of the FavoriteWindow class, completing its window.
  * @param	profile		The current user profile
  * @param	favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
-	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(std::move(favorite))
+FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
+	: QDialog(parent), ui(new Ui::FavoriteWindow), m_profile(profile), m_favorite(std::move(favorite))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -34,13 +34,13 @@ favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
 	}
 
-	connect(this, &QDialog::accepted, this, &favoriteWindow::save);
+	connect(this, &QDialog::accepted, this, &FavoriteWindow::save);
 }
 
 /**
- * Destructor of the favoriteWindow class
+ * Destructor of the FavoriteWindow class
  */
-favoriteWindow::~favoriteWindow()
+FavoriteWindow::~FavoriteWindow()
 {
 	delete ui;
 }
@@ -48,7 +48,7 @@ favoriteWindow::~favoriteWindow()
 /**
  * Removes the favorite from the list and closes the window
  */
-void favoriteWindow::on_buttonRemove_clicked()
+void FavoriteWindow::on_buttonRemove_clicked()
 {
 	m_profile->removeFavorite(m_favorite);
 	close();
@@ -57,7 +57,7 @@ void favoriteWindow::on_buttonRemove_clicked()
 /**
  * Opens a window to choose an image to set the image path value.
  */
-void favoriteWindow::on_openButton_clicked()
+void FavoriteWindow::on_openButton_clicked()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!file.isEmpty())
@@ -67,7 +67,7 @@ void favoriteWindow::on_openButton_clicked()
 /**
  * Update the local favorites file and add thumb if necessary.
  */
-void favoriteWindow::save()
+void FavoriteWindow::save()
 {
 	Favorite oldFav = m_favorite;
 

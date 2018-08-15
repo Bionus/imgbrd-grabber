@@ -1,8 +1,8 @@
-#include "searchwindow.h"
+#include "search-window.h"
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
-#include <ui_searchwindow.h>
+#include <ui_search-window.h>
 #include "functions.h"
 #include "models/profile.h"
 #include "ui/textedit.h"

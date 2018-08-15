@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>favoriteWindow</class>
- <widget class="QDialog" name="favoriteWindow">
+ <class>FavoriteWindow</class>
+ <widget class="QDialog" name="FavoriteWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -212,7 +212,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>favoriteWindow</receiver>
+   <receiver>FavoriteWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -228,7 +228,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>favoriteWindow</receiver>
+   <receiver>FavoriteWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -10,7 +10,7 @@
 
 namespace Ui
 {
-	class sourcesWindow;
+	class SourcesWindow;
 }
 
 
@@ -19,13 +19,13 @@ class QBouton;
 class Site;
 class Source;
 
-class sourcesWindow : public QDialog
+class SourcesWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent = nullptr);
-		~sourcesWindow() override;
+		explicit SourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent = nullptr);
+		~SourcesWindow() override;
 
 	public slots:
 		void valid();
@@ -61,7 +61,7 @@ class sourcesWindow : public QDialog
 		void valid(const QList<Site*> &selectedSites);
 
 	private:
-		Ui::sourcesWindow *ui;
+		Ui::SourcesWindow *ui;
 		Profile *m_profile;
 		QList<Site*> m_selected;
 		QList<QCheckBox*> m_checks;

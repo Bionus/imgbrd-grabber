@@ -27,7 +27,7 @@
 #include <QApplication>
 #include "downloader/downloader.h"
 #include "functions.h"
-#include "mainwindow.h"
+#include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 			params.insert("tags", parser.value(tagsOption));
 
-			auto *mainwindow = new mainWindow(profile);
+			auto *mainwindow = new MainWindow(profile);
 			mainwindow->init(parser.positionalArguments(), params);
 			mainwindow->show();
 		}

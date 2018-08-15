@@ -1,24 +1,24 @@
-#ifndef STARTWINDOW_H
-#define STARTWINDOW_H
+#ifndef START_WINDOW_H
+#define START_WINDOW_H
 
 #include <QDialog>
 
 
 namespace Ui
 {
-	class startWindow;
+	class StartWindow;
 }
 
 
 class Profile;
 
-class startWindow : public QDialog
+class StartWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit startWindow(Profile *profile, QWidget *parent = nullptr);
-		~startWindow() override;
+		explicit StartWindow(Profile *profile, QWidget *parent = nullptr);
+		~StartWindow() override;
 
 	public slots:
 		void save();
@@ -32,8 +32,8 @@ class startWindow : public QDialog
 		void settingsChanged();
 
 	private:
-		Ui::startWindow *ui;
+		Ui::StartWindow *ui;
 		Profile *m_profile;
 };
 
-#endif // STARTWINDOW_H
+#endif // START_WINDOW_H

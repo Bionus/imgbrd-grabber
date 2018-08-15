@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "main-window.h"
 #include <QCloseEvent>
 #include <QCompleter>
 #include <QDesktopServices>
@@ -19,11 +19,11 @@
 	#include "Windows.h"
 #endif
 #include <qmath.h>
-#include <ui_mainwindow.h>
-#include "aboutwindow.h"
-#include "batch/addgroupwindow.h"
-#include "batch/adduniquewindow.h"
-#include "batch/batchwindow.h"
+#include <ui_main-window.h>
+#include "about-window.h"
+#include "batch/add-group-window.h"
+#include "batch/add-unique-window.h"
+#include "batch/batch-window.h"
 #include "commands/commands.h"
 #include "danbooru-downloader-importer.h"
 #include "downloader/download-query-group.h"
@@ -40,8 +40,8 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "monitoring-center.h"
-#include "settings/optionswindow.h"
-#include "settings/startwindow.h"
+#include "settings/options-window.h"
+#include "settings/start-window.h"
 #include "tabs/favorites-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/search-tab.h"
@@ -58,10 +58,10 @@
 #include "utils/tag-loader/tag-loader.h"
 
 
-mainWindow::mainWindow(Profile *profile)
-	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0), m_showLog(true)
+MainWindow::MainWindow(Profile *profile)
+	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0), m_showLog(true)
 { }
-void mainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
+void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
 	m_settings = m_profile->getSettings();
 	auto sites = m_profile->getSites();
@@ -86,7 +86,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 			logFile.close();
 		}
 
-		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
+		connect(&Logger::getInstance(), &Logger::newLog, this, &MainWindow::logShow);
 	}
 
 	log(QStringLiteral("New session started."), Logger::Info);
@@ -188,7 +188,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	if (m_settings->value("Monitoring/enableTray", false).toBool())
 	{
 		auto quitAction = new QAction(tr("&Quit"), this);
-		connect(quitAction, &QAction::triggered, this, &mainWindow::trayClose);
+		connect(quitAction, &QAction::triggered, this, &MainWindow::trayClose);
 
 		auto trayIconMenu = new QMenu(this);
 		trayIconMenu->addAction(quitAction);
@@ -198,8 +198,8 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_trayIcon->setIcon(windowIcon());
 		m_trayIcon->show();
 
-		connect(m_trayIcon, &QSystemTrayIcon::activated, this, &mainWindow::trayIconActivated);
-		connect(m_trayIcon, &QSystemTrayIcon::messageClicked, this, &mainWindow::trayMessageClicked);
+		connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::trayIconActivated);
+		connect(m_trayIcon, &QSystemTrayIcon::messageClicked, this, &MainWindow::trayMessageClicked);
 	}
 	else
 	{ m_trayIcon = nullptr; }
@@ -209,20 +209,20 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(actionCloseTabW, &QShortcut::activated, ui->actionClosetab, &QAction::trigger);
 
 	QShortcut *actionFocusSearch = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
-	connect(actionFocusSearch, &QShortcut::activated, this, &mainWindow::focusSearch);
+	connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
 	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
-	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &mainWindow::batchClearSelGroups);
+	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &MainWindow::batchClearSelGroups);
 
 	QShortcut *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
 	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
-	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &mainWindow::batchClearSelUniques);
+	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &MainWindow::batchClearSelUniques);
 
 	QShortcut *actionNextTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
-	connect(actionNextTab, &QShortcut::activated, this, &mainWindow::tabNext);
+	connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 	QShortcut *actionPrevTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
-	connect(actionPrevTab, &QShortcut::activated, this, &mainWindow::tabPrev);
+	connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
 
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
@@ -269,11 +269,11 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		ui->tabWidget->setCornerWidget(add);
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_profile, this);
-	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
+	m_favoritesTab = new FavoritesTab(m_profile, this);
+	connect(m_favoritesTab, &SearchTab::batchAddGroup, this, &MainWindow::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
-	connect(m_favoritesTab, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
-	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
+	connect(m_favoritesTab, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
+	connect(m_favoritesTab, &SearchTab::changed, this, &MainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
 	ui->tabWidget->setCurrentIndex(0);
 
@@ -288,7 +288,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 			continue;
 
 		Site *site = sites.value(key);
-		connect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+		connect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
 		m_selectedSites.append(site);
 	}
 
@@ -320,16 +320,16 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
 
-	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
-	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
-	connect(m_profile, &Profile::siteDeleted, this, &mainWindow::siteDeleted);
+	connect(m_profile, &Profile::favoritesChanged, this, &MainWindow::updateFavorites);
+	connect(m_profile, &Profile::keptForLaterChanged, this, &MainWindow::updateKeepForLater);
+	connect(m_profile, &Profile::siteDeleted, this, &MainWindow::siteDeleted);
 	updateFavorites();
 	updateKeepForLater();
 
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
 
-void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString> &params)
+void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString> &params)
 {
 	// When we use Grabber to open a file
 	QStringList tags;
@@ -358,10 +358,10 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	}
 }
 
-void mainWindow::initialLoginsFinished()
+void MainWindow::initialLoginsFinished()
 {
 	auto site = qobject_cast<Site*>(sender());
-	disconnect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+	disconnect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
 
 	m_waitForLogin--;
 	if (m_waitForLogin != 0)
@@ -370,7 +370,7 @@ void mainWindow::initialLoginsFinished()
 	initialLoginsDone();
 }
 
-void mainWindow::initialLoginsDone()
+void MainWindow::initialLoginsDone()
 {
 	if (m_restore)
 	{ loadTabs(m_profile->getPath() + "/tabs.txt"); }
@@ -387,25 +387,25 @@ void mainWindow::initialLoginsDone()
 	m_monitoringCenter->start();
 }
 
-mainWindow::~mainWindow()
+MainWindow::~MainWindow()
 {
 	delete m_profile;
 	delete ui;
 }
 
-void mainWindow::focusSearch()
+void MainWindow::focusSearch()
 {
 	if (ui->tabWidget->widget(ui->tabWidget->currentIndex())->maximumWidth() != 16777214)
 	{
-		auto *tab = dynamic_cast<searchTab *>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
+		auto *tab = dynamic_cast<SearchTab*>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
 		tab->focusSearch();
 	}
 }
 
-void mainWindow::onFirstLoad()
+void MainWindow::onFirstLoad()
 {
 	// Save all default settings
-	auto *ow = new optionsWindow(m_profile, this);
+	auto *ow = new OptionsWindow(m_profile, this);
 	ow->save();
 	ow->deleteLater();
 
@@ -422,16 +422,16 @@ void mainWindow::onFirstLoad()
 	}
 
 	// Open startup window
-	auto *swin = new startWindow(m_profile, this);
+	auto *swin = new StartWindow(m_profile, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
-	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
-	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
+	connect(swin, &StartWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
+	connect(swin, &StartWindow::sourceChanged, this, &MainWindow::setSource);
 	swin->show();
 }
 
-void mainWindow::addTab(const QString &tag, bool background, bool save)
+void MainWindow::addTab(const QString &tag, bool background, bool save)
 {
-	auto *w = new tagTab(m_profile, this);
+	auto *w = new TagTab(m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!tag.isEmpty())
@@ -439,9 +439,9 @@ void mainWindow::addTab(const QString &tag, bool background, bool save)
 	else
 	{ w->focusSearch(); }
 }
-void mainWindow::addPoolTab(int pool, const QString &site, bool background, bool save)
+void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save)
 {
-	auto *w = new poolTab(m_profile, this);
+	auto *w = new PoolTab(m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!site.isEmpty())
@@ -451,7 +451,7 @@ void mainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 	else
 	{ w->focusSearch(); }
 }
-void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
+void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 {
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
@@ -460,11 +460,11 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 		w->setColumns(m_tabs[ui->tabWidget->currentIndex()]->columns());
 		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
 	}
-	connect(w, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
+	connect(w, &SearchTab::batchAddGroup, this, &MainWindow::batchAddGroup);
 	connect(w, SIGNAL(batchAddUnique(const DownloadQueryImage &)), this, SLOT(batchAddUnique(const DownloadQueryImage &)));
-	connect(w, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
-	connect(w, &searchTab::changed, this, &mainWindow::updateTabs);
-	connect(w, &searchTab::closed, this, &mainWindow::tabClosed);
+	connect(w, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
+	connect(w, &SearchTab::changed, this, &MainWindow::updateTabs);
+	connect(w, &SearchTab::closed, this, &MainWindow::tabClosed);
 
 	QString title = w->windowTitle();
 	if (title.isEmpty())
@@ -477,7 +477,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
-		connect(closeTab, &QPushButton::clicked, w, &searchTab::deleteLater);
+		connect(closeTab, &QPushButton::clicked, w, &SearchTab::deleteLater);
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 
 	if (!background)
@@ -487,13 +487,13 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 		saveTabs(m_profile->getPath() + "/tabs.txt");
 }
 
-bool mainWindow::saveTabs(const QString &filename)
+bool MainWindow::saveTabs(const QString &filename)
 {
-	return TabsLoader::save(filename, m_tabs, qobject_cast<searchTab*>(m_currentTab));
+	return TabsLoader::save(filename, m_tabs, qobject_cast<SearchTab*>(m_currentTab));
 }
-bool mainWindow::loadTabs(const QString &filename)
+bool MainWindow::loadTabs(const QString &filename)
 {
-	QList<searchTab*> tabs;
+	QList<SearchTab*> tabs;
 	int currentTab;
 
 	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, this))
@@ -510,18 +510,18 @@ bool mainWindow::loadTabs(const QString &filename)
 	m_forcedTab = currentTab;
 	return true;
 }
-void mainWindow::updateTabTitle(searchTab *tab)
+void MainWindow::updateTabTitle(SearchTab *tab)
 {
 	ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle());
 }
-void mainWindow::updateTabs()
+void MainWindow::updateTabs()
 {
 	if (m_loaded)
 	{
 		saveTabs(m_profile->getPath() + "/tabs.txt");
 	}
 }
-void mainWindow::tabClosed(searchTab *tab)
+void MainWindow::tabClosed(SearchTab *tab)
 {
 	// Store closed tab information
 	QJsonObject obj;
@@ -535,24 +535,24 @@ void mainWindow::tabClosed(searchTab *tab)
 
 	m_tabs.removeAll(tab);
 }
-void mainWindow::restoreLastClosedTab()
+void MainWindow::restoreLastClosedTab()
 {
 	if (m_closedTabs.isEmpty())
 		return;
 
 	QJsonObject infos = m_closedTabs.takeLast();
-	searchTab *tab = TabsLoader::loadTab(infos, m_profile, this, true);
+	SearchTab *tab = TabsLoader::loadTab(infos, m_profile, this, true);
 	addSearchTab(tab);
 
 	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());
 }
-void mainWindow::currentTabChanged(int tab)
+void MainWindow::currentTabChanged(int tab)
 {
 	if (m_loaded && tab < m_tabs.size())
 	{
 		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
 		{
-			searchTab *tb = m_tabs[tab];
+			SearchTab *tb = m_tabs[tab];
 			if (m_tabsWaitingForPreload.contains(tb))
 			{
 				tb->load();
@@ -568,7 +568,7 @@ void mainWindow::currentTabChanged(int tab)
 	}
 }
 
-void mainWindow::setTags(const QList<Tag> &tags, searchTab *from)
+void MainWindow::setTags(const QList<Tag> &tags, SearchTab *from)
 {
 	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex())
 		return;
@@ -578,19 +578,19 @@ void mainWindow::setTags(const QList<Tag> &tags, searchTab *from)
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-	connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
-	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
-	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+	connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &MainWindow::loadTagTab);
+	connect(taglabel, &QAffiche::linkHovered, this, &MainWindow::linkHovered);
+	connect(taglabel, &QAffiche::linkActivated, this, &MainWindow::loadTagNoTab);
 	taglabel->setText(TagStylist(m_profile).stylished(tags, true, true).join("<br/>"));
 
 	// Context menu
 	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(taglabel, &QWidget::customContextMenuRequested, this, &mainWindow::contextMenu);
+	connect(taglabel, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenu);
 
 	ui->dockInternetScrollLayout->addWidget(taglabel);
 }
 
-void mainWindow::closeCurrentTab()
+void MainWindow::closeCurrentTab()
 {
 	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
 	auto currentTab = ui->tabWidget->currentWidget();
@@ -598,20 +598,20 @@ void mainWindow::closeCurrentTab()
 	{ currentTab->deleteLater(); }
 }
 
-void mainWindow::tabNext()
+void MainWindow::tabNext()
 {
 	int index = ui->tabWidget->currentIndex();
 	int count = ui->tabWidget->count();
 	ui->tabWidget->setCurrentIndex((index + 1) % count);
 }
-void mainWindow::tabPrev()
+void MainWindow::tabPrev()
 {
 	int index = ui->tabWidget->currentIndex();
 	int count = ui->tabWidget->count();
 	ui->tabWidget->setCurrentIndex((index - 1 + count) % count);
 }
 
-void mainWindow::addTableItem(QTableWidget *table, int row, int col, const QString &text)
+void MainWindow::addTableItem(QTableWidget *table, int row, int col, const QString &text)
 {
 	auto *item = new QTableWidgetItem(text);
 	item->setToolTip(text);
@@ -619,7 +619,7 @@ void mainWindow::addTableItem(QTableWidget *table, int row, int col, const QStri
 	table->setItem(row, col, item);
 }
 
-void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
+void MainWindow::batchAddGroup(const DownloadQueryGroup &values)
 {
 	// Ignore downloads already present in the list
 	if (m_groupBatchs.contains(values))
@@ -656,14 +656,14 @@ void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 	saveLinkList(m_profile->getPath() + "/restore.igl");
 	updateGroupCount();
 }
-void mainWindow::updateGroupCount()
+void MainWindow::updateGroupCount()
 {
 	int groups = 0;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
 	ui->labelGroups->setText(tr("Groups (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
-void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
+void MainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 {
 	// Ignore downloads already present in the list
 	if (m_batchs.contains(query))
@@ -689,7 +689,7 @@ void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 	if (save)
 	{ saveLinkList(m_profile->getPath() + "/restore.igl"); }
 }
-void mainWindow::saveFolder()
+void MainWindow::saveFolder()
 {
 	QString path = m_settings->value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
@@ -698,14 +698,14 @@ void mainWindow::saveFolder()
 	if (dir.exists())
 	{ showInGraphicalShell(path); }
 }
-void mainWindow::openSettingsFolder()
+void MainWindow::openSettingsFolder()
 {
 	QDir dir(savePath(""));
 	if (dir.exists())
 	{ showInGraphicalShell(dir.absolutePath()); }
 }
 
-void mainWindow::batchClear()
+void MainWindow::batchClear()
 {
 	// Don't do anything if there's nothing to clear
 	if (ui->tableBatchGroups->rowCount() == 0 && ui->tableBatchUniques->rowCount() == 0)
@@ -726,12 +726,12 @@ void mainWindow::batchClear()
 	m_progressBars.clear();
 	updateGroupCount();
 }
-void mainWindow::batchClearSel()
+void MainWindow::batchClearSel()
 {
 	batchClearSelGroups();
 	batchClearSelUniques();
 }
-void mainWindow::batchClearSelGroups()
+void MainWindow::batchClearSelGroups()
 {
 	QList<int> rows;
 	for (QTableWidgetItem *selected : ui->tableBatchGroups->selectedItems())
@@ -743,7 +743,7 @@ void mainWindow::batchClearSelGroups()
 
 	batchRemoveGroups(rows);
 }
-void mainWindow::batchClearSelUniques()
+void MainWindow::batchClearSelUniques()
 {
 	QList<int> rows;
 	for (QTableWidgetItem *selected : ui->tableBatchUniques->selectedItems())
@@ -755,7 +755,7 @@ void mainWindow::batchClearSelUniques()
 
 	batchRemoveUniques(rows);
 }
-void mainWindow::batchRemoveGroups(QList<int> rows)
+void MainWindow::batchRemoveGroups(QList<int> rows)
 {
 	std::sort(rows.begin(), rows.end());
 
@@ -772,7 +772,7 @@ void mainWindow::batchRemoveGroups(QList<int> rows)
 
 	updateGroupCount();
 }
-void mainWindow::batchRemoveUniques(QList<int> rows)
+void MainWindow::batchRemoveUniques(QList<int> rows)
 {
 	std::sort(rows.begin(), rows.end());
 
@@ -788,7 +788,7 @@ void mainWindow::batchRemoveUniques(QList<int> rows)
 	updateGroupCount();
 }
 
-void mainWindow::batchMove(int diff)
+void MainWindow::batchMove(int diff)
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	if (selected.isEmpty())
@@ -825,16 +825,16 @@ void mainWindow::batchMove(int diff)
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
-void mainWindow::batchMoveUp()
+void MainWindow::batchMoveUp()
 {
 	batchMove(-1);
 }
-void mainWindow::batchMoveDown()
+void MainWindow::batchMoveDown()
 {
 	batchMove(1);
 }
 
-void mainWindow::updateBatchGroups(int y, int x)
+void MainWindow::updateBatchGroups(int y, int x)
 {
 	if (m_allow && x > 0)
 	{
@@ -888,7 +888,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 	}
 }
 
-Site *mainWindow::getSelectedSiteOrDefault()
+Site *MainWindow::getSelectedSiteOrDefault()
 {
 	if (m_selectedSites.isEmpty())
 		return m_profile->getSites().first();
@@ -896,20 +896,20 @@ Site *mainWindow::getSelectedSiteOrDefault()
 	return m_selectedSites.first();
 }
 
-void mainWindow::addGroup()
+void MainWindow::addGroup()
 {
 	auto wAddGroup = new AddGroupWindow(getSelectedSiteOrDefault(), m_profile, this);
-	connect(wAddGroup, &AddGroupWindow::sendData, this, &mainWindow::batchAddGroup);
+	connect(wAddGroup, &AddGroupWindow::sendData, this, &MainWindow::batchAddGroup);
 	wAddGroup->show();
 }
-void mainWindow::addUnique()
+void MainWindow::addUnique()
 {
 	auto wAddUnique = new AddUniqueWindow(getSelectedSiteOrDefault(), m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
 
-void mainWindow::updateFavorites()
+void MainWindow::updateFavorites()
 {
 	clearLayout(ui->layoutFavoritesDock);
 
@@ -935,7 +935,7 @@ void mainWindow::updateFavorites()
 		ui->layoutFavoritesDock->addWidget(lab);
 	}
 }
-void mainWindow::updateKeepForLater()
+void MainWindow::updateKeepForLater()
 {
 	QStringList kfl = m_profile->getKeptForLater();
 
@@ -946,14 +946,14 @@ void mainWindow::updateKeepForLater()
 		auto *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
 		taglabel->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%1</a>)").arg(tag));
 		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-		connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
-		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+		connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &MainWindow::loadTagTab);
+		connect(taglabel, &QAffiche::linkActivated, this, &MainWindow::loadTagNoTab);
 		ui->dockKflScrollLayout->addWidget(taglabel);
 	}
 }
 
 
-void mainWindow::logShow(const QString &msg)
+void MainWindow::logShow(const QString &msg)
 {
 	if (!m_showLog)
 		return;
@@ -986,7 +986,7 @@ void mainWindow::logShow(const QString &msg)
 	ui->labelLog->appendHtml(htmlMsg);
 	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
-void mainWindow::logClear()
+void MainWindow::logClear()
 {
 	QFile logFile(m_profile->getPath() + "/main.log");
 	if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -1000,10 +1000,10 @@ void mainWindow::logClear()
 		ui->labelLog->clear();
 	}
 }
-void mainWindow::logOpen()
+void MainWindow::logOpen()
 { QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
-void mainWindow::loadLanguage(const QString &rLanguage, bool quiet)
+void MainWindow::loadLanguage(const QString &rLanguage, bool quiet)
 {
 	if (m_currLang != rLanguage)
 	{
@@ -1024,7 +1024,7 @@ void mainWindow::loadLanguage(const QString &rLanguage, bool quiet)
 }
 
 // Update interface language
-void mainWindow::changeEvent(QEvent *event)
+void MainWindow::changeEvent(QEvent *event)
 {
 	// Translation
 	if (event->type() == QEvent::LocaleChange)
@@ -1049,7 +1049,7 @@ void mainWindow::changeEvent(QEvent *event)
 }
 
 // Save tabs and settings on close
-void mainWindow::closeEvent(QCloseEvent *e)
+void MainWindow::closeEvent(QCloseEvent *e)
 {
 	// Close to tray
 	bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
@@ -1116,29 +1116,29 @@ void mainWindow::closeEvent(QCloseEvent *e)
 	qApp->quit();
 }
 
-void mainWindow::options()
+void MainWindow::options()
 {
 	log(QStringLiteral("Opening options window..."), Logger::Debug);
 
-	auto *options = new optionsWindow(m_profile, this);
+	auto *options = new OptionsWindow(m_profile, this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
-	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
-	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
+	connect(options, &OptionsWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
+	connect(options, &QDialog::accepted, this, &MainWindow::optionsClosed);
 	options->show();
 
 	DONE();
 }
 
-void mainWindow::optionsClosed()
+void MainWindow::optionsClosed()
 {
-	for (searchTab *tab : m_tabs)
+	for (SearchTab *tab : m_tabs)
 	{
 		tab->optionsChanged();
 		tab->updateCheckboxes();
 	}
 }
 
-void mainWindow::setSource(const QString &site)
+void MainWindow::setSource(const QString &site)
 {
 	if (!m_profile->getSites().contains(site))
 		return;
@@ -1152,31 +1152,31 @@ void mainWindow::setSource(const QString &site)
 	m_tabs.first()->saveSources(m_selectedSites);
 }
 
-void mainWindow::aboutWebsite()
+void MainWindow::aboutWebsite()
 {
 	QDesktopServices::openUrl(QUrl(PROJECT_WEBSITE_URL));
 }
-void mainWindow::aboutGithub()
+void MainWindow::aboutGithub()
 {
 	QDesktopServices::openUrl(QUrl(PROJECT_GITHUB_URL));
 }
-void mainWindow::aboutReportBug()
+void MainWindow::aboutReportBug()
 {
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new"));
 }
 
-void mainWindow::aboutAuthor()
+void MainWindow::aboutAuthor()
 {
 	AboutWindow *aw = new AboutWindow(QString(VERSION), this);
 	aw->show();
 }
 
 /* Batch download */
-void mainWindow::batchSel()
+void MainWindow::batchSel()
 {
 	getAll(false);
 }
-void mainWindow::getAll(bool all)
+void MainWindow::getAll(bool all)
 {
 	// Initial checks
 	if (m_getAll)
@@ -1198,10 +1198,10 @@ void mainWindow::getAll(bool all)
 
 	if (m_progressDialog == nullptr)
 	{
-		m_progressDialog = new batchWindow(m_profile->getSettings(), this);
-		connect(m_progressDialog, &batchWindow::paused, this, &mainWindow::getAllPause);
-		connect(m_progressDialog, &batchWindow::rejected, this, &mainWindow::getAllCancel);
-		connect(m_progressDialog, &batchWindow::skipped, this, &mainWindow::getAllSkip);
+		m_progressDialog = new BatchWindow(m_profile->getSettings(), this);
+		connect(m_progressDialog, &BatchWindow::paused, this, &MainWindow::getAllPause);
+		connect(m_progressDialog, &BatchWindow::rejected, this, &MainWindow::getAllCancel);
+		connect(m_progressDialog, &BatchWindow::skipped, this, &MainWindow::getAllSkip);
 	}
 
 	// Reinitialize variables
@@ -1311,7 +1311,7 @@ void mainWindow::getAll(bool all)
 	getAllLogin();
 }
 
-void mainWindow::getAllLogin()
+void MainWindow::getAllLogin()
 {
 	m_progressDialog->clear();
 	m_progressDialog->setText(tr("Logging in, please wait..."));
@@ -1342,11 +1342,11 @@ void mainWindow::getAllLogin()
 	while (!logins.isEmpty())
 	{
 		Site *site = logins.dequeue();
-		connect(site, &Site::loggedIn, this, &mainWindow::getAllFinishedLogin);
+		connect(site, &Site::loggedIn, this, &MainWindow::getAllFinishedLogin);
 		site->login();
 	}
 }
-void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult result)
+void MainWindow::getAllFinishedLogin(Site *site, Site::LoginResult result)
 {
 	Q_UNUSED(result);
 
@@ -1360,7 +1360,7 @@ void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult result)
 	{ getAllFinishedLogins(); }
 }
 
-void mainWindow::getAllFinishedLogins()
+void MainWindow::getAllFinishedLogins()
 {
 	bool usePacking = m_settings->value("packing_enable", true).toBool();
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
@@ -1403,8 +1403,8 @@ void mainWindow::getAllFinishedLogins()
 			downloader->setData(j.key());
 			downloader->setQuit(false);
 
-			connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
-			connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
+			connect(downloader, &Downloader::finishedImages, this, &MainWindow::getAllFinishedImages);
+			connect(downloader, &Downloader::finishedImagesPage, this, &MainWindow::getAllFinishedPage);
 
 			m_waitingDownloaders.enqueue(downloader);
 			previous = downloader;
@@ -1415,7 +1415,7 @@ void mainWindow::getAllFinishedLogins()
 	getNextPack();
 }
 
-void mainWindow::getNextPack()
+void MainWindow::getNextPack()
 {
 	m_downloaders.clear();
 
@@ -1434,7 +1434,7 @@ void mainWindow::getNextPack()
 	}
 }
 
-void mainWindow::getAllGetPages()
+void MainWindow::getAllGetPages()
 {
 	m_progressDialog->clearImages();
 	m_progressDialog->setText(tr("Downloading pages, please wait..."));
@@ -1458,7 +1458,7 @@ void mainWindow::getAllGetPages()
  *
  * @param page The loaded page
  */
-void mainWindow::getAllFinishedPage(Page *page)
+void MainWindow::getAllFinishedPage(Page *page)
 {
 	auto *d = qobject_cast<Downloader*>(sender());
 
@@ -1473,7 +1473,7 @@ void mainWindow::getAllFinishedPage(Page *page)
  *
  * @param images The images results on this page
  */
-void mainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images)
+void MainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images)
 {
 	auto *downloader = qobject_cast<Downloader*>(sender());
 	m_downloaders.removeAll(downloader);
@@ -1510,7 +1510,7 @@ void mainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images
 /**
  * Called when all pages have been loaded and parsed from all sources.
  */
-void mainWindow::getAllImages()
+void MainWindow::getAllImages()
 {
 	// Si la limite d'images est dépassée, on retire celles en trop
 	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
@@ -1529,8 +1529,8 @@ void mainWindow::getAllImages()
 
 		// We add the image
 		m_progressDialog->addImage(img->url(), siteId, img->fileSize());
-		connect(img.data(), &Image::urlChanged, m_progressDialog, &batchWindow::imageUrlChanged);
-		connect(img.data(), &Image::urlChanged, this, &mainWindow::imageUrlChanged);
+		connect(img.data(), &Image::urlChanged, m_progressDialog, &BatchWindow::imageUrlChanged);
+		connect(img.data(), &Image::urlChanged, this, &MainWindow::imageUrlChanged);
 	}
 
 	// Set some values on the batch window
@@ -1577,7 +1577,7 @@ void mainWindow::getAllImages()
 		_getAll();
 }
 
-int mainWindow::needExactTags(QSettings *settings)
+int MainWindow::needExactTags(QSettings *settings)
 {
 	auto logFiles = getExternalLogFiles(settings);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
@@ -1612,7 +1612,7 @@ int mainWindow::needExactTags(QSettings *settings)
 	return 0;
 }
 
-void mainWindow::_getAll()
+void MainWindow::_getAll()
 {
 	// We quit as soon as the user cancels
 	if (m_progressDialog->cancelled())
@@ -1638,7 +1638,7 @@ void mainWindow::_getAll()
 		}
 		if (m_mustGetTags == 2 || (m_mustGetTags == 1 && hasUnknownTag))
 		{
-			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
+			connect(img.data(), &Image::finishedLoadingTags, this, &MainWindow::getAllPerformTags);
 			img->loadDetails();
 		}
 		else
@@ -1685,7 +1685,7 @@ void mainWindow::_getAll()
 	{ getAllFinished(); }
 }
 
-void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId)
+void MainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &download, int siteId)
 {
 	// Early return if we want to download blacklisted images
 	if (download.queryGroup == nullptr || download.queryGroup->getBlacklisted)
@@ -1709,7 +1709,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(const BatchDownloadImage &downlo
 	getAllGetImage(download, siteId);
 }
 
-void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry)
+void MainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry)
 {
 	m_downloadTime.remove(download.image->url());
 	m_downloadTimeLast.remove(download.image->url());
@@ -1732,14 +1732,14 @@ void mainWindow::getAllImageOk(const BatchDownloadImage &download, int siteId, b
 	_getAll();
 }
 
-void mainWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
+void MainWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 {
 	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
 	m_downloadTimeLast.remove(before);
 	m_downloadTime.insert(after, m_downloadTime[before]);
 	m_downloadTime.remove(before);
 }
-void mainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal)
+void MainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal)
 {
 	const QUrl url = img->url();
 	if (img->fileSize() == 0)
@@ -1768,7 +1768,7 @@ void mainWindow::getAllProgress(const QSharedPointer<Image> &img, qint64 bytesRe
 
 	m_progressDialog->statusImage(url, percent);
 }
-void mainWindow::getAllPerformTags()
+void MainWindow::getAllPerformTags()
 {
 	if (m_progressDialog->cancelled())
 		return;
@@ -1832,12 +1832,12 @@ void mainWindow::getAllPerformTags()
 	}
 }
 
-int mainWindow::getRowForSite(int siteId)
+int MainWindow::getRowForSite(int siteId)
 {
 	return siteId - 1;
 }
 
-void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
+void MainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 {
 	QSharedPointer<Image> img = download.image;
 
@@ -1868,13 +1868,13 @@ void mainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
-	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved, Qt::UniqueConnection);
-	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
+	connect(imgDownloader, &ImageDownloader::saved, this, &MainWindow::getAllGetImageSaved, Qt::UniqueConnection);
+	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &MainWindow::getAllProgress, Qt::UniqueConnection);
 	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
-void mainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result)
+void MainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result)
 {
 	// Delete ImageDownloader to prevent leaks
 	m_getAllImageDownloaders[img]->deleteLater();
@@ -1954,7 +1954,7 @@ void mainWindow::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QStr
 	getAllImageOk(download, siteId, diskError);
 }
 
-void mainWindow::getAllCancel()
+void MainWindow::getAllCancel()
 {
 	log(QStringLiteral("Cancelling downloads..."), Logger::Info);
 	m_progressDialog->cancel();
@@ -1975,7 +1975,7 @@ void mainWindow::getAllCancel()
 	DONE();
 }
 
-void mainWindow::getAllSkip()
+void MainWindow::getAllSkip()
 {
 	log(QStringLiteral("Skipping downloads..."), Logger::Info);
 
@@ -2000,7 +2000,7 @@ void mainWindow::getAllSkip()
 	DONE();
 }
 
-void mainWindow::getAllFinished()
+void MainWindow::getAllFinished()
 {
 	if (!m_waitingDownloaders.isEmpty())
 	{
@@ -2093,7 +2093,7 @@ void mainWindow::getAllFinished()
 	log(QStringLiteral("Batch download finished"), Logger::Info);
 }
 
-void mainWindow::getAllPause()
+void MainWindow::getAllPause()
 {
 	if (m_progressDialog->isPaused())
 	{
@@ -2120,33 +2120,33 @@ void mainWindow::getAllPause()
 	DONE();
 }
 
-void mainWindow::blacklistFix()
+void MainWindow::blacklistFix()
 {
 	auto *win = new BlacklistFix1(m_profile, this);
 	win->show();
 }
-void mainWindow::emptyDirsFix()
+void MainWindow::emptyDirsFix()
 {
 	auto *win = new EmptyDirsFix1(m_profile, this);
 	win->show();
 }
-void mainWindow::md5FixOpen()
+void MainWindow::md5FixOpen()
 {
-	auto *win = new md5Fix(m_profile, this);
+	auto *win = new Md5Fix(m_profile, this);
 	win->show();
 }
-void mainWindow::renameExisting()
+void MainWindow::renameExisting()
 {
 	auto *win = new RenameExisting1(m_profile, this);
 	win->show();
 }
-void mainWindow::utilTagLoader()
+void MainWindow::utilTagLoader()
 {
 	auto *win = new TagLoader(m_profile);
 	win->show();
 }
 
-void mainWindow::on_buttonSaveLinkList_clicked()
+void MainWindow::on_buttonSaveLinkList_clicked()
 {
 	QString lastDir = m_settings->value("linksLastDir", "").toString();
 	QString save = QFileDialog::getSaveFileName(this, tr("Save link list"), QDir::toNativeSeparators(lastDir), tr("Imageboard-Grabber links (*.igl)"));
@@ -2161,12 +2161,12 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 	else
 	{ QMessageBox::critical(this, tr("Save link list"), tr("Error opening file.")); }
 }
-bool mainWindow::saveLinkList(const QString &filename)
+bool MainWindow::saveLinkList(const QString &filename)
 {
 	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
 }
 
-void mainWindow::on_buttonLoadLinkList_clicked()
+void MainWindow::on_buttonLoadLinkList_clicked()
 {
 	QString load = QFileDialog::getOpenFileName(this, tr("Load link list"), QString(), tr("Imageboard-Grabber links (*.igl)"));
 	if (load.isEmpty())
@@ -2177,7 +2177,7 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 	else
 	{ QMessageBox::critical(this, tr("Load link list"), tr("Error opening file.")); }
 }
-bool mainWindow::loadLinkList(const QString &filename)
+bool MainWindow::loadLinkList(const QString &filename)
 {
 	QList<DownloadQueryImage> newBatchs;
 	QList<DownloadQueryGroup> newGroupBatchs;
@@ -2230,7 +2230,7 @@ bool mainWindow::loadLinkList(const QString &filename)
 	return true;
 }
 
-void mainWindow::setWiki(const QString &wiki, searchTab *from)
+void MainWindow::setWiki(const QString &wiki, SearchTab *from)
 {
 	if (from != nullptr && from != m_currentTab)
 		return;
@@ -2238,7 +2238,7 @@ void mainWindow::setWiki(const QString &wiki, searchTab *from)
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
 
-void mainWindow::siteDeleted(Site *site)
+void MainWindow::siteDeleted(Site *site)
 {
 	QList<int> batchRows;
 	for (int i = 0; i < m_groupBatchs.count(); ++i)
@@ -2259,7 +2259,7 @@ void mainWindow::siteDeleted(Site *site)
 	batchRemoveUniques(uniquesRows);
 }
 
-QIcon &mainWindow::getIcon(const QString &path)
+QIcon &MainWindow::getIcon(const QString &path)
 {
 	if (!m_icons.contains(path))
 		m_icons.insert(path, QIcon(path));
@@ -2267,7 +2267,7 @@ QIcon &mainWindow::getIcon(const QString &path)
 	return m_icons[path];
 }
 
-void mainWindow::on_buttonFolder_clicked()
+void MainWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
@@ -2277,7 +2277,7 @@ void mainWindow::on_buttonFolder_clicked()
 		saveSettings();
 	}
 }
-void mainWindow::on_buttonSaveSettings_clicked()
+void MainWindow::on_buttonSaveSettings_clicked()
 {
 	QString folder = fixFilename("", ui->lineFolder->text());
 	if (!QDir(folder).exists())
@@ -2287,7 +2287,7 @@ void mainWindow::on_buttonSaveSettings_clicked()
 	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
 	saveSettings();
 }
-void mainWindow::on_buttonInitSettings_clicked()
+void MainWindow::on_buttonInitSettings_clicked()
 {
 	// Reload filename history
 	QFile f(m_profile->getPath() + "/filenamehistory.txt");
@@ -2314,7 +2314,7 @@ void mainWindow::on_buttonInitSettings_clicked()
 	// Save settings
 	saveSettings();
 }
-void mainWindow::updateCompleters()
+void MainWindow::updateCompleters()
 {
 	if (ui->lineFolder->text() != m_settings->value("Save/path").toString())
 	{
@@ -2327,7 +2327,7 @@ void mainWindow::updateCompleters()
 		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	}*/
 }
-void mainWindow::saveSettings()
+void MainWindow::saveSettings()
 {
 	// Filename combobox
 	QString txt = ui->comboFilename->currentText();
@@ -2359,7 +2359,7 @@ void mainWindow::saveSettings()
 
 
 
-void mainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save)
+void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save)
 {
 	QFile file(path);
 	if (file.open(QFile::ReadOnly))
@@ -2370,7 +2370,7 @@ void mainWindow::loadMd5(const QString &path, bool newTab, bool background, bool
 		loadTag("md5:" + md5, newTab, background, save);
 	}
 }
-void mainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save)
+void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save)
 {
 	if (tag.startsWith("http://") || tag.startsWith("https://"))
 	{
@@ -2383,30 +2383,30 @@ void mainWindow::loadTag(const QString &tag, bool newTab, bool background, bool 
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
-void mainWindow::loadTagTab(const QString &tag)
+void MainWindow::loadTagTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, true); }
-void mainWindow::loadTagNoTab(const QString &tag)
+void MainWindow::loadTagNoTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, false); }
-void mainWindow::linkHovered(const QString &tag)
+void MainWindow::linkHovered(const QString &tag)
 {
 	m_link = tag;
 }
-void mainWindow::contextMenu()
+void MainWindow::contextMenu()
 {
 	if (m_link.isEmpty())
 		return;
 
 	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTags, QUrl(), m_profile, false, this);
-	connect(menu, &TagContextMenu::openNewTab, this, &mainWindow::openInNewTab);
+	connect(menu, &TagContextMenu::openNewTab, this, &MainWindow::openInNewTab);
 	menu->exec(QCursor::pos());
 }
-void mainWindow::openInNewTab()
+void MainWindow::openInNewTab()
 {
 	addTab(m_link);
 }
 
 
-void mainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
 	{
@@ -2414,12 +2414,12 @@ void mainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 	}
 }
 
-void mainWindow::trayMessageClicked()
+void MainWindow::trayMessageClicked()
 {
 	// No op
 }
 
-void mainWindow::trayClose()
+void MainWindow::trayClose()
 {
 	m_closeFromTray = true;
 	close();
@@ -2427,7 +2427,7 @@ void mainWindow::trayClose()
 }
 
 
-void mainWindow::dragEnterEvent(QDragEnterEvent *event)
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
@@ -2459,7 +2459,7 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 	}
 }
 
-void mainWindow::dropEvent(QDropEvent *event)
+void MainWindow::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 

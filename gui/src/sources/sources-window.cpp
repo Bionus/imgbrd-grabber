@@ -1,21 +1,21 @@
-#include "sources/sourceswindow.h"
+#include "sources/sources-window.h"
 #include <QCloseEvent>
 #include <QDesktopServices>
 #include <QInputDialog>
-#include <ui_sourceswindow.h>
+#include <ui_sources-window.h>
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
-#include "sources/sitewindow.h"
-#include "sources/sourcessettingswindow.h"
+#include "sources/site-window.h"
+#include "sources/sources-settings-window.h"
 #include "ui/QAffiche.h"
 #include "ui/QBouton.h"
 
 
-sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent)
-	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(std::move(selected)), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(nullptr)
+SourcesWindow::SourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SourcesWindow), m_profile(profile), m_selected(std::move(selected)), m_sites(profile->getSites()), m_sources(profile->getSources()), m_checkForSourceReply(nullptr)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -24,7 +24,7 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *p
 	addCheckboxes();
 
 	ui->gridLayout->setColumnStretch(0, 1);
-	connect(ui->checkBox, &QCheckBox::clicked, this, &sourcesWindow::checkClicked);
+	connect(ui->checkBox, &QCheckBox::clicked, this, &SourcesWindow::checkClicked);
 	checkUpdate();
 
 	// Presets
@@ -39,7 +39,7 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *p
 
 	ui->buttonOk->setFocus();
 }
-sourcesWindow::~sourcesWindow()
+SourcesWindow::~SourcesWindow()
 {
 	delete ui;
 }
@@ -49,7 +49,7 @@ sourcesWindow::~sourcesWindow()
  * @param	event	The event triggered wy window's closing
  * @todo	Why use a signal, since we can simply use a pointer to the parent window, or a signal giving not a pointer to this window, but directly m_selected ?
  */
-void sourcesWindow::closeEvent(QCloseEvent *event)
+void SourcesWindow::closeEvent(QCloseEvent *event)
 {
 	QSettings *settings = m_profile->getSettings();
 	savePresets(settings);
@@ -62,7 +62,7 @@ void sourcesWindow::closeEvent(QCloseEvent *event)
 /**
  * Update the "Check all" checkbox according to checked checkboxes.
  */
-void sourcesWindow::checkUpdate()
+void SourcesWindow::checkUpdate()
 {
 	bool oneChecked = false;
 	bool oneUnchecked = false;
@@ -88,7 +88,7 @@ void sourcesWindow::checkUpdate()
 /**
  * Alternate between the checked and unchecked state of the tri-state checkbox "Check all".
  */
-void sourcesWindow::checkClicked()
+void SourcesWindow::checkClicked()
 {
 	if (ui->checkBox->checkState() == Qt::Unchecked)
 	{ ui->checkBox->setCheckState(Qt::Unchecked); }
@@ -100,7 +100,7 @@ void sourcesWindow::checkClicked()
 /**
  * Saves current selection then close the window.
  */
-void sourcesWindow::valid()
+void SourcesWindow::valid()
 {
 	QList<Site*> selected;
 	QStringList keys = m_sites.keys();
@@ -112,15 +112,15 @@ void sourcesWindow::valid()
 	this->close();
 }
 
-void sourcesWindow::openSite(const QString &site) const
+void SourcesWindow::openSite(const QString &site) const
 {
 	QDesktopServices::openUrl(m_sites.value(site)->fixUrl("/"));
 }
 
-void sourcesWindow::settingsSite(const QString &site)
+void SourcesWindow::settingsSite(const QString &site)
 {
 	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
-	connect(ssw, &SourcesSettingsWindow::siteDeleted, this, &sourcesWindow::deleteSite);
+	connect(ssw, &SourcesSettingsWindow::siteDeleted, this, &SourcesWindow::deleteSite);
 	ssw->show();
 }
 
@@ -128,7 +128,7 @@ void sourcesWindow::settingsSite(const QString &site)
  * Delete a site from the sources list.
  * @param	site	The url of the site to delete.
  */
-void sourcesWindow::deleteSite(const QString &site)
+void SourcesWindow::deleteSite(const QString &site)
 {
 	int i = m_sites.keys().indexOf(site);
 
@@ -154,20 +154,20 @@ void sourcesWindow::deleteSite(const QString &site)
 /**
  * Open the window to add a site.
  */
-void sourcesWindow::addSite()
+void SourcesWindow::addSite()
 {
 	auto *sw = new SiteWindow(m_profile, this);
-	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
+	connect(sw, &SiteWindow::accepted, this, &SourcesWindow::updateCheckboxes);
 	sw->show();
 }
 
-void sourcesWindow::updateCheckboxes()
+void SourcesWindow::updateCheckboxes()
 {
 	removeCheckboxes();
 	addCheckboxes();
 }
 
-void sourcesWindow::removeCheckboxes()
+void SourcesWindow::removeCheckboxes()
 {
 	for (int i = 0; i < m_checks.count(); i++)
 	{
@@ -192,7 +192,7 @@ void sourcesWindow::removeCheckboxes()
 /**
  * Add a site to the list.
  */
-void sourcesWindow::addCheckboxes()
+void SourcesWindow::addCheckboxes()
 {
 	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
@@ -260,22 +260,22 @@ void sourcesWindow::addCheckboxes()
  *
  * @param	check	Qt::CheckState saying if we must check or uncheck everything (0 = uncheck, 2 = check)
  */
-void sourcesWindow::checkAll(int check)
+void SourcesWindow::checkAll(int check)
 {
 	for (int i = 0; i < m_checks.count(); i++)
 		m_checks.at(i)->setChecked(check == 2);
 }
 
-void sourcesWindow::checkForUpdates()
+void SourcesWindow::checkForUpdates()
 {
 	for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it)
 	{
 		const SourceUpdater &updater = it.value()->getUpdater();
-		connect(&updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
+		connect(&updater, &SourceUpdater::finished, this, &SourcesWindow::checkForUpdatesReceived);
 		updater.checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
+void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
 {
 	if (!isNew)
 		return;
@@ -290,14 +290,14 @@ void sourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNe
 	}
 }
 
-void sourcesWindow::checkForSourceIssues()
+void SourcesWindow::checkForSourceIssues()
 {
 	auto *accessManager = new CustomNetworkAccessManager(this);
 	m_checkForSourceReply = accessManager->get(QNetworkRequest(QUrl(SOURCE_ISSUES_URL)));
 
-	connect(m_checkForSourceReply, &QNetworkReply::finished, this, &sourcesWindow::checkForSourceIssuesReceived);
+	connect(m_checkForSourceReply, &QNetworkReply::finished, this, &SourcesWindow::checkForSourceIssuesReceived);
 }
-void sourcesWindow::checkForSourceIssuesReceived()
+void SourcesWindow::checkForSourceIssuesReceived()
 {
 	if (m_checkForSourceReply->error() != QNetworkReply::NoError)
 		return;
@@ -325,7 +325,7 @@ void sourcesWindow::checkForSourceIssuesReceived()
 	}
 }
 
-QMap<QString, QStringList> sourcesWindow::loadPresets(QSettings *settings) const
+QMap<QString, QStringList> SourcesWindow::loadPresets(QSettings *settings) const
 {
 	QMap<QString, QStringList> ret;
 
@@ -342,7 +342,7 @@ QMap<QString, QStringList> sourcesWindow::loadPresets(QSettings *settings) const
 	return ret;
 }
 
-void sourcesWindow::savePresets(QSettings *settings) const
+void SourcesWindow::savePresets(QSettings *settings) const
 {
 	QStringList names = m_presets.keys();
 	settings->beginWriteArray("SourcePresets");
@@ -356,7 +356,7 @@ void sourcesWindow::savePresets(QSettings *settings) const
 	settings->endArray();
 }
 
-QList<Site*> sourcesWindow::selected() const
+QList<Site*> SourcesWindow::selected() const
 {
 	QList<Site*> selected;
 
@@ -368,7 +368,7 @@ QList<Site*> sourcesWindow::selected() const
 	return selected;
 }
 
-void sourcesWindow::showPresets()
+void SourcesWindow::showPresets()
 {
 	// Reset combo box and re-add items
 	ui->comboPresets->clear();
@@ -381,7 +381,7 @@ void sourcesWindow::showPresets()
 	ui->comboPresets->setItemData(0, font, Qt::FontRole);
 }
 
-void sourcesWindow::addPreset()
+void SourcesWindow::addPreset()
 {
 	bool ok;
 	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, QString(), &ok);
@@ -399,13 +399,13 @@ void sourcesWindow::addPreset()
 	ui->comboPresets->setCurrentText(name);
 }
 
-void sourcesWindow::deletePreset()
+void SourcesWindow::deletePreset()
 {
 	m_presets.remove(ui->comboPresets->currentText());
 	ui->comboPresets->removeItem(ui->comboPresets->currentIndex());
 }
 
-void sourcesWindow::editPreset()
+void SourcesWindow::editPreset()
 {
 	bool ok;
 	QString oldName = ui->comboPresets->currentText();
@@ -420,7 +420,7 @@ void sourcesWindow::editPreset()
 	ui->comboPresets->setCurrentText(newName);
 }
 
-void sourcesWindow::savePreset()
+void SourcesWindow::savePreset()
 {
 	const QList<Site*> &selectedSites = selected();
 
@@ -434,7 +434,7 @@ void sourcesWindow::savePreset()
 }
 
 
-void sourcesWindow::selectPreset(const QString &name)
+void SourcesWindow::selectPreset(const QString &name)
 {
 	bool isPreset = ui->comboPresets->currentIndex() > 0;
 

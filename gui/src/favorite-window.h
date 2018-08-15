@@ -1,5 +1,5 @@
-#ifndef FAVORITEWINDOW_H
-#define FAVORITEWINDOW_H
+#ifndef FAVORITE_WINDOW_H
+#define FAVORITE_WINDOW_H
 
 #include <QDialog>
 #include "models/favorite.h"
@@ -7,19 +7,19 @@
 
 namespace Ui
 {
-	class favoriteWindow;
+	class FavoriteWindow;
 }
 
 
 class Profile;
 
-class favoriteWindow : public QDialog
+class FavoriteWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
-		~favoriteWindow() override;
+		FavoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
+		~FavoriteWindow() override;
 
 	public slots:
 		void save();
@@ -27,9 +27,9 @@ class favoriteWindow : public QDialog
 		void on_buttonRemove_clicked();
 
 	private:
-		Ui::favoriteWindow	*ui;
+		Ui::FavoriteWindow	*ui;
 		Profile				*m_profile;
 		Favorite			m_favorite;
 };
 
-#endif // FAVORITEWINDOW_H
+#endif // FAVORITE_WINDOW_H

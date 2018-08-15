@@ -1,6 +1,6 @@
-#include "batch/addgroupwindow.h"
+#include "batch/add-group-window.h"
 #include <QCompleter>
-#include <ui_addgroupwindow.h>
+#include <ui_add-group-window.h>
 #include "downloader/download-query-group.h"
 #include "models/profile.h"
 #include "models/site.h"

@@ -1,4 +1,4 @@
-#include "settings/optionswindow.h"
+#include "settings/options-window.h"
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QFontDialog>
@@ -6,23 +6,23 @@
 #include <QSignalMapper>
 #include <QSqlDatabase>
 #include <algorithm>
-#include <ui_optionswindow.h>
+#include <ui_options-window.h>
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "reverse-search/reverse-search-loader.h"
-#include "settings/conditionwindow.h"
-#include "settings/customwindow.h"
-#include "settings/filenamewindow.h"
+#include "settings/condition-window.h"
+#include "settings/custom-window.h"
+#include "settings/filename-window.h"
 #include "settings/log-window.h"
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
 
 
-optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::optionsWindow), m_profile(profile)
+OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::OptionsWindow), m_profile(profile)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -336,50 +336,50 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		settings->endGroup();
 	settings->endGroup();
 
-	connect(this, &QDialog::accepted, this, &optionsWindow::save);
+	connect(this, &QDialog::accepted, this, &OptionsWindow::save);
 }
 
-optionsWindow::~optionsWindow()
+OptionsWindow::~OptionsWindow()
 {
 	delete ui;
 }
 
-void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
+void OptionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 { ui->spinSourcesLetters->setDisabled(i > 0); }
 
-void optionsWindow::on_buttonFolder_clicked()
+void OptionsWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
-void optionsWindow::on_buttonFolderFavorites_clicked()
+void OptionsWindow::on_buttonFolderFavorites_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolderFavorites->setText(folder); }
 }
 
-void optionsWindow::on_buttonFilenamePlus_clicked()
+void OptionsWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }
-void optionsWindow::on_buttonFavoritesPlus_clicked()
+void OptionsWindow::on_buttonFavoritesPlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFavorites, &QLineEdit::setText);
 	fw->show();
 }
 
-void optionsWindow::on_buttonCustom_clicked()
+void OptionsWindow::on_buttonCustom_clicked()
 {
 	auto *cw = new CustomWindow(this);
-	connect(cw, &CustomWindow::validated, this, &optionsWindow::addCustom);
+	connect(cw, &CustomWindow::validated, this, &OptionsWindow::addCustom);
 	cw->show();
 }
-void optionsWindow::addCustom(const QString &name, const QString &tags)
+void OptionsWindow::addCustom(const QString &name, const QString &tags)
 {
 	auto *leName = new QLineEdit(name);
 	auto *leTags = new QLineEdit(tags);
@@ -387,13 +387,13 @@ void optionsWindow::addCustom(const QString &name, const QString &tags)
 	m_customNames.append(leName);
 	m_customTags.append(leTags);
 }
-void optionsWindow::on_buttonFilenames_clicked()
+void OptionsWindow::on_buttonFilenames_clicked()
 {
-	auto *cw = new conditionWindow();
-	connect(cw, &conditionWindow::validated, this, &optionsWindow::addFilename);
+	auto *cw = new ConditionWindow();
+	connect(cw, &ConditionWindow::validated, this, &OptionsWindow::addFilename);
 	cw->show();
 }
-void optionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
+void OptionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
 {
 	auto *leCondition = new QLineEdit(condition);
 	auto *leFilename = new QLineEdit(filename);
@@ -411,7 +411,7 @@ void optionsWindow::addFilename(const QString &condition, const QString &filenam
 }
 
 
-void optionsWindow::showLogFiles(QSettings *settings)
+void OptionsWindow::showLogFiles(QSettings *settings)
 {
 	clearLayout(ui->layoutLogFiles);
 
@@ -441,21 +441,21 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	}
 }
 
-void optionsWindow::addLogFile()
+void OptionsWindow::addLogFile()
 {
 	auto *logWindow = new LogWindow(-1, m_profile, this);
-	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	connect(logWindow, &LogWindow::validated, this, &OptionsWindow::setLogFile);
 	logWindow->show();
 }
 
-void optionsWindow::editLogFile(int index)
+void OptionsWindow::editLogFile(int index)
 {
 	auto *logWindow = new LogWindow(index, m_profile, this);
-	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	connect(logWindow, &LogWindow::validated, this, &OptionsWindow::setLogFile);
 	logWindow->show();
 }
 
-void optionsWindow::removeLogFile(int index)
+void OptionsWindow::removeLogFile(int index)
 {
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
@@ -468,7 +468,7 @@ void optionsWindow::removeLogFile(int index)
 	showLogFiles(settings);
 }
 
-void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
+void OptionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 {
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
@@ -494,7 +494,7 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 }
 
 
-void optionsWindow::showWebServices()
+void OptionsWindow::showWebServices()
 {
 	clearLayout(ui->layoutWebServices);
 
@@ -552,22 +552,22 @@ void optionsWindow::showWebServices()
 	}
 }
 
-void optionsWindow::addWebService()
+void OptionsWindow::addWebService()
 {
 	auto *wsWindow = new WebServiceWindow(nullptr, this);
-	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	connect(wsWindow, &WebServiceWindow::validated, this, &OptionsWindow::setWebService);
 	wsWindow->show();
 }
 
-void optionsWindow::editWebService(int id)
+void OptionsWindow::editWebService(int id)
 {
 	int pos = m_webServicesIds[id];
 	auto *wsWindow = new WebServiceWindow(&m_webServices[pos], this);
-	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	connect(wsWindow, &WebServiceWindow::validated, this, &OptionsWindow::setWebService);
 	wsWindow->show();
 }
 
-void optionsWindow::removeWebService(int id)
+void OptionsWindow::removeWebService(int id)
 {
 	m_webServices.removeAt(m_webServicesIds[id]);
 
@@ -585,7 +585,7 @@ void optionsWindow::removeWebService(int id)
 	showWebServices();
 }
 
-void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
+void OptionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
 {
 	const bool isNew = rse.id() < 0;
 
@@ -627,7 +627,7 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 	showWebServices();
 }
 
-void optionsWindow::moveUpWebService(int id)
+void OptionsWindow::moveUpWebService(int id)
 {
 	const int i = m_webServicesIds[id];
 	if (i == 0)
@@ -636,7 +636,7 @@ void optionsWindow::moveUpWebService(int id)
 	swapWebServices(i, i - 1);
 }
 
-void optionsWindow::moveDownWebService(int id)
+void OptionsWindow::moveDownWebService(int id)
 {
 	const int i = m_webServicesIds[id];
 	if (i == m_webServicesIds.count() - 1)
@@ -647,7 +647,7 @@ void optionsWindow::moveDownWebService(int id)
 
 bool sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
 { return a.order() < b.order(); }
-void optionsWindow::swapWebServices(int a, int b)
+void OptionsWindow::swapWebServices(int a, int b)
 {
 	const int pos = m_webServices[b].order();
 	m_webServices[b].setOrder(m_webServices[a].order());
@@ -663,7 +663,7 @@ void optionsWindow::swapWebServices(int a, int b)
 }
 
 
-void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
+void OptionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	const QString text = lineEdit->text();
 	QColor color = button
@@ -679,7 +679,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 	{ lineEdit->setStyleSheet("color:#000000"); }
 }
 
-void optionsWindow::setFont(QLineEdit *lineEdit)
+void OptionsWindow::setFont(QLineEdit *lineEdit)
 {
 	bool ok = false;
 	const QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
@@ -688,88 +688,88 @@ void optionsWindow::setFont(QLineEdit *lineEdit)
 	{ lineEdit->setFont(police); }
 }
 
-void optionsWindow::on_lineColoringArtists_textChanged()
+void OptionsWindow::on_lineColoringArtists_textChanged()
 { setColor(ui->lineColoringArtists); }
-void optionsWindow::on_lineColoringCircles_textChanged()
+void OptionsWindow::on_lineColoringCircles_textChanged()
 { setColor(ui->lineColoringCircles); }
-void optionsWindow::on_lineColoringCopyrights_textChanged()
+void OptionsWindow::on_lineColoringCopyrights_textChanged()
 { setColor(ui->lineColoringCopyrights); }
-void optionsWindow::on_lineColoringCharacters_textChanged()
+void OptionsWindow::on_lineColoringCharacters_textChanged()
 { setColor(ui->lineColoringCharacters); }
-void optionsWindow::on_lineColoringSpecies_textChanged()
+void OptionsWindow::on_lineColoringSpecies_textChanged()
 { setColor(ui->lineColoringSpecies); }
-void optionsWindow::on_lineColoringMetas_textChanged()
+void OptionsWindow::on_lineColoringMetas_textChanged()
 { setColor(ui->lineColoringMetas); }
-void optionsWindow::on_lineColoringModels_textChanged()
+void OptionsWindow::on_lineColoringModels_textChanged()
 { setColor(ui->lineColoringModels); }
-void optionsWindow::on_lineColoringGenerals_textChanged()
+void OptionsWindow::on_lineColoringGenerals_textChanged()
 { setColor(ui->lineColoringGenerals); }
-void optionsWindow::on_lineColoringFavorites_textChanged()
+void OptionsWindow::on_lineColoringFavorites_textChanged()
 { setColor(ui->lineColoringFavorites); }
-void optionsWindow::on_lineColoringKeptForLater_textChanged()
+void OptionsWindow::on_lineColoringKeptForLater_textChanged()
 { setColor(ui->lineColoringKeptForLater); }
-void optionsWindow::on_lineColoringBlacklisteds_textChanged()
+void OptionsWindow::on_lineColoringBlacklisteds_textChanged()
 { setColor(ui->lineColoringBlacklisteds); }
-void optionsWindow::on_lineColoringIgnoreds_textChanged()
+void OptionsWindow::on_lineColoringIgnoreds_textChanged()
 { setColor(ui->lineColoringIgnoreds); }
-void optionsWindow::on_lineBorderColor_textChanged()
+void OptionsWindow::on_lineBorderColor_textChanged()
 { setColor(ui->lineBorderColor); }
 
-void optionsWindow::on_buttonColoringArtistsColor_clicked()
+void OptionsWindow::on_buttonColoringArtistsColor_clicked()
 { setColor(ui->lineColoringArtists, true); }
-void optionsWindow::on_buttonColoringCirclesColor_clicked()
+void OptionsWindow::on_buttonColoringCirclesColor_clicked()
 { setColor(ui->lineColoringCircles, true); }
-void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
+void OptionsWindow::on_buttonColoringCopyrightsColor_clicked()
 { setColor(ui->lineColoringCopyrights, true); }
-void optionsWindow::on_buttonColoringCharactersColor_clicked()
+void OptionsWindow::on_buttonColoringCharactersColor_clicked()
 { setColor(ui->lineColoringCharacters, true); }
-void optionsWindow::on_buttonColoringSpeciesColor_clicked()
+void OptionsWindow::on_buttonColoringSpeciesColor_clicked()
 { setColor(ui->lineColoringSpecies, true); }
-void optionsWindow::on_buttonColoringMetasColor_clicked()
+void OptionsWindow::on_buttonColoringMetasColor_clicked()
 { setColor(ui->lineColoringMetas, true); }
-void optionsWindow::on_buttonColoringModelsColor_clicked()
+void OptionsWindow::on_buttonColoringModelsColor_clicked()
 { setColor(ui->lineColoringModels, true); }
-void optionsWindow::on_buttonColoringGeneralsColor_clicked()
+void OptionsWindow::on_buttonColoringGeneralsColor_clicked()
 { setColor(ui->lineColoringGenerals, true); }
-void optionsWindow::on_buttonColoringFavoritesColor_clicked()
+void OptionsWindow::on_buttonColoringFavoritesColor_clicked()
 { setColor(ui->lineColoringFavorites, true); }
-void optionsWindow::on_buttonColoringKeptForLaterColor_clicked()
+void OptionsWindow::on_buttonColoringKeptForLaterColor_clicked()
 { setColor(ui->lineColoringKeptForLater, true); }
-void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
+void OptionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 { setColor(ui->lineColoringBlacklisteds, true); }
-void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
+void OptionsWindow::on_buttonColoringIgnoredsColor_clicked()
 { setColor(ui->lineColoringIgnoreds, true); }
-void optionsWindow::on_buttonBorderColor_clicked()
+void OptionsWindow::on_buttonBorderColor_clicked()
 { setColor(ui->lineBorderColor, true); }
 
-void optionsWindow::on_buttonColoringArtistsFont_clicked()
+void OptionsWindow::on_buttonColoringArtistsFont_clicked()
 { setFont(ui->lineColoringArtists); }
-void optionsWindow::on_buttonColoringCirclesFont_clicked()
+void OptionsWindow::on_buttonColoringCirclesFont_clicked()
 { setFont(ui->lineColoringCircles); }
-void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
+void OptionsWindow::on_buttonColoringCopyrightsFont_clicked()
 { setFont(ui->lineColoringCopyrights); }
-void optionsWindow::on_buttonColoringCharactersFont_clicked()
+void OptionsWindow::on_buttonColoringCharactersFont_clicked()
 { setFont(ui->lineColoringCharacters); }
-void optionsWindow::on_buttonColoringSpeciesFont_clicked()
+void OptionsWindow::on_buttonColoringSpeciesFont_clicked()
 { setFont(ui->lineColoringSpecies); }
-void optionsWindow::on_buttonColoringMetasFont_clicked()
+void OptionsWindow::on_buttonColoringMetasFont_clicked()
 { setFont(ui->lineColoringMetas); }
-void optionsWindow::on_buttonColoringModelsFont_clicked()
+void OptionsWindow::on_buttonColoringModelsFont_clicked()
 { setFont(ui->lineColoringModels); }
-void optionsWindow::on_buttonColoringGeneralsFont_clicked()
+void OptionsWindow::on_buttonColoringGeneralsFont_clicked()
 { setFont(ui->lineColoringGenerals); }
-void optionsWindow::on_buttonColoringFavoritesFont_clicked()
+void OptionsWindow::on_buttonColoringFavoritesFont_clicked()
 { setFont(ui->lineColoringFavorites); }
-void optionsWindow::on_buttonColoringKeptForLaterFont_clicked()
+void OptionsWindow::on_buttonColoringKeptForLaterFont_clicked()
 { setFont(ui->lineColoringKeptForLater); }
-void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
+void OptionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 { setFont(ui->lineColoringBlacklisteds); }
-void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
+void OptionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
 
-void optionsWindow::on_lineImageBackgroundColor_textChanged()
+void OptionsWindow::on_lineImageBackgroundColor_textChanged()
 { setColor(ui->lineImageBackgroundColor); }
-void optionsWindow::on_buttonImageBackgroundColor_clicked()
+void OptionsWindow::on_buttonImageBackgroundColor_clicked()
 { setColor(ui->lineImageBackgroundColor, true); }
 
 void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
@@ -789,7 +789,7 @@ void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current,
 	}
 }
 
-void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void OptionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
 	Q_UNUSED(previous);
 
@@ -807,7 +807,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		ui->stackedWidget->setCurrentIndex(index);
 }
 
-void optionsWindow::save()
+void OptionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 

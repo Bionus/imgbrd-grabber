@@ -1,18 +1,18 @@
-#include "settings/startwindow.h"
+#include "settings/start-window.h"
 #include <QFileDialog>
 #include <QSettings>
 #include <QStandardPaths>
-#include <ui_startwindow.h>
+#include <ui_start-window.h>
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"
 #include "models/profile.h"
-#include "settings/filenamewindow.h"
-#include "settings/optionswindow.h"
+#include "settings/filename-window.h"
+#include "settings/options-window.h"
 
 
-startWindow::startWindow(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile)
+StartWindow::StartWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::StartWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
@@ -36,24 +36,24 @@ startWindow::startWindow(Profile *profile, QWidget *parent)
 	ui->lineFolder->setText(desktop.absoluteFilePath("Grabber"));
 	ui->lineFilename->setText("%md5%.%ext%");
 
-	connect(this, &QDialog::accepted, this, &startWindow::save);
+	connect(this, &QDialog::accepted, this, &StartWindow::save);
 }
 
 /**
- * Destructor of the startWindow class.
+ * Destructor of the StartWindow class.
  */
-startWindow::~startWindow()
+StartWindow::~StartWindow()
 {
 	delete ui;
 }
 
-void startWindow::on_buttonFolder_clicked()
+void StartWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
-void startWindow::on_buttonFilenamePlus_clicked()
+void StartWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
@@ -63,7 +63,7 @@ void startWindow::on_buttonFilenamePlus_clicked()
 /**
  * Save initial settings.
  */
-void startWindow::save()
+void StartWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("Save");
@@ -108,9 +108,9 @@ void startWindow::save()
 /**
  * Open a full settings window.
  */
-void startWindow::openOptions()
+void StartWindow::openOptions()
 {
-	auto *ow = new optionsWindow(m_profile, parentWidget());
+	auto *ow = new OptionsWindow(m_profile, parentWidget());
 	ow->show();
 
 	this->close();

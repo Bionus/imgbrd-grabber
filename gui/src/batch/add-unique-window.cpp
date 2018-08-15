@@ -1,6 +1,6 @@
-#include "batch/adduniquewindow.h"
+#include "batch/add-unique-window.h"
 #include <QFileDialog>
-#include <ui_adduniquewindow.h>
+#include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"
 #include "models/api/api.h"

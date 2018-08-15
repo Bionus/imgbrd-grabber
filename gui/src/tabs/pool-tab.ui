@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>poolTab</class>
- <widget class="QWidget" name="poolTab">
+ <class>PoolTab</class>
+ <widget class="QWidget" name="PoolTab">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -484,7 +484,7 @@
   <connection>
    <sender>buttonTags</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -516,7 +516,7 @@
   <connection>
    <sender>buttonPreviousPage</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>previousPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -532,7 +532,7 @@
   <connection>
    <sender>buttonFirstPage</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>firstPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -548,7 +548,7 @@
   <connection>
    <sender>buttonGetpage</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>getPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -564,7 +564,7 @@
   <connection>
    <sender>buttonNextPage</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>nextPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -580,7 +580,7 @@
   <connection>
    <sender>buttonLastPage</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>lastPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -596,7 +596,7 @@
   <connection>
    <sender>buttonHistoryBack</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>historyBack()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -612,7 +612,7 @@
   <connection>
    <sender>buttonHistoryNext</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>historyNext()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -628,7 +628,7 @@
   <connection>
    <sender>buttonGetAll</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -644,7 +644,7 @@
   <connection>
    <sender>buttonGetSel</sender>
    <signal>clicked()</signal>
-   <receiver>poolTab</receiver>
+   <receiver>PoolTab</receiver>
    <slot>getSel()</slot>
    <hints>
     <hint type="sourcelabel">

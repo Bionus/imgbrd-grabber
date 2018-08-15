@@ -1,17 +1,17 @@
-#include "batch/batchwindow.h"
+#include "batch/batch-window.h"
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QSettings>
 #ifdef Q_OS_WIN
 	#include <QWinTaskbarButton>
 #endif
-#include <ui_batchwindow.h>
+#include <ui_batch-window.h>
 #include "functions.h"
 #include "loader/downloadable.h"
 
 
-batchWindow::batchWindow(QSettings *settings, QWidget *parent)
-	: QDialog(parent), ui(new Ui::batchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
+BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
+	: QDialog(parent), ui(new Ui::BatchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -43,7 +43,7 @@ batchWindow::batchWindow(QSettings *settings, QWidget *parent)
 	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
 }
 
-batchWindow::~batchWindow()
+BatchWindow::~BatchWindow()
 {
 	delete ui;
 
@@ -52,7 +52,7 @@ batchWindow::~batchWindow()
 		m_taskBarProgress->deleteLater();
 	#endif
 }
-void batchWindow::closeEvent(QCloseEvent *e)
+void BatchWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Batch/geometry", saveGeometry());
 	m_settings->setValue("Batch/details", ui->buttonDetails->isChecked());
@@ -76,7 +76,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	emit closed();
 	e->accept();
 }
-void batchWindow::pause()
+void BatchWindow::pause()
 {
 	m_paused = !m_paused;
 	ui->labelSpeed->setText(m_paused ? tr("Paused") : QString());
@@ -88,11 +88,11 @@ void batchWindow::pause()
 
 	emit paused();
 }
-void batchWindow::skip()
+void BatchWindow::skip()
 {
 	emit skipped();
 }
-void batchWindow::cancel()
+void BatchWindow::cancel()
 {
 	m_cancel = true;
 
@@ -100,10 +100,10 @@ void batchWindow::cancel()
 		m_taskBarProgress->setVisible(false);
 	#endif
 }
-bool batchWindow::cancelled()
+bool BatchWindow::cancelled()
 { return m_cancel; }
 
-void batchWindow::clear()
+void BatchWindow::clear()
 {
 	m_cancel = false;
 	m_paused = false;
@@ -125,7 +125,7 @@ void batchWindow::clear()
 
 	clearImages();
 }
-void batchWindow::clearImages()
+void BatchWindow::clearImages()
 {
 	m_items = 0;
 	m_maxSpeeds = 0;
@@ -148,7 +148,7 @@ void batchWindow::clearImages()
 	m_mean.clear();
 }
 
-void batchWindow::copyToClipboard()
+void BatchWindow::copyToClipboard()
 {
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
 	int count = selected.size();
@@ -171,9 +171,9 @@ void batchWindow::copyToClipboard()
 	qApp->clipboard()->setText(urls.join('\n'));
 }
 
-void batchWindow::setCount(int cnt)
+void BatchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
-void batchWindow::addImage(const QUrl &url, int batch, double size)
+void BatchWindow::addImage(const QUrl &url, int batch, double size)
 {
 	m_urls.append(url);
 
@@ -196,7 +196,7 @@ void batchWindow::addImage(const QUrl &url, int batch, double size)
 
 	m_items++;
 }
-void batchWindow::updateColumns()
+void BatchWindow::updateColumns()
 {
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
 	headerView->setSectionResizeMode(QHeaderView::Interactive);
@@ -210,21 +210,21 @@ void batchWindow::updateColumns()
 	ui->tableWidget->resizeColumnToContents(0);
 	ui->tableWidget->repaint();
 }
-int batchWindow::indexOf(const QUrl &url)
+int BatchWindow::indexOf(const QUrl &url)
 {
 	const int i = m_urls.indexOf(url);
 	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr)
 		return -1;
 	return i;
 }
-int batchWindow::batch(const QUrl &url)
+int BatchWindow::batch(const QUrl &url)
 {
 	const int i = indexOf(url);
 	if (i == -1)
 		return -1;
 	return ui->tableWidget->item(i, 1)->text().toInt();
 }
-void batchWindow::loadingImage(const QUrl &url)
+void BatchWindow::loadingImage(const QUrl &url)
 {
 	if (m_start->isNull())
 		m_start->start();
@@ -240,7 +240,7 @@ void batchWindow::loadingImage(const QUrl &url)
 		scrollTo(i);
 	}
 }
-void batchWindow::scrollTo(int i)
+void BatchWindow::scrollTo(int i)
 {
 	// Go to downloading image
 	if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
@@ -249,7 +249,7 @@ void batchWindow::scrollTo(int i)
 		m_lastDownloading = i;
 	}
 }
-void batchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
+void BatchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 {
 	const int i = indexOf(before);
 	if (i != -1)
@@ -261,13 +261,13 @@ void batchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 		ui->tableWidget->item(i, 5)->setText("0 %");
 	}
 }
-void batchWindow::statusImage(const QUrl &url, int percent)
+void BatchWindow::statusImage(const QUrl &url, int percent)
 {
 	const int i = indexOf(url);
 	if (i != -1)
 		ui->tableWidget->item(i, 5)->setText(QString::number(percent) + " %");
 }
-void batchWindow::speedImage(const QUrl &url, double speed)
+void BatchWindow::speedImage(const QUrl &url, double speed)
 {
 	m_speeds[url] = static_cast<int>(speed);
 	const QString unit = getUnit(&speed) + "/s";
@@ -278,7 +278,7 @@ void batchWindow::speedImage(const QUrl &url, double speed)
 
 	drawSpeed();
 }
-void batchWindow::sizeImage(const QUrl &url, double size)
+void BatchWindow::sizeImage(const QUrl &url, double size)
 {
 	int i = indexOf(url);
 	if (i != -1)
@@ -290,7 +290,7 @@ void batchWindow::sizeImage(const QUrl &url, double size)
 		ui->tableWidget->item(i, 3)->setText(label);
 	}
 }
-void batchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
+void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 {
 	static QIcon ignoredIcon(":/images/status/ignored.png");
 	static QIcon errorIcon(":/images/status/error.png");
@@ -336,7 +336,7 @@ void batchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 	}
 }
 
-void batchWindow::drawSpeed()
+void BatchWindow::drawSpeed()
 {
 	if (m_time->elapsed() < 1000)
 	{ return; }
@@ -371,7 +371,7 @@ void batchWindow::drawSpeed()
 	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
-void batchWindow::on_buttonDetails_clicked(bool visible)
+void BatchWindow::on_buttonDetails_clicked(bool visible)
 {
 	if (ui->details->isHidden() || visible)
 	{
@@ -386,15 +386,15 @@ void batchWindow::on_buttonDetails_clicked(bool visible)
 	}
 }
 
-void batchWindow::setText(const QString &text)
+void BatchWindow::setText(const QString &text)
 { ui->labelMessage->setText(text); }
 
-void batchWindow::setCurrentValue(int val)
+void BatchWindow::setCurrentValue(int val)
 { ui->progressCurrent->setValue(val); }
-void batchWindow::setCurrentMax(int max)
+void BatchWindow::setCurrentMax(int max)
 { ui->progressCurrent->setMaximum(max); }
 
-void batchWindow::setTotalValue(int val)
+void BatchWindow::setTotalValue(int val)
 {
 	m_images = val;
 	ui->labelImages->setText(QStringLiteral("%1/%2").arg(m_images).arg(m_imagesCount));
@@ -407,7 +407,7 @@ void batchWindow::setTotalValue(int val)
 		m_taskBarProgress->setValue(val);
 	#endif
 }
-void batchWindow::setTotalMax(int max)
+void BatchWindow::setTotalMax(int max)
 {
 	m_imagesCount = max;
 	ui->labelImages->setText(QStringLiteral("0/%2").arg(max));
@@ -418,15 +418,15 @@ void batchWindow::setTotalMax(int max)
 	#endif
 }
 
-int batchWindow::currentValue() const
+int BatchWindow::currentValue() const
 { return ui->progressCurrent->value(); }
-int batchWindow::currentMax() const
+int BatchWindow::currentMax() const
 { return ui->progressCurrent->maximum(); }
-int batchWindow::totalValue() const
+int BatchWindow::totalValue() const
 { return ui->progressTotal->value(); }
-int batchWindow::totalMax() const
+int BatchWindow::totalMax() const
 { return ui->progressTotal->maximum(); }
 
-int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();		}
-bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();		}
-bool batchWindow::isPaused()	{ return m_paused;							}
+int BatchWindow::endAction()	{ return ui->comboEnd->currentIndex();		}
+bool BatchWindow::endRemove()	{ return ui->checkRemove->isChecked();		}
+bool BatchWindow::isPaused()	{ return m_paused;							}

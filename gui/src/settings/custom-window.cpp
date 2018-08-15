@@ -1,5 +1,5 @@
-#include "customwindow.h"
-#include "ui_customwindow.h"
+#include "custom-window.h"
+#include "ui_custom-window.h"
 
 
 CustomWindow::CustomWindow(QWidget *parent)

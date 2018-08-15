@@ -1,5 +1,5 @@
-#include "aboutwindow.h"
-#include "ui_aboutwindow.h"
+#include "about-window.h"
+#include "ui_about-window.h"
 
 
 AboutWindow::AboutWindow(const QString &version, QWidget *parent)

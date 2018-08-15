@@ -5,12 +5,12 @@
 #include "downloader/download-query-group.h"
 #include "models/page.h"
 #include "models/site.h"
-#include "searchwindow.h"
+#include "search-window.h"
 #include "ui/textedit.h"
 
 
-tagTab::tagTab(Profile *profile, mainWindow *parent)
-	: searchTab(profile, parent), ui(new Ui::tagTab)
+TagTab::TagTab(Profile *profile, MainWindow *parent)
+	: SearchTab(profile, parent), ui(new Ui::TagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -56,20 +56,20 @@ tagTab::tagTab(Profile *profile, mainWindow *parent)
 	init();
 }
 
-tagTab::~tagTab()
+TagTab::~TagTab()
 {
 	close();
 	delete ui;
 }
 
-void tagTab::on_buttonSearch_clicked()
+void TagTab::on_buttonSearch_clicked()
 {
 	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
 	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
 	sw->show();
 }
 
-void tagTab::closeEvent(QCloseEvent *e)
+void TagTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->sync();
@@ -79,7 +79,7 @@ void tagTab::closeEvent(QCloseEvent *e)
 }
 
 
-void tagTab::load()
+void TagTab::load()
 {
 	updateTitle();
 
@@ -97,7 +97,7 @@ void tagTab::load()
 	loadTags(tags);
 }
 
-void tagTab::write(QJsonObject &json) const
+void TagTab::write(QJsonObject &json) const
 {
 	json["type"] = QStringLiteral("tag");
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
@@ -114,7 +114,7 @@ void tagTab::write(QJsonObject &json) const
 	json["sites"] = sites;
 }
 
-bool tagTab::read(const QJsonObject &json, bool preload)
+bool TagTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPage->setValue(json["page"].toInt());
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
@@ -153,7 +153,7 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 }
 
 
-void tagTab::setTags(const QString &tags, bool preload)
+void TagTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
@@ -164,7 +164,7 @@ void tagTab::setTags(const QString &tags, bool preload)
 		updateTitle();
 }
 
-void tagTab::getPage()
+void TagTab::getPage()
 {
 	if (m_pages.empty())
 		return;
@@ -192,7 +192,7 @@ void tagTab::getPage()
 		}
 	}
 }
-void tagTab::getAll()
+void TagTab::getAll()
 {
 	if (m_pages.empty())
 		return;
@@ -225,16 +225,16 @@ void tagTab::getAll()
 }
 
 
-void tagTab::focusSearch()
+void TagTab::focusSearch()
 {
 	m_search->setFocus();
 }
 
-QString tagTab::tags() const
+QString TagTab::tags() const
 { return m_search->toPlainText(); }
 
 
-void tagTab::changeEvent(QEvent *event)
+void TagTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
@@ -245,7 +245,7 @@ void tagTab::changeEvent(QEvent *event)
 	QWidget::changeEvent(event);
 }
 
-void tagTab::updateTitle()
+void TagTab::updateTitle()
 {
 	QString search = m_search->toPlainText().trimmed();
 	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));

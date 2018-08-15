@@ -18,7 +18,7 @@
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class Favorite;
-class mainWindow;
+class MainWindow;
 class Profile;
 class QBouton;
 class FixedSizeGridLayout;
@@ -26,13 +26,13 @@ class TextEdit;
 class VerticalScrollArea;
 class ZoomWindow;
 
-class searchTab : public QWidget
+class SearchTab : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		searchTab(Profile *profile, mainWindow *parent);
-		~searchTab() override;
+		SearchTab(Profile *profile, MainWindow *parent);
+		~SearchTab() override;
 		void init();
 		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
@@ -128,9 +128,9 @@ class searchTab : public QWidget
 
 	signals:
 		// Tab events
-		void titleChanged(searchTab*);
-		void changed(searchTab*);
-		void closed(searchTab*);
+		void titleChanged(SearchTab*);
+		void changed(SearchTab*);
+		void closed(SearchTab*);
 
 		// Batch
 		void batchAddGroup(const DownloadQueryGroup &);
@@ -149,7 +149,7 @@ class searchTab : public QWidget
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
 		QList<Tag>			m_tags;
-		mainWindow			*m_parent;
+		MainWindow			*m_parent;
 		QSettings			*m_settings;
 		QString				m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;

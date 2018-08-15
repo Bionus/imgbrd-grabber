@@ -3,15 +3,15 @@
 #include <QJsonArray>
 #include <ui_pool-tab.h>
 #include "downloader/download-query-group.h"
-#include "mainwindow.h"
+#include "main-window.h"
 #include "models/page.h"
 #include "models/site.h"
-#include "searchwindow.h"
+#include "search-window.h"
 #include "ui/textedit.h"
 
 
-poolTab::poolTab(Profile *profile, mainWindow *parent)
-	: searchTab(profile, parent), ui(new Ui::poolTab)
+PoolTab::PoolTab(Profile *profile, MainWindow *parent)
+	: SearchTab(profile, parent), ui(new Ui::PoolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -58,27 +58,27 @@ poolTab::poolTab(Profile *profile, mainWindow *parent)
 	m_search->setFocus();
 }
 
-poolTab::~poolTab()
+PoolTab::~PoolTab()
 {
 	close();
 	delete ui;
 }
 
-void poolTab::on_buttonSearch_clicked()
+void PoolTab::on_buttonSearch_clicked()
 {
 	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
 	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
 	sw->show();
 }
 
-void poolTab::closeEvent(QCloseEvent *e)
+void PoolTab::closeEvent(QCloseEvent *e)
 {
 	emit closed(this);
 	e->accept();
 }
 
 
-void poolTab::load()
+void PoolTab::load()
 {
 	updateTitle();
 
@@ -90,14 +90,14 @@ void poolTab::load()
 	loadTags(tags);
 }
 
-QList<Site*> poolTab::loadSites() const
+QList<Site*> PoolTab::loadSites() const
 {
 	QList<Site*> sites;
 	sites.append(m_sites.value(ui->comboSites->currentText()));
 	return sites;
 }
 
-void poolTab::write(QJsonObject &json) const
+void PoolTab::write(QJsonObject &json) const
 {
 	json["type"] = QStringLiteral("pool");
 	json["pool"] = ui->spinPool->value();
@@ -109,7 +109,7 @@ void poolTab::write(QJsonObject &json) const
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 }
 
-bool poolTab::read(const QJsonObject &json, bool preload)
+bool PoolTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPool->setValue(json["pool"].toInt());
 	ui->comboSites->setCurrentText(json["site"].toString());
@@ -137,7 +137,7 @@ bool poolTab::read(const QJsonObject &json, bool preload)
 }
 
 
-void poolTab::getPage()
+void PoolTab::getPage()
 {
 	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
@@ -149,7 +149,7 @@ void poolTab::getPage()
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
-void poolTab::getAll()
+void PoolTab::getAll()
 {
 	const auto &page = m_pages[ui->comboSites->currentText()].first();
 
@@ -169,7 +169,7 @@ void poolTab::getAll()
 }
 
 
-void poolTab::setTags(const QString &tags, bool preload)
+void PoolTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
@@ -179,7 +179,7 @@ void poolTab::setTags(const QString &tags, bool preload)
 	else
 		updateTitle();
 }
-void poolTab::setPool(int id, const QString &site)
+void PoolTab::setPool(int id, const QString &site)
 {
 	activateWindow();
 	ui->spinPool->setValue(id);
@@ -188,23 +188,23 @@ void poolTab::setPool(int id, const QString &site)
 	{ ui->comboSites->setCurrentIndex(index); }
 	load();
 }
-void poolTab::setSite(const QString &site)
+void PoolTab::setSite(const QString &site)
 {
 	const int index = ui->comboSites->findText(site);
 	if (index != -1)
 	{ ui->comboSites->setCurrentIndex(index); }
 }
 
-void poolTab::focusSearch()
+void PoolTab::focusSearch()
 {
 	ui->spinPool->setFocus();
 }
 
-QString poolTab::tags() const
+QString PoolTab::tags() const
 { return m_search->toPlainText(); }
 
 
-void poolTab::changeEvent(QEvent *event)
+void PoolTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
@@ -215,7 +215,7 @@ void poolTab::changeEvent(QEvent *event)
 	QWidget::changeEvent(event);
 }
 
-void poolTab::updateTitle()
+void PoolTab::updateTitle()
 {
 	QString search = m_search->toPlainText().trimmed();
 	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? QString() : " - " + QString(search).replace("&", "&&")));

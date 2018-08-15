@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>mainWindow</class>
- <widget class="QMainWindow" name="mainWindow">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -1162,7 +1162,7 @@ QTextEdit {
   <connection>
    <sender>actionOptions</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>options()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1178,7 +1178,7 @@ QTextEdit {
   <connection>
    <sender>actionAboutGrabber</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>aboutAuthor()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1194,7 +1194,7 @@ QTextEdit {
   <connection>
    <sender>actionFolder</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>saveFolder()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1210,7 +1210,7 @@ QTextEdit {
   <connection>
    <sender>actionAddtab</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>addTab()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1226,7 +1226,7 @@ QTextEdit {
   <connection>
    <sender>actionClosetab</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>closeCurrentTab()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1242,7 +1242,7 @@ QTextEdit {
   <connection>
    <sender>actionBlacklistFix</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>blacklistFix()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1258,7 +1258,7 @@ QTextEdit {
   <connection>
    <sender>actionEmptyDirsFix</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>emptyDirsFix()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1322,7 +1322,7 @@ QTextEdit {
   <connection>
    <sender>comboOrderFav</sender>
    <signal>currentIndexChanged(QString)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1338,7 +1338,7 @@ QTextEdit {
   <connection>
    <sender>comboAscFav</sender>
    <signal>currentIndexChanged(QString)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1354,7 +1354,7 @@ QTextEdit {
   <connection>
    <sender>labelWiki</sender>
    <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1370,7 +1370,7 @@ QTextEdit {
   <connection>
    <sender>lineFolder</sender>
    <signal>textEdited(QString)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1386,7 +1386,7 @@ QTextEdit {
   <connection>
    <sender>actionAddpooltab</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>addPoolTab()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1402,7 +1402,7 @@ QTextEdit {
   <connection>
    <sender>actionMd5Fix</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>md5FixOpen()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1418,7 +1418,7 @@ QTextEdit {
   <connection>
    <sender>pushButton_12</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1434,7 +1434,7 @@ QTextEdit {
   <connection>
    <sender>pushButton_13</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1450,7 +1450,7 @@ QTextEdit {
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1466,7 +1466,7 @@ QTextEdit {
   <connection>
    <sender>pushButton_14</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1482,7 +1482,7 @@ QTextEdit {
   <connection>
    <sender>buttonClearSel</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1498,7 +1498,7 @@ QTextEdit {
   <connection>
    <sender>buttonClear</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1514,7 +1514,7 @@ QTextEdit {
   <connection>
    <sender>buttonClearlog</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1530,7 +1530,7 @@ QTextEdit {
   <connection>
    <sender>tabWidget</sender>
    <signal>currentChanged(int)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>currentTabChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1546,7 +1546,7 @@ QTextEdit {
   <connection>
    <sender>buttonOpenLog</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1562,7 +1562,7 @@ QTextEdit {
   <connection>
    <sender>tableBatchGroups</sender>
    <signal>cellChanged(int,int)</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>updateBatchGroups(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1578,7 +1578,7 @@ QTextEdit {
   <connection>
    <sender>lineFolder</sender>
    <signal>editingFinished()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>updateCompleters()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1594,7 +1594,7 @@ QTextEdit {
   <connection>
    <sender>buttonMoveUp</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>batchMoveUp()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1610,7 +1610,7 @@ QTextEdit {
   <connection>
    <sender>buttonMoveDown</sender>
    <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>batchMoveDown()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1626,7 +1626,7 @@ QTextEdit {
   <connection>
    <sender>actionSettingsFolder</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>openSettingsFolder()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1642,7 +1642,7 @@ QTextEdit {
   <connection>
    <sender>actionAboutReportBug</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>aboutReportBug()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1658,7 +1658,7 @@ QTextEdit {
   <connection>
    <sender>actionAboutWebsite</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>aboutWebsite()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1674,7 +1674,7 @@ QTextEdit {
   <connection>
    <sender>actionRenameExistingImages</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>renameExisting()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1690,7 +1690,7 @@ QTextEdit {
   <connection>
    <sender>actionAboutGithub</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>aboutGithub()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1706,7 +1706,7 @@ QTextEdit {
   <connection>
    <sender>actionRestoreLastClosedTab</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>restoreLastClosedTab()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1722,7 +1722,7 @@ QTextEdit {
   <connection>
    <sender>actionTagLoader</sender>
    <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
+   <receiver>MainWindow</receiver>
    <slot>utilTagLoader()</slot>
    <hints>
     <hint type="sourcelabel">

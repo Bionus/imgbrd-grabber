@@ -7,21 +7,21 @@
 
 namespace Ui
 {
-	class poolTab;
+	class PoolTab;
 }
 
 
-class mainWindow;
+class MainWindow;
 class TextEdit;
 
-class poolTab : public searchTab
+class PoolTab : public SearchTab
 {
 	Q_OBJECT
 
 	public:
-		explicit poolTab(Profile *profile, mainWindow *parent);
-		~poolTab() override;
-		Ui::poolTab *ui;
+		explicit PoolTab(Profile *profile, MainWindow *parent);
+		~PoolTab() override;
+		Ui::PoolTab *ui;
 		QString tags() const override;
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;

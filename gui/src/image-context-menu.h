@@ -7,14 +7,14 @@
 
 
 class QSettings;
-class mainWindow;
+class MainWindow;
 
 class ImageContextMenu : public QMenu
 {
 	Q_OBJECT
 
 	public:
-		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = nullptr);
+		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, MainWindow *mw, QWidget *parent = nullptr);
 
 	protected slots:
 		void openInBrowser();
@@ -24,7 +24,7 @@ class ImageContextMenu : public QMenu
 	private:
 		QSettings *m_settings;
 		QSharedPointer<Image> m_image;
-		mainWindow *m_mainWindow;
+		MainWindow *m_mainWindow;
 		QList<ReverseSearchEngine> m_reverseSearchEngines;
 };
 

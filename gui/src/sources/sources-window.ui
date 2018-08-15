@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>sourcesWindow</class>
- <widget class="QDialog" name="sourcesWindow">
+ <class>SourcesWindow</class>
+ <widget class="QDialog" name="SourcesWindow">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -218,7 +218,7 @@
   <connection>
    <sender>buttonCancel</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -234,7 +234,7 @@
   <connection>
    <sender>buttonOk</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>valid()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -250,7 +250,7 @@
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>addSite()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -266,7 +266,7 @@
   <connection>
    <sender>comboPresets</sender>
    <signal>currentTextChanged(QString)</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>selectPreset(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -282,7 +282,7 @@
   <connection>
    <sender>buttonPresetSave</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>savePreset()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -298,7 +298,7 @@
   <connection>
    <sender>buttonPresetEdit</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>editPreset()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -314,7 +314,7 @@
   <connection>
    <sender>buttonPresetDelete</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>deletePreset()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -330,7 +330,7 @@
   <connection>
    <sender>buttonPresetAdd</sender>
    <signal>clicked()</signal>
-   <receiver>sourcesWindow</receiver>
+   <receiver>SourcesWindow</receiver>
    <slot>addPreset()</slot>
    <hints>
     <hint type="sourcelabel">

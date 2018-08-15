@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>optionsWindow</class>
- <widget class="QDialog" name="optionsWindow">
+ <class>OptionsWindow</class>
+ <widget class="QDialog" name="OptionsWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -3289,7 +3289,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>optionsWindow</receiver>
+   <receiver>OptionsWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3305,7 +3305,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>optionsWindow</receiver>
+   <receiver>OptionsWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3321,7 +3321,7 @@
   <connection>
    <sender>treeWidget</sender>
    <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
-   <receiver>optionsWindow</receiver>
+   <receiver>OptionsWindow</receiver>
    <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3561,7 +3561,7 @@
   <connection>
    <sender>buttonAddLogFile</sender>
    <signal>clicked()</signal>
-   <receiver>optionsWindow</receiver>
+   <receiver>OptionsWindow</receiver>
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3577,7 +3577,7 @@
   <connection>
    <sender>buttonAddWebService</sender>
    <signal>clicked()</signal>
-   <receiver>optionsWindow</receiver>
+   <receiver>OptionsWindow</receiver>
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">

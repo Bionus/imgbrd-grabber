@@ -1,5 +1,5 @@
-#ifndef OPTIONSWINDOW_H
-#define OPTIONSWINDOW_H
+#ifndef OPTIONS_WINDOW_H
+#define OPTIONS_WINDOW_H
 
 #include <QDialog>
 #include <QSettings>
@@ -9,19 +9,19 @@
 
 namespace Ui
 {
-	class optionsWindow;
+	class OptionsWindow;
 }
 
 
 class Profile;
 
-class optionsWindow : public QDialog
+class OptionsWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(Profile *profile, QWidget *parent = nullptr);
-		~optionsWindow() override;
+		explicit OptionsWindow(Profile *profile, QWidget *parent = nullptr);
+		~OptionsWindow() override;
 		void setColor(QLineEdit *lineEdit, bool button = false);
 		void setFont(QLineEdit *lineEdit);
 
@@ -101,11 +101,11 @@ class optionsWindow : public QDialog
 		void settingsChanged();
 
 	private:
-		Ui::optionsWindow *ui;
+		Ui::OptionsWindow *ui;
 		Profile *m_profile;
 		QList<ReverseSearchEngine> m_webServices;
 		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 
-#endif // OPTIONSWINDOW_H
+#endif // OPTIONS_WINDOW_H

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>batchWindow</class>
- <widget class="QDialog" name="batchWindow">
+ <class>BatchWindow</class>
+ <widget class="QDialog" name="BatchWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -275,7 +275,7 @@
   <connection>
    <sender>buttonCopyToClipboard</sender>
    <signal>clicked()</signal>
-   <receiver>batchWindow</receiver>
+   <receiver>BatchWindow</receiver>
    <slot>copyToClipboard()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -291,7 +291,7 @@
   <connection>
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>batchWindow</receiver>
+   <receiver>BatchWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -307,7 +307,7 @@
   <connection>
    <sender>buttonPause</sender>
    <signal>clicked()</signal>
-   <receiver>batchWindow</receiver>
+   <receiver>BatchWindow</receiver>
    <slot>pause()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -323,7 +323,7 @@
   <connection>
    <sender>buttonSkip</sender>
    <signal>clicked()</signal>
-   <receiver>batchWindow</receiver>
+   <receiver>BatchWindow</receiver>
    <slot>skip()</slot>
    <hints>
     <hint type="sourcelabel">

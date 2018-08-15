@@ -18,13 +18,13 @@
 
 namespace Ui
 {
-	class mainWindow;
+	class MainWindow;
 }
 
 
-class searchTab;
-class favoritesTab;
-class batchWindow;
+class SearchTab;
+class FavoritesTab;
+class BatchWindow;
 class Profile;
 class Downloader;
 class Favorite;
@@ -32,14 +32,14 @@ class DownloadQueryGroup;
 class DownloadQueryImage;
 class MonitoringCenter;
 
-class mainWindow : public QMainWindow
+class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		explicit mainWindow(Profile *profile);
-		~mainWindow() override;
-		Ui::mainWindow *ui;
+		explicit MainWindow(Profile *profile);
+		~MainWindow() override;
+		Ui::MainWindow *ui;
 
 	public slots:
 		// Log
@@ -106,9 +106,9 @@ class mainWindow : public QMainWindow
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true);
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true);
-		void addSearchTab(searchTab*, bool background = false, bool save = true);
-		void updateTabTitle(searchTab*);
-		void tabClosed(searchTab*);
+		void addSearchTab(SearchTab*, bool background = false, bool save = true);
+		void updateTabTitle(SearchTab*);
+		void tabClosed(SearchTab*);
 		void restoreLastClosedTab();
 		void currentTabChanged(int);
 		void closeCurrentTab();
@@ -146,10 +146,10 @@ class mainWindow : public QMainWindow
 		void imageUrlChanged(const QUrl &before, const QUrl &after);
 		void updateCompleters();
 		void setSource(const QString &site);
-		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
+		void setTags(const QList<Tag> &tags, SearchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon &getIcon(const QString &path);
-		void setWiki(const QString &wiki, searchTab *from = nullptr);
+		void setWiki(const QString &wiki, SearchTab *from = nullptr);
 		void siteDeleted(Site *site);
 
 		// Drag & drop
@@ -172,16 +172,16 @@ class mainWindow : public QMainWindow
 		int					m_mustGetTags;
 		int					m_forcedTab;
 		QSettings			*m_settings;
-		batchWindow			*m_progressDialog;
+		BatchWindow			*m_progressDialog;
 		QString				m_currLang, m_link;
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<BatchDownloadImage>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
-		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
+		QList<SearchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<Site*>		m_selectedSites;
-		favoritesTab		*m_favoritesTab;
+		FavoritesTab		*m_favoritesTab;
 		QMap<QUrl, QTime>				m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
