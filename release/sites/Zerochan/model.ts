@@ -55,9 +55,13 @@ export const source: ISource = {
                         images.push(completeImage(img));
                     }
 
+                    const imageCount = parsed.rss.channel.description
+                        ? Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", parsed.rss.channel.description["#text"]))
+                        : undefined;
+
                     return {
                         images,
-                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", parsed.rss.channel.description["#text"])),
+                        imageCount,
                     };
                 },
             },
