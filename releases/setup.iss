@@ -21,6 +21,10 @@
 # define MyAppVersion "6.0.4"
 #endif
 
+#ifndef QtApngDll
+# define QtApngDll QtPlugins + "\imageformats\qapng.dll"
+#endif
+
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -127,6 +131,7 @@ Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crash
 Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion

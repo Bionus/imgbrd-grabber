@@ -4,6 +4,7 @@ environment:
   APPVEYOR: 1
   DEPLOY: 0
   MYSQL_VERSION: mysql-5.7.14-win32
+  APNG_PLUGIN: apng-1.1.05.10.1
 
   matrix:
     # MSVC x86
@@ -28,6 +29,7 @@ environment:
 cache:
   - release\sites\node_modules -> release\sites\package.json
   - mysql-5.7.14-win32 -> .appveyor.yml
+  - apng-1.1.05.10.1 -> .appveyor.yml
 
 init:
   - git config --global core.autocrlf input
@@ -43,9 +45,11 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
+  - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5101/qt.qt5.5101.skycoder42.png.win32_msvc2015/1.1.05.10.1.7z -o "%APNG_PLUGIN%.7z"
+  - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="nightly" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%"  releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="nightly" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
 
 test_script:
   - build\tests\tests.exe
