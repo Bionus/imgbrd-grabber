@@ -86,6 +86,23 @@ void ImageDownloader::loadedSave()
 	// Try to save the image if it's already loaded or exists somewhere else on disk
 	if (!m_force)
 	{
+		// Check if the destination files already exist
+		bool allExists = true;
+		for (const QString &path : qAsConst(m_paths))
+		{
+			if (!QFile::exists(path))
+			{
+				allExists = false;
+				break;
+			}
+		}
+		if (allExists)
+		{
+			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(m_paths.first()), Logger::Info);
+			emit saved(m_image, makeMap(m_paths, Image::SaveResult::AlreadyExistsDisk));
+			return;
+		}
+
 		Image::SaveResult res = m_image->preSave(m_temporaryPath);
 
 		// If we don't need any loading, we can return already
