@@ -1,7 +1,7 @@
 {
   "projectOwner": "Bionus",
   "projectName": "imgbrd-grabber",
-  "imageSize": 118,
+  "imageSize": 122,
   "repoType": "github",
   "commit": false,
   "contributorsPerLine": 6,
@@ -9,7 +9,7 @@
     {
       "login": "Bionus",
       "name": "Jack Vasti",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/882719?s=118",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/882719?s=122",
       "profile": "https://github.com/Bionus",
       "contributions": [
         "code",
@@ -20,7 +20,7 @@
     {
       "login": "YMI",
       "name": "YMI",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/16903308?s=118",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/16903308?s=122",
       "profile": "https://github.com/Zzzyyzzyxx",
       "contributions": [
         "bug",
@@ -30,7 +30,7 @@
     {
       "login": "SultrySamthepennanceman",
       "name": "SultrySamthepenna&hellip;",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/12085184?s=118",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/12085184?s=122",
       "profile": "https://github.com/SultrySamthepennanceman",
       "contributions": [
         "bug"
@@ -39,7 +39,7 @@
     {
       "login": "BarryMode",
       "name": "Barry Anders",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/5648875?s=118",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5648875?s=122",
       "profile": "https://github.com/BarryMode",
       "contributions": [
         "code",
@@ -49,16 +49,17 @@
     {
       "login": "Flat",
       "name": "Ken Swenson",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/2048861?s=118",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2048861?s=122",
       "profile": "https://github.com/Flat",
       "contributions": [
-        "code"
+        "code",
+        "platform"
       ]
     },
     {
       "login": "larry-he",
       "name": "Larry He",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/18506295?s=118",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/18506295?s=122",
       "profile": "https://github.com/larry-he",
       "contributions": [
         "code"
@@ -67,7 +68,7 @@
     {
       "login": "brodycas3",
       "name": "brodycas3",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/19770864?s=118",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/19770864?s=122",
       "profile": "https://github.com/brodycas3",
       "contributions": [
         "bug"
@@ -76,7 +77,7 @@
     {
       "login": "sanddudu",
       "name": "Klion Xu",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/1650692?s=118",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1650692?s=122",
       "profile": "https://github.com/sanddudu",
       "contributions": [
         "translation"
@@ -85,7 +86,7 @@
     {
       "login": "MasterPetrik",
       "name": "MasterPetrik",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/22294259?s=118",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/22294259?s=122",
       "profile": "https://github.com/MasterPetrik",
       "contributions": [
         "bug",
@@ -96,7 +97,7 @@
     {
       "login": "dyskette",
       "name": "Eddy Castillo",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/6687927?s=118",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6687927?s=122",
       "profile": "https://github.com/dyskette",
       "contributions": [
         "translation"
@@ -105,7 +106,7 @@
     {
       "login": "MrAndre96",
       "name": "MrAndre96",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/6564956?s=118",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6564956?s=122",
       "profile": "https://github.com/MrAndre96",
       "contributions": [
         "bug"
