@@ -1131,7 +1131,7 @@ void MainWindow::options()
 
 void MainWindow::optionsClosed()
 {
-	for (SearchTab *tab : m_tabs)
+	for (SearchTab *tab : qAsConst(m_tabs))
 	{
 		tab->optionsChanged();
 		tab->updateCheckboxes();

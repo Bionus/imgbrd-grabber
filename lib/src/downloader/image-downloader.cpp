@@ -11,6 +11,19 @@
 #include "models/source.h"
 
 
+static void addMd5(Profile *profile, const QString &path)
+{
+	QCryptographicHash hash(QCryptographicHash::Md5);
+
+	QFile f(path);
+	f.open(QFile::ReadOnly);
+	hash.addData(&f);
+	f.close();
+
+	profile->addMd5(hash.result().toHex(), path);
+}
+
+
 ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
 	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
@@ -99,13 +112,14 @@ void ImageDownloader::loadedSave()
 		if (allExists)
 		{
 			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(m_paths.first()), Logger::Info);
+			for (const QString &path : qAsConst(m_paths))
+			{ addMd5(profile, path); }
 			emit saved(m_image, makeMap(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
 		}
 
-		Image::SaveResult res = m_image->preSave(m_temporaryPath);
-
 		// If we don't need any loading, we can return already
+		Image::SaveResult res = m_image->preSave(m_temporaryPath);
 		if (res != Image::SaveResult::NotLoaded)
 		{
 			QMap<QString, Image::SaveResult> result {{ m_temporaryPath, res }};
@@ -237,6 +251,7 @@ void ImageDownloader::success()
 
 QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
+	Profile *profile = m_image->parentSite()->getSource()->getProfile();
 	m_image->setSavePath(m_temporaryPath);
 
 	if (!m_filename.isEmpty())
@@ -246,13 +261,13 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 	bool moved = false;
 
 	QMap<QString, Image::SaveResult> result;
-	for (int i = 0; i < m_paths.count(); ++i)
+	for (const QString &path : qAsConst(m_paths))
 	{
-		const QString &path = m_paths[i];
-
-		QFile f(path);
-		if (f.exists())
+		// Don't overwrite already existing files
+		if (QFile::exists(path))
 		{
+			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(path), Logger::Info);
+			addMd5(profile, path);
 			result[path] = Image::SaveResult::AlreadyExistsDisk;
 			continue;
 		}
