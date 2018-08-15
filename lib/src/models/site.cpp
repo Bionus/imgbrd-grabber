@@ -264,6 +264,9 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 
 int Site::msToRequest(QueryType type) const
 {
+	if (!m_lastRequest.isValid())
+		return 0;
+
 	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
