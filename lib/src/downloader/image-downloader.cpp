@@ -170,7 +170,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 			}
 			else
 			{
-				m_url = setExtension(m_url, newext);
+				m_url = setExtension(m_image->url(Image::Size::Full), newext);
 				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
 			}
 
