@@ -1884,7 +1884,8 @@ void MainWindow::getAllGetImage(const BatchDownloadImage &download, int siteId)
 	// Start loading and saving image
 	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
+	bool getBlacklisted = download.queryGroup == nullptr || download.queryGroup->getBlacklisted;
+	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, getBlacklisted, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &MainWindow::getAllGetImageSaved, Qt::UniqueConnection);
 	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &MainWindow::getAllProgress, Qt::UniqueConnection);
 	imgDownloader->save();

@@ -11,12 +11,12 @@
 #include "models/source.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate, bool force)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
+	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate, bool force)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force)
+	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
 ImageDownloader::~ImageDownloader()
@@ -52,13 +52,14 @@ void ImageDownloader::abort()
 
 void ImageDownloader::loadedSave()
 {
+	Profile *profile = m_image->parentSite()->getSource()->getProfile();
+
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty())
 	{
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
 
 		// Use a random temporary file if we need the MD5 or equivalent
-		Profile *profile = m_image->parentSite()->getSource()->getProfile();
 		if (Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
 		{
 			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
@@ -69,6 +70,18 @@ void ImageDownloader::loadedSave()
 	// Directly use the image path as temporary file  if possible
 	if (m_temporaryPath.isEmpty())
 	{ m_temporaryPath = m_paths.first() + ".tmp"; }
+
+	// Check if the image is blacklisted
+	if (!m_getBlacklisted)
+	{
+		const QStringList &detected = profile->getBlacklist().match(m_image->tokens(profile));
+		if (!detected.isEmpty())
+		{
+			log(QStringLiteral("Image contains blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
+			emit saved(m_image, makeMap(m_paths, Image::SaveResult::Blacklisted));
+			return;
+		}
+	}
 
 	// Try to save the image if it's already loaded or exists somewhere else on disk
 	if (!m_force)

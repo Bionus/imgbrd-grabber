@@ -232,7 +232,7 @@ void Downloader::loadNext()
 	{
 		const QSharedPointer<Image> image = m_images.takeFirst();
 		log(QString("Loading image '%1'").arg(image->url().toString()));
-		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false);
+		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false, m_blacklist);
 		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
 		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 		dwl->save();

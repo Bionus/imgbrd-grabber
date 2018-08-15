@@ -606,7 +606,7 @@ void SearchTab::finishedLoadingPreview()
 
 		if (download)
 		{
-			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, this);
+			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
 			downloader->save();
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		}
@@ -955,7 +955,7 @@ void SearchTab::contextSaveImage(int position)
 		if (m_boutons.contains(img))
 		{ connect(img, &Image::downloadProgressImage, m_boutons[img], &QBouton::setProgress); }
 
-		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, this, true);
+		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this, true);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}
@@ -974,7 +974,7 @@ void SearchTab::contextSaveImageAs(int position)
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
 
 		QEventLoop loop;
-		ImageDownloader downloader(image, QStringList() << tmpPath, 1, true, true, this);
+		ImageDownloader downloader(image, QStringList() << tmpPath, 1, true, true, true, this);
 		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
 		downloader.save();
 		loop.exec();
@@ -995,7 +995,7 @@ void SearchTab::contextSaveImageAs(int position)
 		{ QFile::rename(tmpPath, path); }
 		else
 		{
-			auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, this);
+			auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, true, this);
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 			downloader->save();
 		}
@@ -1013,7 +1013,7 @@ void SearchTab::contextSaveSelected()
 		if (m_boutons.contains(img.data()))
 		{ connect(img.data(), &Image::downloadProgressImage, m_boutons[img.data()], &QBouton::setProgress); }
 
-		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, this, true);
+		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this, true);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}
