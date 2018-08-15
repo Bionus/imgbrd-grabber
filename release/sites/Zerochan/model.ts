@@ -10,6 +10,10 @@ function completeImage(img: IImage): IImage {
         .replace("/240/", "/full/")
         .replace("/600/", "/full/");
 
+    if (img["file_size"]) {
+        img["file_size"] = Grabber.fileSizeToInt(img["file_size"]);
+    }
+
     return img;
 }
 
@@ -82,7 +86,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedSearch => {
                     return {
                         tags: Grabber.regexToTags("<li[^>]*>\\s*<a [^>]+>(?<name>[^>]+)</a>\\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)</span>|(?<type_2>[^<]*))\\s*</li>", src),
-                        images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*src=['\"](?<preview_url>[^'\"]*)['\"][^>]*/?>)", src).map(completeImage),
+                        images: Grabber.regexToImages("<a href=['\"]/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?:<b>[^<]*</b>)?[^<]*(?:<span>[^<]*</span>)?[^<]*(?<image><img\\s*src=['\"](?<preview_url>[^'\"]*)['\"][^>]+title=['\"](?<width>\\d+)x(?<height>\\d+) (?<file_size>[^'\"]+)['\"][^>]*/?>)", src).map(completeImage),
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", "page (?:[0-9,]+) of (?<page>[0-9,]+)", src)),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", "has (?<count>[0-9,]+) .+? anime images", src)),
                     };

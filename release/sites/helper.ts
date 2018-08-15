@@ -84,6 +84,22 @@ addHelper("countToInt", (str: string): number => {
     return Math.round(count);
 });
 
+addHelper("fileSizeToInt", (str: string): number => {
+    const res = str.match(/^(\d+)\s*(\w+)$/);
+    if (res) {
+        const val = parseInt(res[1], 10);
+        const unit = res[2].toLowerCase();
+        if (unit === "mb") {
+            return val * 1024 * 1024;
+        }
+        if (unit === "kb") {
+            return val * 1024;
+        }
+        return val;
+    }
+    return parseInt(str, 10);
+});
+
 addHelper("loginUrl", (fields: any, values: any): string => {
     let res = "";
     for (const field of fields) {
