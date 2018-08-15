@@ -47,7 +47,9 @@ void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
 	int needTags = Filename(m_filename).needExactTags(m_image->parentSite());
-	if (!m_loadTags || !m_paths.isEmpty() || needTags == 0 || (needTags == 1 && !m_image->hasUnknownTag()))
+	bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
+	bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
+	if (!blacklistNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags))
 	{
 		loadedSave();
 		return;

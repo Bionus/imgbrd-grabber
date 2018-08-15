@@ -20,6 +20,8 @@ void ImageDownloaderTest::cleanup()
 	}
 
 	delete m_profile;
+	m_profile = nullptr;
+
 	m_source->deleteLater();
 	m_site->deleteLater();
 }
@@ -35,8 +37,11 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
 	details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
 	details["page_url"] = "/posts/7331";
+	details["tags"] = "tag1 tag2 tag3";
 
-	m_profile = new Profile("tests/resources/");
+	if (m_profile == nullptr)
+	{ m_profile = new Profile("tests/resources/"); }
+
 	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 	return new Image(m_site, details, m_profile);
@@ -135,6 +140,22 @@ void ImageDownloaderTest::testRotateExtension()
 	CustomNetworkAccessManager::NextFiles.append("404");
 
 	assertDownload(img, &downloader, expected, true);
+}
+
+void ImageDownloaderTest::testBlacklisted()
+{
+	m_profile = new Profile("tests/resources/");
+	m_profile->addBlacklistedTag("tag1");
+
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, false, nullptr, false, false);
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Blacklisted);
+
+	assertDownload(img, &downloader, expected, false);
+
+	m_profile->removeBlacklistedTag("tag1");
 }
 
 
