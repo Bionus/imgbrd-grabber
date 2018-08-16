@@ -5,8 +5,8 @@
 #include <QNetworkProxy>
 #include <QSignalMapper>
 #include <QSqlDatabase>
-#include <algorithm>
 #include <ui_options-window.h>
+#include <algorithm>
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"

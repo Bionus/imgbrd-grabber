@@ -1,7 +1,7 @@
 #include "post-filter.h"
-#include "functions.h"
 #include "filter.h"
 #include "filter-factory.h"
+#include "functions.h"
 
 
 PostFilter::PostFilter(const QStringList &filters)

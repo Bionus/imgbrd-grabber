@@ -1,8 +1,8 @@
 #include "meta-filter-test.h"
 #include <QtTest>
+#include "loader/token.h"
 #include "models/filtering/meta-filter.h"
 #include "models/filtering/tag-filter.h"
-#include "loader/token.h"
 
 
 void MetaFilterTest::testToString()

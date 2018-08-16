@@ -1,8 +1,8 @@
 #include "tag-filter-test.h"
 #include <QtTest>
+#include "loader/token.h"
 #include "models/filtering/tag-filter.h"
 #include "models/filtering/token-filter.h"
-#include "loader/token.h"
 
 
 void TagFilterTest::testToString()

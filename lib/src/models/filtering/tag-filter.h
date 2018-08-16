@@ -1,9 +1,9 @@
 #ifndef TAG_FILTER_H
 #define TAG_FILTER_H
 
-#include "filter.h"
 #include <QRegExp>
 #include <QScopedPointer>
+#include "filter.h"
 
 
 class TagFilter : public Filter
