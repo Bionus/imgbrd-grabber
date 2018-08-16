@@ -261,6 +261,29 @@ QString Profile::tempPath() const
 	return tmp + QDir::separator() + subDir;
 }
 
+void Profile::purgeTemp(int maxAge) const
+{
+	const QDir tempDir(tempPath());
+	const QFileInfoList tempFiles = tempDir.entryInfoList(QDir::Files);
+	const QDateTime max = QDateTime::currentDateTime().addSecs(-maxAge);
+
+	int purged = 0;
+	int failed = 0;
+	for (const QFileInfo &tempFile : tempFiles)
+	{
+		const QDateTime lastModified = tempFile.lastModified();
+		if (lastModified < max)
+		{
+			if (QFile::remove(tempFile.absoluteFilePath()))
+				purged++;
+			else
+				failed++;
+		}
+	}
+
+	log(QString("Temp directory purged of %1/%2 files (%3 failed)").arg(purged).arg(tempFiles.count()).arg(failed), Logger::Info);
+}
+
 void Profile::addFavorite(const Favorite &fav)
 {
 	m_favorites.removeAll(fav);

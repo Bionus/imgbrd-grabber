@@ -24,6 +24,7 @@ class Profile : public QObject
 
 		// Temporary path
 		QString tempPath() const;
+		void purgeTemp(int maxAge) const;
 
 		// Favorite management
 		void addFavorite(const Favorite &fav);

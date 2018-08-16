@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
 #endif
 
 	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+
 	Downloader *downloader = new Downloader(profile,
 										parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 										parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
