@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 		parser.showHelp();
 
 	downloader->setQuit(true);
-	QObject::connect(downloader, SIGNAL(quit()), qApp, SLOT(quit()));
+	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
 
 	return app.exec();
 }

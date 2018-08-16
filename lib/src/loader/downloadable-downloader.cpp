@@ -102,7 +102,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 void DownloadableDownloader::success()
 {
 	setResult(m_paths, Downloadable::SaveResult::Saved);
-	for (const QString &path : m_paths)
+	for (const QString &path : qAsConst(m_paths))
 	{ m_downloadable->postSave(path, Downloadable::SaveResult::Saved, m_addMd5, m_startCommands, m_count); }
 	emit saved(m_downloadable, m_result);
 }

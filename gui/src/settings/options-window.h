@@ -82,7 +82,7 @@ class OptionsWindow : public QDialog
 		void showLogFiles(QSettings *settings);
 		void editLogFile(int index);
 		void removeLogFile(int index);
-		void setLogFile(int index, QMap<QString, QVariant> logFile);
+		void setLogFile(int index, const QMap<QString, QVariant> &logFile);
 
 		// Web services
 		void addWebService();

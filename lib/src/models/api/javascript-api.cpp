@@ -151,7 +151,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
 
 		QString type;
-		int typeId;
+		int typeId = -1;
 		if (tag.hasProperty("type") && !tag.property("type").isUndefined())
 		{
 			if (tag.property("type").isNumber())

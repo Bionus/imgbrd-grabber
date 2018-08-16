@@ -468,7 +468,7 @@ void OptionsWindow::removeLogFile(int index)
 	showLogFiles(settings);
 }
 
-void OptionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
+void OptionsWindow::setLogFile(int index, const QMap<QString, QVariant> &logFile)
 {
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
@@ -594,7 +594,7 @@ void OptionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 	{
 		int maxOrder = 0;
 		int maxId = 0;
-		for (const ReverseSearchEngine &ws : m_webServices)
+		for (const ReverseSearchEngine &ws : qAsConst(m_webServices))
 		{
 			if (ws.id() > maxId)
 				maxId = ws.id();
@@ -1036,7 +1036,7 @@ void OptionsWindow::save()
 
 	// Web services
 	settings->beginGroup("WebServices");
-	for (const ReverseSearchEngine &webService : m_webServices)
+	for (const ReverseSearchEngine &webService : qAsConst(m_webServices))
 	{
 		settings->beginGroup(QString::number(webService.id()));
 		settings->setValue("name", webService.name());

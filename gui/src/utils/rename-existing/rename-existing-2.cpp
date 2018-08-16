@@ -14,7 +14,7 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 
 	int i = 0;
 	ui->tableWidget->setRowCount(m_details.size());
-	for (const RenameExistingFile &image : m_details)
+	for (const RenameExistingFile &image : qAsConst(m_details))
 	{
 		if (showThumbnails)
 		{
@@ -68,7 +68,7 @@ void RenameExisting2::deleteDir(const QString &path)
 void RenameExisting2::on_buttonOk_clicked()
 {
 	// Move all images
-	for (const RenameExistingFile &image : m_details)
+	for (const RenameExistingFile &image : qAsConst(m_details))
 	{
 		// Create hierarchy
 		const QString path = image.newPath.left(image.newPath.lastIndexOf(QDir::separator()));

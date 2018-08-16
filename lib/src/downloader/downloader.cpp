@@ -125,7 +125,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	}
 
 	QList<Tag> list;
-	for (auto p : m_pagesT)
+	for (auto p : qAsConst(m_pagesT))
 	{
 		const QList<Tag> &pageTags = p->tags();
 		for (const Tag &tag : pageTags)
@@ -275,7 +275,7 @@ void Downloader::getImages()
 	m_waiting = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
@@ -312,7 +312,7 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QSet<QString> md5s;
 	QList<QSharedPointer<Image>> images;
-	for (Page *p : m_pages)
+	for (Page *p : qAsConst(m_pages))
 	{
 		for (const QSharedPointer<Image> &img : p->images())
 		{
@@ -392,7 +392,7 @@ void Downloader::getUrls()
 	m_duplicates = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
@@ -426,7 +426,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 
 	QSet<QString> md5s;
 	QVector<QSharedPointer<Image>> images;
-	for (Page *p : m_pages)
+	for (Page *p : qAsConst(m_pages))
 	{
 		for (const QSharedPointer<Image> &img : p->images())
 		{
