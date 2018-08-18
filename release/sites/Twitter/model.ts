@@ -24,8 +24,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "since_id={max}", "max_id={min-1}");
-                        return "/1.1/statuses/user_timeline.json?include_rts=true&screen_name=" + query.search + pageUrl;
+                        const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
+                        return "/1.1/statuses/user_timeline.json?include_rts=true&screen_name=" + encodeURIComponent(query.search) + pageUrl;
                     } catch (e) {
                         return { error: e.message };
                     }

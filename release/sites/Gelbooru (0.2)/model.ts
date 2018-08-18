@@ -27,7 +27,7 @@ export const source: ISource = {
                 url: (query: any, opts: any, previous: any): string => {
                     const page: number = query.page - 1;
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
-                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + search;
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -57,7 +57,7 @@ export const source: ISource = {
                         const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
-                        return "/index.php?page=post&s=list&tags=" + search + pagePart;
+                        return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                     } catch (e) {
                         return { error: e.message };
                     }

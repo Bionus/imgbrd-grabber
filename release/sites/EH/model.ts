@@ -9,7 +9,7 @@ export const source: ISource = {
             forcedLimit: 25,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    return "/?page=" + (query.page - 1) + "&f_search=" + query.search;
+                    return "/?page=" + (query.page - 1) + "&f_search=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     // Gallery mode regex: <div class="id1"[^>]*><div class="id2"><a href="(?<url>[^"]+)">(?<name>[^<]+)<\/a><\/div><div class="id3"[^>]*><a[^>]*><img src="(?<preview_url>[^"]*)"[^>]*><\/a><\/div><div class="id4"><div class="id41"[^>]* title="(?<category>[^"]*)"><\/div><div class="id42">(?<images_count>[0-9,]+) files<\/div>
