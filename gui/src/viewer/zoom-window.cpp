@@ -457,7 +457,7 @@ void ZoomWindow::replyFinishedDetails()
 	m_isAnimated = m_image->isAnimated();
 
 	const QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
-	const QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
+	const QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, true, true, true);
 	QString source1;
 	bool file1notexists = false;
 	for (const QString &pth1 : pth1s)
@@ -470,7 +470,7 @@ void ZoomWindow::replyFinishedDetails()
 	}
 
 	const QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
-	const QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
+	const QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, true, true, true);
 	QString source2;
 	bool file2notexists = false;
 	for (const QString &pth2 : pth2s)

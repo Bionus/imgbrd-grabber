@@ -173,7 +173,7 @@ void RenameExisting1::getTags()
 
 void RenameExisting1::setImageResult(Image *img)
 {
-	QStringList paths = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true);
+	QStringList paths = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, true, true, true);
 	m_getAll[img->md5()].newPath = paths.first();
 
 	ui->progressBar->setValue(ui->progressBar->value() + 1);

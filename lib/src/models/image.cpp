@@ -427,16 +427,8 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxLength, bool shouldFixFilename, bool getFull) const
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull) const
 {
-	if (!simple)
-	{
-		if (fn.isEmpty())
-		{ fn = m_settings->value("Save/filename").toString(); }
-		if (pth.isEmpty())
-		{ pth = m_settings->value("Save/path").toString(); }
-	}
-
 	Filename filename(fn);
 	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
 }
@@ -561,7 +553,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 		{
 			auto logFile = it.value();
 			const QString textfileFormat = logFile["content"].toString();
-			QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
+			QStringList cont = this->path(textfileFormat, "", count, true, false, false, false);
 			if (!cont.isEmpty())
 			{
 				const int locationType = logFile["locationType"].toInt();
@@ -570,7 +562,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 				// File path
 				QString fileTagsPath;
 				if (locationType == 0)
-					fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, false, true, true, true).first();
+					fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, true, true, true).first();
 				else if (locationType == 1)
 					fileTagsPath = logFile["uniquePath"].toString();
 				else if (locationType == 2)
@@ -621,7 +613,7 @@ QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addM
 }
 QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
 {
-	const QStringList paths = this->path(filename, path, count, true, false, true, true, true);
+	const QStringList paths = this->path(filename, path, count, true, true, true, true);
 	return save(paths, addMd5, startCommands, count, false);
 }
 
@@ -977,7 +969,7 @@ void Image::preload(const Filename &filename)
 
 QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
 {
-	return path(filename.getFormat(), folder, count, true, false, true, true, true);
+	return path(filename.getFormat(), folder, count, true, true, true, true);
 }
 
 QMap<QString, Token> Image::generateTokens(Profile *profile) const

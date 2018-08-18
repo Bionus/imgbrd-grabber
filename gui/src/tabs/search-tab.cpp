@@ -892,7 +892,7 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 
 	if (Filename(fn).needExactTags(img->parentSite()) == 0)
 	{
-		QStringList files = img->path(fn, path, 0, true, false, true, true, true);
+		QStringList files = img->path(fn, path, 0, true, true, true, true);
 		for (const QString &file : files)
 		{
 			if (QFile(file).exists())

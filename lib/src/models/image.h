@@ -26,7 +26,7 @@ class Image : public QObject, public Downloadable
 		Image(const Image &other);
 		~Image();
 		int			value() const;
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
+		QStringList	path(QString fn, QString pth, int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
 		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
