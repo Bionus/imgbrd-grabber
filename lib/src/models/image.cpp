@@ -688,12 +688,22 @@ void Image::setTemporaryPath(const QString &path)
 		QFile::remove(m_temporaryPath);
 
 	m_temporaryPath = path;
+
+	if (m_fileSize <= 0)
+	{
+		m_fileSize = QFileInfo(m_temporaryPath).size();
+		refreshTokens();
+	}
 }
 void Image::setSavePath(const QString &path)
 {
 	if (path != m_savePath)
 	{
 		m_savePath = path;
+
+		if (m_fileSize <= 0)
+		{ m_fileSize = QFileInfo(m_savePath).size(); }
+
 		refreshTokens();
 	}
 }

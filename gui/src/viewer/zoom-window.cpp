@@ -489,6 +489,7 @@ void ZoomWindow::replyFinishedDetails()
 	{
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
+		m_image->setSavePath(m_source);
 		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Update save button state
