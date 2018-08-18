@@ -955,7 +955,7 @@ void SearchTab::contextSaveImage(int position)
 		if (m_boutons.contains(img))
 		{ connect(img, &Image::downloadProgressImage, m_boutons[img], &QBouton::setProgress); }
 
-		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this, true);
+		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}
@@ -1013,7 +1013,7 @@ void SearchTab::contextSaveSelected()
 		if (m_boutons.contains(img.data()))
 		{ connect(img.data(), &Image::downloadProgressImage, m_boutons[img.data()], &QBouton::setProgress); }
 
-		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this, true);
+		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}

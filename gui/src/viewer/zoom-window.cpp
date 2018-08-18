@@ -879,7 +879,7 @@ void ZoomWindow::saveImageNow()
 		return;
 	}
 
-	auto downloader = new ImageDownloader(m_image, fn, pth, 1, true, true, true, this);
+	auto downloader = new ImageDownloader(m_image, fn, pth, 1, true, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, this, &ZoomWindow::saveImageNowSaved);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
@@ -1169,7 +1169,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 		m_images[pos]->loadDetails();
 
 		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, true, this);
+		auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, true, this, false);
 		m_imageDownloaders.insert(img, dwl);
 		dwl->save();
 	}
