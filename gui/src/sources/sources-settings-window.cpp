@@ -291,12 +291,14 @@ void SourcesSettingsWindow::saveSettings()
 	QList<QVariant> cookies;
 	for (int i = 0; i < ui->tableCookies->rowCount(); ++i)
 	{
-		if (ui->tableCookies->item(i, 0)->text().isEmpty())
+		QTableWidgetItem *key = ui->tableCookies->item(i, 0);
+		QTableWidgetItem *value = ui->tableCookies->item(i, 1);
+		if (key == nullptr || key->text().isEmpty())
 			continue;
 
 		QNetworkCookie cookie;
-		cookie.setName(ui->tableCookies->item(i, 0)->text().toLatin1());
-		cookie.setValue(ui->tableCookies->item(i, 1)->text().toLatin1());
+		cookie.setName(key->text().toLatin1());
+		cookie.setValue(value != nullptr ? value->text().toLatin1() : "");
 		cookies.append(cookie.toRawForm());
 	}
 	m_site->setSetting("cookies", cookies, QList<QVariant>());
@@ -305,11 +307,12 @@ void SourcesSettingsWindow::saveSettings()
 	QMap<QString, QVariant> headers;
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
 	{
-		QTableWidgetItem *item = ui->tableHeaders->item(i, 0);
-		if (item == nullptr || item->text().isEmpty())
+		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
+		QTableWidgetItem *value = ui->tableCookies->item(i, 1);
+		if (key == nullptr || key->text().isEmpty())
 			continue;
 
-		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
+		headers.insert(key->text(), value != nullptr ? value->text().toLatin1() : "");
 	}
 	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
 
