@@ -377,7 +377,7 @@ void MainWindow::initialLoginsDone()
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
-	m_currentTab = ui->tabWidget->currentWidget();
+	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
 	m_loaded = true;
 
 	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
@@ -489,7 +489,8 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 
 bool MainWindow::saveTabs(const QString &filename)
 {
-	return TabsLoader::save(filename, m_tabs, qobject_cast<SearchTab*>(m_currentTab));
+	auto currentSearchTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
+	return TabsLoader::save(filename, m_tabs, currentSearchTab);
 }
 bool MainWindow::loadTabs(const QString &filename)
 {
@@ -550,7 +551,8 @@ void MainWindow::currentTabChanged(int tab)
 {
 	if (m_loaded && tab < m_tabs.size())
 	{
-		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
+		auto currentSearchTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
+		if (currentSearchTab != nullptr)
 		{
 			SearchTab *tb = m_tabs[tab];
 			if (m_tabsWaitingForPreload.contains(tb))
@@ -558,12 +560,12 @@ void MainWindow::currentTabChanged(int tab)
 				tb->load();
 				m_tabsWaitingForPreload.removeAll(tb);
 			}
-			else if (m_currentTab != ui->tabWidget->currentWidget())
+			else if (m_currentTab != currentSearchTab)
 			{
 				setTags(tb->results());
 				setWiki(tb->wiki());
 			}
-			m_currentTab = ui->tabWidget->currentWidget();
+			m_currentTab = currentSearchTab;
 		}
 	}
 }

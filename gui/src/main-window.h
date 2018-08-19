@@ -175,7 +175,7 @@ class MainWindow : public QMainWindow
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<BatchDownloadImage>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
-		QWidget				*m_currentTab;
+		SearchTab			*m_currentTab;
 		QList<SearchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<Site*>		m_selectedSites;
 		FavoritesTab		*m_favoritesTab;
