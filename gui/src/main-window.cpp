@@ -235,7 +235,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Favorites tab
 	m_favoritesTab = new FavoritesTab(m_profile, this);
 	connect(m_favoritesTab, &SearchTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
-	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
+	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(m_favoritesTab, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
 	connect(m_favoritesTab, &SearchTab::changed, this, &MainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
@@ -417,7 +417,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
 	}
 	connect(w, &SearchTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
-	connect(w, SIGNAL(batchAddUnique(const DownloadQueryImage &)), this, SLOT(batchAddUnique(const DownloadQueryImage &)));
+	connect(w, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(w, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
 	connect(w, &SearchTab::changed, this, &MainWindow::updateTabs);
 	connect(w, &SearchTab::closed, this, &MainWindow::tabClosed);
