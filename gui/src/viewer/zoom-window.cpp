@@ -576,6 +576,10 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
 			break;
 
+		case SaveButtonState::Linked:
+			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
+			break;
+
 		case SaveButtonState::ExistsMd5:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
@@ -903,6 +907,10 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString
 
 			case Image::SaveResult::Moved:
 				setButtonState(fav, SaveButtonState::Moved);
+				break;
+
+			case Image::SaveResult::Linked:
+				setButtonState(fav, SaveButtonState::Linked);
 				break;
 
 			case Image::SaveResult::AlreadyExistsMd5:

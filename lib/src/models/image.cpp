@@ -526,6 +526,18 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 
 			res = SaveResult::Moved;
 		}
+		else if (whatToDo == "link")
+		{
+			log(QStringLiteral("Creating link for <a href=\"file:///%1\">%1</a> in <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+
+			#ifdef Q_OS_WIN
+				QFile::link(md5Duplicate, path + ".lnk");
+			#else
+				QFile::link(md5Duplicate, path);
+			#endif
+
+			res = SaveResult::Linked;
+		}
 		else
 		{
 			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url().toString(), md5Duplicate));

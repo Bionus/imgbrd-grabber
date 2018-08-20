@@ -772,6 +772,11 @@
           </item>
           <item>
            <property name="text">
+            <string>Link</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Don't save</string>
            </property>
           </item>
@@ -969,8 +974,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>65</width>
-             <height>16</height>
+             <width>369</width>
+             <height>377</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">

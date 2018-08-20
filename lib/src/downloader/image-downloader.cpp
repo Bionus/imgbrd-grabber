@@ -126,7 +126,7 @@ void ImageDownloader::loadedSave()
 		{
 			QMap<QString, Image::SaveResult> result {{ m_temporaryPath, res }};
 
-			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
+			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Linked)
 			{ result = postSaving(res); }
 
 			emit saved(m_image, result);
@@ -259,17 +259,26 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 	if (!m_filename.isEmpty())
 	{ m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true); }
 
-	QFile tmp(m_temporaryPath);
+	QString suffix;
+	#ifdef Q_OS_WIN
+		if (saveResult == Image::SaveResult::Linked)
+		{ suffix = ".lnk"; }
+	#endif
+
+	QFile tmp(m_temporaryPath + suffix);
 	bool moved = false;
 
 	QMap<QString, Image::SaveResult> result;
-	for (const QString &path : qAsConst(m_paths))
+	for (const QString &file : qAsConst(m_paths))
 	{
+		const QString path = file + suffix;
+
 		// Don't overwrite already existing files
-		if (QFile::exists(path))
+		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path)))
 		{
-			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(path), Logger::Info);
-			addMd5(profile, path);
+			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(file), Logger::Info);
+			if (suffix.isEmpty())
+			{ addMd5(profile, file); }
 			result[path] = Image::SaveResult::AlreadyExistsDisk;
 			continue;
 		}

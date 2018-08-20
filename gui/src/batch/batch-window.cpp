@@ -326,6 +326,7 @@ void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 
 			case Downloadable::SaveResult::Moved:
 			case Downloadable::SaveResult::Copied:
+			case Downloadable::SaveResult::Linked:
 			case Downloadable::SaveResult::Saved:
 				ui->tableWidget->item(i, 0)->setIcon(okIcon);
 				ui->tableWidget->item(i, 5)->setText("100 %");

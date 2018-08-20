@@ -137,7 +137,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
-		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
+		QStringList opts = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
 		ui->comboMd5Duplicates->setCurrentIndex(opts.indexOf(settings->value("md5Duplicates", "save").toString()));
 		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
 
@@ -940,7 +940,7 @@ void OptionsWindow::save()
 			else
 			{ pth.mkpath(folder); }
 		}
-		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
+		QStringList opts = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
 		settings->setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
 

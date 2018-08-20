@@ -35,6 +35,7 @@ class ZoomWindow : public QWidget
 			Saved,
 			Copied,
 			Moved,
+			Linked,
 			ExistsMd5,
 			ExistsDisk,
 			Delete
