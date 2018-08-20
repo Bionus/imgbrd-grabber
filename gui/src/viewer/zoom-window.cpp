@@ -460,43 +460,37 @@ void ZoomWindow::replyFinishedDetails()
 	const QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
 	const QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, true, true, true);
 	QString source1;
-	bool file1notexists = false;
 	for (const QString &pth1 : pth1s)
 	{
 		QFile file(pth1);
 		if (file.exists())
 			source1 = file.fileName();
-		else
-			file1notexists = true;
 	}
 
 	const QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
 	const QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, true, true, true);
 	QString source2;
-	bool file2notexists = false;
 	for (const QString &pth2 : pth2s)
 	{
 		QFile file(pth2);
 		if (file.exists())
 			source2 = file.fileName();
-		else
-			file2notexists = true;
 	}
 
 	QString md5Exists = m_profile->md5Exists(m_image->md5());
 
 	// If the file already exists, we directly display it
-	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
+	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty())
 	{
-		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 		m_imagePath = m_source;
 		m_image->setSavePath(m_source);
 		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Update save button state
 		const SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
-		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : md5State);
-		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
 
 		// Fix extension when it should be guessed
 		const QString fext = m_source.section('.', -1);
