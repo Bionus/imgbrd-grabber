@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>541</height>
+    <width>999</width>
+    <height>626</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -49,289 +49,11 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <property name="movable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="tabBatch">
-       <property name="maximumSize">
-        <size>
-         <width>16777214</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <attribute name="title">
-        <string>Downloads</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="labelGroups">
-          <property name="text">
-           <string>Groups (0/0)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableBatchGroups">
-          <property name="verticalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <property name="horizontalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <attribute name="horizontalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string/>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Tags</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Source</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Page</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Images per page</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Images limit</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Filename</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Folder</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Post-filtering</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Get blacklisted</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Progress</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_12">
-          <property name="text">
-           <string>Add</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Single images</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableBatchUniques">
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>false</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>false</bool>
-          </property>
-          <property name="verticalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <property name="horizontalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <attribute name="horizontalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string>Id</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Md5</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Rating</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Tags</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Url</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Date</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Search</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Site</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Filename</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Folder</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_13">
-          <property name="text">
-           <string>Add</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widgetDownloadButtons" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QPushButton" name="buttonClear">
-               <property name="text">
-                <string>Delete all</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="buttonClearSel">
-               <property name="text">
-                <string>Delete selected</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_14">
-               <property name="text">
-                <string>Download</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>Download selected</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="buttonMoveDown">
-               <property name="text">
-                <string>Move down</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="buttonLoadLinkList">
-               <property name="text">
-                <string>Load</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="buttonSaveLinkList">
-               <property name="text">
-                <string>Save</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="buttonMoveUp">
-               <property name="text">
-                <string>Move up</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -341,7 +63,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>999</width>
      <height>21</height>
     </rect>
    </property>
@@ -436,7 +158,7 @@
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>33</height>
+          <height>43</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockInternetScrollLayout_1">
@@ -524,7 +246,7 @@
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>33</height>
+          <height>44</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockKflScrollLayout_1">
@@ -645,7 +367,7 @@
           <x>0</x>
           <y>0</y>
           <width>203</width>
-          <height>36</height>
+          <height>57</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -745,7 +467,7 @@
           <x>0</x>
           <y>0</y>
           <width>215</width>
-          <height>34</height>
+          <height>134</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1075,9 +797,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>tableBatchGroups</tabstop>
-  <tabstop>pushButton_12</tabstop>
-  <tabstop>tableBatchUniques</tabstop>
   <tabstop>dockInternetScroll</tabstop>
   <tabstop>dockKflScroll</tabstop>
   <tabstop>comboOrderFav</tabstop>
@@ -1261,7 +980,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>51</x>
-     <y>185</y>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
@@ -1277,7 +996,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>58</x>
-     <y>211</y>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1293,10 +1012,10 @@
    <hints>
     <hint type="sourcelabel">
      <x>33</x>
-     <y>317</y>
+     <y>347</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-12</x>
+     <x>0</x>
      <y>480</y>
     </hint>
    </hints>
@@ -1309,10 +1028,10 @@
    <hints>
     <hint type="sourcelabel">
      <x>105</x>
-     <y>380</y>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-2</x>
+     <x>0</x>
      <y>398</y>
     </hint>
    </hints>
@@ -1350,102 +1069,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_12</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addGroup()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>249</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>804</x>
-     <y>262</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_13</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addUnique()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>536</x>
-     <y>468</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>804</x>
-     <y>483</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>batchSel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>785</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>216</x>
-     <y>545</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_14</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>getAll()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>644</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>302</x>
-     <y>546</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonClearSel</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>batchClearSel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>503</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>629</x>
-     <y>541</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonClear</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>batchClear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>362</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>742</x>
-     <y>543</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tabWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>MainWindow</receiver>
@@ -1456,24 +1079,8 @@
      <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-3</x>
+     <x>0</x>
      <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tableBatchGroups</sender>
-   <signal>cellChanged(int,int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateBatchGroups(int,int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>71</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>801</x>
-     <y>208</y>
     </hint>
    </hints>
   </connection>
@@ -1485,43 +1092,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>178</x>
-     <y>395</y>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>
-     <y>542</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonMoveUp</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>batchMoveUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>685</x>
-     <y>515</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>220</x>
-     <y>518</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonMoveDown</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>batchMoveDown()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>309</x>
-     <y>515</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>800</x>
-     <y>511</y>
+     <y>540</y>
     </hint>
    </hints>
   </connection>

@@ -3,7 +3,6 @@
 #include <QScrollBar>
 #include <ui_log-tab.h>
 #include "logger.h"
-#include "models/profile.h"
 
 
 LogTab::LogTab(QWidget *parent)

@@ -7,6 +7,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <ui_zoom-window.h>
+#include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"

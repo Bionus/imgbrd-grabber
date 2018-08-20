@@ -10,8 +10,6 @@ namespace Ui
 }
 
 
-class Profile;
-
 class LogTab : public QWidget
 {
 	Q_OBJECT
