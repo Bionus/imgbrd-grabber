@@ -153,8 +153,10 @@ void FavoritesTab::updateFavorites()
 
 		if (display.contains("i"))
 		{
+			const bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
+
 			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
+			QBouton *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
 				image->scale(img, upscale);
 				image->setFixedSize(dim, dim);
 				image->setFlat(true);
