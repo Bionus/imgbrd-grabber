@@ -43,6 +43,7 @@
 #include "settings/options-window.h"
 #include "settings/start-window.h"
 #include "tabs/favorites-tab.h"
+#include "tabs/log-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/search-tab.h"
 #include "tabs/tabs-loader.h"
@@ -59,7 +60,7 @@
 
 
 MainWindow::MainWindow(Profile *profile)
-	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0)
 { }
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
@@ -70,24 +71,8 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
 	ui->setupUi(this);
 
-	m_showLog = m_settings->value("Log/show", true).toBool();
-	if (!m_showLog)
-	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
-	else
-	{
-		QFile logFile(Logger::getInstance().logFile());
-		if (logFile.open(QFile::ReadOnly | QFile::Text))
-		{
-			while (!logFile.atEnd())
-			{
-				QString line = logFile.readLine();
-				logShow(line);
-			}
-			logFile.close();
-		}
-
-		connect(&Logger::getInstance(), &Logger::newLog, this, &MainWindow::logShow);
-	}
+	if (m_settings->value("Log/show", true).toBool())
+	{ ui->tabWidget->addTab(new LogTab(this), tr("Log")); }
 
 	log(QStringLiteral("New session started."), Logger::Info);
 	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
@@ -395,9 +380,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::focusSearch()
 {
-	if (ui->tabWidget->widget(ui->tabWidget->currentIndex())->maximumWidth() != 16777214)
+	auto *tab = dynamic_cast<SearchTab*>(ui->tabWidget->currentWidget());
+	if (tab != nullptr)
 	{
-		auto *tab = dynamic_cast<SearchTab*>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
 		tab->focusSearch();
 	}
 }
@@ -954,56 +939,6 @@ void MainWindow::updateKeepForLater()
 	}
 }
 
-
-void MainWindow::logShow(const QString &msg)
-{
-	if (!m_showLog)
-		return;
-
-	// Find meta delimitations
-	QString htmlMsg = msg;
-	int timeEnd = msg.indexOf(']');
-	int levelEnd = msg.indexOf(']', timeEnd + 1);
-	QString level = msg.mid(timeEnd + 2, levelEnd - timeEnd - 2);
-
-	// Level color
-	static const QMap<QString, QString> colors
-	{
-		{ "Debug", "#999" },
-		{ "Info", "" },
-		{ "Warning", "orange" },
-		{ "Error", "red" },
-	};
-	QString levelColor = colors[level];
-	if (!levelColor.isEmpty())
-	{
-		htmlMsg.insert(msg.size(), "</span>");
-		htmlMsg.insert(timeEnd + 1, QString("<span style='color:%1'>").arg(colors[level]));
-	}
-
-	// Time color
-	htmlMsg.insert(timeEnd + 1, "</span>");
-	htmlMsg.insert(0, "<span style='color:darkgreen'>");
-
-	ui->labelLog->appendHtml(htmlMsg);
-	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
-}
-void MainWindow::logClear()
-{
-	QFile logFile(m_profile->getPath() + "/main.log");
-	if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
-	{
-		logFile.resize(0);
-		logFile.close();
-	}
-
-	if (m_showLog)
-	{
-		ui->labelLog->clear();
-	}
-}
-void MainWindow::logOpen()
-{ QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
 void MainWindow::loadLanguage(const QString &rLanguage, bool quiet)
 {

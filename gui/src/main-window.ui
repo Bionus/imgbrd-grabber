@@ -332,70 +332,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabLog">
-       <property name="maximumSize">
-        <size>
-         <width>16777214</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <attribute name="title">
-        <string>Log</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <widget class="QPlainTextEdit" name="labelLog">
-          <property name="acceptDrops">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QFrame {
-	background: transparent;
-}
-QTextEdit {
-	padding: 0;
-}</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="lineWidth">
-           <number>0</number>
-          </property>
-          <property name="undoRedoEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="lineWrapMode">
-           <enum>QPlainTextEdit::NoWrap</enum>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QPushButton" name="buttonClearlog">
-            <property name="text">
-             <string>Clear log</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonOpenLog">
-            <property name="text">
-             <string>Open log</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -1142,8 +1078,6 @@ QTextEdit {
   <tabstop>tableBatchGroups</tabstop>
   <tabstop>pushButton_12</tabstop>
   <tabstop>tableBatchUniques</tabstop>
-  <tabstop>buttonClearlog</tabstop>
-  <tabstop>buttonOpenLog</tabstop>
   <tabstop>dockInternetScroll</tabstop>
   <tabstop>dockKflScroll</tabstop>
   <tabstop>comboOrderFav</tabstop>
@@ -1512,22 +1446,6 @@ QTextEdit {
    </hints>
   </connection>
   <connection>
-   <sender>buttonClearlog</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>logClear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>327</x>
-     <y>526</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>476</x>
-     <y>543</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tabWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>MainWindow</receiver>
@@ -1540,22 +1458,6 @@ QTextEdit {
     <hint type="destinationlabel">
      <x>-3</x>
      <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOpenLog</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>logOpen()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>609</x>
-     <y>526</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>485</x>
-     <y>-5</y>
     </hint>
    </hints>
   </connection>
@@ -1582,8 +1484,8 @@ QTextEdit {
    <slot>updateCompleters()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>172</x>
-     <y>372</y>
+     <x>178</x>
+     <y>395</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>

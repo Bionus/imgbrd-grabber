@@ -42,10 +42,6 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 
 	public slots:
-		// Log
-		void logShow(const QString &msg);
-		void logClear();
-		void logOpen();
 		// Menus
 		void options();
 		void optionsClosed();
@@ -165,7 +161,7 @@ class MainWindow : public QMainWindow
 	private:
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
-		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
+		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_waitForLogin;
 		bool				m_allow, m_loaded, m_getAll;
 		int					m_forcedTab;
 		QSettings			*m_settings;
@@ -190,7 +186,7 @@ class MainWindow : public QMainWindow
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
-		bool				m_restore, m_showLog;
+		bool				m_restore;
 		QMap<QString, QIcon>	m_icons;
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
