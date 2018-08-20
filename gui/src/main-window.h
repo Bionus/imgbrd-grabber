@@ -9,9 +9,9 @@
 #include <QQueue>
 #include <QSystemTrayIcon>
 #include <QTableWidgetItem>
-#include <QTranslator>
 #include "batch-download-image.h"
 #include "downloader/image-downloader.h"
+#include "language-loader.h"
 #include "models/image.h"
 #include "models/site.h"
 
@@ -56,9 +56,7 @@ class MainWindow : public QMainWindow
 		void md5FixOpen();
 		void renameExisting();
 		void utilTagLoader();
-		// Language
-		void loadLanguage(const QString &, bool quiet = false);
-		void changeEvent(QEvent *) override;
+		void changeEvent(QEvent *event) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
@@ -166,8 +164,8 @@ class MainWindow : public QMainWindow
 		int					m_forcedTab;
 		QSettings			*m_settings;
 		BatchWindow			*m_progressDialog;
-		QString				m_currLang, m_link;
-		QTranslator			m_translator, m_qtTranslator;
+		QString				m_link;
+		LanguageLoader		m_languageLoader;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<BatchDownloadImage>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;

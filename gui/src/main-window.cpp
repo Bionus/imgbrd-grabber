@@ -60,7 +60,7 @@
 
 
 MainWindow::MainWindow(Profile *profile)
-	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_currentTab(nullptr), m_batchAutomaticRetries(0)
+	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_progressDialog(nullptr), m_languageLoader(savePath("languages/", true)), m_currentTab(nullptr), m_batchAutomaticRetries(0)
 { }
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
@@ -110,9 +110,8 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	// Load translations
-	qApp->installTranslator(&m_translator);
-	qApp->installTranslator(&m_qtTranslator);
-	loadLanguage(m_settings->value("language", "English").toString());
+	m_languageLoader.install(qApp);
+	m_languageLoader.setLanguage(m_settings->value("language", "English").toString());
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -408,7 +407,7 @@ void MainWindow::onFirstLoad()
 
 	// Open startup window
 	auto *swin = new StartWindow(m_profile, this);
-	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
+	connect(swin, &StartWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
 	connect(swin, &StartWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
 	connect(swin, &StartWindow::sourceChanged, this, &MainWindow::setSource);
 	swin->show();
@@ -940,35 +939,12 @@ void MainWindow::updateKeepForLater()
 }
 
 
-void MainWindow::loadLanguage(const QString &rLanguage, bool quiet)
-{
-	if (m_currLang != rLanguage)
-	{
-		m_currLang = rLanguage;
-		QLocale locale = QLocale(m_currLang);
-		QLocale::setDefault(locale);
-
-		m_translator.load(savePath("languages/" + m_currLang + ".qm", true));
-		m_qtTranslator.load(savePath("languages/qt/" + m_currLang + ".qm", true));
-
-		if (!quiet)
-		{
-			log(QStringLiteral("Translating texts in %1...").arg(m_currLang), Logger::Info);
-			ui->retranslateUi(this);
-			DONE();
-		}
-	}
-}
-
-// Update interface language
 void MainWindow::changeEvent(QEvent *event)
 {
-	// Translation
-	if (event->type() == QEvent::LocaleChange)
+	// Automatically re-translate UI on language change
+	if (event->type() == QEvent::LanguageChange)
 	{
-		QString locale = QLocale::system().name();
-		locale.truncate(locale.lastIndexOf('_'));
-		loadLanguage(locale);
+		ui->retranslateUi(this);
 	}
 
 	// Minimize to tray
@@ -1058,7 +1034,7 @@ void MainWindow::options()
 	log(QStringLiteral("Opening options window..."), Logger::Debug);
 
 	auto *options = new OptionsWindow(m_profile, this);
-	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
+	connect(options, &OptionsWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
 	connect(options, &OptionsWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
 	connect(options, &QDialog::accepted, this, &MainWindow::optionsClosed);
 	options->show();
