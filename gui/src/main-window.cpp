@@ -187,7 +187,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
-	connect(ui->actionQuit, &QAction::triggered, qApp, &QApplication::quit);
+	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);
 	connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
 
 	// Action on first load
