@@ -529,6 +529,7 @@ void DownloadsTab::getAll(bool all)
 	m_getAllSkippedImages.clear();
 	m_batchPending.clear();
 	m_lastDownloader = nullptr;
+	m_waitingDownloaders.clear();
 
 	if (!all)
 	{
