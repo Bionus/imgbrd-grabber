@@ -2,10 +2,11 @@
 #define BATCH_DOWNLOAD_IMAGE_H
 
 #include <QSharedPointer>
-#include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
 
 
+class DownloadQuery;
+class DownloadQueryGroup;
+class DownloadQueryImage;
 class Image;
 
 class BatchDownloadImage
