@@ -1,12 +1,22 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QPair>
+#include <QSharedPointer>
+#include <QString>
+#include <QStringList>
 #include <QVariant>
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
+#include "tags/tag.h"
 
 
+class Profile;
 class Page;
+class Site;
 
 class Downloader : public QObject
 {

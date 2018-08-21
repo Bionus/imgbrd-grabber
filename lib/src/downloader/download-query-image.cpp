@@ -1,5 +1,6 @@
 #include "downloader/download-query-image.h"
 #include <QJsonArray>
+#include <QSettings>
 #include "models/image.h"
 #include "models/site.h"
 #include "tags/tag.h"

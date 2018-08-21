@@ -1,9 +1,13 @@
 #ifndef PROGRAM_UPDATER_H
 #define PROGRAM_UPDATER_H
 
-#include <QNetworkReply>
+#include <QByteArray>
+#include <QString>
+#include <QUrl>
 #include "updater/updater.h"
 
+
+class QNetworkReply;
 
 class ProgramUpdater : public Updater
 {

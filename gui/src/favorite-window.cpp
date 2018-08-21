@@ -1,6 +1,7 @@
 #include "favorite-window.h"
 #include <QFile>
 #include <QFileDialog>
+#include <QSettings>
 #include <QtMath>
 #include <ui_favorite-window.h>
 #include "functions.h"

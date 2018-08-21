@@ -3,12 +3,14 @@
 
 #include <QJsonObject>
 #include <QMap>
-#include <QSettings>
+#include <QMetaType>
 #include <QString>
+#include <QStringList>
 #include "downloader/download-query.h"
 
 
 class Image;
+class QSettings;
 class Site;
 
 class DownloadQueryImage : public DownloadQuery

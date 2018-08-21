@@ -4,7 +4,6 @@
 #define LOG(a, b) Logger::getInstance().log((a), (b))
 #define DONE() Logger::getInstance().logUpdate(" Done")
 
-#include <QDateTime>
 #include <QFile>
 #include <QObject>
 #include <QString>

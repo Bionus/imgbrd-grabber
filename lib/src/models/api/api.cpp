@@ -1,6 +1,6 @@
 #include "models/api/api.h"
-#include <QRegularExpression>
 #include "logger.h"
+#include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "models/source.h"

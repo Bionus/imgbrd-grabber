@@ -2,13 +2,14 @@
 #include <QJSEngine>
 #include <QJSValueIterator>
 #include <QMap>
-#include <QMutexLocker>
+// #include <QMutexLocker>
 #include "functions.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/site.h"
+#include "tags/tag.h"
 #include "tags/tag-database.h"
 
 

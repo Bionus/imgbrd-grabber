@@ -3,8 +3,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSet>
+#include <QSettings>
 #include "commands/commands.h"
 #include "functions.h"
+#include "models/favorite.h"
 #include "models/site.h"
 #include "models/source.h"
 

@@ -2,7 +2,7 @@
 #define ADDGROUPWINDOW_H
 
 #include <QDialog>
-#include <QSettings>
+#include <QMap>
 
 
 namespace Ui
@@ -13,6 +13,7 @@ namespace Ui
 
 class Site;
 class Profile;
+class QSettings;
 class TextEdit;
 class DownloadQueryGroup;
 

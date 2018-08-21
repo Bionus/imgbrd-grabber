@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include "custom-network-access-manager.h"
 #include "logger.h"
 
 

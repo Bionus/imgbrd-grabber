@@ -1,7 +1,6 @@
 #include "models/page-api.h"
 #include <QNetworkReply>
-#include <QRegularExpression>
-#include <QtConcurrentRun>
+// #include <QtConcurrentRun>
 #include <QTimer>
 #include <QtMath>
 #include "functions.h"
@@ -10,7 +9,6 @@
 #include "models/api/api.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
-#include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag.h"
 

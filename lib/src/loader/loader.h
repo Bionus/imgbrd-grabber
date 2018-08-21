@@ -4,8 +4,8 @@
 #include <QVariant>
 
 
-class Site;
 class LoaderQuery;
+class Site;
 
 class Loader
 {

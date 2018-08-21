@@ -1,11 +1,12 @@
 #ifndef SOURCE_TEST_H
 #define SOURCE_TEST_H
 
-#include <QSettings>
-#include "models/site.h"
-#include "models/source.h"
 #include "test-suite.h"
 
+
+class Profile;
+class QSettings;
+class Source;
 
 class SourceTest : public TestSuite
 {

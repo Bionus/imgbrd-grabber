@@ -1,6 +1,8 @@
 #include <QFileInfo>
+#include <QtTest>
 #include "functions.h"
 #include "functions-test.h"
+#include "models/profile.h"
 
 
 QDateTime fileCreationDate(const QString &path)

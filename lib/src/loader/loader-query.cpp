@@ -3,7 +3,6 @@
 #include <QtMath>
 #include "loader/loader-data.h"
 #include "models/filtering/blacklist.h"
-#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"
@@ -41,7 +40,7 @@ LoaderData LoaderQuery::next()
 	const QStringList postFiltering = m_options["postFiltering"].toStringList();
 	const bool getBlacklisted = m_options["getBlacklisted"].toBool();
 	// const QStringList blacklist = m_options["blacklist"].toStringList();
-	const Blacklist blacklist;
+	const Blacklist blacklist {};
 
 	// Load results
 	QEventLoop loop;

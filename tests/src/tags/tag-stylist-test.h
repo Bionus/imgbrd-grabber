@@ -1,9 +1,13 @@
 #ifndef TAG_STYLIST_TEST_H
 #define TAG_STYLIST_TEST_H
 
-#include <QSettings>
+#include <QString>
+#include <QStringList>
 #include "test-suite.h"
 
+
+class Profile;
+class QSettings;
 
 class TagStylistTest : public TestSuite
 {

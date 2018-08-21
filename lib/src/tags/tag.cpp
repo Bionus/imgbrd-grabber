@@ -1,6 +1,4 @@
 #include "tag.h"
-#include <QRegularExpression>
-#include <QSet>
 #include "functions.h"
 #include "tag-type.h"
 

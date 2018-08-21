@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMap>
+#include <QSharedPointer>
 
 
 namespace Ui

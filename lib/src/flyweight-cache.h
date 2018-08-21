@@ -1,6 +1,7 @@
 #ifndef FLYWEIGHT_CACHE_H
 #define FLYWEIGHT_CACHE_H
 
+#include <QMap>
 #include <QSharedPointer>
 
 

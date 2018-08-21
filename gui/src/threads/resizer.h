@@ -2,6 +2,7 @@
 #define RESIZER_H
 
 #include <QImage>
+#include <QObject>
 #include <QSize>
 #include <QString>
 

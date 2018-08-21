@@ -1,13 +1,18 @@
 #ifndef INTEGRATION_TEST_SUITE_H
 #define INTEGRATION_TEST_SUITE_H
 
-#include <QSettings>
-#include "downloader/downloader.h"
-#include "models/image.h"
-#include "models/site.h"
-#include "models/source.h"
+#include <QList>
+#include <QString>
+#include <QStringList>
 #include "test-suite.h"
 
+
+class Downloader;
+class Image;
+class Profile;
+class Site;
+class Source;
+class Tag;
 
 class IntegrationTestSuite : public TestSuite
 {

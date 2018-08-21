@@ -1,8 +1,8 @@
 #ifndef FILE_DOWNLOADER_TEST_H
 #define FILE_DOWNLOADER_TEST_H
 
-#include "downloader/file-downloader.h"
 #include <QNetworkAccessManager>
+#include <QString>
 #include "test-suite.h"
 
 

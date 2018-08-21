@@ -1,4 +1,5 @@
 #include "downloader/image-downloader.h"
+#include <QSettings>
 #include <QUuid>
 #include "extension-rotator.h"
 #include "file-downloader.h"

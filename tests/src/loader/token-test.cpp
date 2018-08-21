@@ -1,5 +1,6 @@
 #include "token-test.h"
 #include <QtTest>
+#include "loader/token.h"
 
 
 void TokenTest::testLazyNotCalled()

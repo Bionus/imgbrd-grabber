@@ -3,8 +3,9 @@
 
 #include <QMap>
 #include <QString>
-#include "loader/token.h"
 
+
+class Token;
 
 class Filter
 {

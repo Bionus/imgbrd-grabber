@@ -1,8 +1,8 @@
 #ifndef LANGUAGE_LOADER_H
 #define LANGUAGE_LOADER_H
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 #include <QString>
 #include <QTranslator>
 

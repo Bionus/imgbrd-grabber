@@ -4,6 +4,7 @@
 #include <QSettings>
 #ifdef Q_OS_WIN
 	#include <QWinTaskbarButton>
+	#include <QWinTaskbarProgress>
 #endif
 #include <ui_batch-window.h>
 #include "functions.h"

@@ -2,6 +2,9 @@
 #include <QNetworkCookie>
 #include <QtTest>
 #include "custom-network-access-manager.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 #include "tags/tag.h"
 
 

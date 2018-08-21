@@ -1,7 +1,9 @@
+#include "source-guesser-test.h"
+#include <QtTest>
 #include "custom-network-access-manager.h"
+#include "models/profile.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
-#include "source-guesser-test.h"
 
 
 void SourceGuesserTest::initTestCase()

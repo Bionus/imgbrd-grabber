@@ -1,14 +1,20 @@
 #ifndef PAGE_API_H
 #define PAGE_API_H
 
+#include <QList>
+#include <QObject>
+#include <QSharedPointer>
+#include <QUrl>
 #include "models/filtering/post-filter.h"
-#include "models/image.h"
 #include "tags/tag.h"
 
 
-class Page;
 class Api;
+class Image;
+class Page;
 class Profile;
+class QNetworkReply;
+class QTimer;
 class Site;
 
 class PageApi : public QObject

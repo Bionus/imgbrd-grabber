@@ -1,11 +1,13 @@
 #ifndef IMAGE_CONTEXT_MENU_H
 #define IMAGE_CONTEXT_MENU_H
 
+#include <QList>
 #include <QMenu>
-#include "models/image.h"
+#include <QSharedPointer>
 #include "reverse-search/reverse-search-engine.h"
 
 
+class Image;
 class QSettings;
 class MainWindow;
 

@@ -1,8 +1,19 @@
 #ifndef API_H
 #define API_H
 
-#include "models/image.h"
+#include <QDateTime>
+#include <QList>
+#include <QMap>
+#include <QSharedPointer>
+#include <QUrl>
 #include "tags/tag.h"
+
+
+class Image;
+class Page;
+class Pool;
+class Site;
+
 
 struct PageUrl
 {
@@ -43,7 +54,6 @@ struct ParsedCheck
 	bool ok = false;
 };
 
-class Site;
 
 class Api : public QObject
 {

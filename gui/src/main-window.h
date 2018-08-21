@@ -6,7 +6,6 @@
 #include <QLinkedList>
 #include <QMainWindow>
 #include <QNetworkAccessManager>
-#include <QSettings>
 #include <QSystemTrayIcon>
 #include "language-loader.h"
 
@@ -23,6 +22,7 @@ class Profile;
 class DownloadsTab;
 class Favorite;
 class MonitoringCenter;
+class QSettings;
 class Site;
 class Tag;
 

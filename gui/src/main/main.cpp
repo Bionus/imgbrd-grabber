@@ -25,6 +25,7 @@
 
 
 #include <QApplication>
+#include <QSettings>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "main-window.h"

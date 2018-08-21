@@ -1,14 +1,12 @@
 #include "downloader/downloader.h"
-#include <QDir>
-#include <QFile>
 #include <qmath.h>
 #include <iostream>
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
-#include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/site.h"
+#include "tags/tag.h"
 
 
 Downloader::~Downloader()

@@ -1,6 +1,6 @@
 #include "extension-rotator-test.h"
 #include <QtTest>
-#include <algorithm>
+#include "downloader/extension-rotator.h"
 
 
 void ExtensionRotatorTest::testBasic()
@@ -71,9 +71,9 @@ void ExtensionRotatorTest::testCopyConstructor()
 	QCOMPARE(rotator.next(), QString("jpg"));
 	QCOMPARE(rotator.next(), QString("png"));
 
-	ExtensionRotator copy(rotator);
-	QCOMPARE(copy.next(), QString("gif"));
-	QCOMPARE(copy.next(), QString());
+	ExtensionRotator cpy(rotator);
+	QCOMPARE(cpy.next(), QString("gif"));
+	QCOMPARE(cpy.next(), QString());
 }
 
 

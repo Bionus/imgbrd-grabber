@@ -3,17 +3,20 @@
 
 #include <QDateTime>
 #include <QMap>
+#include <QMetaType>
 #include <QNetworkReply>
+#include <QObject>
 #include <QPixmap>
-#include <QSettings>
+#include <QString>
 #include "loader/downloadable.h"
-#include "models/pool.h"
 #include "tags/tag.h"
 
 
 class ExtensionRotator;
 class Page;
+class Pool;
 class Profile;
+class QSettings;
 class Site;
 
 class Image : public QObject, public Downloadable
@@ -90,11 +93,11 @@ class Image : public QObject, public Downloadable
 		void postSave(const QString &path, SaveResult result, bool addMd5, bool startCommands, int count) override;
 
 		// Templates
-		template <typename T>
+		/*template <typename T>
 		T token(const QString &name) const
 		{
 			return tokens(m_profile).value(name).value<T>();
-		}
+		}*/
 
 	protected:
 		void setRating(const QString &rating);

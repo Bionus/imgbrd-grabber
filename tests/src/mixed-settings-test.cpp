@@ -1,6 +1,7 @@
-#include "mixed-settings.h"
-#include <QSettings>
 #include "mixed-settings-test.h"
+#include <QSettings>
+#include <QtTest>
+#include "mixed-settings.h"
 
 
 void MixedSettingsTest::init()

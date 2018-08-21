@@ -1,8 +1,8 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QNetworkReply>
-#include <QSettings>
+#include <QDateTime>
+#include <QNetworkRequest>
 #include <QString>
 #include <QUrl>
 #include <QVariant>
@@ -15,6 +15,10 @@ class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
 class Page;
+class QNetworkCookie;
+class QNetworkCookieJar;
+class QNetworkReply;
+class QSettings;
 class Source;
 class Tag;
 class TagDatabase;

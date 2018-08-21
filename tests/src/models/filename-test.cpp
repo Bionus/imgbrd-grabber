@@ -1,5 +1,11 @@
 #include "filename-test.h"
 #include <QtTest>
+#include "loader/token.h"
+#include "models/filename.h"
+#include "models/image.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 
 
 void FilenameTest::init()

@@ -1,6 +1,7 @@
 #include "tag-test.h"
 #include <QtTest>
 #include <algorithm>
+#include "tags/tag.h"
 
 
 void TagTest::init()

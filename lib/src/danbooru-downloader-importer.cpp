@@ -1,5 +1,6 @@
 #include "danbooru-downloader-importer.h"
 #include <QFileInfo>
+#include <QMap>
 #include <QRegularExpression>
 #include <QSettings>
 

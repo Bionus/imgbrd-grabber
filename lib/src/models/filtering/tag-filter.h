@@ -1,8 +1,10 @@
 #ifndef TAG_FILTER_H
 #define TAG_FILTER_H
 
+#include <QMap>
 #include <QRegExp>
 #include <QScopedPointer>
+#include <QString>
 #include "filter.h"
 
 

@@ -2,7 +2,9 @@
 #define POST_FILTER_H
 
 #include <QList>
+#include <QMap>
 #include <QSharedPointer>
+#include <QString>
 #include <QStringList>
 
 

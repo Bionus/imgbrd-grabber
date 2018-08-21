@@ -2,15 +2,19 @@
 #define DOWNLOADABLE_H
 
 #include <QColor>
+#include <QList>
+#include <QMap>
+#include <QPair>
 #include <QString>
+#include <QStringList>
 #include <QUrl>
-#include "loader/token.h"
 
 
 typedef QPair<QString, QString> QStrP;
 
 class Filename;
 class Profile;
+class Token;
 
 class Downloadable
 {

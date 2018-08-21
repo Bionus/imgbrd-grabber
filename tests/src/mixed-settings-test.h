@@ -4,6 +4,8 @@
 #include "test-suite.h"
 
 
+class QSettings;
+
 class MixedSettingsTest : public TestSuite
 {
 	Q_OBJECT

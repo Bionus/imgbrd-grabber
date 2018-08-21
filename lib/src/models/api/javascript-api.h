@@ -2,13 +2,13 @@
 #define JAVASCRIPT_API_H
 
 #include <QJSValue>
-#include <QMutex>
 #include "models/api/api.h"
-#include "tags/tag.h"
 
 
 class Page;
+class QMutex;
 class Site;
+class Tag;
 
 class JavascriptApi : public Api
 {

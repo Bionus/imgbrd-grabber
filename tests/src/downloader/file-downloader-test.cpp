@@ -1,5 +1,6 @@
 #include "file-downloader-test.h"
 #include <QtTest>
+#include "downloader/file-downloader.h"
 
 
 QString fileMd5(const QString &path)

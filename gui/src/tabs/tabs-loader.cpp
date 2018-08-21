@@ -3,10 +3,11 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSettings>
+#include "gallery-tab.h"
 #include "logger.h"
 #include "main-window.h"
 #include "models/profile.h"
-#include "gallery-tab.h"
 #include "pool-tab.h"
 #include "tag-tab.h"
 #include "ui_pool-tab.h"

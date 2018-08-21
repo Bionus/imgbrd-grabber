@@ -1,6 +1,7 @@
 #ifndef SQL_WORKER_H
 #define SQL_WORKER_H
 
+#include <QString>
 #include <QThread>
 #include <QVariant>
 

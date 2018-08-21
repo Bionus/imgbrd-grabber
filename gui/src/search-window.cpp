@@ -1,7 +1,9 @@
 #include "search-window.h"
+#include <QCalendarWidget>
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
+#include <QSettings>
 #include <ui_search-window.h>
 #include "functions.h"
 #include "models/profile.h"

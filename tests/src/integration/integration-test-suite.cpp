@@ -2,7 +2,11 @@
 #include <QStringList>
 #include <QtTest>
 #include "custom-network-access-manager.h"
-#include "functions.h"
+#include "downloader/downloader.h"
+#include "logger.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 #include "tags/tag-api.h"
 
 

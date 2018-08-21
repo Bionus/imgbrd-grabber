@@ -1,12 +1,14 @@
 #ifndef OAUTH2_LOGIN_H
 #define OAUTH2_LOGIN_H
 
-#include <QNetworkAccessManager>
-#include <QSettings>
+#include <QString>
 #include "login/login.h"
 
 
 class MixedSettings;
+class QNetworkAccessManager;
+class QNetworkReply;
+class QNetworkRequest;
 class Site;
 
 class OAuth2Login : public Login

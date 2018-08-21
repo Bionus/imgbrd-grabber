@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QStringBuilder>
 #include <QTimeZone>
+#include "loader/token.h"
 
 
 MetaFilter::MetaFilter(QString type, QString val, bool invert)

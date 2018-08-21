@@ -5,8 +5,8 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
+#include <QSettings>
 #include <QStringList>
-#include <QTimer>
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
@@ -20,6 +20,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
 

@@ -1,5 +1,7 @@
 #include "tag-stylist-test.h"
 #include <QtTest>
+#include "models/favorite.h"
+#include "models/profile.h"
 #include "tags/tag.h"
 #include "tags/tag-stylist.h"
 

@@ -1,10 +1,11 @@
 #include "models/filename.h"
 #include <QCollator>
-#include <QIcon>
 #include <QJSEngine>
 #include <QRegularExpression>
+#include <QSettings>
 #include <algorithm>
 #include "functions.h"
+#include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filtering/post-filter.h"
 #include "models/image.h"

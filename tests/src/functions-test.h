@@ -1,6 +1,7 @@
 #ifndef FUNCTIONS_TEST_H
 #define FUNCTIONS_TEST_H
 
+#include <QString>
 #include "test-suite.h"
 
 

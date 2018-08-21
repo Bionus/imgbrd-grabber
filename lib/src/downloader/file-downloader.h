@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QNetworkReply>
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 
 class FileDownloader : public QObject

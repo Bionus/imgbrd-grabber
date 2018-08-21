@@ -2,7 +2,8 @@
 #define ABOUT_WINDOW_H
 
 #include <QDialog>
-#include <QNetworkReply>
+#include <QString>
+#include <QWidget>
 #include "updater/program-updater.h"
 
 

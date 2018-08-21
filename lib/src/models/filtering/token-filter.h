@@ -1,8 +1,12 @@
 #ifndef TOKEN_FILTER_H
 #define TOKEN_FILTER_H
 
+#include <QMap>
+#include <QString>
 #include "filter.h"
 
+
+class Token;
 
 class TokenFilter : public Filter
 {

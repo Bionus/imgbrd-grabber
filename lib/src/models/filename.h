@@ -1,8 +1,8 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
-#include <QJSEngine>
-#include <QSettings>
+#include <QList>
+#include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
@@ -10,6 +10,8 @@
 
 class Site;
 class Image;
+class QJSEngine;
+class QSettings;
 class Profile;
 class Token;
 

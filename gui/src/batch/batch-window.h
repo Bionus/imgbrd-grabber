@@ -2,14 +2,18 @@
 #define BATCHWINDOW_H
 
 #include <QDialog>
-#include <QProgressBar>
-#include <QSettings>
+#include <QList>
+#include <QMap>
+#include <QSize>
 #include "loader/downloadable.h"
-#ifdef Q_OS_WIN
-	#include <QWinTaskbarButton>
-	#include <QWinTaskbarProgress>
-#endif
 
+
+class QProgressBar;
+class QSettings;
+#ifdef Q_OS_WIN
+	class QWinTaskbarButton;
+	class QWinTaskbarProgress;
+#endif
 
 
 namespace Ui

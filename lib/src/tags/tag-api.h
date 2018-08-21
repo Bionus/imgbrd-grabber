@@ -1,13 +1,15 @@
 #ifndef TAG_API_H
 #define TAG_API_H
 
-#include <QNetworkReply>
-#include "tags/tag.h"
+#include <QObject>
+#include <QUrl>
 
 
-class Profile;
 class Api;
+class Profile;
+class QNetworkReply;
 class Site;
+class Tag;
 
 class TagApi : public QObject
 {

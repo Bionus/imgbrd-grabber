@@ -2,6 +2,8 @@
 #include <QDesktopServices>
 #include <QSignalMapper>
 #include "main-window.h"
+#include "models/image.h"
+#include "reverse-search/reverse-search-engine.h"
 #include "reverse-search/reverse-search-loader.h"
 
 

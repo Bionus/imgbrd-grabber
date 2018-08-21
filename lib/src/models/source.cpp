@@ -1,12 +1,12 @@
 #include "models/source.h"
 #include <QJSValue>
 #include <QJSValueIterator>
+#include <QMutex>
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
 #include "models/api/javascript-console-helper.h"
 #include "models/api/javascript-grabber-helper.h"
-#include "models/profile.h"
 #include "models/site.h"
 
 

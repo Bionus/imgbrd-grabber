@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QDirIterator>
+#include <QLocale>
 #include <QFile>
 #include <QFileInfo>
 #include <QFont>
@@ -9,7 +10,6 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
-#include <QTimeZone>
 #include <QtMath>
 #include <QUrl>
 #include <QVector>

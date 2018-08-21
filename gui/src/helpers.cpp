@@ -1,18 +1,20 @@
 #include "helpers.h"
-#include <QDir>
+#include <QLayout>
 #include <QMessageBox>
-#include <QProcess>
 #if defined(Q_OS_WIN)
-	#include <Windows.h>
-	#include <ShlObj.h>
 	#include <comdef.h>
+	#include <QDir>
+	#include <ShlObj.h>
+	#include <Windows.h>
+	#include "logger.h"
 #elif defined(Q_OS_MAC)
+	#include <QProcess>
 	#include <QStringList>
 #else
 	#include <QDesktopServices>
 	#include <QUrl>
 #endif
-#include "logger.h"
+#include <QWidget>
 
 
 /**

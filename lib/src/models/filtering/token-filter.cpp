@@ -1,6 +1,7 @@
 #include "token-filter.h"
 #include <QStringBuilder>
 #include "functions.h"
+#include "loader/token.h"
 
 
 TokenFilter::TokenFilter(QString token, bool invert)

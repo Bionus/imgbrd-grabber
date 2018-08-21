@@ -1,10 +1,17 @@
 #ifndef IMAGE_DOWNLOADER_TEST_H
 #define IMAGE_DOWNLOADER_TEST_H
 
-#include "downloader/image-downloader.h"
-#include "models/source.h"
+#include <QMap>
+#include <QSharedPointer>
+#include <QString>
+#include "models/image.h"
 #include "test-suite.h"
 
+
+class ImageDownloader;
+class Profile;
+class Site;
+class Source;
 
 class ImageDownloaderTest : public TestSuite
 {

@@ -1,7 +1,6 @@
 #include "tags/tag-api.h"
-#include <QRegularExpression>
+#include <QNetworkReply>
 #include <QTimer>
-#include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"

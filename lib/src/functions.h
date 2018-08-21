@@ -5,10 +5,12 @@
 #include <QDir>
 #include <QDomElement>
 #include <QMap>
-#include <QSettings>
 #include <QString>
 #include <QStringList>
 #include "logger.h"
+
+
+class QSettings;
 
 
 // qAsConst

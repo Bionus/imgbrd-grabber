@@ -1,9 +1,10 @@
 #ifndef REVERSE_SEARCH_LOADER_H
 #define REVERSE_SEARCH_LOADER_H
 
-#include <QSettings>
+#include <QList>
 
 
+class QSettings;
 class ReverseSearchEngine;
 
 class ReverseSearchLoader

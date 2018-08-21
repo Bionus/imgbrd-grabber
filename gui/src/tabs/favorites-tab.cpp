@@ -1,5 +1,6 @@
 #include "tabs/favorites-tab.h"
 #include <QMessageBox>
+#include <QSettings>
 #include <QtMath>
 #include <ui_favorites-tab.h>
 #include <algorithm>

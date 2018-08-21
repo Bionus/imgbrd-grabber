@@ -8,17 +8,18 @@
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QStorageInfo>
 #endif
-#include <qmath.h>
+#include <QtMath>
 #include <ui_downloads-tab.h>
-#include "batch-download-image.h"
+#include <algorithm>
 #include "batch/add-group-window.h"
 #include "batch/add-unique-window.h"
 #include "batch/batch-window.h"
+#include "batch-download-image.h"
 #include "commands/commands.h"
-#include "downloader/downloader.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
+#include "downloader/downloader.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"

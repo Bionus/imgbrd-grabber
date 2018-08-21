@@ -1,5 +1,4 @@
 #include "login/login.h"
-#include <QNetworkRequest>
 
 
 QString Login::complementUrl(QString url, const QString &loginPart) const

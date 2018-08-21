@@ -1,4 +1,7 @@
 #include "profile-test.h"
+#include <QFile>
+#include <QtTest>
+#include "models/profile.h"
 
 
 void ProfileTest::init()

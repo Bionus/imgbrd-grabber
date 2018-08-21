@@ -1,7 +1,11 @@
 #include "image-test.h"
 #include <QtTest>
-#include "functions.h"
-#include "test-suite.h"
+#include "loader/token.h"
+#include "models/image.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "tags/tag.h"
 
 
 void ImageTest::init()

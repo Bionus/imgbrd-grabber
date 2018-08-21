@@ -1,8 +1,8 @@
 #ifndef SEARCH_WINDOW_H
 #define SEARCH_WINDOW_H
 
-#include <QCalendarWidget>
 #include <QDialog>
+#include <QString>
 
 
 namespace Ui
@@ -12,6 +12,7 @@ namespace Ui
 
 
 class Profile;
+class QCalendarWidget;
 class TextEdit;
 
 class SearchWindow : public QDialog

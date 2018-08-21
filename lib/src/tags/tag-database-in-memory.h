@@ -1,9 +1,15 @@
 #ifndef TAG_DATABASE_IN_MEMORY_H
 #define TAG_DATABASE_IN_MEMORY_H
 
-#include "tags/tag-database.h"
 #include <QHash>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include "tags/tag-database.h"
 
+
+class Tag;
+class TagType;
 
 class TagDatabaseInMemory : public TagDatabase
 {

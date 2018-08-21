@@ -1,7 +1,7 @@
 #ifndef JAVASCRIPT_GRABBER_HELPER_H
 #define JAVASCRIPT_GRABBER_HELPER_H
 
-#include <QDomElement>
+#include <QDomNode>
 #include <QJSEngine>
 #include <QJSValue>
 #include <QObject>

@@ -1,8 +1,8 @@
 #ifndef TAG_STYLIST_H
 #define TAG_STYLIST_H
 
-#include <QFont>
 #include <QList>
+#include <QMap>
 #include <QString>
 
 

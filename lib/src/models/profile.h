@@ -1,13 +1,17 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
-#include <QSettings>
+#include <QList>
+#include <QMap>
+#include <QObject>
 #include <QString>
+#include <QStringList>
 #include "models/favorite.h"
 #include "models/filtering/blacklist.h"
 
 
 class Commands;
+class QSettings;
 class Site;
 class Source;
 

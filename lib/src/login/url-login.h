@@ -1,13 +1,13 @@
 #ifndef URL_LOGIN_H
 #define URL_LOGIN_H
 
-#include <QNetworkAccessManager>
-#include <QSettings>
+#include <QString>
 #include "login/login.h"
 
 
 class MixedSettings;
 class Page;
+class QNetworkAccessManager;
 class Site;
 
 class UrlLogin : public Login

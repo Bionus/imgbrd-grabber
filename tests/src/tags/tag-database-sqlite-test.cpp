@@ -1,5 +1,4 @@
 #include "tag-database-sqlite-test.h"
-#include <QtTest>
 #include "tags/tag-database-sqlite.h"
 
 

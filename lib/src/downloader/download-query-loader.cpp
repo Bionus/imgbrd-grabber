@@ -5,7 +5,6 @@
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "logger.h"
-#include "models/site.h"
 
 
 bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)

@@ -3,6 +3,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QSettings>
 #include <QTimer>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
@@ -11,11 +12,12 @@
 #include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filename.h"
-#include "models/filtering/post-filter.h"
 #include "models/image.h"
 #include "models/page.h"
+#include "models/pool.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
 #include "tags/tag-type.h"

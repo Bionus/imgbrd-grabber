@@ -1,7 +1,6 @@
 #ifndef FAVORITE_TEST_H
 #define FAVORITE_TEST_H
 
-#include "models/favorite.h"
 #include "test-suite.h"
 
 

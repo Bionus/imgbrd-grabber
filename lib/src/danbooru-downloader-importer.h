@@ -1,9 +1,10 @@
 #ifndef DANBOORU_DOWNLOADER_IMPORTER_H
 #define DANBOORU_DOWNLOADER_IMPORTER_H
 
-#include <QSettings>
 #include <QString>
 
+
+class QSettings;
 
 class DanbooruDownloaderImporter
 {

@@ -1,11 +1,16 @@
 #ifndef IMAGE_TEST_H
 #define IMAGE_TEST_H
 
-#include "models/image.h"
-#include "models/site.h"
-#include "models/source.h"
+#include <QMap>
+#include <QString>
 #include "test-suite.h"
 
+
+class Image;
+class Profile;
+class QSettings;
+class Site;
+class Source;
 
 class ImageTest : public TestSuite
 {

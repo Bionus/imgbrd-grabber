@@ -2,6 +2,7 @@
 #define FAVORITE_WINDOW_H
 
 #include <QDialog>
+#include <QWidget>
 #include "models/favorite.h"
 
 

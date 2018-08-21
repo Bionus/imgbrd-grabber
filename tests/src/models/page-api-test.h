@@ -1,10 +1,11 @@
 #ifndef PAGE_API_TEST_H
 #define PAGE_API_TEST_H
 
-#include "models/page.h"
-#include "models/site.h"
 #include "test-suite.h"
 
+
+class Profile;
+class Site;
 
 class PageApiTest : public TestSuite
 {

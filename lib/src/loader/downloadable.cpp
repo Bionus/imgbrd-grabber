@@ -1,5 +1,7 @@
 #include "loader/downloadable.h"
+#include <QSettings>
 #include "functions.h"
+#include "loader/token.h"
 #include "models/filename.h"
 #include "models/profile.h"
 

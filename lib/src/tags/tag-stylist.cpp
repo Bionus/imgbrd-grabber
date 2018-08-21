@@ -1,4 +1,6 @@
 #include "tags/tag-stylist.h"
+#include <QFont>
+#include <QSettings>
 #include <algorithm>
 #include "functions.h"
 #include "models/favorite.h"

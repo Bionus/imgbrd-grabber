@@ -3,15 +3,17 @@
 
 #include <QJSValue>
 #include <QList>
-#include <QMutex>
+#include <QObject>
 #include <QString>
 #include "tags/tag-name-format.h"
 #include "updater/source-updater.h"
 
 
-class Site;
 class Api;
 class Profile;
+class QJSEngine;
+class QMutex;
+class Site;
 
 class Source : public QObject
 {

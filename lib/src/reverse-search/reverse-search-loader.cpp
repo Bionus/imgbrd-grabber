@@ -1,4 +1,5 @@
 #include "reverse-search/reverse-search-loader.h"
+#include <QSettings>
 #include "functions.h"
 #include "reverse-search/reverse-search-engine.h"
 

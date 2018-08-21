@@ -5,7 +5,6 @@
 #include <QUrlQuery>
 #include "custom-network-access-manager.h"
 #include "mixed-settings.h"
-#include "models/site.h"
 
 
 HttpLogin::HttpLogin(QString type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)

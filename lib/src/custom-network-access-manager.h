@@ -6,6 +6,10 @@
 #include <QString>
 
 
+class QNetworkReply;
+class QNetworkRequest;
+class QSslError;
+
 class CustomNetworkAccessManager : public QNetworkAccessManager
 {
 	Q_OBJECT

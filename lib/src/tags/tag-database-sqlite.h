@@ -3,9 +3,11 @@
 
 #include <QHash>
 #include <QSqlDatabase>
+#include <QString>
 #include "tags/tag-database.h"
-#include "tags/tag-type.h"
 
+
+class TagType;
 
 class TagDatabaseSqlite : public TagDatabase
 {
