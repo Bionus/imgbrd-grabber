@@ -17,6 +17,8 @@
 #include <ui_main-window.h>
 #include "about-window.h"
 #include "danbooru-downloader-importer.h"
+#include "downloader/download-query-group.h"
+#include "downloader/download-query-image.h"
 #include "functions.h"
 #include "helpers.h"
 #include "models/api/api.h"
