@@ -5,7 +5,9 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSound>
-#include <QStorageInfo>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+	#include <QStorageInfo>
+#endif
 #include <qmath.h>
 #include <ui_downloads-tab.h>
 #include "batch-download-image.h"
