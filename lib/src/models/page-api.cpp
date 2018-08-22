@@ -28,6 +28,10 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStri
 	m_pool = pool;
 	m_format = m_api->getName();
 
+	m_replyTimer = new QTimer(this);
+	m_replyTimer->setSingleShot(true);
+	connect(m_replyTimer, &QTimer::timeout, this, &PageApi::loadNow);
+
 	updateUrls();
 }
 
@@ -80,6 +84,9 @@ void PageApi::setReply(QNetworkReply *reply)
 		m_reply->deleteLater();
 	}
 
+	if (m_replyTimer->isActive())
+		m_replyTimer->stop();
+
 	m_reply = reply;
 }
 
@@ -114,7 +121,13 @@ void PageApi::load(bool rateLimit, bool force)
 	// Load the request with a possible delay
 	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
 	if (ms > 0)
-	{ QTimer::singleShot(ms, this, SLOT(loadNow())); }
+	{
+		if (m_replyTimer->isActive())
+			m_replyTimer->stop();
+
+		m_replyTimer->setInterval(ms);
+		m_replyTimer->start();
+	}
 	else
 	{ loadNow(); }
 }
@@ -126,6 +139,8 @@ void PageApi::loadNow()
 }
 void PageApi::abort()
 {
+	if (m_replyTimer->isActive())
+		m_replyTimer->stop();
 	if (m_reply != nullptr && m_reply->isRunning())
 		m_reply->abort();
 }

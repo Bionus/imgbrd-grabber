@@ -84,6 +84,7 @@ class PageApi : public QObject
 		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
+		QTimer			*m_replyTimer;
 		int				m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
 		bool			m_imagesCountSafe, m_pagesCountSafe;
 		bool			m_loading = false;
