@@ -430,6 +430,6 @@ int BatchWindow::totalValue() const
 int BatchWindow::totalMax() const
 { return ui->progressTotal->maximum(); }
 
-int BatchWindow::endAction()	{ return ui->comboEnd->currentIndex();		}
-bool BatchWindow::endRemove()	{ return ui->checkRemove->isChecked();		}
-bool BatchWindow::isPaused()	{ return m_paused;							}
+int BatchWindow::endAction() { return ui->comboEnd->currentIndex(); }
+bool BatchWindow::endRemove() { return ui->checkRemove->isChecked(); }
+bool BatchWindow::isPaused() { return m_paused; }

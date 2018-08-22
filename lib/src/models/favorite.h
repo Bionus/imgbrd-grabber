@@ -19,9 +19,9 @@ class Favorite
 		void setNote(int note);
 		void setLastViewed(const QDateTime &lastViewed);
 		void setImagePath(const QString &imagePath);
-		int			getNote()		const;
-		QDateTime	getLastViewed()	const;
-		QString		getImagePath()	const;
+		int getNote() const;
+		QDateTime getLastViewed() const;
+		QString getImagePath() const;
 		QList<Monitor> &getMonitors();
 
 		/**
@@ -44,11 +44,11 @@ class Favorite
 		static bool sortByLastViewed(const Favorite &s1, const Favorite &s2);
 
 	private:
-		QString		m_name;
-		int			m_note;
-		QDateTime	m_lastViewed;
+		QString m_name;
+		int m_note;
+		QDateTime m_lastViewed;
 		QList<Monitor> m_monitors;
-		QString		m_imagePath;
+		QString m_imagePath;
 };
 
 bool operator==(const Favorite &lhs, const Favorite &rhs);

@@ -91,17 +91,17 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	return type;
 }
 
-void Tag::setId(int id)						{ m_id = id;		}
-void Tag::setText(const QString &text)		{ m_text = text;	}
-void Tag::setType(const TagType &type)		{ m_type = type;	}
-void Tag::setCount(int count)				{ m_count = count;	}
-void Tag::setRelated(const QStringList &related)	{ m_related = related;	}
+void Tag::setId(int id) { m_id = id; }
+void Tag::setText(const QString &text) { m_text = text; }
+void Tag::setType(const TagType &type) { m_type = type; }
+void Tag::setCount(int count) { m_count = count; }
+void Tag::setRelated(const QStringList &related) { m_related = related; }
 
-int Tag::id() const						{ return m_id;		}
-const QString &Tag::text() const		{ return m_text;	}
-const TagType &Tag::type() const		{ return m_type;	}
-int Tag::count() const					{ return m_count;	}
-const QStringList &Tag::related() const	{ return m_related;	}
+int Tag::id() const { return m_id; }
+const QString &Tag::text() const { return m_text; }
+const TagType &Tag::type() const { return m_type; }
+int Tag::count() const { return m_count; }
+const QStringList &Tag::related() const { return m_related; }
 
 bool sortTagsByType(const Tag &s1, const Tag &s2)
 {

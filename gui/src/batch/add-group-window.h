@@ -30,11 +30,11 @@ class AddGroupWindow : public QDialog
 		void sendData(const DownloadQueryGroup &);
 
 	private:
-		Ui::AddGroupWindow		*ui;
-		TextEdit				*m_lineTags;
-		TextEdit				*m_linePostFiltering;
-		QMap<QString, Site*>	m_sites;
-		QSettings				*m_settings;
+		Ui::AddGroupWindow *ui;
+		TextEdit *m_lineTags;
+		TextEdit *m_linePostFiltering;
+		QMap<QString, Site*> m_sites;
+		QSettings *m_settings;
 };
 
 #endif // ADDGROUPWINDOW_H

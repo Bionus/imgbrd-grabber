@@ -137,21 +137,21 @@ class SearchTab : public QWidget
 		void batchAddUnique(const DownloadQueryImage &);
 
 	protected:
-		Profile				*m_profile;
-		int					m_lastPage;
-		qulonglong			m_lastPageMaxId, m_lastPageMinId;
+		Profile *m_profile;
+		int m_lastPage;
+		qulonglong m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;
-		QMap<Image*, QBouton*>	m_boutons;
-		QList<QUrl>			m_selectedImages;
-		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
-		QList<Site*>		m_selectedSources;
-		QSignalMapper		*m_checkboxesSignalMapper;
-		QList<QCheckBox*>	m_checkboxes;
-		QList<Favorite>		&m_favorites;
-		QList<Tag>			m_tags;
-		MainWindow			*m_parent;
-		QSettings			*m_settings;
-		QString				m_wiki;
+		QMap<Image*, QBouton*> m_boutons;
+		QList<QUrl> m_selectedImages;
+		QList<QSharedPointer<Image>> m_selectedImagesPtrs;
+		QList<Site*> m_selectedSources;
+		QSignalMapper *m_checkboxesSignalMapper;
+		QList<QCheckBox*> m_checkboxes;
+		QList<Favorite> &m_favorites;
+		QList<Tag> m_tags;
+		MainWindow *m_parent;
+		QSettings *m_settings;
+		QString m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;
 
 		QStringList m_completion;

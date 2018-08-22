@@ -86,18 +86,18 @@ class Profile : public QObject
 		void blacklistChanged();
 
 	private:
-		QString 		m_path;
-		QSettings		*m_settings;
-		QList<Favorite>	m_favorites;
-		QStringList		m_keptForLater;
-		QStringList		m_ignored;
-		Commands		*m_commands;
-		QStringList		m_autoComplete;
-		QStringList		m_customAutoComplete;
-		Blacklist		m_blacklist;
-		QHash<QString, QString>	m_md5s;
-		QMap<QString, Source*>	m_sources;
-		QMap<QString, Site*>	m_sites;
+		QString m_path;
+		QSettings *m_settings;
+		QList<Favorite> m_favorites;
+		QStringList m_keptForLater;
+		QStringList m_ignored;
+		Commands *m_commands;
+		QStringList m_autoComplete;
+		QStringList m_customAutoComplete;
+		Blacklist m_blacklist;
+		QHash<QString, QString> m_md5s;
+		QMap<QString, Source*> m_sources;
+		QMap<QString, Site*> m_sites;
 };
 
 #endif // PROFILE_H

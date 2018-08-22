@@ -93,7 +93,7 @@ static bool rangeCheck(T (*converter)(const QString &), T input, const QString &
 	if (val.startsWith(">"))
 	{ return input > converter(val.right(val.size() - 1)); }
 	if (val.contains(".."))
-	{ return input >= converter(val.left(val.indexOf(".."))) && input <= converter(val.right(val.size() - val.indexOf("..") - 2));	}
+	{ return input >= converter(val.left(val.indexOf(".."))) && input <= converter(val.right(val.size() - val.indexOf("..") - 2)); }
 	return input == converter(val);
 }
 

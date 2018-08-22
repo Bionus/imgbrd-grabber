@@ -105,23 +105,23 @@ class MainWindow : public QMainWindow
 		void initialLoginsDone();
 
 	private:
-		Profile				*m_profile;
-		QList<Favorite>		&m_favorites;
-		int					m_waitForLogin;
-		bool				m_loaded;
-		int					m_forcedTab;
-		QSettings			*m_settings;
-		QString				m_link;
-		LanguageLoader		m_languageLoader;
-		SearchTab			*m_currentTab;
-		QList<SearchTab*>	m_tabs, m_tabsWaitingForPreload;
-		QList<Site*>		m_selectedSites;
-		FavoritesTab		*m_favoritesTab;
-		DownloadsTab		*m_downloadsTab;
-		QStringList			m_lineFilename_completer, m_lineFolder_completer;
-		bool				m_restore;
-		QList<Tag>				m_currentTags;
-		QLinkedList<QJsonObject>	m_closedTabs;
+		Profile *m_profile;
+		QList<Favorite> &m_favorites;
+		int m_waitForLogin;
+		bool m_loaded;
+		int m_forcedTab;
+		QSettings *m_settings;
+		QString m_link;
+		LanguageLoader m_languageLoader;
+		SearchTab *m_currentTab;
+		QList<SearchTab*> m_tabs, m_tabsWaitingForPreload;
+		QList<Site*> m_selectedSites;
+		FavoritesTab *m_favoritesTab;
+		DownloadsTab *m_downloadsTab;
+		QStringList m_lineFilename_completer, m_lineFolder_completer;
+		bool m_restore;
+		QList<Tag> m_currentTags;
+		QLinkedList<QJsonObject> m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
 
 		// System tray

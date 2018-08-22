@@ -20,7 +20,7 @@
 #include "tags/tag-stylist.h"
 #include "tags/tag-type.h"
 
-#define MAX_LOAD_FILESIZE (1024*1024*50)
+#define MAX_LOAD_FILESIZE (1024 * 1024 * 50)
 
 
 QUrl removeCacheUrl(QUrl url)
@@ -657,27 +657,27 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-const QUrl		&Image::url() const			{ return m_url;				}
-const QString	&Image::rating() const		{ return m_rating;			}
-Site			*Image::parentSite() const	{ return m_parentSite;		}
-const QList<Tag>	&Image::tags() const	{ return m_tags;			}
-const QList<Pool>	&Image::pools() const	{ return m_pools;			}
-qulonglong		Image::id() const			{ return m_id;				}
-int				Image::fileSize() const		{ return m_fileSize;		}
-int				Image::width() const		{ return m_size.width();	}
-int				Image::height() const		{ return m_size.height();	}
-const QDateTime	&Image::createdAt() const	{ return m_createdAt;		}
-const QUrl		&Image::fileUrl() const		{ return m_fileUrl;			}
-const QUrl		&Image::pageUrl() const		{ return m_pageUrl;			}
-QSize			Image::size() const			{ return m_size;			}
-QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
-const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
-Page			*Image::page() const		{ return m_parent;			}
-const QByteArray &Image::data() const		{ return m_data;			}
-const QStringList &Image::search() const	{ return m_search;			}
-bool			Image::isGallery() const	{ return m_isGallery;		}
-ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
-QString			Image::extension() const	{ return getExtension(m_url).toLower();		}
+const QUrl &Image::url() const { return m_url; }
+const QString &Image::rating() const { return m_rating; }
+Site *Image::parentSite() const { return m_parentSite; }
+const QList<Tag> &Image::tags() const { return m_tags; }
+const QList<Pool> &Image::pools() const { return m_pools; }
+qulonglong Image::id() const { return m_id; }
+int Image::fileSize() const { return m_fileSize; }
+int Image::width() const { return m_size.width(); }
+int Image::height() const { return m_size.height(); }
+const QDateTime &Image::createdAt() const { return m_createdAt; }
+const QUrl &Image::fileUrl() const { return m_fileUrl; }
+const QUrl &Image::pageUrl() const { return m_pageUrl; }
+QSize Image::size() const { return m_size; }
+QPixmap Image::previewImage() const { return m_imagePreview; }
+const QPixmap &Image::previewImage() { return m_imagePreview; }
+Page *Image::page() const { return m_parent; }
+const QByteArray &Image::data() const { return m_data; }
+const QStringList &Image::search() const { return m_search; }
+bool Image::isGallery() const { return m_isGallery; }
+ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
+QString Image::extension() const { return getExtension(m_url).toLower(); }
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
@@ -740,8 +740,8 @@ void Image::setUrl(const QUrl &url)
 	m_url = url;
 	refreshTokens();
 }
-void Image::setSize(QSize size)		{ m_size = size; refreshTokens();		}
-void Image::setFileSize(int size)	{ m_fileSize = size; refreshTokens();	}
+void Image::setSize(QSize size) { m_size = size; refreshTokens(); }
+void Image::setFileSize(int size) { m_fileSize = size; refreshTokens(); }
 void Image::setData(const QByteArray &data)
 {
 	m_data = data;

@@ -39,11 +39,11 @@ void ReverseSearchEngine::searchByUrl(const QUrl &url) const
 }
 
 
-int ReverseSearchEngine::id() const					{ return m_id;		}
-QIcon ReverseSearchEngine::icon() const				{ return m_icon;	}
-const QString &ReverseSearchEngine::name() const	{ return m_name;	}
-const QString &ReverseSearchEngine::tpl() const		{ return m_tpl;		}
-int ReverseSearchEngine::order() const				{ return m_order;	}
+int ReverseSearchEngine::id() const { return m_id; }
+QIcon ReverseSearchEngine::icon() const { return m_icon; }
+const QString &ReverseSearchEngine::name() const { return m_name; }
+const QString &ReverseSearchEngine::tpl() const { return m_tpl; }
+int ReverseSearchEngine::order() const { return m_order; }
 
-void ReverseSearchEngine::setId(int id)			{ m_id = id;		}
-void ReverseSearchEngine::setOrder(int order)	{ m_order = order;	}
+void ReverseSearchEngine::setId(int id) { m_id = id; }
+void ReverseSearchEngine::setOrder(int order) { m_order = order; }

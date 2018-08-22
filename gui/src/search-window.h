@@ -34,10 +34,10 @@ class SearchWindow : public QDialog
 		void accepted(const QString &search);
 
 	private:
-		Ui::SearchWindow	*ui;
-		QCalendarWidget		*m_calendar;
-		TextEdit			*m_tags;
-		Profile				*m_profile;
+		Ui::SearchWindow *ui;
+		QCalendarWidget *m_calendar;
+		TextEdit *m_tags;
+		Profile *m_profile;
 };
 
 #endif // SEARCH_WINDOW_H

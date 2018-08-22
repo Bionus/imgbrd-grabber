@@ -72,7 +72,7 @@ class Downloader : public QObject
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images;
-		QList<QPair<Site*, int> > m_pagesP, m_oPagesP;
+		QList<QPair<Site*, int>> m_pagesP, m_oPagesP;
 		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit;

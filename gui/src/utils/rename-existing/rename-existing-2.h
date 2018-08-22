@@ -26,10 +26,10 @@ class RenameExisting2 : public QDialog
 		void on_buttonOk_clicked();
 
 	private:
-		Ui::RenameExisting2				*ui;
-		QList<RenameExistingFile>		m_details;
-		QList<QLabel*>					m_previews;
-		QString							m_folder;
+		Ui::RenameExisting2 *ui;
+		QList<RenameExistingFile> m_details;
+		QList<QLabel*> m_previews;
+		QString m_folder;
 };
 
 #endif // RENAME_EXISTING_2_H

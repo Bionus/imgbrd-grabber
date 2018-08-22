@@ -42,10 +42,10 @@ class TextEdit : public QTextEdit
 		void addedFavorite(const QString &name);
 
 	private:
-		QCompleter		*c;
-		Profile			*m_profile;
-		QList<Favorite>	&m_favorites;
-		QStringList		&m_viewItLater;
+		QCompleter *c;
+		Profile *m_profile;
+		QList<Favorite> &m_favorites;
+		QStringList &m_viewItLater;
 };
 
 #endif

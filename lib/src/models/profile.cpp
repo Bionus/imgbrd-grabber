@@ -451,17 +451,17 @@ void Profile::removeBlacklistedTag(const QString &tag)
 }
 
 
-QString Profile::getPath() const				{ return m_path;				}
-QSettings *Profile::getSettings() const			{ return m_settings;			}
-QList<Favorite> &Profile::getFavorites()		{ return m_favorites;			}
-QStringList &Profile::getKeptForLater()			{ return m_keptForLater;		}
-QStringList &Profile::getIgnored()				{ return m_ignored;				}
-Commands &Profile::getCommands()				{ return *m_commands;			}
-QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
-QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
-Blacklist &Profile::getBlacklist()				{ return m_blacklist;			}
-const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
-const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
+QString Profile::getPath() const { return m_path; }
+QSettings *Profile::getSettings() const { return m_settings; }
+QList<Favorite> &Profile::getFavorites() { return m_favorites; }
+QStringList &Profile::getKeptForLater() { return m_keptForLater; }
+QStringList &Profile::getIgnored() { return m_ignored; }
+Commands &Profile::getCommands() { return *m_commands; }
+QStringList &Profile::getAutoComplete() { return m_autoComplete; }
+QStringList &Profile::getCustomAutoComplete() { return m_customAutoComplete; }
+Blacklist &Profile::getBlacklist() { return m_blacklist; }
+const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
+const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {

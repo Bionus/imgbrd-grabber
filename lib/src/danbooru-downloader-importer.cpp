@@ -52,8 +52,8 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	{
 		auto match = matches.next();
 		QString value = match.captured(2);
-		if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
-		if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
+		if (value.startsWith('"')) { value = value.right(value.length() - 1); }
+		if (value.endsWith('"')) { value = value.left(value.length() - 1); }
 		firefox[match.captured(1)] = value;
 	}
 

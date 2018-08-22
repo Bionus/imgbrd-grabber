@@ -293,7 +293,7 @@ QList<Site*> FavoritesTab::sources()
 { return m_selectedSources; }
 
 QString FavoritesTab::tags() const
-{ return m_currentTags;	}
+{ return m_currentTags; }
 
 void FavoritesTab::loadFavorite(const QString &name)
 {

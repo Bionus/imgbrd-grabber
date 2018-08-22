@@ -35,10 +35,10 @@ class UpdateDialog : public QDialog
 		void downloadFinished(const QString &path);
 
 	private:
-		Ui::UpdateDialog	*ui;
-		bool				*m_shouldQuit;
-		QWidget				*m_parent;
-		ProgramUpdater		m_updater;
+		Ui::UpdateDialog *ui;
+		bool *m_shouldQuit;
+		QWidget *m_parent;
+		ProgramUpdater m_updater;
 };
 
 #endif // UPDATE_DIALOG_H

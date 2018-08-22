@@ -37,12 +37,12 @@ class AddUniqueWindow : public QDialog
 		void sendData(const DownloadQueryImage &);
 
 	private:
-		Ui::AddUniqueWindow		*ui;
-		Page					*m_page;
-		QMap<QString, Site*>	m_sites;
-		bool					m_close;
-		Profile					*m_profile;
-		QSharedPointer<Image>	m_image;
+		Ui::AddUniqueWindow *ui;
+		Page *m_page;
+		QMap<QString, Site*> m_sites;
+		bool m_close;
+		Profile *m_profile;
+		QSharedPointer<Image> m_image;
 };
 
 #endif // ADDUNIQUEWINDOW_H

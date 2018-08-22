@@ -68,18 +68,18 @@ class BatchWindow : public QDialog
 		void skipped();
 
 	private:
-		Ui::BatchWindow			*ui;
-		QSettings				*m_settings;
-		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_images, m_maxSpeeds, m_lastDownloading;
-		QMap<QUrl, int>			m_urls;
-		QList<QProgressBar*>	m_progressBars;
-		QMap<QUrl, int>			m_speeds;
-		QList<int>				m_mean;
-		bool					m_cancel, m_paused;
-		QTime					*m_time, *m_start;
+		Ui::BatchWindow *ui;
+		QSettings *m_settings;
+		QSize m_currentSize;
+		int m_imagesCount, m_items, m_images, m_maxSpeeds, m_lastDownloading;
+		QMap<QUrl, int> m_urls;
+		QList<QProgressBar*> m_progressBars;
+		QMap<QUrl, int> m_speeds;
+		QList<int> m_mean;
+		bool m_cancel, m_paused;
+		QTime *m_time, *m_start;
 		#ifdef Q_OS_WIN
-			QWinTaskbarButton   *m_taskBarButton;
+			QWinTaskbarButton *m_taskBarButton;
 			QWinTaskbarProgress *m_taskBarProgress;
 		#endif
 };

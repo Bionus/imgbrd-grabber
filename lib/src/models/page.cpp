@@ -14,7 +14,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	m_pagesCount = -1;
 
 	// Replace shortcuts to increase compatibility
-	QString text = " "+tags.join(" ")+" ";
+	QString text = " " + tags.join(' ') + " ";
 	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
 		.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
 		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
@@ -156,21 +156,21 @@ void Page::clear()
 		pageApi->clear();
 }
 
-Site *Page::site() const				{ return m_site;								}
-const QString &Page::website() const	{ return m_website;								}
-const QString &Page::wiki() const		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->wiki();	}
-const QStringList &Page::search() const	{ return m_search;								}
-const QStringList &Page::errors() const	{ return m_errors;								}
-int Page::imagesPerPage() const			{ return m_imagesPerPage;						}
-int Page::page() const					{ return m_page;								}
-int Page::pageImageCount() const		{ return m_pageApis[m_currentApi]->pageImageCount();						}
-const QList<QSharedPointer<Image>> &Page::images() const	{ return m_pageApis[m_currentApi]->images();			}
-const QUrl &Page::url() const			{ return m_pageApis[m_currentApi]->url();		}
-const QUrl &Page::friendlyUrl() const	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url();		}
-const QList<Tag> &Page::tags() const	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags();	}
-const QUrl &Page::nextPage() const		{ return m_pageApis[m_currentApi]->nextPage();	}
-const QUrl &Page::prevPage() const		{ return m_pageApis[m_currentApi]->prevPage();	}
-int Page::highLimit() const				{ return m_pageApis[m_currentApi]->highLimit(); }
+Site *Page::site() const { return m_site; }
+const QString &Page::website() const { return m_website; }
+const QString &Page::wiki() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->wiki(); }
+const QStringList &Page::search() const { return m_search; }
+const QStringList &Page::errors() const { return m_errors; }
+int Page::imagesPerPage() const { return m_imagesPerPage; }
+int Page::page() const { return m_page; }
+int Page::pageImageCount() const { return m_pageApis[m_currentApi]->pageImageCount(); }
+const QList<QSharedPointer<Image>> &Page::images() const { return m_pageApis[m_currentApi]->images(); }
+const QUrl &Page::url() const { return m_pageApis[m_currentApi]->url(); }
+const QUrl &Page::friendlyUrl() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url(); }
+const QList<Tag> &Page::tags() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
+const QUrl &Page::nextPage() const { return m_pageApis[m_currentApi]->nextPage(); }
+const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage(); }
+int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 
 bool Page::hasSource() const
 {

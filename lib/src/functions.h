@@ -36,32 +36,32 @@
 #endif
 
 
-QDateTime	qDateTimeFromString(const QString &str);
-QString		savePath(const QString &file = "", bool exists = false, bool writable = false);
-bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
-int			levenshtein(QString, QString);
-QString		stripTags(QString);
-QString		getUnit(double *size);
-QString		formatFilesize(double size);
-QString		getExtension(const QUrl &url);
-QUrl		setExtension(QUrl url, const QString &extension);
-bool		isUrl(const QString &str);
-bool		isVariantEmpty(const QVariant &value);
+QDateTime qDateTimeFromString(const QString &str);
+QString savePath(const QString &file = "", bool exists = false, bool writable = false);
+bool copyRecursively(QString srcFilePath, QString tgtFilePath);
+int levenshtein(QString, QString);
+QString stripTags(QString);
+QString getUnit(double *size);
+QString formatFilesize(double size);
+QString getExtension(const QUrl &url);
+QUrl setExtension(QUrl url, const QString &extension);
+bool isUrl(const QString &str);
+bool isVariantEmpty(const QVariant &value);
 
-bool		setFileCreationDate(const QString &path, const QDateTime &datetime);
-void		shutDown(int timeout = 0);
-void		openTray();
+bool setFileCreationDate(const QString &path, const QDateTime &datetime);
+void shutDown(int timeout = 0);
+void openTray();
 
 QString fixFilename(QString filename, QString path = "", int maxLength = 0, bool invalidChars = true);
 QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
-QMap<QString, QString>		domToMap(const QDomElement &);
+QMap<QString, QString> domToMap(const QDomElement &);
 
-QMap<QString, QStringList>	getCustoms(QSettings *settings);
-QMap<QString, QPair<QString, QString>>	getFilenames(QSettings *settings);
-QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
-QStringList								getExternalLogFilesSuffixes(QSettings *settings);
+QMap<QString, QStringList> getCustoms(QSettings *settings);
+QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings);
+QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
+QStringList getExternalLogFilesSuffixes(QSettings *settings);
 
 QStringList removeWildards(const QStringList &elements, const QStringList &remove);
 QString getExtensionFromHeader(const QByteArray &data12);

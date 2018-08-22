@@ -71,7 +71,7 @@ void Site::loadConfig()
 		<< pSettings->value("source_4").toString();
 	defaults.removeAll("");
 	if (defaults.isEmpty())
-	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
+	{ defaults = QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
 
 	// Get overridden source order
 	QStringList sources;
@@ -169,7 +169,7 @@ void Site::resetCookieJar()
 /**
  * Try to log into the website.
  *
- * @param force	Whether to force login or not
+ * @param force Whether to force login or not
  */
 void Site::login(bool force)
 {
@@ -311,10 +311,12 @@ void Site::finishedTags()
 		{
 			QJsonObject sc = sourc[id].toObject();
 			const int cat = sc.value("category").toInt();
-			tags.append(Tag(sc.value("name").toString(),
-					cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
-					sc.value("post_count").toInt(),
-					sc.value("related_tags").toString().split(' ')));
+			tags.append(Tag(
+				sc.value("name").toString(),
+				cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
+				sc.value("post_count").toInt(),
+				sc.value("related_tags").toString().split(' ')
+			));
 		}
 	}
 	emit finishedLoadingTags(tags);
@@ -324,7 +326,7 @@ QVariant Site::setting(const QString &key, const QVariant &def) const { return m
 void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def) const { m_settings->setValue(key, value, def); }
 void Site::syncSettings() const { m_settings->sync(); }
 MixedSettings *Site::settings() const { return m_settings; }
-TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
+TagDatabase *Site::tagDatabase() const { return m_tagDatabase; }
 
 QString Site::baseUrl() const
 {
@@ -333,12 +335,12 @@ QString Site::baseUrl() const
 	return protocol + "://" + m_url;
 }
 
-const QString &Site::name() const { return m_name;	}
-const QString &Site::url() const	{ return m_url;	}
-const QString &Site::type() const	{ return m_type;	}
+const QString &Site::name() const { return m_name; }
+const QString &Site::url() const { return m_url; }
+const QString &Site::type() const { return m_type; }
 
-Source *Site::getSource() const	{ return m_source;		}
-const QList<Api *> &Site::getApis() const { return m_apis;	}
+Source *Site::getSource() const { return m_source; }
+const QList<Api *> &Site::getApis() const { return m_apis; }
 QList<Api *> Site::getLoggedInApis() const
 {
 	QList<Api*> ret;
@@ -365,8 +367,8 @@ Api *Site::detailsApi() const
 	return nullptr;
 }
 
-bool Site::autoLogin() const			{ return m_autoLogin;		}
-void Site::setAutoLogin(bool autoLogin)	{ m_autoLogin = autoLogin;	}
+bool Site::autoLogin() const { return m_autoLogin; }
+void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
 QString Site::fixLoginUrl(QString url, const QString &loginPart) const
 {

@@ -355,8 +355,11 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				// Sort files naturally
 				QCollator collator;
 				collator.setNumericMode(true);
-				std::sort(files.begin(), files.end(), [&collator](const QFileInfo &a, const QFileInfo &b)
-				{ return collator.compare(a.fileName(), b.fileName()) < 0; });
+				std::sort(
+					files.begin(),
+					files.end(),
+					[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
+				);
 
 				int num = 1;
 				if (!files.isEmpty())
@@ -611,10 +614,10 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 {
-    return (
-        (m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
-        (m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
-    );
+	return (
+		(m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+		(m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
+	);
 }
 
 int Filename::needExactTags(Site *site, const QString &api) const

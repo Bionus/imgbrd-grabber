@@ -35,13 +35,13 @@ class RenameExisting1 : public QDialog
 		void setImageResult(Image *img);
 
 	private:
-		Ui::RenameExisting1						*ui;
-		Profile									*m_profile;
-		QMap<QString, Site*>					m_sites;
-		Filename								m_filename;
-		int										m_needDetails;
-		QList<RenameExistingFile>				m_details;
-		QMap<QString, RenameExistingFile>		m_getAll;
+		Ui::RenameExisting1 *ui;
+		Profile *m_profile;
+		QMap<QString, Site*> m_sites;
+		Filename m_filename;
+		int m_needDetails;
+		QList<RenameExistingFile> m_details;
+		QMap<QString, RenameExistingFile> m_getAll;
 };
 
 #endif // RENAME_EXISTING_1_H

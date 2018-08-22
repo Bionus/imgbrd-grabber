@@ -363,23 +363,23 @@ void PageApi::clear()
 	m_pageImageCount = 0;
 }
 
-const QList<QSharedPointer<Image>> &PageApi::images() const	{ return m_images;	}
-const QUrl &PageApi::url() const			{ return m_url;			}
-const QString &PageApi::source() const		{ return m_source;		}
-const QString &PageApi::wiki() const		{ return m_wiki;		}
-const QList<Tag> &PageApi::tags() const		{ return m_tags;		}
-const QStringList &PageApi::search() const	{ return m_search;		}
-const QStringList &PageApi::errors() const	{ return m_errors;		}
-const QUrl &PageApi::nextPage() const		{ return m_urlNextPage;	}
-const QUrl &PageApi::prevPage() const		{ return m_urlPrevPage;	}
-bool PageApi::isLoaded() const				{ return m_loaded;		}
+const QList<QSharedPointer<Image>> &PageApi::images() const { return m_images; }
+const QUrl &PageApi::url() const { return m_url; }
+const QString &PageApi::source() const { return m_source; }
+const QString &PageApi::wiki() const { return m_wiki; }
+const QList<Tag> &PageApi::tags() const { return m_tags; }
+const QStringList &PageApi::search() const { return m_search; }
+const QStringList &PageApi::errors() const { return m_errors; }
+const QUrl &PageApi::nextPage() const { return m_urlNextPage; }
+const QUrl &PageApi::prevPage() const { return m_urlPrevPage; }
+bool PageApi::isLoaded() const { return m_loaded; }
 
 int PageApi::imagesPerPage() const
-{ return m_imagesPerPage;	}
+{ return m_imagesPerPage; }
 int PageApi::page() const
-{ return m_page;			}
+{ return m_page; }
 int PageApi::pageImageCount() const
-{ return m_pageImageCount;	}
+{ return m_pageImageCount; }
 int PageApi::highLimit() const
 { return m_api->maxLimit(); }
 

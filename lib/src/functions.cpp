@@ -234,21 +234,21 @@ QString savePath(const QString &file, bool exists, bool writable)
 
 	if (isTestModeEnabled())
 	{
-		if (QDir(QDir::currentPath()+"/tests/resources/").exists())
-		{ return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file); }
+		if (QDir(QDir::currentPath() + "/tests/resources/").exists())
+		{ return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file); }
 	}
 
-	if (validSavePath(qApp->applicationDirPath()+"/"+check, writable))
-	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (validSavePath(QDir::currentPath()+"/"+check, writable))
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (validSavePath(QDir::homePath()+"/Grabber/"+check, writable))
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable))
+	{ return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file); }
+	if (validSavePath(QDir::currentPath() + "/" + check, writable))
+	{ return QDir::toNativeSeparators(QDir::currentPath() + "/" + file); }
+	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable))
+	{ return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file); }
 	#ifdef __linux__
-		if (validSavePath(QDir::homePath()+"/.Grabber/"+check, writable))
-		{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
-		if (validSavePath(QString(PREFIX)+"/share/Grabber/"+check, writable))
-		{ return QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+file); }
+		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable))
+		{ return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file); }
+		if (validSavePath(QString(PREFIX) + "/share/Grabber/" + check, writable))
+		{ return QDir::toNativeSeparators(QString(PREFIX) + "/share/Grabber/" + file); }
 	#endif
 
 	QString dir;
@@ -739,25 +739,25 @@ QString qFontToCss(const QFont &font)
 	QString style;
 	switch (font.style())
 	{
-		case QFont::StyleNormal:	style = "normal";	break;
-		case QFont::StyleItalic:	style = "italic";	break;
-		case QFont::StyleOblique:	style = "oblique";	break;
+		case QFont::StyleNormal: style = "normal"; break;
+		case QFont::StyleItalic: style = "italic"; break;
+		case QFont::StyleOblique: style = "oblique"; break;
 	}
 
 	QString size;
 	if (font.pixelSize() == -1)
-	{ size = QString::number(font.pointSize())+"pt"; }
+	{ size = QString::number(font.pointSize()) + "pt"; }
 	else
-	{ size = QString::number(font.pixelSize())+"px"; }
+	{ size = QString::number(font.pixelSize()) + "px"; }
 
 	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
 	const QString weight = QString::number(font.weight() * 8);
 
 	QStringList decorations;
-	if (font.strikeOut())	{ decorations.append("line-through");	}
-	if (font.underline())	{ decorations.append("underline");		}
+	if (font.strikeOut()) { decorations.append("line-through"); }
+	if (font.underline()) { decorations.append("underline"); }
 
-	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
+	return "font-family:'" + font.family() + "'; font-size:" + size + "; font-style:" + style + "; font-weight:" + weight + "; text-decoration:" + (decorations.isEmpty() ? "none" : decorations.join(" ")) + ";";
 }
 
 QFont qFontFromString(const QString &str)
