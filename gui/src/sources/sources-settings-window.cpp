@@ -101,12 +101,12 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	QList<QNetworkCookie> cookies = site->cookies();
 	ui->tableCookies->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableCookies->setRowCount(cookies.count());
-	int row = 0;
+	int cookieRow = 0;
 	for (const QNetworkCookie &cookie : site->cookies())
 	{
-		ui->tableCookies->setItem(row, 0, new QTableWidgetItem(QString(cookie.name())));
-		ui->tableCookies->setItem(row, 1, new QTableWidgetItem(QString(cookie.value())));
-		row++;
+		ui->tableCookies->setItem(cookieRow, 0, new QTableWidgetItem(QString(cookie.name())));
+		ui->tableCookies->setItem(cookieRow, 1, new QTableWidgetItem(QString(cookie.value())));
+		cookieRow++;
 	}
 
 	// Headers
@@ -114,12 +114,10 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableHeaders->setRowCount(headers.count());
 	int headerRow = 0;
-	QMapIterator<QString, QVariant> i(headers);
-	while (i.hasNext())
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
 	{
-		i.next();
-		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(i.key()));
-		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(i.value().toString()));
+		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(it.key()));
+		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value().toString()));
 		headerRow++;
 	}
 
@@ -308,7 +306,7 @@ void SourcesSettingsWindow::saveSettings()
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
 	{
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
-		QTableWidgetItem *value = ui->tableCookies->item(i, 1);
+		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
 		if (key == nullptr || key->text().isEmpty())
 			continue;
 
