@@ -59,7 +59,7 @@ void DownloadableDownloader::preloaded()
 	}
 
 	// Load the image directly on the disk
-	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url.toString());
 	QNetworkReply *reply = m_site->get(m_url, nullptr, QStringLiteral("image"), nullptr); // TODO(Bionus)
 	connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
@@ -93,7 +93,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 	}
 	else
 	{
-		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
+		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
 		setResult(m_paths, Downloadable::SaveResult::NetworkError);
 	}
 

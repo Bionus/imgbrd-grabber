@@ -483,7 +483,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		{
 			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
-				log(QStringLiteral("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path, m_savePath));
+				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, m_savePath));
 				QFile(m_savePath).copy(path);
 			}
 			else
@@ -491,7 +491,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 				if (m_data.isEmpty())
 				{ return SaveResult::NotLoaded; }
 
-				log(QStringLiteral("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+				log(QStringLiteral("Saving image in `%1`").arg(path));
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -513,14 +513,14 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else if (whatToDo == "copy")
 		{
-			log(QStringLiteral("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+			log(QStringLiteral("Copy from `%1` to `%2`").arg(md5Duplicate, path));
 			QFile(md5Duplicate).copy(path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(QStringLiteral("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+			log(QStringLiteral("Moving from `%1` to `%2`").arg(md5Duplicate, path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
@@ -528,7 +528,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else if (whatToDo == "link")
 		{
-			log(QStringLiteral("Creating link for <a href=\"file:///%1\">%1</a> in <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
+			log(QStringLiteral("Creating link for `%1` in `%2`").arg(md5Duplicate, path));
 
 			#ifdef Q_OS_WIN
 				QFile::link(md5Duplicate, path + ".lnk");
@@ -540,7 +540,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else
 		{
-			log(QStringLiteral("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url().toString(), md5Duplicate));
+			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), url().toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;
 		}
 

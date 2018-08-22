@@ -85,7 +85,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		return reply;
 	}
 
-	log(QStringLiteral("Loading <a href=\"%1\">%1</a>").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
+	log(QStringLiteral("Loading `%1`").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
 	return QNetworkAccessManager::get(request);
 }
 

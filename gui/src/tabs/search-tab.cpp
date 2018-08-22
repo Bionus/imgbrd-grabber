@@ -576,7 +576,7 @@ void SearchTab::finishedLoadingPreview()
 	reply->deleteLater();
 	if (preview.isNull())
 	{
-		log(QStringLiteral("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail).toString()), Logger::Error);
+		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(img->url(Image::Size::Thumbnail).toString()), Logger::Error);
 		if (img->hasTag(QStringLiteral("flash")))
 		{ preview.load(QStringLiteral(":/images/flash.png")); }
 		else

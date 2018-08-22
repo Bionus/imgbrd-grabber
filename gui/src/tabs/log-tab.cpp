@@ -1,5 +1,6 @@
 #include "tabs/log-tab.h"
 #include <QDesktopServices>
+#include <QRegularExpression>
 #include <QScrollBar>
 #include <ui_log-tab.h>
 #include "logger.h"
@@ -56,6 +57,18 @@ void LogTab::write(const QString &msg)
 	// Time color
 	htmlMsg.insert(timeEnd + 1, "</span>");
 	htmlMsg.insert(0, "<span style='color:darkgreen'>");
+
+	// Links color
+	static const QRegularExpression rxLinks("`(http[^']+)`");
+	htmlMsg.replace(rxLinks, R"(<a href="\1">\1</a>)");
+
+	// File paths color
+	#ifdef Q_OS_WIN
+		static const QRegularExpression rxPaths("`(\\w:[\\\\/][^`]+)`");
+	#else
+		static const QRegularExpression rxPaths("`(/[^`]+)`");
+	#endif
+	htmlMsg.replace(rxPaths, R"(<a href="file:///\1">\1</a>)");
 
 	ui->labelLog->appendHtml(htmlMsg);
 	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());

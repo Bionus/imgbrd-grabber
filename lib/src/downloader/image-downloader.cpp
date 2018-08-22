@@ -113,7 +113,7 @@ void ImageDownloader::loadedSave()
 		}
 		if (allExists)
 		{
-			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(m_paths.first()), Logger::Info);
+			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			for (const QString &path : qAsConst(m_paths))
 			{ addMd5(profile, path); }
 			emit saved(m_image, makeMap(m_paths, Image::SaveResult::AlreadyExistsDisk));
@@ -135,7 +135,7 @@ void ImageDownloader::loadedSave()
 	}
 
 	m_url = m_image->url(Image::Size::Full);
-	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
 	loadImage();
 }
 
@@ -232,7 +232,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 	}
 	else if (error != QNetworkReply::OperationCanceledError)
 	{
-		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
 	}
 }
@@ -276,7 +276,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 		// Don't overwrite already existing files
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path)))
 		{
-			log(QStringLiteral("File already exists: <a href=\"file:///%1\">%1</a>").arg(file), Logger::Info);
+			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty())
 			{ addMd5(profile, file); }
 			result[path] = Image::SaveResult::AlreadyExistsDisk;

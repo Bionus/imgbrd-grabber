@@ -371,7 +371,7 @@ void ZoomWindow::setfavorite()
 
 void ZoomWindow::load(bool force)
 {
-	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a>").arg(m_url.toString()));
+	log(QStringLiteral("Loading image from `%1`").arg(m_url.toString()));
 
 	m_source.clear();
 
@@ -485,7 +485,7 @@ void ZoomWindow::replyFinishedDetails()
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 		m_imagePath = m_source;
 		m_image->setSavePath(m_source);
-		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
+		log(QStringLiteral("Image loaded from the file `%1`").arg(m_source));
 
 		// Update save button state
 		const SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
@@ -509,7 +509,7 @@ void ZoomWindow::replyFinishedDetails()
 	else if (!m_image->savePath().isEmpty() && QFile::exists(m_image->savePath()))
 	{
 		m_imagePath = m_image->savePath();
-		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_imagePath));
+		log(QStringLiteral("Image loaded from the file `%1`").arg(m_imagePath));
 
 		m_finished = true;
 		m_loadedImage = true;
@@ -615,7 +615,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result)
 {
-	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
+	log(QStringLiteral("Image received from `%1`").arg(m_url.toString()));
 	Image::SaveResult res = result.first();
 
 	ui->progressBarDownload->hide();

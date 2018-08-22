@@ -32,7 +32,7 @@ void TagApi::load(bool rateLimit)
 
 void TagApi::loadNow()
 {
-	log(QStringLiteral("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1] Loading tags page `%2`").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
 	if (m_reply != nullptr)
 	{
@@ -54,14 +54,14 @@ void TagApi::abort()
 
 void TagApi::parse()
 {
-	log(QStringLiteral("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1] Receiving tags page `%2`").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
 	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
-		log(QStringLiteral("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1] Redirecting tags page `%2` to `%3`").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;

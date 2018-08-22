@@ -133,7 +133,7 @@ void PageApi::load(bool rateLimit, bool force)
 }
 void PageApi::loadNow()
 {
-	log(QStringLiteral("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 	setReply(m_site->get(m_url));
 	connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
 }
@@ -169,14 +169,14 @@ void PageApi::parse()
 	if (m_reply == nullptr)
 		return;
 
-	log(QStringLiteral("[%1][%2] Receiving page <a href=\"%3\">%3</a>").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QStringLiteral("[%1][%2] Receiving page `%3`").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
-		log(QStringLiteral("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QStringLiteral("[%1][%2] Redirecting page `%3` to `%4`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 
 		// HTTP -> HTTPS redirects
 		const bool ssl = m_site->setting("ssl", false).toBool();
@@ -348,7 +348,7 @@ void PageApi::parseActual()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
-	log(QStringLiteral("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images (%5), %6 tags (%7), %8 total (%9), %10 pages (%11)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(m_pageImageCount).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+	log(QStringLiteral("[%1][%2] Parsed page `%3`: %4 images (%5), %6 tags (%7), %8 total (%9), %10 pages (%11)").arg(m_site->url(), m_format, m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(m_pageImageCount).arg(page.tags.count()).arg(m_tags.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
 
 	setReply(nullptr);
 	m_loaded = true;

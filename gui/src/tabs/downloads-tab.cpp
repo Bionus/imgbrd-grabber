@@ -1035,7 +1035,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	m_downloadTimeLast[img->url()].start();
 
 	// Start loading and saving image
-	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
+	log(QStringLiteral("Loading image from `%1` %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	bool getBlacklisted = download.queryGroup == nullptr || download.queryGroup->getBlacklisted;
 	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, getBlacklisted, this);

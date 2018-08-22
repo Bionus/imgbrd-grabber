@@ -64,8 +64,8 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	log(QStringLiteral("New session started."), Logger::Info);
 	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
-	log(QStringLiteral("Path: %1").arg(qApp->applicationDirPath()), Logger::Info);
-	log(QStringLiteral("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()), Logger::Info);
+	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
+	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
 
 	if (!QSslSocket::supportsSsl())
 	{ log(QStringLiteral("Missing SSL libraries"), Logger::Error); }
