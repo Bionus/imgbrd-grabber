@@ -1025,7 +1025,7 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey))
 	{
-		log(QStringLiteral("Missing image layout"), Logger::Error);
+		log(QStringLiteral("Missing image layout for '%1'").arg(img->url().toString()), Logger::Error);
 		return;
 	}
 
