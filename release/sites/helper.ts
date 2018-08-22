@@ -71,7 +71,7 @@ addHelper("mapFields", (data: any, map: any): any => {
 
 addHelper("countToInt", (str: string): number => {
     if (!str) {
-        return 0;
+        return undefined;
     }
     let count: number;
     const normalized = str.toLowerCase().trim().replace(/,/g, "");

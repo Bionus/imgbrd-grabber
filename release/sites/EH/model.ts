@@ -22,6 +22,8 @@ export const source: ISource = {
                             match["preview_url"] = protocol + parts[1] + "/" + parts[2];
                             delete match["encoded_thumbnail"];
                         }
+                        // tslint:disable
+                        console.log(JSON.stringify(match));
                         return match;
                     });
                     return {
@@ -32,12 +34,16 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (id: number): IError => {
-                    return { error: "Not supported (gallery token)" };
+                url: (query: any): string => {
+                    return "/g/" + query.id + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {
                     return {
                         images: Grabber.regexToImages('<div class="gdtm"[^>]*><div style="[^"]*background:transparent url\\((?<preview_url>[^)]+)\\) [^"]*"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src),
+                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*><a[^>]*>&gt;</a></td>", src)),
+                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<p class="gpc">Showing [0-9,]+ - [0-9,]+ of (?<count>[0-9,]+) images</p>', src)),
+                        urlNextPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&gt;</a></td>', src),
+                        urlPrevPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&lt;</a></td>', src),
                     };
                 },
             },
