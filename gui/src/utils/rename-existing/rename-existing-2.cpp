@@ -25,7 +25,15 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 		}
 
 		ui->tableWidget->setItem(i, 1, new QTableWidgetItem(image.path.right(image.path.length() - m_folder.length() - 1)));
-		ui->tableWidget->setItem(i, 2, new QTableWidgetItem(image.newPath.right(image.newPath.length() - m_folder.length() - 1)));
+		if (image.path == image.newPath)
+		{
+			auto item = new QTableWidgetItem("No change");
+			item->setForeground(Qt::red);
+			ui->tableWidget->setItem(i, 2, item);
+		}
+		else
+		{ ui->tableWidget->setItem(i, 2, new QTableWidgetItem(image.newPath.right(image.newPath.length() - m_folder.length() - 1))); }
+
 		i++;
 	}
 
@@ -70,6 +78,10 @@ void RenameExisting2::on_buttonOk_clicked()
 	// Move all images
 	for (const RenameExistingFile &image : qAsConst(m_details))
 	{
+		// Ignore images with no change in path
+		if (!image.newPath.isEmpty() || image.newPath == image.path)
+			continue;
+
 		// Create hierarchy
 		const QString path = image.newPath.left(image.newPath.lastIndexOf(QDir::separator()));
 		QDir directory(path);
