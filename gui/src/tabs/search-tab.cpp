@@ -1183,6 +1183,12 @@ void SearchTab::webZoom(int id)
 
 void SearchTab::openImage(const QSharedPointer<Image> &image)
 {
+	if (image->isGallery())
+	{
+		m_parent->addGalleryTab(image->parentSite(), image->name(), image->pageUrl());
+		return;
+	}
+
 	if (m_settings->value("Zoom/singleWindow", false).toBool() && !m_lastZoomWindow.isNull())
 	{
 		m_lastZoomWindow->reuse(m_images, image, image->page()->site());

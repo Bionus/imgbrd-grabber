@@ -47,6 +47,7 @@ class Image : public QObject, public Downloadable
 		const QUrl &pageUrl() const;
 		const QUrl &fileUrl() const;
 		QSize size() const;
+		const QString &name() const;
 		QPixmap previewImage() const;
 		const QPixmap &previewImage();
 		void setPreviewImage(const QPixmap &preview);

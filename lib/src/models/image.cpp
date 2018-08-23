@@ -670,6 +670,7 @@ const QDateTime &Image::createdAt() const { return m_createdAt; }
 const QUrl &Image::fileUrl() const { return m_fileUrl; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size() const { return m_size; }
+const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_imagePreview; }
 const QPixmap &Image::previewImage() { return m_imagePreview; }
 Page *Image::page() const { return m_parent; }

@@ -58,6 +58,7 @@ class MainWindow : public QMainWindow
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true);
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true);
+		void addGalleryTab(Site *site, QString name, QUrl url, bool background = false, bool save = true);
 		void addSearchTab(SearchTab*, bool background = false, bool save = true);
 		void updateTabTitle(SearchTab*);
 		void tabClosed(SearchTab*);

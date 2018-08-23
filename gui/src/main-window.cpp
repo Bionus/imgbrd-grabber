@@ -31,6 +31,7 @@
 #include "settings/start-window.h"
 #include "tabs/downloads-tab.h"
 #include "tabs/favorites-tab.h"
+#include "tabs/gallery-tab.h"
 #include "tabs/log-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/search-tab.h"
@@ -408,6 +409,11 @@ void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 	{ w->setPool(pool, site); }
 	else
 	{ w->focusSearch(); }
+}
+void MainWindow::addGalleryTab(Site *site, QString name, QUrl url, bool background, bool save)
+{
+	auto *w = new GalleryTab(site, std::move(name), std::move(url), m_profile, this);
+	this->addSearchTab(w, background, save);
 }
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 {
