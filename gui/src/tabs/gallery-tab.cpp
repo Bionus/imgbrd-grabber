@@ -118,27 +118,20 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 }
 
 
-// TODO(Bionus)
 void GalleryTab::getPage()
 {
-	log("Not implemented yet", Logger::Warning);
-
-	/*const auto &page = m_pages[ui->comboSites->currentText()].first();
+	const auto &page = m_pages[m_site->url()].first();
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QString tags = "gallery:" + m_url.toString();
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-	Site *site = m_sites.value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));*/
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, m_site));
 }
-// TODO(Bionus)
 void GalleryTab::getAll()
 {
-	log("Not implemented yet", Logger::Warning);
-
-	/*const auto &page = m_pages[ui->comboSites->currentText()].first();
+	const auto &page = m_pages[m_site->url()].first();
 
 	const int highLimit = page->highLimit();
 	const int currentCount = page->pageImageCount();
@@ -148,11 +141,10 @@ void GalleryTab::getAll()
 	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
-	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QString search = "gallery:" + m_url.toString();
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-	Site *site = m_sites.value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));*/
+	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_site));
 }
 
 

@@ -23,6 +23,7 @@ function sizeToInt(size: string): number {
 export const source: ISource = {
     name: "E-Hentai",
     modifiers: [],
+    forcedTokens: ["*"],
     auth: {},
     apis: {
         html: {
@@ -64,7 +65,7 @@ export const source: ISource = {
                         const styles = cssToObject(match["div_style"]);
                         delete match["div_style"];
 
-                        const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/)
+                        const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/);
                         match["preview_url"] = background[1];
                         match["preview_rect"] = [
                             -sizeToInt(background[2]),
@@ -90,7 +91,7 @@ export const source: ISource = {
                     return { error: "Not supported (view token)" };
                 },
                 parse: (src: string): IParsedDetails => {
-                    // Grabber.regexMatches("<div>(?<filename>[^:]*) :: (?<width>\d+) x (?<height>\d+) :: (?<filesize>[^ ]+ [KM]B)<\/div>", src);
+                    // Grabber.regexMatches("<div>(?<filename>[^:]*) :: (?<width>\\d+) x (?<height>\\d+) :: (?<filesize>[^ ]+ [KM]B)</div>", src);
                     return {
                         imageUrl: Grabber.regexToConst("url", '<img id="img" src="(?<url>[^"]+)"', src),
                     };
