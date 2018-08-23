@@ -1126,6 +1126,9 @@ void SearchTab::getSel()
 
 void SearchTab::updateCheckboxes()
 {
+	if (ui_layoutSourcesList == nullptr)
+		return;
+
 	log(QStringLiteral("Updating checkboxes."));
 
 	qDeleteAll(m_checkboxes);
