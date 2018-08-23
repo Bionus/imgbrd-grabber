@@ -13,12 +13,12 @@
 #define MAX_TAB_NAME_LENGTH 40
 
 
-GalleryTab::GalleryTab(Site *site, QString name, QUrl url, Profile *profile, MainWindow *parent)
+GalleryTab::GalleryTab(Site *site, QString name, QString id, Profile *profile, MainWindow *parent)
 	: GalleryTab(profile, parent)
 {
 	m_site = site;
 	m_name = std::move(name);
-	m_url = std::move(url);
+	m_id = std::move(id);
 
 	ui->labelGalleryName->setText(m_name);
 
@@ -72,7 +72,7 @@ void GalleryTab::closeEvent(QCloseEvent *e)
 void GalleryTab::load()
 {
 	updateTitle();
-	loadTags(QStringList() << "gallery:" + m_url.toString());
+	loadTags(QStringList() << "gallery:" + m_id);
 }
 
 QList<Site*> GalleryTab::loadSites() const
@@ -86,7 +86,7 @@ void GalleryTab::write(QJsonObject &json) const
 {
 	json["type"] = QStringLiteral("gallery");
 	json["name"] = m_name;
-	json["url"] = m_url.toString();
+	json["id"] = m_id;
 	json["site"] = m_site->url();
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
@@ -97,7 +97,7 @@ void GalleryTab::write(QJsonObject &json) const
 bool GalleryTab::read(const QJsonObject &json, bool preload)
 {
 	m_name = json["name"].toString();
-	m_url = QUrl(json["url"].toString());
+	m_id = json["id"].toString();
 	m_site = m_sites[json["site"].toString()];
 
 	ui->labelGalleryName->setText(m_name);
@@ -124,7 +124,7 @@ void GalleryTab::getPage()
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QString tags = "gallery:" + m_url.toString();
+	const QString tags = "gallery:" + m_id;
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, m_site));
@@ -141,7 +141,7 @@ void GalleryTab::getAll()
 	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
-	const QString search = "gallery:" + m_url.toString();
+	const QString search = "gallery:" + m_id;
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_site));
@@ -166,7 +166,7 @@ void GalleryTab::focusSearch()
 }
 
 QString GalleryTab::tags() const
-{ return "gallery:" + m_url.toString(); }
+{ return "gallery:" + m_id; }
 
 
 void GalleryTab::changeEvent(QEvent *event)

@@ -45,6 +45,10 @@ export const source: ISource = {
                             match["preview_url"] = protocol + parts[1] + "/" + parts[2];
                             delete match["encoded_thumbnail"];
                         }
+                        const gallery = Grabber.regexMatches("/g/(?<id>\\d+)/(?<token>[^/]+)/", match["page_url"]);
+                        match["id"] = gallery[0]["id"];
+                        match["token"] = gallery[0]["token"];
+                        match["md5"] = match["id"] + "/" + match["token"];
                         return match;
                     });
                     return {

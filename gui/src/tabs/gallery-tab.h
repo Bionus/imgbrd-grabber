@@ -19,7 +19,7 @@ class GalleryTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit GalleryTab(Site *site, QString name, QUrl url, Profile *profile, MainWindow *parent);
+		explicit GalleryTab(Site *site, QString name, QString id, Profile *profile, MainWindow *parent);
 		explicit GalleryTab(Profile *profile, MainWindow *parent);
 		~GalleryTab() override;
 		Ui::GalleryTab *ui;
@@ -46,7 +46,7 @@ class GalleryTab : public SearchTab
 	private:
 		Site *m_site;
 		QString m_name;
-		QUrl m_url;
+		QString m_id;
 };
 
 #endif // GALLERY_TAB_H
