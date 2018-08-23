@@ -224,7 +224,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		login();
 
 	// Force HTTPS if set so in the settings (no mixed content allowed)
-	if (m_settings->value("ssl", false).toBool() && url.scheme() == "http")
+	if (m_settings->value("ssl", false).toBool() && url.scheme() == "http" && url.toString().contains(m_url))
 		url.setScheme("https");
 
 	QNetworkRequest request(url);
@@ -399,7 +399,7 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
 
-	if (url.startsWith("http://") && ssl)
+	if (url.startsWith("http://") && ssl && url.contains(m_url))
 	{ return QUrl(protocol + "://" + url.mid(7)); }
 
 	return QUrl(url);
