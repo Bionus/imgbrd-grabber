@@ -256,6 +256,39 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 }
 
 
+PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *site) const
+{
+	PageUrl ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("gallery").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support galleries";
+		return ret;
+	}
+
+	QJSValue query = m_source.engine()->newObject();
+	query.setProperty("id", id);
+	query.setProperty("page", page);
+
+	QJSValue opts = m_source.engine()->newObject();
+	opts.setProperty("limit", limit);
+	opts.setProperty("baseUrl", site->baseUrl());
+
+	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first, int limit) const
+{
+	return parsePage(parentPage, source, first, limit);
+}
+
+
 bool JavascriptApi::canLoadTags() const
 {
 	// QMutexLocker locker(m_engineMutex);

@@ -55,12 +55,22 @@ void PageApi::updateUrls()
 	QString search = m_search.join(' ');
 	m_errors.clear();
 
+	// Gallery searches using either 'gallery:url' or 'gallery:id'
+	bool isGallery = m_search.count() == 1 && search.startsWith("gallery:");
+	if (isGallery)
+	{ search = search.mid(8); }
+
 	// URL searches
 	if (m_search.count() == 1 && !search.isEmpty() && isUrl(search))
 	{ url = search; }
 	else
 	{
-		PageUrl ret = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site);
+		PageUrl ret;
+		if (isGallery)
+		{ ret = m_api->galleryUrl(search, m_page, m_imagesPerPage, m_site); }
+		else
+		{ ret = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
+
 		if (!ret.error.isEmpty())
 		{ m_errors.append(ret.error); }
 		url = ret.url;
@@ -221,7 +231,13 @@ void PageApi::parseActual()
 	const int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
 
 	// Parse source
-	ParsedPage page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage);
+	ParsedPage page;
+	if (m_search.count() == 1 && m_search[0].startsWith("gallery:"))
+	{ page = m_api->parseGallery(m_parentPage, m_source, first, m_imagesPerPage); }
+	else
+	{ page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage); }
+
+	// Handle errors
 	if (!page.error.isEmpty())
 	{
 		m_errors.append(page.error);

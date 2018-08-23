@@ -20,6 +20,8 @@ class JavascriptApi : public Api
 		// API
 		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const override;
+		PageUrl galleryUrl(const QString &id, int page, int limit, Site *site) const override;
+		ParsedPage parseGallery(Page *parentPage, const QString &source, int first, int limit) const override;
 		PageUrl tagsUrl(int page, int limit, Site *site) const override;
 		ParsedTags parseTags(const QString &source, Site *site) const override;
 		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const override;

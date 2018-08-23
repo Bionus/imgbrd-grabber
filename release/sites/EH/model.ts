@@ -12,8 +12,8 @@ export const source: ISource = {
                     return "/?page=" + (query.page - 1) + "&f_search=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
-                    // Gallery mode regex: <div class="id1"[^>]*><div class="id2"><a href="(?<url>[^"]+)">(?<name>[^<]+)<\/a><\/div><div class="id3"[^>]*><a[^>]*><img src="(?<preview_url>[^"]*)"[^>]*><\/a><\/div><div class="id4"><div class="id41"[^>]* title="(?<category>[^"]*)"><\/div><div class="id42">(?<images_count>[0-9,]+) files<\/div>
-                    const matches = Grabber.regexMatches('<tr class="gtr\\d"><td[^>]*><a[^>]*><img[^>]*alt="(?<category>[^"]*)"[^>]*></a></td><td[^>]*>(?<date>[^<]*)</td><td[^>]*><div[^>]*><div class="it2" id="i(?<id>\\d+)"[^>]*>(?:<img src="(?<preview_url>[^"]+)"[^>]*>|(?<encoded_thumbnail>[^<]*))</div><div class="it3">.*?</div><div class="it5"><a href="(?<url>[^"]+)"[^>]*>(?<name>[^<]*)</a></div><div class="it4">.*?</div></div></div></td><td[^>]*><div><a[^>]*>(?<uploader>[^<]*)</a></div></td></tr>', src);
+                    // Gallery mode regex: <div class="id1"[^>]*><div class="id2"><a href="(?<page_url>[^"]+)">(?<name>[^<]+)<\/a><\/div><div class="id3"[^>]*><a[^>]*><img src="(?<preview_url>[^"]*)"[^>]*><\/a><\/div><div class="id4"><div class="id41"[^>]* title="(?<category>[^"]*)"><\/div><div class="id42">(?<images_count>[0-9,]+) files<\/div>
+                    const matches = Grabber.regexMatches('<tr class="gtr\\d"><td[^>]*><a[^>]*><img[^>]*alt="(?<category>[^"]*)"[^>]*></a></td><td[^>]*>(?<date>[^<]*)</td><td[^>]*><div[^>]*><div class="it2" id="i(?<id>\\d+)"[^>]*>(?:<img src="(?<preview_url>[^"]+)"[^>]*>|(?<encoded_thumbnail>[^<]*))</div><div class="it3">.*?</div><div class="it5"><a href="(?<page_url>[^"]+)"[^>]*>(?<name>[^<]*)</a></div><div class="it4">.*?</div></div></div></td><td[^>]*><div><a[^>]*>(?<uploader>[^<]*)</a></div></td></tr>', src);
                     const images = matches.map((match: any) => {
                         match["type"] = "gallery";
                         if ("encoded_thumbnail" in match && match["encoded_thumbnail"].length > 0) {
@@ -22,8 +22,6 @@ export const source: ISource = {
                             match["preview_url"] = protocol + parts[1] + "/" + parts[2];
                             delete match["encoded_thumbnail"];
                         }
-                        // tslint:disable
-                        console.log(JSON.stringify(match));
                         return match;
                     });
                     return {
@@ -34,7 +32,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any): string => {
+                url: (query: any, opts: any): string => {
                     return "/g/" + query.id + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {

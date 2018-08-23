@@ -92,7 +92,7 @@ interface IApi {
         parse: (src: string) => IParsedDetails | IError;
     };
     gallery?: {
-        url: (query: any) => IUrl | IError | string;
+        url: (query: any, opts: any) => IUrl | IError | string;
         parse: (src: string) => IParsedGallery | IError;
     };
     tags?: {

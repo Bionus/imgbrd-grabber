@@ -60,17 +60,10 @@ void GalleryTab::closeEvent(QCloseEvent *e)
 }
 
 
-// TODO(Bionus)
 void GalleryTab::load()
 {
 	updateTitle();
-
-	// Get the search values
-	/*QString search = m_search->toPlainText();
-	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
-	tags.prepend("pool:" + QString::number(ui->spinPool->value()));
-
-	loadTags(tags);*/
+	loadTags(QStringList() << "gallery:" + m_url.toString());
 }
 
 QList<Site*> GalleryTab::loadSites() const
@@ -178,9 +171,8 @@ void GalleryTab::focusSearch()
 	/* Nothing to focus */
 }
 
-// TODO(Bionus)
 QString GalleryTab::tags() const
-{ return ""; }
+{ return "gallery:" + m_url.toString(); }
 
 
 void GalleryTab::changeEvent(QEvent *event)
