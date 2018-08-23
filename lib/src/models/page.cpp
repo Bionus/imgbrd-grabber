@@ -90,11 +90,13 @@ void Page::setLastPage(Page *page)
 	for (PageApi *api : qAsConst(m_pageApis))
 		api->setLastPage(page);
 
-	m_currentApi--;
-	if (!page->nextPage().isEmpty())
+	if (false && !page->nextPage().isEmpty())
 	{ /*m_url = page->nextPage();*/ }
 	else
-	{ fallback(false); }
+	{
+		m_currentApi--;
+		fallback(false);
+	}
 }
 
 void Page::load(bool rateLimit)
