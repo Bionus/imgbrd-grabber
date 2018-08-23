@@ -248,10 +248,10 @@ void PageApi::parseActual()
 	}
 
 	// Fill data from parsing result
-	if (page.imageCount >= 0)
-	{ setImageCount(page.imageCount, true); }
 	if (page.pageCount >= 0)
 	{ setPageCount(page.pageCount, true); }
+	if (page.imageCount >= 0)
+	{ setImageCount(page.imageCount, true); }
 	for (const Tag &tag : qAsConst(page.tags))
 	{ m_tags.append(tag); }
 	for (const QSharedPointer<Image> &img : qAsConst(page.images))

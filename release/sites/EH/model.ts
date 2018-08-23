@@ -53,7 +53,7 @@ export const source: ISource = {
                     });
                     return {
                         images,
-                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">...</td><td[^>]*><a[^>]*>(?<page>\\d+)</a></td>", src)),
+                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing \\d+-\\d+ of (?<count>[0-9,]+)<", src)),
                     };
                 },
@@ -83,7 +83,7 @@ export const source: ISource = {
 
                     return {
                         images,
-                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*><a[^>]*>&gt;</a></td>", src)),
+                        pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<p class="gpc">Showing [0-9,]+ - [0-9,]+ of (?<count>[0-9,]+) images</p>', src)),
                         urlNextPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&gt;</a></td>', src),
                         urlPrevPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&lt;</a></td>', src),
