@@ -1,3 +1,25 @@
+function cssToObject(css: string): any {
+    const ret: any = {};
+    css.split(";").map((style: string) => {
+        style = style.trim();
+        const index: number = style.indexOf(":");
+        if (index < 0) {
+            return;
+        }
+        ret[style.substr(0, index).trim()] = style.substr(index + 1).trim();
+    });
+    return ret;
+}
+
+function sizeToInt(size: string): number {
+    const match = size.match(/^(-?)(\d+)\w*$/);
+    const val = parseInt(match[2], 10);
+    if (match[1].length > 0) {
+        return -val;
+    }
+    return val;
+}
+
 export const source: ISource = {
     name: "E-Hentai",
     modifiers: [],
@@ -36,8 +58,26 @@ export const source: ISource = {
                     return "/g/" + query.id + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {
+                    const images: IImage[] = [];
+                    const matches = Grabber.regexMatches('<div class="gdtm"[^>]*><div style="(?<div_style>[^"]+)"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src);
+                    for (const match of matches) {
+                        const styles = cssToObject(match["div_style"]);
+                        delete match["div_style"];
+
+                        const background = styles["background"].match(/url\(([^)]+)\) ([^ ]+) ([^ ]+)/)
+                        match["preview_url"] = background[1];
+                        match["preview_rect"] = [
+                            -sizeToInt(background[2]),
+                            -sizeToInt(background[3]),
+                            sizeToInt(styles["width"]),
+                            sizeToInt(styles["height"]),
+                        ].join(";"); // x;y;w;h
+
+                        images.push(match);
+                    }
+
                     return {
-                        images: Grabber.regexToImages('<div class="gdtm"[^>]*><div style="[^"]*background:transparent url\\((?<preview_url>[^)]+)\\) [^"]*"><a href="(?<page_url>[^"]+)"><img[^>]*></a></div>', src),
+                        images,
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*><a[^>]*>&gt;</a></td>", src)),
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<p class="gpc">Showing [0-9,]+ - [0-9,]+ of (?<count>[0-9,]+) images</p>', src)),
                         urlNextPage: Grabber.regexToConst("url", '<td[^>]*><a[^>]+href="(?<url>[^"]+)"[^>]*>&gt;</a></td>', src),

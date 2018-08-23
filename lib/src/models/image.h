@@ -124,6 +124,7 @@ class Image : public QObject, public Downloadable
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize m_size;
 		QPixmap m_imagePreview;
+		QRect m_previewRect;
 		QDateTime m_createdAt;
 		QByteArray m_data;
 		QNetworkReply *m_loadDetails;

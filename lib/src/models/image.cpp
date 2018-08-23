@@ -127,6 +127,13 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
 
+	// Preview rect
+	if (details.contains("preview_rect"))
+	{
+		const QStringList rect = details["preview_rect"].split(';');
+		m_previewRect = QRect(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt());
+	}
+
 	// Page url
 	if (details.contains("page_url"))
 	{ m_pageUrl = details["page_url"]; }
@@ -681,7 +688,11 @@ ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
 QString Image::extension() const { return getExtension(m_url).toLower(); }
 
 void Image::setPreviewImage(const QPixmap &preview)
-{ m_imagePreview = preview; }
+{
+	m_imagePreview = !m_previewRect.isNull()
+		? preview.copy(m_previewRect)
+		: preview;
+}
 void Image::setTemporaryPath(const QString &path)
 {
 	setSavePath(path);
