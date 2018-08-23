@@ -254,6 +254,8 @@ void ImageDownloader::success()
 QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
 	Profile *profile = m_image->parentSite()->getSource()->getProfile();
+	const QString multipleFiles = profile->getSettings()->value("Save/multiple_files", "copy").toString();
+
 	m_image->setSavePath(m_temporaryPath);
 
 	if (!m_filename.isEmpty())
@@ -295,6 +297,14 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 
 			tmp.rename(path);
 			moved = true;
+		}
+		else if (multipleFiles == "link")
+		{
+			#ifdef Q_OS_WIN
+				tmp.link(path + ".lnk");
+			#else
+				tmp.link(path);
+			#endif
 		}
 		else
 		{ tmp.copy(path); }

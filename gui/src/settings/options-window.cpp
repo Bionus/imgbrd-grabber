@@ -137,9 +137,11 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
-		QStringList opts = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
-		ui->comboMd5Duplicates->setCurrentIndex(opts.indexOf(settings->value("md5Duplicates", "save").toString()));
+		QStringList md5Duplicates = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
+		ui->comboMd5Duplicates->setCurrentIndex(md5Duplicates.indexOf(settings->value("md5Duplicates", "save").toString()));
 		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
+		QStringList multipleFiles = QStringList() << "copy" << "link";
+		ui->comboMultipleFiles->setCurrentIndex(multipleFiles.indexOf(settings->value("multiple_files", "copy").toString()));
 
 		ui->lineFilename->setText(settings->value("filename_real").toString());
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
@@ -940,9 +942,11 @@ void OptionsWindow::save()
 			else
 			{ pth.mkpath(folder); }
 		}
-		QStringList opts = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
-		settings->setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
+		QStringList md5Duplicates = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
+		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
+		QStringList multipleFiles = QStringList() << "copy" << "link";
+		settings->setValue("multiple_files", multipleFiles.at(ui->comboMultipleFiles->currentIndex()));
 
 		settings->setValue("filename", ui->lineFilename->text());
 		settings->setValue("filename_real", ui->lineFilename->text());
