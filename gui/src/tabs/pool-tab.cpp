@@ -17,9 +17,6 @@ PoolTab::PoolTab(Profile *profile, MainWindow *parent)
 	ui->widgetMeant->hide();
 
 	// UI members for SearchTab class
-	ui_checkMergeResults = nullptr;
-	ui_progressMergeResults = nullptr;
-	ui_stackedMergeResults = nullptr;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -36,7 +33,6 @@ PoolTab::PoolTab(Profile *profile, MainWindow *parent)
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
-	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites.keys();

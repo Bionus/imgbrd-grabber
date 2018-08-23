@@ -47,8 +47,6 @@ FavoritesTab::FavoritesTab(Profile *profile, MainWindow *parent)
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
-	ui_widgetMeant = nullptr;
-	ui_labelMeant = nullptr;
 	ui_layoutResults = ui->layoutResults;
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
@@ -60,7 +58,6 @@ FavoritesTab::FavoritesTab(Profile *profile, MainWindow *parent)
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
-	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search field

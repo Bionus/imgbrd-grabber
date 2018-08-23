@@ -179,28 +179,28 @@ class SearchTab : public QWidget
 		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff
-		TextEdit *m_postFiltering;
-		QCheckBox *ui_checkMergeResults;
-		QProgressBar *ui_progressMergeResults;
-		QStackedWidget *ui_stackedMergeResults;
-		QSpinBox *ui_spinPage;
-		QSpinBox *ui_spinImagesPerPage;
-		QSpinBox *ui_spinColumns;
-		QWidget *ui_widgetMeant;
-		QLabel *ui_labelMeant;
-		QGridLayout *ui_layoutResults;
-		QLayout *ui_layoutSourcesList;
-		QPushButton *ui_buttonHistoryBack;
-		QPushButton *ui_buttonHistoryNext;
-		QPushButton *ui_buttonNextPage;
-		QPushButton *ui_buttonLastPage;
-		QPushButton *ui_buttonGetAll;
-		QPushButton *ui_buttonGetPage;
-		QPushButton *ui_buttonGetSel;
-		QPushButton *ui_buttonFirstPage;
-		QPushButton *ui_buttonPreviousPage;
-		QPushButton *ui_buttonEndlessLoad;
-		VerticalScrollArea *ui_scrollAreaResults;
+		TextEdit *m_postFiltering = nullptr;
+		QCheckBox *ui_checkMergeResults = nullptr;
+		QProgressBar *ui_progressMergeResults = nullptr;
+		QStackedWidget *ui_stackedMergeResults = nullptr;
+		QSpinBox *ui_spinPage = nullptr;
+		QSpinBox *ui_spinImagesPerPage = nullptr;
+		QSpinBox *ui_spinColumns = nullptr;
+		QWidget *ui_widgetMeant = nullptr;
+		QLabel *ui_labelMeant = nullptr;
+		QGridLayout *ui_layoutResults = nullptr;
+		QLayout *ui_layoutSourcesList = nullptr;
+		QPushButton *ui_buttonHistoryBack = nullptr;
+		QPushButton *ui_buttonHistoryNext = nullptr;
+		QPushButton *ui_buttonNextPage = nullptr;
+		QPushButton *ui_buttonLastPage = nullptr;
+		QPushButton *ui_buttonGetAll = nullptr;
+		QPushButton *ui_buttonGetPage = nullptr;
+		QPushButton *ui_buttonGetSel = nullptr;
+		QPushButton *ui_buttonFirstPage = nullptr;
+		QPushButton *ui_buttonPreviousPage = nullptr;
+		QPushButton *ui_buttonEndlessLoad = nullptr;
+		VerticalScrollArea *ui_scrollAreaResults = nullptr;
 };
 
 #endif // SEARCH_TAB_H
