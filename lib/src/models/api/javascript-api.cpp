@@ -169,7 +169,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
+ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first, int limit) const
 {
 	Q_UNUSED(limit);
 
@@ -178,7 +178,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	// QMutexLocker locker(m_engineMutex);
 	Site *site = parentPage->site();
 	const QJSValue &api = m_source.property("apis").property(m_key);
-	QJSValue parseFunction = api.property("search").property("parse");
+	QJSValue parseFunction = api.property(type).property("parse");
 	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source);
 
 	// Script errors and exceptions
@@ -255,6 +255,11 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	return ret;
 }
 
+ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
+{
+	return parsePageInternal("search", parentPage, source, first, limit);
+}
+
 
 PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *site) const
 {
@@ -285,7 +290,7 @@ PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *
 
 ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first, int limit) const
 {
-	return parsePage(parentPage, source, first, limit);
+	return parsePageInternal("gallery", parentPage, source, first, limit);
 }
 
 

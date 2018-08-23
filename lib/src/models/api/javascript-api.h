@@ -41,6 +41,7 @@ class JavascriptApi : public Api
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;
 		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
+		ParsedPage parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first, int limit) const;
 
 	private:
 		const QJSValue &m_source;
