@@ -20,6 +20,7 @@ class GalleryTab : public SearchTab
 
 	public:
 		explicit GalleryTab(Site *site, QString name, QUrl url, Profile *profile, MainWindow *parent);
+		explicit GalleryTab(Profile *profile, MainWindow *parent);
 		~GalleryTab() override;
 		Ui::GalleryTab *ui;
 		QString tags() const override;

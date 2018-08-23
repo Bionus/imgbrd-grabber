@@ -14,10 +14,21 @@
 
 
 GalleryTab::GalleryTab(Site *site, QString name, QUrl url, Profile *profile, MainWindow *parent)
-	: SearchTab(profile, parent), ui(new Ui::GalleryTab), m_site(site), m_name(std::move(name)), m_url(std::move(url))
+	: GalleryTab(profile, parent)
+{
+	m_site = site;
+	m_name = std::move(name);
+	m_url = std::move(url);
+
+	ui->labelGalleryName->setText(m_name);
+
+	load();
+}
+
+GalleryTab::GalleryTab(Profile *profile, MainWindow *parent)
+	: SearchTab(profile, parent), ui(new Ui::GalleryTab)
 {
 	ui->setupUi(this);
-	ui->labelGalleryName->setText(m_name);
 
 	// UI members for SearchTab class
 	ui_spinPage = ui->spinPage;
@@ -43,8 +54,6 @@ GalleryTab::GalleryTab(Site *site, QString name, QUrl url, Profile *profile, Mai
 	optionsChanged();
 	ui->widgetPlus->hide();
 	setWindowIcon(QIcon());
-
-	load();
 }
 
 GalleryTab::~GalleryTab()
@@ -104,14 +113,7 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 		postFilters.append(tag.toString());
 	setPostFilter(postFilters.join(' '));
 
-	// Tags
-	QJsonArray jsonTags = json["tags"].toArray();
-	QStringList tags;
-	tags.reserve(jsonTags.count());
-	for (auto tag : jsonTags)
-		tags.append(tag.toString());
-	setTags(tags.join(' '), preload);
-
+	setTags("", preload);
 	return true;
 }
 
@@ -154,11 +156,11 @@ void GalleryTab::getAll()
 }
 
 
-// TODO(Bionus)
 void GalleryTab::setTags(const QString &tags, bool preload)
 {
+	Q_UNUSED(tags);
+
 	activateWindow();
-	// m_search->setText(tags);
 
 	if (preload)
 		load();

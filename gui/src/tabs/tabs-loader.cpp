@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "main-window.h"
 #include "models/profile.h"
+#include "gallery-tab.h"
 #include "pool-tab.h"
 #include "tag-tab.h"
 #include "ui_pool-tab.h"
@@ -109,6 +110,12 @@ SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, MainWindow *p
 	else if (type == "pool")
 	{
 		auto *tab = new PoolTab(profile, parent);
+		if (tab->read(info, preload))
+			return tab;
+	}
+	else if (type == "gallery")
+	{
+		auto *tab = new GalleryTab(profile, parent);
 		if (tab->read(info, preload))
 			return tab;
 	}
