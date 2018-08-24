@@ -18,6 +18,24 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+function searchToUrl(search: string): string {
+    const parts = search.split(" ");
+    const tags: string[] = [];
+    const ret: string[] = [];
+    for (let part of parts) {
+        part = part.trim();
+        if (part.indexOf("width:") === 0) {
+            ret.push("res_x=" + part.substr(6));
+        } else if (part.indexOf("height:") === 0) {
+            ret.push("res_y=" + part.substr(7));
+        } else {
+            tags.push(part);
+        }
+    }
+    ret.unshift("search_tag=" + tags.join(" "));
+    return ret.join("&");
+}
+
 const auth: { [id: string]: IAuth } = {
     session: {
         type: "post",
@@ -41,7 +59,7 @@ const auth: { [id: string]: IAuth } = {
 
 export const source: ISource = {
     name: "Anime pictures",
-    modifiers: [],
+    modifiers: ["width:", "height:"],
     forcedTokens: [],
     tagFormat: {
         case: "lower",
@@ -55,7 +73,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?search_tag=" + query.search + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -115,7 +133,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?search_tag=" + query.search + "&lang=en";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&lang=en";
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
