@@ -71,10 +71,10 @@ Source::Source(Profile *profile, const QString &dir)
 		else
 		{
 			const QDomElement docElem = doc.documentElement();
-			QMap<QString, QString> details = domToMap(docElem);
+			const QMap<QString, QString> details = domToMap(docElem);
 
 			// Tag format mapper
-			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
 			{
 				{ "lower", TagNameFormat::Lower },
 				{ "upper_first", TagNameFormat::UpperFirst },

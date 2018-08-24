@@ -125,7 +125,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		const QDateTime &date = tokens["date"].value().toDateTime();
 		ageToDateImage = date;
 		ageToDateTestNow = tokens["TESTS_now"].value().toDateTime();
-		bool cond = rangeCheck(ageToDate, date, m_val);
+		const bool cond = rangeCheck(ageToDate, date, m_val);
 
 		if (cond && !invert)
 		{ return QObject::tr("image's %1 does not match").arg(m_type); }

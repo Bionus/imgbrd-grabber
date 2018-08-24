@@ -56,7 +56,7 @@ void PageApi::updateUrls()
 	m_errors.clear();
 
 	// Gallery searches using either 'gallery:url' or 'gallery:id'
-	bool isGallery = m_search.count() == 1 && search.startsWith("gallery:");
+	const bool isGallery = m_search.count() == 1 && search.startsWith("gallery:");
 	if (isGallery)
 	{ search = search.mid(8); }
 

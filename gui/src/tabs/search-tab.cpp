@@ -1024,10 +1024,7 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey))
-	{
-		log(QStringLiteral("Missing image layout for '%1'").arg(img->url(Image::Size::Thumbnail).toString()), Logger::Error);
 		return;
-	}
 
 	// Calculate image absolute position
 	int absolutePosition = m_images.indexOf(img);

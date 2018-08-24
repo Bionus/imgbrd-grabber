@@ -293,7 +293,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	{
 		// We get path and remove useless slashes from filename
 		folder.replace("\\", "/");
-		//filename.replace("\\", "/");
+		// filename.replace("\\", "/");
 		if (filename.at(0) == QChar('/'))
 		{ filename = filename.right(filename.length() - 1); }
 		if (folder.right(1) == "/")

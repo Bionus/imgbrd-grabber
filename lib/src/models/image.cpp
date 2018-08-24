@@ -307,7 +307,7 @@ void Image::loadDetails(bool rateLimit)
 	}
 
 	// Load the request with a possible delay
-	int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
+	const int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
 	if (ms > 0)
 	{ QTimer::singleShot(ms, this, SLOT(loadDetailsNow())); }
 	else
@@ -394,8 +394,8 @@ void Image::parseDetails()
 	if (!ret.imageUrl.isEmpty())
 	{
 		const QUrl before = m_url;
+		const QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
 
-		QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
 		m_url = newUrl;
 		m_fileUrl = newUrl;
 
