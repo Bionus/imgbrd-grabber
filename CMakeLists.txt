@@ -21,7 +21,7 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	endif()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005") # Suppress some warnings
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wmacro-redefined -pedantic")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-macro-redefined -pedantic")
 endif()
 
 project(Grabber)
