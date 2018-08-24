@@ -22,14 +22,14 @@ function searchToUrl(search: string): string {
     const parts = search.split(" ");
     const tags: string[] = [];
     const ret: string[] = [];
-    for (let part of parts) {
-        part = part.trim();
+    for (const tag of parts) {
+        const part = tag.trim();
         if (part.indexOf("width:") === 0) {
             ret.push("res_x=" + part.substr(6));
         } else if (part.indexOf("height:") === 0) {
             ret.push("res_y=" + part.substr(7));
         } else {
-            tags.push(part);
+            tags.push(encodeURIComponent(tag));
         }
     }
     ret.unshift("search_tag=" + tags.join(" "));
