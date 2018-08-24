@@ -18,21 +18,47 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+function sizeToUrl(size: string, key: string, ret: string[]): void {
+    let op: number;
+    if (size.indexOf("<=") === 0) {
+        size = size.substr(2);
+        op = 0;
+    } else if (size.indexOf(">=") === 0) {
+        size = size.substr(2);
+        op = 1;
+    }
+    ret.push(key + "=" + size);
+    if (op !== undefined) {
+        ret.push(key + "_n=" + op);
+    }
+}
+
 function searchToUrl(search: string): string {
     const parts = search.split(" ");
     const tags: string[] = [];
+    const denied: string[] = [];
     const ret: string[] = [];
     for (const tag of parts) {
         const part = tag.trim();
         if (part.indexOf("width:") === 0) {
-            ret.push("res_x=" + part.substr(6));
+            sizeToUrl(part.substr(6), "ret_x", ret);
         } else if (part.indexOf("height:") === 0) {
-            ret.push("res_y=" + part.substr(7));
+            sizeToUrl(part.substr(7), "res_y", ret);
+        } else if (part.indexOf("ratio:") === 0) {
+            ret.push("aspect=" + part.substr(6));
+        } else if (part.indexOf("order:") === 0) {
+            ret.push("order_by=" + part.substr(6));
+        } else if (part.indexOf("filetype:") === 0) {
+            const ext = part.substr(9);
+            ret.push("ext_" + ext + "=" + ext);
+        } else if (part[0] === "-") {
+            denied.push(encodeURIComponent(tag.substr(1)));
         } else {
             tags.push(encodeURIComponent(tag));
         }
     }
     ret.unshift("search_tag=" + tags.join(" "));
+    ret.unshift("denied_tags=" + denied.join(" "));
     return ret.join("&");
 }
 
@@ -59,7 +85,7 @@ const auth: { [id: string]: IAuth } = {
 
 export const source: ISource = {
     name: "Anime pictures",
-    modifiers: ["width:", "height:"],
+    modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
     forcedTokens: [],
     tagFormat: {
         case: "lower",
