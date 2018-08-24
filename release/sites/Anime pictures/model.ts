@@ -26,6 +26,12 @@ function sizeToUrl(size: string, key: string, ret: string[]): void {
     } else if (size.indexOf(">=") === 0) {
         size = size.substr(2);
         op = 1;
+    } else if (size[0] === "<") {
+        size = String(parseInt(size.substr(1), 10) - 1);
+        op = 0;
+    } else if (size[0] === ">") {
+        size = String(parseInt(size.substr(1), 10) + 1);
+        op = 1;
     }
     ret.push(key + "=" + size);
     if (op !== undefined) {
