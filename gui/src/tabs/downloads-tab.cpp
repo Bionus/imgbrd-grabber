@@ -661,17 +661,11 @@ void DownloadsTab::getAllLogin()
 	m_progressDialog->setText(tr("Logging in, please wait..."));
 
 	m_getAllLogins.clear();
-	QQueue<Site*> logins;
-	for (Downloader *downloader : qAsConst(m_downloaders))
+	for (auto it = m_batchPending.constBegin(); it != m_batchPending.constEnd(); ++it)
 	{
-		for (Site *site : downloader->getSites())
-		{
-			if (!m_getAllLogins.contains(site))
-			{
-				m_getAllLogins.append(site);
-				logins.enqueue(site);
-			}
-		}
+		Site *site = it.value().site;
+		if (!m_getAllLogins.contains(site))
+		{ m_getAllLogins.append(site); }
 	}
 
 	if (m_getAllLogins.empty())
@@ -683,10 +677,9 @@ void DownloadsTab::getAllLogin()
 	m_progressDialog->setCurrentValue(0);
 	m_progressDialog->setCurrentMax(m_getAllLogins.count());
 
-	while (!logins.isEmpty())
+	for (Site *site : m_getAllLogins)
 	{
-		Site *site = logins.dequeue();
-		connect(site, &Site::loggedIn, this, &DownloadsTab::getAllFinishedLogin);
+		connect(site, &Site::loggedIn, this, &DownloadsTab::getAllFinishedLogin, Qt::QueuedConnection);
 		site->login();
 	}
 }
