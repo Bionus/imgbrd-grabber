@@ -33,7 +33,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 {
 	QList<QSharedPointer<Image>> results;
 
-	while (hasNext() && (results.count() < m_packSize || m_packSize < 0))
+	while (hasNext() && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0))
 	{
 		bool gallery = !m_pendingGalleries.isEmpty();
 

@@ -183,6 +183,12 @@ void Site::login(bool force)
 		return;
 	}
 
+	if (!m_login->isTestable())
+	{
+		emit loggedIn(this, LoginResult::Impossible);
+		return;
+	}
+
 	log(QStringLiteral("[%1] Logging in...").arg(m_url), Logger::Info);
 
 	// Clear cookies if we want to force a re-login
@@ -190,12 +196,6 @@ void Site::login(bool force)
 		resetCookieJar();
 
 	m_loggedIn = LoginStatus::Pending;
-
-	if (!m_login->isTestable())
-	{
-		emit loggedIn(this, LoginResult::Impossible);
-		return;
-	}
 
 	connect(m_login, &Login::loggedIn, this, &Site::loginFinished);
 	m_login->login();
