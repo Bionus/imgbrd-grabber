@@ -3,22 +3,28 @@
 
 #include <QList>
 #include <QLinkedList>
+#include <QObject>
 #include <QSharedPointer>
 #include "downloader/download-query-group.h"
 
 
-class Downloadable;
+class Image;
 class Page;
 class Profile;
 class Site;
 
-class PackLoader
+class PackLoader : public QObject
 {
+	Q_OBJECT
+
 	public:
-		explicit PackLoader(Profile *profile, DownloadQueryGroup query, int packSize = 1000);
+		explicit PackLoader(Profile *profile, DownloadQueryGroup query, int packSize = 1000, QObject *parent = nullptr);
 		bool start();
 		bool hasNext() const;
-		QList<QSharedPointer<Downloadable>> next();
+		QList<QSharedPointer<Image>> next();
+
+	signals:
+		void finishedPage(Page *page);
 
 	private:
 		Profile *m_profile;

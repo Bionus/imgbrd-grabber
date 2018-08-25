@@ -6,8 +6,8 @@
 #include "models/source.h"
 
 
-PackLoader::PackLoader(Profile *profile, DownloadQueryGroup query, int packSize)
-	: m_profile(profile), m_site(query.site), m_query(std::move(query)), m_packSize(packSize)
+PackLoader::PackLoader(Profile *profile, DownloadQueryGroup query, int packSize, QObject *parent)
+	: QObject(parent), m_profile(profile), m_site(query.site), m_query(std::move(query)), m_packSize(packSize)
 {}
 
 bool PackLoader::start()
@@ -29,9 +29,9 @@ bool PackLoader::hasNext() const
 	return (!m_pendingPages.isEmpty() || !m_pendingGalleries.isEmpty()) && (m_total < m_query.total || m_query.total < 0);
 }
 
-QList<QSharedPointer<Downloadable>> PackLoader::next()
+QList<QSharedPointer<Image>> PackLoader::next()
 {
-	QList<QSharedPointer<Downloadable>> results;
+	QList<QSharedPointer<Image>> results;
 
 	while (hasNext() && (results.count() < m_packSize || m_packSize < 0))
 	{
@@ -44,6 +44,7 @@ QList<QSharedPointer<Downloadable>> PackLoader::next()
 		QObject::connect(page, &Page::failedLoading, &loop, &QEventLoop::quit);
 		page->load(false);
 		loop.exec();
+		emit finishedPage(page);
 
 		// Add next page to the pending queue
 		if (!gallery || page->hasNext())
@@ -62,9 +63,9 @@ QList<QSharedPointer<Downloadable>> PackLoader::next()
 			// If this result is a gallery, add it to the beginning of the pending galleries
 			if (img->isGallery())
 			{
-				Page *gallery = new Page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << ("gallery:" + img->md5()), 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << ("gallery:" + img->md5()), 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 				// gallery->addToken("gallery_name", img->name());
-				m_pendingGalleries.insert(itGallery, gallery);
+				m_pendingGalleries.insert(itGallery, galleryPage);
 				continue;
 			}
 
