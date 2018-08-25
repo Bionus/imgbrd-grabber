@@ -33,7 +33,7 @@ QList<QSharedPointer<Downloadable>> PackLoader::next()
 {
 	QList<QSharedPointer<Downloadable>> results;
 
-	while (hasNext() && results.count() < m_packSize)
+	while (hasNext() && (results.count() < m_packSize || m_packSize < 0))
 	{
 		bool gallery = !m_pendingGalleries.isEmpty();
 
@@ -62,7 +62,9 @@ QList<QSharedPointer<Downloadable>> PackLoader::next()
 			// If this result is a gallery, add it to the beginning of the pending galleries
 			if (img->isGallery())
 			{
-				m_pendingGalleries.insert(itGallery, new Page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << ("gallery:" + img->md5()), 1, m_query.perpage, m_query.postFiltering, false, nullptr));
+				Page *gallery = new Page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << ("gallery:" + img->md5()), 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+				// gallery->addToken("gallery_name", img->name());
+				m_pendingGalleries.insert(itGallery, gallery);
 				continue;
 			}
 
