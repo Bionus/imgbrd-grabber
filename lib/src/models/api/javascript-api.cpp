@@ -170,10 +170,8 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first, int limit) const
+ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first) const
 {
-	Q_UNUSED(limit);
-
 	ParsedPage ret;
 
 	// QMutexLocker locker(m_engineMutex);
@@ -256,9 +254,9 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
+ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first) const
 {
-	return parsePageInternal("search", parentPage, source, first, limit);
+	return parsePageInternal("search", parentPage, source, first);
 }
 
 
@@ -289,9 +287,9 @@ PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *
 	return ret;
 }
 
-ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first, int limit) const
+ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first) const
 {
-	return parsePageInternal("gallery", parentPage, source, first, limit);
+	return parsePageInternal("gallery", parentPage, source, first);
 }
 
 

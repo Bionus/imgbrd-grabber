@@ -231,9 +231,9 @@ void PageApi::parseActual()
 	// Parse source
 	ParsedPage page;
 	if (m_search.count() == 1 && m_search[0].startsWith("gallery:"))
-	{ page = m_api->parseGallery(m_parentPage, m_source, first, m_imagesPerPage); }
+	{ page = m_api->parseGallery(m_parentPage, m_source, first); }
 	else
-	{ page = m_api->parsePage(m_parentPage, m_source, first, m_imagesPerPage); }
+	{ page = m_api->parsePage(m_parentPage, m_source, first); }
 
 	// Handle errors
 	if (!page.error.isEmpty())

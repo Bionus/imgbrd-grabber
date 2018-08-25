@@ -19,9 +19,9 @@ class JavascriptApi : public Api
 
 		// API
 		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
-		ParsedPage parsePage(Page *parentPage, const QString &source, int first, int limit) const override;
+		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
 		PageUrl galleryUrl(const QString &id, int page, int limit, Site *site) const override;
-		ParsedPage parseGallery(Page *parentPage, const QString &source, int first, int limit) const override;
+		ParsedPage parseGallery(Page *parentPage, const QString &source, int first) const override;
 		PageUrl tagsUrl(int page, int limit, Site *site) const override;
 		ParsedTags parseTags(const QString &source, Site *site) const override;
 		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const override;
@@ -41,7 +41,7 @@ class JavascriptApi : public Api
 		void fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const;
 		QList<Tag> makeTags(const QJSValue &tags, Site *site) const;
 		QJSValue getJsConst(const QString &key, const QJSValue &def = QJSValue(QJSValue::UndefinedValue)) const;
-		ParsedPage parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first, int limit) const;
+		ParsedPage parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first) const;
 
 	private:
 		const QJSValue &m_source;
