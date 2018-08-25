@@ -430,11 +430,14 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 	{
 		batchAddUnique(queryImage, false);
 	}
-	for (auto queryGroup : qAsConst(newGroupBatchs))
+	for (const auto &queryGroup : qAsConst(newGroupBatchs))
 	{
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
-		QString last = queryGroup.unk;
-		int max = last.rightRef(last.indexOf("/") + 1).toInt(), val = last.leftRef(last.indexOf("/")).toInt();
+
+		const QString unk = queryGroup.unk;
+		const int sep = unk.indexOf("/");
+		const int val = unk.leftRef(sep).toInt();
+		const int max = unk.midRef(sep + 1).toInt();
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);
@@ -447,9 +450,8 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.postFiltering.join(' '));
 		addTableItem(ui->tableBatchGroups, row, 9, queryGroup.getBlacklisted ? "true" : "false");
 
-		queryGroup.unk = "true";
 		m_groupBatchs.append(queryGroup);
-		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/" + QString(val == max ? "ok" : (val > 0 ? "downloading" : "pending")) + ".png"), "");
+		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/" + QString(val >= max ? "ok" : (val > 0 ? "downloading" : "pending")) + ".png"), "");
 		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 		it->setTextAlignment(Qt::AlignCenter);
 		ui->tableBatchGroups->setItem(row, 0, it);
@@ -802,11 +804,6 @@ void DownloadsTab::getAllGetPages()
  */
 void DownloadsTab::getAllFinishedPage(Page *page)
 {
-	auto *d = qobject_cast<Downloader*>(sender());
-
-	int pos = d->getData().toInt();
-	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
-
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
 
