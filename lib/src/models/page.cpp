@@ -173,6 +173,7 @@ const QList<Tag> &Page::tags() const { return m_pageApis[m_regexApi < 0 ? m_curr
 const QUrl &Page::nextPage() const { return m_pageApis[m_currentApi]->nextPage(); }
 const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage(); }
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
+bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 
 bool Page::hasSource() const
 {

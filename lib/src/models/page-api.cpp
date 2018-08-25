@@ -397,6 +397,16 @@ int PageApi::pageImageCount() const
 int PageApi::highLimit() const
 { return m_api->maxLimit(); }
 
+bool PageApi::hasNext() const
+{
+	int pageCount = pagesCount();
+	int maxPages = maxPagesCount();
+	if (pageCount <= 0 && maxPages > 0)
+		pageCount = maxPages;
+
+	return pageCount > m_page || (pageCount <= 0 && m_pageImageCount > 0);
+}
+
 bool PageApi::isImageCountSure() const { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess) const
 {

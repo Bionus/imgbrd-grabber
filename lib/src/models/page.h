@@ -42,6 +42,7 @@ class Page : public QObject
 		const QStringList &errors() const;
 		int imagesPerPage() const;
 		int highLimit() const;
+		bool hasNext() const;
 		int page() const;
 		int pageImageCount() const;
 		qulonglong minId() const;
