@@ -27,9 +27,9 @@ void E621Test::testSwfUrls()
 
 	// Compare URLs
 	QStringList expectedUrls = QStringList()
-							   << "https://static1.e621.net/data/cb/05/cb0523430ab3a75216fe1b3a3a42cac5.swf"
-							   << "https://static1.e621.net/data/45/33/4533e0a1bf7b132038f7ab3864ecd027.swf"
-							   << "https://static1.e621.net/data/d8/46/d8461800f2a107f2d928fcbca00f6019.swf";
+		<< "https://static1.e621.net/data/cb/05/cb0523430ab3a75216fe1b3a3a42cac5.swf"
+		<< "https://static1.e621.net/data/45/33/4533e0a1bf7b132038f7ab3864ecd027.swf"
+		<< "https://static1.e621.net/data/d8/46/d8461800f2a107f2d928fcbca00f6019.swf";
 	QStringList actualUrls = urls.mid(0, 3);
 	QCOMPARE(actualUrls, expectedUrls);
 }

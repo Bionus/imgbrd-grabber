@@ -29,7 +29,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -49,21 +49,21 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 
 	QList<Image*> result;
 	m_downloader = new Downloader(m_profile,
-								  tags.split(' '),
-								  QStringList(),
-								  sites,
-								  1,
-								  20,
-								  20,
-								  ".",
-								  "%md5%.%ext%",
-								  "",
-								  "",
-								  false,
-								  Blacklist(),
-								  false,
-								  0,
-								  "%tag %count %type");
+		tags.split(' '),
+		QStringList(),
+		sites,
+		1,
+		20,
+		20,
+		".",
+		"%md5%.%ext%",
+		"",
+		"",
+		false,
+		Blacklist(),
+		false,
+		0,
+		"%tag %count %type");
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
@@ -91,7 +91,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	setupSource(site);
 	setupSite(site, source);
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -115,21 +115,21 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 
 	QList<Tag> result;
 	m_downloader = new Downloader(m_profile,
-								  tags.split(' '),
-								  QStringList(),
-								  sites,
-								  1,
-								  20,
-								  20,
-								  ".",
-								  "%md5%.%ext%",
-								  "",
-								  "",
-								  false,
-								  Blacklist(),
-								  false,
-								  0,
-								  "%tag %count %type");
+		tags.split(' '),
+		QStringList(),
+		sites,
+		1,
+		20,
+		20,
+		".",
+		"%md5%.%ext%",
+		"",
+		"",
+		false,
+		Blacklist(),
+		false,
+		0,
+		"%tag %count %type");
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
@@ -157,7 +157,7 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	setupSource(site);
 	setupSite(site, source);
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);

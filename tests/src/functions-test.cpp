@@ -208,16 +208,16 @@ void FunctionsTest::testRemoveWildards()
 void FunctionsTest::testDateTimeFromString()
 {
 	// Timestamps
-	QCOMPARE(qDateTimeFromString("1492192180").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("1492192180").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 
 	// Standart dates
 	QCOMPARE(qDateTimeFromString("2017/04/14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 	QCOMPARE(qDateTimeFromString("2017-04-14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
-	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
-	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
 
 	// Danbooru dates
-	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(),  QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
 
 	// Gelbooru dates
 	QCOMPARE(qDateTimeFromString("Tue Apr  4 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 4), QTime(17, 49, 40), Qt::UTC));
