@@ -52,7 +52,7 @@ void HttpLogin::loginFinished()
 
 	for (const QNetworkCookie &cookie : cookies)
 	{
-		if (cookie.name() == cookieName && !cookie.value().isEmpty())
+		if (cookie.name() == cookieName && !cookie.value().isEmpty() && cookie.value() != "0")
 		{
 			emit loggedIn(Result::Success);
 			return;

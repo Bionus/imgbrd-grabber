@@ -67,7 +67,7 @@ interface IAuthCheckCookie {
 }
 
 interface IAuth {
-    type: string;
+    type: "url" | "get" | "post" | "oauth2";
     fields: IAuthField[];
     check?: IAuthCheck;
     [name: string]: any;
