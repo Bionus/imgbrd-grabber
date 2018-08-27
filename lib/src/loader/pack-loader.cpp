@@ -1,5 +1,6 @@
 #include "loader/pack-loader.h"
 #include <QEventLoop>
+#include <QtMath>
 #include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"
@@ -9,6 +10,9 @@
 PackLoader::PackLoader(Profile *profile, DownloadQueryGroup query, int packSize, QObject *parent)
 	: QObject(parent), m_profile(profile), m_site(query.site), m_query(std::move(query)), m_packSize(packSize)
 {}
+
+const DownloadQueryGroup &PackLoader::query() const { return m_query; }
+int PackLoader::nextPackSize() const { return qMin(m_packSize, m_query.total - m_total); }
 
 bool PackLoader::start()
 {
@@ -31,9 +35,14 @@ bool PackLoader::hasNext() const
 
 QList<QSharedPointer<Image>> PackLoader::next()
 {
-	QList<QSharedPointer<Image>> results;
+	const int maxPages = qMax(1, qCeil(static_cast<qreal>(m_packSize) / m_query.perpage));
+	const int already = m_total;
 
-	while (hasNext() && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0))
+	QList<QSharedPointer<Image>> results;
+	int count = 0;
+	int pageCount = 0;
+
+	while (hasNext() && pageCount < maxPages && (count == 0 || count < m_packSize || m_packSize < 0))
 	{
 		bool gallery = !m_pendingGalleries.isEmpty();
 
@@ -71,8 +80,17 @@ QList<QSharedPointer<Image>> PackLoader::next()
 
 			// If it's an image, add it to the results
 			results.append(img);
-			m_total++;
+
+			// Early return if we reached the image limit
+			if (already + results.count() == m_query.total)
+				break;
 		}
+
+		m_total += page->pageImageCount();
+		count += page->pageImageCount();
+
+		if (!gallery)
+			pageCount++;
 
 		page->deleteLater();
 	}

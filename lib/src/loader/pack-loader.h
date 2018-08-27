@@ -19,6 +19,8 @@ class PackLoader : public QObject
 
 	public:
 		explicit PackLoader(Profile *profile, DownloadQueryGroup query, int packSize = 1000, QObject *parent = nullptr);
+		const DownloadQueryGroup &query() const;
+		int nextPackSize() const;
 		bool start();
 		bool hasNext() const;
 		QList<QSharedPointer<Image>> next();
