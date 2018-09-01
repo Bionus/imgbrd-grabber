@@ -79,7 +79,7 @@ void RenameExisting2::on_buttonOk_clicked()
 	for (const RenameExistingFile &image : qAsConst(m_details))
 	{
 		// Ignore images with no change in path
-		if (!image.newPath.isEmpty() || image.newPath == image.path)
+		if (image.newPath.isEmpty() || image.newPath == image.path)
 			continue;
 
 		// Create hierarchy
