@@ -68,6 +68,7 @@ class SearchTab : public QWidget
 		void contextSaveImage(int position);
 		void contextSaveImageAs(int position);
 		void contextSaveSelected();
+		void contextSaveImageProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
 		void toggleSource(const QString &url);

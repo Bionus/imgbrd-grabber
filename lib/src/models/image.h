@@ -111,8 +111,6 @@ class Image : public QObject, public Downloadable
 	signals:
 		void finishedLoadingPreview();
 		void finishedLoadingTags();
-		void finishedImage(QNetworkReply::NetworkError, const QString &);
-		void downloadProgressImage(qint64, qint64);
 		void urlChanged(const QUrl &before, const QUrl &after);
 
 	private:

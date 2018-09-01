@@ -952,10 +952,8 @@ void SearchTab::contextSaveImage(int position)
 		const QString fn = m_settings->value("Save/filename").toString();
 		const QString path = m_settings->value("Save/path").toString();
 
-		if (m_boutons.contains(img))
-		{ connect(img, &Image::downloadProgressImage, m_boutons[img], &QBouton::setProgress); }
-
 		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this);
+		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}
@@ -1010,13 +1008,16 @@ void SearchTab::contextSaveSelected()
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs))
 	{
-		if (m_boutons.contains(img.data()))
-		{ connect(img.data(), &Image::downloadProgressImage, m_boutons[img.data()], &QBouton::setProgress); }
-
 		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this);
+		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
 	}
+}
+void SearchTab::contextSaveImageProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2)
+{
+	if (m_boutons.contains(img.data()))
+	{ m_boutons[img.data()]->setProgress(v1, v2); }
 }
 
 void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge)
