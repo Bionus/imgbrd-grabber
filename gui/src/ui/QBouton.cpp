@@ -88,8 +88,17 @@ void QBouton::paintEvent(QPaintEvent *event)
 	// Clip borders overflows
 	painter.setClipRect(x, y, w, h);
 
+	// Draw borders
+	if (p > 0 && m_penColor.isValid())
+	{
+		QPen pen(m_penColor);
+		pen.setWidth(p * 2);
+		painter.setPen(pen);
+		painter.drawRect(qMax(x, 0), qMax(y, 0), qMin(w, size().width()), qMin(h, size().height()));
+	}
+
 	// Draw progress
-	if (m_progressMax > 0 && m_progress > 0 && m_progress != m_progressMax)
+	if (m_progressMax > 0 && m_progress > 0 && m_progress < m_progressMax)
 	{
 		const int lineHeight = 6;
 		const int a = p + lineHeight / 2;
@@ -105,15 +114,6 @@ void QBouton::paintEvent(QPaintEvent *event)
 			painter.setPen(pen);
 			painter.drawLine(p1, p2);
 		}
-	}
-
-	// Draw borders
-	if (p > 0 && m_penColor.isValid())
-	{
-		QPen pen(m_penColor);
-		pen.setWidth(p * 2);
-		painter.setPen(pen);
-		painter.drawRect(qMax(x, 0), qMax(y, 0), qMin(w, size().width()), qMin(h, size().height()));
 	}
 
 	// Draw counter
