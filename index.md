@@ -17,61 +17,61 @@ Grabber works on Windows, Mac, and Linux.
 <i>Note that those are only a few sources present by default, but you can add as many as you want very easily!</i>
 
 <div class="source" markdown="1">
-![](assets/img/sources/danbooru.png)
+![Danbooru](assets/img/sources/danbooru.png)
 
 Danbooru
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/gelbooru.png)
+![Gelbooru](assets/img/sources/gelbooru.png)
 
 Gelbooru
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/shimmie.png)
+![Shimmie](assets/img/sources/shimmie.png)
 
 Shimmie
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/yandere.png)
+![Yandere](assets/img/sources/yandere.png)
 
 Yande.re
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/e621.png)
+![e621](assets/img/sources/e621.png)
 
 e621
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/konachan.png)
+![Konachan](assets/img/sources/konachan.png)
 
 Konachan
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/zerochan.png)
+![Zerochan](assets/img/sources/zerochan.png)
 
 Zerochan
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/rule34.png)
+![rule34](assets/img/sources/rule34.png)
 
 rule34
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/safebooru.png)
+![Safebooru](assets/img/sources/safebooru.png)
 
 Safebooru
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/behoimi.png)
+![Behoimi](assets/img/sources/behoimi.png)
 
 Behoimi
 </div>
@@ -83,9 +83,9 @@ Behoimi
 
 <div class="features" markdown="1">
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/search-basic-thumb.png)](assets/img/screenshots/search-basic.png "You can use Grabber's interface to search the same way as you would on the website directly.")
-[![](assets/img/screenshots/search-multiple-thumb.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
-[![](assets/img/screenshots/search-merged-thumb.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
+[![basic search](assets/img/screenshots/search-basic-thumb.png)](assets/img/screenshots/search-basic.png "You can use Grabber's interface to search the same way as you would on the website directly.")
+[![multi-source search](assets/img/screenshots/search-multiple-thumb.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
+[![merged search](assets/img/screenshots/search-merged-thumb.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
 
 ### Browse
 
@@ -100,7 +100,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/download-thumb.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
+[![download window](assets/img/screenshots/download-thumb.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
 
 ### Download
 
@@ -110,7 +110,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/sources-thumb.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
+[![sources window](assets/img/screenshots/sources-thumb.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
 
 ### Customize
 
@@ -121,7 +121,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/filename-thumb.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
+[![filename window](assets/img/screenshots/filename-thumb.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
 
 ### Organize
 
@@ -141,31 +141,31 @@ Behoimi
 
 <div class="flags" markdown="1">
 <div class="flag" markdown="1">
-![](assets/img/flags/en.png)
+![English flag](assets/img/flags/en.png)
 
 English
 </div>
 
 <div class="flag" markdown="1">
-![](assets/img/flags/fr.png)
+![French flag](assets/img/flags/fr.png)
 
 French
 </div>
 
 <div class="flag" markdown="1">
-![](assets/img/flags/ru.png)
+![Russian flag](assets/img/flags/ru.png)
 
 Russian
 </div>
 
 <div class="flag" markdown="1">
-![](assets/img/flags/cn.png)
+![Chinese flag](assets/img/flags/cn.png)
 
 Chinese (simplified)
 </div>
 
 <div class="flag" markdown="1">
-![](assets/img/flags/sp.png)
+![Spanish flag](assets/img/flags/sp.png)
 
 Spanish
 </div>
