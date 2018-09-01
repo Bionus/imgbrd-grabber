@@ -1,4 +1,5 @@
 #include "login/url-login.h"
+#include <QCryptographicHash>
 #include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/page.h"

@@ -4,6 +4,8 @@
 #include "test-suite.h"
 
 
+class Profile;
+
 class SourceGuesserTest : public TestSuite
 {
 	Q_OBJECT

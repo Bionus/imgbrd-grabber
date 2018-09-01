@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 	const QJsonArray rootSearch = root.value("search").toArray();
 	const QJsonObject sources = root.value("sources").toObject();
 
-	for (auto it = sources.begin(); it != sources.end(); ++it)
+	for (auto it = sources.constBegin(); it != sources.constEnd(); ++it)
 	{
 		const QString &sourceName = it.key();
 		qDebug() << "#" << "Source" << sourceName;
@@ -108,12 +108,12 @@ int main(int argc, char *argv[])
 				{ siteSearch = override.value("search").toArray(); }
 			}
 
-			for (auto ita = siteApis.begin(); ita != siteApis.end(); ++ita)
+			for (auto ita = siteApis.constBegin(); ita != siteApis.constEnd(); ++ita)
 			{
 				const QString &apiName = ita.key();
 				qDebug() << "###" << "API" << apiName;
 				QJsonObject apiJson;
-				QJsonArray checks = ita.value(api).toArray();
+				QJsonArray checks = ita.value().toArray();
 
 				QJsonArray apiSearch = siteSearch;
 				if (checks.count() > 4)

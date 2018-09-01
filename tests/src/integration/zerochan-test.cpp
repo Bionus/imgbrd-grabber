@@ -1,6 +1,8 @@
 #include "zerochan-test.h"
 #include <QStringList>
 #include <QtTest>
+#include "models/image.h"
+#include "tags/tag.h"
 
 
 void ZerochanTest::testHtml()

@@ -1,11 +1,13 @@
 #include "image-context-menu.h"
 #include <QDesktopServices>
 #include <QSignalMapper>
-#include "mainwindow.h"
+#include "main-window.h"
+#include "models/image.h"
+#include "reverse-search/reverse-search-engine.h"
 #include "reverse-search/reverse-search-loader.h"
 
 
-ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent)
+ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, MainWindow *mw, QWidget *parent)
 	: QMenu(parent), m_settings(settings), m_image(std::move(img)), m_mainWindow(mw)
 {
 	// Load reverse search engines

@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "functions.h"
 #include "models/profile.h"
+#include "tags/tag.h"
 
 
 TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)

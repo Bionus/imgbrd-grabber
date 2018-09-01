@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <QSettings>
 #include <QString>
+
 
 struct MysqlSettings
 {
@@ -15,9 +15,9 @@ struct MysqlSettings
 
 
 class Image;
-class Tag;
 class Profile;
 class SqlWorker;
+class Tag;
 
 class Commands
 {

@@ -1,6 +1,7 @@
 #ifndef TAG_TYPE_FACTORY_H
 #define TAG_TYPE_FACTORY_H
 
+#include <QString>
 #include "flyweight-cache.h"
 
 

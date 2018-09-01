@@ -1,10 +1,11 @@
 #include "models/filename.h"
 #include <QCollator>
-#include <QIcon>
 #include <QJSEngine>
 #include <QRegularExpression>
+#include <QSettings>
 #include <algorithm>
 #include "functions.h"
+#include "loader/token.h"
 #include "models/api/api.h"
 #include "models/filtering/post-filter.h"
 #include "models/image.h"
@@ -136,7 +137,7 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 {
 	QJSValue obj = engine.globalObject();
 
-	for (auto it = tokens.begin(); it != tokens.end(); ++it)
+	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it)
 	{
 		const QString &key = it.key();
 		QVariant val = it.value().value();
@@ -251,7 +252,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	if (complex)
 	{
 		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-		for (auto it = filenames.begin(); it != filenames.end(); ++it)
+		for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
 		{
 			if (matchConditionalFilename(it.key(), settings, tokens))
 			{
@@ -293,7 +294,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	{
 		// We get path and remove useless slashes from filename
 		folder.replace("\\", "/");
-		//filename.replace("\\", "/");
+		// filename.replace("\\", "/");
 		if (filename.at(0) == QChar('/'))
 		{ filename = filename.right(filename.length() - 1); }
 		if (folder.right(1) == "/")
@@ -355,8 +356,11 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				// Sort files naturally
 				QCollator collator;
 				collator.setNumericMode(true);
-				std::sort(files.begin(), files.end(), [&collator](const QFileInfo &a, const QFileInfo &b)
-				{ return collator.compare(a.fileName(), b.fileName()) < 0; });
+				std::sort(
+					files.begin(),
+					files.end(),
+					[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
+				);
 
 				int num = 1;
 				if (!files.isEmpty())
@@ -577,15 +581,15 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num";
 	if (profile != nullptr)
 	{ tokens.append(getCustoms(profile->getSettings()).keys()); }
-	QRegularExpression rx("%(.+?)%");
+	static const QRegularExpression rx("%(.+?)%");
 	auto matches = rx.globalMatch(m_format);
 	while (matches.hasNext())
 	{
 		auto match = matches.next();
 		bool found = false;
-		for (int i = 0; i < tokens.length(); i++)
+		for (const QString &token : tokens)
 		{
-			if (QRegularExpression("%" + tokens[i] + "(?::[^%]+)?%").match(match.captured(0)).hasMatch())
+			if (QRegularExpression("%" + token + "(?::[^%]+)?%").match(match.captured(0)).hasMatch())
 				found = true;
 		}
 
@@ -611,10 +615,10 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 {
-    return (
-        (m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
-        (m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
-    );
+	return (
+		(m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+		(m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
+	);
 }
 
 int Filename::needExactTags(Site *site, const QString &api) const

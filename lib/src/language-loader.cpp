@@ -1,6 +1,9 @@
 #include "language-loader.h"
+#include <QCoreApplication>
 #include <QDir>
+#include <QLocale>
 #include <QSettings>
+#include "logger.h"
 
 
 LanguageLoader::LanguageLoader(QString path)
@@ -27,4 +30,26 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 	}
 
 	return languages;
+}
+
+void LanguageLoader::install(QCoreApplication *app)
+{
+	app->installTranslator(&m_translator);
+	app->installTranslator(&m_qtTranslator);
+}
+
+void LanguageLoader::uninstall(QCoreApplication *app)
+{
+	app->removeTranslator(&m_translator);
+	app->removeTranslator(&m_qtTranslator);
+}
+
+void LanguageLoader::setLanguage(const QString &lang)
+{
+	log(QStringLiteral("Setting language to '%1'...").arg(lang), Logger::Info);
+
+	QLocale::setDefault(QLocale(lang));
+
+	m_translator.load(m_path + lang + ".qm");
+	m_qtTranslator.load(m_path + "qt/" + lang + ".qm");
 }

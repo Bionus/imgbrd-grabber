@@ -65,27 +65,29 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-#ifndef QT_DEBUG
-	Logger::setupMessageOutput(parser.isSet(verboseOption));
-#endif
+	#ifndef QT_DEBUG
+		Logger::setupMessageOutput(parser.isSet(verboseOption));
+	#endif
 
 	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+
 	Downloader *downloader = new Downloader(profile,
-										parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-										parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-										profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
-										parser.value(pageOption).toInt(),
-										parser.value(limitOption).toInt(),
-										parser.value(perPageOption).toInt(),
-										parser.value(pathOption),
-										parser.value(filenameOption),
-										parser.value(userOption),
-										parser.value(passwordOption),
-										parser.isSet(blacklistOption),
-										profile->getBlacklist(),
-										parser.isSet(noDuplicatesOption),
-										parser.value(tagsMinOption).toInt(),
-										parser.value(tagsFormatOption));
+		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
+		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
+		profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+		parser.value(pageOption).toInt(),
+		parser.value(limitOption).toInt(),
+		parser.value(perPageOption).toInt(),
+		parser.value(pathOption),
+		parser.value(filenameOption),
+		parser.value(userOption),
+		parser.value(passwordOption),
+		parser.isSet(blacklistOption),
+		profile->getBlacklist(),
+		parser.isSet(noDuplicatesOption),
+		parser.value(tagsMinOption).toInt(),
+		parser.value(tagsFormatOption));
 
 	if (parser.isSet(returnCountOption))
 		downloader->getPageCount();
@@ -101,7 +103,7 @@ int main(int argc, char *argv[])
 		parser.showHelp();
 
 	downloader->setQuit(true);
-	QObject::connect(downloader, SIGNAL(quit()), qApp, SLOT(quit()));
+	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
 
 	return app.exec();
 }

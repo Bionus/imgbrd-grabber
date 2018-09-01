@@ -1,5 +1,6 @@
 #include "danbooru-downloader-importer.h"
 #include <QFileInfo>
+#include <QMap>
 #include <QRegularExpression>
 #include <QSettings>
 
@@ -52,15 +53,15 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	{
 		auto match = matches.next();
 		QString value = match.captured(2);
-		if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
-		if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
+		if (value.startsWith('"')) { value = value.right(value.length() - 1); }
+		if (value.endsWith('"')) { value = value.left(value.length() - 1); }
 		firefox[match.captured(1)] = value;
 	}
 
 	dest->beginGroup("Save");
 	if (firefox.contains("useBlacklist"))
 	{ dest->setValue("downloadblacklist", firefox["useBlacklist"] != "true"); }
-	for (auto it = firefox.begin(); it != firefox.end(); ++it)
+	for (auto it = firefox.constBegin(); it != firefox.constEnd(); ++it)
 	{
 		if (assoc.contains(it.key()))
 		{

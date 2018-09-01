@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>favoritesTab</class>
- <widget class="QWidget" name="favoritesTab">
+ <class>FavoritesTab</class>
+ <widget class="QWidget" name="FavoritesTab">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -689,7 +689,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonSourcesList</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>openSourcesWindow()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -705,7 +705,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonPreviousPage</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>previousPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -721,7 +721,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonFirstPage</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>firstPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -737,7 +737,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonGetpage</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>getPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -753,7 +753,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonNextPage</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>nextPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -769,7 +769,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonLastPage</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>lastPage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -785,7 +785,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonGetAll</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -817,7 +817,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonTags</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -833,7 +833,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonHistoryBack</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>historyBack()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -849,7 +849,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonBack</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>favoritesBack()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -865,7 +865,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonHistoryNext</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>historyNext()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -881,7 +881,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonMarkAsViewed</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>viewed()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -897,7 +897,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>viewed()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -913,7 +913,7 @@ QWidget#scrollAreaWidgetContents {
   <connection>
    <sender>buttonGetSel</sender>
    <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
+   <receiver>FavoritesTab</receiver>
    <slot>getSel()</slot>
    <hints>
     <hint type="sourcelabel">

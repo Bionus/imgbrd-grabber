@@ -1,7 +1,11 @@
 #include "tag-api-test.h"
 #include <QtTest>
 #include "custom-network-access-manager.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "models/source.h"
+#include "tags/tag.h"
+#include "tags/tag-api.h"
 
 
 void TagApiTest::init()

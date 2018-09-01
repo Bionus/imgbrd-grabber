@@ -1,4 +1,6 @@
 #include "test-suite.h"
+#include <QDir>
+#include <QFile>
 
 
 TestSuite::TestSuite()

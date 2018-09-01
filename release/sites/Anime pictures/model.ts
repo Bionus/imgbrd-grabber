@@ -18,6 +18,56 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+function sizeToUrl(size: string, key: string, ret: string[]): void {
+    let op: number;
+    if (size.indexOf("<=") === 0) {
+        size = size.substr(2);
+        op = 0;
+    } else if (size.indexOf(">=") === 0) {
+        size = size.substr(2);
+        op = 1;
+    } else if (size[0] === "<") {
+        size = String(parseInt(size.substr(1), 10) - 1);
+        op = 0;
+    } else if (size[0] === ">") {
+        size = String(parseInt(size.substr(1), 10) + 1);
+        op = 1;
+    }
+    ret.push(key + "=" + size);
+    if (op !== undefined) {
+        ret.push(key + "_n=" + op);
+    }
+}
+
+function searchToUrl(search: string): string {
+    const parts = search.split(" ");
+    const tags: string[] = [];
+    const denied: string[] = [];
+    const ret: string[] = [];
+    for (const tag of parts) {
+        const part = tag.trim();
+        if (part.indexOf("width:") === 0) {
+            sizeToUrl(part.substr(6), "ret_x", ret);
+        } else if (part.indexOf("height:") === 0) {
+            sizeToUrl(part.substr(7), "res_y", ret);
+        } else if (part.indexOf("ratio:") === 0) {
+            ret.push("aspect=" + part.substr(6));
+        } else if (part.indexOf("order:") === 0) {
+            ret.push("order_by=" + part.substr(6));
+        } else if (part.indexOf("filetype:") === 0) {
+            const ext = part.substr(9);
+            ret.push("ext_" + ext + "=" + ext);
+        } else if (part[0] === "-") {
+            denied.push(encodeURIComponent(tag.substr(1)));
+        } else {
+            tags.push(encodeURIComponent(tag));
+        }
+    }
+    ret.unshift("search_tag=" + tags.join(" "));
+    ret.unshift("denied_tags=" + denied.join(" "));
+    return ret.join("&");
+}
+
 const auth: { [id: string]: IAuth } = {
     session: {
         type: "post",
@@ -41,7 +91,7 @@ const auth: { [id: string]: IAuth } = {
 
 export const source: ISource = {
     name: "Anime pictures",
-    modifiers: [],
+    modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
     forcedTokens: [],
     tagFormat: {
         case: "lower",
@@ -55,7 +105,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?search_tag=" + query.search + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -85,6 +135,28 @@ export const source: ISource = {
                     };
                 },
             },
+            details: {
+                url: (id: number, md5: string): string => {
+                    return "/pictures/view_post/" + id + "?lang=en&type=json";
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src);
+
+                    const tags: ITag[] = data["tags_full"].map((tag: any) => {
+                        return {
+                            name: tag["name"],
+                            count: tag["num"],
+                            typeId: tag["type"],
+                        };
+                    });
+
+                    return {
+                        tags,
+                        createdAt: data["pubtime"],
+                        imageUrl: data["file_url"],
+                    };
+                },
+            },
         },
         html: {
             name: "Regex",
@@ -93,7 +165,7 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?search_tag=" + query.search + "&lang=en";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&lang=en";
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

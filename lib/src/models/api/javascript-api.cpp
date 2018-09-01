@@ -2,13 +2,14 @@
 #include <QJSEngine>
 #include <QJSValueIterator>
 #include <QMap>
-#include <QMutexLocker>
+// #include <QMutexLocker>
 #include "functions.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/site.h"
+#include "tags/tag.h"
 #include "tags/tag-database.h"
 
 
@@ -151,7 +152,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
 
 		QString type;
-		int typeId;
+		int typeId = -1;
 		if (tag.hasProperty("type") && !tag.property("type").isUndefined())
 		{
 			if (tag.property("type").isNumber())
@@ -169,16 +170,14 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first, int limit) const
+ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first) const
 {
-	Q_UNUSED(limit);
-
 	ParsedPage ret;
 
 	// QMutexLocker locker(m_engineMutex);
 	Site *site = parentPage->site();
 	const QJSValue &api = m_source.property("apis").property(m_key);
-	QJSValue parseFunction = api.property("search").property("parse");
+	QJSValue parseFunction = api.property(type).property("parse");
 	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source);
 
 	// Script errors and exceptions
@@ -221,6 +220,8 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
+				else if (val.isArray())
+				{ d[key] = jsToStringList(val).join(' '); }
 				else
 				{ d[key] = val.toString(); }
 			}
@@ -251,6 +252,44 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 	}
 
 	return ret;
+}
+
+ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first) const
+{
+	return parsePageInternal("search", parentPage, source, first);
+}
+
+
+PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *site) const
+{
+	PageUrl ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("gallery").property("url");
+	if (urlFunction.isUndefined())
+	{
+		ret.error = "This API does not support galleries";
+		return ret;
+	}
+
+	QJSValue query = m_source.engine()->newObject();
+	query.setProperty("id", id);
+	query.setProperty("page", page);
+
+	QJSValue opts = m_source.engine()->newObject();
+	opts.setProperty("limit", limit);
+	opts.setProperty("baseUrl", site->baseUrl());
+
+	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first) const
+{
+	return parsePageInternal("gallery", parentPage, source, first);
 }
 
 

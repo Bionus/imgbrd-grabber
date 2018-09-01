@@ -1,5 +1,7 @@
 #include "source-test.h"
 #include <QtTest>
+#include "models/profile.h"
+#include "models/source.h"
 
 
 void SourceTest::init()

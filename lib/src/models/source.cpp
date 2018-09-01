@@ -1,12 +1,12 @@
 #include "models/source.h"
 #include <QJSValue>
 #include <QJSValueIterator>
+#include <QMutex>
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
 #include "models/api/javascript-console-helper.h"
 #include "models/api/javascript-grabber-helper.h"
-#include "models/profile.h"
 #include "models/site.h"
 
 
@@ -71,10 +71,10 @@ Source::Source(Profile *profile, const QString &dir)
 		else
 		{
 			const QDomElement docElem = doc.documentElement();
-			QMap<QString, QString> details = domToMap(docElem);
+			const QMap<QString, QString> details = domToMap(docElem);
 
 			// Tag format mapper
-			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
 			{
 				{ "lower", TagNameFormat::Lower },
 				{ "upper_first", TagNameFormat::UpperFirst },
@@ -153,12 +153,12 @@ Source::~Source()
 }
 
 
-QString Source::getName() const					{ return m_name;	}
-QString Source::getPath() const					{ return m_dir;		}
-const QList<Site*> &Source::getSites() const	{ return m_sites;	}
-const QList<Api*> &Source::getApis() const		{ return m_apis;	}
-Profile *Source::getProfile() const				{ return m_profile;	}
-const SourceUpdater &Source::getUpdater() const	{ return m_updater;	}
+QString Source::getName() const { return m_name; }
+QString Source::getPath() const { return m_dir; }
+const QList<Site*> &Source::getSites() const { return m_sites; }
+const QList<Api*> &Source::getApis() const { return m_apis; }
+Profile *Source::getProfile() const { return m_profile; }
+const SourceUpdater &Source::getUpdater() const { return m_updater; }
 
 Api *Source::getApi(const QString &name) const
 {

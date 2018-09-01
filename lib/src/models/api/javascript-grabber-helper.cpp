@@ -1,6 +1,5 @@
 #include "models/api/javascript-grabber-helper.h"
 #include <QDomNode>
-#include <QJSEngine>
 #include <QRegularExpression>
 #include "logger.h"
 

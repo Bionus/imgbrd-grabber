@@ -1,10 +1,12 @@
 #ifndef IMAGE_LOADER_QUEUE_H
 #define IMAGE_LOADER_QUEUE_H
 
-#include <QPixmap>
+#include <QByteArray>
+#include <QObject>
 
 
 class ImageLoader;
+class QPixmap;
 
 class ImageLoaderQueue : public QObject
 {

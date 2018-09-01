@@ -1,13 +1,14 @@
 #ifndef TAG_CONTEXT_MENU_H
 #define TAG_CONTEXT_MENU_H
 
+#include <QList>
 #include <QMenu>
-#include <QStringList>
+#include <QString>
 #include <QUrl>
-#include "tags/tag.h"
 
 
 class Profile;
+class Tag;
 
 class TagContextMenu : public QMenu
 {

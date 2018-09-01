@@ -19,15 +19,16 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 	endif()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127") # Suppress some warnings
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005") # Suppress some warnings
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-macro-redefined -pedantic")
 endif()
 
 project(Grabber)
 set(USE_SSL 1)
+set(USE_PCH 1)
 
-add_definitions(-DVERSION="6.0.4")
+add_definitions(-DVERSION="6.0.5")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bionus/imgbrd-grabber/SourceIssues.md")
@@ -45,11 +46,15 @@ if(USE_SSL)
 	endif()
 endif()
 
-# Enable code coverage on the Travis Linux build
-if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+# Enable code coverage on GCC
+if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
 	include(cmake/CodeCoverage.cmake)
 	setup_target_for_coverage(coverage tests coverage)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
+# Add a bunch of definitions for Travis builds
+if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-DTRAVIS=1)
 	if("$ENV{TRAVIS_OS_NAME}" STREQUAL "osx")
 		add_definitions(-DTRAVIS_OS_OSX=1)
@@ -74,12 +79,11 @@ install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
 
 # Transpile TS sites into JS
 set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
-set(NODE_MODULES_DIR "${SITES_DIR}/node_modules")
 file(GLOB_RECURSE SITES_TS_FILES "${SITES_DIR}/**.ts")
 list(FILTER SITES_TS_FILES EXCLUDE REGEX ".*.d.ts$")
 list(FILTER SITES_TS_FILES EXCLUDE REGEX "node_modules")
 add_custom_command(
-	OUTPUT ${NODE_MODULES_DIR}
+	OUTPUT NPM_modules
 	DEPENDS "${SITES_DIR}/package.json"
 	COMMAND npm install
 	WORKING_DIRECTORY ${SITES_DIR}
@@ -88,7 +92,7 @@ add_custom_command(
 add_custom_command(
 	OUTPUT JavaScript_sites
 	COMMAND npm run build
-	DEPENDS ${NODE_MODULES_DIR} ${SITES_TS_FILES}
+	DEPENDS NPM_modules ${SITES_TS_FILES}
 	WORKING_DIRECTORY ${SITES_DIR}
 	COMMENT "Transpiling TypeScript sources into JavaScript..."
 )

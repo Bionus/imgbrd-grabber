@@ -1,6 +1,7 @@
 #include "tag-database-test-suite.h"
 #include <QtTest>
 #include "tags/tag.h"
+#include "tags/tag-database.h"
 
 
 TagDatabaseTestSuite::TagDatabaseTestSuite(TagDatabase *database)

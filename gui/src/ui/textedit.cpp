@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QScrollBar>
+#include <QSettings>
 #include <QStyleOptionFrameV2>
 #include <QTextDocumentFragment>
 #include <QWheelEvent>
@@ -54,7 +55,7 @@ void TextEdit::doColor()
 	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
 	const QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
 	const QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
-	for (const Favorite &fav : m_favorites)
+	for (const Favorite &fav : qAsConst(m_favorites))
 		txt.replace(" " + fav.getName() + " ", " <span style=\"" + styleFavorites + "\">" + fav.getName() + "</span> ");
 
 	// Color kept for later tags
@@ -62,7 +63,7 @@ void TextEdit::doColor()
 	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
 	const QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
 	const QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
-	for (const QString &tag : m_viewItLater)
+	for (const QString &tag : qAsConst(m_viewItLater))
 		txt.replace(" " + tag + " ", " <span style=\"" + styleKeptForLater + "\">" + tag + "</span> ");
 
 	// Color metatags
@@ -246,7 +247,7 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			auto *favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
-				for (const Favorite &fav : m_favorites)
+				for (const Favorite &fav : qAsConst(m_favorites))
 				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
 				{
@@ -264,7 +265,7 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			auto *vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
-				for (const QString &viewItLater : m_viewItLater)
+				for (const QString &viewItLater : qAsConst(m_viewItLater))
 				{ vilsGroup->addAction(viewItLater); }
 				if (!toPlainText().isEmpty())
 				{

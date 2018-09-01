@@ -4,6 +4,8 @@
 #include "test-suite.h"
 
 
+class QSettings;
+
 class MixedSettingsTest : public TestSuite
 {
 	Q_OBJECT
@@ -11,6 +13,7 @@ class MixedSettingsTest : public TestSuite
 	private slots:
 		void init();
 
+		void testEmptySettings();
 		void testValueFirstValid();
 		void testValueDefault();
 		void testSetValueResetToParent();

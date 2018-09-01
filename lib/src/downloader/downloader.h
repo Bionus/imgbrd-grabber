@@ -1,12 +1,22 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QPair>
+#include <QSharedPointer>
+#include <QString>
+#include <QStringList>
 #include <QVariant>
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
+#include "tags/tag.h"
 
 
+class Profile;
 class Page;
+class Site;
 
 class Downloader : public QObject
 {
@@ -72,7 +82,7 @@ class Downloader : public QObject
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images;
-		QList<QPair<Site*, int> > m_pagesP, m_oPagesP;
+		QList<QPair<Site*, int>> m_pagesP, m_oPagesP;
 		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit;

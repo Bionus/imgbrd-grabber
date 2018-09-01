@@ -1,7 +1,6 @@
 #ifndef TOKEN_TEST_H
 #define TOKEN_TEST_H
 
-#include "loader/token.h"
 #include "test-suite.h"
 
 

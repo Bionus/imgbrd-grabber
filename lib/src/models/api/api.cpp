@@ -1,6 +1,6 @@
 #include "models/api/api.h"
-#include <QRegularExpression>
 #include "logger.h"
+#include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -21,10 +21,10 @@ Api::Api(QString name, QMap<QString, QString> data)
 }
 
 
-QString Api::getName() const	{ return m_name;	}
+QString Api::getName() const { return m_name; }
 
-bool Api::contains(const QString &key) const	{ return m_data.contains(key);	}
-QString Api::value(const QString &key) const	{ return m_data.value(key);		}
+bool Api::contains(const QString &key) const { return m_data.contains(key); }
+QString Api::value(const QString &key) const { return m_data.value(key); }
 
 
 QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags) const

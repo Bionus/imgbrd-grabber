@@ -2,12 +2,12 @@
 #define MONITORING_CENTER_H
 
 #include <QObject>
-#include <QSystemTrayIcon>
 
 
 class Favorite;
 class Monitor;
 class Profile;
+class QSystemTrayIcon;
 
 class MonitoringCenter : public QObject
 {

@@ -1,9 +1,11 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <QNetworkReply>
 #include <QObject>
+#include <QString>
 
+
+class QNetworkRequest;
 
 class Login : public QObject
 {

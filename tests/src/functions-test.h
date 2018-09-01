@@ -1,6 +1,7 @@
 #ifndef FUNCTIONS_TEST_H
 #define FUNCTIONS_TEST_H
 
+#include <QString>
 #include "test-suite.h"
 
 
@@ -27,6 +28,9 @@ class FunctionsTest : public TestSuite
 		void testParseMarkdownIssueLinks();
 		void testSetFileCreationDate();
 		void testSetFileCreationDateUtf8();
+		void testGetExternalLogFilesSuffixes();
+		void testFixCloudflareEmail();
+		void testFixCloudflareEmails();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);

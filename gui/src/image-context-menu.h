@@ -1,20 +1,22 @@
 #ifndef IMAGE_CONTEXT_MENU_H
 #define IMAGE_CONTEXT_MENU_H
 
+#include <QList>
 #include <QMenu>
-#include "models/image.h"
+#include <QSharedPointer>
 #include "reverse-search/reverse-search-engine.h"
 
 
+class Image;
 class QSettings;
-class mainWindow;
+class MainWindow;
 
 class ImageContextMenu : public QMenu
 {
 	Q_OBJECT
 
 	public:
-		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, mainWindow *mw, QWidget *parent = nullptr);
+		ImageContextMenu(QSettings *settings, QSharedPointer<Image> img, MainWindow *mw, QWidget *parent = nullptr);
 
 	protected slots:
 		void openInBrowser();
@@ -24,7 +26,7 @@ class ImageContextMenu : public QMenu
 	private:
 		QSettings *m_settings;
 		QSharedPointer<Image> m_image;
-		mainWindow *m_mainWindow;
+		MainWindow *m_mainWindow;
 		QList<ReverseSearchEngine> m_reverseSearchEngines;
 };
 

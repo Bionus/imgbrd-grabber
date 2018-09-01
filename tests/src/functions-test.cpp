@@ -1,6 +1,8 @@
 #include <QFileInfo>
+#include <QtTest>
 #include "functions.h"
 #include "functions-test.h"
+#include "models/profile.h"
 
 
 QDateTime fileCreationDate(const QString &path)
@@ -206,16 +208,16 @@ void FunctionsTest::testRemoveWildards()
 void FunctionsTest::testDateTimeFromString()
 {
 	// Timestamps
-	QCOMPARE(qDateTimeFromString("1492192180").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("1492192180").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 
 	// Standart dates
 	QCOMPARE(qDateTimeFromString("2017/04/14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 	QCOMPARE(qDateTimeFromString("2017-04-14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
-	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
-	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
 
 	// Danbooru dates
-	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(),  QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
 
 	// Gelbooru dates
 	QCOMPARE(qDateTimeFromString("Tue Apr  4 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 4), QTime(17, 49, 40), Qt::UTC));
@@ -285,6 +287,41 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 	QDateTime created = fileCreationDate(path);
 	QCOMPARE(created.toTime_t(), date.toTime_t());
 #endif
+}
+
+void FunctionsTest::testGetExternalLogFilesSuffixes()
+{
+	auto *profile = new Profile("tests/resources/");
+	auto *settings = profile->getSettings();
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList());
+
+	settings->setValue("LogFiles/0/locationType", 1);
+	settings->setValue("LogFiles/0/uniquePath", "path");
+	settings->setValue("LogFiles/0/content", "id: %id%");
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList());
+
+	settings->setValue("LogFiles/0/locationType", 2);
+	settings->setValue("LogFiles/0/suffix", ".xml");
+
+	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList() << ".xml");
+
+	settings->remove("LogFiles/0/locationType");
+	settings->remove("LogFiles/0/suffix");
+	settings->remove("LogFiles/0/uniquePath");
+	settings->remove("LogFiles/0/content");
+}
+
+void FunctionsTest::testFixCloudflareEmail()
+{
+	QCOMPARE(fixCloudflareEmail("145d505b58595447405146"), QString("IDOLM@STER"));
+	QCOMPARE(fixCloudflareEmail("cc9cbea3a6a9afb8e1a5818c9f"), QString("Project-iM@S"));
+}
+void FunctionsTest::testFixCloudflareEmails()
+{
+	QCOMPARE(fixCloudflareEmails(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls"><span class="__cf_email__" data-cfemail="145d505b58595447405146">[email&#160;protected]</span> Cinderella Girls</a>)"), QString(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls">IDOLM@STER Cinderella Girls</a>)"));
+	QCOMPARE(fixCloudflareEmails(R"(Koshimizu Sachiko on <span class="__cf_email__" data-cfemail="cc9cbea3a6a9afb8e1a5818c9f">[email&#160;protected]</span>)"), QString("Koshimizu Sachiko on Project-iM@S"));
 }
 
 

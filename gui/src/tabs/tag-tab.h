@@ -7,21 +7,21 @@
 
 namespace Ui
 {
-	class tagTab;
+	class TagTab;
 }
 
 
-class mainWindow;
+class MainWindow;
 class TextEdit;
 
-class tagTab : public searchTab
+class TagTab : public SearchTab
 {
 	Q_OBJECT
 
 	public:
-		explicit tagTab(Profile *profile, mainWindow *parent);
-		~tagTab() override;
-		Ui::tagTab *ui;
+		explicit TagTab(Profile *profile, MainWindow *parent);
+		~TagTab() override;
+		Ui::TagTab *ui;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, bool preload = true);

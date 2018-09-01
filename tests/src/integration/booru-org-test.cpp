@@ -1,7 +1,8 @@
 #include "booru-org-test.h"
 #include <QStringList>
 #include <QtTest>
-#include "functions.h"
+#include "models/image.h"
+#include "tags/tag.h"
 
 
 void BooruOrgTest::testHtml()

@@ -2,6 +2,9 @@
 #include <QNetworkCookie>
 #include <QtTest>
 #include "custom-network-access-manager.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 #include "tags/tag.h"
 
 
@@ -57,7 +60,8 @@ void SiteTest::testNoApis()
 void SiteTest::testFixUrlBasic()
 {
 	QCOMPARE(m_site->fixUrl(""), QUrl());
-	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://danbooru.donmai.us/dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
 	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRoot()

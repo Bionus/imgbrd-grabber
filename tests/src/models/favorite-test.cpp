@@ -2,6 +2,7 @@
 #include <QtTest>
 #include <algorithm>
 #include "functions.h"
+#include "models/favorite.h"
 
 
 void FavoriteTest::testBasicConstructor()

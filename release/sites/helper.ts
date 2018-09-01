@@ -47,6 +47,10 @@ addHelper("typedXML", (val: any) => {
     }
 
     if (val && typeof val === "object") {
+        if (Object.keys(val).length === 0) {
+            return "";
+        }
+
         return Grabber.mapObject(val, Grabber.typedXML);
     }
 
@@ -67,7 +71,7 @@ addHelper("mapFields", (data: any, map: any): any => {
 
 addHelper("countToInt", (str: string): number => {
     if (!str) {
-        return 0;
+        return undefined;
     }
     let count: number;
     const normalized = str.toLowerCase().trim().replace(/,/g, "");
@@ -78,6 +82,22 @@ addHelper("countToInt", (str: string): number => {
         count = parseFloat(normalized);
     }
     return Math.round(count);
+});
+
+addHelper("fileSizeToInt", (str: string): number => {
+    const res = str.match(/^(\d+)\s*(\w+)$/);
+    if (res) {
+        const val = parseInt(res[1], 10);
+        const unit = res[2].toLowerCase();
+        if (unit === "mb") {
+            return val * 1024 * 1024;
+        }
+        if (unit === "kb") {
+            return val * 1024;
+        }
+        return val;
+    }
+    return parseInt(str, 10);
 });
 
 addHelper("loginUrl", (fields: any, values: any): string => {

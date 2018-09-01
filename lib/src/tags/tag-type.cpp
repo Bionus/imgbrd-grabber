@@ -33,7 +33,7 @@ int TagType::number() const
 	{
 		{ "general", 0 },
 		{ "artist", 1 },
-		//{ "general", 2 },
+		// { "general", 2 },
 		{ "copyright", 3 },
 		{ "character", 4 },
 		{ "model", 5 },

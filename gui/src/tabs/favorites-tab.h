@@ -6,21 +6,21 @@
 
 namespace Ui
 {
-	class favoritesTab;
+	class FavoritesTab;
 }
 
 
-class mainWindow;
+class MainWindow;
 class Page;
 
-class favoritesTab : public searchTab
+class FavoritesTab : public SearchTab
 {
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(Profile *profile, mainWindow *parent);
-		~favoritesTab() override;
-		Ui::favoritesTab *ui;
+		explicit FavoritesTab(Profile *profile, MainWindow *parent);
+		~FavoritesTab() override;
+		Ui::FavoritesTab *ui;
 		QList<Site*> sources() override;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;

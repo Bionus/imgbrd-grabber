@@ -1,8 +1,10 @@
 #ifndef BLACKLIST_H
 #define BLACKLIST_H
 
+#include <QList>
 #include <QMap>
 #include <QSharedPointer>
+#include <QString>
 
 
 class Filter;

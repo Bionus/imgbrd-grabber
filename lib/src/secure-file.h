@@ -1,7 +1,9 @@
 #ifndef SECURE_FILE_H
 #define SECURE_FILE_H
 
+#include <QByteArray>
 #include <QFile>
+#include <QString>
 #include "vendor/simplecrypt.h"
 
 

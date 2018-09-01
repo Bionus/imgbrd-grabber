@@ -1,13 +1,14 @@
 #ifndef HTTP_LOGIN_H
 #define HTTP_LOGIN_H
 
-#include <QNetworkReply>
-#include <QSettings>
+#include <QString>
 #include "login/login.h"
 
 
 class CustomNetworkAccessManager;
 class MixedSettings;
+class QNetworkReply;
+class QUrlQuery;
 class Site;
 
 class HttpLogin : public Login

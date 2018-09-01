@@ -7,26 +7,26 @@
 
 namespace Ui
 {
-	class md5Fix;
+	class Md5Fix;
 }
 
 
 class Profile;
 
-class md5Fix : public QDialog
+class Md5Fix : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit md5Fix(Profile *profile, QWidget *parent = nullptr);
-		~md5Fix() override;
+		explicit Md5Fix(Profile *profile, QWidget *parent = nullptr);
+		~Md5Fix() override;
 
 	private slots:
 		void on_buttonCancel_clicked();
 		void on_buttonStart_clicked();
 
 	private:
-		Ui::md5Fix *ui;
+		Ui::Md5Fix *ui;
 		Profile *m_profile;
 };
 

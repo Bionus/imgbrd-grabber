@@ -1,7 +1,7 @@
 #include "tag-filter.h"
 #include <QRegExp>
 #include <QStringBuilder>
-#include "functions.h"
+#include "loader/token.h"
 
 
 TagFilter::TagFilter(QString tag, bool invert)

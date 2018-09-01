@@ -3,8 +3,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSet>
+#include <QSettings>
 #include "commands/commands.h"
 #include "functions.h"
+#include "models/favorite.h"
 #include "models/site.h"
 #include "models/source.h"
 
@@ -261,6 +263,29 @@ QString Profile::tempPath() const
 	return tmp + QDir::separator() + subDir;
 }
 
+void Profile::purgeTemp(int maxAge) const
+{
+	const QDir tempDir(tempPath());
+	const QFileInfoList tempFiles = tempDir.entryInfoList(QDir::Files);
+	const QDateTime max = QDateTime::currentDateTime().addSecs(-maxAge);
+
+	int purged = 0;
+	int failed = 0;
+	for (const QFileInfo &tempFile : tempFiles)
+	{
+		const QDateTime lastModified = tempFile.lastModified();
+		if (lastModified < max)
+		{
+			if (QFile::remove(tempFile.absoluteFilePath()))
+				purged++;
+			else
+				failed++;
+		}
+	}
+
+	log(QString("Temp directory purged of %1/%2 files (%3 failed)").arg(purged).arg(tempFiles.count()).arg(failed), Logger::Info);
+}
+
 void Profile::addFavorite(const Favorite &fav)
 {
 	m_favorites.removeAll(fav);
@@ -428,17 +453,17 @@ void Profile::removeBlacklistedTag(const QString &tag)
 }
 
 
-QString Profile::getPath() const				{ return m_path;				}
-QSettings *Profile::getSettings() const			{ return m_settings;			}
-QList<Favorite> &Profile::getFavorites()		{ return m_favorites;			}
-QStringList &Profile::getKeptForLater()			{ return m_keptForLater;		}
-QStringList &Profile::getIgnored()				{ return m_ignored;				}
-Commands &Profile::getCommands()				{ return *m_commands;			}
-QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
-QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
-Blacklist &Profile::getBlacklist()				{ return m_blacklist;			}
-const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
-const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
+QString Profile::getPath() const { return m_path; }
+QSettings *Profile::getSettings() const { return m_settings; }
+QList<Favorite> &Profile::getFavorites() { return m_favorites; }
+QStringList &Profile::getKeptForLater() { return m_keptForLater; }
+QStringList &Profile::getIgnored() { return m_ignored; }
+Commands &Profile::getCommands() { return *m_commands; }
+QStringList &Profile::getAutoComplete() { return m_autoComplete; }
+QStringList &Profile::getCustomAutoComplete() { return m_customAutoComplete; }
+Blacklist &Profile::getBlacklist() { return m_blacklist; }
+const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
+const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {

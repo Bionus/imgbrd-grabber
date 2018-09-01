@@ -1,7 +1,9 @@
 #include "commands/commands.h"
+#include <QDir>
 #include <QProcess>
+#include <QSettings>
 #include "commands/sql-worker.h"
-#include "functions.h"
+#include "logger.h"
 #include "models/filename.h"
 #include "models/profile.h"
 #include "tags/tag.h"

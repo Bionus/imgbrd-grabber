@@ -1,8 +1,12 @@
 #ifndef META_FILTER_H
 #define META_FILTER_H
 
+#include <QMap>
+#include <QString>
 #include "filter.h"
 
+
+class Token;
 
 class MetaFilter : public Filter
 {

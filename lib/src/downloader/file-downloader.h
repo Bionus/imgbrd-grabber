@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QNetworkReply>
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 
 class FileDownloader : public QObject
@@ -11,7 +13,7 @@ class FileDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		explicit FileDownloader(QObject *parent = nullptr);
+		explicit FileDownloader(bool allowHtmlResponses, QObject *parent = nullptr);
 		bool start(QNetworkReply *reply, const QString &path);
 		bool start(QNetworkReply *reply, const QStringList &paths);
 
@@ -25,6 +27,7 @@ class FileDownloader : public QObject
 		void replyFinished();
 
 	private:
+		bool m_allowHtmlResponses;
 		QNetworkReply *m_reply;
 		QFile m_file;
 		bool m_writeError;

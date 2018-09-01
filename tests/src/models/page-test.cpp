@@ -1,5 +1,8 @@
 #include "page-test.h"
 #include <QtTest>
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "models/source.h"
 
 

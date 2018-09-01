@@ -2,11 +2,13 @@
 #define DOWNLOAD_QUERY_GROUP_H
 
 #include <QJsonObject>
-#include <QSettings>
+#include <QMetaType>
 #include <QString>
+#include <QStringList>
 #include "downloader/download-query.h"
 
 
+class QSettings;
 class Site;
 
 class DownloadQueryGroup : public DownloadQuery

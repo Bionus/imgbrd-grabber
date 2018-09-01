@@ -27,10 +27,10 @@ class BlacklistFix2 : public QDialog
 		void on_buttonOk_clicked();
 
 	private:
-		Ui::BlacklistFix2				*ui;
-		QList<QMap<QString, QString>>	m_details;
-		QList<QLabel*>					m_previews;
-		Blacklist						m_blacklist;
+		Ui::BlacklistFix2 *ui;
+		QList<QMap<QString, QString>> m_details;
+		QList<QLabel*> m_previews;
+		Blacklist m_blacklist;
 };
 
 #endif // BLACKLIST_FIX_2_H

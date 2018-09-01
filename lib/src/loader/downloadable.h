@@ -2,25 +2,31 @@
 #define DOWNLOADABLE_H
 
 #include <QColor>
+#include <QList>
+#include <QMap>
+#include <QPair>
 #include <QString>
+#include <QStringList>
 #include <QUrl>
-#include "loader/token.h"
 
 
 typedef QPair<QString, QString> QStrP;
 
 class Filename;
 class Profile;
+class Token;
 
 class Downloadable
 {
 	public:
 		enum SaveResult
 		{
-			AlreadyExists,
-			Ignored,
+			AlreadyExistsDisk,
+			AlreadyExistsMd5,
+			Blacklisted,
 			Moved,
 			Copied,
+			Linked,
 			Saved,
 			Error,
 			NotLoaded,

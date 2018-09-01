@@ -1,6 +1,7 @@
-#include "mixed-settings.h"
-#include <QSettings>
 #include "mixed-settings-test.h"
+#include <QSettings>
+#include <QtTest>
+#include "mixed-settings.h"
 
 
 void MixedSettingsTest::init()
@@ -10,6 +11,21 @@ void MixedSettingsTest::init()
 
 	m_child->clear();
 	m_parent->clear();
+}
+
+
+void MixedSettingsTest::testEmptySettings()
+{
+	MixedSettings settings((QList<QSettings*>()));
+
+	// Those calls shouldn't do anything, but shouldn't throw either
+	settings.setValue("test", "val");
+	QCOMPARE(settings.value("test", "none").toString(), QString("none"));
+	QCOMPARE(settings.childKeys(), QStringList());
+	settings.beginGroup("group");
+	QCOMPARE(settings.childKeys(), QStringList());
+	settings.endGroup();
+	settings.sync();
 }
 
 void MixedSettingsTest::testValueFirstValid()

@@ -1,6 +1,11 @@
 #include "post-filter-test.h"
 #include <QtTest>
+#include "loader/token.h"
 #include "models/filtering/post-filter.h"
+#include "models/image.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 #include "test-suite.h"
 
 

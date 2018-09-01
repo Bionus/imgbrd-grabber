@@ -54,7 +54,7 @@ export const source: ISource = {
                     if (!query.search || query.search.length === 0) {
                         return "/images.json?" + loginPart + "page=" + query.page + "&nocomments=1&nofav=1";
                     }
-                    return "/search.json?" + loginPart + "page=" + query.page + "&q=" + query.search + "&nocomments=1&nofav=1";
+                    return "/search.json?" + loginPart + "page=" + query.page + "&q=" + encodeURIComponent(query.search) + "&nocomments=1&nofav=1";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -126,7 +126,7 @@ export const source: ISource = {
                     if (!query.search || query.search.length === 0) {
                         return "/images/page/" + query.page + "?" + loginPart;
                     }
-                    return "/search?" + loginPart + "page=" + query.page + "&sbq=" + query.search;
+                    return "/search?" + loginPart + "page=" + query.page + "&sbq=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     return {

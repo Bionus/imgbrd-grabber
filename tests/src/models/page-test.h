@@ -1,10 +1,12 @@
 #ifndef PAGE_TEST_H
 #define PAGE_TEST_H
 
-#include "models/page.h"
-#include "models/site.h"
+#include <QList>
 #include "test-suite.h"
 
+
+class Profile;
+class Site;
 
 class PageTest : public TestSuite
 {

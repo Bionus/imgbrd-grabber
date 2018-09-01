@@ -1,11 +1,11 @@
 #include "loader/downloadable-downloader.h"
+#include "functions.h"
 #include "logger.h"
-#include "models/image.h"
 #include "models/site.h"
 
 
 DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)
-	: QObject(parent), m_downloadable(std::move(downloadable)), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags)
+	: QObject(parent), m_downloadable(std::move(downloadable)), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags), m_fileDownloader(false, this)
 {}
 
 void DownloadableDownloader::setPath(const Filename &filename, const QString &folder)
@@ -51,14 +51,14 @@ void DownloadableDownloader::preloaded()
 	// If we don't need any loading, we return early
 	if (m_paths.isEmpty())
 	{
-		for (auto it = m_result.begin(); it != m_result.end(); ++it)
+		for (auto it = m_result.constBegin(); it != m_result.constEnd(); ++it)
 		{ m_downloadable->postSave(it.key(), it.value(), m_addMd5, m_startCommands, m_count); }
 		emit saved(m_downloadable, m_result);
 		return;
 	}
 
 	// Load the image directly on the disk
-	log(QStringLiteral("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url.toString());
 	QNetworkReply *reply = m_site->get(m_url, nullptr, QStringLiteral("image"), nullptr); // TODO(Bionus)
 	connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
@@ -92,7 +92,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 	}
 	else
 	{
-		log(QStringLiteral("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
+		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_url.toString().toHtmlEscaped()).arg(error).arg(errorString), Logger::Error);
 		setResult(m_paths, Downloadable::SaveResult::NetworkError);
 	}
 
@@ -102,7 +102,7 @@ void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, con
 void DownloadableDownloader::success()
 {
 	setResult(m_paths, Downloadable::SaveResult::Saved);
-	for (const QString &path : m_paths)
+	for (const QString &path : qAsConst(m_paths))
 	{ m_downloadable->postSave(path, Downloadable::SaveResult::Saved, m_addMd5, m_startCommands, m_count); }
 	emit saved(m_downloadable, m_result);
 }

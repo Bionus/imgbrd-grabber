@@ -17,7 +17,7 @@ namespace Ui
 
 class QAffiche;
 class Profile;
-class mainWindow;
+class MainWindow;
 class DetailsWindow;
 class ImageDownloader;
 class ImageLoader;
@@ -35,6 +35,7 @@ class ZoomWindow : public QWidget
 			Saved,
 			Copied,
 			Moved,
+			Linked,
 			ExistsMd5,
 			ExistsDisk,
 			Delete
@@ -48,7 +49,7 @@ class ZoomWindow : public QWidget
 			PendingOpen,
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -125,7 +126,7 @@ class ZoomWindow : public QWidget
 		void clearLoadQueue();
 
 	private:
-		mainWindow *m_parent;
+		MainWindow *m_parent;
 		Profile *m_profile;
 		QList<Favorite> &m_favorites;
 		QStringList &m_viewItLater;

@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QStringBuilder>
 #include <QTimeZone>
+#include "loader/token.h"
 
 
 MetaFilter::MetaFilter(QString type, QString val, bool invert)
@@ -93,7 +94,7 @@ static bool rangeCheck(T (*converter)(const QString &), T input, const QString &
 	if (val.startsWith(">"))
 	{ return input > converter(val.right(val.size() - 1)); }
 	if (val.contains(".."))
-	{ return input >= converter(val.left(val.indexOf(".."))) && input <= converter(val.right(val.size() - val.indexOf("..") - 2));	}
+	{ return input >= converter(val.left(val.indexOf(".."))) && input <= converter(val.right(val.size() - val.indexOf("..") - 2)); }
 	return input == converter(val);
 }
 
@@ -125,7 +126,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		const QDateTime &date = tokens["date"].value().toDateTime();
 		ageToDateImage = date;
 		ageToDateTestNow = tokens["TESTS_now"].value().toDateTime();
-		bool cond = rangeCheck(ageToDate, date, m_val);
+		const bool cond = rangeCheck(ageToDate, date, m_val);
 
 		if (cond && !invert)
 		{ return QObject::tr("image's %1 does not match").arg(m_type); }

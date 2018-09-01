@@ -1,5 +1,6 @@
 #include "tag-name-format-test.h"
 #include <QtTest>
+#include "tags/tag-name-format.h"
 
 
 void TagNameFormatTest::testLower()

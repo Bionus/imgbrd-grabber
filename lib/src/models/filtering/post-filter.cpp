@@ -1,5 +1,4 @@
 #include "post-filter.h"
-#include "functions.h"
 #include "filter.h"
 #include "filter-factory.h"
 

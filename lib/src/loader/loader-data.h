@@ -3,8 +3,9 @@
 
 #include <QList>
 #include <QSharedPointer>
-#include "loader/downloadable.h"
 
+
+class Downloadable;
 
 struct LoaderData
 {

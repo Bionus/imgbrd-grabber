@@ -7,17 +7,20 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <ui_zoom-window.h>
+#include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
-#include "mainwindow.h"
+#include "main-window.h"
 #include "models/filename.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
+#include "models/pool.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "settings/optionswindow.h"
+#include "settings/options-window.h"
 #include "tag-context-menu.h"
+#include "tags/tag.h"
 #include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
@@ -25,7 +28,7 @@
 #include "viewer/details-window.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, mainWindow *parent)
+ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent)
 	: QWidget(nullptr, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -291,9 +294,9 @@ void ZoomWindow::openPoolId(Page *p)
 void ZoomWindow::openSaveDir(bool fav)
 {
 	// If the file was already saved, we focus on it
-	if (!m_imagePath.isEmpty())
+	if (!m_source.isEmpty())
 	{
-		showInGraphicalShell(m_imagePath);
+		showInGraphicalShell(m_source);
 	}
 	else
 	{
@@ -370,7 +373,7 @@ void ZoomWindow::setfavorite()
 
 void ZoomWindow::load(bool force)
 {
-	log(QStringLiteral("Loading image from <a href=\"%1\">%1</a>").arg(m_url.toString()));
+	log(QStringLiteral("Loading image from `%1`").arg(m_url.toString()));
 
 	m_source.clear();
 
@@ -387,8 +390,8 @@ void ZoomWindow::load(bool force)
 	ImageDownloader *dwl = m_imageDownloaders.value(m_image, nullptr);
 	if (dwl == nullptr)
 	{
-		const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-		dwl = new ImageDownloader(m_image, QStringList() << fn, 1, false, false, this, true, force);
+		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+		dwl = new ImageDownloader(m_image, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, force);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
@@ -437,6 +440,8 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 
 void ZoomWindow::replyFinishedDetails()
 {
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails);
+
 	m_loadedDetails = true;
 	colore();
 
@@ -455,44 +460,39 @@ void ZoomWindow::replyFinishedDetails()
 	m_isAnimated = m_image->isAnimated();
 
 	const QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
-	const QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
+	const QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, true, true, true);
 	QString source1;
-	bool file1notexists = false;
 	for (const QString &pth1 : pth1s)
 	{
 		QFile file(pth1);
 		if (file.exists())
 			source1 = file.fileName();
-		else
-			file1notexists = true;
 	}
 
 	const QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
-	const QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
+	const QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, true, true, true);
 	QString source2;
-	bool file2notexists = false;
 	for (const QString &pth2 : pth2s)
 	{
 		QFile file(pth2);
 		if (file.exists())
 			source2 = file.fileName();
-		else
-			file2notexists = true;
 	}
 
 	QString md5Exists = m_profile->md5Exists(m_image->md5());
 
 	// If the file already exists, we directly display it
-	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
+	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty())
 	{
-		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 		m_imagePath = m_source;
-		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
+		m_image->setSavePath(m_source);
+		log(QStringLiteral("Image loaded from the file `%1`").arg(m_source));
 
 		// Update save button state
 		const SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
-		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : md5State);
-		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
 
 		// Fix extension when it should be guessed
 		const QString fext = m_source.section('.', -1);
@@ -511,7 +511,7 @@ void ZoomWindow::replyFinishedDetails()
 	else if (!m_image->savePath().isEmpty() && QFile::exists(m_image->savePath()))
 	{
 		m_imagePath = m_image->savePath();
-		log(QStringLiteral("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_imagePath));
+		log(QStringLiteral("Image loaded from the file `%1`").arg(m_imagePath));
 
 		m_finished = true;
 		m_loadedImage = true;
@@ -578,6 +578,10 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
 			break;
 
+		case SaveButtonState::Linked:
+			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
+			break;
+
 		case SaveButtonState::ExistsMd5:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
@@ -613,7 +617,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result)
 {
-	log(QStringLiteral("Image received from <a href=\"%1\">%1</a>").arg(m_url.toString()));
+	log(QStringLiteral("Image received from `%1`").arg(m_url.toString()));
 	Image::SaveResult res = result.first();
 
 	ui->progressBarDownload->hide();
@@ -823,7 +827,7 @@ void ZoomWindow::saveImage(bool fav)
 		case SaveButtonState::Delete:
 		{
 			if (m_imagePath.isEmpty() || m_imagePath == m_source)
-			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp"; }
+			{ m_imagePath = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + "." + m_image->extension(); }
 			if (QFile::exists(m_imagePath))
 			{ QFile::remove(m_source); }
 			else
@@ -844,8 +848,12 @@ void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs)
 	{
-		QFile::copy(m_imagePath, m_saveAsPending);
-		saveImageNowSaved(m_image, QMap<QString, Image::SaveResult>());
+		if (QFile::exists(m_saveAsPending))
+		{ QFile::remove(m_saveAsPending); }
+		bool ok = QFile(m_imagePath).copy(m_saveAsPending);
+		auto result = ok ? Image::SaveResult::Saved : Image::SaveResult::Error;
+		m_image->postSave(m_saveAsPending, result, true, true, 1);
+		saveImageNowSaved(m_image, QMap<QString, Image::SaveResult> {{ m_saveAsPending, result }});
 		return;
 	}
 
@@ -864,7 +872,7 @@ void ZoomWindow::saveImageNow()
 		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			auto *options = new optionsWindow(m_profile, parentWidget());
+			auto *options = new OptionsWindow(m_profile, parentWidget());
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
@@ -873,7 +881,7 @@ void ZoomWindow::saveImageNow()
 		return;
 	}
 
-	auto downloader = new ImageDownloader(m_image, fn, pth, 1, true, true, this);
+	auto downloader = new ImageDownloader(m_image, fn, pth, 1, true, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, this, &ZoomWindow::saveImageNowSaved);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
@@ -884,7 +892,7 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString
 
 	const bool fav = m_pendingAction == PendingSaveFav;
 
-	for (auto it = result.begin(); it != result.end(); ++it)
+	for (auto it = result.constBegin(); it != result.constEnd(); ++it)
 	{
 		const Image::SaveResult res = it.value();
 		m_source = it.key();
@@ -903,12 +911,16 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString
 				setButtonState(fav, SaveButtonState::Moved);
 				break;
 
-			case Image::SaveResult::Ignored:
+			case Image::SaveResult::Linked:
+				setButtonState(fav, SaveButtonState::Linked);
+				break;
+
+			case Image::SaveResult::AlreadyExistsMd5:
 				setButtonState(fav, SaveButtonState::ExistsMd5);
 				m_source = m_profile->md5Exists(m_image->md5());
 				break;
 
-			case Image::SaveResult::AlreadyExists:
+			case Image::SaveResult::AlreadyExistsDisk:
 				setButtonState(fav, SaveButtonState::ExistsDisk);
 				break;
 
@@ -1051,7 +1063,7 @@ void ZoomWindow::closeEvent(QCloseEvent *e)
 
 	m_image->abortTags();
 
-	for (auto it = m_imageDownloaders.begin(); it != m_imageDownloaders.end(); ++it)
+	for (auto it = m_imageDownloaders.constBegin(); it != m_imageDownloaders.constEnd(); ++it)
 	{
 		it.value()->abort();
 		it.value()->deleteLater();
@@ -1126,9 +1138,6 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 {
 	emit clearLoadQueue();
 
-	if (!m_image.isNull())
-	{ disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails); }
-
 	m_displayImage = QPixmap();
 	m_loadedImage = false;
 	m_source = "";
@@ -1143,35 +1152,32 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	if (isVisible())
 	{ showThumbnail(); }
 
-	// Preload gallery images
+	// Preload and abort next and previous images
 	const int preload = m_settings->value("preload", 0).toInt();
-	if (preload > 0)
+	QSet<int> preloaded;
+	const int index = m_images.indexOf(m_image);
+	for (int i = index - preload - 1; i <= index + preload + 1; ++i)
 	{
-		QSet<int> preloaded;
-		const int index = m_images.indexOf(m_image);
-		for (int i = index - preload - 1; i <= index + preload + 1; ++i)
-		{
-			bool forAbort = i == index - preload - 1 || i == index + preload + 1;
-			int pos = (i + m_images.count()) % m_images.count();
-			if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
-				continue;
+		bool forAbort = i == index - preload - 1 || i == index + preload + 1;
+		int pos = (i + m_images.count()) % m_images.count();
+		if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
+			continue;
 
-			QSharedPointer<Image> img = m_images[pos];
-			bool downloaderExists = m_imageDownloaders.contains(img);
-			if (downloaderExists && forAbort)
-				m_imageDownloaders[img]->abort();
-			if (downloaderExists || forAbort || (!img->savePath().isEmpty() && QFile::exists(img->savePath())))
-				continue;
+		QSharedPointer<Image> img = m_images[pos];
+		bool downloaderExists = m_imageDownloaders.contains(img);
+		if (downloaderExists && forAbort)
+			m_imageDownloaders[img]->abort();
+		if (downloaderExists || forAbort || (!img->savePath().isEmpty() && QFile::exists(img->savePath())))
+			continue;
 
-			preloaded.insert(pos);
-			log(QStringLiteral("Preloading data for image #%1").arg(pos));
-			m_images[pos]->loadDetails();
+		preloaded.insert(pos);
+		log(QStringLiteral("Preloading data for image #%1").arg(pos));
+		m_images[pos]->loadDetails();
 
-			const QString fn = m_profile->tempPath() + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
-			auto dwl = new ImageDownloader(img, QStringList() << fn, 1, false, false, this);
-			m_imageDownloaders.insert(img, dwl);
-			dwl->save();
-		}
+		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+		auto dwl = new ImageDownloader(img, fn, m_profile->tempPath(), 1, false, false, true, this, false);
+		m_imageDownloaders.insert(img, dwl);
+		dwl->save();
 	}
 
 	// Reset buttons

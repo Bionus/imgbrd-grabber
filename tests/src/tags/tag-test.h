@@ -1,10 +1,11 @@
 #ifndef TAG_TEST_H
 #define TAG_TEST_H
 
-#include <QSettings>
-#include "tags/tag.h"
 #include "test-suite.h"
 
+
+class Profile;
+class QSettings;
 
 class TagTest : public TestSuite
 {

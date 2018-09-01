@@ -1,7 +1,6 @@
 #ifndef POOL_TEST_H
 #define POOL_TEST_H
 
-#include "models/pool.h"
 #include "test-suite.h"
 
 

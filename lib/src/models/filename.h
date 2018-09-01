@@ -1,8 +1,8 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
-#include <QJSEngine>
-#include <QSettings>
+#include <QList>
+#include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
@@ -10,6 +10,8 @@
 
 class Site;
 class Image;
+class QJSEngine;
+class QSettings;
 class Profile;
 class Token;
 
@@ -23,7 +25,7 @@ class Filename
 		void setEscapeMethod(QString (*)(const QVariant &));
 
 		QStringList path(const Image &img, Profile *profile, const QString &pth = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
-		QStringList	path(QMap<QString, Token> tokens, Profile *profile, QString folder = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
+		QStringList path(QMap<QString, Token> tokens, Profile *profile, QString folder = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
 
 		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 		bool needTemporaryFile(const QMap<QString, Token> &tokens) const;

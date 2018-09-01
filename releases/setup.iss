@@ -18,7 +18,11 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "6.0.4"
+# define MyAppVersion "6.0.5"
+#endif
+
+#ifndef QtApngDll
+# define QtApngDll QtPlugins + "\imageformats\qapng.dll"
 #endif
 
 
@@ -127,6 +131,7 @@ Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crash
 Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -159,7 +164,8 @@ Source: "..\release\sites\Anime pictures\icon.png";     DestDir: "{localappdata}
 Source: "..\release\sites\Anime pictures\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
 Source: "..\release\sites\Anime pictures\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
 Source: "..\release\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion

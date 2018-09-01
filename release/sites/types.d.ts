@@ -45,9 +45,7 @@ interface IParsedDetails {
     imageUrl?: string;
     createdAt?: string;
 }
-interface IParsedGallery {
-    images: Iterable<IImage>;
-}
+interface IParsedGallery extends IParsedSearch {}
 
 type IAuthField = IAuthNormalField | IAuthHashField;
 interface IAuthFieldBase {
@@ -69,7 +67,7 @@ interface IAuthCheckCookie {
 }
 
 interface IAuth {
-    type: string;
+    type: "url" | "get" | "post" | "oauth2";
     fields: IAuthField[];
     check?: IAuthCheck;
     [name: string]: any;
@@ -94,7 +92,7 @@ interface IApi {
         parse: (src: string) => IParsedDetails | IError;
     };
     gallery?: {
-        url: (id: number) => IUrl | IError | string;
+        url: (query: any, opts: any) => IUrl | IError | string;
         parse: (src: string) => IParsedGallery | IError;
     };
     tags?: {

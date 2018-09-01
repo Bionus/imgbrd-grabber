@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>md5Fix</class>
- <widget class="QDialog" name="md5Fix">
+ <class>Md5Fix</class>
+ <widget class="QDialog" name="Md5Fix">
   <property name="geometry">
    <rect>
     <x>0</x>

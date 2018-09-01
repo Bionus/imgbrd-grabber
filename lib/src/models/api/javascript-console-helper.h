@@ -2,6 +2,7 @@
 #define JAVASCRIPT_CONSOLE_HELPER_H
 
 #include <QObject>
+#include <QString>
 
 
 class JavascriptConsoleHelper : public QObject

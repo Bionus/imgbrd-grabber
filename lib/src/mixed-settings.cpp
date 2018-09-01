@@ -1,4 +1,5 @@
 #include "mixed-settings.h"
+#include <QSettings>
 #include "functions.h"
 
 

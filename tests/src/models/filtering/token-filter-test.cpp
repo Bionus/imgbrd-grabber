@@ -1,7 +1,8 @@
 #include "token-filter-test.h"
 #include <QtTest>
-#include "models/filtering/token-filter.h"
 #include "loader/token.h"
+#include "models/filtering/tag-filter.h"
+#include "models/filtering/token-filter.h"
 
 
 void TokenFilterTest::testToString()
@@ -15,6 +16,7 @@ void TokenFilterTest::testCompare()
 	QCOMPARE(TokenFilter("test") == TokenFilter("test"), true);
 	QCOMPARE(TokenFilter("test") == TokenFilter("test", true), false);
 	QCOMPARE(TokenFilter("test") == TokenFilter("another test"), false);
+	QCOMPARE(TokenFilter("test") == TagFilter("tag"), false);
 }
 
 void TokenFilterTest::testMatchInt()

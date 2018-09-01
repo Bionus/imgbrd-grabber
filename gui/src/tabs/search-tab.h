@@ -18,7 +18,7 @@
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class Favorite;
-class mainWindow;
+class MainWindow;
 class Profile;
 class QBouton;
 class FixedSizeGridLayout;
@@ -26,13 +26,13 @@ class TextEdit;
 class VerticalScrollArea;
 class ZoomWindow;
 
-class searchTab : public QWidget
+class SearchTab : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		searchTab(Profile *profile, mainWindow *parent);
-		~searchTab() override;
+		SearchTab(Profile *profile, MainWindow *parent);
+		~SearchTab() override;
 		void init();
 		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
@@ -68,6 +68,7 @@ class searchTab : public QWidget
 		void contextSaveImage(int position);
 		void contextSaveImageAs(int position);
 		void contextSaveSelected();
+		void contextSaveImageProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
 		void toggleSource(const QString &url);
@@ -117,6 +118,7 @@ class searchTab : public QWidget
 		void httpsRedirect(Page *page);
 		void postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		void finishedLoadingTags(Page *page);
+		void updatePaginationButtons(Page *page);
 		// Image selection
 		void selectImage(const QSharedPointer<Image> &img);
 		void unselectImage(const QSharedPointer<Image> &img);
@@ -127,30 +129,30 @@ class searchTab : public QWidget
 
 	signals:
 		// Tab events
-		void titleChanged(searchTab*);
-		void changed(searchTab*);
-		void closed(searchTab*);
+		void titleChanged(SearchTab*);
+		void changed(SearchTab*);
+		void closed(SearchTab*);
 
 		// Batch
 		void batchAddGroup(const DownloadQueryGroup &);
 		void batchAddUnique(const DownloadQueryImage &);
 
 	protected:
-		Profile				*m_profile;
-		int					m_lastPage;
-		qulonglong			m_lastPageMaxId, m_lastPageMinId;
+		Profile *m_profile;
+		int m_lastPage;
+		qulonglong m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;
-		QMap<Image*, QBouton*>	m_boutons;
-		QList<QUrl>			m_selectedImages;
-		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
-		QList<Site*>		m_selectedSources;
-		QSignalMapper		*m_checkboxesSignalMapper;
-		QList<QCheckBox*>	m_checkboxes;
-		QList<Favorite>		&m_favorites;
-		QList<Tag>			m_tags;
-		mainWindow			*m_parent;
-		QSettings			*m_settings;
-		QString				m_wiki;
+		QMap<Image*, QBouton*> m_boutons;
+		QList<QUrl> m_selectedImages;
+		QList<QSharedPointer<Image>> m_selectedImagesPtrs;
+		QList<Site*> m_selectedSources;
+		QSignalMapper *m_checkboxesSignalMapper;
+		QList<QCheckBox*> m_checkboxes;
+		QList<Favorite> &m_favorites;
+		QList<Tag> m_tags;
+		MainWindow *m_parent;
+		QSettings *m_settings;
+		QString m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;
 
 		QStringList m_completion;
@@ -178,28 +180,28 @@ class searchTab : public QWidget
 		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff
-		TextEdit *m_postFiltering;
-		QCheckBox *ui_checkMergeResults;
-		QProgressBar *ui_progressMergeResults;
-		QStackedWidget *ui_stackedMergeResults;
-		QSpinBox *ui_spinPage;
-		QSpinBox *ui_spinImagesPerPage;
-		QSpinBox *ui_spinColumns;
-		QWidget *ui_widgetMeant;
-		QLabel *ui_labelMeant;
-		QGridLayout *ui_layoutResults;
-		QLayout *ui_layoutSourcesList;
-		QPushButton *ui_buttonHistoryBack;
-		QPushButton *ui_buttonHistoryNext;
-		QPushButton *ui_buttonNextPage;
-		QPushButton *ui_buttonLastPage;
-		QPushButton *ui_buttonGetAll;
-		QPushButton *ui_buttonGetPage;
-		QPushButton *ui_buttonGetSel;
-		QPushButton *ui_buttonFirstPage;
-		QPushButton *ui_buttonPreviousPage;
-		QPushButton *ui_buttonEndlessLoad;
-		VerticalScrollArea *ui_scrollAreaResults;
+		TextEdit *m_postFiltering = nullptr;
+		QCheckBox *ui_checkMergeResults = nullptr;
+		QProgressBar *ui_progressMergeResults = nullptr;
+		QStackedWidget *ui_stackedMergeResults = nullptr;
+		QSpinBox *ui_spinPage = nullptr;
+		QSpinBox *ui_spinImagesPerPage = nullptr;
+		QSpinBox *ui_spinColumns = nullptr;
+		QWidget *ui_widgetMeant = nullptr;
+		QLabel *ui_labelMeant = nullptr;
+		QGridLayout *ui_layoutResults = nullptr;
+		QLayout *ui_layoutSourcesList = nullptr;
+		QPushButton *ui_buttonHistoryBack = nullptr;
+		QPushButton *ui_buttonHistoryNext = nullptr;
+		QPushButton *ui_buttonNextPage = nullptr;
+		QPushButton *ui_buttonLastPage = nullptr;
+		QPushButton *ui_buttonGetAll = nullptr;
+		QPushButton *ui_buttonGetPage = nullptr;
+		QPushButton *ui_buttonGetSel = nullptr;
+		QPushButton *ui_buttonFirstPage = nullptr;
+		QPushButton *ui_buttonPreviousPage = nullptr;
+		QPushButton *ui_buttonEndlessLoad = nullptr;
+		VerticalScrollArea *ui_scrollAreaResults = nullptr;
 };
 
 #endif // SEARCH_TAB_H

@@ -1,14 +1,12 @@
 #include "downloader/downloader.h"
-#include <QDir>
-#include <QFile>
 #include <qmath.h>
 #include <iostream>
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
-#include "models/filtering/post-filter.h"
 #include "models/page.h"
 #include "models/site.h"
+#include "tags/tag.h"
 
 
 Downloader::~Downloader()
@@ -125,7 +123,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	}
 
 	QList<Tag> list;
-	for (auto p : m_pagesT)
+	for (auto p : qAsConst(m_pagesT))
 	{
 		const QList<Tag> &pageTags = p->tags();
 		for (const Tag &tag : pageTags)
@@ -232,7 +230,7 @@ void Downloader::loadNext()
 	{
 		const QSharedPointer<Image> image = m_images.takeFirst();
 		log(QString("Loading image '%1'").arg(image->url().toString()));
-		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false);
+		auto dwl = new ImageDownloader(image, m_filename, m_location, 0, true, false, m_blacklist, this);
 		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
 		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 		dwl->save();
@@ -275,7 +273,7 @@ void Downloader::getImages()
 	m_waiting = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
@@ -312,7 +310,7 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QSet<QString> md5s;
 	QList<QSharedPointer<Image>> images;
-	for (Page *p : m_pages)
+	for (Page *p : qAsConst(m_pages))
 	{
 		for (const QSharedPointer<Image> &img : p->images())
 		{
@@ -392,7 +390,7 @@ void Downloader::getUrls()
 	m_duplicates = 0;
 	m_cancelled = false;
 
-	for (Site *site : m_sites)
+	for (Site *site : qAsConst(m_sites))
 	{
 		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
@@ -426,7 +424,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 
 	QSet<QString> md5s;
 	QVector<QSharedPointer<Image>> images;
-	for (Page *p : m_pages)
+	for (Page *p : qAsConst(m_pages))
 	{
 		for (const QSharedPointer<Image> &img : p->images())
 		{

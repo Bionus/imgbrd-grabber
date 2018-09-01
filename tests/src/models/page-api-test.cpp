@@ -1,6 +1,11 @@
 #include "page-api-test.h"
 #include <QtTest>
+#include "models/page.h"
+#include "models/page-api.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "models/source.h"
+#include "tags/tag.h"
 
 
 void PageApiTest::init()

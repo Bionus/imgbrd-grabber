@@ -2,7 +2,6 @@
 #include <QEventLoop>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QRegularExpression>
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"

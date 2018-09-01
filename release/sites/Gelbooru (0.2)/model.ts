@@ -10,19 +10,6 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
-function setExtension(url: string, ext: string): string {
-    const queryPos: number = url.indexOf("?");
-    const dotPos: number = url.lastIndexOf(".", queryPos !== -1 ? queryPos : url.length);
-    const query: string = queryPos === -1 ? "" : url.substr(queryPos);
-    return url.substr(0, dotPos + 1) + ext + query;
-}
-
-// Fix thumbnails that do not have a JPG extendion
-function fixThumbnailExtension(img: IImage): IImage {
-    img["preview_url"] = setExtension(img["preview_url"], "jpg");
-    return img;
-}
-
 export const source: ISource = {
     name: "Gelbooru (0.2)",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating", "sort:updated", "sort:id", "sort:score", "sort:rating", "sort:user", "sort:height", "sort:width", "sort:parent", "sort:source", "sort:updated"],
@@ -40,7 +27,7 @@ export const source: ISource = {
                 url: (query: any, opts: any, previous: any): string => {
                     const page: number = query.page - 1;
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
-                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + search;
+                    return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -49,7 +36,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of data) {
                         if (image && "@attributes" in image) {
-                            images.push(fixThumbnailExtension(completeImage(image["@attributes"])));
+                            images.push(completeImage(image["@attributes"]));
                         }
                     }
 
@@ -70,7 +57,7 @@ export const source: ISource = {
                         const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
-                        return "/index.php?page=post&s=list&tags=" + search + pagePart;
+                        return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                     } catch (e) {
                         return { error: e.message };
                     }

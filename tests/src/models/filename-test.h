@@ -1,12 +1,17 @@
 #ifndef FILENAME_TEST_H
 #define FILENAME_TEST_H
 
-#include "models/filename.h"
-#include "models/image.h"
-#include "models/site.h"
-#include "models/source.h"
+#include <QMap>
+#include <QString>
+#include <QStringList>
 #include "test-suite.h"
 
+
+class Image;
+class Profile;
+class QSettings;
+class Site;
+class Source;
 
 class FilenameTest : public TestSuite
 {

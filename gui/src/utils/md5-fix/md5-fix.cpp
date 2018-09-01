@@ -10,8 +10,8 @@
 #include "models/profile.h"
 
 
-md5Fix::md5Fix(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::md5Fix), m_profile(profile)
+Md5Fix::Md5Fix(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::Md5Fix), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -24,18 +24,18 @@ md5Fix::md5Fix(Profile *profile, QWidget *parent)
 	resize(size().width(), 0);
 }
 
-md5Fix::~md5Fix()
+Md5Fix::~Md5Fix()
 {
 	delete ui;
 }
 
-void md5Fix::on_buttonCancel_clicked()
+void Md5Fix::on_buttonCancel_clicked()
 {
 	emit rejected();
 	close();
 }
 
-void md5Fix::on_buttonStart_clicked()
+void Md5Fix::on_buttonStart_clicked()
 {
 	ui->buttonStart->setEnabled(false);
 
@@ -124,6 +124,8 @@ void md5Fix::on_buttonStart_clicked()
 	ui->progressBar->setMaximum(0);
 
 	ui->buttonStart->setEnabled(true);
+
+	m_profile->sync();
 
 	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", count));
 }

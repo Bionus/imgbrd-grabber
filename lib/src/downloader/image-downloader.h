@@ -1,7 +1,13 @@
 #ifndef IMAGE_DOWNLOADER_H
 #define IMAGE_DOWNLOADER_H
 
+#include <QMap>
+#include <QNetworkReply>
 #include <QObject>
+#include <QSharedPointer>
+#include <QString>
+#include <QStringList>
+#include <QUrl>
 #include "downloader/file-downloader.h"
 #include "loader/downloadable.h"
 #include "models/image.h"
@@ -12,8 +18,8 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = false, bool rotate = true, bool force = false);
-		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false);
+		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false);
+		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false);
 		~ImageDownloader();
 		bool isRunning() const;
 
@@ -48,6 +54,7 @@ class ImageDownloader : public QObject
 		int m_count;
 		bool m_addMd5;
 		bool m_startCommands;
+		bool m_getBlacklisted;
 		bool m_writeError;
 		bool m_rotate;
 		bool m_force;

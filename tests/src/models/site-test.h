@@ -1,11 +1,13 @@
 #ifndef SITE_TEST_H
 #define SITE_TEST_H
 
-#include <QSettings>
-#include "models/site.h"
-#include "models/source.h"
 #include "test-suite.h"
 
+
+class Profile;
+class QSettings;
+class Site;
+class Source;
 
 class SiteTest : public TestSuite
 {

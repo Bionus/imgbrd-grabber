@@ -1,7 +1,6 @@
 #ifndef SOURCE_UPDATER_H
 #define SOURCE_UPDATER_H
 
-#include <QObject>
 #include <QString>
 #include "updater/updater.h"
 

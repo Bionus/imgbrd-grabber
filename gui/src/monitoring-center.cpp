@@ -1,5 +1,7 @@
 #include "monitoring-center.h"
 #include <QEventLoop>
+#include <QSettings>
+#include <QSystemTrayIcon>
 #include <QTimer>
 #include "logger.h"
 #include "models/favorite.h"

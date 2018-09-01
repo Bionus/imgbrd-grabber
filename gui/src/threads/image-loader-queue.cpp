@@ -1,5 +1,6 @@
 #include "threads/image-loader-queue.h"
 #include <QObject>
+#include <QPixmap>
 #include "threads/image-loader.h"
 
 
