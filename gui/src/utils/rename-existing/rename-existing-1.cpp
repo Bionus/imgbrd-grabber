@@ -10,20 +10,24 @@
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "models/site.h"
 #include "utils/rename-existing/rename-existing-2.h"
 
 
-RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)
+RenameExisting1::RenameExisting1(Site *selected, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(0)
 {
 	ui->setupUi(this);
+
+	QStringList keys = m_sites.keys();
+	ui->comboSource->addItems(keys);
+	ui->comboSource->setCurrentIndex(keys.indexOf(selected->url()));
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilenameOrigin->setText(settings->value("Save/filename").toString());
 	ui->lineSuffixes->setText(getExternalLogFilesSuffixes(profile->getSettings()).join(", "));
 	ui->lineFilenameDestination->setText(settings->value("Save/filename").toString());
-	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 
 	resize(size().width(), 0);

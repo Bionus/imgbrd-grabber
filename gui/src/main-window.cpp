@@ -803,7 +803,7 @@ void MainWindow::md5FixOpen()
 }
 void MainWindow::renameExisting()
 {
-	auto *win = new RenameExisting1(m_profile, this);
+	auto *win = new RenameExisting1(getSelectedSiteOrDefault(), m_profile, this);
 	win->show();
 }
 void MainWindow::utilTagLoader()
