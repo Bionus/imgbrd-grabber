@@ -6,6 +6,7 @@ show_download: true
 google_analytics: UA-22768717-4
 theme:
 lang: en_US
+relative_permalinks: false
 
 exclude:
 - release/
@@ -16,6 +17,11 @@ exclude:
 
 kramdown:
   header_offset: 1
+
+collections:
+  docs:
+    permalink: "/:collection/:path.html"
+    output: true
 
 gems:
 - jekyll-seo-tag
@@ -28,3 +34,8 @@ defaults:
       path: ""
     values:
       image: assets/img/icon.png
+  - scope:
+      path: _docs
+      type: docs
+    values:
+      layout: docs

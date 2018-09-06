@@ -142,16 +142,18 @@ section {
 	}
 }
 
-section h2 {
-	clear: both;
-	text-align: center;
-	margin: 30px 0 30px 0;
-	font-size: 30px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #ccc;
+.index {
+	section h2 {
+		clear: both;
+		text-align: center;
+		margin: 30px 0 30px 0;
+		font-size: 30px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #ccc;
 
-	@media screen and (max-width: $screen-xs-max) {
-		font-size: 26px;
+		@media screen and (max-width: $screen-xs-max) {
+			font-size: 26px;
+		}
 	}
 }
 
@@ -289,4 +291,37 @@ footer p {
 	text-align: center;
 	font-size: 12px;
 	color: #555;
+}
+
+
+/* Left navigation menu */
+
+aside.menu {
+	ul {
+		list-style: none;
+		padding-left: 0;
+
+		li {
+			span {
+				font-weight: bold;
+			}
+
+			&.active a {
+				color: #666;
+			}
+		}
+	}
+
+	> ul > li {
+		margin-bottom: 15px;
+	}
+}
+
+
+/* Documentation text */
+
+.docs {
+	.content > *:first-child {
+		margin-top: 0 !important;
+	}
 }

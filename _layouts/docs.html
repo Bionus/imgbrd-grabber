@@ -1,0 +1,29 @@
+---
+layout: default
+class: docs
+---
+
+{%capture header %}
+	<div class="head">
+		<h1>{{ page.title }}</h1>
+	</div>
+{% endcapture %}
+
+{% capture content %}
+	<div class="row">
+		<div class="col-md-3">
+			<aside class="menu">
+				<ul>
+					{% for section in site.data.docs_navigation %}
+						{% include navbar_link.html item=section %}
+					{% endfor %}
+				</ul>
+			</aside>
+		</div>
+		<div class="col-md-9 content">
+			{{ content }}
+		</div>
+	</div>
+{% endcapture %}
+
+{% include body.html %}

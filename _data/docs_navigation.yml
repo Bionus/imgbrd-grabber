@@ -1,0 +1,26 @@
+- name: Basics
+  children:
+    - link: /docs/
+    - link: /docs/filename.html
+    - link: /docs/favorites.html
+    - link: /docs/website-login.html
+- name: Commands
+  children:
+    - link: /docs/commands/
+    - link: /docs/commands/my-imouto.html
+    - link: /docs/commands/gelbooru.html
+    - link: /docs/commands/shimmie.html
+- name: Sources
+  children:
+    - link: /docs/sites/
+    - link: /docs/sites/source.html
+    - link: /docs/sites/javascript-helper.html
+- name: Plugins
+  children:
+    - link: /docs/plugins/translation.html
+    - link: /docs/plugins/theme.html
+- name: Advanced
+  children:
+    - link: /docs/compilation.html
+    - link: /docs/cli.html
+    - link: /docs/portable-version.html
