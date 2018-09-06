@@ -11,9 +11,10 @@ relative_permalinks: false
 exclude:
 - release/
 - releases/
-- cli/build/
-- gui/build/
-- tests/build/
+- languages/
+- cli/
+- gui/
+- tests/
 
 kramdown:
   header_offset: 1
