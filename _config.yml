@@ -24,7 +24,8 @@ collections:
     output: true
 
 gems:
-- jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-seo-tag
 
 webmaster_verifications:
   google: HUsU9v5lhoPPeKdafhViSRi1NofQwzQrRwLN1nEzsA8
