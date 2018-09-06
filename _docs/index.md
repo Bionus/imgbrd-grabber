@@ -28,7 +28,7 @@ After installation you will need to copy the example configuration files to your
 
 When you first start the program, you should be welcomed with this window:
 
-\images/firstlaunch.png]]
+![startup window](img/firstlaunch.png)
 
 There are four fields to fill:
 
@@ -44,7 +44,7 @@ Then, go the the "Save" part. Set the "Folder" and the "Filename" fields (it is 
 
 You should now be seeing something like this:
 
-![startup window](images/start.png)
+![startup window](img/start.png)
 
 ## Searching
 
@@ -55,7 +55,7 @@ The upper part of the window is "divided" into two parts:
 
 After searching for something, you should see something as:
 
-![search results](images/search.png)
+![search results](img/search.png)
 
 ## Downloading
 
@@ -65,15 +65,15 @@ To download a lot of pictures at the same time, first search for the tag you wan
 
 Then, go to the "Downloads" tab to have a summary or what will be downloaded:
 
-![downloads tab](images/downloadpage.png)
+![downloads tab](img/downloadpage.png)
 
 Once you are satisfied with your download list, click the "Download" button to start the download. This window should then appear:
 
-![batch download window](images/batchdownload.png)
+![batch download window](img/batchdownload.png)
 
 It lists all the images that will be or are already downloaded. Now, you just have to wait. When all images are downloaded, the program will tell you and show you a summary:
 
-![download finished window](images/downloadfinished.png)
+![download finished window](img/downloadfinished.png)
 
 Success!
 
@@ -81,11 +81,11 @@ Success!
 
 To download single images, you have to "Ctrl + click" the images you want to download in the search window. They should then be marked in blue.
 
-![single image selection](images/getselected.png)
+![single image selection](img/getselected.png)
 
 One you have selected all the images you want to download, click the "Get selected" button. It will mark these images to be downloaded in the "Downloads" tab:
 
-![single image downloads tab](images/downloadselected.png)
+![single image downloads tab](img/downloadselected.png)
 
 Once you are satisfied with your download list, click the "Download" button.
 
@@ -95,7 +95,7 @@ Once you are satisfied with your download list, click the "Download" button.
 
 If you want to change the source of the pictures, just click the "Sources button" at the bottom of the window:
 
-![sources window](images/sources.png)
+![sources window](img/sources.png)
 
 Here, you just have to check the sources you want and then click "Ok".
 
@@ -111,10 +111,10 @@ Some sources (for example Danbooru or Gelbooru) require to login to enable full 
 
 To log in a source, just enter your credentials in the "Credentials" tab of the source settings window:
 
-![credentials form](images/sourcecredentials.png)
+![credentials form](img/sourcecredentials.png)
 
 When you're done, you can click the "Test" button to check if your credentials are correct. Note that not all source support login checking.
 
-![credentials test success](images/sourcecredentialssuccess.png)
+![credentials test success](img/sourcecredentialssuccess.png)
 
 Success!
