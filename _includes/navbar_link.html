@@ -4,7 +4,7 @@
 <li class="{% if page.url == p.url %}active{% endif %}
 {% if item.children %}has-children{% endif %}">
 	{% if p %}
-		<a href="{{ p.url }}">
+		<a href="{{ p.url | relative_url }}">
 			{% if p.menu_name %}
 				{{ p.menu_name }}
 			{% else %}

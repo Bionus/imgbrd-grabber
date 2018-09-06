@@ -7,6 +7,7 @@ google_analytics: UA-22768717-4
 theme:
 lang: en_US
 relative_permalinks: false
+baseurl: /imgbrd-grabber
 
 exclude:
 - release/
