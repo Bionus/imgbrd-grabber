@@ -14,6 +14,9 @@ exclude:
 - gui/build/
 - tests/build/
 
+kramdown:
+  header_offset: 1
+
 gems:
 - jekyll-seo-tag
 

@@ -11,7 +11,7 @@ Grabber works on Windows, Mac, and Linux.
 
 
 
-## Sources
+# Sources
 
 <div class="sources" markdown="1">
 <i>Note that those are only a few sources present by default, but you can add as many as you want very easily!</i>
@@ -79,7 +79,7 @@ Behoimi
 
 
 
-## Features
+# Features
 
 <div class="features" markdown="1">
 <div class="feature" markdown="1">
@@ -87,7 +87,7 @@ Behoimi
 [![multi-source search](assets/img/screenshots/search-multiple-thumb.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
 [![merged search](assets/img/screenshots/search-merged-thumb.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
 
-### Browse
+## Browse
 
 * Tabs to make multiple searchs at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
@@ -102,7 +102,7 @@ Behoimi
 <div class="feature" markdown="1">
 [![download window](assets/img/screenshots/download-thumb.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
 
-### Download
+## Download
 
 * Download thousands of images at once
 * Download single images using their MD5 or ID
@@ -112,7 +112,7 @@ Behoimi
 <div class="feature" markdown="1">
 [![sources window](assets/img/screenshots/sources-thumb.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
 
-### Customize
+## Customize
 
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
@@ -123,7 +123,7 @@ Behoimi
 <div class="feature" markdown="1">
 [![filename window](assets/img/screenshots/filename-thumb.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
 
-### Organize
+## Organize
 
 * Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Filename) for details.
 * Favorite tags to keep track of new images
@@ -137,7 +137,7 @@ Behoimi
 
 
 
-## Languages
+# Languages
 
 <div class="flags" markdown="1">
 <div class="flag" markdown="1">
@@ -173,7 +173,7 @@ Spanish
 
 
 
-## Contact
+# Contact
 
 If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).
 
