@@ -1,114 +1,27 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <title>{{ site.title | default: site.github.repository_name }}{% if site.subtitle %} - {{ site.subtitle }}{% endif %}</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" integrity="sha256-UpdOHyyfsvF5Uu6BhbsYQHd1aCNIvxhICDFjz4QbENo=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" />
-    <meta name="viewport" content="width=device-width" />
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    {% seo title=false %}
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <div class="container">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ site.github.repository_url }}/wiki">Documentation</a></li>
-            <li><a href="{{ site.github.repository_url }}/blob/master/LICENSE">License</a></li>
-            <li><a href="{{ site.github.repository_url }}/issues">Issue tracker</a></li>
-          </ul>
+---
+layout: default
+class: index
+---
 
-          <div class="head">
-            {% if site.logo %}
-              <img src="{{ site.logo | relative_url }}" alt="logo" />
-            {% endif %}
+{% capture header %}
+	<div class="head">
+		{% if site.logo %}
+			<img src="{{ site.logo | relative_url }}" alt="logo" />
+		{% endif %}
 
-            <div class="hright">
-              <h1>{{ site.title | default: site.github.repository_name }}</h1>
-              {% if site.subtitle %}
-                <p class="subtitle">{{ site.subtitle }}</p>
-              {% endif %}
-              <p class="description">{{ site.description | default: site.github.project_tagline }}</p>
+		<div class="hright">
+			<h1>{{ site.title | default: site.github.repository_name }}</h1>
+			{% if site.subtitle %}
+				<p class="subtitle">{{ site.subtitle }}</p>
+			{% endif %}
+			<p class="description">{{ site.description | default: site.github.project_tagline }}</p>
 
-              {% if site.show_download %}
-                <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}" data-label="Download">Free Download</a></p>
-              {% endif %}
-              <p class="view"><a href="{{ site.github.repository_url }}" data-label="GitHub project">View the Project on GitHub</a></p>
-            </div>
-          </div>
-        </div>
-      </header>
+			{% if site.show_download %}
+				<p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}" data-label="Download">Free Download</a></p>
+			{% endif %}
+			<p class="view"><a href="{{ site.github.repository_url }}" data-label="GitHub project">View the Project on GitHub</a></p>
+		</div>
+	</div>
+{% endcapture %}
 
-      <section>
-        <div class="container">
-          {{ content }}
-        </div>
-      </section>
-
-      <footer>
-        <div class="container">
-          <p>This project is maintained by <a href="{{ site.github.owner_url }}" data-label="Owner">{{ site.github.owner_name }}</a></p>
-        </div>
-      </footer>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js" integrity="sha256-MXT+AJD8HdXQ4nLEbqkMqW3wXXfvjaGQt/Q/iRlBNSU=" crossorigin="anonymous"></script>
-    <script src="{{ '/assets/js/main.js?v=' | append: site.github.build_revision | relative_url }}"></script>
-    {% if site.google_analytics %}
-      <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-          ga('create', '{{ site.google_analytics }}', 'auto');
-          ga('send', 'pageview');
-
-          var baseURI = window.location.host;
-          $('a').on('click', function(event) {
-            var th = $(this);
-            if (th.hasClass('fancybox')) {
-              return;
-            }
-
-            var name = th.attr('data-label') ? th.data('label') : th.html();
-            var href = th.attr('href');
-
-            if (href.indexOf(baseURI) === -1) {
-              var redir = false;
-              function loadPage() {
-                if (redir) return;
-                redir = true;
-                document.location = href;
-              }
-
-              var targ = th.attr('target');
-              var target = (targ && !targ.match(/^_(self|parent|top)$/i)) ? targ : false;
-              if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
-                target = '_blank';
-              }
-
-              var opts = {
-                'hitType': 'event',
-                'eventCategory': 'Outbound',
-                'eventAction': href,
-                'eventLabel': name ? name.toLowerCase() : href
-              };
-              if (!target) {
-                opts['hitCallback'] = loadPage;
-                setTimeout(loadPage, 1000);
-              }
-
-              ga('send', opts);
-            }
-          });
-      </script>
-    {% endif %}
-  </body>
-</html>
+{% include body.html %}
