@@ -29,7 +29,7 @@ set(USE_SSL 1)
 set(USE_PCH 1)
 
 add_definitions(-DVERSION="6.0.5")
-add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/")
+add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bionus/imgbrd-grabber/SourceIssues.md")
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")

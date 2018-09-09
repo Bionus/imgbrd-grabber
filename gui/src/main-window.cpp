@@ -769,7 +769,7 @@ void MainWindow::setSource(const QString &site)
 
 void MainWindow::aboutWebsite()
 {
-	QDesktopServices::openUrl(QUrl(PROJECT_WEBSITE_URL));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/"));
 }
 void MainWindow::aboutGithub()
 {
