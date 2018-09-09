@@ -303,7 +303,11 @@ aside.menu {
 
 		li {
 			span {
-				font-weight: bold;
+				font-size: 1.4em;
+				border-bottom: 1px dotted darkorange;
+				display: block;
+				padding-bottom: 4px;
+				margin-bottom: 8px;
 			}
 
 			&.active a {
@@ -313,15 +317,15 @@ aside.menu {
 	}
 
 	> ul > li {
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 	}
 }
 
 
 /* Documentation text */
 
-.docs {
-	.content > *:first-child {
+.docs .content {
+	> *:first-child {
 		margin-top: 0 !important;
 	}
 }
