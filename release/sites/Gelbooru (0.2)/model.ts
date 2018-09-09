@@ -5,8 +5,6 @@ function completeImage(img: IImage): IImage {
             .replace("/thumbnail_", "/");
     }
 
-    img["file_url"] = img["file_url"].replace("/gelbooru.com/", "/simg4.gelbooru.com/");
-
     return img;
 }
 
