@@ -797,6 +797,8 @@ void DownloadsTab::getAllGetPages()
  */
 void DownloadsTab::getAllFinishedPage(Page *page)
 {
+	Q_UNUSED(page);
+
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
 
