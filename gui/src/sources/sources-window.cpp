@@ -66,9 +66,9 @@ void SourcesWindow::checkUpdate()
 {
 	bool oneChecked = false;
 	bool oneUnchecked = false;
-	for (QCheckBox *check : qAsConst(m_checks))
+	for (const auto &row : qAsConst(m_rows))
 	{
-		if (check->isChecked())
+		if (row.check->isChecked())
 		{ oneChecked = true; }
 		else
 		{ oneUnchecked = true; }
@@ -90,9 +90,7 @@ void SourcesWindow::checkUpdate()
  */
 void SourcesWindow::checkClicked()
 {
-	if (ui->checkBox->checkState() == Qt::Unchecked)
-	{ ui->checkBox->setCheckState(Qt::Unchecked); }
-	else
+	if (ui->checkBox->checkState() != Qt::Unchecked)
 	{ ui->checkBox->setCheckState(Qt::Checked); }
 	checkAll(ui->checkBox->checkState());
 }
@@ -102,14 +100,8 @@ void SourcesWindow::checkClicked()
  */
 void SourcesWindow::valid()
 {
-	QList<Site*> selected;
-	QStringList keys = m_sites.keys();
-	for (int i = 0; i < keys.count(); i++)
-		if (m_checks.at(i)->isChecked())
-			selected.append(m_sites.value(keys[i]));
-
-	emit valid(selected);
-	this->close();
+	emit valid(selected());
+	close();
 }
 
 void SourcesWindow::openSite(const QString &site) const
@@ -130,25 +122,39 @@ void SourcesWindow::settingsSite(const QString &site)
  */
 void SourcesWindow::deleteSite(const QString &site)
 {
-	int i = m_sites.keys().indexOf(site);
-
-	m_checks.at(i)->hide();
-	ui->gridLayout->removeWidget(m_checks.at(i));
-	m_checks.removeAt(i);
-	m_buttons.at(i)->hide();
-	ui->gridLayout->removeWidget(m_buttons.at(i));
-	m_buttons.removeAt(i);
-	if (!m_labels.isEmpty())
+	int index = -1;
+	for (int i = 0; i < m_rows.count(); ++i)
 	{
-		m_labels.at(i)->hide();
-		ui->gridLayout->removeWidget(m_labels.at(i));
-		m_labels.removeAt(i);
+		const auto &row = m_rows[i];
+		if (row.site->url() != site)
+			continue;
+
+		row.check->hide();
+		ui->gridLayout->removeWidget(row.check);
+		row.check->deleteLater();
+
+		row.button->hide();
+		ui->gridLayout->removeWidget(row.button);
+		row.button->deleteLater();
+
+		for (QLabel *label : qAsConst(row.labels))
+		{
+			label->hide();
+			ui->gridLayout->removeWidget(label);
+			label->deleteLater();
+		}
+
+		m_profile->removeSite(row.site);
+		m_selected.removeAll(row.site);
+
+		index = i;
 	}
 
-	Site *obj = m_sites.value(site);
-	m_profile->removeSite(obj);
-
-	m_selected.removeAll(obj);
+	if (index != -1)
+	{
+		m_rows.removeAt(index);
+		m_siteRows.remove(site);
+	}
 }
 
 /**
@@ -169,24 +175,22 @@ void SourcesWindow::updateCheckboxes()
 
 void SourcesWindow::removeCheckboxes()
 {
-	for (int i = 0; i < m_checks.count(); i++)
+	for (auto &row : qAsConst(m_rows))
 	{
-		ui->gridLayout->removeWidget(m_checks.at(i));
-		m_checks.at(i)->deleteLater();
+		ui->gridLayout->removeWidget(row.check);
+		row.check->deleteLater();
 
-		ui->gridLayout->removeWidget(m_buttons.at(i));
-		m_buttons.at(i)->deleteLater();
+		ui->gridLayout->removeWidget(row.button);
+		row.button->deleteLater();
 
-		if (!m_labels.isEmpty())
+		for (QLabel *label : qAsConst(row.labels))
 		{
-			m_labels.at(i)->deleteLater();
-			ui->gridLayout->removeWidget(m_labels.at(i));
+			ui->gridLayout->removeWidget(label);
+			label->deleteLater();
 		}
 	}
 
-	m_checks.clear();
-	m_buttons.clear();
-	m_labels.clear();
+	m_rows.clear();
 }
 
 /**
@@ -196,15 +200,19 @@ void SourcesWindow::addCheckboxes()
 {
 	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
-	QStringList k = m_sites.keys();
-	for (int i = 0; i < k.count(); i++)
+	int i = 0;
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
-		Site *site = m_sites.value(k.at(i));
+		Site *site = it.value();
+
+		SourceRow row;
+		row.site = site;
+
 		auto *check = new QCheckBox(this);
 			check->setChecked(m_selected.contains(site));
 			check->setText(site->url());
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
-			m_checks << check;
+			row.check = check;
 			ui->gridLayout->addWidget(check, i, 0);
 
 		int n = 1;
@@ -212,29 +220,34 @@ void SourcesWindow::addCheckboxes()
 		{
 			if (t == "icon" || t == "both")
 			{
-				QAffiche *image = new QAffiche(k.at(i), 0, QColor(), this);
+				QAffiche *image = new QAffiche(it.key(), 0, QColor(), this);
 				image->setPixmap(QPixmap(site->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
 				image->setCursor(Qt::PointingHandCursor);
 				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
-				m_labels << image;
+				row.labels.append(image);
 				n++;
 			}
 			if (t == "text" || t == "both")
 			{
 				QLabel *type = new QLabel(site->getSource()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
-				m_labels << type;
+				row.labels.append(type);
 				n++;
 			}
 		}
 
-		QBouton *del = new QBouton(k.at(i));
+		QBouton *del = new QBouton(it.key());
 			del->setParent(this);
 			del->setText(tr("Options"));
 			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
-			m_buttons << del;
+			row.button = del;
 			ui->gridLayout->addWidget(del, i, n);
+
+		m_rows.append(row);
+		m_siteRows.insert(site->url(), i);
+
+		i++;
 	}
 
 	/*int n =  0+(t == "icon" || t == "both")+(t == "text" || t == "both");
@@ -262,8 +275,8 @@ void SourcesWindow::addCheckboxes()
  */
 void SourcesWindow::checkAll(int check)
 {
-	for (int i = 0; i < m_checks.count(); i++)
-		m_checks.at(i)->setChecked(check == 2);
+	for (const auto &row : qAsConst(m_rows))
+		row.check->setChecked(check == 2);
 }
 
 void SourcesWindow::checkForUpdates()
@@ -283,10 +296,12 @@ void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNe
 	Source *source = m_sources[sourceName];
 	for (Site *site : source->getSites())
 	{
-		int pos = m_sites.values().indexOf(site);
+		if (!m_siteRows.contains(site->url()))
+			continue;
 
-		m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-		m_labels[pos]->setToolTip(tr("An update for this source is available."));
+		int pos = m_siteRows.value(site->url());
+		m_rows[pos].labels[0]->setPixmap(QPixmap(":/images/icons/update.png"));
+		m_rows[pos].labels[0]->setToolTip(tr("An update for this source is available."));
 	}
 }
 
@@ -314,14 +329,14 @@ void SourcesWindow::checkForSourceIssuesReceived()
 		const QString &site = issue.left(index).trimmed();
 		const QString &desc = issue.mid(index + 1).trimmed();
 
-		int pos = m_sites.keys().indexOf(site);
-		if (pos != -1)
-		{
-			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-			m_labels[pos]->setToolTip(desc);
-			m_checks[pos]->setStyleSheet("QCheckBox { color: red; }");
-			m_checks[pos]->setToolTip(desc);
-		}
+		if (!m_siteRows.contains(site))
+			continue;
+
+		int pos = m_siteRows.value(site);
+		m_rows[pos].labels[0]->setPixmap(QPixmap(":/images/icons/warning.png"));
+		m_rows[pos].labels[0]->setToolTip(desc);
+		m_rows[pos].check->setStyleSheet("QCheckBox { color: red; }");
+		m_rows[pos].check->setToolTip(desc);
 	}
 }
 
@@ -344,14 +359,14 @@ QMap<QString, QStringList> SourcesWindow::loadPresets(QSettings *settings) const
 
 void SourcesWindow::savePresets(QSettings *settings) const
 {
-	QStringList names = m_presets.keys();
 	settings->beginWriteArray("SourcePresets");
-	for (int i = 0; i < names.count(); ++i)
+	int i = 0;
+	for (auto it = m_presets.constBegin(); it != m_presets.constEnd(); ++it)
 	{
 		settings->setArrayIndex(i);
-		QString name = names[i];
-		settings->setValue("name", name);
-		settings->setValue("sources", m_presets[name]);
+		settings->setValue("name", it.key());
+		settings->setValue("sources", it.value());
+		i++;
 	}
 	settings->endArray();
 }
@@ -359,12 +374,9 @@ void SourcesWindow::savePresets(QSettings *settings) const
 QList<Site*> SourcesWindow::selected() const
 {
 	QList<Site*> selected;
-
-	const QStringList &keys = m_sites.keys();
-	for (int i = 0; i < keys.count(); ++i)
-		if (m_checks[i]->isChecked())
-			selected.append(m_sites.value(keys[i]));
-
+	for (const auto &row : qAsConst(m_rows))
+		if (row.check->isChecked())
+			selected.append(row.site);
 	return selected;
 }
 
@@ -441,12 +453,8 @@ void SourcesWindow::selectPreset(const QString &name)
 	if (isPreset)
 	{
 		const QStringList &preset = m_presets[name];
-		const QStringList &keys = m_sites.keys();
-		for (int i = 0; i < keys.count(); ++i)
-		{
-			Site *site = m_sites.value(keys[i]);
-			m_checks[i]->setChecked(preset.contains(site->url()));
-		}
+		for (const auto &row : qAsConst(m_rows))
+			row.check->setChecked(preset.contains(row.site->url()));
 	}
 
 	ui->buttonPresetSave->setEnabled(false);
