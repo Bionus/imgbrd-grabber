@@ -30,7 +30,7 @@ void TabSelector::markStaticTab(QWidget *tab)
 void TabSelector::updateCounter()
 {
 	if (m_showTabCount) {
-		const QString count = QString::number(m_tabWidget->count());
+		const QString count = QString::number(m_tabWidget->count() - m_staticTabs.count());
 		setText(count);
 		setMaximumWidth(23 + 7 * count.length());
 	} else {
