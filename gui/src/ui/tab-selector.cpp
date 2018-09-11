@@ -62,10 +62,15 @@ void TabSelector::back()
 void TabSelector::menuAboutToShow()
 {
 	m_menu->clear();
+	QWidget *current = m_tabWidget->currentWidget();
 
 	// Add static tabs at the beginning
 	for (QWidget *widget : m_staticTabs) {
-		m_menu->addAction(widget->windowTitle())->setData(QVariant::fromValue(widget));
+		QAction *action = m_menu->addAction(widget->windowTitle());
+		action->setData(QVariant::fromValue(widget));
+		if (widget == current) {
+			action->setEnabled(false);
+		}
 	}
 
 	// Add separator if necessary
@@ -80,7 +85,11 @@ void TabSelector::menuAboutToShow()
 			continue;
 		}
 
-		m_menu->addAction(widget->windowTitle())->setData(QVariant::fromValue(widget));
+		QAction *action = m_menu->addAction(widget->windowTitle());
+		action->setData(QVariant::fromValue(widget));
+		if (widget == current) {
+			action->setEnabled(false);
+		}
 	}
 }
 
