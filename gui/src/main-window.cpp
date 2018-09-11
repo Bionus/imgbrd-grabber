@@ -252,6 +252,12 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	layout->setSpacing(0);
 	ui->tabWidget->setCornerWidget(cornerWidget);
 
+	// Last tab button
+	QPushButton *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
+		lastTab->setFlat(true);
+		lastTab->resize(QSize(15, 12));
+		layout->addWidget(lastTab);
+
 	// Add tab button
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
 		add->setFlat(true);
@@ -260,7 +266,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		layout->addWidget(add);
 
 	// Tab selector
-	m_tabSelector = new TabSelector(ui->tabWidget, this);
+	m_tabSelector = new TabSelector(ui->tabWidget, lastTab, this);
 		m_tabSelector->setShowTabCount(true); // TODO(Bionus): add a setting to disable tab count
 		m_tabSelector->setFlat(true);
 		m_tabSelector->markStaticTab(m_favoritesTab);
