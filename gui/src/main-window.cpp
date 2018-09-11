@@ -223,6 +223,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
 
+	// Tab bar context menu
+	ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
+
 	// Downloads tab
 	m_downloadsTab = new DownloadsTab(m_profile, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
@@ -842,6 +846,16 @@ void MainWindow::setWiki(const QString &wiki, SearchTab *from)
 		return;
 
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
+}
+
+void MainWindow::tabContextMenuRequested(const QPoint &pos)
+{
+	Q_UNUSED(pos);
+
+	auto *menu = new QMenu(this);
+	menu->addAction(ui->actionAddtab);
+	menu->addAction(ui->actionRestoreLastClosedTab);
+	menu->exec(QCursor::pos());
 }
 
 void MainWindow::on_buttonFolder_clicked()
