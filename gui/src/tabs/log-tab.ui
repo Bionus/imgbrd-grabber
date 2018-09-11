@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>New tab</string>
+   <string>Log</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/resources.qrc">
