@@ -32,7 +32,7 @@ For users interested, a nightly version is built automatically on every commit o
 
 [<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic.png)
 
-* Tabs to make multiple searchs at the same time
+* Tabs to make multiple searches at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
 * Remove duplicate results from multiple-imageboard searches
 * Auto-completion of tags in the search field
@@ -72,7 +72,7 @@ For users interested, a nightly version is built automatically on every commit o
 
 [<img src="https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename-thumb.png" align="right" />](https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png)
 
-* Save images using a custom format, for example %artist%/%copyright%/%character%/%md5%.%ext%, or using Javascript code. See Filename for details.
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using JavaScript code. See Filename for details.
 * Favorite tags to keep track of new images
 * "View it later" tags to save a search for later
 * Support saving images directly to a local booru, such as Shimmie, Gelbooru or MyImouto.
@@ -81,7 +81,7 @@ For users interested, a nightly version is built automatically on every commit o
 * Rename already downloaded images
 
 ## Default sources
-You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+You can add additional sources very easily, but here's a short list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
 
 ## Compilation
 See the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page to know how to build Grabber.
