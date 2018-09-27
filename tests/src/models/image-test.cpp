@@ -355,5 +355,18 @@ void ImageTest::testSetUrl()
 	QCOMPARE(m_img->url(), url);
 }
 
+void ImageTest::testGrabberFavoritedToken()
+{
+	auto tokens = m_img->tokens(m_profile);
+	QVERIFY(!tokens["grabber"].value().toStringList().contains("favorited"));
+
+	Favorite fav("tag2");
+	m_profile->addFavorite(fav);
+	m_img->refreshTokens();
+	tokens = m_img->tokens(m_profile);
+	QVERIFY(tokens["grabber"].value().toStringList().contains("favorited"));
+	m_profile->removeFavorite(fav);
+}
+
 
 QTEST_MAIN(ImageTest)
