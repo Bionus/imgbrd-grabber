@@ -2,7 +2,10 @@ function addHelper(name: string, value: any): void {
     Object.defineProperty(Grabber, name, { value });
 }
 
-addHelper("makeArray", (val: any): any[] => {
+addHelper("makeArray", (val: any, allowFalsy: boolean = false): any[] => {
+    if (!val && !allowFalsy) {
+        return [];
+    }
     if (!Array.isArray(val)) {
         return [ val ];
     }
