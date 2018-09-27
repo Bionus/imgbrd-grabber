@@ -16,7 +16,7 @@
 #include "ui/fixed-size-grid-layout.h"
 #include "ui/QAffiche.h"
 #include "ui/QBouton.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 
 #define FAVORITES_THUMB_SIZE 150
 

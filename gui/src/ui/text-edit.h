@@ -1,12 +1,15 @@
-#ifndef HEADER_TEXTEDIT
-#define HEADER_TEXTEDIT
+#ifndef TEXT_EDIT_H
+#define TEXT_EDIT_H
 
-#include <QCompleter>
+#include <QString>
+#include <QStringList>
 #include <QTextEdit>
 
 
-class Profile;
 class Favorite;
+class Profile;
+class QCompleter;
+class QWidget;
 
 class TextEdit : public QTextEdit
 {
@@ -48,4 +51,4 @@ class TextEdit : public QTextEdit
 		QStringList &m_viewItLater;
 };
 
-#endif
+#endif // TEXT_EDIT_H

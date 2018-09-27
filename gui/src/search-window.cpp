@@ -1,5 +1,6 @@
 #include "search-window.h"
 #include <QCalendarWidget>
+#include <QCompleter>
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
@@ -7,7 +8,7 @@
 #include <ui_search-window.h>
 #include "functions.h"
 #include "models/profile.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)

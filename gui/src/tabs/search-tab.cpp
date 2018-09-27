@@ -1,4 +1,5 @@
 #include "tabs/search-tab.h"
+#include <QCompleter>
 #include <QEventLoop>
 #include <QFileDialog>
 #include <QMenu>
@@ -23,7 +24,7 @@
 #include "sources/sources-window.h"
 #include "ui/fixed-size-grid-layout.h"
 #include "ui/QBouton.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 #include "ui/verticalscrollarea.h"
 #include "viewer/zoom-window.h"
 

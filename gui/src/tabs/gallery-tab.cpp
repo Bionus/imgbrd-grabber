@@ -9,7 +9,7 @@
 #include "models/page.h"
 #include "models/site.h"
 #include "search-window.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 
 #define MAX_TAB_NAME_LENGTH 40
 

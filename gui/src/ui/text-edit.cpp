@@ -1,6 +1,7 @@
-#include "textedit.h"
+#include "text-edit.h"
 #include <QAbstractItemView>
 #include <QApplication>
+#include <QCompleter>
 #include <QMenu>
 #include <QScrollBar>
 #include <QSettings>
