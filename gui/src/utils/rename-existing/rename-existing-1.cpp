@@ -89,25 +89,20 @@ void RenameExisting1::on_buttonContinue_clicked()
 		}
 		else
 		{
-			QRegExp regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilenameOrigin->text());
-			int pos = 0, cur = 0, id = -1;
-			while ((pos = regx.indexIn(ui->lineFilenameOrigin->text(), pos)) != -1)
+			QRegularExpression regx("%([^%]*)%");
+			QString reg = QRegularExpression::escape(ui->lineFilenameOrigin->text());
+			auto matches = regx.globalMatch(ui->lineFilenameOrigin->text());
+			while (matches.hasNext())
 			{
-				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), QStringLiteral("(.+)"));
-				if (regx.cap(1) == QLatin1String("md5"))
-				{ id = cur; }
-				cur++;
+				const auto match = matches.next();
+				const bool isMd5 = match.captured(1) == QLatin1String("md5");
+				reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
 			}
-			QRegExp rx(reg);
-			rx.setMinimal(true);
-			pos = 0;
-			while ((pos = rx.indexIn(fileName, pos)) != -1)
-			{
-				pos += rx.matchedLength();
-				md5 = rx.cap(id + 1);
-			}
+
+			QRegularExpression rx(reg);
+			const auto match = rx.match(fileName);
+			if (match.hasMatch())
+			{ md5 = match.captured("md5"); }
 		}
 
 		if (!md5.isEmpty())
