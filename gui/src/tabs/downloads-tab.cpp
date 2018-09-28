@@ -882,41 +882,6 @@ void DownloadsTab::getAllImages()
 		_getAll();
 }
 
-int DownloadsTab::needExactTags(QSettings *settings)
-{
-	auto logFiles = getExternalLogFiles(settings);
-	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
-	{
-		Filename fn(it.value().value("content").toString());
-		int need = fn.needExactTags();
-		if (need != 0)
-			return need;
-	}
-
-	QStringList settingNames = QStringList()
-		<< "Exec/tag_before"
-		<< "Exec/image"
-		<< "Exec/tag_after"
-		<< "Exec/SQL/before"
-		<< "Exec/SQL/tag_before"
-		<< "Exec/SQL/image"
-		<< "Exec/SQL/tag_after"
-		<< "Exec/SQL/after";
-	for (const QString &setting : settingNames)
-	{
-		QString value = settings->value(setting, "").toString();
-		if (value.isEmpty())
-			continue;
-
-		Filename fn(value);
-		int need = fn.needExactTags();
-		if (need != 0)
-			return need;
-	}
-
-	return 0;
-}
-
 void DownloadsTab::_getAll()
 {
 	// We quit as soon as the user cancels

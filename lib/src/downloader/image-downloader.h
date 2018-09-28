@@ -30,6 +30,7 @@ class ImageDownloader : public QObject
 		void abort();
 
 	protected:
+		int needExactTags(QSettings *settings);
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
 		QMap<QString, Downloadable::SaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
 

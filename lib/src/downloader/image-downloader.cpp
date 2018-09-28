@@ -47,10 +47,11 @@ bool ImageDownloader::isRunning() const
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
-	int needTags = Filename(m_filename).needExactTags(m_image->parentSite());
-	bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
-	qDebug() << "!!!!!" << needTags << filenameNeedTags << blacklistNeedTags;
+	const int globalNeedTags = needExactTags(m_profile->getSettings());
+	const int localNeedTags = Filename(m_filename).needExactTags(m_image->parentSite());
+	const int needTags = qMax(globalNeedTags, localNeedTags);
+	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
+	const bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags))
 	{
 		loadedSave();
@@ -59,6 +60,39 @@ void ImageDownloader::save()
 
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
 	m_image->loadDetails();
+}
+
+int ImageDownloader::needExactTags(QSettings *settings)
+{
+	const auto logFiles = getExternalLogFiles(settings);
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
+	{
+		const int need = Filename(it.value().value("content").toString()).needExactTags();
+		if (need != 0)
+			return need;
+	}
+
+	QStringList settingNames = QStringList()
+		<< "Exec/tag_before"
+		<< "Exec/image"
+		<< "Exec/tag_after"
+		<< "Exec/SQL/before"
+		<< "Exec/SQL/tag_before"
+		<< "Exec/SQL/image"
+		<< "Exec/SQL/tag_after"
+		<< "Exec/SQL/after";
+	for (const QString &setting : settingNames)
+	{
+		const QString value = settings->value(setting, "").toString();
+		if (value.isEmpty())
+			continue;
+
+		const int need = Filename(value).needExactTags();
+		if (need != 0)
+			return need;
+	}
+
+	return 0;
 }
 
 void ImageDownloader::abort()

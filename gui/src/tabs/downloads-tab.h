@@ -84,7 +84,6 @@ class DownloadsTab : public QWidget
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
-		int needExactTags(QSettings *settings);
 		int getRowForSite(int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
 		void imageUrlChanged(const QUrl &before, const QUrl &after);
