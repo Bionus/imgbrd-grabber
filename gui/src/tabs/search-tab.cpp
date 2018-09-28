@@ -973,7 +973,7 @@ void SearchTab::contextSaveImageAs(int position)
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
 
 		QEventLoop loop;
-		ImageDownloader downloader(image, QStringList() << tmpPath, 1, true, true, true, this);
+		ImageDownloader downloader(m_profile, image, QStringList() << tmpPath, 1, true, true, true, this);
 		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
 		downloader.save();
 		loop.exec();

@@ -333,8 +333,7 @@ void ImageTest::testSaveLog()
 	QCOMPARE(file.exists(), true);
 	QCOMPARE(logFile.exists(), true);
 
-	if (!logFile.open(QFile::ReadOnly | QFile::Text))
-		QFAIL("Could not open text file");
+	QVERIFY2(logFile.open(QFile::ReadOnly | QFile::Text), "Could not open text file");
 	QCOMPARE(QString(logFile.readAll()), QString("id: 7331"));
 	logFile.close();
 
