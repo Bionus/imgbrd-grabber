@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <ui_blacklist-fix-1.h>
 #include "helpers.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
@@ -78,46 +79,17 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	// Parse all files
 	for (const QPair<QString, QString> &file : files)
 	{
-		QString md5;
-		if (ui->radioForce->isChecked())
-		{
-			QFile fle(file.second);
-			fle.open(QFile::ReadOnly);
-			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-		}
-		else
-		{
-			QRegularExpression regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilename->text());
-			auto matches = regx.globalMatch(ui->lineFilename->text());
-			while (matches.hasNext())
-			{
-				const auto match = matches.next();
-				const bool isMd5 = match.captured(1) == QLatin1String("md5");
-				reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
-			}
-
-			QRegularExpression rx(reg);
-			const auto match = rx.match(file.first);
-			if (match.hasMatch())
-			{ md5 = match.captured("md5"); }
-			else
-			{ log(QStringLiteral("Unable to detect MD5 file `%1`").arg(file.second), Logger::Warning); }
-		}
+		QString md5 = ui->radioForce->isChecked()
+			? getFileMd5(file.second)
+			: getFilenameMd5(file.first, ui->lineFilename->text());
 
 		if (!md5.isEmpty())
 		{
-			static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
-			if (rxMd5.match(md5).hasMatch())
-			{
-				QMap<QString, QString> det;
-				det.insert("md5", md5);
-				det.insert("path", file.first);
-				det.insert("path_full", file.second);
-				m_details.append(det);
-			}
-			else
-			{ log(QStringLiteral("Invalid detected MD5 '%1' for file `%2`").arg(md5, file.second), Logger::Warning); }
+			QMap<QString, QString> det;
+			det.insert("md5", md5);
+			det.insert("path", file.first);
+			det.insert("path_full", file.second);
+			m_details.append(det);
 		}
 	}
 

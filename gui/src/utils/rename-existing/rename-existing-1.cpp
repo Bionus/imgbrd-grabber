@@ -81,53 +81,24 @@ void RenameExisting1::on_buttonContinue_clicked()
 		const QString fileName = file.first;
 		const QString path = dir.absoluteFilePath(fileName);
 
-		QString md5;
-		if (ui->radioForce->isChecked())
-		{
-			QFile fle(path);
-			fle.open(QFile::ReadOnly);
-			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-		}
-		else
-		{
-			QRegularExpression regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilenameOrigin->text());
-			auto matches = regx.globalMatch(ui->lineFilenameOrigin->text());
-			while (matches.hasNext())
-			{
-				const auto match = matches.next();
-				const bool isMd5 = match.captured(1) == QLatin1String("md5");
-				reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
-			}
-
-			QRegularExpression rx(reg);
-			const auto match = rx.match(fileName);
-			if (match.hasMatch())
-			{ md5 = match.captured("md5"); }
-			else
-			{ log(QStringLiteral("Unable to detect MD5 file `%1`").arg(path), Logger::Warning); }
-		}
+		QString md5 = ui->radioForce->isChecked()
+			? getFileMd5(path)
+			: getFilenameMd5(fileName, ui->lineFilenameOrigin->text());
 
 		if (!md5.isEmpty())
 		{
-			static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
-			if (rxMd5.match(md5).hasMatch())
+			RenameExistingFile det;
+			det.md5 = md5;
+			det.path = QDir::toNativeSeparators(path);
+			if (!file.second.isEmpty())
 			{
-				RenameExistingFile det;
-				det.md5 = md5;
-				det.path = QDir::toNativeSeparators(path);
-				if (!file.second.isEmpty())
-				{
-					QStringList children;
-					children.reserve(file.second.count());
-					for (const QString &child : file.second)
-					{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
-					det.children = children;
-				}
-				m_details.append(det);
+				QStringList children;
+				children.reserve(file.second.count());
+				for (const QString &child : file.second)
+				{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
+				det.children = children;
 			}
-			else
-			{ log(QStringLiteral("Invalid detected MD5 '%1' for file `%2`").arg(md5, path), Logger::Warning); }
+			m_details.append(det);
 		}
 	}
 
