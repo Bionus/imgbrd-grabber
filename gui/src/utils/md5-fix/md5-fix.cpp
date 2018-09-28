@@ -7,6 +7,7 @@
 #include <ui_md5-fix.h>
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/profile.h"
 
 
@@ -87,31 +88,34 @@ void Md5Fix::on_buttonStart_clicked()
 			}
 			else
 			{
-				QRegExp regx("%([^%]*)%");
+				QRegularExpression regx("%([^%]*)%");
 				QString reg = QRegExp::escape(ui->lineFilename->text());
-				int pos = 0, cur = 0, id = -1;
-				while ((pos = regx.indexIn(reg, pos)) != -1)
+				auto matches = regx.globalMatch(ui->lineFilename->text());
+				while (matches.hasNext())
 				{
-					pos += 4;
-					reg.replace(regx.cap(0), "(.+)");
-					if (regx.cap(1) == QLatin1String("md5"))
-					{ id = cur; }
-					cur++;
+					const auto match = matches.next();
+					const bool isMd5 = match.captured(1) == QLatin1String("md5");
+					reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
 				}
-				QRegExp rx(reg);
-				rx.setMinimal(true);
-				pos = 0;
-				while ((pos = rx.indexIn(fileName, pos)) != -1)
-				{
-					pos += rx.matchedLength();
-					md5 = rx.cap(id + 1);
-				}
+
+				QRegularExpression rx(reg);
+				const auto match = rx.match(fileName);
+				if (match.hasMatch())
+				{ md5 = match.captured("md5"); }
+				else
+				{ log(QStringLiteral("Unable to detect MD5 file `%1`").arg(path), Logger::Warning); }
 			}
 
 			if (!md5.isEmpty())
 			{
-				m_profile->addMd5(md5, path);
-				count++;
+				static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
+				if (rxMd5.match(md5).hasMatch())
+				{
+					m_profile->addMd5(md5, path);
+					count++;
+				}
+				else
+				{ log(QStringLiteral("Invalid detected MD5 '%1' for file `%2`").arg(md5, path), Logger::Warning); }
 			}
 
 			ui->progressBar->setValue(ui->progressBar->value() + 1);

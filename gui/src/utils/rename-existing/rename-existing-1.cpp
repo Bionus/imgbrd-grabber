@@ -7,6 +7,7 @@
 #include <ui_rename-existing-1.h>
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -90,7 +91,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 		else
 		{
 			QRegularExpression regx("%([^%]*)%");
-			QString reg = QRegularExpression::escape(ui->lineFilenameOrigin->text());
+			QString reg = QRegExp::escape(ui->lineFilenameOrigin->text());
 			auto matches = regx.globalMatch(ui->lineFilenameOrigin->text());
 			while (matches.hasNext())
 			{
@@ -103,22 +104,30 @@ void RenameExisting1::on_buttonContinue_clicked()
 			const auto match = rx.match(fileName);
 			if (match.hasMatch())
 			{ md5 = match.captured("md5"); }
+			else
+			{ log(QStringLiteral("Unable to detect MD5 file `%1`").arg(path), Logger::Warning); }
 		}
 
 		if (!md5.isEmpty())
 		{
-			RenameExistingFile det;
-			det.md5 = md5;
-			det.path = QDir::toNativeSeparators(path);
-			if (!file.second.isEmpty())
+			static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
+			if (rxMd5.match(md5).hasMatch())
 			{
-				QStringList children;
-				children.reserve(file.second.count());
-				for (const QString &child : file.second)
-				{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
-				det.children = children;
+				RenameExistingFile det;
+				det.md5 = md5;
+				det.path = QDir::toNativeSeparators(path);
+				if (!file.second.isEmpty())
+				{
+					QStringList children;
+					children.reserve(file.second.count());
+					for (const QString &child : file.second)
+					{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
+					det.children = children;
+				}
+				m_details.append(det);
 			}
-			m_details.append(det);
+			else
+			{ log(QStringLiteral("Invalid detected MD5 '%1' for file `%2`").arg(md5, path), Logger::Warning); }
 		}
 	}
 

@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <ui_blacklist-fix-1.h>
 #include "helpers.h"
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -86,32 +87,38 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		}
 		else
 		{
-			QRegExp regx("%([^%]*)%");
+			QRegularExpression regx("%([^%]*)%");
 			QString reg = QRegExp::escape(ui->lineFilename->text());
-			int pos = 0, cur = 0, id = -1;
-			while ((pos = regx.indexIn(ui->lineFilename->text(), pos)) != -1)
+			auto matches = regx.globalMatch(ui->lineFilename->text());
+			while (matches.hasNext())
 			{
-				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), "(.+)");
-				if (regx.cap(1) == "md5")
-				{ id = cur; }
-				cur++;
+				const auto match = matches.next();
+				const bool isMd5 = match.captured(1) == QLatin1String("md5");
+				reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
 			}
-			QRegExp rx(reg);
-			rx.setMinimal(true);
-			pos = 0;
-			while ((pos = rx.indexIn(file.first, pos)) != -1)
-			{
-				pos += rx.matchedLength();
-				md5 = rx.cap(id + 1);
-			}
+
+			QRegularExpression rx(reg);
+			const auto match = rx.match(file.first);
+			if (match.hasMatch())
+			{ md5 = match.captured("md5"); }
+			else
+			{ log(QStringLiteral("Unable to detect MD5 file `%1`").arg(file.second), Logger::Warning); }
 		}
 
-		QMap<QString, QString> det;
-		det.insert("md5", md5);
-		det.insert("path", file.first);
-		det.insert("path_full", file.second);
-		m_details.append(det);
+		if (!md5.isEmpty())
+		{
+			static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
+			if (rxMd5.match(md5).hasMatch())
+			{
+				QMap<QString, QString> det;
+				det.insert("md5", md5);
+				det.insert("path", file.first);
+				det.insert("path_full", file.second);
+				m_details.append(det);
+			}
+			else
+			{ log(QStringLiteral("Invalid detected MD5 '%1' for file `%2`").arg(md5, file.second), Logger::Warning); }
+		}
 	}
 
 	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
