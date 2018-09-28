@@ -72,6 +72,38 @@ void ImageDownloaderTest::testSuccessLoadTags()
 	assertDownload(img, &downloader, expected, true);
 }
 
+void ImageDownloaderTest::testSuccessLoadTagsExternal()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(m_profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, true, nullptr, true, false);
+
+	// Delete already existing
+	QFile logFile("tests/resources/tmp/savelog.txt");
+	if (logFile.exists())
+		logFile.remove();
+
+	QSettings *settings = m_profile->getSettings();
+	settings->setValue("LogFiles/0/locationType", 1);
+	settings->setValue("LogFiles/0/uniquePath", logFile.fileName());
+	settings->setValue("LogFiles/0/content", "%copyright%");
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Saved);
+
+	assertDownload(img, &downloader, expected, true);
+
+	QCOMPARE(logFile.exists(), true);
+	QVERIFY2(logFile.open(QFile::ReadOnly | QFile::Text), "Could not open text file");
+	QCOMPARE(QString(logFile.readAll()), QString("to heart 2"));
+
+	logFile.close();
+	logFile.remove();
+
+	settings->remove("LogFiles/0/locationType");
+	settings->remove("LogFiles/0/uniquePath");
+	settings->remove("LogFiles/0/content");
+}
+
 void ImageDownloaderTest::testOpenError()
 {
 	QSharedPointer<Image> img(createImage());
