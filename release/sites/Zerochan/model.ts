@@ -25,6 +25,9 @@ export const source: ISource = {
         case: "upper",
         wordSeparator: " ",
     },
+    searchFormat: {
+        and: ", ",
+    },
     auth: {},
     apis: {
         rss: {

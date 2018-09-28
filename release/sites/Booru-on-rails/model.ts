@@ -41,6 +41,12 @@ export const source: ISource = {
         case: "lower",
         wordSeparator: " ",
     },
+    searchFormat: {
+        and: " AND ",
+        or: " OR ",
+        parenthesis: true,
+        precedence: "and",
+    },
     auth,
     apis: {
         json: {

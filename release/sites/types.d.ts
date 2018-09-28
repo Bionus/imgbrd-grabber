@@ -78,9 +78,12 @@ interface ITagFormat {
     wordSeparator: string;
 }
 
-interface ISearchFormat {
-    and: ISearchFormatType;
-    or: ISearchFormatType;
+type SearchFormat = ISearchFormatBasic | ISearchFormatFull;
+interface ISearchFormatBasic {
+    and: ISearchFormatType | string;
+}
+interface ISearchFormatFull extends ISearchFormatBasic {
+    or: ISearchFormatType | string;
     parenthesis: boolean;
     precedence: "and" | "or";
 }
@@ -120,7 +123,7 @@ interface ISource {
     modifiers?: string[];
     forcedTokens?: string[];
     tagFormat?: ITagFormat;
-    searchFormat?: ISearchFormat;
+    searchFormat?: SearchFormat;
     auth?: { [id: string]: IAuth };
     apis: { [id: string]: IApi };
 }

@@ -68,15 +68,13 @@ export const source: ISource = {
         wordSeparator: "_",
     },
     searchFormat: {
-        and: {
-            separator: " ",
-        },
+        and: " ",
         or: {
             separator: " ",
             prefix: "~",
         },
         parenthesis: false,
-        precedence: "and",
+        precedence: "or",
     },
     auth,
     apis: {

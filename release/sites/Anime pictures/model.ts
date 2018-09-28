@@ -98,12 +98,8 @@ export const source: ISource = {
         wordSeparator: " ",
     },
     searchFormat: {
-        and: {
-            separator: " && ",
-        },
-        or: {
-            separator: " || ",
-        },
+        and: " && ",
+        or: " || ",
         parenthesis: false,
         precedence: "and",
     },
