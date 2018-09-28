@@ -607,7 +607,7 @@ void SearchTab::finishedLoadingPreview()
 
 		if (download)
 		{
-			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
 			downloader->save();
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		}
@@ -953,7 +953,7 @@ void SearchTab::contextSaveImage(int position)
 		const QString fn = m_settings->value("Save/filename").toString();
 		const QString path = m_settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
@@ -994,7 +994,7 @@ void SearchTab::contextSaveImageAs(int position)
 		{ QFile::rename(tmpPath, path); }
 		else
 		{
-			auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, image, QStringList() << path, 1, true, true, true, this);
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 			downloader->save();
 		}
@@ -1009,7 +1009,7 @@ void SearchTab::contextSaveSelected()
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs))
 	{
-		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
