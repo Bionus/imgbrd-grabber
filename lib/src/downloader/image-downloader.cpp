@@ -64,11 +64,13 @@ void ImageDownloader::save()
 
 int ImageDownloader::needExactTags(QSettings *settings)
 {
+	int need = 0;
+
 	const auto logFiles = getExternalLogFiles(settings);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 	{
-		const int need = Filename(it.value().value("content").toString()).needExactTags();
-		if (need != 0)
+		need = qMax(need, Filename(it.value().value("content").toString()).needExactTags());
+		if (need == 2)
 			return need;
 	}
 
@@ -87,12 +89,12 @@ int ImageDownloader::needExactTags(QSettings *settings)
 		if (value.isEmpty())
 			continue;
 
-		const int need = Filename(value).needExactTags();
-		if (need != 0)
+		need = qMax(need, Filename(value).needExactTags());
+		if (need == 2)
 			return need;
 	}
 
-	return 0;
+	return need;
 }
 
 void ImageDownloader::abort()
