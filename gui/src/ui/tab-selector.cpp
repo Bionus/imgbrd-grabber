@@ -3,15 +3,17 @@
 #include <QMenu>
 #include <QTabWidget>
 #include "tabs/search-tab.h"
+#include "ui/click-menu.h"
 
 
 TabSelector::TabSelector(QTabWidget *tabWidget, QPushButton *backButton, QWidget *parent)
 	: QPushButton(parent), m_tabWidget(tabWidget), m_backButton(backButton)
 {
-	m_menu = new QMenu(this);
+	m_menu = new ClickMenu(this);
 	m_menu->setStyleSheet("QMenu { menu-scrollable: 1; }");
-	connect(m_menu, &QMenu::aboutToShow, this, &TabSelector::menuAboutToShow);
-	connect(m_menu, &QMenu::triggered, this, &TabSelector::actionTriggered);
+	connect(m_menu, &ClickMenu::aboutToShow, this, &TabSelector::menuAboutToShow);
+	connect(m_menu, &ClickMenu::triggered, this, &TabSelector::actionTriggered);
+	connect(m_menu, &ClickMenu::triggeredMiddle, this, &TabSelector::actionTriggeredMiddle);
 	setMenu(m_menu);
 
 	if (m_backButton != nullptr) {
@@ -106,5 +108,17 @@ void TabSelector::actionTriggered(QAction *action)
 		m_lastTab = lastTab;
 
 		m_backButton->show();
+	}
+}
+
+void TabSelector::actionTriggeredMiddle(QAction *action)
+{
+	QWidget *widget = action->data().value<QWidget*>();
+	if (widget == nullptr) {
+		return;
+	}
+
+	if (!m_staticTabs.contains(widget)) {
+		widget->close();
 	}
 }

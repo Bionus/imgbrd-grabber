@@ -5,8 +5,8 @@
 #include <QPushButton>
 
 
+class ClickMenu;
 class QAction;
-class QMenu;
 class QTabWidget;
 class QWidget;
 
@@ -26,6 +26,7 @@ class TabSelector : public QPushButton
 	private slots:
 		void menuAboutToShow();
 		void actionTriggered(QAction *action);
+		void actionTriggeredMiddle(QAction *action);
 		void tabChanged(int index);
 
 	signals:
@@ -34,7 +35,7 @@ class TabSelector : public QPushButton
 	private:
 		QTabWidget *m_tabWidget;
 		QPushButton *m_backButton;
-		QMenu *m_menu;
+		ClickMenu *m_menu;
 		QList<QWidget*> m_staticTabs;
 		bool m_showTabCount = true;
 		QWidget *m_lastTab = nullptr;
