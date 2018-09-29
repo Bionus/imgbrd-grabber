@@ -121,7 +121,8 @@ class Image : public QObject, public Downloadable
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
-		QString m_author, m_name, m_status, m_rating, m_source, m_site, m_temporaryPath, m_savePath;
+		QString m_author, m_name, m_status, m_rating, m_site, m_temporaryPath, m_savePath;
+		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize m_size;
 		QPixmap m_imagePreview;

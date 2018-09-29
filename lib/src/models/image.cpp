@@ -68,7 +68,7 @@ Image::Image(const Image &other)
 	m_name = other.m_name;
 	m_status = other.m_status;
 	m_rating = other.m_rating;
-	m_source = other.m_source;
+	m_sources = other.m_sources;
 	m_savePath = other.m_savePath;
 
 	m_pageUrl = other.m_pageUrl;
@@ -127,7 +127,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
-	m_source = details.contains("source") ? details["source"] : "";
+	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 
 	// Preview rect
 	if (details.contains("preview_rect"))
@@ -843,6 +843,10 @@ QList<QStrP> Image::detailsData() const
 	const QString yes = tr("yes");
 	const QString no = tr("no");
 
+	QString sources;
+	for (const QString &source : m_sources)
+	{ sources += (!sources.isEmpty() ? "<br/>" : "") + QString("<a href=\"%1\">%1</a>").arg(source); }
+
 	return
 	{
 		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
@@ -859,7 +863,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
 		QStrP(tr("URL"), !m_fileUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_fileUrl.toString()) : unknown),
-		QStrP(tr("Source"), !m_source.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_source) : unknown),
+		QStrP(tr("Source(s)", "", m_sources.count()), !sources.isEmpty() ? sources : unknown),
 		QStrP(tr("Sample"), !m_sampleUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_sampleUrl.toString()) : unknown),
 		QStrP(tr("Thumbnail"), !m_previewUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_previewUrl.toString()) : unknown),
 		QStrP(),
@@ -1027,7 +1031,8 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("url_sample", Token(m_sampleUrl.toString(), ""));
 	tokens.insert("url_thumbnail", Token(m_previewUrl.toString(), ""));
 	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
-	tokens.insert("source", Token(m_source, ""));
+	tokens.insert("source", Token(!m_sources.isEmpty() ? m_sources.first() : "", ""));
+	tokens.insert("sources", Token(m_sources));
 	tokens.insert("filesize", Token(m_fileSize, 0));
 	tokens.insert("author", Token(m_author, ""));
 	tokens.insert("authorid", Token(m_authorId, 0));

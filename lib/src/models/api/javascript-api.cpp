@@ -221,7 +221,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
 				else if (val.isArray())
-				{ d[key] = jsToStringList(val).join(' '); }
+				{ d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' '); }
 				else
 				{ d[key] = val.toString(); }
 			}

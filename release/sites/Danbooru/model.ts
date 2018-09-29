@@ -17,6 +17,10 @@ const completeImage = (data: any): IImage => {
         }
     }
 
+    if ("sources" in data && "source" in data["sources"]) {
+        data["sources"] = data["sources"]["source"];
+    }
+
     if (!data["file_url"] || data["file_url"].length < 5) {
         data["file_url"] = data["preview_url"].replace("/preview/", "/");
     }
