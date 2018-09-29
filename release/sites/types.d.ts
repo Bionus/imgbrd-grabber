@@ -1,5 +1,3 @@
-type Iterable<T> = T[] | { [k: number]: T } | { [k: string]: T };
-
 interface ITag {
     id?: number;
     name: string;
@@ -28,8 +26,8 @@ interface IError {
     error: string;
 }
 interface IParsedSearch {
-    images: Iterable<IImage>;
-    tags?: Iterable<ITag>;
+    images: IImage[];
+    tags?: ITag[];
     wiki?: string;
     pageCount?: number;
     imageCount?: number;
@@ -37,11 +35,11 @@ interface IParsedSearch {
     urlPrevPage?: string;
 }
 interface IParsedTags {
-    tags: Iterable<ITag>;
+    tags: ITag[];
 }
 interface IParsedDetails {
-    pools?: Iterable<IPool>;
-    tags?: Iterable<ITag>;
+    pools?: IPool[];
+    tags?: ITag[];
     imageUrl?: string;
     createdAt?: string;
 }
