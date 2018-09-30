@@ -30,10 +30,15 @@ export const source: ISource = {
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
                     const parsed = Grabber.parseXML(src);
-                    const data = Grabber.makeArray(parsed.posts.post);
 
+                    // Handle error messages
+                    if ("response" in parsed && parsed["response"]["@attributes"]["success"] === "false") {
+                        return { error: parsed["response"]["@attributes"]["reason"] };
+                    }
+
+                    const data = Grabber.makeArray(parsed.posts.post);
                     const images: IImage[] = [];
                     for (const image of data) {
                         if (image && "@attributes" in image) {
