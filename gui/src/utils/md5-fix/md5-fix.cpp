@@ -30,13 +30,13 @@ Md5Fix::~Md5Fix()
 	delete ui;
 }
 
-void Md5Fix::on_buttonCancel_clicked()
+void Md5Fix::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void Md5Fix::on_buttonStart_clicked()
+void Md5Fix::start()
 {
 	ui->buttonStart->setEnabled(false);
 
