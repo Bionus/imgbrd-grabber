@@ -94,6 +94,7 @@ void OAuth2Login::loginFinished()
 	}
 
 	m_token = jsonObject.value("access_token").toString();
+	log(QStringLiteral("[%1] Successfully received OAuth2 token '%2'").arg(m_site->url(), m_token), Logger::Debug);
 	emit loggedIn(Result::Success);
 }
 
