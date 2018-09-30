@@ -13,6 +13,77 @@ export const source: ISource = {
     },
     auth: {},
     apis: {
+        json: {
+            name: "JSON",
+            auth: [],
+            maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
+            search: {
+                url: (query: any, opts: any, previous: any): string => {
+                    const params: string[] = [
+                        "q=" + query.search,
+                        "page=" + query.page,
+                        "per_page=" + opts.limit,
+                        "period=all",
+                        "order=desc",
+                        "mode=caption",
+                        "sort=date",
+                        "image_sizes=small,medium,large",
+                    ];
+                    return "https://public-api.secure.pixiv.net/v1/search/works.json?" + params.join("&");
+                },
+                parse: (src: string): IParsedSearch => {
+                    const map = {
+                        "name": "title",
+                        "created_at": "created_time",
+                        "file_url": "image_urls.large",
+                        "sample_url": "image_urls.medium",
+                        "preview_url": "image_urls.small",
+                        "width": "width",
+                        "parent_id": "parent_id",
+                        "height": "height",
+                        "creator_id": "user.id",
+                        "id": "id",
+                        "tags": "tags",
+                        "author": "user.name",
+                    };
+
+                    const data = JSON.parse(src);
+
+                    const images: IImage[] = [];
+                    for (const image of data["response"]) {
+                        const img = Grabber.mapFields(image, map);
+                        if (image["age_limit"] === "all-age") {
+                            img["rating"] = "safe";
+                        } else if (image["age_limit"] === "r18") {
+                            img["rating"] = "explicit";
+                        }
+                        if (image["is_manga"]) {
+                            img["type"] = "gallery";
+                        }
+                        images.push(img);
+                    }
+
+                    return {
+                        images,
+                        imageCount: data["pagination"]["total"],
+                        pageCount: data["pagination"]["pages"],
+                    };
+                },
+            },
+            details: {
+                url: (id: number, md5: string): string => {
+                    return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src)["response"][0];
+                    return {
+                        imageUrl: data["image_urls"]["large"],
+                        tags: data["tags"],
+                        createdAt: data["created_time"],
+                    };
+                },
+            },
+        },
         html: {
             name: "Regex",
             auth: [],
