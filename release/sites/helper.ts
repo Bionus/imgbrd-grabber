@@ -12,6 +12,14 @@ addHelper("makeArray", (val: any, allowFalsy: boolean = false): any[] => {
     return val;
 });
 
+addHelper("regexMatch", (regexp: string, src: string): any => {
+    const matches = Grabber.regexMatches(regexp, src);
+    if (matches && matches.length > 0) {
+        return matches[0];
+    }
+    return undefined;
+});
+
 addHelper("mapObject", (obj: any, fn: (v: any) => any): any => {
     const ret: any = {};
     for (const k in obj) {
