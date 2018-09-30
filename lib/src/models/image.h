@@ -82,6 +82,7 @@ class Image : public QObject, public Downloadable
 		// Displayable
 		QColor color() const override;
 		QString tooltip() const override;
+		QString counter() const override;
 		QList<QStrP> detailsData() const override;
 
 		// Downloadable
@@ -139,6 +140,7 @@ class Image : public QObject, public Downloadable
 		ExtensionRotator *m_extensionRotator;
 		bool m_loadingDetails, m_loadedDetails;
 		bool m_isGallery = false;
+		int m_galleryCount;
 };
 
 Q_DECLARE_METATYPE(Image)

@@ -81,6 +81,8 @@ Image::Image(const Image &other)
 	m_createdAt = other.m_createdAt;
 	m_data = other.m_data;
 
+	m_galleryCount = other.m_galleryCount;
+
 	m_loadDetails = other.m_loadDetails;
 
 	m_tags = other.m_tags;
@@ -128,6 +130,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
+	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 
 	// Preview rect
 	if (details.contains("preview_rect"))
@@ -835,6 +838,11 @@ QString Image::tooltip() const
 		.arg(m_size.width() == 0 || m_size.height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(m_size.width()), QString::number(m_size.height())))
 		.arg(m_fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
 		.arg(!m_createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(m_createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
+}
+
+QString Image::counter() const
+{
+	return m_galleryCount > 0 ? QString::number(m_galleryCount) : QString();
 }
 
 QList<QStrP> Image::detailsData() const

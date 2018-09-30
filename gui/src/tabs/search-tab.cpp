@@ -873,6 +873,10 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	{ l->scale(img->previewImage(), upscale); }
 	l->setFlat(true);
 
+	QString counter = img->counter();
+	if (!counter.isEmpty())
+	{ l->setCounter(counter); }
+
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 

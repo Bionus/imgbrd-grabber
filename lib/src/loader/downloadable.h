@@ -51,6 +51,7 @@ class Downloadable
 
 		virtual QColor color() const = 0;
 		virtual QString tooltip() const = 0;
+		virtual QString counter() const = 0;
 		virtual QList<QStrP> detailsData() const = 0;
 
 		void refreshTokens();

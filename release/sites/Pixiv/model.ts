@@ -59,6 +59,7 @@ export const source: ISource = {
                         }
                         if (image["is_manga"]) {
                             img["type"] = "gallery";
+                            img["gallery_count"] = image["page_count"];
                         }
                         images.push(img);
                     }
