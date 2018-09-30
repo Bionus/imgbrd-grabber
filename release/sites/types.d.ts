@@ -27,7 +27,7 @@ interface IError {
 }
 interface IParsedSearch {
     images: IImage[];
-    tags?: ITag[];
+    tags?: ITag[] | string[];
     wiki?: string;
     pageCount?: number;
     imageCount?: number;
@@ -35,11 +35,11 @@ interface IParsedSearch {
     urlPrevPage?: string;
 }
 interface IParsedTags {
-    tags: ITag[];
+    tags: ITag[] | string[];
 }
 interface IParsedDetails {
     pools?: IPool[];
-    tags?: ITag[];
+    tags?: ITag[] | string[];
     imageUrl?: string;
     createdAt?: string;
 }
