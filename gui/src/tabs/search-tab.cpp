@@ -474,6 +474,9 @@ void SearchTab::updatePaginationButtons(Page *page)
 	if (pageCount > m_pagemax || m_pagemax == -1)
 		m_pagemax = pageCount;
 
+	// Update page spinbox max value
+	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : m_pagemax);
+
 	// Enable/disable buttons
 	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
 	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
