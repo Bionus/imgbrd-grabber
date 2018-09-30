@@ -535,6 +535,7 @@ void DownloadsTab::getAll(bool all)
 	m_batchPending.clear();
 	m_lastDownloader = nullptr;
 	m_waitingDownloaders.clear();
+	m_batchUniqueDownloading.clear();
 
 	if (!all)
 	{
@@ -554,12 +555,14 @@ void DownloadsTab::getAll(bool all)
 			d.queryImage = &batch;
 
 			m_getAllRemaining.append(d);
+			m_batchUniqueDownloading.insert(row);
 		}
 	}
 	else
 	{
-		for (const DownloadQueryImage &batch : qAsConst(m_batchs))
+		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
+			const DownloadQueryImage &batch = m_batchs[j];
 			if (batch.values.value("file_url").isEmpty())
 			{
 				log(QStringLiteral("No file URL provided in image download query"), Logger::Warning);
@@ -577,6 +580,7 @@ void DownloadsTab::getAll(bool all)
 			d.queryImage = &batch;
 
 			m_getAllRemaining.append(d);
+			m_batchUniqueDownloading.insert(j);
 		}
 	}
 	m_getAllLimit = m_batchs.size();
@@ -1214,7 +1218,10 @@ void DownloadsTab::getAllFinished()
 
 	// Remove after download and retries are finished
 	if (m_progressDialog->endRemove())
-	{ batchRemoveGroups(m_batchDownloading.toList()); }
+	{
+		batchRemoveGroups(m_batchDownloading.toList());
+		batchRemoveUniques(m_batchUniqueDownloading.toList());
+	}
 
 	// End of batch download
 	m_profile->getCommands().after();

@@ -112,6 +112,7 @@ class DownloadsTab : public QWidget
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
 		QSet<int> m_batchDownloading;
+		QSet<int> m_batchUniqueDownloading;
 		QList<DownloadQueryGroup> m_groupBatchs;
 		QList<BatchDownloadImage> m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_getAllImageDownloaders;
