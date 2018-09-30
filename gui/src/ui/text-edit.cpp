@@ -1,6 +1,7 @@
-#include "textedit.h"
+#include "text-edit.h"
 #include <QAbstractItemView>
 #include <QApplication>
+#include <QCompleter>
 #include <QMenu>
 #include <QScrollBar>
 #include <QSettings>
@@ -164,7 +165,13 @@ QString TextEdit::textUnderCursor() const
 	QString txt = ' ' + toPlainText() + ' ';
 	const int pos = tc.position();
 	const int i2 = txt.indexOf(' ', pos);
-	const int i1 = txt.lastIndexOf(' ', i2 - 1) + 1;
+	int i1 = txt.lastIndexOf(' ', i2 - 1) + 1;
+
+	// Skip - and ~ prefixes
+	while (i1 < i2 && (txt[i1] == '-' || txt[i1] == '~')) {
+		i1++;
+	}
+
 	return txt.mid(i1, i2 - i1);
 }
 

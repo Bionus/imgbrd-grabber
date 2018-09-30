@@ -41,6 +41,7 @@
 #include "tags/tag-stylist.h"
 #include "theme-loader.h"
 #include "ui/QAffiche.h"
+#include "ui/tab-selector.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
@@ -61,7 +62,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->setupUi(this);
 
 	if (m_settings->value("Log/show", true).toBool())
-	{ ui->tabWidget->addTab(new LogTab(this), tr("Log")); }
+	{
+		m_logTab = new LogTab(this);
+		ui->tabWidget->addTab(m_logTab, m_logTab->windowTitle());
+	}
 
 	log(QStringLiteral("New session started."), Logger::Info);
 	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
@@ -219,21 +223,18 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
 
+	// Tab bar context menu
+	ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
+
 	// Downloads tab
 	m_downloadsTab = new DownloadsTab(m_profile, this);
-	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, tr("Downloads"));
+	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
 
 	// Restore download lists
 	if (m_restore)
 	{ m_downloadsTab->loadLinkList(m_profile->getPath() + "/restore.igl"); }
-
-	// Tab add button
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
-		add->setFlat(true);
-		add->resize(QSize(12, 12));
-		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
-		ui->tabWidget->setCornerWidget(add);
 
 	// Favorites tab
 	m_favoritesTab = new FavoritesTab(m_profile, this);
@@ -241,8 +242,38 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(m_favoritesTab, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
 	connect(m_favoritesTab, &SearchTab::changed, this, &MainWindow::updateTabs);
-	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
+	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, m_favoritesTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
+
+	// Tab corner widget
+	QWidget *cornerWidget = new QWidget(this);
+	QLayout *layout = new QHBoxLayout(cornerWidget);
+	layout->setContentsMargins(0, 0, 6, 0);
+	layout->setSpacing(0);
+	ui->tabWidget->setCornerWidget(cornerWidget);
+
+	// Last tab button
+	QPushButton *lastTab = new QPushButton(QIcon(":/images/back.png"), "", this);
+		lastTab->setFlat(true);
+		lastTab->resize(QSize(15, 12));
+		layout->addWidget(lastTab);
+
+	// Add tab button
+	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
+		add->setFlat(true);
+		add->resize(QSize(12, 12));
+		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
+		layout->addWidget(add);
+
+	// Tab selector
+	m_tabSelector = new TabSelector(ui->tabWidget, lastTab, this);
+		m_tabSelector->setShowTabCount(true); // TODO(Bionus): add a setting to disable tab count
+		m_tabSelector->setFlat(true);
+		m_tabSelector->markStaticTab(m_favoritesTab);
+		m_tabSelector->markStaticTab(m_downloadsTab);
+		if (m_logTab != nullptr)
+		{ m_tabSelector->markStaticTab(m_logTab); }
+		layout->addWidget(m_tabSelector);
 
 	// Load given files
 	parseArgs(args, params);
@@ -438,6 +469,8 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 	int index = ui->tabWidget->insertTab(pos, w, title);
 	m_tabs.append(w);
 
+	m_tabSelector->updateCounter();
+
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8, 8));
@@ -499,6 +532,7 @@ void MainWindow::tabClosed(SearchTab *tab)
 	ui->actionRestoreLastClosedTab->setEnabled(true);
 
 	m_tabs.removeAll(tab);
+	m_tabSelector->updateCounter();
 }
 void MainWindow::restoreLastClosedTab()
 {
@@ -769,7 +803,7 @@ void MainWindow::setSource(const QString &site)
 
 void MainWindow::aboutWebsite()
 {
-	QDesktopServices::openUrl(QUrl(PROJECT_WEBSITE_URL));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/"));
 }
 void MainWindow::aboutGithub()
 {
@@ -818,6 +852,16 @@ void MainWindow::setWiki(const QString &wiki, SearchTab *from)
 		return;
 
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
+}
+
+void MainWindow::tabContextMenuRequested(const QPoint &pos)
+{
+	Q_UNUSED(pos);
+
+	auto *menu = new QMenu(this);
+	menu->addAction(ui->actionAddtab);
+	menu->addAction(ui->actionRestoreLastClosedTab);
+	menu->exec(QCursor::pos());
 }
 
 void MainWindow::on_buttonFolder_clicked()

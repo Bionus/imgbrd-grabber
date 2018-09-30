@@ -21,12 +21,14 @@ FixedSizeGridLayout::~FixedSizeGridLayout()
 void FixedSizeGridLayout::setFixedWidth(int width)
 {
 	m_fixedWidth = width;
+	invalidate();
 }
 
 
 void FixedSizeGridLayout::addItem(QLayoutItem *item)
 {
 	m_items.append(item);
+	invalidate();
 }
 
 void FixedSizeGridLayout::insertItem(int index, QLayoutItem *item)
@@ -35,6 +37,7 @@ void FixedSizeGridLayout::insertItem(int index, QLayoutItem *item)
 		index = m_items.count();
 
 	m_items.insert(index, item);
+	invalidate();
 }
 
 void FixedSizeGridLayout::insertWidget(int index, QWidget *widget)
@@ -56,7 +59,11 @@ QLayoutItem *FixedSizeGridLayout::itemAt(int index) const
 QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 {
 	if (index >= 0 && index < m_items.size())
-		return m_items.takeAt(index);
+	{
+		auto item = m_items.takeAt(index);
+		invalidate();
+		return item;
+	}
 
 	return nullptr;
 }

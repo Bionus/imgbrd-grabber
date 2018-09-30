@@ -32,6 +32,15 @@ export const source: any = {
         case: "lower",
         wordSeparator: "_",
     },
+    searchFormat: {
+        and: " ",
+        or: {
+            separator: " ",
+            prefix: "~",
+        },
+        parenthesis: false,
+        precedence: "or",
+    },
     auth,
     apis: {
         json: {

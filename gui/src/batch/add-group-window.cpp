@@ -5,7 +5,7 @@
 #include "downloader/download-query-group.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 
 
 AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent)

@@ -13,13 +13,15 @@
 #include "models/image.h"
 
 
+class Profile;
+
 class ImageDownloader : public QObject
 {
 	Q_OBJECT
 
 	public:
-		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false);
-		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false);
 		~ImageDownloader();
 		bool isRunning() const;
 
@@ -28,6 +30,7 @@ class ImageDownloader : public QObject
 		void abort();
 
 	protected:
+		int needExactTags(QSettings *settings);
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
 		QMap<QString, Downloadable::SaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
 
@@ -44,6 +47,7 @@ class ImageDownloader : public QObject
 		void success();
 
 	private:
+		Profile *m_profile;
 		QSharedPointer<Image> m_image;
 		FileDownloader m_fileDownloader;
 		QString m_filename;

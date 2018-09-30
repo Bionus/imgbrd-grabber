@@ -19,6 +19,14 @@ class QBouton;
 class Site;
 class Source;
 
+struct SourceRow
+{
+	Site *site;
+	QCheckBox *check;
+	QList<QLabel*> labels;
+	QBouton *button;
+};
+
 class SourcesWindow : public QDialog
 {
 	Q_OBJECT
@@ -64,9 +72,8 @@ class SourcesWindow : public QDialog
 		Ui::SourcesWindow *ui;
 		Profile *m_profile;
 		QList<Site*> m_selected;
-		QList<QCheckBox*> m_checks;
-		QList<QLabel*> m_labels;
-		QList<QBouton*> m_buttons;
+		QList<SourceRow> m_rows;
+		QMap<QString, int> m_siteRows;
 		const QMap<QString, Site*> &m_sites;
 		const QMap<QString, Source*> &m_sources;
 		QMap<QString, QStringList> m_presets;

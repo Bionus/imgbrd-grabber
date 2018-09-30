@@ -7,7 +7,7 @@
 #include "models/page.h"
 #include "models/site.h"
 #include "search-window.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 
 
 TagTab::TagTab(Profile *profile, MainWindow *parent)

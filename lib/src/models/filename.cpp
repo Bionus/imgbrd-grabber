@@ -498,9 +498,12 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 		{ std::sort(vals.begin(), vals.end()); }
 
 		// Clean each value separately
-		for (QString &t : vals)
-		{ t = this->cleanUpValue(t, options, settings); }
-		cleaned = true;
+		if (!key.startsWith("source"))
+		{
+			for (QString &t : vals)
+			{ t = this->cleanUpValue(t, options, settings); }
+			cleaned = true;
+		}
 
 		res = vals.join(tagSeparator);
 	}
@@ -514,7 +517,7 @@ QString Filename::optionedValue(const QVariant &val, const QString &key, const Q
 	{ res = res.toHtmlEscaped(); }
 
 	// Forbidden characters and spaces replacement settings
-	if (key != "allo" && !key.startsWith("url_") && key != "filename" && !cleaned)
+	if (key != "allo" && !key.startsWith("url_") && key != "filename" && !key.startsWith("source") && !cleaned)
 	{ res = this->cleanUpValue(res, options, settings); }
 
 	// Escape if necessary

@@ -140,12 +140,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>69</y>
+     <x>50</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>38</x>
-     <y>90</y>
+     <x>47</x>
+     <y>130</y>
     </hint>
    </hints>
   </connection>
@@ -156,14 +156,50 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>295</x>
-     <y>73</y>
+     <x>304</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>291</x>
-     <y>89</y>
+     <x>347</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonStart</sender>
+   <signal>clicked()</signal>
+   <receiver>Md5Fix</receiver>
+   <slot>start()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>237</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Md5Fix</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>311</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>314</x>
+     <y>217</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>start()</slot>
+  <slot>cancel()</slot>
+ </slots>
 </ui>

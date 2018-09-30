@@ -7,6 +7,7 @@
 #include <ui_md5-fix.h>
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/profile.h"
 
 
@@ -29,13 +30,13 @@ Md5Fix::~Md5Fix()
 	delete ui;
 }
 
-void Md5Fix::on_buttonCancel_clicked()
+void Md5Fix::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void Md5Fix::on_buttonStart_clicked()
+void Md5Fix::start()
 {
 	ui->buttonStart->setEnabled(false);
 
@@ -78,35 +79,9 @@ void Md5Fix::on_buttonStart_clicked()
 			const QString fileName = file.first;
 			const QString path = dir.absoluteFilePath(fileName);
 
-			QString md5;
-			if (ui->radioForce->isChecked())
-			{
-				QFile fle(path);
-				fle.open(QFile::ReadOnly);
-				md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-			}
-			else
-			{
-				QRegExp regx("%([^%]*)%");
-				QString reg = QRegExp::escape(ui->lineFilename->text());
-				int pos = 0, cur = 0, id = -1;
-				while ((pos = regx.indexIn(reg, pos)) != -1)
-				{
-					pos += 4;
-					reg.replace(regx.cap(0), "(.+)");
-					if (regx.cap(1) == QLatin1String("md5"))
-					{ id = cur; }
-					cur++;
-				}
-				QRegExp rx(reg);
-				rx.setMinimal(true);
-				pos = 0;
-				while ((pos = rx.indexIn(fileName, pos)) != -1)
-				{
-					pos += rx.matchedLength();
-					md5 = rx.cap(id + 1);
-				}
-			}
+			QString md5 = ui->radioForce->isChecked()
+				? getFileMd5(path)
+				: getFilenameMd5(fileName, ui->lineFilename->text());
 
 			if (!md5.isEmpty())
 			{

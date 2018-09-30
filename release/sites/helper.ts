@@ -2,11 +2,22 @@ function addHelper(name: string, value: any): void {
     Object.defineProperty(Grabber, name, { value });
 }
 
-addHelper("makeArray", (val: any): any[] => {
+addHelper("makeArray", (val: any, allowFalsy: boolean = false): any[] => {
+    if (!val && !allowFalsy) {
+        return [];
+    }
     if (!Array.isArray(val)) {
         return [ val ];
     }
     return val;
+});
+
+addHelper("regexMatch", (regexp: string, src: string): any => {
+    const matches = Grabber.regexMatches(regexp, src);
+    if (matches && matches.length > 0) {
+        return matches[0];
+    }
+    return undefined;
 });
 
 addHelper("mapObject", (obj: any, fn: (v: any) => any): any => {
@@ -57,14 +68,18 @@ addHelper("typedXML", (val: any) => {
     return val;
 });
 
-addHelper("mapFields", (data: any, map: any): any => {
+addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     const result: any = {};
     if (typeof data !== "object") {
         return result;
     }
     for (const to in map) {
-        const from = map[to];
-        result[to] = from in data && data[from] !== null ? data[from] : undefined;
+        const from = map[to].split(".");
+        let val: any = data;
+        for (const part of from) {
+            val = part in val && val[part] !== null ? val[part] : undefined;
+        }
+        result[to] = val !== data ? val : undefined;
     }
     return result;
 });

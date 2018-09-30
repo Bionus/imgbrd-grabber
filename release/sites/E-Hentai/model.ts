@@ -45,6 +45,9 @@ export const source: ISource = {
     name: "E-Hentai",
     modifiers: [],
     forcedTokens: ["*"],
+    searchFormat: {
+        and: " ",
+    },
     auth,
     apis: {
         html: {

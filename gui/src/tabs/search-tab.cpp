@@ -1,4 +1,5 @@
 #include "tabs/search-tab.h"
+#include <QCompleter>
 #include <QEventLoop>
 #include <QFileDialog>
 #include <QMenu>
@@ -23,7 +24,7 @@
 #include "sources/sources-window.h"
 #include "ui/fixed-size-grid-layout.h"
 #include "ui/QBouton.h"
-#include "ui/textedit.h"
+#include "ui/text-edit.h"
 #include "ui/verticalscrollarea.h"
 #include "viewer/zoom-window.h"
 
@@ -473,6 +474,9 @@ void SearchTab::updatePaginationButtons(Page *page)
 	if (pageCount > m_pagemax || m_pagemax == -1)
 		m_pagemax = pageCount;
 
+	// Update page spinbox max value
+	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : m_pagemax);
+
 	// Enable/disable buttons
 	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
 	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
@@ -606,7 +610,7 @@ void SearchTab::finishedLoadingPreview()
 
 		if (download)
 		{
-			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
 			downloader->save();
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		}
@@ -869,6 +873,10 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	{ l->scale(img->previewImage(), upscale); }
 	l->setFlat(true);
 
+	QString counter = img->counter();
+	if (!counter.isEmpty())
+	{ l->setCounter(counter); }
+
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
@@ -952,7 +960,7 @@ void SearchTab::contextSaveImage(int position)
 		const QString fn = m_settings->value("Save/filename").toString();
 		const QString path = m_settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
@@ -972,7 +980,7 @@ void SearchTab::contextSaveImageAs(int position)
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
 
 		QEventLoop loop;
-		ImageDownloader downloader(image, QStringList() << tmpPath, 1, true, true, true, this);
+		ImageDownloader downloader(m_profile, image, QStringList() << tmpPath, 1, true, true, true, this);
 		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
 		downloader.save();
 		loop.exec();
@@ -993,7 +1001,7 @@ void SearchTab::contextSaveImageAs(int position)
 		{ QFile::rename(tmpPath, path); }
 		else
 		{
-			auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, image, QStringList() << path, 1, true, true, true, this);
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 			downloader->save();
 		}
@@ -1008,7 +1016,7 @@ void SearchTab::contextSaveSelected()
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs))
 	{
-		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();

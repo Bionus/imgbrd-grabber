@@ -20,10 +20,12 @@ class SearchTab;
 class FavoritesTab;
 class Profile;
 class DownloadsTab;
+class LogTab;
 class Favorite;
 class MonitoringCenter;
 class QSettings;
 class Site;
+class TabSelector;
 class Tag;
 
 class MainWindow : public QMainWindow
@@ -97,6 +99,7 @@ class MainWindow : public QMainWindow
 		void setTags(const QList<Tag> &tags, SearchTab *from = nullptr);
 		void initialLoginsFinished();
 		void setWiki(const QString &wiki, SearchTab *from = nullptr);
+		void tabContextMenuRequested(const QPoint &pos);
 
 		// Drag & drop
 		void dragEnterEvent(QDragEnterEvent *event) override;
@@ -119,11 +122,13 @@ class MainWindow : public QMainWindow
 		QList<Site*> m_selectedSites;
 		FavoritesTab *m_favoritesTab;
 		DownloadsTab *m_downloadsTab;
+		LogTab *m_logTab;
 		QStringList m_lineFilename_completer, m_lineFolder_completer;
 		bool m_restore;
 		QList<Tag> m_currentTags;
 		QLinkedList<QJsonObject> m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
+		TabSelector *m_tabSelector;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;

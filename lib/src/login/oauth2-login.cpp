@@ -8,6 +8,8 @@
 #include "models/site.h"
 
 
+typedef QPair<QString, QString> QStrP;
+
 OAuth2Login::OAuth2Login(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
 	: m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
 {}
@@ -19,37 +21,80 @@ bool OAuth2Login::isTestable() const
 
 void OAuth2Login::login()
 {
-	// Get user application credentials
+	const QString type = m_settings->value("login/oauth2/type", "password").toString();
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
-	const QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
-	const QByteArray base64BearerCredentials = bearerCredentials.toBase64();
 
-	// Create request
 	QNetworkRequest request(m_site->fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
-	request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
-	const QString body = QStringLiteral("grant_type=client_credentials");
+
+	QList<QStrP> body;
+
+	if (type == "header_basic")
+	{
+		body << QStrP("grant_type", "client_credentials");
+
+		const QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
+		const QByteArray base64BearerCredentials = bearerCredentials.toBase64();
+		request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
+	}
+	else if (type == "client_credentials")
+	{
+		body << QStrP("grant_type", "client_credentials")
+			 << QStrP("client_id", consumerKey)
+			 << QStrP("client_secret", consumerSecret);
+	}
+	else if (type == "password")
+	{
+		const QString pseudo = m_settings->value("auth/pseudo").toString();
+		const QString password = m_settings->value("auth/password").toString();
+
+		body << QStrP("grant_type", "password")
+			 << QStrP("username", pseudo)
+			 << QStrP("password", password);
+
+		if (!consumerKey.isEmpty())
+		{
+			body << QStrP("client_id", consumerKey);
+			if (!consumerSecret.isEmpty())
+			{ body << QStrP("client_secret", consumerSecret); }
+		}
+	}
 
 	// Post request and wait for a reply
-	m_tokenReply = m_manager->post(request, body.toUtf8());
+	QString bodyStr;
+	for (const QStrP &pair : body)
+	{ bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second; }
+	m_tokenReply = m_manager->post(request, bodyStr.toUtf8());
 	connect(m_tokenReply, &QNetworkReply::finished, this, &OAuth2Login::loginFinished);
 }
 
 void OAuth2Login::loginFinished()
 {
-	QString result = m_tokenReply->readAll();
-	QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
-	QJsonObject jsonObject = jsonDocument.object();
+	const QString result = m_tokenReply->readAll();
+	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
 
-	if (jsonObject.value("token_type").toString() != QLatin1String("bearer"))
+	// Some OAuth2 API wrap their responses in 'response' JSON objects
+	QJsonObject jsonObject = jsonDocument.object();
+	if (!jsonObject.contains("token_type") && jsonObject.contains("response"))
+	{ jsonObject = jsonObject.value("response").toObject(); }
+
+	const QJsonValue tokenType = jsonObject.value("token_type");
+	if (tokenType.isUndefined())
 	{
-		log(QStringLiteral("[%1] Wrong OAuth2 token type received.").arg(m_site->url()));
+		log(QStringLiteral("[%1] No OAuth2 token type received: %2").arg(m_site->url(), result), Logger::Warning);
+		emit loggedIn(Result::Failure);
+		return;
+	}
+	if (tokenType.toString() != QLatin1String("bearer"))
+	{
+		log(QStringLiteral("[%1] Wrong OAuth2 token type received (%2).").arg(m_site->url(), tokenType.toString()), Logger::Warning);
 		emit loggedIn(Result::Failure);
 		return;
 	}
 
 	m_token = jsonObject.value("access_token").toString();
+	log(QStringLiteral("[%1] Successfully received OAuth2 token '%2'").arg(m_site->url(), m_token), Logger::Debug);
 	emit loggedIn(Result::Success);
 }
 

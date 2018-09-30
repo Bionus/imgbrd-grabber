@@ -78,7 +78,7 @@ void FileDownloaderTest::testFailedStart()
 
 void FileDownloaderTest::testInvalidHtml()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(PROJECT_WEBSITE_URL)));
+	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(QString(PROJECT_WEBSITE_URL) + "/")));
 	QString dest = "test.html";
 
 	FileDownloader downloader(false);

@@ -84,7 +84,6 @@ class DownloadsTab : public QWidget
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
-		int needExactTags(QSettings *settings);
 		int getRowForSite(int siteId);
 		void getAllImageOk(const BatchDownloadImage &download, int siteId, bool retry = false);
 		void imageUrlChanged(const QUrl &before, const QUrl &after);
@@ -113,6 +112,7 @@ class DownloadsTab : public QWidget
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
 		QSet<int> m_batchDownloading;
+		QSet<int> m_batchUniqueDownloading;
 		QList<DownloadQueryGroup> m_groupBatchs;
 		QList<BatchDownloadImage> m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_getAllImageDownloaders;

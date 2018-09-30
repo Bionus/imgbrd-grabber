@@ -535,6 +535,7 @@ void DownloadsTab::getAll(bool all)
 	m_batchPending.clear();
 	m_lastDownloader = nullptr;
 	m_waitingDownloaders.clear();
+	m_batchUniqueDownloading.clear();
 
 	if (!all)
 	{
@@ -554,12 +555,14 @@ void DownloadsTab::getAll(bool all)
 			d.queryImage = &batch;
 
 			m_getAllRemaining.append(d);
+			m_batchUniqueDownloading.insert(row);
 		}
 	}
 	else
 	{
-		for (const DownloadQueryImage &batch : qAsConst(m_batchs))
+		for (int j = 0; j < m_batchs.count(); ++j)
 		{
+			const DownloadQueryImage &batch = m_batchs[j];
 			if (batch.values.value("file_url").isEmpty())
 			{
 				log(QStringLiteral("No file URL provided in image download query"), Logger::Warning);
@@ -577,6 +580,7 @@ void DownloadsTab::getAll(bool all)
 			d.queryImage = &batch;
 
 			m_getAllRemaining.append(d);
+			m_batchUniqueDownloading.insert(j);
 		}
 	}
 	m_getAllLimit = m_batchs.size();
@@ -646,6 +650,7 @@ void DownloadsTab::getAll(bool all)
 
 	if (tooBig || (m_batchPending.isEmpty() && m_getAllRemaining.isEmpty()))
 	{
+		log(tooBig ? QStringLiteral("Batch download too big") : QStringLiteral("Nothing to download"), Logger::Info);
 		m_getAll = false;
 		ui->widgetDownloadButtons->setEnabled(true);
 		return;
@@ -797,6 +802,8 @@ void DownloadsTab::getAllGetPages()
  */
 void DownloadsTab::getAllFinishedPage(Page *page)
 {
+	Q_UNUSED(page);
+
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
 
@@ -878,41 +885,6 @@ void DownloadsTab::getAllImages()
 	m_getAllCurrentlyProcessing.store(count);
 	for (int i = 0; i < count; i++)
 		_getAll();
-}
-
-int DownloadsTab::needExactTags(QSettings *settings)
-{
-	auto logFiles = getExternalLogFiles(settings);
-	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
-	{
-		Filename fn(it.value().value("content").toString());
-		int need = fn.needExactTags();
-		if (need != 0)
-			return need;
-	}
-
-	QStringList settingNames = QStringList()
-		<< "Exec/tag_before"
-		<< "Exec/image"
-		<< "Exec/tag_after"
-		<< "Exec/SQL/before"
-		<< "Exec/SQL/tag_before"
-		<< "Exec/SQL/image"
-		<< "Exec/SQL/tag_after"
-		<< "Exec/SQL/after";
-	for (const QString &setting : settingNames)
-	{
-		QString value = settings->value(setting, "").toString();
-		if (value.isEmpty())
-			continue;
-
-		Filename fn(value);
-		int need = fn.needExactTags();
-		if (need != 0)
-			return need;
-	}
-
-	return 0;
 }
 
 void DownloadsTab::_getAll()
@@ -1029,7 +1001,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	log(QStringLiteral("Loading image from `%1` %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	bool getBlacklisted = download.queryGroup == nullptr || download.queryGroup->getBlacklisted;
-	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, getBlacklisted, this);
+	auto imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, getBlacklisted, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &DownloadsTab::getAllGetImageSaved, Qt::UniqueConnection);
 	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &DownloadsTab::getAllProgress, Qt::UniqueConnection);
 	imgDownloader->save();
@@ -1247,7 +1219,10 @@ void DownloadsTab::getAllFinished()
 
 	// Remove after download and retries are finished
 	if (m_progressDialog->endRemove())
-	{ batchRemoveGroups(m_batchDownloading.toList()); }
+	{
+		batchRemoveGroups(m_batchDownloading.toList());
+		batchRemoveUniques(m_batchUniqueDownloading.toList());
+	}
 
 	// End of batch download
 	m_profile->getCommands().after();

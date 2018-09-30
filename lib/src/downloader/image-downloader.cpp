@@ -25,12 +25,12 @@ static void addMd5(Profile *profile, const QString &path)
 }
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force)
-	: QObject(parent), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
 {}
 
 ImageDownloader::~ImageDownloader()
@@ -47,9 +47,11 @@ bool ImageDownloader::isRunning() const
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
-	int needTags = Filename(m_filename).needExactTags(m_image->parentSite());
-	bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
+	const int globalNeedTags = needExactTags(m_profile->getSettings());
+	const int localNeedTags = Filename(m_filename).needExactTags(m_image->parentSite());
+	const int needTags = qMax(globalNeedTags, localNeedTags);
+	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
+	const bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags))
 	{
 		loadedSave();
@@ -60,6 +62,41 @@ void ImageDownloader::save()
 	m_image->loadDetails();
 }
 
+int ImageDownloader::needExactTags(QSettings *settings)
+{
+	int need = 0;
+
+	const auto logFiles = getExternalLogFiles(settings);
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
+	{
+		need = qMax(need, Filename(it.value().value("content").toString()).needExactTags());
+		if (need == 2)
+			return need;
+	}
+
+	QStringList settingNames = QStringList()
+		<< "Exec/tag_before"
+		<< "Exec/image"
+		<< "Exec/tag_after"
+		<< "Exec/SQL/before"
+		<< "Exec/SQL/tag_before"
+		<< "Exec/SQL/image"
+		<< "Exec/SQL/tag_after"
+		<< "Exec/SQL/after";
+	for (const QString &setting : settingNames)
+	{
+		const QString value = settings->value(setting, "").toString();
+		if (value.isEmpty())
+			continue;
+
+		need = qMax(need, Filename(value).needExactTags());
+		if (need == 2)
+			return need;
+	}
+
+	return need;
+}
+
 void ImageDownloader::abort()
 {
 	if (m_reply != nullptr && m_reply->isRunning())
@@ -68,15 +105,13 @@ void ImageDownloader::abort()
 
 void ImageDownloader::loadedSave()
 {
-	Profile *profile = m_image->parentSite()->getSource()->getProfile();
-
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty())
 	{
 		m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true);
 
 		// Use a random temporary file if we need the MD5 or equivalent
-		if (Filename(m_filename).needTemporaryFile(m_image->tokens(profile)))
+		if (Filename(m_filename).needTemporaryFile(m_image->tokens(m_profile)))
 		{
 			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
 			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
@@ -90,7 +125,7 @@ void ImageDownloader::loadedSave()
 	// Check if the image is blacklisted
 	if (!m_getBlacklisted)
 	{
-		const QStringList &detected = profile->getBlacklist().match(m_image->tokens(profile));
+		const QStringList &detected = m_profile->getBlacklist().match(m_image->tokens(m_profile));
 		if (!detected.isEmpty())
 		{
 			log(QStringLiteral("Image contains blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
@@ -116,7 +151,7 @@ void ImageDownloader::loadedSave()
 		{
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			for (const QString &path : qAsConst(m_paths))
-			{ addMd5(profile, path); }
+			{ addMd5(m_profile, path); }
 			emit saved(m_image, makeMap(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
 		}
@@ -199,7 +234,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 {
 	if (error == QNetworkReply::ContentNotFoundError)
 	{
-		QSettings *settings = m_image->parentSite()->getSource()->getProfile()->getSettings();
+		QSettings *settings = m_profile->getSettings();
 		ExtensionRotator *extensionRotator = m_image->extensionRotator();
 
 		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
@@ -254,8 +289,7 @@ void ImageDownloader::success()
 
 QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
-	Profile *profile = m_image->parentSite()->getSource()->getProfile();
-	const QString multipleFiles = profile->getSettings()->value("Save/multiple_files", "copy").toString();
+	const QString multipleFiles = m_profile->getSettings()->value("Save/multiple_files", "copy").toString();
 
 	m_image->setSavePath(m_temporaryPath);
 
@@ -281,7 +315,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 		{
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty())
-			{ addMd5(profile, file); }
+			{ addMd5(m_profile, file); }
 			result[path] = Image::SaveResult::AlreadyExistsDisk;
 			continue;
 		}

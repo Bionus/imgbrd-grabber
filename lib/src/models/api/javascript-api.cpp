@@ -17,11 +17,9 @@ QStringList jsToStringList(const QJSValue &val)
 {
 	QStringList ret;
 
-	QJSValueIterator it(val);
-	while (it.hasNext())
-	{
-		it.next();
-		ret.append(it.value().toString());
+	const quint32 length = val.property("length").toUInt();
+	for (quint32 i = 0; i < length; ++i) {
+		ret.append(val.property(i).toString());
 	}
 
 	return ret;
@@ -133,12 +131,10 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	QList<Tag> ret;
 	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
 
-	QJSValueIterator it(tags);
-	while (it.hasNext())
+	const quint32 length = tags.property("length").toUInt();
+	for (quint32 i = 0; i < length; ++i)
 	{
-		it.next();
-
-		const QJSValue tag = it.value();
+		const QJSValue tag = tags.property(i);
 		if (tag.isString())
 		{
 			ret.append(Tag(tag.toString()));
@@ -196,21 +192,19 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	if (results.hasProperty("images"))
 	{
 		const QJSValue images = results.property("images");
-		QJSValueIterator it(images);
-		while (it.hasNext())
+		const quint32 length = images.property("length").toUInt();
+		for (quint32 i = 0; i < length; ++i)
 		{
-			it.next();
-
 			QList<Tag> tags;
 
 			QMap<QString, QString> d;
-			QJSValueIterator it3(it.value());
-			while (it3.hasNext())
+			QJSValueIterator it(images.property(i));
+			while (it.hasNext())
 			{
-				it3.next();
+				it.next();
 
-				const QString &key = it3.name();
-				const QJSValue &val = it3.value();
+				const QString &key = it.name();
+				const QJSValue &val = it.value();
 
 				if (val.isUndefined())
 				{
@@ -221,7 +215,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
 				{ tags = makeTags(val, site); }
 				else if (val.isArray())
-				{ d[key] = jsToStringList(val).join(' '); }
+				{ d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' '); }
 				else
 				{ d[key] = val.toString(); }
 			}
@@ -422,13 +416,11 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) con
 
 	if (results.hasProperty("pools"))
 	{
-		const QJSValue images = results.property("pools");
-		QJSValueIterator it(images);
-		while (it.hasNext())
+		const QJSValue pools = results.property("pools");
+		const quint32 length = pools.property("length").toUInt();
+		for (quint32 i = 0; i < length; ++i)
 		{
-			it.next();
-
-			QJSValue pool = it.value();
+			const QJSValue pool = pools.property(i);
 			if (!pool.isObject())
 				continue;
 

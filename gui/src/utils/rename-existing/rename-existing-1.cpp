@@ -7,6 +7,7 @@
 #include <ui_rename-existing-1.h>
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -80,35 +81,9 @@ void RenameExisting1::on_buttonContinue_clicked()
 		const QString fileName = file.first;
 		const QString path = dir.absoluteFilePath(fileName);
 
-		QString md5;
-		if (ui->radioForce->isChecked())
-		{
-			QFile fle(path);
-			fle.open(QFile::ReadOnly);
-			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-		}
-		else
-		{
-			QRegExp regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilenameOrigin->text());
-			int pos = 0, cur = 0, id = -1;
-			while ((pos = regx.indexIn(ui->lineFilenameOrigin->text(), pos)) != -1)
-			{
-				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), QStringLiteral("(.+)"));
-				if (regx.cap(1) == QLatin1String("md5"))
-				{ id = cur; }
-				cur++;
-			}
-			QRegExp rx(reg);
-			rx.setMinimal(true);
-			pos = 0;
-			while ((pos = rx.indexIn(fileName, pos)) != -1)
-			{
-				pos += rx.matchedLength();
-				md5 = rx.cap(id + 1);
-			}
-		}
+		QString md5 = ui->radioForce->isChecked()
+			? getFileMd5(path)
+			: getFilenameMd5(fileName, ui->lineFilenameOrigin->text());
 
 		if (!md5.isEmpty())
 		{

@@ -1,5 +1,6 @@
 #include "functions.h"
 #include <QCoreApplication>
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
 #include <QLocale>
@@ -699,6 +700,41 @@ QString fixCloudflareEmails(QString html)
 		html.replace(match.captured(0), email);
 	}
 	return html;
+}
+
+
+QString getFileMd5(const QString &path)
+{
+	QFile file(path);
+	file.open(QFile::ReadOnly);
+	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+}
+
+QString getFilenameMd5(const QString &fileName, const QString &format)
+{
+	QRegularExpression regx("%([^%]*)%");
+	QString reg = QRegExp::escape(format);
+	auto matches = regx.globalMatch(format);
+	while (matches.hasNext()) {
+		const auto match = matches.next();
+		const bool isMd5 = match.captured(1) == QLatin1String("md5");
+		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
+	}
+
+	QRegularExpression rx(reg);
+	const auto match = rx.match(fileName);
+	if (match.hasMatch()) {
+		const QString md5 = match.captured("md5");
+
+		static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
+		if (rxMd5.match(md5).hasMatch()) {
+			return md5;
+		}
+	} else {
+		log(QStringLiteral("Unable to detect MD5 file `%1`").arg(fileName), Logger::Warning);
+	}
+
+	return QString();
 }
 
 

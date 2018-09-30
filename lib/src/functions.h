@@ -74,6 +74,9 @@ bool isTestModeEnabled();
 QString fixCloudflareEmail(const QString &a);
 QString fixCloudflareEmails(QString html);
 
+QString getFileMd5(const QString &path);
+QString getFilenameMd5(const QString &fileName, const QString &format);
+
 QString parseMarkdown(QString str);
 QString decodeHtmlEntities(const QString &html);
 

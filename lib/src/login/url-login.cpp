@@ -44,8 +44,8 @@ void UrlLogin::loginFinished()
 
 QString UrlLogin::complementUrl(QString url, const QString &loginPart) const
 {
-	QString pseudo = m_settings->value("auth/pseudo").toString();
-	QString password = m_settings->value("auth/password").toString();
+	const QString pseudo = m_settings->value("auth/pseudo").toString();
+	const QString password = m_settings->value("auth/password").toString();
 
 	const bool hasLoginString = !loginPart.isEmpty() && (!pseudo.isEmpty() || !password.isEmpty());
 	url.replace("{login}", hasLoginString ? loginPart : QString());

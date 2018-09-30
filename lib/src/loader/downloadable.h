@@ -51,11 +51,13 @@ class Downloadable
 
 		virtual QColor color() const = 0;
 		virtual QString tooltip() const = 0;
+		virtual QString counter() const = 0;
 		virtual QList<QStrP> detailsData() const = 0;
+
+		void refreshTokens();
 
 	protected:
 		virtual QMap<QString, Token> generateTokens(Profile *profile) const = 0;
-		void refreshTokens();
 
 	private:
 		mutable QMap<QString, Token> m_tokens;

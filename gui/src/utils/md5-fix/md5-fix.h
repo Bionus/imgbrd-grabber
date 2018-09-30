@@ -2,7 +2,6 @@
 #define MD5_FIX_H
 
 #include <QDialog>
-#include <QMap>
 
 
 namespace Ui
@@ -19,11 +18,11 @@ class Md5Fix : public QDialog
 
 	public:
 		explicit Md5Fix(Profile *profile, QWidget *parent = nullptr);
-		~Md5Fix() override;
+		~Md5Fix();
 
 	private slots:
-		void on_buttonCancel_clicked();
-		void on_buttonStart_clicked();
+		void cancel();
+		void start();
 
 	private:
 		Ui::Md5Fix *ui;

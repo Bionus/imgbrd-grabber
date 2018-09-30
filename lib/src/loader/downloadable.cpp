@@ -6,6 +6,18 @@
 #include "models/profile.h"
 
 
+bool isFavorited(const QStringList &tags, const QList<Favorite> &favorites)
+{
+	for (const QString &tag : tags) {
+		for (const Favorite &fav : favorites) {
+			if (fav.getName() == tag) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 {
 	if (m_tokens.isEmpty())
@@ -58,6 +70,15 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 			{ metas.append("inMd5List"); }
 			if (alreadyExists || inMd5List)
 			{ metas.append("downloaded"); }
+
+			// Favorited
+			if (tokens.contains("tags")) {
+				const QStringList &tags = tokens["tags"].value().toStringList();
+				if (isFavorited(tags, profile->getFavorites())) {
+					metas.append("favorited");
+				}
+			}
+
 			return metas;
 		}));
 

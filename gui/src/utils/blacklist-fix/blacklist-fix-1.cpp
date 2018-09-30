@@ -6,6 +6,8 @@
 #include <QSettings>
 #include <ui_blacklist-fix-1.h>
 #include "helpers.h"
+#include "functions.h"
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -77,41 +79,18 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	// Parse all files
 	for (const QPair<QString, QString> &file : files)
 	{
-		QString md5;
-		if (ui->radioForce->isChecked())
-		{
-			QFile fle(file.second);
-			fle.open(QFile::ReadOnly);
-			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-		}
-		else
-		{
-			QRegExp regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilename->text());
-			int pos = 0, cur = 0, id = -1;
-			while ((pos = regx.indexIn(ui->lineFilename->text(), pos)) != -1)
-			{
-				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), "(.+)");
-				if (regx.cap(1) == "md5")
-				{ id = cur; }
-				cur++;
-			}
-			QRegExp rx(reg);
-			rx.setMinimal(true);
-			pos = 0;
-			while ((pos = rx.indexIn(file.first, pos)) != -1)
-			{
-				pos += rx.matchedLength();
-				md5 = rx.cap(id + 1);
-			}
-		}
+		QString md5 = ui->radioForce->isChecked()
+			? getFileMd5(file.second)
+			: getFilenameMd5(file.first, ui->lineFilename->text());
 
-		QMap<QString, QString> det;
-		det.insert("md5", md5);
-		det.insert("path", file.first);
-		det.insert("path_full", file.second);
-		m_details.append(det);
+		if (!md5.isEmpty())
+		{
+			QMap<QString, QString> det;
+			det.insert("md5", md5);
+			det.insert("path", file.first);
+			det.insert("path_full", file.second);
+			m_details.append(det);
+		}
 	}
 
 	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);

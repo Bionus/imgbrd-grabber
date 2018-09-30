@@ -1,5 +1,3 @@
-type Iterable<T> = T[] | { [k: number]: T } | { [k: string]: T };
-
 interface ITag {
     id?: number;
     name: string;
@@ -28,8 +26,8 @@ interface IError {
     error: string;
 }
 interface IParsedSearch {
-    images: Iterable<IImage>;
-    tags?: Iterable<ITag>;
+    images: IImage[];
+    tags?: ITag[] | string[];
     wiki?: string;
     pageCount?: number;
     imageCount?: number;
@@ -37,11 +35,11 @@ interface IParsedSearch {
     urlPrevPage?: string;
 }
 interface IParsedTags {
-    tags: Iterable<ITag>;
+    tags: ITag[] | string[];
 }
 interface IParsedDetails {
-    pools?: Iterable<IPool>;
-    tags?: Iterable<ITag>;
+    pools?: IPool[];
+    tags?: ITag[] | string[];
     imageUrl?: string;
     createdAt?: string;
 }
@@ -78,6 +76,20 @@ interface ITagFormat {
     wordSeparator: string;
 }
 
+type SearchFormat = ISearchFormatBasic | ISearchFormatFull;
+interface ISearchFormatBasic {
+    and: ISearchFormatType | string;
+}
+interface ISearchFormatFull extends ISearchFormatBasic {
+    or: ISearchFormatType | string;
+    parenthesis: boolean;
+    precedence: "and" | "or";
+}
+interface ISearchFormatType {
+    separator: string;
+    prefix?: string;
+}
+
 interface IApi {
     name: string;
     auth: string[];
@@ -109,6 +121,7 @@ interface ISource {
     modifiers?: string[];
     forcedTokens?: string[];
     tagFormat?: ITagFormat;
+    searchFormat?: SearchFormat;
     auth?: { [id: string]: IAuth };
     apis: { [id: string]: IApi };
 }

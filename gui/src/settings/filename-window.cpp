@@ -100,11 +100,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 void FilenameWindow::on_buttonHelpClassic_clicked()
 {
-	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/docs/filename.html"));
 }
 void FilenameWindow::on_buttonHelpJavascript_clicked()
 {
-	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename#javascript"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_WEBSITE_URL) + "/docs/filename.html#javascript"));
 }
 
 QString FilenameWindow::format() const
