@@ -560,7 +560,7 @@ void DownloadsTab::getAll(bool all)
 	}
 	else
 	{
-		for (int j = 0; j < m_groupBatchs.count(); ++j)
+		for (int j = 0; j < m_batchs.count(); ++j)
 		{
 			const DownloadQueryImage &batch = m_batchs[j];
 			if (batch.values.value("file_url").isEmpty())
@@ -650,6 +650,7 @@ void DownloadsTab::getAll(bool all)
 
 	if (tooBig || (m_batchPending.isEmpty() && m_getAllRemaining.isEmpty()))
 	{
+		log(tooBig ? QStringLiteral("Batch download too big") : QStringLiteral("Nothing to download"), Logger::Info);
 		m_getAll = false;
 		ui->widgetDownloadButtons->setEnabled(true);
 		return;
