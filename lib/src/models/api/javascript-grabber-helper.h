@@ -14,6 +14,7 @@ class JavascriptGrabberHelper : public QObject
 	public:
 		explicit JavascriptGrabberHelper(QJSEngine &engine);
 
+		Q_INVOKABLE QJSValue htmlDecode(const QString &txt) const;
 		Q_INVOKABLE QJSValue regexMatches(const QString &regex, const QString &txt) const;
 		Q_INVOKABLE QJSValue parseXML(const QString &txt) const;
 

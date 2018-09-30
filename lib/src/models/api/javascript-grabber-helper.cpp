@@ -1,6 +1,7 @@
 #include "models/api/javascript-grabber-helper.h"
 #include <QDomNode>
 #include <QRegularExpression>
+#include "functions.h"
 #include "logger.h"
 
 
@@ -8,6 +9,11 @@ JavascriptGrabberHelper::JavascriptGrabberHelper(QJSEngine &engine)
 	: QObject(&engine), m_engine(engine)
 {}
 
+
+QJSValue JavascriptGrabberHelper::htmlDecode(const QString &txt) const
+{
+	return decodeHtmlEntities(txt);
+}
 
 QJSValue JavascriptGrabberHelper::regexMatches(const QString &regex, const QString &txt) const
 {
