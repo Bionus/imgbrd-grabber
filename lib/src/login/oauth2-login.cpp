@@ -73,7 +73,11 @@ void OAuth2Login::loginFinished()
 {
 	const QString result = m_tokenReply->readAll();
 	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
-	const QJsonObject jsonObject = jsonDocument.object();
+
+	// Some OAuth2 API wrap their responses in 'response' JSON objects
+	QJsonObject jsonObject = jsonDocument.object();
+	if (!jsonObject.contains("token_type") && jsonObject.contains("response"))
+	{ jsonObject = jsonObject.value("response").toObject(); }
 
 	const QJsonValue tokenType = jsonObject.value("token_type");
 	if (tokenType.isUndefined())
