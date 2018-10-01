@@ -55,7 +55,7 @@ void PageApiTest::testParseUrlLogin()
 	Page page(m_profile, site, m_sites, tags);
 	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags);
 
-	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
+	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?limit=25&page=1&tags=test tag&login=user&password_hash=pass"));
 }
 
 void PageApiTest::testParseUrlAltPage()
@@ -68,7 +68,7 @@ void PageApiTest::testParseUrlAltPage()
 	PageApi pageApi(&page, m_profile, site, site->getApis().first(), tags, 1001);
 	pageApi.setLastPage(&prevPage);
 
-	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
+	QCOMPARE(pageApi.url().toString(), QString("https://danbooru.donmai.us/posts.xml?limit=25&page=b0&tags=test tag&login=user&password_hash=pass"));
 }
 
 
