@@ -84,7 +84,7 @@ class Site : public QObject
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
-		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
+		QString fixLoginUrl(QString url) const;
 
 	private:
 		QNetworkReply *getRequest(const QNetworkRequest &request);

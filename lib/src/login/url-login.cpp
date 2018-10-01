@@ -42,13 +42,10 @@ void UrlLogin::loginFinished()
 	emit loggedIn(Result::Failure);
 }
 
-QString UrlLogin::complementUrl(QString url, const QString &loginPart) const
+QString UrlLogin::complementUrl(QString url) const
 {
 	const QString pseudo = m_settings->value("auth/pseudo").toString();
 	const QString password = m_settings->value("auth/password").toString();
-
-	const bool hasLoginString = !loginPart.isEmpty() && (!pseudo.isEmpty() || !password.isEmpty());
-	url.replace("{login}", hasLoginString ? loginPart : QString());
 
 	// Basic GET auth
 	url.replace("{pseudo}", pseudo);

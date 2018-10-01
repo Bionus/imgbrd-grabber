@@ -19,7 +19,7 @@ class Login : public QObject
 		};
 
 		virtual bool isTestable() const = 0;
-		virtual QString complementUrl(QString url, const QString &loginPart) const;
+		virtual QString complementUrl(QString url) const;
 		virtual void complementRequest(QNetworkRequest *request) const;
 
 	public slots:

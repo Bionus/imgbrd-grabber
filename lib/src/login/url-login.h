@@ -17,7 +17,7 @@ class UrlLogin : public Login
 	public:
 		explicit UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
-		QString complementUrl(QString url, const QString &loginPart) const override;
+		QString complementUrl(QString url) const override;
 
 	public slots:
 		void login() override;

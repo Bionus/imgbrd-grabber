@@ -371,9 +371,9 @@ Api *Site::detailsApi() const
 bool Site::autoLogin() const { return m_autoLogin; }
 void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
-QString Site::fixLoginUrl(QString url, const QString &loginPart) const
+QString Site::fixLoginUrl(QString url) const
 {
-	return m_login->complementUrl(std::move(url), loginPart);
+	return m_login->complementUrl(std::move(url));
 }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
