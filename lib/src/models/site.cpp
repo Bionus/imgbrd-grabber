@@ -388,6 +388,8 @@ QString Site::fixLoginUrl(QString url) const
 	return m_login->complementUrl(std::move(url), m_auth->fields());
 }
 
+Auth *Site::getAuth() const { return m_auth; }
+
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
 	if (url.isEmpty())

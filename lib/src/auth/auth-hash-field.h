@@ -13,6 +13,7 @@ class AuthHashField : public AuthField
     public:
         AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt);
 		QString value(MixedSettings *settings) const override;
+		QString salt() const;
 
     private:
         QCryptographicHash::Algorithm m_algo;

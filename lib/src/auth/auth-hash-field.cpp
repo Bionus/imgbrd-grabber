@@ -23,3 +23,8 @@ QString AuthHashField::value(MixedSettings *settings) const
 
 	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();
 }
+
+QString AuthHashField::salt() const
+{
+	return m_salt;
+}
