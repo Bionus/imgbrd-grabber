@@ -62,108 +62,87 @@ QMutex *Source::jsEngineMutex()
 Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
-	// Load XML details for this source from its model file
-	QFile file(m_dir + "/model.xml");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	// Tag format mapper
+	static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
 	{
-		const QString fileContents = file.readAll();
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
+		{ "lower", TagNameFormat::Lower },
+		{ "upper_first", TagNameFormat::UpperFirst },
+		{ "upper", TagNameFormat::Upper },
+		{ "caps", TagNameFormat::Caps },
+	};
+
+	// Javascript models
+	QFile js(m_dir + "/model.js");
+	if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
+
+		const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
+
+		m_jsSource = jsEngine()->evaluate(src, js.fileName());
+		if (m_jsSource.isError())
+		{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 		else
 		{
-			const QDomElement docElem = doc.documentElement();
-			const QMap<QString, QString> details = domToMap(docElem);
+			m_name = m_jsSource.property("name").toString();
 
-			// Tag format mapper
-			static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			// Get the list of APIs for this Source
+			const QJSValue apis = m_jsSource.property("apis");
+			QJSValueIterator it(apis);
+			while (it.hasNext())
 			{
-				{ "lower", TagNameFormat::Lower },
-				{ "upper_first", TagNameFormat::UpperFirst },
-				{ "upper", TagNameFormat::Upper },
-				{ "caps", TagNameFormat::Caps },
-			};
+				it.next();
+				m_apis.append(new JavascriptApi(m_jsSource, jsEngineMutex(), it.name()));
+			}
+			if (m_apis.isEmpty())
+			{ log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name)); }
 
-			// Javascript models
-			QFile js(m_dir + "/model.js");
-			if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
+			// Read tag naming format
+			const QJSValue &tagFormat = m_jsSource.property("tagFormat");
+			if (!tagFormat.isUndefined())
 			{
-				log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
+				const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
+				m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
+			}
 
-				const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
+			// Read auth information
+			const QJSValue auths = m_jsSource.property("auth");
+			QJSValueIterator authIt(auths);
+			while (authIt.hasNext())
+			{
+				authIt.next();
 
-				m_jsSource = jsEngine()->evaluate(src, js.fileName());
-				if (m_jsSource.isError())
-				{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
-				else
+				const QString &id = authIt.name();
+				const QJSValue &auth = authIt.value();
+
+				QList<AuthField*> fields;
+				const QJSValue &jsFields = auth.property("fields");
+				const quint32 length = jsFields.property("length").toUInt();
+				for (quint32 i = 0; i < length; ++i)
 				{
-					m_name = m_jsSource.property("name").toString();
+					const QJSValue &field = jsFields.property(i);
 
-					// Get the list of APIs for this Source
-					const QJSValue apis = m_jsSource.property("apis");
-					QJSValueIterator it(apis);
-					while (it.hasNext())
+					const QString key = field.property("key").toString();
+					const QString type = field.property("type").toString();
+
+					if (type == "hash")
 					{
-						it.next();
-						m_apis.append(new JavascriptApi(details, m_jsSource, jsEngineMutex(), it.name()));
+						const QString algoStr = field.property("hash").toString();
+						const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
+						fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
 					}
-					if (m_apis.isEmpty())
-					{ log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name)); }
-
-					// Read tag naming format
-					const QJSValue &tagFormat = m_jsSource.property("tagFormat");
-					if (!tagFormat.isUndefined())
-					{
-						const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
-						m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
-					}
-
-					// Read auth information
-					const QJSValue auths = m_jsSource.property("auth");
-					QJSValueIterator authIt(auths);
-					while (authIt.hasNext())
-					{
-						authIt.next();
-
-						const QString &id = authIt.name();
-						const QJSValue &auth = authIt.value();
-
-						QList<AuthField*> fields;
-						const QJSValue &jsFields = auth.property("fields");
-						const quint32 length = jsFields.property("length").toUInt();
-						for (quint32 i = 0; i < length; ++i)
-						{
-							const QJSValue &field = jsFields.property(i);
-
-							const QString key = field.property("key").toString();
-							const QString type = field.property("type").toString();
-
-							if (type == "hash")
-							{
-								const QString algoStr = field.property("hash").toString();
-								const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
-								fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
-							}
-							else
-							{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
-						}
-
-						m_auths.insert(id, new Auth(auth.property("type").toString(), fields));
-					}
+					else
+					{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
 				}
 
-				js.close();
+				m_auths.insert(id, new Auth(auth.property("type").toString(), fields));
 			}
-			else
-			{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 		}
 
-		file.close();
+		js.close();
 	}
 	else
-	{ log(QStringLiteral("Impossible to open the model file '%1'").arg(m_dir + "/model.xml"), Logger::Warning); }
+	{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");

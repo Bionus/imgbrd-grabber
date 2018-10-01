@@ -60,16 +60,11 @@ class Api : public QObject
 	Q_OBJECT
 
 	public:
-		Api(QString name, QMap<QString, QString> data);
+		Api(QString name);
 
 		// Getters
 		QString getName() const;
 		virtual bool needAuth() const = 0;
-
-		// Info getters
-		bool contains(const QString &key) const;
-		QString value(const QString &key) const;
-		QString operator[](const QString &key) const { return value(key); }
 
 		// API
 		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const = 0;
@@ -95,7 +90,6 @@ class Api : public QObject
 
 	private:
 		QString m_name;
-		QMap<QString, QString> m_data;
 };
 
 #endif // API_H

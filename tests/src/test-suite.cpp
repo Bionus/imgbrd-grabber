@@ -23,10 +23,8 @@ void TestSuite::setupSource(const QString &source, QString dir)
 
 	QDir().mkpath(dir);
 	QFile::remove(dir + "/model.js");
-	QFile::remove(dir + "/model.xml");
 	QFile::remove(dir + "/sites.txt");
 	QFile("release/sites/" + source + "/model.js").copy(dir + "/model.js");
-	QFile("release/sites/" + source + "/model.xml").copy(dir + "/model.xml");
 	QFile("release/sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
 }
 

@@ -32,8 +32,8 @@ QString normalize(QString key)
 	return key;
 }
 
-JavascriptApi::JavascriptApi(const QMap<QString, QString> &data, const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
-	: Api(normalize(key), data), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
+JavascriptApi::JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
+	: Api(normalize(key)), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
 {}
 
 

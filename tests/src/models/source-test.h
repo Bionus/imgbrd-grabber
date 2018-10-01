@@ -16,9 +16,7 @@ class SourceTest : public TestSuite
 		void init();
 		void cleanup();
 
-		void testMissingXml();
 		void testMissingJavascript();
-		void testInvalidXml();
 		void testInvalidJavascript();
 		void testMissingSites();
 		void testIgnoreEmptySites();
