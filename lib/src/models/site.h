@@ -11,6 +11,7 @@
 
 
 class Api;
+class Auth;
 class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
@@ -118,6 +119,7 @@ class Site : public QObject
 
 		// Login
 		Login *m_login;
+		Auth *m_auth;
 		LoginStatus m_loggedIn;
 		bool m_autoLogin;
 

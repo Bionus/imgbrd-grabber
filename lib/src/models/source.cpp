@@ -150,7 +150,7 @@ Source::Source(Profile *profile, const QString &dir)
 							{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
 						}
 
-						m_auths.insert(id, Auth(auth.property("type").toString(), fields));
+						m_auths.insert(id, new Auth(auth.property("type").toString(), fields));
 					}
 				}
 
@@ -187,6 +187,7 @@ Source::~Source()
 {
 	qDeleteAll(m_apis);
 	qDeleteAll(m_sites);
+	qDeleteAll(m_auths);
 }
 
 
@@ -196,6 +197,8 @@ const QList<Site*> &Source::getSites() const { return m_sites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
 Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
+const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
+Auth *Source::getAuth(const QString &name) const { return m_auths.value(name); }
 
 Api *Source::getApi(const QString &name) const
 {

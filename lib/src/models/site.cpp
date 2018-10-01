@@ -119,6 +119,15 @@ void Site::loadConfig()
 		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
 	}
 
+	// Get reference to the source auth information
+	m_auth = nullptr;
+	const auto &auths = m_source->getAuths();
+	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it)
+	{
+		if (it.value()->type() == type)
+		{ m_auth = it.value(); }
+	}
+
 	// Cookies
 	m_cookies.clear();
 	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
