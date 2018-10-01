@@ -1,4 +1,5 @@
 #include "auth/auth-field.h"
+#include <QSettings>
 
 
 AuthField::AuthField(QString key, FieldType type)
@@ -16,7 +17,8 @@ AuthField::FieldType AuthField::type() const
     return m_type;
 }
 
-QString AuthField::value(const QString &val) const
+QString AuthField::value(QSettings *settings) const
 {
-    return val;
+	const QString key = type() == FieldType::Username ? "pseudo" : "password";
+	return settings->value("auth/" + key).toString();
 }

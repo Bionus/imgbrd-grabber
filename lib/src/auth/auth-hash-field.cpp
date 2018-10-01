@@ -1,4 +1,5 @@
 #include "auth/auth-hash-field.h"
+#include <QSettings>
 
 
 AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt)
@@ -6,16 +7,18 @@ AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QS
 {}
 
 
-QString AuthHashField::value(const QString &val) const
+QString AuthHashField::value(QSettings *settings) const
 {
-    QString data = val;
+	const QString username = settings->value("auth/pseudo").toString();
+	const QString password = settings->value("auth/password").toString();
 
-    if (!m_salt.isEmpty())
-    {
+	QString data = password;
+	if (!m_salt.isEmpty())
+	{
         data = QString(m_salt);
-        /*data.replace("%username%", pseudo);
-        data.replace("%username:lower%", pseudo.toLower());
-        data.replace("%password%", password);*/
+		data.replace("%username%", username);
+		data.replace("%username:lower%", username.toLower());
+		data.replace("%password%", password);
     }
 
 	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();

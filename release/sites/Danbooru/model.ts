@@ -40,7 +40,7 @@ const auth: { [id: string]: IAuth } = {
                 key: "password_hash",
                 type: "hash",
                 hash: "sha1",
-                salt: "choujin-steiner--%value%--",
+                salt: "choujin-steiner--%password%--",
             },
         ],
     },

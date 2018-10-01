@@ -4,6 +4,8 @@
 #include <QString>
 
 
+class QSettings;
+
 class AuthField
 {
 	public:
@@ -19,7 +21,7 @@ class AuthField
 
 		QString key() const;
 		FieldType type() const;
-		virtual QString value(const QString &val) const;
+		virtual QString value(QSettings *settings) const;
 
 	private:
 		QString m_key;
