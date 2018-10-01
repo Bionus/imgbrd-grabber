@@ -43,9 +43,13 @@ void UrlLogin::loginFinished()
 
 QString UrlLogin::complementUrl(QString url, QList<AuthField*> fields) const
 {
+	bool hasQuery = url.contains('?');
+
+	int i = 0;
 	for (AuthField *field : fields)
 	{
-		url.append("&" + field->key() + "=" + field->value(m_settings));
+		url.append((i == 0 && !hasQuery ? "?" : "&") + field->key() + "=" + field->value(m_settings));
+		++i;
 	}
 
 	return url;
