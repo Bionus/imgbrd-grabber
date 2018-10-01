@@ -17,6 +17,37 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+const auth: { [id: string]: IAuth } = {
+    session: {
+        type: "post",
+        url: "/login",
+        fields: [
+            {
+                key: "name",
+                type: "username",
+            },
+            {
+                key: "password",
+                type: "password",
+            },
+            {
+                key: "login",
+                type: "const",
+                value: "Login",
+            },
+            {
+                key: "ref",
+                type: "const",
+                value: "ref",
+            },
+        ],
+        check: {
+            type: "cookie",
+            key: "z_hash",
+        },
+    },
+};
+
 export const source: ISource = {
     name: "Zerochan",
     modifiers: [],
@@ -28,7 +59,7 @@ export const source: ISource = {
     searchFormat: {
         and: ", ",
     },
-    auth: {},
+    auth,
     apis: {
         rss: {
             name: "RSS",

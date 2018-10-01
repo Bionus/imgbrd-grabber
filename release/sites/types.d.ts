@@ -45,12 +45,16 @@ interface IParsedDetails {
 }
 interface IParsedGallery extends IParsedSearch {}
 
-type IAuthField = IAuthNormalField | IAuthHashField;
+type IAuthField = IAuthNormalField | IAuthConstField | IAuthHashField;
 interface IAuthFieldBase {
     key: string;
 }
 interface IAuthNormalField extends IAuthFieldBase {
     type: "username" | "password";
+}
+interface IAuthConstField extends IAuthFieldBase {
+    type: "const";
+    value: string;
 }
 interface IAuthHashField extends IAuthFieldBase {
     type: "hash";

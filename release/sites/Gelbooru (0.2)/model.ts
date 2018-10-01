@@ -8,6 +8,27 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
+const auth: { [id: string]: IAuth } = {
+    session: {
+        type: "post",
+        url: "/index.php?page=account&s=login&code=00",
+        fields: [
+            {
+                key: "user",
+                type: "username",
+            },
+            {
+                key: "pass",
+                type: "password",
+            },
+        ],
+        check: {
+            type: "cookie",
+            key: "user_id",
+        },
+    },
+};
+
 export const source: ISource = {
     name: "Gelbooru (0.2)",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "parent:none", "unlocked:rating", "sort:updated", "sort:id", "sort:score", "sort:rating", "sort:user", "sort:height", "sort:width", "sort:parent", "sort:source", "sort:updated"],
@@ -18,7 +39,7 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth: {},
+    auth,
     apis: {
         xml: {
             name: "XML",
