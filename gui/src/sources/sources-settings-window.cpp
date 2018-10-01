@@ -95,12 +95,15 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Hide hash if unncessary
 	bool hasHash = false;
-	for (AuthField *field : site->getAuth()->fields())
+	if (site->getAuth() != nullptr)
 	{
-		if (field->type() == AuthField::Hash)
+		for (AuthField *field : site->getAuth()->fields())
 		{
-			hasHash = true;
-			break;
+			if (field->type() == AuthField::Hash)
+			{
+				hasHash = true;
+				break;
+			}
 		}
 	}
 	if (!hasHash)
