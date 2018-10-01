@@ -49,9 +49,8 @@ export const source: any = {
             maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index.json?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -66,8 +65,7 @@ export const source: any = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag.json?" + loginPart + "page=" + query.page;
+                    return "/tag.json?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -94,9 +92,8 @@ export const source: any = {
             maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const parsed = Grabber.parseXML(src);
@@ -116,8 +113,7 @@ export const source: any = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag.xml?" + loginPart + "page=" + query.page;
+                    return "/tag.xml?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -145,9 +141,8 @@ export const source: any = {
             maxLimit: 1000,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
-                    return "/post/index?" + loginPart + "limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                    return "/post/index?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const images = Grabber.regexToImages("Post\\.register\\((?<json>\\{.+?\\})\\);?", src).map(completeImage);
@@ -175,8 +170,7 @@ export const source: any = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag?" + loginPart + "page=" + query.page;
+                    return "/tag?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

@@ -89,9 +89,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.json?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.json?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -109,8 +108,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -138,9 +136,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.xml?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -163,8 +160,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.xml?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -193,9 +189,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -225,8 +220,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

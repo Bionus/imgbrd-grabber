@@ -60,8 +60,7 @@ export const source: ISource = {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-beta.")
                         .replace("//idol.", "//iapi.");
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return baseUrl + "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    return baseUrl + "/post/index.json?page=" + query.page + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -84,9 +83,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
-                        return "/post/index?" + loginPart + pagePart + "&tags=" + encodeURIComponent(query.search);
+                        return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }

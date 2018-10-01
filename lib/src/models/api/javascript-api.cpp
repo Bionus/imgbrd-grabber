@@ -95,21 +95,6 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
-	QJSValue auth = m_source.engine()->newObject();
-	MixedSettings *settings = site->settings();
-	settings->beginGroup("auth");
-	const QStringList &authKeys = settings->childKeys();
-	for (const QString &key : authKeys)
-	{
-		const QString value = settings->value(key).toString();
-		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
-		{ auth.setProperty("login", value); }
-		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
-		{ auth.setProperty("password_hash", value); }
-		auth.setProperty(key, value);
-	}
-	settings->endGroup();
-	opts.setProperty("auth", auth);
 
 	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
 	if (lastPage > 0)
@@ -315,21 +300,6 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
-	QJSValue auth = m_source.engine()->newObject();
-	MixedSettings *settings = site->settings();
-	settings->beginGroup("auth");
-	const QStringList &authKeys = settings->childKeys();
-	for (const QString &key : authKeys)
-	{
-		const QString value = settings->value(key).toString();
-		if (key == QLatin1String("pseudo") && !auth.hasProperty("login"))
-		{ auth.setProperty("login", value); }
-		if (key == QLatin1String("password") && !auth.hasProperty("password_hash"))
-		{ auth.setProperty("password_hash", value); }
-		auth.setProperty(key, value);
-	}
-	settings->endGroup();
-	opts.setProperty("auth", auth);
 
 	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
 	fillUrlObject(result, site, ret);
