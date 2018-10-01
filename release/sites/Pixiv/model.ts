@@ -119,6 +119,10 @@ export const source: ISource = {
                         const img = Grabber.mapFields(data, imgMap);
                         img["sample_url"] = img["preview_url"].replace(/\/c\/\d+x\d+\/img-master\//g, "/img-master/");
                         img["file_url"] = urlSampleToFull(img["sample_url"]);
+                        if (data["pageCount"] > 1) {
+                            img["type"] = "gallery";
+                            img["gallery_count"] = data["pageCount"];
+                        }
                         return img;
                     });
 
