@@ -12,6 +12,11 @@ QString AuthHashField::value(MixedSettings *settings) const
 	const QString username = settings->value("auth/pseudo").toString();
 	const QString password = settings->value("auth/password").toString();
 
+	// Don't hash passwords twice
+	// FIXME: very long passwords won't get hashed
+	if (password.length() >= 32)
+		return password;
+
 	QString data = password;
 	if (!m_salt.isEmpty())
 	{
