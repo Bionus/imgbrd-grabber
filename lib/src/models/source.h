@@ -31,7 +31,7 @@ class Source : public QObject
 		const QList<Site*> &getSites() const;
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
-		const QMap<QString, Auth*> &Source::getAuths() const;
+		const QMap<QString, Auth*> &getAuths() const;
 		Auth *getAuth(const QString &name) const;
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
