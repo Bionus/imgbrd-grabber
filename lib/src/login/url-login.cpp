@@ -1,7 +1,6 @@
 #include "login/url-login.h"
-#include <QCryptographicHash>
+#include "auth/auth-field.h"
 #include "mixed-settings.h"
-#include "models/api/api.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -42,22 +41,11 @@ void UrlLogin::loginFinished()
 	emit loggedIn(Result::Failure);
 }
 
-QString UrlLogin::complementUrl(QString url) const
+QString UrlLogin::complementUrl(QString url, QList<AuthField*> fields) const
 {
-	const QString pseudo = m_settings->value("auth/pseudo").toString();
-	const QString password = m_settings->value("auth/password").toString();
-
-	// Basic GET auth
-	url.replace("{pseudo}", pseudo);
-	url.replace("{password}", password);
-
-	// Appkey GET auth
-	if (url.contains("{appkey}"))
+	for (AuthField *field : fields)
 	{
-		QString appkey = m_site->getApis().first()->value("AppkeySalt");
-		appkey.replace("%password%", password);
-		appkey.replace("%username%", pseudo.toLower());
-		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());
+		url.append("&" + field->key() + "=" + field->value(m_settings));
 	}
 
 	return url;

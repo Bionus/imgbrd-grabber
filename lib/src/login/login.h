@@ -5,6 +5,7 @@
 #include <QString>
 
 
+class AuthField;
 class QNetworkRequest;
 
 class Login : public QObject
@@ -19,7 +20,7 @@ class Login : public QObject
 		};
 
 		virtual bool isTestable() const = 0;
-		virtual QString complementUrl(QString url) const;
+		virtual QString complementUrl(QString url, QList<AuthField*> fields) const;
 		virtual void complementRequest(QNetworkRequest *request) const;
 
 	public slots:

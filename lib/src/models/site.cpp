@@ -382,7 +382,10 @@ void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
 QString Site::fixLoginUrl(QString url) const
 {
-	return m_login->complementUrl(std::move(url));
+	if (m_auth == nullptr)
+		return url;
+
+	return m_login->complementUrl(std::move(url), m_auth->fields());
 }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const

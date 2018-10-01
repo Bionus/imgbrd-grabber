@@ -1,5 +1,5 @@
 #include "auth/auth-hash-field.h"
-#include <QSettings>
+#include "mixed-settings.h"
 
 
 AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt)
@@ -7,7 +7,7 @@ AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QS
 {}
 
 
-QString AuthHashField::value(QSettings *settings) const
+QString AuthHashField::value(MixedSettings *settings) const
 {
 	const QString username = settings->value("auth/pseudo").toString();
 	const QString password = settings->value("auth/password").toString();

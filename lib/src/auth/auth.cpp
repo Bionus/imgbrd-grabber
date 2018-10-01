@@ -1,4 +1,5 @@
 #include "auth/auth.h"
+#include "auth/auth-field.h"
 
 
 Auth::Auth(QString type, QList<AuthField*> fields)

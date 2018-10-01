@@ -5,6 +5,7 @@
 #include "login/login.h"
 
 
+class AuthField;
 class MixedSettings;
 class Page;
 class QNetworkAccessManager;
@@ -17,7 +18,7 @@ class UrlLogin : public Login
 	public:
 		explicit UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
-		QString complementUrl(QString url) const override;
+		QString complementUrl(QString url, QList<AuthField *> fields) const override;
 
 	public slots:
 		void login() override;

@@ -6,13 +6,13 @@
 #include "auth/auth-field.h"
 
 
-class QSettings;
+class MixedSettings;
 
 class AuthHashField : public AuthField
 {
     public:
         AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt);
-		QString value(QSettings *settings) const override;
+		QString value(MixedSettings *settings) const override;
 
     private:
         QCryptographicHash::Algorithm m_algo;
