@@ -3,8 +3,10 @@
 
 #include <QJSValue>
 #include <QList>
+#include <QMap>
 #include <QObject>
 #include <QString>
+#include "auth/auth.h"
 #include "tags/tag-name-format.h"
 #include "updater/source-updater.h"
 
@@ -42,6 +44,7 @@ class Source : public QObject
 		QString m_name;
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;
+		QMap<QString, Auth> m_auths;
 		Profile *m_profile;
 		SourceUpdater m_updater;
 		TagNameFormat m_tagNameFormat;

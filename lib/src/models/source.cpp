@@ -1,7 +1,11 @@
 #include "models/source.h"
+#include <QCryptographicHash>
 #include <QJSValue>
 #include <QJSValueIterator>
 #include <QMutex>
+#include "auth/auth.h"
+#include "auth/auth-field.h"
+#include "auth/auth-hash-field.h"
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
@@ -114,6 +118,39 @@ Source::Source(Profile *profile, const QString &dir)
 					{
 						const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
 						m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
+					}
+
+					// Read auth information
+					const QJSValue auths = m_jsSource.property("auth");
+					QJSValueIterator authIt(auths);
+					while (authIt.hasNext())
+					{
+						authIt.next();
+
+						const QString &id = authIt.name();
+						const QJSValue &auth = authIt.value();
+
+						QList<AuthField*> fields;
+						const QJSValue &jsFields = auth.property("fields");
+						const quint32 length = jsFields.property("length").toUInt();
+						for (quint32 i = 0; i < length; ++i)
+						{
+							const QJSValue &field = jsFields.property(i);
+
+							const QString key = field.property("key").toString();
+							const QString type = field.property("type").toString();
+
+							if (type == "hash")
+							{
+								const QString algoStr = field.property("hash").toString();
+								const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
+								fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
+							}
+							else
+							{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
+						}
+
+						m_auths.insert(id, Auth(auth.property("type").toString(), fields));
 					}
 				}
 
