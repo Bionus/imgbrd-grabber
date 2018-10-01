@@ -1194,7 +1194,10 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 {
 	if (image->isGallery())
 	{
-		m_parent->addGalleryTab(image->parentSite(), image->name(), image->md5());
+		QString galleryId = image->md5();
+		if (galleryId.isEmpty())
+		{ galleryId = QString::number(image->id()); }
+		m_parent->addGalleryTab(image->parentSite(), image->name(), galleryId);
 		return;
 	}
 

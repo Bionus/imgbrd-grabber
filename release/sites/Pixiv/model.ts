@@ -3,6 +3,9 @@ function urlSampleToFull(url: string): string {
         .replace("img-master", "img-original")
         .replace(/_master\d+\./, ".");
 }
+function urlSampleToThumbnail(url: string): string {
+    return url.replace("/img-master/", "/c/150x150/img-master/");
+}
 
 export const source: ISource = {
     name: "Pixiv",
@@ -71,6 +74,25 @@ export const source: ISource = {
                     };
                 },
             },
+            gallery: {
+                url: (query: any, opts: any): string => {
+                    return "https://public-api.secure.pixiv.net/v1/works/" + query.id + ".json?image_sizes=large";
+                },
+                parse: (src: string): IParsedGallery => {
+                    const data = JSON.parse(src)["response"][0];
+                    return {
+                        images: data["metadata"]["pages"].map((page: any): IImage => {
+                            return {
+                                file_url: page["image_urls"]["large"],
+                                sample_url: page["image_urls"]["medium"],
+                                preview_url: urlSampleToThumbnail(page["image_urls"]["medium"]),
+                            };
+                        }),
+                        tags: data["tags"],
+                        imageCount: data["page_count"],
+                    };
+                },
+            },
             details: {
                 url: (id: number, md5: string): string => {
                     return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
@@ -131,6 +153,20 @@ export const source: ISource = {
                         tags,
                         imageCount: Grabber.countToInt(Grabber.regexToConst("count", '<span class="count-badge">(?<count>\\d+)[^<]+</span>', src)),
                     };
+                },
+            },
+            gallery: {
+                url: (query: any, opts: any): string => {
+                    return "/member_illust.php?mode=manga&illust_id=" + query.id;
+                },
+                parse: (src: string): IParsedGallery => {
+                    const rawImages = Grabber.regexMatches('<img[^<]+data-filter="manga-image"[^>]*data-src="(?<sample_url>[^"]+)"[^>]*>', src);
+                    const images = rawImages.map((img: any): IImage => {
+                        img["file_url"] = urlSampleToFull(img["sample_url"]);
+                        img["preview_url"] = urlSampleToThumbnail(img["sample_url"]);
+                        return img;
+                    });
+                    return { images };
                 },
             },
             details: {
