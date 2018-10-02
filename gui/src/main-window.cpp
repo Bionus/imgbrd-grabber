@@ -463,7 +463,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 
 	QString title = w->windowTitle();
 	if (title.isEmpty())
-	{ title = "New tab"; }
+	{ title = tr("New tab"); }
 
 	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty() ? 1 : 0) : m_tabs.count();
 	int index = ui->tabWidget->insertTab(pos, w, title);
