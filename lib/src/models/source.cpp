@@ -145,7 +145,7 @@ Source::Source(Profile *profile, const QString &dir)
 							const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
 							fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
 						}
-						if (type == "const")
+						else if (type == "const")
 						{
 							const QString value = field.property("value").toString();
 							fields.append(new AuthConstField(key, value));
