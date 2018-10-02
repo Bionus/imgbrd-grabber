@@ -6,6 +6,7 @@
 #include "auth/http-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
+#include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "functions.h"
@@ -143,6 +144,11 @@ Source::Source(Profile *profile, const QString &dir)
 							const QString algoStr = field.property("hash").toString();
 							const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
 							fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
+						}
+						if (type == "const")
+						{
+							const QString value = field.property("value").toString();
+							fields.append(new AuthConstField(key, value));
 						}
 						else
 						{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
