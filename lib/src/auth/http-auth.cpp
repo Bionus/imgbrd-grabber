@@ -11,7 +11,7 @@ QString HttpAuth::url() const
     return m_url;
 }
 
-QList<AuthField*> Auth::fields() const
+QList<AuthField*> HttpAuth::fields() const
 {
     return m_fields;
 }

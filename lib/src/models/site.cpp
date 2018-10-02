@@ -386,7 +386,7 @@ QString Site::fixLoginUrl(QString url) const
 	if (m_auth == nullptr)
 		return url;
 
-	return m_login->complementUrl(std::move(url), m_auth->fields());
+	return m_login->complementUrl(std::move(url));
 }
 
 Auth *Site::getAuth() const { return m_auth; }
