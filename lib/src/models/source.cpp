@@ -3,7 +3,9 @@
 #include <QJSValue>
 #include <QJSValueIterator>
 #include <QMutex>
-#include "auth/auth.h"
+#include "auth/http-auth.h"
+#include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "functions.h"
@@ -115,27 +117,48 @@ Source::Source(Profile *profile, const QString &dir)
 				const QString &id = authIt.name();
 				const QJSValue &auth = authIt.value();
 
-				QList<AuthField*> fields;
-				const QJSValue &jsFields = auth.property("fields");
-				const quint32 length = jsFields.property("length").toUInt();
-				for (quint32 i = 0; i < length; ++i)
+				const QString type = auth.property("type").toString();
+				Auth *ret = nullptr;
+
+				if (type == "oauth2")
 				{
-					const QJSValue &field = jsFields.property(i);
-
-					const QString key = field.property("key").toString();
-					const QString type = field.property("type").toString();
-
-					if (type == "hash")
+					const QString authType = auth.property("authType").toString();
+					const QString tokenUrl = auth.property("tokenUrl").toString();
+					ret = new OAuth2Auth(type, authType, tokenUrl);
+				}
+				else
+				{
+					QList<AuthField*> fields;
+					const QJSValue &jsFields = auth.property("fields");
+					const quint32 length = jsFields.property("length").toUInt();
+					for (quint32 i = 0; i < length; ++i)
 					{
-						const QString algoStr = field.property("hash").toString();
-						const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
-						fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
+						const QJSValue &field = jsFields.property(i);
+
+						const QString key = field.property("key").toString();
+						const QString type = field.property("type").toString();
+
+						if (type == "hash")
+						{
+							const QString algoStr = field.property("hash").toString();
+							const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
+							fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
+						}
+						else
+						{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
+					}
+
+					if (type == "get" ||  type == "post")
+					{
+						const QString url = auth.property("url").toString();
+						ret = new HttpAuth(type, url, fields);
 					}
 					else
-					{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
+					{ ret = new UrlAuth(type, fields); }
 				}
 
-				m_auths.insert(id, new Auth(auth.property("type").toString(), fields));
+				if (ret != nullptr)
+				{ m_auths.insert(id, ret); }
 			}
 		}
 
