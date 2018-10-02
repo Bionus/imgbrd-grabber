@@ -200,6 +200,10 @@ Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{
 Source: "..\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Pixiv\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
+Source: "..\release\sites\Pixiv\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
+Source: "..\release\sites\Pixiv\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Pixiv\www.pixiv.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv\www.pixiv.net"; Flags: ignoreversion
 Source: "..\release\sites\Shimmie\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
 Source: "..\release\sites\Shimmie\model.js";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
 Source: "..\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: onlyifdoesntexist
