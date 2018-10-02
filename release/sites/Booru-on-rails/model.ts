@@ -21,18 +21,6 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
-const auth: { [id: string]: IAuth } = {
-    url: {
-        type: "url",
-        fields: [
-            {
-                key: "key",
-                type: "password",
-            },
-        ],
-    },
-};
-
 export const source: ISource = {
     name: "Booru-on-rails",
     modifiers: ["faved_by:", "width:", "height:", "uploader:", "source_url:", "description:", "sha512_hash:", "aspect_ratio:"],
@@ -47,7 +35,17 @@ export const source: ISource = {
         parenthesis: true,
         precedence: "and",
     },
-    auth,
+    auth: {
+        url: {
+            type: "url",
+            fields: [
+                {
+                    key: "key",
+                    type: "password",
+                },
+            ],
+        },
+    },
     apis: {
         json: {
             name: "JSON",

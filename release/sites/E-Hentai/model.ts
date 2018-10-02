@@ -20,27 +20,6 @@ function sizeToInt(size: string): number {
     return val;
 }
 
-const auth: { [id: string]: IAuth } = {
-    post: {
-        type: "post",
-        url: "https://forums.e-hentai.org/index.php?act=Login&CODE=01",
-        fields: [
-            {
-                key: "UserName",
-                type: "username",
-            },
-            {
-                key: "PassWord",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "ipb_member_id",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "E-Hentai",
     modifiers: [],
@@ -48,7 +27,26 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth,
+    auth: {
+        post: {
+            type: "post",
+            url: "https://forums.e-hentai.org/index.php?act=Login&CODE=01",
+            fields: [
+                {
+                    key: "UserName",
+                    type: "username",
+                },
+                {
+                    key: "PassWord",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "ipb_member_id",
+            },
+        },
+    },
     apis: {
         html: {
             name: "Regex",

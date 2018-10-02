@@ -20,27 +20,6 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
-const auth: { [id: string]: IAuth } = {
-    session: {
-        type: "post",
-        url: "/user_admin/login",
-        fields: [
-            {
-                key: "user",
-                type: "username",
-            },
-            {
-                key: "pass",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "shm_session",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "Shimmie",
     modifiers: [],
@@ -52,7 +31,26 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth,
+    auth: {
+        session: {
+            type: "post",
+            url: "/user_admin/login",
+            fields: [
+                {
+                    key: "user",
+                    type: "username",
+                },
+                {
+                    key: "pass",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "shm_session",
+            },
+        },
+    },
     apis: {
         rss: {
             name: "RSS",

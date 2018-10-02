@@ -68,27 +68,6 @@ function searchToUrl(search: string): string {
     return ret.join("&");
 }
 
-const auth: { [id: string]: IAuth } = {
-    session: {
-        type: "post",
-        url: "/login/submit",
-        fields: [
-            {
-                key: "login",
-                type: "username",
-            },
-            {
-                key: "password",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "asian_server",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "Anime pictures",
     modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
@@ -103,7 +82,26 @@ export const source: ISource = {
         parenthesis: false,
         precedence: "and",
     },
-    auth,
+    auth: {
+        session: {
+            type: "post",
+            url: "/login/submit",
+            fields: [
+                {
+                    key: "login",
+                    type: "username",
+                },
+                {
+                    key: "password",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "asian_server",
+            },
+        },
+    },
     apis: {
         json: {
             name: "JSON",
