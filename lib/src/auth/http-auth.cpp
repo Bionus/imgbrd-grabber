@@ -2,16 +2,11 @@
 
 
 HttpAuth::HttpAuth(QString type, QString url, QList<AuthField*> fields)
-    : Auth(std::move(type)), m_url(std::move(url)), m_fields(std::move(fields))
+	: FieldAuth(std::move(type), std::move(fields)), m_url(std::move(url))
 {}
 
 
 QString HttpAuth::url() const
 {
-    return m_url;
-}
-
-QList<AuthField*> HttpAuth::fields() const
-{
-    return m_fields;
+	return m_url;
 }

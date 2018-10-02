@@ -3,19 +3,15 @@
 
 #include <QList>
 #include <QString>
-#include "auth/auth.h"
+#include "auth/field-auth.h"
 
 
 class AuthField;
 
-class UrlAuth : public Auth
+class UrlAuth : public FieldAuth
 {
-    public:
+	public:
 		UrlAuth(QString type, QList<AuthField*> fields);
-		QList<AuthField*> fields() const;
-
-    private:
-        QList<AuthField*> m_fields;
 };
 
 #endif // URL_AUTH_H
