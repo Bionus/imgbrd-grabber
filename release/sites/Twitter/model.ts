@@ -43,6 +43,11 @@ export const source: ISource = {
                             continue;
                         }
 
+                        if (medias.length > 1) {
+                            d["type"] = "gallery";
+                            d["gallery_count"] = medias.length;
+                        }
+
                         const media = medias[0];
                         const sizes = media["sizes"];
 
@@ -57,7 +62,7 @@ export const source: ISource = {
                         d["width"] = size["w"];
                         d["height"] = size["h"];
 
-                        if (media.contains("video_info")) {
+                        if ("video_info" in media) {
                             let maxBitrate = -1;
                             for (const variantInfo of media["video_info"]["variants"]) {
                                 const bitrate = variantInfo["bitrate"];
