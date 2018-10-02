@@ -68,11 +68,24 @@ interface IAuthCheckCookie {
     key: string;
 }
 
-interface IAuth {
-    type: "url" | "get" | "post" | "oauth2";
+type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth;
+interface IOauth2Auth {
+    type: "oauth2";
+    authType: "password" | "client_credentials" | "header_basic";
+    requestUrl?: string;
+    tokenUrl?: string;
+    refreshTokenUrl?: string;
+    scope?: string[];
+}
+interface IBasicAuth {
+    type: "url";
+    fields: IAuthField[];
+}
+interface IHttpAuth {
+    type: "get" | "post";
+    url: string;
     fields: IAuthField[];
     check?: IAuthCheck;
-    [name: string]: any;
 }
 
 interface ITagFormat {

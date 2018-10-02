@@ -14,11 +14,17 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth: {},
+    auth: {
+        oauth2: {
+            type: "oauth2",
+            authType: "password",
+            tokenUrl: "https://oauth.secure.pixiv.net/auth/token",
+        },
+    },
     apis: {
         json: {
             name: "JSON",
-            auth: [],
+            auth: ["oauth2"],
             maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
             search: {
                 url: (query: any, opts: any, previous: any): string => {

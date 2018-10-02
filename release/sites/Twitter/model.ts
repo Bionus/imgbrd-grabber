@@ -3,17 +3,8 @@ export const source: ISource = {
     auth: {
         oauth2: {
             type: "oauth2",
-            token_url: "/oauth2/token",
-            fields: [
-                {
-                    key: "consumerKey",
-                    type: "username",
-                },
-                {
-                    key: "consumerSecret",
-                    type: "password",
-                },
-            ],
+            authType: "header_basic",
+            tokenUrl: "/oauth2/token",
         },
     },
     apis: {
