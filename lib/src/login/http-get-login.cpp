@@ -4,8 +4,8 @@
 #include "models/site.h"
 
 
-HttpGetLogin::HttpGetLogin(Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
-	: HttpLogin("get", site, manager, settings)
+HttpGetLogin::HttpGetLogin(HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+	: HttpLogin("get", auth, site, manager, settings)
 {}
 
 QNetworkReply *HttpGetLogin::getReply(const QString &url, const QUrlQuery &query) const

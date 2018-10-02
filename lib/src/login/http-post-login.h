@@ -5,6 +5,7 @@
 
 
 class CustomNetworkAccessManager;
+class HttpAuth;
 class MixedSettings;
 class QNetworkReply;
 class QUrlQuery;
@@ -15,7 +16,7 @@ class HttpPostLogin : public HttpLogin
 	Q_OBJECT
 
 	public:
-		explicit HttpPostLogin(Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
+		explicit HttpPostLogin(HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
 		QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const override;
 };
 

@@ -7,6 +7,9 @@
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
+#include "auth/http-auth.h"
+#include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
@@ -103,29 +106,27 @@ void Site::loadConfig()
 
 	// Auth information
 	const QString type = m_settings->value("login/type", "url").toString();
-	if (m_login != nullptr)
-		m_login->deleteLater();
-	if (type == "url")
-		m_login = new UrlLogin(this, m_manager, m_settings);
-	else if (type == "oauth2")
-		m_login = new OAuth2Login(this, m_manager, m_settings);
-	else if (type == "post")
-		m_login = new HttpPostLogin(this, m_manager, m_settings);
-	else if (type == "get")
-		m_login = new HttpGetLogin(this, m_manager, m_settings);
-	else
-	{
-		m_login = nullptr;
-		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
-	}
-
-	// Get reference to the source auth information
 	m_auth = nullptr;
 	const auto &auths = m_source->getAuths();
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it)
 	{
 		if (it.value()->type() == type)
 		{ m_auth = it.value(); }
+	}
+	if (m_login != nullptr)
+		m_login->deleteLater();
+	if (type == "url")
+		m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
+	else if (type == "oauth2")
+		m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
+	else if (type == "post")
+		m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
+	else if (type == "get")
+		m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
+	else
+	{
+		m_login = nullptr;
+		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
 	}
 
 	// Cookies

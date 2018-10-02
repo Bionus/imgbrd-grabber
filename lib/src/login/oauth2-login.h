@@ -6,6 +6,7 @@
 
 
 class MixedSettings;
+class OAuth2Auth;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QNetworkRequest;
@@ -16,7 +17,7 @@ class OAuth2Login : public Login
 	Q_OBJECT
 
 	public:
-		explicit OAuth2Login(Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
+		explicit OAuth2Login(OAuth2Auth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
 		void complementRequest(QNetworkRequest *request) const override;
 
@@ -27,6 +28,7 @@ class OAuth2Login : public Login
 		void loginFinished();
 
 	private:
+		OAuth2Auth *m_auth;
 		Site *m_site;
 		QNetworkAccessManager *m_manager;
 		MixedSettings *m_settings;

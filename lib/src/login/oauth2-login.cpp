@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include "auth/oauth2-auth.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/site.h"
@@ -10,22 +11,22 @@
 
 typedef QPair<QString, QString> QStrP;
 
-OAuth2Login::OAuth2Login(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
-	: m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
+OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
 {}
 
 bool OAuth2Login::isTestable() const
 {
-	return !m_settings->value("login/oauth2/tokenUrl").toString().isEmpty();
+	return !m_auth->tokenUrl().isEmpty();
 }
 
 void OAuth2Login::login()
 {
-	const QString type = m_settings->value("login/oauth2/type", "password").toString();
+	const QString type = m_auth->authType();
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
-	QNetworkRequest request(m_site->fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
+	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 
 	QList<QStrP> body;

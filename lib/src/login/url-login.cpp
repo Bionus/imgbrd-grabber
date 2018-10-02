@@ -1,13 +1,14 @@
 #include "login/url-login.h"
 #include "auth/auth-field.h"
+#include "auth/url-auth.h"
 #include "mixed-settings.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "models/source.h"
 
 
-UrlLogin::UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
-	: m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
+UrlLogin::UrlLogin(UrlAuth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
 {}
 
 bool UrlLogin::isTestable() const
@@ -41,12 +42,12 @@ void UrlLogin::loginFinished()
 	emit loggedIn(Result::Failure);
 }
 
-QString UrlLogin::complementUrl(QString url, QList<AuthField*> fields) const
+QString UrlLogin::complementUrl(QString url) const
 {
 	bool hasQuery = url.contains('?');
 
 	int i = 0;
-	for (AuthField *field : fields)
+	for (AuthField *field : m_auth->fields())
 	{
 		url.append((i == 0 && !hasQuery ? "?" : "&") + field->key() + "=" + field->value(m_settings));
 		++i;

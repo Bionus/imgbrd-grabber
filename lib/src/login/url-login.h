@@ -10,15 +10,16 @@ class MixedSettings;
 class Page;
 class QNetworkAccessManager;
 class Site;
+class UrlAuth;
 
 class UrlLogin : public Login
 {
 	Q_OBJECT
 
 	public:
-		explicit UrlLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
+		explicit UrlLogin(UrlAuth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
-		QString complementUrl(QString url, QList<AuthField *> fields) const override;
+		QString complementUrl(QString url) const override;
 
 	public slots:
 		void login() override;
@@ -27,6 +28,7 @@ class UrlLogin : public Login
 		void loginFinished();
 
 	private:
+		UrlAuth *m_auth;
 		Site *m_site;
 		QNetworkAccessManager *m_manager;
 		MixedSettings *m_settings;

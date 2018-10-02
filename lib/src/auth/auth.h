@@ -8,6 +8,7 @@ class Auth
 {
     public:
         explicit Auth(QString type);
+		virtual ~Auth() = default;
         QString type() const;
 
     private:
