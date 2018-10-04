@@ -103,6 +103,11 @@
      </column>
      <column>
       <property name="text">
+       <string>Galleries count as one</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>Progress</string>
       </property>
      </column>

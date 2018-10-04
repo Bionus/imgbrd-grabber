@@ -86,8 +86,9 @@ QList<QSharedPointer<Image>> PackLoader::next()
 				break;
 		}
 
-		m_total += page->pageImageCount();
 		count += page->pageImageCount();
+		if (!gallery || !m_query.galleriesCountAsOne)
+			m_total += page->pageImageCount();
 
 		if (!gallery)
 			pageCount++;

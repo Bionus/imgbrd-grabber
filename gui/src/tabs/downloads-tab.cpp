@@ -251,6 +251,7 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 			case 7:	m_groupBatchs[y].path = val;						break;
 			case 8:	m_groupBatchs[y].postFiltering = val.split(' ', QString::SkipEmptyParts);	break;
 			case 9:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
+			case 10: m_groupBatchs[y].galleriesCountAsOne = (val != "false");	break;
 
 			case 2:
 				if (!m_profile->getSites().contains(val))
@@ -330,12 +331,13 @@ void DownloadsTab::batchAddGroup(const DownloadQueryGroup &values)
 	addTableItem(ui->tableBatchGroups, row, 7, values.path);
 	addTableItem(ui->tableBatchGroups, row, 8, values.postFiltering.join(' '));
 	addTableItem(ui->tableBatchGroups, row, 9, values.getBlacklisted ? "true" : "false");
+	addTableItem(ui->tableBatchGroups, row, 10, values.galleriesCountAsOne ? "true" : "false");
 
 	auto *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
 	prog->setMaximum(values.total);
 	m_progressBars.append(prog);
-	ui->tableBatchGroups->setCellWidget(row, 10, prog);
+	ui->tableBatchGroups->setCellWidget(row, 11, prog);
 
 	m_allow = true;
 	saveLinkList(m_profile->getPath() + "/restore.igl");
@@ -449,6 +451,7 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		addTableItem(ui->tableBatchGroups, row, 7, queryGroup.path);
 		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.postFiltering.join(' '));
 		addTableItem(ui->tableBatchGroups, row, 9, queryGroup.getBlacklisted ? "true" : "false");
+		addTableItem(ui->tableBatchGroups, row, 10, queryGroup.galleriesCountAsOne ? "true" : "false");
 
 		m_groupBatchs.append(queryGroup);
 		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/" + QString(val >= max ? "ok" : (val > 0 ? "downloading" : "pending")) + ".png"), "");
@@ -462,7 +465,7 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		prog->setMinimum(0);
 		prog->setTextVisible(false);
 		m_progressBars.append(prog);
-		ui->tableBatchGroups->setCellWidget(row, 10, prog);
+		ui->tableBatchGroups->setCellWidget(row, 11, prog);
 	}
 	m_allow = true;
 	updateGroupCount();
