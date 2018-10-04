@@ -586,7 +586,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 				// File path
 				QString fileTagsPath;
 				if (locationType == 0)
-					fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, true, true, true).first();
+					fileTagsPath = this->paths(logFile["filename"].toString(), logFile["path"].toString(), 0).first();
 				else if (locationType == 1)
 					fileTagsPath = logFile["uniquePath"].toString();
 				else if (locationType == 2)
@@ -637,7 +637,7 @@ QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addM
 }
 QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
 {
-	const QStringList paths = this->path(filename, path, count, true, true, true, true);
+	const QStringList paths = this->paths(filename, path, count);
 	return save(paths, addMd5, startCommands, count, false);
 }
 
@@ -1004,6 +1004,10 @@ void Image::preload(const Filename &filename)
 	loop.exec();
 }
 
+QStringList Image::paths(const QString &filename, const QString &folder, int count) const
+{
+	return path(filename, folder, count, true, true, true, true);
+}
 QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
 {
 	return path(filename.format(), folder, count, true, true, true, true);

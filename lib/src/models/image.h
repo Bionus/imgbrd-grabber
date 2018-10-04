@@ -87,6 +87,7 @@ class Image : public QObject, public Downloadable
 		// Downloadable
 		QUrl url(Size size = Size::Full) const override;
 		void preload(const Filename &filename) override;
+		QStringList paths(const QString &filename, const QString &folder, int count) const;
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
 		SaveResult preSave(const QString &path) override;

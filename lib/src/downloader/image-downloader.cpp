@@ -108,7 +108,7 @@ void ImageDownloader::loadedSave()
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty())
 	{
-		m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true);
+		m_paths = m_image->paths(m_filename, m_path, m_count);
 
 		// Use a random temporary file if we need the MD5 or equivalent
 		if (Filename(m_filename).needTemporaryFile(m_image->tokens(m_profile)))
@@ -294,7 +294,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 	m_image->setSavePath(m_temporaryPath);
 
 	if (!m_filename.isEmpty())
-	{ m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true); }
+	{ m_paths = m_image->paths(m_filename, m_path, m_count); }
 
 	QString suffix;
 	#ifdef Q_OS_WIN
