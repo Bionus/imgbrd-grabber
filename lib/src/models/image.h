@@ -30,7 +30,6 @@ class Image : public QObject, public Downloadable
 		~Image();
 
 		// TODO: remove these two methods
-		QStringList path(QString fn, QString pth, int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
 
 		int value() const;

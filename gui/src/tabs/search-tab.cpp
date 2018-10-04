@@ -987,7 +987,7 @@ void SearchTab::contextSaveImageAs(int position)
 	}
 
 	Filename format(fn);
-	QStringList filenames = format.path(*img, m_profile);
+	const QStringList filenames = format.path(*img, m_profile);
 	const QString filename = filenames.first().section(QDir::separator(), -1);
 	const QString lastDir = m_settings->value("Zoom/lastDir").toString();
 

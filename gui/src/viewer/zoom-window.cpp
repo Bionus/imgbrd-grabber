@@ -300,19 +300,13 @@ void ZoomWindow::openSaveDir(bool fav)
 	}
 	else
 	{
-		QString path = m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString().replace("\\", "/");
+		const QString path = m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString();
 		const QString fn = m_settings->value("Save/filename" + QString(fav ? "_favorites" : "")).toString();
 
-		if (path.right(1) == "/")
-		{ path = path.left(path.length() - 1); }
-		path = QDir::toNativeSeparators(path);
+		const QStringList files = m_image->paths(fn, path, 0);
+		const QString url = !files.empty() ? files.first() : path;
 
-		const QStringList files = m_image->path(fn, path);
-		const QString file = files.empty() ? QString() : files.at(0);
-		const QString pth = file.section(QDir::separator(), 0, -2);
-		const QString url = path + QDir::separator() + pth;
-
-		QDir dir(url);
+		QDir dir = QFileInfo(url).dir();
 		if (dir.exists())
 		{ showInGraphicalShell(url); }
 		else
@@ -321,7 +315,7 @@ void ZoomWindow::openSaveDir(bool fav)
 			if (reply == QMessageBox::Yes)
 			{
 				QDir rootDir(path);
-				if (!rootDir.mkpath(pth))
+				if (!rootDir.mkpath(dir.path()))
 				{ error(this, tr("Error creating folder.\n%1").arg(url)); }
 				showInGraphicalShell(url);
 			}

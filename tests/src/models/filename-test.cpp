@@ -644,7 +644,7 @@ void FilenameTest::testCommand()
 {
 	 Filename fn("curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=%all%\" -F \"post[rating]=%rating%\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 
-	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, false, false, false, false),
+	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, Filename::None),
 			  QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 }
 
@@ -733,8 +733,16 @@ void FilenameTest::assertPath(const QString &format, const QStringList &expected
 		expectedNative.append(QDir::toNativeSeparators(exp));
 	}
 
+	Filename::PathFlags flags = Filename::Complex | Filename::CapLength;
+	if (shouldFixFilename)
+	{ flags |= Filename::Fix; }
+	if (fullPath)
+	{ flags |= Filename::IncludeFolder; }
+	if (keepInvalidTokens)
+	{ flags |= Filename::KeepInvalidTokens; }
+
 	Filename fn(format);
-	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath, keepInvalidTokens);
+	QStringList actual = fn.path(*m_img, m_profile, path, 7, flags);
 	QCOMPARE(actual, expectedNative);
 }
 

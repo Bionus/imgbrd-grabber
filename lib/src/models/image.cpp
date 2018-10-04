@@ -439,12 +439,6 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull) const
-{
-	Filename filename(fn);
-	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
-}
-
 /**
  * Try to guess the size of the image in pixels for sorting.
  * @return The guessed number of pixels in the image.
@@ -576,8 +570,8 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 		for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
 		{
 			auto logFile = it.value();
-			const QString textfileFormat = logFile["content"].toString();
-			QStringList cont = this->path(textfileFormat, "", count, true, false, false, false);
+			const Filename textfileFormat = Filename(logFile["content"].toString());
+			QStringList cont = textfileFormat.path(*this, m_profile, "", count, Filename::Complex);
 			if (!cont.isEmpty())
 			{
 				const int locationType = logFile["locationType"].toInt();
@@ -1006,11 +1000,11 @@ void Image::preload(const Filename &filename)
 
 QStringList Image::paths(const QString &filename, const QString &folder, int count) const
 {
-	return path(filename, folder, count, true, true, true, true);
+	return paths(Filename(filename), folder, count);
 }
 QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
 {
-	return path(filename.format(), folder, count, true, true, true, true);
+	return filename.path(*this, m_profile, folder, count, Filename::Complex | Filename::Path);
 }
 
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
