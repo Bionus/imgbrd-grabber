@@ -183,7 +183,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>14</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -995,8 +995,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>369</width>
+             <height>377</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1984,6 +1984,13 @@
       </widget>
       <widget class="QWidget" name="pageImageWindow">
        <layout class="QFormLayout" name="formLayout_22">
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSingleDetailsWindow">
+          <property name="text">
+           <string>Use a single image window</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelTagsPosition">
           <property name="text">
@@ -2057,21 +2064,21 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkZoomShowTagCount">
           <property name="text">
            <string>Show tag count</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelImageTagOrder">
           <property name="text">
            <string>Tag order</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="QComboBox" name="comboImageTagOrder">
           <item>
            <property name="text">
@@ -2090,14 +2097,14 @@
           </item>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
            <string>Image position</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionImage">
           <item>
            <widget class="QComboBox" name="comboImagePositionImageV">
@@ -2145,14 +2152,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="labelImagePositionAnimation">
           <property name="text">
            <string>Animation position</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionAnimation">
           <item>
            <widget class="QComboBox" name="comboImagePositionAnimationV">
@@ -2200,14 +2207,14 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="labelImagePositionVideo">
           <property name="text">
            <string>Video position</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionVideo">
           <item>
            <widget class="QComboBox" name="comboImagePositionVideoV">
@@ -2255,14 +2262,14 @@
           </item>
          </layout>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_88">
           <property name="text">
            <string>Background color</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="1">
          <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
           <item>
            <widget class="QLineEdit" name="lineImageBackgroundColor"/>
@@ -2276,10 +2283,10 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkSingleDetailsWindow">
+        <item row="6" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkZoomViewSamples">
           <property name="text">
-           <string>Use a single image window</string>
+           <string>Use image samples</string>
           </property>
          </widget>
         </item>
