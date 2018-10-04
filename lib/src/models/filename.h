@@ -20,7 +20,7 @@ class Filename
 	public:
 		Filename() = default;
 		explicit Filename(QString format);
-		QString getFormat() const;
+		QString format() const;
 		void setFormat(const QString &format);
 		void setEscapeMethod(QString (*)(const QVariant &));
 

@@ -15,7 +15,7 @@
 
 Filename::Filename(QString format)
 	: m_format(std::move(format))
-{ }
+{}
 
 QString Filename::expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
 {
@@ -534,7 +534,7 @@ QString Filename::fixSeparator(const QString &separator) const
 		.replace("\\r", "\r");
 }
 
-QString Filename::getFormat() const
+QString Filename::format() const
 {
 	return m_format;
 }

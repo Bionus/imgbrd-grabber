@@ -28,18 +28,15 @@ class Image : public QObject, public Downloadable
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
 		~Image();
-		int value() const;
+
+		// TODO: remove these two methods
 		QStringList path(QString fn, QString pth, int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
-		QStringList stylishedTags(Profile *profile) const;
-		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
-		void postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
-		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
+
+		int value() const;
 		QString md5() const;
-		const QUrl &url() const;
 		const QString &rating() const;
 		const QList<Tag> &tags() const;
-		QList<Tag> filteredTags(const QStringList &remove) const;
 		QStringList tagsString() const;
 		const QList<Pool> &pools() const;
 		qulonglong id() const;
@@ -51,9 +48,6 @@ class Image : public QObject, public Downloadable
 		const QUrl &fileUrl() const;
 		QSize size() const;
 		const QString &name() const;
-		QPixmap previewImage() const;
-		const QPixmap &previewImage();
-		void setPreviewImage(const QPixmap &preview);
 		Page *page() const;
 		const QByteArray &data() const;
 		const QStringList &search() const;
@@ -79,6 +73,11 @@ class Image : public QObject, public Downloadable
 		bool isGallery() const;
 		QString extension() const;
 
+		// Preview pixmap store
+		QPixmap previewImage() const;
+		const QPixmap &previewImage();
+		void setPreviewImage(const QPixmap &preview);
+
 		// Displayable
 		QColor color() const override;
 		QString tooltip() const override;
@@ -86,7 +85,7 @@ class Image : public QObject, public Downloadable
 		QList<QStrP> detailsData() const override;
 
 		// Downloadable
-		QUrl url(Size size) const override;
+		QUrl url(Size size = Size::Full) const override;
 		void preload(const Filename &filename) override;
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
@@ -101,7 +100,13 @@ class Image : public QObject, public Downloadable
 		}*/
 
 	protected:
+		QList<Tag> filteredTags(const QStringList &remove) const;
 		void setRating(const QString &rating);
+
+		// Saving
+		SaveResult save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
+		void postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
+		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
 
 	public slots:
 		void loadDetails(bool rateLimit = false);

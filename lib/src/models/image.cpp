@@ -552,7 +552,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else
 		{
-			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), url().toString(), md5Duplicate));
+			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;
 		}
 
@@ -669,7 +669,6 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-const QUrl &Image::url() const { return m_url; }
 const QString &Image::rating() const { return m_rating; }
 Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
@@ -1007,7 +1006,7 @@ void Image::preload(const Filename &filename)
 
 QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
 {
-	return path(filename.getFormat(), folder, count, true, true, true, true);
+	return path(filename.format(), folder, count, true, true, true, true);
 }
 
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
