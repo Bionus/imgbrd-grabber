@@ -18,10 +18,10 @@ namespace Ui
 
 class BatchDownloadImage;
 class BatchWindow;
-class Downloader;
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class ImageDownloader;
+class PackLoader;
 class Page;
 class Profile;
 class MainWindow;
@@ -117,9 +117,8 @@ class DownloadsTab : public QWidget
 		QList<BatchDownloadImage> m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_getAllImageDownloaders;
 		QMap<QString, QIcon> m_icons;
-		QList<Downloader*> m_downloaders;
-		Downloader *m_lastDownloader;
-		QQueue<Downloader*> m_waitingDownloaders;
+		QQueue<PackLoader*> m_waitingPackLoaders;
+		PackLoader *m_currentPackLoader = nullptr;
 		QList<Site*> m_getAllLogins;
 		int m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		QAtomicInt m_getAllCurrentlyProcessing;
