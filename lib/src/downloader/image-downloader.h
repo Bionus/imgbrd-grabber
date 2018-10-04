@@ -20,10 +20,11 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false);
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
 		~ImageDownloader();
 		bool isRunning() const;
+		void setSize(Image::Size size);
 
 	public slots:
 		void save();
@@ -62,6 +63,7 @@ class ImageDownloader : public QObject
 		bool m_writeError;
 		bool m_rotate;
 		bool m_force;
+		Image::Size m_size;
 
 		QNetworkReply *m_reply = nullptr;
 		QUrl m_url;

@@ -25,13 +25,17 @@ static void addMd5(Profile *profile, const QString &path)
 }
 
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size)
 	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
-{}
+{
+	setSize(size);
+}
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force, Image::Size size)
 	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
-{}
+{
+	setSize(size);
+}
 
 ImageDownloader::~ImageDownloader()
 {
@@ -42,6 +46,21 @@ ImageDownloader::~ImageDownloader()
 bool ImageDownloader::isRunning() const
 {
 	return m_reply != nullptr && m_reply->isRunning();
+}
+
+void ImageDownloader::setSize(Image::Size size)
+{
+	if (size == Image::Size::Unknown)
+	{
+		const bool getOriginals = m_profile->getSettings()->value("Save/downloadoriginals", true).toBool();
+		const bool hasSample = m_image->url(Image::Size::Sample).isEmpty();
+		if (getOriginals || !hasSample)
+		{ m_size = Image::Size::Full; }
+		else
+		{ m_size = Image::Size::Sample; }
+	}
+	else
+	{ m_size = size; }
 }
 
 void ImageDownloader::save()
@@ -170,7 +189,7 @@ void ImageDownloader::loadedSave()
 		}
 	}
 
-	m_url = m_image->url(Image::Size::Full);
+	m_url = m_image->url(m_size);
 	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
 	loadImage();
 }
@@ -240,7 +259,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
 		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
-		const bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
+		const bool shouldFallback = m_size == Image::Size::Full && sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
 		const bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
 
 		if (m_rotate && (!isLast || (shouldFallback && !m_tryingSample)))
@@ -253,7 +272,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 			}
 			else
 			{
-				m_url = setExtension(m_image->url(Image::Size::Full), newext);
+				m_url = setExtension(m_image->url(m_size), newext);
 				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
 			}
 

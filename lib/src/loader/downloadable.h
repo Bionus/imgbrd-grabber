@@ -36,6 +36,7 @@ class Downloadable
 
 		enum Size
 		{
+			Unknown,
 			Thumbnail,
 			Sample,
 			Full
