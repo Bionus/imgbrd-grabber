@@ -68,7 +68,6 @@ Image::Image(const Image &other)
 	m_status = other.m_status;
 	m_rating = other.m_rating;
 	m_sources = other.m_sources;
-	m_savePath = other.m_savePath;
 
 	m_pageUrl = other.m_pageUrl;
 	m_fileUrl = other.m_fileUrl;
@@ -297,11 +296,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_pools = QList<Pool>();
 }
 
-Image::~Image()
-{
-	if (!m_temporaryPath.isEmpty())
-		QFile::remove(m_temporaryPath);
-}
 
 void Image::loadDetails(bool rateLimit)
 {
@@ -492,10 +486,11 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
+			const QString savePath = m_sizes[Image::Size::Full].savePath();
+			if (!savePath.isEmpty() && QFile::exists(savePath))
 			{
-				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, m_savePath));
-				QFile(m_savePath).copy(path);
+				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
+				QFile(savePath).copy(path);
 			}
 			else
 			{
@@ -698,36 +693,16 @@ void Image::setPreviewImage(const QPixmap &preview)
 }
 void Image::setTemporaryPath(const QString &path)
 {
-	setSavePath(path);
-
-	if (m_temporaryPath == path)
-		return;
-
-	if (!m_temporaryPath.isEmpty())
-		QFile::remove(m_temporaryPath);
-
-	m_temporaryPath = path;
-
-	if (m_sizes[Image::Size::Full].fileSize <= 0)
-	{
-		m_sizes[Image::Size::Full].fileSize = QFileInfo(m_temporaryPath).size();
+	if (m_sizes[Image::Size::Full].setTemporaryPath(path))
 		refreshTokens();
-	}
 }
 void Image::setSavePath(const QString &path)
 {
-	if (path != m_savePath)
-	{
-		m_savePath = path;
-
-		if (m_sizes[Image::Size::Full].fileSize <= 0)
-		{ m_sizes[Image::Size::Full].fileSize = QFileInfo(m_savePath).size(); }
-
+	if (m_sizes[Image::Size::Full].setSavePath(path))
 		refreshTokens();
-	}
 }
 QString Image::savePath() const
-{ return m_savePath; }
+{ return m_sizes[Image::Size::Full].savePath(); }
 
 bool Image::shouldDisplaySample() const
 {
@@ -882,8 +857,10 @@ QList<QStrP> Image::detailsData() const
 
 QString Image::md5() const
 {
+	const QString savePath = m_sizes[Image::Size::Full].savePath();
+
 	// If we know the path to the image or its content but not its md5, we calculate it first
-	if (m_md5.isEmpty() && (!m_savePath.isEmpty() || !m_data.isEmpty()))
+	if (m_md5.isEmpty() && (!savePath.isEmpty() || !m_data.isEmpty()))
 	{
 		QCryptographicHash hash(QCryptographicHash::Md5);
 
@@ -896,7 +873,7 @@ QString Image::md5() const
 		// Calculate from image path
 		else
 		{
-			QFile f(m_savePath);
+			QFile f(savePath);
 			f.open(QFile::ReadOnly);
 			hash.addData(&f);
 			f.close();

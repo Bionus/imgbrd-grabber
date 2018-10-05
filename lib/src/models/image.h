@@ -10,12 +10,13 @@
 #include <QString>
 #include "image-size.h"
 #include "loader/downloadable.h"
+#include "loader/token.h"
+#include "models/pool.h"
 #include "tags/tag.h"
 
 
 class ExtensionRotator;
 class Page;
-class Pool;
 class Profile;
 class QSettings;
 class Site;
@@ -28,7 +29,6 @@ class Image : public QObject, public Downloadable
 		Image();
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
-		~Image();
 
 		// TODO: remove these two methods
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
@@ -128,7 +128,7 @@ class Image : public QObject, public Downloadable
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
-		QString m_author, m_name, m_status, m_rating, m_site, m_temporaryPath, m_savePath;
+		QString m_author, m_name, m_status, m_rating, m_site;
 		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QPixmap m_imagePreview;
