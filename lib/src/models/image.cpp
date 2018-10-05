@@ -76,7 +76,7 @@ Image::Image(const Image &other)
 	m_sampleUrl = other.m_sampleUrl;
 	m_previewUrl = other.m_previewUrl;
 
-	m_size = other.m_size;
+	m_sizes = other.m_sizes;
 	m_imagePreview = other.m_imagePreview;
 	m_createdAt = other.m_createdAt;
 	m_data = other.m_data;
@@ -128,9 +128,13 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
-	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
+
+	// Sizes
+	ImageSize full;
+	full.size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
+	m_sizes.insert(Image::Size::Full, full);
 
 	// Preview rect
 	if (details.contains("preview_rect"))
@@ -196,7 +200,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 				{
 					QStringList size = tg.mid(colon + 1).split('x');
 					if (size.size() == 2)
-						m_size = QSize(size[0].toInt(), size[1].toInt());
+						setSize(QSize(size[0].toInt(), size[1].toInt()));
 				}
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
@@ -445,9 +449,11 @@ void Image::parseDetails()
  */
 int Image::value() const
 {
+	QSize size = m_sizes[Image::Size::Full].size;
+
 	// Get from image size
-	if (!m_size.isEmpty())
-		return m_size.width() * m_size.height();
+	if (!size.isEmpty())
+		return size.width() * size.height();
 
 	// Get from tags
 	if (hasTag("incredibly_absurdres"))
@@ -669,12 +675,12 @@ const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
 qulonglong Image::id() const { return m_id; }
 int Image::fileSize() const { return m_fileSize; }
-int Image::width() const { return m_size.width(); }
-int Image::height() const { return m_size.height(); }
+int Image::width() const { return size().width(); }
+int Image::height() const { return size().height(); }
 const QDateTime &Image::createdAt() const { return m_createdAt; }
 const QUrl &Image::fileUrl() const { return m_fileUrl; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
-QSize Image::size() const { return m_size; }
+QSize Image::size() const { return m_sizes[Image::Size::Full].size; }
 const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_imagePreview; }
 const QPixmap &Image::previewImage() { return m_imagePreview; }
@@ -750,7 +756,7 @@ void Image::setUrl(const QUrl &url)
 	m_url = url;
 	refreshTokens();
 }
-void Image::setSize(QSize size) { m_size = size; refreshTokens(); }
+void Image::setSize(QSize size) { m_sizes[Image::Size::Full].size = size; refreshTokens(); }
 void Image::setFileSize(int size) { m_fileSize = size; refreshTokens(); }
 void Image::setData(const QByteArray &data)
 {
@@ -828,7 +834,7 @@ QString Image::tooltip() const
 		.arg(m_rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(m_rating))
 		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
 		.arg(m_author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(m_author))
-		.arg(m_size.width() == 0 || m_size.height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(m_size.width()), QString::number(m_size.height())))
+		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
 		.arg(!m_createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(m_createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
 }
@@ -859,7 +865,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
-		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width()) + "x" + QString::number(m_size.height()) : unknown),
+		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
 		QStrP(tr("Filesize"), m_fileSize != 0 ? formatFilesize(m_fileSize) : unknown),
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
@@ -1029,9 +1035,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("id", Token(m_id, 0));
 	tokens.insert("rating", Token(m_rating, "unknown"));
 	tokens.insert("score", Token(m_score, 0));
-	tokens.insert("height", Token(m_size.height(), 0));
-	tokens.insert("width", Token(m_size.width(), 0));
-	tokens.insert("mpixels", Token(m_size.width() * m_size.height(), 0));
+	tokens.insert("height", Token(height(), 0));
+	tokens.insert("width", Token(width(), 0));
+	tokens.insert("mpixels", Token(width() * height(), 0));
 	tokens.insert("url_file", Token(m_url, ""));
 	tokens.insert("url_sample", Token(m_sampleUrl.toString(), ""));
 	tokens.insert("url_thumbnail", Token(m_previewUrl.toString(), ""));

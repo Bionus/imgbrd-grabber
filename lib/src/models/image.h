@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QPixmap>
 #include <QString>
+#include "image-size.h"
 #include "loader/downloadable.h"
 #include "tags/tag.h"
 
@@ -130,7 +131,6 @@ class Image : public QObject, public Downloadable
 		QString m_author, m_name, m_status, m_rating, m_site, m_temporaryPath, m_savePath;
 		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
-		QSize m_size;
 		QPixmap m_imagePreview;
 		QRect m_previewRect;
 		QDateTime m_createdAt;
@@ -146,6 +146,7 @@ class Image : public QObject, public Downloadable
 		bool m_loadingDetails, m_loadedDetails;
 		bool m_isGallery = false;
 		int m_galleryCount;
+		QMap<Image::Size, ImageSize> m_sizes;
 };
 
 Q_DECLARE_METATYPE(Image)
