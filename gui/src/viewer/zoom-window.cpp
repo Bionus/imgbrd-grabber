@@ -405,7 +405,8 @@ void ZoomWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceive
 	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && static_cast<double>(bytesReceived) / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
-		emit loadImage(m_image->data());
+		// FIXME: should read the file contents now that the image is not loaded in RAM anymore
+		// emit loadImage(m_image->data());
 	}
 }
 void ZoomWindow::display(const QPixmap &pix, int size)

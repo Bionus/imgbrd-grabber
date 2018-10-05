@@ -105,7 +105,6 @@ void ImageTest::testCopy()
 	QCOMPARE(clone.tokens(m_profile), m_img->tokens(m_profile));
 	QCOMPARE(clone.parentSite(), m_img->parentSite());
 	QCOMPARE(clone.page(), m_img->page());
-	QCOMPARE(clone.data(), m_img->data());
 }
 
 void ImageTest::testHasTag()
@@ -130,15 +129,6 @@ void ImageTest::testHasAllTags()
 }
 
 
-void ImageTest::testMd5FromData()
-{
-	m_details.remove("md5");
-	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, m_profile);
-	m_img->setData(QString("test").toLatin1());
-
-	QCOMPARE(m_img->md5(), QString("098f6bcd4621d373cade4e832627b4f6"));
-}
 /*void ImageTest::testMd5FromFile()
 {
 	m_details.remove("md5");
@@ -242,7 +232,7 @@ void ImageTest::testSave()
 	if (file.exists())
 		file.remove();
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
@@ -255,7 +245,7 @@ void ImageTest::testSaveError()
 {
 	QString path = "Z:/../tests/resources/tmp/";
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), path);
 
 	QCOMPARE(res.count(), 1);
@@ -269,7 +259,7 @@ void ImageTest::testSaveAlreadyExists()
 	if (!file.open(QFile::Truncate | QFile::WriteOnly))
 		QFAIL("Cannot create file");
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
@@ -282,7 +272,7 @@ void ImageTest::testSaveDuplicate()
 	if (file.exists())
 		file.remove();
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res;
 
 	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/source.png");
@@ -325,7 +315,7 @@ void ImageTest::testSaveLog()
 	m_settings->setValue("LogFiles/0/uniquePath", logFile.fileName());
 	m_settings->setValue("LogFiles/0/content", "id: %id%");
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);

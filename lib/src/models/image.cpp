@@ -77,7 +77,6 @@ Image::Image(const Image &other)
 	m_sizes = other.m_sizes;
 	m_imagePreview = other.m_imagePreview;
 	m_createdAt = other.m_createdAt;
-	m_data = other.m_data;
 
 	m_galleryCount = other.m_galleryCount;
 
@@ -493,29 +492,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 				QFile(savePath).copy(path);
 			}
 			else
-			{
-				if (m_data.isEmpty())
-				{ return SaveResult::NotLoaded; }
-
-				log(QStringLiteral("Saving image in `%1`").arg(path));
-
-				if (f.open(QFile::WriteOnly))
-				{
-					if (f.write(m_data) < 0)
-					{
-						f.close();
-						f.remove();
-						log(QStringLiteral("File saving error: %1)").arg(f.errorString()), Logger::Error);
-						return SaveResult::Error;
-					}
-					f.close();
-				}
-				else
-				{
-					log(QStringLiteral("Unable to open file"));
-					return SaveResult::Error;
-				}
-			}
+			{ return SaveResult::NotLoaded; }
 		}
 		else if (whatToDo == "copy")
 		{
@@ -679,7 +656,6 @@ const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_imagePreview; }
 const QPixmap &Image::previewImage() { return m_imagePreview; }
 Page *Image::page() const { return m_parent; }
-const QByteArray &Image::data() const { return m_data; }
 const QStringList &Image::search() const { return m_search; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
@@ -732,30 +708,6 @@ void Image::setUrl(const QUrl &url)
 }
 void Image::setSize(QSize size) { m_sizes[Image::Size::Full].size = size; refreshTokens(); }
 void Image::setFileSize(int size) { m_sizes[Image::Size::Full].fileSize = size; refreshTokens(); }
-void Image::setData(const QByteArray &data)
-{
-	m_data = data;
-
-	// Detect file extension from data headers
-	const bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
-	if (headerDetection)
-	{
-		QString ext = getExtensionFromHeader(m_data.left(12));
-		const QString currentExt = getExtension(m_url);
-		if (!ext.isEmpty() && ext != currentExt)
-		{
-			log(QStringLiteral("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Logger::Info);
-			setFileExtension(ext);
-		}
-	}
-
-	// Set MD5 by hashing this data if we don't already have it
-	if (m_md5.isEmpty())
-	{
-		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
-		refreshTokens();
-	}
-}
 void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
@@ -860,24 +812,15 @@ QString Image::md5() const
 	const QString savePath = m_sizes[Image::Size::Full].savePath();
 
 	// If we know the path to the image or its content but not its md5, we calculate it first
-	if (m_md5.isEmpty() && (!savePath.isEmpty() || !m_data.isEmpty()))
+	if (m_md5.isEmpty() && !savePath.isEmpty())
 	{
 		QCryptographicHash hash(QCryptographicHash::Md5);
 
-		// Calculate from image data
-		if (!m_data.isEmpty())
-		{
-			hash.addData(m_data);
-		}
-
 		// Calculate from image path
-		else
-		{
-			QFile f(savePath);
-			f.open(QFile::ReadOnly);
-			hash.addData(&f);
-			f.close();
-		}
+		QFile f(savePath);
+		f.open(QFile::ReadOnly);
+		hash.addData(&f);
+		f.close();
 
 		m_md5 = hash.result().toHex();
 	}

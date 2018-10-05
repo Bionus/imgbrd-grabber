@@ -49,7 +49,6 @@ class Image : public QObject, public Downloadable
 		QSize size() const;
 		const QString &name() const;
 		Page *page() const;
-		const QByteArray &data() const;
 		const QStringList &search() const;
 		Site *parentSite() const;
 		ExtensionRotator *extensionRotator() const;
@@ -58,7 +57,6 @@ class Image : public QObject, public Downloadable
 		bool hasAllTags(const QStringList &tags) const;
 		bool hasUnknownTag() const;
 		void setUrl(const QUrl &url);
-		void setData(const QByteArray &data);
 		void setSize(QSize size);
 		void setFileSize(int size);
 		void setFileExtension(const QString &ext);
@@ -134,7 +132,6 @@ class Image : public QObject, public Downloadable
 		QPixmap m_imagePreview;
 		QRect m_previewRect;
 		QDateTime m_createdAt;
-		QByteArray m_data;
 		QNetworkReply *m_loadDetails;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;
