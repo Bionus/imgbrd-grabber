@@ -10,6 +10,7 @@
 struct ImageSize
 {
 	QSize size;
+	int fileSize;
 };
 
 #endif // IMAGE_SIZE_H

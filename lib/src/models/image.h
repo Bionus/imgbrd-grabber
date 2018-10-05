@@ -124,7 +124,7 @@ class Image : public QObject, public Downloadable
 		Profile *m_profile;
 		Page *m_parent;
 		qulonglong m_id;
-		int m_score, m_parentId, m_fileSize, m_authorId;
+		int m_score, m_parentId, m_authorId;
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
