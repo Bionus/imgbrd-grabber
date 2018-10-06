@@ -825,10 +825,6 @@ void DownloadsTab::getAllFinishedImages(const QList<QSharedPointer<Image>> &imag
  */
 void DownloadsTab::getAllImages()
 {
-	// Si la limite d'images est dépassée, on retire celles en trop
-	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
-		m_getAllRemaining.takeLast().image->deleteLater();
-
 	log(QStringLiteral("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
 
 	// We add the images to the download dialog
