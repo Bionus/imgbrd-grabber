@@ -5,6 +5,7 @@
 #include <QList>
 #include <QMap>
 #include <QSize>
+#include "exponential-moving-average.h"
 #include "loader/downloadable.h"
 
 
@@ -78,8 +79,8 @@ class BatchWindow : public QDialog
 		int m_imagesCount, m_items, m_images, m_maxSpeeds, m_lastDownloading;
 		QMap<QUrl, int> m_urls;
 		QList<QProgressBar*> m_progressBars;
-		QMap<QUrl, int> m_speeds;
-		QList<int> m_mean;
+		QMap<QUrl, ExponentialMovingAverage> m_speeds;
+		ExponentialMovingAverage m_mean;
 		bool m_cancel, m_paused;
 		QTime *m_time, *m_start;
 		#ifdef Q_OS_WIN

@@ -10,9 +10,12 @@
 #include "functions.h"
 #include "loader/downloadable.h"
 
+#define SPEED_SMOOTHING_IMAGE 0.5
+#define SPEED_SMOOTHING_AVERAGE 0.5
+
 
 BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
-	: QDialog(parent), ui(new Ui::BatchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
+	: QDialog(parent), ui(new Ui::BatchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_mean(SPEED_SMOOTHING_AVERAGE), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -82,6 +85,11 @@ void BatchWindow::pause()
 	m_paused = !m_paused;
 	ui->labelSpeed->setText(m_paused ? tr("Paused") : QString());
 	ui->buttonPause->setText(m_paused ? tr("Resume") : tr("Pause"));
+
+	// Reset download speeds
+	m_mean.clear();
+	for (auto it = m_speeds.begin(); it != m_speeds.end(); ++it)
+		it.value().clear();
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setPaused(m_paused);
@@ -229,7 +237,7 @@ void BatchWindow::loadingImage(const QUrl &url)
 {
 	if (m_start->isNull())
 		m_start->start();
-	m_speeds.insert(url, 0);
+	m_speeds.insert(url, ExponentialMovingAverage(SPEED_SMOOTHING_IMAGE));
 	if (m_speeds.size() > m_maxSpeeds)
 		m_maxSpeeds = m_speeds.size();
 
@@ -271,12 +279,14 @@ void BatchWindow::statusImage(const QUrl &url, int percent)
 }
 void BatchWindow::speedImage(const QUrl &url, double speed)
 {
-	m_speeds[url] = static_cast<int>(speed);
-	const QString unit = getUnit(&speed) + "/s";
+	m_speeds[url].addValue(speed);
+
+	double average = m_speeds[url].average();
+	const QString unit = getUnit(&average) + "/s";
 
 	int i = indexOf(url);
 	if (i != -1)
-		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0) + " " + unit);
+		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(average, 'f', average < 10 ? 2 : 0) + " " + unit);
 
 	drawSpeed();
 }
@@ -348,19 +358,12 @@ void BatchWindow::drawSpeed()
 
 	double speed = 0;
 	for (auto sp = m_speeds.constBegin(); sp != m_speeds.constEnd(); ++sp)
-	{ speed += sp.value(); }
+	{ speed += sp.value().average(); }
 	if (m_speeds.size() == m_maxSpeeds)
-	{ m_mean.append(qRound(speed)); }
+	{ m_mean.addValue(speed); }
 	const QString unit = getUnit(&speed) + "/s";
 
-	double speedMean = 0;
-	const int count = qMin(m_mean.count(), 60);
-	if (count > 0)
-	{
-		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
-		{ speedMean += m_mean[i]; }
-		speedMean = static_cast<int>(speedMean / count);
-	}
+	double speedMean = m_mean.average();
 	const QString unitMean = getUnit(&speedMean) + "/s";
 
 	const int elapsed = m_start->elapsed();
