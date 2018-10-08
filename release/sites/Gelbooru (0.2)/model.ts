@@ -44,9 +44,13 @@ export const source: ISource = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: any, opts: any, previous: any): string | IError => {
                     const page: number = query.page - 1;
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                    if (fav) {
+                        return { error: "XML API cannot search favorites" };
+                    }
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
@@ -82,13 +86,19 @@ export const source: ISource = {
                         const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
+                        const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                        if (fav) {
+                            const pageFav: number = (query.page - 1) * 50;
+                            const pagePartFav = Grabber.pageUrl(pageFav, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
+                            return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePartFav;
+                        }
                         return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                     } catch (e) {
                         return { error: e.message };
                     }
                 },
                 parse: (src: string): IParsedSearch => {
-                    const pageCount = Grabber.regexToConst("page", '<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a></div>', src);
+                    const pageCount = Grabber.regexToConst("page", '<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>(?:</div>|<br ?/>)', src);
                     return {
                         images: Grabber.regexToImages('<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src).map(completeImage),
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
