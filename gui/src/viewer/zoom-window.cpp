@@ -830,8 +830,9 @@ void ZoomWindow::saveImageNow()
 		{ QFile::remove(m_saveAsPending); }
 		bool ok = QFile(m_imagePath).copy(m_saveAsPending);
 		auto result = ok ? Image::SaveResult::Saved : Image::SaveResult::Error;
-		m_image->postSave(m_saveAsPending, result, true, true, 1);
-		saveImageNowSaved(m_image, QList<ImageSaveResult> {{ m_saveAsPending, Image::Size::Unknown, result }}); // FIXME: depends on the size of m_imagePath, but it's unused anyway
+		const Image::Size size = Image::Size::Full; // FIXME: depends on the size of m_imagePath
+		m_image->postSave(m_saveAsPending, size, result, true, true, 1);
+		saveImageNowSaved(m_image, QList<ImageSaveResult> {{ m_saveAsPending, size, result }});
 		return;
 	}
 

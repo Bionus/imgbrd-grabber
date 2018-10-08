@@ -31,7 +31,7 @@ class Image : public QObject, public Downloadable
 		Image(const Image &other);
 
 		// TODO: remove these two methods
-		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1);
+		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, Size size = Size::Full);
 
 		int value() const;
 		QString md5() const;
@@ -87,8 +87,8 @@ class Image : public QObject, public Downloadable
 		QStringList paths(const QString &filename, const QString &folder, int count) const;
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
-		SaveResult preSave(const QString &path) override;
-		void postSave(const QString &path, SaveResult result, bool addMd5, bool startCommands, int count) override;
+		SaveResult preSave(const QString &path, Size size) override;
+		void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count) override;
 
 		// Templates
 		/*template <typename T>
@@ -102,9 +102,9 @@ class Image : public QObject, public Downloadable
 		void setRating(const QString &rating);
 
 		// Saving
-		SaveResult save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
-		void postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
-		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
+		SaveResult save(const QString &path, Size size, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
+		void postSaving(const QString &path, Size size, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
+		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, Size size = Size::Full);
 
 	public slots:
 		void loadDetails(bool rateLimit = false);

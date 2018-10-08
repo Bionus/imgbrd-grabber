@@ -460,7 +460,7 @@ int Image::value() const
 	return 1200 * 900;
 }
 
-Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSave)
+Image::SaveResult Image::save(const QString &path, Size size, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSave)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -485,7 +485,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			const QString savePath = m_sizes[Image::Size::Full].savePath();
+			const QString savePath = m_sizes[size].savePath();
 			if (!savePath.isEmpty() && QFile::exists(savePath))
 			{
 				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
@@ -528,14 +528,14 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 
 		if (postSave)
-		{ postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
+		{ postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
 	}
 	else
 	{ res = SaveResult::AlreadyExistsDisk; }
 
 	return res;
 }
-void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int count, bool basic)
+void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCommands, int count, bool basic)
 {
 	if (addMd5)
 	{ m_profile->addMd5(md5(), path); }
@@ -597,19 +597,19 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 	if (startCommands)
 	{ commands.after(); }
 
-	setSavePath(path);
+	setSavePath(path, size);
 }
-QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force)
+QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, Size size)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (const QString &path : paths)
-		res.insert(path, save(path, force, false, addMd5, startCommands, count));
+		res.insert(path, save(path, size, force, false, addMd5, startCommands, count));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count)
+QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, Size size)
 {
 	const QStringList paths = this->paths(filename, path, count);
-	return save(paths, addMd5, startCommands, count, false);
+	return save(paths, addMd5, startCommands, count, false, size);
 }
 
 QList<Tag> Image::filteredTags(const QStringList &remove) const
@@ -1041,12 +1041,12 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	return tokens;
 }
 
-Image::SaveResult Image::preSave(const QString &path)
+Image::SaveResult Image::preSave(const QString &path, Size size)
 {
-	return save(path, false, false, false, false, 1, false);
+	return save(path, size, false, false, false, false, 1, false);
 }
 
-void Image::postSave(const QString &path, SaveResult res, bool addMd5, bool startCommands, int count)
+void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count)
 {
-	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
+	postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count);
 }

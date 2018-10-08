@@ -176,7 +176,7 @@ void ImageDownloader::loadedSave()
 		}
 
 		// If we don't need any loading, we can return already
-		Image::SaveResult res = m_image->preSave(m_temporaryPath);
+		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
 		if (res != Image::SaveResult::NotLoaded)
 		{
 			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
@@ -369,7 +369,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 		{ tmp.copy(path); }
 
 		result.append({ path, size, saveResult });
-		m_image->postSave(path, saveResult, m_addMd5, m_startCommands, m_count);
+		m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
 	}
 
 	if (!moved)

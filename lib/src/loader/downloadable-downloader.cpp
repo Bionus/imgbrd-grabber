@@ -33,7 +33,8 @@ void DownloadableDownloader::save()
 
 void DownloadableDownloader::preloaded()
 {
-	const QUrl url = m_downloadable->url(Downloadable::Size::Full);
+	const Downloadable::Size size = Downloadable::Size::Full;
+	const QUrl url = m_downloadable->url(size);
 	QStringList paths = !m_paths.isEmpty() ? m_paths : m_downloadable->paths(m_filename, m_folder, m_count);
 
 	// Sometimes we don't even need to download the image to save it
@@ -41,7 +42,7 @@ void DownloadableDownloader::preloaded()
 	m_result.clear();
 	for (const QString &path : paths)
 	{
-		Downloadable::SaveResult result = m_downloadable->preSave(path);
+		Downloadable::SaveResult result = m_downloadable->preSave(path, size);
 		if (result == Downloadable::SaveResult::NotLoaded)
 		{ m_paths.append(path); }
 		else
@@ -52,7 +53,7 @@ void DownloadableDownloader::preloaded()
 	if (m_paths.isEmpty())
 	{
 		for (auto it = m_result.constBegin(); it != m_result.constEnd(); ++it)
-		{ m_downloadable->postSave(it.key(), it.value(), m_addMd5, m_startCommands, m_count); }
+		{ m_downloadable->postSave(it.key(), size, it.value(), m_addMd5, m_startCommands, m_count); }
 		emit saved(m_downloadable, m_result);
 		return;
 	}
@@ -103,6 +104,6 @@ void DownloadableDownloader::success()
 {
 	setResult(m_paths, Downloadable::SaveResult::Saved);
 	for (const QString &path : qAsConst(m_paths))
-	{ m_downloadable->postSave(path, Downloadable::SaveResult::Saved, m_addMd5, m_startCommands, m_count); }
+	{ m_downloadable->postSave(path, Downloadable::Size::Full, Downloadable::SaveResult::Saved, m_addMd5, m_startCommands, m_count); }
 	emit saved(m_downloadable, m_result);
 }
