@@ -148,8 +148,6 @@ void ZoomWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
-	m_url = m_image->url(m_image->preferredDisplaySize());
-
 	auto *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
@@ -367,7 +365,8 @@ void ZoomWindow::setfavorite()
 
 void ZoomWindow::load(bool force)
 {
-	log(QStringLiteral("Loading image from `%1`").arg(m_url.toString()));
+	const Image::Size size = m_image->preferredDisplaySize();
+	log(QStringLiteral("Loading image from `%1`").arg(m_image->url(size).toString()));
 
 	m_source.clear();
 
@@ -379,7 +378,6 @@ void ZoomWindow::load(bool force)
 	if (dwl == nullptr)
 	{
 		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		const Image::Size size = m_image->preferredDisplaySize();
 		dwl = new ImageDownloader(m_profile, m_image, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, force, size);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
@@ -486,7 +484,6 @@ void ZoomWindow::replyFinishedDetails()
 
 		// Fix extension when it should be guessed
 		const QString fext = m_source.section('.', -1);
-		m_url = setExtension(m_url, fext);
 		m_image->setFileExtension(fext);
 
 		m_finished = true;
@@ -511,11 +508,7 @@ void ZoomWindow::replyFinishedDetails()
 
 	// If the file does not exist, we have to load it
 	else
-	{
-		if (m_url.isEmpty())
-		{ m_url = m_image->url(); }
-		load();
-	}
+	{ load(); }
 
 	updateWindowTitle();
 }
@@ -606,8 +599,8 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result)
 {
-	log(QStringLiteral("Image received from `%1`").arg(m_url.toString()));
 	ImageSaveResult res = result.first();
+	log(QStringLiteral("Image received from `%1`").arg(img->url(res.size).toString()));
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
@@ -626,7 +619,6 @@ void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList
 	{ showLoadingError("Error saving the image."); }
 	else
 	{
-		m_url = m_image->url();
 		m_imagePath = res.path;
 		m_loadedImage = true;
 
@@ -1104,12 +1096,6 @@ void ZoomWindow::showThumbnail()
 	}
 }
 
-void ZoomWindow::urlChanged(const QUrl &before, const QUrl &after)
-{
-	Q_UNUSED(before);
-	m_url = after;
-}
-
 
 void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site)
 {
@@ -1129,7 +1115,6 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	m_imagePath = "";
 	m_image = image;
 	m_isAnimated = image->isAnimated();
-	connect(m_image.data(), &Image::urlChanged, this, &ZoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 	ui->labelLoadingError->hide();
 

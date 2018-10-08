@@ -78,7 +78,6 @@ class ZoomWindow : public QWidget
 		void setfavorite();
 		void downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void urlChanged(const QUrl &before, const QUrl &after);
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
@@ -143,7 +142,6 @@ class ZoomWindow : public QWidget
 		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QString id;
-		QUrl m_url, m_saveUrl;
 		QString rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
