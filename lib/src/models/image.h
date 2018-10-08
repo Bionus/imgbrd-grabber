@@ -57,8 +57,8 @@ class Image : public QObject, public Downloadable
 		bool hasAllTags(const QStringList &tags) const;
 		bool hasUnknownTag() const;
 		void setUrl(const QUrl &url);
-		void setSize(QSize size);
-		void setFileSize(int size);
+		void setSize(QSize size, Size s);
+		void setFileSize(int fileSize, Size s);
 		void setFileExtension(const QString &ext);
 		void setTemporaryPath(const QString &path, Size size = Size::Full);
 		void setSavePath(const QString &path, Size size = Size::Full);

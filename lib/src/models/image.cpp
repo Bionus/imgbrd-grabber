@@ -197,7 +197,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 				{
 					QStringList size = tg.mid(colon + 1).split('x');
 					if (size.size() == 2)
-						setSize(QSize(size[0].toInt(), size[1].toInt()));
+					{ setSize(QSize(size[0].toInt(), size[1].toInt()), Size::Full); }
 				}
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
@@ -400,11 +400,13 @@ void Image::parseDetails()
 		m_url = newUrl;
 		m_fileUrl = newUrl;
 
+		delete m_extensionRotator;
+		m_extensionRotator = nullptr;
+
 		if (before != m_url)
 		{
-			delete m_extensionRotator;
-			m_extensionRotator = nullptr;
-			setFileSize(0);
+			if (getExtension(before) != getExtension(m_url))
+			{ setFileSize(0, Size::Full); }
 			emit urlChanged(before, m_url);
 		}
 	}
@@ -701,13 +703,21 @@ QStringList Image::tagsString() const
 
 void Image::setUrl(const QUrl &url)
 {
-	setFileSize(0);
+	setFileSize(0, Size::Full); // FIXME
 	emit urlChanged(m_url, url);
 	m_url = url;
 	refreshTokens();
 }
-void Image::setSize(QSize size) { m_sizes[Image::Size::Full].size = size; refreshTokens(); }
-void Image::setFileSize(int size) { m_sizes[Image::Size::Full].fileSize = size; refreshTokens(); }
+void Image::setSize(QSize size, Size s)
+{
+	m_sizes[s].size = size;
+	refreshTokens();
+}
+void Image::setFileSize(int fileSize, Size s)
+{
+	m_sizes[s].fileSize = fileSize;
+	refreshTokens();
+}
 void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;

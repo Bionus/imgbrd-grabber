@@ -417,7 +417,7 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 
 		if (!pix.size().isEmpty() && m_image->size().isEmpty())
 		{
-			m_image->setSize(pix.size());
+			m_image->setSize(pix.size(), Image::Size::Full); // FIXME
 			updateWindowTitle();
 		}
 
