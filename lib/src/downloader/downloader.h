@@ -14,6 +14,7 @@
 #include "tags/tag.h"
 
 
+struct ImageSaveResult;
 class Profile;
 class Page;
 class Site;
@@ -65,7 +66,7 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
-		void finishedLoadingImage(const QSharedPointer<Image> &image, const QMap<QString, Image::SaveResult> &result);
+		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
 		void clear();
 

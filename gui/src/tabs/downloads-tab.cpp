@@ -978,7 +978,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
-void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result)
+void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QList<ImageSaveResult> result)
 {
 	// Delete ImageDownloader to prevent leaks
 	m_getAllImageDownloaders[img]->deleteLater();
@@ -998,13 +998,12 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QS
 
 	// Save error count to compare it later on
 	bool diskError = false;
-	const auto res = result.first();
+	const auto res = result.first().result;
 
 	// Disk writing errors
-	for (auto it = result.constBegin(); it != result.constEnd(); ++it)
+	for (const ImageSaveResult &re : result)
 	{
-		const QString &path = it.key();
-		if (it.value() == Image::SaveResult::Error)
+		if (re.result == Image::SaveResult::Error)
 		{
 			diskError = true;
 
@@ -1015,7 +1014,7 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QS
 				bool isDriveFull;
 				QString drive;
 				#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-					QDir destinationDir = QFileInfo(path).absoluteDir();
+					QDir destinationDir = QFileInfo(re.path).absoluteDir();
 					QStorageInfo storage(destinationDir);
 					isDriveFull = storage.isValid() && (storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024);
 					QString rootPath = storage.rootPath();
@@ -1032,7 +1031,7 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QS
 				if (isDriveFull)
 				{ msg = tr("Not enough space on the destination drive \"%1\".\nPlease free some space before resuming the download.").arg(drive); }
 				else
-				{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
+				{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(re.path); }
 				QMessageBox::critical(m_progressDialog, tr("Error"), msg);
 			}
 		}

@@ -21,6 +21,7 @@ class BatchWindow;
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class ImageDownloader;
+struct ImageSaveResult;
 class PackLoader;
 class Page;
 class Profile;
@@ -73,7 +74,7 @@ class DownloadsTab : public QWidget
 		void getAllFinishedImages(const QList<QSharedPointer<Image>> &images);
 		void getAllImages();
 		void getAllGetImage(const BatchDownloadImage &download, int siteId);
-		void getAllGetImageSaved(const QSharedPointer<Image> &img, QMap<QString, Image::SaveResult> result);
+		void getAllGetImageSaved(const QSharedPointer<Image> &img, QList<ImageSaveResult> result);
 		void getAllProgress(const QSharedPointer<Image> &img, qint64 bytesReceived, qint64 bytesTotal);
 		void getAllCancel();
 		void getAllPause();

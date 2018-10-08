@@ -355,7 +355,7 @@ void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
 
 	loadNext();
 }
-void Downloader::finishedLoadingImage(const QSharedPointer<Image> &image, const QMap<QString, Image::SaveResult> &result)
+void Downloader::finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result)
 {
 	Q_UNUSED(result);
 

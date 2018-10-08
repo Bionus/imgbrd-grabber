@@ -605,30 +605,30 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	}
 }
 
-void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result)
+void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result)
 {
 	log(QStringLiteral("Image received from `%1`").arg(m_url.toString()));
-	Image::SaveResult res = result.first();
+	ImageSaveResult res = result.first();
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
 
-	if (res == 500)
+	if (res.result == 500)
 	{
 		m_tooBig = true;
 		if (!m_image->isVideo())
 		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url().toString())); }
 	}
-	else if (res == Image::SaveResult::NotFound)
+	else if (res.result == Image::SaveResult::NotFound)
 	{ showLoadingError("Image not found."); }
-	else if (res == Image::SaveResult::NetworkError)
+	else if (res.result == Image::SaveResult::NetworkError)
 	{ showLoadingError("Error loading the image."); }
-	else if (res == Image::SaveResult::Error)
+	else if (res.result == Image::SaveResult::Error)
 	{ showLoadingError("Error saving the image."); }
 	else
 	{
 		m_url = m_image->url();
-		m_imagePath = result.firstKey();
+		m_imagePath = res.path;
 		m_loadedImage = true;
 
 		img->setTemporaryPath(m_imagePath);
@@ -840,7 +840,7 @@ void ZoomWindow::saveImageNow()
 		bool ok = QFile(m_imagePath).copy(m_saveAsPending);
 		auto result = ok ? Image::SaveResult::Saved : Image::SaveResult::Error;
 		m_image->postSave(m_saveAsPending, result, true, true, 1);
-		saveImageNowSaved(m_image, QMap<QString, Image::SaveResult> {{ m_saveAsPending, result }});
+		saveImageNowSaved(m_image, QList<ImageSaveResult> {{ m_saveAsPending, Image::Size::Unknown, result }}); // FIXME: depends on the size of m_imagePath, but it's unused anyway
 		return;
 	}
 
@@ -873,18 +873,17 @@ void ZoomWindow::saveImageNow()
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
 }
-void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result)
+void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result)
 {
 	Q_UNUSED(img);
 
 	const bool fav = m_pendingAction == PendingSaveFav;
 
-	for (auto it = result.constBegin(); it != result.constEnd(); ++it)
+	for (const ImageSaveResult &res : result)
 	{
-		const Image::SaveResult res = it.value();
-		m_source = it.key();
+		m_source = res.path;
 
-		switch (res)
+		switch (res.result)
 		{
 			case Image::SaveResult::Saved:
 				setButtonState(fav, SaveButtonState::Saved);

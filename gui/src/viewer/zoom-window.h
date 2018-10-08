@@ -5,6 +5,7 @@
 #include <QStackedWidget>
 #include <QtGui>
 #include <QtNetwork>
+#include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
 
@@ -57,14 +58,14 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result);
+		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
 		void saveImageNow();
-		void saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
+		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
 		void openUrl(const QString &);
 		void openPool(const QString &);
