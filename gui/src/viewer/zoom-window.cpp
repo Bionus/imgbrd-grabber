@@ -148,7 +148,7 @@ void ZoomWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
-	m_url = m_image->getDisplayableUrl();
+	m_url = m_image->url(m_image->preferredDisplaySize());
 
 	auto *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -379,7 +379,7 @@ void ZoomWindow::load(bool force)
 	if (dwl == nullptr)
 	{
 		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		const Image::Size size = m_image->shouldDisplaySample() ? Image::Size::Sample : Image::Size::Full;
+		const Image::Size size = m_image->preferredDisplaySize();
 		dwl = new ImageDownloader(m_profile, m_image, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, force, size);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
@@ -1162,7 +1162,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 		m_images[pos]->loadDetails();
 
 		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		const Image::Size size = m_image->shouldDisplaySample() ? Image::Size::Sample : Image::Size::Full;
+		const Image::Size size = m_image->preferredDisplaySize();
 		auto dwl = new ImageDownloader(m_profile, img, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, false, size);
 		m_imageDownloaders.insert(img, dwl);
 		dwl->save();

@@ -680,15 +680,15 @@ void Image::setSavePath(const QString &path)
 QString Image::savePath() const
 { return m_sizes[Image::Size::Full].savePath(); }
 
-bool Image::shouldDisplaySample() const
+Image::Size Image::preferredDisplaySize() const
 {
 	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	const bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
 
-	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample);
+	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample)
+		? Size::Sample
+		: Size::Full;
 }
-QUrl Image::getDisplayableUrl() const
-{ return shouldDisplaySample() ? m_sampleUrl : m_url; }
 
 QStringList Image::tagsString() const
 {

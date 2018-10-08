@@ -63,8 +63,7 @@ class Image : public QObject, public Downloadable
 		void setTemporaryPath(const QString &path);
 		void setSavePath(const QString &path);
 		QString savePath() const;
-		bool shouldDisplaySample() const;
-		QUrl getDisplayableUrl() const;
+		Size preferredDisplaySize() const;
 		bool isVideo() const;
 		QString isAnimated() const;
 		void setTags(const QList<Tag> &tags);
