@@ -60,9 +60,9 @@ class Image : public QObject, public Downloadable
 		void setSize(QSize size);
 		void setFileSize(int size);
 		void setFileExtension(const QString &ext);
-		void setTemporaryPath(const QString &path);
-		void setSavePath(const QString &path);
-		QString savePath() const;
+		void setTemporaryPath(const QString &path, Size size = Size::Full);
+		void setSavePath(const QString &path, Size size = Size::Full);
+		QString savePath(Size size = Size::Full) const;
 		Size preferredDisplaySize() const;
 		bool isVideo() const;
 		QString isAnimated() const;

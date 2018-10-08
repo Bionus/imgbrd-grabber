@@ -315,7 +315,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 	const QString multipleFiles = m_profile->getSettings()->value("Save/multiple_files", "copy").toString();
 	const Image::Size size = currentSize();
 
-	m_image->setSavePath(m_temporaryPath);
+	m_image->setSavePath(m_temporaryPath, size);
 
 	if (!m_filename.isEmpty())
 	{ m_paths = m_image->paths(m_filename, m_path, m_count); }

@@ -667,18 +667,18 @@ void Image::setPreviewImage(const QPixmap &preview)
 		? preview.copy(m_previewRect)
 		: preview;
 }
-void Image::setTemporaryPath(const QString &path)
+void Image::setTemporaryPath(const QString &path, Size size)
 {
-	if (m_sizes[Image::Size::Full].setTemporaryPath(path))
+	if (m_sizes[size].setTemporaryPath(path))
 		refreshTokens();
 }
-void Image::setSavePath(const QString &path)
+void Image::setSavePath(const QString &path, Size size)
 {
-	if (m_sizes[Image::Size::Full].setSavePath(path))
+	if (m_sizes[size].setSavePath(path))
 		refreshTokens();
 }
-QString Image::savePath() const
-{ return m_sizes[Image::Size::Full].savePath(); }
+QString Image::savePath(Size size) const
+{ return m_sizes[size].savePath(); }
 
 Image::Size Image::preferredDisplaySize() const
 {

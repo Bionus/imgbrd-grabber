@@ -496,7 +496,6 @@ void ZoomWindow::replyFinishedDetails()
 		draw();
 	}
 
-
 	// If the image already has an associated file on disk
 	else if (!m_image->savePath().isEmpty() && QFile::exists(m_image->savePath()))
 	{
@@ -631,7 +630,7 @@ void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList
 		m_imagePath = res.path;
 		m_loadedImage = true;
 
-		img->setTemporaryPath(m_imagePath);
+		img->setTemporaryPath(m_imagePath, res.size);
 
 		updateWindowTitle();
 		pendingUpdate();
