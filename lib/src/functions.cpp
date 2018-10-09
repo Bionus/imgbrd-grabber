@@ -689,7 +689,7 @@ QString getFileMd5(const QString &path)
 QString getFilenameMd5(const QString &fileName, const QString &format)
 {
 	QRegularExpression regx("%([^%]*)%");
-	QString reg = QRegExp::escape(format);
+	QString reg = "^" + QRegExp::escape(format) + "$";
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
