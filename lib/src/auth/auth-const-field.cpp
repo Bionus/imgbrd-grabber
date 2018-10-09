@@ -3,7 +3,7 @@
 
 
 AuthConstField::AuthConstField(QString key, QString value)
-	: AuthField(std::move(key), AuthField::Hash), m_value(std::move(value))
+	: AuthField(std::move(key), AuthField::Const), m_value(std::move(value))
 {}
 
 

@@ -13,7 +13,8 @@ class AuthField
 		{
 			Username,
 			Password,
-			Hash
+			Hash,
+			Const
 		};
 
 		AuthField(QString key, FieldType type);

@@ -335,7 +335,7 @@ void FunctionsTest::testGetFileMd5()
 	file.write("test");
 	file.seek(0);
 
-	QCOMPARE(getFileMd5(file.fileName()), QString("098f6bcd4621d373cade4e832627b4f6"));
+	QCOMPARE(getFileMd5(file.fileName()), QString("098f6bcd4621d373cade4e832627b4f6")); // md5("test")
 }
 void FunctionsTest::testGetFilenameMd5()
 {
