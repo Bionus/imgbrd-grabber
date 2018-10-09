@@ -12,7 +12,7 @@ struct ImageSize
 	~ImageSize();
 
 	QSize size;
-	int fileSize;
+	int fileSize = 0;
 	QRect rect;
 
 	// Filesystem cache

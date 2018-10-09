@@ -18,10 +18,10 @@ QString ImageSize::savePath() const
 
 bool ImageSize::setTemporaryPath(const QString &path)
 {
-	setSavePath(path);
+	bool changed = setSavePath(path);
 
 	if (m_temporaryPath == path)
-		return false;
+		return changed;
 
 	if (!m_temporaryPath.isEmpty())
 		QFile::remove(m_temporaryPath);
@@ -34,7 +34,7 @@ bool ImageSize::setTemporaryPath(const QString &path)
 		return true;
 	}
 
-	return false;
+	return changed;
 }
 
 bool ImageSize::setSavePath(const QString &path)
