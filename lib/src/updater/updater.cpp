@@ -37,13 +37,10 @@ int Updater::compareVersions(QString a, QString b)
 	QStringList aSem = a.split('.');
 	QStringList bSem = b.split('.');
 
-	if (aSem.count() != bSem.count())
-		return 0;
-
-	for (int i = 0; i < aSem.count(); ++i)
+	for (int i = 0; i < qMax(aSem.count(), bSem.count()); ++i)
 	{
-		const int aPart = aSem[i].toInt();
-		const int bPart = bSem[i].toInt();
+		const int aPart = i < aSem.count() ? aSem[i].toInt() : 0;
+		const int bPart = i < bSem.count() ? bSem[i].toInt() : 0;
 
 		if (aPart > bPart)
 			return 1;

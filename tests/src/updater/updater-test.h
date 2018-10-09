@@ -17,10 +17,12 @@ class UpdaterTest : public TestSuite
 		void testCompareNormal();
 		void testCompareMajor();
 		void testCompareTen();
+		void testCompareMissing();
 
 		void testCompareAlphas();
 		void testCompareAlphaToNew();
 		void testCompareAlphaToOld();
+		void testCompareAlphaToBeta();
 
 	private:
 		ProgramUpdater m_updater;
