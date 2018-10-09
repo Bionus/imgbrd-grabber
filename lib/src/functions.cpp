@@ -682,7 +682,8 @@ QString fixCloudflareEmails(QString html)
 QString getFileMd5(const QString &path)
 {
 	QFile file(path);
-	file.open(QFile::ReadOnly);
+	if (!file.open(QFile::ReadOnly))
+		return QString();
 	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 }
 

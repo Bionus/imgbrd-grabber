@@ -21,6 +21,7 @@ class MixedSettingsTest : public TestSuite
 		void testSetValueOverrideParent();
 		void testSetValueOverrideDefault();
 		void testChildKeys();
+		void testChildKeysInGroup();
 
 	private:
 		QSettings *m_child;

@@ -7,7 +7,7 @@ void ExponentialMovingAverageTest::testEmpty()
 {
 	ExponentialMovingAverage avg(0.5);
 
-	QCOMPARE(avg.average(), 0);
+	QCOMPARE(avg.average(), 0.0);
 }
 
 void ExponentialMovingAverageTest::testClear()
@@ -16,7 +16,7 @@ void ExponentialMovingAverageTest::testClear()
 	avg.addValue(1);
 	avg.clear();
 
-	QCOMPARE(avg.average(), 0);
+	QCOMPARE(avg.average(), 0.0);
 }
 
 void ExponentialMovingAverageTest::testFirstValue()
@@ -24,7 +24,7 @@ void ExponentialMovingAverageTest::testFirstValue()
 	ExponentialMovingAverage avg(0.5);
 	avg.addValue(1);
 
-	QCOMPARE(avg.average(), 1);
+	QCOMPARE(avg.average(), 1.0);
 }
 
 void ExponentialMovingAverageTest::testBasic()
@@ -34,7 +34,7 @@ void ExponentialMovingAverageTest::testBasic()
 	avg.addValue(4);
 	avg.addValue(5);
 
-	QCOMPARE(avg.average(), 4);
+	QCOMPARE(avg.average(), 4.0);
 }
 
 void ExponentialMovingAverageTest::testSetSmoothingFactor()
@@ -45,7 +45,7 @@ void ExponentialMovingAverageTest::testSetSmoothingFactor()
 	avg.addValue(4);
 	avg.addValue(5);
 
-	QCOMPARE(avg.average(), 4);
+	QCOMPARE(avg.average(), 4.0);
 }
 
 

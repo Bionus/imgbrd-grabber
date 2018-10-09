@@ -31,6 +31,8 @@ class FunctionsTest : public TestSuite
 		void testGetExternalLogFilesSuffixes();
 		void testFixCloudflareEmail();
 		void testFixCloudflareEmails();
+		void testGetFileMd5();
+		void testGetFilenameMd5();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);

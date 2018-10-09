@@ -66,6 +66,7 @@ void FunctionsTest::testGetExtensionFromHeader()
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/mp4.mp4")), QString("mp4"));
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/swf.swf")), QString("swf"));
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/ico.ico")), QString("ico"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/txt.txt")), QString());
 }
 
 static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
@@ -322,6 +323,29 @@ void FunctionsTest::testFixCloudflareEmails()
 {
 	QCOMPARE(fixCloudflareEmails(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls"><span class="__cf_email__" data-cfemail="145d505b58595447405146">[email&#160;protected]</span> Cinderella Girls</a>)"), QString(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls">IDOLM@STER Cinderella Girls</a>)"));
 	QCOMPARE(fixCloudflareEmails(R"(Koshimizu Sachiko on <span class="__cf_email__" data-cfemail="cc9cbea3a6a9afb8e1a5818c9f">[email&#160;protected]</span>)"), QString("Koshimizu Sachiko on Project-iM@S"));
+}
+
+void FunctionsTest::testGetFileMd5()
+{
+	QCOMPARE(getFileMd5(QString()), QString());
+	QCOMPARE(getFileMd5("non_existing_path.txt"), QString());
+
+	QTemporaryFile file;
+	QVERIFY(file.open());
+	file.write("test");
+	file.seek(0);
+
+	QCOMPARE(getFileMd5(file.fileName()), QString("098f6bcd4621d373cade4e832627b4f6"));
+}
+void FunctionsTest::testGetFilenameMd5()
+{
+	QCOMPARE(getFilenameMd5("", "%md5%.%ext%"), QString());
+	QCOMPARE(getFilenameMd5("lol.jpg", "%md5%.%ext%"), QString());
+	QCOMPARE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%"), QString());
+
+	QCOMPARE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6", "%md5%"), QString("098f6bcd4621d373cade4e832627b4f6"));
+	QCOMPARE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%"), QString("098f6bcd4621d373cade4e832627b4f6"));
+	QCOMPARE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%/%md5%.%ext%"), QString("098f6bcd4621d373cade4e832627b4f6"));
 }
 
 

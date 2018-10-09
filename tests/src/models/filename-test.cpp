@@ -551,7 +551,10 @@ void FilenameTest::testConditionalsTag()
 	m_settings->setValue("Filenames/0_cond", "tag7");
 	m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
 	m_settings->setValue("Filenames/1_dir", QDir::homePath());
-	m_settings->setValue("Filenames/1_cond", "character1");
+	m_settings->setValue("Filenames/1_cond", "");
+	m_settings->setValue("Filenames/2_fn", "%id% %md5%.%ext%");
+	m_settings->setValue("Filenames/2_dir", QDir::homePath());
+	m_settings->setValue("Filenames/2_cond", "character1");
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
@@ -609,7 +612,10 @@ void FilenameTest::testConditionalsJavascript()
 	m_settings->setValue("Filenames/0_cond", "javascript:width > 2000");
 	m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
 	m_settings->setValue("Filenames/1_dir", QDir::homePath());
-	m_settings->setValue("Filenames/1_cond", "javascript:width > 400");
+	m_settings->setValue("Filenames/1_cond", "javascript:'");
+	m_settings->setValue("Filenames/2_fn", "%id% %md5%.%ext%");
+	m_settings->setValue("Filenames/2_dir", QDir::homePath());
+	m_settings->setValue("Filenames/2_cond", "javascript:width > 400");
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }

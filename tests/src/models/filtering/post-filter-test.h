@@ -20,6 +20,7 @@ class PostFilterTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testCount();
 		void testFilterNumeric();
 		void testFilterSpecial();
 		void testFilterInvert();

@@ -35,6 +35,25 @@ void TagDatabaseInMemoryTest::loadEmpty()
 	QCOMPARE(database.count(), 0);
 }
 
+void TagDatabaseInMemoryTest::testLoadInvalidTypes()
+{
+	QTemporaryFile file;
+	QVERIFY(file.open());
+	file.write("0,general\n1,artist\n2,invalid,test\n3,copyright\n4,character");
+	file.seek(0);
+
+	TagDatabaseInMemory database(file.fileName(), "tests/resources/tags.txt");
+	QVERIFY(database.load());
+
+	QMap<int, TagType> types = database.tagTypes();
+	QCOMPARE(types.count(), 4);
+	QCOMPARE(types.keys(), QList<int>() << 0 << 1 << 3 << 4);
+	QCOMPARE(types.value(0).name(), QString("general"));
+	QCOMPARE(types.value(1).name(), QString("artist"));
+	QCOMPARE(types.value(3).name(), QString("copyright"));
+	QCOMPARE(types.value(4).name(), QString("character"));
+}
+
 void TagDatabaseInMemoryTest::loadInvalidLines()
 {
 	QTemporaryFile file;

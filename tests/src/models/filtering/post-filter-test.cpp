@@ -65,6 +65,12 @@ void PostFilterTest::cleanup()
 }
 
 
+void PostFilterTest::testCount()
+{
+	QCOMPARE(PostFilter(QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01").count(), 3);
+	QCOMPARE(PostFilter(QStringList() << "" << "id:<=10000").count(), 1);
+}
+
 void PostFilterTest::testFilterNumeric()
 {
 	auto tokens = m_img->tokens(m_profile);
