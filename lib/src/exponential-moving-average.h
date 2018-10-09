@@ -14,7 +14,7 @@ class ExponentialMovingAverage
 
 	private:
 		double m_smoothingFactor;
-		double m_average;
+		double m_average = 0;
 		bool m_hasValue = false;
 };
 
