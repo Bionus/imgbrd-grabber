@@ -51,3 +51,21 @@ bool ImageSize::setSavePath(const QString &path)
 
 	return false;
 }
+
+
+QPixmap ImageSize::pixmap() const
+{
+	return m_pixmap;
+}
+
+const QPixmap &ImageSize::pixmap()
+{
+	return m_pixmap;
+}
+
+void ImageSize::setPixmap(const QPixmap &pixmap)
+{
+	m_pixmap = !rect.isNull()
+		? pixmap.copy(rect)
+		: pixmap;
+}

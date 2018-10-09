@@ -128,8 +128,6 @@ class Image : public QObject, public Downloadable
 		QString m_author, m_name, m_status, m_rating, m_site;
 		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
-		QPixmap m_imagePreview;
-		QRect m_previewRect;
 		QDateTime m_createdAt;
 		QNetworkReply *m_loadDetails;
 		QList<Tag> m_tags;

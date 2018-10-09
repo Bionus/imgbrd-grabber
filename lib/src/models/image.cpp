@@ -75,7 +75,6 @@ Image::Image(const Image &other)
 	m_previewUrl = other.m_previewUrl;
 
 	m_sizes = other.m_sizes;
-	m_imagePreview = other.m_imagePreview;
 	m_createdAt = other.m_createdAt;
 
 	m_galleryCount = other.m_galleryCount;
@@ -128,16 +127,33 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 
 	// Sizes
-	ImageSize full;
-	full.size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
-	full.fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
-	m_sizes.insert(Image::Size::Full, full);
-
-	// Preview rect
-	if (details.contains("preview_rect"))
+	static QMap<Image::Size, QString> prefixes =
 	{
-		const QStringList rect = details["preview_rect"].split(';');
-		m_previewRect = QRect(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt());
+		{ Image::Size::Full, "" },
+		{ Image::Size::Sample, "sample_" },
+		{ Image::Size::Thumbnail, "preview_" },
+	};
+	for (auto it = prefixes.constBegin(); it != prefixes.constEnd(); ++it)
+	{
+		const QString &prefix = it.value();
+
+		ImageSize is;
+
+		is.size = details.contains(prefix + "width") && details.contains(prefix + "height")
+			? QSize(details[prefix + "width"].toInt(), details[prefix + "height"].toInt())
+			: QSize();
+		is.fileSize = details.contains(prefix + "file_size") ? details[prefix + "file_size"].toInt() : 0;
+
+		if (details.contains(prefix + "rect"))
+		{
+			const QStringList rect = details[prefix + "rect"].split(';');
+			if (rect.count() == 4)
+			{ is.rect = QRect(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt()); }
+			else
+			{ log("Invalid number of values for image rectangle", Logger::Error); }
+		}
+
+		m_sizes.insert(it.key(), is);
 	}
 
 	// Page url
@@ -655,8 +671,8 @@ const QUrl &Image::fileUrl() const { return m_fileUrl; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size() const { return m_sizes[Image::Size::Full].size; }
 const QString &Image::name() const { return m_name; }
-QPixmap Image::previewImage() const { return m_imagePreview; }
-const QPixmap &Image::previewImage() { return m_imagePreview; }
+QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail].pixmap(); }
+const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail].pixmap(); }
 Page *Image::page() const { return m_parent; }
 const QStringList &Image::search() const { return m_search; }
 bool Image::isGallery() const { return m_isGallery; }
@@ -665,9 +681,7 @@ QString Image::extension() const { return getExtension(m_url).toLower(); }
 
 void Image::setPreviewImage(const QPixmap &preview)
 {
-	m_imagePreview = !m_previewRect.isNull()
-		? preview.copy(m_previewRect)
-		: preview;
+	m_sizes[Image::Size::Thumbnail].setPixmap(preview);
 }
 void Image::setTemporaryPath(const QString &path, Size size)
 {
