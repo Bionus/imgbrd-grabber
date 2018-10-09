@@ -368,30 +368,6 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 }
 
 /**
- * Converts a DOM elemet to a map.
- * @param	dom		The DOM element to convert.
- * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
- */
-QMap<QString, QString> domToMap(const QDomElement &dom)
-{
-	QMap<QString, QString> details;
-	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const auto type = n.firstChild().nodeType();
-		if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode)
-		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
-		else
-		{
-			QMap<QString, QString> r = domToMap(n.toElement());
-			QStringList k = r.keys();
-			for (int i = 0; i < r.count(); i++)
-			{ details[n.nodeName() + "/" + k.at(i)] = r.value(k.at(i)); }
-		}
-	}
-	return details;
-}
-
-/**
  * Removes HTML from a string.
  * @param	str		The string to remove HTML from.
  * @return			The string without html.

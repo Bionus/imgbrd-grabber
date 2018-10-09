@@ -58,8 +58,6 @@ QString fixFilename(QString filename, QString path = "", int maxLength = 0, bool
 QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
-QMap<QString, QString> domToMap(const QDomElement &);
-
 QMap<QString, QStringList> getCustoms(QSettings *settings);
 QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
