@@ -7,14 +7,14 @@
 
 class OAuth2Auth : public Auth
 {
-    public:
+	public:
 		OAuth2Auth(QString type, QString authType, QString tokenUrl);
-        QString authType() const;
-        QString tokenUrl() const;
+		QString authType() const;
+		QString tokenUrl() const;
 
-    private:
-        QString m_authType;
-        QString m_tokenUrl;
+	private:
+		QString m_authType;
+		QString m_tokenUrl;
 };
 
 #endif // OAUTH2_AUTH_H

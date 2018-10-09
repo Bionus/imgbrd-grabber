@@ -9,7 +9,7 @@ class MixedSettings;
 
 class AuthConstField : public AuthField
 {
-    public:
+	public:
 		AuthConstField(QString key, QString value);
 		QString value(MixedSettings *settings) const override;
 

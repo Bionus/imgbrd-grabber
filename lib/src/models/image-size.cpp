@@ -36,6 +36,7 @@ bool ImageSize::setTemporaryPath(const QString &path)
 
 	return false;
 }
+
 bool ImageSize::setSavePath(const QString &path)
 {
 	if (path != m_savePath)

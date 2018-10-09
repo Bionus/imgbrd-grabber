@@ -3,7 +3,7 @@
 
 
 AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt)
-    : AuthField(std::move(key), AuthField::Hash), m_algo(algo), m_salt(std::move(salt))
+	: AuthField(std::move(key), AuthField::Hash), m_algo(algo), m_salt(std::move(salt))
 {}
 
 
@@ -20,11 +20,11 @@ QString AuthHashField::value(MixedSettings *settings) const
 	QString data = password;
 	if (!m_salt.isEmpty())
 	{
-        data = QString(m_salt);
+		data = QString(m_salt);
 		data.replace("%username%", username);
 		data.replace("%username:lower%", username.toLower());
 		data.replace("%password%", password);
-    }
+	}
 
 	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();
 }

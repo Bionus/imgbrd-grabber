@@ -3,18 +3,18 @@
 
 
 AuthField::AuthField(QString key, FieldType type)
-    : m_key(std::move(key)), m_type(type)
+	: m_key(std::move(key)), m_type(type)
 {}
 
 
 QString AuthField::key() const
 {
-    return m_key;
+	return m_key;
 }
 
 AuthField::FieldType AuthField::type() const
 {
-    return m_type;
+	return m_type;
 }
 
 QString AuthField::value(MixedSettings *settings) const

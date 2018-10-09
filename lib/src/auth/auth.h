@@ -6,12 +6,12 @@
 
 class Auth
 {
-    public:
-        explicit Auth(QString type);
+	public:
+		explicit Auth(QString type);
 		virtual ~Auth() = default;
-        QString type() const;
+		QString type() const;
 
-    private:
+	private:
 		QString m_type;
 };
 
