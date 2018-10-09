@@ -68,7 +68,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 		emit finishedPage(page);
 
 		// Add next page to the pending queue
-		if (!gallery || page->hasNext())
+		if (page->hasNext())
 		{
 			Page *next = new Page(m_profile, m_site, QList<Site*>() << m_site, page->search(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 			if (gallery)
