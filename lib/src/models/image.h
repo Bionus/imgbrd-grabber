@@ -140,7 +140,7 @@ class Image : public QObject, public Downloadable
 		bool m_loadingDetails, m_loadedDetails;
 		bool m_isGallery = false;
 		int m_galleryCount;
-		QMap<Image::Size, ImageSize> m_sizes;
+		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
 };
 
 Q_DECLARE_METATYPE(Image)
