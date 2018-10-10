@@ -16,6 +16,30 @@ QString ImageSize::savePath() const
 }
 
 
+QString ImageSize::save(const QString &path)
+{
+	// If we have a temporary path for this image, we move it to the destination
+	if (!m_temporaryPath.isEmpty() && QFile::exists(m_temporaryPath))
+	{
+		QString temp = m_temporaryPath;
+		QFile(m_temporaryPath).rename(path);
+
+		m_temporaryPath.clear();
+		m_savePath = path;
+
+		return temp;
+	}
+
+	// If we already saved this image somewhere, simply make a copy of this file
+	if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
+	{
+		QFile(m_savePath).copy(path);
+		return m_savePath;
+	}
+
+	return QString();
+}
+
 bool ImageSize::setTemporaryPath(const QString &path)
 {
 	bool changed = setSavePath(path);

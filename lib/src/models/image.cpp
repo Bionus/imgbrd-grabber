@@ -503,12 +503,9 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			const QString savePath = m_sizes[size]->savePath();
-			if (!savePath.isEmpty() && QFile::exists(savePath))
-			{
-				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
-				QFile(savePath).copy(path);
-			}
+			const QString savePath = m_sizes[size]->save(path);
+			if (!savePath.isEmpty())
+			{ log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath)); }
 			else
 			{ return SaveResult::NotLoaded; }
 		}

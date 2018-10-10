@@ -16,6 +16,7 @@ struct ImageSize
 	QRect rect;
 
 	// Filesystem cache
+	QString save(const QString &path);
 	QString savePath() const;
 	bool setTemporaryPath(const QString &path);
 	bool setSavePath(const QString &path);
