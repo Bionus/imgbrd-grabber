@@ -187,6 +187,8 @@ void FavoritesTab::updateFavorites()
 			caption->setFixedWidth(dim);
 		if (!caption->text().isEmpty())
 		{
+			connect(caption, SIGNAL(rightClicked(QString)), this, SLOT(favoriteProperties(QString)));
+			connect(caption, SIGNAL(middleClicked(QString)), m_parent, SLOT(addTab(QString)));
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
 			l->addWidget(caption);
 		}

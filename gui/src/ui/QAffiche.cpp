@@ -27,7 +27,7 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent *e)
 void QAffiche::mousePressEvent(QMouseEvent *e)
 {
 	m_lastPressed = e->button();
-	m_pressed = e->button() == Qt::LeftButton || e->button() == Qt::MidButton;
+	m_pressed = e->button() == Qt::LeftButton || e->button() == Qt::MidButton || e->button() == Qt::RightButton;
 	emit pressed();
 	emit pressed(m_id.toInt());
 	QLabel::mousePressEvent(e);
@@ -46,6 +46,12 @@ void QAffiche::mouseReleaseEvent(QMouseEvent *e)
 		emit middleClicked();
 		emit middleClicked(m_id.toInt());
 		emit middleClicked(m_id.toString());
+	}
+	else if (m_pressed && e->button() == Qt::RightButton && hitLabel(e->pos()))
+	{
+		emit rightClicked();
+		emit rightClicked(m_id.toInt());
+		emit rightClicked(m_id.toString());
 	}
 	m_pressed = false;
 	emit released();
