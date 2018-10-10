@@ -10,8 +10,8 @@
 #include "functions.h"
 #include "loader/downloadable.h"
 
-#define SPEED_SMOOTHING_IMAGE 0.5
-#define SPEED_SMOOTHING_AVERAGE 0.5
+#define SPEED_SMOOTHING_IMAGE 0.3
+#define SPEED_SMOOTHING_AVERAGE 0.3
 
 
 BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)

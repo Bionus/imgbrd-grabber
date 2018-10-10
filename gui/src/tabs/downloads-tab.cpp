@@ -916,7 +916,7 @@ void DownloadsTab::getAllProgress(const QSharedPointer<Image> &img, qint64 bytes
 	if (!m_downloadTimeLast.contains(url))
 		return;
 
-	if (m_downloadTimeLast[url].elapsed() >= 1000)
+	if (m_downloadTimeLast[url].elapsed() >= 200 && bytesReceived > 0)
 	{
 		m_downloadTimeLast[url].restart();
 		const int elapsed = m_downloadTime[url].elapsed();
