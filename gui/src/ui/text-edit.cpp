@@ -353,9 +353,9 @@ void TextEdit::insertFav(QAction *act)
 	QString txt = this->toPlainText();
 	if (!cursor.hasSelection())
 	{
-		if (pos == 0 && (txt.count() == 0 || txt[0] != ' '))
+		if (pos == 0 && txt.count() != 0 && txt[0] != ' ')
 			text.append(' ');
-		if (pos == txt.count() && txt[txt.count() - 1] != ' ')
+		if (pos == txt.count() && txt.count() != 0 && txt[txt.count() - 1] != ' ')
 			text.prepend(' ');
 		this->setPlainText(txt.mid(0, pos) + text + txt.mid(pos));
 	}
