@@ -377,8 +377,9 @@ void ZoomWindow::load(bool force)
 	ImageDownloader *dwl = m_imageDownloaders.value(m_image, nullptr);
 	if (dwl == nullptr)
 	{
-		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
-		dwl = new ImageDownloader(m_profile, m_image, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, force, size);
+		const Filename fn = Filename(QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
+		const QStringList paths = fn.path(*m_image.data(), m_profile, m_profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
+		dwl = new ImageDownloader(m_profile, m_image, paths, 1, false, false, true, this, true, force, size);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
@@ -1145,9 +1146,10 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 		log(QStringLiteral("Preloading data for image #%1").arg(pos));
 		m_images[pos]->loadDetails();
 
-		const QString fn = QUuid::createUuid().toString().mid(1, 36) + ".%ext%";
+		const Filename fn = Filename(QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
+		const QStringList paths = fn.path(*m_image.data(), m_profile, m_profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
 		const Image::Size size = m_image->preferredDisplaySize();
-		auto dwl = new ImageDownloader(m_profile, img, fn, m_profile->tempPath(), 1, false, false, true, this, false, true, false, size);
+		auto dwl = new ImageDownloader(m_profile, img, paths, 1, false, false, true, this, true, false, size);
 		m_imageDownloaders.insert(img, dwl);
 		dwl->save();
 	}
