@@ -25,10 +25,11 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 project(Grabber)
+set(VERSION "6.0.6")
 set(USE_SSL 1)
 set(USE_PCH 1)
 
-add_definitions(-DVERSION="6.0.6")
+add_definitions(-DVERSION="${VERSION}")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bionus/imgbrd-grabber/SourceIssues.md")
