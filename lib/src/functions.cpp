@@ -245,6 +245,13 @@ QString savePath(const QString &file, bool exists, bool writable)
 	{ return QDir::toNativeSeparators(QDir::currentPath() + "/" + file); }
 	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable))
 	{ return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file); }
+	#if defined(Q_OS_ANDROID)
+		const QString &appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+		if (validSavePath(appData + "/" + check, writable))
+		{ return QDir::toNativeSeparators(appData + "/" + file); }
+		if (validSavePath("assets:/" + check, writable))
+		{ return QDir::toNativeSeparators("assets:/" + file); }
+	#endif
 	#ifdef __linux__
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable))
 		{ return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file); }
@@ -254,7 +261,11 @@ QString savePath(const QString &file, bool exists, bool writable)
 
 	QString dir;
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-		dir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+		#if defined(Q_OS_ANDROID)
+			dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+		#else
+			dir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+		#endif
 	#else
 		dir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
 		#ifdef __linux__
