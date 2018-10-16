@@ -3,7 +3,6 @@
 
 #include <QPushButton>
 #include <QStackedWidget>
-#include <QtGui>
 #include <QtNetwork>
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
