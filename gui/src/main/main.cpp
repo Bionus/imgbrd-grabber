@@ -42,6 +42,10 @@
 	#include <QFileInfo>
 	#include "crashhandler/crashhandler.h"
 #endif
+#if defined(Q_OS_ANDROID)
+	#include <QMessageBox>
+	#include "android.h"
+#endif
 
 
 
@@ -75,6 +79,13 @@ int main(int argc, char *argv[])
 		if (!QDir(to).exists() && QDir(from).exists())
 			copyRecursively(from, to);
 	}
+
+	#if defined(Q_OS_ANDROID)
+		if (!checkPermission("android.permission.WRITE_EXTERNAL_STORAGE")) {
+			QMessageBox::critical(nullptr, "Permission error", "Grabber needs storage writing permissions to download images");
+			return 0;
+		}
+	#endif
 
 	QCommandLineParser parser;
 	parser.addHelpOption();

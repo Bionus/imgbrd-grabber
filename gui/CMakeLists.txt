@@ -35,6 +35,12 @@ if(WIN32)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::WinExtras)
 endif()
 
+# Android specials
+if(ANDROID)
+	find_package(Qt5AndroidExtras REQUIRED)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+endif()
+
 # QScintilla
 if(USE_QSCINTILLA)
 	find_package(QScintilla REQUIRED)
