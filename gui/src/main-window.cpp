@@ -54,6 +54,8 @@ MainWindow::MainWindow(Profile *profile)
 { }
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	m_settings = m_profile->getSettings();
 	auto sites = m_profile->getSites();
 
@@ -379,8 +381,10 @@ void MainWindow::initialLoginsDone()
 
 MainWindow::~MainWindow()
 {
-	delete m_profile;
+	m_profile->deleteLater();
+
 	delete ui;
+	ui = nullptr;
 }
 
 void MainWindow::focusSearch()
@@ -529,7 +533,10 @@ void MainWindow::tabClosed(SearchTab *tab)
 	{
 		m_closedTabs.removeFirst();
 	}
-	ui->actionRestoreLastClosedTab->setEnabled(true);
+
+	if (ui != nullptr) {
+		ui->actionRestoreLastClosedTab->setEnabled(true);
+	}
 
 	m_tabs.removeAll(tab);
 	m_tabSelector->updateCounter();
@@ -762,7 +769,6 @@ void MainWindow::closeEvent(QCloseEvent *e)
 		m_trayIcon->hide();
 
 	e->accept();
-	qApp->quit();
 }
 
 void MainWindow::options()
