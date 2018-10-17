@@ -148,7 +148,10 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
 		ui->checkNoJpeg->setChecked(settings->value("noJpeg", true).toBool());
 
+		static const QStringList tagsSort { "original", "name" };
+
 		ui->lineArtistsIfNone->setText(settings->value("artist_empty", "anonymous").toString());
+		ui->comboArtistsSort->setCurrentIndex(tagsSort.indexOf(settings->value("artist_sort", "original").toString()));
 		ui->spinArtistsMoreThanN->setValue(settings->value("artist_multiple_limit", 1).toInt());
 		ui->spinArtistsKeepN->setValue(settings->value("artist_multiple_keepN", 1).toInt());
 		ui->spinArtistsKeepNThenAdd->setValue(settings->value("artist_multiple_keepNThenAdd_keep", 1).toInt());
@@ -163,6 +166,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		else if	(artistMultiple == "multiple")		{ ui->radioArtistsMultiple->setChecked(true);		}
 
 		ui->lineCopyrightsIfNone->setText(settings->value("copyright_empty", "misc").toString());
+		ui->comboCopyrightsSort->setCurrentIndex(tagsSort.indexOf(settings->value("copyright_sort", "original").toString()));
 		ui->checkCopyrightsUseShorter->setChecked(settings->value("copyright_useshorter", true).toBool());
 		ui->spinCopyrightsMoreThanN->setValue(settings->value("copyright_multiple_limit", 1).toInt());
 		ui->spinCopyrightsKeepN->setValue(settings->value("copyright_multiple_keepN", 1).toInt());
@@ -178,6 +182,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		else if	(copyrightMultiple == "multiple")		{ ui->radioCopyrightsMultiple->setChecked(true);		}
 
 		ui->lineCharactersIfNone->setText(settings->value("character_empty", "unknown").toString());
+		ui->comboCharactersSort->setCurrentIndex(tagsSort.indexOf(settings->value("character_sort", "original").toString()));
 		ui->spinCharactersMoreThanN->setValue(settings->value("character_multiple_limit", 1).toInt());
 		ui->spinCharactersKeepN->setValue(settings->value("character_multiple_keepN", 1).toInt());
 		ui->spinCharactersKeepNThenAdd->setValue(settings->value("character_multiple_keepNThenAdd_keep", 1).toInt());
@@ -192,6 +197,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
 
 		ui->lineSpeciesIfNone->setText(settings->value("species_empty", "unknown").toString());
+		ui->comboSpeciesSort->setCurrentIndex(tagsSort.indexOf(settings->value("species_sort", "original").toString()));
 		ui->spinSpeciesMoreThanN->setValue(settings->value("species_multiple_limit", 1).toInt());
 		ui->spinSpeciesKeepN->setValue(settings->value("species_multiple_keepN", 1).toInt());
 		ui->spinSpeciesKeepNThenAdd->setValue(settings->value("species_multiple_keepNThenAdd_keep", 1).toInt());
@@ -206,6 +212,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		else if	(speciesMultiple == "multiple")		{ ui->radioSpeciesMultiple->setChecked(true);		}
 
 		ui->lineMetasIfNone->setText(settings->value("meta_empty", "none").toString());
+		ui->comboMetasSort->setCurrentIndex(tagsSort.indexOf(settings->value("meta_sort", "original").toString()));
 		ui->spinMetasMoreThanN->setValue(settings->value("meta_multiple_limit", 1).toInt());
 		ui->spinMetasKeepN->setValue(settings->value("meta_multiple_keepN", 1).toInt());
 		ui->spinMetasKeepNThenAdd->setValue(settings->value("meta_multiple_keepNThenAdd_keep", 1).toInt());
@@ -952,7 +959,10 @@ void OptionsWindow::save()
 		settings->setValue("filename_real", ui->lineFilename->text());
 		settings->setValue("filename_favorites", ui->lineFavorites->text());
 
+		static const QStringList tagsSort { "original", "name" };
+
 		settings->setValue("artist_empty", ui->lineArtistsIfNone->text());
+		settings->setValue("artist_sort", tagsSort.at(ui->comboArtistsSort->currentIndex()));
 		settings->setValue("artist_useall", ui->radioArtistsKeepAll->isChecked());
 		QString artistMultiple;
 		if		(ui->radioArtistsKeepAll->isChecked())		{ artistMultiple = "keepAll";		}
@@ -969,6 +979,7 @@ void OptionsWindow::save()
 		settings->setValue("artist_value", ui->lineArtistsReplaceAll->text());
 
 		settings->setValue("copyright_empty", ui->lineCopyrightsIfNone->text());
+		settings->setValue("copyright_sort", tagsSort.at(ui->comboCopyrightsSort->currentIndex()));
 		settings->setValue("copyright_useshorter", ui->checkCopyrightsUseShorter->isChecked());
 		QString copyrightMultiple;
 		if		(ui->radioCopyrightsKeepAll->isChecked())		{ copyrightMultiple = "keepAll";		}
@@ -985,6 +996,7 @@ void OptionsWindow::save()
 		settings->setValue("copyright_value", ui->lineCopyrightsReplaceAll->text());
 
 		settings->setValue("character_empty", ui->lineCharactersIfNone->text());
+		settings->setValue("character_sort", tagsSort.at(ui->comboCharactersSort->currentIndex()));
 		QString characterMultiple;
 		if		(ui->radioCharactersKeepAll->isChecked())		{ characterMultiple = "keepAll";		}
 		else if	(ui->radioCharactersKeepN->isChecked())			{ characterMultiple = "keepN";			}
@@ -1000,6 +1012,7 @@ void OptionsWindow::save()
 		settings->setValue("character_value", ui->lineCharactersReplaceAll->text());
 
 		settings->setValue("species_empty", ui->lineSpeciesIfNone->text());
+		settings->setValue("species_sort", tagsSort.at(ui->comboSpeciesSort->currentIndex()));
 		QString speciesMultiple;
 		if		(ui->radioSpeciesKeepAll->isChecked())		{ speciesMultiple = "keepAll";		}
 		else if	(ui->radioSpeciesKeepN->isChecked())		{ speciesMultiple = "keepN";		}
@@ -1015,6 +1028,7 @@ void OptionsWindow::save()
 		settings->setValue("species_value", ui->lineSpeciesReplaceAll->text());
 
 		settings->setValue("meta_empty", ui->lineMetasIfNone->text());
+		settings->setValue("meta_sort", tagsSort.at(ui->comboMetasSort->currentIndex()));
 		QString metaMultiple;
 		if		(ui->radioMetasKeepAll->isChecked())		{ metaMultiple = "keepAll";			}
 		else if	(ui->radioMetasKeepN->isChecked())			{ metaMultiple = "keepN";			}

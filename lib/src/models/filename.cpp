@@ -83,7 +83,7 @@ QString Filename::expandConditionals(const QString &text, const QStringList &tag
 QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings) const
 {
 	QList<Token> ret;
-	const QStringList &value = token.value().toStringList();
+	QStringList value = token.value().toStringList();
 
 	if (token.whatToDoDefault().isEmpty())
 	{
@@ -92,6 +92,10 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	}
 
 	settings->beginGroup("Save");
+
+	const QString sort = settings->value(key + "_sort", "original").toString();
+	if (sort == QLatin1String("name"))
+	{ value.sort(); }
 
 	if (value.isEmpty())
 	{ ret.append(Token(settings->value(key + "_empty", token.emptyDefault()).toString())); }

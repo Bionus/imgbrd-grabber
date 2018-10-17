@@ -117,6 +117,16 @@ void FilenameTest::testPathKeepN()
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/character1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testPathSort()
+{
+	m_img->deleteLater();
+	m_details["tags_copyright"] = "copyright2 copyright1";
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	m_settings->setValue("Save/copyright_sort", "name");
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertPath("%copyright%", "copyright1 copyright2");
+}
 void FilenameTest::testPathKeepNThenAdd()
 {
 	m_settings->setValue("Save/character_multiple", "keepNThenAdd");

@@ -183,7 +183,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>14</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -1104,14 +1104,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_71">
           <property name="text">
            <string>If more than n tags</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinArtistsMoreThanN">
           <property name="maximum">
            <number>100</number>
@@ -1121,41 +1121,31 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
-          <property name="text">
-           <string>Keep n tags, then add</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QRadioButton" name="radioArtistsReplaceAll">
-          <property name="text">
-           <string>Replace all tags by</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QLineEdit" name="lineArtistsReplaceAll">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
+         <widget class="QRadioButton" name="radioArtistsKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="QRadioButton" name="radioArtistsKeepN">
           <property name="text">
            <string>Keep n tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinArtistsKeepN"/>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="0">
+         <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
+          <property name="text">
+           <string>Keep n tags, then add</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,1">
           <item>
            <widget class="QSpinBox" name="spinArtistsKeepNThenAdd"/>
@@ -1169,17 +1159,48 @@
           </item>
          </layout>
         </item>
-        <item row="3" column="0">
-         <widget class="QRadioButton" name="radioArtistsKeepAll">
+        <item row="7" column="0">
+         <widget class="QRadioButton" name="radioArtistsReplaceAll">
           <property name="text">
-           <string>Keep all tags</string>
+           <string>Replace all tags by</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="7" column="1">
+         <widget class="QLineEdit" name="lineArtistsReplaceAll">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
          <widget class="QRadioButton" name="radioArtistsMultiple">
           <property name="text">
            <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboArtistsSort">
+          <item>
+           <property name="text">
+            <string>Original</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelArtistsSort">
+          <property name="text">
+           <string>Sort</string>
           </property>
          </widget>
         </item>
@@ -1215,14 +1236,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_70">
           <property name="text">
            <string>If more than n tags</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinCopyrightsMoreThanN">
           <property name="maximum">
            <number>100</number>
@@ -1232,24 +1253,24 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepN">
           <property name="text">
            <string>Keep n tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinCopyrightsKeepN"/>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepNThenAdd">
           <property name="text">
            <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,1">
           <item>
            <widget class="QSpinBox" name="spinCopyrightsKeepNThenAdd"/>
@@ -1263,7 +1284,7 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCopyrightsReplaceAll">
           <property name="text">
            <string>Replace all tags by</string>
@@ -1273,14 +1294,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineCopyrightsReplaceAll">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkCopyrightsUseShorter">
           <property name="text">
            <string>Use shortest if possible</string>
@@ -1290,18 +1311,39 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QRadioButton" name="radioCopyrightsMultiple">
           <property name="text">
            <string>One file per tag</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Sort</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboCopyrightsSort">
+          <item>
+           <property name="text">
+            <string>Original</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -1336,14 +1378,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_69">
           <property name="text">
            <string>If more than n tags</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinCharactersMoreThanN">
           <property name="maximum">
            <number>100</number>
@@ -1353,24 +1395,24 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QRadioButton" name="radioCharactersKeepN">
           <property name="text">
            <string>Keep n tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinCharactersKeepN"/>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QRadioButton" name="radioCharactersKeepNThenAdd">
           <property name="text">
            <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="1,1">
           <item>
            <widget class="QSpinBox" name="spinCharactersKeepNThenAdd"/>
@@ -1384,7 +1426,7 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCharactersReplaceAll">
           <property name="text">
            <string>Replace all tags by</string>
@@ -1394,25 +1436,46 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineCharactersReplaceAll">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QRadioButton" name="radioCharactersMultiple">
           <property name="text">
            <string>One file per tag</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QRadioButton" name="radioCharactersKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Sort</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboCharactersSort">
+          <item>
+           <property name="text">
+            <string>Original</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -1447,14 +1510,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_86">
           <property name="text">
            <string>If more than n tags</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinSpeciesMoreThanN">
           <property name="maximum">
            <number>100</number>
@@ -1464,24 +1527,24 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QRadioButton" name="radioSpeciesKeepN">
           <property name="text">
            <string>Keep n tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinSpeciesKeepN"/>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QRadioButton" name="radioSpeciesKeepNThenAdd">
           <property name="text">
            <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="1,1">
           <item>
            <widget class="QSpinBox" name="spinSpeciesKeepNThenAdd"/>
@@ -1495,7 +1558,7 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioSpeciesReplaceAll">
           <property name="text">
            <string>Replace all tags by</string>
@@ -1505,25 +1568,46 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineSpeciesReplaceAll">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QRadioButton" name="radioSpeciesKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QRadioButton" name="radioSpeciesMultiple">
           <property name="text">
            <string>One file per tag</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Sort</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboSpeciesSort">
+          <item>
+           <property name="text">
+            <string>Original</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -1558,14 +1642,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_145">
           <property name="text">
            <string>If more than n tags</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinMetasMoreThanN">
           <property name="maximum">
            <number>100</number>
@@ -1575,31 +1659,31 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QRadioButton" name="radioMetasKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QRadioButton" name="radioMetasKeepN">
           <property name="text">
            <string>Keep n tags</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinMetasKeepN"/>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QRadioButton" name="radioMetasKeepNThenAdd">
           <property name="text">
            <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="1,1">
           <item>
            <widget class="QSpinBox" name="spinMetasKeepNThenAdd"/>
@@ -1613,7 +1697,7 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioMetasReplaceAll">
           <property name="text">
            <string>Replace all tags by</string>
@@ -1623,18 +1707,39 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineMetasReplaceAll">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QRadioButton" name="radioMetasMultiple">
           <property name="text">
            <string>One file per tag</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_30">
+          <property name="text">
+           <string>Sort</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboMetasSort">
+          <item>
+           <property name="text">
+            <string>Original</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

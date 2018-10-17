@@ -29,6 +29,7 @@ class FilenameTest : public TestSuite
 		void testPathKeepAll();
 		void testPathKeepN();
 		void testPathKeepNThenAdd();
+		void testPathSort();
 		void testPathIgnoredTags();
 		void testPathEmptyDirs();
 		void testPathEmptyDirsNetworkDrive();
