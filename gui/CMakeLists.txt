@@ -48,7 +48,7 @@ if(USE_QSCINTILLA)
 		add_definitions(-DUSE_QSCINTILLA=1)
 		list(APPEND LIBS ${QSCINTILLA_LIBRARY})
 	else()
-		MESSAGE(INFO "QScintilla2 not found")
+		message(WARNING "QScintilla2 not found")
 	endif()
 endif()
 

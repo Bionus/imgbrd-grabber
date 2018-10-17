@@ -36,12 +36,12 @@ add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bion
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
 # SSL
-if(USE_SSL)
-	message("Compiling with SSL support")
+if(USE_SSL AND (NOT ANDROID))
+	message(INFO "Compiling with SSL support")
 	find_package(OpenSSL REQUIRED)
 	if (OPENSSL_FOUND)
-		message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
-		message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+		message(INFO "OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
+		message(INFO "OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 		include_directories(${OPENSSL_INCLUDE_DIR})
 		list(APPEND LIBS ${OPENSSL_LIBRARIES})
 	endif()
