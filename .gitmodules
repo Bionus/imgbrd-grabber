@@ -1,0 +1,3 @@
+[submodule "cmake/qt-android-cmake"]
+	path = cmake/qt-android-cmake
+	url = https://github.com/LaurentGomila/qt-android-cmake.git

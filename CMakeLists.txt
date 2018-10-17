@@ -26,6 +26,7 @@ endif()
 
 project(Grabber)
 set(VERSION "6.0.6")
+set(VERSION_ANDROID "1")
 set(USE_SSL 1)
 set(USE_PCH 1)
 

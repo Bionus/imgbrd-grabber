@@ -102,15 +102,33 @@ if(USE_BREAKPAD)
 	include_directories(${BREAKPAD}/src)
 endif()
 
-if (WIN32)
+if(ANDROID)
+	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+elseif(WIN32)
 	add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 else()
 	add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Grabber")
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${VERSION})
+
+if(ANDROID)
+	# SSL
+	if(USE_SSL)
+		message(INFO "Compiling with SSL support")
+		set(OPENSSL_ANDROID "D:/Programmation/C++/Qt/OpenSSH-android/openssl-1.0.2p")
+		message(INFO "OpenSSL for Android dir: ${OPENSSL_ANDROID}")
+		list(APPEND APK_LIBS "${OPENSSL_ANDROID}/libcrypto.so" "${OPENSSL_ANDROID}/libssl.so")
+	endif()
+
+	message("CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+	include("qt-android-cmake/AddQtAndroidApk")
+	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${APK_LIBS} VERSION_CODE ${VERSION_ANDROID} NAME "Grabber" PACKAGE_NAME "com.bionus.grabber")
+else()
+	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Grabber")
+	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+endif()
 
 # Pre-compiled header
 if(USE_PCH)
