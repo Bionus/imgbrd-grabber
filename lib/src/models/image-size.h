@@ -7,6 +7,8 @@
 #include <QUrl>
 
 
+class QJsonObject;
+
 struct ImageSize
 {
 	~ImageSize();
@@ -25,6 +27,10 @@ struct ImageSize
 	QPixmap pixmap() const;
 	const QPixmap &pixmap();
 	void setPixmap(const QPixmap &pixmap);
+
+	// Serialization
+	void read(const QJsonObject &json);
+	void write(QJsonObject &json) const;
 
 	private:
 		QString m_temporaryPath;

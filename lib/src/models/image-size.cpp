@@ -1,6 +1,7 @@
 #include "image-size.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QJsonObject>
 
 
 ImageSize::~ImageSize()
@@ -92,4 +93,33 @@ void ImageSize::setPixmap(const QPixmap &pixmap)
 	m_pixmap = !rect.isNull()
 		? pixmap.copy(rect)
 		: pixmap;
+}
+
+
+void ImageSize::read(const QJsonObject &json)
+{
+	fileSize = json["fileSize"].toInt();
+
+	QJsonObject sz = json["size"].toObject();
+	size = QSize(sz["width"].toInt(), sz["height"].toInt());
+
+	QJsonObject rct = json["rect"].toObject();
+	rect = QRect(rct["left"].toInt(), rct["top"].toInt(), rct["width"].toInt(), rct["height"].toInt());
+}
+
+void ImageSize::write(QJsonObject &json) const
+{
+	json["fileSize"] = fileSize;
+
+	QJsonObject sz;
+	sz["width"] = size.width();
+	sz["height"] = size.height();
+	json["size"] = sz;
+
+	QJsonObject rct;
+	rct["left"] = rect.left();
+	rct["top"] = rect.top();
+	rct["width"] = rect.width();
+	rct["height"] = rect.height();
+	json["rect"] = rct;
 }
