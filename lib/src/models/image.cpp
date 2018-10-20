@@ -83,7 +83,6 @@ Image::Image(const Image &other)
 
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
-	m_timer = other.m_timer;
 	m_profile = other.m_profile;
 	m_settings = other.m_settings;
 	m_search = other.m_search;
