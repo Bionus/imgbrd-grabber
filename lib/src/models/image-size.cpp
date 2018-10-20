@@ -100,26 +100,42 @@ void ImageSize::read(const QJsonObject &json)
 {
 	fileSize = json["fileSize"].toInt();
 
-	QJsonObject sz = json["size"].toObject();
-	size = QSize(sz["width"].toInt(), sz["height"].toInt());
+	if (json.contains("size") && json["size"].isObject()) {
+		QJsonObject sz = json["size"].toObject();
+		size = QSize(
+			sz["width"].toInt(),
+			sz["height"].toInt()
+		);
+	}
 
-	QJsonObject rct = json["rect"].toObject();
-	rect = QRect(rct["left"].toInt(), rct["top"].toInt(), rct["width"].toInt(), rct["height"].toInt());
+	if (json.contains("rect") && json["rect"].isObject()) {
+		QJsonObject rct = json["rect"].toObject();
+		rect = QRect(
+			rct["left"].toInt(),
+			rct["top"].toInt(),
+			rct["width"].toInt(),
+			rct["height"].toInt()
+		);
+	}
 }
 
 void ImageSize::write(QJsonObject &json) const
 {
 	json["fileSize"] = fileSize;
 
-	QJsonObject sz;
-	sz["width"] = size.width();
-	sz["height"] = size.height();
-	json["size"] = sz;
+	if (size.isValid()) {
+		QJsonObject sz;
+		sz["width"] = size.width();
+		sz["height"] = size.height();
+		json["size"] = sz;
+	}
 
-	QJsonObject rct;
-	rct["left"] = rect.left();
-	rct["top"] = rect.top();
-	rct["width"] = rect.width();
-	rct["height"] = rect.height();
-	json["rect"] = rct;
+	if (rect.isValid()) {
+		QJsonObject rct;
+		rct["left"] = rect.left();
+		rct["top"] = rect.top();
+		rct["width"] = rect.width();
+		rct["height"] = rect.height();
+		json["rect"] = rct;
+	}
 }
