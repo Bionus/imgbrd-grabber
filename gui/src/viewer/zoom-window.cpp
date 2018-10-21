@@ -211,7 +211,7 @@ ZoomWindow::~ZoomWindow()
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
-	m_imageLoaderThread.wait(1000);
+	m_imageLoaderQueueThread.wait(1000);
 	m_imageLoaderThread.quit();
 	m_imageLoaderThread.wait(1000);
 
