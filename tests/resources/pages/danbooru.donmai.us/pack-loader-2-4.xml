@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283080</id>
+    <created-at type="dateTime">2018-10-11T11:39:03-04:00</created-at>
+    <uploader-id type="integer">458730</uploader-id>
+    <score type="integer">0</score>
+    <source>https://twitter.com/maku_raku/status/1050393522661023745</source>
+    <md5>0d56aab690da95be393d86b9c0dc244f</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">1000</image-width>
+    <image-height type="integer">1425</image-height>
+    <tag-string>2girls asymmetrical_hair braid breasts comic commentary greyscale hair_ornament hat highres hip_vent holding_cloth japanese_clothes jitome kantai_collection kariginu kneehighs long_hair long_sleeves maku-raku midriff miniskirt monochrome multiple_girls pleated_skirt ryuujou_(kantai_collection) shikigami short_sleeves single_braid sitting skirt smile speech_bubble thighhighs translated triangle_mouth twintails unryuu_(kantai_collection) very_long_hair visor_cap wariza |_|</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">1</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime">2018-10-11T11:39:56-04:00</last-noted-at>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">true</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">35</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">2</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">171817</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">42</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:40:52-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">true</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">3</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">458730</uid>
+    </keeper-data>
+    <uploader-name>Elf_song</uploader-name>
+    <has-large type="boolean">true</has-large>
+    <has-visible-children type="boolean">true</has-visible-children>
+    <children-ids>3283081 3283083</children-ids>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>2girls asymmetrical_hair braid breasts comic greyscale hair_ornament hat hip_vent holding_cloth japanese_clothes jitome kariginu kneehighs long_hair long_sleeves midriff miniskirt monochrome multiple_girls pleated_skirt shikigami short_sleeves single_braid sitting skirt smile speech_bubble thighhighs triangle_mouth twintails very_long_hair visor_cap wariza |_|</tag-string-general>
+    <tag-string-character>ryuujou_(kantai_collection) unryuu_(kantai_collection)</tag-string-character>
+    <tag-string-copyright>kantai_collection</tag-string-copyright>
+    <tag-string-artist>maku-raku</tag-string-artist>
+    <tag-string-meta>commentary highres translated</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/0d56aab690da95be393d86b9c0dc244f.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/sample/sample-0d56aab690da95be393d86b9c0dc244f.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/0d/56/0d56aab690da95be393d86b9c0dc244f.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283078</id>
+    <created-at type="dateTime">2018-10-11T11:37:56-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">1</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p13.jpg</source>
+    <md5>7dd30cc7a943ed56fef35272f4a6fbf1</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">459</image-width>
+    <image-height type="integer">586</image-height>
+    <tag-string>1girl :d animal_ears aoba_moka bang_dream! bangs blue_eyes blush bow bowtie brooch cat_ears fang hands_up jewelry kemonomimi_mode long_sleeves looking_at_viewer mizukikushou open_mouth purple_neckwear short_hair sketch smile solo star striped_neckwear translation_request upper_body white_hair</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">2</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">26</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">108268</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">1</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">30</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:37:56-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl :d animal_ears bangs blue_eyes blush bow bowtie brooch cat_ears fang hands_up jewelry kemonomimi_mode long_sleeves looking_at_viewer open_mouth purple_neckwear short_hair sketch smile solo star striped_neckwear upper_body white_hair</tag-string-general>
+    <tag-string-character>aoba_moka</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta>translation_request</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/7dd30cc7a943ed56fef35272f4a6fbf1.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/7dd30cc7a943ed56fef35272f4a6fbf1.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/7d/d3/7dd30cc7a943ed56fef35272f4a6fbf1.jpg</preview-file-url>
+  </post>
+</posts>

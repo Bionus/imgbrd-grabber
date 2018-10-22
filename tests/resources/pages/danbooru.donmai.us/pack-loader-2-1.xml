@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283117</id>
+    <created-at type="dateTime">2018-10-11T12:33:35-04:00</created-at>
+    <uploader-id type="integer">503835</uploader-id>
+    <score type="integer">1</score>
+    <source>https://yoruny.tumblr.com/post/178951608919</source>
+    <md5>d598b15312f7949f6ee722ddadd24524</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">1200</image-width>
+    <image-height type="integer">900</image-height>
+    <tag-string>1girl ascot bangs bat_wings blue_background blue_hair border brooch commentary cropped_torso dress eyebrows_visible_through_hair fangs hands_up jewelry no_hat no_headwear open_mouth outline outside_border pink_dress pointy_ears red_eyes red_neckwear remilia_scarlet short_hair simple_background solo touhou upper_body white_border white_outline wing_collar wings yoruny</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">1</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">31</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">72140</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string>pool:14357 pool:series</pool-string>
+    <up-score type="integer">1</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">35</tag-count>
+    <updated-at type="dateTime">2018-10-11T12:33:35-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">503835</uid>
+    </keeper-data>
+    <uploader-name>inkuJerr</uploader-name>
+    <has-large type="boolean">true</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl ascot bangs bat_wings blue_background blue_hair border brooch cropped_torso dress eyebrows_visible_through_hair fangs hands_up jewelry no_hat no_headwear open_mouth outline outside_border pink_dress pointy_ears red_eyes red_neckwear short_hair simple_background solo upper_body white_border white_outline wing_collar wings</tag-string-general>
+    <tag-string-character>remilia_scarlet</tag-string-character>
+    <tag-string-copyright>touhou</tag-string-copyright>
+    <tag-string-artist>yoruny</tag-string-artist>
+    <tag-string-meta>commentary</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/d598b15312f7949f6ee722ddadd24524.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/sample/sample-d598b15312f7949f6ee722ddadd24524.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/d5/98/d598b15312f7949f6ee722ddadd24524.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283107</id>
+    <created-at type="dateTime">2018-10-11T12:15:59-04:00</created-at>
+    <uploader-id type="integer">489481</uploader-id>
+    <score type="integer">0</score>
+    <source>https://twitter.com/i_oekaki08/status/1049241534674006017</source>
+    <md5>b287ccbe227e7085ed015a767957fef3</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">1000</image-width>
+    <image-height type="integer">1400</image-height>
+    <tag-string>1girl 2boys baby bangs belt black_hair blonde_hair chaldea_uniform closed_eyes comic commentary_request dual_persona earrings ereshkigal_(fate/grand_order) fate/grand_order fate_(series) fujimaru_ritsuka_(male) hair_ribbon highres hug i_(yunyuniraaka) jacket jewelry long_hair long_sleeves multiple_boys parted_bangs red_eyes red_ribbon ribbon short_hair speech_bubble tiara translated twintails two_side_up ventunesimo white_jacket younger</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime">2018-10-11T12:21:54-04:00</last-noted-at>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer">3269118</parent-id>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">30</tag-count-general>
+    <tag-count-artist type="integer">2</tag-count-artist>
+    <tag-count-character type="integer">2</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">147815</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string>pool:756 pool:1446 pool:collection</pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">true</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">39</tag-count>
+    <updated-at type="dateTime">2018-10-11T12:21:57-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">3</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">489481</uid>
+    </keeper-data>
+    <uploader-name>boredman23</uploader-name>
+    <has-large type="boolean">true</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl 2boys baby bangs belt black_hair blonde_hair chaldea_uniform closed_eyes comic dual_persona earrings hair_ribbon hug jacket jewelry long_hair long_sleeves multiple_boys parted_bangs red_eyes red_ribbon ribbon short_hair speech_bubble tiara twintails two_side_up white_jacket younger</tag-string-general>
+    <tag-string-character>ereshkigal_(fate/grand_order) fujimaru_ritsuka_(male)</tag-string-character>
+    <tag-string-copyright>fate/grand_order fate_(series)</tag-string-copyright>
+    <tag-string-artist>i_(yunyuniraaka) ventunesimo</tag-string-artist>
+    <tag-string-meta>commentary_request highres translated</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/b287ccbe227e7085ed015a767957fef3.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/sample/sample-b287ccbe227e7085ed015a767957fef3.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/b2/87/b287ccbe227e7085ed015a767957fef3.jpg</preview-file-url>
+  </post>
+</posts>
