@@ -67,7 +67,7 @@ void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
-	const int localNeedTags = Filename(m_filename).needExactTags(m_image->parentSite());
+	const int localNeedTags = m_filename.needExactTags(m_image->parentSite());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
@@ -130,7 +130,7 @@ void ImageDownloader::loadedSave()
 		m_paths = m_image->paths(m_filename, m_path, m_count);
 
 		// Use a random temporary file if we need the MD5 or equivalent
-		if (Filename(m_filename).needTemporaryFile(m_image->tokens(m_profile)))
+		if (m_filename.needTemporaryFile(m_image->tokens(m_profile)))
 		{
 			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
 			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
@@ -317,7 +317,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 
 	m_image->setSavePath(m_temporaryPath, size);
 
-	if (!m_filename.isEmpty())
+	if (!m_filename.format().isEmpty())
 	{ m_paths = m_image->paths(m_filename, m_path, m_count); }
 
 	QString suffix;

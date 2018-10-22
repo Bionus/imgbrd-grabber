@@ -11,6 +11,7 @@
 #include "downloader/file-downloader.h"
 #include "downloader/image-save-result.h"
 #include "loader/downloadable.h"
+#include "models/filename.h"
 #include "models/image.h"
 
 
@@ -53,7 +54,7 @@ class ImageDownloader : public QObject
 		Profile *m_profile;
 		QSharedPointer<Image> m_image;
 		FileDownloader m_fileDownloader;
-		QString m_filename;
+		Filename m_filename;
 		QString m_path;
 		bool m_loadTags;
 		QStringList m_paths;
