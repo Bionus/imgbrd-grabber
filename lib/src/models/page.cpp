@@ -174,6 +174,7 @@ const QUrl &Page::nextPage() const { return m_pageApis[m_currentApi]->nextPage()
 const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage(); }
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
+bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
 
 bool Page::hasSource() const
 {

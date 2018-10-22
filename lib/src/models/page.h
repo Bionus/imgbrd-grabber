@@ -49,6 +49,7 @@ class Page : public QObject
 		qulonglong maxId() const;
 		const QUrl &nextPage() const;
 		const QUrl &prevPage() const;
+		bool isLoaded() const;
 
 	public slots:
 		void abort();

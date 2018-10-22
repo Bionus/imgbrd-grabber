@@ -20,6 +20,9 @@ void UrlLogin::login()
 {
 	if (m_page != nullptr)
 	{
+		if (!m_page->isLoaded())
+			return;
+
 		m_page->abort();
 		m_page->deleteLater();
 	}

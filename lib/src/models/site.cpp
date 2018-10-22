@@ -193,7 +193,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	if (!m_login->isTestable())
+	if (!canTestLogin())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
 		return;
@@ -256,7 +256,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
-	m_login->complementRequest(&request);
+	if (m_login != nullptr)
+	{ m_login->complementRequest(&request); }
 
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
 	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
@@ -383,7 +384,7 @@ void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
 QString Site::fixLoginUrl(QString url) const
 {
-	if (m_auth == nullptr)
+	if (m_auth == nullptr || m_login == nullptr)
 		return url;
 
 	return m_login->complementUrl(std::move(url));
