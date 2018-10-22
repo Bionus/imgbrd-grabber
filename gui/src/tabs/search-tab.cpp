@@ -466,6 +466,8 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 
 void SearchTab::updatePaginationButtons(Page *page)
 {
+	const int pageNum = ui_spinPage->value();
+
 	// Update max page counter
 	int pageCount = page->pagesCount();
 	int maxPages = page->maxPagesCount();
@@ -475,11 +477,11 @@ void SearchTab::updatePaginationButtons(Page *page)
 		m_pagemax = pageCount;
 
 	// Update page spinbox max value
-	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : qMax(1, m_pagemax));
+	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : qMax(1, qMax(pageNum, m_pagemax)));
 
 	// Enable/disable buttons
-	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
-	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1);
 }
 
 void SearchTab::finishedLoadingTags(Page *page)
