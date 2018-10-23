@@ -733,7 +733,7 @@ void DownloadsTab::getNextPack()
 	}
 
 	// If there are pending packs
-	if (!m_waitingPackLoaders.isEmpty())
+	else if (!m_waitingPackLoaders.isEmpty())
 	{
 		if (m_currentPackLoader != nullptr)
 			m_currentPackLoader->deleteLater();
