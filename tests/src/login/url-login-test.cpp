@@ -33,7 +33,7 @@ void UrlLoginTest::cleanup()
 
 void UrlLoginTest::testNonTestable()
 {
-	MixedSettings *settings = m_site->settings();;
+	MixedSettings *settings = m_site->settings();
 	settings->setValue("login/maxPage", 0, 0);
 
 	QList<AuthField*> fields;
