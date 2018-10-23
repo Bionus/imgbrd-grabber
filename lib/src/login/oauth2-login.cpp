@@ -1,9 +1,9 @@
 #include "login/oauth2-login.h"
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include "auth/oauth2-auth.h"
+#include "custom-network-access-manager.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/site.h"
@@ -11,7 +11,7 @@
 
 typedef QPair<QString, QString> QStrP;
 
-OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
 	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
 {}
 

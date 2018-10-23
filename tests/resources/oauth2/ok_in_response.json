@@ -1,0 +1,6 @@
+{
+    "response": {
+        "token_type": "bearer",
+        "access_token": "test_token"
+    }
+}
