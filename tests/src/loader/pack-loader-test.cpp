@@ -27,6 +27,11 @@ void PackLoaderTest::testBasic()
 	Source source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
+	// Login first
+	QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, &site, SLOT(login()));
+	QVERIFY(spy.wait());
+
 	// 2 packs of 9 from 8 pages of 2
 	for (int i = 1; i <= 8; ++i)
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/pack-loader-2-" + QString::number(i) + ".xml"); }
@@ -55,6 +60,11 @@ void PackLoaderTest::testWrongResultsCount()
 	Source source(m_profile, "tests/resources/sites/Gelbooru (0.2)");
 	Site site("gelbooru.com", &source);
 
+	// Login first
+	QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, &site, SLOT(login()));
+	QVERIFY(spy.wait());
+
 	// 4 packs of 90 from 7 pages of 50
 	for (int i = 1; i <= 7; ++i)
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/gelbooru.com/pack-loader-" + QString::number(i) + ".html"); }
@@ -82,6 +92,11 @@ void PackLoaderTest::testGalleries()
 
 	Source source(m_profile, "tests/resources/sites/E-Hentai");
 	Site site("e-hentai.org", &source);
+
+	// Login first
+	QSignalSpy spy(&site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, &site, SLOT(login()));
+	QVERIFY(spy.wait());
 
 	// 2 packs of 30 from 1 gallery of 31
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/e-hentai.org/pack-loader-list.html");

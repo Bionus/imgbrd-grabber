@@ -31,7 +31,14 @@ void HttpLogin::login()
 		m_loginReply->deleteLater();
 	}
 
-	m_loginReply = getReply(m_auth->url(), query);
+	QNetworkReply *reply = getReply(m_auth->url(), query);
+	if (reply == nullptr)
+	{
+		emit loggedIn(Result::Failure);
+		return;
+	}
+
+	m_loginReply = reply;
 	connect(m_loginReply, &QNetworkReply::finished, this, &HttpLogin::loginFinished);
 }
 
