@@ -59,16 +59,6 @@ if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
-# Add a bunch of definitions for Travis builds
-if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions(-DTRAVIS=1)
-	if("$ENV{TRAVIS_OS_NAME}" STREQUAL "osx")
-		add_definitions(-DTRAVIS_OS_OSX=1)
-	elseif("$ENV{TRAVIS_OS_NAME}" STREQUAL "linux")
-		add_definitions(-DTRAVIS_OS_LINUX=1)
-	endif()
-endif()
-
 add_subdirectory(lib)
 add_subdirectory(gui)
 add_subdirectory(cli)
