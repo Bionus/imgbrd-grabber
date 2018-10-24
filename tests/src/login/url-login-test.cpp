@@ -48,6 +48,7 @@ void UrlLoginTest::testLoginSuccess()
 	MixedSettings *settings = m_site->settings();
 	settings->setValue("login/maxPage", 10, 0);
 	settings->setValue("login/type", "disabled");
+	m_site->loadConfig();
 
 	QList<AuthField*> fields;
 	UrlAuth auth("url", fields);
@@ -59,8 +60,8 @@ void UrlLoginTest::testLoginSuccess()
 
 	QSignalSpy spy(&login, SIGNAL(loggedIn(Login::Result)));
 	login.login();
-	if (!spy.wait())
-		return;
+	QVERIFY(spy.wait());
+
 	QList<QVariant> arguments = spy.takeFirst();
 	Login::Result result = arguments.at(0).value<Login::Result>();
 
@@ -72,6 +73,7 @@ void UrlLoginTest::testLoginFailure()
 	MixedSettings *settings = m_site->settings();
 	settings->setValue("login/maxPage", 10, 0);
 	settings->setValue("login/type", "disabled");
+	m_site->loadConfig();
 
 	QList<AuthField*> fields;
 	UrlAuth auth("url", fields);
@@ -79,14 +81,13 @@ void UrlLoginTest::testLoginFailure()
 
 	QVERIFY(login.isTestable());
 
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.json");
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.html");
+	for (int i = 0; i < 3; ++i)
+		CustomNetworkAccessManager::NextFiles.enqueue("404");
 
 	QSignalSpy spy(&login, SIGNAL(loggedIn(Login::Result)));
 	login.login();
-	if (!spy.wait())
-		return;
+	QVERIFY(spy.wait());
+
 	QList<QVariant> arguments = spy.takeFirst();
 	Login::Result result = arguments.at(0).value<Login::Result>();
 
