@@ -59,7 +59,7 @@ void TagDatabaseTestSuite::testFilledContainsAll()
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
 
 	QCOMPARE(m_database->count(), 4);
 }
@@ -81,5 +81,5 @@ void TagDatabaseTestSuite::testFilledContainsSome()
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
 }
