@@ -25,12 +25,14 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 project(Grabber)
-if((NOT DEFINED VERSION) OR (DEFINED NIGHTLY))
+if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
 	set(VERSION "6.0.6")
 endif()
 set(VERSION_ANDROID "1")
 set(USE_SSL 1)
 set(USE_PCH 1)
+
+message(STATUS "Configuring for version '${VERSION}'")
 
 add_definitions(-DVERSION="${VERSION}")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber")

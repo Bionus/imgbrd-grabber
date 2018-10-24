@@ -13,9 +13,10 @@ if(DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
 endif()
 
 # Nightly version settings
-if (DEFINED NIGHTLY)
+if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 	add_definitions(-DNIGHTLY=1)
 	add_definitions(-DNIGHTLY_COMMIT="${COMMIT}")
+	message(STATUS "Configuring nightly with commit '${COMMIT}'")
 endif()
 
 # Qt libraries
