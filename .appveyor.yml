@@ -45,7 +45,7 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - if %APPVEYOR_REPO_TAG%==true (set GRABBER_VERSION="$(APPVEYOR_REPO_TAG_NAME)") else (set GRABBER_VERSION="nightly")
+  - if %APPVEYOR_REPO_TAG%==true (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME%") else (set GRABBER_VERSION="nightly")
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5101/qt.qt5.5101.skycoder42.png.win32_msvc2015/1.1.05.10.1.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
@@ -56,7 +56,7 @@ test_script:
   - build\tests\tests.exe
 
 artifacts:
-  - path: releases\Grabber_$(GRABBER_VERSION).exe
+  - path: releases\Grabber_*.exe
     name: windows_setup
 
 deploy:
@@ -87,10 +87,6 @@ deploy:
     prerelease: false
     force_update: true
     artifact: windows_setup
-    description: |
-      AppVeyor release
-
-      **Tag:** $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
