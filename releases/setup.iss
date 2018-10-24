@@ -25,6 +25,10 @@
 # define QtApngDll QtPlugins + "\imageformats\qapng.dll"
 #endif
 
+#ifndef QScintillaDir
+# define QScintillaDir QtDir
+#endif
+
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -111,8 +115,8 @@ Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#OpenSSLDir}\libssl32.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\qscintilla2.dll";             DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QtDir}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QScintillaDir}\qscintilla2.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QScintillaDir}\qscintilla2_qt5.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion

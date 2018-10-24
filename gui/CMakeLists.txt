@@ -7,9 +7,12 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Continuous integration settings
-if(DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
+if(DEFINED ENV{TRAVIS})
 	set(USE_BREAKPAD 0)
 	set(USE_QSCINTILLA 0)
+endif()
+if(DEFINED ENV{APPVEYOR})
+	set(USE_BREAKPAD 0)
 endif()
 
 # Nightly version settings
@@ -44,8 +47,9 @@ endif()
 
 # QScintilla
 if(USE_QSCINTILLA)
-	find_package(QScintilla REQUIRED)
+	find_package(QScintilla)
 	if(QSCINTILLA_FOUND)
+		message(STATUS "Building with QScintilla2 support")
 		add_definitions(-DUSE_QSCINTILLA=1)
 		list(APPEND LIBS ${QSCINTILLA_LIBRARY})
 	else()

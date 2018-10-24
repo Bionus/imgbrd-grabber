@@ -5,6 +5,7 @@ environment:
   DEPLOY: 0
   MYSQL_VERSION: mysql-5.7.14-win32
   APNG_PLUGIN: apng-1.1.05.10.1
+  QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
 
   matrix:
     # MSVC x86
@@ -30,6 +31,7 @@ cache:
   - release\sites\node_modules -> release\sites\package.json
   - mysql-5.7.14-win32 -> .appveyor.yml
   - apng-1.1.05.10.1 -> .appveyor.yml
+  - QScintilla_gpl-2.10.8 -> .appveyor.yml
 
 init:
   - git config --global core.autocrlf input
@@ -38,20 +40,41 @@ init:
   - set PATH=%QTDIR%\bin;%PATH%
   - if not %PLATFORM%==mingw call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
   - set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
+  - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_IS_NIGHTLY=0") else (set "GRABBER_IS_NIGHTLY=1")
+  - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_VERSION=%APPVEYOR_REPO_TAG_NAME%") else (set "GRABBER_VERSION=nightly")
 
 build_script:
-  - if %APPVEYOR_REPO_TAG%==true (set GRABBER_IS_NIGHTLY=0) else (set GRABBER_IS_NIGHTLY=1)
-  - if %APPVEYOR_REPO_TAG%==true (if "%APPVEYOR_REPO_TAG_NAME:~0,1%"=="v" (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME:~1%") else (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME%")) else (set GRABBER_VERSION="nightly")
+  # Build QScintilla
+  - set "QSCINTILLA_BUILD=0"
+  - if %DEPLOY%==1 if not exist %QSCINTILLA_VERSION% set "QSCINTILLA_BUILD=1"
+  - if %QSCINTILLA_BUILD%==1 curl -L "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip" -o "%QSCINTILLA_VERSION%.zip"
+  - if %QSCINTILLA_BUILD%==1 7z x "%QSCINTILLA_VERSION%.zip" -y
+  - if %DEPLOY%==1 call "%QTDIR%/bin/qtenv2.bat"
+  - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%/%QSCINTILLA_VERSION%/Qt4Qt5"
+  - if %QSCINTILLA_BUILD%==1 qmake qscintilla.pro
+  - if %QSCINTILLA_BUILD%==1 if not %PLATFORM%==mingw (nmake) else (mingw32-make)
+  - if %DEPLOY%==1 if not %PLATFORM%==mingw (nmake install) else (mingw32-make install)
+  - if %DEPLOY%==1 cd "%QTDIR%/lib"
+  - if %DEPLOY%==1 rename qscintilla2_qt5.* qscintilla2.*
+  - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%"
+
+  # Build Grabber
   - mkdir build
   - cd build
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%"
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
+
+  # Download APNG plugin DLL
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5101/qt.qt5.5101.skycoder42.png.win32_msvc2015/1.1.05.10.1.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
+
+  # Download Mysql DLL
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
+
+  # Generate installer
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" /DQScintillaDir="%QSCINTILLA_DIR%" releases/setup.iss
 
 test_script:
   - build\tests\tests.exe
