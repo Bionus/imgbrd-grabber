@@ -40,12 +40,13 @@ init:
   - set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 
 build_script:
+  - if %APPVEYOR_REPO_TAG%==true (set GRABBER_IS_NIGHTLY=0) else (set GRABBER_IS_NIGHTLY=1)
+  - if %APPVEYOR_REPO_TAG%==true (if "%APPVEYOR_REPO_TAG_NAME:~0,1%"=="v" (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME:~1%") else (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME%")) else (set GRABBER_VERSION="nightly")
   - mkdir build
   - cd build
-  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
+  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%"
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - if %APPVEYOR_REPO_TAG%==true (set GRABBER_VERSION="%APPVEYOR_REPO_TAG_NAME%") else (set GRABBER_VERSION="nightly")
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5101/qt.qt5.5101.skycoder42.png.win32_msvc2015/1.1.05.10.1.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
