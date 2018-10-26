@@ -59,9 +59,10 @@ build_script:
   - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%"
 
   # Build Grabber
+  - if %GRABBER_IS_NIGHTLY%==1 (set "BUILD_TYPE=Release") else (set "BUILD_TYPE=RelWithDebInfo")
   - mkdir build
   - cd build
-  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%"
+  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%"
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
 
@@ -76,12 +77,17 @@ build_script:
   # Generate installer
   - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" /DQScintillaDir="%QSCINTILLA_DIR%" releases/setup.iss
 
+  # Package symbol files to zip
+  - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
+
 test_script:
   - build\tests\tests.exe
 
 artifacts:
   - path: releases\Grabber_*.exe
     name: windows_setup
+  - path: releases\Grabber_*_symbols.zip
+    name: windows_symbols_zip
 
 deploy:
   # Nightly
@@ -111,7 +117,7 @@ deploy:
     draft: true
     prerelease: false
     force_update: true
-    artifact: windows_setup
+    artifact: windows_setup, windows_symbols_zip
     auth_token:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
