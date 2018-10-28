@@ -525,6 +525,9 @@ void MainWindow::updateTabs()
 }
 void MainWindow::tabClosed(SearchTab *tab)
 {
+	if (ui == nullptr)
+		return;
+
 	// Store closed tab information
 	QJsonObject obj;
 	tab->write(obj);
@@ -534,9 +537,7 @@ void MainWindow::tabClosed(SearchTab *tab)
 		m_closedTabs.removeFirst();
 	}
 
-	if (ui != nullptr) {
-		ui->actionRestoreLastClosedTab->setEnabled(true);
-	}
+	ui->actionRestoreLastClosedTab->setEnabled(true);
 
 	m_tabs.removeAll(tab);
 	m_tabSelector->updateCounter();
