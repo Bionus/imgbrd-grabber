@@ -33,12 +33,59 @@ void ImageSizeTest::testSavePath()
 	QTemporaryFile file;
 	QVERIFY(file.open());
 	file.write("test");
-	file.flush();
+	file.close();
+
+	ImageSize is;
+	QVERIFY(is.setSavePath(file.fileName()));
+	QVERIFY(!is.setSavePath(file.fileName()));
+	QCOMPARE(is.fileSize, 4);
+}
+
+void ImageSizeTest::testSaveDefault()
+{
+	const QString dest = "tests/resources/tmp/image-size.jpg";
+
+	ImageSize is;
+	QCOMPARE(is.save(dest), QString());
+	QVERIFY(!QFile::exists(dest));
+}
+
+void ImageSizeTest::testSaveMove()
+{
+	return; // FIXME
+
+	const QString dest = "tests/resources/tmp/image-size.jpg";
+
+	QTemporaryFile file;
+	QVERIFY(file.open());
+	file.write("test");
+	file.close();
 
 	ImageSize is;
 	QVERIFY(is.setTemporaryPath(file.fileName()));
-	QVERIFY(!is.setTemporaryPath(file.fileName()));
-	QCOMPARE(is.fileSize, 4);
+	QCOMPARE(is.save(dest), file.fileName());
+
+	QVERIFY(!file.exists());
+	QVERIFY(QFile::exists(dest));
+	QVERIFY(QFile::remove(dest));
+}
+
+void ImageSizeTest::testSaveCopy()
+{
+	const QString dest = "tests/resources/tmp/image-size.jpg";
+
+	QTemporaryFile file;
+	QVERIFY(file.open());
+	file.write("test");
+	file.close();
+
+	ImageSize is;
+	QVERIFY(is.setSavePath(file.fileName()));
+	QCOMPARE(is.save(dest), file.fileName());
+
+	QVERIFY(file.exists());
+	QVERIFY(QFile::exists(dest));
+	QVERIFY(QFile::remove(dest));
 }
 
 void ImageSizeTest::testPixmap()
@@ -60,6 +107,24 @@ void ImageSizeTest::testPixmapRect()
 	is.setPixmap(pix);
 
 	QCOMPARE(is.pixmap().size(), QSize(20, 40));
+}
+
+void ImageSizeTest::testSerialization()
+{
+	ImageSize original;
+	original.fileSize = 123456;
+	original.size = QSize(800, 600);
+	original.rect = QRect(10, 20, 30, 40);
+
+	QJsonObject json;
+	original.write(json);
+
+	ImageSize dest;
+	dest.read(json);
+
+	QCOMPARE(dest.fileSize, original.fileSize);
+	QCOMPARE(dest.size, original.size);
+	QCOMPARE(dest.rect, original.rect);
 }
 
 

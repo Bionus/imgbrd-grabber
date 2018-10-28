@@ -11,8 +11,12 @@ class ImageSizeTest : public TestSuite
 	private slots:
 		void testTemporaryPath();
 		void testSavePath();
+		void testSaveDefault();
+		void testSaveMove();
+		void testSaveCopy();
 		void testPixmap();
 		void testPixmapRect();
+		void testSerialization();
 };
 
 #endif // IMAGE_SIZE_TEST_H
