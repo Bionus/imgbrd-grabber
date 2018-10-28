@@ -32,6 +32,8 @@ cache:
   - mysql-5.7.14-win32 -> .appveyor.yml
   - apng-1.1.05.10.1 -> .appveyor.yml
   - QScintilla_gpl-2.10.8 -> .appveyor.yml
+  - depot_tools -> .appveyor.yml
+  - breakpad -> .appveyor.yml
 
 init:
   - git config --global core.autocrlf input
@@ -44,6 +46,27 @@ init:
   - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_VERSION=%APPVEYOR_REPO_TAG_NAME%") else (set "GRABBER_VERSION=nightly")
 
 build_script:
+  # Download Google tools and put them in the PATH (required for Google Breakpad)
+  - if not exist "depot_tools" appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip
+  - if not exist "depot_tools" 7z x "depot_tools.zip" -odepot_tools -y
+  - depot_tools\update_depot_tools
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\depot_tools;%PATH%
+
+  # Build Google Breakpad
+  - set "BREAKPAD_BUILD=0"
+  - if %DEPLOY%==1 if not exist "breakpad" set "BREAKPAD_BUILD=1"
+  - if %BREAKPAD_BUILD%==1 mkdir breakpad
+  - if %BREAKPAD_BUILD%==1 cd breakpad
+  - if %BREAKPAD_BUILD%==1 gclient config https://github.com/google/breakpad --unmanaged --name=src
+  - if %BREAKPAD_BUILD%==1 gclient sync
+  - if %BREAKPAD_BUILD%==1 cd src\src\client\windows
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" *.vcxproj # <TreatWChar_tAsBuiltInType>false<\/TreatWChar_tAsBuiltInType>
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" */*.vcxproj
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" */*/*.vcxproj
+  - if %BREAKPAD_BUILD%==1 if "%PLATFORM%"=="X86" (set "BREAKPAD_PLATFORM=Win32") else (set "BREAKPAD_PLATFORM=x64")
+  - if %BREAKPAD_BUILD%==1 msbuild breakpad_client.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:normal /p:Configuration=Release /p:Platform="%BREAKPAD_PLATFORM%"
+  - if %BREAKPAD_BUILD%==1 cd "%APPVEYOR_BUILD_FOLDER%"
+
   # Build QScintilla
   - set "QSCINTILLA_BUILD=0"
   - if %DEPLOY%==1 if not exist %QSCINTILLA_VERSION% set "QSCINTILLA_BUILD=1"
@@ -62,7 +85,7 @@ build_script:
   - if %GRABBER_IS_NIGHTLY%==1 (set "BUILD_TYPE=Release") else (set "BUILD_TYPE=RelWithDebInfo")
   - mkdir build
   - cd build
-  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%"
+  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%" -DBREAKPAD="%APPVEYOR_BUILD_FOLDER%/breakpad/src"
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
 

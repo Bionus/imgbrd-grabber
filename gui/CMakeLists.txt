@@ -6,12 +6,15 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	set(USE_QSCINTILLA 1)
 endif()
 
-# Continuous integration settings
+# Disable Google Breakpad and QScintilla on Linux builds
 if(DEFINED ENV{TRAVIS})
 	set(USE_BREAKPAD 0)
 	set(USE_QSCINTILLA 0)
 endif()
-if(DEFINED ENV{APPVEYOR})
+
+# Disable Google Breakpad if the provided folder does not exist
+if((DEFINED BREAKPAD) AND (NOT EXISTS "${BREAKPAD}"))
+	message(WARNING "Provided Google Breakpad directory does not exist, disabling Google Breakpad: ${BREAKPAD}")
 	set(USE_BREAKPAD 0)
 endif()
 
@@ -87,7 +90,9 @@ if(USE_BREAKPAD)
 	if(WIN32)
 		set(CMAKE_LFLAGS_RELEASE "${CMAKE_LFLAGS_RELEASE} /INCREMENTAL:NO /DEBUG")
 		set(CMAKE_CFLAGS_RELEASE "${CMAKE_CFLAGS_RELEASE} -O2 -MD -zi")
-		set(BREAKPAD "D:/bin/google-breakpad")
+		if(NOT DEFINED BREAKPAD)
+			set(BREAKPAD "D:/bin/google-breakpad")
+		endif()
 		if(CMAKE_BUILD_TYPE STREQUAL "Release")
 			list(APPEND LIBS
 				"${BREAKPAD}/src/client/windows/Release/lib/common.lib"
@@ -101,9 +106,12 @@ if(USE_BREAKPAD)
 		endif()
 	elseif(UNIX)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
-		set(BREAKPAD "~/Programmation/google-breakpad")
+		if(NOT DEFINED BREAKPAD)
+			set(BREAKPAD "~/Programmation/google-breakpad")
+		endif()
 		list(APPEND LIBS "${BREAKPAD}/src/client/linux/libbreakpad_client.a")
 	endif()
+	message(STATUS "Using Google Breakpad from ${BREAKPAD}")
 	include_directories(${BREAKPAD}/src)
 endif()
 
