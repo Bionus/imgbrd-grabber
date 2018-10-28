@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>209</height>
+    <height>357</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,33 +17,15 @@
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
    </property>
-   <item row="8" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Site</string>
      </property>
     </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="comboSites"/>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
@@ -56,32 +38,6 @@
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Md5</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QComboBox" name="comboSites"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineId"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="lineMd5"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Filename</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="lineFilename"/>
-   </item>
-   <item row="5" column="0" colspan="2">
-    <widget class="QLabel" name="labelFilename">
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>
@@ -106,6 +62,23 @@
      </item>
     </layout>
    </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Filename</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="lineFilename"/>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="labelFilename">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
    <item row="7" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -119,6 +92,129 @@
      </property>
     </spacer>
    </item>
+   <item row="9" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <layout class="QHBoxLayout" name="layoutLineId">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPlainTextEdit" name="lineId"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelLineId">
+         <property name="text">
+          <string>&lt;i&gt;One ID per line.&lt;/i&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="buttonMultiLineId">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>+</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="layoutLineMd5">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QPlainTextEdit" name="lineMd5"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelLineMd5">
+         <property name="text">
+          <string>&lt;i&gt;One MD5 per line.&lt;/i&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QPushButton" name="buttonLineMd5">
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>+</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QProgressBar" name="progressBar"/>
+   </item>
   </layout>
  </widget>
  <resources/>
@@ -130,8 +226,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>207</y>
+     <x>289</x>
+     <y>346</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -146,8 +242,8 @@
    <slot>ok()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>171</x>
-     <y>190</y>
+     <x>262</x>
+     <y>346</y>
     </hint>
     <hint type="destinationlabel">
      <x>169</x>
@@ -162,44 +258,12 @@
    <slot>add()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>70</x>
-     <y>204</y>
+     <x>80</x>
+     <y>346</y>
     </hint>
     <hint type="destinationlabel">
      <x>69</x>
      <y>215</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineId</sender>
-   <signal>returnPressed()</signal>
-   <receiver>AddUniqueWindow</receiver>
-   <slot>ok()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>160</x>
-     <y>41</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>289</x>
-     <y>45</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineMd5</sender>
-   <signal>returnPressed()</signal>
-   <receiver>AddUniqueWindow</receiver>
-   <slot>ok()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>257</x>
-     <y>76</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>288</x>
-     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -210,8 +274,8 @@
    <slot>ok()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>281</x>
-     <y>133</y>
+     <x>290</x>
+     <y>285</y>
     </hint>
     <hint type="destinationlabel">
      <x>289</x>
@@ -226,8 +290,8 @@
    <slot>ok()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>188</x>
-     <y>100</y>
+     <x>208</x>
+     <y>256</y>
     </hint>
     <hint type="destinationlabel">
      <x>292</x>
@@ -235,9 +299,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonMultiLineId</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>toggleMultiLineId(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>294</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonLineMd5</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>toggleMultiLineMd5(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>252</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ok()</slot>
   <slot>add()</slot>
+  <slot>toggleMultiLineId(bool)</slot>
+  <slot>toggleMultiLineMd5(bool)</slot>
  </slots>
 </ui>
