@@ -27,6 +27,10 @@ AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *pare
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
 
+	ui->lineId->setContentsMargins(0, 0, 0, 0);
+	ui->lineId->document()->setDocumentMargin(3);
+	ui->lineMd5->setContentsMargins(0, 0, 0, 0);
+	ui->lineMd5->document()->setDocumentMargin(3);
 	toggleMultiLineId(false);
 	toggleMultiLineMd5(false);
 	ui->progressBar->hide();
@@ -49,11 +53,12 @@ void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel 
 	if (toggle)
 		setTextEditRows(ptxt, 6);
 	else
-		ptxt->setFixedHeight(ui->buttonLineId->height());
+		setTextEditRows(ptxt, 1);
 
 	ptxt->verticalScrollBar()->setVisible(toggle);
 	label->setVisible(toggle);
 
+	update();
 	resize(width(), 0);
 }
 void AddUniqueWindow::toggleMultiLineId(bool toggle)
@@ -114,9 +119,12 @@ void AddUniqueWindow::ok(bool close)
 		m_queue.enqueue(q);
 	}
 
-	ui->progressBar->setMaximum(m_queue.count());
-	ui->progressBar->setValue(0);
-	ui->progressBar->show();
+	if (m_queue.count() > 1)
+	{
+		ui->progressBar->setMaximum(m_queue.count());
+		ui->progressBar->setValue(0);
+		ui->progressBar->show();
+	}
 
 	loadNext();
 }

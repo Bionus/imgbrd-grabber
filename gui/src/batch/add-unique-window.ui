@@ -118,7 +118,11 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QPlainTextEdit" name="lineId"/>
+        <widget class="QPlainTextEdit" name="lineId">
+         <property name="lineWrapMode">
+          <enum>QPlainTextEdit::NoWrap</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="labelLineId">
@@ -169,7 +173,11 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QPlainTextEdit" name="lineMd5"/>
+        <widget class="QPlainTextEdit" name="lineMd5">
+         <property name="lineWrapMode">
+          <enum>QPlainTextEdit::NoWrap</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="labelLineMd5">
@@ -192,6 +200,9 @@
          </property>
          <property name="text">
           <string>+</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
