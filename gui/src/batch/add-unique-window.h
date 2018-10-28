@@ -16,6 +16,8 @@ namespace Ui
 class Api;
 class Site;
 class Profile;
+class QLabel;
+class QPlainTextEdit;
 class Image;
 class Page;
 class DownloadQueryImage;
@@ -49,6 +51,9 @@ class AddUniqueWindow : public QDialog
 
 	signals:
 		void sendData(const DownloadQueryImage &);
+
+	protected:
+		void toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label);
 
 	private:
 		Ui::AddUniqueWindow *ui;

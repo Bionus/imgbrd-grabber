@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>357</height>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,7 +132,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="buttonMultiLineId">
+        <widget class="QPushButton" name="buttonLineId">
          <property name="maximumSize">
           <size>
            <width>30</width>
@@ -300,7 +300,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonMultiLineId</sender>
+   <sender>buttonLineId</sender>
    <signal>toggled(bool)</signal>
    <receiver>AddUniqueWindow</receiver>
    <slot>toggleMultiLineId(bool)</slot>

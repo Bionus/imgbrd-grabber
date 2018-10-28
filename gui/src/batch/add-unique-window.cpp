@@ -1,6 +1,7 @@
 #include "batch/add-unique-window.h"
 #include <QFileDialog>
 #include <QPlainTextEdit>
+#include <QScrollBar>
 #include <QSettings>
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
@@ -43,15 +44,25 @@ void setTextEditRows(QPlainTextEdit *ptxt, int nRows)
 			+ margins.bottom();
 	ptxt->setFixedHeight(nHeight);
 }
+void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label)
+{
+	if (toggle)
+		setTextEditRows(ptxt, 6);
+	else
+		ptxt->setFixedHeight(ui->buttonLineId->height());
+
+	ptxt->verticalScrollBar()->setVisible(toggle);
+	label->setVisible(toggle);
+
+	resize(width(), 0);
+}
 void AddUniqueWindow::toggleMultiLineId(bool toggle)
 {
-	setTextEditRows(ui->lineId, toggle ? 6 : 1);
-	ui->labelLineId->setVisible(toggle);
+	toggleMultiLine(toggle, ui->lineId, ui->labelLineId);
 }
 void AddUniqueWindow::toggleMultiLineMd5(bool toggle)
 {
-	setTextEditRows(ui->lineMd5, toggle ? 6 : 1);
-	ui->labelLineMd5->setVisible(toggle);
+	toggleMultiLine(toggle, ui->lineMd5, ui->labelLineMd5);
 }
 
 /**
