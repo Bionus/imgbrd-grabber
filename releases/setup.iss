@@ -8,6 +8,7 @@
 # define QtDir "C:\Qt\Qt5.10.1\5.10.1\msvc2015\bin"
 #endif
 #define QtPlugins QtDir + "\..\plugins"
+#define QtLib QtDir + "\..\lib"
 
 #ifndef OpenSSLDir
 # define OpenSSLDir "C:\bin\OpenSSL-Win32-1.0.2k"
@@ -23,10 +24,6 @@
 
 #ifndef QtApngDll
 # define QtApngDll QtPlugins + "\imageformats\qapng.dll"
-#endif
-
-#ifndef QScintillaDir
-# define QScintillaDir QtDir
 #endif
 
 
@@ -115,8 +112,7 @@ Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#OpenSSLDir}\libssl32.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QScintillaDir}\qscintilla2.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#QScintillaDir}\qscintilla2_qt5.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion

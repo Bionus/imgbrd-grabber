@@ -77,8 +77,6 @@ build_script:
   - if %QSCINTILLA_BUILD%==1 qmake qscintilla.pro
   - if %QSCINTILLA_BUILD%==1 if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - if %DEPLOY%==1 if not %PLATFORM%==mingw (nmake install) else (mingw32-make install)
-  - if %DEPLOY%==1 cd "%QTDIR%/lib"
-  - if %DEPLOY%==1 rename qscintilla2_qt5.* qscintilla2.*
   - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%"
 
   # Build Grabber
@@ -98,7 +96,7 @@ build_script:
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" /DQScintillaDir="%QSCINTILLA_DIR%" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
 
   # Package symbol files to zip
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
