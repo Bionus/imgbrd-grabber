@@ -31,7 +31,7 @@ void HttpLoginTest::cleanup()
 void HttpLoginTest::testNonTestable()
 {
 	QList<AuthField*> fields;
-	HttpAuth auth("url", "", fields);
+	HttpAuth auth("url", "", fields, "");
 	HttpGetLogin login(&auth, m_site, &m_manager, m_site->settings());
 
 	QVERIFY(!login.isTestable());
@@ -43,12 +43,9 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	// Clear all cookies
 	manager->setCookieJar(new QNetworkCookieJar(manager));
 
-	MixedSettings *settings = site->settings();
-	settings->setValue("login/" + type + "/cookie", "test_cookie");
-
 	QList<AuthField*> fields;
-	HttpAuth auth(type, "/login", fields);
-	T login(&auth, site, manager, settings);
+	HttpAuth auth(type, "/login", fields, "test_cookie");
+	T login(&auth, site, manager, site->settings());
 
 	QVERIFY(login.isTestable());
 

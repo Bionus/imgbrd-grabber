@@ -13,7 +13,7 @@ UrlLogin::UrlLogin(UrlAuth *auth, Site *site, QNetworkAccessManager *manager, Mi
 
 bool UrlLogin::isTestable() const
 {
-	return m_settings->value("login/maxPage", 0).toInt() > 0;
+	return m_auth->maxPage() > 0;
 }
 
 void UrlLogin::login()
@@ -27,7 +27,7 @@ void UrlLogin::login()
 		m_page->deleteLater();
 	}
 
-	const int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+	const int maxPageAnonymous = m_auth->maxPage();
 	m_page = new Page(m_site->getSource()->getProfile(), m_site, QList<Site*>() << m_site, QStringList(), maxPageAnonymous);
 	connect(m_page, &Page::finishedLoading, this, &UrlLogin::loginFinished);
 	connect(m_page, &Page::failedLoading, this, &UrlLogin::loginFinished);

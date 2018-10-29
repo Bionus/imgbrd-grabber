@@ -11,7 +11,11 @@ class AuthField;
 class UrlAuth : public FieldAuth
 {
 	public:
-		UrlAuth(QString type, QList<AuthField*> fields);
+		UrlAuth(QString type, QList<AuthField*> fields, int maxPage);
+		int maxPage() const;
+
+	private:
+		int m_maxPage;
 };
 
 #endif // URL_AUTH_H

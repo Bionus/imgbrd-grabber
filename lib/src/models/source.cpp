@@ -121,6 +121,9 @@ Source::Source(Profile *profile, const QString &dir)
 				const QString type = auth.property("type").toString();
 				Auth *ret = nullptr;
 
+				const QJSValue check = auth.property("check");
+				const QString checkType = check.isObject() ? check.property("type").toString() : QString();
+
 				if (type == "oauth2")
 				{
 					const QString authType = auth.property("authType").toString();
@@ -157,10 +160,14 @@ Source::Source(Profile *profile, const QString &dir)
 					if (type == "get" ||  type == "post")
 					{
 						const QString url = auth.property("url").toString();
-						ret = new HttpAuth(type, url, fields);
+						const QString cookie = checkType == "cookie" ? check.property("key").toString() : QString();
+						ret = new HttpAuth(type, url, fields, cookie);
 					}
 					else
-					{ ret = new UrlAuth(type, fields); }
+					{
+						const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
+						ret = new UrlAuth(type, fields, maxPage);
+					}
 				}
 
 				if (ret != nullptr)

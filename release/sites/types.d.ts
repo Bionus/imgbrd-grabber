@@ -62,10 +62,14 @@ interface IAuthHashField extends IAuthFieldBase {
     salt: string;
 }
 
-type IAuthCheck = IAuthCheckCookie;
+type IAuthCheck = IAuthCheckCookie | IAuthCheckMaxPage;
 interface IAuthCheckCookie {
     type: "cookie";
     key: string;
+}
+interface IAuthCheckMaxPage {
+    type: "max_page";
+    value: number;
 }
 
 type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth;
@@ -80,6 +84,7 @@ interface IOauth2Auth {
 interface IBasicAuth {
     type: "url";
     fields: IAuthField[];
+    check?: IAuthCheck;
 }
 interface IHttpAuth {
     type: "get" | "post";

@@ -44,7 +44,7 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
-	const QString cookieName = m_settings->value("login/" + m_type + "/cookie").toString();
+	const QString cookieName = m_auth->cookie();
 
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
 	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());

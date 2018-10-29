@@ -21,7 +21,6 @@ void UrlLoginTest::init()
 void UrlLoginTest::cleanup()
 {
 	MixedSettings *settings = m_site->settings();
-	settings->setValue("login/maxPage", 0, 0);
 	settings->setValue("login/type", "url");
 	settings->sync();
 
@@ -33,12 +32,9 @@ void UrlLoginTest::cleanup()
 
 void UrlLoginTest::testNonTestable()
 {
-	MixedSettings *settings = m_site->settings();
-	settings->setValue("login/maxPage", 0, 0);
-
 	QList<AuthField*> fields;
-	UrlAuth auth("url", fields);
-	UrlLogin login(&auth, m_site, &m_manager, settings);
+	UrlAuth auth("url", fields, 0);
+	UrlLogin login(&auth, m_site, &m_manager, m_site->settings());
 
 	QVERIFY(!login.isTestable());
 }
@@ -46,12 +42,11 @@ void UrlLoginTest::testNonTestable()
 void UrlLoginTest::testLoginSuccess()
 {
 	MixedSettings *settings = m_site->settings();
-	settings->setValue("login/maxPage", 10, 0);
 	settings->setValue("login/type", "disabled");
 	m_site->loadConfig();
 
 	QList<AuthField*> fields;
-	UrlAuth auth("url", fields);
+	UrlAuth auth("url", fields, 10);
 	UrlLogin login(&auth, m_site, &m_manager, settings);
 
 	QVERIFY(login.isTestable());
@@ -71,12 +66,11 @@ void UrlLoginTest::testLoginSuccess()
 void UrlLoginTest::testLoginFailure()
 {
 	MixedSettings *settings = m_site->settings();
-	settings->setValue("login/maxPage", 10, 0);
 	settings->setValue("login/type", "disabled");
 	m_site->loadConfig();
 
 	QList<AuthField*> fields;
-	UrlAuth auth("url", fields);
+	UrlAuth auth("url", fields, 10);
 	UrlLogin login(&auth, m_site, &m_manager, settings);
 
 	QVERIFY(login.isTestable());
@@ -100,9 +94,8 @@ void UrlLoginTest::testComplementUrl()
 	fields.append(new AuthConstField("a", "1"));
 	fields.append(new AuthConstField("b", "2"));
 
-	MixedSettings *settings = m_site->settings();;
-	UrlAuth auth("url", fields);
-	UrlLogin login(&auth, m_site, &m_manager, settings);
+	UrlAuth auth("url", fields, 10);
+	UrlLogin login(&auth, m_site, &m_manager, m_site->settings());
 
 	QCOMPARE(login.complementUrl("/"), QString("/?a=1&b=2"));
 	QCOMPARE(login.complementUrl("/?test=1"), QString("/?test=1&a=1&b=2"));

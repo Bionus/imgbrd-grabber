@@ -46,6 +46,10 @@ export const source: ISource = {
                     salt: "sankakuapp_%username:lower%_Z5NE9YASej",
                 },
             ],
+            check: {
+                type: "max_page",
+                value: 50,
+            },
         },
     },
     apis: {
