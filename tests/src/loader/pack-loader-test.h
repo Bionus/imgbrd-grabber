@@ -15,6 +15,7 @@ class PackLoaderTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testGetQuery();
 		void testBasic();
 		void testWrongResultsCount();
 		void testGalleries();

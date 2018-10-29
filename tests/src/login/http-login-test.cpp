@@ -61,7 +61,6 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	QList<QVariant> arguments = spy.takeFirst();
 	Login::Result result = arguments.at(0).value<Login::Result>();
 
-	qDebug() << type << url << (result == Login::Success) << (expected == Login::Success);
 	QCOMPARE(result, expected);
 }
 

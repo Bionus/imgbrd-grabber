@@ -19,6 +19,14 @@ void PackLoaderTest::cleanup()
 }
 
 
+void PackLoaderTest::testGetQuery()
+{
+	DownloadQueryGroup query("search", 1, 10, 20, QStringList(), false, nullptr, "%md5%.%ext%", "");
+	PackLoader loader(nullptr, query, 100, nullptr);
+
+	QCOMPARE(loader.query(), query);
+}
+
 void PackLoaderTest::testBasic()
 {
 	setupSource("Danbooru (2.0)");

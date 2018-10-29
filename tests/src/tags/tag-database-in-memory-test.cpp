@@ -58,7 +58,7 @@ void TagDatabaseInMemoryTest::loadInvalidLines()
 {
 	QTemporaryFile file;
 	QVERIFY(file.open());
-	file.write("tag1,1\ntag3\n");
+	file.write("tag1,1\ntag3\ntag4,123456\n,4");
 	file.seek(0);
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", file.fileName());
@@ -67,8 +67,9 @@ void TagDatabaseInMemoryTest::loadInvalidLines()
 	QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 
 	QCOMPARE(types.count(), 1);
-	QCOMPARE(types.contains("tag1"), true);
-	QCOMPARE(types.contains("tag3"), false);
+	QVERIFY(types.contains("tag1"));
+	QVERIFY(!types.contains("tag3"));
+	QVERIFY(!types.contains("tag4"));
 	QCOMPARE(types.value("tag1").name(), QString("artist"));
 	QCOMPARE(database.count(), 1);
 }
@@ -86,8 +87,8 @@ void TagDatabaseInMemoryTest::loadValidData()
 	QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 
 	QCOMPARE(types.count(), 2);
-	QCOMPARE(types.contains("tag1"), true);
-	QCOMPARE(types.contains("tag3"), true);
+	QVERIFY(types.contains("tag1"));
+	QVERIFY(types.contains("tag3"));
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	QCOMPARE(database.count(), 4);

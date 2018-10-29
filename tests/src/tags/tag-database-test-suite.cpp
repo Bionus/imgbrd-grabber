@@ -16,6 +16,13 @@ void TagDatabaseTestSuite::initTestCase()
 }
 
 
+void TagDatabaseTestSuite::testAlreadyLoaded()
+{
+	m_database->load();
+
+	QCOMPARE(m_database->tagTypes().count(), 4);
+}
+
 void TagDatabaseTestSuite::testTypesProperlyLoaded()
 {
 	QMap<int, TagType> types = m_database->tagTypes();
