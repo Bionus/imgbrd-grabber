@@ -213,7 +213,7 @@ void Site::login(bool force)
 
 bool Site::canTestLogin() const
 {
-	return m_login != nullptr && m_login->isTestable();
+	return m_auth != nullptr && m_login != nullptr && m_login->isTestable();
 }
 
 /**
