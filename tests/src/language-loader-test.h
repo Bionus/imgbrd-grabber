@@ -11,6 +11,7 @@ class LanguageLoaderTest : public TestSuite
 	private slots:
 		void testInvalid();
 		void testValid();
+		void testSetLanguage();
 };
 
 #endif // LANGUAGE_LOADER_TEST_H

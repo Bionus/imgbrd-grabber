@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
 
+add_subdirectory(languages)
+
 # Pre-compiled header
 if(USE_PCH)
 	include(PrecompiledHeader)
