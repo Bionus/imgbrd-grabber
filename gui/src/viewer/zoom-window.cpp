@@ -423,14 +423,18 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 		m_displayImage = pix;
 		update(!m_finished);
 
-		if (!pix.size().isEmpty() && m_image->size().isEmpty())
-		{
-			m_image->setSize(pix.size(), Image::Size::Full); // FIXME
-			updateWindowTitle();
-		}
+		updateSize(pix.size());
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+	}
+}
+void ZoomWindow::updateSize(const QSize &size)
+{
+	if (!size.isEmpty() && m_image->size().isEmpty())
+	{
+		m_image->setSize(size, Image::Size::Full); // FIXME
+		updateWindowTitle();
 	}
 }
 
@@ -713,6 +717,8 @@ void ZoomWindow::draw()
 	{
 		m_displayImage = QPixmap();
 		m_displayImage.load(m_imagePath);
+
+		updateSize(m_displayImage.size());
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
