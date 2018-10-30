@@ -12,7 +12,7 @@ class TagDatabase
 {
 	public:
 		virtual ~TagDatabase() = default;
-		void loadTypes();
+		bool loadTypes();
 		virtual bool load();
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
