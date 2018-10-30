@@ -808,7 +808,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 
 	// No results message
-	if (totalCount == 0)
+	if (imgs.isEmpty())
 	{
 		QString meant;
 		QStringList reasons = reasonsToFail(page, m_completion, &meant);

@@ -207,7 +207,8 @@ void FavoritesTab::load()
 
 bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && SearchTab::validateImage(img, error);
+	bool dateOk = img->createdAt() > m_loadFavorite || img->createdAt().isNull();
+	return dateOk && SearchTab::validateImage(img, error);
 }
 
 void FavoritesTab::write(QJsonObject &json) const
