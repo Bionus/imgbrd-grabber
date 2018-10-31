@@ -21,6 +21,7 @@ class MonitorTest : public TestSuite
 		void testLastCheck();
 		void testCumulated();
 		void testSerialization();
+		void testCompare();
 
 	private:
 		Profile *m_profile;

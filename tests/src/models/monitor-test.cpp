@@ -58,7 +58,6 @@ void MonitorTest::testCumulated()
 	QCOMPARE(monitor.preciseCumulated(), false);
 }
 
-
 void MonitorTest::testSerialization()
 {
 	Monitor original(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
@@ -73,6 +72,19 @@ void MonitorTest::testSerialization()
 	QCOMPARE(dest.lastCheck(), original.lastCheck());
 	QCOMPARE(dest.cumulated(), original.cumulated());
 	QCOMPARE(dest.preciseCumulated(), original.preciseCumulated());
+}
+
+void MonitorTest::testCompare()
+{
+	Monitor a(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+	Monitor b(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+	Monitor c(m_site, 120, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+
+	QVERIFY(a == b);
+	QVERIFY(b == a);
+	QVERIFY(a != c);
+	QVERIFY(b != c);
+	QVERIFY(c == c);
 }
 
 

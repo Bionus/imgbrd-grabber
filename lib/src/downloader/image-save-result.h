@@ -14,6 +14,7 @@ struct ImageSaveResult
 };
 
 bool operator==(const ImageSaveResult &lhs, const ImageSaveResult &rhs);
+bool operator!=(const ImageSaveResult &lhs, const ImageSaveResult &rhs);
 
 Q_DECLARE_METATYPE(ImageSaveResult)
 

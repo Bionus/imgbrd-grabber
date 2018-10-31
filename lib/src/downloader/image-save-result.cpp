@@ -7,3 +7,8 @@ bool operator==(const ImageSaveResult &lhs, const ImageSaveResult &rhs)
 		&& lhs.size == rhs.size
 		&& lhs.result == rhs.result;
 }
+
+bool operator!=(const ImageSaveResult &lhs, const ImageSaveResult &rhs)
+{
+	return !(lhs == rhs);
+}
