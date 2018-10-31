@@ -423,20 +423,20 @@ void MainWindow::onFirstLoad()
 	swin->show();
 }
 
-void MainWindow::addTab(const QString &tag, bool background, bool save)
+void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source)
 {
 	auto *w = new TagTab(m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
 	else
 	{ w->focusSearch(); }
 }
-void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save)
+void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save, SearchTab *source)
 {
 	auto *w = new PoolTab(m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 
 	if (!site.isEmpty())
 	{ w->setSite(site); }
@@ -445,19 +445,23 @@ void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 	else
 	{ w->focusSearch(); }
 }
-void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool background, bool save)
+void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool background, bool save, SearchTab *source)
 {
 	auto *w = new GalleryTab(site, std::move(name), std::move(id), m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 }
-void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
+void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
-	if (m_tabs.size() > ui->tabWidget->currentIndex())
+	// TODO(Bionus): remove this and always pass it when necessary
+	if (source == nullptr && m_tabs.size() > ui->tabWidget->currentIndex())
+	{ source = m_tabs[ui->tabWidget->currentIndex()]; }
+
+	if (source != nullptr)
 	{
-		w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources());
-		w->setImagesPerPage(m_tabs[ui->tabWidget->currentIndex()]->imagesPerPage());
-		w->setColumns(m_tabs[ui->tabWidget->currentIndex()]->columns());
-		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
+		w->setSources(source->sources());
+		w->setImagesPerPage(source->imagesPerPage());
+		w->setColumns(source->columns());
+		w->setPostFilter(source->postFilter());
 	}
 	connect(w, &SearchTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
 	connect(w, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
@@ -963,7 +967,7 @@ void MainWindow::saveSettings()
 
 
 
-void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save)
+void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save, SearchTab *source)
 {
 	QFile file(path);
 	if (file.open(QFile::ReadOnly))
@@ -971,10 +975,10 @@ void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool
 		QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 		file.close();
 
-		loadTag("md5:" + md5, newTab, background, save);
+		loadTag("md5:" + md5, newTab, background, save, source);
 	}
 }
-void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save)
+void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save, SearchTab *source)
 {
 	if (tag.startsWith("http://") || tag.startsWith("https://"))
 	{
@@ -983,7 +987,7 @@ void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool 
 	}
 
 	if (newTab)
-		addTab(tag, background, save);
+		addTab(tag, background, save, source);
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }

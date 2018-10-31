@@ -349,7 +349,7 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 
 void ZoomWindow::openInNewTab()
 {
-	m_parent->addTab(m_link);
+	emit linkMiddleClicked(m_link);
 }
 void ZoomWindow::setfavorite()
 {
