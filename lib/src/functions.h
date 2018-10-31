@@ -7,20 +7,12 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
+#include "backports/backports.h"
 #include "logger.h"
 
 
 class QSettings;
 
-
-// qAsConst
-#if (QT_VERSION < QT_VERSION_CHECK(5, 7, 0))
-	template <typename T>
-	Q_DECL_CONSTEXPR typename std::add_const<T>::type &qAsConst(T &t) Q_DECL_NOTHROW { return t; }
-
-	template <typename T>
-	void qAsConst(const T &&) Q_DECL_EQ_DELETE;
-#endif
 
 // Filesize units
 #if defined(Q_OS_WIN)
