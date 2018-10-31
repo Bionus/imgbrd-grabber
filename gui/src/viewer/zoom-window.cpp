@@ -1236,7 +1236,7 @@ void ZoomWindow::previous()
 
 void ZoomWindow::updateButtonPlus()
 {
-	ui->buttonPlus->setText(ui->buttonPlus->isChecked() ? "-" : "+");
+	ui->buttonPlus->setText(QChar(ui->buttonPlus->isChecked() ? '-' : '+'));
 }
 
 void ZoomWindow::openFile(bool now)

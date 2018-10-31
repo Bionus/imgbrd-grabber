@@ -358,7 +358,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
 		pcreationtime.dwHighDateTime = ll >> 32;
 
-		if (!SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime))
+		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE)
 		{
 			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
@@ -669,7 +669,7 @@ QString fixCloudflareEmail(const QString &a)
 {
 	QString s;
 	int r = a.midRef(0, 2).toInt(nullptr, 16);
-	for (int j = 2; a.length() - j; j += 2)
+	for (int j = 2; j < a.length(); j += 2)
 	{
 		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
 		s += QString(QChar(c));

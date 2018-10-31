@@ -211,7 +211,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 	}
 
-	const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
+	const bool isShortcut = (e->modifiers().testFlag(Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
 	if (c == nullptr || !isShortcut) // do not process the shortcut when we have a completer
 	{
 		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
@@ -223,7 +223,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 	doColor();
 
-	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	const bool ctrlOrShift = e->modifiers().testFlag(Qt::ControlModifier) || e->modifiers().testFlag(Qt::ShiftModifier);
 	if (c == nullptr || (ctrlOrShift && e->text().isEmpty()))
 		return;
 

@@ -37,8 +37,8 @@ class PackLoader : public QObject
 		QLinkedList<Page*> m_pendingPages;
 		QLinkedList<Page*> m_pendingGalleries;
 		QList<QSharedPointer<Image>> m_overflow;
-		bool m_overflowGallery;
-		bool m_overflowHasNext;
+		bool m_overflowGallery = false;
+		bool m_overflowHasNext = false;
 };
 
 #endif // PACK_LOADER_H

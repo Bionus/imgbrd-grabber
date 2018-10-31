@@ -66,7 +66,7 @@ class ImageDownloader : public QObject
 		bool m_writeError;
 		bool m_rotate;
 		bool m_force;
-		Image::Size m_size;
+		Image::Size m_size = Image::Size::Unknown;
 
 		QNetworkReply *m_reply = nullptr;
 		QUrl m_url;

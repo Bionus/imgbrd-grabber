@@ -9,7 +9,7 @@
 #include "models/site.h"
 
 
-typedef QPair<QString, QString> QStrP;
+using QStrP = QPair<QString, QString>;
 
 OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
 	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)

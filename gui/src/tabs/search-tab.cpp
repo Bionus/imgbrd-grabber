@@ -1024,7 +1024,7 @@ void SearchTab::contextSaveSelected()
 		downloader->save();
 	}
 }
-void SearchTab::contextSaveImageProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2)
+void SearchTab::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
 {
 	if (m_boutons.contains(img.data()))
 	{ m_boutons[img.data()]->setProgress(v1, v2); }

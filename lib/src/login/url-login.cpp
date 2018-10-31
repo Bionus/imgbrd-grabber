@@ -52,7 +52,7 @@ QString UrlLogin::complementUrl(QString url) const
 	int i = 0;
 	for (AuthField *field : m_auth->fields())
 	{
-		url.append((i == 0 && !hasQuery ? "?" : "&") + field->key() + "=" + field->value(m_settings));
+		url.append((i == 0 && !hasQuery ? '?' : '&') + field->key() + "=" + field->value(m_settings));
 		++i;
 	}
 
