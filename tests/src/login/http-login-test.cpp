@@ -73,5 +73,14 @@ void HttpLoginTest::testLoginFailure()
 	testLogin<HttpPostLogin>("post", "404", Login::Result::Failure, m_site, &m_manager);
 }
 
+void HttpLoginTest::testDoubleLogin()
+{
+	testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, m_site, &m_manager);
+	testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, m_site, &m_manager);
+
+	testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, m_site, &m_manager);
+	testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, m_site, &m_manager);
+}
+
 
 QTEST_MAIN(HttpLoginTest)

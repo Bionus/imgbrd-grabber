@@ -21,6 +21,7 @@ class HttpLoginTest : public TestSuite
 		void testNonTestable();
 		void testLoginSuccess();
 		void testLoginFailure();
+		void testDoubleLogin();
 
 	private:
 		Profile *m_profile;
