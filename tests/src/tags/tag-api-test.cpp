@@ -71,5 +71,38 @@ void TagApiTest::testParseError()
 	QCOMPARE(tagApi.tags().count(), 0);
 }
 
+void TagApiTest::testDoubleLoad()
+{
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
+	load(&tagApi);
+	TagApi::LoadResult result = load(&tagApi);
+
+	QCOMPARE(result, TagApi::LoadResult::Ok);
+}
+
+void TagApiTest::testRedirect()
+{
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	CustomNetworkAccessManager::NextFiles.enqueue("redirect");
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
+	TagApi::LoadResult result = load(&tagApi);
+
+	QCOMPARE(result, TagApi::LoadResult::Ok);
+}
+
+void TagApiTest::testAbort()
+{
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+
+	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	tagApi.load(false);
+	tagApi.abort();
+	QVERIFY(!spy.wait(1000));
+}
+
 
 QTEST_MAIN(TagApiTest)

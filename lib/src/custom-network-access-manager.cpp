@@ -28,7 +28,7 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 	{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 	// Error testing
-	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie"))
+	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie") || path == QLatin1String("redirect"))
 	{
 		auto *reply = new QCustomNetworkReply(this);
 		if (path == QLatin1String("404"))
@@ -39,6 +39,11 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 		else if (path == QLatin1String("cookie"))
 		{
 			cookieJar()->insertCookie(QNetworkCookie("test_cookie", "test_value"));
+			reply->setHttpStatusCode(200, "OK");
+		}
+		else if (path == QLatin1String("redirect"))
+		{
+			reply->setAttribute(QNetworkRequest::RedirectionTargetAttribute, QUrl("https://www.test-redirect.com"));
 			reply->setHttpStatusCode(200, "OK");
 		}
 		else
