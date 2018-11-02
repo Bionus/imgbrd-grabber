@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6.0)
+cmake_minimum_required(VERSION 3.2)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -75,11 +75,21 @@ install(DIRECTORY release/ DESTINATION share/Grabber/
 		PATTERN "*.exe" EXCLUDE)
 install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
 
+# Replicate the behavior of "list(FILTER ${LIST} EXCLUDE REGEX ${REGEX})" on older CMake versions
+function(listFilterRegex LIST REGEX)
+	foreach(ITEM ${${LIST}})
+		if(NOT ITEM MATCHES "${REGEX}")
+			list(APPEND OUTPUT ${ITEM})
+		endif()
+	endforeach()
+	set(${LIST} ${OUTPUT} PARENT_SCOPE)
+endfunction()
+
 # Transpile TS sites into JS
 set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
 file(GLOB_RECURSE SITES_TS_FILES "${SITES_DIR}/**.ts")
-list(FILTER SITES_TS_FILES EXCLUDE REGEX ".*.d.ts$")
-list(FILTER SITES_TS_FILES EXCLUDE REGEX "node_modules")
+listFilterRegex(SITES_TS_FILES ".*.d.ts$")
+listFilterRegex(SITES_TS_FILES "node_modules")
 add_custom_command(
 	OUTPUT NPM_modules
 	DEPENDS "${SITES_DIR}/package.json"
