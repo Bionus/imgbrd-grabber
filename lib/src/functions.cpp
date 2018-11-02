@@ -831,6 +831,21 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	return files;
 }
 
+QUrl removeCacheBuster(QUrl url)
+{
+	const QString query = url.query();
+	if (query.isEmpty())
+		return url;
+
+	// Only remove ?integer
+	bool ok;
+	query.toInt(&ok);
+	if (ok)
+		url.setQuery(QString());
+
+	return url;
+}
+
 bool isVariantEmpty(const QVariant &value)
 {
 	switch (value.type())

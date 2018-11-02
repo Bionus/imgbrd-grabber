@@ -25,21 +25,6 @@
 #define MAX_LOAD_FILESIZE (1024 * 1024 * 50)
 
 
-QUrl removeCacheUrl(QUrl url)
-{
-	const QString query = url.query();
-	if (query.isEmpty())
-		return url;
-
-	// Only remove ?integer
-	bool ok;
-	query.toInt(&ok);
-	if (ok)
-		url.setQuery(QString());
-
-	return url;
-}
-
 Image::Image()
 	: m_profile(nullptr), m_extensionRotator(nullptr)
 { }
@@ -278,10 +263,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	{ m_url = setExtension(m_url, QStringLiteral("gif")); }
 
 	// Remove ? in urls
-	m_url = removeCacheUrl(m_url);
-	m_fileUrl = removeCacheUrl(m_fileUrl);
-	m_sampleUrl = removeCacheUrl(m_sampleUrl);
-	m_previewUrl = removeCacheUrl(m_previewUrl);
+	m_url = removeCacheBuster(m_url);
+	m_fileUrl = removeCacheBuster(m_fileUrl);
+	m_sampleUrl = removeCacheBuster(m_sampleUrl);
+	m_previewUrl = removeCacheBuster(m_previewUrl);
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
 	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
@@ -855,20 +840,6 @@ bool Image::hasTag(QString tag) const
 		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0)
 			return true;
 	return false;
-}
-bool Image::hasAnyTag(const QStringList &tags) const
-{
-	for (const QString &tag : tags)
-		if (this->hasTag(tag))
-			return true;
-	return false;
-}
-bool Image::hasAllTags(const QStringList &tags) const
-{
-	for (const QString &tag : tags)
-		if (!this->hasTag(tag))
-			return false;
-	return true;
 }
 bool Image::hasUnknownTag() const
 {

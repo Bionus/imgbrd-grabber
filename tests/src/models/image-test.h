@@ -23,8 +23,6 @@ class ImageTest : public TestSuite
 		void testConstructor();
 		void testCopy();
 		void testHasTag();
-		void testHasAnyTag();
-		void testHasAllTags();
 		// void testMd5FromFile();
 		void testValue();
 		void testLoadDetails();

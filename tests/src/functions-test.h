@@ -33,6 +33,7 @@ class FunctionsTest : public TestSuite
 		void testFixCloudflareEmails();
 		void testGetFileMd5();
 		void testGetFilenameMd5();
+		void testRemoveCacheBuster();
 
 	protected:
 		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);

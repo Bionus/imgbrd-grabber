@@ -53,8 +53,6 @@ class Image : public QObject, public Downloadable
 		Site *parentSite() const;
 		ExtensionRotator *extensionRotator() const;
 		bool hasTag(QString tag) const;
-		bool hasAnyTag(const QStringList &tags) const;
-		bool hasAllTags(const QStringList &tags) const;
 		bool hasUnknownTag() const;
 		void setUrl(const QUrl &url);
 		void setSize(QSize size, Size s);

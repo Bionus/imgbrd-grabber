@@ -115,18 +115,6 @@ void ImageTest::testHasTag()
 	QCOMPARE(m_img->hasTag("tag7"), false);
 	QCOMPARE(m_img->hasTag("copyright3"), false);
 }
-void ImageTest::testHasAnyTag()
-{
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag1" << "tag2"), true);
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag7" << "tag1"), true);
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag4" << "tag7"), false);
-}
-void ImageTest::testHasAllTags()
-{
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag1" << "tag2"), true);
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag7" << "tag1"), false);
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag4" << "tag7"), false);
-}
 
 
 /*void ImageTest::testMd5FromFile()

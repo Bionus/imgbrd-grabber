@@ -348,6 +348,16 @@ void FunctionsTest::testGetFilenameMd5()
 	QCOMPARE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%/%md5%.%ext%"), QString("098f6bcd4621d373cade4e832627b4f6"));
 }
 
+void FunctionsTest::testRemoveCacheBuster()
+{
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com")), QUrl("https://test.com"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com?string")), QUrl("https://test.com?string"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com?1234")), QUrl("https://test.com"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path")), QUrl("https://test.com/path"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path?string")), QUrl("https://test.com/path?string"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path?1234")), QUrl("https://test.com/path"));
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected)
 {
