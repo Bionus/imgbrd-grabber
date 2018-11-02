@@ -1299,6 +1299,13 @@ void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 {
 	log(QStringLiteral("Saving sources..."));
 
+	// Reset page counter when adding a new source
+	for (Site *site : sel)
+	{
+		if (!m_selectedSources.contains(site))
+		{ ui_spinPage->setValue(1); }
+	}
+
 	QStringList sav;
 	sav.reserve(sel.count());
 	for (Site *enabled : sel)
