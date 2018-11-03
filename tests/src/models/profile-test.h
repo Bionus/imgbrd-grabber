@@ -27,14 +27,6 @@ class ProfileTest : public TestSuite
 		void testRemoveFavoriteThumb();
 #endif
 
-		// MD5s
-		void testLoadMd5s();
-		void testAddMd5();
-		void testUpdateMd5();
-		void testRemoveMd5();
-		void testMd5ActionDontKeepDeleted();
-		void testMd5ActionKeepDeleted();
-
 	private:
 		Profile *m_profile;
 		QList<QDateTime> m_dates;

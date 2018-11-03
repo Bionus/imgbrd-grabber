@@ -11,6 +11,7 @@
 
 
 class Commands;
+class Md5Database;
 class QSettings;
 class Site;
 class Source;
@@ -99,7 +100,7 @@ class Profile : public QObject
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
 		Blacklist m_blacklist;
-		QHash<QString, QString> m_md5s;
+		Md5Database *m_md5s;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;
 };

@@ -7,15 +7,16 @@
 #include "commands/commands.h"
 #include "functions.h"
 #include "models/favorite.h"
+#include "models/md5-database.h"
 #include "models/site.h"
 #include "models/source.h"
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr)
+	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(std::move(path))
@@ -102,15 +103,7 @@ Profile::Profile(QString path)
 	}
 
 	// Load MD5s
-	QFile fileMD5(m_path + "/md5s.txt");
-	if (fileMD5.open(QFile::ReadOnly | QFile::Text))
-	{
-		QString line;
-		while (!(line = fileMD5.readLine()).isEmpty())
-			m_md5s.insert(line.left(32), line.mid(32).trimmed());
-
-		fileMD5.close();
-	}
+	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
 	QFile fileAutoComplete(m_path + "/words.txt");
@@ -173,16 +166,7 @@ void Profile::sync()
 	syncIgnored();
 
 	// MD5s
-	QFile fileMD5(m_path + "/md5s.txt");
-	if (fileMD5.open(QFile::WriteOnly | QFile::Truncate))
-	{
-		QStringList md5s = m_md5s.keys();
-		QStringList paths = m_md5s.values();
-		for (int i = 0; i < md5s.size(); i++)
-			fileMD5.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
-
-		fileMD5.close();
-	}
+	m_md5s->sync();
 
 	// Custom auto-complete
 	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
@@ -344,25 +328,7 @@ void Profile::removeIgnored(const QString &tag)
 
 QPair<QString, QString> Profile::md5Action(const QString &md5)
 {
-	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
-	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
-
-	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
-	QString path = contains ? m_md5s[md5] : QString();
-	const bool exists = contains && QFile::exists(path);
-
-	if (contains && !exists)
-	{
-		if (!keepDeleted)
-		{
-			removeMd5(md5);
-			path = QString();
-		}
-		else
-		{ action = "ignore"; }
-	}
-
-	return QPair<QString, QString>(action, path);
+	return m_md5s->action(md5);
 }
 
 /**
@@ -372,15 +338,7 @@ QPair<QString, QString> Profile::md5Action(const QString &md5)
  */
 QString Profile::md5Exists(const QString &md5)
 {
-	if (m_md5s.contains(md5))
-	{
-		if (QFile::exists(m_md5s[md5]))
-			return m_md5s[md5];
-
-		if (!m_settings->value("Save/keepDeletedMd5", false).toBool())
-			removeMd5(md5);
-	}
-	return QString();
+	return m_md5s->exists(md5);
 }
 
 /**
@@ -390,8 +348,7 @@ QString Profile::md5Exists(const QString &md5)
  */
 void Profile::addMd5(const QString &md5, const QString &path)
 {
-	if (!md5.isEmpty())
-	{ m_md5s.insert(md5, path); }
+	m_md5s->add(md5, path);
 }
 
 /**
@@ -401,7 +358,7 @@ void Profile::addMd5(const QString &md5, const QString &path)
  */
 void Profile::setMd5(const QString &md5, const QString &path)
 {
-	m_md5s[md5] = path;
+	m_md5s->set(md5, path);
 }
 
 /**
@@ -410,7 +367,7 @@ void Profile::setMd5(const QString &md5, const QString &path)
  */
 void Profile::removeMd5(const QString &md5)
 {
-	m_md5s.remove(md5);
+	m_md5s->remove(md5);
 }
 
 
