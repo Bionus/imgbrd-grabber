@@ -73,7 +73,6 @@ class SearchTab : public QWidget
 		void setEndlessLoadingMode(bool enabled);
 		void toggleSource(const QString &url);
 		void setFavoriteImage(const QString &name);
-		void openInNewTab(const QString &tag);
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);

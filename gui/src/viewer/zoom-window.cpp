@@ -26,6 +26,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "settings/options-window.h"
+#include "tabs/search-tab.h"
 #include "tag-context-menu.h"
 #include "tags/tag.h"
 #include "tags/tag-stylist.h"
@@ -35,8 +36,8 @@
 #include "viewer/details-window.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent)
-	: QWidget(nullptr, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
+ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
+	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	connect(parent, &MainWindow::destroyed, this, &QWidget::deleteLater);
@@ -349,7 +350,7 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 
 void ZoomWindow::openInNewTab()
 {
-	emit linkMiddleClicked(m_link);
+	m_parent->addTab(m_link, false, true, m_tab);
 }
 void ZoomWindow::setfavorite()
 {

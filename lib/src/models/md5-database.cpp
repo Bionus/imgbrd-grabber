@@ -46,6 +46,7 @@ void Md5Database::flush()
 		fileMD5.close();
 	}
 
+	m_pendingAdd.clear();
 	emit flushed();
 }
 

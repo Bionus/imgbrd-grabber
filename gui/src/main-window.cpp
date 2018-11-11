@@ -453,8 +453,13 @@ void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool backgr
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
 	// TODO(Bionus): remove this and always pass it when necessary
-	if (source == nullptr && m_tabs.size() > ui->tabWidget->currentIndex())
-	{ source = m_tabs[ui->tabWidget->currentIndex()]; }
+	if (source == nullptr || !m_tabs.contains(source))
+	{
+		if (m_tabs.size() > ui->tabWidget->currentIndex())
+		{ source = m_tabs[ui->tabWidget->currentIndex()]; }
+		else
+		{ source = nullptr; }
+	}
 
 	if (source != nullptr)
 	{

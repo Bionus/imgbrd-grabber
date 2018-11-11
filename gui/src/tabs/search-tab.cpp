@@ -1210,9 +1210,8 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 		return;
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent, this);
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-	connect(zoom, SIGNAL(linkMiddleClicked(QString)), this, SLOT(openInNewTab(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 	zoom->show();
 
@@ -1520,8 +1519,6 @@ void SearchTab::setFavoriteImage(const QString &name)
 		}
 	}
 }
-void SearchTab::openInNewTab(const QString &tag)
-{ m_parent->addTab(tag, false, true, this); }
 
 QList<Site*> SearchTab::sources()
 { return m_selectedSources; }

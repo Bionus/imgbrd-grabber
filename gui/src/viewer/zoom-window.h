@@ -22,6 +22,7 @@ class DetailsWindow;
 class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
+class SearchTab;
 
 class ZoomWindow : public QWidget
 {
@@ -49,7 +50,7 @@ class ZoomWindow : public QWidget
 			PendingOpen,
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -127,6 +128,7 @@ class ZoomWindow : public QWidget
 
 	private:
 		MainWindow *m_parent;
+		SearchTab *m_tab;
 		Profile *m_profile;
 		QList<Favorite> &m_favorites;
 		QStringList &m_viewItLater;
