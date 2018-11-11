@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPair>
 #include <QString>
+#include <QTimer>
 
 
 class QSettings;
@@ -24,10 +25,18 @@ class Md5Database : public QObject
 		void set(const QString &md5, const QString &path);
 		void remove(const QString &md5);
 
+	protected slots:
+		void flush();
+
+	signals:
+		void flushed();
+
 	private:
 		QString m_path;
 		QSettings *m_settings;
 		QHash<QString, QString> m_md5s;
+		QTimer m_flushTimer;
+		QHash<QString, QString> m_pendingAdd;
 };
 
 #endif // MD5_DATABASE_H

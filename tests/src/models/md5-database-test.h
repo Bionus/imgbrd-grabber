@@ -14,7 +14,9 @@ class Md5DatabaseTest : public TestSuite
 		void cleanup();
 
 		void testLoad();
-		void testAdd();
+		void testAddSync();
+		void testAddFlush();
+		void testAddFlushOnlyOnce();
 		void testUpdate();
 		void testRemove();
 		void testActionDontKeepDeleted();

@@ -4,8 +4,9 @@
 
 
 Md5Database::Md5Database(QString path, QSettings *settings)
-	: m_path(std::move(path)), m_settings(settings)
+	: m_path(std::move(path)), m_settings(settings), m_flushTimer(this)
 {
+	// Read all MD5 from the database and load them in memory
 	QFile fileMD5(m_path);
 	if (fileMD5.open(QFile::ReadOnly | QFile::Text))
 	{
@@ -15,6 +16,11 @@ Md5Database::Md5Database(QString path, QSettings *settings)
 
 		fileMD5.close();
 	}
+
+	// Connect the timer to the flush slot
+	m_flushTimer.setSingleShot(true);
+	m_flushTimer.setInterval(m_settings->value("md5_flush_interval", 1000).toInt());
+	connect(&m_flushTimer, &QTimer::timeout, this, &Md5Database::flush);
 }
 
 Md5Database::~Md5Database()
@@ -23,19 +29,39 @@ Md5Database::~Md5Database()
 }
 
 
+/**
+ * Appends the newly-added MD5s to the MD5 file.
+ */
+void Md5Database::flush()
+{
+	if (m_path.isEmpty())
+		return;
+
+	QFile fileMD5(m_path);
+	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Append))
+	{
+		for (auto it = m_pendingAdd.begin(); it != m_pendingAdd.end(); ++it)
+			fileMD5.write(QString(it.key() + it.value() + "\n").toUtf8());
+
+		fileMD5.close();
+	}
+
+	emit flushed();
+}
+
+/**
+ * Rewrites the whole contents of the MD5 file with the current database.
+ */
 void Md5Database::sync()
 {
 	if (m_path.isEmpty())
 		return;
 
-	// MD5s
 	QFile fileMD5(m_path);
-	if (fileMD5.open(QFile::WriteOnly | QFile::Truncate))
+	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Truncate))
 	{
-		QStringList md5s = m_md5s.keys();
-		QStringList paths = m_md5s.values();
-		for (int i = 0; i < md5s.size(); i++)
-			fileMD5.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
+		for (auto it = m_md5s.begin(); it != m_md5s.end(); ++it)
+			fileMD5.write(QString(it.key() + it.value() + "\n").toUtf8());
 
 		fileMD5.close();
 	}
@@ -90,7 +116,18 @@ QString Md5Database::exists(const QString &md5)
 void Md5Database::add(const QString &md5, const QString &path)
 {
 	if (!md5.isEmpty())
-	{ m_md5s.insert(md5, path); }
+	{
+		m_md5s.insert(md5, path);
+
+		m_pendingAdd.insert(md5, path);
+		if (m_pendingAdd.count() >= 100)
+		{
+			m_flushTimer.stop();
+			flush();
+		}
+		else
+		{ m_flushTimer.start(); }
+	}
 }
 
 /**
