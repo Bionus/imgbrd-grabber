@@ -974,8 +974,8 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	auto imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, getBlacklisted, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &DownloadsTab::getAllGetImageSaved, Qt::UniqueConnection);
 	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &DownloadsTab::getAllProgress, Qt::UniqueConnection);
-	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
+	imgDownloader->save();
 }
 
 void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QList<ImageSaveResult> result)
