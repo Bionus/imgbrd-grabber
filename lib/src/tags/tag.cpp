@@ -64,6 +64,8 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type.contains(", "))
 		type = type.split(", ").at(0).trimmed();
 
+	if (type == QLatin1String("idol"))
+		return QStringLiteral("model");
 	if (type == QLatin1String("series"))
 		return QStringLiteral("copyright");
 	if (type == QLatin1String("mangaka"))
