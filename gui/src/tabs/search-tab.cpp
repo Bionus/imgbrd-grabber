@@ -1499,7 +1499,10 @@ QList<Site*> SearchTab::loadSites() const
 
 
 void SearchTab::setSources(const QList<Site*> &sources)
-{ m_selectedSources = sources; }
+{
+	m_selectedSources = sources;
+	updateCheckboxes();
+}
 void SearchTab::toggleSource(const QString &url)
 {
 	Site *site = m_sites.value(url);
