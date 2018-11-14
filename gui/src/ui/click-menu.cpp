@@ -8,7 +8,7 @@ ClickMenu::ClickMenu(QWidget *parent)
 
 void ClickMenu::mouseReleaseEvent(QMouseEvent *event)
 {
-	QAction *action = actionAt(event->pos());
+	QAction *action = activeAction();
 	if (action == nullptr) {
 		QMenu::mouseReleaseEvent(event);
 		return;
