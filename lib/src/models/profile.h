@@ -71,7 +71,6 @@ class Profile : public QObject
 		QStringList &getIgnored();
 		Commands &getCommands();
 		QStringList &getAutoComplete();
-		QStringList &getCustomAutoComplete();
 		Blacklist &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;

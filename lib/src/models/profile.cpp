@@ -142,6 +142,14 @@ Profile::Profile(QString path)
 
 		fileBlacklist.close();
 	}
+
+	// Complete auto-complete
+	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());
+	m_autoComplete.append(m_customAutoComplete);
+	for (const Favorite &fav : qAsConst(m_favorites))
+		m_autoComplete.append(fav.getName());
+	m_autoComplete.removeDuplicates();
+	m_autoComplete.sort();
 }
 
 Profile::~Profile()
@@ -272,8 +280,12 @@ void Profile::purgeTemp(int maxAge) const
 
 void Profile::addFavorite(const Favorite &fav)
 {
-	m_favorites.removeAll(fav);
+	const int already = m_favorites.removeAll(fav);
 	m_favorites.append(fav);
+
+	if (already == 0) {
+		m_autoComplete.append(fav.getName());
+	}
 
 	syncFavorites();
 	emit favoritesChanged();
@@ -417,7 +429,6 @@ QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
 Commands &Profile::getCommands() { return *m_commands; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
-QStringList &Profile::getCustomAutoComplete() { return m_customAutoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }

@@ -40,15 +40,6 @@ SearchTab::SearchTab(Profile *profile, MainWindow *parent)
 	m_checkboxesSignalMapper = new QSignalMapper(this);
 	connect(m_checkboxesSignalMapper, SIGNAL(mapped(QString)), this, SLOT(toggleSource(QString)));
 
-	// Auto-complete list
-	m_completion.append(profile->getAutoComplete());
-	m_completion.append(profile->getCustomAutoComplete());
-
-	// Favorite tags
-	m_completion.reserve(m_completion.count() + m_favorites.count());
-	for (const Favorite &fav : qAsConst(m_favorites))
-		m_completion.append(fav.getName());
-
 	// Modifiers
 	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
@@ -57,8 +48,8 @@ SearchTab::SearchTab(Profile *profile, MainWindow *parent)
 		m_completion.append(modifiers);
 	}
 
-	m_completion.removeDuplicates();
-	m_completion.sort();
+	// Auto-complete list
+	m_completion.append(profile->getAutoComplete());
 
 	setSelectedSources(m_settings);
 }

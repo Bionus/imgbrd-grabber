@@ -17,10 +17,7 @@ AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent
 	ui->comboSites->addItems(keys);
 	ui->comboSites->setCurrentIndex(keys.indexOf(selected->url()));
 
-	QStringList completion;
-	completion.append(profile->getAutoComplete());
-	completion.append(profile->getCustomAutoComplete());
-	auto *completer = new QCompleter(completion, this);
+	auto *completer = new QCompleter(profile->getAutoComplete(), this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 
 	m_lineTags = new TextEdit(profile, this);
