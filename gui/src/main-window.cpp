@@ -365,7 +365,11 @@ void MainWindow::initialLoginsFinished()
 void MainWindow::initialLoginsDone()
 {
 	if (m_restore)
-	{ loadTabs(m_profile->getPath() + "/tabs.txt"); }
+	{
+		if (QFile::exists(m_profile->getPath() + "/tabs.txt"))
+		{ QFile::rename(m_profile->getPath() + "/tabs.txt", m_profile->getPath() + "/tabs.json"); }
+		loadTabs(m_profile->getPath() + "/tabs.json");
+	}
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
@@ -494,7 +498,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 		ui->tabWidget->setCurrentIndex(index);
 
 	if (save)
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 }
 
 bool MainWindow::saveTabs(const QString &filename)
@@ -529,7 +533,7 @@ void MainWindow::updateTabs()
 {
 	if (m_loaded)
 	{
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 	}
 }
 void MainWindow::tabClosed(SearchTab *tab)
@@ -764,7 +768,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 
 	log(QStringLiteral("Saving..."), Logger::Debug);
 		m_downloadsTab->saveLinkList(m_profile->getPath() + "/restore.igl");
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 		m_settings->setValue("state", saveState());
 		m_settings->setValue("geometry", saveGeometry());
 		m_settings->setValue("crashed", false);
