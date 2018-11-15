@@ -232,13 +232,14 @@ void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 
 void FavoritesTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_currentTags = tags;
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 
 void FavoritesTab::getPage()

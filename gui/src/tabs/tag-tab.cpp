@@ -156,13 +156,14 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 
 void TagTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_search->setText(tags);
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 
 void TagTab::getPage()

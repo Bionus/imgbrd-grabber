@@ -168,13 +168,14 @@ void PoolTab::getAll()
 
 void PoolTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_search->setText(tags);
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 void PoolTab::setPool(int id, const QString &site)
 {

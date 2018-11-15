@@ -153,12 +153,12 @@ void GalleryTab::setTags(const QString &tags, bool preload)
 {
 	Q_UNUSED(tags);
 
-	activateWindow();
-
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 
 void GalleryTab::focusSearch()
