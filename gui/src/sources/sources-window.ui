@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SourcesWindow</class>
+ <widget class="QDialog" name="SourcesWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>315</width>
+    <height>557</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Sources</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources/resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="text">
+      <string>Check all</string>
+     </property>
+     <property name="tristate">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutPresets" stretch="1,0">
+     <item>
+      <widget class="QComboBox" name="comboPresets"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="layoutPresetsButtons">
+       <property name="spacing">
+        <number>3</number>
+       </property>
+       <item>
+        <widget class="QToolButton" name="buttonPresetSave">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetEdit">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/edit.png</normaloff>:/images/icons/edit.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetDelete">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/remove.png</normaloff>:/images/icons/remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetAdd">
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/add.png</normaloff>:/images/icons/add.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>297</width>
+        <height>441</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="buttonAdd">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
+        <string>Ok</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>checkBox</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonOk</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../resources/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>546</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>valid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>304</x>
+     <y>546</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>217</x>
+     <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>addSite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>546</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>50</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboPresets</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>selectPreset(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>34</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPresetSave</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>savePreset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>151</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPresetEdit</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>editPreset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPresetDelete</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>deletePreset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPresetAdd</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>addPreset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>289</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>288</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>valid()</slot>
+  <slot>checkAll(int)</slot>
+  <slot>addSite()</slot>
+  <slot>selectPreset(QString)</slot>
+  <slot>addPreset()</slot>
+  <slot>deletePreset()</slot>
+  <slot>editPreset()</slot>
+  <slot>savePreset()</slot>
+ </slots>
+</ui>

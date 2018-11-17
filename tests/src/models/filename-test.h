@@ -1,12 +1,17 @@
 #ifndef FILENAME_TEST_H
 #define FILENAME_TEST_H
 
+#include <QMap>
+#include <QString>
+#include <QStringList>
 #include "test-suite.h"
-#include "models/filename.h"
-#include "models/source.h"
-#include "models/site.h"
-#include "models/image.h"
 
+
+class Image;
+class Profile;
+class QSettings;
+class Site;
+class Source;
 
 class FilenameTest : public TestSuite
 {
@@ -32,6 +37,7 @@ class FilenameTest : public TestSuite
 		void testPathSimpleJavascript();
 		void testPathJavascriptToken();
 		void testPathJavascriptArray();
+		void testPathJavascriptDate();
 		void testPathInvalidJavascript();
 		void testExpandTagSimple();
 		void testExpandTagWithInvalidCharacter();
@@ -59,6 +65,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumAboveTen();
 		void testPathOptionSort();
 		void testPathSpecies();
+		void testPathMeta();
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();
@@ -68,20 +75,23 @@ class FilenameTest : public TestSuite
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();
+		void testConditionalsMultipleTags();
 		void testConditionalsToken();
+		void testConditionalsMeta();
 		void testConditionalsCustom();
 		void testConditionalsJavascript();
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();
 		void testFilenameWithMultipleUnderscores();
+		void testNeedTemporaryFile();
 		void testNeedExactTags();
 		void testEscapeMethod();
 
 	protected:
-		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertExpand(QString format, QString expected);
+		void assertPath(const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertExpand(const QString &format, const QString &expected);
 
 	private:
 		Profile *m_profile;
@@ -89,7 +99,7 @@ class FilenameTest : public TestSuite
 		Source *m_source;
 		Site *m_site;
 		Image *m_img;
-		QMap<QString,QString> m_details;
+		QMap<QString, QString> m_details;
 };
 
 #endif // FILENAME_TEST_H

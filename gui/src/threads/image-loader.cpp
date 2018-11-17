@@ -1,7 +1,8 @@
-#include "image-loader.h"
+#include "threads/image-loader.h"
+#include <QPixmap>
 
 
-ImageLoader::ImageLoader(QObject* parent)
+ImageLoader::ImageLoader(QObject *parent)
 	: QObject(parent)
 { }
 

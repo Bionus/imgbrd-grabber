@@ -1,10 +1,10 @@
 #ifndef SOURCE_GUESSER_H
 #define SOURCE_GUESSER_H
 
-#include <QObject>
 #include <QList>
 #include <QMap>
-#include <QUrl>
+#include <QObject>
+#include <QString>
 
 
 class CustomNetworkAccessManager;

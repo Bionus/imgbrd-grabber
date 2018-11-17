@@ -1,10 +1,11 @@
+#include "utils/empty-dirs-fix/empty-dirs-fix-2.h"
 #include <QMessageBox>
-#include "empty-dirs-fix-2.h"
-#include "ui_empty-dirs-fix-2.h"
+#include <ui_empty-dirs-fix-2.h>
 
 
 
-EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2)
+EmptyDirsFix2::EmptyDirsFix2(const QStringList &folders, QWidget *parent)
+	: QDialog(parent), ui(new Ui::EmptyDirsFix2)
 {
 	ui->setupUi(this);
 
@@ -29,8 +30,9 @@ bool EmptyDirsFix2::removeDir(QString path)
 
 void EmptyDirsFix2::deleteSel()
 {
-	QStringList folders;
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
+	QStringList folders;
+	folders.reserve(sel.count());
 	for (QListWidgetItem *s : sel)
 	{ folders.append(s->text()); }
 
@@ -40,7 +42,7 @@ void EmptyDirsFix2::deleteSel()
 		return;
 	}
 
-	int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
+	const int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes)
 	{
 		for (int i = 0; i < folders.size(); i++)

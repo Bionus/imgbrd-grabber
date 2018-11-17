@@ -1,18 +1,19 @@
 #ifndef IMAGE_LOADER_QUEUE_H
 #define IMAGE_LOADER_QUEUE_H
 
-#include <QPixmap>
 #include <QByteArray>
+#include <QObject>
 
 
 class ImageLoader;
+class QPixmap;
 
 class ImageLoaderQueue : public QObject
 {
 	Q_OBJECT
 
 	public:
-		explicit ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = Q_NULLPTR);
+		explicit ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = nullptr);
 
 	public slots:
 		void load(const QByteArray &data);

@@ -1,10 +1,11 @@
+#include "reverse-search/reverse-search-engine.h"
 #include <QDesktopServices>
-#include "reverse-search-engine.h"
+#include <QUrl>
 #include "functions.h"
 
 
 ReverseSearchEngine::ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order)
-	: m_icon(loadIcon(icon)), m_id(id), m_name(name), m_tpl(tpl), m_order(order)
+	: m_id(id), m_icon(loadIcon(icon)), m_name(std::move(name)), m_tpl(std::move(tpl)), m_order(order)
 {}
 
 QIcon ReverseSearchEngine::loadIcon(const QString &path) const
@@ -38,11 +39,11 @@ void ReverseSearchEngine::searchByUrl(const QUrl &url) const
 }
 
 
-int ReverseSearchEngine::id() const			{ return m_id;		}
-QIcon ReverseSearchEngine::icon() const		{ return m_icon;	}
-QString ReverseSearchEngine::name() const	{ return m_name;	}
-QString ReverseSearchEngine::tpl() const	{ return m_tpl;		}
-int ReverseSearchEngine::order() const		{ return m_order;	}
+int ReverseSearchEngine::id() const { return m_id; }
+QIcon ReverseSearchEngine::icon() const { return m_icon; }
+const QString &ReverseSearchEngine::name() const { return m_name; }
+const QString &ReverseSearchEngine::tpl() const { return m_tpl; }
+int ReverseSearchEngine::order() const { return m_order; }
 
-void ReverseSearchEngine::setId(int id)			{ m_id = id;		}
-void ReverseSearchEngine::setOrder(int order)	{ m_order = order;	}
+void ReverseSearchEngine::setId(int id) { m_id = id; }
+void ReverseSearchEngine::setOrder(int order) { m_order = order; }

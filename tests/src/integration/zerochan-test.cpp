@@ -1,6 +1,8 @@
-#include <QtTest>
-#include <QStringList>
 #include "zerochan-test.h"
+#include <QStringList>
+#include <QtTest>
+#include "models/image.h"
+#include "tags/tag.h"
 
 
 void ZerochanTest::testHtml()
@@ -8,7 +10,8 @@ void ZerochanTest::testHtml()
 	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html");
 
 	// Convert results
-	QList<int> ids;
+	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());
@@ -16,7 +19,7 @@ void ZerochanTest::testHtml()
 
 	// Check results
 	ids = ids.mid(0, 3);
-	QList<int> expected = QList<int>() << 2034435 << 2034432 << 2034431;
+	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
 	QCOMPARE(images.count(), 20);
 	QCOMPARE(ids, expected);
 }
@@ -26,7 +29,8 @@ void ZerochanTest::testRss()
 	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss");
 
 	// Convert results
-	QList<int> ids;
+	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());
@@ -34,10 +38,10 @@ void ZerochanTest::testRss()
 
 	// Check results
 	ids = ids.mid(0, 3);
-	QList<int> expected = QList<int>() << 2034435 << 2034432 << 2034431;
+	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
 	QCOMPARE(images.count(), 20);
 	QCOMPARE(ids, expected);
 }
 
 
-static ZerochanTest instance;
+QTEST_MAIN(ZerochanTest)

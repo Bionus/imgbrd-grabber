@@ -1,9 +1,13 @@
 #ifndef PROGRAM_UPDATER_H
 #define PROGRAM_UPDATER_H
 
-#include <QNetworkReply>
-#include "updater.h"
+#include <QByteArray>
+#include <QString>
+#include <QUrl>
+#include "updater/updater.h"
 
+
+class QNetworkReply;
 
 class ProgramUpdater : public Updater
 {
@@ -15,7 +19,7 @@ class ProgramUpdater : public Updater
 		QUrl latestUrl() const;
 
 	public slots:
-		void checkForUpdates() override;
+		void checkForUpdates() const override;
 		void downloadUpdate();
 
 	private slots:
@@ -23,15 +27,14 @@ class ProgramUpdater : public Updater
 		void downloadDone();
 
 	signals:
-		void finished(QString newVersion, bool available, QString changelog);
+		void finished(const QString &newVersion, bool available, const QString &changelog);
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-		void downloadFinished(QString path);
+		void downloadFinished(const QString &path);
 
 	private:
 		QString m_baseUrl;
-		QNetworkReply *m_checkForUpdatesReply;
 		QNetworkReply *m_downloadReply;
-		QString m_source;
+		QByteArray m_source;
 		QString m_newVersion;
 		QString m_updateFilename;
 };

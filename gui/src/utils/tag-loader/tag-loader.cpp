@@ -1,27 +1,28 @@
-#include "tag-loader.h"
-#include "ui_tag-loader.h"
+#include "utils/tag-loader/tag-loader.h"
 #include <QMessageBox>
+#include <ui_tag-loader.h>
+#include "helpers.h"
+#include "models/api/api.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "models/api.h"
-#include "tags/tag-api.h"
 #include "tags/tag.h"
-#include "helpers.h"
+#include "tags/tag-api.h"
+#include "tags/tag-database.h"
 
 
-TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
+TagLoader::TagLoader(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (const QString &key : sites.keys())
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
-		Site *site = sites[key];
+		Site *site = it.value();
 		if (!getCompatibleApis(site).isEmpty())
 		{
-			m_options.append(key);
-			keys.append(QString("%1 (%L2 tags)").arg(key).arg(site->tagDatabase()->count()));
+			m_options.append(it.key());
+			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
 		}
 	}
 
@@ -40,7 +41,7 @@ QList<Api*> TagLoader::getCompatibleApis(Site *site) const
 {
 	QList<Api*> apis;
 	for (Api *a : site->getApis())
-		if (a->contains("Urls/TagApi"))
+		if (a->canLoadTags())
 			apis.append(a);
 
 	return apis;

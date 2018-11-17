@@ -1,23 +1,25 @@
-#include "file-downloader.h"
+#include "downloader/file-downloader.h"
+#include <QNetworkReply>
+#include "functions.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 
 
-FileDownloader::FileDownloader(QObject *parent)
-	: QObject(parent), m_reply(Q_NULLPTR)
+FileDownloader::FileDownloader(bool allowHtmlResponses, QObject *parent)
+	: QObject(parent), m_allowHtmlResponses(allowHtmlResponses), m_reply(nullptr), m_writeError(false)
 {}
 
-bool FileDownloader::start(QNetworkReply *reply, QString path)
+bool FileDownloader::start(QNetworkReply *reply, const QString &path)
 {
 	return start(reply, QStringList(path));
 }
-bool FileDownloader::start(QNetworkReply *reply, QStringList paths)
+bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 {
-	m_file.setFileName(paths.takeFirst());
-	bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
+	m_copies = paths;
+	m_file.setFileName(m_copies.takeFirst());
+	const bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
 	m_writeError = false;
-	m_copies = paths;
 	m_reply = reply;
 
 	if (ok)
@@ -45,21 +47,27 @@ void FileDownloader::replyReadyRead()
 void FileDownloader::replyFinished()
 {
 	QByteArray data = m_reply->readAll();
-	qint64 written = m_file.write(data);
+	const qint64 written = m_file.write(data);
 	m_file.close();
 
-	bool failedLastWrite = data.length() > 0 && written < 0;
-	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite)
+	const bool failedLastWrite = data.length() > 0 && written < 0;
+	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
+	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite || invalidHtml)
 	{
 		m_file.remove();
 		if (failedLastWrite || m_writeError)
-			emit writeError();
+		{ emit writeError(); }
+		else if (invalidHtml)
+		{
+			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
+			emit networkError(QNetworkReply::ContentNotFoundError, "Invalid HTML content returned");
+		}
 		else
-			emit networkError(m_reply->error(), m_reply->errorString());
+		{ emit networkError(m_reply->error(), m_reply->errorString()); }
 		return;
 	}
 
-	for (const QString &copy : m_copies)
+	for (const QString &copy : qAsConst(m_copies))
 		m_file.copy(copy);
 
 	emit success();

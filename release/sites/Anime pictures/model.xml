@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Site>
-	<Name>Danbooru</Name>
+	<Name>Anime pictures</Name>
 	<Urls>
 		<Image>/pictures/download_image/{id}.jpg</Image>
 		<SampleReplaces>_cp.->_bp.&amp;_sp.->_bp.</SampleReplaces>

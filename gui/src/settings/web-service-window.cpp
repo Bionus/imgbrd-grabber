@@ -1,13 +1,13 @@
-#include "web-service-window.h"
-#include "ui_web-service-window.h"
-#include <QNetworkAccessManager>
+#include "settings/web-service-window.h"
 #include <QNetworkRequest>
-#include <QFile>
+#include <ui_web-service-window.h>
+#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "reverse-search/reverse-search-engine.h"
 
 
 WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent)
-	: QDialog(parent), ui(new Ui::WebServiceWindow), m_webService(webService)
+	: QDialog(parent), ui(new Ui::WebServiceWindow), m_webService(webService), m_faviconReply(nullptr)
 {
 	ui->setupUi(this);
 
@@ -19,7 +19,7 @@ WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidge
 		ui->lineUrl->setText(webService->tpl());
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(getFavicon()));
+	connect(this, &QDialog::accepted, this, &WebServiceWindow::getFavicon);
 }
 
 WebServiceWindow::~WebServiceWindow()
@@ -31,7 +31,7 @@ WebServiceWindow::~WebServiceWindow()
 void WebServiceWindow::getFavicon()
 {
 	QUrl url(ui->lineUrl->text());
-	QString favicon = url.scheme() + "://" + url.authority() + "/favicon.ico";
+	const QString favicon = url.scheme() + "://" + url.authority() + "/favicon.ico";
 
 	m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(favicon)));
 	connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
@@ -69,9 +69,9 @@ void WebServiceWindow::save()
 	}
 
 	// Emit the success signal
-	QString name = ui->lineName->text();
-	QString url = ui->lineUrl->text();
-	emit validated(ReverseSearchEngine(id, "", name, url, order), faviconData);
+	const QString name = ui->lineName->text();
+	const QString url = ui->lineUrl->text();
+	emit validated(ReverseSearchEngine(id, QString(), name, url, order), faviconData);
 
 	deleteLater();
 }

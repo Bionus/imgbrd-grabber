@@ -1,9 +1,12 @@
 #ifndef PROFILE_TEST_H
 #define PROFILE_TEST_H
 
+#include <QDateTime>
+#include <QList>
 #include "test-suite.h"
-#include "models/profile.h"
 
+
+class Profile;
 
 class ProfileTest : public TestSuite
 {
@@ -34,6 +37,7 @@ class ProfileTest : public TestSuite
 
 	private:
 		Profile *m_profile;
+		QList<QDateTime> m_dates;
 };
 
 #endif // PROFILE_TEST_H

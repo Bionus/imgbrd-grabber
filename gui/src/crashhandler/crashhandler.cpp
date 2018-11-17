@@ -1,4 +1,4 @@
-#if USE_BREAKPAD
+#if defined(USE_BREAKPAD)
 
 #include "crashhandler.h"
 #include <QDir>
@@ -26,12 +26,12 @@ class CrashHandlerPrivate
 	public:
 		CrashHandlerPrivate() { pHandler = NULL; }
 		~CrashHandlerPrivate() { delete pHandler; }
-		void InitCrashHandler(const QString& dumpPath);
-		static google_breakpad::ExceptionHandler* pHandler;
+		void InitCrashHandler(const QString &dumpPath);
+		static google_breakpad::ExceptionHandler *pHandler;
 		static bool bReportCrashesToSystem;
 };
 
-google_breakpad::ExceptionHandler* CrashHandlerPrivate::pHandler = NULL;
+google_breakpad::ExceptionHandler *CrashHandlerPrivate::pHandler = NULL;
 bool CrashHandlerPrivate::bReportCrashesToSystem = false;
 
 
@@ -71,7 +71,7 @@ bool DumpCallback(const char* _dump_dir,const char* _minidump_id,void *context, 
 		QFile f(savePath("lastdump"));
 		if (f.open(QFile::WriteOnly))
 		{
-			f.write(QDir::toNativeSeparators(dir+"/"+mid+".dmp").toLatin1());
+			f.write(QDir::toNativeSeparators(dir + "/" + mid + ".dmp").toLatin1());
 			f.close();
 		}
 	}
@@ -126,7 +126,7 @@ void CrashHandlerPrivate::InitCrashHandler(const QString& dumpPath)
 /* CrashHandler                                                         */
 /************************************************************************/
 
-CrashHandler* CrashHandler::instance()
+CrashHandler *CrashHandler::instance()
 {
 	static CrashHandler globalHandler;
 	return &globalHandler;
@@ -151,7 +151,7 @@ bool CrashHandler::writeMinidump()
 	return res;
 }
 
-void CrashHandler::Init( const QString& reportPath )
+void CrashHandler::Init( const QString &reportPath )
 { d->InitCrashHandler(reportPath); }
 
 #endif

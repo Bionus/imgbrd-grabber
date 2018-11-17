@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StartWindow</class>
+ <widget class="QDialog" name="StartWindow">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>395</width>
+    <height>224</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>First launch</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
+   <item>
+    <widget class="QLabel" name="welcomeLabel">
+     <property name="text">
+      <string>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="layoutSettings">
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelLanguage">
+       <property name="text">
+        <string>Language</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelFolder">
+       <property name="text">
+        <string>Folder</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="layoutFolder" stretch="1,0">
+       <item>
+        <widget class="QLineEdit" name="lineFolder"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonFolder">
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelFormat">
+       <property name="text">
+        <string>Format</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <layout class="QHBoxLayout" name="layoutFilename">
+       <item>
+        <widget class="QLineEdit" name="lineFilename"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonFilenamePlus">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelSource">
+       <property name="text">
+        <string>Source</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboLanguage"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboSource"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelHelp">
+     <property name="text">
+      <string>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="buttonOptions">
+       <property name="text">
+        <string>Options</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Ignore|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>comboLanguage</tabstop>
+  <tabstop>comboSource</tabstop>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>buttonFolder</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>buttonFilenamePlus</tabstop>
+  <tabstop>buttonOptions</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>StartWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>StartWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOptions</sender>
+   <signal>clicked()</signal>
+   <receiver>StartWindow</receiver>
+   <slot>openOptions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openOptions()</slot>
+ </slots>
+</ui>

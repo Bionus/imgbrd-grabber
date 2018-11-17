@@ -1,9 +1,11 @@
-#include "image-loader-queue.h"
-#include "image-loader.h"
+#include "threads/image-loader-queue.h"
+#include <QObject>
+#include <QPixmap>
+#include "threads/image-loader.h"
 
 
-ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject* parent)
-	: QObject(parent), m_waiting(false), m_cancelNext(false), m_hasNext(false), m_next(QByteArray())
+ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent)
+	: QObject(parent), m_next(QByteArray()), m_waiting(false), m_cancelNext(false), m_hasNext(false)
 {
 	connect(this, &ImageLoaderQueue::loadImage, imageLoader, &ImageLoader::load);
 	connect(imageLoader, &ImageLoader::finished, this, &ImageLoaderQueue::loadingSuccess);

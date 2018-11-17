@@ -1,20 +1,26 @@
 #ifndef PAGE_API_H
 #define PAGE_API_H
 
-#include <QMap>
-#include <QNetworkReply>
+#include <QList>
+#include <QObject>
+#include <QSharedPointer>
+#include <QUrl>
+#include "models/filtering/post-filter.h"
 #include "tags/tag.h"
 
 
-class Page;
 class Api;
-class Profile;
 class Image;
+class Page;
+class Profile;
+class QNetworkReply;
+class QTimer;
 class Site;
 
 class PageApi : public QObject
 {
 	Q_OBJECT
+	Q_ENUMS(LoadResult)
 
 	public:
 		enum LoadResult
@@ -23,65 +29,75 @@ class PageApi : public QObject
 			Error
 		};
 
-		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
-		void			setLastPage(Page *page);
-		void			load(bool rateLimit = false);
-		void			loadTags();
-		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-		QList<QSharedPointer<Image>> images();
-		bool			isImageCountSure();
-		bool			isPageCountSure();
-		int				imagesCount(bool guess = true);
-		int				pagesCount(bool guess = true);
-		QUrl			url();
-		QString			source();
-		QString			wiki();
-		QList<Tag>		tags();
-		QStringList		search();
-		QStringList		errors();
-		int				imagesPerPage();
-		int				highLimit();
-		int				page();
-		int				pageImageCount();
-		int				minId();
-		int				maxId();
-		void			setUrl(const QUrl &url);
-		QUrl			nextPage();
-		QUrl			prevPage();
+		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, PostFilter postFiltering = PostFilter(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
+		void setLastPage(Page *page);
+		const QList<QSharedPointer<Image>> &images() const;
+		bool isImageCountSure() const;
+		bool isPageCountSure() const;
+		int imagesCount(bool guess = true) const;
+		int maxImagesCount() const;
+		int pagesCount(bool guess = true) const;
+		int maxPagesCount() const;
+		const QUrl &url() const;
+		const QString &source() const;
+		const QString &wiki() const;
+		const QList<Tag> &tags() const;
+		const QStringList &search() const;
+		const QStringList &errors() const;
+		int imagesPerPage() const;
+		int highLimit() const;
+		bool hasNext() const;
+		int page() const;
+		int pageImageCount() const;
+		qulonglong minId() const;
+		qulonglong maxId() const;
+		const QUrl &nextPage() const;
+		const QUrl &prevPage() const;
+		bool isLoaded() const;
 
 	public slots:
+		void load(bool rateLimit = false, bool force = false);
+		void loadNow();
 		void parse();
-		void parseTags();
 		void abort();
-		void abortTags();
 		void clear();
 
 	signals:
 		void finishedLoading(PageApi*, LoadResult);
 		void finishedLoadingTags(PageApi*);
+		void httpsRedirect();
 
 	protected:
-		void parseImage(QMap<QString,QString> data, int position, QList<Tag> tags = QList<Tag>());
-		void parseNavigation(const QString &source);
+		bool addImage(const QSharedPointer<Image> &img);
 		void updateUrls();
+		void parseActual();
 		void setImageCount(int count, bool sure);
+		void setImageMaxCount(int maxCount);
 		void setPageCount(int count, bool sure);
+		void setReply(QNetworkReply *reply);
 
 	private:
-		Page			*m_parentPage;
-		Profile			*m_profile;
-		Site			*m_site;
-		Api				*m_api;
-		QStringList		m_search, m_postFiltering, m_errors;
-		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
-		bool			m_smart, m_isAltPage;
-		QString			m_format, m_source, m_wiki, m_originalUrl;
-		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
-		QList<QSharedPointer<Image>>	m_images;
-		QList<Tag>		m_tags;
-		QNetworkReply	*m_reply, *m_replyTags;
-		int				m_imagesCount, m_pagesCount, m_pageImageCount;
-		bool			m_imagesCountSafe, m_pagesCountSafe;
+		Page *m_parentPage;
+		Profile *m_profile;
+		Site *m_site;
+		Api *m_api;
+		QStringList m_search, m_errors;
+		PostFilter m_postFiltering;
+		int m_imagesPerPage, m_lastPage, m_page, m_blim, m_pool;
+		qulonglong m_lastPageMinId, m_lastPageMaxId;
+		bool m_smart, m_isAltPage;
+		QString m_format, m_source, m_wiki, m_originalUrl;
+		QUrl m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
+		QList<QSharedPointer<Image>> m_images;
+		QList<Tag> m_tags;
+		QNetworkReply *m_reply, *m_replyTags;
+		QTimer *m_replyTimer;
+		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
+		bool m_imagesCountSafe, m_pagesCountSafe;
+		bool m_loading = false;
+		bool m_loaded = false;
 };
+
+Q_DECLARE_METATYPE(PageApi::LoadResult)
 
 #endif // PAGE_API_H

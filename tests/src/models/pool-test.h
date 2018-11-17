@@ -2,7 +2,6 @@
 #define POOL_TEST_H
 
 #include "test-suite.h"
-#include "models/pool.h"
 
 
 class PoolTest : public TestSuite

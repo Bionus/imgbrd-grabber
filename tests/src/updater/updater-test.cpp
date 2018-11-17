@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "updater-test.h"
+#include <QtTest>
 
 
 void UpdaterTest::testCompareEqual()
@@ -55,4 +55,4 @@ void UpdaterTest::testCompareAlphaToOld()
 }
 
 
-static UpdaterTest instance;
+QTEST_MAIN(UpdaterTest)

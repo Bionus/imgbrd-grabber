@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Source status</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <h1>Source status</h1>
+            <div id="status"></div>
+        </div>
+
+        <script type="text/javascript">
+            $.ajax({
+                url: "result.json",
+                dataType: "json",
+                beforeSend: function(xhr) {
+                    xhr.overrideMimeType("text/json");
+                },
+                success: function(data) {
+                    var html = "";
+                    for (var source in data) {
+                        var sites = data[source];
+                        if (Object.keys(sites).length === 0) {
+                            continue;
+                        }
+
+                        html += "<h2>" + source + "</h2>";
+                        html += "<table>";
+
+                        var first = true;
+                        for (var site in sites) {
+                            var stts = data[source][site];
+
+                            if (first) {
+                                html += "<tr>";
+                                html += "<th></th>";
+                                for (var api in stts) {
+                                    html += "<th>" + api + "</th>";
+                                }
+                                html += "</tr>";
+                                first = false;
+                            }
+
+                            html += "<tr>";
+                            html += "<td>" + site + "</td>";
+                            for (var api in stts) {
+                                var state = stts[api];
+                                html += "<td>";
+                                if (typeof state !== "object") {
+                                    state = { status: state };
+                                }
+                                html += "<img src='img/" + state.status + ".png' " + (state.message && state.message.length > 0 ? "title='" + state.message + "' " : "") + "/>";
+                                html += "</td>";
+                            }
+                            html += "</tr>";
+                        }
+
+                        html += "</table>";
+                    }
+                    $("#status").html(html);
+                }
+            });
+        </script>
+    </body>
+</html>

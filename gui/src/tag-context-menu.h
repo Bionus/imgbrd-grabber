@@ -1,20 +1,21 @@
 #ifndef TAG_CONTEXT_MENU_H
 #define TAG_CONTEXT_MENU_H
 
+#include <QList>
 #include <QMenu>
-#include <QStringList>
+#include <QString>
 #include <QUrl>
-#include "models/profile.h"
-#include "models/image.h"
-#include "tags/tag.h"
 
+
+class Profile;
+class Tag;
 
 class TagContextMenu : public QMenu
 {
 	Q_OBJECT
 
 	public:
-		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = Q_NULLPTR);
+		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = nullptr);
 
 	protected slots:
 		void favorite();

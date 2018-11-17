@@ -1,6 +1,6 @@
-#include "qclosabletabwidget.h"
-#include <QTabBar>
+#include "ui/qclosabletabwidget.h"
 #include <QMouseEvent>
+#include <QTabBar>
 
 
 QClosableTabWidget::QClosableTabWidget(QWidget *parent)
@@ -13,10 +13,10 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 {
 	if (o == tabBar() && e->type() == QEvent::MouseButtonPress)
 	{
-		auto *mouseEvent = static_cast<QMouseEvent *>(e);
-		if (mouseEvent->button() == Qt::MiddleButton)
+		auto *mouseEvent = dynamic_cast<QMouseEvent*>(e);
+		if (mouseEvent != nullptr && mouseEvent->button() == Qt::MiddleButton)
 		{
-			int index = tabBar()->tabAt(mouseEvent->pos());
+			const int index = tabBar()->tabAt(mouseEvent->pos());
 			QWidget *w = widget(index);
 
 			// Non-closable tabs have a maximum width of 16777214 (default: 16777215)

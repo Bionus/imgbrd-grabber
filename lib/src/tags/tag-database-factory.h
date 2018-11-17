@@ -2,13 +2,14 @@
 #define TAG_DATABASE_FACTORY_H
 
 #include <QString>
-#include "tag-database.h"
 
+
+class TagDatabase;
 
 class TagDatabaseFactory
 {
 	public:
-                static TagDatabase *Create(QString directory);
+		static TagDatabase *Create(QString directory);
 };
 
 #endif // TAG_DATABASE_FACTORY_H

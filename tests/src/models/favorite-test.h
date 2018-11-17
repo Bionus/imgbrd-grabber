@@ -2,7 +2,6 @@
 #define FAVORITE_TEST_H
 
 #include "test-suite.h"
-#include "models/favorite.h"
 
 
 class FavoriteTest : public TestSuite
@@ -19,6 +18,7 @@ class FavoriteTest : public TestSuite
 		void testSetLastViewed();
 		void testGetImagePath();
 		void testSetImagePath();
+		void testGetMonitors();
 		void testEquals();
 		void testEqualsAll();
 		void testEqualsCase();
@@ -32,6 +32,9 @@ class FavoriteTest : public TestSuite
 #endif
 		void testToString();
 		void testFromString();
+		void testSortByNote();
+		void testSortByName();
+		void testSortByLastViewed();
 };
 
 #endif // FAVORITE_TEST_H

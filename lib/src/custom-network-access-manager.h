@@ -6,12 +6,18 @@
 #include <QString>
 
 
+class QNetworkReply;
+class QNetworkRequest;
+class QSslError;
+
 class CustomNetworkAccessManager : public QNetworkAccessManager
 {
+	Q_OBJECT
+
 	public:
-		explicit CustomNetworkAccessManager(QObject *parent = Q_NULLPTR);
+		explicit CustomNetworkAccessManager(QObject *parent = nullptr);
 		QNetworkReply *get(const QNetworkRequest &request);
-		void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
+		void sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors);
 
 		static QQueue<QString> NextFiles;
 };

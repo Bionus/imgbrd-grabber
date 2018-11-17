@@ -1,11 +1,12 @@
 #include "tag-database.h"
 #include <QFile>
-#include <QTextStream>
 #include <QStringList>
+#include <QTextStream>
+#include "tag-type.h"
 
 
 TagDatabase::TagDatabase(QString typeFile)
-	: m_typeFile(typeFile)
+	: m_typeFile(std::move(typeFile))
 {}
 
 bool TagDatabase::load()
@@ -37,7 +38,7 @@ void TagDatabase::loadTypes()
 	f.close();
 }
 
-QMap<int, TagType> TagDatabase::tagTypes() const
+const QMap<int, TagType> &TagDatabase::tagTypes() const
 {
 	return m_tagTypes;
 }

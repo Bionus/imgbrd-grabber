@@ -1,6 +1,7 @@
-#include "reverse-search-loader.h"
-#include "reverse-search-engine.h"
+#include "reverse-search/reverse-search-loader.h"
+#include <QSettings>
 #include "functions.h"
+#include "reverse-search/reverse-search-engine.h"
 
 
 ReverseSearchLoader::ReverseSearchLoader(QSettings *settings)
@@ -24,11 +25,12 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 
 	// Load groups
 	m_settings->beginGroup("WebServices");
-	for (const QString &group : m_settings->childGroups())
+	const QStringList &webGroups = m_settings->childGroups();
+	for (const QString &group : webGroups)
 	{
 		m_settings->beginGroup(group);
-		int id = group.toInt();
-		int order = m_settings->value("order").toInt();
+		const int id = group.toInt();
+		const int order = m_settings->value("order").toInt();
 		ret.insert(order, ReverseSearchEngine(id, savePath("webservices/" + group + ".ico"), m_settings->value("name").toString(), m_settings->value("url").toString(), order));
 		m_settings->endGroup();
 	}

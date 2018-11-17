@@ -1,0 +1,7 @@
+0,general
+1,idol
+3,copyright
+4,character
+5,photoset
+8,medium
+9,meta

@@ -1,4 +1,3 @@
-#include <QtTest>
 #include "tag-database-sqlite-test.h"
 #include "tags/tag-database-sqlite.h"
 
@@ -8,4 +7,4 @@ TagDatabaseSqliteTest::TagDatabaseSqliteTest()
 {}
 
 
-static TagDatabaseSqliteTest instance;
+QTEST_MAIN(TagDatabaseSqliteTest)

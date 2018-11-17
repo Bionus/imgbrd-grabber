@@ -1,31 +1,27 @@
 #ifndef TAG_TAB_H
 #define TAG_TAB_H
 
-#include <QWidget>
-#include <QMap>
-#include <QCalendarWidget>
 #include <QJsonObject>
-#include "search-tab.h"
+#include "tabs/search-tab.h"
 
 
 namespace Ui
 {
-	class tagTab;
+	class TagTab;
 }
 
 
-class mainWindow;
-class Downloader;
+class MainWindow;
 class TextEdit;
 
-class tagTab : public searchTab
+class TagTab : public SearchTab
 {
 	Q_OBJECT
 
 	public:
-		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~tagTab() override;
-		Ui::tagTab *ui;
+		explicit TagTab(Profile *profile, MainWindow *parent);
+		~TagTab() override;
+		Ui::TagTab *ui;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, bool preload = true);
@@ -35,14 +31,14 @@ class tagTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
+		void setTags(const QString &tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*) override;
+		void closeEvent(QCloseEvent *) override;
 		void on_buttonSearch_clicked();
 		void focusSearch() override;
 		void updateTitle() override;

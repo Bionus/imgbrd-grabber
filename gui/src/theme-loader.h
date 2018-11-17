@@ -2,7 +2,7 @@
 #define THEME_LOADER_H
 
 #include <QString>
-#include <QSettings>
+#include <QStringList>
 
 
 class ThemeLoader
@@ -10,7 +10,7 @@ class ThemeLoader
 	public:
 		explicit ThemeLoader(QString path);
 		QStringList getAllThemes() const;
-		bool setTheme(QString name);
+		bool setTheme(const QString &name);
 
 	private:
 		QString m_path;

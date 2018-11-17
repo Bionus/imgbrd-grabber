@@ -1,10 +1,11 @@
-#include "tag-database-in-memory.h"
+#include "tags/tag-database-in-memory.h"
 #include <QFile>
 #include <QTextStream>
+#include "tags/tag.h"
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(QString typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile)
+TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
+	: TagDatabase(typeFile), m_tagFile(std::move(tagFile))
 {}
 
 bool TagDatabaseInMemory::load()
@@ -57,8 +58,8 @@ bool TagDatabaseInMemory::save()
 
 	// Inverted tag type map to get the tag type ID from its name
 	QMap<QString, int> tagTypes;
-	for (int typeId : m_tagTypes.keys())
-		tagTypes.insert(m_tagTypes[typeId].name(), typeId);
+	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it)
+		tagTypes.insert(it.value().name(), it.key());
 
 	QHashIterator<QString, TagType> i(m_database);
 	while (i.hasNext())
@@ -66,7 +67,7 @@ bool TagDatabaseInMemory::save()
 		i.next();
 
 		TagType tagType = i.value();
-		int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
+		const int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
 
 		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
 	}
@@ -82,7 +83,7 @@ void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
 		m_database.insert(tag.text(), tag.type());
 }
 
-QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(QStringList tags) const
+QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
 	for (const QString &tag : tags)

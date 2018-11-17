@@ -2,10 +2,10 @@
 #define TAG_API_TEST_H
 
 #include "test-suite.h"
-#include "tags/tag-api.h"
-#include "models/site.h"
-#include <QMap>
 
+
+class Profile;
+class Site;
 
 class TagApiTest : public TestSuite
 {
@@ -18,7 +18,8 @@ class TagApiTest : public TestSuite
 		void testBasic();
 
 	private:
-		Site* m_site;
+		Profile *m_profile;
+		Site *m_site;
 };
 
 #endif // TAG_API_TEST_H

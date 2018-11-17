@@ -2,8 +2,7 @@
 #define UPDATE_DIALOG_H
 
 #include <QDialog>
-#include <QNetworkReply>
-#include <QWidget>
+#include <QString>
 #include "updater/program-updater.h"
 
 
@@ -17,7 +16,7 @@ class UpdateDialog : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = Q_NULLPTR);
+		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = nullptr);
 		~UpdateDialog() override;
 
 	signals:
@@ -30,15 +29,15 @@ class UpdateDialog : public QDialog
 		void resizeToFit();
 
 	private slots:
-		void checkForUpdatesDone(QString newVersion, bool available, QString changelog);
+		void checkForUpdatesDone(const QString &newVersion, bool available, const QString &changelog);
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-		void downloadFinished(QString path);
+		void downloadFinished(const QString &path);
 
 	private:
-		Ui::UpdateDialog	*ui;
-		bool				*m_shouldQuit;
-		QWidget				*m_parent;
-		ProgramUpdater		m_updater;
+		Ui::UpdateDialog *ui;
+		bool *m_shouldQuit;
+		QWidget *m_parent;
+		ProgramUpdater m_updater;
 };
 
 #endif // UPDATE_DIALOG_H

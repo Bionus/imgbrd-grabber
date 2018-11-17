@@ -9,10 +9,11 @@ class QCustomNetworkReply : public QNetworkReply
     Q_OBJECT
 
 	public:
-		explicit QCustomNetworkReply(QObject *parent = Q_NULLPTR);
+		explicit QCustomNetworkReply(QObject *parent = nullptr);
 		~QCustomNetworkReply() override;
 
 		void setHttpStatusCode(int code, const QByteArray &statusText = QByteArray());
+		void setNetworkError(QNetworkReply::NetworkError errorCode, const QString &errorString = QString());
 		void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
 		void setContentType(const QByteArray &contentType);
 

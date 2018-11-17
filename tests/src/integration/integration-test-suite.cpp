@@ -1,17 +1,26 @@
-#include <QtTest>
-#include <QStringList>
 #include "integration-test-suite.h"
+#include <QStringList>
+#include <QtTest>
+#include "custom-network-access-manager.h"
+#include "downloader/downloader.h"
+#include "logger.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 #include "tags/tag-api.h"
-#include "functions.h"
 
 
 void IntegrationTestSuite::initTestCase()
 {
 	Logger::getInstance().setLogFile("tests/test_log.log");
+
 	m_downloader = nullptr;
+	m_profile = nullptr;
+	m_source = nullptr;
+	m_site = nullptr;
 }
 
-QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags, QString file)
+QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(site);
 	setupSite(site, source);
@@ -20,7 +29,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -30,28 +39,31 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.sync();
 	m_filesToRemove.append(settings.fileName());
 
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+
 	QList<Site*> sites;
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
-	sites.append(ste);
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
+	sites.append(m_site);
 
 	QList<Image*> result;
-	m_downloader = new Downloader(&profile,
-								  tags.split(' '),
-								  QStringList(),
-								  sites,
-								  1,
-								  20,
-								  20,
-								  ".",
-								  "%md5%.%ext%",
-								  "",
-								  "",
-								  false,
-								  QStringList(),
-								  false,
-								  0,
-								  "%tag %count %type");
+	m_downloader = new Downloader(m_profile,
+		tags.split(' '),
+		QStringList(),
+		sites,
+		1,
+		20,
+		20,
+		".",
+		"%md5%.%ext%",
+		"",
+		"",
+		false,
+		Blacklist(),
+		false,
+		0,
+		"%tag %count %type");
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
@@ -65,7 +77,8 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
-	for (QVariant variant : variants)
+	result.reserve(variants.count());
+	for (const QVariant &variant : variants)
 	{
 		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
 		result.append(img.data());
@@ -73,13 +86,12 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags, QString file)
+QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	setupSource(site);
+	setupSite(site, source);
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -93,28 +105,31 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+
 	QList<Site*> sites;
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
-	sites.append(ste);
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
+	sites.append(m_site);
 
 	QList<Tag> result;
-	m_downloader = new Downloader(&profile,
-								  tags.split(' '),
-								  QStringList(),
-								  sites,
-								  1,
-								  20,
-								  20,
-								  ".",
-								  "%md5%.%ext%",
-								  "",
-								  "",
-								  false,
-								  QStringList(),
-								  false,
-								  0,
-								  "%tag %count %type");
+	m_downloader = new Downloader(m_profile,
+		tags.split(' '),
+		QStringList(),
+		sites,
+		1,
+		20,
+		20,
+		".",
+		"%md5%.%ext%",
+		"",
+		"",
+		false,
+		Blacklist(),
+		false,
+		0,
+		"%tag %count %type");
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
@@ -128,7 +143,8 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
-	for (QVariant variant : variants)
+	result.reserve(variants.count());
+	for (const QVariant &variant : variants)
 	{
 		Tag tag = variant.value<Tag>();
 		result.append(tag);
@@ -136,13 +152,12 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString format, QString file)
+QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	setupSource(site);
+	setupSite(site, source);
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -156,11 +171,14 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
-	ste->setAutoLogin(false);
+	m_profile = new Profile("tests/resources/");
+	m_source = new Source(m_profile, "tests/resources/sites/" + site);
+
+	m_site = new Site(source, m_source);
+	m_site->setAutoLogin(false);
 
 	QList<Tag> result;
-	TagApi tagApi(&profile, ste, ste->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
 
 	// Wait for tag api
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
@@ -184,8 +202,23 @@ void IntegrationTestSuite::cleanup()
 		m_downloader->deleteLater();
 		m_downloader = nullptr;
 	}
+	if (m_profile != nullptr)
+	{
+		delete m_profile;
+		m_profile = nullptr;
+	}
+	if (m_source != nullptr)
+	{
+		delete m_source;
+		m_source = nullptr;
+	}
+	if (m_site != nullptr)
+	{
+		delete m_site;
+		m_site = nullptr;
+	}
 
-	for (QString file : m_filesToRemove)
+	for (const QString &file : m_filesToRemove)
 	{ QFile(file).remove(); }
 	m_filesToRemove.clear();
 }

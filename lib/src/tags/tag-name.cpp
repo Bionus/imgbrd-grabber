@@ -1,12 +1,8 @@
-#include "tag-name.h"
-#include <QMap>
+#include "tags/tag-name.h"
 
-
-TagName::TagName()
-{}
 
 TagName::TagName(QString name, TagNameFormat format)
-	: m_name(name), m_format(format)
+	: m_name(std::move(name)), m_format(std::move(format))
 {
 	m_normalized = normalized();
 }

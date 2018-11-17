@@ -1,10 +1,13 @@
 #ifndef TAG_STYLIST_TEST_H
 #define TAG_STYLIST_TEST_H
 
+#include <QString>
+#include <QStringList>
 #include "test-suite.h"
-#include "tags/tag-stylist.h"
-#include <QSettings>
 
+
+class Profile;
+class QSettings;
 
 class TagStylistTest : public TestSuite
 {
@@ -20,6 +23,12 @@ class TagStylistTest : public TestSuite
 		void testFavorite();
 		void testKeptForLater();
 		void testWithCount();
+		void testSortName();
+		void testSortType();
+		void testSortCount();
+
+	protected:
+		void assertSort(const QString &sort, const QStringList &expectedOrder);
 
 	private:
 		QSettings *m_settings;

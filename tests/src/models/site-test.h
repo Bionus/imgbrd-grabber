@@ -2,10 +2,12 @@
 #define SITE_TEST_H
 
 #include "test-suite.h"
-#include "models/source.h"
-#include "models/site.h"
-#include <QSettings>
 
+
+class Profile;
+class QSettings;
+class Site;
+class Source;
 
 class SiteTest : public TestSuite
 {
@@ -17,9 +19,6 @@ class SiteTest : public TestSuite
 
 		void testDefaultApis();
 		void testNoApis();
-
-		void testSetUsername();
-		void testSetPassword();
 
 		void testFixUrlBasic();
 		void testFixUrlRoot();
@@ -34,6 +33,7 @@ class SiteTest : public TestSuite
 		void testLoginPost();
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;

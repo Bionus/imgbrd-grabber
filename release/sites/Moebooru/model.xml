@@ -27,9 +27,9 @@
 		<Tags><![CDATA[<li class="(?:[^"]* )?tag-type-(?<type>[^" ]+)"[^>]*>(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)k?</span>[^<]*</li>]]></Tags>
 		<Image><![CDATA[Post\.register\((?<json>\{.+?\})\);?]]></Image>
 		<TagApi><![CDATA[<tr[^>]*>\s*<td[^>]*>(?<count>\d+)<\/td>\s*<td[^>]*>\s*<a.+?>\?<\/a>\s*<a[^>]+>(?<tag>.*?)<\/a>\s*<\/td>\s*<td>(?<type>.+?)<\/td>\s*<td[^>]*><a href="\/tag\/edit\/(?<id>\d+)">]]></TagApi>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*?page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
-		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
+		<LastPage><![CDATA[<link href="[^"]*\?.*?page=(\d+)[^"]*" rel="last" title="Last Page">]]></LastPage>
+		<Pools><![CDATA[<div class="status-notice" id="pool\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(\d+)" >([^<]+)</a>[^<]*(?:<a href="/post/show/(\d+)" >&gt;&gt;</a>)?[^<]*</div>]]></Pools>
+		<Wiki><![CDATA[<div id="sidebar-wiki"(?:[^>]+)>(.+?)</div>]]></Wiki>
 	</Regex>
 	<Check>
 		<Url>/</Url>

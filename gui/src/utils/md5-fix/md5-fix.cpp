@@ -1,17 +1,18 @@
-#include <QSettings>
+#include "utils/md5-fix/md5-fix.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "md5-fix.h"
-#include "ui_md5-fix.h"
+#include <QSettings>
+#include <ui_md5-fix.h>
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/profile.h"
 
 
-md5Fix::md5Fix(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::md5Fix), m_profile(profile)
+Md5Fix::Md5Fix(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::Md5Fix), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -24,18 +25,18 @@ md5Fix::md5Fix(Profile *profile, QWidget *parent)
 	resize(size().width(), 0);
 }
 
-md5Fix::~md5Fix()
+Md5Fix::~Md5Fix()
 {
 	delete ui;
 }
 
-void md5Fix::on_buttonCancel_clicked()
+void Md5Fix::cancel()
 {
 	emit rejected();
 	close();
 }
 
-void md5Fix::on_buttonStart_clicked()
+void Md5Fix::start()
 {
 	ui->buttonStart->setEnabled(false);
 
@@ -75,38 +76,12 @@ void md5Fix::on_buttonStart_clicked()
 		// Parse all files
 		for (const auto &file : files)
 		{
-			QString fileName = file.first;
-			QString path = dir.absoluteFilePath(fileName);
+			const QString fileName = file.first;
+			const QString path = dir.absoluteFilePath(fileName);
 
-			QString md5 = "";
-			if (ui->radioForce->isChecked())
-			{
-				QFile fle(path);
-				fle.open(QFile::ReadOnly);
-				md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-			}
-			else
-			{
-				QRegExp regx("%([^%]*)%");
-				QString reg = QRegExp::escape(ui->lineFilename->text());
-				int pos = 0, cur = 0, id = -1;
-				while ((pos = regx.indexIn(reg, pos)) != -1)
-				{
-					pos += 4;
-					reg.replace(regx.cap(0), "(.+)");
-					if (regx.cap(1) == "md5")
-					{ id = cur; }
-					cur++;
-				}
-				QRegExp rx(reg);
-				rx.setMinimal(true);
-				pos = 0;
-				while ((pos = rx.indexIn(fileName, pos)) != -1)
-				{
-					pos += rx.matchedLength();
-					md5 = rx.cap(id + 1);
-				}
-			}
+			QString md5 = ui->radioForce->isChecked()
+				? getFileMd5(path)
+				: getFilenameMd5(fileName, ui->lineFilename->text());
 
 			if (!md5.isEmpty())
 			{
@@ -124,6 +99,8 @@ void md5Fix::on_buttonStart_clicked()
 	ui->progressBar->setMaximum(0);
 
 	ui->buttonStart->setEnabled(true);
+
+	m_profile->sync();
 
 	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", count));
 }

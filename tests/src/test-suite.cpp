@@ -1,29 +1,49 @@
 #include "test-suite.h"
+#include <QDir>
+#include <QFile>
 
 
 TestSuite::TestSuite()
-	: QObject(), profile("tests/resources/")
+	: QObject()
 {
 	getSuites().append(this);
 }
 
-void TestSuite::setupSource(QString site)
+void TestSuite::setupSource(const QString &source, QString dir)
 {
-	QDir().mkpath("tests/resources/sites/" + site);
-	QFile::remove("tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
+	if (dir.isEmpty())
+	{
+		dir = "tests/resources/sites/";
+
+		QFile::remove(dir + "helper.js");
+		QFile("release/sites/helper.js").copy(dir + "helper.js");
+
+		dir += source;
+	}
+
+	QDir().mkpath(dir);
+	QFile::remove(dir + "/model.js");
+	QFile::remove(dir + "/model.xml");
+	QFile::remove(dir + "/sites.txt");
+	QFile("release/sites/" + source + "/model.js").copy(dir + "/model.js");
+	QFile("release/sites/" + source + "/model.xml").copy(dir + "/model.xml");
+	QFile("release/sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
 }
 
-void TestSuite::setupSite(QString site, QString source)
+void TestSuite::setupSite(const QString &source, const QString &site, QString dir)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::remove("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
-	if (QFile::exists("release/sites/" + site +"/" + source + "/defaults.ini"))
-	{ QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini"); }
+	if (dir.isEmpty())
+	{ dir = "tests/resources/sites/" + source + "/" + site; }
+
+	QDir().mkpath(dir);
+	QFile::remove(dir + "/defaults.ini");
+	QFile::remove(dir + "/settings.ini");
+	if (QFile::exists("release/sites/" + source + "/" + site + "/defaults.ini"))
+	{ QFile("release/sites/" + source + "/" + site + "/defaults.ini").copy(dir + "/defaults.ini"); }
 }
 
-QList<QObject*> &TestSuite::getSuites()
+QList<TestSuite*> &TestSuite::getSuites()
 {
-	static QList<QObject*> suites;
+	static QList<TestSuite*> suites;
 	return suites;
 }

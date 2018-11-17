@@ -1,22 +1,24 @@
 #ifndef TAG_DATABASE_H
 #define TAG_DATABASE_H
 
-#include <QString>
 #include <QMap>
-#include "tag-type.h"
-#include "tag.h"
+#include <QString>
+#include "tags/tag-type.h"
 
+
+class Tag;
 
 class TagDatabase
 {
 	public:
+		virtual ~TagDatabase() = default;
 		void loadTypes();
 		virtual bool load();
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
-		virtual QMap<QString, TagType> getTagTypes(QStringList tags) const = 0;
+		virtual QMap<QString, TagType> getTagTypes(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
-		QMap<int, TagType> tagTypes() const;
+		const QMap<int, TagType> &tagTypes() const;
 
 	protected:
 		explicit TagDatabase(QString typeFile);

@@ -1,35 +1,63 @@
 language: cpp
 compiler: gcc
 
-# OS X build
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
-    - os: osx
-
 # Qt packages for Linux
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-    packages:
+    packages: &shared_deps
       - sqlite3
       - libqt5sql5-sqlite
       - qtbase5-dev
-      - qtscript5-dev
+      - qtdeclarative5-dev
       - qtmultimedia5-dev
       - qttools5-dev
       - qttools5-dev-tools
       - sshpass
       - lcov
 
+# OS X build
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      env:
+        - COVERAGE=1
+        - PACKAGE=1
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - *shared_deps
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+      dist: trusty
+      sudo: required
+    - os: osx
+      env:
+        - PACKAGE=1
+
+cache:
+  directories:
+    - release/sites/node_modules
+
+# Install coveralls sender
+before_install:
+  - eval "${MATRIX_EVAL}"
+  - if [[ "$COVERAGE" == "1" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      pip install --user cpp-coveralls
+    ; fi
+
 # Qt packages for OS X
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
-      brew install http://git.io/sshpass.rb &&
+      brew install https://raw.githubusercontent.com/hudochenkov/homebrew-sshpass/master/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
@@ -57,12 +85,16 @@ script:
   - ./build/tests/tests
 
 after_success:
-  # Upload code coverage
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+  # Upload code coverage (codecov)
+  - if [[ "$COVERAGE" == 1 ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       lcov --directory . --capture --output-file coverage.info &&
       lcov --remove coverage.info '/usr/*' --output-file coverage.info &&
       lcov --list coverage.info &&
       bash <(curl -s https://codecov.io/bash)
+    ; fi
+  # Upload code coverage (coveralls)
+  - if [[ "$COVERAGE" == "1" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      coveralls --exclude build --exclude e2e --exclude tests --exclude CrashReporter --gcov-options '\-lp'
     ; fi
   # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
@@ -71,19 +103,19 @@ after_success:
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
   # Build and upload release
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+  - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+  - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       cp "build/gui/Grabber" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . && cd - &&
+      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi

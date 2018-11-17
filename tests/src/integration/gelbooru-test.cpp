@@ -1,7 +1,8 @@
-#include <QtTest>
-#include <QStringList>
 #include "gelbooru-test.h"
-#include "functions.h"
+#include <QStringList>
+#include <QtTest>
+#include "models/image.h"
+#include "tags/tag.h"
 
 
 void GelbooruTest::testHtml()
@@ -10,6 +11,7 @@ void GelbooruTest::testHtml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -28,6 +30,7 @@ void GelbooruTest::testXml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -66,4 +69,4 @@ void GelbooruTest::testHtmlTags()
 }
 
 
-static GelbooruTest instance;
+QTEST_MAIN(GelbooruTest)

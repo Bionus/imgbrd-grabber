@@ -4,10 +4,9 @@
 #define LOG(a, b) Logger::getInstance().log((a), (b))
 #define DONE() Logger::getInstance().logUpdate(" Done")
 
+#include <QFile>
 #include <QObject>
 #include <QString>
-#include <QFile>
-#include <QDateTime>
 
 
 class Logger : public QObject
@@ -24,23 +23,30 @@ class Logger : public QObject
 		};
 
 		// Singleton pattern
-		static Logger& getInstance()
+		static Logger &getInstance()
 		{
 			static Logger instance;
 			return instance;
 		}
-		Logger(Logger const&) = delete;
-		void operator=(Logger const&) = delete;
+		Logger(Logger const &) = delete;
+		void operator=(Logger const &) = delete;
 
-		void setLogFile(QString path);
+		// Handlers for Qt log messages
+		static void messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
+		static void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
+		static void setupMessageOutput(bool log);
+
+		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
-		void log(QString, LogLevel type = Info);
-		void logCommand(QString);
-		void logCommandSql(QString);
-		void logUpdate(QString);
+		void log(const QString &, LogLevel level = Info);
+		void logCommand(const QString &);
+		void logCommandSql(const QString &);
+		void logUpdate(const QString &);
+
+		QString logFile() const;
 
 	signals:
-		void newLog(QString message);
+		void newLog(const QString &message);
 
 	private:
 		Logger() = default;
@@ -50,6 +56,6 @@ class Logger : public QObject
 
 
 // Temporary shortcut for the macro
-void log(QString l, Logger::LogLevel level = Logger::Info);
+void log(const QString &l, Logger::LogLevel level = Logger::Info);
 
 #endif // LOGGER_H

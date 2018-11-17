@@ -1,11 +1,12 @@
-#include "commands.h"
-#include <QProcess>
+#include "commands/commands.h"
 #include <QDir>
+#include <QProcess>
+#include <QSettings>
+#include "commands/sql-worker.h"
+#include "logger.h"
 #include "models/filename.h"
 #include "models/profile.h"
 #include "tags/tag.h"
-#include "sql-worker.h"
-#include "functions.h"
 
 
 
@@ -28,10 +29,10 @@ Commands::Commands(Profile *profile)
 	settings->endGroup();
 
 	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
-								settings->value("Exec/SQL/host").toString(),
-								settings->value("Exec/SQL/user").toString(),
-								settings->value("Exec/SQL/password").toString(),
-								settings->value("Exec/SQL/database").toString());
+		settings->value("Exec/SQL/host").toString(),
+		settings->value("Exec/SQL/user").toString(),
+		settings->value("Exec/SQL/password").toString(),
+		settings->value("Exec/SQL/database").toString());
 	m_sqlWorker->setObjectName("SqlThread");
 }
 
@@ -40,12 +41,12 @@ Commands::~Commands()
 	m_sqlWorker->deleteLater();
 }
 
-bool Commands::start()
+bool Commands::start() const
 {
 	return m_sqlWorker->connect();
 }
 
-bool Commands::before()
+bool Commands::before() const
 {
 	if (!m_mysqlSettings.before.isEmpty())
 		return sqlExec(m_mysqlSettings.before);
@@ -53,25 +54,25 @@ bool Commands::before()
 	return true;
 }
 
-bool Commands::image(const Image &img, QString path)
+bool Commands::image(const Image &img, const QString &path)
 {
 	// Normal commands
 	if (!m_commandImage.isEmpty())
 	{
 		Filename fn(m_commandImage);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QString("Execution of \"%1\"").arg(exec));
+			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
-			int code = QProcess::execute(exec);
+			const int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QString("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -80,7 +81,7 @@ bool Commands::image(const Image &img, QString path)
 	{
 		Filename fn(m_mysqlSettings.image);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
@@ -95,16 +96,16 @@ bool Commands::image(const Image &img, QString path)
 	return true;
 }
 
-bool Commands::tag(const Image &img, Tag tag, bool after)
+bool Commands::tag(const Image &img, const Tag &tag, bool after)
 {
-	QString original = QString(tag.text()).replace(" ", "_");
+	const QString original = QString(tag.text()).replace(" ", "_");
 
 	QString command = after ? m_commandTagAfter : m_commandTagBefore;
 	if (!command.isEmpty())
 	{
 		Filename fn(command);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
@@ -113,12 +114,12 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 				.replace("%type%", tag.type().name())
 				.replace("%number%", QString::number(tag.type().number()));
 
-			log(QString("Execution of \"%1\"").arg(exec));
+			log(QStringLiteral("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
 
-			int code = QProcess::execute(exec);
+			const int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QString("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -128,7 +129,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		start();
 
 		Filename fn(commandSql);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
@@ -145,7 +146,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 	return true;
 }
 
-bool Commands::after()
+bool Commands::after() const
 {
 	if (!m_mysqlSettings.after.isEmpty())
 		return sqlExec(m_mysqlSettings.after);
@@ -153,7 +154,7 @@ bool Commands::after()
 	return true;
 }
 
-bool Commands::sqlExec(QString sql)
+bool Commands::sqlExec(const QString &sql) const
 {
 	QMetaObject::invokeMethod(m_sqlWorker, "execute", Qt::QueuedConnection, Q_ARG(QString, sql));
 	return true;

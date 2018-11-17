@@ -1,7 +1,7 @@
-#include <QtTest>
 #include "source-updater-test.h"
-#include "updater/source-updater.h"
+#include <QtTest>
 #include "models/source.h"
+#include "updater/source-updater.h"
 
 
 #if defined(Q_OS_WIN) && 0
@@ -39,4 +39,4 @@ void SourceUpdaterTest::testChanged()
 #endif
 
 
-static SourceUpdaterTest instance;
+QTEST_MAIN(SourceUpdaterTest)

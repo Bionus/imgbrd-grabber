@@ -1,15 +1,16 @@
 #include "secure-file.h"
 #include <QCryptographicHash>
 #include <QDataStream>
+#include <QFile>
 
 
-SecureFile::SecureFile(QString filename, QString key)
+SecureFile::SecureFile(const QString &filename, const QString &key)
 	: m_file(filename), m_encryptor(generateIntKey(key))
 {}
 
 quint64 SecureFile::generateIntKey(const QString &key) const
 {
-	auto data = QByteArray::fromRawData((const char*)key.utf16(), key.length() * 2);
+	const auto data = QByteArray::fromRawData(reinterpret_cast<const char*>(key.utf16()), key.length() * 2);
 	QByteArray hash = QCryptographicHash::hash(data, QCryptographicHash::Md5);
 	Q_ASSERT(hash.size() == 16);
 	QDataStream stream(hash);
@@ -19,7 +20,7 @@ quint64 SecureFile::generateIntKey(const QString &key) const
 }
 
 
-void SecureFile::write(QByteArray data)
+void SecureFile::write(const QByteArray &data)
 {
 	if (m_file.open(QFile::WriteOnly))
 	{

@@ -1,4 +1,5 @@
-#include "extension-rotator.h"
+#include "downloader/extension-rotator.h"
+#include <QObject>
 
 
 ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
@@ -8,10 +9,10 @@ ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
 	m_next = other.m_next;
 }
 
-ExtensionRotator::ExtensionRotator(QString initialExtension, QStringList extensions)
-	: m_initialExtension(initialExtension), m_extensions(extensions)
+ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent)
+	: QObject(parent), m_initialExtension(initialExtension), m_extensions(extensions)
 {
-	int index = extensions.indexOf(initialExtension);
+	const int index = extensions.indexOf(initialExtension);
 
 	// If the initial extension is not in the list, we return the first one
 	if (index < 0)
@@ -29,8 +30,8 @@ QString ExtensionRotator::next()
 	QString next = m_extensions[m_next % m_extensions.length()];
 
 	// If we did a full loop, that means we finished
-	bool isLast = m_next == m_extensions.size();
-	bool isNotFound = m_extensions.indexOf(m_initialExtension) < 0;
+	const bool isLast = m_next == m_extensions.size();
+	const bool isNotFound = m_extensions.indexOf(m_initialExtension) < 0;
 	if (next == m_initialExtension || (isLast && isNotFound))
 		return QString();
 

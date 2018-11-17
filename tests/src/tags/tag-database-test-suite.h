@@ -2,8 +2,9 @@
 #define TAG_DATABASE_TEST_SUITE_H
 
 #include "test-suite.h"
-#include "tags/tag-database.h"
 
+
+class TagDatabase;
 
 class TagDatabaseTestSuite : public TestSuite
 {

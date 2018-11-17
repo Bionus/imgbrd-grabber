@@ -15,3 +15,9 @@ include_directories("src/" "../lib/src/")
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
+
+# Pre-compiled header
+if(USE_PCH)
+	include(PrecompiledHeader)
+	add_precompiled_header(${PROJECT_NAME} "src/pch.h" FORCEINCLUDE SOURCE_CXX "${CMAKE_CURRENT_SOURCE_DIR}/src/pch.cpp")
+endif()

@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>313</width>
-    <height>220</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Blacklist fixer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources.qrc">
+   <iconset resource="../../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelFolder">
      <property name="text">
       <string>Folder</string>
      </property>
@@ -46,7 +46,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelFilename">
      <property name="text">
       <string>Filename</string>
      </property>
@@ -55,27 +55,17 @@
    <item row="3" column="1">
     <widget class="QLineEdit" name="lineFilename"/>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Blacklist</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="lineBlacklist"/>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_4">
+   <item row="6" column="0">
+    <widget class="QLabel" name="labelSource">
      <property name="text">
       <string>Source</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="comboSource"/>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="enabled">
       <bool>true</bool>
@@ -85,8 +75,8 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <item row="8" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="layoutButtons">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -116,12 +106,20 @@
      </item>
     </layout>
    </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="textBlacklist"/>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QLabel" name="labelBlacklist">
+     <property name="text">
+      <string>Blacklist</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>
-  <include location="../../../resources.qrc"/>
-  <include location="../../../resources.qrc"/>
-  <include location="../../../resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

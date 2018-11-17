@@ -2,7 +2,6 @@
 #define EXTENSION_ROTATOR_TEST_H
 
 #include "test-suite.h"
-#include "downloader/extension-rotator.h"
 
 
 class ExtensionRotatorTest : public TestSuite
@@ -17,6 +16,7 @@ class ExtensionRotatorTest : public TestSuite
 		void testEmptyFirst();
 		void testEmptyList();
 		void testEmptyBoth();
+		void testCopyConstructor();
 };
 
 #endif // EXTENSION_ROTATOR_TEST_H

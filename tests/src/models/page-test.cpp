@@ -1,19 +1,28 @@
-#include <QtTest>
 #include "page-test.h"
-#include "tags/tag.h"
+#include <QtTest>
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "models/source.h"
 
 
 void PageTest::init()
 {
-	m_sites.append(new Site("danbooru.donmai.us", new Source(&profile, "release/sites/Danbooru (2.0)")));
-	m_site = new Site("gelbooru.com", new Source(&profile, "release/sites/Gelbooru (0.2)"));
+	m_profile = new Profile("tests/resources/");
+	m_sites.append(new Site("danbooru.donmai.us", new Source(m_profile, "release/sites/Danbooru (2.0)")));
+	m_site = new Site("gelbooru.com", new Source(m_profile, "release/sites/Gelbooru (0.2)"));
+}
+
+void PageTest::cleanup()
+{
+	m_profile->deleteLater();
+	m_site->deleteLater();
 }
 
 
 void PageTest::testIncompatibleModifiers()
 {
-	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QCOMPARE(page.search().count(), 1);
 	QCOMPARE(page.search().first(), QString("test"));
@@ -21,7 +30,7 @@ void PageTest::testIncompatibleModifiers()
 
 void PageTest::testLoadAbort()
 {
-	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QSignalSpy spy(&page, SIGNAL(finishedLoading(Page*)));
 	page.load();
@@ -31,7 +40,7 @@ void PageTest::testLoadAbort()
 
 void PageTest::testLoadTagsAbort()
 {
-	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QSignalSpy spy(&page, SIGNAL(finishedLoadingTags(Page*)));
 	page.loadTags();
@@ -40,4 +49,4 @@ void PageTest::testLoadTagsAbort()
 }
 
 
-static PageTest instance;
+QTEST_MAIN(PageTest)

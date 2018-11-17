@@ -2,9 +2,10 @@
 #define PAGE_API_TEST_H
 
 #include "test-suite.h"
-#include "models/site.h"
-#include "models/page.h"
 
+
+class Profile;
+class Site;
 
 class PageApiTest : public TestSuite
 {
@@ -19,6 +20,7 @@ class PageApiTest : public TestSuite
 		void testParseUrlAltPage();
 
 	private:
+		Profile *m_profile;
 		QList<Site*> m_sites;
 		Site *m_site;
 };

@@ -2,7 +2,6 @@
 #define TAG_NAME_TEST_H
 
 #include "test-suite.h"
-#include "tags/tag-name.h"
 
 
 class TagNameTest : public TestSuite
@@ -13,6 +12,7 @@ class TagNameTest : public TestSuite
 		void testNormalizedValid();
 		void testNormalizedInvalid();
 		void testFormatted();
+		void testCompare();
 };
 
 #endif // TAG_NAME_TEST_H

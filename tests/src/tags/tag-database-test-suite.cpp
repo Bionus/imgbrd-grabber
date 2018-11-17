@@ -1,6 +1,7 @@
-#include <QtTest>
-#include <QTimer>
 #include "tag-database-test-suite.h"
+#include <QtTest>
+#include "tags/tag.h"
+#include "tags/tag-database.h"
 
 
 TagDatabaseTestSuite::TagDatabaseTestSuite(TagDatabase *database)
@@ -38,7 +39,9 @@ void TagDatabaseTestSuite::testEmptyContainsNone()
 
 	QCOMPARE(types.count(), 0);
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
+
+	QCOMPARE(m_database->count(), 0);
 }
 
 void TagDatabaseTestSuite::testFilledContainsAll()
@@ -57,6 +60,8 @@ void TagDatabaseTestSuite::testFilledContainsAll()
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	qDebug() << "Elapsed" << elapsed << "ms";
 	QVERIFY(elapsed < 10);
+
+	QCOMPARE(m_database->count(), 4);
 }
 
 void TagDatabaseTestSuite::testFilledContainsSome()

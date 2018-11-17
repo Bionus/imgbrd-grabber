@@ -1,14 +1,13 @@
-#include "download-query-loader.h"
+#include "downloader/download-query-loader.h"
 #include <QFile>
-#include <QJsonDocument>
 #include <QJsonArray>
-#include <QJsonObject>
-#include "models/site.h"
-#include "download-query-image.h"
-#include "download-query-group.h"
+#include <QJsonDocument>
+#include "downloader/download-query-group.h"
+#include "downloader/download-query-image.h"
+#include "logger.h"
 
 
-bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, const QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -22,8 +21,8 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	// Version 1 and 2 are plain text
 	if (header.startsWith("[IGL "))
 	{
-		QString fieldSeparator((char)29);
-		QString lineSeparator((char)28);
+		const QChar fieldSeparator(29);
+		const QChar lineSeparator(28);
 
 		// Read the remaining file
 		QString links = f.readAll();
@@ -37,19 +36,29 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 			QStringList infos = link.split(fieldSeparator);
 			if (infos.size() == 9)
 			{
-				QString source = infos[6];
+				const QString &source = infos[6];
 				if (!sites.contains(source))
 					continue;
 
-				uniques.append(DownloadQueryImage(infos[0].toInt(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8]));
+				uniques.append(DownloadQueryImage(infos[0].toULongLong(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8], QStringList()));
 			}
 			else
 			{
-				QString source = infos[5];
+				const QString &source = infos[5];
 				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 					continue;
 
-				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), QStringList(), infos[4] != "false", sites[source], infos[6], infos[7]));
+				groups.append(DownloadQueryGroup(
+					infos[0],
+					infos[1].toInt(),
+					infos[2].toInt(),
+					infos[3].toInt(),
+					QStringList(),
+					infos[4] != QLatin1String("false"),
+					sites[source],
+					infos[6],
+					infos[7]
+				));
 			}
 		}
 
@@ -57,42 +66,42 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	}
 
 	// Other versions are JSON-based
-	else
+	f.reset();
+
+	const QByteArray data = f.readAll();
+	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
+	QJsonObject object = loadDoc.object();
+
+	const int version = object["version"].toInt();
+	switch (version)
 	{
-		f.reset();
-
-		QByteArray data = f.readAll();
-		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
-		QJsonObject object = loadDoc.object();
-
-		int version = object["version"].toInt();
-		switch (version)
+		case 3:
 		{
-			case 3:
-				QJsonArray batchsJson = object["batchs"].toArray();
-				for (auto batchJson : batchsJson)
-				{
-					DownloadQueryGroup batch;
-					if (batch.read(batchJson.toObject(), sites))
-						batchs.append(batch);
-				}
+			QJsonArray groupsJson = object["batchs"].toArray();
+			for (auto groupJson : groupsJson)
+			{
+				DownloadQueryGroup batch;
+				if (batch.read(groupJson.toObject(), sites))
+					groups.append(batch);
+			}
 
-				QJsonArray uniquesJson = object["uniques"].toArray();
-				for (auto uniqueJson : uniquesJson)
-				{
-					DownloadQueryImage unique;
-					if (unique.read(uniqueJson.toObject(), sites))
-						uniques.append(unique);
-				}
-				return true;
+			QJsonArray uniquesJson = object["uniques"].toArray();
+			for (auto uniqueJson : uniquesJson)
+			{
+				DownloadQueryImage unique;
+				if (unique.read(uniqueJson.toObject(), sites))
+					uniques.append(unique);
+			}
+			return true;
 		}
 
+		default:
+			log(QStringLiteral("Unknown IGL file version: %1").arg(version), Logger::Warning);
+			return false;
 	}
-
-	return false;
 }
 
-bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &batchs)
+bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))
@@ -101,12 +110,12 @@ bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &un
 	}
 
 	// Batch downloads
-	QJsonArray batchsJson;
-	for (const auto &b : batchs)
+	QJsonArray groupsJson;
+	for (const auto &b : groups)
 	{
 		QJsonObject batch;
 		b.write(batch);
-		batchsJson.append(batch);
+		groupsJson.append(batch);
 	}
 
 	// Unique images
@@ -121,7 +130,7 @@ bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &un
 	// Generate result
 	QJsonObject full;
 	full["version"] = 3;
-	full["batchs"] = batchsJson;
+	full["batchs"] = groupsJson;
 	full["uniques"] = uniquesJson;
 
 	// Write result

@@ -1,22 +1,14 @@
 #include <QCoreApplication>
-#include <QtGlobal>
 #include "downloader/downloader.h"
-#include "models/site.h"
-#include "models/profile.h"
 #include "functions.h"
+#include "models/profile.h"
+#include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
 
-
-void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-	Q_UNUSED(type);
-	Q_UNUSED(context);
-	Q_UNUSED(message);
-}
 
 int main(int argc, char *argv[])
 {
@@ -30,21 +22,21 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
-	QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
-	QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
-	QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
-	QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
-	QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
-	QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
-	QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
-	QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
-	QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
-	QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
-	QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
-	QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
-	QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
-	QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
+	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
+	const QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
+	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
+	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
+	const QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
+	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
+	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
+	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
+	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
+	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
+	const QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
+	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
+	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
+	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
+	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -60,11 +52,11 @@ int main(int argc, char *argv[])
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
-	QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
-	QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
-	QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
-	QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
-	QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
+	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
+	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
+	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
+	const QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
+	const QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
 	parser.addOption(returnCountOption);
 	parser.addOption(returnTagsOption);
 	parser.addOption(returnPureTagsOption);
@@ -73,26 +65,29 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	if (!parser.isSet(verboseOption))
-		qInstallMessageHandler(noMessageOutput);
+	#ifndef QT_DEBUG
+		Logger::setupMessageOutput(parser.isSet(verboseOption));
+	#endif
 
 	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+
 	Downloader *downloader = new Downloader(profile,
-										parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-										parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-										Site::getSites(profile, parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
-										parser.value(pageOption).toInt(),
-										parser.value(limitOption).toInt(),
-										parser.value(perPageOption).toInt(),
-										parser.value(pathOption),
-										parser.value(filenameOption),
-										parser.value(userOption),
-										parser.value(passwordOption),
-										parser.isSet(blacklistOption),
-										profile->getBlacklist(),
-										parser.isSet(noDuplicatesOption),
-										parser.value(tagsMinOption).toInt(),
-										parser.value(tagsFormatOption));
+		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
+		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
+		profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+		parser.value(pageOption).toInt(),
+		parser.value(limitOption).toInt(),
+		parser.value(perPageOption).toInt(),
+		parser.value(pathOption),
+		parser.value(filenameOption),
+		parser.value(userOption),
+		parser.value(passwordOption),
+		parser.isSet(blacklistOption),
+		profile->getBlacklist(),
+		parser.isSet(noDuplicatesOption),
+		parser.value(tagsMinOption).toInt(),
+		parser.value(tagsFormatOption));
 
 	if (parser.isSet(returnCountOption))
 		downloader->getPageCount();
@@ -108,7 +103,7 @@ int main(int argc, char *argv[])
 		parser.showHelp();
 
 	downloader->setQuit(true);
-	QObject::connect(downloader, SIGNAL(quit()), qApp, SLOT(quit()));
+	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
 
 	return app.exec();
 }

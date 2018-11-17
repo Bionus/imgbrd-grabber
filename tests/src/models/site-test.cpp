@@ -1,26 +1,27 @@
-#include <QtTest>
-#include <QNetworkCookie>
 #include "site-test.h"
+#include <QNetworkCookie>
+#include <QtTest>
+#include "custom-network-access-manager.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "tags/tag.h"
 
 
 void SiteTest::init()
 {
-	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
-	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
-	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	m_profile = new Profile("tests/resources/");
+	m_settings = m_profile->getSettings();
+	m_source = new Source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 }
 
 void SiteTest::cleanup()
 {
-	m_settings->deleteLater();
+	m_profile->deleteLater();
 	m_source->deleteLater();
 	m_site->deleteLater();
 }
@@ -35,7 +36,7 @@ void SiteTest::testDefaultApis()
 	settings.setValue("sources/source_3", "");
 	settings.setValue("sources/source_4", "");
 
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	Source source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 3);
@@ -50,36 +51,17 @@ void SiteTest::testNoApis()
 	settings.setValue("sources/source_3", "3");
 	settings.setValue("sources/source_4", "4");
 
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	Source source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 0);
-	QCOMPARE(site.contains("Urls/Image"), false);
-	QCOMPARE(site.value("Urls/Image"), QString());
-}
-
-void SiteTest::testSetUsername()
-{
-	QString username = "test";
-
-	QVERIFY(m_site->username() != username);
-	m_site->setUsername(username);
-	QVERIFY(m_site->username() == username);
-}
-
-void SiteTest::testSetPassword()
-{
-	QString password = "test";
-
-	QVERIFY(m_site->password() != password);
-	m_site->setPassword(password);
-	QVERIFY(m_site->password() == password);
 }
 
 void SiteTest::testFixUrlBasic()
 {
 	QCOMPARE(m_site->fixUrl(""), QUrl());
-	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://danbooru.donmai.us/dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
 	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRoot()
@@ -98,12 +80,12 @@ void SiteTest::testGetSites()
 {
 	QList<Site*> sites;
 
-	sites = Site::getSites(&profile, QStringList() << "danbooru.donmai.us");
+	sites = m_profile->getFilteredSites(QStringList() << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 
-	sites = Site::getSites(&profile, QStringList() << "test (does not exist)" << "danbooru.donmai.us");
+	sites = m_profile->getFilteredSites(QStringList() << "test (does not exist)" << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
@@ -112,6 +94,7 @@ void SiteTest::testGetSites()
 void SiteTest::testLoadTags()
 {
 	// Wait for tags
+	qRegisterMetaType<QList<Tag>>();
 	QSignalSpy spy(m_site, SIGNAL(finishedLoadingTags(QList<Tag>)));
 	m_site->loadTags(3, 20);
 	QVERIFY(spy.wait());
@@ -121,9 +104,11 @@ void SiteTest::testLoadTags()
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
-	QList<Tag> tags;
+	QVector<Tag> tags;
 	QStringList tagsText;
-	for (QVariant variant : variants)
+	tags.reserve(variants.count());
+	tagsText.reserve(variants.count());
+	for (const QVariant &variant : variants)
 	{
 		Tag tag = variant.value<Tag>();
 		tags.append(tag);
@@ -143,7 +128,8 @@ void SiteTest::testCookies()
 	cookies.append(QNetworkCookie("test_name_2", "test_value_2"));
 
 	QList<QVariant> cookiesVariant;
-	for (QNetworkCookie cookie : cookies)
+	cookiesVariant.reserve(cookies.count());
+	for (const QNetworkCookie &cookie : cookies)
 	{
 		cookiesVariant.append(cookie.toRawForm());
 	}
@@ -245,4 +231,4 @@ void SiteTest::testLoginPost()
 }
 
 
-static SiteTest instance;
+QTEST_MAIN(SiteTest)

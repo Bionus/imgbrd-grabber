@@ -2,18 +2,16 @@
 #define LOADER_DATA_H
 
 #include <QList>
-#include <QPair>
-#include <QUrl>
-#include <QStringList>
 #include <QSharedPointer>
-#include "downloadable.h"
 
+
+class Downloadable;
 
 struct LoaderData
 {
 	// Progress indicators
-	int position;
-	int max;
+	int position = -1;
+	int max = -1;
 
 	// Results
 	QList<QSharedPointer<Downloadable>> ignored;

@@ -1,19 +1,21 @@
 #ifndef TAG_TYPE_H
 #define TAG_TYPE_H
 
+#include <QMetaType>
 #include <QString>
-#include "qmetatype.h"
 
 
 class TagType
 {
 	public:
 		TagType();
-		explicit TagType(QString name);
-		QString name() const;
+		explicit TagType(const QString &name);
+		bool isUnknown() const;
+		const QString &name() const;
 		int number() const;
 
 	private:
+		bool m_isUnknown;
 		QString m_name;
 };
 

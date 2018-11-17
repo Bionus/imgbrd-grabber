@@ -1,7 +1,8 @@
 0,unknow
 1,character
-2,characteristic
+2,general
 3,copyright
 4,artist
 5,copyright
 6,copyright
+7,general

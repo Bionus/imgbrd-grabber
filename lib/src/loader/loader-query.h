@@ -1,19 +1,17 @@
 #ifndef LOADER_QUERY_H
 #define LOADER_QUERY_H
 
-#include <QMap>
-#include <QString>
 #include <QVariant>
-#include "loader-data.h"
 
 
-class Loader;
+struct LoaderData;
 class Site;
 
 class LoaderQuery
 {
 	public:
 		explicit LoaderQuery(Site *site, QMap<QString, QVariant> options);
+		bool start();
 		LoaderData next();
 		bool hasNext() const;
 

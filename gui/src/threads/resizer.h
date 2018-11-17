@@ -1,8 +1,9 @@
 #ifndef RESIZER_H
 #define RESIZER_H
 
-#include <QSize>
 #include <QImage>
+#include <QObject>
+#include <QSize>
 #include <QString>
 
 
@@ -11,10 +12,10 @@ class Resizer : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Resizer(QObject *parent = Q_NULLPTR);
+		explicit Resizer(QObject *parent = nullptr);
 
 	public slots:
-		void setSize(const QSize &size);
+		void setSize(QSize size);
 		void setAspectRatioMode(Qt::AspectRatioMode mode);
 		void setInput(const QImage &input);
 		void setInput(const QString &filename);

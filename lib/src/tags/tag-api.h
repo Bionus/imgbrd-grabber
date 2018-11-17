@@ -1,13 +1,15 @@
 #ifndef TAG_API_H
 #define TAG_API_H
 
-#include <QNetworkReply>
-#include "tag.h"
+#include <QObject>
+#include <QUrl>
 
 
-class Profile;
 class Api;
+class Profile;
+class QNetworkReply;
 class Site;
+class Tag;
 
 class TagApi : public QObject
 {
@@ -21,12 +23,13 @@ class TagApi : public QObject
 			Error
 		};
 
-		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = Q_NULLPTR);
+		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = nullptr);
 		~TagApi() override;
 		void load(bool rateLimit = false);
-		QList<Tag> tags() const;
+		const QList<Tag> &tags() const;
 
 	public slots:
+		void loadNow();
 		void abort();
 
 	protected slots:

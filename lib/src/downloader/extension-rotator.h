@@ -1,16 +1,19 @@
 #ifndef EXTENSION_ROTATOR_H
 #define EXTENSION_ROTATOR_H
 
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
 
-class ExtensionRotator
+class ExtensionRotator : public QObject
 {
+	Q_OBJECT
+
 	public:
-		explicit ExtensionRotator() = default;
+		ExtensionRotator() = default;
 		explicit ExtensionRotator(const ExtensionRotator &other);
-		explicit ExtensionRotator(QString initialExtension, QStringList extensions);
+		explicit ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent = nullptr);
 		QString next();
 
 	private:

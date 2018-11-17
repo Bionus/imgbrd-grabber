@@ -1,12 +1,15 @@
 #include "tag-context-menu.h"
-#include <QProcess>
-#include <QDesktopServices>
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
+#include <QProcess>
+#include "functions.h"
+#include "models/profile.h"
+#include "tags/tag.h"
 
 
 TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)
-	: QMenu(parent), m_tag(tag), m_allTags(allTags), m_browserUrl(browserUrl), m_profile(profile)
+	: QMenu(parent), m_tag(std::move(tag)), m_allTags(std::move(allTags)), m_browserUrl(std::move(browserUrl)), m_profile(profile)
 {
 	// Favorites
 	if (profile->getFavorites().contains(Favorite(m_tag)))
@@ -98,8 +101,7 @@ void TagContextMenu::openInNewTab()
 }
 void TagContextMenu::openInNewWindow()
 {
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
 }
 void TagContextMenu::openInBrowser()
 {
@@ -112,7 +114,8 @@ void TagContextMenu::copyTagToClipboard()
 void TagContextMenu::copyAllTagsToClipboard()
 {
 	QStringList tags;
-	for (const Tag &tag : m_allTags)
+	tags.reserve(m_allTags.count());
+	for (const Tag &tag : qAsConst(m_allTags))
 		tags.append(tag.text());
 
 	QApplication::clipboard()->setText(tags.join(' '));

@@ -1,13 +1,15 @@
 #include "danbooru-downloader-importer.h"
 #include <QFileInfo>
+#include <QMap>
 #include <QRegularExpression>
+#include <QSettings>
 
 
 DanbooruDownloaderImporter::DanbooruDownloaderImporter()
 	: m_firefoxProfilePath(QString())
 {
 	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
-	QString path = QFileInfo(cfg.fileName()).absolutePath() + "/Firefox";
+	const QString path = QFileInfo(cfg.fileName()).absolutePath() + "/Firefox";
 	if (QFile::exists(path + "/profiles.ini"))
 	{
 		QSettings profiles(path + "/profiles.ini", QSettings::IniFormat);
@@ -26,9 +28,9 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	if (prefs.exists() && prefs.open(QIODevice::ReadOnly | QIODevice::Text))
 		return;
 
-	QString source = prefs.readAll();
+	const QString source = prefs.readAll();
 	QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-	QMap<QString,QString> firefox, assoc;
+	QMap<QString, QString> firefox, assoc;
 	assoc["blacklist"] = "blacklistedtags";
 	assoc["generalTagsSeparator"] = "separator";
 	assoc["multipleArtistsAll"] = "artist_useall";
@@ -51,21 +53,21 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	{
 		auto match = matches.next();
 		QString value = match.captured(2);
-		if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
-		if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
+		if (value.startsWith('"')) { value = value.right(value.length() - 1); }
+		if (value.endsWith('"')) { value = value.left(value.length() - 1); }
 		firefox[match.captured(1)] = value;
 	}
 
 	dest->beginGroup("Save");
-	if (firefox.keys().contains("useBlacklist"))
+	if (firefox.contains("useBlacklist"))
 	{ dest->setValue("downloadblacklist", firefox["useBlacklist"] != "true"); }
-	for (int i = 0; i < firefox.size(); i++)
+	for (auto it = firefox.constBegin(); it != firefox.constEnd(); ++it)
 	{
-		if (assoc.keys().contains(firefox.keys().at(i)))
+		if (assoc.contains(it.key()))
 		{
-			QString v =  firefox.values().at(i);
+			QString v(it.value());
 			v.replace("\\\\", "\\");
-			dest->setValue(assoc[firefox.keys().at(i)], v);
+			dest->setValue(assoc[it.key()], v);
 		}
 	}
 	dest->endGroup();

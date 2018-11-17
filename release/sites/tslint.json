@@ -1,0 +1,11 @@
+{
+    "extends": ["tslint:latest"],
+    "rules": {
+        "forin": false,
+        "max-line-length": false,
+        "member-ordering": false,
+        "no-string-literal": false,
+        "object-literal-key-quotes": false,
+        "object-literal-sort-keys": false
+    }
+}

@@ -1,5 +1,6 @@
-#include <QtTest>
 #include "tag-database-in-memory-test.h"
+#include <QtTest>
+#include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"
 
 
@@ -112,4 +113,4 @@ void TagDatabaseInMemoryTest::saveData()
 }
 
 
-static TagDatabaseInMemoryTest instance;
+QTEST_MAIN(TagDatabaseInMemoryTest)

@@ -1,9 +1,11 @@
 #ifndef FILE_DOWNLOADER_H
 #define FILE_DOWNLOADER_H
 
-#include <QObject>
-#include <QNetworkReply>
 #include <QFile>
+#include <QNetworkReply>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 
 
 class FileDownloader : public QObject
@@ -11,13 +13,13 @@ class FileDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		explicit FileDownloader(QObject *parent = Q_NULLPTR);
-		bool start(QNetworkReply *reply, QString path);
-		bool start(QNetworkReply *reply, QStringList paths);
+		explicit FileDownloader(bool allowHtmlResponses, QObject *parent = nullptr);
+		bool start(QNetworkReply *reply, const QString &path);
+		bool start(QNetworkReply *reply, const QStringList &paths);
 
 	signals:
 		void writeError();
-		void networkError(QNetworkReply::NetworkError error, QString errorString);
+		void networkError(QNetworkReply::NetworkError error, const QString &errorString);
 		void success();
 
 	private slots:
@@ -25,6 +27,7 @@ class FileDownloader : public QObject
 		void replyFinished();
 
 	private:
+		bool m_allowHtmlResponses;
 		QNetworkReply *m_reply;
 		QFile m_file;
 		bool m_writeError;

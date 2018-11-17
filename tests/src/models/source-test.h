@@ -2,10 +2,11 @@
 #define SOURCE_TEST_H
 
 #include "test-suite.h"
-#include "models/source.h"
-#include "models/site.h"
-#include <QSettings>
 
+
+class Profile;
+class QSettings;
+class Source;
 
 class SourceTest : public TestSuite
 {
@@ -16,18 +17,15 @@ class SourceTest : public TestSuite
 		void cleanup();
 
 		void testMissingXml();
+		void testMissingJavascript();
 		void testInvalidXml();
+		void testInvalidJavascript();
 		void testMissingSites();
 		void testIgnoreEmptySites();
 
-		/**
-		 * Multiple calls should always return the very same pointer (not only the same
-		 * data) as the result should be cached.
-		 */
-		void testGetAllCached();
-
 	private:
 		QSettings *m_settings;
+		Profile *m_profile;
 		Source *m_source;
 };
 
