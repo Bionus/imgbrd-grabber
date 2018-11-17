@@ -99,13 +99,13 @@ then
 fi
 
 # Is OpenSSL installed? {{{2
-export OPENSSL_ROOT_DIR="$("${BREW_BIN}" info --json=v1 openssl|"${JQ_PATH}" -r '.[0].bottle.stable.cellar,.[0].name,.[0].versions.stable'|tr '\n' '/')"
+export OPENSSL_ROOT_DIR="$("${BREW_BIN}" info --json=v1 openssl|"${JQ_PATH}" -r '.[0].bottle.stable.cellar,.[0].name,.[0].installed[-1].version'|tr '\n' '/')"
 export OPENSSL_INCLUDE_DIR="${OPENSSL_ROOT_DIR}/lib"
 if [[ ! -e "${OPENSSL_ROOT_DIR}" ]]
 then
 	echo "A local version of OpenSSL is required to build against. Installing. (This will not overwrite the systems OpenSSL installation)"
 	"${BREW_BIN}" install openssl
-	export OPENSSL_ROOT_DIR="$("${BREW_BIN}" info --json=v1 openssl|"${JQ_PATH}" -r '.[0].bottle.stable.cellar,.[0].name,.[0].versions.stable'|tr '\n' '/')"
+	export OPENSSL_ROOT_DIR="$("${BREW_BIN}" info --json=v1 openssl|"${JQ_PATH}" -r '.[0].bottle.stable.cellar,.[0].name,.[0].installed[-1].version'|tr '\n' '/')"
 	export OPENSSL_INCLUDE_DIR="${OPENSSL_ROOT_DIR}/lib"
 
 	if [[ ! -e "${OPENSSL_INCLUDE_DIR}" ]]
@@ -215,12 +215,13 @@ case "${AGREE}" in
 		if [[ -e ${HOME}/Applications/Grabber.app ]] #{{{4
 		then
 			echo "A copy of imgbrd-grabber already exists at '${HOME}/Applications/Grabber.app'"
-			read -p "Overwrite '${HOME}/Applications/Grabber.app'? [y|N]" AGREE
+			DATE=$(date +%Y-%m-%d_%H%M%S)
+			read -p "Move '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'? [y|N]" AGREE
 			case "${AGREE}" in
 				[yY]|[yY][eE]|[yY][eE][sS]) #{{{5
-					rm -rf ${HOME}/Applications/Grabber.app >/dev/null 2>&1
+					mv ${HOME}/Applications/Grabber.app ${HOME}/Applications/Grabber_${DATE}.app >/dev/null 2>&1
 					ERR=$?
-					[[ $ERR -ne 0 ]] && echo "Unable to delete '${HOME}/Applications/Grabber.app'. Aborting." && exit 1
+					[[ $ERR -ne 0 ]] && echo "Unable to move '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'. Aborting." && exit 1
 					mv "${srcDir}/TEMP-Grabber.app" "${HOME}/Applications/Grabber.app" >/dev/null 2>&1
 					APP_PATH="${HOME}/Applications/Grabber.app"
 					;;
