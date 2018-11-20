@@ -351,22 +351,32 @@
         <item row="9" column="1">
          <widget class="QLineEdit" name="lineAdd"/>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_65">
           <property name="text">
-           <string>&lt;i&gt;These tags will be automatically added to every search.&lt;/i&gt;</string>
+           <string>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
            <string>Ask for confirmation before closing the window</string>
           </property>
          </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelGlobalPostFilter">
+          <property name="text">
+           <string>Post-filters</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="QLineEdit" name="lineGlobalPostFilter"/>
         </item>
        </layout>
        <zorder>label</zorder>
@@ -388,6 +398,8 @@
        <zorder>checkConfirmClose</zorder>
        <zorder>labelCheckForUpdates</zorder>
        <zorder>comboCheckForUpdates</zorder>
+       <zorder>labelGlobalPostFilter</zorder>
+       <zorder>lineGlobalPostFilter</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -995,8 +1007,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>369</width>
-             <height>377</height>
+             <width>65</width>
+             <height>16</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">

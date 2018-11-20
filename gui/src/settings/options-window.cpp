@@ -40,6 +40,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
+	ui->lineGlobalPostFilter->setText(settings->value("globalPostFilter").toString());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
 	ui->lineIgnored->setText(settings->value("ignoredtags").toString());
@@ -823,6 +824,7 @@ void OptionsWindow::save()
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("ignoredtags", ui->lineIgnored->text());
 	settings->setValue("add", ui->lineAdd->text());
+	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	settings->setValue("whitelist_download", wl.at(ui->comboWhitelist->currentIndex()));
 
