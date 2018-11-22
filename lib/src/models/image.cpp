@@ -375,7 +375,7 @@ void Image::parseDetails()
 		return;
 
 	// Parse source
-	ParsedDetails ret = api->parseDetails(source, m_parentSite);
+	ParsedDetails ret = api->parseDetails(source, statusCode, m_parentSite);
 	if (!ret.error.isEmpty())
 	{
 		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), Logger::Warning);

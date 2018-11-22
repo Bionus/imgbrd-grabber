@@ -68,15 +68,20 @@ class Api : public QObject
 
 		// API
 		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const = 0;
-		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int first) const = 0;
+		virtual bool parsePageErrors() const = 0;
+		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
 		virtual PageUrl galleryUrl(const QString &id, int page, int limit, Site *site) const = 0;
-		virtual ParsedPage parseGallery(Page *parentPage, const QString &source, int first) const = 0;
+		virtual bool parseGalleryErrors() const = 0;
+		virtual ParsedPage parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
 		virtual PageUrl tagsUrl(int page, int limit, Site *site) const = 0;
-		virtual ParsedTags parseTags(const QString &source, Site *site) const = 0;
+		virtual bool parseTagsErrors() const = 0;
+		virtual ParsedTags parseTags(const QString &source, int statusCode, Site *site) const = 0;
 		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const = 0;
-		virtual ParsedDetails parseDetails(const QString &source, Site *site) const = 0;
+		virtual bool parseDetailsErrors() const = 0;
+		virtual ParsedDetails parseDetails(const QString &source, int statusCode, Site *site) const = 0;
 		virtual PageUrl checkUrl() const = 0;
-		virtual ParsedCheck parseCheck(const QString &source) const = 0;
+		virtual bool parseCheckErrors() const = 0;
+		virtual ParsedCheck parseCheck(const QString &source, int statusCode) const = 0;
 		virtual bool canLoadTags() const = 0;
 		virtual bool canLoadDetails() const = 0;
 		virtual bool canLoadCheck() const = 0;

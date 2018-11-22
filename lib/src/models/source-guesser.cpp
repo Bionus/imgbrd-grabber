@@ -50,7 +50,7 @@ Source *SourceGuesser::start()
 				m_cache[checkUrl] = reply->readAll();
 			}
 
-			if (api->parseCheck(m_cache[checkUrl]).ok)
+			if (api->parseCheck(m_cache[checkUrl], 200).ok)
 			{
 				emit finished(source);
 				return source;

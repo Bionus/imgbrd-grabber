@@ -151,7 +151,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int first) const
+ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int statusCode, int first) const
 {
 	ParsedPage ret;
 
@@ -159,7 +159,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	Site *site = parentPage->site();
 	const QJSValue &api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property(type).property("parse");
-	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source);
+	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
 	if (results.isError())
@@ -233,9 +233,14 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	return ret;
 }
 
-ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int first) const
+bool JavascriptApi::parsePageErrors() const
 {
-	return parsePageInternal("search", parentPage, source, first);
+	return getJsConst("search.parseErrors").toBool();
+}
+
+ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int statusCode, int first) const
+{
+	return parsePageInternal("search", parentPage, source, statusCode, first);
 }
 
 
@@ -266,9 +271,14 @@ PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *
 	return ret;
 }
 
-ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int first) const
+bool JavascriptApi::parseGalleryErrors() const
 {
-	return parsePageInternal("gallery", parentPage, source, first);
+	return getJsConst("gallery.parseErrors").toBool();
+}
+
+ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const
+{
+	return parsePageInternal("gallery", parentPage, source, statusCode, first);
 }
 
 
@@ -307,14 +317,19 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	return ret;
 }
 
-ParsedTags JavascriptApi::parseTags(const QString &source, Site *site) const
+bool JavascriptApi::parseTagsErrors() const
+{
+	return getJsConst("tags.parseErrors").toBool();
+}
+
+ParsedTags JavascriptApi::parseTags(const QString &source, int statusCode, Site *site) const
 {
 	ParsedTags ret;
 
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("tags").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
 	if (results.isError())
@@ -359,14 +374,19 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 	return ret;
 }
 
-ParsedDetails JavascriptApi::parseDetails(const QString &source, Site *site) const
+bool JavascriptApi::parseDetailsErrors() const
+{
+	return getJsConst("details.parseErrors").toBool();
+}
+
+ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode, Site *site) const
 {
 	ParsedDetails ret;
 
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("details").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source);
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
 	if (results.isError())
@@ -434,14 +454,19 @@ PageUrl JavascriptApi::checkUrl() const
 	return ret;
 }
 
-ParsedCheck JavascriptApi::parseCheck(const QString &source) const
+bool JavascriptApi::parseCheckErrors() const
+{
+	return getJsConst("check.parseErrors").toBool();
+}
+
+ParsedCheck JavascriptApi::parseCheck(const QString &source, int statusCode) const
 {
 	ParsedCheck ret;
 
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("check").property("parse");
-	QJSValue result = parseFunction.call(QList<QJSValue>() << source);
+	QJSValue result = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
 	if (result.isError())
@@ -457,14 +482,28 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source) const
 }
 
 
-QJSValue JavascriptApi::getJsConst(const QString &key, const QJSValue &def) const
+static QJSValue tryGetValue(QJSValue api, const QStringList &properties)
+{
+	for (int i = 0; !api.isUndefined() && i < properties.length(); ++i)
+	{ api = api.property(properties[i]); }
+	return api;
+}
+
+QJSValue JavascriptApi::getJsConst(const QString &fullKey, const QJSValue &def) const
 {
 	// QMutexLocker locker(m_engineMutex);
+
+	const QStringList properties = fullKey.split('.');
+
 	QJSValue api = m_source.property("apis").property(m_key);
-	if (api.hasProperty(key))
-	{ return api.property(key); }
-	if (m_source.hasProperty(key))
-	{ return m_source.property(key); }
+	QJSValue fromApi = tryGetValue(api, properties);
+	if (!fromApi.isUndefined())
+		return fromApi;
+
+	QJSValue fromSource = tryGetValue(m_source, properties);
+	if (!fromSource.isUndefined())
+		return fromSource;
+
 	return def;
 }
 

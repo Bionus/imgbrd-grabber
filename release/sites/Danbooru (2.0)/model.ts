@@ -81,6 +81,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
+                parseErrors: true,
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
@@ -89,7 +90,7 @@ export const source: ISource = {
                         return { error: e.message };
                     }
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
                     const map = {
                         "created_at": "created_at",
                         "status": "status",
@@ -124,6 +125,10 @@ export const source: ISource = {
                     };
 
                     const data = JSON.parse(src);
+
+                    if ("success" in data && data["success"] === false && "message" in data) {
+                        return { error: data["message"] };
+                    }
 
                     const images: IImage[] = [];
                     for (const image of data) {
@@ -165,6 +170,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
+                parseErrors: true,
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
@@ -173,7 +179,7 @@ export const source: ISource = {
                         return { error: e.message };
                     }
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
                     const map = {
                         "created_at": "created-at",
                         "status": "status",
@@ -207,8 +213,13 @@ export const source: ISource = {
                         "tags_meta": "tag-string-meta",
                     };
 
-                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).posts.post);
+                    const xml = Grabber.parseXML(src);
 
+                    if ("result" in xml && "@attributes" in xml["result"] && "success" in xml["result"]["@attributes"] && xml["result"]["@attributes"]["success"] === "false") {
+                        return { error: xml["result"]["#text"] };
+                    }
+
+                    const data = Grabber.makeArray(Grabber.typedXML(xml).posts.post);
                     const images: IImage[] = [];
                     for (const image of data) {
                         const img = Grabber.mapFields(image, map);
@@ -249,6 +260,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
+                parseErrors: true,
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
@@ -257,7 +269,12 @@ export const source: ISource = {
                         return { error: e.message };
                     }
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string, statusCode: number): IParsedSearch | IError => {
+                    const match = src.match(/<div id="page">\s*<p>([^<]+)<\/p>\s*<\/div>/m);
+                    if (match) {
+                        return { error: match[1] };
+                    }
+
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
                     wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
                     return {

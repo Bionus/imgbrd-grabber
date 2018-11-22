@@ -118,24 +118,29 @@ interface IApi {
     maxLimit?: number;
     forcedLimit?: number;
     search: {
+        parseErrors?: boolean;
         url: (query: any, opts: any, previous: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedSearch | IError;
+        parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
     details?: {
+        parseErrors?: boolean;
         url: (id: number, md5: string) => IUrl | IError | string;
-        parse: (src: string) => IParsedDetails | IError;
+        parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {
+        parseErrors?: boolean;
         url: (query: any, opts: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedGallery | IError;
+        parse: (src: string, statusCode: number) => IParsedGallery | IError;
     };
     tags?: {
+        parseErrors?: boolean;
         url: (query: any, opts: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedTags | IError;
+        parse: (src: string, statusCode: number) => IParsedTags | IError;
     };
     check?: {
+        parseErrors?: boolean;
         url: () => IUrl | IError | string;
-        parse: (src: string) => boolean | IError;
+        parse: (src: string, statusCode: number) => boolean | IError;
     };
 }
 interface ISource {
