@@ -19,7 +19,7 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 	endif()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005") # Suppress some warnings
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005 /wd4251") # Suppress some warnings
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-macro-redefined -pedantic")
 endif()
@@ -32,7 +32,6 @@ else()
 endif()
 set(VERSION_ANDROID "1")
 set(USE_SSL 1)
-set(USE_PCH 1)
 
 message(STATUS "Configuring for version '${VERSION}'")
 
@@ -59,6 +58,16 @@ if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
 	include(cmake/CodeCoverage.cmake)
 	setup_target_for_coverage(coverage tests coverage)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
+# Pre-compiled headers
+if(WIN32)
+	set(USE_PCH 1)
+else()
+	set(USE_PCH 0)
+endif()
+if(USE_PCH)
+	include(cotire/CMake/cotire)
 endif()
 
 add_subdirectory(lib)

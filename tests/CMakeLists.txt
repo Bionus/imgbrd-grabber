@@ -20,6 +20,5 @@ add_subdirectory(languages)
 
 # Pre-compiled header
 if(USE_PCH)
-	include(PrecompiledHeader)
-	add_precompiled_header(${PROJECT_NAME} "src/pch.h" FORCEINCLUDE SOURCE_CXX "${CMAKE_CURRENT_SOURCE_DIR}/src/pch.cpp")
+	cotire(${PROJECT_NAME})
 endif()

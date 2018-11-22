@@ -45,6 +45,9 @@ init:
   - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_IS_NIGHTLY=0") else (set "GRABBER_IS_NIGHTLY=1")
   - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_VERSION=%APPVEYOR_REPO_TAG_NAME%") else (set "GRABBER_VERSION=nightly")
 
+install:
+  - git submodule update --init --recursive
+
 build_script:
   # Download Google tools and put them in the PATH (required for Google Breakpad)
   - if not exist "depot_tools" appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip

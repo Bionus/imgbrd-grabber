@@ -1,3 +1,6 @@
 [submodule "cmake/qt-android-cmake"]
 	path = cmake/qt-android-cmake
 	url = https://github.com/LaurentGomila/qt-android-cmake.git
+[submodule "cmake/cotire"]
+	path = cmake/cotire
+	url = https://github.com/sakra/cotire.git
