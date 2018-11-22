@@ -226,6 +226,8 @@ void PageApi::parseActual()
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
 		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
 		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -245,6 +247,8 @@ void PageApi::parseActual()
 		m_errors.append(page.error);
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
 		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
