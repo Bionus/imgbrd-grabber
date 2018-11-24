@@ -135,7 +135,7 @@ export const source: ISource = {
                     return {
                         images,
                         imageCount: data["posts_count"],
-                        pageCount: data["max_pages"],
+                        pageCount: data["max_pages"] + 1, // max_pages is an index, not a count, and pages start at 0
                     };
                 },
             },
