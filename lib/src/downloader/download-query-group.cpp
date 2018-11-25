@@ -25,6 +25,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["total"] = total;
 	json["postFiltering"] = QJsonArray::fromStringList(postFiltering);
 	json["getBlacklisted"] = getBlacklisted;
+	json["galleriesCountAsOne"] = galleriesCountAsOne;
 
 	json["site"] = site->url();
 	json["filename"] = QString(filename).replace("\n", "\\n");
@@ -44,6 +45,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 	perpage = json["perpage"].toInt();
 	total = json["total"].toInt();
 	getBlacklisted = json["getBlacklisted"].toBool();
+	galleriesCountAsOne = json["galleriesCountAsOne"].toBool();
 
 	filename = json["filename"].toString().replace("\\n", "\n");
 	path = json["path"].toString();
@@ -79,6 +81,7 @@ bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs)
 		&& lhs.perpage == rhs.perpage
 		&& lhs.total == rhs.total
 		&& lhs.getBlacklisted == rhs.getBlacklisted
+		&& lhs.galleriesCountAsOne == rhs.galleriesCountAsOne
 		&& lhs.site == rhs.site
 		&& lhs.filename == rhs.filename
 		&& lhs.path == rhs.path;

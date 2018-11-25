@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283082</id>
+    <created-at type="dateTime">2018-10-11T11:39:11-04:00</created-at>
+    <uploader-id type="integer">399708</uploader-id>
+    <score type="integer">1</score>
+    <source>https://image02.seesaawiki.jp/k/w/kagranw/9b8b4abb5f28a4ce.jpg</source>
+    <md5>7534bdfd5418d6ff4b1aeb1776229fc0</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>q</rating>
+    <image-width type="integer">640</image-width>
+    <image-height type="integer">800</image-height>
+    <tag-string>1girl bangs blue_eyes blue_hair blush breasts character_name cleavage covering covering_breasts cyborg emblem feathers flower hair_flower hair_ornament holding laughing official_art one_eye_closed open_mouth senran_kagura senran_kagura_new_wave solo tears tickle_torture tickling torn_clothes yozakura_(senran_kagura)</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">3</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">25</tag-count-general>
+    <tag-count-artist type="integer">0</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">101834</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">1</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">true</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">29</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:39:25-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">399708</uid>
+    </keeper-data>
+    <uploader-name>yuihirasawa</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl bangs blue_eyes blue_hair blush breasts character_name cleavage covering covering_breasts cyborg emblem feathers flower hair_flower hair_ornament holding laughing one_eye_closed open_mouth solo tears tickle_torture tickling torn_clothes</tag-string-general>
+    <tag-string-character>yozakura_(senran_kagura)</tag-string-character>
+    <tag-string-copyright>senran_kagura senran_kagura_new_wave</tag-string-copyright>
+    <tag-string-artist></tag-string-artist>
+    <tag-string-meta>official_art</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/7534bdfd5418d6ff4b1aeb1776229fc0.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/7534bdfd5418d6ff4b1aeb1776229fc0.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/75/34/7534bdfd5418d6ff4b1aeb1776229fc0.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283081</id>
+    <created-at type="dateTime">2018-10-11T11:39:10-04:00</created-at>
+    <uploader-id type="integer">458730</uploader-id>
+    <score type="integer">0</score>
+    <source>https://twitter.com/maku_raku/status/1050393522661023745</source>
+    <md5>65a162ff0cf3ea0b69e0b936a0c5da58</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">1000</image-width>
+    <image-height type="integer">1425</image-height>
+    <tag-string>2girls comic greyscale hat highres holding_cloth kantai_collection long_hair maku-raku monochrome multiple_girls ryuujou_(kantai_collection) smile speech_bubble translated twintails unryuu_(kantai_collection) visor_cap</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime">2018-10-11T11:41:11-04:00</last-noted-at>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer">3283080</parent-id>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">12</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">2</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">175555</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">18</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:41:15-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">2</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">458730</uid>
+    </keeper-data>
+    <uploader-name>Elf_song</uploader-name>
+    <has-large type="boolean">true</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>2girls comic greyscale hat holding_cloth long_hair monochrome multiple_girls smile speech_bubble twintails visor_cap</tag-string-general>
+    <tag-string-character>ryuujou_(kantai_collection) unryuu_(kantai_collection)</tag-string-character>
+    <tag-string-copyright>kantai_collection</tag-string-copyright>
+    <tag-string-artist>maku-raku</tag-string-artist>
+    <tag-string-meta>highres translated</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/65a162ff0cf3ea0b69e0b936a0c5da58.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/sample/sample-65a162ff0cf3ea0b69e0b936a0c5da58.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/65/a1/65a162ff0cf3ea0b69e0b936a0c5da58.jpg</preview-file-url>
+  </post>
+</posts>

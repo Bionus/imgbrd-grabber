@@ -22,12 +22,28 @@ Md5Fix::Md5Fix(Profile *profile, QWidget *parent)
 	ui->lineSuffixes->setText(getExternalLogFilesSuffixes(profile->getSettings()).join(", "));
 	ui->progressBar->hide();
 
+	m_worker = new Md5FixWorker();
+	m_worker->moveToThread(&m_thread);
+	connect(&m_thread, &QThread::finished, m_worker, &QObject::deleteLater);
+	connect(this, &Md5Fix::startWorker, m_worker, &Md5FixWorker::doWork);
+	connect(m_worker, &Md5FixWorker::maximumSet, this, &Md5Fix::workerMaximumSet);
+	connect(m_worker, &Md5FixWorker::valueSet, this, &Md5Fix::workerValueSet);
+	connect(m_worker, &Md5FixWorker::md5Calculated, this, &Md5Fix::workerMd5Calculated);
+	connect(m_worker, &Md5FixWorker::finished, this, &Md5Fix::workerFinished);
+
+	m_thread.start();
+
 	resize(size().width(), 0);
 }
 
 Md5Fix::~Md5Fix()
 {
 	delete ui;
+
+	m_thread.quit();
+	m_thread.wait();
+
+	m_worker->deleteLater();
 }
 
 void Md5Fix::cancel()
@@ -36,13 +52,47 @@ void Md5Fix::cancel()
 	close();
 }
 
+void Md5Fix::workerMaximumSet(int max)
+{
+	if (max > 0)
+	{
+		ui->progressBar->setValue(0);
+		ui->progressBar->setMaximum(max);
+		ui->progressBar->show();
+	}
+}
+
+void Md5Fix::workerValueSet(int value)
+{
+	ui->progressBar->setValue(value);
+}
+
+void Md5Fix::workerMd5Calculated(const QString &md5, const QString &path)
+{
+	m_profile->addMd5(md5, path);
+}
+
+void Md5Fix::workerFinished(int loadedCount)
+{
+	// Hide progress bar
+	ui->progressBar->hide();
+	ui->progressBar->setValue(0);
+	ui->progressBar->setMaximum(0);
+
+	ui->buttonStart->setEnabled(true);
+
+	m_profile->sync();
+
+	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", loadedCount));
+}
+
 void Md5Fix::start()
 {
 	ui->buttonStart->setEnabled(false);
 
 	// Check that directory exists
-	QDir dir(ui->lineFolder->text());
-	if (!dir.exists())
+	QString dir = ui->lineFolder->text();
+	if (!QDir(dir).exists())
 	{
 		error(this, tr("This folder does not exist."));
 		ui->buttonStart->setEnabled(true);
@@ -50,7 +100,8 @@ void Md5Fix::start()
 	}
 
 	// Make sure the input is valid
-	if (!ui->radioForce->isChecked() && !ui->lineFilename->text().contains("%md5%"))
+	bool force = ui->radioForce->isChecked();
+	if (!force && !ui->lineFilename->text().contains("%md5%"))
 	{
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonStart->setEnabled(true);
@@ -62,45 +113,5 @@ void Md5Fix::start()
 	for (QString &suffix : suffixes)
 		suffix = suffix.trimmed();
 
-	// Get all files from the destination directory
-	auto files = listFilesFromDirectory(dir, suffixes);
-
-	int count = 0;
-	if (files.count() > 0)
-	{
-		// Show progress bar
-		ui->progressBar->setValue(0);
-		ui->progressBar->setMaximum(files.size());
-		ui->progressBar->show();
-
-		// Parse all files
-		for (const auto &file : files)
-		{
-			const QString fileName = file.first;
-			const QString path = dir.absoluteFilePath(fileName);
-
-			QString md5 = ui->radioForce->isChecked()
-				? getFileMd5(path)
-				: getFilenameMd5(fileName, ui->lineFilename->text());
-
-			if (!md5.isEmpty())
-			{
-				m_profile->addMd5(md5, path);
-				count++;
-			}
-
-			ui->progressBar->setValue(ui->progressBar->value() + 1);
-		}
-	}
-
-	// Hide progress bar
-	ui->progressBar->hide();
-	ui->progressBar->setValue(0);
-	ui->progressBar->setMaximum(0);
-
-	ui->buttonStart->setEnabled(true);
-
-	m_profile->sync();
-
-	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", count));
+	emit startWorker(dir, ui->lineFilename->text(), suffixes, force);
 }

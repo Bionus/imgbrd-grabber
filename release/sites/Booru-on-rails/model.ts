@@ -21,18 +21,6 @@ function completeImage(img: IImage): IImage {
     return img;
 }
 
-const auth: { [id: string]: IAuth } = {
-    url: {
-        type: "url",
-        fields: [
-            {
-                key: "key",
-                type: "password",
-            },
-        ],
-    },
-};
-
 export const source: ISource = {
     name: "Booru-on-rails",
     modifiers: ["faved_by:", "width:", "height:", "uploader:", "source_url:", "description:", "sha512_hash:", "aspect_ratio:"],
@@ -47,7 +35,17 @@ export const source: ISource = {
         parenthesis: true,
         precedence: "and",
     },
-    auth,
+    auth: {
+        url: {
+            type: "url",
+            fields: [
+                {
+                    key: "key",
+                    type: "password",
+                },
+            ],
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -55,12 +53,10 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
-                        return "/images.json?" + loginPart + "page=" + query.page + "&nocomments=1&nofav=1";
+                        return "/images.json?page=" + query.page + "&nocomments=1&nofav=1";
                     }
-                    return "/search.json?" + loginPart + "page=" + query.page + "&q=" + encodeURIComponent(query.search) + "&nocomments=1&nofav=1";
+                    return "/search.json?page=" + query.page + "&q=" + encodeURIComponent(query.search) + "&nocomments=1&nofav=1";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -98,9 +94,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -127,12 +121,10 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
-                        return "/images/page/" + query.page + "?" + loginPart;
+                        return "/images/page/" + query.page;
                     }
-                    return "/search?" + loginPart + "page=" + query.page + "&sbq=" + encodeURIComponent(query.search);
+                    return "/search?page=" + query.page + "&sbq=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
@@ -154,9 +146,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags?" + loginPart + "page=" + query.page;
+                    return "/tags?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

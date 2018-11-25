@@ -6,6 +6,9 @@
 #include <QStyle>
 
 
+class QWidget;
+class QLayoutItem;
+
 class FixedSizeGridLayout : public QLayout
 {
 	Q_OBJECT

@@ -21,6 +21,9 @@ class QAffiche : public QLabel
 		void clicked();
 		void clicked(int);
 		void clicked(const QString &);
+		void rightClicked();
+		void rightClicked(int);
+		void rightClicked(const QString &);
 		void middleClicked();
 		void middleClicked(int);
 		void middleClicked(const QString &);

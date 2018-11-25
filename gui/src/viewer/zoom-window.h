@@ -3,8 +3,8 @@
 
 #include <QPushButton>
 #include <QStackedWidget>
-#include <QtGui>
 #include <QtNetwork>
+#include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
 
@@ -22,6 +22,7 @@ class DetailsWindow;
 class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
+class SearchTab;
 
 class ZoomWindow : public QWidget
 {
@@ -49,7 +50,7 @@ class ZoomWindow : public QWidget
 			PendingOpen,
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -57,14 +58,15 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(const QSharedPointer<Image> &img, const QMap<QString, Image::SaveResult> &result);
+		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
+		void updateSize(const QSize &size);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
 		void saveImageNow();
-		void saveImageNowSaved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
+		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
 		void openUrl(const QString &);
 		void openPool(const QString &);
@@ -77,7 +79,6 @@ class ZoomWindow : public QWidget
 		void setfavorite();
 		void downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void urlChanged(const QUrl &before, const QUrl &after);
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
@@ -127,6 +128,7 @@ class ZoomWindow : public QWidget
 
 	private:
 		MainWindow *m_parent;
+		SearchTab *m_tab;
 		Profile *m_profile;
 		QList<Favorite> &m_favorites;
 		QStringList &m_viewItLater;
@@ -142,7 +144,6 @@ class ZoomWindow : public QWidget
 		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QString id;
-		QUrl m_url, m_saveUrl;
 		QString rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;

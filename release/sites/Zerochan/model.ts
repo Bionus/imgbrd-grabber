@@ -28,7 +28,36 @@ export const source: ISource = {
     searchFormat: {
         and: ", ",
     },
-    auth: {},
+    auth: {
+        session: {
+            type: "post",
+            url: "/login",
+            fields: [
+                {
+                    key: "name",
+                    type: "username",
+                },
+                {
+                    key: "password",
+                    type: "password",
+                },
+                {
+                    key: "login",
+                    type: "const",
+                    value: "Login",
+                },
+                {
+                    key: "ref",
+                    type: "const",
+                    value: "ref",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "z_hash",
+            },
+        },
+    },
     apis: {
         rss: {
             name: "RSS",

@@ -1,5 +1,5 @@
 #include "fixed-size-grid-layout.h"
-#include <QtWidgets>
+#include <QWidget>
 
 
 FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent, int hSpacing, int vSpacing)

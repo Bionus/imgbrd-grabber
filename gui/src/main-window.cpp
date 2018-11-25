@@ -54,6 +54,8 @@ MainWindow::MainWindow(Profile *profile)
 { }
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	m_settings = m_profile->getSettings();
 	auto sites = m_profile->getSites();
 
@@ -363,7 +365,11 @@ void MainWindow::initialLoginsFinished()
 void MainWindow::initialLoginsDone()
 {
 	if (m_restore)
-	{ loadTabs(m_profile->getPath() + "/tabs.txt"); }
+	{
+		if (QFile::exists(m_profile->getPath() + "/tabs.txt"))
+		{ QFile::rename(m_profile->getPath() + "/tabs.txt", m_profile->getPath() + "/tabs.json"); }
+		loadTabs(m_profile->getPath() + "/tabs.json");
+	}
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
@@ -379,8 +385,10 @@ void MainWindow::initialLoginsDone()
 
 MainWindow::~MainWindow()
 {
-	delete m_profile;
+	m_profile->deleteLater();
+
 	delete ui;
+	ui = nullptr;
 }
 
 void MainWindow::focusSearch()
@@ -419,20 +427,20 @@ void MainWindow::onFirstLoad()
 	swin->show();
 }
 
-void MainWindow::addTab(const QString &tag, bool background, bool save)
+void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source)
 {
 	auto *w = new TagTab(m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
 	else
 	{ w->focusSearch(); }
 }
-void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save)
+void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save, SearchTab *source)
 {
 	auto *w = new PoolTab(m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 
 	if (!site.isEmpty())
 	{ w->setSite(site); }
@@ -441,19 +449,28 @@ void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 	else
 	{ w->focusSearch(); }
 }
-void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool background, bool save)
+void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool background, bool save, SearchTab *source)
 {
 	auto *w = new GalleryTab(site, std::move(name), std::move(id), m_profile, this);
-	this->addSearchTab(w, background, save);
+	this->addSearchTab(w, background, save, source);
 }
-void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
+void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
-	if (m_tabs.size() > ui->tabWidget->currentIndex())
+	// TODO(Bionus): remove this and always pass it when necessary
+	if (source == nullptr || !m_tabs.contains(source))
 	{
-		w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources());
-		w->setImagesPerPage(m_tabs[ui->tabWidget->currentIndex()]->imagesPerPage());
-		w->setColumns(m_tabs[ui->tabWidget->currentIndex()]->columns());
-		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
+		if (m_tabs.size() > ui->tabWidget->currentIndex())
+		{ source = m_tabs[ui->tabWidget->currentIndex()]; }
+		else
+		{ source = nullptr; }
+	}
+
+	if (source != nullptr)
+	{
+		w->setSources(source->sources());
+		w->setImagesPerPage(source->imagesPerPage());
+		w->setColumns(source->columns());
+		w->setPostFilter(source->postFilter());
 	}
 	connect(w, &SearchTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
 	connect(w, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
@@ -463,7 +480,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 
 	QString title = w->windowTitle();
 	if (title.isEmpty())
-	{ title = "New tab"; }
+	{ title = tr("New tab"); }
 
 	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty() ? 1 : 0) : m_tabs.count();
 	int index = ui->tabWidget->insertTab(pos, w, title);
@@ -481,7 +498,7 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save)
 		ui->tabWidget->setCurrentIndex(index);
 
 	if (save)
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 }
 
 bool MainWindow::saveTabs(const QString &filename)
@@ -516,11 +533,14 @@ void MainWindow::updateTabs()
 {
 	if (m_loaded)
 	{
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 	}
 }
 void MainWindow::tabClosed(SearchTab *tab)
 {
+	if (ui == nullptr)
+		return;
+
 	// Store closed tab information
 	QJsonObject obj;
 	tab->write(obj);
@@ -529,6 +549,7 @@ void MainWindow::tabClosed(SearchTab *tab)
 	{
 		m_closedTabs.removeFirst();
 	}
+
 	ui->actionRestoreLastClosedTab->setEnabled(true);
 
 	m_tabs.removeAll(tab);
@@ -747,7 +768,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 
 	log(QStringLiteral("Saving..."), Logger::Debug);
 		m_downloadsTab->saveLinkList(m_profile->getPath() + "/restore.igl");
-		saveTabs(m_profile->getPath() + "/tabs.txt");
+		saveTabs(m_profile->getPath() + "/tabs.json");
 		m_settings->setValue("state", saveState());
 		m_settings->setValue("geometry", saveGeometry());
 		m_settings->setValue("crashed", false);
@@ -762,7 +783,6 @@ void MainWindow::closeEvent(QCloseEvent *e)
 		m_trayIcon->hide();
 
 	e->accept();
-	qApp->quit();
 }
 
 void MainWindow::options()
@@ -956,7 +976,7 @@ void MainWindow::saveSettings()
 
 
 
-void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save)
+void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save, SearchTab *source)
 {
 	QFile file(path);
 	if (file.open(QFile::ReadOnly))
@@ -964,10 +984,10 @@ void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool
 		QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 		file.close();
 
-		loadTag("md5:" + md5, newTab, background, save);
+		loadTag("md5:" + md5, newTab, background, save, source);
 	}
 }
-void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save)
+void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save, SearchTab *source)
 {
 	if (tag.startsWith("http://") || tag.startsWith("https://"))
 	{
@@ -976,7 +996,7 @@ void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool 
 	}
 
 	if (newTab)
-		addTab(tag, background, save);
+		addTab(tag, background, save, source);
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }

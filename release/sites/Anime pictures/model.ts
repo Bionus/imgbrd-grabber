@@ -68,27 +68,6 @@ function searchToUrl(search: string): string {
     return ret.join("&");
 }
 
-const auth: { [id: string]: IAuth } = {
-    session: {
-        type: "post",
-        url: "/login/submit",
-        fields: [
-            {
-                key: "login",
-                type: "username",
-            },
-            {
-                key: "password",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "asian_server",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "Anime pictures",
     modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
@@ -103,7 +82,26 @@ export const source: ISource = {
         parenthesis: false,
         precedence: "and",
     },
-    auth,
+    auth: {
+        session: {
+            type: "post",
+            url: "/login/submit",
+            fields: [
+                {
+                    key: "login",
+                    type: "username",
+                },
+                {
+                    key: "password",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "asian_server",
+            },
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -137,7 +135,7 @@ export const source: ISource = {
                     return {
                         images,
                         imageCount: data["posts_count"],
-                        pageCount: data["max_pages"],
+                        pageCount: data["max_pages"] + 1, // max_pages is an index, not a count, and pages start at 0
                     };
                 },
             },

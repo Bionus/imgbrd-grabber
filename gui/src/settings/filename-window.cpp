@@ -137,7 +137,7 @@ void FilenameWindow::done(int r)
 		info.insert("tags_copyright", "copyright_1 copyright_2");
 
 		Image image(site, info, m_profile);
-		QStringList det = image.path(format(), QString());
+		QStringList det = image.paths(format(), QString(), 0);
 
 		if (det.isEmpty())
 		{

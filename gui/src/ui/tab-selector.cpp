@@ -97,7 +97,7 @@ void TabSelector::menuAboutToShow()
 
 void TabSelector::actionTriggered(QAction *action)
 {
-	QWidget *widget = action->data().value<QWidget*>();
+	auto *widget = action->data().value<QWidget*>();
 	if (widget == nullptr) {
 		return;
 	}
@@ -113,7 +113,7 @@ void TabSelector::actionTriggered(QAction *action)
 
 void TabSelector::actionTriggeredMiddle(QAction *action)
 {
-	QWidget *widget = action->data().value<QWidget*>();
+	auto *widget = action->data().value<QWidget*>();
 	if (widget == nullptr) {
 		return;
 	}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283069</id>
+    <created-at type="dateTime">2018-10-11T11:31:07-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">0</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p10.jpg</source>
+    <md5>80d506a4325519ff56be6832e6ce25ff</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">558</image-width>
+    <image-height type="integer">700</image-height>
+    <tag-string>2girls aoba_moka bang_dream! bangs black_hair blazer blush bob_cut closed_eyes confetti crying eyebrows_visible_through_hair face-to-face grey_hair grey_jacket hand_in_another's_hair haneoka_school_uniform happy_tears jacket long_sleeves mitake_ran mizukikushou multiple_girls necktie open_mouth red_hair short_hair smile tears translation_request twitter_username yuri</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">1</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">27</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">2</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">186251</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">32</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:31:07-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>2girls bangs black_hair blazer blush bob_cut closed_eyes confetti crying eyebrows_visible_through_hair face-to-face grey_hair grey_jacket hand_in_another's_hair haneoka_school_uniform happy_tears jacket long_sleeves multiple_girls necktie open_mouth red_hair short_hair smile tears twitter_username yuri</tag-string-general>
+    <tag-string-character>aoba_moka mitake_ran</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta>translation_request</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/80d506a4325519ff56be6832e6ce25ff.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/80d506a4325519ff56be6832e6ce25ff.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/80/d5/80d506a4325519ff56be6832e6ce25ff.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283066</id>
+    <created-at type="dateTime">2018-10-11T11:29:49-04:00</created-at>
+    <uploader-id type="integer">399708</uploader-id>
+    <score type="integer">1</score>
+    <source>https://image02.seesaawiki.jp/k/w/kagranw/a96fb5617389bd3d.jpg</source>
+    <md5>14d545016453afc0e8f236ef58464fb8</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">640</image-width>
+    <image-height type="integer">800</image-height>
+    <tag-string>1girl armor bangs bare_legs blue_eyes blue_hair breasts character_name cleavage emblem flower hair_flower hair_ornament mask ninja official_art sandals senran_kagura senran_kagura_new_wave solo yozakura_(senran_kagura)</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">1</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">17</tag-count-general>
+    <tag-count-artist type="integer">0</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">102088</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">1</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">true</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">21</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:29:49-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">399708</uid>
+    </keeper-data>
+    <uploader-name>yuihirasawa</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl armor bangs bare_legs blue_eyes blue_hair breasts character_name cleavage emblem flower hair_flower hair_ornament mask ninja sandals solo</tag-string-general>
+    <tag-string-character>yozakura_(senran_kagura)</tag-string-character>
+    <tag-string-copyright>senran_kagura senran_kagura_new_wave</tag-string-copyright>
+    <tag-string-artist></tag-string-artist>
+    <tag-string-meta>official_art</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/14d545016453afc0e8f236ef58464fb8.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/14d545016453afc0e8f236ef58464fb8.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/14/d5/14d545016453afc0e8f236ef58464fb8.jpg</preview-file-url>
+  </post>
+</posts>

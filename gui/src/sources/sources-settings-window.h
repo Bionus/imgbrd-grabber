@@ -41,6 +41,7 @@ class SourcesSettingsWindow : public QDialog
 		Ui::SourcesSettingsWindow *ui;
 		Site *m_site;
 		QSettings *m_globalSettings;
+		QString m_salt;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

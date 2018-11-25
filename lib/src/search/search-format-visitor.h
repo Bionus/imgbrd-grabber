@@ -23,7 +23,7 @@ class SearchFormatVisitor : public SearchVisitor
 
 		QString m_result;
 		QString m_error;
-		bool m_inPrecedent;
+		bool m_inPrecedent = false;
 };
 
 #endif // SEARCH_FORMAT_VISITOR_H

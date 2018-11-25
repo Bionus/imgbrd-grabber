@@ -9,7 +9,7 @@
 
 
 UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
-	: QDialog(nullptr), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
+	: QDialog(parent), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
 {
 	ui->setupUi(this);
 

@@ -1,7 +1,14 @@
 #include "models/source.h"
+#include <QCryptographicHash>
 #include <QJSValue>
 #include <QJSValueIterator>
 #include <QMutex>
+#include "auth/http-auth.h"
+#include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
+#include "auth/auth-const-field.h"
+#include "auth/auth-field.h"
+#include "auth/auth-hash-field.h"
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
@@ -58,75 +65,120 @@ QMutex *Source::jsEngineMutex()
 Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_diskName(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_diskName, m_dir, getUpdaterBaseUrl())
 {
-	// Load XML details for this source from its model file
-	QFile file(m_dir + "/model.xml");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	// Tag format mapper
+	static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
 	{
-		const QString fileContents = file.readAll();
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(QStringLiteral("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
+		{ "lower", TagNameFormat::Lower },
+		{ "upper_first", TagNameFormat::UpperFirst },
+		{ "upper", TagNameFormat::Upper },
+		{ "caps", TagNameFormat::Caps },
+	};
+
+	// Javascript models
+	QFile js(m_dir + "/model.js");
+	if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
+
+		const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
+
+		m_jsSource = jsEngine()->evaluate(src, js.fileName());
+		if (m_jsSource.isError())
+		{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
 		else
 		{
-			const QDomElement docElem = doc.documentElement();
-			const QMap<QString, QString> details = domToMap(docElem);
+			m_name = m_jsSource.property("name").toString();
 
-			// Tag format mapper
-			static const QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			// Get the list of APIs for this Source
+			const QJSValue apis = m_jsSource.property("apis");
+			QJSValueIterator it(apis);
+			while (it.hasNext())
 			{
-				{ "lower", TagNameFormat::Lower },
-				{ "upper_first", TagNameFormat::UpperFirst },
-				{ "upper", TagNameFormat::Upper },
-				{ "caps", TagNameFormat::Caps },
-			};
+				it.next();
+				m_apis.append(new JavascriptApi(m_jsSource, jsEngineMutex(), it.name()));
+			}
+			if (m_apis.isEmpty())
+			{ log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name)); }
 
-			// Javascript models
-			QFile js(m_dir + "/model.js");
-			if (js.exists() && js.open(QIODevice::ReadOnly | QIODevice::Text))
+			// Read tag naming format
+			const QJSValue &tagFormat = m_jsSource.property("tagFormat");
+			if (!tagFormat.isUndefined())
 			{
-				log(QStringLiteral("Using Javascript model for %1").arg(m_diskName), Logger::Debug);
+				const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
+				m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
+			}
 
-				const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
+			// Read auth information
+			const QJSValue auths = m_jsSource.property("auth");
+			QJSValueIterator authIt(auths);
+			while (authIt.hasNext())
+			{
+				authIt.next();
 
-				m_jsSource = jsEngine()->evaluate(src, js.fileName());
-				if (m_jsSource.isError())
-				{ log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error); }
+				const QString &id = authIt.name();
+				const QJSValue &auth = authIt.value();
+
+				const QString type = auth.property("type").toString();
+				Auth *ret = nullptr;
+
+				const QJSValue check = auth.property("check");
+				const QString checkType = check.isObject() ? check.property("type").toString() : QString();
+
+				if (type == "oauth2")
+				{
+					const QString authType = auth.property("authType").toString();
+					const QString tokenUrl = auth.property("tokenUrl").toString();
+					ret = new OAuth2Auth(type, authType, tokenUrl);
+				}
 				else
 				{
-					m_name = m_jsSource.property("name").toString();
-
-					// Get the list of APIs for this Source
-					const QJSValue apis = m_jsSource.property("apis");
-					QJSValueIterator it(apis);
-					while (it.hasNext())
+					QList<AuthField*> fields;
+					const QJSValue &jsFields = auth.property("fields");
+					const quint32 length = jsFields.property("length").toUInt();
+					for (quint32 i = 0; i < length; ++i)
 					{
-						it.next();
-						m_apis.append(new JavascriptApi(details, m_jsSource, jsEngineMutex(), it.name()));
+						const QJSValue &field = jsFields.property(i);
+
+						const QString key = field.property("key").toString();
+						const QString type = field.property("type").toString();
+
+						if (type == "hash")
+						{
+							const QString algoStr = field.property("hash").toString();
+							const auto algo = algoStr == "sha1" ? QCryptographicHash::Sha1 : QCryptographicHash::Md5;
+							fields.append(new AuthHashField(key, algo, field.property("salt").toString()));
+						}
+						else if (type == "const")
+						{
+							const QString value = field.property("value").toString();
+							fields.append(new AuthConstField(key, value));
+						}
+						else
+						{ fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username)); }
 					}
-					if (m_apis.isEmpty())
-					{ log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name)); }
 
-					// Read tag naming format
-					const QJSValue &tagFormat = m_jsSource.property("tagFormat");
-					if (!tagFormat.isUndefined())
+					if (type == "get" ||  type == "post")
 					{
-						const auto caseFormat = caseAssoc.value(tagFormat.property("case").toString(), TagNameFormat::Lower);
-						m_tagNameFormat = TagNameFormat(caseFormat, tagFormat.property("wordSeparator").toString());
+						const QString url = auth.property("url").toString();
+						const QString cookie = checkType == "cookie" ? check.property("key").toString() : QString();
+						ret = new HttpAuth(type, url, fields, cookie);
+					}
+					else
+					{
+						const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
+						ret = new UrlAuth(type, fields, maxPage);
 					}
 				}
 
-				js.close();
+				if (ret != nullptr)
+				{ m_auths.insert(id, ret); }
 			}
-			else
-			{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 		}
 
-		file.close();
+		js.close();
 	}
 	else
-	{ log(QStringLiteral("Impossible to open the model file '%1'").arg(m_dir + "/model.xml"), Logger::Warning); }
+	{ log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
@@ -150,6 +202,7 @@ Source::~Source()
 {
 	qDeleteAll(m_apis);
 	qDeleteAll(m_sites);
+	qDeleteAll(m_auths);
 }
 
 
@@ -159,6 +212,8 @@ const QList<Site*> &Source::getSites() const { return m_sites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
 Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
+const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
+Auth *Source::getAuth(const QString &name) const { return m_auths.value(name); }
 
 Api *Source::getApi(const QString &name) const
 {

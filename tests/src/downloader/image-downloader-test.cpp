@@ -55,8 +55,8 @@ void ImageDownloaderTest::testSuccessBasic()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
 	assertDownload(img, &downloader, expected, true);
 }
@@ -66,8 +66,8 @@ void ImageDownloaderTest::testSuccessLoadTags()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, true, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/to heart 2.jpg"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/to heart 2.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
 	assertDownload(img, &downloader, expected, true);
 }
@@ -87,8 +87,8 @@ void ImageDownloaderTest::testSuccessLoadTagsExternal()
 	settings->setValue("LogFiles/0/uniquePath", logFile.fileName());
 	settings->setValue("LogFiles/0/content", "%copyright%");
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
 	assertDownload(img, &downloader, expected, true);
 
@@ -109,8 +109,8 @@ void ImageDownloaderTest::testOpenError()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "///", "///root/toto", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("//root/toto/"), Image::SaveResult::Error);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("//root/toto/"), Image::Size::Full, Image::SaveResult::Error });
 
 	assertDownload(img, &downloader, expected, false, true);
 }
@@ -120,8 +120,8 @@ void ImageDownloaderTest::testNotFound()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NotFound);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::NotFound });
 
 	CustomNetworkAccessManager::NextFiles.append("404");
 
@@ -133,8 +133,8 @@ void ImageDownloaderTest::testNetworkError()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NetworkError);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::NetworkError });
 
 	CustomNetworkAccessManager::NextFiles.append("500");
 
@@ -146,8 +146,8 @@ void ImageDownloaderTest::testOriginalMd5()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.jpg"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
 	assertDownload(img, &downloader, expected, true);
 }
@@ -157,8 +157,8 @@ void ImageDownloaderTest::testGeneratedMd5()
 	QSharedPointer<Image> img(createImage(true));
 	ImageDownloader downloader(m_profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/956ddde86fb5ce85218b21e2f49e5c50.jpg"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/956ddde86fb5ce85218b21e2f49e5c50.jpg"), Image::Size::Full, Image::SaveResult::Saved });
 
 	assertDownload(img, &downloader, expected, true);
 }
@@ -168,12 +168,25 @@ void ImageDownloaderTest::testRotateExtension()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, false, true);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.png"), Image::SaveResult::Saved);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.png"), Image::Size::Full, Image::SaveResult::Saved });
 
 	CustomNetworkAccessManager::NextFiles.append("404");
 
 	assertDownload(img, &downloader, expected, true);
+}
+
+void ImageDownloaderTest::testSampleFallback()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(m_profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, false, false);
+
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.jpg"), Image::Size::Sample, Image::SaveResult::Saved });
+
+	CustomNetworkAccessManager::NextFiles.append("404");
+
+	assertDownload(img, &downloader, expected, true, false, true);
 }
 
 void ImageDownloaderTest::testBlacklisted()
@@ -184,8 +197,8 @@ void ImageDownloaderTest::testBlacklisted()
 	QSharedPointer<Image> img(createImage());
 	ImageDownloader downloader(m_profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, false, nullptr, false, false);
 
-	QMap<QString, Image::SaveResult> expected;
-	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::Blacklisted);
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::Size::Full, Image::SaveResult::Blacklisted });
 
 	assertDownload(img, &downloader, expected, false);
 
@@ -193,28 +206,35 @@ void ImageDownloaderTest::testBlacklisted()
 }
 
 
-void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloader *downloader, const QMap<QString, Image::SaveResult> &expected, bool shouldExist, bool onlyCheckValues)
+void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloader *downloader, const QList<ImageSaveResult> &expected, bool shouldExist, bool onlyCheckValues, bool sampleFallback)
 {
-	qRegisterMetaType<QMap<QString, Image::SaveResult>>();
-	QSignalSpy spy(downloader, SIGNAL(saved(QSharedPointer<Image>, QMap<QString, Image::SaveResult>)));
+	const bool oldSampleFallback = m_profile->getSettings()->value("Save/samplefallback", true).toBool();
+	m_profile->getSettings()->setValue("Save/samplefallback", sampleFallback);
+
+	qRegisterMetaType<QList<ImageSaveResult>>();
+	QSignalSpy spy(downloader, SIGNAL(saved(QSharedPointer<Image>, QList<ImageSaveResult>)));
 	QTimer::singleShot(1, downloader, SLOT(save()));
 	QVERIFY(spy.wait());
 
 	QList<QVariant> arguments = spy.takeFirst();
 	auto out = arguments[0].value<QSharedPointer<Image>>();
-	auto result = arguments[1].value<QMap<QString, Image::SaveResult>>();
+	auto result = arguments[1].value<QList<ImageSaveResult>>();
+
+	m_profile->getSettings()->setValue("Save/samplefallback", oldSampleFallback);
 
 	QCOMPARE(out, img);
-	qDebug() << "result" << result;
-	qDebug() << "expected" << expected;
-	if (onlyCheckValues)
-	{ QCOMPARE(result.values(), expected.values()); }
-	else
-	{ QCOMPARE(result, expected); }
-
-	for (const QString &path : result.keys())
+	QCOMPARE(result.count(), expected.count());
+	for (int i = 0; i < result.count(); ++i)
 	{
-		QFile f(path);
+		if (!onlyCheckValues)
+		{ QCOMPARE(result[i].path, expected[i].path); }
+		QCOMPARE(result[i].size, expected[i].size);
+		QCOMPARE(result[i].result, expected[i].result);
+	}
+
+	for (const ImageSaveResult &res : result)
+	{
+		QFile f(res.path);
 		bool exists = f.exists();
 		QVERIFY(exists == shouldExist);
 		if (exists)

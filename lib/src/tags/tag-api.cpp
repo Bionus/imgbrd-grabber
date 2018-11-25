@@ -77,7 +77,8 @@ void TagApi::parse()
 	}
 
 	// Parse source
-	ParsedTags ret = m_api->parseTags(source, m_site);
+	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	ParsedTags ret = m_api->parseTags(source, statusCode, m_site);
 	if (!ret.error.isEmpty())
 	{
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);

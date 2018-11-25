@@ -1,7 +1,7 @@
 #ifndef IMAGE_DOWNLOADER_H
 #define IMAGE_DOWNLOADER_H
 
-#include <QMap>
+#include <QList>
 #include <QNetworkReply>
 #include <QObject>
 #include <QSharedPointer>
@@ -9,7 +9,9 @@
 #include <QStringList>
 #include <QUrl>
 #include "downloader/file-downloader.h"
+#include "downloader/image-save-result.h"
 #include "loader/downloadable.h"
+#include "models/filename.h"
 #include "models/image.h"
 
 
@@ -20,23 +22,25 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false);
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
 		~ImageDownloader();
 		bool isRunning() const;
+		void setSize(Image::Size size);
 
 	public slots:
 		void save();
 		void abort();
 
 	protected:
-		int needExactTags(QSettings *settings);
-		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
-		QMap<QString, Downloadable::SaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
+		int needExactTags(QSettings *settings) const;
+		Image::Size currentSize() const;
+		QList<ImageSaveResult> makeResult(const QStringList &paths, Image::SaveResult result) const;
+		QList<ImageSaveResult> postSaving(Image::SaveResult saveResult = Image::SaveResult::Saved);
 
 	signals:
 		void downloadProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);
-		void saved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
+		void saved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 
 	private slots:
 		void loadedSave();
@@ -50,7 +54,7 @@ class ImageDownloader : public QObject
 		Profile *m_profile;
 		QSharedPointer<Image> m_image;
 		FileDownloader m_fileDownloader;
-		QString m_filename;
+		Filename m_filename;
 		QString m_path;
 		bool m_loadTags;
 		QStringList m_paths;
@@ -62,6 +66,7 @@ class ImageDownloader : public QObject
 		bool m_writeError;
 		bool m_rotate;
 		bool m_force;
+		Image::Size m_size = Image::Size::Unknown;
 
 		QNetworkReply *m_reply = nullptr;
 		QUrl m_url;

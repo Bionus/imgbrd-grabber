@@ -25,13 +25,17 @@ static void addMd5(Profile *profile, const QString &path)
 }
 
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size)
 	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
-{}
+{
+	setSize(size);
+}
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force, Image::Size size)
 	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
-{}
+{
+	setSize(size);
+}
 
 ImageDownloader::~ImageDownloader()
 {
@@ -44,11 +48,26 @@ bool ImageDownloader::isRunning() const
 	return m_reply != nullptr && m_reply->isRunning();
 }
 
+void ImageDownloader::setSize(Image::Size size)
+{
+	if (size == Image::Size::Unknown)
+	{
+		const bool getOriginals = m_profile->getSettings()->value("Save/downloadoriginals", true).toBool();
+		const bool hasSample = m_image->url(Image::Size::Sample).isEmpty();
+		if (getOriginals || !hasSample)
+		{ m_size = Image::Size::Full; }
+		else
+		{ m_size = Image::Size::Sample; }
+	}
+	else
+	{ m_size = size; }
+}
+
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
-	const int localNeedTags = Filename(m_filename).needExactTags(m_image->parentSite());
+	const int localNeedTags = m_filename.needExactTags(m_image->parentSite());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
@@ -62,7 +81,7 @@ void ImageDownloader::save()
 	m_image->loadDetails();
 }
 
-int ImageDownloader::needExactTags(QSettings *settings)
+int ImageDownloader::needExactTags(QSettings *settings) const
 {
 	int need = 0;
 
@@ -108,10 +127,10 @@ void ImageDownloader::loadedSave()
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty())
 	{
-		m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true);
+		m_paths = m_image->paths(m_filename, m_path, m_count);
 
 		// Use a random temporary file if we need the MD5 or equivalent
-		if (Filename(m_filename).needTemporaryFile(m_image->tokens(m_profile)))
+		if (m_filename.needTemporaryFile(m_image->tokens(m_profile)))
 		{
 			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
 			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
@@ -129,7 +148,7 @@ void ImageDownloader::loadedSave()
 		if (!detected.isEmpty())
 		{
 			log(QStringLiteral("Image contains blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
-			emit saved(m_image, makeMap(m_paths, Image::SaveResult::Blacklisted));
+			emit saved(m_image, makeResult(m_paths, Image::SaveResult::Blacklisted));
 			return;
 		}
 	}
@@ -152,15 +171,15 @@ void ImageDownloader::loadedSave()
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
 			for (const QString &path : qAsConst(m_paths))
 			{ addMd5(m_profile, path); }
-			emit saved(m_image, makeMap(m_paths, Image::SaveResult::AlreadyExistsDisk));
+			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
 		}
 
 		// If we don't need any loading, we can return already
-		Image::SaveResult res = m_image->preSave(m_temporaryPath);
+		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
 		if (res != Image::SaveResult::NotLoaded)
 		{
-			QMap<QString, Image::SaveResult> result {{ m_temporaryPath, res }};
+			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Linked)
 			{ result = postSaving(res); }
@@ -170,7 +189,7 @@ void ImageDownloader::loadedSave()
 		}
 	}
 
-	m_url = m_image->url(Image::Size::Full);
+	m_url = m_image->url(m_size);
 	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
 	loadImage();
 }
@@ -196,7 +215,7 @@ void ImageDownloader::loadImage()
 	if (!QDir(rootDir).exists() && !QDir().mkpath(rootDir))
 	{
 		log(QStringLiteral("Impossible to create the destination folder: %1.").arg(rootDir), Logger::Error);
-		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
+		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
 
@@ -204,7 +223,7 @@ void ImageDownloader::loadImage()
 	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))
 	{
 		log(QStringLiteral("Unable to open file"), Logger::Error);
-		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
+		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
 }
@@ -212,22 +231,29 @@ void ImageDownloader::loadImage()
 void ImageDownloader::downloadProgressImage(qint64 v1, qint64 v2)
 {
 	if (m_image->fileSize() == 0 || m_image->fileSize() < v2 / 2)
-		m_image->setFileSize(v2);
+		m_image->setFileSize(v2, currentSize());
 
 	emit downloadProgress(m_image, v1, v2);
 }
 
-QMap<QString, Image::SaveResult> ImageDownloader::makeMap(const QStringList &keys, Image::SaveResult value)
+Image::Size ImageDownloader::currentSize() const
 {
-	QMap<QString, Image::SaveResult> res;
-	for (const QString &key : keys)
-		res.insert(key, value);
+	return m_tryingSample ? Image::Size::Sample : m_size;
+}
+
+QList<ImageSaveResult> ImageDownloader::makeResult(const QStringList &paths, Image::SaveResult result) const
+{
+	const Image::Size size = currentSize();
+
+	QList<ImageSaveResult> res;
+	for (const QString &path : paths)
+		res.append({ path, size, result });
 	return res;
 }
 
 void ImageDownloader::writeError()
 {
-	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
+	emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 }
 
 void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QString &msg)
@@ -238,38 +264,35 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		ExtensionRotator *extensionRotator = m_image->extensionRotator();
 
 		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
+		const bool shouldFallback = m_size == Image::Size::Full && sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
 		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
-		const bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
-		const bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
-
-		if (m_rotate && (!isLast || (shouldFallback && !m_tryingSample)))
+		if (m_rotate && !newext.isEmpty())
 		{
-			if (isLast)
-			{
-				m_url = m_image->url(Image::Size::Sample);
-				m_tryingSample = true;
-				log(QStringLiteral("Image not found. New try with its sample..."));
-			}
-			else
-			{
-				m_url = setExtension(m_image->url(Image::Size::Full), newext);
-				log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
-			}
-
+			m_url = setExtension(m_image->url(m_size), newext);
+			log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
+			m_image->setUrl(m_url);
+			loadImage();
+		}
+		else if (shouldFallback && !m_tryingSample)
+		{
+			m_url = m_image->url(Image::Size::Sample);
+			m_tryingSample = true;
+			log(QStringLiteral("Image not found. New try with its sample (%1)...").arg(m_url.toString()));
 			m_image->setUrl(m_url);
 			loadImage();
 		}
 		else
 		{
+			m_tryingSample = false;
 			log(QStringLiteral("Image not found."));
-			emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound));
+			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NotFound));
 		}
 	}
 	else if (error != QNetworkReply::OperationCanceledError)
 	{
 		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
-		emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
+		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 	}
 }
 
@@ -287,14 +310,15 @@ void ImageDownloader::success()
 	emit saved(m_image, postSaving());
 }
 
-QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
+QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
 	const QString multipleFiles = m_profile->getSettings()->value("Save/multiple_files", "copy").toString();
+	const Image::Size size = currentSize();
 
-	m_image->setSavePath(m_temporaryPath);
+	m_image->setSavePath(m_temporaryPath, size);
 
-	if (!m_filename.isEmpty())
-	{ m_paths = m_image->path(m_filename, m_path, m_count, true, true, true, true); }
+	if (!m_filename.format().isEmpty())
+	{ m_paths = m_image->paths(m_filename, m_path, m_count); }
 
 	QString suffix;
 	#ifdef Q_OS_WIN
@@ -305,7 +329,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 	QFile tmp(m_temporaryPath + suffix);
 	bool moved = false;
 
-	QMap<QString, Image::SaveResult> result;
+	QList<ImageSaveResult> result;
 	for (const QString &file : qAsConst(m_paths))
 	{
 		const QString path = file + suffix;
@@ -316,7 +340,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
 			if (suffix.isEmpty())
 			{ addMd5(m_profile, file); }
-			result[path] = Image::SaveResult::AlreadyExistsDisk;
+			result.append({ path, size, Image::SaveResult::AlreadyExistsDisk });
 			continue;
 		}
 
@@ -326,7 +350,7 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 			if (!QDir(dir).exists() && !QDir().mkpath(dir))
 			{
 				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
-				result[path] = Image::SaveResult::Error;
+				result.append({ path, size, Image::SaveResult::Error });
 				continue;
 			}
 
@@ -344,10 +368,8 @@ QMap<QString, Image::SaveResult> ImageDownloader::postSaving(Image::SaveResult s
 		else
 		{ tmp.copy(path); }
 
-		if (!result.contains(path))
-		{ result[path] = saveResult; }
-
-		m_image->postSave(path, result[path], m_addMd5, m_startCommands, m_count);
+		result.append({ path, size, saveResult });
+		m_image->postSave(path, size, saveResult, m_addMd5, m_startCommands, m_count);
 	}
 
 	if (!moved)

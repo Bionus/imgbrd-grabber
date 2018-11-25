@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283062</id>
+    <created-at type="dateTime">2018-10-11T11:25:21-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">0</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p7.jpg</source>
+    <md5>e998a542c2ecff8ba97504685f857c48</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">586</image-width>
+    <image-height type="integer">594</image-height>
+    <tag-string>1girl aoba_moka bang_dream! collared_shirt crying eyebrows_visible_through_hair from_side green_eyes grey_hair hair_between_eyes mizukikushou necktie shirt short_hair solo upper_body white_shirt</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">14</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">122381</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">17</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:25:21-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">0</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl collared_shirt crying eyebrows_visible_through_hair from_side green_eyes grey_hair hair_between_eyes necktie shirt short_hair solo upper_body white_shirt</tag-string-general>
+    <tag-string-character>aoba_moka</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta></tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/e998a542c2ecff8ba97504685f857c48.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/e998a542c2ecff8ba97504685f857c48.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/e9/98/e998a542c2ecff8ba97504685f857c48.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283058</id>
+    <created-at type="dateTime">2018-10-11T11:20:18-04:00</created-at>
+    <uploader-id type="integer">399708</uploader-id>
+    <score type="integer">0</score>
+    <source>https://image02.seesaawiki.jp/k/w/kagranw/50f3cd93fd3df265.jpg</source>
+    <md5>39f6d59deed65a36192ca8cc7e695d81</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>q</rating>
+    <image-width type="integer">640</image-width>
+    <image-height type="integer">800</image-height>
+    <tag-string>bangs blue_eyes blue_hair blush breasts calligraphy_brush censored character_name covering covering_breasts embarrassed emblem flower hair_flower hair_ornament holding ink japanese_clothes kimono official_art open_mouth paintbrush senran_kagura senran_kagura_new_wave torn_clothes yozakura_(senran_kagura)</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">2</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">22</tag-count-general>
+    <tag-count-artist type="integer">0</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">101411</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">true</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">26</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:20:18-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">399708</uid>
+    </keeper-data>
+    <uploader-name>yuihirasawa</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>bangs blue_eyes blue_hair blush breasts calligraphy_brush censored character_name covering covering_breasts embarrassed emblem flower hair_flower hair_ornament holding ink japanese_clothes kimono open_mouth paintbrush torn_clothes</tag-string-general>
+    <tag-string-character>yozakura_(senran_kagura)</tag-string-character>
+    <tag-string-copyright>senran_kagura senran_kagura_new_wave</tag-string-copyright>
+    <tag-string-artist></tag-string-artist>
+    <tag-string-meta>official_art</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/39f6d59deed65a36192ca8cc7e695d81.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/39f6d59deed65a36192ca8cc7e695d81.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/39/f6/39f6d59deed65a36192ca8cc7e695d81.jpg</preview-file-url>
+  </post>
+</posts>

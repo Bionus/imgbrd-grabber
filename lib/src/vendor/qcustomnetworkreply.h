@@ -15,6 +15,7 @@ class QCustomNetworkReply : public QNetworkReply
 		void setHttpStatusCode(int code, const QByteArray &statusText = QByteArray());
 		void setNetworkError(QNetworkReply::NetworkError errorCode, const QString &errorString = QString());
 		void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
+		void setAttribute(QNetworkRequest::Attribute code, const QVariant &value);
 		void setContentType(const QByteArray &contentType);
 
 		void setContent(const QString &content);

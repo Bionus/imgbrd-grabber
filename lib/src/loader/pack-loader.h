@@ -36,6 +36,9 @@ class PackLoader : public QObject
 		int m_total = 0;
 		QLinkedList<Page*> m_pendingPages;
 		QLinkedList<Page*> m_pendingGalleries;
+		QList<QSharedPointer<Image>> m_overflow;
+		bool m_overflowGallery = false;
+		bool m_overflowHasNext = false;
 };
 
 #endif // PACK_LOADER_H

@@ -215,13 +215,19 @@ void PageApi::parse()
 
 void PageApi::parseActual()
 {
+	const bool isGallery = m_search.count() == 1 && m_search[0].startsWith("gallery:");
+	const bool parseErrors = isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors();
+	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
 	// Try to read the reply
 	m_source = m_reply->readAll();
-	if (m_source.isEmpty() || m_reply->error() != QNetworkReply::NoError)
+	if (m_source.isEmpty() || (m_reply->error() != QNetworkReply::NoError && !parseErrors))
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
 		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
 		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -230,10 +236,10 @@ void PageApi::parseActual()
 
 	// Parse source
 	ParsedPage page;
-	if (m_search.count() == 1 && m_search[0].startsWith("gallery:"))
-	{ page = m_api->parseGallery(m_parentPage, m_source, first); }
+	if (isGallery)
+	{ page = m_api->parseGallery(m_parentPage, m_source, statusCode, first); }
 	else
-	{ page = m_api->parsePage(m_parentPage, m_source, first); }
+	{ page = m_api->parsePage(m_parentPage, m_source, statusCode, first); }
 
 	// Handle errors
 	if (!page.error.isEmpty())
@@ -241,6 +247,8 @@ void PageApi::parseActual()
 		m_errors.append(page.error);
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_format, page.error), Logger::Warning);
 		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}

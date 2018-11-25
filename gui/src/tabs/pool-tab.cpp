@@ -141,7 +141,7 @@ void PoolTab::getPage()
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
@@ -159,7 +159,7 @@ void PoolTab::getAll()
 		return;
 
 	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
@@ -168,13 +168,14 @@ void PoolTab::getAll()
 
 void PoolTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_search->setText(tags);
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 void PoolTab::setPool(int id, const QString &site)
 {

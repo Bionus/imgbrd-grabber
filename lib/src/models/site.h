@@ -11,6 +11,7 @@
 
 
 class Api;
+class Auth;
 class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
@@ -84,7 +85,8 @@ class Site : public QObject
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
-		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
+		QString fixLoginUrl(QString url) const;
+		Auth *getAuth() const;
 
 	private:
 		QNetworkReply *getRequest(const QNetworkRequest &request);
@@ -118,6 +120,7 @@ class Site : public QObject
 
 		// Login
 		Login *m_login;
+		Auth *m_auth;
 		LoginStatus m_loggedIn;
 		bool m_autoLogin;
 

@@ -3,6 +3,9 @@
 #include <algorithm>
 #include "functions.h"
 #include "models/favorite.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "models/source.h"
 
 
 void FavoriteTest::testBasicConstructor()
@@ -270,6 +273,26 @@ void FavoriteTest::testSortByLastViewed()
 	QCOMPARE(favorites[0].getName(), QString("f2"));
 	QCOMPARE(favorites[1].getName(), QString("f3"));
 	QCOMPARE(favorites[2].getName(), QString("f1"));
+}
+
+void FavoriteTest::testSerialization()
+{
+	Profile profile("tests/resources/");
+	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	Site site("danbooru.donmai.us", &source);
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+	Monitor monitor(&site, 60, date);
+	Favorite original("fate/stay_night", 50, date, QList<Monitor>() << monitor);
+
+	QJsonObject json;
+	original.toJson(json);
+
+	Favorite dest = Favorite::fromJson("", json, QMap<QString, Site*> {{ site.url(), &site }});
+
+	QCOMPARE(dest.getName(), original.getName());
+	QCOMPARE(dest.getNote(), original.getNote());
+	QCOMPARE(dest.getLastViewed(), original.getLastViewed());
 }
 
 

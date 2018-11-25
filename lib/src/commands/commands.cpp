@@ -60,7 +60,7 @@ bool Commands::image(const Image &img, const QString &path)
 	if (!m_commandImage.isEmpty())
 	{
 		Filename fn(m_commandImage);
-		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, Filename::None);
 
 		for (QString exec : execs)
 		{
@@ -81,7 +81,7 @@ bool Commands::image(const Image &img, const QString &path)
 	{
 		Filename fn(m_mysqlSettings.image);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, Filename::None);
 
 		for (QString exec : execs)
 		{
@@ -105,7 +105,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 	{
 		Filename fn(command);
 		fn.setEscapeMethod(&SqlWorker::escape);
-		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, Filename::KeepInvalidTokens);
 
 		for (QString exec : execs)
 		{
@@ -129,7 +129,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 		start();
 
 		Filename fn(commandSql);
-		QStringList execs = fn.path(img, m_profile, QString(), 0, false, false, false, false, true);
+		QStringList execs = fn.path(img, m_profile, QString(), 0, Filename::KeepInvalidTokens);
 
 		for (QString exec : execs)
 		{

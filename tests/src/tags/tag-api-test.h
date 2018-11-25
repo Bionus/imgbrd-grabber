@@ -16,6 +16,11 @@ class TagApiTest : public TestSuite
 		void cleanup();
 
 		void testBasic();
+		void testNetworkError();
+		void testParseError();
+		void testDoubleLoad();
+		void testRedirect();
+		void testAbort();
 
 	private:
 		Profile *m_profile;

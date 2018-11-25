@@ -6,25 +6,12 @@
 #include "models/source.h"
 
 
-Api::Api(QString name, QMap<QString, QString> data)
-	: m_name(std::move(name)), m_data(std::move(data))
-{
-	QString prefix = "Urls/" + m_name;
-	for (auto it = m_data.begin(); it != m_data.end(); ++it)
-	{
-		if (it.key().startsWith(prefix))
-		{
-			const QString k = it.key().right(it.key().length() - prefix.length() - 1);
-			m_data["Urls/" + k] = it.value();
-		}
-	}
-}
+Api::Api(QString name)
+	: m_name(std::move(name))
+{}
 
 
 QString Api::getName() const { return m_name; }
-
-bool Api::contains(const QString &key) const { return m_data.contains(key); }
-QString Api::value(const QString &key) const { return m_data.value(key); }
 
 
 QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags) const

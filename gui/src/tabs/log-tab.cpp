@@ -64,7 +64,7 @@ void LogTab::write(const QString &msg)
 
 	// File paths color
 	#ifdef Q_OS_WIN
-		static const QRegularExpression rxPaths("`(\\w:[\\\\/][^`]+)`");
+		static const QRegularExpression rxPaths(R"(`(\w:[\\/][^`]+)`)");
 	#else
 		static const QRegularExpression rxPaths("`(/[^`]+)`");
 	#endif

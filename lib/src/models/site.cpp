@@ -7,6 +7,9 @@
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
+#include "auth/http-auth.h"
+#include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
 #include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
@@ -103,16 +106,23 @@ void Site::loadConfig()
 
 	// Auth information
 	const QString type = m_settings->value("login/type", "url").toString();
+	m_auth = nullptr;
+	const auto &auths = m_source->getAuths();
+	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it)
+	{
+		if (it.value()->type() == type)
+		{ m_auth = it.value(); }
+	}
 	if (m_login != nullptr)
 		m_login->deleteLater();
 	if (type == "url")
-		m_login = new UrlLogin(this, m_manager, m_settings);
+		m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
 	else if (type == "oauth2")
-		m_login = new OAuth2Login(this, m_manager, m_settings);
+		m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
 	else if (type == "post")
-		m_login = new HttpPostLogin(this, m_manager, m_settings);
+		m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
 	else if (type == "get")
-		m_login = new HttpGetLogin(this, m_manager, m_settings);
+		m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
 	else
 	{
 		m_login = nullptr;
@@ -183,7 +193,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	if (!m_login->isTestable())
+	if (!canTestLogin())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
 		return;
@@ -203,7 +213,7 @@ void Site::login(bool force)
 
 bool Site::canTestLogin() const
 {
-	return m_login != nullptr && m_login->isTestable();
+	return m_auth != nullptr && m_login != nullptr && m_login->isTestable();
 }
 
 /**
@@ -246,7 +256,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
-	m_login->complementRequest(&request);
+	if (m_login != nullptr)
+	{ m_login->complementRequest(&request); }
 
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
 	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
@@ -371,10 +382,15 @@ Api *Site::detailsApi() const
 bool Site::autoLogin() const { return m_autoLogin; }
 void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
-QString Site::fixLoginUrl(QString url, const QString &loginPart) const
+QString Site::fixLoginUrl(QString url) const
 {
-	return m_login->complementUrl(std::move(url), loginPart);
+	if (m_auth == nullptr || m_login == nullptr)
+		return url;
+
+	return m_login->complementUrl(std::move(url));
 }
+
+Auth *Site::getAuth() const { return m_auth; }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283105</id>
+    <created-at type="dateTime">2018-10-11T12:14:33-04:00</created-at>
+    <uploader-id type="integer">489481</uploader-id>
+    <score type="integer">0</score>
+    <source>https://twitter.com/i_oekaki08/status/1049241534674006017</source>
+    <md5>87ec86dcf7cf0ac6e416405cf13df31c</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">1000</image-width>
+    <image-height type="integer">1400</image-height>
+    <tag-string>1girl 2boys baby bangs black_hair blonde_hair blue_eyes chaldea_uniform closed_eyes comic commentary_request dual_persona earrings ereshkigal_(fate/grand_order) fate/grand_order fate_(series) fujimaru_ritsuka_(male) hair_over_one_eye hair_ribbon highres i_(yunyuniraaka) infinity jewelry long_hair long_sleeves multiple_boys open_mouth parted_bangs red_eyes red_ribbon ribbon short_hair skull speech_bubble tears tiara translated twintails two_side_up ventunesimo younger</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime">2018-10-11T12:20:56-04:00</last-noted-at>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer">3269118</parent-id>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">32</tag-count-general>
+    <tag-count-artist type="integer">2</tag-count-artist>
+    <tag-count-character type="integer">2</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">179856</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">true</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">41</tag-count>
+    <updated-at type="dateTime">2018-10-11T12:21:01-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">3</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">489481</uid>
+    </keeper-data>
+    <uploader-name>boredman23</uploader-name>
+    <has-large type="boolean">true</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl 2boys baby bangs black_hair blonde_hair blue_eyes chaldea_uniform closed_eyes comic dual_persona earrings hair_over_one_eye hair_ribbon infinity jewelry long_hair long_sleeves multiple_boys open_mouth parted_bangs red_eyes red_ribbon ribbon short_hair skull speech_bubble tears tiara twintails two_side_up younger</tag-string-general>
+    <tag-string-character>ereshkigal_(fate/grand_order) fujimaru_ritsuka_(male)</tag-string-character>
+    <tag-string-copyright>fate/grand_order fate_(series)</tag-string-copyright>
+    <tag-string-artist>i_(yunyuniraaka) ventunesimo</tag-string-artist>
+    <tag-string-meta>commentary_request highres translated</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/87ec86dcf7cf0ac6e416405cf13df31c.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/sample/sample-87ec86dcf7cf0ac6e416405cf13df31c.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/87/ec/87ec86dcf7cf0ac6e416405cf13df31c.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283097</id>
+    <created-at type="dateTime">2018-10-11T11:55:36-04:00</created-at>
+    <uploader-id type="integer">10122</uploader-id>
+    <score type="integer">0</score>
+    <source>http://zan.art.coocan.jp/nekotama/cg/z_www22.jpg</source>
+    <md5>83ee6125e51d839f4a3ad1299b47aa80</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">600</image-width>
+    <image-height type="integer">800</image-height>
+    <tag-string>1girl angel_wings cat closed_eyes commentary_request dated denim english eyebrows_visible_through_hair feathers green_sweater halo jeans light_smile orange_eyes orange_hair original pants shiny shiny_hair signature snow socks sweater v-neck wings zan_nekotama</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">24</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">0</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">84140</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">27</tag-count>
+    <updated-at type="dateTime">2018-10-11T12:02:53-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">1</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">10122</uid>
+    </keeper-data>
+    <uploader-name>Kandarihu</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl angel_wings cat closed_eyes dated denim english eyebrows_visible_through_hair feathers green_sweater halo jeans light_smile orange_eyes orange_hair pants shiny shiny_hair signature snow socks sweater v-neck wings</tag-string-general>
+    <tag-string-character></tag-string-character>
+    <tag-string-copyright>original</tag-string-copyright>
+    <tag-string-artist>zan_nekotama</tag-string-artist>
+    <tag-string-meta>commentary_request</tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/83ee6125e51d839f4a3ad1299b47aa80.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/83ee6125e51d839f4a3ad1299b47aa80.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/83/ee/83ee6125e51d839f4a3ad1299b47aa80.jpg</preview-file-url>
+  </post>
+</posts>

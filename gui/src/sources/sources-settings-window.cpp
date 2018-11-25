@@ -5,6 +5,9 @@
 #include <QNetworkCookie>
 #include <QSettings>
 #include <ui_sources-settings-window.h>
+#include "auth/field-auth.h"
+#include "auth/auth-field.h"
+#include "auth/auth-hash-field.h"
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/profile.h"
@@ -27,6 +30,20 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
+
+	auto auth = dynamic_cast<FieldAuth*>(site->getAuth());
+	if (auth != nullptr)
+	{
+		for (AuthField *field : auth->fields())
+		{
+			if (field->type() == AuthField::Hash)
+			{
+				auto hashField = dynamic_cast<AuthHashField*>(field);
+				m_salt = hashField->salt();
+				break;
+			}
+		}
+	}
 
 	// Refferers
 	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
@@ -92,7 +109,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
-	if (site->getApis().first()->value("PasswordSalt").isEmpty())
+	if (m_salt.isEmpty())
 	{ ui->buttonAuthHash->hide(); }
 	else
 	{ ui->lineAuthPassword->setEchoMode(QLineEdit::Normal); }
@@ -145,13 +162,11 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString salt = m_site->getApis().first()->value("PasswordSalt");
-	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(salt));
+	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_salt));
 	if (!password.isEmpty())
 	{
-		salt.replace("%password%", password);
-		salt.replace("%value%", password);
-		ui->lineAuthPassword->setText(QCryptographicHash::hash(salt.toUtf8(), QCryptographicHash::Sha1).toHex());
+		QString val = QString(m_salt).replace("%password%", password);
+		ui->lineAuthPassword->setText(QCryptographicHash::hash(val.toUtf8(), QCryptographicHash::Sha1).toHex());
 	}
 }
 

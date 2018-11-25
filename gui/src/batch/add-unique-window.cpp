@@ -1,5 +1,7 @@
 #include "batch/add-unique-window.h"
 #include <QFileDialog>
+#include <QPlainTextEdit>
+#include <QScrollBar>
 #include <QSettings>
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
@@ -24,6 +26,48 @@ AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *pare
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
+
+	ui->lineId->setContentsMargins(0, 0, 0, 0);
+	ui->lineId->document()->setDocumentMargin(3);
+	ui->lineMd5->setContentsMargins(0, 0, 0, 0);
+	ui->lineMd5->document()->setDocumentMargin(3);
+	toggleMultiLineId(false);
+	toggleMultiLineMd5(false);
+	ui->progressBar->hide();
+}
+
+void setTextEditRows(QPlainTextEdit *ptxt, int nRows)
+{
+	const QTextDocument *pdoc = ptxt->document();
+	const QFontMetrics fm(pdoc->defaultFont());
+	const QMargins margins = ptxt->contentsMargins();
+
+	const int nHeight = fm.lineSpacing() * nRows
+			+ qRound((pdoc->documentMargin() + ptxt->frameWidth()) * 2)
+			+ margins.top()
+			+ margins.bottom();
+	ptxt->setFixedHeight(nHeight);
+}
+void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label)
+{
+	if (toggle)
+		setTextEditRows(ptxt, 6);
+	else
+		setTextEditRows(ptxt, 1);
+
+	ptxt->verticalScrollBar()->setVisible(toggle);
+	label->setVisible(toggle);
+
+	update();
+	resize(width(), 0);
+}
+void AddUniqueWindow::toggleMultiLineId(bool toggle)
+{
+	toggleMultiLine(toggle, ui->lineId, ui->labelLineId);
+}
+void AddUniqueWindow::toggleMultiLineMd5(bool toggle)
+{
+	toggleMultiLine(toggle, ui->lineMd5, ui->labelLineMd5);
 }
 
 /**
@@ -54,24 +98,67 @@ void AddUniqueWindow::ok(bool close)
 
 	m_close = close;
 	Api *api = site->detailsApi();
-	if (api != nullptr)
+
+	const QStringList ids = ui->lineId->toPlainText().split('\n', QString::SkipEmptyParts);
+	for (const QString &id : ids)
 	{
-		const QString url = api->detailsUrl(ui->lineId->text().toULongLong(), ui->lineMd5->text(), site).url;
+		UniqueQuery q;
+		q.site = site;
+		q.api = api;
+		q.id = id.trimmed();
+		m_queue.enqueue(q);
+	}
+
+	const QStringList md5s = ui->lineMd5->toPlainText().split('\n', QString::SkipEmptyParts);
+	for (const QString &md5 : md5s)
+	{
+		UniqueQuery q;
+		q.site = site;
+		q.api = api;
+		q.md5 = md5.trimmed();
+		m_queue.enqueue(q);
+	}
+
+	if (m_queue.count() > 1)
+	{
+		ui->progressBar->setMaximum(m_queue.count());
+		ui->progressBar->setValue(0);
+		ui->progressBar->show();
+	}
+
+	loadNext();
+}
+void AddUniqueWindow::loadNext()
+{
+	if (m_queue.isEmpty())
+	{
+		if (m_close)
+			close();
+		else
+			ui->progressBar->hide();
+		return;
+	}
+
+	const UniqueQuery q = m_queue.dequeue();
+
+	if (q.api != nullptr && false)
+	{
+		const QString url = q.api->detailsUrl(q.id.toULongLong(), q.md5, q.site).url;
 
 		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
-		details.insert("id", ui->lineId->text());
-		details.insert("md5", ui->lineMd5->text());
+		details.insert("id", q.id);
+		details.insert("md5", q.md5);
 
-		m_image = QSharedPointer<Image>(new Image(site, details, m_profile));
+		m_image = QSharedPointer<Image>(new Image(q.site, details, m_profile));
 		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
 		m_image->loadDetails();
 	}
 	else
 	{
-		const QString query = (ui->lineId->text().isEmpty() ? "md5:" + ui->lineMd5->text() : "id:" + ui->lineId->text());
+		const QString query = (q.id.isEmpty() ? "md5:" + q.md5 : "id:" + q.id);
 		const QStringList search = QStringList() << query << "status:any";
-		m_page = new Page(m_profile, site, m_sites.values(), search, 1, 1);
+		m_page = new Page(m_profile, q.site, m_sites.values(), search, 1, 1);
 		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();
 	}
@@ -93,11 +180,13 @@ void AddUniqueWindow::replyFinished(Page *p)
 void AddUniqueWindow::addLoadedImage()
 {
 	addImage(m_image);
+	// m_image->deleteLater();
 }
 void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
 	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 
-	if (m_close)
-		close();
+	ui->progressBar->setValue(ui->progressBar->value() + 1);
+
+	loadNext();
 }

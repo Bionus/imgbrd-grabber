@@ -15,7 +15,7 @@
 
 Filename::Filename(QString format)
 	: m_format(std::move(format))
-{ }
+{}
 
 QString Filename::expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
 {
@@ -83,7 +83,7 @@ QString Filename::expandConditionals(const QString &text, const QStringList &tag
 QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings) const
 {
 	QList<Token> ret;
-	const QStringList &value = token.value().toStringList();
+	QStringList value = token.value().toStringList();
 
 	if (token.whatToDoDefault().isEmpty())
 	{
@@ -92,6 +92,10 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	}
 
 	settings->beginGroup("Save");
+
+	const QString sort = settings->value(key + "_sort", "original").toString();
+	if (sort == QLatin1String("name"))
+	{ value.sort(); }
 
 	if (value.isEmpty())
 	{ ret.append(Token(settings->value(key + "_empty", token.emptyDefault()).toString())); }
@@ -238,9 +242,9 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	return ret;
 }
 
-QStringList Filename::path(const Image &img, Profile *profile, const QString &pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
-{ return path(img.tokens(profile), profile, pth, counter, complex, maxLength, shouldFixFilename, getFull, keepInvalidTokens); }
-QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
+QStringList Filename::path(const Image &img, Profile *profile, const QString &pth, int counter, PathFlags flags) const
+{ return path(img.tokens(profile), profile, pth, counter, flags); }
+QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, PathFlags flags) const
 {
 	QSettings *settings = profile->getSettings();
 	QString filename = m_format;
@@ -249,7 +253,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	tokens.insert("count", Token(counter));
 
 	// Conditional filenames
-	if (complex)
+	if (flags.testFlag(PathFlag::ConditionalFilenames))
 	{
 		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 		for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
@@ -310,7 +314,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			const QStringList namespaces = replaces["all_namespaces"].value().toStringList();
 
 			// Conditionals
-			if (complex)
+			if (flags.testFlag(PathFlag::ExpandConditionals))
 			{ cFilename = this->expandConditionals(cFilename, tokens["allos"].value().toStringList(), replaces, settings); }
 
 			// Replace everything
@@ -339,7 +343,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 					p += replacerx.matchedLength();
 				}
-				else if (!keepInvalidTokens)
+				else if (!flags.testFlag(PathFlag::KeepInvalidTokens))
 				{ cFilename.remove(replacerx.cap(0)); }
 				else
 				{ p += replacerx.matchedLength(); }
@@ -380,22 +384,22 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	const int cnt = fns.count();
 	for (int i = 0; i < cnt; ++i)
 	{
-		if (shouldFixFilename)
+		if (flags.testFlag(PathFlag::Fix))
 		{
 			// Trim directory names
 			fns[i] = fns[i].trimmed();
 			fns[i].replace(QRegularExpression(" */ *"), "/");
 
 			// Max filename size option
-			const int limit = !maxLength ? 0 : settings->value("Save/limit").toInt();
+			const int limit = !flags.testFlag(PathFlag::CapLength) ? 0 : settings->value("Save/limit").toInt();
 			fns[i] = fixFilename(fns[i], folder, limit);
 		}
 
 		// Include directory in result
-		if (getFull)
+		if (flags.testFlag(PathFlag::IncludeFolder))
 		{ fns[i] = folder + "/" + fns[i]; }
 
-		if (shouldFixFilename)
+		if (flags.testFlag(PathFlag::Fix))
 		{
 			// Native separators
 			fns[i] = QDir::toNativeSeparators(fns[i]);
@@ -534,7 +538,7 @@ QString Filename::fixSeparator(const QString &separator) const
 		.replace("\\r", "\r");
 }
 
-QString Filename::getFormat() const
+QString Filename::format() const
 {
 	return m_format;
 }

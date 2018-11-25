@@ -245,6 +245,13 @@ QString savePath(const QString &file, bool exists, bool writable)
 	{ return QDir::toNativeSeparators(QDir::currentPath() + "/" + file); }
 	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable))
 	{ return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file); }
+	#if defined(Q_OS_ANDROID)
+		const QString &appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+		if (validSavePath(appData + "/" + check, writable))
+		{ return QDir::toNativeSeparators(appData + "/" + file); }
+		if (validSavePath("assets:/" + check, writable))
+		{ return QDir::toNativeSeparators("assets:/" + file); }
+	#endif
 	#ifdef __linux__
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable))
 		{ return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file); }
@@ -254,7 +261,11 @@ QString savePath(const QString &file, bool exists, bool writable)
 
 	QString dir;
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-		dir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+		#if defined(Q_OS_ANDROID)
+			dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+		#else
+			dir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+		#endif
 	#else
 		dir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
 		#ifdef __linux__
@@ -347,7 +358,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
 		pcreationtime.dwHighDateTime = ll >> 32;
 
-		if (!SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime))
+		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE)
 		{
 			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
@@ -365,30 +376,6 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		}
 	#endif
 	return true;
-}
-
-/**
- * Converts a DOM elemet to a map.
- * @param	dom		The DOM element to convert.
- * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
- */
-QMap<QString, QString> domToMap(const QDomElement &dom)
-{
-	QMap<QString, QString> details;
-	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const auto type = n.firstChild().nodeType();
-		if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode)
-		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
-		else
-		{
-			QMap<QString, QString> r = domToMap(n.toElement());
-			QStringList k = r.keys();
-			for (int i = 0; i < r.count(); i++)
-			{ details[n.nodeName() + "/" + k.at(i)] = r.value(k.at(i)); }
-		}
-	}
-	return details;
 }
 
 /**
@@ -682,7 +669,7 @@ QString fixCloudflareEmail(const QString &a)
 {
 	QString s;
 	int r = a.midRef(0, 2).toInt(nullptr, 16);
-	for (int j = 2; a.length() - j; j += 2)
+	for (int j = 2; j < a.length(); j += 2)
 	{
 		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
 		s += QString(QChar(c));
@@ -706,14 +693,15 @@ QString fixCloudflareEmails(QString html)
 QString getFileMd5(const QString &path)
 {
 	QFile file(path);
-	file.open(QFile::ReadOnly);
+	if (!file.open(QFile::ReadOnly))
+		return QString();
 	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 }
 
 QString getFilenameMd5(const QString &fileName, const QString &format)
 {
 	QRegularExpression regx("%([^%]*)%");
-	QString reg = QRegExp::escape(format);
+	QString reg = "^" + QRegExp::escape(format) + "$";
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
@@ -841,6 +829,21 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	}
 
 	return files;
+}
+
+QUrl removeCacheBuster(QUrl url)
+{
+	const QString query = url.query();
+	if (query.isEmpty())
+		return url;
+
+	// Only remove ?integer
+	bool ok;
+	query.toInt(&ok);
+	if (ok)
+		url.setQuery(QString());
+
+	return url;
 }
 
 bool isVariantEmpty(const QVariant &value)

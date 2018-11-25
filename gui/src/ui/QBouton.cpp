@@ -195,11 +195,11 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton)
 	{
-		const bool ctrlPressed = event->modifiers() & Qt::ControlModifier;
+		const bool ctrlPressed = event->modifiers().testFlag(Qt::ControlModifier);
 		if (ctrlPressed != m_invertToggle)
 		{
 			this->toggle();
-			const bool range = event->modifiers() & Qt::ShiftModifier;
+			const bool range = event->modifiers().testFlag(Qt::ShiftModifier);
 			emit this->toggled(m_id, this->isChecked(), range);
 			emit this->toggled(m_id.toString(), this->isChecked(), range);
 			emit this->toggled(m_id.toInt(), this->isChecked(), range);

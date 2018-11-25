@@ -12,6 +12,7 @@ class TokenTest : public TestSuite
 		void testLazyNotCalled();
 		void testLazyWithCaching();
 		void testLazyWithoutCaching();
+		void testCompare();
 };
 
 #endif // TOKEN_TEST_H

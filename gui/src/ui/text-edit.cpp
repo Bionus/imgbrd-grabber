@@ -211,7 +211,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 	}
 
-	const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
+	const bool isShortcut = (e->modifiers().testFlag(Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
 	if (c == nullptr || !isShortcut) // do not process the shortcut when we have a completer
 	{
 		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
@@ -223,7 +223,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 	doColor();
 
-	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	const bool ctrlOrShift = e->modifiers().testFlag(Qt::ControlModifier) || e->modifiers().testFlag(Qt::ShiftModifier);
 	if (c == nullptr || (ctrlOrShift && e->text().isEmpty()))
 		return;
 
@@ -353,9 +353,9 @@ void TextEdit::insertFav(QAction *act)
 	QString txt = this->toPlainText();
 	if (!cursor.hasSelection())
 	{
-		if (pos == 0 && (txt.count() == 0 || txt[0] != ' '))
+		if (pos == 0 && txt.count() != 0 && txt[0] != ' ')
 			text.append(' ');
-		if (pos == txt.count() && txt[txt.count() - 1] != ' ')
+		if (pos == txt.count() && txt.count() != 0 && txt[txt.count() - 1] != ' ')
 			text.prepend(' ');
 		this->setPlainText(txt.mid(0, pos) + text + txt.mid(pos));
 	}

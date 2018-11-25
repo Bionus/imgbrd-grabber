@@ -30,6 +30,7 @@ class DownloadQueryGroup : public DownloadQuery
 		int total;
 		QStringList postFiltering;
 		bool getBlacklisted;
+		bool galleriesCountAsOne = true;
 		QString unk;
 };
 

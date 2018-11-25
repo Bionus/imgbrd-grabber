@@ -73,7 +73,7 @@ void FilenameTest::testDefaultConstructor()
 {
 	Filename fn;
 
-	QCOMPARE(fn.getFormat().isEmpty(), true);
+	QCOMPARE(fn.format().isEmpty(), true);
 }
 
 void FilenameTest::testGetFormat()
@@ -81,7 +81,7 @@ void FilenameTest::testGetFormat()
 	QString format = "%md5%.%ext%";
 	Filename fn(format);
 
-	QCOMPARE(fn.getFormat(), format);
+	QCOMPARE(fn.format(), format);
 }
 
 void FilenameTest::testSetFormat()
@@ -90,7 +90,7 @@ void FilenameTest::testSetFormat()
 	Filename fn("%id%.%ext%");
 	fn.setFormat(format);
 
-	QCOMPARE(fn.getFormat(), format);
+	QCOMPARE(fn.format(), format);
 }
 
 void FilenameTest::testPathSimple()
@@ -116,6 +116,16 @@ void FilenameTest::testPathKeepN()
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/character1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathSort()
+{
+	m_img->deleteLater();
+	m_details["tags_copyright"] = "copyright2 copyright1";
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	m_settings->setValue("Save/copyright_sort", "name");
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertPath("%copyright%", "copyright1 copyright2");
 }
 void FilenameTest::testPathKeepNThenAdd()
 {
@@ -551,7 +561,10 @@ void FilenameTest::testConditionalsTag()
 	m_settings->setValue("Filenames/0_cond", "tag7");
 	m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
 	m_settings->setValue("Filenames/1_dir", QDir::homePath());
-	m_settings->setValue("Filenames/1_cond", "character1");
+	m_settings->setValue("Filenames/1_cond", "");
+	m_settings->setValue("Filenames/2_fn", "%id% %md5%.%ext%");
+	m_settings->setValue("Filenames/2_dir", QDir::homePath());
+	m_settings->setValue("Filenames/2_cond", "character1");
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
@@ -609,7 +622,10 @@ void FilenameTest::testConditionalsJavascript()
 	m_settings->setValue("Filenames/0_cond", "javascript:width > 2000");
 	m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
 	m_settings->setValue("Filenames/1_dir", QDir::homePath());
-	m_settings->setValue("Filenames/1_cond", "javascript:width > 400");
+	m_settings->setValue("Filenames/1_cond", "javascript:'");
+	m_settings->setValue("Filenames/2_fn", "%id% %md5%.%ext%");
+	m_settings->setValue("Filenames/2_dir", QDir::homePath());
+	m_settings->setValue("Filenames/2_cond", "javascript:width > 400");
 
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
@@ -644,7 +660,7 @@ void FilenameTest::testCommand()
 {
 	 Filename fn("curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=%all%\" -F \"post[rating]=%rating%\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 
-	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, false, false, false, false),
+	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, Filename::None),
 			  QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 }
 
@@ -733,8 +749,16 @@ void FilenameTest::assertPath(const QString &format, const QStringList &expected
 		expectedNative.append(QDir::toNativeSeparators(exp));
 	}
 
+	Filename::PathFlags flags = Filename::Complex | Filename::CapLength;
+	if (shouldFixFilename)
+	{ flags |= Filename::Fix; }
+	if (fullPath)
+	{ flags |= Filename::IncludeFolder; }
+	if (keepInvalidTokens)
+	{ flags |= Filename::KeepInvalidTokens; }
+
 	Filename fn(format);
-	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath, keepInvalidTokens);
+	QStringList actual = fn.path(*m_img, m_profile, path, 7, flags);
 	QCOMPARE(actual, expectedNative);
 }
 

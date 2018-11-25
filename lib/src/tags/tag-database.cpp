@@ -11,18 +11,17 @@ TagDatabase::TagDatabase(QString typeFile)
 
 bool TagDatabase::load()
 {
-	loadTypes();
-	return true;
+	return loadTypes();
 }
 
-void TagDatabase::loadTypes()
+bool TagDatabase::loadTypes()
 {
 	if (!m_tagTypes.isEmpty())
-		return;
+		return true;
 
 	QFile f(m_typeFile);
 	if (!f.open(QFile::ReadOnly | QFile::Text))
-		return;
+		return false;
 
 	QTextStream in(&f);
 	while (!in.atEnd())
@@ -36,6 +35,8 @@ void TagDatabase::loadTypes()
 		m_tagTypes.insert(data[0].toInt(), TagType(data[1]));
 	}
 	f.close();
+
+	return true;
 }
 
 const QMap<int, TagType> &TagDatabase::tagTypes() const

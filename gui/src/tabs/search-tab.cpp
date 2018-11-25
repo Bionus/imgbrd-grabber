@@ -40,15 +40,6 @@ SearchTab::SearchTab(Profile *profile, MainWindow *parent)
 	m_checkboxesSignalMapper = new QSignalMapper(this);
 	connect(m_checkboxesSignalMapper, SIGNAL(mapped(QString)), this, SLOT(toggleSource(QString)));
 
-	// Auto-complete list
-	m_completion.append(profile->getAutoComplete());
-	m_completion.append(profile->getCustomAutoComplete());
-
-	// Favorite tags
-	m_completion.reserve(m_completion.count() + m_favorites.count());
-	for (const Favorite &fav : qAsConst(m_favorites))
-		m_completion.append(fav.getName());
-
 	// Modifiers
 	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
 	{
@@ -57,8 +48,8 @@ SearchTab::SearchTab(Profile *profile, MainWindow *parent)
 		m_completion.append(modifiers);
 	}
 
-	m_completion.removeDuplicates();
-	m_completion.sort();
+	// Auto-complete list
+	m_completion.append(profile->getAutoComplete());
 
 	setSelectedSources(m_settings);
 }
@@ -466,6 +457,8 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 
 void SearchTab::updatePaginationButtons(Page *page)
 {
+	const int pageNum = ui_spinPage->value();
+
 	// Update max page counter
 	int pageCount = page->pagesCount();
 	int maxPages = page->maxPagesCount();
@@ -475,11 +468,11 @@ void SearchTab::updatePaginationButtons(Page *page)
 		m_pagemax = pageCount;
 
 	// Update page spinbox max value
-	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : m_pagemax);
+	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : qMax(1, qMax(pageNum, m_pagemax)));
 
 	// Enable/disable buttons
-	ui_buttonNextPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
-	ui_buttonLastPage->setEnabled(m_pagemax > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
+	ui_buttonLastPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1);
 }
 
 void SearchTab::finishedLoadingTags(Page *page)
@@ -806,7 +799,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 
 	// No results message
-	if (totalCount == 0)
+	if (imgs.isEmpty())
 	{
 		QString meant;
 		QStringList reasons = reasonsToFail(page, m_completion, &meant);
@@ -900,7 +893,7 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 
 	if (Filename(fn).needExactTags(img->parentSite()) == 0)
 	{
-		QStringList files = img->path(fn, path, 0, true, true, true, true);
+		QStringList files = img->paths(fn, path, 0);
 		for (const QString &file : files)
 		{
 			if (QFile(file).exists())
@@ -987,7 +980,7 @@ void SearchTab::contextSaveImageAs(int position)
 	}
 
 	Filename format(fn);
-	QStringList filenames = format.path(*img, m_profile);
+	const QStringList filenames = format.path(*img, m_profile);
 	const QString filename = filenames.first().section(QDir::separator(), -1);
 	const QString lastDir = m_settings->value("Zoom/lastDir").toString();
 
@@ -1022,7 +1015,7 @@ void SearchTab::contextSaveSelected()
 		downloader->save();
 	}
 }
-void SearchTab::contextSaveImageProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2)
+void SearchTab::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
 {
 	if (m_boutons.contains(img.data()))
 	{ m_boutons[img.data()]->setProgress(v1, v2); }
@@ -1194,7 +1187,10 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 {
 	if (image->isGallery())
 	{
-		m_parent->addGalleryTab(image->parentSite(), image->name(), image->md5());
+		QString galleryId = image->md5();
+		if (galleryId.isEmpty())
+		{ galleryId = QString::number(image->id()); }
+		m_parent->addGalleryTab(image->parentSite(), image->name(), galleryId);
 		return;
 	}
 
@@ -1205,7 +1201,7 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 		return;
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent, this);
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 	zoom->show();
@@ -1292,6 +1288,13 @@ void SearchTab::openSourcesWindow()
 void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 {
 	log(QStringLiteral("Saving sources..."));
+
+	// Reset page counter when adding a new source
+	for (Site *site : sel)
+	{
+		if (!m_selectedSources.contains(site))
+		{ ui_spinPage->setValue(1); }
+	}
 
 	QStringList sav;
 	sav.reserve(sel.count());
@@ -1399,7 +1402,8 @@ void SearchTab::loadPage()
 	for (Site *site : loadSites())
 	{
 		// Load results
-		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);
@@ -1487,7 +1491,10 @@ QList<Site*> SearchTab::loadSites() const
 
 
 void SearchTab::setSources(const QList<Site*> &sources)
-{ m_selectedSources = sources; }
+{
+	m_selectedSources = sources;
+	updateCheckboxes();
+}
 void SearchTab::toggleSource(const QString &url)
 {
 	Site *site = m_sites.value(url);

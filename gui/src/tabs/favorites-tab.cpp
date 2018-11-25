@@ -187,6 +187,8 @@ void FavoritesTab::updateFavorites()
 			caption->setFixedWidth(dim);
 		if (!caption->text().isEmpty())
 		{
+			connect(caption, SIGNAL(rightClicked(QString)), this, SLOT(favoriteProperties(QString)));
+			connect(caption, SIGNAL(middleClicked(QString)), m_parent, SLOT(addTab(QString)));
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
 			l->addWidget(caption);
 		}
@@ -205,7 +207,8 @@ void FavoritesTab::load()
 
 bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && SearchTab::validateImage(img, error);
+	bool dateOk = img->createdAt() > m_loadFavorite || img->createdAt().isNull();
+	return dateOk && SearchTab::validateImage(img, error);
 }
 
 void FavoritesTab::write(QJsonObject &json) const
@@ -229,13 +232,14 @@ void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 
 void FavoritesTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_currentTags = tags;
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 
 void FavoritesTab::getPage()
@@ -252,7 +256,7 @@ void FavoritesTab::getPage()
 		const auto &page = m_pages[actuals[i]].first();
 		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 	}
@@ -279,7 +283,7 @@ void FavoritesTab::getAll()
 			continue;
 
 		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
-		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 		Site *site = m_sites.value(actual);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));

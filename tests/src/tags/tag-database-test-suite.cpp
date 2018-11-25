@@ -16,6 +16,13 @@ void TagDatabaseTestSuite::initTestCase()
 }
 
 
+void TagDatabaseTestSuite::testAlreadyLoaded()
+{
+	m_database->load();
+
+	QCOMPARE(m_database->tagTypes().count(), 4);
+}
+
 void TagDatabaseTestSuite::testTypesProperlyLoaded()
 {
 	QMap<int, TagType> types = m_database->tagTypes();
@@ -59,7 +66,7 @@ void TagDatabaseTestSuite::testFilledContainsAll()
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
 
 	QCOMPARE(m_database->count(), 4);
 }
@@ -81,5 +88,5 @@ void TagDatabaseTestSuite::testFilledContainsSome()
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
 }

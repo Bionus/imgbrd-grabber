@@ -5,6 +5,7 @@ environment:
   DEPLOY: 0
   MYSQL_VERSION: mysql-5.7.14-win32
   APNG_PLUGIN: apng-1.1.05.10.1
+  QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
 
   matrix:
     # MSVC x86
@@ -30,6 +31,9 @@ cache:
   - release\sites\node_modules -> release\sites\package.json
   - mysql-5.7.14-win32 -> .appveyor.yml
   - apng-1.1.05.10.1 -> .appveyor.yml
+  - QScintilla_gpl-2.10.8 -> .appveyor.yml
+  - depot_tools -> .appveyor.yml
+  - breakpad -> .appveyor.yml
 
 init:
   - git config --global core.autocrlf input
@@ -38,33 +42,86 @@ init:
   - set PATH=%QTDIR%\bin;%PATH%
   - if not %PLATFORM%==mingw call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
   - set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
+  - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_IS_NIGHTLY=0") else (set "GRABBER_IS_NIGHTLY=1")
+  - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_VERSION=%APPVEYOR_REPO_TAG_NAME%") else (set "GRABBER_VERSION=nightly")
+
+install:
+  - git submodule update --init --recursive
 
 build_script:
+  # Download Google tools and put them in the PATH (required for Google Breakpad)
+  - if not exist "depot_tools" appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip
+  - if not exist "depot_tools" 7z x "depot_tools.zip" -odepot_tools -y
+  - depot_tools\update_depot_tools
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\depot_tools;%PATH%
+
+  # Build Google Breakpad
+  - set "BREAKPAD_BUILD=0"
+  - if %DEPLOY%==1 if not exist "breakpad" set "BREAKPAD_BUILD=1"
+  - if %BREAKPAD_BUILD%==1 mkdir breakpad
+  - if %BREAKPAD_BUILD%==1 cd breakpad
+  - if %BREAKPAD_BUILD%==1 gclient config https://github.com/google/breakpad --unmanaged --name=src
+  - if %BREAKPAD_BUILD%==1 gclient sync
+  - if %BREAKPAD_BUILD%==1 cd src\src\client\windows
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" *.vcxproj # <TreatWChar_tAsBuiltInType>false<\/TreatWChar_tAsBuiltInType>
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" */*.vcxproj
+  - if %BREAKPAD_BUILD%==1 sed -i -e "s/<\/RuntimeLibrary>/DLL<\/RuntimeLibrary>/g;" */*/*.vcxproj
+  - if %BREAKPAD_BUILD%==1 if "%PLATFORM%"=="X86" (set "BREAKPAD_PLATFORM=Win32") else (set "BREAKPAD_PLATFORM=x64")
+  - if %BREAKPAD_BUILD%==1 msbuild breakpad_client.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:normal /p:Configuration=Release /p:Platform="%BREAKPAD_PLATFORM%"
+  - if %BREAKPAD_BUILD%==1 cd "%APPVEYOR_BUILD_FOLDER%"
+
+  # Build QScintilla
+  - set "QSCINTILLA_BUILD=0"
+  - if %DEPLOY%==1 if not exist %QSCINTILLA_VERSION% set "QSCINTILLA_BUILD=1"
+  - if %QSCINTILLA_BUILD%==1 curl -L "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip" -o "%QSCINTILLA_VERSION%.zip"
+  - if %QSCINTILLA_BUILD%==1 7z x "%QSCINTILLA_VERSION%.zip" -y
+  - if %DEPLOY%==1 call "%QTDIR%/bin/qtenv2.bat"
+  - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%/%QSCINTILLA_VERSION%/Qt4Qt5"
+  - if %QSCINTILLA_BUILD%==1 qmake qscintilla.pro
+  - if %QSCINTILLA_BUILD%==1 if not %PLATFORM%==mingw (nmake) else (mingw32-make)
+  - if %DEPLOY%==1 if not %PLATFORM%==mingw (nmake install) else (mingw32-make install)
+  - if %DEPLOY%==1 cd "%APPVEYOR_BUILD_FOLDER%"
+
+  # Build Grabber
+  - if %GRABBER_IS_NIGHTLY%==1 (set "BUILD_TYPE=Release") else (set "BUILD_TYPE=RelWithDebInfo")
   - mkdir build
   - cd build
-  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
+  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%APPVEYOR_REPO_COMMIT%" -DVERSION="%GRABBER_VERSION%" -DBREAKPAD="%APPVEYOR_BUILD_FOLDER%/breakpad/src"
   - if not %PLATFORM%==mingw (nmake) else (mingw32-make)
   - cd ..
+
+  # Download APNG plugin DLL
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5101/qt.qt5.5101.skycoder42.png.win32_msvc2015/1.1.05.10.1.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
+
+  # Download Mysql DLL
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="nightly" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
+
+  # Generate installer
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
+
+  # Package symbol files to zip
+  - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
 test_script:
   - build\tests\tests.exe
 
 artifacts:
-  - path: releases\Grabber_nightly.exe
+  - path: releases\Grabber_*.exe
+    name: windows_setup
+  - path: releases\Grabber_*_symbols.zip
+    name: windows_symbols_zip
 
 deploy:
+  # Nightly
   - provider: GitHub
     tag: nightly
     release: Nightly
     draft: false
     prerelease: true
     force_update: true
-    artifact: releases\Grabber_nightly.exe
+    artifact: windows_setup
     description: |
       Nightly automated builds from the develop branch.
       Automatically uploaded by AppVeyor, **use at your own risk**!
@@ -75,4 +132,18 @@ deploy:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
       branch: develop
+      DEPLOY: 1
+
+  # Releases
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: $(APPVEYOR_REPO_TAG_NAME)
+    draft: true
+    prerelease: false
+    force_update: true
+    artifact: windows_setup, windows_symbols_zip
+    auth_token:
+      secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
+    on:
+      APPVEYOR_REPO_TAG: true
       DEPLOY: 1

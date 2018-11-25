@@ -115,17 +115,6 @@ addHelper("fileSizeToInt", (str: string): number => {
     return parseInt(str, 10);
 });
 
-addHelper("loginUrl", (fields: any, values: any): string => {
-    let res = "";
-    for (const field of fields) {
-        const val = values[field.key];
-        if (val) {
-            res += field.key + "=" + val + "&";
-        }
-    }
-    return res;
-});
-
 addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
     url = url.replace("{page}", String(page));
     if (previous) {
