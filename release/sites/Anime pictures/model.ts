@@ -47,7 +47,7 @@ function searchToUrl(search: string): string {
     for (const tag of parts) {
         const part = tag.trim();
         if (part.indexOf("width:") === 0) {
-            sizeToUrl(part.substr(6), "ret_x", ret);
+            sizeToUrl(part.substr(6), "res_x", ret);
         } else if (part.indexOf("height:") === 0) {
             sizeToUrl(part.substr(7), "res_y", ret);
         } else if (part.indexOf("ratio:") === 0) {
