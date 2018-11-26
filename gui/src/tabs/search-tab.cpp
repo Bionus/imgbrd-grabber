@@ -47,6 +47,7 @@ SearchTab::SearchTab(Profile *profile, MainWindow *parent)
 		const QStringList modifiers = site->getApis().first()->modifiers();
 		m_completion.append(modifiers);
 	}
+	m_completion.removeDuplicates();
 
 	// Auto-complete list
 	m_completion.append(profile->getAutoComplete());
