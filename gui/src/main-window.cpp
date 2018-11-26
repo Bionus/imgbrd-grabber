@@ -1006,7 +1006,7 @@ void MainWindow::loadTagNoTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, false); }
 void MainWindow::linkHovered(const QString &tag)
 {
-	m_link = tag;
+	m_link = QUrl::fromPercentEncoding(tag.toUtf8());
 }
 void MainWindow::contextMenu()
 {

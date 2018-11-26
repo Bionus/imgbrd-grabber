@@ -1,6 +1,7 @@
 #include "tags/tag-stylist.h"
 #include <QFont>
 #include <QSettings>
+#include <QUrl>
 #include <algorithm>
 #include "functions.h"
 #include "models/favorite.h"
@@ -59,7 +60,7 @@ QString TagStylist::stylished(const Tag &tag, const QMap<QString, QString> &styl
 			key = "favorites";
 
 	QString txt = tag.text();
-	QString ret = QString(R"(<a href="%1" style="%2">%3</a>)").arg(tag.text(), styles.value(key), noUnderscores ? txt.replace('_', ' ') : tag.text());
+	QString ret = QString(R"(<a href="%1" style="%2">%3</a>)").arg(QUrl::toPercentEncoding(tag.text()), styles.value(key), noUnderscores ? txt.replace('_', ' ') : tag.text());
 	if (count && tag.count() > 0)
 		ret += QString(" <span style=\"color:#aaa\">(%L1)</span>").arg(tag.count());
 

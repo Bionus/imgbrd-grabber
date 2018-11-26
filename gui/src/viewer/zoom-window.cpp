@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QScrollBar>
 #include <QShortcut>
+#include <QUrl>
 #include <QWheelEvent>
 #include <ui_zoom-window.h>
 #include "downloader/image-downloader.h"
@@ -333,7 +334,7 @@ void ZoomWindow::openSaveDirFav()
 { openSaveDir(true); }
 
 void ZoomWindow::linkHovered(const QString &url)
-{ m_link = url; }
+{ m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
 void ZoomWindow::contextMenu(const QPoint &pos)
 {
 	Q_UNUSED(pos);
