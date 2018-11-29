@@ -720,6 +720,7 @@ void Image::setTags(const QList<Tag> &tags)
 void Image::setParentGallery(const QSharedPointer<Image> &parentGallery)
 {
 	m_parentGallery = parentGallery;
+	refreshTokens();
 }
 
 QColor Image::color() const
@@ -941,39 +942,39 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Metadata
 	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.fileName().section('.', 0, -2).toUtf8()), ""));
-	tokens.insert("website", Token(m_parentSite->url(), ""));
-	tokens.insert("websitename", Token(m_parentSite->name(), ""));
-	tokens.insert("md5", Token(md5(), ""));
-	tokens.insert("date", Token(m_createdAt, QDateTime()));
-	tokens.insert("id", Token(m_id, 0));
+	tokens.insert("website", Token(m_parentSite->url()));
+	tokens.insert("websitename", Token(m_parentSite->name()));
+	tokens.insert("md5", Token(md5()));
+	tokens.insert("date", Token(m_createdAt));
+	tokens.insert("id", Token(m_id));
 	tokens.insert("rating", Token(m_rating, "unknown"));
-	tokens.insert("score", Token(m_score, 0));
-	tokens.insert("height", Token(height(), 0));
-	tokens.insert("width", Token(width(), 0));
-	tokens.insert("mpixels", Token(width() * height(), 0));
-	tokens.insert("url_file", Token(m_url, ""));
-	tokens.insert("url_original", Token(m_fileUrl, ""));
-	tokens.insert("url_sample", Token(m_sampleUrl.toString(), ""));
-	tokens.insert("url_thumbnail", Token(m_previewUrl.toString(), ""));
-	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
-	tokens.insert("source", Token(!m_sources.isEmpty() ? m_sources.first() : "", ""));
+	tokens.insert("score", Token(m_score));
+	tokens.insert("height", Token(height()));
+	tokens.insert("width", Token(width()));
+	tokens.insert("mpixels", Token(width() * height()));
+	tokens.insert("url_file", Token(m_url));
+	tokens.insert("url_original", Token(m_fileUrl.toString()));
+	tokens.insert("url_sample", Token(m_sampleUrl.toString()));
+	tokens.insert("url_thumbnail", Token(m_previewUrl.toString()));
+	tokens.insert("url_page", Token(m_pageUrl.toString()));
+	tokens.insert("source", Token(!m_sources.isEmpty() ? m_sources.first() : ""));
 	tokens.insert("sources", Token(m_sources));
-	tokens.insert("filesize", Token(m_sizes[Image::Size::Full]->fileSize, 0));
-	tokens.insert("author", Token(m_author, ""));
-	tokens.insert("authorid", Token(m_authorId, 0));
-	tokens.insert("parentid", Token(m_parentId, 0));
+	tokens.insert("filesize", Token(m_sizes[Image::Size::Full]->fileSize));
+	tokens.insert("author", Token(m_author));
+	tokens.insert("authorid", Token(m_authorId));
+	tokens.insert("parentid", Token(m_parentId));
 
 	// Flags
-	tokens.insert("has_children", Token(m_hasChildren, false));
-	tokens.insert("has_note", Token(m_hasNote, false));
-	tokens.insert("has_comments", Token(m_hasComments, false));
+	tokens.insert("has_children", Token(m_hasChildren));
+	tokens.insert("has_note", Token(m_hasNote));
+	tokens.insert("has_comments", Token(m_hasComments));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i)
-	{ tokens.insert("search_" + QString::number(i + 1), Token(m_search[i], "")); }
+	{ tokens.insert("search_" + QString::number(i + 1), Token(m_search[i])); }
 	for (int i = m_search.size(); i < 10; ++i)
-	{ tokens.insert("search_" + QString::number(i + 1), Token("", "")); }
-	tokens.insert("search", Token(m_search.join(' '), ""));
+	{ tokens.insert("search_" + QString::number(i + 1), Token("")); }
+	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
 	QMap<QString, QStringList> details;
@@ -1021,7 +1022,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("species", Token(details["species"], "replaceAll", "unknown", "multiple"));
 	tokens.insert("meta", Token(details["meta"], "replaceAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
-	tokens.insert("allo", Token(details["allos"].join(' '), ""));
+	tokens.insert("allo", Token(details["allos"].join(' ')));
 	tokens.insert("tags", Token(details["alls"]));
 	tokens.insert("all", Token(details["alls"]));
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
@@ -1032,6 +1033,11 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 		ext = "jpg";
 	tokens.insert("ext", Token(ext, "jpg"));
 	tokens.insert("filetype", Token(ext, "jpg"));
+
+	// Variables
+	if (!m_parentGallery.isNull()) {
+		tokens.insert("gallery", Token(QVariant::fromValue(m_parentGallery)));
+	}
 
 	return tokens;
 }

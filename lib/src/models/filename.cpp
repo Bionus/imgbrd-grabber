@@ -137,10 +137,8 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
-void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens) const
+void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens, QJSValue &obj) const
 {
-	QJSValue obj = engine.globalObject();
-
 	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it)
 	{
 		const QString &key = it.key();
@@ -173,6 +171,13 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 
 			obj.setProperty(key, res);
 		}
+		else if (val.canConvert<QSharedPointer<Image>>())
+		{
+			QJSValue v = engine.newObject();
+			QSharedPointer<Image> img = val.value<QSharedPointer<Image>>();
+			setJavaScriptVariables(engine, settings, img->tokens(nullptr), v);
+			obj.setProperty(key, v);
+		}
 		else
 		{ obj.setProperty(key, engine.toScriptValue(val)); }
 	}
@@ -191,7 +196,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 
 		// Script execution
 		QJSEngine engine;
-		setJavaScriptVariables(engine, settings, tokens);
+		setJavaScriptVariables(engine, settings, tokens, engine.globalObject());
 		QJSValue result = engine.evaluate(cond);
 		if (result.isError())
 		{
@@ -283,7 +288,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		{
 			// Script execution
 			QJSEngine engine;
-			setJavaScriptVariables(engine, settings, replaces);
+			setJavaScriptVariables(engine, settings, replaces, engine.globalObject());
 			QJSValue result = engine.evaluate(filename);
 			if (result.isError())
 			{
@@ -323,17 +328,34 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			int p = 0;
 			while ((p = replacerx.indexIn(cFilename, p)) != -1)
 			{
-				const QString &key = replacerx.cap(1);
+				QStringList var = replacerx.cap(1).split('.');
+				QString key = var.takeFirst();
 				const QString &options = replacerx.captureCount() > 1 ? replacerx.cap(2) : QString();
 
-				if (replaces.contains(key))
+				bool found = true;
+				QMap<QString, Token> context = replaces;
+				while (!var.isEmpty())
+				{
+					if (context.contains(key))
+					{
+						const QVariant &val = context[key].value();
+						if (val.canConvert<QSharedPointer<Image>>())
+						{
+							context = val.value<QSharedPointer<Image>>()->tokens(profile);
+							continue;
+						}
+					}
+					found = false;
+				}
+
+				if (found && replaces.contains(key))
 				{
 					const QVariant &val = replaces[key].value();
 					const QString &res = optionedValue(val, key, options, settings, namespaces);
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
 				}
-				else if (ignoredTokens.contains(key))
+				else if (found && ignoredTokens.contains(key))
 				{
 					if (key == "num")
 					{
