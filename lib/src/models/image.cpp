@@ -77,6 +77,7 @@ Image::Image(const Image &other)
 	m_loadingDetails = other.m_loadingDetails;
 }
 
+
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
 {
@@ -639,7 +640,6 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 }
 
 
-const QString &Image::rating() const { return m_rating; }
 Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
@@ -655,7 +655,6 @@ const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 Page *Image::page() const { return m_parent; }
-const QStringList &Image::search() const { return m_search; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
 QString Image::extension() const { return getExtension(m_url).toLower(); }
@@ -717,6 +716,10 @@ void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
 	refreshTokens();
+}
+void Image::setParentGallery(const QSharedPointer<Image> &parentGallery)
+{
+	m_parentGallery = parentGallery;
 }
 
 QColor Image::color() const

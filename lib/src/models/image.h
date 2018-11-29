@@ -35,7 +35,6 @@ class Image : public QObject, public Downloadable
 
 		int value() const;
 		QString md5() const;
-		const QString &rating() const;
 		const QList<Tag> &tags() const;
 		QStringList tagsString() const;
 		const QList<Pool> &pools() const;
@@ -49,7 +48,6 @@ class Image : public QObject, public Downloadable
 		QSize size() const;
 		const QString &name() const;
 		Page *page() const;
-		const QStringList &search() const;
 		Site *parentSite() const;
 		ExtensionRotator *extensionRotator() const;
 		bool hasTag(QString tag) const;
@@ -67,6 +65,7 @@ class Image : public QObject, public Downloadable
 		void setTags(const QList<Tag> &tags);
 		bool isGallery() const;
 		QString extension() const;
+		void setParentGallery(const QSharedPointer<Image> &parentGallery);
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -137,6 +136,7 @@ class Image : public QObject, public Downloadable
 		bool m_loadingDetails, m_loadedDetails;
 		bool m_isGallery = false;
 		int m_galleryCount;
+		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
 };
 
