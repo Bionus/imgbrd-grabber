@@ -949,6 +949,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("width", Token(width(), 0));
 	tokens.insert("mpixels", Token(width() * height(), 0));
 	tokens.insert("url_file", Token(m_url, ""));
+	tokens.insert("url_original", Token(m_fileUrl, ""));
 	tokens.insert("url_sample", Token(m_sampleUrl.toString(), ""));
 	tokens.insert("url_thumbnail", Token(m_previewUrl.toString(), ""));
 	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));

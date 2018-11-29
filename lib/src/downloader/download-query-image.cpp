@@ -36,7 +36,16 @@ void DownloadQueryImage::initFromImage(const Image &img)
 	for (const Tag &tag : imgTags)
 		tags.append(tag.text());
 
-	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate), img.search());
+	const QMap<QString, Token> &tokens = img.tokens(nullptr);
+	initFromData(
+		tokens["id"].value().toULongLong(),
+		tokens["md5"].value().toString(),
+		tokens["rating"].value().toString(),
+		tags.join(" "),
+		tokens["url_original"].value().toString(),
+		tokens["date"].value().toDateTime().toString(Qt::ISODate),
+		tokens["search"].value().toString().split(' ')
+	);
 }
 
 void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, const QStringList &search)
