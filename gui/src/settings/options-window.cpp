@@ -159,7 +159,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->lineArtistsKeepNThenAdd->setText(settings->value("artist_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineArtistsSeparator->setText(settings->value("artist_sep", "+").toString());
 		ui->lineArtistsReplaceAll->setText(settings->value("artist_value", "multiple artists").toString());
-		const QString artistMultiple = settings->value("artist_multiple", "replaceAll").toString();
+		const QString artistMultiple = settings->value("artist_multiple", "keepAll").toString();
 		if		(artistMultiple == "keepAll")		{ ui->radioArtistsKeepAll->setChecked(true);		}
 		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
 		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
@@ -175,7 +175,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->lineCopyrightsKeepNThenAdd->setText(settings->value("copyright_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCopyrightsSeparator->setText(settings->value("copyright_sep", "+").toString());
 		ui->lineCopyrightsReplaceAll->setText(settings->value("copyright_value", "crossover").toString());
-		const QString copyrightMultiple = settings->value("copyright_multiple", "replaceAll").toString();
+		const QString copyrightMultiple = settings->value("copyright_multiple", "keepAll").toString();
 		if		(copyrightMultiple == "keepAll")		{ ui->radioCopyrightsKeepAll->setChecked(true);			}
 		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
 		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
@@ -190,7 +190,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->lineCharactersKeepNThenAdd->setText(settings->value("character_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCharactersSeparator->setText(settings->value("character_sep", "+").toString());
 		ui->lineCharactersReplaceAll->setText(settings->value("character_value", "group").toString());
-		const QString characterMultiple = settings->value("character_multiple", "replaceAll").toString();
+		const QString characterMultiple = settings->value("character_multiple", "keepAll").toString();
 		if		(characterMultiple == "keepAll")		{ ui->radioCharactersKeepAll->setChecked(true);			}
 		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
 		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}

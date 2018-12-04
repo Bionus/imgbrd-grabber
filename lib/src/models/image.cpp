@@ -1015,12 +1015,12 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Tags
 	tokens.insert("general", Token(details["general"]));
-	tokens.insert("artist", Token(details["artist"], "replaceAll", "anonymous", "multiple artists"));
-	tokens.insert("copyright", Token(details["copyright"], "replaceAll", "misc", "crossover"));
-	tokens.insert("character", Token(details["character"], "replaceAll", "unknown", "group"));
-	tokens.insert("model", Token(details["model"] + details["idol"], "replaceAll", "unknown", "multiple"));
-	tokens.insert("species", Token(details["species"], "replaceAll", "unknown", "multiple"));
-	tokens.insert("meta", Token(details["meta"], "replaceAll", "none", "multiple"));
+	tokens.insert("artist", Token(details["artist"], "keepAll", "anonymous", "multiple artists"));
+	tokens.insert("copyright", Token(details["copyright"], "keepAll", "misc", "crossover"));
+	tokens.insert("character", Token(details["character"], "keepAll", "unknown", "group"));
+	tokens.insert("model", Token(details["model"] + details["idol"], "keepAll", "unknown", "multiple"));
+	tokens.insert("species", Token(details["species"], "keepAll", "unknown", "multiple"));
+	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' ')));
 	tokens.insert("tags", Token(details["alls"]));
