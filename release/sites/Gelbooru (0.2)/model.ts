@@ -120,7 +120,8 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    return "/index.php?page=tags&s=list&pid=" + query.page;
+                    const page: number = (query.page - 1) * 50;
+                    return "/index.php?page=tags&s=list&pid=" + page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {
