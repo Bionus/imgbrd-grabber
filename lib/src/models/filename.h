@@ -60,7 +60,7 @@ class Filename
 		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
 		bool returnError(const QString &msg, QString *error) const;
 		QString fixSeparator(const QString &separator) const;
-		void setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens, QJSValue &obj) const;
+		void setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens, QJSValue obj) const;
 		bool matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const;
 
 	private:
