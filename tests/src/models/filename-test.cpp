@@ -389,6 +389,23 @@ void FilenameTest::testPathOptionNumMultiple()
 	QFile::remove("tests/resources/tmp/7331 (1).jpg");
 	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
+void FilenameTest::testPathOptionNumNoExt()
+{
+	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (1).jpg");
+	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (2).png");
+	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (3).png");
+
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (2).jpg",
+			   "tests/resources/tmp/");
+
+	assertPath("%id% (%num:noext%).%ext%",
+			   "7331 (4).jpg",
+			   "tests/resources/tmp/");
+
+	QFile::remove("tests/resources/tmp/7331 (1).png");
+	QFile::remove("tests/resources/tmp/7331 (2).png");
+}
 void FilenameTest::testPathOptionNumAboveTen()
 {
 	int count = 15;

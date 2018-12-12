@@ -373,29 +373,43 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 			if (!hasNum.isEmpty())
 			{
+				int num = 1;
+				const bool noExt = numOptions.contains("noext");
+
 				const int mid = QDir::toNativeSeparators(cFilename).lastIndexOf(QDir::separator());
 				QDir dir(folder + (mid >= 0 ? QDir::separator() + cFilename.left(mid) : QString()));
 				const QString cRight = mid >= 0 ? cFilename.right(cFilename.length() - mid - 1) : cFilename;
-				const QString filter = QString(cRight).replace(hasNum, "*");
+				QString filter = QString(cRight).replace(hasNum, "*");
+				if (noExt)
+				{
+					const QString ext = replaces["ext"].toString();
+					if (filter.endsWith("." + ext))
+					{ filter = filter.left(filter.length() - ext.length()) + "*"; }
+				}
 				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
 
-				// Sort files naturally
-				QCollator collator;
-				collator.setNumericMode(true);
-				std::sort(
-					files.begin(),
-					files.end(),
-					[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
-				);
+				if (!files.isEmpty()) {
+					// Get last file
+					QCollator collator;
+					collator.setNumericMode(true);
+					const QFileInfo highest = noExt
+						? *std::max_element(
+							files.begin(),
+							files.end(),
+							[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.completeBaseName(), b.completeBaseName()) < 0; }
+						)
+						: *std::max_element(
+							files.begin(),
+							files.end(),
+							[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
+						);
 
-				int num = 1;
-				if (!files.isEmpty())
-				{
-					const QString last = files.last().fileName();
+					const QString last = highest.fileName();
 					const int pos = cRight.indexOf(hasNum);
-					const int len = last.length() - cRight.length() + 5;
+					const int len = last.length() - cRight.length() + hasNum.length();
 					num = last.midRef(pos, len).toInt() + 1;
 				}
+
 				cFilename.replace(hasNum, optionedValue(num, "num", numOptions, settings, namespaces));
 			}
 

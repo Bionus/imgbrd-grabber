@@ -63,6 +63,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
+		void testPathOptionNumNoExt();
 		void testPathOptionNumAboveTen();
 		void testPathOptionSort();
 		void testPathSpecies();
