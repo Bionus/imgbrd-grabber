@@ -66,6 +66,7 @@ class Image : public QObject, public Downloadable
 		bool isGallery() const;
 		QString extension() const;
 		void setParentGallery(const QSharedPointer<Image> &parentGallery);
+		void setPromoteDetailParsWarn(bool);
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -136,6 +137,7 @@ class Image : public QObject, public Downloadable
 		bool m_loadingDetails, m_loadedDetails;
 		bool m_isGallery = false;
 		int m_galleryCount;
+		bool m_detailsParsWarnAsErr = false;
 		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
 };
