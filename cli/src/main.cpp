@@ -1,4 +1,6 @@
 #include <QCoreApplication>
+#include <QUrl>
+#include <QNetworkProxy>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "models/profile.h"
@@ -38,6 +40,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
 	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
 	const QCommandLineOption ignoreErrorOption(QStringList() << "ignore-error", "don't exit on error.");
+	const QCommandLineOption proxyOption(QStringList() << "proxy", "Use given proxy.", "[user:password]@host:port", "");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -54,6 +57,7 @@ int main(int argc, char *argv[])
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
 	parser.addOption(ignoreErrorOption);
+	parser.addOption(proxyOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -76,6 +80,30 @@ int main(int argc, char *argv[])
 
 	if (!parser.isSet(ignoreErrorOption))
 		Logger::getInstance().setExitOnError(true);
+
+	if (parser.isSet(proxyOption)) {
+		QUrl proxyUrl = QUrl::fromUserInput(parser.value(proxyOption));
+
+		if (!proxyUrl.isValid())
+			log(proxyUrl.errorString(), Logger::Error);
+		if (proxyUrl.port() == -1)
+			log("Bad proxy port.", Logger::Error);
+
+		const auto type = proxyUrl.scheme().startsWith("socks")
+		                  ? QNetworkProxy::Socks5Proxy
+		                  : QNetworkProxy::HttpProxy;
+
+		const QNetworkProxy proxy(
+		        type,
+		        proxyUrl.host(),
+		        proxyUrl.port(),
+		        proxyUrl.userName(),
+		        proxyUrl.password()
+		    );
+
+		QNetworkProxy::setApplicationProxy(proxy);
+		log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(proxyUrl.host()).arg(proxyUrl.port()), Logger::Info);
+	}
 
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
