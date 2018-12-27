@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
 	const QCommandLineOption ignoreErrorOption(QStringList() << "ignore-error", "don't exit on error.");
 	const QCommandLineOption proxyOption(QStringList() << "proxy", "Use given proxy.", "[user:password]@host:port", "");
+	const QCommandLineOption noLoginOption(QStringList() << "no-login", "disable auto login.");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -58,6 +59,7 @@ int main(int argc, char *argv[])
 	parser.addOption(verboseOption);
 	parser.addOption(ignoreErrorOption);
 	parser.addOption(proxyOption);
+	parser.addOption(noLoginOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -108,10 +110,15 @@ int main(int argc, char *argv[])
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
 
+	auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts));
+	if (parser.isSet(noLoginOption))
+		for (auto& site : sites)
+			site->setAutoLogin(false);
+
 	Downloader *downloader = new Downloader(profile,
 		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-		profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+		sites,
 		parser.value(pageOption).toInt(),
 		parser.value(limitOption).toInt(),
 		parser.value(perPageOption).toInt(),
