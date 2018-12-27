@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
 	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
 	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
+	const QCommandLineOption ignoreErrorOption(QStringList() << "ignore-error", "don't exit on error.");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
+	parser.addOption(ignoreErrorOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -65,9 +67,15 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	#ifndef QT_DEBUG
-		Logger::setupMessageOutput(parser.isSet(verboseOption));
-	#endif
+	if (parser.isSet(verboseOption)) {
+        #ifndef QT_DEBUG
+		    Logger::getInstance().logToConsole();
+        #endif
+		Logger::getInstance().setLogLevel(Logger::Debug);
+	}
+
+	if (!parser.isSet(ignoreErrorOption))
+		Logger::getInstance().setExitOnError(true);
 
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);

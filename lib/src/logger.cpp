@@ -6,6 +6,12 @@
 	#include <QDebug>
 #endif
 
+void Logger::logToConsole()
+{
+	if (m_logFile.isOpen()) m_logFile.close();
+	m_logFile.open(stdout, QIODevice::WriteOnly);
+}
+
 
 void Logger::setLogFile(const QString &path)
 {
@@ -21,6 +27,11 @@ QString Logger::logFile() const
 void Logger::setLogLevel(LogLevel level)
 {
 	m_level = level;
+}
+
+void Logger::setExitOnError(bool val)
+{
+	m_exitOnError = val;
 }
 
 
@@ -67,6 +78,9 @@ void Logger::setupMessageOutput(bool log)
  */
 void Logger::log(const QString &l, LogLevel level)
 {
+	if (m_exitOnError && level == Logger::LogLevel::Error)
+		throw std::runtime_error(l.toStdString());
+
 	if (level < m_level)
 		return;
 
