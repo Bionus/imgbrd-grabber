@@ -36,12 +36,14 @@ class Logger : public QObject
 		static void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message);
 		static void setupMessageOutput(bool log);
 
+		void setExitOnError(bool val);
 		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
 		void log(const QString &, LogLevel level = Info);
 		void logCommand(const QString &);
 		void logCommandSql(const QString &);
 		void logUpdate(const QString &);
+		void logToConsole();
 
 		QString logFile() const;
 
@@ -52,6 +54,7 @@ class Logger : public QObject
 		Logger() = default;
 		QFile m_logFile, m_fCommandsLog, m_fCommandsSqlLog;
 		LogLevel m_level = LogLevel::Info;
+		bool m_exitOnError = false;
 };
 
 
