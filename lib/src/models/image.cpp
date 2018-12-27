@@ -456,7 +456,8 @@ void Image::parseDetails()
 	ParsedDetails ret = api->parseDetails(source, statusCode, m_parentSite);
 	if (!ret.error.isEmpty())
 	{
-		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), Logger::Warning);
+		auto logLevel = m_detailsParsWarnAsErr ? Logger::Error : Logger::Warning;
+		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), logLevel);
 		emit finishedLoadingTags();
 		return;
 	}
@@ -738,6 +739,7 @@ bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
 QString Image::extension() const { return getExtension(m_url).toLower(); }
 
+void Image::setPromoteDetailParsWarn(bool val) { m_detailsParsWarnAsErr = val; }
 void Image::setPreviewImage(const QPixmap &preview)
 {
 	m_sizes[Image::Size::Thumbnail]->setPixmap(preview);
