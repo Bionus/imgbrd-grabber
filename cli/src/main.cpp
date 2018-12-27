@@ -1,6 +1,8 @@
 #include <QCoreApplication>
 #include <QUrl>
 #include <QNetworkProxy>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "models/profile.h"
@@ -11,6 +13,9 @@
 	#include <vendor/qcommandlineparser.h>
 #endif
 
+void loadMoreDetails(const QList<QSharedPointer<Image>> &images);
+QJsonObject serializeImg(const Image *image, const QMap<QString, Token>& tokens);
+void writeToFile(QString filename, QByteArray data);
 
 int main(int argc, char *argv[])
 {
@@ -42,6 +47,8 @@ int main(int argc, char *argv[])
 	const QCommandLineOption ignoreErrorOption(QStringList() << "ignore-error", "don't exit on error.");
 	const QCommandLineOption proxyOption(QStringList() << "proxy", "Use given proxy.", "[user:password]@host:port", "");
 	const QCommandLineOption noLoginOption(QStringList() << "no-login", "disable auto login.");
+	const QCommandLineOption jsonOption(QStringList() << "j" << "json", "output results as json.");
+	const QCommandLineOption loadDetailsOption(QStringList() << "load-details", "request (more) details on found items.");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -60,6 +67,8 @@ int main(int argc, char *argv[])
 	parser.addOption(ignoreErrorOption);
 	parser.addOption(proxyOption);
 	parser.addOption(noLoginOption);
+	parser.addOption(jsonOption);
+	parser.addOption(loadDetailsOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -132,6 +141,8 @@ int main(int argc, char *argv[])
 		parser.value(tagsMinOption).toInt(),
 		parser.value(tagsFormatOption));
 
+	downloader->setQuit(true);
+
 	if (parser.isSet(returnCountOption))
 		downloader->getPageCount();
 	else if (parser.isSet(returnTagsOption))
@@ -142,11 +153,101 @@ int main(int argc, char *argv[])
 		downloader->getUrls();
 	else if (parser.isSet(downloadOption))
 		downloader->getImages();
+	else if (parser.isSet(jsonOption)) {
+		downloader->setQuit(false);
+		downloader->getImages();
+		QObject::connect(downloader, &Downloader::finishedImages, [&](const QList<QSharedPointer<Image>> &images){
+			if (parser.isSet(loadDetailsOption))
+				loadMoreDetails(images);
+
+			QJsonDocument jsonDoc;
+			QJsonArray jsonArray;
+
+			for (auto& image : images) {
+				auto tokens = image->tokens(profile);
+				auto jsObject = serializeImg(image.data(), tokens);
+				jsonArray.append(jsObject);
+			}
+
+			jsonDoc.setArray(jsonArray);
+			auto jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
+			QTextStream(stdout) << qPrintable(jsonResult);
+			app.quit();
+		});
+	}
 	else
 		parser.showHelp();
 
-	downloader->setQuit(true);
 	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
 
 	return app.exec();
+}
+
+void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
+{
+	int work = images.length();
+	QEventLoop loop;
+	int requestsLimit = 5;  // simultan requests
+	int runningRequests = 0;
+	for (auto& image : images) {
+		while (runningRequests >= requestsLimit)
+			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+		runningRequests ++;
+		image->loadDetails();
+		QObject::connect(image.data(), &Image::finishedLoadingTags, [&](){
+			work--;
+			runningRequests--;
+			if (!work) loop.quit();
+		});
+	}
+	loop.exec();
+}
+
+QJsonObject serializeImg(const Image *image, const QMap<QString, Token> &tokens) {
+	static QStringList ignoreKeys = {"all", "allo", "allos", "all_namespaces", };
+	QJsonObject jsObject;
+
+	for (auto& key : tokens.keys()) {
+		typedef QVariant::Type Type;
+		if (ignoreKeys.contains(key)) continue;
+		if (key.contains("search_")) continue;
+
+		const QVariant& qvalue = tokens.value(key).value();
+		auto type = qvalue.type();
+
+		if (type == QVariant::Type::StringList) {
+			QStringList l = qvalue.toStringList();
+			if (l.isEmpty()) continue;
+			jsObject.insert(key, QJsonArray::fromStringList(l));
+		}
+		else if (type == QVariant::Type::String) {
+			QString s = qvalue.toString();
+			if (s.isEmpty()) continue;
+			jsObject.insert(key, s);
+		}
+		else if (type == Type::Url || type == Type::ULongLong || type == Type::LongLong)
+			jsObject.insert(key, qvalue.toString());
+		else if (type == Type::Int)
+			jsObject.insert(key, qvalue.value<int>());
+		else if (type == Type::Bool)
+			jsObject.insert(key, qvalue.value<bool>());
+		else if (type == Type::DateTime)
+			jsObject.insert(key, static_cast<int>(qvalue.value<QDateTime>().toTime_t()));
+		else {
+			qDebug() << qvalue;
+			log(QStringLiteral("using generic QVariant::toString for key: %1").arg(key), Logger::Warning);
+			jsObject.insert(key, qvalue.toString());
+		}
+	}
+	jsObject.insert("isVideo", image->isVideo());
+	jsObject.insert("isGallery", image->isGallery());
+	jsObject.insert("isAnimated", image->isAnimated());
+	return jsObject;
+}
+
+void writeToFile(QString filename, QByteArray data) {
+	QFile file(filename);
+	file.open(QFile::WriteOnly);
+	file.write(data);
+	file.close();
 }
