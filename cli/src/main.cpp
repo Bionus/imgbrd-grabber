@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption noLoginOption(QStringList() << "no-login", "disable auto login.");
 	const QCommandLineOption jsonOption(QStringList() << "j" << "json", "output results as json.");
 	const QCommandLineOption loadDetailsOption(QStringList() << "load-details", "request (more) details on found items.");
+	const QCommandLineOption getDetailsOption(QStringList() << "get-details", "parse details from given link.", "url-page");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
 	parser.addOption(noLoginOption);
 	parser.addOption(jsonOption);
 	parser.addOption(loadDetailsOption);
+	parser.addOption(getDetailsOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -124,6 +126,32 @@ int main(int argc, char *argv[])
 		for (auto& site : sites)
 			site->setAutoLogin(false);
 
+	if (parser.isSet(getDetailsOption)) {
+		if (sites.length() != 1)
+			throw std::runtime_error("number of provided sites must be 1");
+		if (!parser.isSet(verboseOption))
+			Logger::getInstance().setLogLevel(Logger::Error);
+
+		QString detailsUrl = parser.value(getDetailsOption);
+		QMap<QString, QString> details = {{"page_url", detailsUrl}};
+		Image image(sites[0], details, profile);
+		image.setPromoteDetailParsWarn(true);
+
+		QEventLoop loop;
+		image.loadDetails();
+		QObject::connect(&image, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
+		loop.exec();
+
+		auto tokens = image.tokens(profile);
+		auto jsObject = serializeImg(&image, tokens);
+
+		QJsonDocument jsonDoc;
+		jsonDoc.setObject(jsObject);
+		auto jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
+		QTextStream(stdout) << qPrintable(jsonResult);
+
+		exit(0);
+	}
 	Downloader *downloader = new Downloader(profile,
 		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
