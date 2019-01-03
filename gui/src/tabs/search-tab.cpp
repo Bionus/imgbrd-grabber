@@ -1022,6 +1022,27 @@ void SearchTab::contextSaveImageProgress(const QSharedPointer<Image> &img, qint6
 	{ m_boutons[img.data()]->setProgress(v1, v2); }
 }
 
+QList<QSharedPointer<Page>> SearchTab::getPagesToDownload()
+{
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+
+	QList<QSharedPointer<Page>> pages;
+	if (unloaded) {
+		QStringList keys = m_sites.keys();
+		for (int i = 0; i < m_checkboxes.count(); i++) {
+			if (m_checkboxes[i]->isChecked() && m_pages.contains(keys[i])) {
+				pages.append(m_pages[keys[i]].first());
+			}
+		}
+	} else {
+		for (auto it = m_pages.begin(); it != m_pages.end(); ++it) {
+			pages.append(it.value().first());
+		}
+	}
+
+	return pages;
+}
+
 void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge)
 {
 	// Early return if the layout has already been removed

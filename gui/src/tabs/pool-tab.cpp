@@ -136,9 +136,14 @@ bool PoolTab::read(const QJsonObject &json, bool preload)
 
 void PoolTab::getPage()
 {
-	const auto &page = m_pages[ui->comboSites->currentText()].first();
-
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+
+	const QString &ste = ui->comboSites->currentText();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : nullptr) : m_pages.first().first();
+	if (page.isNull()) {
+		return;
+	}
+
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
 	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
@@ -148,7 +153,13 @@ void PoolTab::getPage()
 }
 void PoolTab::getAll()
 {
-	const auto &page = m_pages[ui->comboSites->currentText()].first();
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+
+	const QString &ste = ui->comboSites->currentText();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : nullptr) : m_pages.first().first();
+	if (page.isNull()) {
+		return;
+	}
 
 	const int highLimit = page->highLimit();
 	const int currentCount = page->pageImageCount();
