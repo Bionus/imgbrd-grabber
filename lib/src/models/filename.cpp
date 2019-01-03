@@ -137,8 +137,9 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 	return ret;
 }
 
-void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, const QMap<QString, Token> &tokens, QJSValue obj) const
+void Filename::setJavaScriptVariables(QJSEngine &engine, Profile *profile, const QMap<QString, Token> &tokens, QJSValue obj) const
 {
+	QSettings *settings = profile->getSettings();
 	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it)
 	{
 		const QString &key = it.key();
@@ -175,7 +176,7 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 		{
 			QJSValue v = engine.newObject();
 			QSharedPointer<Image> img = val.value<QSharedPointer<Image>>();
-			setJavaScriptVariables(engine, settings, img->tokens(nullptr), v);
+			setJavaScriptVariables(engine, profile, img->tokens(profile), v);
 			obj.setProperty(key, v);
 		}
 		else
@@ -183,7 +184,7 @@ void Filename::setJavaScriptVariables(QJSEngine &engine, QSettings *settings, co
 	}
 }
 
-bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const
+bool Filename::matchConditionalFilename(QString cond, Profile *profile, const QMap<QString, Token> &tokens) const
 {
 	if (cond.isEmpty())
 		return false;
@@ -196,7 +197,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 
 		// Script execution
 		QJSEngine engine;
-		setJavaScriptVariables(engine, settings, tokens, engine.globalObject());
+		setJavaScriptVariables(engine, profile, tokens, engine.globalObject());
 		QJSValue result = engine.evaluate(cond);
 		if (result.isError())
 		{
@@ -263,7 +264,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 		for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
 		{
-			if (matchConditionalFilename(it.key(), settings, tokens))
+			if (matchConditionalFilename(it.key(), profile, tokens))
 			{
 				const QPair<QString, QString> &result = it.value();
 				if (!result.first.isEmpty())
@@ -288,7 +289,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		{
 			// Script execution
 			QJSEngine engine;
-			setJavaScriptVariables(engine, settings, replaces, engine.globalObject());
+			setJavaScriptVariables(engine, profile, replaces, engine.globalObject());
 			QJSValue result = engine.evaluate(filename);
 			if (result.isError())
 			{

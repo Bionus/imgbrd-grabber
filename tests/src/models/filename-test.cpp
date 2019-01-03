@@ -43,6 +43,7 @@ void FilenameTest::init()
 	m_details["tags_meta"] = "";
 	m_details["created_at"] = "1471513944";
 	m_details["rating"] = "safe";
+	m_details["name"] = "Test gallery name";
 
 	m_profile = new Profile("tests/resources/settings.ini");
 	m_settings = m_profile->getSettings();
@@ -58,13 +59,17 @@ void FilenameTest::init()
 
 	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
+	m_gallery = new Image(m_site, m_details, m_profile);
+	m_details.remove("name");
 	m_img = new Image(m_site, m_details, m_profile);
+	m_img->setParentGallery(QSharedPointer<Image>(m_gallery));
 }
 
 void FilenameTest::cleanup()
 {
 	delete m_profile;
 	m_site->deleteLater();
+	m_gallery->deleteLater();
 	m_img->deleteLater();
 }
 
@@ -476,6 +481,12 @@ void FilenameTest::testPathForbiddenSeparator()
 	assertPath("%copyright:separator=/%", "copyright1/copyright2");
 }
 
+void FilenameTest::testPathGalleryName()
+{
+	//assertPath("%gallery.name%/%name% - %md5%.%ext%", "Test gallery name/ - 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("javascript:gallery.name + '/' + name + ' - ' + md5 + '.' + ext", "Test gallery name/ - 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+
 void FilenameTest::testExpandTokensSimple()
 {
 	QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
@@ -720,11 +731,11 @@ void FilenameTest::testNeedTemporaryFile()
 
 void FilenameTest::testNeedExactTags()
 {
-	QCOMPARE(Filename("%md5%.%ext%").needExactTags(NULL), 0);
+	QCOMPARE(Filename("%md5%.%ext%").needExactTags(nullptr), 0);
 	QCOMPARE(Filename("%md5%.%ext%").needExactTags(m_site), 0);
-	QCOMPARE(Filename("javascript:md5 + '.' + ext").needExactTags(NULL), 2);
-	QCOMPARE(Filename("%character% %md5%.%ext%").needExactTags(NULL), 1);
-	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(NULL), 1);
+	QCOMPARE(Filename("javascript:md5 + '.' + ext").needExactTags(nullptr), 2);
+	QCOMPARE(Filename("%character% %md5%.%ext%").needExactTags(nullptr), 1);
+	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(nullptr), 1);
 
 	Filename filename("%filename%.%ext%");
 	QCOMPARE(filename.needExactTags(), 0);

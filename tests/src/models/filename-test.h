@@ -71,6 +71,7 @@ class FilenameTest : public TestSuite
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();
+		void testPathGalleryName();
 		void testExpandTokensSimple();
 		void testExpandTokensMultiple();
 		void testExpandTokensMatrix();
@@ -100,6 +101,7 @@ class FilenameTest : public TestSuite
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;
+		Image *m_gallery;
 		Image *m_img;
 		QMap<QString, QString> m_details;
 };
