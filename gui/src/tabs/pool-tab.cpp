@@ -139,7 +139,7 @@ void PoolTab::getPage()
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 
 	const QString &ste = ui->comboSites->currentText();
-	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : nullptr) : m_pages.first().first();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : QSharedPointer<Page>()) : m_pages.first().first();
 	if (page.isNull()) {
 		return;
 	}
@@ -156,7 +156,7 @@ void PoolTab::getAll()
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 
 	const QString &ste = ui->comboSites->currentText();
-	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : nullptr) : m_pages.first().first();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : QSharedPointer<Page>()) : m_pages.first().first();
 	if (page.isNull()) {
 		return;
 	}
