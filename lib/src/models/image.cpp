@@ -963,6 +963,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("author", Token(m_author));
 	tokens.insert("authorid", Token(m_authorId));
 	tokens.insert("parentid", Token(m_parentId));
+	tokens.insert("name", Token(m_name));
 
 	// Flags
 	tokens.insert("has_children", Token(m_hasChildren));
