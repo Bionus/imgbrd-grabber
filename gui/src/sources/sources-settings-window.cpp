@@ -58,7 +58,6 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->checkSsl->setChecked(site->setting("ssl", false).toBool());
 
 	// Download settings
-	ui->spinImagesPerPage->setValue(site->setting("download/imagesperpage", 200).toInt());
 	ui->spinSimultaneousDownloads->setValue(site->setting("download/simultaneous", 10).toInt());
 	ui->spinThrottleDetails->setValue(site->setting("download/throttle_details", 0).toInt());
 	ui->spinThrottleImage->setValue(site->setting("download/throttle_image", 0).toInt());
@@ -240,7 +239,6 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("ignore/1", ui->spinIgnore1->value(), 0);
 	m_site->setSetting("ssl", ui->checkSsl->isChecked(), false);
 
-	m_site->setSetting("download/imagesperpage", ui->spinImagesPerPage->value(), 200);
 	m_site->setSetting("download/simultaneous", ui->spinSimultaneousDownloads->value(), 10);
 	m_site->setSetting("download/throttle_details", ui->spinThrottleDetails->value(), 0);
 	m_site->setSetting("download/throttle_image", ui->spinThrottleImage->value(), 0);
