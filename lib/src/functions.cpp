@@ -568,7 +568,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 		{ part = part + "!"; }
 
 		// A part cannot finish by a period
-		if (invalidChars && part.endsWith('.'))
+		while (invalidChars && part.endsWith('.'))
 		{ part = part.left(part.length() - 1).trimmed(); }
 
 		// A part cannot start or finish with a space

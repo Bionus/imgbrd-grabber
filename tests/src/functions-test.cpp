@@ -38,6 +38,7 @@ void FunctionsTest::testFixFilenameWindows()
 	assertFixFilename(0, "image.jpg", "C:\\test\\", "image.jpg");
 	assertFixFilename(0, "image", "C:\\test\\", "image");
 	assertFixFilename(0, "folder\\image.jpg", "C:\\test\\", "folder\\image.jpg");
+	assertFixFilename(0, "folder...\\image.jpg", "C:\\test\\", "folder\\image.jpg");
 }
 
 void FunctionsTest::testFixFilenameLinux()
