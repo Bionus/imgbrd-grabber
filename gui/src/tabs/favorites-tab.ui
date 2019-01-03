@@ -926,6 +926,22 @@ QWidget#scrollAreaWidgetContents {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>splitter</sender>
+   <signal>splitterMoved(int,int)</signal>
+   <receiver>FavoritesTab</receiver>
+   <slot>splitterMoved(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>778</x>
+     <y>325</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>328</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -945,5 +961,6 @@ QWidget#scrollAreaWidgetContents {
   <slot>favoritesBack()</slot>
   <slot>viewed()</slot>
   <slot>favoriteProperties()</slot>
+  <slot>splitterMoved(int,int)</slot>
  </slots>
 </ui>

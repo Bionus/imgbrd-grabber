@@ -380,8 +380,6 @@ void FavoritesTab::changeEvent(QEvent *event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		setWindowTitle(tr("Favorites"));
-		emit titleChanged(this);
 	}
 
 	QWidget::changeEvent(event);
@@ -389,5 +387,21 @@ void FavoritesTab::changeEvent(QEvent *event)
 
 void FavoritesTab::updateTitle()
 {
-	// No-op, the Favorites tab never changes its title
+	setWindowTitle(tr("Favorites") + (m_currentTags.isEmpty() ? "" : " - " + m_currentTags));
+	emit titleChanged(this);
+}
+
+void FavoritesTab::splitterMoved(int pos, int index)
+{
+	const QString title = tr("Favorites");
+
+	int min, max;
+	ui->splitter->getRange(index, &min, &max);
+
+	if (index == 1 && pos >= max) {
+		setWindowTitle(title);
+		emit titleChanged(this);
+	} else if (windowTitle() == title) {
+		updateTitle();
+	}
 }
