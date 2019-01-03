@@ -483,8 +483,8 @@ void FilenameTest::testPathForbiddenSeparator()
 
 void FilenameTest::testPathGalleryName()
 {
-	//assertPath("%gallery.name%/%name% - %md5%.%ext%", "Test gallery name/ - 1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("javascript:gallery.name + '/' + name + ' - ' + md5 + '.' + ext", "Test gallery name/ - 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("%gallery.name%/%name%-%md5%.%ext%", "Test gallery name/-1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("javascript:gallery.name + '/' + name + '-' + md5 + '.' + ext", "Test gallery name/-1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
 void FilenameTest::testExpandTokensSimple()

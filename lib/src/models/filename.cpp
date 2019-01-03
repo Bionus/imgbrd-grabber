@@ -335,7 +335,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 				bool found = true;
 				QMap<QString, Token> context = replaces;
-				while (!var.isEmpty())
+				while (found && !var.isEmpty())
 				{
 					if (context.contains(key))
 					{
@@ -343,15 +343,17 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 						if (val.canConvert<QSharedPointer<Image>>())
 						{
 							context = val.value<QSharedPointer<Image>>()->tokens(profile);
+							key = var.takeFirst();
 							continue;
 						}
+						break;
 					}
 					found = false;
 				}
 
-				if (found && replaces.contains(key))
+				if (found && context.contains(key))
 				{
-					const QVariant &val = replaces[key].value();
+					const QVariant &val = context[key].value();
 					const QString &res = optionedValue(val, key, options, settings, namespaces);
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
