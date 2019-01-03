@@ -228,6 +228,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboSites</tabstop>
+  <tabstop>lineId</tabstop>
+  <tabstop>buttonLineId</tabstop>
+  <tabstop>lineMd5</tabstop>
+  <tabstop>buttonLineMd5</tabstop>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>buttonFolder</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

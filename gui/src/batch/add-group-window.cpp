@@ -23,10 +23,12 @@ AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent
 	m_lineTags = new TextEdit(profile, this);
 	m_lineTags->setCompleter(completer);
 	ui->formLayout->setWidget(1, QFormLayout::FieldRole, m_lineTags);
+	setTabOrder(ui->comboSites, m_lineTags);
 
 	m_linePostFiltering = new TextEdit(profile, this);
 	m_linePostFiltering->setCompleter(completer);
 	ui->formLayout->setWidget(5, QFormLayout::FieldRole, m_linePostFiltering);
+	setTabOrder(ui->spinLimit, m_linePostFiltering);
 }
 
 /**
