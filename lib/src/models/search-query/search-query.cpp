@@ -6,6 +6,16 @@
 #include "models/site.h"
 
 
+QString SearchQuery::toString() const
+{
+	if (!gallery.isNull()) {
+		return "Gallery: " + gallery->name();
+	}
+
+	return tags.join(' ');
+}
+
+
 void SearchQuery::write(QJsonObject &json) const
 {
 	json["tags"] = QJsonArray::fromStringList(tags);

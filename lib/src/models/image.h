@@ -46,6 +46,8 @@ class Image : public QObject, public Downloadable
 		int fileSize() const;
 		int width() const;
 		int height() const;
+		const QString &rating() const;
+		const QStringList &search() const;
 		const QDateTime &createdAt() const;
 		const QUrl &pageUrl() const;
 		const QUrl &fileUrl() const;

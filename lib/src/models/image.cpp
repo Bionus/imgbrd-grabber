@@ -1,5 +1,6 @@
 #include <QCryptographicHash>
 #include <QEventLoop>
+#include <QJsonArray>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegularExpression>
@@ -307,10 +308,20 @@ void Image::write(QJsonObject &json) const
 		json["gallery"] = jsonGallery;
 	}
 
+	QStringList tags;
+	tags.reserve(m_tags.count());
+	for (const Tag &tag : m_tags)
+		tags.append(tag.text());
+
 	// FIXME: real serialization
 	json["name"] = m_name;
 	json["id"] = static_cast<int>(m_id);
 	json["md5"] = m_md5;
+	json["rating"] = m_rating;
+	json["tags"] = QJsonArray::fromStringList(tags);
+	json["file_url"] = m_fileUrl.toString();
+	json["date"] = m_createdAt.toString(Qt::ISODate);
+	json["search"] = QJsonArray::fromStringList(m_search);
 }
 
 bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
@@ -337,6 +348,21 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	m_name = json["name"].toString();
 	m_id = json["id"].toInt();
 	m_md5 = json["md5"].toString();
+	m_rating = json["rating"].toString();
+	m_fileUrl = json["file_url"].toString();
+	m_createdAt = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+
+	// Tags
+	QJsonArray jsonTags = json["tags"].toArray();
+	m_tags.reserve(jsonTags.count());
+	for (const auto &tag : jsonTags)
+		m_tags.append(Tag(tag.toString()));
+
+	// Search
+	QJsonArray jsonSearch = json["search"].toArray();
+	m_search.reserve(jsonSearch.count());
+	for (const auto &tag : jsonSearch)
+		m_search.append(tag.toString());
 
 	m_sizes = {
 		{ Image::Size::Full, QSharedPointer<ImageSize>::create() },
@@ -698,6 +724,8 @@ qulonglong Image::id() const { return m_id; }
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size().width(); }
 int Image::height() const { return size().height(); }
+const QString &Image::rating() const { return m_rating; }
+const QStringList &Image::search() const { return m_search; }
 const QDateTime &Image::createdAt() const { return m_createdAt; }
 const QUrl &Image::fileUrl() const { return m_fileUrl; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }

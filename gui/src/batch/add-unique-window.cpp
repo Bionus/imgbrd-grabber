@@ -184,7 +184,7 @@ void AddUniqueWindow::addLoadedImage()
 }
 void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
-	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
+	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
 

@@ -23,6 +23,7 @@ class SearchQuery
 		SearchQuery(QSharedPointer<Image> gallery_)
 			: gallery(gallery_)
 		{}
+		QString toString() const;
 
 		// Serialization
 		void write(QJsonObject &json) const;
