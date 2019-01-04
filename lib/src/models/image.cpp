@@ -301,6 +301,12 @@ void Image::write(QJsonObject &json) const
 {
 	json["website"] = m_parentSite->url();
 
+	if (!m_parentGallery.isNull()) {
+		QJsonObject jsonGallery;
+		m_parentGallery->write(jsonGallery);
+		json["gallery"] = jsonGallery;
+	}
+
 	// FIXME: real serialization
 	json["name"] = m_name;
 	json["id"] = static_cast<int>(m_id);
@@ -312,6 +318,16 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	const QString site = json["website"].toString();
 	if (!sites.contains(site)) {
 		return false;
+	}
+
+	if (json.contains("gallery")) {
+		auto gallery = new Image();
+		if (gallery->read(json["gallery"].toObject(), sites)) {
+			m_parentGallery = QSharedPointer<Image>(gallery);
+		} else {
+			gallery->deleteLater();
+			return false;
+		}
 	}
 
 	m_parentSite = sites[site];
