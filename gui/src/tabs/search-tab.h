@@ -179,6 +179,7 @@ class SearchTab : public QWidget
 		int m_history_cursor;
 		QList<QMap<QString, QString>> m_history;
 		SearchQuery m_lastQuery;
+		bool m_hasLastQuery = false;
 		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff

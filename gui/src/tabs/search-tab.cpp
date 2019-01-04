@@ -1377,11 +1377,12 @@ void SearchTab::loadTags(SearchQuery query)
 	{ addHistory(query, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
 	m_from_history = false;
 
-	if (query != m_lastQuery)
+	if (m_hasLastQuery && query != m_lastQuery)
 	{ m_mergedMd5s.clear(); }
-	if (query != m_lastQuery && m_history_cursor == m_history.size() - 1)
+	if (m_hasLastQuery && query != m_lastQuery && m_history_cursor == m_history.size() - 1)
 	{ ui_spinPage->setValue(1); }
 	m_lastQuery = query;
+	m_hasLastQuery = true;
 
 	if (ui_widgetMeant != nullptr)
 		ui_widgetMeant->hide();
