@@ -21,7 +21,7 @@ void PackLoaderTest::cleanup()
 
 void PackLoaderTest::testGetQuery()
 {
-	DownloadQueryGroup query("search", 1, 10, 20, QStringList(), false, nullptr, "%md5%.%ext%", "");
+	DownloadQueryGroup query(QStringList() << "search", 1, 10, 20, QStringList(), false, nullptr, "%md5%.%ext%", "");
 	PackLoader loader(nullptr, query, 100, nullptr);
 
 	QCOMPARE(loader.query(), query);
@@ -129,7 +129,7 @@ QList<int> PackLoaderTest::getResults(Profile *profile, Site *site, QString sear
 {
 	QList<int> ret;
 
-	DownloadQueryGroup query(search, 1, perPage, total, QStringList(), false, site, "%md5%.%ext%", "");
+	DownloadQueryGroup query(QStringList() << search, 1, perPage, total, QStringList(), false, site, "%md5%.%ext%", "");
 	query.galleriesCountAsOne = galleriesCountAsOne;
 
 	PackLoader loader(profile, query, packSize, nullptr);

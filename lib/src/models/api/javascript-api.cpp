@@ -6,6 +6,7 @@
 #include "functions.h"
 #include "logger.h"
 #include "mixed-settings.h"
+#include "models/image.h"
 #include "models/page.h"
 #include "models/pool.h"
 #include "models/site.h"
@@ -244,7 +245,7 @@ ParsedPage JavascriptApi::parsePage(Page *parentPage, const QString &source, int
 }
 
 
-PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *site) const
+PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const
 {
 	PageUrl ret;
 
@@ -258,7 +259,8 @@ PageUrl JavascriptApi::galleryUrl(const QString &id, int page, int limit, Site *
 	}
 
 	QJSValue query = m_source.engine()->newObject();
-	query.setProperty("id", id);
+	query.setProperty("id", static_cast<int>(gallery->id()));
+	query.setProperty("md5", gallery->md5());
 	query.setProperty("page", page);
 
 	QJSValue opts = m_source.engine()->newObject();

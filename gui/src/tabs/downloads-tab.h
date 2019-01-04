@@ -55,7 +55,7 @@ class DownloadsTab : public QWidget
 		void addUnique();
 		void batchAddGroup(const DownloadQueryGroup &values);
 		void batchAddUnique(const DownloadQueryImage &query, bool save = true);
-		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
+		QTableWidgetItem *addTableItem(QTableWidget *table, int row, int col, const QString &text);
 
 		// Update
 		void updateBatchGroups(int, int);

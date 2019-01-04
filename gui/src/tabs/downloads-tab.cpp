@@ -245,7 +245,8 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 
 		switch (x)
 		{
-			case 1:	m_groupBatchs[y].tags = val;						break;
+			// FIXME tsq
+			case 1:	m_groupBatchs[y].query.tags = val.split(' ', QString::SkipEmptyParts);	break;
 			case 3:	m_groupBatchs[y].page = toInt;						break;
 			case 6:	m_groupBatchs[y].filename = val;					break;
 			case 7:	m_groupBatchs[y].path = val;						break;
@@ -322,7 +323,13 @@ void DownloadsTab::batchAddGroup(const DownloadQueryGroup &values)
 	item->setFlags(item->flags() ^ Qt::ItemIsEditable);
 	ui->tableBatchGroups->setItem(row, 0, item);
 
-	addTableItem(ui->tableBatchGroups, row, 1, values.tags);
+	if (!values.query.gallery.isNull())
+	{
+		auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, "Gallery: " + values.query.gallery->name());
+		gItem->setFlags(gItem->flags() & (~Qt::ItemIsEditable));
+	}
+	else
+	{ addTableItem(ui->tableBatchGroups, row, 1, values.query.tags.join(' ')); }
 	addTableItem(ui->tableBatchGroups, row, 2, values.site->url());
 	addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
 	addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
@@ -377,12 +384,13 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 	{ saveLinkList(m_profile->getPath() + "/restore.igl"); }
 }
 
-void DownloadsTab::addTableItem(QTableWidget *table, int row, int col, const QString &text)
+QTableWidgetItem *DownloadsTab::addTableItem(QTableWidget *table, int row, int col, const QString &text)
 {
 	auto *item = new QTableWidgetItem(text);
 	item->setToolTip(text);
 
 	table->setItem(row, col, item);
+	return item;
 }
 
 
@@ -442,7 +450,13 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		const int max = unk.midRef(sep + 1).toInt();
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
-		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);
+		if (!queryGroup.query.gallery.isNull())
+		{
+			auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, "Gallery: " + queryGroup.query.gallery->name());
+			gItem->setFlags(gItem->flags() & (~Qt::ItemIsEditable));
+		}
+		else
+		{ addTableItem(ui->tableBatchGroups, row, 1, queryGroup.query.tags.join(' ')); }
 		addTableItem(ui->tableBatchGroups, row, 2, queryGroup.site->url());
 		addTableItem(ui->tableBatchGroups, row, 3, QString::number(queryGroup.page));
 		addTableItem(ui->tableBatchGroups, row, 4, QString::number(queryGroup.perpage));
@@ -550,7 +564,8 @@ void DownloadsTab::getAll(bool all)
 			tdl.append(row);
 
 			DownloadQueryImage batch = m_batchs[row];
-			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(" "), 1, 1, QStringList(), false, this);
+			// FIXME tsq
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(' '), 1, 1, QStringList(), false, this);
 
 			BatchDownloadImage d;
 			d.image = QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page));
@@ -575,7 +590,8 @@ void DownloadsTab::getAll(bool all)
 			dta.insert("filename", batch.filename);
 			dta.insert("folder", batch.path);
 
-			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(" "), 1, 1, QStringList(), false, this);
+			// FIXME tsq
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["search"].split(' '), 1, 1, QStringList(), false, this);
 
 			BatchDownloadImage d;
 			d.image = QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page));

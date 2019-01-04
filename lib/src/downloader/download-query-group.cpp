@@ -4,22 +4,25 @@
 #include "models/site.h"
 
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
-	: DownloadQuery(site), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), unk(std::move(unk))
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
+	: DownloadQuery(site), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), unk(std::move(unk))
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
-	: DownloadQuery(site, filename, path), tags(std::move(tags)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
+DownloadQueryGroup::DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
+	: DownloadQuery(site, filename, path), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
 { }
 
 
 void DownloadQueryGroup::write(QJsonObject &json) const
 {
-	json["tags"] = QJsonArray::fromStringList(tags.split(' ', QString::SkipEmptyParts));
+	QJsonObject jsonQuery;
+	query.write(jsonQuery);
+	json["query"] = jsonQuery;
+
 	json["page"] = page;
 	json["perpage"] = perpage;
 	json["total"] = total;
@@ -34,13 +37,8 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 
 bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
-	QJsonArray jsonTags = json["tags"].toArray();
-	QStringList tgs;
-	tgs.reserve(jsonTags.count());
-	for (auto tag : jsonTags)
-		tgs.append(tag.toString());
+	query.read(json.contains("query") ? json["query"].toObject() : json, sites);
 
-	tags = tgs.join(' ');
 	page = json["page"].toInt();
 	perpage = json["perpage"].toInt();
 	total = json["total"].toInt();
@@ -76,7 +74,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 
 bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs)
 {
-	return lhs.tags == rhs.tags
+	return lhs.query == rhs.query
 		&& lhs.page == rhs.page
 		&& lhs.perpage == rhs.perpage
 		&& lhs.total == rhs.total

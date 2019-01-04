@@ -2,6 +2,7 @@
 #define GALLERY_TAB_H
 
 #include <QJsonObject>
+#include <QSharedPointer>
 #include "tabs/search-tab.h"
 
 
@@ -11,6 +12,7 @@ namespace Ui
 }
 
 
+class Image;
 class MainWindow;
 class TextEdit;
 
@@ -19,7 +21,7 @@ class GalleryTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit GalleryTab(Site *site, QString name, QString id, Profile *profile, MainWindow *parent);
+		explicit GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, MainWindow *parent);
 		explicit GalleryTab(Profile *profile, MainWindow *parent);
 		~GalleryTab() override;
 		Ui::GalleryTab *ui;
@@ -45,8 +47,7 @@ class GalleryTab : public SearchTab
 
 	private:
 		Site *m_site;
-		QString m_name;
-		QString m_id;
+		QSharedPointer<Image> m_gallery;
 };
 
 #endif // GALLERY_TAB_H

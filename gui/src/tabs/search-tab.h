@@ -13,6 +13,7 @@
 #include <QStackedWidget>
 #include <QWidget>
 #include "models/image.h"
+#include "models/search-query/search-query.h"
 
 
 class DownloadQueryGroup;
@@ -55,7 +56,7 @@ class SearchTab : public QWidget
 	protected:
 		void setSelectedSources(QSettings *settings);
 		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>> &pages);
-		void addHistory(const QString &tags, int page, int ipp, int cols);
+		void addHistory(const SearchQuery &query, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
@@ -101,7 +102,7 @@ class SearchTab : public QWidget
 		// Results
 		virtual void load() = 0;
 		virtual void updateTitle() = 0;
-		void loadTags(QStringList tags);
+		void loadTags(SearchQuery query);
 		void endlessLoad();
 		void loadPage();
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr);
@@ -177,7 +178,7 @@ class SearchTab : public QWidget
 		bool m_from_history;
 		int m_history_cursor;
 		QList<QMap<QString, QString>> m_history;
-		QString m_lastTags;
+		SearchQuery m_lastQuery;
 		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff

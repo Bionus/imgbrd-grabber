@@ -70,7 +70,7 @@ class Api : public QObject
 		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const = 0;
 		virtual bool parsePageErrors() const = 0;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
-		virtual PageUrl galleryUrl(const QString &id, int page, int limit, Site *site) const = 0;
+		virtual PageUrl galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const = 0;
 		virtual bool parseGalleryErrors() const = 0;
 		virtual ParsedPage parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
 		virtual PageUrl tagsUrl(int page, int limit, Site *site) const = 0;

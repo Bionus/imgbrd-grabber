@@ -30,6 +30,10 @@ class Image : public QObject, public Downloadable
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
 
+		// Serialization
+		void write(QJsonObject &json) const;
+		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
+
 		// TODO: remove these two methods
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, Size size = Size::Full);
 

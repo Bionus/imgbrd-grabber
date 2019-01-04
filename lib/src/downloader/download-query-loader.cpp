@@ -49,7 +49,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 					continue;
 
 				groups.append(DownloadQueryGroup(
-					infos[0],
+					infos[0].split(' ', QString::SkipEmptyParts),
 					infos[1].toInt(),
 					infos[2].toInt(),
 					infos[3].toInt(),

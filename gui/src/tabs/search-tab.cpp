@@ -32,7 +32,7 @@
 
 
 SearchTab::SearchTab(Profile *profile, MainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
+	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -1078,10 +1078,14 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	layout->insertWidget(relativePosition, button);
 }
 
-void SearchTab::addHistory(const QString &tags, int page, int ipp, int cols)
+void SearchTab::addHistory(const SearchQuery &query, int page, int ipp, int cols)
 {
 	QMap<QString, QString> srch;
-	srch["tags"] = tags;
+	if (!query.gallery.isNull()) {
+		srch["gallery"] = query.gallery->name();
+	} else {
+		srch["tags"] = query.tags.join(' ');
+	}
 	srch["page"] = QString::number(page);
 	srch["ipp"] = QString::number(ipp);
 	srch["columns"] = QString::number(cols);
@@ -1209,10 +1213,7 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 {
 	if (image->isGallery())
 	{
-		QString galleryId = image->md5();
-		if (galleryId.isEmpty())
-		{ galleryId = QString::number(image->id()); }
-		m_parent->addGalleryTab(image->parentSite(), image->name(), galleryId);
+		m_parent->addGalleryTab(image->parentSite(), image);
 		return;
 	}
 
@@ -1339,7 +1340,7 @@ void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 }
 
 
-void SearchTab::loadTags(QStringList tags)
+void SearchTab::loadTags(SearchQuery query)
 {
 	log(QStringLiteral("Loading results..."));
 
@@ -1348,7 +1349,9 @@ void SearchTab::loadTags(QStringList tags)
 	ui_scrollAreaResults->setScrollEnabled(resultsScrollArea);
 
 	// Append "additional tags" setting
-	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+	if (query.gallery.isNull()) {
+		query.tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+	}
 
 	// Save previous pages
 	m_lastPages.clear();
@@ -1370,18 +1373,15 @@ void SearchTab::loadTags(QStringList tags)
 	ui_buttonNextPage->setEnabled(false);
 	ui_buttonLastPage->setEnabled(false);
 
-	// Get the search values
-	const QString search = tags.join(" ");
-
 	if (!m_from_history)
-	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
+	{ addHistory(query, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
 	m_from_history = false;
 
-	if (search != m_lastTags && !m_lastTags.isNull())
+	if (query != m_lastQuery)
 	{ m_mergedMd5s.clear(); }
-	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
+	if (query != m_lastQuery && m_history_cursor == m_history.size() - 1)
 	{ ui_spinPage->setValue(1); }
-	m_lastTags = search;
+	m_lastQuery = query;
 
 	if (ui_widgetMeant != nullptr)
 		ui_widgetMeant->hide();
@@ -1418,14 +1418,13 @@ void SearchTab::loadPage()
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	const int perpage = ui_spinImagesPerPage->value();
 	const int currentPage = ui_spinPage->value() + m_endlessLoadOffset;
-	const QStringList tags = m_lastTags.split(' ');
 	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites())
 	{
 		// Load results
 		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
-		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites.values(), m_lastQuery, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);

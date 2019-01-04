@@ -180,10 +180,9 @@ void TagTab::getPage()
 		if (perpage <= 0 || page->pageImageCount() <= 0)
 			continue;
 
-		const QString search = page->search().join(' ');
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
 	}
 }
 void TagTab::getAll()
@@ -202,10 +201,9 @@ void TagTab::getAll()
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 			continue;
 
-		const QString search = page->search().join(' ');
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, page->site()));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), 1, perPage, total, postFiltering, page->site()));
 	}
 }
 

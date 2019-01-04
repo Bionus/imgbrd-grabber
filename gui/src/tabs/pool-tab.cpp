@@ -145,7 +145,7 @@ void PoolTab::getPage()
 	}
 
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QStringList tags = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
 	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
@@ -169,7 +169,7 @@ void PoolTab::getAll()
 	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 		return;
 
-	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
+	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
 	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 

@@ -297,6 +297,41 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 }
 
 
+void Image::write(QJsonObject &json) const
+{
+	json["website"] = m_parentSite->url();
+
+	// FIXME: real serialization
+	json["name"] = m_name;
+	json["id"] = static_cast<int>(m_id);
+	json["md5"] = m_md5;
+}
+
+bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
+{
+	const QString site = json["website"].toString();
+	if (!sites.contains(site)) {
+		return false;
+	}
+
+	m_parentSite = sites[site];
+	using ::savePath;
+	m_profile = new Profile(savePath()); // FIXME
+
+	m_name = json["name"].toString();
+	m_id = json["id"].toInt();
+	m_md5 = json["md5"].toString();
+
+	m_sizes = {
+		{ Image::Size::Full, QSharedPointer<ImageSize>::create() },
+		{ Image::Size::Sample, QSharedPointer<ImageSize>::create() },
+		{ Image::Size::Thumbnail, QSharedPointer<ImageSize>::create() },
+	};
+
+	return true;
+}
+
+
 void Image::loadDetails(bool rateLimit)
 {
 	if (m_loadingDetails)

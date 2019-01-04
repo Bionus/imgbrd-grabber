@@ -3,38 +3,44 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
+#include "models/search-query/search-query.h"
 #include "models/site.h"
 
 
-Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(-1), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 
-	// Replace shortcuts to increase compatibility
-	QString text = " " + tags.join(' ') + " ";
-	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-		.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-		.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
-		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-	tags = text.split(" ", QString::SkipEmptyParts);
+	if (m_query.gallery.isNull())
+	{
+		// Replace shortcuts to increase compatibility
+		QString text = " " + m_query.tags.join(' ') + " ";
+		text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
+			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
+			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
+			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+		QStringList tags = text.split(" ", QString::SkipEmptyParts);
 
-	// Get the list of all enabled modifiers
-	QStringList modifiers = QStringList();
-	for (Site *ste : sites)
-	{ modifiers.append(ste->getApis().first()->modifiers()); }
-	const QStringList mods = m_site->getApis().first()->modifiers();
-	for (const QString &mod : mods)
-	{ modifiers.removeAll(mod); }
+		// Get the list of all enabled modifiers
+		QStringList modifiers = QStringList();
+		for (Site *ste : sites)
+		{ modifiers.append(ste->getApis().first()->modifiers()); }
+		const QStringList mods = m_site->getApis().first()->modifiers();
+		for (const QString &mod : mods)
+		{ modifiers.removeAll(mod); }
 
-	// Remove modifiers from tags
-	for (const QString &mod : modifiers)
-	{ tags.removeAll(mod); }
-	m_search = tags;
+		// Remove modifiers from tags
+		for (const QString &mod : modifiers)
+		{ tags.removeAll(mod); }
+		m_search = tags;
+
+		m_query.tags =  m_search;
+	}
 
 	// Generate pages
 	PostFilter postFilter(postFiltering);
@@ -42,7 +48,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis))
 	{
-		auto *pageApi = new PageApi(this, profile, m_site, api, m_search, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
+		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
 		if (m_pageApis.count() == 0)
 		{ connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot); }
 		m_pageApis.append(pageApi);
@@ -161,6 +167,7 @@ void Page::clear()
 Site *Page::site() const { return m_site; }
 const QString &Page::website() const { return m_website; }
 const QString &Page::wiki() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->wiki(); }
+const SearchQuery &Page::query() const { return m_query; }
 const QStringList &Page::search() const { return m_search; }
 const QStringList &Page::errors() const { return m_errors; }
 int Page::imagesPerPage() const { return m_imagesPerPage; }

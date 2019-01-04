@@ -449,9 +449,9 @@ void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 	else
 	{ w->focusSearch(); }
 }
-void MainWindow::addGalleryTab(Site *site, QString name, QString id, bool background, bool save, SearchTab *source)
+void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background, bool save, SearchTab *source)
 {
-	auto *w = new GalleryTab(site, std::move(name), std::move(id), m_profile, this);
+	auto *w = new GalleryTab(site, std::move(gallery), m_profile, this);
 	this->addSearchTab(w, background, save, source);
 }
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)

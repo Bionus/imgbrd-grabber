@@ -8,10 +8,10 @@
 
 void DownloadQueryGroupTest::testCompare()
 {
-	DownloadQueryGroup a("tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup b("tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup c("tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup d("tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk_diff");
+	DownloadQueryGroup a(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
+	DownloadQueryGroup b(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
+	DownloadQueryGroup c(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
+	DownloadQueryGroup d(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk_diff");
 
 	QVERIFY(a == b);
 	QVERIFY(b == a);
@@ -27,7 +27,7 @@ void DownloadQueryGroupTest::testSerialization()
 	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
-	DownloadQueryGroup original("tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path", "unk");
+	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path", "unk");
 
 	QJsonObject json;
 	original.write(json);
@@ -35,7 +35,7 @@ void DownloadQueryGroupTest::testSerialization()
 	DownloadQueryGroup dest;
 	dest.read(json, QMap<QString, Site*> {{ site.url(), &site }});
 
-	QCOMPARE(dest.tags, QString("tags"));
+	QCOMPARE(dest.query.tags, QStringList() << "tags");
 	QCOMPARE(dest.page, 1);
 	QCOMPARE(dest.perpage, 2);
 	QCOMPARE(dest.total, 3);

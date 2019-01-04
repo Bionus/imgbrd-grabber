@@ -20,6 +20,7 @@ class SearchTab;
 class FavoritesTab;
 class Profile;
 class DownloadsTab;
+class Image;
 class LogTab;
 class Favorite;
 class MonitoringCenter;
@@ -60,7 +61,7 @@ class MainWindow : public QMainWindow
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true, SearchTab *source = nullptr);
-		void addGalleryTab(Site *site, QString name, QString id, bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addSearchTab(SearchTab*, bool background = false, bool save = true, SearchTab *source = nullptr);
 		void updateTabTitle(SearchTab*);
 		void tabClosed(SearchTab*);

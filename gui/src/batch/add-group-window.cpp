@@ -36,8 +36,9 @@ AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent
  */
 void AddGroupWindow::ok()
 {
+	const QStringList tags = m_lineTags->toPlainText().split(' ', QString::SkipEmptyParts);
 	const QStringList postFiltering = m_linePostFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
-	emit sendData(DownloadQueryGroup(m_lineTags->toPlainText(), ui->spinPage->value(), ui->spinPP->value(), ui->spinLimit->value(), postFiltering, ui->checkBlacklist->isChecked(), site, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()));
+	emit sendData(DownloadQueryGroup(tags, ui->spinPage->value(), ui->spinPP->value(), ui->spinLimit->value(), postFiltering, ui->checkBlacklist->isChecked(), site, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()));
 	close();
 }

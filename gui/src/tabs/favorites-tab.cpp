@@ -249,7 +249,7 @@ void FavoritesTab::getPage()
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
 	for (const QSharedPointer<Page> &page : pages)
 	{
-		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
+		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 
@@ -269,7 +269,7 @@ void FavoritesTab::getAll()
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
 			continue;
 
-		const QString search = m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed();
+		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
 		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, page->site()));

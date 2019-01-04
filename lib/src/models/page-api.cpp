@@ -9,12 +9,13 @@
 #include "models/api/api.h"
 #include "models/filtering/post-filter.h"
 #include "models/page.h"
+#include "models/search-query/search-query.h"
 #include "models/site.h"
 #include "tags/tag.h"
 
 
-PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(std::move(tags)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_query(std::move(query)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
@@ -50,24 +51,18 @@ void PageApi::setLastPage(Page *page)
 void PageApi::updateUrls()
 {
 	QString url;
-	QString search = m_search.join(' ');
 	m_errors.clear();
 
-	// Gallery searches using either 'gallery:url' or 'gallery:id'
-	const bool isGallery = m_search.count() == 1 && search.startsWith("gallery:");
-	if (isGallery)
-	{ search = search.mid(8); }
-
 	// URL searches
-	if (m_search.count() == 1 && !search.isEmpty() && isUrl(search))
-	{ url = search; }
+	if (m_query.tags.count() == 1 && isUrl(m_query.tags.first()))
+	{ url = m_query.tags.first(); }
 	else
 	{
 		PageUrl ret;
-		if (isGallery)
-		{ ret = m_api->galleryUrl(search, m_page, m_imagesPerPage, m_site); }
+		if (!m_query.gallery.isNull())
+		{ ret = m_api->galleryUrl(m_query.gallery, m_page, m_imagesPerPage, m_site); }
 		else
-		{ ret = m_api->pageUrl(search, m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
+		{ ret = m_api->pageUrl(m_query.tags.join(' '), m_page, m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_site); }
 
 		if (!ret.error.isEmpty())
 		{ m_errors.append(ret.error); }
@@ -215,7 +210,7 @@ void PageApi::parse()
 
 void PageApi::parseActual()
 {
-	const bool isGallery = m_search.count() == 1 && m_search[0].startsWith("gallery:");
+	const bool isGallery = !m_query.gallery.isNull();
 	const bool parseErrors = isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors();
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -269,6 +264,13 @@ void PageApi::parseActual()
 	if (!page.wiki.isEmpty())
 	{ m_wiki = fixCloudflareEmails(page.wiki); }
 
+	// Link images to their respective galleries
+	if (isGallery) {
+		for (auto &img : m_images) {
+			img->setParentGallery(m_query.gallery);
+		}
+	}
+
 	// Complete image count information from tag count information
 	if (m_imagesCount < 1 || !m_imagesCountSafe)
 	{
@@ -276,18 +278,18 @@ void PageApi::parseActual()
 		int min = -1;
 		for (const Tag &tag : qAsConst(m_tags))
 		{
-			if (m_search.contains(tag.text()))
+			if (m_query.tags.contains(tag.text()))
 			{
 				found++;
 				if (min == -1 || min > tag.count())
 				{ min = tag.count(); }
 			}
 		}
-		int searchTagsCount = m_search.count();;
-		if (m_search.count() > found)
+		int searchTagsCount = m_query.tags.count();;
+		if (m_query.tags.count() > found)
 		{
 			const QStringList modifiers = QStringList() << "-" << m_api->modifiers();
-			for (const QString &search : qAsConst(m_search))
+			for (const QString &search : qAsConst(m_query.tags))
 			{
 				for (const QString &modifier : modifiers)
 				{
@@ -301,7 +303,7 @@ void PageApi::parseActual()
 		}
 		if (searchTagsCount == found)
 		{
-			if (m_search.count() == 1)
+			if (m_query.tags.count() == 1)
 			{
 				const int forcedLimit = m_api->forcedLimit();
 				const int perPage = forcedLimit > 0 ? forcedLimit : m_imagesPerPage;
@@ -390,7 +392,6 @@ const QUrl &PageApi::url() const { return m_url; }
 const QString &PageApi::source() const { return m_source; }
 const QString &PageApi::wiki() const { return m_wiki; }
 const QList<Tag> &PageApi::tags() const { return m_tags; }
-const QStringList &PageApi::search() const { return m_search; }
 const QStringList &PageApi::errors() const { return m_errors; }
 const QUrl &PageApi::nextPage() const { return m_urlNextPage; }
 const QUrl &PageApi::prevPage() const { return m_urlPrevPage; }

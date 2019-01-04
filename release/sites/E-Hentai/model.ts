@@ -82,7 +82,7 @@ export const source: ISource = {
             },
             gallery: {
                 url: (query: any, opts: any): string => {
-                    return "/g/" + query.id + "/?p=" + (query.page - 1);
+                    return "/g/" + query.md5 + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {
                     const images: IImage[] = [];

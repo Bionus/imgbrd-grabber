@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 #include <QUrl>
 #include "models/filtering/post-filter.h"
+#include "models/search-query/search-query.h"
 #include "tags/tag.h"
 
 
@@ -15,6 +16,7 @@ class Page;
 class Profile;
 class QNetworkReply;
 class QTimer;
+class SearchQuery;
 class Site;
 
 class PageApi : public QObject
@@ -29,7 +31,7 @@ class PageApi : public QObject
 			Error
 		};
 
-		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, PostFilter postFiltering = PostFilter(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
+		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page = 1, int limit = 25, PostFilter postFiltering = PostFilter(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		void setLastPage(Page *page);
 		const QList<QSharedPointer<Image>> &images() const;
 		bool isImageCountSure() const;
@@ -42,7 +44,6 @@ class PageApi : public QObject
 		const QString &source() const;
 		const QString &wiki() const;
 		const QList<Tag> &tags() const;
-		const QStringList &search() const;
 		const QStringList &errors() const;
 		int imagesPerPage() const;
 		int highLimit() const;
@@ -81,7 +82,8 @@ class PageApi : public QObject
 		Profile *m_profile;
 		Site *m_site;
 		Api *m_api;
-		QStringList m_search, m_errors;
+		SearchQuery m_query;
+		QStringList m_errors;
 		PostFilter m_postFiltering;
 		int m_imagesPerPage, m_lastPage, m_page, m_blim, m_pool;
 		qulonglong m_lastPageMinId, m_lastPageMaxId;
