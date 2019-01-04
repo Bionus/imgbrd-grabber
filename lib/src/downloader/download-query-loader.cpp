@@ -21,49 +21,8 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	// Version 1 and 2 are plain text
 	if (header.startsWith("[IGL "))
 	{
-		const QChar fieldSeparator(29);
-		const QChar lineSeparator(28);
-
-		// Read the remaining file
-		QString links = f.readAll();
-		f.close();
-		QStringList det = links.split(lineSeparator, QString::SkipEmptyParts);
-		if (det.empty())
-			return false;
-
-		for (const QString &link : det)
-		{
-			QStringList infos = link.split(fieldSeparator);
-			if (infos.size() == 9)
-			{
-				const QString &source = infos[6];
-				if (!sites.contains(source))
-					continue;
-
-				// FIXME: totally drop support for IGL v1
-				// uniques.append(DownloadQueryImage(infos[0].toULongLong(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8], QStringList()));
-			}
-			else
-			{
-				const QString &source = infos[5];
-				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
-					continue;
-
-				groups.append(DownloadQueryGroup(
-					infos[0].split(' ', QString::SkipEmptyParts),
-					infos[1].toInt(),
-					infos[2].toInt(),
-					infos[3].toInt(),
-					QStringList(),
-					infos[4] != QLatin1String("false"),
-					sites[source],
-					infos[6],
-					infos[7]
-				));
-			}
-		}
-
-		return true;
+		log(QStringLiteral("Text-based IGL files are not supported"), Logger::Warning);
+		return false;
 	}
 
 	// Other versions are JSON-based

@@ -69,7 +69,6 @@ void FilenameTest::cleanup()
 {
 	delete m_profile;
 	m_site->deleteLater();
-	m_gallery->deleteLater();
 	m_img->deleteLater();
 }
 

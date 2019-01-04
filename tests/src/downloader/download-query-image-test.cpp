@@ -44,8 +44,8 @@ void DownloadQueryImageTest::testSerialization()
 		{ "date", "2016-08-26T16:26:30+01:00" },
 		{ "search", "search" },
 	};
-	Image img(&site, details, &profile);
-	DownloadQueryImage original(QSharedPointer<Image>(&img), &site, "filename", "path");
+	auto img = QSharedPointer<Image>(new Image(&site, details, &profile));
+	DownloadQueryImage original(img, &site, "filename", "path");
 
 	QJsonObject json;
 	original.write(json);

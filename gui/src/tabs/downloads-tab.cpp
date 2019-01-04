@@ -453,8 +453,8 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 
-		auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, values.query.toString());
-		if (!values.query.gallery.isNull()) {
+		auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, queryGroup.query.toString());
+		if (!queryGroup.query.gallery.isNull()) {
 			gItem->setFlags(gItem->flags() & (~Qt::ItemIsEditable));
 		}
 
