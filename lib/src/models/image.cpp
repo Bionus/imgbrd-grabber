@@ -722,14 +722,14 @@ const QList<Tag> &Image::tags() const { return m_tags; }
 const QList<Pool> &Image::pools() const { return m_pools; }
 qulonglong Image::id() const { return m_id; }
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
-int Image::width() const { return size().width(); }
-int Image::height() const { return size().height(); }
+int Image::width() const { return size(Image::Size::Full).width(); }
+int Image::height() const { return size(Image::Size::Full).height(); }
 const QString &Image::rating() const { return m_rating; }
 const QStringList &Image::search() const { return m_search; }
 const QDateTime &Image::createdAt() const { return m_createdAt; }
 const QUrl &Image::fileUrl() const { return m_fileUrl; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
-QSize Image::size() const { return m_sizes[Image::Size::Full]->size; }
+QSize Image::size(Size size) const { return m_sizes[size]->size; }
 const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }

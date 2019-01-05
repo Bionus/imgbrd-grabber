@@ -661,9 +661,16 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 {
+	static const QRegularExpression regexMd5("%md5(?::([^%]+))?%");
+	static const QRegularExpression regexFilesize("%filesize(?::([^%]+))?%");
+	static const QRegularExpression regexWidth("%width(?::([^%]+))?%");
+	static const QRegularExpression regexHeight("%height(?::([^%]+))?%");
+
 	return (
-		(m_format.contains(QRegularExpression("%md5(?::([^%]+))?%")) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
-		(m_format.contains(QRegularExpression("%filesize(?::([^%]+))?%")) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0))
+		(m_format.contains(regexMd5) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+		(m_format.contains(regexFilesize) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0)) ||
+		(m_format.contains(regexWidth) && (!tokens.contains("width") || tokens["width"].value().toInt() <= 0)) ||
+		(m_format.contains(regexHeight) && (!tokens.contains("height") || tokens["height"].value().toInt() <= 0))
 	);
 }
 

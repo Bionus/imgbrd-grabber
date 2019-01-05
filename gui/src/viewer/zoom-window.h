@@ -60,7 +60,6 @@ class ZoomWindow : public QWidget
 		void replyFinishedDetails();
 		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
-		void updateSize(const QSize &size);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);

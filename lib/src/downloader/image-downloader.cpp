@@ -1,5 +1,7 @@
 #include "downloader/image-downloader.h"
+#include <QImageReader>
 #include <QSettings>
+#include <QSize>
 #include <QUuid>
 #include "extension-rotator.h"
 #include "file-downloader.h"
@@ -316,6 +318,14 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 	const Image::Size size = currentSize();
 
 	m_image->setSavePath(m_temporaryPath, size);
+
+	if (m_image->size(size).isEmpty()) {
+		QImageReader reader(m_temporaryPath);
+		QSize imgSize = reader.size();
+		if (imgSize.isValid()) {
+			m_image->setSize(imgSize, size);
+		}
+	}
 
 	if (!m_filename.format().isEmpty())
 	{ m_paths = m_image->paths(m_filename, m_path, m_count); }
