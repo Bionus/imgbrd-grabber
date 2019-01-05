@@ -1,4 +1,5 @@
 #include "tag.h"
+#include <QJsonArray>
 #include "functions.h"
 #include "tag-type.h"
 
@@ -90,6 +91,34 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 
 	return type;
 }
+
+
+void Tag::write(QJsonObject &json) const
+{
+	json["id"] = m_id;
+	json["text"] = m_text;
+	json["type"] = m_type.name();
+	json["count"] = m_count;
+	json["related"] = QJsonArray::fromStringList(m_related);
+}
+
+bool Tag::read(const QJsonObject &json)
+{
+	m_id = json["id"].toInt();
+	m_text = json["text"].toString();
+	m_type = TagType(json["type"].toString());
+	m_count = json["count"].toInt();
+
+	// Related
+	QJsonArray related = json["related"].toArray();
+	m_related.reserve(related.count());
+	for (auto tag : related) {
+		m_related.append(tag.toString());
+	}
+
+	return true;
+}
+
 
 void Tag::setId(int id) { m_id = id; }
 void Tag::setText(const QString &text) { m_text = text; }

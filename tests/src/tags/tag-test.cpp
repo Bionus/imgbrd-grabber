@@ -228,5 +228,22 @@ void TagTest::testGetType()
 	QCOMPARE(Tag::GetType("copyright, character", ids), QString("copyright"));
 }
 
+void TagTest::testSerialization()
+{
+	Tag original(123, "tag", TagType("type"), 456, QStringList() << "rel 1" << "rel 2");
+
+	QJsonObject json;
+	original.write(json);
+
+	Tag dest;
+	dest.read(json);
+
+	QCOMPARE(dest.id(), original.id());
+	QCOMPARE(dest.text(), original.text());
+	QCOMPARE(dest.type(), original.type());
+	QCOMPARE(dest.count(), original.count());
+	QCOMPARE(dest.related(), original.related());
+}
+
 
 QTEST_MAIN(TagTest)

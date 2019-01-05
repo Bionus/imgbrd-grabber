@@ -37,6 +37,7 @@ class TagTest : public TestSuite
 		void testSortTagsByCount();
 		void testTypeSpaced();
 		void testGetType();
+		void testSerialization();
 
 	private:
 		QSettings *m_settings;
