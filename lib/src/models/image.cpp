@@ -1099,6 +1099,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("copyright", Token(details["copyright"], "keepAll", "misc", "crossover"));
 	tokens.insert("character", Token(details["character"], "keepAll", "unknown", "group"));
 	tokens.insert("model", Token(details["model"] + details["idol"], "keepAll", "unknown", "multiple"));
+	tokens.insert("photo_set", Token(details["photo_set"], "keepAll", "unknown", "multiple"));
 	tokens.insert("species", Token(details["species"], "keepAll", "unknown", "multiple"));
 	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
