@@ -17,6 +17,39 @@ void loadMoreDetails(const QList<QSharedPointer<Image>> &images);
 QJsonObject serializeImg(const Image *image, const QMap<QString, Token>& tokens);
 void writeToFile(QString filename, QByteArray data);
 
+void returnJsonArray(const QJsonArray &array)
+{
+	QJsonDocument jsonDoc;
+	jsonDoc.setArray(array);
+
+	QByteArray jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
+	QTextStream(stdout) << qPrintable(jsonResult);
+
+	qApp->quit();
+}
+
+void serializeTags(const QList<Tag> &tags)
+{
+	QJsonArray jsonArray;
+	for (const Tag &tag : tags) {
+		QJsonObject jsonObj;
+		tag.write(jsonObj);
+		jsonArray.append(jsonObj);
+	}
+	returnJsonArray(jsonArray);
+}
+
+void serializeImages(Profile *profile, const QList<QSharedPointer<Image>> &images)
+{
+	QJsonArray jsonArray;
+	for (const auto &image : images) {
+		auto tokens = image->tokens(profile);
+		auto jsObject = serializeImg(image.data(), tokens);
+		jsonArray.append(jsObject);
+	}
+	returnJsonArray(jsonArray);
+}
+
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
@@ -171,6 +204,20 @@ int main(int argc, char *argv[])
 
 	downloader->setQuit(true);
 
+	// JSON output
+	if (parser.isSet(jsonOption)) {
+		downloader->setQuit(false);
+
+		QObject::connect(downloader, &Downloader::finishedTags, serializeTags);
+		QObject::connect(downloader, &Downloader::finishedImages, [&](const QList<QSharedPointer<Image>> &images) {
+			if (parser.isSet(loadDetailsOption)) {
+				loadMoreDetails(images);
+			}
+			serializeImages(profile, images);
+		});
+	}
+
+	// Load the correct data
 	if (parser.isSet(returnCountOption))
 		downloader->getPageCount();
 	else if (parser.isSet(returnTagsOption))
@@ -179,30 +226,8 @@ int main(int argc, char *argv[])
 		downloader->getTags();
 	else if (parser.isSet(returnImagesOption))
 		downloader->getUrls();
-	else if (parser.isSet(downloadOption))
+	else if (parser.isSet(downloadOption) || parser.isSet(jsonOption))
 		downloader->getImages();
-	else if (parser.isSet(jsonOption)) {
-		downloader->setQuit(false);
-		downloader->getImages();
-		QObject::connect(downloader, &Downloader::finishedImages, [&](const QList<QSharedPointer<Image>> &images){
-			if (parser.isSet(loadDetailsOption))
-				loadMoreDetails(images);
-
-			QJsonDocument jsonDoc;
-			QJsonArray jsonArray;
-
-			for (auto& image : images) {
-				auto tokens = image->tokens(profile);
-				auto jsObject = serializeImg(image.data(), tokens);
-				jsonArray.append(jsObject);
-			}
-
-			jsonDoc.setArray(jsonArray);
-			auto jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
-			QTextStream(stdout) << qPrintable(jsonResult);
-			app.quit();
-		});
-	}
 	else
 		parser.showHelp();
 

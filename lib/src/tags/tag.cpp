@@ -95,25 +95,43 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 
 void Tag::write(QJsonObject &json) const
 {
-	json["id"] = m_id;
 	json["text"] = m_text;
-	json["type"] = m_type.name();
-	json["count"] = m_count;
-	json["related"] = QJsonArray::fromStringList(m_related);
+
+	if (m_id > 0) {
+		json["id"] = m_id;
+	}
+	if (!m_type.isUnknown()) {
+		json["type"] = m_type.name();
+	}
+	if (m_count >= 0) {
+		json["count"] = m_count;
+	}
+	if (!m_related.isEmpty()) {
+		json["related"] = QJsonArray::fromStringList(m_related);
+	}
 }
 
 bool Tag::read(const QJsonObject &json)
 {
-	m_id = json["id"].toInt();
 	m_text = json["text"].toString();
-	m_type = TagType(json["type"].toString());
-	m_count = json["count"].toInt();
+
+	if (json.contains("id")) {
+		m_id = json["id"].toInt();
+	}
+	if (json.contains("type")) {
+		m_type = TagType(json["type"].toString());
+	}
+	if (json.contains("count")) {
+		m_count = json["count"].toInt();
+	}
 
 	// Related
-	QJsonArray related = json["related"].toArray();
-	m_related.reserve(related.count());
-	for (auto tag : related) {
-		m_related.append(tag.toString());
+	if (json.contains("related")) {
+		QJsonArray related = json["related"].toArray();
+		m_related.reserve(related.count());
+		for (auto tag : related) {
+			m_related.append(tag.toString());
+		}
 	}
 
 	return true;
