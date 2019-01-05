@@ -302,38 +302,6 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 }
 
 
-void Site::loadTags(int page, int limit)
-{
-	const QString protocol = (m_settings->value("ssl", false).toBool() ? QStringLiteral("https") : QStringLiteral("http"));
-	m_tagsReply = get(QUrl(protocol + "://" + m_url + "/tags.json?search[hide_empty]=yes&limit=" + QString::number(limit) + "&page=" + QString::number(page)));
-	connect(m_tagsReply, &QNetworkReply::finished, this, &Site::finishedTags);
-}
-
-void Site::finishedTags()
-{
-	const QByteArray source = m_tagsReply->readAll();
-	m_tagsReply->deleteLater();
-	QList<Tag> tags;
-	QJsonDocument src = QJsonDocument::fromJson(source);
-	if (!src.isNull())
-	{
-		QJsonArray sourc = src.array();
-		tags.reserve(sourc.count());
-		for (int id = 0; id < sourc.count(); id++)
-		{
-			QJsonObject sc = sourc[id].toObject();
-			const int cat = sc.value("category").toInt();
-			tags.append(Tag(
-				sc.value("name").toString(),
-				cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
-				sc.value("post_count").toInt(),
-				sc.value("related_tags").toString().split(' ')
-			));
-		}
-	}
-	emit finishedLoadingTags(tags);
-}
-
 QVariant Site::setting(const QString &key, const QVariant &def) const { return m_settings->value(key, def); }
 void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def) const { m_settings->setValue(key, value, def); }
 void Site::syncSettings() const { m_settings->sync(); }

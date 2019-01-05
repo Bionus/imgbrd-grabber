@@ -94,8 +94,6 @@ class Site : public QObject
 	public slots:
 		void login(bool force = false);
 		void loginFinished(Login::Result result);
-		void loadTags(int page, int limit);
-		void finishedTags();
 
 	protected:
 		void resetCookieJar();

@@ -91,36 +91,6 @@ void SiteTest::testGetSites()
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 }
 
-void SiteTest::testLoadTags()
-{
-	// Wait for tags
-	qRegisterMetaType<QList<Tag>>();
-	QSignalSpy spy(m_site, SIGNAL(finishedLoadingTags(QList<Tag>)));
-	m_site->loadTags(3, 20);
-	QVERIFY(spy.wait());
-
-	// Get results
-	QList<QVariant> arguments = spy.takeFirst();
-	QVariantList variants = arguments.at(0).value<QVariantList>();
-
-	// Convert results
-	QVector<Tag> tags;
-	QStringList tagsText;
-	tags.reserve(variants.count());
-	tagsText.reserve(variants.count());
-	for (const QVariant &variant : variants)
-	{
-		Tag tag = variant.value<Tag>();
-		tags.append(tag);
-		tagsText.append(tag.text());
-	}
-
-	// Compare results
-	tagsText = tagsText.mid(0, 3);
-	QCOMPARE(tags.count(), 20);
-	QCOMPARE(tagsText, QStringList() << "kameji_(tyariri)" << "the_king_of_fighterx_xiv" << "condom_skirt");
-}
-
 void SiteTest::testCookies()
 {
 	QList<QNetworkCookie> cookies;

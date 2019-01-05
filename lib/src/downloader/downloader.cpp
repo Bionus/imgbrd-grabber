@@ -4,9 +4,11 @@
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
+#include "models/api/api.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "tags/tag.h"
+#include "tags/tag-api.h"
 
 
 Downloader::~Downloader()
@@ -169,7 +171,6 @@ void Downloader::getTags()
 		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
 		if (pages <= 0 || m_perPage <= 0 || m_max <= 0)
 			pages = 1;
-		connect(site, &Site::finishedLoadingTags, this, &Downloader::finishedLoadingTags);
 		for (int p = 0; p < pages; ++p)
 		{
 			m_pagesP.append(QPair<Site*, int>(site, m_page + p));
@@ -180,6 +181,13 @@ void Downloader::getTags()
 
 	loadNext();
 }
+Api *getTagApi(Site *site)
+{
+	for (Api *a : site->getApis())
+		if (a->canLoadTags())
+			return a;
+	return nullptr;
+}
 void Downloader::loadNext()
 {
 	if (m_cancelled)
@@ -187,9 +195,19 @@ void Downloader::loadNext()
 
 	if (!m_oPagesP.isEmpty())
 	{
-		QPair<Site*, int> tag = m_oPagesP.takeFirst();
 		log(QStringLiteral("Loading tags"));
-		tag.first->loadTags(tag.second, m_perPage);
+		QPair<Site*, int> tag = m_oPagesP.takeFirst();
+		Site *site = tag.first;
+
+		Api *api = getTagApi(site);
+		if (api == nullptr) {
+			log(QStringLiteral("No valid API for loading tags for source: %1").arg(site->url()), Logger::Error);
+			return;
+		}
+
+		auto *tagApi = new TagApi(m_profile, site, api, tag.second, m_perPage, this);
+		connect(tagApi, &TagApi::finishedLoading, this, &Downloader::finishedLoadingTags);
+		tagApi->load();
 		return;
 	}
 
@@ -237,12 +255,19 @@ void Downloader::loadNext()
 		return;
 	}
 }
-void Downloader::finishedLoadingTags(const QList<Tag> &tags)
+void Downloader::finishedLoadingTags(TagApi *api, TagApi::LoadResult status)
 {
 	if (m_cancelled)
 		return;
 
+	if (status == TagApi::LoadResult::Error) {
+		log(QStringLiteral("Error loading pure tags"), Logger::Warning);
+		return;
+	}
+
+	const QList<Tag> tags = api->tags();
 	log(QStringLiteral("Received pure tags (%1)").arg(tags.count()));
+	api->deleteLater();
 
 	m_results.append(tags);
 	if (--m_waiting > 0)

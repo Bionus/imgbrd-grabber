@@ -12,6 +12,7 @@
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
 #include "tags/tag.h"
+#include "tags/tag-api.h"
 
 
 struct ImageSaveResult;
@@ -62,7 +63,7 @@ class Downloader : public QObject
 		void returnTagList(const QList<Tag> &tags);
 		void returnStringList(const QStringList &ret);
 		void finishedLoadingPageCount(Page *page);
-		void finishedLoadingTags(const QList<Tag> &tags);
+		void finishedLoadingTags(TagApi *api, TagApi::LoadResult status);
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
