@@ -131,3 +131,8 @@ Makefile*
 
 *.qmlproject.user
 *.qmlproject.user.*
+
+
+# VS Code
+
+.vscode/
