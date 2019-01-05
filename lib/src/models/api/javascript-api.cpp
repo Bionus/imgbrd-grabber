@@ -145,8 +145,17 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined())
 		{ typeId = tag.property("typeId").toInt(); }
 
+		QStringList related;
+		if (tag.hasProperty("related") && !tag.property("related").isUndefined()) {
+			if (tag.property("related").isArray()) {
+				related = jsToStringList(tag.property("related"));
+			} else {
+				related = tag.property("related").toString().split(' ', QString::SkipEmptyParts);
+			}
+		}
+
 		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
-		ret.append(Tag(id, text, tagType, count));
+		ret.append(Tag(id, text, tagType, count, related));
 	}
 
 	return ret;

@@ -152,13 +152,18 @@ export const source: ISource = {
                         "name": "name",
                         "count": "post_count",
                         "typeId": "category",
+                        "related": "related_tags",
                     };
 
                     const data = JSON.parse(src);
 
                     const tags: ITag[] = [];
                     for (const tag of data) {
-                        tags.push(Grabber.mapFields(tag, map));
+                        const ret = Grabber.mapFields(tag, map);
+                        if (ret.related) {
+                            ret.related = ret.related.split(" ").filter((_: string, i: number) => i % 2 === 0);
+                        }
+                        tags.push(ret);
                     }
 
                     return { tags };
@@ -242,13 +247,18 @@ export const source: ISource = {
                         "name": "name",
                         "count": "post-count",
                         "typeId": "category",
+                        "related": "related-tags",
                     };
 
                     const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).tags.tag);
 
                     const tags: ITag[] = [];
                     for (const tag of data) {
-                        tags.push(Grabber.mapFields(tag, map));
+                        const ret = Grabber.mapFields(tag, map);
+                        if (ret.related) {
+                            ret.related = ret.related.split(" ").filter((_: string, i: number) => i % 2 === 0);
+                        }
+                        tags.push(ret);
                     }
 
                     return { tags };
