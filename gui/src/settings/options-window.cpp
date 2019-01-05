@@ -17,6 +17,7 @@
 #include "settings/custom-window.h"
 #include "settings/filename-window.h"
 #include "settings/log-window.h"
+#include "settings/token-settings-widget.h"
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
 
@@ -27,6 +28,8 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
+	QSettings *settings = profile->getSettings();
+
 	ui->splitter->setSizes(QList<int>() << 160 << ui->stackedWidget->sizeHint().width());
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
@@ -36,7 +39,6 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it)
 	{ ui->comboLanguages->addItem(it.value(), it.key()); }
 
-	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
@@ -149,83 +151,26 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
 		ui->checkNoJpeg->setChecked(settings->value("noJpeg", true).toBool());
 
-		static const QStringList tagsSort { "original", "name" };
 
-		ui->lineArtistsIfNone->setText(settings->value("artist_empty", "anonymous").toString());
-		ui->comboArtistsSort->setCurrentIndex(tagsSort.indexOf(settings->value("artist_sort", "original").toString()));
-		ui->spinArtistsMoreThanN->setValue(settings->value("artist_multiple_limit", 1).toInt());
-		ui->spinArtistsKeepN->setValue(settings->value("artist_multiple_keepN", 1).toInt());
-		ui->spinArtistsKeepNThenAdd->setValue(settings->value("artist_multiple_keepNThenAdd_keep", 1).toInt());
-		ui->lineArtistsKeepNThenAdd->setText(settings->value("artist_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-		ui->lineArtistsSeparator->setText(settings->value("artist_sep", "+").toString());
-		ui->lineArtistsReplaceAll->setText(settings->value("artist_value", "multiple artists").toString());
-		const QString artistMultiple = settings->value("artist_multiple", "keepAll").toString();
-		if		(artistMultiple == "keepAll")		{ ui->radioArtistsKeepAll->setChecked(true);		}
-		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
-		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
-		else if	(artistMultiple == "replaceAll")	{ ui->radioArtistsReplaceAll->setChecked(true);		}
-		else if	(artistMultiple == "multiple")		{ ui->radioArtistsMultiple->setChecked(true);		}
-
-		ui->lineCopyrightsIfNone->setText(settings->value("copyright_empty", "misc").toString());
-		ui->comboCopyrightsSort->setCurrentIndex(tagsSort.indexOf(settings->value("copyright_sort", "original").toString()));
-		ui->checkCopyrightsUseShorter->setChecked(settings->value("copyright_useshorter", true).toBool());
-		ui->spinCopyrightsMoreThanN->setValue(settings->value("copyright_multiple_limit", 1).toInt());
-		ui->spinCopyrightsKeepN->setValue(settings->value("copyright_multiple_keepN", 1).toInt());
-		ui->spinCopyrightsKeepNThenAdd->setValue(settings->value("copyright_multiple_keepNThenAdd_keep", 1).toInt());
-		ui->lineCopyrightsKeepNThenAdd->setText(settings->value("copyright_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-		ui->lineCopyrightsSeparator->setText(settings->value("copyright_sep", "+").toString());
-		ui->lineCopyrightsReplaceAll->setText(settings->value("copyright_value", "crossover").toString());
-		const QString copyrightMultiple = settings->value("copyright_multiple", "keepAll").toString();
-		if		(copyrightMultiple == "keepAll")		{ ui->radioCopyrightsKeepAll->setChecked(true);			}
-		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
-		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
-		else if	(copyrightMultiple == "replaceAll")		{ ui->radioCopyrightsReplaceAll->setChecked(true);		}
-		else if	(copyrightMultiple == "multiple")		{ ui->radioCopyrightsMultiple->setChecked(true);		}
-
-		ui->lineCharactersIfNone->setText(settings->value("character_empty", "unknown").toString());
-		ui->comboCharactersSort->setCurrentIndex(tagsSort.indexOf(settings->value("character_sort", "original").toString()));
-		ui->spinCharactersMoreThanN->setValue(settings->value("character_multiple_limit", 1).toInt());
-		ui->spinCharactersKeepN->setValue(settings->value("character_multiple_keepN", 1).toInt());
-		ui->spinCharactersKeepNThenAdd->setValue(settings->value("character_multiple_keepNThenAdd_keep", 1).toInt());
-		ui->lineCharactersKeepNThenAdd->setText(settings->value("character_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-		ui->lineCharactersSeparator->setText(settings->value("character_sep", "+").toString());
-		ui->lineCharactersReplaceAll->setText(settings->value("character_value", "group").toString());
-		const QString characterMultiple = settings->value("character_multiple", "keepAll").toString();
-		if		(characterMultiple == "keepAll")		{ ui->radioCharactersKeepAll->setChecked(true);			}
-		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
-		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
-		else if	(characterMultiple == "replaceAll")		{ ui->radioCharactersReplaceAll->setChecked(true);		}
-		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
-
-		ui->lineSpeciesIfNone->setText(settings->value("species_empty", "unknown").toString());
-		ui->comboSpeciesSort->setCurrentIndex(tagsSort.indexOf(settings->value("species_sort", "original").toString()));
-		ui->spinSpeciesMoreThanN->setValue(settings->value("species_multiple_limit", 1).toInt());
-		ui->spinSpeciesKeepN->setValue(settings->value("species_multiple_keepN", 1).toInt());
-		ui->spinSpeciesKeepNThenAdd->setValue(settings->value("species_multiple_keepNThenAdd_keep", 1).toInt());
-		ui->lineSpeciesKeepNThenAdd->setText(settings->value("species_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-		ui->lineSpeciesSeparator->setText(settings->value("species_sep", "+").toString());
-		ui->lineSpeciesReplaceAll->setText(settings->value("species_value", "multiple").toString());
-		const QString speciesMultiple = settings->value("species_multiple", "keepAll").toString();
-		if		(speciesMultiple == "keepAll")		{ ui->radioSpeciesKeepAll->setChecked(true);		}
-		else if	(speciesMultiple == "keepN")		{ ui->radioSpeciesKeepN->setChecked(true);			}
-		else if	(speciesMultiple == "keepNThenAdd")	{ ui->radioSpeciesKeepNThenAdd->setChecked(true);	}
-		else if	(speciesMultiple == "replaceAll")	{ ui->radioSpeciesReplaceAll->setChecked(true);		}
-		else if	(speciesMultiple == "multiple")		{ ui->radioSpeciesMultiple->setChecked(true);		}
-
-		ui->lineMetasIfNone->setText(settings->value("meta_empty", "none").toString());
-		ui->comboMetasSort->setCurrentIndex(tagsSort.indexOf(settings->value("meta_sort", "original").toString()));
-		ui->spinMetasMoreThanN->setValue(settings->value("meta_multiple_limit", 1).toInt());
-		ui->spinMetasKeepN->setValue(settings->value("meta_multiple_keepN", 1).toInt());
-		ui->spinMetasKeepNThenAdd->setValue(settings->value("meta_multiple_keepNThenAdd_keep", 1).toInt());
-		ui->lineMetasKeepNThenAdd->setText(settings->value("meta_multiple_keepNThenAdd_add", " (+ %count%)").toString());
-		ui->lineMetasSeparator->setText(settings->value("meta_sep", "+").toString());
-		ui->lineMetasReplaceAll->setText(settings->value("meta_value", "multiple").toString());
-		const QString metaMultiple = settings->value("meta_multiple", "keepAll").toString();
-		if		(metaMultiple == "keepAll")			{ ui->radioMetasKeepAll->setChecked(true);		}
-		else if	(metaMultiple == "keepN")			{ ui->radioMetasKeepN->setChecked(true);		}
-		else if	(metaMultiple == "keepNThenAdd")	{ ui->radioMetasKeepNThenAdd->setChecked(true);	}
-		else if	(metaMultiple == "replaceAll")		{ ui->radioMetasReplaceAll->setChecked(true);	}
-		else if	(metaMultiple == "multiple")		{ ui->radioMetasMultiple->setChecked(true);		}
+		// Build the "tags" settings
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(4);
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Artist", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Copyright", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Character", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Model", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Photo set", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Species", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Meta", tagsTree->type()));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "artist", false, "anonymous", "multiple artists", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "copyright", true, "misc", "crossover", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "character", false, "unknown", "group", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "model", false, "unknown", "multiple", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "photo_set", false, "unknown", "multiple", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", this));
+		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", this));
+		for (int i = 0; i < m_tokenSettings.count(); ++i) {
+			ui->stackedWidget->insertWidget(i + 8, m_tokenSettings[i]);
+		}
 
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings->value("simultaneous", 1).toInt());
@@ -961,89 +906,9 @@ void OptionsWindow::save()
 		settings->setValue("filename_real", ui->lineFilename->text());
 		settings->setValue("filename_favorites", ui->lineFavorites->text());
 
-		static const QStringList tagsSort { "original", "name" };
-
-		settings->setValue("artist_empty", ui->lineArtistsIfNone->text());
-		settings->setValue("artist_sort", tagsSort.at(ui->comboArtistsSort->currentIndex()));
-		settings->setValue("artist_useall", ui->radioArtistsKeepAll->isChecked());
-		QString artistMultiple;
-		if		(ui->radioArtistsKeepAll->isChecked())		{ artistMultiple = "keepAll";		}
-		else if	(ui->radioArtistsKeepN->isChecked())		{ artistMultiple = "keepN";			}
-		else if	(ui->radioArtistsKeepNThenAdd->isChecked())	{ artistMultiple = "keepNThenAdd";	}
-		else if	(ui->radioArtistsReplaceAll->isChecked())	{ artistMultiple = "replaceAll";	}
-		else if	(ui->radioArtistsMultiple->isChecked())		{ artistMultiple = "multiple";		}
-		settings->setValue("artist_multiple", artistMultiple);
-		settings->setValue("artist_multiple_limit", ui->spinArtistsMoreThanN->value());
-		settings->setValue("artist_multiple_keepN", ui->spinArtistsKeepN->value());
-		settings->setValue("artist_multiple_keepNThenAdd_keep", ui->spinArtistsKeepNThenAdd->value());
-		settings->setValue("artist_multiple_keepNThenAdd_add", ui->lineArtistsKeepNThenAdd->text());
-		settings->setValue("artist_sep", ui->lineArtistsSeparator->text());
-		settings->setValue("artist_value", ui->lineArtistsReplaceAll->text());
-
-		settings->setValue("copyright_empty", ui->lineCopyrightsIfNone->text());
-		settings->setValue("copyright_sort", tagsSort.at(ui->comboCopyrightsSort->currentIndex()));
-		settings->setValue("copyright_useshorter", ui->checkCopyrightsUseShorter->isChecked());
-		QString copyrightMultiple;
-		if		(ui->radioCopyrightsKeepAll->isChecked())		{ copyrightMultiple = "keepAll";		}
-		else if	(ui->radioCopyrightsKeepN->isChecked())			{ copyrightMultiple = "keepN";			}
-		else if	(ui->radioCopyrightsKeepNThenAdd->isChecked())	{ copyrightMultiple = "keepNThenAdd";	}
-		else if	(ui->radioCopyrightsReplaceAll->isChecked())	{ copyrightMultiple = "replaceAll";		}
-		else if	(ui->radioCopyrightsMultiple->isChecked())		{ copyrightMultiple = "multiple";		}
-		settings->setValue("copyright_multiple", copyrightMultiple);
-		settings->setValue("copyright_multiple_limit", ui->spinCopyrightsMoreThanN->value());
-		settings->setValue("copyright_multiple_keepN", ui->spinCopyrightsKeepN->value());
-		settings->setValue("copyright_multiple_keepNThenAdd_keep", ui->spinCopyrightsKeepNThenAdd->value());
-		settings->setValue("copyright_multiple_keepNThenAdd_add", ui->lineCopyrightsKeepNThenAdd->text());
-		settings->setValue("copyright_sep", ui->lineCopyrightsSeparator->text());
-		settings->setValue("copyright_value", ui->lineCopyrightsReplaceAll->text());
-
-		settings->setValue("character_empty", ui->lineCharactersIfNone->text());
-		settings->setValue("character_sort", tagsSort.at(ui->comboCharactersSort->currentIndex()));
-		QString characterMultiple;
-		if		(ui->radioCharactersKeepAll->isChecked())		{ characterMultiple = "keepAll";		}
-		else if	(ui->radioCharactersKeepN->isChecked())			{ characterMultiple = "keepN";			}
-		else if	(ui->radioCharactersKeepNThenAdd->isChecked())	{ characterMultiple = "keepNThenAdd";	}
-		else if	(ui->radioCharactersReplaceAll->isChecked())	{ characterMultiple = "replaceAll";		}
-		else if	(ui->radioCharactersMultiple->isChecked())		{ characterMultiple = "multiple";		}
-		settings->setValue("character_multiple", characterMultiple);
-		settings->setValue("character_multiple_limit", ui->spinCharactersMoreThanN->value());
-		settings->setValue("character_multiple_keepN", ui->spinCharactersKeepN->value());
-		settings->setValue("character_multiple_keepNThenAdd_keep", ui->spinCharactersKeepNThenAdd->value());
-		settings->setValue("character_multiple_keepNThenAdd_add", ui->lineCharactersKeepNThenAdd->text());
-		settings->setValue("character_sep", ui->lineCharactersSeparator->text());
-		settings->setValue("character_value", ui->lineCharactersReplaceAll->text());
-
-		settings->setValue("species_empty", ui->lineSpeciesIfNone->text());
-		settings->setValue("species_sort", tagsSort.at(ui->comboSpeciesSort->currentIndex()));
-		QString speciesMultiple;
-		if		(ui->radioSpeciesKeepAll->isChecked())		{ speciesMultiple = "keepAll";		}
-		else if	(ui->radioSpeciesKeepN->isChecked())		{ speciesMultiple = "keepN";		}
-		else if	(ui->radioSpeciesKeepNThenAdd->isChecked())	{ speciesMultiple = "keepNThenAdd";	}
-		else if	(ui->radioSpeciesReplaceAll->isChecked())	{ speciesMultiple = "replaceAll";	}
-		else if	(ui->radioSpeciesMultiple->isChecked())		{ speciesMultiple = "multiple";		}
-		settings->setValue("species_multiple", speciesMultiple);
-		settings->setValue("species_multiple_limit", ui->spinSpeciesMoreThanN->value());
-		settings->setValue("species_multiple_keepN", ui->spinSpeciesKeepN->value());
-		settings->setValue("species_multiple_keepNThenAdd_keep", ui->spinSpeciesKeepNThenAdd->value());
-		settings->setValue("species_multiple_keepNThenAdd_add", ui->lineSpeciesKeepNThenAdd->text());
-		settings->setValue("species_sep", ui->lineSpeciesSeparator->text());
-		settings->setValue("species_value", ui->lineSpeciesReplaceAll->text());
-
-		settings->setValue("meta_empty", ui->lineMetasIfNone->text());
-		settings->setValue("meta_sort", tagsSort.at(ui->comboMetasSort->currentIndex()));
-		QString metaMultiple;
-		if		(ui->radioMetasKeepAll->isChecked())		{ metaMultiple = "keepAll";			}
-		else if	(ui->radioMetasKeepN->isChecked())			{ metaMultiple = "keepN";			}
-		else if	(ui->radioMetasKeepNThenAdd->isChecked())	{ metaMultiple = "keepNThenAdd";	}
-		else if	(ui->radioMetasReplaceAll->isChecked())		{ metaMultiple = "replaceAll";		}
-		else if	(ui->radioMetasMultiple->isChecked())		{ metaMultiple = "multiple";		}
-		settings->setValue("meta_multiple", metaMultiple);
-		settings->setValue("meta_multiple_limit", ui->spinMetasMoreThanN->value());
-		settings->setValue("meta_multiple_keepN", ui->spinMetasKeepN->value());
-		settings->setValue("meta_multiple_keepNThenAdd_keep", ui->spinMetasKeepNThenAdd->value());
-		settings->setValue("meta_multiple_keepNThenAdd_add", ui->lineMetasKeepNThenAdd->text());
-		settings->setValue("meta_sep", ui->lineMetasSeparator->text());
-		settings->setValue("meta_value", ui->lineMetasReplaceAll->text());
+		for (TokenSettingsWidget *tokenSettings : m_tokenSettings) {
+			tokenSettings->save();
+		}
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
