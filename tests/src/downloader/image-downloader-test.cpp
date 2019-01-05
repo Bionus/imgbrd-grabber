@@ -104,6 +104,19 @@ void ImageDownloaderTest::testSuccessLoadTagsExternal()
 	settings->remove("LogFiles/0/content");
 }
 
+void ImageDownloaderTest::testSuccessLoadSize()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(m_profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, true, nullptr, true, false);
+
+	QList<ImageSaveResult> expected;
+	expected.append({ QDir::toNativeSeparators("tests/resources/tmp/to heart 2.jpg"), Image::Size::Full, Image::SaveResult::Saved });
+
+	QVERIFY(img->size().isEmpty());
+	assertDownload(img, &downloader, expected, true);
+	QCOMPARE(img->size(), QSize(1, 1));
+}
+
 void ImageDownloaderTest::testOpenError()
 {
 	QSharedPointer<Image> img(createImage());

@@ -4,7 +4,6 @@
 
 
 TestSuite::TestSuite()
-	: QObject()
 {
 	getSuites().append(this);
 }

@@ -53,11 +53,11 @@ void DownloadQueryImageTest::testSerialization()
 	DownloadQueryImage dest;
 	dest.read(json, QMap<QString, Site*> {{ site.url(), &site }});
 
-	QCOMPARE(dest.image->id(), 1);
+	QCOMPARE(static_cast<int>(dest.image->id()), 1);
 	QCOMPARE(dest.image->md5(), QString("md5"));
 	QCOMPARE(dest.image->rating(), QString("rating"));
 	QCOMPARE(dest.image->tagsString(), QStringList() << "tags");
-	QCOMPARE(dest.image->fileUrl(), QString("https://test.com/fileUrl"));
+	QCOMPARE(dest.image->fileUrl().toString(), QString("https://test.com/fileUrl"));
 	QCOMPARE(dest.image->createdAt().toString("yyyy-MM-dd HH:mm:ss"), QString("2016-08-26 16:26:30"));
 	QCOMPARE(dest.image->search(), QStringList() << "search");
 

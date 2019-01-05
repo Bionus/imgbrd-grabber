@@ -25,6 +25,7 @@ class ImageDownloaderTest : public TestSuite
 		void testSuccessBasic();
 		void testSuccessLoadTags();
 		void testSuccessLoadTagsExternal();
+		void testSuccessLoadSize();
 		void testOpenError();
 		void testNotFound();
 		void testNetworkError();
