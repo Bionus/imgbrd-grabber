@@ -134,8 +134,8 @@ export const source: ISource = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.search(/Running Gelbooru Beta 0\.2/) !== -1
-                        || src.search(/Running <a href=['"][^'"]+['"]>Gelbooru<\/a> Beta 0\.2/) !== -1;
+                    return src.search(/Running Gelbooru(?: Beta)? 0\.2/) !== -1
+                        || src.search(/Running <a[^>]*>Gelbooru<\/a>(?: Beta)? 0\.2/) !== -1;
                 },
             },
         },
