@@ -26,6 +26,11 @@
 # define QtApngDll QtPlugins + "\imageformats\qapng.dll"
 #endif
 
+#define PlatformNamePrefix ""
+#ifdef PlatformName
+# define PlatformNamePrefix "_" + PlatformName
+#endif
+
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -44,7 +49,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Apache license 2.0.txt
 OutputDir=.
-OutputBaseFilename=Grabber_{#MyAppVersion}
+OutputBaseFilename=Grabber_{#MyAppVersion}{#PlatformNamePrefix}
 SetupIconFile=resources\images\icon.ico
 UninstallDisplayName="{#MyAppName} {#MyAppVersion}"
 UninstallDisplayIcon={app}\icon.ico

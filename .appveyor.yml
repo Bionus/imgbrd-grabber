@@ -20,6 +20,7 @@ environment:
       QTDIR: C:\Qt\5.10.1\msvc2015_64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
+      DEPLOY: 1
 
     # MinGW
     - PLATFORM: mingw
@@ -44,6 +45,7 @@ init:
   - set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
   - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_IS_NIGHTLY=0") else (set "GRABBER_IS_NIGHTLY=1")
   - if "%APPVEYOR_REPO_TAG%"=="true" (set "GRABBER_VERSION=%APPVEYOR_REPO_TAG_NAME%") else (set "GRABBER_VERSION=nightly")
+  - if "%PLATFORM%"=="X86" (set "PLATFORM_NAME=x86") else (set "PLATFORM_NAME=x64")
 
 install:
   - git submodule update --init --recursive
@@ -99,10 +101,10 @@ build_script:
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
 
   # Package symbol files to zip
-  - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
+  - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
 test_script:
   - build\tests\tests.exe
