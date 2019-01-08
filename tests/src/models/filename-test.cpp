@@ -553,8 +553,8 @@ void FilenameTest::testIsValid()
 	QCOMPARE(Filename("%md5% %date:format=yyyy-MM-dd%.%ext%").isValid(), true);
 	QCOMPARE(Filename("%md5% (%num%).%ext%").isValid(), true);
 
-	QCOMPARE(Filename("%gallery.id%").isValid(), true);
-	QCOMPARE(Filename("%toto.id%").isValid(), false);
+	QCOMPARE(Filename("%gallery.id%/%md5%.%ext%").isValid(), true);
+	QCOMPARE(Filename("%toto.id%/%md5%.%ext%").isValid(), false);
 
 	QString out;
 	Filename("%toto%.%ext%").isValid(m_profile, &out);
