@@ -85,7 +85,7 @@ class PageApi : public QObject
 		SearchQuery m_query;
 		QStringList m_errors;
 		PostFilter m_postFiltering;
-		int m_imagesPerPage, m_lastPage, m_page, m_blim, m_pool;
+		int m_imagesPerPage, m_lastPage, m_page, m_pool;
 		qulonglong m_lastPageMinId, m_lastPageMaxId;
 		bool m_smart, m_isAltPage;
 		QString m_format, m_source, m_wiki, m_originalUrl;

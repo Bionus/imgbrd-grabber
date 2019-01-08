@@ -213,6 +213,7 @@ void PageApi::parseActual()
 	const bool isGallery = !m_query.gallery.isNull();
 	const bool parseErrors = isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors();
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	const int offset = (m_page - 1) * m_imagesPerPage;
 
 	// Try to read the reply
 	m_source = m_reply->readAll();
@@ -227,14 +228,12 @@ void PageApi::parseActual()
 		return;
 	}
 
-	const int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
-
 	// Parse source
 	ParsedPage page;
 	if (isGallery)
-	{ page = m_api->parseGallery(m_parentPage, m_source, statusCode, first); }
+	{ page = m_api->parseGallery(m_parentPage, m_source, statusCode, offset); }
 	else
-	{ page = m_api->parsePage(m_parentPage, m_source, statusCode, first); }
+	{ page = m_api->parsePage(m_parentPage, m_source, statusCode, offset); }
 
 	// Handle errors
 	if (!page.error.isEmpty())

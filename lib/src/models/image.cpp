@@ -64,6 +64,7 @@ Image::Image(const Image &other)
 	m_createdAt = other.m_createdAt;
 
 	m_galleryCount = other.m_galleryCount;
+	m_position = other.m_position;
 
 	m_loadDetails = other.m_loadDetails;
 
@@ -111,6 +112,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
+	m_position = details.contains("position") ? details["position"].toInt() : 0;
 
 	// Sizes
 	static QMap<Image::Size, QString> prefixes =
@@ -1047,6 +1049,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("authorid", Token(m_authorId));
 	tokens.insert("parentid", Token(m_parentId));
 	tokens.insert("name", Token(m_name));
+	tokens.insert("position", Token(m_position > 0 ? QString::number(m_position) : ""));
 
 	// Flags
 	tokens.insert("has_children", Token(m_hasChildren));

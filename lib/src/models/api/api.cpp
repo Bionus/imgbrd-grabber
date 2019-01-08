@@ -18,6 +18,8 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 {
 	Site *site = parentPage->site();
 
+	d["position"] = QString::number(position + 1);
+
 	// Remove dot before extension
 	if (d.contains("ext") && d["ext"][0] == '.')
 	{ d["ext"] = d["ext"].mid(1); }
