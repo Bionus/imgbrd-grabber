@@ -11,6 +11,7 @@ environment:
     # MSVC x86
     - PLATFORM: amd64_x86
       QTDIR: C:\Qt\5.10.1\msvc2015
+      OPENSSLDIR: C:\OpenSSL-Win32
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
@@ -18,6 +19,7 @@ environment:
     # MSVC x64
     - PLATFORM: amd64
       QTDIR: C:\Qt\5.10.1\msvc2015_64
+      OPENSSLDIR: C:\OpenSSL-Win64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
@@ -25,6 +27,7 @@ environment:
     # MinGW
     - PLATFORM: mingw
       QTDIR: C:\Qt\5.10.1\mingw53_32
+      OPENSSLDIR: C:\OpenSSL-Win32
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
 
@@ -101,7 +104,7 @@ build_script:
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="C:\OpenSSL-Win32" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.10.1\msvc2015\plugins\imageformats\qapng.dll" releases/setup.iss
 
   # Package symbol files to zip
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
