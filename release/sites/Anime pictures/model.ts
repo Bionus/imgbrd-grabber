@@ -1,3 +1,7 @@
+function noWebp(url: string): string {
+    return url.replace(/(\.\w{3,4})\.webp/, "$1");
+}
+
 function completeImage(img: IImage): IImage {
     if (img["ext"] && img["ext"][0] === ".") {
         img["ext"] = img["ext"].substring(1);
@@ -11,9 +15,8 @@ function completeImage(img: IImage): IImage {
             .replace("_sp.", "_bp.");
     }
 
-    img["file_url"] = img["file_url"].replace(".jpg.webp", ".jpg");
-    img["sample_url"] = (img["sample_url"] || "").replace(".jpg.webp", ".jpg");
-    img["preview_url"] = (img["preview_url"] || "").replace(".jpg.webp", ".jpg");
+    img["sample_url"] = noWebp(img["sample_url"] || "");
+    img["preview_url"] = noWebp(img["preview_url"] || "");
 
     return img;
 }
@@ -154,10 +157,14 @@ export const source: ISource = {
                         };
                     });
 
+                    const imgUrl: string = data["file_url"];
+                    const pos = imgUrl.lastIndexOf("/") + 1;
+                    const fn = imgUrl.substr(pos);
+
                     return {
                         tags,
                         createdAt: data["pubtime"],
-                        imageUrl: data["file_url"],
+                        imageUrl: imgUrl.substr(0, pos) + (fn.indexOf(" ") !== -1 ? encodeURIComponent(fn) : fn),
                     };
                 },
             },
