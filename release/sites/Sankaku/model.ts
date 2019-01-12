@@ -62,7 +62,8 @@ export const source: ISource = {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-beta.")
                         .replace("//idol.", "//iapi.");
-                    return baseUrl + "/post/index.json?page=" + query.page + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
+                    return baseUrl + "/post/index.json?" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
