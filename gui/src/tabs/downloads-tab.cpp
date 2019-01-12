@@ -1138,6 +1138,14 @@ void DownloadsTab::getAllFinished()
 		}
 		else
 		{
+			// Trigger minor end actions on retry
+			switch (m_progressDialog->endAction())
+			{
+				case 2:	openTray();								break;
+				case 4:	QSound::play(":/sounds/finished.wav");	break;
+			}
+			activateWindow();
+
 			int totalCount = m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors + m_getAllSkipped;
 			reponse = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(failedCount).arg(totalCount), QMessageBox::Yes | QMessageBox::No);
 		}
