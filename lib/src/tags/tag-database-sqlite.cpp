@@ -13,15 +13,11 @@ TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
-bool TagDatabaseSqlite::load()
+bool TagDatabaseSqlite::open()
 {
-	// Don't reload databases
+	// Don't re-open databases
 	if (m_database.isOpen())
 		return true;
-
-	// Load tag types
-	if (!TagDatabase::load())
-		return false;
 
 	// Load and connect to the database
 	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
@@ -41,7 +37,19 @@ bool TagDatabaseSqlite::load()
 		return false;
 	}
 
-	return true;
+	return TagDatabase::open();
+}
+
+bool TagDatabaseSqlite::close()
+{
+	m_database.close();
+
+	return TagDatabase::close();
+}
+
+bool TagDatabaseSqlite::load()
+{
+	return TagDatabase::load();
 }
 
 bool TagDatabaseSqlite::save()

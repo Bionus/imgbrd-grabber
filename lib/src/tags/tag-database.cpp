@@ -9,6 +9,23 @@ TagDatabase::TagDatabase(QString typeFile)
 	: m_typeFile(std::move(typeFile))
 {}
 
+bool TagDatabase::open()
+{
+	m_isOpen = true;
+	return true;
+}
+
+bool TagDatabase::isOpen() const
+{
+	return m_isOpen;
+}
+
+bool TagDatabase::close()
+{
+	m_isOpen = false;
+	return true;
+}
+
 bool TagDatabase::load()
 {
 	return loadTypes();

@@ -5,7 +5,7 @@
 
 
 TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(std::move(tagFile))
+	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
 bool TagDatabaseInMemory::load()
@@ -95,5 +95,25 @@ QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags)
 
 int TagDatabaseInMemory::count() const
 {
-	return m_database.count();
+	if (!m_database.isEmpty())
+		return m_database.count();
+
+	if (m_count != -1)
+		return m_count;
+
+	m_count = 0;
+
+	QFile file(m_tagFile);
+	if (!file.open(QFile::ReadOnly | QFile::Text))
+		return m_count;
+
+	QTextStream in(&file);
+	while (!in.atEnd())
+	{
+		m_count++;
+		in.readLine();
+	}
+	file.close();
+
+	return m_count;
 }

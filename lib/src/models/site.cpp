@@ -148,6 +148,7 @@ void Site::loadConfig()
 	// Tag database
 	delete m_tagDatabase;
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
+	m_tagDatabase->open();
 	m_tagDatabase->loadTypes();
 }
 
