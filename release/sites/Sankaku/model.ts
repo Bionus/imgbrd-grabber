@@ -93,6 +93,7 @@ export const source: ISource = {
                     }
                 },
                 parse: (src: string): IParsedSearch => {
+                    src = src.replace(/<div class="?popular-preview-post"?>[\s\S]+?<\/div>/g, "");
                     const searchImageCounts = Grabber.regexMatches('class="?tag-(?:count|type-none)"? title="Post Count: (?<count>[0-9,]+)"', src);
                     const lastPage = Grabber.regexToConst("page", '<span class="?current"?>\\s*(?<page>[0-9,]+)\\s*</span>\\s*>>\\s*</div>', src);
                     let wiki = Grabber.regexToConst("wiki", '<div id="?wiki-excerpt"?[^>]*>(?<wiki>.+?)</div>', src);
