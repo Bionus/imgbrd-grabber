@@ -70,7 +70,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	static const QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
 	QStringList sources = QStringList() << "";
 	QStringList opts = QStringList() << "";
-	for (Api *api : site->getApis())
+	for (Api *api : site->getSource()->getApis())
 	{
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
@@ -248,7 +248,7 @@ void SourcesSettingsWindow::saveSettings()
 
 	QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
 	QStringList sources = QStringList() << "";
-	for (Api *api : m_site->getApis())
+	for (Api *api : m_site->getSource()->getApis())
 	{
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
