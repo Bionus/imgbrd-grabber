@@ -184,7 +184,11 @@ void BatchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
 void BatchWindow::addImage(const QUrl &url, int batch, double size)
 {
-	m_urls.insert(url, m_items);
+	if (m_urls.contains(url)) {
+		m_urls[url].append(m_items);
+	} else {
+		m_urls.insert(url, {m_items});
+	}
 
 	static QIcon pendingIcon(":/images/status/pending.png");
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
@@ -221,7 +225,8 @@ void BatchWindow::updateColumns()
 }
 int BatchWindow::indexOf(const QUrl &url)
 {
-	const int i = m_urls[url];
+	const auto vals = m_urls.value(url);
+	const int i = vals.isEmpty() ? -1 : vals.first();
 	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr)
 		return -1;
 	return i;
@@ -263,8 +268,13 @@ void BatchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 	const int i = indexOf(before);
 	if (i != -1)
 	{
-		m_urls.remove(before);
-		m_urls.insert(after, i);
+		const auto vals = m_urls.value(before);
+		if (vals.count() == 1) {
+			m_urls.remove(before);
+		} else {
+			m_urls[before].removeFirst();
+		}
+		m_urls.insert(after, {i});
 		ui->tableWidget->item(i, 2)->setText(after.toString());
 		ui->tableWidget->item(i, 3)->setText(QString());
 		ui->tableWidget->item(i, 4)->setText(QString());
