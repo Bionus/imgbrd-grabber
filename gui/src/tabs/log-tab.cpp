@@ -13,10 +13,8 @@ LogTab::LogTab(QWidget *parent)
 
 	// Load already written log
 	QFile logFile(Logger::getInstance().logFile());
-	if (logFile.open(QFile::ReadOnly | QFile::Text))
-	{
-		while (!logFile.atEnd())
-		{
+	if (logFile.open(QFile::ReadOnly | QFile::Text)) {
+		while (!logFile.atEnd()) {
 			write(logFile.readLine());
 		}
 		logFile.close();
@@ -48,8 +46,7 @@ void LogTab::write(const QString &msg)
 		{ "Error", "red" },
 	};
 	QString levelColor = colors[level];
-	if (!levelColor.isEmpty())
-	{
+	if (!levelColor.isEmpty()) {
 		htmlMsg.insert(msg.size(), "</span>");
 		htmlMsg.insert(timeEnd + 1, QString("<span style='color:%1'>").arg(colors[level]));
 	}
@@ -77,8 +74,7 @@ void LogTab::write(const QString &msg)
 void LogTab::clear()
 {
 	QFile logFile(Logger::getInstance().logFile());
-	if (logFile.open(QFile::WriteOnly | QFile::Text))
-	{
+	if (logFile.open(QFile::WriteOnly | QFile::Text)) {
 		logFile.resize(0);
 		logFile.close();
 	}
@@ -94,8 +90,7 @@ void LogTab::open()
 void LogTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 

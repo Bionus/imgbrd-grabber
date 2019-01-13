@@ -87,11 +87,11 @@ void TagTab::load()
 	QString search = m_search->toPlainText().trimmed();
 
 	// Search an image directly by typing its MD5
-	if (m_settings->value("enable_md5_fast_search", true).toBool())
-	{
+	if (m_settings->value("enable_md5_fast_search", true).toBool()) {
 		static QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
-		if (md5Matcher.match(search).hasMatch())
+		if (md5Matcher.match(search).hasMatch()) {
 			search.prepend("md5:");
+		}
 	}
 
 	const QStringList tags = search.split(" ", QString::SkipEmptyParts);
@@ -110,8 +110,9 @@ void TagTab::write(QJsonObject &json) const
 
 	// Sites
 	QJsonArray sites;
-	for (Site *site : loadSites())
+	for (Site *site : loadSites()) {
 		sites.append(site->url());
+	}
 	json["sites"] = sites;
 }
 
@@ -126,28 +127,33 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	QStringList postFilters;
 	postFilters.reserve(jsonPostFilters.count());
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
+	}
 	setPostFilter(postFilters.join(' '));
 
 	// Sources
 	QJsonArray jsonSelectedSources = json["sites"].toArray();
 	QStringList selectedSources;
 	selectedSources.reserve(jsonSelectedSources.count());
-	for (auto site : jsonSelectedSources)
+	for (auto site : jsonSelectedSources) {
 		selectedSources.append(site.toString());
+	}
 	QList<Site*> selectedSourcesObj;
-	for (Site *site : m_sites)
-		if (selectedSources.contains(site->url()))
+	for (Site *site : m_sites) {
+		if (selectedSources.contains(site->url())) {
 			selectedSourcesObj.append(site);
+		}
+	}
 	saveSources(selectedSourcesObj, false);
 
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	QStringList tags;
 	tags.reserve(jsonTags.count());
-	for (auto tag : jsonTags)
+	for (auto tag : jsonTags) {
 		tags.append(tag.toString());
+	}
 	setTags(tags.join(' '), preload);
 
 	return true;
@@ -168,17 +174,18 @@ void TagTab::setTags(const QString &tags, bool preload)
 
 void TagTab::getPage()
 {
-	if (m_pages.empty())
+	if (m_pages.empty()) {
 		return;
+	}
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
-	for (const QSharedPointer<Page> &page : pages)
-	{
+	for (const QSharedPointer<Page> &page : pages) {
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
-		if (perpage <= 0 || page->pageImageCount() <= 0)
+		if (perpage <= 0 || page->pageImageCount() <= 0) {
 			continue;
+		}
 
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
@@ -187,19 +194,20 @@ void TagTab::getPage()
 }
 void TagTab::getAll()
 {
-	if (m_pages.empty())
+	if (m_pages.empty()) {
 		return;
+	}
 
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
-	for (const QSharedPointer<Page> &page : pages)
-	{
+	for (const QSharedPointer<Page> &page : pages) {
 		const int highLimit = page->highLimit();
 		const int currentCount = page->pageImageCount();
 		const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
+		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 			continue;
+		}
 
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
@@ -220,8 +228,7 @@ QString TagTab::tags() const
 void TagTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 

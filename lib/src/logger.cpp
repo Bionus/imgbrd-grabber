@@ -8,15 +8,18 @@
 
 void Logger::logToConsole()
 {
-	if (m_logFile.isOpen()) m_logFile.close();
+	if (m_logFile.isOpen()) {
+		m_logFile.close();
+	}
 	m_logFile.open(stdout, QIODevice::WriteOnly);
 }
 
 
 void Logger::setLogFile(const QString &path)
 {
-	if (m_logFile.isOpen())
-	{ m_logFile.close(); }
+	if (m_logFile.isOpen()) {
+		m_logFile.close();
+	}
 
 	m_logFile.setFileName(path);
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
@@ -51,8 +54,9 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, co
 
 	QString label = QStringLiteral("[Qt]");
 	QString category(context.category);
-	if (!category.isEmpty())
+	if (!category.isEmpty()) {
 		label += "[" + category + "]";
+	}
 	#if defined QT_MESSAGELOGCONTEXT && defined QT_DEBUG && 0
 		label += QStringLiteral("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
 	#endif
@@ -78,14 +82,17 @@ void Logger::setupMessageOutput(bool log)
  */
 void Logger::log(const QString &l, LogLevel level)
 {
-	if (m_exitOnError && level == Logger::LogLevel::Error)
+	if (m_exitOnError && level == Logger::LogLevel::Error) {
 		throw std::runtime_error(l.toStdString());
+	}
 
-	if (level < m_level)
+	if (level < m_level) {
 		return;
+	}
 
-	if (!m_logFile.isOpen())
+	if (!m_logFile.isOpen()) {
 		setLogFile(savePath(QStringLiteral("main.log"), false, true));
+	}
 
 	static const QString timeFormat = QStringLiteral("hh:mm:ss.zzz");
 	static const QStringList levels = QStringList()
@@ -111,8 +118,7 @@ void Logger::log(const QString &l, LogLevel level)
 
 void Logger::logCommand(const QString &l)
 {
-	if (!m_fCommandsLog.isOpen())
-	{
+	if (!m_fCommandsLog.isOpen()) {
 		m_fCommandsLog.setFileName(savePath(QStringLiteral("commands.log"), false, true));
 		m_fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
@@ -123,8 +129,7 @@ void Logger::logCommand(const QString &l)
 
 void Logger::logCommandSql(const QString &l)
 {
-	if (!m_fCommandsSqlLog.isOpen())
-	{
+	if (!m_fCommandsSqlLog.isOpen()) {
 		m_fCommandsSqlLog.setFileName(savePath(QStringLiteral("commands.sql"), false, true));
 		m_fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}

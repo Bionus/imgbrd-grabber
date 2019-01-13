@@ -52,16 +52,14 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 	// Check that directory exists
 	QDir dir(ui->lineFolder->text());
-	if (!dir.exists())
-	{
+	if (!dir.exists()) {
 		error(this, tr("This folder does not exist."));
 		ui->buttonContinue->setEnabled(true);
 		return;
 	}
 
 	// Make sure the input is valid
-	if (!ui->radioForce->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%md5%")))
-	{
+	if (!ui->radioForce->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%md5%"))) {
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonContinue->setEnabled(true);
 		return;
@@ -69,15 +67,15 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 	// Suffixes
 	QStringList suffixes = ui->lineSuffixes->text().split(',');
-	for (QString &suffix : suffixes)
+	for (QString &suffix : suffixes) {
 		suffix = suffix.trimmed();
+	}
 
 	// Get all files from the destination directory
 	auto files = listFilesFromDirectory(dir, suffixes);
 
 	// Parse all files
-	for (const auto &file : files)
-	{
+	for (const auto &file : files) {
 		const QString fileName = file.first;
 		const QString path = dir.absoluteFilePath(fileName);
 
@@ -85,17 +83,16 @@ void RenameExisting1::on_buttonContinue_clicked()
 			? getFileMd5(path)
 			: getFilenameMd5(fileName, ui->lineFilenameOrigin->text());
 
-		if (!md5.isEmpty())
-		{
+		if (!md5.isEmpty()) {
 			RenameExistingFile det;
 			det.md5 = md5;
 			det.path = QDir::toNativeSeparators(path);
-			if (!file.second.isEmpty())
-			{
+			if (!file.second.isEmpty()) {
 				QStringList children;
 				children.reserve(file.second.count());
-				for (const QString &child : file.second)
-				{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
+				for (const QString &child : file.second) {
+					children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child)));
+				}
 				det.children = children;
 			}
 			m_details.append(det);
@@ -107,25 +104,21 @@ void RenameExisting1::on_buttonContinue_clicked()
 	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()));
 
 	const int response = QMessageBox::question(this, tr("Rename existing images"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
-	if (response == QMessageBox::Yes)
-	{
+	if (response == QMessageBox::Yes) {
 		// Show progress bar
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(m_details.size());
 		ui->progressBar->show();
 
 		loadNext();
-	}
-	else
-	{
+	} else {
 		ui->buttonContinue->setEnabled(true);
 	}
 }
 
 void RenameExisting1::getAll(Page *p)
 {
-	if (p->images().isEmpty())
-	{
+	if (p->images().isEmpty()) {
 		log(tr("No image found when renaming image '%1'").arg(p->search().join(' ')), Logger::Warning);
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 		loadNext();
@@ -133,13 +126,10 @@ void RenameExisting1::getAll(Page *p)
 	}
 
 	const QSharedPointer<Image> img = p->images().at(0);
-	if (m_needDetails == 2 || (m_needDetails == 1 && img->hasUnknownTag()))
-	{
+	if (m_needDetails == 2 || (m_needDetails == 1 && img->hasUnknownTag())) {
 		connect(img.data(), &Image::finishedLoadingTags, this, &RenameExisting1::getTags);
 		img->loadDetails();
-	}
-	else
-	{
+	} else {
 		setImageResult(img.data());
 	}
 }
@@ -161,8 +151,7 @@ void RenameExisting1::setImageResult(Image *img)
 
 void RenameExisting1::loadNext()
 {
-	if (!m_details.isEmpty())
-	{
+	if (!m_details.isEmpty()) {
 		const RenameExistingFile det = m_details.takeFirst();
 		m_getAll.insert(det.md5, det);
 

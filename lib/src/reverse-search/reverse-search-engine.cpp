@@ -10,20 +10,20 @@ ReverseSearchEngine::ReverseSearchEngine(int id, const QString &icon, QString na
 
 QIcon ReverseSearchEngine::loadIcon(const QString &path) const
 {
-	if (path.isEmpty())
+	if (path.isEmpty()) {
 		return QIcon();
+	}
 
 	QFile f(path);
-	if (f.open(QFile::ReadOnly))
-	{
+	if (f.open(QFile::ReadOnly)) {
 		QByteArray data12 = f.read(12);
 		f.close();
 
-		if (data12.length() >= 12)
-		{
+		if (data12.length() >= 12) {
 			QString ext = getExtensionFromHeader(data12);
-			if (!ext.isEmpty())
+			if (!ext.isEmpty()) {
 				return QIcon(QPixmap(path, ext.toStdString().c_str()));
+			}
 		}
 	}
 

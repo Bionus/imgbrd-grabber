@@ -24,30 +24,23 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 	QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
 
 	const bool fromQueue = !CustomNetworkAccessManager::NextFiles.isEmpty();
-	if (fromQueue)
-	{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
+	if (fromQueue) {
+		path = CustomNetworkAccessManager::NextFiles.dequeue();
+	}
 
 	// Error testing
-	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie") || path == QLatin1String("redirect"))
-	{
+	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie") || path == QLatin1String("redirect")) {
 		auto *reply = new QCustomNetworkReply(this);
-		if (path == QLatin1String("404"))
-		{
+		if (path == QLatin1String("404")) {
 			reply->setHttpStatusCode(404, "Not Found");
 			reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
-		}
-		else if (path == QLatin1String("cookie"))
-		{
+		} else if (path == QLatin1String("cookie")) {
 			cookieJar()->insertCookie(QNetworkCookie("test_cookie", "test_value"));
 			reply->setHttpStatusCode(200, "OK");
-		}
-		else if (path == QLatin1String("redirect"))
-		{
+		} else if (path == QLatin1String("redirect")) {
 			reply->setAttribute(QNetworkRequest::RedirectionTargetAttribute, QUrl("https://www.test-redirect.com"));
 			reply->setHttpStatusCode(200, "OK");
-		}
-		else
-		{
+		} else {
 			reply->setHttpStatusCode(500, "Internal Server Error");
 			reply->setNetworkError(QNetworkReply::UnknownNetworkError, QStringLiteral("Internal Server Error"));
 		}
@@ -59,16 +52,13 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 	QFile f(path);
 	const bool opened = f.open(QFile::ReadOnly);
 	const bool logFilename = !opened || !fromQueue;
-	if (!opened)
-	{
+	if (!opened) {
 		md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		f.setFileName("tests/resources/pages/" + host + "/" + md5 + "." + ext);
 
-		if (!f.open(QFile::ReadOnly))
-		{
+		if (!f.open(QFile::ReadOnly)) {
 			// LCOV_EXCL_START
-			if (ext != QLatin1String("jpg") && ext != QLatin1String("png"))
-			{
+			if (ext != QLatin1String("jpg") && ext != QLatin1String("png")) {
 				qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
 				return nullptr;
 			}
@@ -77,14 +67,16 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 			f.setFileName(QStringLiteral("tests/resources/image_1x1.png"));
 
 			// LCOV_EXCL_START
-			if (!f.open(QFile::ReadOnly))
+			if (!f.open(QFile::ReadOnly)) {
 				return nullptr;
+			}
 			// LCOV_EXCL_STOP
 		}
 	}
 
-	if (logFilename)
-	{ qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName()); }
+	if (logFilename) {
+		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
+	}
 	const QByteArray content = f.readAll();
 
 	auto *reply = new QCustomNetworkReply(this);
@@ -97,8 +89,9 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 
 QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 {
-	if (isTestModeEnabled())
+	if (isTestModeEnabled()) {
 		return makeTestReply(request);
+	}
 
 	log(QStringLiteral("Loading `%1`").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
 	return QNetworkAccessManager::get(request);
@@ -106,8 +99,9 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 
 QNetworkReply *CustomNetworkAccessManager::post(const QNetworkRequest &request, const QByteArray &data)
 {
-	if (isTestModeEnabled())
+	if (isTestModeEnabled()) {
 		return makeTestReply(request);
+	}
 
 	log(QStringLiteral("Posting to `%1`").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
 	return QNetworkAccessManager::post(request, data);

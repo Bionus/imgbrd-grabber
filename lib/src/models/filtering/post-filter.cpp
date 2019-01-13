@@ -5,11 +5,11 @@
 
 PostFilter::PostFilter(const QStringList &filters)
 {
-	for (const QString &filter : filters)
-	{
+	for (const QString &filter : filters) {
 		auto fil = QSharedPointer<Filter>(FilterFactory::build(filter));
-		if (!fil.isNull())
+		if (!fil.isNull()) {
 			m_filters.append(fil);
+		}
 	}
 }
 
@@ -21,11 +21,11 @@ int PostFilter::count() const
 QStringList PostFilter::match(const QMap<QString, Token> &tokens) const
 {
 	QStringList ret;
-	for (const auto &filter : m_filters)
-	{
+	for (const auto &filter : m_filters) {
 		QString err = filter->match(tokens);
-		if (!err.isEmpty())
+		if (!err.isEmpty()) {
 			ret.append(err);
+		}
 	}
 	return ret;
 }

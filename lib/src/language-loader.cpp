@@ -17,15 +17,13 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 
 	QStringList languageFiles = QDir(m_path).entryList(QStringList() << QStringLiteral("*.qm"), QDir::Files);
 	QMap<QString, QString> languages;
-	for (const QString &languageFile : languageFiles)
-	{
+	for (const QString &languageFile : languageFiles) {
 		const QString lang = languageFile.left(languageFile.length() - 3);
 		const QString fullLang = fullLanguages.value(lang, lang).toString();
 		languages[lang] = fullLang;
 	}
 
-	if (!languages.contains("English"))
-	{
+	if (!languages.contains("English")) {
 		languages[""] = "English";
 	}
 

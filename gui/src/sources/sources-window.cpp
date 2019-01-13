@@ -66,23 +66,25 @@ void SourcesWindow::checkUpdate()
 {
 	bool oneChecked = false;
 	bool oneUnchecked = false;
-	for (const auto &row : qAsConst(m_rows))
-	{
-		if (row.check->isChecked())
-		{ oneChecked = true; }
-		else
-		{ oneUnchecked = true; }
+	for (const auto &row : qAsConst(m_rows)) {
+		if (row.check->isChecked()) {
+			oneChecked = true;
+		} else {
+			oneUnchecked = true;
+		}
 	}
-	if (oneChecked && !oneUnchecked)
-	{ ui->checkBox->setCheckState(Qt::Checked); }
-	else if (!oneChecked && oneUnchecked)
-	{ ui->checkBox->setCheckState(Qt::Unchecked); }
-	else
-	{ ui->checkBox->setCheckState(Qt::PartiallyChecked); }
+	if (oneChecked && !oneUnchecked) {
+		ui->checkBox->setCheckState(Qt::Checked);
+	} else if (!oneChecked && oneUnchecked) {
+		ui->checkBox->setCheckState(Qt::Unchecked);
+	} else {
+		ui->checkBox->setCheckState(Qt::PartiallyChecked);
+	}
 
 	// Update preset save button
-	if (ui->comboPresets->currentIndex() > 0)
-	{ ui->buttonPresetSave->setEnabled(true); }
+	if (ui->comboPresets->currentIndex() > 0) {
+		ui->buttonPresetSave->setEnabled(true);
+	}
 }
 
 /**
@@ -90,8 +92,9 @@ void SourcesWindow::checkUpdate()
  */
 void SourcesWindow::checkClicked()
 {
-	if (ui->checkBox->checkState() != Qt::Unchecked)
-	{ ui->checkBox->setCheckState(Qt::Checked); }
+	if (ui->checkBox->checkState() != Qt::Unchecked) {
+		ui->checkBox->setCheckState(Qt::Checked);
+	}
 	checkAll(ui->checkBox->checkState());
 }
 
@@ -123,11 +126,11 @@ void SourcesWindow::settingsSite(const QString &site)
 void SourcesWindow::deleteSite(const QString &site)
 {
 	int index = -1;
-	for (int i = 0; i < m_rows.count(); ++i)
-	{
+	for (int i = 0; i < m_rows.count(); ++i) {
 		const auto &row = m_rows[i];
-		if (row.site->url() != site)
+		if (row.site->url() != site) {
 			continue;
+		}
 
 		row.check->hide();
 		ui->gridLayout->removeWidget(row.check);
@@ -137,8 +140,7 @@ void SourcesWindow::deleteSite(const QString &site)
 		ui->gridLayout->removeWidget(row.button);
 		row.button->deleteLater();
 
-		for (QLabel *label : qAsConst(row.labels))
-		{
+		for (QLabel *label : qAsConst(row.labels)) {
 			label->hide();
 			ui->gridLayout->removeWidget(label);
 			label->deleteLater();
@@ -150,8 +152,7 @@ void SourcesWindow::deleteSite(const QString &site)
 		index = i;
 	}
 
-	if (index != -1)
-	{
+	if (index != -1) {
 		m_rows.removeAt(index);
 		m_siteRows.remove(site);
 	}
@@ -175,16 +176,14 @@ void SourcesWindow::updateCheckboxes()
 
 void SourcesWindow::removeCheckboxes()
 {
-	for (auto &row : qAsConst(m_rows))
-	{
+	for (auto &row : qAsConst(m_rows)) {
 		ui->gridLayout->removeWidget(row.check);
 		row.check->deleteLater();
 
 		ui->gridLayout->removeWidget(row.button);
 		row.button->deleteLater();
 
-		for (QLabel *label : qAsConst(row.labels))
-		{
+		for (QLabel *label : qAsConst(row.labels)) {
 			ui->gridLayout->removeWidget(label);
 			label->deleteLater();
 		}
@@ -201,8 +200,7 @@ void SourcesWindow::addCheckboxes()
 	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
 	int i = 0;
-	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
-	{
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
 		Site *site = it.value();
 
 		SourceRow row;
@@ -216,10 +214,8 @@ void SourcesWindow::addCheckboxes()
 			ui->gridLayout->addWidget(check, i, 0);
 
 		int n = 1;
-		if (t != "hide")
-		{
-			if (t == "icon" || t == "both")
-			{
+		if (t != "hide") {
+			if (t == "icon" || t == "both") {
 				QAffiche *image = new QAffiche(it.key(), 0, QColor(), this);
 				image->setPixmap(QPixmap(site->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
 				image->setCursor(Qt::PointingHandCursor);
@@ -228,8 +224,7 @@ void SourcesWindow::addCheckboxes()
 				row.labels.append(image);
 				n++;
 			}
-			if (t == "text" || t == "both")
-			{
+			if (t == "text" || t == "both") {
 				QLabel *type = new QLabel(site->getSource()->getName(), this);
 				ui->gridLayout->addWidget(type, i, n);
 				row.labels.append(type);
@@ -251,14 +246,11 @@ void SourcesWindow::addCheckboxes()
 	}
 
 	/*int n =  0+(t == "icon" || t == "both")+(t == "text" || t == "both");
-	for (int i = 0; i < m_checks.count(); i++)
-	{
+	for (int i = 0; i < m_checks.count(); i++) {
 		ui->gridLayout->addWidget(m_checks.at(i), i, 0);
 		m_checks.at(i)->show();
-		if (!m_labels.isEmpty())
-		{
-			for (int r = 0; r < n; r++)
-			{
+		if (!m_labels.isEmpty()) {
+			for (int r = 0; r < n; r++) {
 				ui->gridLayout->addWidget(m_labels.at(i*n+r), i*n+r, 1);
 				m_labels.at(i*n+r)->show();
 			}
@@ -275,14 +267,14 @@ void SourcesWindow::addCheckboxes()
  */
 void SourcesWindow::checkAll(int check)
 {
-	for (const auto &row : qAsConst(m_rows))
+	for (const auto &row : qAsConst(m_rows)) {
 		row.check->setChecked(check == 2);
+	}
 }
 
 void SourcesWindow::checkForUpdates()
 {
-	for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it)
-	{
+	for (auto it = m_sources.constBegin(); it != m_sources.constEnd(); ++it) {
 		const SourceUpdater &updater = it.value()->getUpdater();
 		connect(&updater, &SourceUpdater::finished, this, &SourcesWindow::checkForUpdatesReceived);
 		updater.checkForUpdates();
@@ -290,14 +282,15 @@ void SourcesWindow::checkForUpdates()
 }
 void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
 {
-	if (!isNew)
+	if (!isNew) {
 		return;
+	}
 
 	Source *source = m_sources[sourceName];
-	for (Site *site : source->getSites())
-	{
-		if (!m_siteRows.contains(site->url()))
+	for (Site *site : source->getSites()) {
+		if (!m_siteRows.contains(site->url())) {
 			continue;
+		}
 
 		int pos = m_siteRows.value(site->url());
 		m_rows[pos].labels[0]->setPixmap(QPixmap(":/images/icons/update.png"));
@@ -314,23 +307,25 @@ void SourcesWindow::checkForSourceIssues()
 }
 void SourcesWindow::checkForSourceIssuesReceived()
 {
-	if (m_checkForSourceReply->error() != QNetworkReply::NoError)
+	if (m_checkForSourceReply->error() != QNetworkReply::NoError) {
 		return;
+	}
 
 	QString source = m_checkForSourceReply->readAll();
 	QStringList issues = source.split("\n");
 
-	for (const QString &issue : issues)
-	{
+	for (const QString &issue : issues) {
 		const int index = issue.indexOf(':');
-		if (issue.isEmpty() || index < 0)
+		if (issue.isEmpty() || index < 0) {
 			return;
+		}
 
 		const QString &site = issue.left(index).trimmed();
 		const QString &desc = issue.mid(index + 1).trimmed();
 
-		if (!m_siteRows.contains(site))
+		if (!m_siteRows.contains(site)) {
 			continue;
+		}
 
 		int pos = m_siteRows.value(site);
 		m_rows[pos].labels[0]->setPixmap(QPixmap(":/images/icons/warning.png"));
@@ -345,8 +340,7 @@ QMap<QString, QStringList> SourcesWindow::loadPresets(QSettings *settings) const
 	QMap<QString, QStringList> ret;
 
 	const int size = settings->beginReadArray("SourcePresets");
-	for (int i = 0; i < size; ++i)
-	{
+	for (int i = 0; i < size; ++i) {
 		settings->setArrayIndex(i);
 		const QString name = settings->value("name").toString();
 		const QStringList sources = settings->value("sources").toStringList();
@@ -361,8 +355,7 @@ void SourcesWindow::savePresets(QSettings *settings) const
 {
 	settings->beginWriteArray("SourcePresets");
 	int i = 0;
-	for (auto it = m_presets.constBegin(); it != m_presets.constEnd(); ++it)
-	{
+	for (auto it = m_presets.constBegin(); it != m_presets.constEnd(); ++it) {
 		settings->setArrayIndex(i);
 		settings->setValue("name", it.key());
 		settings->setValue("sources", it.value());
@@ -374,9 +367,11 @@ void SourcesWindow::savePresets(QSettings *settings) const
 QList<Site*> SourcesWindow::selected() const
 {
 	QList<Site*> selected;
-	for (const auto &row : qAsConst(m_rows))
-		if (row.check->isChecked())
+	for (const auto &row : qAsConst(m_rows)) {
+		if (row.check->isChecked()) {
 			selected.append(row.site);
+		}
+	}
 	return selected;
 }
 
@@ -397,14 +392,16 @@ void SourcesWindow::addPreset()
 {
 	bool ok;
 	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, QString(), &ok);
-	if (!ok || name.isEmpty())
+	if (!ok || name.isEmpty()) {
 		return;
+	}
 
 	const QList<Site*> &selectedSites = selected();
 	QStringList sel;
 	sel.reserve(selectedSites.count());
-	for (Site *site : selectedSites)
+	for (Site *site : selectedSites) {
 		sel.append(site->url());
+	}
 	m_presets.insert(name, sel);
 
 	showPresets();
@@ -422,8 +419,9 @@ void SourcesWindow::editPreset()
 	bool ok;
 	QString oldName = ui->comboPresets->currentText();
 	QString newName = QInputDialog::getText(this, tr("Edit preset"), tr("Name"), QLineEdit::Normal, oldName, &ok);
-	if (!ok || newName.isEmpty())
+	if (!ok || newName.isEmpty()) {
 		return;
+	}
 
 	m_presets.insert(newName, m_presets[oldName]);
 	m_presets.remove(oldName);
@@ -438,8 +436,9 @@ void SourcesWindow::savePreset()
 
 	QStringList sel;
 	sel.reserve(selectedSites.count());
-	for (Site *site : selectedSites)
+	for (Site *site : selectedSites) {
 		sel.append(site->url());
+	}
 	m_presets[ui->comboPresets->currentText()] = sel;
 
 	ui->buttonPresetSave->setEnabled(false);
@@ -450,11 +449,11 @@ void SourcesWindow::selectPreset(const QString &name)
 {
 	bool isPreset = ui->comboPresets->currentIndex() > 0;
 
-	if (isPreset)
-	{
+	if (isPreset) {
 		const QStringList &preset = m_presets[name];
-		for (const auto &row : qAsConst(m_rows))
+		for (const auto &row : qAsConst(m_rows)) {
 			row.check->setChecked(preset.contains(row.site->url()));
+		}
 	}
 
 	ui->buttonPresetSave->setEnabled(false);

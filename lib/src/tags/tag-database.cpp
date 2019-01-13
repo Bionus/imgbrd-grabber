@@ -33,21 +33,23 @@ bool TagDatabase::load()
 
 bool TagDatabase::loadTypes()
 {
-	if (!m_tagTypes.isEmpty())
+	if (!m_tagTypes.isEmpty()) {
 		return true;
+	}
 
 	QFile f(m_typeFile);
-	if (!f.open(QFile::ReadOnly | QFile::Text))
+	if (!f.open(QFile::ReadOnly | QFile::Text)) {
 		return false;
+	}
 
 	QTextStream in(&f);
-	while (!in.atEnd())
-	{
+	while (!in.atEnd()) {
 		QString line = in.readLine();
 
 		QStringList data = line.split(',');
-		if (data.count() != 2)
+		if (data.count() != 2) {
 			continue;
+		}
 
 		m_tagTypes.insert(data[0].toInt(), TagType(data[1]));
 	}

@@ -9,23 +9,20 @@ Filter *FilterFactory::build(QString filter)
 	bool invert = false;
 
 	// Invert the filter by prepending '-'
-	if (filter.startsWith('-'))
-	{
+	if (filter.startsWith('-')) {
 		filter = filter.right(filter.length() - 1);
 		invert = true;
 	}
 
 	// Tokens
-	if (filter.startsWith('%') && filter.endsWith('%'))
-	{
+	if (filter.startsWith('%') && filter.endsWith('%')) {
 		const QString token = filter.mid(1, filter.length() - 2);
 
 		return new TokenFilter(token, invert);
 	}
 
 	// Meta-tags
-	if (filter.contains(":"))
-	{
+	if (filter.contains(":")) {
 		const QString type = filter.section(':', 0, 0).toLower();
 		const QString val = filter.section(':', 1).toLower();
 
@@ -33,8 +30,7 @@ Filter *FilterFactory::build(QString filter)
 	}
 
 	// Tags
-	if (!filter.isEmpty())
-	{
+	if (!filter.isEmpty()) {
 		return new TagFilter(filter.trimmed(), invert);
 	}
 

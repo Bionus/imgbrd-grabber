@@ -99,8 +99,7 @@ void SiteTest::testCookies()
 
 	QList<QVariant> cookiesVariant;
 	cookiesVariant.reserve(cookies.count());
-	for (const QNetworkCookie &cookie : cookies)
-	{
+	for (const QNetworkCookie &cookie : cookies) {
 		cookiesVariant.append(cookie.toRawForm());
 	}
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);

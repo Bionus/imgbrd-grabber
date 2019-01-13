@@ -54,8 +54,7 @@ void Md5Fix::cancel()
 
 void Md5Fix::workerMaximumSet(int max)
 {
-	if (max > 0)
-	{
+	if (max > 0) {
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(max);
 		ui->progressBar->show();
@@ -92,8 +91,7 @@ void Md5Fix::start()
 
 	// Check that directory exists
 	QString dir = ui->lineFolder->text();
-	if (!QDir(dir).exists())
-	{
+	if (!QDir(dir).exists()) {
 		error(this, tr("This folder does not exist."));
 		ui->buttonStart->setEnabled(true);
 		return;
@@ -101,8 +99,7 @@ void Md5Fix::start()
 
 	// Make sure the input is valid
 	bool force = ui->radioForce->isChecked();
-	if (!force && !ui->lineFilename->text().contains("%md5%"))
-	{
+	if (!force && !ui->lineFilename->text().contains("%md5%")) {
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonStart->setEnabled(true);
 		return;
@@ -110,8 +107,9 @@ void Md5Fix::start()
 
 	// Suffixes
 	QStringList suffixes = ui->lineSuffixes->text().split(',');
-	for (QString &suffix : suffixes)
+	for (QString &suffix : suffixes) {
 		suffix = suffix.trimmed();
+	}
 
 	emit startWorker(dir, ui->lineFilename->text(), suffixes, force);
 }

@@ -32,12 +32,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->setupUi(this);
 
 	auto auth = dynamic_cast<FieldAuth*>(site->getAuth());
-	if (auth != nullptr)
-	{
-		for (AuthField *field : auth->fields())
-		{
-			if (field->type() == AuthField::Hash)
-			{
+	if (auth != nullptr) {
+		for (AuthField *field : auth->fields()) {
+			if (field->type() == AuthField::Hash) {
 				auto hashField = dynamic_cast<AuthHashField*>(field);
 				m_salt = hashField->salt();
 				break;
@@ -70,8 +67,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	static const QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
 	QStringList sources = QStringList() << "";
 	QStringList opts = QStringList() << "";
-	for (Api *api : site->getSource()->getApis())
-	{
+	for (Api *api : site->getSource()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 		opts.append(api->getName());
@@ -108,18 +104,18 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
-	if (m_salt.isEmpty())
-	{ ui->buttonAuthHash->hide(); }
-	else
-	{ ui->lineAuthPassword->setEchoMode(QLineEdit::Normal); }
+	if (m_salt.isEmpty()) {
+		ui->buttonAuthHash->hide();
+	} else {
+		ui->lineAuthPassword->setEchoMode(QLineEdit::Normal);
+	}
 
 	// Cookies
 	QList<QNetworkCookie> cookies = site->cookies();
 	ui->tableCookies->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableCookies->setRowCount(cookies.count());
 	int cookieRow = 0;
-	for (const QNetworkCookie &cookie : site->cookies())
-	{
+	for (const QNetworkCookie &cookie : site->cookies()) {
 		ui->tableCookies->setItem(cookieRow, 0, new QTableWidgetItem(QString(cookie.name())));
 		ui->tableCookies->setItem(cookieRow, 1, new QTableWidgetItem(QString(cookie.value())));
 		cookieRow++;
@@ -130,16 +126,14 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableHeaders->setRowCount(headers.count());
 	int headerRow = 0;
-	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
-	{
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
 		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(it.key()));
 		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value().toString()));
 		headerRow++;
 	}
 
 	// Hide login testing buttons if we can't tests this site's login
-	if (!m_site->canTestLogin())
-	{
+	if (!m_site->canTestLogin()) {
 		ui->widgetTestCredentials->hide();
 		ui->widgetTestLogin->hide();
 	}
@@ -162,8 +156,7 @@ void SourcesSettingsWindow::addHeader()
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
 	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_salt));
-	if (!password.isEmpty())
-	{
+	if (!password.isEmpty()) {
 		QString val = QString(m_salt).replace("%password%", password);
 		ui->lineAuthPassword->setText(QCryptographicHash::hash(val.toUtf8(), QCryptographicHash::Sha1).toHex());
 	}
@@ -172,8 +165,7 @@ void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 void SourcesSettingsWindow::deleteSite()
 {
 	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
-	{
+	if (reponse == QMessageBox::Yes) {
 		QFile f(m_site->getSource()->getPath() + "/sites.txt");
 		f.open(QIODevice::ReadOnly);
 		QString sites = f.readAll();
@@ -248,8 +240,7 @@ void SourcesSettingsWindow::saveSettings()
 
 	QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
 	QStringList sources = QStringList() << "";
-	for (Api *api : m_site->getSource()->getApis())
-	{
+	for (Api *api : m_site->getSource()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
 	}
@@ -266,11 +257,12 @@ void SourcesSettingsWindow::saveSettings()
 
 	// Ensure at least one source is selected
 	bool allEmpty = true;
-	for (const QString &chos : qAsConst(chosen))
-		if (!chos.isEmpty())
+	for (const QString &chos : qAsConst(chosen)) {
+		if (!chos.isEmpty()) {
 			allEmpty = false;
-	if (allEmpty)
-	{
+		}
+	}
+	if (allEmpty) {
 		QMessageBox::critical(this, tr("Error"), tr("You should at least select one source"));
 		return;
 	}
@@ -300,12 +292,12 @@ void SourcesSettingsWindow::saveSettings()
 
 	// Cookies
 	QList<QVariant> cookies;
-	for (int i = 0; i < ui->tableCookies->rowCount(); ++i)
-	{
+	for (int i = 0; i < ui->tableCookies->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableCookies->item(i, 0);
 		QTableWidgetItem *value = ui->tableCookies->item(i, 1);
-		if (key == nullptr || key->text().isEmpty())
+		if (key == nullptr || key->text().isEmpty()) {
 			continue;
+		}
 
 		QNetworkCookie cookie;
 		cookie.setName(key->text().toLatin1());
@@ -316,12 +308,12 @@ void SourcesSettingsWindow::saveSettings()
 
 	// Headers
 	QMap<QString, QVariant> headers;
-	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
-	{
+	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
-		if (key == nullptr || key->text().isEmpty())
+		if (key == nullptr || key->text().isEmpty()) {
 			continue;
+		}
 
 		headers.insert(key->text(), value != nullptr ? value->text().toLatin1() : "");
 	}

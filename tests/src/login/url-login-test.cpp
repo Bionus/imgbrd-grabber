@@ -75,8 +75,9 @@ void UrlLoginTest::testLoginFailure()
 
 	QVERIFY(login.isTestable());
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; ++i) {
 		CustomNetworkAccessManager::NextFiles.enqueue("404");
+	}
 
 	QSignalSpy spy(&login, SIGNAL(loggedIn(Login::Result)));
 	login.login();

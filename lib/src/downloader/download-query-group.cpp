@@ -14,7 +14,7 @@ DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, SearchQuery query, i
 
 DownloadQueryGroup::DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
 	: DownloadQuery(site, filename, path), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
-{ }
+{}
 
 
 void DownloadQueryGroup::write(QJsonObject &json) const
@@ -51,20 +51,19 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 	// Post filtering
 	postFiltering.clear();
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFiltering.append(tag.toString());
+	}
 
 	// Get site
 	const QString siteName = json["site"].toString();
-	if (!sites.contains(siteName))
-	{
+	if (!sites.contains(siteName)) {
 		return false;
 	}
 	site = sites[siteName];
 
 	// Validate values
-	if (page < 1 || perpage < 1 || total < 1)
-	{
+	if (page < 1 || perpage < 1 || total < 1) {
 		return false;
 	}
 

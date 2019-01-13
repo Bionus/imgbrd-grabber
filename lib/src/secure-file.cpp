@@ -22,8 +22,7 @@ quint64 SecureFile::generateIntKey(const QString &key) const
 
 void SecureFile::write(const QByteArray &data)
 {
-	if (m_file.open(QFile::WriteOnly))
-	{
+	if (m_file.open(QFile::WriteOnly)) {
 		m_file.write(m_encryptor.encryptToByteArray(data));
 		m_file.close();
 	}
@@ -32,8 +31,7 @@ void SecureFile::write(const QByteArray &data)
 QByteArray SecureFile::readAll()
 {
 	QByteArray data;
-	if (m_file.open(QFile::ReadOnly))
-	{
+	if (m_file.open(QFile::ReadOnly)) {
 		data = m_encryptor.decryptToByteArray(m_file.readAll());
 		m_file.close();
 	}

@@ -22,18 +22,17 @@ bool HttpLogin::isTestable() const
 void HttpLogin::login()
 {
 	QUrlQuery query;
-	for (AuthField *field : m_auth->fields())
-	{ query.addQueryItem(field->key(), field->value(m_settings)); }
+	for (AuthField *field : m_auth->fields()) {
+		query.addQueryItem(field->key(), field->value(m_settings));
+	}
 
-	if (m_loginReply != nullptr)
-	{
+	if (m_loginReply != nullptr) {
 		m_loginReply->abort();
 		m_loginReply->deleteLater();
 	}
 
 	QNetworkReply *reply = getReply(m_auth->url(), query);
-	if (reply == nullptr)
-	{
+	if (reply == nullptr) {
 		emit loggedIn(Result::Failure);
 		return;
 	}
@@ -49,10 +48,8 @@ void HttpLogin::loginFinished()
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
 	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());
 
-	for (const QNetworkCookie &cookie : cookies)
-	{
-		if (cookie.name() == cookieName && !cookie.value().isEmpty() && cookie.value() != "0")
-		{
+	for (const QNetworkCookie &cookie : cookies) {
+		if (cookie.name() == cookieName && !cookie.value().isEmpty() && cookie.value() != "0") {
 			emit loggedIn(Result::Success);
 			return;
 		}

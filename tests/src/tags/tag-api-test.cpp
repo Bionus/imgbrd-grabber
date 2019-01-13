@@ -26,8 +26,9 @@ TagApi::LoadResult load(TagApi *api)
 	// Wait for downloader
 	QSignalSpy spy(api, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
 	api->load(false);
-	if (!spy.wait())
+	if (!spy.wait()) {
 		return TagApi::LoadResult::Error;
+	}
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();

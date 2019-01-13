@@ -12,8 +12,9 @@ QDateTime fileCreationDate(const QString &path)
 		return fi.created();
 	#else
 		QDateTime d = fi.birthTime();
-		if (d.isValid())
+		if (d.isValid()) {
 			return d;
+		}
 		return fi.metadataChangeTime();
 	#endif
 }
@@ -52,8 +53,9 @@ void FunctionsTest::testFixFilenameLinux()
 static QByteArray readFile(const QString &path)
 {
 	QFile f(path);
-	if (!f.open(QFile::ReadOnly))
+	if (!f.open(QFile::ReadOnly)) {
 		return QByteArray();
+	}
 
 	return f.readAll();
 }
@@ -73,10 +75,11 @@ void FunctionsTest::testGetExtensionFromHeader()
 static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
 {
 	QFont font(name);
-	if (usePixels)
+	if (usePixels) {
 		font.setPixelSize(size);
-	else
+	} else {
 		font.setPointSize(size);
+	}
 	font.setWeight(weight);
 	font.setStyle(style);
 	return font;

@@ -138,8 +138,9 @@ void TagStylistTest::assertSort(const QString &sort, const QStringList &expected
 
 	QString format = "<a href=\"%1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">%1</a>";
 	QStringList expected;
-	for (const QString &tag : expectedOrder)
+	for (const QString &tag : expectedOrder) {
 		expected.append(format.arg(tag));
+	}
 
 	QCOMPARE(actual, expected);
 }

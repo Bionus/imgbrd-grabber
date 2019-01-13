@@ -20,29 +20,28 @@ bool isFavorited(const QStringList &tags, const QList<Favorite> &favorites)
 
 const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 {
-	if (m_tokens.isEmpty())
-	{
+	if (m_tokens.isEmpty()) {
 		auto tokens = generateTokens(profile);
 
 		// Custom tokens (if the tokens contain tags)
-		if (tokens.contains("tags"))
-		{
+		if (tokens.contains("tags")) {
 			const QStringList &tags = tokens["tags"].value().toStringList();
 			QMap<QString, QStringList> scustom = getCustoms(profile->getSettings());
 			QMap<QString, QStringList> custom;
-			for (const QString &tag : tags)
-			{
-				for (auto it = scustom.constBegin(); it != scustom.constEnd(); ++it)
-				{
+			for (const QString &tag : tags) {
+				for (auto it = scustom.constBegin(); it != scustom.constEnd(); ++it) {
 					const QString &key = it.key();
-					if (!custom.contains(key))
-					{ custom.insert(key, QStringList()); }
-					if (it.value().contains(tag, Qt::CaseInsensitive))
-					{ custom[key].append(tag); }
+					if (!custom.contains(key)) {
+						custom.insert(key, QStringList());
+					}
+					if (it.value().contains(tag, Qt::CaseInsensitive)) {
+						custom[key].append(tag);
+					}
 				}
 			}
-			for (auto it = custom.constBegin(); it != custom.constEnd(); ++it)
-			{ tokens.insert(it.key(), Token(it.value())); }
+			for (auto it = custom.constBegin(); it != custom.constEnd(); ++it) {
+				tokens.insert(it.key(), Token(it.value()));
+			}
 		}
 
 		// Use a lazy token for Grabber meta-tags as it can be expensive to calculate
@@ -52,10 +51,8 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 			Filename filename(profile->getSettings()->value("Save/filename").toString());
 			QStringList paths = filename.path(tokens, profile, pth);
 			bool alreadyExists = false;
-			for (const QString &path : paths)
-			{
-				if (QFile::exists(path))
-				{
+			for (const QString &path : paths) {
+				if (QFile::exists(path)) {
 					alreadyExists = true;
 					break;
 				}
@@ -64,12 +61,15 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 
 			// Generate corresponding combination
 			QStringList metas;
-			if (alreadyExists)
-			{ metas.append("alreadyExists"); }
-			if (inMd5List)
-			{ metas.append("inMd5List"); }
-			if (alreadyExists || inMd5List)
-			{ metas.append("downloaded"); }
+			if (alreadyExists) {
+				metas.append("alreadyExists");
+			}
+			if (inMd5List) {
+				metas.append("inMd5List");
+			}
+			if (alreadyExists || inMd5List) {
+				metas.append("downloaded");
+			}
 
 			// Favorited
 			if (tokens.contains("tags")) {

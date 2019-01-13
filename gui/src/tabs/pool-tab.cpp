@@ -37,8 +37,9 @@ PoolTab::PoolTab(Profile *profile, MainWindow *parent)
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites.keys();
-	for (const QString &source : sources)
-	{ ui->comboSites->addItem(source); }
+	for (const QString &source : sources) {
+		ui->comboSites->addItem(source);
+	}
 
 	// Search field
 	m_search = createAutocomplete();
@@ -118,16 +119,18 @@ bool PoolTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	QStringList postFilters;
 	postFilters.reserve(jsonPostFilters.count());
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
+	}
 	setPostFilter(postFilters.join(' '));
 
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	QStringList tags;
 	tags.reserve(jsonTags.count());
-	for (auto tag : jsonTags)
+	for (auto tag : jsonTags) {
 		tags.append(tag.toString());
+	}
 	setTags(tags.join(' '), preload);
 
 	return true;
@@ -166,8 +169,9 @@ void PoolTab::getAll()
 	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
+	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 		return;
+	}
 
 	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
 	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
@@ -193,15 +197,17 @@ void PoolTab::setPool(int id, const QString &site)
 	activateWindow();
 	ui->spinPool->setValue(id);
 	const int index = ui->comboSites->findText(site);
-	if (index != -1)
-	{ ui->comboSites->setCurrentIndex(index); }
+	if (index != -1) {
+		ui->comboSites->setCurrentIndex(index);
+	}
 	load();
 }
 void PoolTab::setSite(const QString &site)
 {
 	const int index = ui->comboSites->findText(site);
-	if (index != -1)
-	{ ui->comboSites->setCurrentIndex(index); }
+	if (index != -1) {
+		ui->comboSites->setCurrentIndex(index);
+	}
 }
 
 void PoolTab::focusSearch()
@@ -216,8 +222,7 @@ QString PoolTab::tags() const
 void PoolTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 

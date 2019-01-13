@@ -12,8 +12,9 @@ void ImageTest::init()
 {
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
+	if (!tmp.exists("tmp")) {
 		tmp.mkdir("tmp");
+	}
 
 	QFile::remove("tests/resources/md5s.txt");
 
@@ -217,8 +218,9 @@ void ImageTest::testSave()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 
 	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
@@ -244,8 +246,9 @@ void ImageTest::testSaveAlreadyExists()
 {
 	// Create file if not exists
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (!file.open(QFile::Truncate | QFile::WriteOnly))
+	if (!file.open(QFile::Truncate | QFile::WriteOnly)) {
 		QFAIL("Cannot create file");
+	}
 
 	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
@@ -257,8 +260,9 @@ void ImageTest::testSaveDuplicate()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 
 	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res;
@@ -293,11 +297,13 @@ void ImageTest::testSaveLog()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 	QFile logFile("tests/resources/tmp/savelog.txt");
-	if (logFile.exists())
+	if (logFile.exists()) {
 		logFile.remove();
+	}
 
 	m_settings->setValue("LogFiles/0/locationType", 1);
 	m_settings->setValue("LogFiles/0/uniquePath", logFile.fileName());

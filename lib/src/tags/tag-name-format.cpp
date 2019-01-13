@@ -25,8 +25,9 @@ QString TagNameFormat::formatted(const QStringList &words) const
 {
 	QStringList res;
 	res.reserve(words.count());
-	for (int i = 0; i < words.length(); ++i)
+	for (int i = 0; i < words.length(); ++i) {
 		res.append(formatted(words[i], i));
+	}
 
 	return res.join(m_wordSeparator);
 }
@@ -42,8 +43,9 @@ QString TagNameFormat::formatted(const QString &word, int index) const
 		case TagNameFormat::UpperFirst:
 		{
 			auto res = word.toLower();
-			if (index == 0 || m_caseFormat == TagNameFormat::Upper)
+			if (index == 0 || m_caseFormat == TagNameFormat::Upper) {
 				res[0] = res[0].toUpper();
+			}
 			return res;
 		}
 

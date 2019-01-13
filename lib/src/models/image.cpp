@@ -28,7 +28,7 @@
 
 Image::Image()
 	: m_profile(nullptr), m_extensionRotator(nullptr)
-{ }
+{}
 
 // TODO(Bionus): clean up this mess
 Image::Image(const Image &other)
@@ -86,8 +86,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 	m_settings = m_profile->getSettings();
 
 	// Parents
-	if (m_parentSite == nullptr)
-	{
+	if (m_parentSite == nullptr) {
 		log(QStringLiteral("Image has nullptr parent, aborting creation."));
 		return;
 	}
@@ -121,8 +120,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 		{ Image::Size::Sample, "sample_" },
 		{ Image::Size::Thumbnail, "preview_" },
 	};
-	for (auto it = prefixes.constBegin(); it != prefixes.constEnd(); ++it)
-	{
+	for (auto it = prefixes.constBegin(); it != prefixes.constEnd(); ++it) {
 		const QString &prefix = it.value();
 
 		auto is = QSharedPointer<ImageSize>::create();
@@ -132,26 +130,26 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 			: QSize();
 		is->fileSize = details.contains(prefix + "file_size") ? details[prefix + "file_size"].toInt() : 0;
 
-		if (details.contains(prefix + "rect"))
-		{
+		if (details.contains(prefix + "rect")) {
 			const QStringList rect = details[prefix + "rect"].split(';');
-			if (rect.count() == 4)
-			{ is->rect = QRect(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt()); }
-			else
-			{ log("Invalid number of values for image rectangle", Logger::Error); }
+			if (rect.count() == 4) {
+				is->rect = QRect(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt());
+			} else {
+				log("Invalid number of values for image rectangle", Logger::Error);
+			}
 		}
 
 		m_sizes.insert(it.key(), is);
 	}
 
 	// Page url
-	if (details.contains("page_url"))
-	{ m_pageUrl = details["page_url"]; }
-	else
-	{
+	if (details.contains("page_url")) {
+		m_pageUrl = details["page_url"];
+	} else {
 		Api *api = m_parentSite->detailsApi();
-		if (api != nullptr)
-		{ m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url; }
+		if (api != nullptr) {
+			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url;
+		}
 	}
 	m_pageUrl = site->fixUrl(m_pageUrl).toString();
 
@@ -160,22 +158,20 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 
 	// Tags
 	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species" << "meta";
-	for (const QString &typ : types)
-	{
+	for (const QString &typ : types) {
 		const QString key = "tags_" + typ;
-		if (!details.contains(key))
+		if (!details.contains(key)) {
 			continue;
+		}
 
 		const TagType ttype(typ);
 		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
-		for (QString tg : t)
-		{
+		for (QString tg : t) {
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, ttype));
 		}
 	}
-	if (m_tags.isEmpty() && details.contains("tags"))
-	{
+	if (m_tags.isEmpty() && details.contains("tags")) {
 		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
 
 		// Automatically find tag separator and split the list
@@ -185,86 +181,84 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 			? tgs.split(", ", QString::SkipEmptyParts)
 			: tgs.split(" ", QString::SkipEmptyParts);
 
-		for (QString tg : t)
-		{
+		for (QString tg : t) {
 			tg.replace("&amp;", "&");
 
 			const int colon = tg.indexOf(':');
-			if (colon != -1)
-			{
+			if (colon != -1) {
 				const QString tp = tg.left(colon).toLower();
-				if (tp == "user")
-				{ m_author = tg.mid(colon + 1); }
-				else if (tp == "score")
-				{ m_score = tg.midRef(colon + 1).toInt(); }
-				else if (tp == "size")
-				{
+				if (tp == "user") {
+					m_author = tg.mid(colon + 1);
+				} else if (tp == "score") {
+					m_score = tg.midRef(colon + 1).toInt();
+				} else if (tp == "size") {
 					QStringList size = tg.mid(colon + 1).split('x');
-					if (size.size() == 2)
-					{ setSize(QSize(size[0].toInt(), size[1].toInt()), Size::Full); }
+					if (size.size() == 2) {
+						setSize(QSize(size[0].toInt(), size[1].toInt()), Size::Full);
+					}
+				} else if (tp == "rating") {
+					setRating(tg.mid(colon + 1));
+				} else {
+					m_tags.append(Tag(tg));
 				}
-				else if (tp == "rating")
-				{ setRating(tg.mid(colon + 1)); }
-				else
-				{ m_tags.append(Tag(tg)); }
+			} else {
+				m_tags.append(Tag(tg));
 			}
-			else
-			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
 	// Complete missing tag type information
 	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
-	for (const Tag &tag : qAsConst(m_tags))
-		if (tag.type().isUnknown())
+	for (const Tag &tag : qAsConst(m_tags)) {
+		if (tag.type().isUnknown()) {
 			unknownTags.append(tag.text());
+		}
+	}
 	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
-	for (Tag &tag : m_tags)
-		if (dbTypes.contains(tag.text()))
+	for (Tag &tag : m_tags) {
+		if (dbTypes.contains(tag.text())) {
 			tag.setType(dbTypes[tag.text()]);
+		}
+	}
 
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl;
 	const QString ext = getExtension(m_url);
-	if (details.contains("ext") && !details["ext"].isEmpty())
-	{
+	if (details.contains("ext") && !details["ext"].isEmpty()) {
 		const QString realExt = details["ext"];
-		if (ext != realExt)
-		{ setFileExtension(realExt); }
-	}
-	else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty())
-	{
+		if (ext != realExt) {
+			setFileExtension(realExt);
+		}
+	} else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty()) {
 		bool fixed = false;
 		const QString previewExt = getExtension(QUrl(details["preview_url"]));
-		if (!m_sampleUrl.isEmpty())
-		{
+		if (!m_sampleUrl.isEmpty()) {
 			// Guess extension from sample url
 			const QString sampleExt = getExtension(QUrl(details["sample_url"]));
-			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext)
-			{
+			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext) {
 				m_url = setExtension(m_url, sampleExt);
 				fixed = true;
 			}
 		}
 
 		// Guess the extension from the tags
-		if (!fixed)
-		{
-			if ((hasTag(QStringLiteral("swf")) || hasTag(QStringLiteral("flash"))) && ext != QLatin1String("swf"))
-			{ setFileExtension(QStringLiteral("swf")); }
-			else if ((hasTag(QStringLiteral("gif")) || hasTag(QStringLiteral("animated_gif"))) && ext != QLatin1String("webm") && ext != QLatin1String("mp4"))
-			{ setFileExtension(QStringLiteral("gif")); }
-			else if (hasTag(QStringLiteral("mp4")) && ext != QLatin1String("gif") && ext != QLatin1String("webm"))
-			{ setFileExtension(QStringLiteral("mp4")); }
-			else if (hasTag(QStringLiteral("animated_png")) && ext != QLatin1String("webm") && ext != QLatin1String("mp4"))
-			{ setFileExtension(QStringLiteral("png")); }
-			else if ((hasTag(QStringLiteral("webm")) || hasTag(QStringLiteral("animated"))) && ext != QLatin1String("gif") && ext != QLatin1String("mp4"))
-			{ setFileExtension(QStringLiteral("webm")); }
+		if (!fixed) {
+			if ((hasTag(QStringLiteral("swf")) || hasTag(QStringLiteral("flash"))) && ext != QLatin1String("swf")) {
+				setFileExtension(QStringLiteral("swf"));
+			} else if ((hasTag(QStringLiteral("gif")) || hasTag(QStringLiteral("animated_gif"))) && ext != QLatin1String("webm") && ext != QLatin1String("mp4")) {
+				setFileExtension(QStringLiteral("gif"));
+			} else if (hasTag(QStringLiteral("mp4")) && ext != QLatin1String("gif") && ext != QLatin1String("webm")) {
+				setFileExtension(QStringLiteral("mp4"));
+			} else if (hasTag(QStringLiteral("animated_png")) && ext != QLatin1String("webm") && ext != QLatin1String("mp4")) {
+				setFileExtension(QStringLiteral("png"));
+			} else if ((hasTag(QStringLiteral("webm")) || hasTag(QStringLiteral("animated"))) && ext != QLatin1String("gif") && ext != QLatin1String("mp4")) {
+				setFileExtension(QStringLiteral("webm"));
+			}
 		}
+	} else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif")) {
+		m_url = setExtension(m_url, QStringLiteral("gif"));
 	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif"))
-	{ m_url = setExtension(m_url, QStringLiteral("gif")); }
 
 	// Remove ? in urls
 	m_url = removeCacheBuster(m_url);
@@ -274,15 +268,17 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page 
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
 	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals))
+	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals)) {
 		m_url = m_sampleUrl.toString();
+	}
 
 	// Creation date
 	m_createdAt = QDateTime();
-	if (details.contains("created_at"))
-	{ m_createdAt = qDateTimeFromString(details["created_at"]); }
-	else if (details.contains("date"))
-	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
+	if (details.contains("created_at")) {
+		m_createdAt = qDateTimeFromString(details["created_at"]);
+	} else if (details.contains("date")) {
+		m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate);
+	}
 
 	// Setup extension rotator
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
@@ -312,8 +308,9 @@ void Image::write(QJsonObject &json) const
 
 	QStringList tags;
 	tags.reserve(m_tags.count());
-	for (const Tag &tag : m_tags)
+	for (const Tag &tag : m_tags) {
 		tags.append(tag.text());
+	}
 
 	// FIXME: real serialization
 	json["name"] = m_name;
@@ -357,14 +354,16 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	m_tags.reserve(jsonTags.count());
-	for (const auto &tag : jsonTags)
+	for (const auto &tag : jsonTags) {
 		m_tags.append(Tag(tag.toString()));
+	}
 
 	// Search
 	QJsonArray jsonSearch = json["search"].toArray();
 	m_search.reserve(jsonSearch.count());
-	for (const auto &tag : jsonSearch)
+	for (const auto &tag : jsonSearch) {
 		m_search.append(tag.toString());
+	}
 
 	m_sizes = {
 		{ Image::Size::Full, QSharedPointer<ImageSize>::create() },
@@ -378,28 +377,29 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 
 void Image::loadDetails(bool rateLimit)
 {
-	if (m_loadingDetails)
+	if (m_loadingDetails) {
 		return;
+	}
 
-	if (m_loadedDetails || m_pageUrl.isEmpty())
-	{
+	if (m_loadedDetails || m_pageUrl.isEmpty()) {
 		emit finishedLoadingTags();
 		return;
 	}
 
 	// Load the request with a possible delay
 	const int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0)
-	{ QTimer::singleShot(ms, this, SLOT(loadDetailsNow())); }
-	else
-	{ loadDetailsNow(); }
+	if (ms > 0) {
+		QTimer::singleShot(ms, this, SLOT(loadDetailsNow()));
+	} else {
+		loadDetailsNow();
+	}
 }
 void Image::loadDetailsNow()
 {
-	if (m_loadDetails != nullptr)
-	{
-		if (m_loadDetails->isRunning())
+	if (m_loadDetails != nullptr) {
+		if (m_loadDetails->isRunning()) {
 			m_loadDetails->abort();
+		}
 
 		m_loadDetails->deleteLater();
 	}
@@ -412,8 +412,7 @@ void Image::loadDetailsNow()
 }
 void Image::abortTags()
 {
-	if (m_loadingDetails && m_loadDetails->isRunning())
-	{
+	if (m_loadingDetails && m_loadDetails->isRunning()) {
 		m_loadDetails->abort();
 		m_loadingDetails = false;
 	}
@@ -423,10 +422,10 @@ void Image::parseDetails()
 	m_loadingDetails = false;
 
 	// Aborted or connection error
-	if (m_loadDetails->error())
-	{
-		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError)
+	if (m_loadDetails->error()) {
+		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
 			log(QStringLiteral("Loading error: %1").arg(m_loadDetails->errorString()), Logger::Error);
+		}
 		m_loadDetails->deleteLater();
 		m_loadDetails = nullptr;
 		return;
@@ -434,16 +433,14 @@ void Image::parseDetails()
 
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
-	{
+	if (!redir.isEmpty()) {
 		m_pageUrl = redir;
 		loadDetails();
 		return;
 	}
 
 	const int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (statusCode == 429)
-	{
+	if (statusCode == 429) {
 		log(QStringLiteral("Details limit reached (429). New try."));
 		loadDetails(true);
 		return;
@@ -453,13 +450,13 @@ void Image::parseDetails()
 
 	// Get an api able to parse details
 	Api *api = m_parentSite->detailsApi();
-	if (api == nullptr)
+	if (api == nullptr) {
 		return;
+	}
 
 	// Parse source
 	ParsedDetails ret = api->parseDetails(source, statusCode, m_parentSite);
-	if (!ret.error.isEmpty())
-	{
+	if (!ret.error.isEmpty()) {
 		auto logLevel = m_detailsParsWarnAsErr ? Logger::Error : Logger::Warning;
 		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), logLevel);
 		emit finishedLoadingTags();
@@ -467,16 +464,18 @@ void Image::parseDetails()
 	}
 
 	// Fill data from parsing result
-	if (!ret.pools.isEmpty())
-	{ m_pools = ret.pools; }
-	if (!ret.tags.isEmpty())
-	{ m_tags = ret.tags; }
-	if (ret.createdAt.isValid())
-	{ m_createdAt = ret.createdAt; }
+	if (!ret.pools.isEmpty()) {
+		m_pools = ret.pools;
+	}
+	if (!ret.tags.isEmpty()) {
+		m_tags = ret.tags;
+	}
+	if (ret.createdAt.isValid()) {
+		m_createdAt = ret.createdAt;
+	}
 
 	// Image url
-	if (!ret.imageUrl.isEmpty())
-	{
+	if (!ret.imageUrl.isEmpty()) {
 		const QUrl before = m_url;
 		const QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
 
@@ -486,29 +485,27 @@ void Image::parseDetails()
 		delete m_extensionRotator;
 		m_extensionRotator = nullptr;
 
-		if (before != m_url)
-		{
-			if (getExtension(before) != getExtension(m_url))
-			{ setFileSize(0, Size::Full); }
+		if (before != m_url) {
+			if (getExtension(before) != getExtension(m_url)) {
+				setFileSize(0, Size::Full);
+			}
 			emit urlChanged(before, m_url);
 		}
 	}
 
 	// Get rating from tags
-	if (m_rating.isEmpty())
-	{
+	if (m_rating.isEmpty()) {
 		int ratingTagIndex = -1;
-		for (int it = 0; it < m_tags.count(); ++it)
-		{
-			if (m_tags[it].type().name() == "rating")
-			{
+		for (int it = 0; it < m_tags.count(); ++it) {
+			if (m_tags[it].type().name() == "rating") {
 				m_rating = m_tags[it].text();
 				ratingTagIndex = it;
 				break;
 			}
 		}
-		if (ratingTagIndex != -1)
-		{ m_tags.removeAt(ratingTagIndex); }
+		if (ratingTagIndex != -1) {
+			m_tags.removeAt(ratingTagIndex);
+		}
 	}
 
 	m_loadDetails->deleteLater();
@@ -529,18 +526,23 @@ int Image::value() const
 	QSize size = m_sizes[Image::Size::Full]->size;
 
 	// Get from image size
-	if (!size.isEmpty())
+	if (!size.isEmpty()) {
 		return size.width() * size.height();
+	}
 
 	// Get from tags
-	if (hasTag("incredibly_absurdres"))
+	if (hasTag("incredibly_absurdres")) {
 		return 10000 * 10000;
-	if (hasTag("absurdres"))
+	}
+	if (hasTag("absurdres")) {
 		return 3200 * 2400;
-	if (hasTag("highres"))
+	}
+	if (hasTag("highres")) {
 		return 1600 * 1200;
-	if (hasTag("lowres"))
+	}
+	if (hasTag("lowres")) {
 		return 500 * 500;
+	}
 
 	return 1200 * 900;
 }
@@ -550,49 +552,40 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 	SaveResult res = SaveResult::Saved;
 
 	QFile f(path);
-	if (!f.exists() || force)
-	{
+	if (!f.exists() || force) {
 		const QPair<QString, QString> md5action = m_profile->md5Action(md5());
 		const QString &whatToDo = md5action.first;
 		const QString &md5Duplicate = md5action.second;
 
 		// Only create the destination directory if we're going to put a file there
-		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
-		{
+		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore") {
 			const QString p = path.section(QDir::separator(), 0, -2);
 			QDir pathToFile(p), dir;
-			if (!pathToFile.exists() && !dir.mkpath(p))
-			{
+			if (!pathToFile.exists() && !dir.mkpath(p)) {
 				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
 				return SaveResult::Error;
 			}
 		}
 
-		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
-		{
+		if (md5Duplicate.isEmpty() || whatToDo == "save" || force) {
 			const QString savePath = m_sizes[size]->save(path);
-			if (!savePath.isEmpty())
-			{ log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath)); }
-			else
-			{ return SaveResult::NotLoaded; }
-		}
-		else if (whatToDo == "copy")
-		{
+			if (!savePath.isEmpty()) {
+				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));
+			} else {
+				return SaveResult::NotLoaded;
+			}
+		} else if (whatToDo == "copy") {
 			log(QStringLiteral("Copy from `%1` to `%2`").arg(md5Duplicate, path));
 			QFile(md5Duplicate).copy(path);
 
 			res = SaveResult::Copied;
-		}
-		else if (whatToDo == "move")
-		{
+		} else if (whatToDo == "move") {
 			log(QStringLiteral("Moving from `%1` to `%2`").arg(md5Duplicate, path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
 			res = SaveResult::Moved;
-		}
-		else if (whatToDo == "link")
-		{
+		} else if (whatToDo == "link") {
 			log(QStringLiteral("Creating link for `%1` in `%2`").arg(md5Duplicate, path));
 
 			#ifdef Q_OS_WIN
@@ -602,48 +595,46 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 			#endif
 
 			res = SaveResult::Linked;
-		}
-		else
-		{
+		} else {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;
 		}
 
-		if (postSave)
-		{ postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
+		if (postSave) {
+			postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count, basic);
+		}
+	} else {
+		res = SaveResult::AlreadyExistsDisk;
 	}
-	else
-	{ res = SaveResult::AlreadyExistsDisk; }
 
 	return res;
 }
 void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCommands, int count, bool basic)
 {
-	if (addMd5)
-	{ m_profile->addMd5(md5(), path); }
+	if (addMd5) {
+		m_profile->addMd5(md5(), path);
+	}
 
 	// Save info to a text file
-	if (!basic)
-	{
+	if (!basic) {
 		auto logFiles = getExternalLogFiles(m_settings);
-		for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
-		{
+		for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 			auto logFile = it.value();
 			const Filename textfileFormat = Filename(logFile["content"].toString());
 			QStringList cont = textfileFormat.path(*this, m_profile, "", count, Filename::Complex);
-			if (!cont.isEmpty())
-			{
+			if (!cont.isEmpty()) {
 				const int locationType = logFile["locationType"].toInt();
 				QString contents = cont.first();
 
 				// File path
 				QString fileTagsPath;
-				if (locationType == 0)
+				if (locationType == 0) {
 					fileTagsPath = this->paths(logFile["filename"].toString(), logFile["path"].toString(), 0).first();
-				else if (locationType == 1)
+				} else if (locationType == 1) {
 					fileTagsPath = logFile["uniquePath"].toString();
-				else if (locationType == 2)
+				} else if (locationType == 2) {
 					fileTagsPath = path + logFile["suffix"].toString();
+				}
 
 				// Replace some post-save tokens
 				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
@@ -652,10 +643,10 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
 				const bool append = fileTags.exists();
-				if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-				{
-					if (append)
+				if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text)) {
+					if (append) {
 						fileTags.write("\n");
+					}
 					fileTags.write(contents.toUtf8());
 					fileTags.close();
 				}
@@ -664,8 +655,9 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 	}
 
 	// Keep original date
-	if (m_settings->value("Save/keepDate", true).toBool())
+	if (m_settings->value("Save/keepDate", true).toBool()) {
 		setFileCreationDate(path, createdAt());
+	}
 
 	// Commands
 	Commands &commands = m_profile->getCommands();
@@ -684,8 +676,9 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, Size size)
 {
 	QMap<QString, Image::SaveResult> res;
-	for (const QString &path : paths)
+	for (const QString &path : paths) {
 		res.insert(path, save(path, size, force, false, addMd5, startCommands, count));
+	}
 	return res;
 }
 QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, Size size)
@@ -701,21 +694,19 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (const Tag &tag : m_tags)
-	{
+	for (const Tag &tag : m_tags) {
 		bool removed = false;
-		for (const QString &rem : remove)
-		{
+		for (const QString &rem : remove) {
 			reg.setPattern(rem);
-			if (reg.exactMatch(tag.text()))
-			{
+			if (reg.exactMatch(tag.text())) {
 				removed = true;
 				break;
 			}
 		}
 
-		if (!removed)
+		if (!removed) {
 			tags.append(tag);
+		}
 	}
 
 	return tags;
@@ -750,13 +741,15 @@ void Image::setPreviewImage(const QPixmap &preview)
 }
 void Image::setTemporaryPath(const QString &path, Size size)
 {
-	if (m_sizes[size]->setTemporaryPath(path))
+	if (m_sizes[size]->setTemporaryPath(path)) {
 		refreshTokens();
+	}
 }
 void Image::setSavePath(const QString &path, Size size)
 {
-	if (m_sizes[size]->setSavePath(path))
+	if (m_sizes[size]->setSavePath(path)) {
 		refreshTokens();
+	}
 }
 QString Image::savePath(Size size) const
 { return m_sizes[size]->savePath(); }
@@ -775,8 +768,9 @@ QStringList Image::tagsString() const
 {
 	QStringList tags;
 	tags.reserve(m_tags.count());
-	for (const Tag &tag : m_tags)
+	for (const Tag &tag : m_tags) {
 		tags.append(tag.text());
+	}
 	return tags;
 }
 
@@ -812,38 +806,47 @@ QColor Image::color() const
 {
 	// Blacklisted
 	QStringList detected = m_profile->getBlacklist().match(tokens(m_profile));
-	if (!detected.isEmpty())
+	if (!detected.isEmpty()) {
 		return { 0, 0, 0 };
+	}
 
 	// Favorited (except for exact favorite search)
 	auto favorites = m_profile->getFavorites();
-	for (const Tag &tag : m_tags)
-		if (!m_parent->search().contains(tag.text()))
-			for (const Favorite &fav : favorites)
-				if (fav.getName() == tag.text())
-				{ return { 255, 192, 203 }; }
+	for (const Tag &tag : m_tags) {
+		if (!m_parent->search().contains(tag.text())) {
+			for (const Favorite &fav : favorites) {
+				if (fav.getName() == tag.text()) {
+					return { 255, 192, 203 };
+				}
+			}
+		}
+	}
 
 	// Image with a parent
-	if (m_parentId != 0)
+	if (m_parentId != 0) {
 		return { 204, 204, 0 };
+	}
 
 	// Image with children
-	if (m_hasChildren)
+	if (m_hasChildren) {
 		return { 0, 255, 0 };
+	}
 
 	// Pending image
-	if (m_status == "pending")
+	if (m_status == "pending") {
 		return { 0, 0, 255 };
+	}
 
 	return {};
 }
 
 QString Image::tooltip() const
 {
-	if (m_isGallery)
+	if (m_isGallery) {
 		return QStringLiteral("%1%2")
 			.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 			.arg(m_name.isEmpty() ? " " : tr("<b>Name:</b> %1<br/>").arg(m_name));
+	}
 
 	double size = m_sizes[Image::Size::Full]->fileSize;
 	const QString unit = getUnit(&size);
@@ -871,8 +874,9 @@ QList<QStrP> Image::detailsData() const
 	const QString no = tr("no");
 
 	QString sources;
-	for (const QString &source : m_sources)
-	{ sources += (!sources.isEmpty() ? "<br/>" : "") + QString("<a href=\"%1\">%1</a>").arg(source); }
+	for (const QString &source : m_sources) {
+		sources += (!sources.isEmpty() ? "<br/>" : "") + QString("<a href=\"%1\">%1</a>").arg(source);
+	}
 
 	return
 	{
@@ -906,8 +910,7 @@ QString Image::md5() const
 	const QString savePath = m_sizes[Image::Size::Full]->savePath();
 
 	// If we know the path to the image or its content but not its md5, we calculate it first
-	if (m_md5.isEmpty() && !savePath.isEmpty())
-	{
+	if (m_md5.isEmpty() && !savePath.isEmpty()) {
 		QCryptographicHash hash(QCryptographicHash::Md5);
 
 		// Calculate from image path
@@ -925,18 +928,23 @@ QString Image::md5() const
 bool Image::hasTag(QString tag) const
 {
 	tag = tag.trimmed();
-	for (const Tag &t : m_tags)
-		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0)
+	for (const Tag &t : m_tags) {
+		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0) {
 			return true;
+		}
+	}
 	return false;
 }
 bool Image::hasUnknownTag() const
 {
-	if (m_tags.isEmpty())
+	if (m_tags.isEmpty()) {
 		return true;
-	for (const Tag &tag : qAsConst(m_tags))
-		if (tag.type().isUnknown())
+	}
+	for (const Tag &tag : qAsConst(m_tags)) {
+		if (tag.type().isUnknown()) {
 			return true;
+		}
+	}
 	return false;
 }
 
@@ -972,11 +980,13 @@ QString Image::isAnimated() const
 {
 	QString ext = getExtension(m_url).toLower();
 
-	if (ext == "gif" || ext == "apng")
+	if (ext == "gif" || ext == "apng") {
 		return ext;
+	}
 
-	if (ext == "png" && (hasTag(QStringLiteral("animated")) || hasTag(QStringLiteral("animated_png"))))
+	if (ext == "png" && (hasTag(QStringLiteral("animated")) || hasTag(QStringLiteral("animated_png")))) {
 		return QStringLiteral("apng");
+	}
 
 	return QString();
 }
@@ -994,8 +1004,9 @@ QUrl Image::url(Size size) const
 
 void Image::preload(const Filename &filename)
 {
-	if (filename.needExactTags(m_parentSite) == 0)
+	if (filename.needExactTags(m_parentSite) == 0) {
 		return;
+	}
 
 	QEventLoop loop;
 	QObject::connect(this, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
@@ -1057,16 +1068,17 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("has_comments", Token(m_hasComments));
 
 	// Search
-	for (int i = 0; i < m_search.size(); ++i)
-	{ tokens.insert("search_" + QString::number(i + 1), Token(m_search[i])); }
-	for (int i = m_search.size(); i < 10; ++i)
-	{ tokens.insert("search_" + QString::number(i + 1), Token("")); }
+	for (int i = 0; i < m_search.size(); ++i) {
+		tokens.insert("search_" + QString::number(i + 1), Token(m_search[i]));
+	}
+	for (int i = m_search.size(); i < 10; ++i) {
+		tokens.insert("search_" + QString::number(i + 1), Token(""));
+	}
 	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
 	QMap<QString, QStringList> details;
-	for (const Tag &tag : filteredTags(remove))
-	{
+	for (const Tag &tag : filteredTags(remove)) {
 		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
@@ -1079,23 +1091,21 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	// Shorten copyrights
-	if (settings->value("Save/copyright_useshorter", true).toBool())
-	{
+	if (settings->value("Save/copyright_useshorter", true).toBool()) {
 		QStringList copyrights;
-		for (const QString &cop : details["copyright"])
-		{
+		for (const QString &cop : details["copyright"]) {
 			bool found = false;
-			for (QString &copyright : copyrights)
-			{
-				if (copyright.left(cop.size()) == cop.left(copyright.size()))
-				{
-					if (cop.size() < copyright.size())
-					{ copyright = cop; }
+			for (QString &copyright : copyrights) {
+				if (copyright.left(cop.size()) == cop.left(copyright.size())) {
+					if (cop.size() < copyright.size()) {
+						copyright = cop;
+					}
 					found = true;
 				}
 			}
-			if (!found)
-			{ copyrights.append(cop); }
+			if (!found) {
+				copyrights.append(cop);
+			}
 		}
 		details["copyright"] = copyrights;
 	}
@@ -1117,8 +1127,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Extension
 	QString ext = extension();
-	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
+	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg") {
 		ext = "jpg";
+	}
 	tokens.insert("ext", Token(ext, "jpg"));
 	tokens.insert("filetype", Token(ext, "jpg"));
 

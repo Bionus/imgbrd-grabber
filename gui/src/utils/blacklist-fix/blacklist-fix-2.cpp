@@ -13,11 +13,9 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	ui->tableWidget->setRowCount(m_details.size());
 	QStringList found = QStringList(), tags;
 	m_previews.reserve(m_details.count());
-	for (int i = 0; i < m_details.size(); i++)
-	{
+	for (int i = 0; i < m_details.size(); i++) {
 		QString color = "blue";
-		if (m_details.at(i).contains("tags"))
-		{
+		if (m_details.at(i).contains("tags")) {
 			QMap<QString, Token> tokens;
 			tokens.insert("allos", Token(tags));
 			found = m_blacklist.match(tokens);
@@ -46,10 +44,10 @@ BlacklistFix2::~BlacklistFix2()
 
 void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
 {
-	for (int i = 0; i < ui->tableWidget->rowCount(); i++)
-	{
-		if (!ui->tableWidget->item(i, 3)->text().isEmpty())
-		{ ui->tableWidget->selectRow(i); }
+	for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+		if (!ui->tableWidget->item(i, 3)->text().isEmpty()) {
+			ui->tableWidget->selectRow(i);
+		}
 	}
 }
 void BlacklistFix2::on_buttonCancel_clicked()
@@ -63,11 +61,11 @@ void BlacklistFix2::on_buttonOk_clicked()
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
 	const int count = selected.size();
 	QSet<int> toDelete = QSet<int>();
-	for (int i = 0; i < count; i++)
-	{ toDelete.insert(selected.at(i)->row()); }
+	for (int i = 0; i < count; i++) {
+		toDelete.insert(selected.at(i)->row());
+	}
 	int rem = 0;
-	for (int i : toDelete)
-	{
+	for (int i : toDelete) {
 		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt() - 1).value("path_full"));
 		ui->tableWidget->removeRow(i - rem);
 		rem++;

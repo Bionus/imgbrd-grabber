@@ -14,12 +14,12 @@ QString AuthHashField::value(MixedSettings *settings) const
 
 	// Don't hash passwords twice
 	// FIXME: very long passwords won't get hashed
-	if (password.length() >= 32)
+	if (password.length() >= 32) {
 		return password;
+	}
 
 	QString data = password;
-	if (!m_salt.isEmpty())
-	{
+	if (!m_salt.isEmpty()) {
 		data = QString(m_salt);
 		data.replace("%username%", username);
 		data.replace("%username:lower%", username.toLower());

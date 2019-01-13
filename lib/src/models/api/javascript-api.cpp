@@ -41,8 +41,7 @@ JavascriptApi::JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, cons
 void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &ret) const
 {
 	// Script errors and exceptions
-	if (result.isError())
-	{
+	if (result.isError()) {
 		const QString err = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
 		ret.error = err;
 		log(err, Logger::Error);
@@ -51,22 +50,19 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 
 	// Parse result
 	QString url;
-	if (result.isObject())
-	{
-		if (result.hasProperty("error"))
-		{
+	if (result.isObject()) {
+		if (result.hasProperty("error")) {
 			ret.error = result.property("error").toString();
 			return;
 		}
 
 		url = result.property("url").toString();
+	} else {
+		url = result.toString();
 	}
-	else
-	{ url = result.toString(); }
 
 	// Site-ize url
-	if (site != nullptr)
-	{
+	if (site != nullptr) {
 		url = site->fixLoginUrl(url);
 		url = site->fixUrl(url).toString();
 	}
@@ -82,8 +78,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("search").property("url");
-	if (urlFunction.isUndefined())
-	{
+	if (urlFunction.isUndefined()) {
 		ret.error = "This API does not support search";
 		return ret;
 	}
@@ -98,8 +93,7 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
-	if (lastPage > 0)
-	{
+	if (lastPage > 0) {
 		previous = m_source.engine()->newObject();
 		previous.setProperty("page", lastPage);
 		previous.setProperty("minId", lastPageMinId);
@@ -118,16 +112,15 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	QMap<int, TagType> tagTypes = site->tagDatabase()->tagTypes();
 
 	const quint32 length = tags.property("length").toUInt();
-	for (quint32 i = 0; i < length; ++i)
-	{
+	for (quint32 i = 0; i < length; ++i) {
 		const QJSValue tag = tags.property(i);
-		if (tag.isString())
-		{
+		if (tag.isString()) {
 			ret.append(Tag(tag.toString()));
 			continue;
 		}
-		if (!tag.isObject())
-		{ continue; }
+		if (!tag.isObject()) {
+			continue;
+		}
 
 		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
 		const QString text = tag.property("name").toString();
@@ -135,15 +128,16 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 
 		QString type;
 		int typeId = -1;
-		if (tag.hasProperty("type") && !tag.property("type").isUndefined())
-		{
-			if (tag.property("type").isNumber())
-			{ typeId = tag.property("type").toInt(); }
-			else
-			{ type = tag.property("type").toString(); }
+		if (tag.hasProperty("type") && !tag.property("type").isUndefined()) {
+			if (tag.property("type").isNumber()) {
+				typeId = tag.property("type").toInt();
+			} else {
+				type = tag.property("type").toString();
+			}
 		}
-		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined())
-		{ typeId = tag.property("typeId").toInt(); }
+		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined()) {
+			typeId = tag.property("typeId").toInt();
+		}
 
 		QStringList related;
 		if (tag.hasProperty("related") && !tag.property("related").isUndefined()) {
@@ -172,70 +166,71 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
-	if (results.isError())
-	{
+	if (results.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
-	if (results.hasProperty("error"))
-	{ ret.error = results.property("error").toString(); }
+	if (results.hasProperty("error")) {
+		ret.error = results.property("error").toString();
+	}
 
-	if (results.hasProperty("tags"))
-	{ ret.tags = makeTags(results.property("tags"), site); }
+	if (results.hasProperty("tags")) {
+		ret.tags = makeTags(results.property("tags"), site);
+	}
 
-	if (results.hasProperty("images"))
-	{
+	if (results.hasProperty("images")) {
 		const QJSValue images = results.property("images");
 		const quint32 length = images.property("length").toUInt();
-		for (quint32 i = 0; i < length; ++i)
-		{
+		for (quint32 i = 0; i < length; ++i) {
 			QList<Tag> tags;
 
 			QMap<QString, QString> d;
 			QJSValueIterator it(images.property(i));
-			while (it.hasNext())
-			{
+			while (it.hasNext()) {
 				it.next();
 
 				const QString &key = it.name();
 				const QJSValue &val = it.value();
 
-				if (val.isUndefined())
-				{
+				if (val.isUndefined()) {
 					log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
 					continue;
 				}
 
-				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray()))
-				{ tags = makeTags(val, site); }
-				else if (val.isArray())
-				{ d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' '); }
-				else
-				{ d[key] = val.toString(); }
+				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
+					tags = makeTags(val, site);
+				} else if (val.isArray()) {
+					d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
+				} else {
+					d[key] = val.toString();
+				}
 			}
 
-			if (!d.isEmpty())
-			{
+			if (!d.isEmpty()) {
 				const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(i));
 				QSharedPointer<Image> img = parseImage(parentPage, d, pos, tags);
-				if (!img.isNull())
-				{ ret.images.append(img); }
+				if (!img.isNull()) {
+					ret.images.append(img);
+				}
 			}
 		}
 	}
 
 	// Basic properties
-	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined())
-	{ ret.imageCount = results.property("imageCount").toInt(); }
-	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined())
-	{ ret.pageCount = results.property("pageCount").toInt(); }
-	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString())
-	{ ret.urlNextPage = results.property("urlNextPage").toString(); }
-	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString())
-	{ ret.urlPrevPage = results.property("urlPrevPage").toString(); }
-	if (results.hasProperty("wiki") && results.property("wiki").isString())
-	{
+	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined()) {
+		ret.imageCount = results.property("imageCount").toInt();
+	}
+	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined()) {
+		ret.pageCount = results.property("pageCount").toInt();
+	}
+	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString()) {
+		ret.urlNextPage = results.property("urlNextPage").toString();
+	}
+	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString()) {
+		ret.urlPrevPage = results.property("urlPrevPage").toString();
+	}
+	if (results.hasProperty("wiki") && results.property("wiki").isString()) {
 		ret.wiki = results.property("wiki").toString();
 		ret.wiki = ret.wiki.replace("href=\"/", "href=\"" + site->baseUrl() + "/");
 	}
@@ -261,8 +256,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("gallery").property("url");
-	if (urlFunction.isUndefined())
-	{
+	if (urlFunction.isUndefined()) {
 		ret.error = "This API does not support galleries";
 		return ret;
 	}
@@ -308,8 +302,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("tags").property("url");
-	if (urlFunction.isUndefined())
-	{
+	if (urlFunction.isUndefined()) {
 		ret.error = "This API does not support tag loading";
 		return ret;
 	}
@@ -343,16 +336,17 @@ ParsedTags JavascriptApi::parseTags(const QString &source, int statusCode, Site 
 	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
-	if (results.isError())
-	{
+	if (results.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
-	if (results.hasProperty("error"))
-	{ ret.error = results.property("error").toString(); }
-	if (results.hasProperty("tags"))
-	{ ret.tags = makeTags(results.property("tags"), site); }
+	if (results.hasProperty("error")) {
+		ret.error = results.property("error").toString();
+	}
+	if (results.hasProperty("tags")) {
+		ret.tags = makeTags(results.property("tags"), site);
+	}
 
 	return ret;
 }
@@ -373,8 +367,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("details").property("url");
-	if (urlFunction.isUndefined())
-	{
+	if (urlFunction.isUndefined()) {
 		ret.error = "This API does not support details loading";
 		return ret;
 	}
@@ -400,30 +393,32 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
-	if (results.isError())
-	{
+	if (results.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
 		return ret;
 	}
 
-	if (results.hasProperty("error") && results.property("error").isString())
-	{ ret.error = results.property("error").toString(); }
-	if (results.hasProperty("tags"))
-	{ ret.tags = makeTags(results.property("tags"), site); }
-	if (results.hasProperty("imageUrl") && results.property("imageUrl").isString())
-	{ ret.imageUrl = results.property("imageUrl").toString(); }
-	if (results.hasProperty("createdAt") && results.property("createdAt").isString())
-	{ ret.createdAt = qDateTimeFromString(results.property("createdAt").toString()); }
+	if (results.hasProperty("error") && results.property("error").isString()) {
+		ret.error = results.property("error").toString();
+	}
+	if (results.hasProperty("tags")) {
+		ret.tags = makeTags(results.property("tags"), site);
+	}
+	if (results.hasProperty("imageUrl") && results.property("imageUrl").isString()) {
+		ret.imageUrl = results.property("imageUrl").toString();
+	}
+	if (results.hasProperty("createdAt") && results.property("createdAt").isString()) {
+		ret.createdAt = qDateTimeFromString(results.property("createdAt").toString());
+	}
 
-	if (results.hasProperty("pools"))
-	{
+	if (results.hasProperty("pools")) {
 		const QJSValue pools = results.property("pools");
 		const quint32 length = pools.property("length").toUInt();
-		for (quint32 i = 0; i < length; ++i)
-		{
+		for (quint32 i = 0; i < length; ++i) {
 			const QJSValue pool = pools.property(i);
-			if (!pool.isObject())
+			if (!pool.isObject()) {
 				continue;
+			}
 
 			const int id = pool.hasProperty("id") ? pool.property("id").toInt() : 0;
 			const QString name = pool.property("name").toString();
@@ -453,8 +448,7 @@ PageUrl JavascriptApi::checkUrl() const
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("check").property("url");
-	if (urlFunction.isUndefined())
-	{
+	if (urlFunction.isUndefined()) {
 		ret.error = "This API does not support checking";
 		return ret;
 	}
@@ -480,8 +474,7 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source, int statusCode) con
 	QJSValue result = parseFunction.call(QList<QJSValue>() << source << statusCode);
 
 	// Script errors and exceptions
-	if (result.isError())
-	{
+	if (result.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(result.property("lineNumber").toInt()).arg(result.toString());
 		ret.ok = false;
 		return ret;
@@ -495,8 +488,9 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source, int statusCode) con
 
 static QJSValue tryGetValue(QJSValue api, const QStringList &properties)
 {
-	for (int i = 0; !api.isUndefined() && i < properties.length(); ++i)
-	{ api = api.property(properties[i]); }
+	for (int i = 0; !api.isUndefined() && i < properties.length(); ++i) {
+		api = api.property(properties[i]);
+	}
 	return api;
 }
 
@@ -508,12 +502,14 @@ QJSValue JavascriptApi::getJsConst(const QString &fullKey, const QJSValue &def) 
 
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue fromApi = tryGetValue(api, properties);
-	if (!fromApi.isUndefined())
+	if (!fromApi.isUndefined()) {
 		return fromApi;
+	}
 
 	QJSValue fromSource = tryGetValue(m_source, properties);
-	if (!fromSource.isUndefined())
+	if (!fromSource.isUndefined()) {
 		return fromSource;
+	}
 
 	return def;
 }

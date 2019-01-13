@@ -51,7 +51,7 @@
 
 MainWindow::MainWindow(Profile *profile)
 	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_forcedTab(-1), m_languageLoader(savePath("languages/", true)), m_currentTab(nullptr)
-{ }
+{}
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -63,8 +63,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
 	ui->setupUi(this);
 
-	if (m_settings->value("Log/show", true).toBool())
-	{
+	if (m_settings->value("Log/show", true).toBool()) {
 		m_logTab = new LogTab(this);
 		ui->tabWidget->addTab(m_logTab, m_logTab->windowTitle());
 	}
@@ -74,10 +73,11 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
 	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
 
-	if (!QSslSocket::supportsSsl())
-	{ log(QStringLiteral("Missing SSL libraries"), Logger::Error); }
-	else
-	{ log(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info); }
+	if (!QSslSocket::supportsSsl()) {
+		log(QStringLiteral("Missing SSL libraries"), Logger::Error);
+	} else {
+		log(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info);
+	}
 
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
@@ -85,8 +85,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// On first launch after setup, we restore the setup's language
 	QString setupSettingsFile = savePath("innosetup.ini");
-	if (QFile::exists(setupSettingsFile))
-	{
+	if (QFile::exists(setupSettingsFile)) {
 		QSettings setupSettings(setupSettingsFile, QSettings::IniFormat);
 		QString setupLanguage = setupSettings.value("language", "en").toString();
 
@@ -95,8 +94,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		QStringList keys = associations.childKeys();
 
 		// Only if the setup language is available in Grabber
-		if (keys.contains(setupLanguage))
-		{
+		if (keys.contains(setupLanguage)) {
 			m_settings->setValue("language", associations.value(setupLanguage).toString());
 		}
 
@@ -121,13 +119,11 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	m_favorites = m_profile->getFavorites();
 
-	if (m_settings->value("Proxy/use", false).toBool())
-	{
+	if (m_settings->value("Proxy/use", false).toBool()) {
 		bool useSystem = m_settings->value("Proxy/useSystem", false).toBool();
 		QNetworkProxyFactory::setUseSystemConfiguration(useSystem);
 
-		if (!useSystem)
-		{
+		if (!useSystem) {
 			const QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http"
 				? QNetworkProxy::HttpProxy
 				: QNetworkProxy::Socks5Proxy;
@@ -140,14 +136,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 			);
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()), Logger::Info);
+		} else {
+			log(QStringLiteral("Enabling system-wide proxy."), Logger::Info);
 		}
-		else
-		{ log(QStringLiteral("Enabling system-wide proxy."), Logger::Info); }
 	}
 
 	log(QStringLiteral("Loading sources"), Logger::Debug);
-	if (sites.empty())
-	{
+	if (sites.empty()) {
 		QMessageBox::critical(this, tr("No source found"), tr("No source found. Do you have a configuration problem? Try to reinstall the program."));
 		qApp->quit();
 		this->deleteLater();
@@ -156,13 +151,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	QString srsc;
 	QStringList keys = sites.keys();
-	for (const QString &key : keys)
-	{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
+	for (const QString &key : keys) {
+		srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")";
+	}
 	log(QStringLiteral("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
 
 	// System tray icon
-	if (m_settings->value("Monitoring/enableTray", false).toBool())
-	{
+	if (m_settings->value("Monitoring/enableTray", false).toBool()) {
 		auto quitAction = new QAction(tr("&Quit"), this);
 		connect(quitAction, &QAction::triggered, this, &MainWindow::trayClose);
 
@@ -176,9 +171,9 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 		connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::trayIconActivated);
 		connect(m_trayIcon, &QSystemTrayIcon::messageClicked, this, &MainWindow::trayMessageClicked);
+	} else {
+		m_trayIcon = nullptr;
 	}
-	else
-	{ m_trayIcon = nullptr; }
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
 	QShortcut *actionCloseTabW = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -200,16 +195,14 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
 
 	// Action on first load
-	if (m_settings->value("firstload", true).toBool())
-	{
+	if (m_settings->value("firstload", true).toBool()) {
 		this->onFirstLoad();
 		m_settings->setValue("firstload", false);
 	}
 
 	// Crash restoration
 	m_restore = m_settings->value("start", "none").toString() == "restore";
-	if (crashed)
-	{
+	if (crashed) {
 		log(QStringLiteral("It seems that Imgbrd-Grabber hasn't shut down properly last time."), Logger::Warning);
 
 		QString msg = tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?");
@@ -235,8 +228,9 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->tabWidget->setCurrentIndex(0);
 
 	// Restore download lists
-	if (m_restore)
-	{ m_downloadsTab->loadLinkList(m_profile->getPath() + "/restore.igl"); }
+	if (m_restore) {
+		m_downloadsTab->loadLinkList(m_profile->getPath() + "/restore.igl");
+	}
 
 	// Favorites tab
 	m_favoritesTab = new FavoritesTab(m_profile, this);
@@ -282,10 +276,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// Get list of selected sources
 	QStringList sav = m_settings->value("sites", "").toStringList();
-	for (const QString &key : sav)
-	{
-		if (!sites.contains(key))
+	for (const QString &key : sav) {
+		if (!sites.contains(key)) {
 			continue;
+		}
 
 		Site *site = sites.value(key);
 		connect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
@@ -294,23 +288,21 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// Initial login on selected sources
 	m_waitForLogin = 0;
-	if (m_selectedSites.isEmpty())
-	{
+	if (m_selectedSites.isEmpty()) {
 		initialLoginsDone();
-	}
-	else
-	{
+	} else {
 		m_waitForLogin += m_selectedSites.count();
-		for (Site *site : qAsConst(m_selectedSites))
+		for (Site *site : qAsConst(m_selectedSites)) {
 			site->login();
+		}
 	}
 
 	on_buttonInitSettings_clicked();
 
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer, ui->lineFolder));
-	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
-	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+	// m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
+	// ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
 
 	connect(m_profile, &Profile::favoritesChanged, this, &MainWindow::updateFavorites);
@@ -325,12 +317,10 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 {
 	// When we use Grabber to open a file
 	QStringList tags;
-	if (args.count() == 1 && QFile::exists(args[0]))
-	{
+	if (args.count() == 1 && QFile::exists(args[0])) {
 		// Load an IGL file
 		QFileInfo info(args[0]);
-		if (info.suffix() == QLatin1String("igl"))
-		{
+		if (info.suffix() == QLatin1String("igl")) {
 			m_downloadsTab->loadLinkList(info.absoluteFilePath());
 			m_forcedTab = m_tabs.size() + 1;
 			return;
@@ -344,8 +334,7 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	// Other positional arguments are treated as tags
 	tags.append(args);
 	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
-	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
-	{
+	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage") {
 		loadTag(tags.join(' '), true, false, false);
 	}
 }
@@ -356,22 +345,24 @@ void MainWindow::initialLoginsFinished()
 	disconnect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
 
 	m_waitForLogin--;
-	if (m_waitForLogin != 0)
+	if (m_waitForLogin != 0) {
 		return;
+	}
 
 	initialLoginsDone();
 }
 
 void MainWindow::initialLoginsDone()
 {
-	if (m_restore)
-	{
-		if (QFile::exists(m_profile->getPath() + "/tabs.txt"))
-		{ QFile::rename(m_profile->getPath() + "/tabs.txt", m_profile->getPath() + "/tabs.json"); }
+	if (m_restore) {
+		if (QFile::exists(m_profile->getPath() + "/tabs.txt")) {
+			QFile::rename(m_profile->getPath() + "/tabs.txt", m_profile->getPath() + "/tabs.json");
+		}
 		loadTabs(m_profile->getPath() + "/tabs.json");
 	}
-	if (m_tabs.isEmpty())
-	{ addTab(); }
+	if (m_tabs.isEmpty()) {
+		addTab();
+	}
 
 	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
 	m_loaded = true;
@@ -394,8 +385,7 @@ MainWindow::~MainWindow()
 void MainWindow::focusSearch()
 {
 	auto *tab = dynamic_cast<SearchTab*>(ui->tabWidget->currentWidget());
-	if (tab != nullptr)
-	{
+	if (tab != nullptr) {
 		tab->focusSearch();
 	}
 }
@@ -409,11 +399,9 @@ void MainWindow::onFirstLoad()
 
 	// Detect and Danbooru Downloader settings
 	DanbooruDownloaderImporter ddImporter;
-	if (ddImporter.isInstalled())
-	{
+	if (ddImporter.isInstalled()) {
 		int reponse = QMessageBox::question(this, "", tr("The Mozilla Firefox addon \"Danbooru Downloader\" has been detected on your system. Do you want to load its preferences?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes)
-		{
+		if (reponse == QMessageBox::Yes) {
 			ddImporter.import(m_settings);
 			return;
 		}
@@ -432,22 +420,25 @@ void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTa
 	auto *w = new TagTab(m_profile, this);
 	this->addSearchTab(w, background, save, source);
 
-	if (!tag.isEmpty())
-	{ w->setTags(tag); }
-	else
-	{ w->focusSearch(); }
+	if (!tag.isEmpty()) {
+		w->setTags(tag);
+	} else {
+		w->focusSearch();
+	}
 }
 void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save, SearchTab *source)
 {
 	auto *w = new PoolTab(m_profile, this);
 	this->addSearchTab(w, background, save, source);
 
-	if (!site.isEmpty())
-	{ w->setSite(site); }
-	if (pool != 0)
-	{ w->setPool(pool, site); }
-	else
-	{ w->focusSearch(); }
+	if (!site.isEmpty()) {
+		w->setSite(site);
+	}
+	if (pool != 0) {
+		w->setPool(pool, site);
+	} else {
+		w->focusSearch();
+	}
 }
 void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background, bool save, SearchTab *source)
 {
@@ -457,16 +448,15 @@ void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool b
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
 	// TODO(Bionus): remove this and always pass it when necessary
-	if (source == nullptr || !m_tabs.contains(source))
-	{
-		if (m_tabs.size() > ui->tabWidget->currentIndex())
-		{ source = m_tabs[ui->tabWidget->currentIndex()]; }
-		else
-		{ source = nullptr; }
+	if (source == nullptr || !m_tabs.contains(source)) {
+		if (m_tabs.size() > ui->tabWidget->currentIndex()) {
+			source = m_tabs[ui->tabWidget->currentIndex()];
+		} else {
+			source = nullptr;
+		}
 	}
 
-	if (source != nullptr)
-	{
+	if (source != nullptr) {
 		w->setSources(source->sources());
 		w->setImagesPerPage(source->imagesPerPage());
 		w->setColumns(source->columns());
@@ -479,8 +469,9 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 	connect(w, &SearchTab::closed, this, &MainWindow::tabClosed);
 
 	QString title = w->windowTitle();
-	if (title.isEmpty())
-	{ title = tr("New tab"); }
+	if (title.isEmpty()) {
+		title = tr("New tab");
+	}
 
 	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty() ? 1 : 0) : m_tabs.count();
 	int index = ui->tabWidget->insertTab(pos, w, title);
@@ -494,11 +485,13 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 		connect(closeTab, &QPushButton::clicked, w, &SearchTab::deleteLater);
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 
-	if (!background)
+	if (!background) {
 		ui->tabWidget->setCurrentIndex(index);
+	}
 
-	if (save)
+	if (save) {
 		saveTabs(m_profile->getPath() + "/tabs.json");
+	}
 }
 
 bool MainWindow::saveTabs(const QString &filename)
@@ -511,15 +504,16 @@ bool MainWindow::loadTabs(const QString &filename)
 	QList<SearchTab*> tabs;
 	int currentTab;
 
-	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, this))
+	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, this)) {
 		return false;
+	}
 
 	bool preload = m_settings->value("preloadAllTabs", false).toBool();
-	for (auto tab : qAsConst(tabs))
-	{
+	for (auto tab : qAsConst(tabs)) {
 		addSearchTab(tab, true, false);
-		if (!preload)
+		if (!preload) {
 			m_tabsWaitingForPreload.append(tab);
+		}
 	}
 
 	m_forcedTab = currentTab;
@@ -531,22 +525,21 @@ void MainWindow::updateTabTitle(SearchTab *tab)
 }
 void MainWindow::updateTabs()
 {
-	if (m_loaded)
-	{
+	if (m_loaded) {
 		saveTabs(m_profile->getPath() + "/tabs.json");
 	}
 }
 void MainWindow::tabClosed(SearchTab *tab)
 {
-	if (ui == nullptr)
+	if (ui == nullptr) {
 		return;
+	}
 
 	// Store closed tab information
 	QJsonObject obj;
 	tab->write(obj);
 	m_closedTabs.append(obj);
-	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX)
-	{
+	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX) {
 		m_closedTabs.removeFirst();
 	}
 
@@ -557,8 +550,9 @@ void MainWindow::tabClosed(SearchTab *tab)
 }
 void MainWindow::restoreLastClosedTab()
 {
-	if (m_closedTabs.isEmpty())
+	if (m_closedTabs.isEmpty()) {
 		return;
+	}
 
 	QJsonObject infos = m_closedTabs.takeLast();
 	SearchTab *tab = TabsLoader::loadTab(infos, m_profile, this, true);
@@ -568,19 +562,14 @@ void MainWindow::restoreLastClosedTab()
 }
 void MainWindow::currentTabChanged(int tab)
 {
-	if (m_loaded && tab < m_tabs.size())
-	{
+	if (m_loaded && tab < m_tabs.size()) {
 		auto currentSearchTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
-		if (currentSearchTab != nullptr)
-		{
+		if (currentSearchTab != nullptr) {
 			SearchTab *tb = m_tabs[tab];
-			if (m_tabsWaitingForPreload.contains(tb))
-			{
+			if (m_tabsWaitingForPreload.contains(tb)) {
 				tb->load();
 				m_tabsWaitingForPreload.removeAll(tb);
-			}
-			else if (m_currentTab != currentSearchTab)
-			{
+			} else if (m_currentTab != currentSearchTab) {
 				setTags(tb->results());
 				setWiki(tb->wiki());
 			}
@@ -591,8 +580,9 @@ void MainWindow::currentTabChanged(int tab)
 
 void MainWindow::setTags(const QList<Tag> &tags, SearchTab *from)
 {
-	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex())
+	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex()) {
 		return;
+	}
 
 	clearLayout(ui->dockInternetScrollLayout);
 	m_currentTags = tags;
@@ -615,8 +605,9 @@ void MainWindow::closeCurrentTab()
 {
 	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
 	auto currentTab = ui->tabWidget->currentWidget();
-	if (currentTab->maximumWidth() != 16777214)
-	{ currentTab->deleteLater(); }
+	if (currentTab->maximumWidth() != 16777214) {
+		currentTab->deleteLater();
+	}
 }
 
 void MainWindow::tabNext()
@@ -635,24 +626,28 @@ void MainWindow::tabPrev()
 void MainWindow::saveFolder()
 {
 	QString path = m_settings->value("Save/path").toString().replace("\\", "/");
-	if (path.right(1) == "/")
-	{ path = path.left(path.length() - 1); }
+	if (path.right(1) == "/") {
+		path = path.left(path.length() - 1);
+	}
 	QDir dir(path);
-	if (dir.exists())
-	{ showInGraphicalShell(path); }
+	if (dir.exists()) {
+		showInGraphicalShell(path);
+	}
 }
 void MainWindow::openSettingsFolder()
 {
 	QDir dir(savePath(""));
-	if (dir.exists())
-	{ showInGraphicalShell(dir.absolutePath()); }
+	if (dir.exists()) {
+		showInGraphicalShell(dir.absolutePath());
+	}
 }
 
 
 Site *MainWindow::getSelectedSiteOrDefault()
 {
-	if (m_selectedSites.isEmpty())
+	if (m_selectedSites.isEmpty()) {
 		return m_profile->getSites().first();
+	}
 
 	return m_selectedSites.first();
 }
@@ -665,21 +660,22 @@ void MainWindow::updateFavorites()
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
 
-	if (order == "note")
-	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote); }
-	else if (order == "lastviewed")
-	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastViewed); }
-	else
-	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByName); }
-	if (reverse)
-	{ m_favorites = reversed(m_favorites); }
+	if (order == "note") {
+		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote);
+	} else if (order == "lastviewed") {
+		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastViewed);
+	} else {
+		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByName);
+	}
+	if (reverse) {
+		m_favorites = reversed(m_favorites);
+	}
 	QString format = tr("MM/dd/yyyy");
 
-	for (const Favorite &fav : qAsConst(m_favorites))
-	{
+	for (const Favorite &fav : qAsConst(m_favorites)) {
 		QLabel *lab = new QLabel(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
-		lab->setToolTip("<img src=\""+fav.getImagePath()+"\" /><br/>"+tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format)));
+		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format)));
 		ui->layoutFavoritesDock->addWidget(lab);
 	}
 }
@@ -689,8 +685,7 @@ void MainWindow::updateKeepForLater()
 
 	clearLayout(ui->dockKflScrollLayout);
 
-	for (const QString &tag : kfl)
-	{
+	for (const QString &tag : kfl) {
 		auto *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
 		taglabel->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%1</a>)").arg(tag));
 		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
@@ -704,18 +699,14 @@ void MainWindow::updateKeepForLater()
 void MainWindow::changeEvent(QEvent *event)
 {
 	// Automatically re-translate UI on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
-
 	// Minimize to tray
-	else if (event->type() == QEvent::WindowStateChange && (windowState() & Qt::WindowMinimized))
-	{
+	else if (event->type() == QEvent::WindowStateChange && (windowState() & Qt::WindowMinimized)) {
 		bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
 		bool minimizeToTray = m_settings->value("Monitoring/minimizeToTray", false).toBool();
-		if (tray && minimizeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible())
-		{
+		if (tray && minimizeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
 			QTimer::singleShot(250, this, SLOT(hide()));
 		}
 	}
@@ -729,41 +720,39 @@ void MainWindow::closeEvent(QCloseEvent *e)
 	// Close to tray
 	bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
 	bool closeToTray = m_settings->value("Monitoring/closeToTray", false).toBool();
-	if (tray && closeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible() && !m_closeFromTray)
-	{
+	if (tray && closeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible() && !m_closeFromTray) {
 		hide();
 		e->ignore();
 		return;
 	}
 
 	// Confirm before closing if there is a batch download or multiple tabs
-	if (m_settings->value("confirm_close", true).toBool() && (m_tabs.count() > 1 || m_downloadsTab->isDownloading()))
-	{
+	if (m_settings->value("confirm_close", true).toBool() && (m_tabs.count() > 1 || m_downloadsTab->isDownloading())) {
 		QMessageBox msgBox(this);
 		msgBox.setText(tr("Are you sure you want to quit?"));
 		msgBox.setIcon(QMessageBox::Warning);
 		QCheckBox dontShowCheckBox(tr("Don't ask me again"));
 		dontShowCheckBox.setCheckable(true);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
-		msgBox.setCheckBox(&dontShowCheckBox);
-#else
-		msgBox.addButton(&dontShowCheckBox, QMessageBox::ResetRole);
-#endif
+		#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+			msgBox.setCheckBox(&dontShowCheckBox);
+		#else
+			msgBox.addButton(&dontShowCheckBox, QMessageBox::ResetRole);
+		#endif
 		msgBox.addButton(QMessageBox::Yes);
 		msgBox.addButton(QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Cancel);
 		int response = msgBox.exec();
 
 		// Don't close on "cancel"
-		if (response != QMessageBox::Yes)
-		{
+		if (response != QMessageBox::Yes) {
 			e->ignore();
 			return;
 		}
 
 		// Remember checkbox
-		if (dontShowCheckBox.checkState() == Qt::Checked)
-		{ m_settings->setValue("confirm_close", false); }
+		if (dontShowCheckBox.checkState() == Qt::Checked) {
+			m_settings->setValue("confirm_close", false);
+		}
 	}
 
 	log(QStringLiteral("Saving..."), Logger::Debug);
@@ -779,8 +768,9 @@ void MainWindow::closeEvent(QCloseEvent *e)
 	m_loaded = false;
 
 	// Ensore the tray icon is hidden quickly on close
-	if (m_trayIcon != nullptr && m_trayIcon->isVisible())
+	if (m_trayIcon != nullptr && m_trayIcon->isVisible()) {
 		m_trayIcon->hide();
+	}
 
 	e->accept();
 }
@@ -800,8 +790,7 @@ void MainWindow::options()
 
 void MainWindow::optionsClosed()
 {
-	for (SearchTab *tab : qAsConst(m_tabs))
-	{
+	for (SearchTab *tab : qAsConst(m_tabs)) {
 		tab->optionsChanged();
 		tab->updateCheckboxes();
 	}
@@ -809,14 +798,16 @@ void MainWindow::optionsClosed()
 
 void MainWindow::setSource(const QString &site)
 {
-	if (!m_profile->getSites().contains(site))
+	if (!m_profile->getSites().contains(site)) {
 		return;
+	}
 
 	m_selectedSites.clear();
 	m_selectedSites.append(m_profile->getSites().value(site));
 
-	if (m_tabs.isEmpty())
+	if (m_tabs.isEmpty()) {
 		return;
+	}
 
 	m_tabs.first()->saveSources(m_selectedSites);
 }
@@ -868,8 +859,9 @@ void MainWindow::utilTagLoader()
 
 void MainWindow::setWiki(const QString &wiki, SearchTab *from)
 {
-	if (from != nullptr && from != m_currentTab)
+	if (from != nullptr && from != m_currentTab) {
 		return;
+	}
 
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
@@ -887,8 +879,7 @@ void MainWindow::tabContextMenuRequested(const QPoint &pos)
 void MainWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
-	if (!folder.isEmpty())
-	{
+	if (!folder.isEmpty()) {
 		ui->lineFolder->setText(folder);
 		updateCompleters();
 		saveSettings();
@@ -897,8 +888,9 @@ void MainWindow::on_buttonFolder_clicked()
 void MainWindow::on_buttonSaveSettings_clicked()
 {
 	QString folder = fixFilename("", ui->lineFolder->text());
-	if (!QDir(folder).exists())
+	if (!QDir(folder).exists()) {
 		QDir::root().mkpath(folder);
+	}
 
 	m_settings->setValue("Save/path_real", folder);
 	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
@@ -909,14 +901,11 @@ void MainWindow::on_buttonInitSettings_clicked()
 	// Reload filename history
 	QFile f(m_profile->getPath() + "/filenamehistory.txt");
 	QStringList filenames;
-	if (f.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (f.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while ((line = f.readLine()) > 0)
-		{
+		while ((line = f.readLine()) > 0) {
 			QString l = line.trimmed();
-			if (!l.isEmpty() && !filenames.contains(l))
-			{
+			if (!l.isEmpty() && !filenames.contains(l)) {
 				filenames.append(l);
 				ui->comboFilename->addItem(l);
 			}
@@ -933,13 +922,11 @@ void MainWindow::on_buttonInitSettings_clicked()
 }
 void MainWindow::updateCompleters()
 {
-	if (ui->lineFolder->text() != m_settings->value("Save/path").toString())
-	{
+	if (ui->lineFolder->text() != m_settings->value("Save/path").toString()) {
 		m_lineFolder_completer.append(ui->lineFolder->text());
 		ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	}
-	/*if (ui->labelFilename->text() != m_settings->value("Save/filename").toString())
-	{
+	/*if (ui->labelFilename->text() != m_settings->value("Save/filename").toString()) {
 		m_lineFilename_completer.append(ui->lineFilename->text());
 		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	}*/
@@ -948,9 +935,11 @@ void MainWindow::saveSettings()
 {
 	// Filename combobox
 	QString txt = ui->comboFilename->currentText();
-	for (int i = ui->comboFilename->count() - 1; i >= 0; --i)
-		if (ui->comboFilename->itemText(i) == txt)
+	for (int i = ui->comboFilename->count() - 1; i >= 0; --i) {
+		if (ui->comboFilename->itemText(i) == txt) {
 			ui->comboFilename->removeItem(i);
+		}
+	}
 	ui->comboFilename->insertItem(0, txt);
 	ui->comboFilename->setCurrentIndex(0);
 	QString message;
@@ -960,10 +949,10 @@ void MainWindow::saveSettings()
 
 	// Save filename history
 	QFile f(m_profile->getPath() + "/filenamehistory.txt");
-	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
-		for (int i = qMax(0, ui->comboFilename->count() - 50); i < ui->comboFilename->count(); ++i)
+	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+		for (int i = qMax(0, ui->comboFilename->count() - 50); i < ui->comboFilename->count(); ++i) {
 			f.write(QString(ui->comboFilename->itemText(i) + "\n").toUtf8());
+		}
 		f.close();
 	}
 
@@ -979,8 +968,7 @@ void MainWindow::saveSettings()
 void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save, SearchTab *source)
 {
 	QFile file(path);
-	if (file.open(QFile::ReadOnly))
-	{
+	if (file.open(QFile::ReadOnly)) {
 		QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 		file.close();
 
@@ -989,16 +977,16 @@ void MainWindow::loadMd5(const QString &path, bool newTab, bool background, bool
 }
 void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save, SearchTab *source)
 {
-	if (tag.startsWith("http://") || tag.startsWith("https://"))
-	{
+	if (tag.startsWith("http://") || tag.startsWith("https://")) {
 		QDesktopServices::openUrl(tag);
 		return;
 	}
 
-	if (newTab)
+	if (newTab) {
 		addTab(tag, background, save, source);
-	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
+	} else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count()) {
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
+	}
 }
 void MainWindow::loadTagTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, true); }
@@ -1010,8 +998,9 @@ void MainWindow::linkHovered(const QString &tag)
 }
 void MainWindow::contextMenu()
 {
-	if (m_link.isEmpty())
+	if (m_link.isEmpty()) {
 		return;
+	}
 
 	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTags, QUrl(), m_profile, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &MainWindow::openInNewTab);
@@ -1025,8 +1014,7 @@ void MainWindow::openInNewTab()
 
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
-	{
+	if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick) {
 		showNormal();
 	}
 }
@@ -1049,26 +1037,21 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 	const QMimeData *mimeData = event->mimeData();
 
 	// Drop a text containing an URL
-	if (mimeData->hasText())
-	{
+	if (mimeData->hasText()) {
 		QString url = mimeData->text();
-		if (isUrl(url))
-		{
+		if (isUrl(url)) {
 			event->acceptProposedAction();
 			return;
 		}
 	}
 
 	// Drop URLs
-	if (mimeData->hasUrls())
-	{
+	if (mimeData->hasUrls()) {
 		QList<QUrl> urlList = mimeData->urls();
-		for (int i = 0; i < urlList.size() && i < 32; ++i)
-		{
+		for (int i = 0; i < urlList.size() && i < 32; ++i) {
 			QString path = urlList.at(i).toLocalFile();
 			QFileInfo fileInfo(path);
-			if (fileInfo.exists() && fileInfo.isFile())
-			{
+			if (fileInfo.exists() && fileInfo.isFile()) {
 				event->acceptProposedAction();
 				return;
 			}
@@ -1081,18 +1064,15 @@ void MainWindow::dropEvent(QDropEvent *event)
 	const QMimeData *mimeData = event->mimeData();
 
 	// Drop a text containing an URL
-	if (mimeData->hasText())
-	{
+	if (mimeData->hasText()) {
 		QString url = mimeData->text();
-		if (isUrl(url))
-		{
+		if (isUrl(url)) {
 			QEventLoop loopLoad;
 			QNetworkReply *reply = m_networkAccessManager.get(QNetworkRequest(QUrl(url)));
 			connect(reply, &QNetworkReply::finished, &loopLoad, &QEventLoop::quit);
 			loopLoad.exec();
 
-			if (reply->error() == QNetworkReply::NoError)
-			{
+			if (reply->error() == QNetworkReply::NoError) {
 				QString md5 = QCryptographicHash::hash(reply->readAll(), QCryptographicHash::Md5).toHex();
 				loadTag("md5:" + md5, true, false);
 			}
@@ -1101,11 +1081,9 @@ void MainWindow::dropEvent(QDropEvent *event)
 	}
 
 	// Drop URLs
-	if (mimeData->hasUrls())
-	{
+	if (mimeData->hasUrls()) {
 		QList<QUrl> urlList = mimeData->urls();
-		for (int i = 0; i < urlList.size() && i < 32; ++i)
-		{
+		for (int i = 0; i < urlList.size() && i < 32; ++i) {
 			loadMd5(urlList.at(i).toLocalFile(), true, false);
 		}
 	}

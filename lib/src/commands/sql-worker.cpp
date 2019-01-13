@@ -18,8 +18,9 @@ SqlWorker::SqlWorker(QString driver, QString host, QString user, QString passwor
 
 bool SqlWorker::connect()
 {
-	if (!m_enabled || m_started)
+	if (!m_enabled || m_started) {
 		return true;
+	}
 
 	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
 	db.setDatabaseName(m_database);
@@ -27,16 +28,14 @@ bool SqlWorker::connect()
 	db.setPassword(m_password);
 
 	const int portSeparator = m_host.lastIndexOf(':');
-	if (portSeparator > 0)
-	{
+	if (portSeparator > 0) {
 		db.setHostName(m_host.left(portSeparator));
 		db.setPort(m_host.midRef(portSeparator + 1).toInt());
+	} else {
+		db.setHostName(m_host);
 	}
-	else
-	{ db.setHostName(m_host); }
 
-	if (!db.open())
-	{
+	if (!db.open()) {
 		log(QStringLiteral("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
 		return false;
 	}
@@ -48,8 +47,9 @@ bool SqlWorker::connect()
 QString SqlWorker::escape(const QVariant &val)
 {
 	QSqlDriver *driver = QSqlDatabase::database().driver();
-	if (driver == nullptr)
+	if (driver == nullptr) {
 		return nullptr;
+	}
 
 	QSqlField f;
 	f.setType(val.type());
@@ -60,8 +60,9 @@ QString SqlWorker::escape(const QVariant &val)
 
 bool SqlWorker::execute(const QString &sql)
 {
-	if (!m_enabled || !connect())
+	if (!m_enabled || !connect()) {
 		return false;
+	}
 
 	log(QStringLiteral("SQL execution of \"%1\"").arg(sql));
 	Logger::getInstance().logCommandSql(sql);

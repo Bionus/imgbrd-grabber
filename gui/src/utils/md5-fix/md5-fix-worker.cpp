@@ -15,8 +15,7 @@ void Md5FixWorker::doWork(const QString &d, const QString &format, const QString
 	int total = 0;
 
 	// Parse all files
-	for (const auto &file : files)
-	{
+	for (const auto &file : files) {
 		const QString fileName = file.first;
 		const QString path = dir.absoluteFilePath(fileName);
 
@@ -24,8 +23,7 @@ void Md5FixWorker::doWork(const QString &d, const QString &format, const QString
 			? getFileMd5(path)
 			: getFilenameMd5(fileName, format);
 
-		if (!md5.isEmpty())
-		{
+		if (!md5.isEmpty()) {
 			emit md5Calculated(md5, path);
 			loaded++;
 		}

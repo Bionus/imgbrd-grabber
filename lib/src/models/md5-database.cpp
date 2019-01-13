@@ -8,11 +8,11 @@ Md5Database::Md5Database(QString path, QSettings *settings)
 {
 	// Read all MD5 from the database and load them in memory
 	QFile fileMD5(m_path);
-	if (fileMD5.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileMD5.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while (!(line = fileMD5.readLine()).isEmpty())
+		while (!(line = fileMD5.readLine()).isEmpty()) {
 			m_md5s.insert(line.left(32), line.mid(32).trimmed());
+		}
 
 		fileMD5.close();
 	}
@@ -34,14 +34,15 @@ Md5Database::~Md5Database()
  */
 void Md5Database::flush()
 {
-	if (m_path.isEmpty())
+	if (m_path.isEmpty()) {
 		return;
+	}
 
 	QFile fileMD5(m_path);
-	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Append))
-	{
-		for (auto it = m_pendingAdd.begin(); it != m_pendingAdd.end(); ++it)
+	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Append)) {
+		for (auto it = m_pendingAdd.begin(); it != m_pendingAdd.end(); ++it) {
 			fileMD5.write(QString(it.key() + it.value() + "\n").toUtf8());
+		}
 
 		fileMD5.close();
 	}
@@ -55,14 +56,15 @@ void Md5Database::flush()
  */
 void Md5Database::sync()
 {
-	if (m_path.isEmpty())
+	if (m_path.isEmpty()) {
 		return;
+	}
 
 	QFile fileMD5(m_path);
-	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Truncate))
-	{
-		for (auto it = m_md5s.begin(); it != m_md5s.end(); ++it)
+	if (fileMD5.open(QFile::Text | QFile::WriteOnly | QFile::Truncate)) {
+		for (auto it = m_md5s.begin(); it != m_md5s.end(); ++it) {
 			fileMD5.write(QString(it.key() + it.value() + "\n").toUtf8());
+		}
 
 		fileMD5.close();
 	}
@@ -77,15 +79,13 @@ QPair<QString, QString> Md5Database::action(const QString &md5)
 	QString path = contains ? m_md5s[md5] : QString();
 	const bool exists = contains && QFile::exists(path);
 
-	if (contains && !exists)
-	{
-		if (!keepDeleted)
-		{
+	if (contains && !exists) {
+		if (!keepDeleted) {
 			remove(md5);
 			path = QString();
+		} else {
+			action = "ignore";
 		}
-		else
-		{ action = "ignore"; }
 	}
 
 	return QPair<QString, QString>(action, path);
@@ -98,13 +98,14 @@ QPair<QString, QString> Md5Database::action(const QString &md5)
  */
 QString Md5Database::exists(const QString &md5)
 {
-	if (m_md5s.contains(md5))
-	{
-		if (QFile::exists(m_md5s[md5]))
+	if (m_md5s.contains(md5)) {
+		if (QFile::exists(m_md5s[md5])) {
 			return m_md5s[md5];
+		}
 
-		if (!m_settings->value("Save/keepDeletedMd5", false).toBool())
+		if (!m_settings->value("Save/keepDeletedMd5", false).toBool()) {
 			remove(md5);
+		}
 	}
 	return QString();
 }
@@ -116,18 +117,16 @@ QString Md5Database::exists(const QString &md5)
  */
 void Md5Database::add(const QString &md5, const QString &path)
 {
-	if (!md5.isEmpty())
-	{
+	if (!md5.isEmpty()) {
 		m_md5s.insert(md5, path);
 
 		m_pendingAdd.insert(md5, path);
-		if (m_pendingAdd.count() >= 100)
-		{
+		if (m_pendingAdd.count() >= 100) {
 			m_flushTimer.stop();
 			flush();
+		} else {
+			m_flushTimer.start();
 		}
-		else
-		{ m_flushTimer.start(); }
 	}
 }
 

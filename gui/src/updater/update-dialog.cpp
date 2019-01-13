@@ -44,15 +44,13 @@ void UpdateDialog::checkForUpdates()
 
 void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available, const QString &changelog)
 {
-	if (!available)
-	{
+	if (!available) {
 		emit noUpdateAvailable();
 		return;
 	}
 
 	const bool hasChangelog = !changelog.isEmpty();
-	if (hasChangelog)
-	{
+	if (hasChangelog) {
 		ui->labelChangelog->setTextFormat(Qt::RichText);
 		ui->labelChangelog->setText(parseMarkdown(changelog));
 	}
@@ -96,8 +94,9 @@ void UpdateDialog::downloadFinished(const QString &path)
 
 	QProcess::startDetached(path);
 
-	if (m_parent != nullptr)
-	{ m_parent->close(); }
+	if (m_parent != nullptr) {
+		m_parent->close();
+	}
 
 	*m_shouldQuit = true;
 	qApp->exit();

@@ -59,8 +59,9 @@ void Site::loadConfig()
 {
 	const QString siteDir = m_source->getPath() + "/" + m_url + "/";
 
-	if (m_settings != nullptr)
+	if (m_settings != nullptr) {
 		m_settings->deleteLater();
+	}
 	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
 	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
@@ -74,57 +75,58 @@ void Site::loadConfig()
 		<< pSettings->value("source_3").toString()
 		<< pSettings->value("source_4").toString();
 	defaults.removeAll("");
-	if (defaults.isEmpty())
-	{ defaults = QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
+	if (defaults.isEmpty()) {
+		defaults = QStringList() << "Xml" << "Json" << "Regex" << "Rss";
+	}
 
 	// Get overridden source order
 	QStringList sources;
-	if (!m_settings->value("sources/usedefault", true).toBool())
-	{
-		for (int i = 0; i < 4; ++i)
-		{
+	if (!m_settings->value("sources/usedefault", true).toBool()) {
+		for (int i = 0; i < 4; ++i) {
 			const QString def = defaults.count() > i ? defaults[i] : QString();
 			sources << m_settings->value("sources/source_" + QString::number(i + 1), def).toString();
 		}
 		sources.removeAll("");
-		if (sources.isEmpty())
-		{ sources = defaults; }
+		if (sources.isEmpty()) {
+			sources = defaults;
+		}
+	} else {
+		sources = defaults;
 	}
-	else
-	{ sources = defaults; }
-	for (int i = 0; i < sources.count(); i++)
-	{ sources[i][0] = sources[i][0].toUpper(); }
+	for (int i = 0; i < sources.count(); i++) {
+		sources[i][0] = sources[i][0].toUpper();
+	}
 
 	// Apis
 	m_apis.clear();
-	for (const QString &src : qAsConst(sources))
-	{
+	for (const QString &src : qAsConst(sources)) {
 		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
-		if (api != nullptr && !m_apis.contains(api))
+		if (api != nullptr && !m_apis.contains(api)) {
 			m_apis.append(api);
+		}
 	}
 
 	// Auth information
 	const QString type = m_settings->value("login/type", "url").toString();
 	m_auth = nullptr;
 	const auto &auths = m_source->getAuths();
-	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it)
-	{
-		if (it.value()->type() == type)
-		{ m_auth = it.value(); }
+	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
+		if (it.value()->type() == type) {
+			m_auth = it.value();
+		}
 	}
-	if (m_login != nullptr)
+	if (m_login != nullptr) {
 		m_login->deleteLater();
-	if (type == "url")
+	}
+	if (type == "url") {
 		m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
-	else if (type == "oauth2")
+	} else if (type == "oauth2") {
 		m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
-	else if (type == "post")
+	} else if (type == "post") {
 		m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-	else if (type == "get")
+	} else if (type == "get") {
 		m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-	else
-	{
+	} else {
 		m_login = nullptr;
 		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
 	}
@@ -132,18 +134,17 @@ void Site::loadConfig()
 	// Cookies
 	m_cookies.clear();
 	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
-	for (const QVariant &variant : settingsCookies)
-	{
+	for (const QVariant &variant : settingsCookies) {
 		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
-		for (QNetworkCookie cookie : cookies)
-		{
+		for (QNetworkCookie cookie : cookies) {
 			cookie.setDomain(m_url);
 			cookie.setPath("/");
 			m_cookies.append(cookie);
 		}
 	}
-	if (m_cookieJar != nullptr)
+	if (m_cookieJar != nullptr) {
 		resetCookieJar();
+	}
 
 	// Tag database
 	delete m_tagDatabase;
@@ -165,13 +166,15 @@ Site::~Site()
 void Site::resetCookieJar()
 {
 	// Delete cookie jar if necessary
-	if (m_cookieJar != nullptr)
-	{ m_cookieJar->deleteLater(); }
+	if (m_cookieJar != nullptr) {
+		m_cookieJar->deleteLater();
+	}
 
 	m_cookieJar = new QNetworkCookieJar(m_manager);
 
-	for (const QNetworkCookie &cookie : qAsConst(m_cookies))
-	{ m_cookieJar->insertCookie(cookie); }
+	for (const QNetworkCookie &cookie : qAsConst(m_cookies)) {
+		m_cookieJar->insertCookie(cookie);
+	}
 
 	m_manager->setCookieJar(m_cookieJar);
 	m_loggedIn = LoginStatus::Unknown;
@@ -185,17 +188,16 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!force && m_loggedIn == LoginStatus::Pending)
+	if (!force && m_loggedIn == LoginStatus::Pending) {
 		return;
+	}
 
-	if (!force && m_loggedIn != LoginStatus::Unknown)
-	{
+	if (!force && m_loggedIn != LoginStatus::Unknown) {
 		emit loggedIn(this, LoginResult::Already);
 		return;
 	}
 
-	if (!canTestLogin())
-	{
+	if (!canTestLogin()) {
 		emit loggedIn(this, LoginResult::Impossible);
 		return;
 	}
@@ -203,8 +205,9 @@ void Site::login(bool force)
 	log(QStringLiteral("[%1] Logging in...").arg(m_url), Logger::Info);
 
 	// Clear cookies if we want to force a re-login
-	if (force)
+	if (force) {
 		resetCookieJar();
+	}
 
 	m_loggedIn = LoginStatus::Pending;
 
@@ -232,42 +235,48 @@ void Site::loginFinished(Login::Result result)
 
 QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img)
 {
-	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown)
+	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
+	}
 
 	// Force HTTPS if set so in the settings (no mixed content allowed)
-	if (m_settings->value("ssl", false).toBool() && url.scheme() == "http" && url.toString().contains(m_url))
+	if (m_settings->value("ssl", false).toBool() && url.scheme() == "http" && url.toString().contains(m_url)) {
 		url.setScheme("https");
+	}
 
 	QNetworkRequest request(url);
 	QString referer = m_settings->value("referer" + (!ref.isEmpty() ? "_" + ref : QString())).toString();
-	if (referer.isEmpty() && !ref.isEmpty())
-	{ referer = m_settings->value("referer", "none").toString(); }
-	if (referer != "none" && (referer != "page" || page != nullptr))
-	{
+	if (referer.isEmpty() && !ref.isEmpty()) {
+		referer = m_settings->value("referer", "none").toString();
+	}
+	if (referer != "none" && (referer != "page" || page != nullptr)) {
 		QString refHeader;
-		if (referer == "host")
-		{ refHeader = url.scheme() + "://" + url.host(); }
-		else if (referer == "image")
-		{ refHeader = fixUrl(url).toString(); }
-		else if (referer == "page" && page != nullptr)
-		{ refHeader = fixUrl(page->url()).toString(); }
-		else if (referer == "details" && img != nullptr)
-		{ refHeader = fixUrl(img->pageUrl()).toString(); }
+		if (referer == "host") {
+			refHeader = url.scheme() + "://" + url.host();
+		} else if (referer == "image") {
+			refHeader = fixUrl(url).toString();
+		} else if (referer == "page" && page != nullptr) {
+			refHeader = fixUrl(page->url()).toString();
+		} else if (referer == "details" && img != nullptr) {
+			refHeader = fixUrl(img->pageUrl()).toString();
+		}
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
-	if (m_login != nullptr)
-	{ m_login->complementRequest(&request); }
+	if (m_login != nullptr) {
+		m_login->complementRequest(&request);
+	}
 
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
-	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it)
-	{ request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1()); }
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
+		request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1());
+	}
 
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
-	if (userAgent.isEmpty())
+	if (userAgent.isEmpty()) {
 		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
+	}
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
@@ -277,8 +286,9 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 
 int Site::msToRequest(QueryType type) const
 {
-	if (!m_lastRequest.isValid())
+	if (!m_lastRequest.isValid()) {
 		return 0;
+	}
 
 	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
@@ -326,25 +336,31 @@ QList<Api *> Site::getLoggedInApis() const
 {
 	QList<Api*> ret;
 	const bool loggedIn = isLoggedIn(true);
-	for (Api *api : m_apis)
-		if (!api->needAuth() || loggedIn)
+	for (Api *api : m_apis) {
+		if (!api->needAuth() || loggedIn) {
 			ret.append(api);
+		}
+	}
 
 	return ret;
 }
 Api *Site::firstValidApi() const
 {
 	const bool loggedIn = isLoggedIn(true);
-	for (Api *api : m_apis)
-		if (!api->needAuth() || loggedIn)
+	for (Api *api : m_apis) {
+		if (!api->needAuth() || loggedIn) {
 			return api;
+		}
+	}
 	return nullptr;
 }
 Api *Site::detailsApi() const
 {
-	for (Api *api : m_apis)
-		if (api->canLoadDetails())
+	for (Api *api : m_apis) {
+		if (api->canLoadDetails()) {
 			return api;
+		}
+	}
 	return nullptr;
 }
 
@@ -353,8 +369,9 @@ void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }
 
 QString Site::fixLoginUrl(QString url) const
 {
-	if (m_auth == nullptr || m_login == nullptr)
+	if (m_auth == nullptr || m_login == nullptr) {
 		return url;
+	}
 
 	return m_login->complementUrl(std::move(url));
 }
@@ -363,30 +380,32 @@ Auth *Site::getAuth() const { return m_auth; }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
-	if (url.isEmpty())
+	if (url.isEmpty()) {
 		return QUrl();
+	}
 
 	const bool ssl = m_settings->value("ssl", false).toBool();
 	const QString protocol = (ssl ? QStringLiteral("https") : QStringLiteral("http"));
 
-	if (url.startsWith("//"))
-	{ return QUrl(protocol + ":" + url); }
-	if (url.startsWith("/"))
-	{
+	if (url.startsWith("//")) {
+		return QUrl(protocol + ":" + url);
+	}
+	if (url.startsWith("/")) {
 		const QString baseUrl = m_url.mid(m_url.indexOf('/'));
 		const QString right = url.startsWith(baseUrl) ? url.mid(baseUrl.length()) : url;
 		return QUrl(protocol + "://" + m_url + right);
 	}
 
-	if (!url.startsWith("http"))
-	{
-		if (old.isValid())
-		{ return old.resolved(QUrl(url)); }
+	if (!url.startsWith("http")) {
+		if (old.isValid()) {
+			return old.resolved(QUrl(url));
+		}
 		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
 
-	if (url.startsWith("http://") && ssl && url.contains(m_url))
-	{ return QUrl(protocol + "://" + url.mid(7)); }
+	if (url.startsWith("http://") && ssl && url.contains(m_url)) {
+		return QUrl(protocol + "://" + url.mid(7));
+	}
 
 	return QUrl(url);
 }
@@ -398,11 +417,13 @@ const QList<QNetworkCookie> &Site::cookies() const
 
 bool Site::isLoggedIn(bool unknown, bool pending) const
 {
-	if (unknown)
+	if (unknown) {
 		return m_loggedIn != LoginStatus::LoggedOut;
+	}
 
-	if (pending && m_loggedIn == LoginStatus::Pending)
+	if (pending && m_loggedIn == LoginStatus::Pending) {
 		return true;
+	}
 
 	return m_loggedIn == LoginStatus::LoggedIn;
 }

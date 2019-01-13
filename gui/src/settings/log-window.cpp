@@ -9,8 +9,7 @@ LogWindow::LogWindow(int index, Profile *profile, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	if (index >= 0)
-	{
+	if (index >= 0) {
 		auto logFiles = getExternalLogFiles(m_profile->getSettings());
 		auto dta = logFiles[index];
 

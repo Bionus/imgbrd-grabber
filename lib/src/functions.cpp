@@ -35,8 +35,9 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
 	QMap<QString, QStringList> tokens;
 	settings->beginGroup(QStringLiteral("Save/Customs"));
 	const QStringList keys = settings->childKeys();
-	for (const QString &key : keys)
-	{ tokens.insert(key, settings->value(key).toString().split(' ')); }
+	for (const QString &key : keys) {
+		tokens.insert(key, settings->value(key).toString().split(' '));
+	}
 	settings->endGroup();
 	return tokens;
 }
@@ -51,10 +52,8 @@ QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
 
 	settings->beginGroup(QStringLiteral("Filenames"));
 	const int count = settings->childKeys().count() / 3;
-	for (int i = 0; i < count; i++)
-	{
-		if (settings->contains(QString::number(i) + "_cond"))
-		{
+	for (int i = 0; i < count; i++) {
+		if (settings->contains(QString::number(i) + "_cond")) {
 			QPair<QString, QString> pair;
 			pair.first = settings->value(QString::number(i) + "_fn").toString();
 			pair.second = settings->value(QString::number(i) + "_dir").toString();
@@ -71,12 +70,12 @@ QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings)
 	QMap<int, QMap<QString, QVariant>> ret;
 
 	settings->beginGroup(QStringLiteral("LogFiles"));
-	for (const QString &group : settings->childGroups())
-	{
+	for (const QString &group : settings->childGroups()) {
 		settings->beginGroup(group);
 		QMap<QString, QVariant> logSettings;
-		for (const QString &key : settings->childKeys())
-		{ logSettings.insert(key, settings->value(key)); }
+		for (const QString &key : settings->childKeys()) {
+			logSettings.insert(key, settings->value(key));
+		}
 		ret.insert(group.toInt(), logSettings);
 		settings->endGroup();
 	}
@@ -89,11 +88,11 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	QStringList suffixes;
 
 	auto logFiles = getExternalLogFiles(settings);
-	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
-	{
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 		const QMap<QString, QVariant> &logFile = it.value();
-		if (logFile["locationType"].toInt() == 2)
-		{ suffixes.append(logFile["suffix"].toString()); }
+		if (logFile["locationType"].toInt() == 2) {
+			suffixes.append(logFile["suffix"].toString());
+		}
 	}
 
 	return suffixes;
@@ -106,21 +105,19 @@ QStringList removeWildards(const QStringList &elements, const QStringList &remov
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (const QString &tag : elements)
-	{
+	for (const QString &tag : elements) {
 		bool removed = false;
-		for (const QString &rem : remove)
-		{
+		for (const QString &rem : remove) {
 			reg.setPattern(rem);
-			if (reg.exactMatch(tag))
-			{
+			if (reg.exactMatch(tag)) {
 				removed = true;
 				break;
 			}
 		}
 
-		if (!removed)
+		if (!removed) {
 			tags.append(tag);
+		}
 	}
 
 	return tags;
@@ -136,43 +133,37 @@ QDateTime qDateTimeFromString(const QString &str)
 	QDateTime date;
 
 	const uint toInt = str.toUInt();
-	if (toInt != 0)
-	{
+	if (toInt != 0) {
 		date.setTime_t(toInt);
-	}
-	else if (str.length() == 19)
-	{
+	} else if (str.length() == 19) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm:ss"));
-		if (!date.isValid())
+		if (!date.isValid()) {
 			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm:ss"));
+		}
 		date.setTimeSpec(Qt::UTC);
-	}
-	else if (str.length() == 16)
-	{
+	} else if (str.length() == 16) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm"));
-		if (!date.isValid())
+		if (!date.isValid()) {
 			date = QDateTime::fromString(str, QStringLiteral("yyyy-MM-dd HH:mm"));
+		}
 		date.setTimeSpec(Qt::UTC);
-	}
-	else if (str[0].isDigit())
-	{
+	} else if (str[0].isDigit()) {
 		qreal decay = 0;
 
 		date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy-MM-dd'T'HH:mm:ss"));
-		if (!date.isValid())
+		if (!date.isValid()) {
 			date = QDateTime::fromString(str.left(19), QStringLiteral("yyyy/MM/dd HH:mm:ss"));
-		else
+		} else {
 			decay = str.right(6).remove(':').toDouble() / 100;
+		}
 		date.setOffsetFromUtc(qFloor(3600 * decay));
-	}
-	else
-	{
+	} else {
 		QLocale myLoc(QLocale::English);
 		date = myLoc.toDateTime(str, QStringLiteral("ddd MMM dd HH:mm:ss yyyy"));
-		if (!date.isValid())
+		if (!date.isValid()) {
 			date = myLoc.toDateTime(str, QStringLiteral("ddd MMM  d HH:mm:ss yyyy"));
-		if (date.isValid())
-		{
+		}
+		if (date.isValid()) {
 			date.setTimeSpec(Qt::UTC);
 			return date;
 		}
@@ -198,8 +189,7 @@ QString getUnit(double *size)
 	const int multiplier = FILESIZE_MULTIPLIER;
 
 	int power = 0;
-	while (*size >= multiplier && power < units.count() - 1)
-	{
+	while (*size >= multiplier && power < units.count() - 1) {
 		*size /= 1024;
 		power++;
 	}
@@ -233,30 +223,37 @@ QString savePath(const QString &file, bool exists, bool writable)
 {
 	const QString &check = exists ? file : QStringLiteral("settings.ini");
 
-	if (isTestModeEnabled())
-	{
-		if (QDir(QDir::currentPath() + "/tests/resources/").exists())
-		{ return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file); }
+	if (isTestModeEnabled()) {
+		if (QDir(QDir::currentPath() + "/tests/resources/").exists()) {
+			return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file);
+		}
 	}
 
-	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable))
-	{ return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file); }
-	if (validSavePath(QDir::currentPath() + "/" + check, writable))
-	{ return QDir::toNativeSeparators(QDir::currentPath() + "/" + file); }
-	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable))
-	{ return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file); }
+	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
+		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
+	}
+	if (validSavePath(QDir::currentPath() + "/" + check, writable)) {
+		return QDir::toNativeSeparators(QDir::currentPath() + "/" + file);
+	}
+	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable)) {
+		return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file);
+	}
 	#if defined(Q_OS_ANDROID)
 		const QString &appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-		if (validSavePath(appData + "/" + check, writable))
-		{ return QDir::toNativeSeparators(appData + "/" + file); }
-		if (validSavePath("assets:/" + check, writable))
-		{ return QDir::toNativeSeparators("assets:/" + file); }
+		if (validSavePath(appData + "/" + check, writable)) {
+			return QDir::toNativeSeparators(appData + "/" + file);
+		}
+		if (validSavePath("assets:/" + check, writable)) {
+			return QDir::toNativeSeparators("assets:/" + file);
+		}
 	#endif
 	#ifdef __linux__
-		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable))
-		{ return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file); }
-		if (validSavePath(QString(PREFIX) + "/share/Grabber/" + check, writable))
-		{ return QDir::toNativeSeparators(QString(PREFIX) + "/share/Grabber/" + file); }
+		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable)) {
+			return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
+		}
+		if (validSavePath(QString(PREFIX) + "/share/Grabber/" + check, writable)) {
+			return QDir::toNativeSeparators(QString(PREFIX) + "/share/Grabber/" + file);
+		}
 	#endif
 
 	QString dir;
@@ -279,29 +276,33 @@ QString savePath(const QString &file, bool exists, bool writable)
 bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 {
 	// Trim directory names of their trailing slashes
-	if (srcFilePath.endsWith(QDir::separator()))
+	if (srcFilePath.endsWith(QDir::separator())) {
 		srcFilePath.chop(1);
-	if (tgtFilePath.endsWith(QDir::separator()))
+	}
+	if (tgtFilePath.endsWith(QDir::separator())) {
 		tgtFilePath.chop(1);
+	}
 
 	// Directly copy files using Qt function
-	if (!QFileInfo(srcFilePath).isDir())
+	if (!QFileInfo(srcFilePath).isDir()) {
 		return QFile(srcFilePath).copy(tgtFilePath);
+	}
 
 	// Try to create the target directory
 	QDir targetDir(tgtFilePath);
 	targetDir.cdUp();
-	if (!targetDir.mkdir(QDir(tgtFilePath).dirName()))
+	if (!targetDir.mkdir(QDir(tgtFilePath).dirName())) {
 		return false;
+	}
 
 	QDir sourceDir(srcFilePath);
 	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	for (const QString &fileName : fileNames)
-	{
+	for (const QString &fileName : fileNames) {
 		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
 		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath))
+		if (!copyRecursively(newSrcFilePath, newTgtFilePath)) {
 			return false;
+		}
 	}
 
 	return true;
@@ -319,15 +320,15 @@ int levenshtein(QString s1, QString s2)
 	QVector<QVector<int>> d(len1 + 1, QVector<int>(len2 + 1));
 
 	d[0][0] = 0;
-	for (int i = 1; i <= len1; ++i)
+	for (int i = 1; i <= len1; ++i) {
 		d[i][0] = i;
-	for (int i = 1; i <= len2; ++i)
+	}
+	for (int i = 1; i <= len2; ++i) {
 		d[0][i] = i;
+	}
 
-	for (int i = 1; i <= len1; ++i)
-	{
-		for (int j = 1; j <= len2; ++j)
-		{
+	for (int i = 1; i <= len1; ++i) {
+		for (int j = 1; j <= len2; ++j) {
 			const int a = qMin(d[i - 1][j] + 1, d[i][j - 1] + 1);
 			const int b = d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1);
 			d[i][j] = qMin(a, b);
@@ -339,16 +340,16 @@ int levenshtein(QString s1, QString s2)
 
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
-	if (!datetime.isValid())
-	{ return false; }
+	if (!datetime.isValid()) {
+		return false;
+	}
 	#ifdef Q_OS_WIN
 		auto *filename = new wchar_t[path.length() + 1];
 		path.toWCharArray(filename);
 		filename[path.length()] = 0;
 		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		delete[] filename;
-		if (hfile == INVALID_HANDLE_VALUE)
-		{
+		if (hfile == INVALID_HANDLE_VALUE) {
 			log(QStringLiteral("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
@@ -358,8 +359,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		pcreationtime.dwLowDateTime = static_cast<DWORD>(ll);
 		pcreationtime.dwHighDateTime = ll >> 32;
 
-		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE)
-		{
+		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE) {
 			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
 			return false;
 		}
@@ -369,8 +369,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		struct utimbuf timebuffer;
 		timebuffer.modtime = datetime.toTime_t();
 		const char *filename = path.toStdString().c_str();
-		if ((utime(filename, &timebuffer)) < 0)
-		{
+		if ((utime(filename, &timebuffer)) < 0) {
 			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
 			return false;
 		}
@@ -419,8 +418,9 @@ QString getExtension(const QUrl &url)
 	const QString filename = url.fileName();
 	const int lastDot = filename.lastIndexOf('.');
 
-	if (lastDot != -1)
+	if (lastDot != -1) {
 		return filename.mid(lastDot + 1);
+	}
 
 	return QString();
 }
@@ -431,8 +431,9 @@ QUrl setExtension(QUrl url, const QString &extension)
 
 	const int lastSlash = path.lastIndexOf('/');
 	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
-	if (lastDot != -1)
+	if (lastDot != -1) {
 		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension);
+	}
 
 	return url;
 }
@@ -448,8 +449,9 @@ QString fixFilename(QString filename, QString path, int maxLength, bool invalidC
 	const QString sep = QDir::separator();
 	filename = QDir::toNativeSeparators(filename);
 	path = QDir::toNativeSeparators(path);
-	if (!path.endsWith(sep) && !path.isEmpty() && !filename.isEmpty())
+	if (!path.endsWith(sep) && !path.isEmpty() && !filename.isEmpty()) {
 		path += sep;
+	}
 
 	#ifdef Q_OS_WIN
 		return fixFilenameWindows(filename, path, maxLength, invalidChars);
@@ -469,26 +471,24 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 	// Divide filename
 	QStringList parts = filename.split(sep);
 	QString file, ext;
-	if (!fn.isEmpty())
-	{
+	if (!fn.isEmpty()) {
 		file = parts.takeLast();;
 		const int lastDot = file.lastIndexOf('.');
-		if (lastDot != -1)
-		{
+		if (lastDot != -1) {
 			ext = file.right(file.length() - lastDot - 1);
 			file = file.left(lastDot);
 		}
 	}
 
 	// Fix directories
-	for (QString &part : parts)
-	{
+	for (QString &part : parts) {
 		// A part cannot start or finish with a space
 		part = part.trimmed();
 
 		// Trim part
-		if (part.length() > 255)
+		if (part.length() > 255) {
 			part = part.left(255).trimmed();
+		}
 	}
 
 	// Join parts back
@@ -497,21 +497,25 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 
 	// A filename cannot exceed a certain length
 	const int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
-	if (file.length() > maxLength - extlen)
+	if (file.length() > maxLength - extlen) {
 		file = file.left(maxLength - extlen).trimmed();
-	if (file.length() > 255 - extlen)
+	}
+	if (file.length() > 255 - extlen) {
 		file = file.left(255 - extlen).trimmed();
+	}
 
 	// Get separation between filename and path
 	int index = -1;
 	const int pathGroups = path.count(sep);
-	for (int i = 0; i < pathGroups; ++i)
+	for (int i = 0; i < pathGroups; ++i) {
 		index = filename.indexOf(sep, index + 1);
+	}
 
 	// Put extension and drive back
 	filename = filename + (!ext.isEmpty() ? "." + ext : QString());
-	if (!fn.isEmpty())
+	if (!fn.isEmpty()) {
 		filename = filename.right(filename.length() - index - 1);
+	}
 
 	QFileInfo fi(filename);
 	QString suffix = fi.suffix();
@@ -533,15 +537,15 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 
 	// Drive
 	QString drive;
-	if (filename.mid(1, 2) == QLatin1String(":\\"))
-	{
+	if (filename.mid(1, 2) == QLatin1String(":\\")) {
 		drive = filename.left(3);
 		filename = filename.right(filename.length() - 3);
 	}
 
 	// Forbidden characters
-	if (invalidChars)
-	{ filename.replace('<', '_').replace('>', '_').replace(':', '_').remove('"').replace('/', '_').replace('|', '_').remove('?').replace('*', '_'); }
+	if (invalidChars) {
+		filename.replace('<', '_').replace('>', '_').replace(':', '_').remove('"').replace('/', '_').replace('|', '_').remove('?').replace('*', '_');
+	}
 
 	// Fobidden directories or filenames
 	static const QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
@@ -549,57 +553,61 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	// Divide filename
 	QStringList parts = filename.split(sep);
 	QString file, ext;
-	if (!fn.isEmpty())
-	{
+	if (!fn.isEmpty()) {
 		file = parts.takeLast();
 		const int lastDot = file.lastIndexOf('.');
-		if (lastDot != -1)
-		{
+		if (lastDot != -1) {
 			ext = file.right(file.length() - lastDot - 1);
 			file = file.left(lastDot);
 		}
 	}
 
 	// Fix directories
-	for (QString &part : parts)
-	{
+	for (QString &part : parts) {
 		// A part cannot be one in the forbidden list
-		if (invalidChars && forbidden.contains(part))
-		{ part = part + "!"; }
+		if (invalidChars && forbidden.contains(part)) {
+			part = part + "!";
+		}
 
 		// A part cannot finish by a period
-		while (invalidChars && part.endsWith('.'))
-		{ part = part.left(part.length() - 1).trimmed(); }
+		while (invalidChars && part.endsWith('.')) {
+			part = part.left(part.length() - 1).trimmed();
+		}
 
 		// A part cannot start or finish with a space
 		part = part.trimmed();
 
 		// A part should still allow creating a file
-		if (part.length() > maxLength - 12)
-		{ part = part.left(qMax(0, maxLength - 12)).trimmed(); }
+		if (part.length() > maxLength - 12) {
+			part = part.left(qMax(0, maxLength - 12)).trimmed();
+		}
 	}
 
 	// Join parts back
 	QString dirpart = parts.join(sep);
-	if (dirpart.length() > maxLength - 12)
-	{ dirpart = dirpart.left(qMax(0, maxLength - 12)).trimmed(); }
+	if (dirpart.length() > maxLength - 12) {
+		dirpart = dirpart.left(qMax(0, maxLength - 12)).trimmed();
+	}
 	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
 	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
-	if (filename.length() > maxLength - 1 - 3 - ext.length() - 1)
-	{ filename = filename.left(qMax(0, maxLength - 1 - 3 - ext.length() - 1)).trimmed(); }
+	if (filename.length() > maxLength - 1 - 3 - ext.length() - 1) {
+		filename = filename.left(qMax(0, maxLength - 1 - 3 - ext.length() - 1)).trimmed();
+	}
 
 	// Get separation between filename and path
 	int index = -1;
 	const int pathGroups = path.count(sep);
-	for (int i = 0; i < pathGroups - (!drive.isEmpty() ? 1 : 0); ++i)
-	{ index = filename.indexOf(sep, index + 1); }
+	for (int i = 0; i < pathGroups - (!drive.isEmpty() ? 1 : 0); ++i) {
+		index = filename.indexOf(sep, index + 1);
+	}
 	index += drive.length();
 
 	// Put extension and drive back
 	filename = drive + filename + (!ext.isEmpty() ? "." + ext : QString());
-	if (!fn.isEmpty())
-	{ filename = filename.right(filename.length() - index - 1); }
+	if (!fn.isEmpty()) {
+		filename = filename.right(filename.length() - index - 1);
+	}
 
 	return filename;
 }
@@ -615,40 +623,49 @@ QString getExtensionFromHeader(const QByteArray &data12)
 	const QByteArray data2 = data12.left(2);
 
 	// GIF
-	if (data6 == "GIF87a" || data6 == "GIF89a")
+	if (data6 == "GIF87a" || data6 == "GIF89a") {
 		return QStringLiteral("gif");
+	}
 
 	// PNG
-	if (data8 == "\211PNG\r\n\032\n")
+	if (data8 == "\211PNG\r\n\032\n") {
 		return QStringLiteral("png");
+	}
 
 	// JPG
-	if (data3 == "\377\330\377")
+	if (data3 == "\377\330\377") {
 		return QStringLiteral("jpg");
+	}
 
 	// BMP
-	if (data2 == "BM")
+	if (data2 == "BM") {
 		return QStringLiteral("bmp");
+	}
 
 	// WEBM
-	if (data4 == "\032\105\337\243")
+	if (data4 == "\032\105\337\243") {
 		return QStringLiteral("webm");
+	}
 
 	// MP4
-	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
+	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom") {
 		return QStringLiteral("mp4");
+	}
 
 	// SWF
-	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
+	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS") {
 		return QStringLiteral("swf");
+	}
 
 	// FLV
-	if (data4 == "FLV\001")
+	if (data4 == "FLV\001") {
 		return QStringLiteral("flv");
+	}
 
 	// ICO
-	if (data4 == QByteArray("\000\000\001\000", 4))
+	if (data4 == QByteArray("\000\000\001\000", 4)) {
 		return QStringLiteral("ico");
+	}
 
 	return QString();
 }
@@ -669,8 +686,7 @@ QString fixCloudflareEmail(const QString &a)
 {
 	QString s;
 	int r = a.midRef(0, 2).toInt(nullptr, 16);
-	for (int j = 2; j < a.length(); j += 2)
-	{
+	for (int j = 2; j < a.length(); j += 2) {
 		int c = a.midRef(j, 2).toInt(nullptr, 16) ^ r;
 		s += QString(QChar(c));
 	}
@@ -680,8 +696,7 @@ QString fixCloudflareEmails(QString html)
 {
 	static QRegularExpression rx("<span class=\"__cf_email__\" data-cfemail=\"([^\"]+)\">\\[[^<]+\\]<\\/span>");
 	auto matches = rx.globalMatch(html);
-	while (matches.hasNext())
-	{
+	while (matches.hasNext()) {
 		auto match = matches.next();
 		const QString email = fixCloudflareEmail(match.captured(1));
 		html.replace(match.captured(0), email);
@@ -693,8 +708,9 @@ QString fixCloudflareEmails(QString html)
 QString getFileMd5(const QString &path)
 {
 	QFile file(path);
-	if (!file.open(QFile::ReadOnly))
+	if (!file.open(QFile::ReadOnly)) {
 		return QString();
+	}
 	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 }
 
@@ -734,8 +750,7 @@ QString parseMarkdown(QString str)
 	// Headers
 	static const QRegularExpression header(QStringLiteral("^(#+)([^#].*)$"), QRegularExpression::MultilineOption);
 	auto matches = header.globalMatch(str);
-	while (matches.hasNext())
-	{
+	while (matches.hasNext()) {
 		auto match = matches.next();
 		const int level = qMax(1, qMin(6, match.captured(1).length()));
 		const QString result = "<h" + QString::number(level) + ">" + match.captured(2).trimmed() + "</h" + QString::number(level) + ">";
@@ -769,17 +784,22 @@ QString qFontToCss(const QFont &font)
 	}
 
 	QString size;
-	if (font.pixelSize() == -1)
-	{ size = QString::number(font.pointSize()) + "pt"; }
-	else
-	{ size = QString::number(font.pixelSize()) + "px"; }
+	if (font.pixelSize() == -1) {
+		size = QString::number(font.pointSize()) + "pt";
+	} else {
+		size = QString::number(font.pixelSize()) + "px";
+	}
 
 	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
 	const QString weight = QString::number(font.weight() * 8);
 
 	QStringList decorations;
-	if (font.strikeOut()) { decorations.append("line-through"); }
-	if (font.underline()) { decorations.append("underline"); }
+	if (font.strikeOut()) {
+		decorations.append("line-through");
+	}
+	if (font.underline()) {
+		decorations.append("underline");
+	}
 
 	return "font-family:'" + font.family() + "'; font-size:" + size + "; font-style:" + style + "; font-weight:" + weight + "; text-decoration:" + (decorations.isEmpty() ? "none" : decorations.join(" ")) + ";";
 }
@@ -788,16 +808,19 @@ QFont qFontFromString(const QString &str)
 {
 	QFont font;
 	font.fromString(str);
-	if (font.family().isEmpty())
-	{ font.setFamily(font.defaultFamily()); }
+	if (font.family().isEmpty()) {
+		font.setFamily(font.defaultFamily());
+	}
 	return font;
 }
 
 bool isFileParentWithSuffix(const QString &fileName, const QString &parent, const QStringList &suffixes)
 {
-	for (const QString &suffix : suffixes)
-		if (fileName == parent + suffix)
+	for (const QString &suffix : suffixes) {
+		if (fileName == parent + suffix) {
 			return true;
+		}
+	}
 	return false;
 }
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes)
@@ -805,21 +828,19 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	auto files = QList<QPair<QString, QStringList>>();
 
 	QDirIterator it(dir, QDirIterator::Subdirectories);
-	while (it.hasNext())
-	{
+	while (it.hasNext()) {
 		it.next();
 
-		if (it.fileInfo().isDir())
+		if (it.fileInfo().isDir()) {
 			continue;
+		}
 
 		QString path = it.filePath();
 		const QString fileName = path.right(path.length() - dir.absolutePath().length() - 1);
 
-		if (!files.isEmpty())
-		{
+		if (!files.isEmpty()) {
 			const QString &previous = files.last().first;
-			if (isFileParentWithSuffix(fileName, previous, suffixes))
-			{
+			if (isFileParentWithSuffix(fileName, previous, suffixes)) {
 				files.last().second.append(fileName);
 				continue;
 			}
@@ -834,14 +855,16 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 QUrl removeCacheBuster(QUrl url)
 {
 	const QString query = url.query();
-	if (query.isEmpty())
+	if (query.isEmpty()) {
 		return url;
+	}
 
 	// Only remove ?integer
 	bool ok;
 	query.toInt(&ok);
-	if (ok)
+	if (ok) {
 		url.setQuery(QString());
+	}
 
 	return url;
 }

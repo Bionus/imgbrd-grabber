@@ -41,21 +41,22 @@ QList<QSharedPointer<Image>> PackLoader::next()
 	QList<QSharedPointer<Image>> results;
 	int pageCount = 0;
 
-	if (!m_overflow.isEmpty())
-	{
-		while (!m_overflow.isEmpty() && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0) && (already + results.count() != m_query.total || (m_overflowGallery && m_query.galleriesCountAsOne)))
+	if (!m_overflow.isEmpty()) {
+		while (!m_overflow.isEmpty() && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0) && (already + results.count() != m_query.total || (m_overflowGallery && m_query.galleriesCountAsOne))) {
 			results.append(m_overflow.takeFirst());
+		}
 
-		if (!m_overflowGallery || !m_query.galleriesCountAsOne)
+		if (!m_overflowGallery || !m_query.galleriesCountAsOne) {
 			m_total += results.count();
+		}
 
 		// If the overflow was the end of a gallery and we finished it, increase the counter
-		if (m_overflowGallery && m_overflow.isEmpty() && m_query.galleriesCountAsOne && !m_overflowHasNext)
+		if (m_overflowGallery && m_overflow.isEmpty() && m_query.galleriesCountAsOne && !m_overflowHasNext) {
 			m_total++;
+		}
 	}
 
-	while (hasNext() && pageCount < maxPages && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0))
-	{
+	while (hasNext() && pageCount < maxPages && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0)) {
 		bool gallery = !m_pendingGalleries.isEmpty();
 
 		// Load next page/gallery
@@ -68,54 +69,53 @@ QList<QSharedPointer<Image>> PackLoader::next()
 		emit finishedPage(page);
 
 		// Add next page to the pending queue
-		if (page->hasNext())
-		{
+		if (page->hasNext()) {
 			Page *next = new Page(m_profile, m_site, QList<Site*>() << m_site, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 			next->setLastPage(page);
-			if (gallery)
+			if (gallery) {
 				m_pendingGalleries.prepend(next);
-			else
+			} else {
 				m_pendingPages.append(next);
+			}
 		}
 
 		// Add results to the data object
 		auto itGallery = m_pendingGalleries.begin();
-		for (const QSharedPointer<Image> &img : page->images())
-		{
+		for (const QSharedPointer<Image> &img : page->images()) {
 			// If this result is a gallery, add it to the beginning of the pending galleries
-			if (img->isGallery())
-			{
+			if (img->isGallery()) {
 				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, img, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 				m_pendingGalleries.insert(itGallery, galleryPage);
 				continue;
 			}
 
 			// If it's an image, add it to the results
-			if (results.count() >= m_packSize)
-			{
+			if (results.count() >= m_packSize) {
 				m_overflow.append(img);
 				m_overflowGallery = gallery;
 				m_overflowHasNext = page->hasNext();
-			}
-			else
-			{
+			} else {
 				results.append(img);
 
-				if (!gallery || !m_query.galleriesCountAsOne)
+				if (!gallery || !m_query.galleriesCountAsOne) {
 					m_total++;
+				}
 			}
 
 			// Early return if we reached the image limit
-			if (m_total == m_query.total)
+			if (m_total == m_query.total) {
 				break;
+			}
 		}
 
 		// If it's the last page of a gallery, increase the counter if we treated all images
-		if (gallery && !page->hasNext() && m_query.galleriesCountAsOne && m_overflow.isEmpty())
+		if (gallery && !page->hasNext() && m_query.galleriesCountAsOne && m_overflow.isEmpty()) {
 			m_total++;
+		}
 
-		if (!gallery)
+		if (!gallery) {
 			pageCount++;
+		}
 
 		page->deleteLater();
 	}

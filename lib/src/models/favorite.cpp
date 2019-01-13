@@ -22,8 +22,9 @@ void Favorite::setNote(int note)
 
 QString Favorite::getName(bool clean) const
 {
-	if (clean)
+	if (clean) {
 		return QString(m_name).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+	}
 	return m_name;
 }
 int Favorite::getNote() const
@@ -37,8 +38,9 @@ QList<Monitor> &Favorite::getMonitors()
 
 bool Favorite::setImage(const QPixmap &img)
 {
-	if (!QDir(savePath("thumbs")).exists())
+	if (!QDir(savePath("thumbs")).exists()) {
 		QDir(savePath()).mkdir("thumbs");
+	}
 
 	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
@@ -48,8 +50,7 @@ bool Favorite::setImage(const QPixmap &img)
 QPixmap Favorite::getImage() const
 {
 	QPixmap img(m_imagePath);
-	if (img.width() > 150 || img.height() > 150)
-	{
+	if (img.width() > 150 || img.height() > 150) {
 		img = img.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 		img.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");
 	}
@@ -71,8 +72,9 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 		: QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
-	if (!QFile::exists(thumbPath))
+	if (!QFile::exists(thumbPath)) {
 		thumbPath = ":/images/noimage.png";
+	}
 
 	return Favorite(tag, note, lastViewed, thumbPath);
 }
@@ -84,8 +86,7 @@ void Favorite::toJson(QJsonObject &json) const
 	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
 
 	QJsonArray monitorsJson;
-	for (const Monitor &monitor : m_monitors)
-	{
+	for (const Monitor &monitor : m_monitors) {
 		QJsonObject obj;
 		monitor.toJson(obj);
 		monitorsJson.append(obj);
@@ -99,13 +100,15 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const 
 	const QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
-	if (!QFile::exists(thumbPath))
+	if (!QFile::exists(thumbPath)) {
 		thumbPath = ":/images/noimage.png";
+	}
 
 	QList<Monitor> monitors;
 	QJsonArray monitorsJson = json["monitors"].toArray();
-	for (auto monitorJson : monitorsJson)
-	{ monitors.append(Monitor::fromJson(monitorJson.toObject(), sites)); }
+	for (auto monitorJson : monitorsJson) {
+		monitors.append(Monitor::fromJson(monitorJson.toObject(), sites));
+	}
 
 	return Favorite(tag, note, lastViewed, monitors, thumbPath);
 }

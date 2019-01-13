@@ -37,7 +37,7 @@ class QAffiche : public QLabel
 		void mouseOut(int);
 
 	protected:
-		//void paintEvent(QPaintEvent*);
+		// void paintEvent(QPaintEvent*);
 		void mouseDoubleClickEvent(QMouseEvent*) override;
 		void mousePressEvent(QMouseEvent*) override;
 		void mouseReleaseEvent(QMouseEvent*) override;

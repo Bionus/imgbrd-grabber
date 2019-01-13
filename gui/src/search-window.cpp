@@ -40,29 +40,25 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
 	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
-	if (tags.contains("order:"))
-	{
+	if (tags.contains("order:")) {
 		QRegularExpression reg("order:([^ ]+)");
 		auto match = reg.match(tags);
 		ui->comboOrder->setCurrentIndex(orders.indexOf(match.captured(1)) + 1);
 		tags.remove(match.captured(0));
 	}
-	if (tags.contains("rating:"))
-	{
+	if (tags.contains("rating:")) {
 		QRegularExpression reg("-?rating:[^ ]+");
 		auto match = reg.match(tags);
 		ui->comboRating->setCurrentIndex(ratings.indexOf(match.captured(0)) + 1);
 		tags.remove(match.captured(0));
 	}
-	if (tags.contains("status:"))
-	{
+	if (tags.contains("status:")) {
 		QRegularExpression reg("status:([^ ]+)");
 		auto match = reg.match(tags);
 		ui->comboStatus->setCurrentIndex(status.indexOf(match.captured(1)) + 1);
 		tags.remove(match.captured(0));
 	}
-	if (tags.contains("date:"))
-	{
+	if (tags.contains("date:")) {
 		QRegularExpression reg("date:([^ ]+)");
 		auto match = reg.match(tags);
 		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), QStringLiteral("MM/dd/yyyy")));
@@ -85,14 +81,18 @@ QString SearchWindow::generateSearch(const QString &additional) const
 
 	QString prefix = !additional.isEmpty() ? additional + " " : QString();
 	QString search = prefix + m_tags->toPlainText();
-	if (ui->comboStatus->currentIndex() != 0)
+	if (ui->comboStatus->currentIndex() != 0) {
 		search += " status:" + status.at(ui->comboStatus->currentIndex() - 1);
-	if (ui->comboOrder->currentIndex() != 0)
+	}
+	if (ui->comboOrder->currentIndex() != 0) {
 		search += " order:" + orders.at(ui->comboOrder->currentIndex() - 1);
-	if (ui->comboRating->currentIndex() != 0)
+	}
+	if (ui->comboRating->currentIndex() != 0) {
 		search += " " + ratings.at(ui->comboRating->currentIndex() - 1);
-	if (!ui->lineDate->text().isEmpty())
+	}
+	if (!ui->lineDate->text().isEmpty()) {
 		search += " date:" + ui->lineDate->text();
+	}
 
 	return search.trimmed();
 }
@@ -113,8 +113,7 @@ void SearchWindow::on_buttonImage_clicked()
 	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), QStringLiteral("Images (*.png *.gif *.jpg *.jpeg)"));
 	QFile f(path);
 	QString md5;
-	if (f.exists())
-	{
+	if (f.exists()) {
 		f.open(QFile::ReadOnly);
 		md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
 	}

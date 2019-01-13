@@ -36,8 +36,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it)
-	{ ui->comboLanguages->addItem(it.value(), it.key()); }
+	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it) {
+		ui->comboLanguages->addItem(it.value(), it.key());
+	}
 
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
@@ -71,8 +72,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
-	for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it)
-	{
+	for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it) {
 		auto leCondition = new QLineEdit(it.key());
 		auto leFilename = new QLineEdit(it.value().first);
 		auto leFolder = new QLineEdit(it.value().second);
@@ -181,8 +181,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
 	i = 0;
-	for (auto it = customs.constBegin(); it != customs.constEnd(); ++it)
-	{
+	for (auto it = customs.constBegin(); it != customs.constEnd(); ++it) {
 		auto *leName = new QLineEdit(it.key());
 		auto *leTags = new QLineEdit(it.value().join(" "));
 		m_customNames.append(leName);
@@ -193,8 +192,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	// Themes
 	ThemeLoader themeLoader(savePath("themes/", true));
 	QStringList themes = themeLoader.getAllThemes();
-	for (const QString &theme : themes)
-	{ ui->comboTheme->addItem(theme, theme); }
+	for (const QString &theme : themes) {
+		ui->comboTheme->addItem(theme, theme);
+	}
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
 	ui->checkSingleDetailsWindow->setChecked(settings->value("Zoom/singleWindow", false).toBool());
@@ -305,14 +305,16 @@ void OptionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 void OptionsWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
-	if (!folder.isEmpty())
-	{ ui->lineFolder->setText(folder); }
+	if (!folder.isEmpty()) {
+		ui->lineFolder->setText(folder);
+	}
 }
 void OptionsWindow::on_buttonFolderFavorites_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
-	if (!folder.isEmpty())
-	{ ui->lineFolderFavorites->setText(folder); }
+	if (!folder.isEmpty()) {
+		ui->lineFolderFavorites->setText(folder);
+	}
 }
 
 void OptionsWindow::on_buttonFilenamePlus_clicked()
@@ -375,8 +377,7 @@ void OptionsWindow::showLogFiles(QSettings *settings)
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
 	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
-	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it)
-	{
+	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 		const int i = it.key();
 		auto logFile = it.value();
 
@@ -415,8 +416,9 @@ void OptionsWindow::removeLogFile(int index)
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
 	settings->beginGroup(QString::number(index));
-	for (const QString &key : settings->childKeys())
-	{ settings->remove(key); }
+	for (const QString &key : settings->childKeys()) {
+		settings->remove(key);
+	}
 	settings->endGroup();
 	settings->endGroup();
 
@@ -428,19 +430,20 @@ void OptionsWindow::setLogFile(int index, const QMap<QString, QVariant> &logFile
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
 
-	if (index < 0)
-	{
+	if (index < 0) {
 		auto childGroups = settings->childGroups();
-		if (childGroups.isEmpty())
-		{ index = 0; }
-		else
-		{ index = childGroups.last().toInt() + 1; }
+		if (childGroups.isEmpty()) {
+			index = 0;
+		} else {
+			index = childGroups.last().toInt() + 1;
+		}
 	}
 
 	settings->beginGroup(QString::number(index));
 
-	for (auto it = logFile.constBegin(); it != logFile.constEnd(); ++it)
-	{ settings->setValue(it.key(), it.value()); }
+	for (auto it = logFile.constBegin(); it != logFile.constEnd(); ++it) {
+		settings->setValue(it.key(), it.value());
+	}
 
 	settings->endGroup();
 	settings->endGroup();
@@ -463,8 +466,7 @@ void OptionsWindow::showWebServices()
 	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
 
 	m_webServicesIds.clear();
-	for (int j = 0; j < m_webServices.count(); ++j)
-	{
+	for (int j = 0; j < m_webServices.count(); ++j) {
 		auto webService = m_webServices[j];
 		int id = webService.id();
 		m_webServicesIds.insert(id, j);
@@ -479,16 +481,14 @@ void OptionsWindow::showWebServices()
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutWebServices->addWidget(label, j, 1);
 
-		if (j > 0)
-		{
+		if (j > 0) {
 			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), QString());
 			mapperMoveUpWebService->setMapping(buttonMoveUp, id);
 			connect(buttonMoveUp, SIGNAL(clicked(bool)), mapperMoveUpWebService, SLOT(map()));
 			ui->layoutWebServices->addWidget(buttonMoveUp, j, 2);
 		}
 
-		if (j < m_webServices.count() - 1)
-		{
+		if (j < m_webServices.count() - 1) {
 			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), QString());
 			mapperMoveDownWebService->setMapping(buttonMoveDown, id);
 			connect(buttonMoveDown, SIGNAL(clicked(bool)), mapperMoveDownWebService, SLOT(map()));
@@ -545,16 +545,16 @@ void OptionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 	const bool isNew = rse.id() < 0;
 
 	// Generate new ID for new web services
-	if (isNew)
-	{
+	if (isNew) {
 		int maxOrder = 0;
 		int maxId = 0;
-		for (const ReverseSearchEngine &ws : qAsConst(m_webServices))
-		{
-			if (ws.id() > maxId)
+		for (const ReverseSearchEngine &ws : qAsConst(m_webServices)) {
+			if (ws.id() > maxId) {
 				maxId = ws.id();
-			if (ws.order() > maxOrder)
+			}
+			if (ws.order() > maxOrder) {
 				maxOrder = ws.order();
+			}
 		}
 
 		rse.setId(maxId + 1);
@@ -562,22 +562,21 @@ void OptionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 	}
 
 	// Write icon information to disk
-	if (!favicon.isEmpty())
-	{
+	if (!favicon.isEmpty()) {
 		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
 		QFile f(faviconPath);
-		if (f.open(QFile::WriteOnly))
-		{
+		if (f.open(QFile::WriteOnly)) {
 			f.write(favicon);
 			f.close();
 		}
 		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
 	}
 
-	if (isNew)
-	{ m_webServices.append(rse); }
-	else
-	{ m_webServices[m_webServicesIds[rse.id()]] = rse; }
+	if (isNew) {
+		m_webServices.append(rse);
+	} else {
+		m_webServices[m_webServicesIds[rse.id()]] = rse;
+	}
 
 	showWebServices();
 }
@@ -585,8 +584,9 @@ void OptionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &fav
 void OptionsWindow::moveUpWebService(int id)
 {
 	const int i = m_webServicesIds[id];
-	if (i == 0)
+	if (i == 0) {
 		return;
+	}
 
 	swapWebServices(i, i - 1);
 }
@@ -594,8 +594,9 @@ void OptionsWindow::moveUpWebService(int id)
 void OptionsWindow::moveDownWebService(int id)
 {
 	const int i = m_webServicesIds[id];
-	if (i == m_webServicesIds.count() - 1)
+	if (i == m_webServicesIds.count() - 1) {
 		return;
+	}
 
 	swapWebServices(i, i + 1);
 }
@@ -611,8 +612,9 @@ void OptionsWindow::swapWebServices(int a, int b)
 	// Re-order web services
 	std::sort(m_webServices.begin(), m_webServices.end(), sortByOrder);
 	m_webServicesIds.clear();
-	for (int i = 0; i < m_webServices.count(); ++i)
+	for (int i = 0; i < m_webServices.count(); ++i) {
 		m_webServicesIds.insert(m_webServices[i].id(), i);
+	}
 
 	showWebServices();
 }
@@ -625,13 +627,12 @@ void OptionsWindow::setColor(QLineEdit *lineEdit, bool button)
 		? QColorDialog::getColor(QColor(text), this, tr("Choose a color"))
 		: QColor(text);
 
-	if (color.isValid())
-	{
+	if (color.isValid()) {
 		lineEdit->setText(button ? color.name() : text);
 		lineEdit->setStyleSheet("color:" + color.name());
+	} else if (!button) {
+		lineEdit->setStyleSheet("color:#000000");
 	}
-	else if (!button)
-	{ lineEdit->setStyleSheet("color:#000000"); }
 }
 
 void OptionsWindow::setFont(QLineEdit *lineEdit)
@@ -639,8 +640,9 @@ void OptionsWindow::setFont(QLineEdit *lineEdit)
 	bool ok = false;
 	const QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
-	if (ok)
-	{ lineEdit->setFont(police); }
+	if (ok) {
+		lineEdit->setFont(police);
+	}
 }
 
 void OptionsWindow::on_lineColoringArtists_textChanged()
@@ -729,18 +731,17 @@ void OptionsWindow::on_buttonImageBackgroundColor_clicked()
 
 void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
-	if (current == sel)
-	{
+	if (current == sel) {
 		found = true;
 		return;
 	}
 	index++;
 
-	for (int i = 0; i < current->childCount(); ++i)
-	{
+	for (int i = 0; i < current->childCount(); ++i) {
 		treeWidgetRec(depth + 1, found, index, current->child(i), sel);
-		if (found)
+		if (found) {
 			break;
+		}
 	}
 }
 
@@ -751,15 +752,16 @@ void OptionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 	bool found = false;
 	int index = 0;
 
-	for (int i = 0; i < ui->treeWidget->topLevelItemCount(); ++i)
-	{
+	for (int i = 0; i < ui->treeWidget->topLevelItemCount(); ++i) {
 		treeWidgetRec(0, found, index, ui->treeWidget->topLevelItem(i), current);
-		if (found)
+		if (found) {
 			break;
+		}
 	}
 
-	if (found)
+	if (found) {
 		ui->stackedWidget->setCurrentIndex(index);
+	}
 }
 
 void OptionsWindow::save()
@@ -791,20 +793,16 @@ void OptionsWindow::save()
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 	settings->setValue("invertToggle", ui->checkInvertToggle->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
-	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
 
 	settings->beginGroup("Filenames");
-		for (int i = 0; i < m_filenamesConditions.size(); i++)
-		{
-			if (!m_filenamesConditions.at(i)->text().isEmpty())
-			{
+		for (int i = 0; i < m_filenamesConditions.size(); i++) {
+			if (!m_filenamesConditions.at(i)->text().isEmpty()) {
 				settings->setValue(QString::number(i) + "_cond", m_filenamesConditions.at(i)->text());
 				settings->setValue(QString::number(i) + "_fn", m_filenamesFilenames.at(i)->text());
 				settings->setValue(QString::number(i) + "_dir", m_filenamesFolders.at(i)->text());
-			}
-			else
-			{
+			} else {
 				settings->remove(QString::number(i) + "_cond");
 				settings->remove(QString::number(i) + "_fn");
 				settings->remove(QString::number(i) + "_dir");
@@ -819,8 +817,7 @@ void OptionsWindow::save()
 	settings->setValue("preloadAllTabs", ui->checkPreloadAllTabs->isChecked());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
-	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))
-	{
+	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex())) {
 		settings->setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
 		m_profile->emitFavorite();
 	}
@@ -832,8 +829,9 @@ void OptionsWindow::save()
 
 	// Blacklist
 	Blacklist blacklist;
-	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
-	{ blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts)) {
+		blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+	}
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
@@ -867,34 +865,32 @@ void OptionsWindow::save()
 		settings->setValue("path", folder);
 		settings->setValue("path_real", folder);
 		QDir pth = QDir(folder);
-		if (!pth.exists())
-		{
+		if (!pth.exists()) {
 			QString op;
-			while (!pth.exists() && pth.path() != op)
-			{
+			while (!pth.exists() && pth.path() != op) {
 				op = pth.path();
 				pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 			}
-			if (pth.path() == op)
-			{ error(this, tr("An error occured creating the save folder.")); }
-			else
-			{ pth.mkpath(folder); }
+			if (pth.path() == op) {
+				error(this, tr("An error occured creating the save folder."));
+			} else {
+				pth.mkpath(folder);
+			}
 		}
 		folder = fixFilename("", ui->lineFolderFavorites->text());
 		settings->setValue("path_favorites", folder);
 		pth = QDir(folder);
-		if (!pth.exists())
-		{
+		if (!pth.exists()) {
 			QString op;
-			while (!pth.exists() && pth.path() != op)
-			{
+			while (!pth.exists() && pth.path() != op) {
 				op = pth.path();
 				pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 			}
-			if (pth.path() == op)
-			{ error(this, tr("An error occured creating the favorites save folder.")); }
-			else
-			{ pth.mkpath(folder); }
+			if (pth.path() == op) {
+				error(this, tr("An error occured creating the favorites save folder."));
+			} else {
+				pth.mkpath(folder);
+			}
 		}
 		QStringList md5Duplicates = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
 		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
@@ -914,15 +910,15 @@ void OptionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (int j = 0; j < m_customNames.size(); j++)
-			{ settings->setValue(m_customNames[j]->text(), m_customTags[j]->text()); }
+			for (int j = 0; j < m_customNames.size(); j++) {
+				settings->setValue(m_customNames[j]->text(), m_customTags[j]->text());
+			}
 		settings->endGroup();
 	settings->endGroup();
 
 	// Web services
 	settings->beginGroup("WebServices");
-	for (const ReverseSearchEngine &webService : qAsConst(m_webServices))
-	{
+	for (const ReverseSearchEngine &webService : qAsConst(m_webServices)) {
 		settings->beginGroup(QString::number(webService.id()));
 		settings->setValue("name", webService.name());
 		settings->setValue("url", webService.tpl());
@@ -934,8 +930,9 @@ void OptionsWindow::save()
 	// Themes
 	const QString theme = ui->comboTheme->currentText();
 	ThemeLoader themeLoader(savePath("themes/", true));
-	if (themeLoader.setTheme(theme))
-	{ settings->setValue("theme", theme); }
+	if (themeLoader.setTheme(theme)) {
+		settings->setValue("theme", theme);
+	}
 
 	settings->setValue("Zoom/singleWindow", ui->checkSingleDetailsWindow->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
@@ -1029,13 +1026,11 @@ void OptionsWindow::save()
 		settings->endGroup();
 	settings->endGroup();
 
-	if (settings->value("Proxy/use", false).toBool())
-	{
+	if (settings->value("Proxy/use", false).toBool()) {
 		const bool useSystem = settings->value("Proxy/useSystem", false).toBool();
 		QNetworkProxyFactory::setUseSystemConfiguration(useSystem);
 
-		if (!useSystem)
-		{
+		if (!useSystem) {
 			const QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http"
 				? QNetworkProxy::HttpProxy
 				: QNetworkProxy::Socks5Proxy;
@@ -1048,19 +1043,16 @@ void OptionsWindow::save()
 			);
 			QNetworkProxy::setApplicationProxy(proxy);
 			log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		} else {
+			log(QStringLiteral("Enabling system-wide proxy."));
 		}
-		else
-		{ log(QStringLiteral("Enabling system-wide proxy.")); }
-	}
-	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
-	{
+	} else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy) {
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
 		log(QStringLiteral("Disabling application proxy."));
 	}
 
 	const QString lang = ui->comboLanguages->currentData().toString();
-	if (settings->value("language", "English").toString() != lang)
-	{
+	if (settings->value("language", "English").toString() != lang) {
 		settings->setValue("language", lang);
 		emit languageChanged(lang);
 	}

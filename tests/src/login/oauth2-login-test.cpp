@@ -54,8 +54,7 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 
 	QCOMPARE(result, expected);
 
-	if (!expectedHeader.isEmpty())
-	{
+	if (!expectedHeader.isEmpty()) {
 		QNetworkRequest req;
 		login.complementRequest(&req);
 

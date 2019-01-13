@@ -48,16 +48,14 @@ void BlacklistFix1::on_buttonContinue_clicked()
 
 	// Check that directory exists
 	QDir dir(ui->lineFolder->text());
-	if (!dir.exists())
-	{
+	if (!dir.exists()) {
 		error(this, tr("This directory does not exist."));
 		ui->buttonContinue->setEnabled(true);
 		return;
 	}
 
 	// Make sure the input is valid
-	if (!ui->radioForce->isChecked() && !ui->lineFilename->text().contains("%md5%"))
-	{
+	if (!ui->radioForce->isChecked() && !ui->lineFilename->text().contains("%md5%")) {
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonContinue->setEnabled(true);
 		return;
@@ -66,25 +64,21 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	// Get all files from the destination directory
 	QVector<QPair<QString, QString>> files;
 	QDirIterator it(dir, QDirIterator::Subdirectories);
-	while (it.hasNext())
-	{
+	while (it.hasNext()) {
 		it.next();
-		if (!it.fileInfo().isDir())
-		{
+		if (!it.fileInfo().isDir()) {
 			int len = it.filePath().length() - dir.absolutePath().length() - 1;
 			files.append(QPair<QString, QString>(it.filePath().right(len), it.filePath()));
 		}
 	}
 
 	// Parse all files
-	for (const QPair<QString, QString> &file : files)
-	{
+	for (const QPair<QString, QString> &file : files) {
 		QString md5 = ui->radioForce->isChecked()
 			? getFileMd5(file.second)
 			: getFilenameMd5(file.first, ui->lineFilename->text());
 
-		if (!md5.isEmpty())
-		{
+		if (!md5.isEmpty()) {
 			QMap<QString, QString> det;
 			det.insert("md5", md5);
 			det.insert("path", file.first);
@@ -94,8 +88,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	}
 
 	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
-	if (response == QMessageBox::Yes)
-	{
+	if (response == QMessageBox::Yes) {
 		// Show progress bar
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(files.size());
@@ -107,28 +100,25 @@ void BlacklistFix1::on_buttonContinue_clicked()
 
 void BlacklistFix1::getAll(Page *p)
 {
-	if (p != nullptr && !p->images().empty())
-	{
+	if (p != nullptr && !p->images().empty()) {
 		QSharedPointer<Image> img = p->images().at(0);
 		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 		p->deleteLater();
 	}
 
-	if (!m_details.empty())
-	{
+	if (!m_details.empty()) {
 		QMap<QString, QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), det);
 
 		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
 		connect(page, &Page::finishedLoading, this, &BlacklistFix1::getAll);
 		page->load();
-	}
-	else
-	{
+	} else {
 		Blacklist blacklist;
-		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts))
-		{ blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts)); }
+		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts)) {
+			blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+		}
 
 		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);
 		close();

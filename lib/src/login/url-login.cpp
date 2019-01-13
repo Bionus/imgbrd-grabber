@@ -18,10 +18,10 @@ bool UrlLogin::isTestable() const
 
 void UrlLogin::login()
 {
-	if (m_page != nullptr)
-	{
-		if (!m_page->isLoaded())
+	if (m_page != nullptr) {
+		if (!m_page->isLoaded()) {
 			return;
+		}
 
 		m_page->abort();
 		m_page->deleteLater();
@@ -36,8 +36,7 @@ void UrlLogin::login()
 
 void UrlLogin::loginFinished()
 {
-	if (!m_page->images().isEmpty())
-	{
+	if (!m_page->images().isEmpty()) {
 		emit loggedIn(Result::Success);
 		return;
 	}
@@ -50,8 +49,7 @@ QString UrlLogin::complementUrl(QString url) const
 	bool hasQuery = url.contains('?');
 
 	int i = 0;
-	for (AuthField *field : m_auth->fields())
-	{
+	for (AuthField *field : m_auth->fields()) {
 		url.append((i == 0 && !hasQuery ? '?' : '&') + field->key() + "=" + field->value(m_settings));
 		++i;
 	}

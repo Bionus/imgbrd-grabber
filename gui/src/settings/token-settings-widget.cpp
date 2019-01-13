@@ -19,11 +19,17 @@ TokenSettingsWidget::TokenSettingsWidget(QSettings *settings, QString name, bool
 	ui->lineReplaceAll->setText(m_settings->value(m_name + "_value", defaultMultiple).toString());
 
 	const QString multiple = m_settings->value(m_name + "_multiple", "keepAll").toString();
-	if		(multiple == "keepAll")			{ ui->radioKeepAll->setChecked(true);		}
-	else if	(multiple == "keepN")			{ ui->radioKeepN->setChecked(true);			}
-	else if	(multiple == "keepNThenAdd")	{ ui->radioKeepNThenAdd->setChecked(true);	}
-	else if	(multiple == "replaceAll")		{ ui->radioReplaceAll->setChecked(true);	}
-	else if	(multiple == "multiple")		{ ui->radioMultiple->setChecked(true);		}
+	if (multiple == "keepAll") {
+		ui->radioKeepAll->setChecked(true);
+	} else if (multiple == "keepN") {
+		ui->radioKeepN->setChecked(true);
+	} else if (multiple == "keepNThenAdd") {
+		ui->radioKeepNThenAdd->setChecked(true);
+	} else if (multiple == "replaceAll") {
+		ui->radioReplaceAll->setChecked(true);
+	} else if (multiple == "multiple") {
+		ui->radioMultiple->setChecked(true);
+	}
 
 	ui->checkUseShorter->setVisible(m_enableShorter);
 	if (m_enableShorter) {
@@ -51,11 +57,17 @@ void TokenSettingsWidget::save()
 	m_settings->setValue(m_name + "_value", ui->lineReplaceAll->text());
 
 	QString artistMultiple;
-	if		(ui->radioKeepAll->isChecked())			{ artistMultiple = "keepAll";		}
-	else if	(ui->radioKeepN->isChecked())			{ artistMultiple = "keepN";			}
-	else if	(ui->radioKeepNThenAdd->isChecked())	{ artistMultiple = "keepNThenAdd";	}
-	else if	(ui->radioReplaceAll->isChecked())		{ artistMultiple = "replaceAll";	}
-	else if	(ui->radioMultiple->isChecked())		{ artistMultiple = "multiple";		}
+	if (ui->radioKeepAll->isChecked()) {
+		artistMultiple = "keepAll";
+	} else if (ui->radioKeepN->isChecked()) {
+		artistMultiple = "keepN";
+	} else if (ui->radioKeepNThenAdd->isChecked()) {
+		artistMultiple = "keepNThenAdd";
+	} else if (ui->radioReplaceAll->isChecked()) {
+		artistMultiple = "replaceAll";
+	} else if (ui->radioMultiple->isChecked()) {
+		artistMultiple = "multiple";
+	}
 	m_settings->setValue(m_name + "_multiple", artistMultiple);
 
 	if (m_enableShorter) {

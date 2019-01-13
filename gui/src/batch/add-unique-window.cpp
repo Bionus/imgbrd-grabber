@@ -50,10 +50,11 @@ void setTextEditRows(QPlainTextEdit *ptxt, int nRows)
 }
 void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label)
 {
-	if (toggle)
+	if (toggle) {
 		setTextEditRows(ptxt, 6);
-	else
+	} else {
 		setTextEditRows(ptxt, 1);
+	}
 
 	ptxt->verticalScrollBar()->setVisible(toggle);
 	label->setVisible(toggle);
@@ -76,8 +77,9 @@ void AddUniqueWindow::toggleMultiLineMd5(bool toggle)
 void AddUniqueWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
-	if (!folder.isEmpty())
-	{ ui->lineFolder->setText(folder); }
+	if (!folder.isEmpty()) {
+		ui->lineFolder->setText(folder);
+	}
 }
 void AddUniqueWindow::on_lineFilename_textChanged(const QString &text)
 {
@@ -100,8 +102,7 @@ void AddUniqueWindow::ok(bool close)
 	Api *api = site->detailsApi();
 
 	const QStringList ids = ui->lineId->toPlainText().split('\n', QString::SkipEmptyParts);
-	for (const QString &id : ids)
-	{
+	for (const QString &id : ids) {
 		UniqueQuery q;
 		q.site = site;
 		q.api = api;
@@ -110,8 +111,7 @@ void AddUniqueWindow::ok(bool close)
 	}
 
 	const QStringList md5s = ui->lineMd5->toPlainText().split('\n', QString::SkipEmptyParts);
-	for (const QString &md5 : md5s)
-	{
+	for (const QString &md5 : md5s) {
 		UniqueQuery q;
 		q.site = site;
 		q.api = api;
@@ -119,8 +119,7 @@ void AddUniqueWindow::ok(bool close)
 		m_queue.enqueue(q);
 	}
 
-	if (m_queue.count() > 1)
-	{
+	if (m_queue.count() > 1) {
 		ui->progressBar->setMaximum(m_queue.count());
 		ui->progressBar->setValue(0);
 		ui->progressBar->show();
@@ -130,19 +129,18 @@ void AddUniqueWindow::ok(bool close)
 }
 void AddUniqueWindow::loadNext()
 {
-	if (m_queue.isEmpty())
-	{
-		if (m_close)
+	if (m_queue.isEmpty()) {
+		if (m_close) {
 			close();
-		else
+		} else {
 			ui->progressBar->hide();
+		}
 		return;
 	}
 
 	const UniqueQuery q = m_queue.dequeue();
 
-	if (q.api != nullptr && false)
-	{
+	if (q.api != nullptr && false) {
 		const QString url = q.api->detailsUrl(q.id.toULongLong(), q.md5, q.site).url;
 
 		auto details = QMap<QString, QString>();
@@ -153,9 +151,7 @@ void AddUniqueWindow::loadNext()
 		m_image = QSharedPointer<Image>(new Image(q.site, details, m_profile));
 		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
 		m_image->loadDetails();
-	}
-	else
-	{
+	} else {
 		const QString query = (q.id.isEmpty() ? "md5:" + q.md5 : "id:" + q.id);
 		const QStringList search = QStringList() << query << "status:any";
 		m_page = new Page(m_profile, q.site, m_sites.values(), search, 1, 1);
@@ -166,8 +162,7 @@ void AddUniqueWindow::loadNext()
 
 void AddUniqueWindow::replyFinished(Page *p)
 {
-	if (p->images().isEmpty())
-	{
+	if (p->images().isEmpty()) {
 		p->deleteLater();
 		error(this, tr("No image found."));
 		return;

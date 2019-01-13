@@ -16,8 +16,7 @@ void ImageDownloaderTest::initTestCase()
 void ImageDownloaderTest::cleanup()
 {
 	QDir dir("tests/resources/tmp/");
-	for (const QString &file : dir.entryList(QDir::Files))
-	{
+	for (const QString &file : dir.entryList(QDir::Files)) {
 		dir.remove(file);
 	}
 
@@ -31,8 +30,9 @@ void ImageDownloaderTest::cleanup()
 Image *ImageDownloaderTest::createImage(bool noMd5)
 {
 	QMap<QString, QString> details;
-	if (!noMd5)
-	{ details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718"; }
+	if (!noMd5) {
+		details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
+	}
 	details["ext"] = "jpg";
 	details["id"] = "7331";
 	details["file_url"] = "http://test.com/img/oldfilename.jpg";
@@ -41,8 +41,9 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
 
-	if (m_profile == nullptr)
-	{ m_profile = new Profile("tests/resources/"); }
+	if (m_profile == nullptr) {
+		m_profile = new Profile("tests/resources/");
+	}
 
 	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
@@ -79,8 +80,9 @@ void ImageDownloaderTest::testSuccessLoadTagsExternal()
 
 	// Delete already existing
 	QFile logFile("tests/resources/tmp/savelog.txt");
-	if (logFile.exists())
+	if (logFile.exists()) {
 		logFile.remove();
+	}
 
 	QSettings *settings = m_profile->getSettings();
 	settings->setValue("LogFiles/0/locationType", 1);
@@ -237,21 +239,21 @@ void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloa
 
 	QCOMPARE(out, img);
 	QCOMPARE(result.count(), expected.count());
-	for (int i = 0; i < result.count(); ++i)
-	{
-		if (!onlyCheckValues)
-		{ QCOMPARE(result[i].path, expected[i].path); }
+	for (int i = 0; i < result.count(); ++i) {
+		if (!onlyCheckValues) {
+			QCOMPARE(result[i].path, expected[i].path);
+		}
 		QCOMPARE(result[i].size, expected[i].size);
 		QCOMPARE(result[i].result, expected[i].result);
 	}
 
-	for (const ImageSaveResult &res : result)
-	{
+	for (const ImageSaveResult &res : result) {
 		QFile f(res.path);
 		bool exists = f.exists();
 		QVERIFY(exists == shouldExist);
-		if (exists)
-		{ f.remove(); }
+		if (exists) {
+			f.remove();
+		}
 	}
 }
 

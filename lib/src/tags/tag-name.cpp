@@ -14,11 +14,13 @@ QString TagName::normalized() const
 
 QString TagName::formatted(const TagNameFormat &format) const
 {
-	if (format == m_format)
+	if (format == m_format) {
 		return m_name;
+	}
 
-	if (m_words.isEmpty())
+	if (m_words.isEmpty()) {
 		m_words = m_name.split(m_format.wordSeparator());
+	}
 
 	return format.formatted(m_words);
 }

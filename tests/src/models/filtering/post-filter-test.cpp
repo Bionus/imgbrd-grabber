@@ -13,8 +13,9 @@ void PostFilterTest::init()
 {
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
+	if (!tmp.exists("tmp")) {
 		tmp.mkdir("tmp");
+	}
 
 	QFile::remove("tests/resources/md5s.txt");
 

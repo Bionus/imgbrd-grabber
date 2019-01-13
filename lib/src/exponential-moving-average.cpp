@@ -18,8 +18,7 @@ void ExponentialMovingAverage::setSmoothingFactor(double smoothingFactor)
 
 void ExponentialMovingAverage::addValue(double value)
 {
-	if (!m_hasValue)
-	{
+	if (!m_hasValue) {
 		m_average = value;
 		m_hasValue = true;
 		return;

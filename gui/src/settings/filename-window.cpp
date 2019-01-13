@@ -26,15 +26,12 @@ FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 	connect(ui->radioJavascript, &QRadioButton::toggled, m_scintilla, &QWidget::setEnabled);
 	ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, m_scintilla);
 
-	if (value.startsWith("javascript:"))
-	{
+	if (value.startsWith("javascript:")) {
 		value = value.right(value.length() - 11);
 		m_scintilla->setText(value);
 		ui->lineClassic->setEnabled(false);
 		ui->radioJavascript->toggle();
-	}
-	else
-	{
+	} else {
 		ui->lineClassic->setText(value);
 		m_scintilla->setEnabled(false);
 		ui->radioClassic->toggle();
@@ -59,26 +56,25 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 	QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;
-	while ((pos = date.indexIn(text, pos)) != -1)
-	{
+	while ((pos = date.indexIn(text, pos)) != -1) {
 		QString cap = date.cap(1);
 		QString format;
-		for (const QChar &c : cap)
-		{
-			if (c == 'Y')
-			{ format += "' + date.getFullYear() + '"; }
-			else if (c == 'M')
-			{ format += "' + date.getMonth() + '"; }
-			else if (c == 'd')
-			{ format += "' + date.getDate() + '"; }
-			else if (c == 'h')
-			{ format += "' + date.getHours() + '"; }
-			else if (c == 'm')
-			{ format += "' + date.getMinutes() + '"; }
-			else if (c == 's')
-			{ format += "' + date.getSeconds() + '"; }
-			else
-			{ format += c; }
+		for (const QChar &c : cap) {
+			if (c == 'Y') {
+				format += "' + date.getFullYear() + '";
+			} else if (c == 'M') {
+				format += "' + date.getMonth() + '";
+			} else if (c == 'd') {
+				format += "' + date.getDate() + '";
+			} else if (c == 'h') {
+				format += "' + date.getHours() + '";
+			} else if (c == 'm') {
+				format += "' + date.getMinutes() + '";
+			} else if (c == 's') {
+				format += "' + date.getSeconds() + '";
+			} else {
+				format += c;
+			}
 		}
 
 		text = text.left(pos) + format + text.mid(pos + date.matchedLength());
@@ -86,14 +82,18 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	}
 
 	QString value = "'" + text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed() + "'";
-	if (value.startsWith("' + "))
-	{ value = value.right(value.length() - 4); }
-	if (value.startsWith("'' + "))
-	{ value = value.right(value.length() - 5); }
-	if (value.endsWith(" + '"))
-	{ value = value.left(value.length() - 4); }
-	if (value.endsWith(" + ''"))
-	{ value = value.left(value.length() - 5); }
+	if (value.startsWith("' + ")) {
+		value = value.right(value.length() - 4);
+	}
+	if (value.startsWith("'' + ")) {
+		value = value.right(value.length() - 5);
+	}
+	if (value.endsWith(" + '")) {
+		value = value.left(value.length() - 4);
+	}
+	if (value.endsWith(" + ''")) {
+		value = value.left(value.length() - 5);
+	}
 
 	m_scintilla->setText(value);
 }
@@ -109,8 +109,7 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 
 QString FilenameWindow::format() const
 {
-	if (ui->radioJavascript->isChecked())
-	{
+	if (ui->radioJavascript->isChecked()) {
 		#if defined(USE_QSCINTILLA)
 			return "javascript:" + m_scintilla->text();
 		#else
@@ -125,8 +124,7 @@ void FilenameWindow::done(int r)
 {
 	QMap<QString, Site*> sites = m_profile->getSites();
 
-	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
-	{
+	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty()) {
 		Site *site = sites.first();
 
 		QMap<QString, QString> info;
@@ -139,11 +137,9 @@ void FilenameWindow::done(int r)
 		Image image(site, info, m_profile);
 		QStringList det = image.paths(format(), QString(), 0);
 
-		if (det.isEmpty())
-		{
+		if (det.isEmpty()) {
 			const int reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
-			if (reply == QMessageBox::Cancel)
-			{
+			if (reply == QMessageBox::Cancel) {
 				return;
 			}
 		}

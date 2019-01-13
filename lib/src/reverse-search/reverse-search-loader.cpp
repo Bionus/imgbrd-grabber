@@ -13,8 +13,7 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 	QMap<int, ReverseSearchEngine> ret;
 
 	// Default groups
-	if (!m_settings->childGroups().contains("WebServices"))
-	{
+	if (!m_settings->childGroups().contains("WebServices")) {
 		ret.insert(1, ReverseSearchEngine(1, savePath("webservices/1.ico"), "IQDB", "https://iqdb.org/?url={url}", 1));
 		ret.insert(2, ReverseSearchEngine(2, savePath("webservices/2.ico"), "SauceNAO", "https://saucenao.com/search.php?db=999&url={url}", 2));
 		ret.insert(3, ReverseSearchEngine(3, savePath("webservices/3.ico"), "Google", "https://www.google.com/searchbyimage?image_url={url}", 3));
@@ -26,8 +25,7 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 	// Load groups
 	m_settings->beginGroup("WebServices");
 	const QStringList &webGroups = m_settings->childGroups();
-	for (const QString &group : webGroups)
-	{
+	for (const QString &group : webGroups) {
 		m_settings->beginGroup(group);
 		const int id = group.toInt();
 		const int order = m_settings->value("order").toInt();

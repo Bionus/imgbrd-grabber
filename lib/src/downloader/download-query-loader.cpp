@@ -10,8 +10,7 @@
 bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
-	if (!f.open(QFile::ReadOnly))
-	{
+	if (!f.open(QFile::ReadOnly)) {
 		return false;
 	}
 
@@ -19,8 +18,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	QString header = f.readLine().trimmed();
 
 	// Version 1 and 2 are plain text
-	if (header.startsWith("[IGL "))
-	{
+	if (header.startsWith("[IGL ")) {
 		log(QStringLiteral("Text-based IGL files are not supported"), Logger::Warning);
 		return false;
 	}
@@ -38,19 +36,19 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 		case 3:
 		{
 			QJsonArray groupsJson = object["batchs"].toArray();
-			for (auto groupJson : groupsJson)
-			{
+			for (auto groupJson : groupsJson) {
 				DownloadQueryGroup batch;
-				if (batch.read(groupJson.toObject(), sites))
+				if (batch.read(groupJson.toObject(), sites)) {
 					groups.append(batch);
+				}
 			}
 
 			QJsonArray uniquesJson = object["uniques"].toArray();
-			for (auto uniqueJson : uniquesJson)
-			{
+			for (auto uniqueJson : uniquesJson) {
 				DownloadQueryImage unique;
-				if (unique.read(uniqueJson.toObject(), sites))
+				if (unique.read(uniqueJson.toObject(), sites)) {
 					uniques.append(unique);
+				}
 			}
 			return true;
 		}
@@ -64,15 +62,13 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
 {
 	QFile saveFile(path);
-	if (!saveFile.open(QFile::WriteOnly))
-	{
+	if (!saveFile.open(QFile::WriteOnly)) {
 		return false;
 	}
 
 	// Batch downloads
 	QJsonArray groupsJson;
-	for (const auto &b : groups)
-	{
+	for (const auto &b : groups) {
 		QJsonObject batch;
 		b.write(batch);
 		groupsJson.append(batch);
@@ -80,8 +76,7 @@ bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryIma
 
 	// Unique images
 	QJsonArray uniquesJson;
-	for (const auto &u : uniques)
-	{
+	for (const auto &u : uniques) {
 		QJsonObject unique;
 		u.write(unique);
 		uniquesJson.append(unique);

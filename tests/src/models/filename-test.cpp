@@ -12,8 +12,9 @@ void FilenameTest::init()
 {
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
+	if (!tmp.exists("tmp")) {
 		tmp.mkdir("tmp");
+	}
 
 	m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
 	m_details["ext"] = "jpg";
@@ -413,15 +414,17 @@ void FilenameTest::testPathOptionNumNoExt()
 void FilenameTest::testPathOptionNumAboveTen()
 {
 	int count = 15;
-	for (int i = 1; i < count; ++i)
+	for (int i = 1; i < count; ++i) {
 		QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+	}
 
 	assertPath("%id% (%num%).%ext%",
 			   "7331 (" + QString::number(count) + ").jpg",
 			   "tests/resources/tmp/");
 
-	for (int i = 1; i < count; ++i)
+	for (int i = 1; i < count; ++i) {
 		QFile::remove("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+	}
 }
 
 void FilenameTest::testPathOptionSort()
@@ -768,24 +771,27 @@ void FilenameTest::assertPath(const QString &format, const QString &expected, co
 
 void FilenameTest::assertPath(const QString &format, const QStringList &expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
 {
-	if (path.isEmpty())
+	if (path.isEmpty()) {
 		path = QDir::homePath();
+	}
 
 	// Convert directory separators
 	QStringList expectedNative;
 	expectedNative.reserve(expected.count());
-	for (const QString &exp : expected)
-	{
+	for (const QString &exp : expected) {
 		expectedNative.append(QDir::toNativeSeparators(exp));
 	}
 
 	Filename::PathFlags flags = Filename::Complex | Filename::CapLength;
-	if (shouldFixFilename)
-	{ flags |= Filename::Fix; }
-	if (fullPath)
-	{ flags |= Filename::IncludeFolder; }
-	if (keepInvalidTokens)
-	{ flags |= Filename::KeepInvalidTokens; }
+	if (shouldFixFilename) {
+		flags |= Filename::Fix;
+	}
+	if (fullPath) {
+		flags |= Filename::IncludeFolder;
+	}
+	if (keepInvalidTokens) {
+		flags |= Filename::KeepInvalidTokens;
+	}
 
 	Filename fn(format);
 	QStringList actual = fn.path(*m_img, m_profile, path, 7, flags);

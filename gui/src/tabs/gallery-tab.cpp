@@ -121,8 +121,9 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	QStringList postFilters;
 	postFilters.reserve(jsonPostFilters.count());
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
+	}
 	setPostFilter(postFilters.join(' '));
 
 	setTags("", preload);
@@ -157,8 +158,9 @@ void GalleryTab::getAll()
 	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
+	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 		return;
+	}
 
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
@@ -190,8 +192,7 @@ QString GalleryTab::tags() const
 void GalleryTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 

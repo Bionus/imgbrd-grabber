@@ -16,8 +16,7 @@ QAffiche::QAffiche(const QVariant &id, int border, QColor color, QWidget *parent
 
 void QAffiche::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	if (e->button() == Qt::LeftButton)
-	{
+	if (e->button() == Qt::LeftButton) {
 		emit doubleClicked();
 		emit doubleClicked(m_id.toInt());
 	}
@@ -35,20 +34,15 @@ void QAffiche::mousePressEvent(QMouseEvent *e)
 
 void QAffiche::mouseReleaseEvent(QMouseEvent *e)
 {
-	if (m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos()))
-	{
+	if (m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos())) {
 		emit clicked();
 		emit clicked(m_id.toInt());
 		emit clicked(m_id.toString());
-	}
-	else if (m_pressed && e->button() == Qt::MidButton && hitLabel(e->pos()))
-	{
+	} else if (m_pressed && e->button() == Qt::MidButton && hitLabel(e->pos())) {
 		emit middleClicked();
 		emit middleClicked(m_id.toInt());
 		emit middleClicked(m_id.toString());
-	}
-	else if (m_pressed && e->button() == Qt::RightButton && hitLabel(e->pos()))
-	{
+	} else if (m_pressed && e->button() == Qt::RightButton && hitLabel(e->pos())) {
 		emit rightClicked();
 		emit rightClicked(m_id.toInt());
 		emit rightClicked(m_id.toString());
@@ -76,12 +70,10 @@ void QAffiche::leaveEvent(QEvent *e)
 void QAffiche::resizeEvent(QResizeEvent *e)
 {
 	QMovie *mov = movie();
-	if (mov != nullptr)
-	{
+	if (mov != nullptr) {
 		const QSize &movieSize = mov->currentPixmap().size();
 		const QSize &newSize = e->size();
-		if (newSize.width() < movieSize.width() || newSize.height() < movieSize.height())
-		{
+		if (newSize.width() < movieSize.width() || newSize.height() < movieSize.height()) {
 			mov->setScaledSize(movieSize.scaled(newSize, Qt::KeepAspectRatio));
 		}
 	}
