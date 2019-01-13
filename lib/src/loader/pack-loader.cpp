@@ -71,6 +71,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 		if (page->hasNext())
 		{
 			Page *next = new Page(m_profile, m_site, QList<Site*>() << m_site, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+			next->setLastPage(page);
 			if (gallery)
 				m_pendingGalleries.prepend(next);
 			else
@@ -85,7 +86,6 @@ QList<QSharedPointer<Image>> PackLoader::next()
 			if (img->isGallery())
 			{
 				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, img, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
-				// gallery->addToken("gallery_name", img->name());
 				m_pendingGalleries.insert(itGallery, galleryPage);
 				continue;
 			}
