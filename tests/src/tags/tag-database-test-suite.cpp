@@ -11,6 +11,7 @@ TagDatabaseTestSuite::TagDatabaseTestSuite(TagDatabase *database)
 
 void TagDatabaseTestSuite::initTestCase()
 {
+	m_database->open();
 	m_database->load();
 	m_database->setTags(QList<Tag>());
 }
