@@ -65,6 +65,11 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 
 	const auto type = node.nodeType();
 
+	// Text node
+	if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode) {
+		return node.nodeValue();
+	}
+
 	// Element node
 	if (type == QDomNode::ElementNode) {
 		const QDomNamedNodeMap &attributes = node.attributes();
@@ -76,10 +81,6 @@ QJSValue JavascriptGrabberHelper::_parseXMLRec(const QDomNode &node) const
 			}
 			obj.setProperty(QStringLiteral("@attributes"), attr);
 		}
-	}
-	// Text node
-	else if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode) {
-		obj = node.nodeValue();
 	}
 
 	// Children

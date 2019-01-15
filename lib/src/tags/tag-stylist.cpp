@@ -29,10 +29,20 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#ee6600" << "#ee6600" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
 	QMap<QString, QString> styles;
 	for (const QString &key : tlist) {
-		QFont font;
-		font.fromString(m_profile->getSettings()->value("Coloring/Fonts/" + key).toString());
 		const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
-		styles.insert(key, "color:" + color + "; " + qFontToCss(font));
+		const QString font = m_profile->getSettings()->value("Coloring/Fonts/" + key).toString();
+
+		QString fontCss;
+		static QMap<QString, QString> fontCssCache;
+		if (fontCssCache.contains(font)) {
+			fontCss = fontCssCache[font];
+		} else {
+			QFont qFont;
+			qFont.fromString(m_profile->getSettings()->value("Coloring/Fonts/" + key).toString());
+			fontCss = qFontToCss(qFont);
+		}
+
+		styles.insert(key, "color:" + color + "; " + fontCss);
 	}
 
 	QStringList t;
