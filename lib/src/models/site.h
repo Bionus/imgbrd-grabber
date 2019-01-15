@@ -6,7 +6,6 @@
 #include <QString>
 #include <QUrl>
 #include <QVariant>
-#include <functional>
 #include "login/login.h"
 
 
@@ -123,9 +122,7 @@ class Site : public QObject
 		bool m_autoLogin;
 
 		// Async
-		std::function<void(QNetworkReply*)> m_lastCallback;
 		QDateTime m_lastRequest;
-		QNetworkRequest m_callbackRequest;
 };
 
 Q_DECLARE_METATYPE(Site::LoginResult)

@@ -80,7 +80,7 @@ class Page : public QObject
 		int m_imagesPerPage, m_lastPage, m_imagesCount, m_pagesCount, m_page, m_pool;
 		qulonglong m_lastPageMinId, m_lastPageMaxId;
 		bool m_smart;
-		QString m_format, m_website, m_source, m_originalUrl;
+		QString m_website;
 };
 
 #endif // PAGE_H

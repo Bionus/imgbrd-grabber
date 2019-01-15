@@ -31,8 +31,10 @@ class SearchTab : public QWidget
 {
 	Q_OBJECT
 
-	public:
+	protected:
 		SearchTab(Profile *profile, MainWindow *parent);
+
+	public:
 		~SearchTab() override;
 		void init();
 		void mouseReleaseEvent(QMouseEvent *e) override;

@@ -6,7 +6,6 @@
 #include "test-suite.h"
 
 
-class Profile;
 class QSettings;
 
 class TagStylistTest : public TestSuite
@@ -32,7 +31,6 @@ class TagStylistTest : public TestSuite
 
 	private:
 		QSettings *m_settings;
-		Profile *m_profile;
 };
 
 #endif // TAG_STYLIST_TEST_H

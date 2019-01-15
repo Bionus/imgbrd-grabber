@@ -59,9 +59,10 @@ class Api : public QObject
 {
 	Q_OBJECT
 
-	public:
-		Api(QString name);
+	protected:
+		explicit Api(QString name);
 
+	public:
 		// Getters
 		QString getName() const;
 		virtual bool needAuth() const = 0;

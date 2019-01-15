@@ -136,14 +136,11 @@ class ZoomWindow : public QWidget
 		Ui::ZoomWindow *ui;
 		DetailsWindow *m_detailsWindow;
 		QSharedPointer<Image> m_image;
-		QMap<QString, QString> regex, m_details;
 		Site *m_site;
 		int m_timeout;
 		PendingAction m_pendingAction;
 		bool m_pendingClose;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
-		QString id;
-		QString rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
