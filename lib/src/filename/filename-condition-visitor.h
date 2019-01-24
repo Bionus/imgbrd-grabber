@@ -4,13 +4,13 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
-#include "filename/ast/filename-visitor.h"
+#include "filename/ast/filename-visitor-base.h"
 
 
 struct FilenameNodeCondition;
 class Token;
 
-class FilenameConditionVisitor : public FilenameVisitor
+class FilenameConditionVisitor : public FilenameVisitorBase
 {
 	public:
 		explicit FilenameConditionVisitor(QMap<QString, Token> tokens);

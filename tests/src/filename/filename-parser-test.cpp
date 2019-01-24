@@ -1,9 +1,65 @@
 #include "filename-parser-test.h"
+#include <QMap>
+#include <QString>
+#include <QtTest>
 #include "filename/filename-parser.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-root.h"
+#include "filename/ast/filename-node-text.h"
+#include "filename/ast/filename-node-variable.h"
+
+
+void FilenameParserTest::testParseText()
+{
+	FilenameParser parser("image.png");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 1);
+
+	auto txt = dynamic_cast<FilenameNodeText*>(filename->exprs[0]);
+	QVERIFY(txt != nullptr);
+	QCOMPARE(txt->text, QString("image.png"));
+}
+
+void FilenameParserTest::testParseVariable()
+{
+	FilenameParser parser("%md5%");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 1);
+
+	auto var = dynamic_cast<FilenameNodeVariable*>(filename->exprs[0]);
+	QVERIFY(var != nullptr);
+	QCOMPARE(var->name, QString("md5"));
+	QCOMPARE(var->opts.count(), 0);
+}
+
+void FilenameParserTest::testParseVariableWithOptions()
+{
+	FilenameParser parser("%md5:flag,opt=val%");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 1);
+
+	auto var = dynamic_cast<FilenameNodeVariable*>(filename->exprs[0]);
+	QVERIFY(var != nullptr);
+	QCOMPARE(var->name, QString("md5"));
+	QCOMPARE(var->opts.count(), 2);
+	QCOMPARE(var->opts.keys(), QStringList() << "flag" << "opt");
+	QCOMPARE(var->opts["flag"], QString());
+	QCOMPARE(var->opts["opt"], QString("val"));
+}
+
+void FilenameParserTest::testParseMixed()
+{
+	FilenameParser parser("out/%md5%.%ext%");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 4);
+}
 
 
 void FilenameParserTest::testParseConditionTag()

@@ -1,25 +1,36 @@
 #ifndef FILENAME_PARSER_H
 #define FILENAME_PARSER_H
 
+#include <QChar>
+#include <QList>
 #include <QString>
 
 
-class FilenameNodeCondition;
-class FilenameNodeConditionInvert;
-class FilenameNodeConditionTag;
-class FilenameNodeConditionToken;
+struct FilenameNode;
+struct FilenameNodeCondition;
+struct FilenameNodeConditional;
+struct FilenameNodeConditionInvert;
+struct FilenameNodeConditionTag;
+struct FilenameNodeConditionToken;
+struct FilenameNodeRoot;
+struct FilenameNodeVariable;
 
 class FilenameParser
 {
 	public:
 		explicit FilenameParser(QString str);
 
+		FilenameNodeRoot *parseRoot();
 		FilenameNodeCondition *parseCondition();
 
 	protected:
 		QChar peek();
 		bool finished();
+		QString readUntil(const QList<QChar> &chars, bool allowEnd = false);
 
+		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
+		FilenameNodeVariable *parseVariable();
+		FilenameNodeConditional *parseConditional();
 		FilenameNodeCondition *parseSingleCondition();
 		FilenameNodeConditionInvert *parseConditionInvert();
 		FilenameNodeConditionTag *parseConditionTag();

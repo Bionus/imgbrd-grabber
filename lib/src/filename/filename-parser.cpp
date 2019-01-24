@@ -1,10 +1,14 @@
 #include "filename/filename-parser.h"
 #include <QStack>
 #include "filename/ast/filename-node-condition.h"
+#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-root.h"
+#include "filename/ast/filename-node-text.h"
+#include "filename/ast/filename-node-variable.h"
 
 
 FilenameParser::FilenameParser(QString str)
@@ -32,6 +36,143 @@ bool FilenameParser::finished()
 	return m_index >= m_str.count();
 }
 
+QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
+{
+	int origPos = m_index;
+	bool escapeNext = false;
+
+	while (!finished()) {
+		QChar c = peek();
+		if (c == '\\' && !escapeNext) {
+			escapeNext = true;
+		} else if (chars.contains(c) && !escapeNext) {
+			return m_str.mid(origPos, m_index - origPos);
+		}
+		m_index++;
+	}
+
+	if (!allowEnd) {
+		return QString();
+	}
+
+	return m_str.mid(origPos);
+}
+
+
+FilenameNodeRoot *FilenameParser::parseRoot()
+{
+	QList<FilenameNode*> exprs;
+
+	while (!finished()) {
+		exprs.append(parseExpr());
+	}
+
+	return new FilenameNodeRoot(exprs);
+}
+
+FilenameNode *FilenameParser::parseExpr(const QList<QChar> &addChars)
+{
+	QChar p = peek();
+
+	if (p == '<') {
+		return parseConditional();
+	}
+	if (p == '%') {
+		return parseVariable();
+	}
+
+	QList<QChar> until = QList<QChar>{ '<', '%' } + addChars;
+	QString txt = readUntil(until, true);
+
+	return new FilenameNodeText(txt);
+}
+
+FilenameNodeVariable *FilenameParser::parseVariable()
+{
+	m_index++; // %
+
+	QString name = readUntil({ ':', '%' });
+
+	QMap<QString, QString> opts;
+	while (peek() != '%') {
+		m_index++; // : or ,
+
+		QString opt = readUntil({ '=', ',', '%' });
+
+		QString val;
+		if (peek() == '=') {
+			m_index++; // =
+			val = readUntil({ ',', '%' });
+		}
+
+		opts.insert(opt, val);
+	}
+
+	m_index++; // %
+
+	return new FilenameNodeVariable(name, opts);
+}
+
+FilenameNodeConditional *FilenameParser::parseConditional()
+{
+	m_index++; // <
+
+	FilenameNodeCondition *condition = nullptr;
+	FilenameNode *ifTrue = nullptr;
+	FilenameNode *ifFalse = nullptr;
+
+	// Legacy conditionals
+	if (false) {
+		QList<FilenameNode*> exprs;
+		bool invert = false;
+
+		/*while (peek() != '>') {
+			exprs.push(parseExpr({ '>', '!', '"', '%' }));
+
+			if (peek() == '!') {
+				invert = true;
+				m_index++; // !
+			}
+
+			if (peek() == '"') {
+				m_index++; // "
+
+				QString cond = parseString(reader);
+
+				cond.invert = invert;
+				invert = false;
+
+				exprs.push(cond);
+			} else if (peek() == '%') {
+				m_index++; // %
+				const cond = parseVariable(reader);
+
+				cond.invert = invert;
+				invert = false;
+
+				exprs.push(cond);
+			}
+		}*/
+	} else {
+		condition = parseCondition();
+		if (peek() != '|') {
+			return nullptr;
+		}
+
+		ifTrue = parseExpr({ '|', '>' });
+		if (peek() == '|') {
+			ifFalse = parseExpr({ '|', '>' });
+		}
+
+		if (peek() != '>') {
+			return nullptr;
+		}
+	}
+
+	m_index++; // >
+
+	return new FilenameNodeConditional(condition, ifTrue, ifFalse);
+}
 
 FilenameNodeCondition *FilenameParser::parseCondition()
 {
@@ -137,13 +278,7 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag()
 {
 	m_index++; // "
 
-	int end = m_str.indexOf('"', m_index);
-	if (end == -1) {
-		return nullptr;
-	}
-
-	QString tag = m_str.mid(m_index, end - m_index);
-	m_index = end;
+	QString tag = readUntil({ '"' });
 
 	m_index++; // "
 
@@ -154,13 +289,7 @@ FilenameNodeConditionToken *FilenameParser::parseConditionToken()
 {
 	m_index++; // %
 
-	int end = m_str.indexOf('%', m_index);
-	if (end == -1) {
-		return nullptr;
-	}
-
-	QString token = m_str.mid(m_index, end - m_index);
-	m_index = end;
+	QString token = readUntil({ '%' });
 
 	m_index++; // %
 

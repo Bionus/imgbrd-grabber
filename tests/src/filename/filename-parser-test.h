@@ -9,6 +9,13 @@ class FilenameParserTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		// Basic
+		void testParseText();
+		void testParseVariable();
+		void testParseVariableWithOptions();
+		void testParseMixed();
+
+		// Condition
 		void testParseConditionTag();
 		void testParseConditionToken();
 		void testParseConditionInvert();
