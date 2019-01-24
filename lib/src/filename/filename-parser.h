@@ -5,6 +5,7 @@
 
 
 class FilenameNodeCondition;
+class FilenameNodeConditionInvert;
 class FilenameNodeConditionTag;
 class FilenameNodeConditionToken;
 
@@ -20,6 +21,7 @@ class FilenameParser
 		bool finished();
 
 		FilenameNodeCondition *parseSingleCondition();
+		FilenameNodeConditionInvert *parseConditionInvert();
 		FilenameNodeConditionTag *parseConditionTag();
 		FilenameNodeConditionToken *parseConditionToken();
 

@@ -11,6 +11,7 @@ class FilenameParserTest : public TestSuite
 	private slots:
 		void testParseConditionTag();
 		void testParseConditionToken();
+		void testParseConditionInvert();
 		void testParseConditionOperator();
 		void testParseConditionMixedOperators();
 		void testParseConditionTagParenthesis();

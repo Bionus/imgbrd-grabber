@@ -1,5 +1,6 @@
 #include "filename-parser-test.h"
 #include "filename/filename-parser.h"
+#include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
@@ -25,6 +26,19 @@ void FilenameParserTest::testParseConditionToken()
 	QCOMPARE(tokenCond->token, QString("my_token"));
 }
 
+void FilenameParserTest::testParseConditionInvert()
+{
+	FilenameParser parser("!%my_token%");
+	auto cond = parser.parseCondition();
+
+	auto invertCond = dynamic_cast<FilenameNodeConditionInvert*>(cond);
+	QVERIFY(invertCond != nullptr);
+
+	auto tokenCond = dynamic_cast<FilenameNodeConditionToken*>(invertCond->node);
+	QVERIFY(tokenCond != nullptr);
+	QCOMPARE(tokenCond->token, QString("my_token"));
+}
+
 void FilenameParserTest::testParseConditionOperator()
 {
 	FilenameParser parser("\"my_tag\" & %my_token%");
@@ -45,7 +59,7 @@ void FilenameParserTest::testParseConditionOperator()
 
 void FilenameParserTest::testParseConditionMixedOperators()
 {
-	FilenameParser parser("\"my_tag\" | %some_token% & %my_token%");
+	FilenameParser parser("\"my_tag\" | %some_token% & !%my_token%");
 	auto cond = parser.parseCondition();
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
@@ -55,6 +69,9 @@ void FilenameParserTest::testParseConditionMixedOperators()
 	auto right = dynamic_cast<FilenameNodeConditionOp*>(opCond->right);
 	QVERIFY(right != nullptr);
 	QCOMPARE(right->op, FilenameNodeConditionOp::Operator::And);
+
+	auto invert = dynamic_cast<FilenameNodeConditionInvert*>(right->right);
+	QVERIFY(invert != nullptr);
 }
 
 void FilenameParserTest::testParseConditionTagParenthesis()

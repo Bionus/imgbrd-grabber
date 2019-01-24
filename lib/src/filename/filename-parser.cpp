@@ -111,6 +111,9 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition()
 {
 	QChar c = peek();
 
+	if (c == '!') {
+		return parseConditionInvert();
+	}
 	if (c == '%') {
 		return parseConditionToken();
 	}
@@ -119,6 +122,15 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition()
 	}
 
 	return nullptr;
+}
+
+FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()
+{
+	m_index++; // !
+
+	auto cond = parseSingleCondition();
+
+	return new FilenameNodeConditionInvert(cond);
 }
 
 FilenameNodeConditionTag *FilenameParser::parseConditionTag()
