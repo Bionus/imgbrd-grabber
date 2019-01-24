@@ -26,6 +26,8 @@ class FilenameParser
 	protected:
 		QChar peek();
 		bool finished();
+		void skipSpaces();
+		int indexOf(const QList<QChar> &chars, int max = -1);
 		QString readUntil(const QList<QChar> &chars, bool allowEnd = false);
 
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});

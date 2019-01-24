@@ -3,6 +3,7 @@
 #include <QString>
 #include <QtTest>
 #include "filename/filename-parser.h"
+#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
@@ -59,6 +60,81 @@ void FilenameParserTest::testParseMixed()
 	auto filename = parser.parseRoot();
 
 	QCOMPARE(filename->exprs.count(), 4);
+}
+
+
+void FilenameParserTest::testParseConditional()
+{
+	FilenameParser parser("out/<\"tag\"?some tag is present:%artist%>/image.png");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 3);
+
+	auto txt1 = dynamic_cast<FilenameNodeText*>(filename->exprs[0]);
+	QVERIFY(txt1 != nullptr);
+	QCOMPARE(txt1->text, QString("out/"));
+
+	auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[1]);
+	QVERIFY(conditional != nullptr);
+	QVERIFY(conditional->ifTrue != nullptr);
+	QVERIFY(conditional->ifFalse != nullptr);
+
+	auto cond = dynamic_cast<FilenameNodeConditionTag*>(conditional->condition);
+	QVERIFY(cond != nullptr);
+	QCOMPARE(cond->tag.text(), QString("tag"));
+
+	auto ifTrue = dynamic_cast<FilenameNodeText*>(conditional->ifTrue);
+	QVERIFY(ifTrue != nullptr);
+	QCOMPARE(ifTrue->text, QString("some tag is present"));
+
+	auto ifFalse = dynamic_cast<FilenameNodeVariable*>(conditional->ifFalse);
+	QVERIFY(ifFalse != nullptr);
+	QCOMPARE(ifFalse->name, QString("artist"));
+
+	auto txt2 = dynamic_cast<FilenameNodeText*>(filename->exprs[2]);
+	QVERIFY(txt2 != nullptr);
+	QCOMPARE(txt2->text, QString("/image.png"));
+}
+
+void FilenameParserTest::testParseConditionalLegacy()
+{
+	FilenameParser parser("out/<some \"tag\" is present/>image.png");
+	auto filename = parser.parseRoot();
+
+	QCOMPARE(filename->exprs.count(), 3);
+
+	auto txt1 = dynamic_cast<FilenameNodeText*>(filename->exprs[0]);
+	QVERIFY(txt1 != nullptr);
+	QCOMPARE(txt1->text, QString("out/"));
+
+	auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[1]);
+	QVERIFY(conditional != nullptr);
+	QVERIFY(conditional->ifTrue != nullptr);
+	QVERIFY(conditional->ifFalse == nullptr);
+
+	auto cond = dynamic_cast<FilenameNodeConditionTag*>(conditional->condition);
+	QVERIFY(cond != nullptr);
+	QCOMPARE(cond->tag.text(), QString("tag"));
+
+	auto ifTrue = dynamic_cast<FilenameNodeRoot*>(conditional->ifTrue);
+	QVERIFY(ifTrue != nullptr);
+	QCOMPARE(ifTrue->exprs.count(), 3);
+
+	auto ifTrue1 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[0]);
+	QVERIFY(ifTrue1 != nullptr);
+	QCOMPARE(ifTrue1->text, QString("some "));
+
+	auto ifTrue2 = dynamic_cast<FilenameNodeConditionTag*>(ifTrue->exprs[1]);
+	QVERIFY(ifTrue2 != nullptr);
+	QCOMPARE(ifTrue2->tag.text(), QString("tag"));
+
+	auto ifTrue3 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[2]);
+	QVERIFY(ifTrue3 != nullptr);
+	QCOMPARE(ifTrue3->text, QString(" is present/"));
+
+	auto txt2 = dynamic_cast<FilenameNodeText*>(filename->exprs[2]);
+	QVERIFY(txt2 != nullptr);
+	QCOMPARE(txt2->text, QString("image.png"));
 }
 
 

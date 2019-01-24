@@ -15,6 +15,10 @@ class FilenameParserTest : public TestSuite
 		void testParseVariableWithOptions();
 		void testParseMixed();
 
+		// Conditionals
+		void testParseConditional();
+		void testParseConditionalLegacy();
+
 		// Condition
 		void testParseConditionTag();
 		void testParseConditionToken();

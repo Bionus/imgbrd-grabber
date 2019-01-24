@@ -18,17 +18,7 @@ FilenameParser::FilenameParser(QString str)
 
 QChar FilenameParser::peek()
 {
-	if (finished()) {
-		return {0};
-	}
-
-	QChar c = m_str[m_index];
-	if (c.isSpace()) {
-		m_index++;
-		return peek();
-	}
-
-	return c;
+	return m_str[m_index];
 }
 
 bool FilenameParser::finished()
@@ -36,26 +26,54 @@ bool FilenameParser::finished()
 	return m_index >= m_str.count();
 }
 
+void FilenameParser::skipSpaces()
+{
+	while (peek().isSpace()) {
+		m_index++;
+	}
+}
+
+int FilenameParser::indexOf(const QList<QChar> &chars, int max)
+{
+	bool escapeNext = false;
+
+	int limit = max < 0 ? m_str.count() : qMin(max, m_str.count());
+	for (int index = m_index; index < limit; ++index) {
+		QChar c = m_str[index];
+
+		// Don't return on escaped characters
+		bool isEscape = c == '\\';
+		if (isEscape && !escapeNext) {
+			escapeNext = true;
+		} else if (chars.contains(c) && !escapeNext) {
+			return index;
+		}
+
+		// Clear escape character if unused
+		if (!isEscape && escapeNext) {
+			escapeNext = false;
+		}
+	}
+
+	return -1;
+}
+
 QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 {
 	int origPos = m_index;
-	bool escapeNext = false;
+	m_index = indexOf(chars);
 
-	while (!finished()) {
-		QChar c = peek();
-		if (c == '\\' && !escapeNext) {
-			escapeNext = true;
-		} else if (chars.contains(c) && !escapeNext) {
-			return m_str.mid(origPos, m_index - origPos);
+	if (m_index < 0) {
+		m_index = m_str.count();
+
+		if (!allowEnd) {
+			return QString();
 		}
-		m_index++;
+
+		return m_str.mid(origPos);
 	}
 
-	if (!allowEnd) {
-		return QString();
-	}
-
-	return m_str.mid(origPos);
+	return m_str.mid(origPos, m_index - origPos);
 }
 
 
@@ -122,46 +140,45 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 	FilenameNode *ifFalse = nullptr;
 
 	// Legacy conditionals
-	if (false) {
+	int endIndex = indexOf({ '>' });
+	int sepIndex = indexOf({ '?' }, endIndex);
+	if (sepIndex < 0) {
 		QList<FilenameNode*> exprs;
-		bool invert = false;
+		QList<FilenameNodeCondition*> conds;
 
-		/*while (peek() != '>') {
-			exprs.push(parseExpr({ '>', '!', '"', '%' }));
+		while (peek() != '>') {
+			exprs.append(parseExpr({ '>', '!', '"', '%' }));
 
-			if (peek() == '!') {
-				invert = true;
-				m_index++; // !
+			if (peek() != '>') {
+				auto cond = parseSingleCondition();
+				conds.append(cond);
+				exprs.append(cond);
 			}
+		}
 
-			if (peek() == '"') {
-				m_index++; // "
-
-				QString cond = parseString(reader);
-
-				cond.invert = invert;
-				invert = false;
-
-				exprs.push(cond);
-			} else if (peek() == '%') {
-				m_index++; // %
-				const cond = parseVariable(reader);
-
-				cond.invert = invert;
-				invert = false;
-
-				exprs.push(cond);
-			}
-		}*/
-	} else {
-		condition = parseCondition();
-		if (peek() != '|') {
+		if (conds.isEmpty()) {
 			return nullptr;
 		}
 
-		ifTrue = parseExpr({ '|', '>' });
-		if (peek() == '|') {
-			ifFalse = parseExpr({ '|', '>' });
+		condition = conds.takeFirst();
+		while (!conds.isEmpty()) {
+			condition = new FilenameNodeConditionOp(FilenameNodeConditionOp::And, condition, conds.takeFirst());
+		}
+
+		ifTrue = exprs.count() == 1
+			? exprs.first()
+			: new FilenameNodeRoot(exprs);
+	} else {
+		condition = parseCondition();
+		if (peek() != '?') {
+			return nullptr;
+		}
+		m_index++; // ?
+
+		ifTrue = parseExpr({ ':', '>' });
+		if (peek() == ':') {
+			m_index++; // :
+			ifFalse = parseExpr({ '>' });
 		}
 
 		if (peek() != '>') {
@@ -176,6 +193,8 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 
 FilenameNodeCondition *FilenameParser::parseCondition()
 {
+	skipSpaces();
+
 	FilenameNodeCondition *lhs;
 
 	// Parenthesis
@@ -197,6 +216,8 @@ FilenameNodeCondition *FilenameParser::parseCondition()
 	QStack<FilenameNodeCondition*> termStack;
 
 	while (!finished()) {
+		skipSpaces();
+
 		QChar c = peek();
 		if (c != '&' && c != '|') {
 			break;
@@ -226,6 +247,7 @@ FilenameNodeCondition *FilenameParser::parseCondition()
 		opsStack.push(c);
 		m_index++;
 
+		skipSpaces();
 		termStack.push(parseSingleCondition());
 	}
 
@@ -244,6 +266,8 @@ FilenameNodeCondition *FilenameParser::parseCondition()
 	if (!termStack.isEmpty()) {
 		term = termStack.pop();
 	}
+
+	skipSpaces();
 
 	return term;
 }
