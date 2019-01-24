@@ -13,6 +13,8 @@ class FilenameParserTest : public TestSuite
 		void testParseConditionToken();
 		void testParseConditionOperator();
 		void testParseConditionMixedOperators();
+		void testParseConditionTagParenthesis();
+		void testParseConditionMixedParenthesis();
 };
 
 #endif // FILENAME_PARSER_TEST_H

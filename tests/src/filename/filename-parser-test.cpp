@@ -57,5 +57,29 @@ void FilenameParserTest::testParseConditionMixedOperators()
 	QCOMPARE(right->op, FilenameNodeConditionOp::Operator::And);
 }
 
+void FilenameParserTest::testParseConditionTagParenthesis()
+{
+	FilenameParser parser("(\"my_tag\")");
+	auto cond = parser.parseCondition();
+
+	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
+	QVERIFY(tagCond != nullptr);
+	QCOMPARE(tagCond->tag.text(), QString("my_tag"));
+}
+
+void FilenameParserTest::testParseConditionMixedParenthesis()
+{
+	FilenameParser parser("(\"my_tag\" | %some_token%) & %my_token%");
+	auto cond = parser.parseCondition();
+
+	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
+	QVERIFY(opCond != nullptr);
+	QCOMPARE(opCond->op, FilenameNodeConditionOp::Operator::And);
+
+	auto right = dynamic_cast<FilenameNodeConditionOp*>(opCond->left);
+	QVERIFY(right != nullptr);
+	QCOMPARE(right->op, FilenameNodeConditionOp::Operator::Or);
+}
+
 
 QTEST_MAIN(FilenameParserTest)

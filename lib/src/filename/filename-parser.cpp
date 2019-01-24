@@ -35,7 +35,22 @@ bool FilenameParser::finished()
 
 FilenameNodeCondition *FilenameParser::parseCondition()
 {
-	FilenameNodeCondition *lhs = parseSingleCondition();
+	FilenameNodeCondition *lhs;
+
+	// Parenthesis
+	QChar p = peek();
+	if (p == '(') {
+		m_index++; // (
+
+		lhs = parseCondition();
+		if (peek() != ')') {
+			return nullptr;
+		}
+
+		m_index++; // )
+	} else {
+		lhs = parseSingleCondition();
+	}
 
 	QStack<QChar> opsStack;
 	QStack<FilenameNodeCondition*> termStack;
