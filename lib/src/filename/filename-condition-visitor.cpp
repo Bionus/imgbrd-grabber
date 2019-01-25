@@ -8,8 +8,8 @@
 #include "loader/token.h"
 
 
-FilenameConditionVisitor::FilenameConditionVisitor(QMap<QString, Token> tokens)
-	: m_tokens(std::move(tokens))
+FilenameConditionVisitor::FilenameConditionVisitor(const QMap<QString, Token> &tokens)
+	: m_tokens(tokens)
 {
 	if (m_tokens.contains("allos")) {
 		m_tags = m_tokens["allos"].value().toStringList();

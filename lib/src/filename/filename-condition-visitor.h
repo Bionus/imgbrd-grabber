@@ -13,7 +13,7 @@ class Token;
 class FilenameConditionVisitor : public FilenameVisitorBase
 {
 	public:
-		explicit FilenameConditionVisitor(QMap<QString, Token> tokens);
+		explicit FilenameConditionVisitor(const QMap<QString, Token> &tokens);
 		bool run(const FilenameNodeCondition &node);
 
 		void visit(const FilenameNodeConditionInvert &node) override;
@@ -22,7 +22,7 @@ class FilenameConditionVisitor : public FilenameVisitorBase
 		void visit(const FilenameNodeConditionToken &node) override;
 
 	private:
-		QMap<QString, Token> m_tokens;
+		const QMap<QString, Token> &m_tokens;
 		QStringList m_tags;
 
 		bool m_result = false;

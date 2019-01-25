@@ -11,7 +11,7 @@ class Token;
 class FilenameExecutionVisitor : public FilenameVisitorBase
 {
 	public:
-		explicit FilenameExecutionVisitor(QMap<QString, Token> tokens);
+		explicit FilenameExecutionVisitor(const QMap<QString, Token> &tokens);
 		QString run(const FilenameNodeRoot &node);
 
 		void visit(const FilenameNodeConditional &node) override;
@@ -24,7 +24,7 @@ class FilenameExecutionVisitor : public FilenameVisitorBase
 		void visitVariable(const QString &name, QMap<QString, QString> options = {});
 
 	private:
-		QMap<QString, Token> m_tokens;
+		const QMap<QString, Token> &m_tokens;
 
 		QString m_result;
 };

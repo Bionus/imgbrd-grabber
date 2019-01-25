@@ -11,8 +11,8 @@
 #include "loader/token.h"
 
 
-FilenameExecutionVisitor::FilenameExecutionVisitor(QMap<QString, Token> tokens)
-    : m_tokens(std::move(tokens))
+FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens)
+    : m_tokens(tokens)
 {}
 
 QString FilenameExecutionVisitor::run(const FilenameNodeRoot &node)
