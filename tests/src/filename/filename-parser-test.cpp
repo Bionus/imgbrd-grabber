@@ -49,7 +49,7 @@ void FilenameParserTest::testParseVariableWithOptions()
 	QVERIFY(var != nullptr);
 	QCOMPARE(var->name, QString("md5"));
 	QCOMPARE(var->opts.count(), 2);
-	QCOMPARE(var->opts.keys(), QStringList() << "flag" << "opt");
+	QCOMPARE(var->opts.keys(), QList<QString>() << "flag" << "opt");
 	QCOMPARE(var->opts["flag"], QString());
 	QCOMPARE(var->opts["opt"], QString("val"));
 }
