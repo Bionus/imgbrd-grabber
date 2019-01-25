@@ -6,8 +6,6 @@
 #include "filename/ast/filename-visitor-base.h"
 
 
-class Token;
-
 class FilenameResolutionVisitor : public FilenameVisitorBase
 {
 	public:
