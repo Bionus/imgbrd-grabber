@@ -19,6 +19,7 @@ class FilenameParser
 {
 	public:
 		explicit FilenameParser(QString str);
+		QString error() const;
 
 		FilenameNodeRoot *parseRoot();
 		FilenameNodeCondition *parseCondition();
@@ -30,9 +31,11 @@ class FilenameParser
 		int indexOf(const QList<QChar> &chars, int max = -1);
 		QString readUntil(const QList<QChar> &chars, bool allowEnd = false);
 
+		FilenameNodeRoot *parseRootNode();
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
 		FilenameNodeVariable *parseVariable();
 		FilenameNodeConditional *parseConditional();
+		FilenameNodeCondition *parseConditionNode();
 		FilenameNodeCondition *parseSingleCondition();
 		FilenameNodeConditionInvert *parseConditionInvert();
 		FilenameNodeConditionTag *parseConditionTag();
@@ -41,6 +44,7 @@ class FilenameParser
 	private:
 		QString m_str;
 		int m_index;
+		QString m_error;
 };
 
 #endif // FILENAME_PARSER_H

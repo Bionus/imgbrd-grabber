@@ -1,4 +1,6 @@
 #include "filename/filename-parser.h"
+#include <QChar>
+#include <QList>
 #include <QStack>
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-conditional.h"
@@ -14,6 +16,32 @@
 FilenameParser::FilenameParser(QString str)
 	: m_str(std::move(str)), m_index(0)
 {}
+
+QString FilenameParser::error() const
+{
+	return m_error;
+}
+
+
+FilenameNodeRoot *FilenameParser::parseRoot()
+{
+	try {
+		return parseRootNode();
+	} catch (const std::exception &e) {
+		m_error = e.what();
+		return nullptr;
+	}
+}
+
+FilenameNodeCondition *FilenameParser::parseCondition()
+{
+	try {
+		return parseConditionNode();
+	} catch (const std::exception &e) {
+		m_error = e.what();
+		return nullptr;
+	}
+}
 
 
 QChar FilenameParser::peek()
@@ -77,7 +105,7 @@ QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 }
 
 
-FilenameNodeRoot *FilenameParser::parseRoot()
+FilenameNodeRoot *FilenameParser::parseRootNode()
 {
 	QList<FilenameNode*> exprs;
 
@@ -147,7 +175,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		QList<FilenameNodeCondition*> conds;
 
 		while (peek() != '>') {
-			exprs.append(parseExpr({ '>', '!', '"', '%' }));
+			QList<QChar> stop { '>', '!', '"', '%' };
+			if (!stop.contains(peek())) {
+				exprs.append(parseExpr(stop));
+			}
 
 			if (peek() != '>') {
 				auto cond = parseSingleCondition();
@@ -157,7 +188,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		}
 
 		if (conds.isEmpty()) {
-			return nullptr;
+			throw std::exception("No condition found in conditional");
 		}
 
 		condition = conds.takeFirst();
@@ -169,9 +200,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			? exprs.first()
 			: new FilenameNodeRoot(exprs);
 	} else {
-		condition = parseCondition();
+		condition = parseConditionNode();
 		if (peek() != '?') {
-			return nullptr;
+			delete condition;
+			throw std::exception("Expected '?' after condition");
 		}
 		m_index++; // ?
 
@@ -182,7 +214,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		}
 
 		if (peek() != '>') {
-			return nullptr;
+			delete condition;
+			delete ifTrue;
+			delete ifFalse;
+			throw std::exception("Expected '>' at the end of contional");
 		}
 	}
 
@@ -191,7 +226,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 	return new FilenameNodeConditional(condition, ifTrue, ifFalse);
 }
 
-FilenameNodeCondition *FilenameParser::parseCondition()
+FilenameNodeCondition *FilenameParser::parseConditionNode()
 {
 	skipSpaces();
 
@@ -202,9 +237,10 @@ FilenameNodeCondition *FilenameParser::parseCondition()
 	if (p == '(') {
 		m_index++; // (
 
-		lhs = parseCondition();
+		lhs = parseConditionNode();
 		if (peek() != ')') {
-			return nullptr;
+			delete lhs;
+			throw std::exception("Expected ')' after condition in parenthesis");
 		}
 
 		m_index++; // )
@@ -286,7 +322,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition()
 		return parseConditionTag();
 	}
 
-	return nullptr;
+	throw std::exception("Expected '!', '%' or '\"' for condition");
 }
 
 FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()

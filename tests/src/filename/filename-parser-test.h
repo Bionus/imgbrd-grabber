@@ -18,6 +18,9 @@ class FilenameParserTest : public TestSuite
 		// Conditionals
 		void testParseConditional();
 		void testParseConditionalLegacy();
+		void testParseConditionalNoCondition();
+		void testParseConditionalNoContent();
+		void testParseConditionalUnterminated();
 
 		// Condition
 		void testParseConditionTag();
@@ -26,6 +29,8 @@ class FilenameParserTest : public TestSuite
 		void testParseConditionOperator();
 		void testParseConditionMixedOperators();
 		void testParseConditionTagParenthesis();
+		void testParseConditionTagParenthesisUnclosed();
+		void testParseConditionInvalid();
 		void testParseConditionMixedParenthesis();
 };
 

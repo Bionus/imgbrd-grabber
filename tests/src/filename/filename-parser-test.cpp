@@ -17,6 +17,7 @@ void FilenameParserTest::testParseText()
 {
 	FilenameParser parser("image.png");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -29,6 +30,7 @@ void FilenameParserTest::testParseVariable()
 {
 	FilenameParser parser("%md5%");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -42,6 +44,7 @@ void FilenameParserTest::testParseVariableWithOptions()
 {
 	FilenameParser parser("%md5:flag,opt=val%");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -58,6 +61,7 @@ void FilenameParserTest::testParseMixed()
 {
 	FilenameParser parser("out/%md5%.%ext%");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 4);
 }
@@ -67,6 +71,7 @@ void FilenameParserTest::testParseConditional()
 {
 	FilenameParser parser("out/<\"tag\"?some tag is present:%artist%>/image.png");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 3);
 
@@ -100,6 +105,7 @@ void FilenameParserTest::testParseConditionalLegacy()
 {
 	FilenameParser parser("out/<some \"tag\" is present/>image.png");
 	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
 
 	QCOMPARE(filename->exprs.count(), 3);
 
@@ -137,11 +143,36 @@ void FilenameParserTest::testParseConditionalLegacy()
 	QCOMPARE(txt2->text, QString("image.png"));
 }
 
+void FilenameParserTest::testParseConditionalNoCondition()
+{
+	FilenameParser parser("<no condition here>");
+	parser.parseRoot();
+
+	QCOMPARE(parser.error(), QString("No condition found in conditional"));
+}
+
+void FilenameParserTest::testParseConditionalNoContent()
+{
+	FilenameParser parser("<%condition%:?>");
+	parser.parseRoot();
+
+	QCOMPARE(parser.error(), QString("Expected '?' after condition"));
+}
+
+void FilenameParserTest::testParseConditionalUnterminated()
+{
+	FilenameParser parser("out/<\"tag\"?some tag is present:%artist%");
+	parser.parseRoot();
+
+	QCOMPARE(parser.error(), QString("Expected '>' at the end of contional"));
+}
+
 
 void FilenameParserTest::testParseConditionTag()
 {
 	FilenameParser parser("\"my_tag\"");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
 	QVERIFY(tagCond != nullptr);
@@ -152,6 +183,7 @@ void FilenameParserTest::testParseConditionToken()
 {
 	FilenameParser parser("%my_token%");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto tokenCond = dynamic_cast<FilenameNodeConditionToken*>(cond);
 	QVERIFY(tokenCond != nullptr);
@@ -162,6 +194,7 @@ void FilenameParserTest::testParseConditionInvert()
 {
 	FilenameParser parser("!%my_token%");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto invertCond = dynamic_cast<FilenameNodeConditionInvert*>(cond);
 	QVERIFY(invertCond != nullptr);
@@ -175,6 +208,7 @@ void FilenameParserTest::testParseConditionOperator()
 {
 	FilenameParser parser("\"my_tag\" & %my_token%");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
@@ -193,6 +227,7 @@ void FilenameParserTest::testParseConditionMixedOperators()
 {
 	FilenameParser parser("\"my_tag\" | %some_token% & !%my_token%");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
@@ -210,16 +245,34 @@ void FilenameParserTest::testParseConditionTagParenthesis()
 {
 	FilenameParser parser("(\"my_tag\")");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
 	QVERIFY(tagCond != nullptr);
 	QCOMPARE(tagCond->tag.text(), QString("my_tag"));
 }
 
+void FilenameParserTest::testParseConditionTagParenthesisUnclosed()
+{
+	FilenameParser parser("(\"my_tag\"");
+	parser.parseCondition();
+
+	QCOMPARE(parser.error(), QString("Expected ')' after condition in parenthesis"));
+}
+
+void FilenameParserTest::testParseConditionInvalid()
+{
+	FilenameParser parser("invalid");
+	parser.parseCondition();
+
+	QCOMPARE(parser.error(), QString("Expected '!', '%' or '\"' for condition"));
+}
+
 void FilenameParserTest::testParseConditionMixedParenthesis()
 {
 	FilenameParser parser("(\"my_tag\" | %some_token%) & %my_token%");
 	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
