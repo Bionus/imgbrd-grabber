@@ -6,6 +6,8 @@
 #include "filename/ast/filename-visitor-base.h"
 
 
+class QDateTime;
+class QStringList;
 class Token;
 
 class FilenameExecutionVisitor : public FilenameVisitorBase
@@ -21,7 +23,11 @@ class FilenameExecutionVisitor : public FilenameVisitorBase
 		void visit(const FilenameNodeVariable &node) override;
 
 	protected:
-		void visitVariable(const QString &name, QMap<QString, QString> options = {});
+		void visitVariable(const QString &name, const QMap<QString, QString> &options = {});
+		QString variableToString(const QDateTime &val, const QMap<QString, QString> &options);
+		QString variableToString(int val, const QMap<QString, QString> &options);
+		QString variableToString(QStringList val, const QMap<QString, QString> &options);
+		QString cleanVariable(QString val, const QMap<QString, QString> &options);
 
 	private:
 		const QMap<QString, Token> &m_tokens;
