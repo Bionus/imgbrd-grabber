@@ -254,7 +254,8 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 	while (!finished()) {
 		skipSpaces();
 
-		QChar c = peek();
+		QChar p = peek();
+		QChar c = p == '"' || p == '%' ? '&' : p;
 		if (c != '&' && c != '|') {
 			break;
 		}
@@ -281,9 +282,12 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		}
 
 		opsStack.push(c);
-		m_index++;
 
-		skipSpaces();
+		if (p == c) {
+			m_index++;
+			skipSpaces();
+		}
+
 		termStack.push(parseSingleCondition());
 	}
 

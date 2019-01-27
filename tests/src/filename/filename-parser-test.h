@@ -28,6 +28,7 @@ class FilenameParserTest : public TestSuite
 		void testParseConditionInvert();
 		void testParseConditionOperator();
 		void testParseConditionMixedOperators();
+		void testParseConditionNoOperator();
 		void testParseConditionTagParenthesis();
 		void testParseConditionTagParenthesisUnclosed();
 		void testParseConditionInvalid();
