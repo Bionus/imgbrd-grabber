@@ -77,8 +77,7 @@ class Page : public QObject
 		int m_regexApi;
 		SearchQuery m_query;
 		QStringList m_errors, m_search;
-		int m_imagesPerPage, m_lastPage, m_imagesCount, m_pagesCount, m_page, m_pool;
-		qulonglong m_lastPageMinId, m_lastPageMaxId;
+		int m_imagesPerPage, m_imagesCount, m_pagesCount, m_page, m_pool;
 		bool m_smart;
 		QString m_website;
 };

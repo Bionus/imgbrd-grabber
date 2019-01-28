@@ -8,7 +8,7 @@
 
 
 Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -93,20 +93,12 @@ void Page::fallback(bool loadIfPossible)
 
 void Page::setLastPage(Page *page)
 {
-	m_lastPage = page->page();
-	m_lastPageMaxId = page->maxId();
-	m_lastPageMinId = page->minId();
-
 	for (PageApi *api : qAsConst(m_pageApis)) {
 		api->setLastPage(page);
 	}
 
-	if (false && !page->nextPage().isEmpty()) {
-		/*m_url = page->nextPage();*/
-	} else {
-		m_currentApi--;
-		fallback(false);
-	}
+	m_currentApi--;
+	fallback(false);
 }
 
 void Page::load(bool rateLimit)

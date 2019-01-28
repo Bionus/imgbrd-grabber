@@ -89,7 +89,7 @@ class PageApi : public QObject
 		qulonglong m_lastPageMinId, m_lastPageMaxId;
 		bool m_smart, m_isAltPage;
 		QString m_format, m_source, m_wiki, m_originalUrl;
-		QUrl m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
+		QUrl m_url, m_urlNextPage, m_urlPrevPage;
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
 		QNetworkReply *m_reply, *m_replyTags;

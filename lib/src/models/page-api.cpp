@@ -42,8 +42,6 @@ void PageApi::setLastPage(Page *page)
 
 	if (!page->nextPage().isEmpty()) {
 		m_url = page->nextPage();
-	} else {
-		/*fallback(false);*/
 	}
 
 	updateUrls();
@@ -76,7 +74,6 @@ void PageApi::updateUrls()
 
 	m_originalUrl = QString(url);
 	m_url = QString(url);
-	m_urlRegex = QUrl(url);
 }
 
 void PageApi::setReply(QNetworkReply *reply)
