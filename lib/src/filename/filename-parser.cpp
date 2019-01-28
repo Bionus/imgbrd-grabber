@@ -27,7 +27,7 @@ FilenameNodeRoot *FilenameParser::parseRoot()
 {
 	try {
 		return parseRootNode();
-	} catch (const std::exception &e) {
+	} catch (const std::runtime_error &e) {
 		m_error = e.what();
 		return nullptr;
 	}
@@ -37,7 +37,7 @@ FilenameNodeCondition *FilenameParser::parseCondition()
 {
 	try {
 		return parseConditionNode();
-	} catch (const std::exception &e) {
+	} catch (const std::runtime_error &e) {
 		m_error = e.what();
 		return nullptr;
 	}
@@ -188,7 +188,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		}
 
 		if (conds.isEmpty()) {
-			throw std::exception("No condition found in conditional");
+			throw std::runtime_error("No condition found in conditional");
 		}
 
 		condition = conds.takeFirst();
@@ -203,7 +203,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		condition = parseConditionNode();
 		if (peek() != '?') {
 			delete condition;
-			throw std::exception("Expected '?' after condition");
+			throw std::runtime_error("Expected '?' after condition");
 		}
 		m_index++; // ?
 
@@ -217,7 +217,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			delete condition;
 			delete ifTrue;
 			delete ifFalse;
-			throw std::exception("Expected '>' at the end of contional");
+			throw std::runtime_error("Expected '>' at the end of contional");
 		}
 	}
 
@@ -240,7 +240,7 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		lhs = parseConditionNode();
 		if (peek() != ')') {
 			delete lhs;
-			throw std::exception("Expected ')' after condition in parenthesis");
+			throw std::runtime_error("Expected ')' after condition in parenthesis");
 		}
 
 		m_index++; // )
@@ -326,7 +326,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition()
 		return parseConditionTag();
 	}
 
-	throw std::exception("Expected '!', '%' or '\"' for condition");
+	throw std::runtime_error("Expected '!', '%' or '\"' for condition");
 }
 
 FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()
