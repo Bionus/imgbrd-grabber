@@ -1411,9 +1411,15 @@ void SearchTab::loadPage()
 	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites()) {
+		// Stored URL
+		SearchQuery query = m_lastQuery;
+		if (m_lastUrls.contains(site->url())) {
+			query.tags = QStringList() << m_lastUrls.take(site->url());
+		}
+
 		// Load results
 		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
-		Page *page = new Page(m_profile, site, m_sites.values(), m_lastQuery, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);

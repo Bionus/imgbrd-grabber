@@ -108,6 +108,15 @@ void TagTab::write(QJsonObject &json) const
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["mergeResults"] = ui->checkMergeResults->isChecked();
 
+	// Last urls
+	QJsonObject lastUrls;
+	for (const QString &site : m_pages.keys()) {
+		if (!m_pages[site].isEmpty()) {
+			lastUrls.insert(site, m_pages[site].last()->url().toString());
+		}
+	}
+	json["lastUrls"] = lastUrls;
+
 	// Sites
 	QJsonArray sites;
 	for (Site *site : loadSites()) {
@@ -122,6 +131,12 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
 	ui->spinColumns->setValue(json["columns"].toInt());
 	ui->checkMergeResults->setChecked(json["mergeResults"].toBool());
+
+	// Last urls
+	QJsonObject jsonLastUrls = json["lastUrls"].toObject();
+	for (const QString &key : jsonLastUrls.keys()) {
+		m_lastUrls[key] = jsonLastUrls[key].toString();
+	}
 
 	// Post filtering
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();

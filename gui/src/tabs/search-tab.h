@@ -158,6 +158,7 @@ class SearchTab : public QWidget
 		QSettings *m_settings;
 		QString m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;
+		QMap<QString, QString> m_lastUrls;
 
 		QStringList m_completion;
 		QMap<QNetworkReply*, QSharedPointer<Image>> m_thumbnailsLoading;
