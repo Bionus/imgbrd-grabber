@@ -178,7 +178,9 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 
 		int c = 0;
 		for (QString tag : page->search()) {
+			QChar modifier;
 			if (modifiers.contains(tag[0])) {
+				modifier = tag[0];
 				tag = tag.mid(1);
 			}
 
@@ -203,6 +205,13 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 			if (lev == 0) {
 				results[tag] = tag;
 				c--;
+			}
+
+			if (!modifier.isNull() && results.contains(tag)) {
+				results[tag].prepend(modifier);
+				if (clean.contains(tag)) {
+					clean[tag].prepend(modifier);
+				}
 			}
 		}
 
