@@ -989,9 +989,9 @@ void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool 
 	}
 }
 void MainWindow::loadTagTab(const QString &tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, true); }
+{ loadTag(tag.isEmpty() ? m_link : QUrl::fromPercentEncoding(tag.toUtf8()), true); }
 void MainWindow::loadTagNoTab(const QString &tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, false); }
+{ loadTag(tag.isEmpty() ? m_link : QUrl::fromPercentEncoding(tag.toUtf8()), false); }
 void MainWindow::linkHovered(const QString &tag)
 {
 	m_link = QUrl::fromPercentEncoding(tag.toUtf8());

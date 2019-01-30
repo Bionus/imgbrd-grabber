@@ -262,7 +262,7 @@ void ZoomWindow::showDetails()
 }
 
 void ZoomWindow::openUrl(const QString &url)
-{ emit linkClicked(url); }
+{ emit linkClicked(QUrl::fromPercentEncoding(url.toUtf8())); }
 void ZoomWindow::openPool(const QString &url)
 {
 	if (url.startsWith(QLatin1String("pool:"))) {
