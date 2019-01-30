@@ -13,6 +13,15 @@
 #include "filename/ast/filename-node-variable.h"
 
 
+void FilenameParserTest::testParseEmpty()
+{
+	FilenameParser parser("");
+	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
+
+	QVERIFY(filename->exprs.isEmpty());
+}
+
 void FilenameParserTest::testParseText()
 {
 	FilenameParser parser("image.png");

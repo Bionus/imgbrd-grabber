@@ -10,6 +10,7 @@ class FilenameParserTest : public TestSuite
 
 	private slots:
 		// Basic
+		void testParseEmpty();
 		void testParseText();
 		void testParseVariable();
 		void testParseVariableWithOptions();

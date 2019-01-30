@@ -4,6 +4,8 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <algorithm>
+#include "filename/ast-filename.h"
+#include "filename/filename-cache.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "models/api/api.h"
@@ -13,9 +15,15 @@
 #include "models/site.h"
 
 
+Filename::Filename()
+	: Filename("")
+{}
+
 Filename::Filename(QString format)
 	: m_format(std::move(format))
-{}
+{
+	m_ast = FilenameCache::Get(m_format);
+}
 
 QString Filename::expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
 {
@@ -211,7 +219,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 			continue;
 		}
 
-		const bool hasToken = !isJavascript && filename.contains(QRegularExpression("%" + key + "(?::[^%]+)?%"));
+		const bool hasToken = !isJavascript && m_ast->tokens().contains(key);
 		const bool hasVar = isJavascript && filename.contains(key);
 		if (!hasToken && !hasVar) {
 			continue;
@@ -583,13 +591,15 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		return true;
 	}
 
+	const auto &toks = m_ast->tokens();
+
 	// Field must end by an extension
 	if (!m_format.endsWith(".%ext%")) {
 		return returnError(orange.arg(QObject::tr("Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.")), error);
 	}
 
 	// Field must contain an unique token
-	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%num%")) {
+	if (!toks.contains("md5") && !toks.contains("id") && !toks.contains("num")) {
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 	}
 
@@ -623,7 +633,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	#endif
 
 	// Check if code is unique
-	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%websitename%") && !m_format.contains("%count%") && m_format.contains("%id%")) {
+	if (!toks.contains("md5") && !toks.contains("website") && !toks.contains("websitename") && !toks.contains("count") && toks.contains("id")) {
 		return returnError(green.arg(QObject::tr("You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.")), error);
 	}
 
@@ -634,16 +644,17 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 {
-	static const QRegularExpression regexMd5("%md5(?::([^%]+))?%");
-	static const QRegularExpression regexFilesize("%filesize(?::([^%]+))?%");
-	static const QRegularExpression regexWidth("%width(?::([^%]+))?%");
-	static const QRegularExpression regexHeight("%height(?::([^%]+))?%");
+	if (m_format.startsWith("javascript:")) {
+		return false;
+	}
+
+	const auto &toks = m_ast->tokens();
 
 	return (
-		(m_format.contains(regexMd5) && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
-		(m_format.contains(regexFilesize) && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0)) ||
-		(m_format.contains(regexWidth) && (!tokens.contains("width") || tokens["width"].value().toInt() <= 0)) ||
-		(m_format.contains(regexHeight) && (!tokens.contains("height") || tokens["height"].value().toInt() <= 0))
+		(toks.contains("md5") && (!tokens.contains("md5") || tokens["md5"].value().toString().isEmpty())) ||
+		(toks.contains("filesize") && (!tokens.contains("filesize") || tokens["filesize"].value().toInt() <= 0)) ||
+		(toks.contains("width") && (!tokens.contains("width") || tokens["width"].value().toInt() <= 0)) ||
+		(toks.contains("height") && (!tokens.contains("height") || tokens["height"].value().toInt() <= 0))
 	);
 }
 
@@ -668,20 +679,22 @@ int Filename::needExactTags(const QStringList &forcedTokens) const
 		return 2;
 	}
 
+	const auto &toks = m_ast->tokens();
+
 	// If we need the filename and it is returned from the details page
-	if (m_format.contains(QRegularExpression("%filename(?::([^%]+))?%")) && forcedTokens.contains("filename")) {
+	if (toks.contains("filename") && forcedTokens.contains("filename")) {
 		return 2;
 	}
 
 	// If we need the date and it is returned from the details page
-	if (m_format.contains(QRegularExpression("%date(?::([^%]+))?%")) && forcedTokens.contains("date")) {
+	if (toks.contains("date") && forcedTokens.contains("date")) {
 		return 2;
 	}
 
 	// The filename contains one of the special tags
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "general";
 	for (const QString &token : forbidden) {
-		if (m_format.contains(QRegularExpression("%" + token + "(?::([^%]+))?%"))) {
+		if (toks.contains(token)) {
 			return 1;
 		}
 	}

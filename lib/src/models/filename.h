@@ -3,17 +3,19 @@
 
 #include <QList>
 #include <QMap>
+#include <QSharedPointer>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
 
 
-class Site;
+class AstFilename;
 class Image;
+class Profile;
 class QJSEngine;
 class QJSValue;
 class QSettings;
-class Profile;
+class Site;
 class Token;
 
 class Filename
@@ -36,7 +38,7 @@ class Filename
 		};
 		Q_DECLARE_FLAGS(PathFlags, PathFlag)
 
-		Filename() = default;
+		Filename();
 		explicit Filename(QString format);
 		QString format() const;
 		void setFormat(const QString &format);
@@ -65,6 +67,7 @@ class Filename
 
 	private:
 		QString m_format;
+		QSharedPointer<AstFilename> m_ast;
 		QString (*m_escapeMethod)(const QVariant &) = nullptr;
 };
 

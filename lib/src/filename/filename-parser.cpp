@@ -17,7 +17,7 @@ FilenameParser::FilenameParser(QString str)
 	: m_str(std::move(str)), m_index(0)
 {}
 
-QString FilenameParser::error() const
+const QString &FilenameParser::error() const
 {
 	return m_error;
 }
