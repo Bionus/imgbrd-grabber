@@ -88,20 +88,36 @@ int FilenameParser::indexOf(const QList<QChar> &chars, int max)
 
 QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 {
-	int origPos = m_index;
-	m_index = indexOf(chars);
+	QString ret;
+	bool escapeNext = false;
 
-	if (m_index < 0) {
-		m_index = m_str.count();
+	while (!finished()) {
+		QChar c = m_str[m_index];
 
-		if (!allowEnd) {
-			return QString();
+		// Don't return on escaped characters
+		bool isEscape = c == '\\';
+		if (isEscape && !escapeNext) {
+			escapeNext = true;
+		} else {
+			if (chars.contains(c) && !escapeNext) {
+				return ret;
+			}
+			ret.append(c);
 		}
 
-		return m_str.mid(origPos);
+		// Clear escape character if unused
+		if (!isEscape && escapeNext) {
+			escapeNext = false;
+		}
+
+		m_index++;
 	}
 
-	return m_str.mid(origPos, m_index - origPos);
+	if (!allowEnd) {
+		return QString();
+	}
+
+	return ret;
 }
 
 

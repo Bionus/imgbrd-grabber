@@ -23,6 +23,7 @@ class FilenameParser
 
 		FilenameNodeRoot *parseRoot();
 		FilenameNodeCondition *parseCondition();
+		FilenameNodeVariable *parseVariable();
 
 	protected:
 		QChar peek();
@@ -33,7 +34,6 @@ class FilenameParser
 
 		FilenameNodeRoot *parseRootNode();
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
-		FilenameNodeVariable *parseVariable();
 		FilenameNodeConditional *parseConditional();
 		FilenameNodeCondition *parseConditionNode();
 		FilenameNodeCondition *parseSingleCondition();
