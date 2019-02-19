@@ -8,6 +8,7 @@
 #include <QString>
 #include <QStringList>
 #include "backports/backports.h"
+#include "filename/conditional-filename.h"
 #include "logger.h"
 
 
@@ -51,7 +52,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxL
 QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
 QMap<QString, QStringList> getCustoms(QSettings *settings);
-QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings);
+QList<ConditionalFilename> getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
 QStringList getExternalLogFilesSuffixes(QSettings *settings);
 

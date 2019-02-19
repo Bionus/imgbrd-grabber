@@ -69,13 +69,13 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
 
-	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
+	QList<ConditionalFilename> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
-	for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it) {
-		auto leCondition = new QLineEdit(it.key());
-		auto leFilename = new QLineEdit(it.value().first);
-		auto leFolder = new QLineEdit(it.value().second);
+	for (const auto &fn : filenames) {
+		auto leCondition = new QLineEdit(fn.condition);
+		auto leFilename = new QLineEdit(fn.filename.format());
+		auto leFolder = new QLineEdit(fn.path);
 
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);

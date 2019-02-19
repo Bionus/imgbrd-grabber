@@ -252,15 +252,14 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 	// Conditional filenames
 	if (flags.testFlag(PathFlag::ConditionalFilenames)) {
-		QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-		for (auto it = filenames.constBegin(); it != filenames.constEnd(); ++it) {
-			if (matchConditionalFilename(it.key(), profile, tokens)) {
-				const QPair<QString, QString> &result = it.value();
-				if (!result.first.isEmpty()) {
-					filename = result.first;
+		QList<ConditionalFilename> filenames = getFilenames(settings);
+		for (const auto &fn : filenames) {
+			if (matchConditionalFilename(fn.condition, profile, tokens)) {
+				if (!fn.path.isEmpty()) {
+					folder = fn.path;
 				}
-				if (!result.second.isEmpty()) {
-					folder = result.second;
+				if (!fn.filename.format().isEmpty()) {
+					return fn.filename.path(tokens, profile, folder, counter, flags & (~PathFlag::ConditionalFilenames));
 				}
 			}
 		}
