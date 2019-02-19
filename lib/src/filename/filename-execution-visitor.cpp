@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QSet>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QStringList>
 #include <QVariant>
 #include "filename/ast/filename-node-conditional.h"
@@ -13,10 +14,12 @@
 #include "filename/ast/filename-node-variable.h"
 #include "filename/filename-condition-visitor.h"
 #include "loader/token.h"
+#include "models/image.h"
+#include "models/profile.h"
 
 
-FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, QSettings *settings)
-	: m_tokens(tokens), m_settings(settings)
+FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, Profile *profile)
+	: m_tokens(tokens), m_profile(profile), m_settings(profile->getSettings())
 {}
 
 void FilenameExecutionVisitor::setEscapeMethod(QString (*escapeMethod)(const QVariant &))
@@ -73,9 +76,28 @@ void FilenameExecutionVisitor::visit(const FilenameNodeVariable &node)
 }
 
 
-void FilenameExecutionVisitor::visitVariable(const QString &name, const QMap<QString, QString> &options)
+void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap<QString, QString> &options)
 {
-	if (!m_tokens.contains(name)) {
+	// Contexts "obj.var"
+	bool found = true;
+	QStringList var = fullName.split('.');
+	QString name = var.takeFirst();
+	QMap<QString, Token> context = m_tokens;
+	while (found && !var.isEmpty()) {
+		if (context.contains(name)) {
+			const QVariant &val = context[name].value();
+			if (val.canConvert<QSharedPointer<Image>>()) {
+				context = val.value<QSharedPointer<Image>>()->tokens(m_profile);
+				name = var.takeFirst();
+				continue;
+			}
+			break;
+		}
+		found = false;
+	}
+
+	// Variable not found
+	if (!found || !context.contains(name)) {
 		static const QSet<QString> keptTokens { "path", "num" };
 		if (m_keepInvalidTokens || keptTokens.contains(name)) {
 			QString strOpts;
@@ -90,7 +112,7 @@ void FilenameExecutionVisitor::visitVariable(const QString &name, const QMap<QSt
 		return;
 	}
 
-	QVariant val = m_tokens[name].value();
+	QVariant val = context[name].value();
 	QString res;
 	bool clean = false;
 
