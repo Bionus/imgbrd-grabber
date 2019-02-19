@@ -1,6 +1,8 @@
 #include "filename/filename-execution-visitor.h"
 #include <algorithm>
 #include <QDateTime>
+#include <QSet>
+#include <QSettings>
 #include <QStringList>
 #include <QVariant>
 #include "filename/ast/filename-node-conditional.h"
@@ -13,9 +15,20 @@
 #include "loader/token.h"
 
 
-FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens)
-	: m_tokens(tokens)
+FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, QSettings *settings)
+	: m_tokens(tokens), m_settings(settings)
 {}
+
+void FilenameExecutionVisitor::setEscapeMethod(QString (*escapeMethod)(const QVariant &))
+{
+	m_escapeMethod = escapeMethod;
+}
+
+void FilenameExecutionVisitor::setKeepInvalidTokens(bool keepInvalidTokens)
+{
+	m_keepInvalidTokens = keepInvalidTokens;
+}
+
 
 QString FilenameExecutionVisitor::run(const FilenameNodeRoot &node)
 {
@@ -63,19 +76,32 @@ void FilenameExecutionVisitor::visit(const FilenameNodeVariable &node)
 void FilenameExecutionVisitor::visitVariable(const QString &name, const QMap<QString, QString> &options)
 {
 	if (!m_tokens.contains(name)) {
+		static const QSet<QString> keptTokens { "path", "num" };
+		if (m_keepInvalidTokens || keptTokens.contains(name)) {
+			QString strOpts;
+			for (auto it = options.constBegin(); it != options.constEnd(); ++it) {
+				strOpts += it.key();
+				if (!it.value().isEmpty()) {
+					strOpts += "=" + it.value();
+				}
+			}
+			m_result += "%" + name + (!strOpts.isEmpty() ? ":" + strOpts : "") + "%"; // FIXME: get original value/proper toString()
+		}
 		return;
 	}
 
 	QVariant val = m_tokens[name].value();
 	QString res;
+	bool clean = false;
 
 	// Convert value to a basic string using the given options
 	if (val.type() == QVariant::DateTime) {
-		res = variableToString(val.toDateTime(), options);
+		res = variableToString(name, val.toDateTime(), options);
 	} else if (val.type() == QVariant::Int) {
-		res = variableToString(val.toInt(), options);
+		res = variableToString(name, val.toInt(), options);
 	} else if (val.type() == QVariant::StringList) {
-		res = variableToString(val.toStringList(), options);
+		res = variableToString(name, val.toStringList(), options);
+		clean = true;
 	} else {
 		res = val.toString();
 	}
@@ -88,31 +114,104 @@ void FilenameExecutionVisitor::visitVariable(const QString &name, const QMap<QSt
 		res = res.toHtmlEscaped();
 	}
 
+	// Forbidden characters and spaces replacement settings
+	if (name != "allo" && !name.startsWith("url_") && name != "filename" && !clean) {
+		res = cleanVariable(res, options);
+	}
+
+	// Escape if necessary
+	if (m_escapeMethod != nullptr && options.contains("escape")) {
+		res = m_escapeMethod(res);
+	}
+
 	m_result += res;
 }
 
-QString FilenameExecutionVisitor::variableToString(const QDateTime &val, const QMap<QString, QString> &options)
+QString FilenameExecutionVisitor::variableToString(const QString &name, const QDateTime &val, const QMap<QString, QString> &options)
 {
+	Q_UNUSED(name);
+
 	const QString format = options.value("format", "MM-dd-yyyy HH.mm");
 	return val.toString(format);
 }
 
-QString FilenameExecutionVisitor::variableToString(int val, const QMap<QString, QString> &options)
+QString FilenameExecutionVisitor::variableToString(const QString &name, int val, const QMap<QString, QString> &options)
 {
+	Q_UNUSED(name);
+
 	return options.contains("length")
 		? QString("%1").arg(val, options["length"].toInt(), 10, QChar('0'))
 		: QString::number(val);
 }
 
-QString FilenameExecutionVisitor::variableToString(QStringList val, const QMap<QString, QString> &options)
+QString FilenameExecutionVisitor::variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options)
 {
+	// Namespaces
+	bool ignoreNamespace = options.contains("ignorenamespace");
+	bool includeNamespace = options.contains("includenamespace");
+	if (ignoreNamespace || includeNamespace) {
+		QStringList namespaces = m_tokens["all_namespaces"].value().toStringList();
+
+		if (options.contains("ignorenamespace")) {
+			QStringList ignored = options["ignorenamespace"].split(' ');
+			QStringList filtered, filteredNamespaces;
+			for (int i = 0; i < val.count(); ++i) {
+				const QString &nspace = name == "all" ? namespaces[i] : name;
+				if (!ignored.contains(nspace)) {
+					filtered.append(val[i]);
+					filteredNamespaces.append(namespaces[i]);
+				}
+			}
+			val = filtered;
+			namespaces = filteredNamespaces;
+		}
+		if (options.contains("includenamespace")) {
+			QStringList excluded;
+			if (options.contains("excludenamespace")) {
+				excluded = options["excludenamespace"].split(' ');
+			}
+
+			QStringList namespaced;
+			for (int i = 0; i < val.count(); ++i) {
+				const QString nspace = name == "all" ? namespaces[i] : name;
+				namespaced.append((!excluded.contains(nspace) ? nspace + ":" : QString()) + val[i]);
+			}
+			val = namespaced;
+		}
+	}
+
 	if (options.contains("sort")) {
 		std::sort(val.begin(), val.end());
 	}
 
+	// Clean each value separately
+	if (!name.startsWith("source")) {
+		for (QString &t : val) {
+			t = cleanVariable(t, options);
+		}
+	}
+
 	// Separator
-	QString separator = options.value("separator", " ");
+	QString mainSeparator = m_settings->value("Save/separator", " ").toString();
+	QString tagSeparator = m_settings->value("Save/" + name + "_sep", mainSeparator).toString();
+	QString separator = options.value("separator", tagSeparator);
 	separator.replace("\\n", "\n").replace("\\r", "\r");
 
 	return val.join(separator);
+}
+
+
+QString FilenameExecutionVisitor::cleanVariable(QString res, const QMap<QString, QString> &options) const
+{
+	// Forbidden characters
+	if (!options.contains("unsafe")) {
+		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+	}
+
+	// Replace underscores by spaces
+	if (!options.contains("underscores") && (!m_settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces"))) {
+		res = res.replace("_", " ");
+	}
+
+	return res;
 }

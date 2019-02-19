@@ -7,13 +7,18 @@
 
 
 class QDateTime;
+class QSettings;
 class QStringList;
+class QVariant;
 class Token;
 
 class FilenameExecutionVisitor : public FilenameVisitorBase
 {
 	public:
-		explicit FilenameExecutionVisitor(const QMap<QString, Token> &tokens);
+		explicit FilenameExecutionVisitor(const QMap<QString, Token> &tokens, QSettings *settings);
+		void setEscapeMethod(QString (*)(const QVariant &));
+		void setKeepInvalidTokens(bool keepInvalidTokens);
+
 		QString run(const FilenameNodeRoot &node);
 
 		void visit(const FilenameNodeConditional &node) override;
@@ -22,15 +27,19 @@ class FilenameExecutionVisitor : public FilenameVisitorBase
 		void visit(const FilenameNodeText &node) override;
 		void visit(const FilenameNodeVariable &node) override;
 
+		QString variableToString(const QString &name, const QDateTime &val, const QMap<QString, QString> &options);
+		QString variableToString(const QString &name, int val, const QMap<QString, QString> &options);
+		QString variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options);
+
 	protected:
 		void visitVariable(const QString &name, const QMap<QString, QString> &options = {});
-		QString variableToString(const QDateTime &val, const QMap<QString, QString> &options);
-		QString variableToString(int val, const QMap<QString, QString> &options);
-		QString variableToString(QStringList val, const QMap<QString, QString> &options);
-		QString cleanVariable(QString val, const QMap<QString, QString> &options);
+		QString cleanVariable(QString val, const QMap<QString, QString> &options) const;
 
 	private:
 		const QMap<QString, Token> &m_tokens;
+		QSettings *m_settings;
+		QString (*m_escapeMethod)(const QVariant &) = nullptr;
+		bool m_keepInvalidTokens = false;
 
 		QString m_result;
 };
