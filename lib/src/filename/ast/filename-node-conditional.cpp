@@ -1,4 +1,5 @@
 #include "filename/ast/filename-node-conditional.h"
+#include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-visitor.h"
 
 
