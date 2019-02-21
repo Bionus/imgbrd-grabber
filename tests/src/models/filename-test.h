@@ -93,8 +93,7 @@ class FilenameTest : public TestSuite
 
 	protected:
 		void assertPath(const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertExpand(const QString &format, const QString &expected);
+		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false, bool useTokens = true);
 
 	private:
 		Profile *m_profile;
