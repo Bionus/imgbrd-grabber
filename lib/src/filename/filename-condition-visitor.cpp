@@ -4,6 +4,7 @@
 #include <QSettings>
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-condition-invert.h"
+#include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
@@ -38,6 +39,20 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionInvert &node)
 	m_result = !m_result;
 }
 
+void FilenameConditionVisitor::visit(const FilenameNodeConditionJavaScript &node)
+{
+	QJSEngine engine;
+	setJavaScriptVariables(engine, m_tokens, engine.globalObject());
+
+	QJSValue result = engine.evaluate(node.script);
+	if (result.isError()) {
+		log("Error in Javascript evaluation:<br/>" + result.toString());
+		return;
+	}
+
+	m_result = result.toBool();
+}
+
 void FilenameConditionVisitor::visit(const FilenameNodeConditionOp &node)
 {
 	node.left->accept(*this);
@@ -59,18 +74,4 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 void FilenameConditionVisitor::visit(const FilenameNodeConditionToken &node)
 {
 	m_result = m_tokens.contains(node.token) && !isVariantEmpty(m_tokens[node.token].value());
-}
-
-void FilenameConditionVisitor::visit(const FilenameNodeJavaScript &node)
-{
-	QJSEngine engine;
-	setJavaScriptVariables(engine, m_tokens, engine.globalObject());
-
-	QJSValue result = engine.evaluate(node.script);
-	if (result.isError()) {
-		log("Error in Javascript evaluation:<br/>" + result.toString());
-		return;
-	}
-
-	m_result = result.toBool();
 }

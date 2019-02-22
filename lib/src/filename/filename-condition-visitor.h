@@ -18,10 +18,10 @@ class FilenameConditionVisitor : public FilenameVisitorJavaScript
 		bool run(const FilenameNodeCondition &node);
 
 		void visit(const FilenameNodeConditionInvert &node) override;
+		void visit(const FilenameNodeConditionJavaScript &node) override;
 		void visit(const FilenameNodeConditionOp &node) override;
 		void visit(const FilenameNodeConditionTag &node) override;
 		void visit(const FilenameNodeConditionToken &node) override;
-		void visit(const FilenameNodeJavaScript &node) override;
 
 	private:
 		const QMap<QString, Token> &m_tokens;

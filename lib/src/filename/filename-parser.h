@@ -11,6 +11,7 @@ struct FilenameNodeCondition;
 struct FilenameNodeConditional;
 struct FilenameNodeConditionIgnore;
 struct FilenameNodeConditionInvert;
+struct FilenameNodeConditionJavaScript;
 struct FilenameNodeConditionTag;
 struct FilenameNodeConditionToken;
 struct FilenameNodeJavaScript;
@@ -41,6 +42,7 @@ class FilenameParser
 		FilenameNodeCondition *parseConditionNode();
 		FilenameNodeCondition *parseSingleCondition(bool legacy = false);
 		FilenameNodeConditionIgnore *parseConditionIgnore();
+		FilenameNodeConditionJavaScript *parseConditionJavaScript();
 		FilenameNodeConditionInvert *parseConditionInvert();
 		FilenameNodeConditionTag *parseConditionTag(bool quotes = true);
 		FilenameNodeConditionToken *parseConditionToken();

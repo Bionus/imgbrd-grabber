@@ -6,6 +6,7 @@
 #include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"
+#include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
@@ -261,6 +262,10 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 
 FilenameNodeCondition *FilenameParser::parseConditionNode()
 {
+	if (m_str.mid(m_index, 11) == "javascript:") {
+		return parseConditionJavaScript();
+	}
+
 	skipSpaces();
 
 	FilenameNodeCondition *lhs;
@@ -385,6 +390,16 @@ FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()
 	auto cond = parseSingleCondition();
 
 	return new FilenameNodeConditionInvert(cond);
+}
+
+FilenameNodeConditionJavaScript *FilenameParser::parseConditionJavaScript()
+{
+	m_index += 11; // javascript:
+
+	int start = m_index;
+	m_index = m_str.length();
+
+	return new FilenameNodeConditionJavaScript(m_str.mid(start));
 }
 
 FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)

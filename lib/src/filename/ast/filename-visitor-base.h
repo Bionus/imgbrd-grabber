@@ -10,6 +10,7 @@ class FilenameVisitorBase : public FilenameVisitor
 		void visit(const FilenameNodeConditional &node) override;
 		void visit(const FilenameNodeConditionIgnore &node) override;
 		void visit(const FilenameNodeConditionInvert &node) override;
+		void visit(const FilenameNodeConditionJavaScript &node) override;
 		void visit(const FilenameNodeConditionOp &node) override;
 		void visit(const FilenameNodeConditionTag &node) override;
 		void visit(const FilenameNodeConditionToken &node) override;

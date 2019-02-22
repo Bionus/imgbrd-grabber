@@ -4,6 +4,7 @@
 #include "loader/token.h"
 #include "filename/filename-condition-visitor.h"
 #include "filename/ast/filename-node-condition-invert.h"
+#include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
@@ -138,6 +139,24 @@ void FilenameConditionVisitorTest::testInvert()
 	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(invalidToken)), true);
 	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(validOp)), false);
 	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(invalidOp)), true);
+}
+
+void FilenameConditionVisitorTest::testJavaScript()
+{
+	FilenameNodeConditionJavaScript condition("typeof my_token !== 'undefined' && my_token.length > 0");
+
+	QMap<QString, Token> tokensWithToken = {
+		{ "my_token", Token("not_empty") },
+	};
+	QMap<QString, Token> tokensWithEmptyToken = {
+		{ "my_token", Token("") },
+	};
+	QMap<QString, Token> tokensWithoutToken;
+
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokensWithToken, &settings).run(condition), true);
+	QCOMPARE(FilenameConditionVisitor(tokensWithEmptyToken, &settings).run(condition), false);
+	QCOMPARE(FilenameConditionVisitor(tokensWithoutToken, &settings).run(condition), false);
 }
 
 

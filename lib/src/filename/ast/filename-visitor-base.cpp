@@ -6,6 +6,7 @@
 #include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"
+#include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
@@ -34,6 +35,11 @@ void FilenameVisitorBase::visit(const FilenameNodeConditionIgnore &node)
 void FilenameVisitorBase::visit(const FilenameNodeConditionInvert &node)
 {
 	node.node->accept(*this);
+}
+
+void FilenameVisitorBase::visit(const FilenameNodeConditionJavaScript &node)
+{
+	Q_UNUSED(node); // No-op
 }
 
 void FilenameVisitorBase::visit(const FilenameNodeConditionOp &node)

@@ -4,6 +4,7 @@
 struct FilenameNodeConditional;
 struct FilenameNodeConditionIgnore;
 struct FilenameNodeConditionInvert;
+struct FilenameNodeConditionJavaScript;
 struct FilenameNodeConditionOp;
 struct FilenameNodeConditionTag;
 struct FilenameNodeConditionToken;
@@ -21,6 +22,7 @@ class FilenameVisitor
 		virtual void visit(const FilenameNodeConditional &node) = 0;
 		virtual void visit(const FilenameNodeConditionIgnore &node) = 0;
 		virtual void visit(const FilenameNodeConditionInvert &node) = 0;
+		virtual void visit(const FilenameNodeConditionJavaScript &node) = 0;
 		virtual void visit(const FilenameNodeConditionOp &node) = 0;
 		virtual void visit(const FilenameNodeConditionTag &node) = 0;
 		virtual void visit(const FilenameNodeConditionToken &node) = 0;

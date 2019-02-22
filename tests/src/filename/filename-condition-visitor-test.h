@@ -15,6 +15,7 @@ class FilenameConditionVisitorTest : public TestSuite
 		void testOperatorAnd();
 		void testMixedOperators();
 		void testInvert();
+		void testJavaScript();
 };
 
 #endif // FILENAME_CONDITION_VISITOR_TEST_H
