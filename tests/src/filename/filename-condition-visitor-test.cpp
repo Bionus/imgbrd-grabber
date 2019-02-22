@@ -26,9 +26,10 @@ void FilenameConditionVisitorTest::testTag()
 	};
 	QMap<QString, Token> tokensWithoutAnyTag;
 
-	QCOMPARE(FilenameConditionVisitor(tokensWithTag).run(condition), true);
-	QCOMPARE(FilenameConditionVisitor(tokensWithoutTag).run(condition), false);
-	QCOMPARE(FilenameConditionVisitor(tokensWithoutAnyTag).run(condition), false);
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokensWithTag, &settings).run(condition), true);
+	QCOMPARE(FilenameConditionVisitor(tokensWithoutTag, &settings).run(condition), false);
+	QCOMPARE(FilenameConditionVisitor(tokensWithoutAnyTag, &settings).run(condition), false);
 }
 
 void FilenameConditionVisitorTest::testToken()
@@ -43,9 +44,10 @@ void FilenameConditionVisitorTest::testToken()
 	};
 	QMap<QString, Token> tokensWithoutToken;
 
-	QCOMPARE(FilenameConditionVisitor(tokensWithToken).run(condition), true);
-	QCOMPARE(FilenameConditionVisitor(tokensWithEmptyToken).run(condition), false);
-	QCOMPARE(FilenameConditionVisitor(tokensWithoutToken).run(condition), false);
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokensWithToken, &settings).run(condition), true);
+	QCOMPARE(FilenameConditionVisitor(tokensWithEmptyToken, &settings).run(condition), false);
+	QCOMPARE(FilenameConditionVisitor(tokensWithoutToken, &settings).run(condition), false);
 }
 
 void FilenameConditionVisitorTest::testOperatorOr()
@@ -60,10 +62,11 @@ void FilenameConditionVisitorTest::testOperatorOr()
 	NOp falseTrue(op, new NTag(Tag("not_found")), new NTag(Tag("tag1")));
 	NOp falseFalse(op, new NTag(Tag("not_found")), new NTag(Tag("not_found")));
 
-	QCOMPARE(FilenameConditionVisitor(tokens).run(trueTrue), true);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(trueFalse), true);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(falseTrue), true);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(falseFalse), false);
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(trueTrue), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(trueFalse), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(falseTrue), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(falseFalse), false);
 }
 
 void FilenameConditionVisitorTest::testOperatorAnd()
@@ -78,14 +81,17 @@ void FilenameConditionVisitorTest::testOperatorAnd()
 	NOp falseTrue(op, new NTag(Tag("not_found")), new NTag(Tag("tag1")));
 	NOp falseFalse(op, new NTag(Tag("not_found")), new NTag(Tag("not_found")));
 
-	QCOMPARE(FilenameConditionVisitor(tokens).run(trueTrue), true);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(trueFalse), false);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(falseTrue), false);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(falseFalse), false);
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(trueTrue), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(trueFalse), false);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(falseTrue), false);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(falseFalse), false);
 }
 
 void FilenameConditionVisitorTest::testMixedOperators()
 {
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+
 	QMap<QString, Token> tokens = {
 		{ "allos", Token(QStringList() << "tag1" << "tag2" << "tag3") },
 	};
@@ -100,7 +106,7 @@ void FilenameConditionVisitorTest::testMixedOperators()
 			new NTag(Tag("not_found"))
 		)
 	);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(left), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(left), true);
 
 	// (A || !B) && C, A = true, B = false, C = false => false
 	NOp right(
@@ -112,7 +118,7 @@ void FilenameConditionVisitorTest::testMixedOperators()
 		),
 		new NTag(Tag("not_found"))
 	);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(right), false);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(right), false);
 }
 
 void FilenameConditionVisitorTest::testInvert()
@@ -127,10 +133,11 @@ void FilenameConditionVisitorTest::testInvert()
 	auto validOp = new NOp(NOp::Operator::Or, new NTag(Tag("tag1")), new NToken("not_found"));
 	auto invalidOp = new NOp(NOp::Operator::And, new NTag(Tag("tag1")), new NToken("not_found"));
 
-	QCOMPARE(FilenameConditionVisitor(tokens).run(NInvert(validTag)), false);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(NInvert(invalidToken)), true);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(NInvert(validOp)), false);
-	QCOMPARE(FilenameConditionVisitor(tokens).run(NInvert(invalidOp)), true);
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(validTag)), false);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(invalidToken)), true);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(validOp)), false);
+	QCOMPARE(FilenameConditionVisitor(tokens, &settings).run(NInvert(invalidOp)), true);
 }
 
 

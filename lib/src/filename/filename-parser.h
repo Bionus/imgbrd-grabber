@@ -9,9 +9,11 @@
 struct FilenameNode;
 struct FilenameNodeCondition;
 struct FilenameNodeConditional;
+struct FilenameNodeConditionIgnore;
 struct FilenameNodeConditionInvert;
 struct FilenameNodeConditionTag;
 struct FilenameNodeConditionToken;
+struct FilenameNodeJavaScript;
 struct FilenameNodeRoot;
 struct FilenameNodeVariable;
 
@@ -34,11 +36,13 @@ class FilenameParser
 
 		FilenameNodeRoot *parseRootNode();
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
+		FilenameNodeJavaScript *parseJavaScript();
 		FilenameNodeConditional *parseConditional();
 		FilenameNodeCondition *parseConditionNode();
-		FilenameNodeCondition *parseSingleCondition();
+		FilenameNodeCondition *parseSingleCondition(bool legacy = false);
+		FilenameNodeConditionIgnore *parseConditionIgnore();
 		FilenameNodeConditionInvert *parseConditionInvert();
-		FilenameNodeConditionTag *parseConditionTag();
+		FilenameNodeConditionTag *parseConditionTag(bool quotes = true);
 		FilenameNodeConditionToken *parseConditionToken();
 
 	private:

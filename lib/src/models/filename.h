@@ -53,17 +53,11 @@ class Filename
 		int needExactTags(Site *site, const QString &api = "") const;
 		int needExactTags(const QStringList &forcedTokens = QStringList()) const;
 
-		QList<QMap<QString, Token>> expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const;
-		QString expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth = 0) const;
+		QList<QMap<QString, Token>> expandTokens(QMap<QString, Token> tokens, QSettings *settings) const;
 
 	protected:
-		QString cleanUpValue(QString res, const QMap<QString, QString> &options, QSettings *settings) const;
-		QString optionedValue(const QVariant &val, const QString &key, const QString &ops, QSettings *settings, QStringList namespaces) const;
 		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
 		bool returnError(const QString &msg, QString *error) const;
-		QString fixSeparator(const QString &separator) const;
-		void setJavaScriptVariables(QJSEngine &engine, Profile *profile, const QMap<QString, Token> &tokens, QJSValue obj) const;
-		bool matchConditionalFilename(QString cond, Profile *profile, const QMap<QString, Token> &tokens) const;
 
 	private:
 		QString m_format;

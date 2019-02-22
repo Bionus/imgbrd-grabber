@@ -1,25 +1,29 @@
 #include "filename/filename-execution-visitor.h"
 #include <algorithm>
 #include <QDateTime>
+#include <QJSEngine>
+#include <QJSValue>
 #include <QSet>
 #include <QSettings>
 #include <QSharedPointer>
 #include <QStringList>
 #include <QVariant>
 #include "filename/ast/filename-node-conditional.h"
+#include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-javascript.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
 #include "filename/filename-condition-visitor.h"
 #include "loader/token.h"
+#include "logger.h"
 #include "models/image.h"
-#include "models/profile.h"
 
 
-FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, Profile *profile)
-	: m_tokens(tokens), m_profile(profile), m_settings(profile->getSettings())
+FilenameExecutionVisitor::FilenameExecutionVisitor(const QMap<QString, Token> &tokens, QSettings *settings)
+	: FilenameVisitorJavaScript(settings), m_tokens(tokens), m_settings(settings)
 {}
 
 void FilenameExecutionVisitor::setEscapeMethod(QString (*escapeMethod)(const QVariant &))
@@ -45,7 +49,7 @@ QString FilenameExecutionVisitor::run(const FilenameNodeRoot &node)
 
 void FilenameExecutionVisitor::visit(const FilenameNodeConditional &node)
 {
-	FilenameConditionVisitor conditionVisitor(m_tokens);
+	FilenameConditionVisitor conditionVisitor(m_tokens, m_settings);
 	bool valid = conditionVisitor.run(*node.condition);
 
 	if (valid && node.ifTrue != nullptr) {
@@ -55,14 +59,35 @@ void FilenameExecutionVisitor::visit(const FilenameNodeConditional &node)
 	}
 }
 
+void FilenameExecutionVisitor::visit(const FilenameNodeConditionIgnore &node)
+{
+	Q_UNUSED(node);
+
+	// No-op
+}
+
 void FilenameExecutionVisitor::visit(const FilenameNodeConditionTag &node)
 {
-	m_result += node.tag.text();
+	m_result += cleanVariable(node.tag.text());
 }
 
 void FilenameExecutionVisitor::visit(const FilenameNodeConditionToken &node)
 {
 	visitVariable(node.token);
+}
+
+void FilenameExecutionVisitor::visit(const FilenameNodeJavaScript &node)
+{
+	QJSEngine engine;
+	setJavaScriptVariables(engine, m_tokens, engine.globalObject());
+
+	QJSValue result = engine.evaluate(node.script);
+	if (result.isError()) {
+		log("Error in Javascript evaluation:<br/>" + result.toString());
+		return;
+	}
+
+	m_result += result.toString();
 }
 
 void FilenameExecutionVisitor::visit(const FilenameNodeText &node)
@@ -86,8 +111,8 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	while (found && !var.isEmpty()) {
 		if (context.contains(name)) {
 			const QVariant &val = context[name].value();
-			if (val.canConvert<QSharedPointer<Image>>()) {
-				context = val.value<QSharedPointer<Image>>()->tokens(m_profile);
+			if (val.canConvert<QMap<QString, Token>>()) {
+				context = val.value<QMap<QString, Token>>();
 				name = var.takeFirst();
 				continue;
 			}

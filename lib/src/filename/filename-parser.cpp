@@ -4,10 +4,12 @@
 #include <QStack>
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-conditional.h"
+#include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-javascript.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
@@ -70,7 +72,7 @@ int FilenameParser::indexOf(const QList<QChar> &chars, int max)
 		QChar c = m_str[index];
 
 		// Don't return on escaped characters
-		bool isEscape = c == '\\';
+		bool isEscape = c == '\\' || ((c == '<' || c == '>') && index < m_str.length() - 1 && c == m_str[index + 1]);
 		if (isEscape && !escapeNext) {
 			escapeNext = true;
 		} else if (chars.contains(c) && !escapeNext) {
@@ -95,7 +97,7 @@ QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 		QChar c = m_str[m_index];
 
 		// Don't return on escaped characters
-		bool isEscape = c == '\\';
+		bool isEscape = c == '\\' || ((c == '<' || c == '>') && m_index < m_str.length() - 1 && c == m_str[m_index + 1]);
 		if (isEscape && !escapeNext) {
 			escapeNext = true;
 		} else {
@@ -134,19 +136,34 @@ FilenameNodeRoot *FilenameParser::parseRootNode()
 
 FilenameNode *FilenameParser::parseExpr(const QList<QChar> &addChars)
 {
-	QChar p = peek();
-
-	if (p == '<') {
-		return parseConditional();
-	}
-	if (p == '%') {
-		return parseVariable();
+	if (m_str.mid(m_index, 11) == "javascript:") {
+		return parseJavaScript();
 	}
 
 	QList<QChar> until = QList<QChar>{ '<', '%' } + addChars;
 	QString txt = readUntil(until, true);
+	if (txt.isEmpty()) {
+		QChar p = peek();
+
+		if (p == '<' && (m_index >= m_str.length() - 1 || m_str[m_index + 1] != '<')) {
+			return parseConditional();
+		}
+		if (p == '%') {
+			return parseVariable();
+		}
+	}
 
 	return new FilenameNodeText(txt);
+}
+
+FilenameNodeJavaScript *FilenameParser::parseJavaScript()
+{
+	m_index += 11; // javascript:
+
+	int start = m_index;
+	m_index = m_str.length();
+
+	return new FilenameNodeJavaScript(m_str.mid(start));
 }
 
 FilenameNodeVariable *FilenameParser::parseVariable()
@@ -191,13 +208,13 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		QList<FilenameNodeCondition*> conds;
 
 		while (peek() != '>') {
-			QList<QChar> stop { '>', '!', '"', '%' };
+			QList<QChar> stop { '>', '-', '!', '"', '%' };
 			if (!stop.contains(peek())) {
 				exprs.append(parseExpr(stop));
 			}
 
 			if (peek() != '>') {
-				auto cond = parseSingleCondition();
+				auto cond = parseSingleCondition(true);
 				conds.append(cond);
 				exprs.append(cond);
 			}
@@ -328,11 +345,14 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 	return term;
 }
 
-FilenameNodeCondition *FilenameParser::parseSingleCondition()
+FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 {
 	QChar c = peek();
 
-	if (c == '!') {
+	if (legacy && c == '-') {
+		return parseConditionIgnore();
+	}
+	if (c == '!' || c == '-') {
 		return parseConditionInvert();
 	}
 	if (c == '%') {
@@ -342,25 +362,44 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition()
 		return parseConditionTag();
 	}
 
+	if (!legacy) {
+		return parseConditionTag(false);
+	}
+
 	throw std::runtime_error("Expected '!', '%' or '\"' for condition");
+}
+
+FilenameNodeConditionIgnore *FilenameParser::parseConditionIgnore()
+{
+	m_index++; // -
+
+	auto cond = parseSingleCondition();
+
+	return new FilenameNodeConditionIgnore(cond);
 }
 
 FilenameNodeConditionInvert *FilenameParser::parseConditionInvert()
 {
-	m_index++; // !
+	m_index++; // ! or -
 
 	auto cond = parseSingleCondition();
 
 	return new FilenameNodeConditionInvert(cond);
 }
 
-FilenameNodeConditionTag *FilenameParser::parseConditionTag()
+FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 {
-	m_index++; // "
+	if (quotes) {
+		m_index++; // "
+	}
 
-	QString tag = readUntil({ '"' });
+	QString tag = quotes
+		? readUntil({ '"' })
+		: readUntil({ ' ', '&', '|', '?' }, true);
 
-	m_index++; // "
+	if (quotes) {
+		m_index++; // "
+	}
 
 	return new FilenameNodeConditionTag(Tag(tag));
 }
