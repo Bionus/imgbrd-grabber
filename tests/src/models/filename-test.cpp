@@ -266,16 +266,16 @@ void FilenameTest::testExpandTagMultiple()
 }
 void FilenameTest::testExpandTagIgnore()
 {
-	assertPath("<\"tag1\"folder1/>%md5%.%ext%", "tag1folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("<-\"tag1\"folder1/>%md5%.%ext%", "folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("<\"tag1\"folder1/>%md5%.%ext%", "tag1folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
+	assertPath("<-\"tag1\"folder1/>%md5%.%ext%", "folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
 
-	assertPath("<\"tag1\"\"tag2\"folder1/>%md5%.%ext%", "tag1tag2folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("<-\"tag1\"-\"tag2\"folder1/>%md5%.%ext%", "folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("<\"tag1\"\"tag2\"folder1/>%md5%.%ext%", "tag1tag2folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
+	assertPath("<-\"tag1\"-\"tag2\"folder1/>%md5%.%ext%", "folder1/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
 
-	assertPath("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("<\"tag1\"-\"tag2\"/>%md5%.%ext%", "tag1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("<-\"tag1\"\"tag2\"/>%md5%.%ext%", "tag2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-	assertPath("<-\"tag1\"-\"tag2\"/>%md5%.%ext%", "/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
+	assertPath("<\"tag1\"-\"tag2\"/>%md5%.%ext%", "tag1/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
+	assertPath("<-\"tag1\"\"tag2\"/>%md5%.%ext%", "tag2/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
+	assertPath("<-\"tag1\"-\"tag2\"/>%md5%.%ext%", "/1bc29b36f623ba82aaf6724fd3b16718.jpg", "", false);
 }
 void FilenameTest::testExpandTokenSimple()
 {
