@@ -156,6 +156,12 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 {
 	QStringList reasons = QStringList();
 
+	// Filtered images
+	if (page->pageImageCount() > 0) {
+		reasons.append(tr("all images filtered"));
+		return reasons;
+	}
+
 	// If the request yielded no source, the server may be offline
 	if (!page->hasSource()) {
 		reasons.append(tr("server offline"));
