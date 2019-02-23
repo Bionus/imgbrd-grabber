@@ -1222,7 +1222,7 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 }
 
 
-void SearchTab::mouseReleaseEvent(QMouseEvent *e)
+void SearchTab::mousePressEvent(QMouseEvent *e)
 {
 	if (e->button() == Qt::XButton1) {
 		previousPage();

@@ -37,7 +37,7 @@ class SearchTab : public QWidget
 	public:
 		~SearchTab() override;
 		void init();
-		void mouseReleaseEvent(QMouseEvent *e) override;
+		void mousePressEvent(QMouseEvent *e) override;
 		virtual QList<Site*> sources();
 		virtual QString tags() const = 0;
 		const QList<Tag> &results() const;
