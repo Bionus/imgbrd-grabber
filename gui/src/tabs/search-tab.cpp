@@ -1423,7 +1423,7 @@ void SearchTab::loadPage()
 		// Stored URL
 		SearchQuery query = m_lastQuery;
 		if (m_lastUrls.contains(site->url())) {
-			query.tags = QStringList() << m_lastUrls.take(site->url());
+			query.url = m_lastUrls.take(site->url());
 		}
 
 		// Load results

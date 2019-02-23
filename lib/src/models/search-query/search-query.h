@@ -30,6 +30,7 @@ class SearchQuery
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
 
 		// Public members
+		QString url;
 		QStringList tags;
 		QSharedPointer<Image> gallery;
 };
