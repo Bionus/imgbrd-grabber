@@ -601,7 +601,7 @@ void SearchTab::finishedLoadingPreview()
 		}
 
 		if (download) {
-			auto downloader = new ImageDownloader(m_profile, img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, this);
 			downloader->save();
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		}
@@ -944,7 +944,7 @@ void SearchTab::contextSaveImage(int position)
 		const QString fn = m_settings->value("Save/filename").toString();
 		const QString path = m_settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();
@@ -963,7 +963,7 @@ void SearchTab::contextSaveImageAs(int position)
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
 
 		QEventLoop loop;
-		ImageDownloader downloader(m_profile, image, QStringList() << tmpPath, 1, true, true, true, this);
+		ImageDownloader downloader(m_profile, image, QStringList() << tmpPath, 1, true, true, this);
 		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
 		downloader.save();
 		loop.exec();
@@ -982,7 +982,7 @@ void SearchTab::contextSaveImageAs(int position)
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);
 		} else {
-			auto downloader = new ImageDownloader(m_profile, image, QStringList() << path, 1, true, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, image, QStringList() << path, 1, true, true, this);
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 			downloader->save();
 		}
@@ -996,7 +996,7 @@ void SearchTab::contextSaveSelected()
 	const QString path = m_settings->value("Save/path").toString();
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
-		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
 		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		downloader->save();

@@ -27,14 +27,14 @@ static void addMd5(Profile *profile, const QString &path)
 }
 
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size)
-	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
 {
 	setSize(size);
 }
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent, bool rotate, bool force, Image::Size size)
-	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_getBlacklisted(getBlacklisted), m_writeError(false), m_rotate(rotate), m_force(force)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate, bool force, Image::Size size)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force)
 {
 	setSize(size);
 }
@@ -66,6 +66,11 @@ void ImageDownloader::setSize(Image::Size size)
 	}
 }
 
+void ImageDownloader::setBlacklist(Blacklist *blacklist)
+{
+	m_blacklist = blacklist;
+}
+
 void ImageDownloader::save()
 {
 	// If we use direct saving or don't want to load tags, we directly save the image
@@ -73,7 +78,7 @@ void ImageDownloader::save()
 	const int localNeedTags = m_filename.needExactTags(m_image->parentSite());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
-	const bool blacklistNeedTags = m_getBlacklisted && m_image->tags().isEmpty();
+	const bool blacklistNeedTags = m_blacklist != nullptr && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave();
 		return;
@@ -145,8 +150,8 @@ void ImageDownloader::loadedSave()
 	}
 
 	// Check if the image is blacklisted
-	if (!m_getBlacklisted) {
-		const QStringList &detected = m_profile->getBlacklist().match(m_image->tokens(m_profile));
+	if (m_blacklist != nullptr) {
+		const QStringList &detected = m_blacklist->match(m_image->tokens(m_profile));
 		if (!detected.isEmpty()) {
 			log(QStringLiteral("Image contains blacklisted tags: '%1'").arg(detected.join("', '")), Logger::Info);
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::Blacklisted));

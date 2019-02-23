@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include "downloader/downloader.h"
 #include "functions.h"
+#include "models/filtering/blacklist.h"
 #include "models/profile.h"
 #include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
+	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist" , "Tags to remove from results.", "tags-blacklist");
 	const QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
@@ -93,6 +95,7 @@ int main(int argc, char *argv[])
 	parser.addOption(userOption);
 	parser.addOption(passwordOption);
 	parser.addOption(blacklistOption);
+	parser.addOption(tagsBlacklistOption);
 	parser.addOption(postFilteringOption);
 	parser.addOption(tagsMinOption);
 	parser.addOption(tagsFormatOption);
@@ -192,6 +195,8 @@ int main(int argc, char *argv[])
 
 		exit(0);
 	}
+
+	QString blacklistOverride = parser.value(tagsBlacklistOption);
 	Downloader *downloader = new Downloader(profile,
 		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
@@ -204,7 +209,7 @@ int main(int argc, char *argv[])
 		parser.value(userOption),
 		parser.value(passwordOption),
 		parser.isSet(blacklistOption),
-		profile->getBlacklist(),
+		blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
 		parser.isSet(noDuplicatesOption),
 		parser.value(tagsMinOption).toInt(),
 		parser.value(tagsFormatOption));

@@ -245,7 +245,10 @@ void Downloader::loadNext()
 	if (!m_images.isEmpty()) {
 		const QSharedPointer<Image> image = m_images.takeFirst();
 		log(QString("Loading image '%1'").arg(image->url().toString()));
-		auto dwl = new ImageDownloader(m_profile, image, m_filename, m_location, 0, true, false, m_blacklist, this);
+		auto dwl = new ImageDownloader(m_profile, image, m_filename, m_location, 0, true, false, this);
+		if (!m_blacklist) {
+			dwl->setBlacklist(&m_blacklistedTags);
+		}
 		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
 		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 		dwl->save();

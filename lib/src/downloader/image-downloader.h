@@ -15,6 +15,7 @@
 #include "models/image.h"
 
 
+class Blacklist;
 class Profile;
 
 class ImageDownloader : public QObject
@@ -22,11 +23,12 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, bool getBlacklisted, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
 		~ImageDownloader();
 		bool isRunning() const;
 		void setSize(Image::Size size);
+		void setBlacklist(Blacklist *blacklist);
 
 	public slots:
 		void save();
@@ -52,6 +54,7 @@ class ImageDownloader : public QObject
 
 	private:
 		Profile *m_profile;
+		Blacklist *m_blacklist = nullptr;
 		QSharedPointer<Image> m_image;
 		FileDownloader m_fileDownloader;
 		Filename m_filename;
@@ -62,7 +65,6 @@ class ImageDownloader : public QObject
 		int m_count;
 		bool m_addMd5;
 		bool m_startCommands;
-		bool m_getBlacklisted;
 		bool m_writeError;
 		bool m_rotate;
 		bool m_force;
