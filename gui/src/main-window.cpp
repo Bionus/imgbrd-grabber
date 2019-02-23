@@ -521,7 +521,12 @@ bool MainWindow::loadTabs(const QString &filename)
 }
 void MainWindow::updateTabTitle(SearchTab *tab)
 {
-	ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle());
+	int index = ui->tabWidget->indexOf(tab);
+	const QString oldText = ui->tabWidget->tabText(index);
+	const QString newText = tab->windowTitle();
+	if (newText != oldText) {
+		ui->tabWidget->setTabText(index, newText);
+	}
 }
 void MainWindow::updateTabs()
 {
