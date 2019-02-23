@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSound>
+#include <QTimer>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QStorageInfo>
 #endif
@@ -892,7 +893,7 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 
 	m_getAllDownloading.removeAll(download);
 	QCoreApplication::processEvents();
-	_getAll();
+	QTimer::singleShot(0, this, SLOT(_getAll()));
 }
 
 void DownloadsTab::imageUrlChanged(const QUrl &before, const QUrl &after)
