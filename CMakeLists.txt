@@ -30,8 +30,13 @@ if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
 else()
 	string(REGEX REPLACE "^v" "" VERSION VERSION)
 endif()
-set(VERSION_ANDROID "1")
 set(USE_SSL 1)
+
+# Android settings
+set(ANDROID_APP_NAME ${PROJECT_NAME})
+set(ANDROID_APP_VERSION_NAME ${VERSION})
+set(ANDROID_APP_VERSION_CODE 1)
+set(ANDROID_APP_PACKAGE_NAME "com.bionus.grabber")
 
 message(STATUS "Configuring for version '${VERSION}'")
 

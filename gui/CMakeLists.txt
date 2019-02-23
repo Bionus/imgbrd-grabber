@@ -135,8 +135,12 @@ if(ANDROID)
 		list(APPEND APK_LIBS "${OPENSSL_ANDROID}/libcrypto.so" "${OPENSSL_ANDROID}/libssl.so")
 	endif()
 
+	# Generate manifest file
+	set(ANDROID_PACKAGE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/android")
+	configure_file("${ANDROID_PACKAGE_SOURCES}/AndroidManifest.xml.in" "${ANDROID_PACKAGE_SOURCES}/AndroidManifest.xml" @ONLY)
+
 	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${APK_LIBS} VERSION_CODE ${VERSION_ANDROID} NAME "Grabber" PACKAGE_NAME "com.bionus.grabber")
+	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${APK_LIBS} PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES})
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Grabber")
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
