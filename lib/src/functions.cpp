@@ -46,23 +46,25 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
+QList<ConditionalFilename> getFilenames(QSettings *settings)
 {
-	QMap<QString, QPair<QString, QString>> tokens;
+	QList<ConditionalFilename> ret;
 
 	settings->beginGroup(QStringLiteral("Filenames"));
 	const int count = settings->childKeys().count() / 3;
 	for (int i = 0; i < count; i++) {
-		if (settings->contains(QString::number(i) + "_cond")) {
-			QPair<QString, QString> pair;
-			pair.first = settings->value(QString::number(i) + "_fn").toString();
-			pair.second = settings->value(QString::number(i) + "_dir").toString();
-			tokens.insert(settings->value(QString::number(i) + "_cond").toString(), pair);
+		const QString strI = QString::number(i);
+		if (settings->contains(strI + "_cond")) {
+			ret.append(ConditionalFilename(
+			   settings->value(strI + "_cond").toString(),
+			   settings->value(strI + "_fn").toString(),
+			   settings->value(strI + "_dir").toString()
+			));
 		}
 	}
 	settings->endGroup();
 
-	return tokens;
+	return ret;
 }
 
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings)

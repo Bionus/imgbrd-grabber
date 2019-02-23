@@ -10,6 +10,7 @@ class FilenameParserTest : public TestSuite
 
 	private slots:
 		// Basic
+		void testParseEmpty();
 		void testParseText();
 		void testParseVariable();
 		void testParseVariableWithOptions();
@@ -24,6 +25,7 @@ class FilenameParserTest : public TestSuite
 
 		// Condition
 		void testParseConditionTag();
+		void testParseConditionTagWithoutQuotes();
 		void testParseConditionToken();
 		void testParseConditionInvert();
 		void testParseConditionOperator();
@@ -31,7 +33,6 @@ class FilenameParserTest : public TestSuite
 		void testParseConditionNoOperator();
 		void testParseConditionTagParenthesis();
 		void testParseConditionTagParenthesisUnclosed();
-		void testParseConditionInvalid();
 		void testParseConditionMixedParenthesis();
 };
 

@@ -1135,7 +1135,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 
 	// Variables
 	if (!m_parentGallery.isNull()) {
-		tokens.insert("gallery", Token(QVariant::fromValue(m_parentGallery)));
+		tokens.insert("gallery", Token([this, profile]() { return QVariant::fromValue(m_parentGallery->tokens(profile)); }));
 	}
 
 	return tokens;

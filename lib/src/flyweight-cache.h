@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QSharedPointer>
+#include <QWeakPointer>
 
 
 template <class K, class T>
@@ -23,7 +24,7 @@ template <class K, class T>
 QSharedPointer<T> FlyweightCache<K, T>::Get(const K &key)
 {
 	auto it = Map.find(key);
-	if (it != Map.end()) {
+	if (it != Map.end() && !it.value().isNull()) {
 		return QSharedPointer<T>(it.value());
 	}
 

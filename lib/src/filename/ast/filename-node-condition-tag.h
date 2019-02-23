@@ -5,11 +5,15 @@
 #include "tags/tag.h"
 
 
+class Filter;
+
 struct FilenameNodeConditionTag : public FilenameNodeCondition
 {
 	Tag tag;
+	Filter *filter;
 
 	explicit FilenameNodeConditionTag(Tag tag);
+	~FilenameNodeConditionTag() override;
 	void accept(FilenameVisitor &v) const override;
 };
 

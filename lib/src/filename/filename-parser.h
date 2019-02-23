@@ -9,9 +9,12 @@
 struct FilenameNode;
 struct FilenameNodeCondition;
 struct FilenameNodeConditional;
+struct FilenameNodeConditionIgnore;
 struct FilenameNodeConditionInvert;
+struct FilenameNodeConditionJavaScript;
 struct FilenameNodeConditionTag;
 struct FilenameNodeConditionToken;
+struct FilenameNodeJavaScript;
 struct FilenameNodeRoot;
 struct FilenameNodeVariable;
 
@@ -19,10 +22,11 @@ class FilenameParser
 {
 	public:
 		explicit FilenameParser(QString str);
-		QString error() const;
+		const QString &error() const;
 
 		FilenameNodeRoot *parseRoot();
 		FilenameNodeCondition *parseCondition();
+		FilenameNodeVariable *parseVariable();
 
 	protected:
 		QChar peek();
@@ -33,12 +37,14 @@ class FilenameParser
 
 		FilenameNodeRoot *parseRootNode();
 		FilenameNode *parseExpr(const QList<QChar> &addChars = {});
-		FilenameNodeVariable *parseVariable();
+		FilenameNodeJavaScript *parseJavaScript();
 		FilenameNodeConditional *parseConditional();
 		FilenameNodeCondition *parseConditionNode();
-		FilenameNodeCondition *parseSingleCondition();
+		FilenameNodeCondition *parseSingleCondition(bool legacy = false);
+		FilenameNodeConditionIgnore *parseConditionIgnore();
+		FilenameNodeConditionJavaScript *parseConditionJavaScript();
 		FilenameNodeConditionInvert *parseConditionInvert();
-		FilenameNodeConditionTag *parseConditionTag();
+		FilenameNodeConditionTag *parseConditionTag(bool quotes = true);
 		FilenameNodeConditionToken *parseConditionToken();
 
 	private:

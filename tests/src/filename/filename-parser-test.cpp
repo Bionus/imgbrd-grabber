@@ -13,6 +13,15 @@
 #include "filename/ast/filename-node-variable.h"
 
 
+void FilenameParserTest::testParseEmpty()
+{
+	FilenameParser parser("");
+	auto filename = parser.parseRoot();
+	QVERIFY(parser.error().isEmpty());
+
+	QVERIFY(filename->exprs.isEmpty());
+}
+
 void FilenameParserTest::testParseText()
 {
 	FilenameParser parser("image.png");
@@ -179,6 +188,17 @@ void FilenameParserTest::testParseConditionTag()
 	QCOMPARE(tagCond->tag.text(), QString("my_tag"));
 }
 
+void FilenameParserTest::testParseConditionTagWithoutQuotes()
+{
+	FilenameParser parser("my_tag");
+	auto cond = parser.parseCondition();
+	QVERIFY(parser.error().isEmpty());
+
+	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
+	QVERIFY(tagCond != nullptr);
+	QCOMPARE(tagCond->tag.text(), QString("my_tag"));
+}
+
 void FilenameParserTest::testParseConditionToken()
 {
 	FilenameParser parser("%my_token%");
@@ -277,14 +297,6 @@ void FilenameParserTest::testParseConditionTagParenthesisUnclosed()
 	parser.parseCondition();
 
 	QCOMPARE(parser.error(), QString("Expected ')' after condition in parenthesis"));
-}
-
-void FilenameParserTest::testParseConditionInvalid()
-{
-	FilenameParser parser("invalid");
-	parser.parseCondition();
-
-	QCOMPARE(parser.error(), QString("Expected '!', '%' or '\"' for condition"));
 }
 
 void FilenameParserTest::testParseConditionMixedParenthesis()
