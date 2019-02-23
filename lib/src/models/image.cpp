@@ -424,7 +424,7 @@ void Image::parseDetails()
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
 		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
-			log(QStringLiteral("Loading error: %1").arg(m_loadDetails->errorString()), Logger::Error);
+			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
 		}
 		m_loadDetails->deleteLater();
 		m_loadDetails = nullptr;
