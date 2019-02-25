@@ -126,6 +126,7 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 
 void ImageDownloader::abort()
 {
+	m_image->abortTags();
 	if (m_reply != nullptr && m_reply->isRunning()) {
 		m_reply->abort();
 	}

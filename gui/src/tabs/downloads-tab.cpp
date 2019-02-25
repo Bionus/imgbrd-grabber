@@ -949,6 +949,11 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 		return;
 	}
 
+	// Stop here if we're paused
+	if (!m_getAll) {
+		return;
+	}
+
 	// Row
 	int row = getRowForSite(siteId);
 
@@ -1061,13 +1066,12 @@ void DownloadsTab::getAllCancel()
 {
 	log(QStringLiteral("Cancelling downloads..."), Logger::Info);
 	m_progressDialog->cancel();
-	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading)) {
-		download.image->abortTags();
+	if (m_currentPackLoader != nullptr) {
+		m_currentPackLoader->abort();
 	}
 	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
 		it.value()->abort();
 	}
-	/* m_currentPackLoader->abort(); */
 	m_getAll = false;
 	ui->widgetDownloadButtons->setEnabled(true);
 	DONE();
@@ -1078,9 +1082,6 @@ void DownloadsTab::getAllSkip()
 	log(QStringLiteral("Skipping downloads..."), Logger::Info);
 
 	int count = m_getAllDownloading.count();
-	for (const BatchDownloadImage &download : qAsConst(m_getAllDownloading)) {
-		download.image->abortTags();
-	}
 	for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
 		it.value()->abort();
 	}
@@ -1201,9 +1202,6 @@ void DownloadsTab::getAllPause()
 		if (m_currentPackLoader != nullptr) {
 			m_currentPackLoader->abort();
 		}
-		for (const auto &download : qAsConst(m_getAllDownloading)) {
-			download.image->abortTags();
-		}
 		for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
 			it.value()->abort();
 		}
@@ -1212,9 +1210,10 @@ void DownloadsTab::getAllPause()
 		m_getAll = true;
 		if (m_getAllDownloading.isEmpty()) {
 			getAllFinishedImages(QList<QSharedPointer<Image>>());
-		}
-		for (const auto &download : qAsConst(m_getAllDownloading)) {
-			getAllGetImage(download, download.siteId(m_groupBatchs));
+		} else {
+			for (const auto &download : qAsConst(m_getAllDownloading)) {
+				getAllGetImage(download, download.siteId(m_groupBatchs));
+			}
 		}
 	}
 	DONE();
