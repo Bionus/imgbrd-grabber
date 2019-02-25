@@ -182,6 +182,7 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 			|| pos.y() < hMargin
 			|| pos.x() > imgSize.width() + wMargin
 			|| pos.y() > imgSize.height() + hMargin) {
+		event->ignore();
 		return;
 	}
 
@@ -198,16 +199,18 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 			emit this->appui(m_id.toString());
 			emit this->appui(m_id.toInt());
 		}
-	}
-	if (event->button() == Qt::RightButton) {
+	} else if (event->button() == Qt::RightButton) {
 		emit this->rightClick(m_id);
 		emit this->rightClick(m_id.toString());
 		emit this->rightClick(m_id.toInt());
-	}
-	if (event->button() == Qt::MidButton) {
+	} else if (event->button() == Qt::MidButton) {
 		emit this->middleClick(m_id);
 		emit this->middleClick(m_id.toString());
 		emit this->middleClick(m_id.toInt());
+	} else {
+		event->ignore();
+		return;
 	}
+
 	event->accept();
 }
