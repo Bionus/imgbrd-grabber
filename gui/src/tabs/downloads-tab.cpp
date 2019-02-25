@@ -801,15 +801,21 @@ void DownloadsTab::getAllFinishedImages(const QList<QSharedPointer<Image>> &imag
 		m_getAllRemaining.append(d);
 	}
 
-	m_progressBars[row]->setValue(0);
-	m_progressBars[row]->setMaximum(images.count());
+	// Ignore for aborted/resumed calls (partial packs)
+	if (m_getAll && !images.isEmpty()) {
+		m_progressBars[row]->setValue(0);
+		m_progressBars[row]->setMaximum(images.count());
 
-	// Update image to take into account unlisted images
-	int unlisted = m_batchCurrentPackSize - images.count();
-	m_getAllImagesCount -= unlisted;
+		// Update image to take into account unlisted images
+		int unlisted = m_batchCurrentPackSize - images.count();
+		m_getAllImagesCount -= unlisted;
+	}
 
-	m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
-	getAllImages();
+	// Stop here if we're paused
+	if (m_getAll) {
+		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
+		getAllImages();
+	}
 }
 
 /**
@@ -1191,19 +1197,25 @@ void DownloadsTab::getAllPause()
 {
 	if (m_progressDialog->isPaused()) {
 		log(QStringLiteral("Pausing downloads..."), Logger::Info);
+		m_getAll = false;
+		if (m_currentPackLoader != nullptr) {
+			m_currentPackLoader->abort();
+		}
 		for (const auto &download : qAsConst(m_getAllDownloading)) {
 			download.image->abortTags();
 		}
 		for (auto it = m_getAllImageDownloaders.constBegin(); it != m_getAllImageDownloaders.constEnd(); ++it) {
 			it.value()->abort();
 		}
-		m_getAll = false;
 	} else {
 		log(QStringLiteral("Recovery of downloads..."), Logger::Info);
+		m_getAll = true;
+		if (m_getAllDownloading.isEmpty()) {
+			getAllFinishedImages(QList<QSharedPointer<Image>>());
+		}
 		for (const auto &download : qAsConst(m_getAllDownloading)) {
 			getAllGetImage(download, download.siteId(m_groupBatchs));
 		}
-		m_getAll = true;
 	}
 	DONE();
 }

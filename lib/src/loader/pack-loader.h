@@ -22,6 +22,7 @@ class PackLoader : public QObject
 		const DownloadQueryGroup &query() const;
 		int nextPackSize() const;
 		bool start();
+		void abort();
 		bool hasNext() const;
 		QList<QSharedPointer<Image>> next();
 
@@ -39,6 +40,7 @@ class PackLoader : public QObject
 		QList<QSharedPointer<Image>> m_overflow;
 		bool m_overflowGallery = false;
 		bool m_overflowHasNext = false;
+		bool m_abort = false;
 };
 
 #endif // PACK_LOADER_H

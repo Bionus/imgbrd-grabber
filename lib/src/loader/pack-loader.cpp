@@ -28,6 +28,11 @@ bool PackLoader::start()
 	return true;
 }
 
+void PackLoader::abort()
+{
+	m_abort = true;
+}
+
 bool PackLoader::hasNext() const
 {
 	return (!m_overflow.isEmpty() || !m_pendingPages.isEmpty() || !m_pendingGalleries.isEmpty()) && (m_total < m_query.total || m_query.total < 0);
@@ -57,6 +62,11 @@ QList<QSharedPointer<Image>> PackLoader::next()
 	}
 
 	while (hasNext() && pageCount < maxPages && (results.isEmpty() || results.count() < m_packSize || m_packSize < 0)) {
+		if (m_abort) {
+			m_abort = false;
+			break;
+		}
+
 		bool gallery = !m_pendingGalleries.isEmpty();
 
 		// Load next page/gallery
