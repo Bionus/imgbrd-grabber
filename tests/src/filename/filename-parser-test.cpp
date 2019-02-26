@@ -2,15 +2,15 @@
 #include <QMap>
 #include <QString>
 #include <QtTest>
-#include "filename/filename-parser.h"
-#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
+#include "filename/filename-parser.h"
 
 
 void FilenameParserTest::testParseEmpty()

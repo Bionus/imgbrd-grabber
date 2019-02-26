@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <ui_blacklist-fix-1.h>
-#include "helpers.h"
 #include "functions.h"
+#include "helpers.h"
 #include "logger.h"
 #include "models/image.h"
 #include "models/page.h"

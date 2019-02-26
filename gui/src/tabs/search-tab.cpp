@@ -13,6 +13,7 @@
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/api/api.h"
 #include "models/favorite.h"

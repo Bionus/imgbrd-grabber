@@ -8,7 +8,6 @@
 #include "filename/ast/filename-visitor-base.h"
 
 
-class Profile;
 class QSettings;
 class Token;
 

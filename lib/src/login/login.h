@@ -5,7 +5,6 @@
 #include <QString>
 
 
-class AuthField;
 class QNetworkRequest;
 
 class Login : public QObject

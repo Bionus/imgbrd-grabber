@@ -9,7 +9,6 @@
 #include <QStringList>
 #include "backports/backports.h"
 #include "filename/conditional-filename.h"
-#include "logger.h"
 
 
 class QSettings;

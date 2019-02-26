@@ -3,6 +3,7 @@
 #include <QFile>
 #include <ui_rename-existing-2.h>
 #include "functions.h"
+#include "logger.h"
 
 
 RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)

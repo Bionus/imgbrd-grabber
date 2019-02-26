@@ -34,7 +34,7 @@ class Image : public QObject, public Downloadable
 		void write(QJsonObject &json) const;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
 
-		// TODO: remove these two methods
+		// TODO(Bionus): remove these two methods
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, Size size = Size::Full);
 
 		int value() const;

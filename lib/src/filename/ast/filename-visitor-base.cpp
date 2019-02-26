@@ -3,13 +3,13 @@
 #include <QJSValue>
 #include <QVariant>
 #include "filename/ast/filename-node-condition.h"
-#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-javascript.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"

@@ -18,7 +18,6 @@ class Page;
 class QNetworkCookie;
 class QNetworkCookieJar;
 class QNetworkReply;
-class QSettings;
 class Source;
 class Tag;
 class TagDatabase;

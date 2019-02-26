@@ -1,13 +1,13 @@
 #include "filename-condition-visitor-test.h"
 #include <QMap>
 #include <QtTest>
-#include "loader/token.h"
-#include "filename/filename-condition-visitor.h"
 #include "filename/ast/filename-node-condition-invert.h"
 #include "filename/ast/filename-node-condition-javascript.h"
 #include "filename/ast/filename-node-condition-op.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/filename-condition-visitor.h"
+#include "loader/token.h"
 
 
 using NInvert = FilenameNodeConditionInvert;

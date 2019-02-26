@@ -5,9 +5,9 @@
 #include <QNetworkCookie>
 #include <QSettings>
 #include <ui_sources-settings-window.h>
-#include "auth/field-auth.h"
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
+#include "auth/field-auth.h"
 #include "functions.h"
 #include "models/api/api.h"
 #include "models/profile.h"

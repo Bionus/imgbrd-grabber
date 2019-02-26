@@ -1,10 +1,11 @@
 #include <QCoreApplication>
-#include <QUrl>
-#include <QNetworkProxy>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QNetworkProxy>
+#include <QUrl>
 #include "downloader/downloader.h"
 #include "functions.h"
+#include "logger.h"
 #include "models/filtering/blacklist.h"
 #include "models/profile.h"
 #include "models/site.h"

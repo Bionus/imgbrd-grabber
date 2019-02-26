@@ -1,5 +1,4 @@
 #include "filename/filename-execution-visitor.h"
-#include <algorithm>
 #include <QDateTime>
 #include <QJSEngine>
 #include <QJSValue>
@@ -8,10 +7,11 @@
 #include <QSharedPointer>
 #include <QStringList>
 #include <QVariant>
-#include "filename/ast/filename-node-conditional.h"
+#include <algorithm>
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-tag.h"
 #include "filename/ast/filename-node-condition-token.h"
+#include "filename/ast/filename-node-conditional.h"
 #include "filename/ast/filename-node-javascript.h"
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"

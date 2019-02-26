@@ -11,6 +11,7 @@
 #include "favorite.h"
 #include "functions.h"
 #include "loader/token.h"
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"

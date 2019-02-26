@@ -2,8 +2,8 @@
 #include <QNetworkCookieJar>
 #include <QSettings>
 #include <QtTest>
-#include "auth/auth-field.h"
 #include "auth/auth-const-field.h"
+#include "auth/auth-field.h"
 #include "auth/http-auth.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"

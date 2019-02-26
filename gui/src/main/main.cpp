@@ -28,6 +28,7 @@
 #include <QSettings>
 #include "downloader/downloader.h"
 #include "functions.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"

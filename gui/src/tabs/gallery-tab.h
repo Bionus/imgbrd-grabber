@@ -14,7 +14,6 @@ namespace Ui
 
 class Image;
 class MainWindow;
-class TextEdit;
 
 class GalleryTab : public SearchTab
 {

@@ -6,6 +6,7 @@
 #include <QSettings>
 #include "commands/commands.h"
 #include "functions.h"
+#include "logger.h"
 #include "models/favorite.h"
 #include "models/md5-database.h"
 #include "models/site.h"

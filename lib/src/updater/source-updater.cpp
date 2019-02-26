@@ -28,7 +28,7 @@ void SourceUpdater::checkForUpdatesDone()
 	auto *reply = dynamic_cast<QNetworkReply*>(sender());
 	bool isNew = false;
 
-	// TODO: source check for updates is broken since switch to JS model files
+	// TODO(Bionus): source check for updates is broken since switch to JS model files
 	/*QString source = reply->readAll();
 	if (source.startsWith("<?xml")) {
 		QFile current(m_directory + "/model.xml");

@@ -8,6 +8,7 @@
 #include "favorite-window.h"
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/favorite.h"
 #include "models/page.h"

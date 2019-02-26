@@ -3,13 +3,14 @@
 #include <QJSValue>
 #include <QJSValueIterator>
 #include <QMutex>
-#include "auth/http-auth.h"
-#include "auth/oauth2-auth.h"
-#include "auth/url-auth.h"
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
+#include "auth/http-auth.h"
+#include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
 #include "functions.h"
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
 #include "models/api/javascript-console-helper.h"

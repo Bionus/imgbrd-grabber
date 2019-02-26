@@ -1,6 +1,7 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
+#include <QFlags>
 #include <QList>
 #include <QMap>
 #include <QSharedPointer>
@@ -12,8 +13,6 @@
 class AstFilename;
 class Image;
 class Profile;
-class QJSEngine;
-class QJSValue;
 class QSettings;
 class Site;
 class Token;

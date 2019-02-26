@@ -1,8 +1,8 @@
 #ifndef PACK_LOADER_H
 #define PACK_LOADER_H
 
-#include <QList>
 #include <QLinkedList>
+#include <QList>
 #include <QObject>
 #include <QSharedPointer>
 #include "downloader/download-query-group.h"

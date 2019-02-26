@@ -21,6 +21,7 @@
 #include "downloader/download-query-image.h"
 #include "functions.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/favorite.h"
 #include "models/filename.h"

@@ -4,6 +4,7 @@
 #include <QNetworkCookieJar>
 #include <QNetworkReply>
 #include "functions.h"
+#include "logger.h"
 #include "vendor/qcustomnetworkreply.h"
 
 QQueue<QString> CustomNetworkAccessManager::NextFiles;

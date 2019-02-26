@@ -10,6 +10,7 @@
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"
+#include "logger.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "reverse-search/reverse-search-loader.h"

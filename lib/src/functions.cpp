@@ -3,10 +3,10 @@
 #include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QLocale>
 #include <QFile>
 #include <QFileInfo>
 #include <QFont>
+#include <QLocale>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSettings>
@@ -23,6 +23,7 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
+#include "logger.h"
 #include "vendor/html-entities.h"
 
 

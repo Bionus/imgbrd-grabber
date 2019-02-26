@@ -19,6 +19,7 @@
 #include "functions.h"
 #include "helpers.h"
 #include "image-context-menu.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/filename.h"
 #include "models/filtering/post-filter.h"

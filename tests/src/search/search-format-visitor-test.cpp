@@ -1,9 +1,9 @@
 #include "search-format-visitor-test.h"
 #include <QtTest>
-#include "search/search-format.h"
-#include "search/search-format-visitor.h"
 #include "search/ast/search-node-op.h"
 #include "search/ast/search-node-tag.h"
+#include "search/search-format.h"
+#include "search/search-format-visitor.h"
 
 
 void SearchFormatVisitorTest::testOrOnly()

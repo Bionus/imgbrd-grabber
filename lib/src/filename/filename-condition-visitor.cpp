@@ -11,6 +11,7 @@
 #include "filename/ast/filename-node-javascript.h"
 #include "functions.h"
 #include "loader/token.h"
+#include "logger.h"
 #include "models/filtering/filter.h"
 
 

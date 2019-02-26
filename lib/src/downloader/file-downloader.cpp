@@ -1,6 +1,6 @@
 #include "downloader/file-downloader.h"
 #include <QNetworkReply>
-#include "functions.h"
+#include "logger.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 

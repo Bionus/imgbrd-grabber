@@ -9,7 +9,7 @@ struct SearchNodeTag : public SearchNode
 {
 	Tag tag;
 
-	SearchNodeTag(Tag tag);
+	explicit SearchNodeTag(Tag tag);
 	void accept(SearchVisitor &v) const override;
 };
 

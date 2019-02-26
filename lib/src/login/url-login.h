@@ -5,7 +5,6 @@
 #include "login/login.h"
 
 
-class AuthField;
 class MixedSettings;
 class Page;
 class QNetworkAccessManager;

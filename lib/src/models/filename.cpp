@@ -4,8 +4,8 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <algorithm>
-#include "filename/ast-filename.h"
 #include "filename/ast/filename-node-variable.h"
+#include "filename/ast-filename.h"
 #include "filename/filename-cache.h"
 #include "filename/filename-execution-visitor.h"
 #include "functions.h"
@@ -150,7 +150,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		FilenameExecutionVisitor executionVisitor(replaces, settings);
 		executionVisitor.setEscapeMethod(m_escapeMethod);
 		executionVisitor.setKeepInvalidTokens(flags.testFlag(PathFlag::KeepInvalidTokens));
-		// TODO: PathFlag::ExpandConditionals
+		// TODO(Bionus): PathFlag::ExpandConditionals
 		QString cFilename = executionVisitor.run(*m_ast->ast());
 
 		// Something wrong happened (JavaScript error...)

@@ -1,8 +1,8 @@
 #include "login/url-login-test.h"
 #include <QSettings>
 #include <QtTest>
-#include "auth/auth-field.h"
 #include "auth/auth-const-field.h"
+#include "auth/auth-field.h"
 #include "auth/url-auth.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
