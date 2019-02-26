@@ -4,16 +4,16 @@
 #include "models/site.h"
 
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
-	: DownloadQuery(site), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), unk(std::move(unk))
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site)
+	: DownloadQuery(site), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering))
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk)
-	: DownloadQuery(site, filename, path), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted), unk(std::move(unk))
+DownloadQueryGroup::DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path)
+	: DownloadQuery(site, filename, path), query(std::move(query)), page(page), perpage(perPage), total(total), postFiltering(std::move(postFiltering)), getBlacklisted(getBlacklisted)
 {}
 
 
@@ -33,6 +33,9 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["site"] = site->url();
 	json["filename"] = QString(filename).replace("\n", "\\n");
 	json["path"] = path;
+
+	json["progressVal"] = progressVal;
+	json["progressMax"] = progressMax;
 }
 
 bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
@@ -47,6 +50,9 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 
 	filename = json["filename"].toString().replace("\\n", "\n");
 	path = json["path"].toString();
+
+	progressVal = json["progressVal"].toInt();
+	progressMax = json["progressMax"].toInt();
 
 	// Post filtering
 	postFiltering.clear();

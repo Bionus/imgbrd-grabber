@@ -8,17 +8,20 @@
 
 void DownloadQueryGroupTest::testCompare()
 {
-	DownloadQueryGroup a(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup b(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup c(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk");
-	DownloadQueryGroup d(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path", "unk_diff");
+	DownloadQueryGroup a(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path");
+	DownloadQueryGroup b(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path");
+	DownloadQueryGroup c(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path");
+	DownloadQueryGroup d(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path");
+
+	d.progressVal = 37;
+	d.progressMax = 100;
 
 	QVERIFY(a == b);
 	QVERIFY(b == a);
 	QVERIFY(a != c);
 	QVERIFY(b != c);
 	QVERIFY(c == c);
-	QVERIFY(c == d); // The "unk" parameter must NOT be checked
+	QVERIFY(c == d); // The progress status must NOT be checked
 }
 
 void DownloadQueryGroupTest::testSerialization()
@@ -27,7 +30,9 @@ void DownloadQueryGroupTest::testSerialization()
 	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
-	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path", "unk");
+	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path");
+	original.progressVal = 37;
+	original.progressMax = 100;
 
 	QJsonObject json;
 	original.write(json);
@@ -44,7 +49,8 @@ void DownloadQueryGroupTest::testSerialization()
 	QCOMPARE(dest.site, &site);
 	QCOMPARE(dest.filename, QString("filename"));
 	QCOMPARE(dest.path, QString("path"));
-	QCOMPARE(dest.unk, QString()); // The "unk" parameter must NOT be serialized
+	QCOMPARE(dest.progressVal, 37);
+	QCOMPARE(dest.progressMax, 100);
 }
 
 

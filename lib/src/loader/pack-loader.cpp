@@ -22,8 +22,15 @@ bool PackLoader::start()
 	m_site->login();
 	loop.exec();
 
+	// Resume stopped downloads
+	int page = m_query.page;
+	if (m_query.progressVal > 0) {
+		page += qFloor(m_query.progressVal / m_query.perpage);
+		m_total = m_query.progressVal;
+	}
+
 	// Add the first results page
-	m_pendingPages.append(new Page(m_profile, m_site, QList<Site*>() << m_site, m_query.query, m_query.page, m_query.perpage, m_query.postFiltering, false, nullptr));
+	m_pendingPages.append(new Page(m_profile, m_site, QList<Site*>() << m_site, m_query.query, page, m_query.perpage, m_query.postFiltering, false, nullptr));
 
 	return true;
 }

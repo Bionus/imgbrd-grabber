@@ -17,8 +17,8 @@ class DownloadQueryGroup : public DownloadQuery
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		explicit DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = QString());
-		explicit DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk = QString());
+		explicit DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site);
+		explicit DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path);
 
 		// Serialization
 		void write(QJsonObject &json) const override;
@@ -32,7 +32,8 @@ class DownloadQueryGroup : public DownloadQuery
 		QStringList postFiltering;
 		bool getBlacklisted;
 		bool galleriesCountAsOne = true;
-		QString unk;
+		int progressVal = 0;
+		int progressMax = 0;
 };
 
 bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);

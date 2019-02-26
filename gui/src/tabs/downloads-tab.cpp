@@ -244,6 +244,9 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 		QString val = ui->tableBatchGroups->item(y, x)->text();
 		int toInt = val.toInt();
 
+		m_groupBatchs[y].progressVal = 0;
+		m_groupBatchs[y].progressMax = 0;
+
 		switch (x)
 		{
 			case 1:
@@ -449,10 +452,8 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 	for (const auto &queryGroup : qAsConst(newGroupBatchs)) {
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 
-		const QString unk = queryGroup.unk;
-		const int sep = unk.indexOf("/");
-		const int val = unk.leftRef(sep).toInt();
-		const int max = unk.midRef(sep + 1).toInt();
+		const int val = queryGroup.progressVal;
+		const int max = queryGroup.progressMax;
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 
@@ -545,6 +546,7 @@ void DownloadsTab::getAll(bool all)
 	m_getAll404s = 0;
 	m_getAllErrors = 0;
 	m_getAllSkipped = 0;
+	m_getAllResumed = 0;
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
@@ -604,6 +606,7 @@ void DownloadsTab::getAll(bool all)
 		}
 	}
 
+	int resumeCount = 0;
 	if (all || !todownload.isEmpty()) {
 		for (int j = 0; j < m_groupBatchs.count(); ++j) {
 			if (all || todownload.contains(j)) {
@@ -617,11 +620,31 @@ void DownloadsTab::getAll(bool all)
 				m_batchPending.insert(j, b);
 				m_getAllLimit += b.total;
 				m_batchDownloading.insert(j);
+
+				if (b.progressVal > 0 && b.progressVal < b.progressMax) {
+					resumeCount += b.progressVal;
+				}
 			}
 		}
 	}
 
-
+	// Try to resume downloads that were stopped in the middle
+	bool clear = false;
+	bool resume = resumeCount > 0;
+	if (resume) {
+		int resumeAnswer = QMessageBox::question(this, "", "Some downloads were started but not finished. Do you want to continue from where you left off?");
+		if (resumeAnswer == QMessageBox::Yes) {
+			m_getAllResumed = resumeCount;
+		} else {
+			resume = false;
+		}
+	}
+	for (const int b : m_batchDownloading) {
+		if (m_groupBatchs[b].progressVal >= m_groupBatchs[b].progressMax || !resume) {
+			m_groupBatchs[b].progressVal = 0;
+			m_batchPending[b].progressVal = 0;
+		}
+	}
 
 	// Confirm before downloading possibly more than 10,000 images
 	bool tooBig = false;
@@ -772,6 +795,7 @@ void DownloadsTab::getAllGetPages()
 void DownloadsTab::getAllFinishedPage(Page *page)
 {
 	Q_UNUSED(page);
+
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
 
@@ -844,7 +868,7 @@ void DownloadsTab::getAllImages()
 	m_progressDialog->setText(tr("Downloading images..."));
 	m_progressDialog->setCurrentValue(0);
 	m_progressDialog->setCurrentMax(m_getAllRemaining.count());
-	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed);
 	m_progressDialog->setTotalMax(m_getAllImagesCount);
 
 	// We start the simultaneous downloads
@@ -887,7 +911,7 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 	}
 
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
-	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed);
 
 	if (siteId >= 0) {
 		int row = getRowForSite(siteId);
@@ -895,6 +919,9 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 		if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum()) {
 			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png"));
 		}
+
+		m_groupBatchs[siteId - 1].progressVal++;
+		m_batchPending[siteId - 1].progressVal++;
 	}
 
 	m_getAllDownloading.removeAll(download);
@@ -973,7 +1000,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 
 	// Start loading and saving image
 	log(QStringLiteral("Loading image from `%1` %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
-	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
+	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed + 1;
 	bool getBlacklisted = download.queryGroup == nullptr || download.queryGroup->getBlacklisted;
 	auto imgDownloader = new ImageDownloader(m_profile, img, filename, path, count, true, false, this);
 	if (!getBlacklisted) {
@@ -1089,7 +1116,7 @@ void DownloadsTab::getAllSkip()
 	m_getAllDownloading.clear();
 
 	m_getAllSkipped += count;
-	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed);
 	m_getAllCurrentlyProcessing.store(count);
 	for (int i = 0; i < count; ++i) {
 		_getAll();
@@ -1130,7 +1157,7 @@ void DownloadsTab::getAllFinished()
 			}
 			activateWindow();
 
-			int totalCount = m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors + m_getAllSkipped;
+			int totalCount = m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors + m_getAllSkipped + m_getAllResumed;
 			reponse = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(failedCount).arg(totalCount), QMessageBox::Yes | QMessageBox::No);
 		}
 
@@ -1150,6 +1177,7 @@ void DownloadsTab::getAllFinished()
 			m_getAll404s = 0;
 			m_getAllErrors = 0;
 			m_getAllSkipped = 0;
+			m_getAllResumed = 0;
 			m_progressDialog->show();
 			getAllImages();
 			return;
@@ -1166,6 +1194,7 @@ void DownloadsTab::getAllFinished()
 			tr("%n file(s) already existing.", "", m_getAllExists) + "\r\n" +
 			tr("%n file(s) not found on the server.", "", m_getAll404s) + "\r\n" +
 			tr("%n file(s) skipped.", "", m_getAllSkipped) + "\r\n" +
+			tr("%n file(s) skipped from a previous download.", "", m_getAllResumed) + "\r\n" +
 			tr("%n error(s).", "", m_getAllErrors)
 		)
 	);

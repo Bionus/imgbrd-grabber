@@ -104,7 +104,7 @@ class DownloadsTab : public QWidget
 		QSettings *m_settings;
 		MainWindow *m_parent;
 
-		int m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit;
+		int m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllResumed, m_getAllLimit;
 		bool m_allow, m_getAll;
 		BatchWindow *m_progressDialog;
 		QMap<QUrl, QTime> m_downloadTime;
