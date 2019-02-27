@@ -12,6 +12,7 @@ namespace Ui
 
 
 class Profile;
+class QSettings;
 
 class SourcesSettingsWindow : public QDialog
 {
