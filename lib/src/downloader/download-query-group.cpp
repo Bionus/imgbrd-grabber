@@ -35,7 +35,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["path"] = path;
 
 	json["progressVal"] = progressVal;
-	json["progressMax"] = progressMax;
+	json["progressFinished"] = progressFinished;
 }
 
 bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
@@ -52,7 +52,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 	path = json["path"].toString();
 
 	progressVal = json["progressVal"].toInt();
-	progressMax = json["progressMax"].toInt();
+	progressFinished = json["progressFinished"].toBool();
 
 	// Post filtering
 	postFiltering.clear();

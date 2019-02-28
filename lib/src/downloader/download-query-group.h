@@ -33,7 +33,7 @@ class DownloadQueryGroup : public DownloadQuery
 		bool getBlacklisted;
 		bool galleriesCountAsOne = true;
 		int progressVal = 0;
-		int progressMax = 0;
+		bool progressFinished = false;
 };
 
 bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);

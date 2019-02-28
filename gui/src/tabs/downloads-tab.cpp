@@ -245,7 +245,7 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 		int toInt = val.toInt();
 
 		m_groupBatchs[y].progressVal = 0;
-		m_groupBatchs[y].progressMax = 0;
+		m_groupBatchs[y].progressFinished = false;
 
 		switch (x)
 		{
@@ -453,7 +453,7 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 
 		const int val = queryGroup.progressVal;
-		const int max = queryGroup.progressMax;
+		const int max = queryGroup.total;
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 
@@ -621,7 +621,7 @@ void DownloadsTab::getAll(bool all)
 				m_getAllLimit += b.total;
 				m_batchDownloading.insert(j);
 
-				if (b.progressVal > 0 && b.progressVal < b.progressMax) {
+				if (b.progressVal > 0 && !b.progressFinished) {
 					resumeCount += b.progressVal;
 				}
 			}
@@ -640,7 +640,7 @@ void DownloadsTab::getAll(bool all)
 		}
 	}
 	for (const int b : m_batchDownloading) {
-		if (m_groupBatchs[b].progressVal >= m_groupBatchs[b].progressMax || !resume) {
+		if (m_groupBatchs[b].progressFinished || !resume) {
 			m_groupBatchs[b].progressVal = 0;
 			m_batchPending[b].progressVal = 0;
 		}
@@ -1198,6 +1198,11 @@ void DownloadsTab::getAllFinished()
 			tr("%n error(s).", "", m_getAllErrors)
 		)
 	);
+
+	// Mark downloads as finished
+	for (const int b : m_batchDownloading) {
+		m_groupBatchs[b].progressFinished = true;
+	}
 
 	// Final action
 	switch (m_progressDialog->endAction())
