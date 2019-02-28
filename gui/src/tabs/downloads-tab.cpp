@@ -644,6 +644,8 @@ void DownloadsTab::getAll(bool all)
 			m_groupBatchs[b].progressVal = 0;
 			m_batchPending[b].progressVal = 0;
 		}
+		m_groupBatchs[b].progressFinished = false;
+		m_batchPending[b].progressFinished = false;
 	}
 
 	// Confirm before downloading possibly more than 10,000 images

@@ -25,8 +25,9 @@ bool PackLoader::start()
 	// Resume stopped downloads
 	int page = m_query.page;
 	if (m_query.progressVal > 0) {
-		page += qFloor(m_query.progressVal / m_query.perpage);
-		m_total = m_query.progressVal;
+		const int pagesToSkip = qFloor(m_query.progressVal / m_query.perpage);
+		page += pagesToSkip;
+		m_total = pagesToSkip * m_query.perpage;
 	}
 
 	// Add the first results page
