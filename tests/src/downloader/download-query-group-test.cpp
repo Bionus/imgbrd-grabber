@@ -14,7 +14,7 @@ void DownloadQueryGroupTest::testCompare()
 	DownloadQueryGroup d(QStringList() << "tags", 1, 3, 3, QStringList() << "postFiltering", true, nullptr, "filename", "path");
 
 	d.progressVal = 37;
-	d.progressMax = 100;
+	d.progressFinished = false;
 
 	QVERIFY(a == b);
 	QVERIFY(b == a);
@@ -32,7 +32,7 @@ void DownloadQueryGroupTest::testSerialization()
 
 	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path");
 	original.progressVal = 37;
-	original.progressMax = 100;
+	original.progressFinished = false;
 
 	QJsonObject json;
 	original.write(json);
@@ -50,7 +50,7 @@ void DownloadQueryGroupTest::testSerialization()
 	QCOMPARE(dest.filename, QString("filename"));
 	QCOMPARE(dest.path, QString("path"));
 	QCOMPARE(dest.progressVal, 37);
-	QCOMPARE(dest.progressMax, 100);
+	QCOMPARE(dest.progressFinished, false);
 }
 
 
