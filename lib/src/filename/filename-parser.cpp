@@ -15,6 +15,8 @@
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
 
+#define ESCAPE_CHARACTER '^'
+
 
 FilenameParser::FilenameParser(QString str)
 	: m_str(std::move(str)), m_index(0)
@@ -73,7 +75,7 @@ int FilenameParser::indexOf(const QList<QChar> &chars, int max)
 		QChar c = m_str[index];
 
 		// Don't return on escaped characters
-		bool isEscape = c == '\\' || ((c == '<' || c == '>') && index < m_str.length() - 1 && c == m_str[index + 1]);
+		bool isEscape = c == ESCAPE_CHARACTER || ((c == '<' || c == '>') && index < m_str.length() - 1 && c == m_str[index + 1]);
 		if (isEscape && !escapeNext) {
 			escapeNext = true;
 		} else if (chars.contains(c) && !escapeNext) {
@@ -98,7 +100,7 @@ QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 		QChar c = m_str[m_index];
 
 		// Don't return on escaped characters
-		bool isEscape = c == '\\' || ((c == '<' || c == '>') && m_index < m_str.length() - 1 && c == m_str[m_index + 1]);
+		bool isEscape = c == ESCAPE_CHARACTER || ((c == '<' || c == '>') && m_index < m_str.length() - 1 && c == m_str[m_index + 1]);
 		if (isEscape && !escapeNext) {
 			escapeNext = true;
 		} else {

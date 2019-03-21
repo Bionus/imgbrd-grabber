@@ -362,7 +362,7 @@ void FilenameTest::testPathOptionTagSeparator()
 }
 void FilenameTest::testPathOptionTagSeparatorEscape()
 {
-	assertPath("%general:separator=\\,%", "tag1,tag2,tag3,test_tag1,test_tag2,test_tag3");
+	assertPath("%general:separator=^,%", "tag1,tag2,tag3,test_tag1,test_tag2,test_tag3");
 }
 void FilenameTest::testPathOptionCount()
 {
