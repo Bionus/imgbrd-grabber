@@ -26,6 +26,7 @@
 
 #include <QApplication>
 #include <QSettings>
+#include "analytics.h"
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "logger.h"
@@ -169,6 +170,12 @@ int main(int argc, char *argv[])
 
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
+	QSettings *settings = profile->getSettings();
+
+	// Analytics
+	Analytics::getInstance().setTrackingID("UA-22768717-6");
+	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
+	Analytics::getInstance().sendEvent("lifecycle", "start");
 
 	if (!gui) {
 		QString blacklistOverride = parser.value(tagsBlacklistOption);
@@ -209,7 +216,6 @@ int main(int argc, char *argv[])
 	#if !defined(USE_CLI)
 		else {
 			// Check for updates
-			QSettings *settings = profile->getSettings();
 			const int cfuInterval = settings->value("check_for_updates", 24 * 60 * 60).toInt();
 			QDateTime lastCfu = settings->value("last_check_for_updates", QDateTime()).toDateTime();
 			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime())) {
