@@ -422,16 +422,6 @@ void Image::parseDetails()
 {
 	m_loadingDetails = false;
 
-	// Aborted or connection error
-	if (m_loadDetails->error()) {
-		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
-			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
-		}
-		m_loadDetails->deleteLater();
-		m_loadDetails = nullptr;
-		return;
-	}
-
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty()) {
@@ -444,6 +434,16 @@ void Image::parseDetails()
 	if (statusCode == 429) {
 		log(QStringLiteral("Details limit reached (429). New try."));
 		loadDetails(true);
+		return;
+	}
+
+	// Aborted or connection error
+	if (m_loadDetails->error()) {
+		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
+			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
+		}
+		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
 		return;
 	}
 
