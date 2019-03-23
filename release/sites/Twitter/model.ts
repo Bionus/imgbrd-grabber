@@ -16,7 +16,7 @@ export const source: ISource = {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
-                        return "/1.1/statuses/user_timeline.json?include_rts=true&screen_name=" + encodeURIComponent(query.search) + pageUrl;
+                        return "/1.1/statuses/user_timeline.json?include_rts=true&exclude_replies=true&tweet_mode=extended&screen_name=" + encodeURIComponent(query.search) + pageUrl;
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -26,9 +26,12 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const i in data) {
-                        const sc = data[i];
+                        let sc = data[i];
                         const d: any = {};
 
+                        if ("retweeted_status" in sc) {
+                            sc = sc["retweeted_status"];
+                        }
                         if (!("extended_entities" in sc)) {
                             continue;
                         }
