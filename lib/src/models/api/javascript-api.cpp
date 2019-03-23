@@ -71,7 +71,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
-PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const
+PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const
 {
 	PageUrl ret;
 
@@ -96,8 +96,10 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	if (lastPage > 0) {
 		previous = m_source.engine()->newObject();
 		previous.setProperty("page", lastPage);
-		previous.setProperty("minId", lastPageMinId);
-		previous.setProperty("maxId", lastPageMaxId);
+		previous.setProperty("minIdM1", QString::number(lastPageMinId - 1));
+		previous.setProperty("minId", QString::number(lastPageMinId));
+		previous.setProperty("maxId", QString::number(lastPageMaxId));
+		previous.setProperty("maxIdP1", QString::number(lastPageMaxId + 1));
 	}
 
 	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts << previous);

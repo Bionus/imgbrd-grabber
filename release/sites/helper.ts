@@ -120,10 +120,8 @@ addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
     if (previous) {
         url = url.replace("{min}", previous.minId);
         url = url.replace("{max}", previous.maxId);
-        url = url.replace("{min-1}", String(previous.minId - 1));
-        url = url.replace("{max-1}", String(previous.maxId - 1));
-        url = url.replace("{min+1}", previous.minId + 1);
-        url = url.replace("{max+1}", previous.maxId + 1);
+        url = url.replace("{min-1}", previous.minIdM1);
+        url = url.replace("{max+1}", previous.maxIdP1);
     }
     return url;
 });

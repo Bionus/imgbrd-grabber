@@ -68,7 +68,7 @@ class Api : public QObject
 		virtual bool needAuth() const = 0;
 
 		// API
-		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const = 0;
+		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const = 0;
 		virtual bool parsePageErrors() const = 0;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
 		virtual PageUrl galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const = 0;

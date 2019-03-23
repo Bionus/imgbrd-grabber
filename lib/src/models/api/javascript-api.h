@@ -18,7 +18,7 @@ class JavascriptApi : public Api
 		explicit JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
 		// API
-		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, int lastPageMinId, int lastPageMaxId, Site *site) const override;
+		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const override;
 		bool parsePageErrors() const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const override;
 		PageUrl galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const override;
