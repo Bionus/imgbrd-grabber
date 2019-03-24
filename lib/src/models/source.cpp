@@ -87,6 +87,7 @@ Source::Source(Profile *profile, const QString &dir)
 			log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error);
 		} else {
 			m_name = m_jsSource.property("name").toString();
+			m_additionalTokens = jsToStringList(m_jsSource.property("tokens"));
 
 			// Get the list of APIs for this Source
 			const QJSValue apis = m_jsSource.property("apis");
@@ -201,6 +202,7 @@ const QList<Site*> &Source::getSites() const { return m_sites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
 Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
+const QStringList &Source::getAdditionalTokens() const { return m_additionalTokens; }
 const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
 Auth *Source::getAuth(const QString &name) const { return m_auths.value(name); }
 

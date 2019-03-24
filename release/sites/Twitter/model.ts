@@ -93,6 +93,7 @@ function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
 
 export const source: ISource = {
     name: "Twitter",
+    tokens: ["tweet_id", "original_tweet_id", "original_author", "original_author_id", "original_date"],
     auth: {
         oauth2: {
             type: "oauth2",

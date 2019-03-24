@@ -194,6 +194,7 @@ interface IApi {
 interface ISource {
     name: string;
     modifiers?: string[];
+    tokens?: string[];
     forcedTokens?: string[];
     tagFormat?: ITagFormat;
     searchFormat?: SearchFormat;

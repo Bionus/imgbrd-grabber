@@ -34,6 +34,7 @@ Profile::Profile(QString path)
 		}
 
 		m_sources.insert(source->getName(), source);
+		m_additionalTokens.append(source->getAdditionalTokens());
 
 		for (Site *site : source->getSites()) {
 			m_sites.insert(site->url(), site);
@@ -421,6 +422,7 @@ QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
+const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {

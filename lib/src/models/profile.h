@@ -74,6 +74,7 @@ class Profile : public QObject
 		Blacklist &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
+		const QStringList &getAdditionalTokens() const;
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 
 	private:
@@ -102,6 +103,7 @@ class Profile : public QObject
 		Md5Database *m_md5s;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;
+		QStringList m_additionalTokens;
 };
 
 #endif // PROFILE_H

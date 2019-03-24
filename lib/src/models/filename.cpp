@@ -294,6 +294,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	// Looking for unknown tokens
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num" << "name" << "position";
 	if (profile != nullptr) {
+		tokens.append(profile->getAdditionalTokens());
 		tokens.append(getCustoms(profile->getSettings()).keys());
 	}
 	static const QRegularExpression rx("%(.+?)%");

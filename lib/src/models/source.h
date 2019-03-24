@@ -35,6 +35,7 @@ class Source : public QObject
 		Auth *getAuth(const QString &name) const;
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
+		const QStringList &getAdditionalTokens() const;
 
 	protected:
 		QJSEngine *jsEngine();
@@ -47,6 +48,7 @@ class Source : public QObject
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;
 		QMap<QString, Auth*> m_auths;
+		QStringList m_additionalTokens;
 		Profile *m_profile;
 		SourceUpdater m_updater;
 		TagNameFormat m_tagNameFormat;
