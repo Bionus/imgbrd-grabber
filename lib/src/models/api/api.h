@@ -92,7 +92,7 @@ class Api : public QObject
 		virtual QStringList forcedTokens() const = 0;
 
 	protected:
-		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags = QList<Tag>()) const;
+		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;
 
 	private:
 		QString m_name;

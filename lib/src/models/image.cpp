@@ -80,9 +80,12 @@ Image::Image(const Image &other)
 	m_loadingDetails = other.m_loadingDetails;
 }
 
-
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr)
+	: Image(site, details, QVariantMap(), profile, parent)
+{}
+
+Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
+	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_data(std::move(data))
 {
 	m_settings = m_profile->getSettings();
 
@@ -1137,6 +1140,11 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	// Variables
 	if (!m_parentGallery.isNull()) {
 		tokens.insert("gallery", Token([this, profile]() { return QVariant::fromValue(m_parentGallery->tokens(profile)); }));
+	}
+
+	// Extra tokens
+	for (auto it = m_data.constBegin(); it != m_data.constEnd(); ++it) {
+		tokens.insert(it.key(), Token(it.value()));
 	}
 
 	return tokens;

@@ -186,6 +186,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 		const quint32 length = images.property("length").toUInt();
 		for (quint32 i = 0; i < length; ++i) {
 			QList<Tag> tags;
+			QVariantMap data;
 
 			QMap<QString, QString> d;
 			QJSValueIterator it(images.property(i));
@@ -202,6 +203,8 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
 					tags = makeTags(val, site);
+				} else if (key == QLatin1String("tokens")) {
+					data = val.toVariant().toMap();
 				} else if (val.isArray()) {
 					d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
 				} else {
@@ -211,7 +214,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 
 			if (!d.isEmpty()) {
 				const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(i));
-				QSharedPointer<Image> img = parseImage(parentPage, d, pos, tags);
+				QSharedPointer<Image> img = parseImage(parentPage, d, data, pos, tags);
 				if (!img.isNull()) {
 					ret.images.append(img);
 				}

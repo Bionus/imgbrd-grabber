@@ -14,7 +14,7 @@ Api::Api(QString name)
 QString Api::getName() const { return m_name; }
 
 
-QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, int position, const QList<Tag> &tags) const
+QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags) const
 {
 	Site *site = parentPage->site();
 
@@ -56,7 +56,7 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	}
 
 	// Generate image
-	QSharedPointer<Image> img(new Image(site, d, site->getSource()->getProfile(), parentPage));
+	QSharedPointer<Image> img(new Image(site, d, std::move(data), site->getSource()->getProfile(), parentPage));
 	img->moveToThread(this->thread());
 	if (!tags.isEmpty()) {
 		img->setTags(tags);

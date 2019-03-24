@@ -50,6 +50,11 @@ interface IImage {
     preview_height?: number;
     preview_file_size?: number;
     preview_rect?: string;
+
+    // Additional raw tokens to pass to the filename
+    tokens?: {
+        [key: string]: any;
+    };
 }
 interface IPool {
     id?: number;

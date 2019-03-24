@@ -28,6 +28,7 @@ class Image : public QObject, public Downloadable
 	public:
 		Image();
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
+		Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
 
 		// Serialization
@@ -147,6 +148,7 @@ class Image : public QObject, public Downloadable
 		bool m_detailsParsWarnAsErr = false;
 		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
+		QVariantMap m_data;
 };
 
 Q_DECLARE_METATYPE(Image)
