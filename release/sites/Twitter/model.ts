@@ -1,3 +1,66 @@
+function parseTweetMedia(sc: any, media: any): any {
+    const d: any = {};
+    const sizes = media["sizes"];
+
+    d["id"] = sc["id_str"];
+    d["created_at"] = sc["created_at"];
+    d["preview_url"] = media["media_url_https"] + ":thumb";
+    if ("medium" in sizes) {
+        d["sample_url"] = media["media_url_https"] + ":medium";
+    }
+
+    const size = sizes["large"];
+    d["width"] = size["w"];
+    d["height"] = size["h"];
+
+    if ("video_info" in media) {
+        let maxBitrate = -1;
+        for (const variantInfo of media["video_info"]["variants"]) {
+            const bitrate = variantInfo["bitrate"];
+            if (bitrate > maxBitrate) {
+                maxBitrate = bitrate;
+                d["file_url"] = variantInfo["url"];
+            }
+        }
+    } else {
+        d["file_url"] = media["media_url_https"] + ":large";
+    }
+
+    return d;
+}
+
+function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
+    if ("retweeted_status" in sc) {
+        sc = sc["retweeted_status"];
+    }
+    if (!("extended_entities" in sc)) {
+        return false;
+    }
+
+    const entities = sc["extended_entities"];
+    if (!("media" in entities)) {
+        return false;
+    }
+
+    const medias = entities["media"];
+    if (!medias || medias.length === 0) {
+        return false;
+    }
+
+    if (medias.length > 1) {
+        if (gallery) {
+            return medias.map((media: any) => parseTweetMedia(sc, media));
+        }
+
+        const d = parseTweetMedia(sc, medias[0]);
+        d["type"] = "gallery";
+        d["gallery_count"] = medias.length;
+        return d;
+    }
+
+    return parseTweetMedia(sc, medias[0]);
+}
+
 export const source: ISource = {
     name: "Twitter",
     auth: {
@@ -16,7 +79,7 @@ export const source: ISource = {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
-                        return "/1.1/statuses/user_timeline.json?include_rts=true&exclude_replies=true&tweet_mode=extended&screen_name=" + encodeURIComponent(query.search) + pageUrl;
+                        return "/1.1/statuses/user_timeline.json?include_rts=true&exclude_replies=false&tweet_mode=extended&screen_name=" + encodeURIComponent(query.search) + pageUrl;
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -26,62 +89,27 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const i in data) {
-                        let sc = data[i];
-                        const d: any = {};
-
-                        if ("retweeted_status" in sc) {
-                            sc = sc["retweeted_status"];
+                        const img = parseTweet(data[i], false);
+                        if (img !== false) {
+                            images.push(img as any);
                         }
-                        if (!("extended_entities" in sc)) {
-                            continue;
-                        }
-
-                        const entities = sc["extended_entities"];
-                        if (!("media" in entities)) {
-                            continue;
-                        }
-
-                        const medias = entities["media"];
-                        if (!medias || medias.length === 0) {
-                            continue;
-                        }
-
-                        if (medias.length > 1) {
-                            d["type"] = "gallery";
-                            d["gallery_count"] = medias.length;
-                        }
-
-                        const media = medias[0];
-                        const sizes = media["sizes"];
-
-                        d["id"] = sc["id_str"];
-                        d["created_at"] = sc["created_at"];
-                        d["preview_url"] = media["media_url_https"] + ":thumb";
-                        if ("medium" in sizes) {
-                            d["sample_url"] = media["media_url_https"] + ":medium";
-                        }
-
-                        const size = sizes["large"];
-                        d["width"] = size["w"];
-                        d["height"] = size["h"];
-
-                        if ("video_info" in media) {
-                            let maxBitrate = -1;
-                            for (const variantInfo of media["video_info"]["variants"]) {
-                                const bitrate = variantInfo["bitrate"];
-                                if (bitrate > maxBitrate) {
-                                    maxBitrate = bitrate;
-                                    d["file_url"] = variantInfo["url"];
-                                }
-                            }
-                        } else {
-                            d["file_url"] = media["media_url_https"] + ":large";
-                        }
-
-                        images.push(d);
                     }
 
                     return { images };
+                },
+            },
+            gallery: {
+                url: (query: any, opts: any): string => {
+                    return "/1.1/statuses/show.json?id=" + query.id;
+                },
+                parse: (src: string): IParsedGallery => {
+                    const data = JSON.parse(src);
+                    const images = Grabber.makeArray(parseTweet(data, true));
+                    return {
+                        images,
+                        imageCount: images.length,
+                        pageCount: 1,
+                    };
                 },
             },
         },
