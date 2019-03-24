@@ -14,7 +14,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 
-	if (m_query.gallery.isNull()) {
+	if (!m_query.tags.isEmpty()) {
 		// Replace shortcuts to increase compatibility
 		QString text = " " + m_query.tags.join(' ') + " ";
 		text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)

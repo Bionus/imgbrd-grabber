@@ -102,7 +102,10 @@ QList<QSharedPointer<Image>> PackLoader::next()
 		for (const QSharedPointer<Image> &img : page->images()) {
 			// If this result is a gallery, add it to the beginning of the pending galleries
 			if (img->isGallery()) {
-				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, img, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+				SearchQuery q;
+				q.gallery = img;
+				q.tags = page->search();
+				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, q, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 				m_pendingGalleries.insert(itGallery, galleryPage);
 				continue;
 			}
