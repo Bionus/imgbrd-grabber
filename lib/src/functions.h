@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QDir>
 #include <QDomElement>
+#include <QJSValue>
 #include <QMap>
 #include <QString>
 #include <QStringList>
@@ -76,6 +77,7 @@ QFont qFontFromString(const QString &str);
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 QUrl removeCacheBuster(QUrl url);
+QStringList jsToStringList(const QJSValue &val);
 
 
 

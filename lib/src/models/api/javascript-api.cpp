@@ -14,18 +14,6 @@
 #include "tags/tag-database.h"
 
 
-QStringList jsToStringList(const QJSValue &val)
-{
-	QStringList ret;
-
-	const quint32 length = val.property("length").toUInt();
-	for (quint32 i = 0; i < length; ++i) {
-		ret.append(val.property(i).toString());
-	}
-
-	return ret;
-}
-
 QString normalize(QString key)
 {
 	key = key.toLower();

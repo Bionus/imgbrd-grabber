@@ -893,3 +893,15 @@ QString decodeHtmlEntities(const QString &html)
 	decode_html_entities_utf8(dest, src);
 	return QString::fromUtf8(dest);
 }
+
+QStringList jsToStringList(const QJSValue &val)
+{
+	QStringList ret;
+
+	const quint32 length = val.property("length").toUInt();
+	for (quint32 i = 0; i < length; ++i) {
+		ret.append(val.property(i).toString());
+	}
+
+	return ret;
+}
