@@ -24,10 +24,11 @@ export const source: ISource = {
             url: "/index.php?page=account&s=login&code=00",
             fields: [
                 {
+                    id: "pseudo",
                     key: "user",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "pass",
                     type: "password",
                 },

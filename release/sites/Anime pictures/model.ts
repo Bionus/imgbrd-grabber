@@ -91,10 +91,11 @@ export const source: ISource = {
             url: "/login/submit",
             fields: [
                 {
+                    id: "pseudo",
                     key: "login",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "password",
                     type: "password",
                 },

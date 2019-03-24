@@ -33,10 +33,11 @@ export const source: ISource = {
             url: "https://forums.e-hentai.org/index.php?act=Login&CODE=01",
             fields: [
                 {
+                    id: "pseudo",
                     key: "UserName",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "PassWord",
                     type: "password",
                 },

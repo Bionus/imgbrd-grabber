@@ -34,10 +34,11 @@ export const source: ISource = {
             url: "/login",
             fields: [
                 {
+                    id: "pseudo",
                     key: "name",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "password",
                     type: "password",
                 },

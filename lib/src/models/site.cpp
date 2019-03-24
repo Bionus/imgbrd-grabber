@@ -107,28 +107,36 @@ void Site::loadConfig()
 	}
 
 	// Auth information
-	const QString type = m_settings->value("login/type", "url").toString();
 	m_auth = nullptr;
-	const auto &auths = m_source->getAuths();
-	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-		if (it.value()->type() == type) {
-			m_auth = it.value();
+	const QString defType = m_settings->value("login/type", "url").toString();
+	if (defType != "disabled") {
+		const auto &auths = m_source->getAuths();
+		for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
+			if (it.value()->type() == defType || m_auth == nullptr) {
+				m_auth = it.value();
+			}
 		}
-	}
-	if (m_login != nullptr) {
-		m_login->deleteLater();
-	}
-	if (type == "url") {
-		m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
-	} else if (type == "oauth2") {
-		m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
-	} else if (type == "post") {
-		m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-	} else if (type == "get") {
-		m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
-	} else {
-		m_login = nullptr;
-		log(QStringLiteral("Invalid login type '%1'").arg(type), Logger::Error);
+		if (m_login != nullptr) {
+			m_login->deleteLater();
+		}
+		if (m_auth != nullptr) {
+			QString type = m_auth->type();
+			if (type == "url") {
+				m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "oauth2") {
+				m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "post") {
+				m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "get") {
+				m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
+			} else {
+				m_login = nullptr;
+				log(QStringLiteral("[%1] Invalid login type '%1'").arg(m_url, type), Logger::Error);
+			}
+		} else {
+			m_login = nullptr;
+			log(QStringLiteral("[%1] No auth found").arg(m_url), Logger::Error);
+		}
 	}
 
 	// Cookies

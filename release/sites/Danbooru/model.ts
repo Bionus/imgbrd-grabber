@@ -49,8 +49,12 @@ export const source: ISource = {
             type: "url",
             fields: [
                 {
+                    id: "pseudo",
                     key: "login",
-                    type: "username",
+                },
+                {
+                    id: "password",
+                    type: "password",
                 },
                 {
                     key: "password_hash",
@@ -65,10 +69,11 @@ export const source: ISource = {
             url: "/user/authenticate",
             fields: [
                 {
+                    id: "pseudo",
                     key: "user[name]",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "user[password]",
                     type: "password",
                 },

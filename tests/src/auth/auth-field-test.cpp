@@ -18,12 +18,13 @@ MixedSettings *makeSettings(QString key, QString value)
 
 void AuthFieldTest::testBasic()
 {
-	AuthField field("key", AuthField::FieldType::Username);
+	AuthField field("id", "key", AuthField::FieldType::Text);
 
+	QCOMPARE(field.id(), QString("id"));
 	QCOMPARE(field.key(), QString("key"));
-	QCOMPARE(field.type(), AuthField::FieldType::Username);
+	QCOMPARE(field.type(), AuthField::FieldType::Text);
 
-	MixedSettings *settings = makeSettings("auth/pseudo", "user");
+	MixedSettings *settings = makeSettings("auth/key", "user");
 	QCOMPARE(field.value(settings), QString("user"));
 	settings->deleteLater();
 }
@@ -42,11 +43,11 @@ void AuthFieldTest::testConst()
 
 void AuthFieldTest::testHash()
 {
-	AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%username%");
+	AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
 
 	QCOMPARE(field.key(), QString("key"));
 	QCOMPARE(field.type(), AuthField::FieldType::Hash);
-	QCOMPARE(field.salt(), QString("test-%username%"));
+	QCOMPARE(field.salt(), QString("test-%pseudo%"));
 
 	MixedSettings *settings = makeSettings("auth/pseudo", "user");
 	QCOMPARE(field.value(settings), QString("42b27efc1480b4fe6d7eaa5eec47424d")); // md5("test-user")

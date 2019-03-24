@@ -40,6 +40,7 @@ export const source: ISource = {
             type: "url",
             fields: [
                 {
+                    id: "apiKey",
                     key: "key",
                     type: "password",
                 },

@@ -37,10 +37,11 @@ export const source: ISource = {
             url: "/user_admin/login",
             fields: [
                 {
+                    id: "pseudo",
                     key: "user",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "pass",
                     type: "password",
                 },

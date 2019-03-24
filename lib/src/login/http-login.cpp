@@ -23,7 +23,9 @@ void HttpLogin::login()
 {
 	QUrlQuery query;
 	for (AuthField *field : m_auth->fields()) {
-		query.addQueryItem(field->key(), field->value(m_settings));
+		if (!field->key().isEmpty()) {
+			query.addQueryItem(field->key(), field->value(m_settings));
+		}
 	}
 
 	if (m_loginReply != nullptr) {

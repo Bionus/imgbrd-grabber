@@ -45,8 +45,12 @@ export const source: ISource = {
             type: "url",
             fields: [
                 {
+                    id: "pseudo",
                     key: "login",
-                    type: "username",
+                },
+                {
+                    id: "password",
+                    type: "password",
                 },
                 {
                     key: "password_hash",
@@ -61,10 +65,11 @@ export const source: ISource = {
             url: "/session",
             fields: [
                 {
+                    id: "pseudo",
                     key: "name",
-                    type: "username",
                 },
                 {
+                    id: "password",
                     key: "password",
                     type: "password",
                 },

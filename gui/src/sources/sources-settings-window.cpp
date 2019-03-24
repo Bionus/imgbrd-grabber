@@ -1,6 +1,7 @@
 #include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
 #include <QInputDialog>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QNetworkCookie>
 #include <QSettings>
@@ -9,6 +10,7 @@
 #include "auth/auth-hash-field.h"
 #include "auth/field-auth.h"
 #include "functions.h"
+#include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/profile.h"
 #include "models/source.h"
@@ -25,22 +27,20 @@ void setSource(QComboBox *combo, const QStringList &opts, const QStringList &val
 	combo->setCurrentIndex(qMax(0, vals.indexOf(local)));
 }
 
+QLineEdit *createLineEdit(QWidget *parent, QString value, bool isPassword)
+{
+	auto le = new QLineEdit(std::move(value), parent);
+	if (isPassword) {
+		le->setEchoMode(QLineEdit::Password);
+	}
+	return le;
+}
+
 SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)
 	: QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site), m_globalSettings(profile->getSettings())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
-
-	auto auth = dynamic_cast<FieldAuth*>(site->getAuth());
-	if (auth != nullptr) {
-		for (AuthField *field : auth->fields()) {
-			if (field->type() == AuthField::Hash) {
-				auto hashField = dynamic_cast<AuthHashField*>(field);
-				m_salt = hashField->salt();
-				break;
-			}
-		}
-	}
 
 	// Refferers
 	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
@@ -77,37 +77,66 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	setSource(ui->comboSources3, opts, sources, defs, site, m_globalSettings, 2);
 	setSource(ui->comboSources4, opts, sources, defs, site, m_globalSettings, 3);
 
-	// Credentials
-	ui->lineAuthPseudo->setText(site->setting("auth/pseudo", "").toString());
-	ui->lineAuthPassword->setText(site->setting("auth/password", "").toString());
-
 	// Login
-	static const QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	const QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
-	const QString type = site->setting("login/type", defaultType).toString();
-	ui->comboLoginType->setCurrentIndex(types.indexOf(type));
-	ui->lineLoginGetUrl->setText(site->setting("login/get/url", type != "get" ? "" : site->setting("login/url", "").toString()).toString());
-	ui->lineLoginGetPseudo->setText(site->setting("login/get/pseudo", type != "get" ? "" : site->setting("login/pseudo", "").toString()).toString());
-	ui->lineLoginGetPassword->setText(site->setting("login/get/password", type != "get" ? "" : site->setting("login/password", "").toString()).toString());
-	ui->lineLoginGetCookie->setText(site->setting("login/get/cookie", type != "get" ? "" : site->setting("login/cookie", "").toString()).toString());
-	ui->lineLoginPostUrl->setText(site->setting("login/post/url", type != "post" ? "" : site->setting("login/url", "").toString()).toString());
-	ui->lineLoginPostPseudo->setText(site->setting("login/post/pseudo", type != "post" ? "" : site->setting("login/pseudo", "").toString()).toString());
-	ui->lineLoginPostPassword->setText(site->setting("login/post/password", type != "post" ? "" : site->setting("login/password", "").toString()).toString());
-	ui->lineLoginPostCookie->setText(site->setting("login/post/cookie", type != "post" ? "" : site->setting("login/cookie", "").toString()).toString());
-	ui->lineLoginOAuth1RequestTokenUrl->setText(site->setting("login/oauth1/requestTokenUrl", "").toString());
-	ui->lineLoginOAuth1AuthorizeUrl->setText(site->setting("login/oauth1/authorizeUrl", "").toString());
-	ui->lineLoginOAuth1AccessTokenUrl->setText(site->setting("login/oauth1/accessTokenUrl", "").toString());
-	ui->lineLoginOAuth2RequestUrl->setText(site->setting("login/oauth2/requestUrl", "").toString());
-	ui->lineLoginOAuth2TokenUrl->setText(site->setting("login/oauth2/tokenUrl", "").toString());
-	ui->lineLoginOAuth2RefreshTokenUrl->setText(site->setting("login/oauth2/refreshTokenUrl", "").toString());
-	ui->lineLoginOAuth2Scope->setText(site->setting("login/oauth2/scope", "").toString());
-	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
+	const QString loginType = site->setting("login/type", "url").toString();
+	static QMap<QString, QString> typeNames {
+		{ "url", tr("Through URL") },
+		{ "get", tr("GET") },
+		{ "post", tr("POST") },
+		{ "oauth1", tr("OAuth 1") },
+		{ "oauth2", tr("OAuth 2") }
+	};
+	static QMap<QString, QString> fieldLabels {
+		{ "pseudo", tr("Username") },
+		{ "password", tr("Password") },
+		{ "apiKey", tr("API key") }
+	};
+	QStringList types;
+	QMultiMap<QString, QLineEdit*> fields;
+	auto auths = m_site->getSource()->getAuths();
+	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
+		const QString type = it.value()->type();
+		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, type);
+		if (type == loginType) {
+			ui->comboLoginType->setCurrentIndex(ui->comboLoginType->count() - 1);
+		}
 
-	// Hide hash if unncessary
-	if (m_salt.isEmpty()) {
-		ui->buttonAuthHash->hide();
-	} else {
-		ui->lineAuthPassword->setEchoMode(QLineEdit::Normal);
+		// Build credential fields
+		QWidget *credentialsWidget = new QWidget(this);
+		QFormLayout *formLayout = new QFormLayout;
+		formLayout->setContentsMargins(0, 0, 0, 0);
+		if (type == "oauth2") {
+			m_credentialFields[type]["consumerKey"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerKey").toString(), false);
+			m_credentialFields[type]["consumerSecret"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerSecret").toString(), false);
+			formLayout->addRow(tr("Consumer key"), m_credentialFields[type]["consumerKey"]);
+			formLayout->addRow(tr("Consumer secret"), m_credentialFields[type]["consumerSecret"]);
+			fields.insert("consumerKey", m_credentialFields[type]["consumerKey"]);
+			fields.insert("consumerSecret", m_credentialFields[type]["consumerSecret"]);
+		} else {
+			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
+			if (fieldAuth) {
+				for (AuthField *field : fieldAuth->fields()) {
+					const QString fid = field->id();
+					if (fid.isEmpty()) {
+						continue;
+					}
+					m_credentialFields[type][fid] = createLineEdit(credentialsWidget, field->value(m_site->settings()), field->type() == AuthField::Password);
+					formLayout->addRow(fieldLabels.contains(fid) ? fieldLabels[fid] : fid, m_credentialFields[type][fid]);
+					fields.insert(fid, m_credentialFields[type][fid]);
+				}
+			}
+		}
+		credentialsWidget->setLayout(formLayout);
+		ui->stackedCredentials->addWidget(credentialsWidget);
+	}
+	for (const QString key : fields.keys()) {
+		const QList<QLineEdit*> l = fields.values(key);
+		for (int i = 0; i < l.count() - 1; ++i) {
+			for (int j = i + 1; j < l.count(); ++j) {
+				connect(l[i], &QLineEdit::textChanged, l[j], &QLineEdit::setText);
+				connect(l[j], &QLineEdit::textChanged, l[i], &QLineEdit::setText);
+			}
+		}
 	}
 
 	// Cookies
@@ -134,7 +163,6 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Hide login testing buttons if we can't tests this site's login
 	if (!m_site->canTestLogin()) {
-		ui->widgetTestCredentials->hide();
 		ui->widgetTestLogin->hide();
 	}
 }
@@ -151,15 +179,6 @@ void SourcesSettingsWindow::addCookie()
 void SourcesSettingsWindow::addHeader()
 {
 	ui->tableHeaders->setRowCount(ui->tableHeaders->rowCount() + 1);
-}
-
-void SourcesSettingsWindow::on_buttonAuthHash_clicked()
-{
-	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_salt));
-	if (!password.isEmpty()) {
-		QString val = QString(m_salt).replace("%password%", password);
-		ui->lineAuthPassword->setText(QCryptographicHash::hash(val.toUtf8(), QCryptographicHash::Sha1).toHex());
-	}
 }
 
 void SourcesSettingsWindow::deleteSite()
@@ -214,7 +233,6 @@ void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
 	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
-	ui->labelTestCredentials->setText(italic);
 	ui->labelTestLogin->setText(italic);
 }
 
@@ -267,28 +285,13 @@ void SourcesSettingsWindow::saveSettings()
 		return;
 	}
 
-	m_site->setSetting("auth/pseudo", ui->lineAuthPseudo->text(), "");
-	m_site->setSetting("auth/password", ui->lineAuthPassword->text(), "");
-
 	// Login
-	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	m_site->setSetting("login/type", types[ui->comboLoginType->currentIndex()], "url");
-	m_site->setSetting("login/get/url", ui->lineLoginGetUrl->text(), "");
-	m_site->setSetting("login/get/pseudo", ui->lineLoginGetPseudo->text(), "");
-	m_site->setSetting("login/get/password", ui->lineLoginGetPassword->text(), "");
-	m_site->setSetting("login/get/cookie", ui->lineLoginGetCookie->text(), "");
-	m_site->setSetting("login/post/url", ui->lineLoginPostUrl->text(), "");
-	m_site->setSetting("login/post/pseudo", ui->lineLoginPostPseudo->text(), "");
-	m_site->setSetting("login/post/password", ui->lineLoginPostPassword->text(), "");
-	m_site->setSetting("login/post/cookie", ui->lineLoginPostCookie->text(), "");
-	m_site->setSetting("login/oauth1/requestTokenUrl", ui->lineLoginOAuth1RequestTokenUrl->text(), "");
-	m_site->setSetting("login/oauth1/authorizeUrl", ui->lineLoginOAuth1AuthorizeUrl->text(), "");
-	m_site->setSetting("login/oauth1/accessTokenUrl", ui->lineLoginOAuth1AccessTokenUrl->text(), "");
-	m_site->setSetting("login/oauth2/requestUrl", ui->lineLoginOAuth2RequestUrl->text(), "");
-	m_site->setSetting("login/oauth2/tokenUrl", ui->lineLoginOAuth2TokenUrl->text(), "");
-	m_site->setSetting("login/oauth2/refreshTokenUrl", ui->lineLoginOAuth2RefreshTokenUrl->text(), "");
-	m_site->setSetting("login/oauth2/scope", ui->lineLoginOAuth2Scope->text(), "");
-	m_site->setSetting("login/maxPage", ui->spinLoginMaxPage->value(), 0);
+	m_site->setSetting("login/type", ui->comboLoginType->currentData(), "url");
+	for (auto itt = m_credentialFields.begin(); itt != m_credentialFields.end(); ++itt) {
+		for (auto itf = itt.value().begin(); itf != itt.value().end(); ++itf) {
+			m_site->setSetting("auth/" + itf.key(), itf.value()->text(), "");
+		}
+	}
 
 	// Cookies
 	QList<QVariant> cookies;

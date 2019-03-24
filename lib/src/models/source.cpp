@@ -132,7 +132,8 @@ Source::Source(Profile *profile, const QString &dir)
 					for (quint32 i = 0; i < length; ++i) {
 						const QJSValue &field = jsFields.property(i);
 
-						const QString key = field.property("key").toString();
+						const QString fid = !field.property("id").isUndefined() ? field.property("id").toString() : QString();
+						const QString key = !field.property("key").isUndefined() ? field.property("key").toString() : QString();
 						const QString type = field.property("type").toString();
 
 						if (type == "hash") {
@@ -143,7 +144,7 @@ Source::Source(Profile *profile, const QString &dir)
 							const QString value = field.property("value").toString();
 							fields.append(new AuthConstField(key, value));
 						} else {
-							fields.append(new AuthField(key, type == "password" ? AuthField::Password : AuthField::Username));
+							fields.append(new AuthField(fid, key, type == "password" ? AuthField::Password : AuthField::Text));
 						}
 					}
 

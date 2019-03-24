@@ -2,6 +2,8 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QMap>
+#include <QString>
 #include "models/site.h"
 
 
@@ -12,7 +14,9 @@ namespace Ui
 
 
 class Profile;
+class QLineEdit;
 class QSettings;
+class QWidget;
 
 class SourcesSettingsWindow : public QDialog
 {
@@ -23,7 +27,6 @@ class SourcesSettingsWindow : public QDialog
 		~SourcesSettingsWindow() override;
 
 	public slots:
-		void on_buttonAuthHash_clicked();
 		void deleteSite();
 		void addCookie();
 		void addHeader();
@@ -42,7 +45,7 @@ class SourcesSettingsWindow : public QDialog
 		Ui::SourcesSettingsWindow *ui;
 		Site *m_site;
 		QSettings *m_globalSettings;
-		QString m_salt;
+		QMap<QString, QMap<QString, QLineEdit*>> m_credentialFields;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

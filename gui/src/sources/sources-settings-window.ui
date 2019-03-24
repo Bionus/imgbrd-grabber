@@ -487,369 +487,27 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabCredentials">
-      <attribute name="title">
-       <string>Credentials</string>
-      </attribute>
-      <layout class="QFormLayout" name="formLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelAuthPseudo">
-         <property name="text">
-          <string>Username</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineAuthPseudo"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labelAuthPassword">
-         <property name="text">
-          <string>Password</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <layout class="QHBoxLayout" name="layoutHashPassword">
-         <item>
-          <widget class="QLineEdit" name="lineAuthPassword">
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonAuthHash">
-           <property name="text">
-            <string>Hash password</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QWidget" name="widgetTestCredentials" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="labelTestCredentials">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonTestCredentials">
-            <property name="text">
-             <string>Test</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tabLogin">
       <attribute name="title">
        <string>Login</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_7">
+      <layout class="QFormLayout" name="formLayout_4">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Type</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="comboLoginType">
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>Through URL</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>GET</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>POST</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>OAuth 1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>OAuth 2</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="comboLoginType"/>
        </item>
        <item row="1" column="0" colspan="2">
-        <widget class="QStackedWidget" name="stackedWidget">
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <widget class="QWidget" name="pageThroughUrl"/>
-         <widget class="QWidget" name="pageGet">
-          <layout class="QFormLayout" name="formLayout_12">
-           <property name="leftMargin">
-            <number>18</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_22">
-             <property name="text">
-              <string>URL</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineLoginGetUrl"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_24">
-             <property name="text">
-              <string>Username field</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineLoginGetPseudo"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_23">
-             <property name="text">
-              <string>Password field</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineLoginGetPassword"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_25">
-             <property name="text">
-              <string>Cookie</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineLoginGetCookie"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="pagePost">
-          <layout class="QFormLayout" name="formLayout_9">
-           <property name="leftMargin">
-            <number>18</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelLoginPostUrl">
-             <property name="text">
-              <string>URL</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineLoginPostUrl"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelLoginPostPseudo">
-             <property name="text">
-              <string>Username</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineLoginPostPseudo"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelLoginPostPassword">
-             <property name="text">
-              <string>Password</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineLoginPostPassword"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="labelLoginPostCookie">
-             <property name="text">
-              <string>Cookie</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineLoginPostCookie"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="pageOAuth1">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <layout class="QFormLayout" name="formLayout_10">
-           <property name="leftMargin">
-            <number>18</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Request token url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>Authorize url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>Access token url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth1RequestTokenUrl"/>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth1AuthorizeUrl"/>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth1AccessTokenUrl"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="pageOAuth2">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <layout class="QFormLayout" name="formLayout_11">
-           <property name="leftMargin">
-            <number>18</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_19">
-             <property name="text">
-              <string>Request url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth2RequestUrl"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_20">
-             <property name="text">
-              <string>Token url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth2TokenUrl"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>Refresh token url</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth2RefreshTokenUrl"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_21">
-             <property name="text">
-              <string>Scope</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineLoginOAuth2Scope"/>
-           </item>
-          </layout>
-         </widget>
-        </widget>
+        <widget class="QStackedWidget" name="stackedCredentials"/>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="labelLoginMaxPage">
-         <property name="text">
-          <string>Page limit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="spinLoginMaxPage">
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QWidget" name="widgetTestLogin" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -870,7 +528,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="buttonTestLogin">
             <property name="text">
              <string>Test</string>
             </property>
@@ -1006,9 +664,6 @@
   <tabstop>comboSources2</tabstop>
   <tabstop>comboSources3</tabstop>
   <tabstop>comboSources4</tabstop>
-  <tabstop>lineAuthPseudo</tabstop>
-  <tabstop>lineAuthPassword</tabstop>
-  <tabstop>buttonAuthHash</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonAccept</tabstop>
  </tabstops>
@@ -1049,22 +704,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>SourcesSettingsWindow</receiver>
-   <slot>testLogin()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>507</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>256</x>
-     <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkSourcesDefault</sender>
    <signal>toggled(bool)</signal>
    <receiver>widget</receiver>
@@ -1081,14 +720,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonTestCredentials</sender>
+   <sender>buttonTestLogin</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>507</x>
-     <y>119</y>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
      <x>273</x>
@@ -1129,22 +768,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboLoginType</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>146</x>
-     <y>40</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>101</x>
-     <y>66</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonAccept</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
@@ -1160,6 +783,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>comboLoginType</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>stackedCredentials</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteSite()</slot>
@@ -1167,5 +806,6 @@
   <slot>addCookie()</slot>
   <slot>addHeader()</slot>
   <slot>save()</slot>
+  <slot>setLoginType(int)</slot>
  </slots>
 </ui>

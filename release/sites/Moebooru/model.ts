@@ -28,8 +28,12 @@ export const source: any = {
             type: "url",
             fields: [
                 {
+                    id: "pseudo",
                     key: "login",
-                    type: "username",
+                },
+                {
+                    id: "password",
+                    type: "password",
                 },
                 {
                     key: "password_hash",

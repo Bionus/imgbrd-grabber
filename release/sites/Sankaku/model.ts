@@ -30,8 +30,12 @@ export const source: ISource = {
             type: "url",
             fields: [
                 {
+                    id: "pseudo",
                     key: "login",
-                    type: "username",
+                },
+                {
+                    id: "password",
+                    type: "password",
                 },
                 {
                     key: "password_hash",
@@ -43,7 +47,7 @@ export const source: ISource = {
                     key: "appkey",
                     type: "hash",
                     hash: "sha1",
-                    salt: "sankakuapp_%username:lower%_Z5NE9YASej",
+                    salt: "sankakuapp_%pseudo:lower%_Z5NE9YASej",
                 },
             ],
             check: {

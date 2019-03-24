@@ -47,10 +47,11 @@ interface IParsedGallery extends IParsedSearch {}
 
 type IAuthField = IAuthNormalField | IAuthConstField | IAuthHashField;
 interface IAuthFieldBase {
-    key: string;
+    key?: string;
 }
 interface IAuthNormalField extends IAuthFieldBase {
-    type: "username" | "password";
+    id: string;
+    type?: "text" | "password";
 }
 interface IAuthConstField extends IAuthFieldBase {
     type: "const";

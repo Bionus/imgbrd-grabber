@@ -11,20 +11,23 @@ class AuthField
 	public:
 		enum FieldType
 		{
-			Username,
+			Text,
 			Password,
 			Hash,
 			Const
 		};
 
-		AuthField(QString key, FieldType type);
+		AuthField(QString id, QString key, FieldType type);
 		virtual ~AuthField() = default;
 
+		QString id() const;
 		QString key() const;
 		FieldType type() const;
+
 		virtual QString value(MixedSettings *settings) const;
 
 	private:
+		QString m_id;
 		QString m_key;
 		FieldType m_type;
 };
