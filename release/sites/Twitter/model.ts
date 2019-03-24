@@ -1,3 +1,11 @@
+function getExtension(url: string): string {
+    const index = url.lastIndexOf(".");
+    if (index >= 0 && index > url.length - 10) {
+        return url.substr(index + 1);
+    }
+    return "";
+}
+
 function parseTweetMedia(sc: any, media: any): any {
     const d: any = {};
     const sizes = media["sizes"];
@@ -20,10 +28,12 @@ function parseTweetMedia(sc: any, media: any): any {
             if (bitrate > maxBitrate) {
                 maxBitrate = bitrate;
                 d["file_url"] = variantInfo["url"];
+                d["ext"] = getExtension(variantInfo["url"]);
             }
         }
     } else {
         d["file_url"] = media["media_url_https"] + ":large";
+        d["ext"] = getExtension(media["media_url_https"]);
     }
 
     return d;
