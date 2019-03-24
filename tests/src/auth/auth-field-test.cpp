@@ -24,7 +24,7 @@ void AuthFieldTest::testBasic()
 	QCOMPARE(field.key(), QString("key"));
 	QCOMPARE(field.type(), AuthField::FieldType::Text);
 
-	MixedSettings *settings = makeSettings("auth/key", "user");
+	MixedSettings *settings = makeSettings("auth/id", "user");
 	QCOMPARE(field.value(settings), QString("user"));
 	settings->deleteLater();
 }
