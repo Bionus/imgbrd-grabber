@@ -204,7 +204,18 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
 					tags = makeTags(val, site);
 				} else if (key == QLatin1String("tokens")) {
-					data = val.toVariant().toMap();
+					QJSValueIterator dit(val);
+					while (dit.hasNext()) {
+						dit.next();
+						QVariant dval = dit.value().toVariant();
+						if (dit.value().isString() && dval.toString().startsWith("date:")) {
+							const QDateTime date = qDateTimeFromString(dval.toString().mid(5));
+							if (date.isValid()) {
+								dval = date;
+							}
+						}
+						data[dit.name()] = dval;
+					}
 				} else if (val.isArray()) {
 					d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
 				} else {
