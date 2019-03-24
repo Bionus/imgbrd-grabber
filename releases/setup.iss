@@ -212,6 +212,10 @@ Source: "..\release\sites\Pixiv\www.pixiv.net\defaults.ini"; DestDir: "{localapp
 Source: "..\release\sites\Shimmie\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
 Source: "..\release\sites\Shimmie\model.js";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
 Source: "..\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Twitter\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
+Source: "..\release\sites\Twitter\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
+Source: "..\release\sites\Twitter\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter\api.twitter.com"; Flags: ignoreversion
 Source: "..\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "..\release\sites\Zerochan\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
