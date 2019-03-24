@@ -6,7 +6,7 @@ function getExtension(url: string): string {
     return "";
 }
 
-function parseTweetMedia(sc: any, media: any): any {
+function parseTweetMedia(sc: any, original: any, media: any): any {
     const d: IImage = {} as any;
     const sizes = media["sizes"];
 
@@ -47,10 +47,19 @@ function parseTweetMedia(sc: any, media: any): any {
         d.ext = getExtension(media["media_url_https"]);
     }
 
+    // Additional tokens
+    d.tokens = {};
+    d.tokens["tweet_id"] = sc["id_str"];
+    d.tokens["original_tweet_id"] = original["id_str"];
+    d.tokens["original_author"] = original["user"]["screen_name"];
+    d.tokens["original_author_id"] = original["user"]["id_str"];
+    d.tokens["original_date"] = "date:" + original["created_at"];
+
     return d;
 }
 
 function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
+    const original = sc;
     if ("retweeted_status" in sc) {
         sc = sc["retweeted_status"];
     }
@@ -70,16 +79,16 @@ function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
 
     if (medias.length > 1) {
         if (gallery) {
-            return medias.map((media: any) => parseTweetMedia(sc, media));
+            return medias.map((media: any) => parseTweetMedia(sc, original, media));
         }
 
-        const d = parseTweetMedia(sc, medias[0]);
+        const d = parseTweetMedia(sc, original, medias[0]);
         d.type = "gallery";
         d.gallery_count = medias.length;
         return d;
     }
 
-    return parseTweetMedia(sc, medias[0]);
+    return parseTweetMedia(sc, original, medias[0]);
 }
 
 export const source: ISource = {
