@@ -62,13 +62,13 @@ export const source: ISource = {
                     for (const image of data["response"]) {
                         const img = Grabber.mapFields(image, map);
                         if (image["age_limit"] === "all-age") {
-                            img["rating"] = "safe";
+                            img.rating = "safe";
                         } else if (image["age_limit"] === "r18") {
-                            img["rating"] = "explicit";
+                            img.rating = "explicit";
                         }
                         if (image["is_manga"]) {
-                            img["type"] = "gallery";
-                            img["gallery_count"] = image["page_count"];
+                            img.type = "gallery";
+                            img.gallery_count = image["page_count"];
                         }
                         images.push(img);
                     }
@@ -145,11 +145,11 @@ export const source: ISource = {
                     };
                     const images: IImage[] = rawItems.map((data: any): IImage => {
                         const img = Grabber.mapFields(data, imgMap);
-                        img["sample_url"] = img["preview_url"].replace(/\/c\/\d+x\d+\/img-master\//g, "/img-master/");
-                        img["file_url"] = urlSampleToFull(img["sample_url"]);
+                        img.sample_url = img.preview_url.replace(/\/c\/\d+x\d+\/img-master\//g, "/img-master/");
+                        img.file_url = urlSampleToFull(img.sample_url);
                         if (data["pageCount"] > 1) {
-                            img["type"] = "gallery";
-                            img["gallery_count"] = data["pageCount"];
+                            img.type = "gallery";
+                            img.gallery_count = data["pageCount"];
                         }
                         return img;
                     });
@@ -168,8 +168,8 @@ export const source: ISource = {
                 parse: (src: string): IParsedGallery => {
                     const rawImages = Grabber.regexMatches('<img[^<]+data-filter="manga-image"[^>]*data-src="(?<sample_url>[^"]+)"[^>]*>', src);
                     const images = rawImages.map((img: any): IImage => {
-                        img["file_url"] = urlSampleToFull(img["sample_url"]);
-                        img["preview_url"] = urlSampleToThumbnail(img["sample_url"]);
+                        img.file_url = urlSampleToFull(img.sample_url);
+                        img.preview_url = urlSampleToThumbnail(img.sample_url);
                         return img;
                     });
                     return { images };

@@ -7,33 +7,44 @@ function getExtension(url: string): string {
 }
 
 function parseTweetMedia(sc: any, media: any): any {
-    const d: any = {};
+    const d: IImage = {} as any;
     const sizes = media["sizes"];
 
-    d["id"] = sc["id_str"];
-    d["created_at"] = sc["created_at"];
-    d["preview_url"] = media["media_url_https"] + ":thumb";
+    // Meta-data
+    d.id = media["id_str"];
+    d.author = sc["user"]["screen_name"];
+    d.author_id = sc["user"]["id_str"];
+    d.created_at = sc["created_at"];
+    d.tags = sc["entities"]["hashtags"].map((hashtag: any) => hashtag["text"]);
+
+    // Images
+    d.width = sizes["large"]["w"];
+    d.height = sizes["large"]["h"];
+    if ("thumb" in sizes) {
+        d.preview_url = media["media_url_https"] + ":thumb";
+        d.preview_width = sizes["thumb"]["w"];
+        d.preview_height = sizes["thumb"]["h"];
+    }
     if ("medium" in sizes) {
-        d["sample_url"] = media["media_url_https"] + ":medium";
+        d.sample_url = media["media_url_https"] + ":medium";
+        d.sample_width = sizes["medium"]["w"];
+        d.sample_height = sizes["medium"]["h"];
     }
 
-    const size = sizes["large"];
-    d["width"] = size["w"];
-    d["height"] = size["h"];
-
+    // Full-size link
     if ("video_info" in media) {
         let maxBitrate = -1;
         for (const variantInfo of media["video_info"]["variants"]) {
             const bitrate = variantInfo["bitrate"];
             if (bitrate > maxBitrate) {
                 maxBitrate = bitrate;
-                d["file_url"] = variantInfo["url"];
-                d["ext"] = getExtension(variantInfo["url"]);
+                d.file_url = variantInfo["url"];
+                d.ext = getExtension(variantInfo["url"]);
             }
         }
     } else {
-        d["file_url"] = media["media_url_https"] + ":large";
-        d["ext"] = getExtension(media["media_url_https"]);
+        d.file_url = media["media_url_https"] + ":large";
+        d.ext = getExtension(media["media_url_https"]);
     }
 
     return d;
@@ -63,8 +74,8 @@ function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
         }
 
         const d = parseTweetMedia(sc, medias[0]);
-        d["type"] = "gallery";
-        d["gallery_count"] = medias.length;
+        d.type = "gallery";
+        d.gallery_count = medias.length;
         return d;
     }
 

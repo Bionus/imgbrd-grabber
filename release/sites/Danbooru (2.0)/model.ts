@@ -1,23 +1,23 @@
 function completeImage(img: IImage): IImage {
-    if (img["ext"] && img["ext"][0] === ".") {
-        img["ext"] = img["ext"].mid(1);
+    if (img.ext && img.ext[0] === ".") {
+        img.ext = img.ext.substr(1);
     }
 
-    if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = `/data/${img["md5"]}.${img["ext"] || "jpg"}`;
+    if (!img.file_url || img.file_url.length < 5) {
+        img.file_url = `/data/${img.md5}.${img.ext || "jpg"}`;
     } else {
-        img["file_url"] = img["file_url"]
+        img.file_url = img.file_url
             .replace("/preview/", "/")
             .replace("/ssd/", "/")
             .replace("/sample/[^.]*sample-", "/");
     }
 
-    if (!img["sample_url"] || img["sample_url"].length < 5) {
-        img["sample_url"] = `/data/sample/sample-${img["md5"]}.jpg`;
+    if (!img.sample_url || img.sample_url.length < 5) {
+        img.sample_url = `/data/sample/sample-${img.md5}.jpg`;
     }
 
-    if (!img["preview_url"] || img["preview_url"].length < 5) {
-        img["preview_url"] = `/data/preview/${img["md5"]}.jpg`;
+    if (!img.preview_url || img.preview_url.length < 5) {
+        img.preview_url = `/data/preview/${img.md5}.jpg`;
     }
 
     return img;
@@ -138,7 +138,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of data) {
                         const img = Grabber.mapFields(image, map);
-                        if (!img["md5"] || img["md5"].length === 0) {
+                        if (!img.md5 || img.md5.length === 0) {
                             continue;
                         }
                         images.push(completeImage(img));
@@ -233,7 +233,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of data) {
                         const img = Grabber.mapFields(image, map);
-                        if (!img["md5"] || img["md5"].length === 0) {
+                        if (!img.md5 || img.md5.length === 0) {
                             continue;
                         }
                         images.push(completeImage(img));

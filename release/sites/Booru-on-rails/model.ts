@@ -1,19 +1,19 @@
-function completeImage(img: IImage): IImage {
-    if (img["json_uris"]) {
-        const uris = JSON.parse(img["json_uris"].replace(/&quot;/g, '"'));
+function completeImage(img: IImage & { json_uris: string }): IImage {
+    if (img.json_uris) {
+        const uris = JSON.parse(img.json_uris.replace(/&quot;/g, '"'));
         if ("thumb_small" in uris && uris["thumb_small"].length > 5) {
-            img["preview_url"] = uris["thumb_small"];
+            img.preview_url = uris["thumb_small"];
         }
         if ("large" in uris && uris["large"].length > 5) {
-            img["sample_url"] = uris["large"];
+            img.sample_url = uris["large"];
         }
         if ("full" in uris && uris["full"].length > 5) {
-            img["file_url"] = uris["full"];
+            img.file_url = uris["full"];
         }
     }
 
-    if (!img["preview_url"] && img["file_url"].length >= 5) {
-        img["preview_url"] = img["file_url"]
+    if (!img.preview_url && img.file_url.length >= 5) {
+        img.preview_url = img.file_url
             .replace("full", "thumb")
             .replace(".svg", ".png");
     }
@@ -79,11 +79,11 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of results) {
                         const img = Grabber.mapFields(image, map);
-                        img["tags"] = image["tags"].split(", ");
-                        img["preview_url"] = image["representations"]["thumb"];
-                        img["sample_url"] = image["representations"]["large"];
-                        img["file_url"] = image["representations"]["full"];
-                        img["has_comments"] = image["comment_count"] > 0;
+                        img.tags = image["tags"].split(", ");
+                        img.preview_url = image["representations"]["thumb"];
+                        img.sample_url = image["representations"]["large"];
+                        img.file_url = image["representations"]["full"];
+                        img.has_comments = image["comment_count"] > 0;
                         images.push(completeImage(img));
                     }
 

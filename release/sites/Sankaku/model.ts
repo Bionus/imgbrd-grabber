@@ -1,9 +1,9 @@
 function completeImage(img: IImage): IImage {
-    if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = img["preview_url"].replace("/preview/", "/");
+    if (!img.file_url || img.file_url.length < 5) {
+        img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    img["file_url"] = img["file_url"].replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
 
     return img;
 }
@@ -74,8 +74,8 @@ export const source: ISource = {
 
                     const images: IImage[] = [];
                     for (const img of data) {
-                        img["created_at"] = img["created_at"]["s"];
-                        img["score"] = img["total_score"];
+                        img.created_at = img.created_at["s"];
+                        img.score = img.total_score;
                         images.push(completeImage(img));
                     }
 

@@ -3,20 +3,20 @@ function noWebp(url: string): string {
 }
 
 function completeImage(img: IImage): IImage {
-    if (img["ext"] && img["ext"][0] === ".") {
-        img["ext"] = img["ext"].substring(1);
+    if (img.ext && img.ext[0] === ".") {
+        img.ext = img.ext.substring(1);
     }
 
-    img["file_url"] = `/pictures/download_image/${img["id"]}.${img["ext"] || "jpg"}`;
+    img.file_url = `/pictures/download_image/${img.id}.${img.ext || "jpg"}`;
 
-    if ((!img["sample_url"] || img["sample_url"].length < 5) && img["preview_url"] && img["preview_url"].length >= 5) {
-        img["sample_url"] = img["preview_url"]
+    if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
+        img.sample_url = img.preview_url
             .replace("_cp.", "_bp.")
             .replace("_sp.", "_bp.");
     }
 
-    img["sample_url"] = noWebp(img["sample_url"] || "");
-    img["preview_url"] = noWebp(img["preview_url"] || "");
+    img.sample_url = noWebp(img.sample_url || "");
+    img.preview_url = noWebp(img.preview_url || "");
 
     return img;
 }

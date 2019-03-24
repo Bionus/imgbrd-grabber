@@ -6,8 +6,50 @@ interface ITag {
     typeId?: number;
 }
 interface IImage {
+    // Known "meaningful" tokens
+    type?: "image" | "gallery";
+    md5?: string;
+    author?: string;
+    name?: string;
+    status?: string;
+    id?: number | string;
+    score?: number;
+    parent_id?: number | string;
+    author_id?: number | string;
+    has_children?: boolean;
+    has_note?: boolean;
+    has_comments?: boolean;
+    sources?: string[];
+    source?: string;
+    position?: number;
+    gallery_count?: number;
+    page_url?: string;
+    rating?: string;
+    tags?: string[];
+    ext?: string;
+    created_at?: string;
+    date?: string;
+
+    // Full size
     file_url: string;
-    [key: string]: any;
+    width?: number;
+    height?: number;
+    file_size?: number;
+    rect?: string;
+
+    // Sample
+    sample_url?: string;
+    sample_width?: number;
+    sample_height?: number;
+    sample_file_size?: number;
+    sample_rect?: string;
+
+    // Thumbnail
+    preview_url?: string;
+    preview_width?: number;
+    preview_height?: number;
+    preview_file_size?: number;
+    preview_rect?: string;
 }
 interface IPool {
     id?: number;
