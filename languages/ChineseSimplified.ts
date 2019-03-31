@@ -737,126 +737,126 @@
         <translation>上移</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="119"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
         <source>Confirmation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="119"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
         <source>Are you sure you want to clear your download list?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="263"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="267"/>
         <source>This source is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="272"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="276"/>
         <source>The image per page value must be greater or equal to 1.</source>
         <translation>每页图片数必须大于等于 1。</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="281"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="285"/>
         <source>The image limit must be greater or equal to 0.</source>
         <translation>图片数限制必须大于或等于 0.</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="357"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="361"/>
         <source>Groups (%1/%2)</source>
         <translation>群组 (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="401"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="410"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="412"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="405"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="414"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="416"/>
         <source>Save link list</source>
         <translation>保存链接列表</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="401"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="422"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="405"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="426"/>
         <source>Imageboard-Grabber links (*.igl)</source>
         <translation>Imageboard-Grabber 链接列表 (*.igl)</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="410"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="414"/>
         <source>Link list saved successfully!</source>
         <translation>链接列表保存成功！</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="412"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="430"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="416"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="434"/>
         <source>Error opening file.</source>
         <translation>打开文件时发生错误。</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="422"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="428"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="430"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="426"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="432"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="434"/>
         <source>Load link list</source>
         <translation>载入链接列表</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="428"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="432"/>
         <source>Link list loaded successfully!</source>
         <translation>链接列表导入完成！</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="442"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="446"/>
         <source>Loading %n download(s)</source>
         <translation>
             <numerusform>正在载入 %n 个下载</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="521"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="523"/>
         <source>You did not specify a save folder!</source>
         <translation>你还没有指定保存文件夹！</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="525"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="527"/>
         <source>You did not specify a filename!</source>
         <translation>你还没有指定文件名！</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="629"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="655"/>
         <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="631"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
         <source>Don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="668"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
         <source>Logging in, please wait...</source>
         <translation>登录中，请稍候...</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="753"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="779"/>
         <source>Downloading pages, please wait...</source>
         <translation>下载页面中，请稍候...</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="823"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="856"/>
         <source>Preparing images, please wait...</source>
         <translation>准备图片中，请稍候...</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="837"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="870"/>
         <source>Downloading images...</source>
         <translation>下载图片中...</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1022"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
         <source>Not enough space on the destination drive &quot;%1&quot;.
 Please free some space before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1024"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1068"/>
         <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
@@ -865,58 +865,65 @@ Please solve the issue before resuming the download.</source>
 请在恢复下载前修复这些问题。</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1026"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1070"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1151"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1163"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1192"/>
         <source>Getting images</source>
         <translation>获取图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1123"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1163"/>
         <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
         <translation>下载图片时出现错误。请问你想要重启这些图片的下载吗？(%1/%2)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1153"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1194"/>
         <source>%n file(s) downloaded successfully.</source>
         <translation>
             <numerusform>%n 个图片已成功下载。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1154"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1195"/>
         <source>%n file(s) ignored.</source>
         <translation>
             <numerusform>%n 个文件被忽略。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1155"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1196"/>
         <source>%n file(s) already existing.</source>
         <translation>
             <numerusform>%n 个文件已经存在。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1156"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1197"/>
         <source>%n file(s) not found on the server.</source>
         <translation>
             <numerusform>%n 个文件在服务器上无法找到。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1157"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1198"/>
         <source>%n file(s) skipped.</source>
         <translation>
             <numerusform>%n 个文件被跳过。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1158"/>
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1199"/>
+        <source>%n file(s) skipped from a previous download.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
         <source>%n error(s).</source>
         <translation>
             <numerusform>%n 个错误。</numerusform>
@@ -1096,8 +1103,8 @@ Please solve the issue before resuming the download.</source>
     <name>FavoritesTab</name>
     <message>
         <location filename="../gui/src/tabs/favorites-tab.ui" line="26"/>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="388"/>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="394"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="389"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="395"/>
         <source>Favorites</source>
         <translation>收藏</translation>
     </message>
@@ -1152,74 +1159,74 @@ Please solve the issue before resuming the download.</source>
         <translation>每页图片数</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="511"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="527"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="521"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="537"/>
         <source>Mark as &amp;viewed</source>
         <translation>标记为&amp;已看</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="528"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="544"/>
         <source>Get &amp;selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="535"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="551"/>
         <source>Get this &amp;page</source>
         <translation>获取此&amp;页面的图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="542"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="558"/>
         <source>Get &amp;all</source>
         <translation>获取&amp;所有图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="589"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="605"/>
         <source>S&amp;ources</source>
         <translation>&amp;来源</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="596"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="612"/>
         <source>Merge results</source>
         <translation>合并结果</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.ui" line="646"/>
+        <location filename="../gui/src/tabs/favorites-tab.ui" line="662"/>
         <source>Mark all as vie&amp;wed</source>
         <translation>标记所有为 &amp;已看</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="126"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="127"/>
         <source>MM/dd/yyyy</source>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="135"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
         <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
         <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释：&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;上次查看：&lt;/b&gt; %3</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="220"/>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="227"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
         <source>No result since the %1</source>
         <translation>从 %1 开始没有结果</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="220"/>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="227"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
         <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
         <translation>MM/dd/yyyy &apos;于&apos; hh:mm</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="318"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
         <source>Mark as viewed</source>
         <translation>标记为已看</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/favorites-tab.cpp" line="318"/>
+        <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
         <source>Are you sure you want to mark all your favorites as viewed?</source>
         <translation>你确定要标记所有收藏为已看吗？</translation>
     </message>
@@ -1333,133 +1340,133 @@ Please solve the issue before resuming the download.</source>
         <translation type="vanished">图片包含 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="855"/>
+        <location filename="../lib/src/models/image.cpp" line="859"/>
         <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;标签：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="847"/>
-        <location filename="../lib/src/models/image.cpp" line="856"/>
+        <location filename="../lib/src/models/image.cpp" line="851"/>
+        <location filename="../lib/src/models/image.cpp" line="860"/>
         <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="848"/>
+        <location filename="../lib/src/models/image.cpp" line="852"/>
         <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="857"/>
+        <location filename="../lib/src/models/image.cpp" line="861"/>
         <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;分级：&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="858"/>
+        <location filename="../lib/src/models/image.cpp" line="862"/>
         <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;得分：&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="859"/>
+        <location filename="../lib/src/models/image.cpp" line="863"/>
         <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;用户：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="860"/>
+        <location filename="../lib/src/models/image.cpp" line="864"/>
         <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;大小：&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="861"/>
+        <location filename="../lib/src/models/image.cpp" line="865"/>
         <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;文件大小：&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="862"/>
+        <location filename="../lib/src/models/image.cpp" line="866"/>
         <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;日期：&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="862"/>
+        <location filename="../lib/src/models/image.cpp" line="866"/>
         <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
         <translation>&apos;MM/dd/yyyy&apos; 于 &apos;hh:mm</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="872"/>
+        <location filename="../lib/src/models/image.cpp" line="876"/>
         <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
         <translation>&lt;i&gt;未知&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="873"/>
+        <location filename="../lib/src/models/image.cpp" line="877"/>
         <source>yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="874"/>
+        <location filename="../lib/src/models/image.cpp" line="878"/>
         <source>no</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="883"/>
+        <location filename="../lib/src/models/image.cpp" line="887"/>
         <source>Tags</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="885"/>
+        <location filename="../lib/src/models/image.cpp" line="889"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="886"/>
+        <location filename="../lib/src/models/image.cpp" line="890"/>
         <source>MD5</source>
         <translation>MD5</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="887"/>
+        <location filename="../lib/src/models/image.cpp" line="891"/>
         <source>Rating</source>
         <translation>评级</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="888"/>
+        <location filename="../lib/src/models/image.cpp" line="892"/>
         <source>Score</source>
         <translation>得分</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="889"/>
+        <location filename="../lib/src/models/image.cpp" line="893"/>
         <source>Author</source>
         <translation>作者</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="891"/>
+        <location filename="../lib/src/models/image.cpp" line="895"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="891"/>
+        <location filename="../lib/src/models/image.cpp" line="895"/>
         <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
         <translation>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="892"/>
+        <location filename="../lib/src/models/image.cpp" line="896"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="893"/>
+        <location filename="../lib/src/models/image.cpp" line="897"/>
         <source>Filesize</source>
         <translation>文件大小</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="895"/>
+        <location filename="../lib/src/models/image.cpp" line="899"/>
         <source>Page</source>
         <translation>页面</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="896"/>
+        <location filename="../lib/src/models/image.cpp" line="900"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message numerus="yes">
-        <location filename="../lib/src/models/image.cpp" line="897"/>
+        <location filename="../lib/src/models/image.cpp" line="901"/>
         <source>Source(s)</source>
         <translation>
             <numerusform>来源</numerusform>
@@ -1470,37 +1477,37 @@ Please solve the issue before resuming the download.</source>
         <translation type="vanished">来源</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="898"/>
+        <location filename="../lib/src/models/image.cpp" line="902"/>
         <source>Sample</source>
         <translation>样本</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="899"/>
+        <location filename="../lib/src/models/image.cpp" line="903"/>
         <source>Thumbnail</source>
         <translation>缩略图</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="901"/>
+        <location filename="../lib/src/models/image.cpp" line="905"/>
         <source>Parent</source>
         <translation>父级</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="901"/>
+        <location filename="../lib/src/models/image.cpp" line="905"/>
         <source>yes (#%1)</source>
         <translation>是 (#%1)</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="902"/>
+        <location filename="../lib/src/models/image.cpp" line="906"/>
         <source>Comments</source>
         <translation>评论</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="903"/>
+        <location filename="../lib/src/models/image.cpp" line="907"/>
         <source>Children</source>
         <translation>子级</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="904"/>
+        <location filename="../lib/src/models/image.cpp" line="908"/>
         <source>Notes</source>
         <translation>注释</translation>
     </message>
@@ -1846,7 +1853,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/main-window.ui" line="656"/>
-        <location filename="../gui/src/main-window.cpp" line="473"/>
+        <location filename="../gui/src/main-window.cpp" line="474"/>
         <source>New tab</source>
         <translation>新标签页</translation>
     </message>
@@ -1911,32 +1918,32 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="146"/>
+        <location filename="../gui/src/main-window.cpp" line="147"/>
         <source>No source found</source>
         <translation>找不到来源</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="146"/>
+        <location filename="../gui/src/main-window.cpp" line="147"/>
         <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
         <translation>找不到来源。是否有配置问题？尝试重新安装程序。</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="161"/>
+        <location filename="../gui/src/main-window.cpp" line="162"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="208"/>
+        <location filename="../gui/src/main-window.cpp" line="209"/>
         <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
         <translation>看来上次程序没有正常结束。你想要恢复会话吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="403"/>
+        <location filename="../gui/src/main-window.cpp" line="404"/>
         <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
         <translation>检测到你有安装 Firefox 插件 &quot;Danbooru Downloader&quot;。你想要导入它的设置吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="734"/>
+        <location filename="../gui/src/main-window.cpp" line="740"/>
         <source>Don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1953,17 +1960,17 @@ Please solve the issue before resuming the download.</source>
         <translation type="obsolete">图片数限制必须大于或等于 0.</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="673"/>
+        <location filename="../gui/src/main-window.cpp" line="679"/>
         <source>MM/dd/yyyy</source>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="678"/>
+        <location filename="../gui/src/main-window.cpp" line="684"/>
         <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
         <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释：&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;上次查看：&lt;/b&gt; %3</translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="732"/>
+        <location filename="../gui/src/main-window.cpp" line="738"/>
         <source>Are you sure you want to quit?</source>
         <translation>你确定要退出吗？</translation>
     </message>
@@ -2082,7 +2089,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message>
-        <location filename="../gui/src/main-window.cpp" line="881"/>
+        <location filename="../gui/src/main-window.cpp" line="887"/>
         <source>Choose a save folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2208,7 +2215,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/settings/options-window.ui" line="69"/>
-        <location filename="../gui/src/settings/options-window.ui" line="752"/>
+        <location filename="../gui/src/settings/options-window.ui" line="760"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -2296,13 +2303,13 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/settings/options-window.ui" line="149"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2540"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2548"/>
         <source>Commands</source>
         <translation>命令行</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/options-window.ui" line="153"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2645"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2653"/>
         <source>Database</source>
         <translation>数据库</translation>
     </message>
@@ -2318,7 +2325,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/settings/options-window.ui" line="194"/>
-        <location filename="../gui/src/settings/options-window.ui" line="713"/>
+        <location filename="../gui/src/settings/options-window.ui" line="721"/>
         <source>Do nothing</source>
         <translation>什么都不做</translation>
     </message>
@@ -2422,239 +2429,239 @@ Please solve the issue before resuming the download.</source>
         <translation>关闭窗口前确认</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="392"/>
+        <location filename="../gui/src/settings/options-window.ui" line="400"/>
         <source>Images per page</source>
         <translation>每页图片数</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="399"/>
+        <location filename="../gui/src/settings/options-window.ui" line="407"/>
         <source>Number of columns</source>
         <translation>列数</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="406"/>
+        <location filename="../gui/src/settings/options-window.ui" line="414"/>
         <source>Source 1</source>
         <translation>来源 1</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="413"/>
+        <location filename="../gui/src/settings/options-window.ui" line="421"/>
         <source>Source 2</source>
         <translation>来源 2</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="420"/>
+        <location filename="../gui/src/settings/options-window.ui" line="428"/>
         <source>Source 3</source>
         <translation>来源 3</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="427"/>
+        <location filename="../gui/src/settings/options-window.ui" line="435"/>
         <source>Source 4</source>
         <translation>来源 4</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="460"/>
+        <location filename="../gui/src/settings/options-window.ui" line="468"/>
         <source>Get more precise tags when searching images</source>
         <translation>在搜索图片时获取更精确的标签</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="471"/>
-        <location filename="../gui/src/settings/options-window.ui" line="498"/>
-        <location filename="../gui/src/settings/options-window.ui" line="525"/>
-        <location filename="../gui/src/settings/options-window.ui" line="552"/>
+        <location filename="../gui/src/settings/options-window.ui" line="479"/>
+        <location filename="../gui/src/settings/options-window.ui" line="506"/>
+        <location filename="../gui/src/settings/options-window.ui" line="533"/>
+        <location filename="../gui/src/settings/options-window.ui" line="560"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="476"/>
-        <location filename="../gui/src/settings/options-window.ui" line="503"/>
-        <location filename="../gui/src/settings/options-window.ui" line="530"/>
-        <location filename="../gui/src/settings/options-window.ui" line="557"/>
+        <location filename="../gui/src/settings/options-window.ui" line="484"/>
+        <location filename="../gui/src/settings/options-window.ui" line="511"/>
+        <location filename="../gui/src/settings/options-window.ui" line="538"/>
+        <location filename="../gui/src/settings/options-window.ui" line="565"/>
         <source>JSON</source>
         <translation>JSON</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="481"/>
-        <location filename="../gui/src/settings/options-window.ui" line="508"/>
-        <location filename="../gui/src/settings/options-window.ui" line="535"/>
-        <location filename="../gui/src/settings/options-window.ui" line="562"/>
+        <location filename="../gui/src/settings/options-window.ui" line="489"/>
+        <location filename="../gui/src/settings/options-window.ui" line="516"/>
+        <location filename="../gui/src/settings/options-window.ui" line="543"/>
+        <location filename="../gui/src/settings/options-window.ui" line="570"/>
         <source>Regex</source>
         <translation>正则表达式</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="486"/>
-        <location filename="../gui/src/settings/options-window.ui" line="513"/>
-        <location filename="../gui/src/settings/options-window.ui" line="540"/>
-        <location filename="../gui/src/settings/options-window.ui" line="567"/>
+        <location filename="../gui/src/settings/options-window.ui" line="494"/>
+        <location filename="../gui/src/settings/options-window.ui" line="521"/>
+        <location filename="../gui/src/settings/options-window.ui" line="548"/>
+        <location filename="../gui/src/settings/options-window.ui" line="575"/>
         <source>RSS</source>
         <translation>RSS</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="575"/>
+        <location filename="../gui/src/settings/options-window.ui" line="583"/>
         <source>Auto tag add</source>
         <translation>自动添加标签</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="599"/>
+        <location filename="../gui/src/settings/options-window.ui" line="607"/>
         <source>Download original images</source>
         <translation>下载原图</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="609"/>
+        <location filename="../gui/src/settings/options-window.ui" line="617"/>
         <source>Download sample on error</source>
         <translation>发生错误时下载缩略图</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="619"/>
+        <location filename="../gui/src/settings/options-window.ui" line="627"/>
         <source>Download images automatically</source>
         <translation>自动下载图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="626"/>
+        <location filename="../gui/src/settings/options-window.ui" line="634"/>
         <source>Keep original creation date</source>
         <translation>保留源创建时间</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="636"/>
+        <location filename="../gui/src/settings/options-window.ui" line="644"/>
         <source>Get extension from file header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="646"/>
+        <location filename="../gui/src/settings/options-window.ui" line="654"/>
         <source>Folder</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="658"/>
-        <location filename="../gui/src/settings/options-window.ui" line="679"/>
+        <location filename="../gui/src/settings/options-window.ui" line="666"/>
+        <location filename="../gui/src/settings/options-window.ui" line="687"/>
         <source>Browse</source>
         <translation>浏览</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="667"/>
-        <location filename="../gui/src/settings/options-window.ui" line="866"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1900"/>
+        <location filename="../gui/src/settings/options-window.ui" line="675"/>
+        <location filename="../gui/src/settings/options-window.ui" line="874"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1908"/>
         <source>Favorites</source>
         <translation>收藏</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="688"/>
+        <location filename="../gui/src/settings/options-window.ui" line="696"/>
         <source>Simultaneous downloads</source>
         <translation>同时下载数</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="705"/>
+        <location filename="../gui/src/settings/options-window.ui" line="713"/>
         <source>When the download is finished</source>
         <translation>当下载完成时执行</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="718"/>
+        <location filename="../gui/src/settings/options-window.ui" line="726"/>
         <source>Close window</source>
         <translation>关闭窗口</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="723"/>
+        <location filename="../gui/src/settings/options-window.ui" line="731"/>
         <source>Open CD tray</source>
         <translation>打开 CD 播放器</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="728"/>
+        <location filename="../gui/src/settings/options-window.ui" line="736"/>
         <source>Play a sound</source>
         <translation>播放提示音</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="733"/>
+        <location filename="../gui/src/settings/options-window.ui" line="741"/>
         <source>Shutdown</source>
         <translation>关机</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="741"/>
+        <location filename="../gui/src/settings/options-window.ui" line="749"/>
         <source>If a file already exists globally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="757"/>
-        <location filename="../gui/src/settings/options-window.ui" line="816"/>
+        <location filename="../gui/src/settings/options-window.ui" line="765"/>
+        <location filename="../gui/src/settings/options-window.ui" line="824"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="762"/>
+        <location filename="../gui/src/settings/options-window.ui" line="770"/>
         <source>Move</source>
         <translation>移动</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="767"/>
-        <location filename="../gui/src/settings/options-window.ui" line="821"/>
+        <location filename="../gui/src/settings/options-window.ui" line="775"/>
+        <location filename="../gui/src/settings/options-window.ui" line="829"/>
         <source>Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="772"/>
+        <location filename="../gui/src/settings/options-window.ui" line="780"/>
         <source>Don&apos;t save</source>
         <translation>不要保存</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="780"/>
+        <location filename="../gui/src/settings/options-window.ui" line="788"/>
         <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
         <translation>&lt;i&gt;文件的身份识别基于 MD5 值。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="787"/>
+        <location filename="../gui/src/settings/options-window.ui" line="795"/>
         <source>Automatic redownload</source>
         <translation>自动重下载</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="801"/>
+        <location filename="../gui/src/settings/options-window.ui" line="809"/>
         <source>Keep deleted files in the MD5 list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="808"/>
+        <location filename="../gui/src/settings/options-window.ui" line="816"/>
         <source>If an image yields multiple files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="833"/>
+        <location filename="../gui/src/settings/options-window.ui" line="841"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="899"/>
+        <location filename="../gui/src/settings/options-window.ui" line="907"/>
         <source>Tags separator</source>
         <translation>标签分隔器</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="913"/>
+        <location filename="../gui/src/settings/options-window.ui" line="921"/>
         <source>Replace spaces by underscores</source>
         <translation>用下划线代替空格</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="920"/>
+        <location filename="../gui/src/settings/options-window.ui" line="928"/>
         <source>Replace JPEG by JPG</source>
         <translation>替换 JPG 为 JPEG</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="930"/>
+        <location filename="../gui/src/settings/options-window.ui" line="938"/>
         <source>Max length</source>
         <translation>最大长度</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="944"/>
+        <location filename="../gui/src/settings/options-window.ui" line="952"/>
         <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</source>
         <translation>&lt;i&gt;如果一个文件名长度比这个数字长，就会被缩短。输入 0 使用默认限制。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="958"/>
+        <location filename="../gui/src/settings/options-window.ui" line="966"/>
         <source>Add a conditional filename</source>
         <translation>添加一个条件文件名</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1037"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1045"/>
         <source>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</source>
         <translation>&lt;i&gt;每当图片保存时，一个文本文件将储存在相同的地方，包含这个图片的标签。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1050"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1058"/>
         <source>Add a separate log file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2699,349 +2706,349 @@ Please solve the issue before resuming the download.</source>
         <translation type="obsolete">尽量缩短</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1074"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1082"/>
         <source>Add a custom token</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1089"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1097"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1099"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1107"/>
         <source>Upscaling</source>
         <translation>升级</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1106"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1114"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1119"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1127"/>
         <source>Favorites display</source>
         <translation>显示收藏</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1127"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1135"/>
         <source>Image, name and details</source>
         <translation>图片，名称和详情</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1132"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1140"/>
         <source>Image and name</source>
         <translation>图片和名称</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1137"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1145"/>
         <source>Image and details</source>
         <translation>图片和详情</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1142"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1150"/>
         <source>Name and details</source>
         <translation>名称和详情</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1147"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1155"/>
         <source>Image only</source>
         <translation>只有图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1152"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1160"/>
         <source>Name only</source>
         <translation>只有名字</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1157"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1165"/>
         <source>Details only</source>
         <translation>只有详情</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1165"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1173"/>
         <source>Hide favorites</source>
         <translation>隐藏收藏</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1182"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1190"/>
         <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
         <translation>&lt;i&gt;当到达特定图片数时，收藏列表将被隐藏。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1192"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1200"/>
         <source>Source&apos;s type display</source>
         <translation>来源类型显示</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1200"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1208"/>
         <source>Text</source>
         <translation>文本</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1205"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2496"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2566"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1213"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2504"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2574"/>
         <source>Image</source>
         <translation>图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1210"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1218"/>
         <source>Image and text</source>
         <translation>图片和文本</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1215"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1223"/>
         <source>Don&apos;t show</source>
         <translation>不显示</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1223"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1231"/>
         <source>Displayed letters</source>
         <translation>显示的字母</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1233"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1241"/>
         <source>Display n letters</source>
         <translation>显示 n 个字母</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1238"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1246"/>
         <source>Before first dot</source>
         <translation>在第一个点前</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1243"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1251"/>
         <source>Before last dot</source>
         <translation>在最后一个点前</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1266"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1274"/>
         <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
         <translation>&lt;i&gt;在主页面 ”+“ 的来源复选框旁显示的字母数量.&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1276"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1284"/>
         <source>Preload all tabs when restoring a previous session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1287"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1295"/>
         <source>Use a scroll area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1297"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1305"/>
         <source>Use a fixed-image-width layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1307"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1315"/>
         <source>Infinite scroll</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1315"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1323"/>
         <source>Disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1320"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1328"/>
         <source>Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1325"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1333"/>
         <source>Scroll</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1333"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1341"/>
         <source>Remember page number when infinite scrolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1340"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1348"/>
         <source>Resize previews instead of cropping them</source>
         <translation>重设预览图大小而不是裁剪</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1350"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1358"/>
         <source>Enable autocompletion</source>
         <translation>启用自动补全</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1360"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1368"/>
         <source>Show warning if an incompatible modifier is found</source>
         <translation>当检测到不兼容的修改时显示警告</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1370"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1378"/>
         <source>Show other warnings</source>
         <translation>显示其它警告</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1380"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1388"/>
         <source>Download not loaded pages</source>
         <translation>下载没有加载的页面</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1387"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1395"/>
         <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
         <translation>&lt;i&gt;如果你启用了这个选项，点击”获取此页“按钮将会对每页显示的图片数和页面数等等进行修改，无论他们是否已经被加载。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1397"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1405"/>
         <source>Invert Click and Ctrl+Click actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1404"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1412"/>
         <source>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1425"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1433"/>
         <source>Tag list position</source>
         <translation>标签列表位置</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1433"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1544"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1599"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1654"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1441"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1552"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1607"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1662"/>
         <source>Top</source>
         <translation>顶部</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1438"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1566"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1621"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1676"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1446"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1574"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1629"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1684"/>
         <source>Left</source>
         <translation>左边</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1443"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1451"/>
         <source>Auto</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1451"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1459"/>
         <source>Preloading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1461"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1469"/>
         <source>Slideshow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1468"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1476"/>
         <source>s</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1478"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1486"/>
         <source>Middle click to close window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1488"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1496"/>
         <source>Enable scroll wheel navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1498"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1506"/>
         <source>Show tag count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1505"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1513"/>
         <source>Tag order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1513"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2380"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1521"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2388"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1518"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1526"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1523"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1531"/>
         <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1531"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1539"/>
         <source>Image position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1549"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1571"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1604"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1626"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1659"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1681"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1557"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1579"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1612"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1634"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1667"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1689"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1554"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1609"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1664"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1562"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1617"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1672"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1576"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1631"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1686"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1584"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1639"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1694"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1586"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1594"/>
         <source>Animation position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1641"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1649"/>
         <source>Video position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1696"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1704"/>
         <source>Background color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1708"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1744"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1772"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1800"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1828"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1856"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1884"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1912"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1940"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1968"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1996"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2024"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2052"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2130"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2152"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1716"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1752"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1780"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1808"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1836"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1864"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1892"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1920"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1948"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1976"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2004"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2032"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2060"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2138"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2160"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1418"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1426"/>
         <source>Use a single image window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3061,288 +3068,293 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1717"/>
+        <location filename="../gui/src/settings/options-window.ui" line="364"/>
+        <source>Send anonymous usage data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/settings/options-window.ui" line="1725"/>
         <source>Use image samples</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1728"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1736"/>
         <source>Artists</source>
         <translation>艺术家</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1751"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1779"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1807"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1835"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1863"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1891"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1919"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1947"/>
-        <location filename="../gui/src/settings/options-window.ui" line="1975"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2003"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2031"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2059"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1759"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1787"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1815"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1843"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1871"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1899"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1927"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1955"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1983"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2011"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2039"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2067"/>
         <source>Font</source>
         <translation>自提</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1760"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1768"/>
         <source>Circle</source>
         <translation>圆圈</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1788"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1796"/>
         <source>Series</source>
         <translation>系列</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1816"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1824"/>
         <source>Characters</source>
         <translation>角色</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1844"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1852"/>
         <source>Models</source>
         <translation>模型</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1872"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1880"/>
         <source>Generals</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1928"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1936"/>
         <source>Blacklisted</source>
         <translation>已被加入黑名单</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1956"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1964"/>
         <source>Ignored</source>
         <translation>已被忽略</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="1984"/>
+        <location filename="../gui/src/settings/options-window.ui" line="1992"/>
         <source>Species</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2012"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2020"/>
         <source>Kept for later</source>
         <translation>等下再看</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2040"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2048"/>
         <source>Metas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2087"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2095"/>
         <source>Hosts</source>
         <translation>主机</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2093"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2170"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2101"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2178"/>
         <source>Horizontal margins</source>
         <translation>水平间距</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2113"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2204"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2121"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2212"/>
         <source>Borders</source>
         <translation>边框</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2164"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2172"/>
         <source>Images</source>
         <translation>图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2187"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2195"/>
         <source>Vertical margins</source>
         <translation>垂直间距</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2228"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2236"/>
         <source>Show log</source>
         <translation>显示日志</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2242"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2250"/>
         <source>Blacklisted tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2255"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2263"/>
         <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2265"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2273"/>
         <source>Ignore images containing a blacklisted tag</source>
         <translation>忽略有黑名单中的标签的图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2272"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2280"/>
         <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
         <translation>&lt;i&gt;如果这个选项被选中，所有包含有黑名单中的标签的图片都将不被显示。否则，在显示图片前将弹出提示。&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2286"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2294"/>
         <source>Delay on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2293"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2301"/>
         <source> s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2303"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2311"/>
         <source>Tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2312"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2320"/>
         <source>Minimize to tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2322"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2330"/>
         <source>Close to tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2329"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2337"/>
         <source>Enable system tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2343"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2351"/>
         <source>Use proxy</source>
         <translation>使用代理</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2388"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2396"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2393"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2401"/>
         <source>SOCKS v5</source>
         <translation>SOCKS v5</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2401"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2615"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2409"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2623"/>
         <source>Host</source>
         <translation>主机</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2411"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2419"/>
         <source>Port</source>
         <translation>端口</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2425"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2625"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2433"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2633"/>
         <source>User</source>
         <translation>用户名</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2432"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2635"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2440"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2643"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2452"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2460"/>
         <source>Use system-wide proxy settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2469"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2477"/>
         <source>Add a web service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2506"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2576"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2514"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2584"/>
         <source>Tag (after)</source>
         <translation>标签（之前）</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2516"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2556"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2524"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2564"/>
         <source>Tag (before)</source>
         <translation>标签（之后）</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2526"/>
-        <location filename="../gui/src/settings/options-window.ui" line="2596"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2534"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2604"/>
         <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
         <translation>额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; 或 &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2546"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2554"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2586"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2594"/>
         <source>End</source>
         <translation>结束</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2609"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2617"/>
         <source>Credentials</source>
         <translation>验证</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.ui" line="2655"/>
+        <location filename="../gui/src/settings/options-window.ui" line="2663"/>
         <source>Driver</source>
         <translation>驱动</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="307"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="309"/>
         <source>Choose a save folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="314"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="316"/>
         <source>Choose a save folder for favorites</source>
         <translation>选择收藏保存的目录</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="388"/>
-        <location filename="../gui/src/settings/options-window.cpp" line="498"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="390"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="500"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="393"/>
-        <location filename="../gui/src/settings/options-window.cpp" line="503"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="395"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="505"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="627"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="629"/>
         <source>Choose a color</source>
         <translation>选择一个颜色</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="641"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="643"/>
         <source>Choose a font</source>
         <translation>选择一个字体</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="875"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="878"/>
         <source>An error occured creating the save folder.</source>
         <translation>创建保存目录时出错。</translation>
     </message>
     <message>
-        <location filename="../gui/src/settings/options-window.cpp" line="890"/>
+        <location filename="../gui/src/settings/options-window.cpp" line="893"/>
         <source>An error occured creating the favorites save folder.</source>
         <translation>创建收藏保存目录时出错。</translation>
     </message>
@@ -3519,22 +3531,22 @@ Please solve the issue before resuming the download.</source>
         <translation>你的文件名不唯一，新图片可能会将之前的图片覆盖！你应该使用 %md5%，因为它是唯一的，可以避免不便。</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="311"/>
+        <location filename="../lib/src/models/filename.cpp" line="312"/>
         <source>The %%1% token does not exist and will not be replaced.</source>
         <translation>%%1% 变量不存在，且不会被替换。</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="319"/>
+        <location filename="../lib/src/models/filename.cpp" line="320"/>
         <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
         <translation>你的文件名格式存在 Windows 不允许的字符！不允许的字符： * ? &quot; : &lt; &gt; |</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="325"/>
+        <location filename="../lib/src/models/filename.cpp" line="326"/>
         <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
         <translation>你选择使用 %id% 变量。它只在特定的站点唯一。相同的 ID 可能在其他站点代表不同的图片。</translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="329"/>
+        <location filename="../lib/src/models/filename.cpp" line="330"/>
         <source>Valid filename!</source>
         <translation>文件名有效！</translation>
     </message>
@@ -3726,105 +3738,110 @@ Please solve the issue before resuming the download.</source>
 <context>
     <name>SearchTab</name>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="161"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="162"/>
+        <source>all images filtered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="168"/>
         <source>server offline</source>
         <translation>服务器不在线</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="166"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="173"/>
         <source>too many tags</source>
         <translation>太多标签</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="171"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="178"/>
         <source>page too far</source>
         <translation>页面过多</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="375"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="382"/>
         <source>HTTPS redirection detected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="376"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
         <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="378"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
         <source>Always</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="379"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
         <source>Never for that website</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="380"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="593"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="600"/>
         <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
         <translation>这个图片中的一些标签是白名单中的：%1。但是，也有一些标签是黑名单中的：%2。你依然想要下载吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="774"/>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="817"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="781"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="824"/>
         <source>Page %1 of %2 (%3 of %4)</source>
         <translation>第 %1 页 共 %2 页 (第 %3 页 共 %4 页)</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="774"/>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="812"/>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="815"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="781"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="819"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="822"/>
         <source>max %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="806"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="813"/>
         <source>No result</source>
         <translation>没有结果</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="807"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="814"/>
         <source>Possible reasons: %1</source>
         <translation>可能的原因：%1</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="909"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="916"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="911"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="918"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="920"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="927"/>
         <source>Save as...</source>
         <translation>保存为...</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="926"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="933"/>
         <source>Save selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="977"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="984"/>
         <source>Save image</source>
         <translation>保存图片</translation>
     </message>
     <message>
-        <location filename="../gui/src/tabs/search-tab.cpp" line="1194"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
         <source>Blacklist</source>
         <translation>黑名单</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/tabs/search-tab.cpp" line="1194"/>
+        <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
         <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
         <translation>
             <numerusform>%1 这个图片中的 %n 标签被检测到在黑名单中。你依然想要显示它吗？</numerusform>
@@ -4116,8 +4133,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/sources/sources-settings-window.ui" line="145"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="893"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="921"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="551"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="579"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -4247,45 +4264,40 @@ Please solve the issue before resuming the download.</source>
         <translation>使用默认来源</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="492"/>
         <source>Credentials</source>
-        <translation>验证</translation>
+        <translation type="vanished">验证</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="498"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="697"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
         <source>Username</source>
         <translation>用户名</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="508"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="707"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="524"/>
         <source>Hash password</source>
-        <translation>计算密码哈希值</translation>
+        <translation type="vanished">计算密码哈希值</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="555"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="875"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="533"/>
         <source>Test</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="566"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="492"/>
         <source>Login</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="498"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="583"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="83"/>
         <source>Through URL</source>
         <translation>通过 url</translation>
     </message>
@@ -4298,171 +4310,130 @@ Please solve the issue before resuming the download.</source>
         <translation type="vanished">请求方式</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="588"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
         <source>GET</source>
         <translation>GET</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="593"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
         <source>POST</source>
         <translation>POST</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="598"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
         <source>OAuth 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="603"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
         <source>OAuth 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="839"/>
-        <source>Page limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="631"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="687"/>
         <source>URL</source>
-        <translation>URL</translation>
+        <translation type="vanished">URL</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="641"/>
-        <source>Username field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="651"/>
-        <source>Password field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="661"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="717"/>
         <source>Cookie</source>
-        <translation>Cookie</translation>
+        <translation type="vanished">Cookie</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="746"/>
-        <source>Request token url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="753"/>
-        <source>Authorize url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="760"/>
-        <source>Access token url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="795"/>
-        <source>Request url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="805"/>
-        <source>Token url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="815"/>
-        <source>Refresh token url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="825"/>
-        <source>Scope</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="886"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="544"/>
         <source>Cookies</source>
         <translation>Cookies</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="898"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="926"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="556"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="584"/>
         <source>Value</source>
         <translation>值</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="906"/>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="934"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="564"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="592"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="914"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
         <source>Headers</source>
         <translation>请求头部</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="959"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="617"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="979"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="637"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.ui" line="986"/>
+        <location filename="../gui/src/sources/sources-settings-window.ui" line="644"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="158"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
+        <source>API key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
+        <source>Consumer key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
+        <source>Consumer secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Hash a password</source>
-        <translation>计算密码哈希值</translation>
+        <translation type="vanished">计算密码哈希值</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="158"/>
         <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-        <translation>请在下面输入你的密码。&lt;br/&gt;它将以 &quot;%1&quot; 的格式计算哈希值。</translation>
+        <translation type="vanished">请在下面输入你的密码。&lt;br/&gt;它将以 &quot;%1&quot; 的格式计算哈希值。</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="167"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
         <source>Delete a site</source>
         <translation>删除站点</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="167"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
         <source>Are you sure you want to delete the site %1?</source>
         <translation>你确定想要删除站点 %1 吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="188"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="207"/>
         <source>Connection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="201"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="220"/>
         <source>Success!</source>
         <translation>测试成功！</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="205"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="224"/>
         <source>Failure</source>
         <translation>测试失败</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="209"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="228"/>
         <source>Unable to test</source>
         <translation>无法测试</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="266"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="284"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sources-settings-window.cpp" line="266"/>
+        <location filename="../gui/src/sources/sources-settings-window.cpp" line="284"/>
         <source>You should at least select one source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4876,7 +4847,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/token-settings-widget.ui" line="56"/>
         <source>Original</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">源文件名</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/token-settings-widget.ui" line="61"/>
@@ -4964,14 +4935,14 @@ Please solve the issue before resuming the download.</source>
     <name>ZoomWindow</name>
     <message>
         <location filename="../gui/src/viewer/zoom-window.ui" line="23"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="1183"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="1185"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="1184"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="1186"/>
         <source>Image</source>
         <translation>图片</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoom-window.ui" line="147"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="535"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="536"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -4982,7 +4953,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoom-window.ui" line="161"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="579"/>
         <source>Save and close</source>
         <translation>保存并关闭</translation>
     </message>
@@ -4998,13 +4969,13 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoom-window.ui" line="219"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="535"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="536"/>
         <source>Save (fav)</source>
         <translation>保存（收藏）</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoom-window.ui" line="226"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="579"/>
         <source>Save and close (fav)</source>
         <translation>保存并退出（收藏）</translation>
     </message>
@@ -5014,131 +4985,131 @@ Please solve the issue before resuming the download.</source>
         <translation>目标文件夹（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="224"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="225"/>
         <source>Reload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="228"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="229"/>
         <source>Copy file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="230"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="231"/>
         <source>Copy data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="311"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="312"/>
         <source>Folder does not exist</source>
         <translation>文件夹不存在</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="311"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="312"/>
         <source>The save folder does not exist yet. Create it?</source>
         <translation>保存文件夹不存在。创建一个吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="315"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="316"/>
         <source>Error creating folder.
 %1</source>
         <translation>创建文件夹时出错
 %1</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="539"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="540"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="583"/>
         <source>Saving... (fav)</source>
         <translation>保存...（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="539"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="540"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="583"/>
         <source>Saving...</source>
         <translation>保存...</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="543"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="544"/>
         <source>Saved! (fav)</source>
         <translation>保存完成！（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="543"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="544"/>
         <source>Saved!</source>
         <translation>保存完成！</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="547"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="548"/>
         <source>Copied! (fav)</source>
         <translation>已复制！（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="547"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="548"/>
         <source>Copied!</source>
         <translation>已复制！</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="551"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="552"/>
         <source>Moved! (fav)</source>
         <translation>已移动！（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="551"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="552"/>
         <source>Moved!</source>
         <translation>已移动！</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="555"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
         <source>Link created! (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="555"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
         <source>Link created!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="560"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
         <source>MD5 already exists (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="560"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
         <source>MD5 already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="565"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
         <source>Already exists (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="565"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
         <source>Already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="569"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
         <source>Delete (fav)</source>
         <translation>删除（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="569"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="587"/>
         <source>Close (fav)</source>
         <translation>关闭（收藏）</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="587"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="602"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="603"/>
         <source>File is too big to be displayed.
 %1</source>
         <translation type="unfinished"></translation>
@@ -5150,28 +5121,28 @@ Please solve the issue before resuming the download.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="840"/>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="842"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="841"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="843"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="840"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="841"/>
         <source>You did not specified a save folder! Do you want to open the options window?</source>
         <translation>你没有指定保存文件夹！你想要现在打开设置窗口吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="842"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="843"/>
         <source>You did not specified a save format! Do you want to open the options window?</source>
         <translation>你没有指定保存格式！你想要现在打开设置窗口吗？</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="896"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="897"/>
         <source>Error saving image.</source>
         <translation>保存图片时发生错误。</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoom-window.cpp" line="916"/>
+        <location filename="../gui/src/viewer/zoom-window.cpp" line="917"/>
         <source>Save image</source>
         <translation>保存图片</translation>
     </message>
