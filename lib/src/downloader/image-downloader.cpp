@@ -7,6 +7,7 @@
 #include "file-downloader.h"
 #include "functions.h"
 #include "logger.h"
+#include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -73,13 +74,17 @@ void ImageDownloader::setBlacklist(Blacklist *blacklist)
 
 void ImageDownloader::save()
 {
+	// Always load details if the API doesn't provide the file URL in the listing page
+	const QStringList forcedTokens = m_image->parentSite()->getApis().first()->forcedTokens();
+	const bool needFileUrl = forcedTokens.contains("*") || forcedTokens.contains("file_url");
+
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
 	const int localNeedTags = m_filename.needExactTags(m_image->parentSite());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_blacklist != nullptr && m_image->tags().isEmpty();
-	if (!blacklistNeedTags && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
+	if (!blacklistNeedTags && !needFileUrl && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
 		loadedSave();
 		return;
 	}
@@ -194,7 +199,7 @@ void ImageDownloader::loadedSave()
 	}
 
 	m_url = m_image->url(m_size);
-	log(QStringLiteral("Loading and saving image in `%1`").arg(m_paths.first()));
+	log(QStringLiteral("Loading and saving image from `%1` in `%2`").arg(m_url.toString(), m_paths.first()));
 	loadImage();
 }
 
