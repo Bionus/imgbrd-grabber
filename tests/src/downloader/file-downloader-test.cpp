@@ -8,8 +8,9 @@ QString fileMd5(const QString &path)
 	QCryptographicHash hash(QCryptographicHash::Md5);
 
 	QFile f(path);
-	if (!f.open(QFile::ReadOnly))
+	if (!f.open(QFile::ReadOnly)) {
 		return QString();
+	}
 
 	hash.addData(&f);
 	f.close();
@@ -41,8 +42,7 @@ void FileDownloaderTest::testSuccessMultiple()
 	QVERIFY(downloader.start(reply, dest));
 	QVERIFY(spy.wait());
 
-	for (const QString &path : dest)
-	{
+	for (const QString &path : dest) {
 		QCOMPARE(fileMd5(path), m_successMd5);
 		QFile::remove(path);
 	}

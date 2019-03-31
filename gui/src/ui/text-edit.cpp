@@ -56,16 +56,18 @@ void TextEdit::doColor()
 	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
 	const QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
 	const QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
-	for (const Favorite &fav : qAsConst(m_favorites))
+	for (const Favorite &fav : qAsConst(m_favorites)) {
 		txt.replace(" " + fav.getName() + " ", " <span style=\"" + styleFavorites + "\">" + fav.getName() + "</span> ");
+	}
 
 	// Color kept for later tags
 	QFont fontKeptForLater;
 	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
 	const QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
 	const QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
-	for (const QString &tag : qAsConst(m_viewItLater))
+	for (const QString &tag : qAsConst(m_viewItLater)) {
 		txt.replace(" " + tag + " ", " <span style=\"" + styleKeptForLater + "\">" + tag + "</span> ");
+	}
 
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
@@ -82,14 +84,14 @@ void TextEdit::doColor()
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);
 	int depth = 0;
-	for (QChar &ch : txt)
-	{
-		if (ch == ' ' && depth == 0)
+	for (QChar &ch : txt) {
+		if (ch == ' ' && depth == 0) {
 			ch = QChar(29);
-		else if (ch == '<')
+		} else if (ch == '<') {
 			depth++;
-		else if (ch == '>')
+		} else if (ch == '>') {
 			depth--;
+		}
 	}
 	txt.replace(QChar(29), "&nbsp;");
 
@@ -100,14 +102,11 @@ void TextEdit::doColor()
 	const int end = crsr.selectionEnd();
 	setHtml(txt);
 
-	//If the cursor is at the right side of (if any) selected text
-	if (pos == end)
-	{
+	// If the cursor is at the right side of (if any) selected text
+	if (pos == end) {
 		crsr.setPosition(start, QTextCursor::MoveAnchor);
 		crsr.setPosition(end, QTextCursor::KeepAnchor);
-	}
-	else
-	{
+	} else {
 		crsr.setPosition(end, QTextCursor::MoveAnchor);
 		crsr.setPosition(start, QTextCursor::KeepAnchor);
 	}
@@ -126,12 +125,14 @@ void TextEdit::setText(const QString &text)
 
 void TextEdit::setCompleter(QCompleter *completer)
 {
-	if (completer == nullptr)
+	if (completer == nullptr) {
 		return;
+	}
 
 	// Disconnect the previous completer
-	if (c != nullptr)
+	if (c != nullptr) {
 		QObject::disconnect(c, nullptr, this, nullptr);
+	}
 
 	// Set the new completer and connect it to the field
 	c = completer;
@@ -148,8 +149,9 @@ QCompleter *TextEdit::completer() const
 
 void TextEdit::insertCompletion(const QString &completion)
 {
-	if (c->widget() != this)
+	if (c->widget() != this) {
 		return;
+	}
 
 	QTextCursor tc = textCursor();
 	const int extra = completion.length() - c->completionPrefix().length();
@@ -177,16 +179,16 @@ QString TextEdit::textUnderCursor() const
 
 void TextEdit::focusInEvent(QFocusEvent *e)
 {
-	if (c != nullptr)
+	if (c != nullptr) {
 		c->setWidget(this);
+	}
 
 	QTextEdit::focusInEvent(e);
 }
 
 void TextEdit::keyPressEvent(QKeyEvent *e)
 {
-	if (c != nullptr && c->popup()->isVisible())
-	{
+	if (c != nullptr && c->popup()->isVisible()) {
 		// The following keys are forwarded by the completer to the widget
 		QString curr = c->popup()->currentIndex().data().toString(), under = textUnderCursor();
 		switch (e->key())
@@ -194,10 +196,9 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				c->popup()->hide();
-				if (curr.isEmpty() || under == curr)
-				{ emit returnPressed(); }
-				else
-				{
+				if (curr.isEmpty() || under == curr) {
+					emit returnPressed();
+				} else {
 					insertCompletion(curr);
 					doColor();
 				}
@@ -211,11 +212,9 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 	}
 
-	const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
-	if (c == nullptr || !isShortcut) // do not process the shortcut when we have a completer
-	{
-		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
-		{
+	const bool isShortcut = (e->modifiers().testFlag(Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
+	if (c == nullptr || !isShortcut) { // do not process the shortcut when we have a completer
+		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return) {
 			emit returnPressed();
 			return;
 		}
@@ -223,22 +222,23 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 	doColor();
 
-	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-	if (c == nullptr || (ctrlOrShift && e->text().isEmpty()))
+	const bool ctrlOrShift = e->modifiers().testFlag(Qt::ControlModifier) || e->modifiers().testFlag(Qt::ShiftModifier);
+	if (c == nullptr || (ctrlOrShift && e->text().isEmpty())) {
 		return;
+	}
 
 	static QString eow(" ");
 	const bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
-	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
-	{
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 3 || eow.contains(e->text().right(1)))) {
 		c->popup()->hide();
 		return;
 	}
 
-	if (completionPrefix != c->completionPrefix())
+	if (completionPrefix != c->completionPrefix()) {
 		c->setCompletionPrefix(completionPrefix);
+	}
 
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
@@ -254,14 +254,15 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			auto *favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
-				for (const Favorite &fav : qAsConst(m_favorites))
-				{ favsGroup->addAction(fav.getName()); }
-				if (!toPlainText().isEmpty())
-				{
-					if (m_favorites.contains(Favorite(toPlainText())))
-					{ favs->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetFavorite())); }
-					else
-					{ favs->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setFavorite())); }
+				for (const Favorite &fav : qAsConst(m_favorites)) {
+					favsGroup->addAction(fav.getName());
+				}
+				if (!toPlainText().isEmpty()) {
+					if (m_favorites.contains(Favorite(toPlainText()))) {
+						favs->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetFavorite()));
+					} else {
+						favs->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setFavorite()));
+					}
 					favs->addSeparator();
 				}
 				favs->addActions(favsGroup->actions());
@@ -272,14 +273,15 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			auto *vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, &QActionGroup::triggered, this, &TextEdit::insertFav);
-				for (const QString &viewItLater : qAsConst(m_viewItLater))
-				{ vilsGroup->addAction(viewItLater); }
-				if (!toPlainText().isEmpty())
-				{
-					if (m_viewItLater.contains(toPlainText()))
-					{ vils->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetKfl())); }
-					else
-					{ vils->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setKfl())); }
+				for (const QString &viewItLater : qAsConst(m_viewItLater)) {
+					vilsGroup->addAction(viewItLater);
+				}
+				if (!toPlainText().isEmpty()) {
+					if (m_viewItLater.contains(toPlainText())) {
+						vils->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetKfl()));
+					} else {
+						vils->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setKfl()));
+					}
 					vils->addSeparator();
 				}
 				vils->addActions(vilsGroup->actions());
@@ -316,8 +318,7 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 				sortings->setIcon(QIcon(":/images/sortings/sort.png"));
 			menu->addMenu(sortings);
 		menu->addSeparator();
-			if (!textCursor().selection().isEmpty())
-			{
+			if (!textCursor().selection().isEmpty()) {
 				menu->addAction(tr("Copy"), this, SLOT(copy()), QKeySequence::Copy);
 				menu->addAction(tr("Cut"), this, SLOT(cut()), QKeySequence::Cut);
 			}
@@ -351,16 +352,17 @@ void TextEdit::insertFav(QAction *act)
 	int pos = cursor.columnNumber();
 
 	QString txt = this->toPlainText();
-	if (!cursor.hasSelection())
-	{
-		if (pos == 0 && (txt.count() == 0 || txt[0] != ' '))
+	if (!cursor.hasSelection()) {
+		if (pos == 0 && txt.count() != 0 && txt[0] != ' ') {
 			text.append(' ');
-		if (pos == txt.count() && txt[txt.count() - 1] != ' ')
+		}
+		if (pos == txt.count() && txt.count() != 0 && txt[txt.count() - 1] != ' ') {
 			text.prepend(' ');
+		}
 		this->setPlainText(txt.mid(0, pos) + text + txt.mid(pos));
+	} else {
+		this->setPlainText(txt.mid(0, cursor.selectionStart()) + text + txt.mid(cursor.selectionEnd()));
 	}
-	else
-	{ this->setPlainText(txt.mid(0, cursor.selectionStart()) + text + txt.mid(cursor.selectionEnd())); }
 
 	cursor.clearSelection();
 	cursor.setPosition(pos + text.length(), QTextCursor::KeepAnchor);

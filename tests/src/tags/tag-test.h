@@ -4,7 +4,6 @@
 #include "test-suite.h"
 
 
-class Profile;
 class QSettings;
 
 class TagTest : public TestSuite
@@ -37,10 +36,10 @@ class TagTest : public TestSuite
 		void testSortTagsByCount();
 		void testTypeSpaced();
 		void testGetType();
+		void testSerialization();
 
 	private:
 		QSettings *m_settings;
-		Profile *m_profile;
 };
 
 #endif // TAG_TEST_H

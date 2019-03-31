@@ -25,6 +25,7 @@ class TagDatabaseInMemory : public TagDatabase
 	private:
 		QString m_tagFile;
 		QHash<QString, TagType> m_database;
+		mutable int m_count;
 };
 
 #endif // TAG_DATABASE_IN_MEMORY_H

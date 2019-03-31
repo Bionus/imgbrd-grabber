@@ -16,6 +16,7 @@ class TagDatabaseTestSuite : public TestSuite
 	private slots:
 		void initTestCase();
 
+		void testAlreadyLoaded();
 		void testTypesProperlyLoaded();
 		void testEmptyContainsNone();
 		void testFilledContainsAll();

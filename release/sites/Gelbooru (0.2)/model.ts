@@ -1,6 +1,6 @@
 function completeImage(img: IImage): IImage {
-    if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = img["preview_url"]
+    if (!img.file_url || img.file_url.length < 5) {
+        img.file_url = img.preview_url
             .replace("/thumbnails/", "/images/")
             .replace("/thumbnail_", "/");
     }
@@ -18,16 +18,40 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth: {},
+    auth: {
+        session: {
+            type: "post",
+            url: "/index.php?page=account&s=login&code=00",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "user",
+                },
+                {
+                    id: "password",
+                    key: "pass",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "user_id",
+            },
+        },
+    },
     apis: {
         xml: {
             name: "XML",
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: any, opts: any, previous: any): string | IError => {
                     const page: number = query.page - 1;
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
+                    const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                    if (fav) {
+                        return { error: "XML API cannot search favorites" };
+                    }
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
@@ -63,16 +87,24 @@ export const source: ISource = {
                         const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
+                        const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
+                        if (fav) {
+                            const pageFav: number = (query.page - 1) * 50;
+                            const pagePartFav = Grabber.pageUrl(pageFav, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
+                            return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePartFav;
+                        }
                         return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                     } catch (e) {
                         return { error: e.message };
                     }
                 },
                 parse: (src: string): IParsedSearch => {
+                    const pageCountRaw = Grabber.regexMatch('<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>\\s*(?:<b>(?<last>\\d+)</b>\\s*)?(?:</div>|<br ?/>)', src);
+                    const pageCount = pageCountRaw["last"] || pageCountRaw["page"];
                     return {
                         images: Grabber.regexToImages('<span[^>]*(?: id="?\\w(?<id>\\d+)"?)?>\\s*<a[^>]*(?: id="?\\w(?<id_2>\\d+)"?)[^>]*>\\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+/thumbnail_(?<md5>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags>[^"]+)"[^>]*/?>\\s*</a>|<img\\s+class="preview"\\s+src="(?<preview_url_2>[^"]+/thumbnail_(?<md5_2>[^.]+)\\.[^"]+)" [^>]*title="\\s*(?<tags_2>[^"]+)"[^>]*/?>', src).map(completeImage),
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
-                        pageCount: Grabber.regexToConst("page", '<a href="[^"]+pid=(?<page>\\d+)[^"]*" alt="last page"[^>]*>'),
+                        pageCount: pageCount && parseInt(pageCount, 10) / 42 + 1,
                     };
                 },
             },
@@ -89,7 +121,8 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    return "/index.php?page=tags&s=list&pid=" + query.page;
+                    const page: number = (query.page - 1) * 50;
+                    return "/index.php?page=tags&s=list&pid=" + page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {
@@ -102,8 +135,8 @@ export const source: ISource = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.search(/Running Gelbooru Beta 0\.2/) !== -1
-                        || src.search(/Running <a href=['"][^'"]+['"]>Gelbooru<\/a> Beta 0\.2/) !== -1;
+                    return src.search(/Running Gelbooru(?: Beta)? 0\.2/) !== -1
+                        || src.search(/Running <a[^>]*>Gelbooru<\/a>(?: Beta)? 0\.2/) !== -1;
                 },
             },
         },

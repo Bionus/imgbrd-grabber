@@ -29,6 +29,7 @@ class FilenameTest : public TestSuite
 		void testPathKeepAll();
 		void testPathKeepN();
 		void testPathKeepNThenAdd();
+		void testPathSort();
 		void testPathIgnoredTags();
 		void testPathEmptyDirs();
 		void testPathEmptyDirsNetworkDrive();
@@ -62,6 +63,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
+		void testPathOptionNumNoExt();
 		void testPathOptionNumAboveTen();
 		void testPathOptionSort();
 		void testPathSpecies();
@@ -69,6 +71,7 @@ class FilenameTest : public TestSuite
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();
+		void testPathGalleryName();
 		void testExpandTokensSimple();
 		void testExpandTokensMultiple();
 		void testExpandTokensMatrix();
@@ -90,14 +93,14 @@ class FilenameTest : public TestSuite
 
 	protected:
 		void assertPath(const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertExpand(const QString &format, const QString &expected);
+		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false, bool useTokens = true);
 
 	private:
 		Profile *m_profile;
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;
+		Image *m_gallery;
 		Image *m_img;
 		QMap<QString, QString> m_details;
 };

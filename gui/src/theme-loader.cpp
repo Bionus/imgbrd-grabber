@@ -18,8 +18,9 @@ bool ThemeLoader::setTheme(const QString &name)
 	QString dir = QString(m_path).replace('\\', '/') + name + "/";
 
 	QFile f(dir + "style.css");
-	if (!f.open(QFile::ReadOnly | QFile::Text))
+	if (!f.open(QFile::ReadOnly | QFile::Text)) {
 		return false;
+	}
 
 	QString css = f.readAll();
 	f.close();

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6.0)
+cmake_minimum_required(VERSION 3.2)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -19,28 +19,40 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 	endif()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005") # Suppress some warnings
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4714 /wd4127 /wd4005 /wd4251") # Suppress some warnings
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-macro-redefined -pedantic")
 endif()
 
 project(Grabber)
+if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
+	set(VERSION "7.0.0")
+else()
+	string(REGEX REPLACE "^v" "" VERSION VERSION)
+endif()
 set(USE_SSL 1)
-set(USE_PCH 1)
 
-add_definitions(-DVERSION="6.0.6")
+# Android settings
+set(ANDROID_APP_NAME ${PROJECT_NAME})
+set(ANDROID_APP_VERSION_NAME ${VERSION})
+set(ANDROID_APP_VERSION_CODE 1)
+set(ANDROID_APP_PACKAGE_NAME "com.bionus.grabber")
+
+message(STATUS "Configuring for version '${VERSION}'")
+
+add_definitions(-DVERSION="${VERSION}")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DSOURCE_ISSUES_URL="https://raw.githubusercontent.com/wiki/Bionus/imgbrd-grabber/SourceIssues.md")
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
 # SSL
-if(USE_SSL)
-	message("Compiling with SSL support")
+if(USE_SSL AND (NOT ANDROID))
+	message(STATUS "Compiling with SSL support")
 	find_package(OpenSSL REQUIRED)
 	if (OPENSSL_FOUND)
-		message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
-		message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+		message(STATUS "OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
+		message(STATUS "OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 		include_directories(${OPENSSL_INCLUDE_DIR})
 		list(APPEND LIBS ${OPENSSL_LIBRARIES})
 	endif()
@@ -53,14 +65,14 @@ if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
-# Add a bunch of definitions for Travis builds
-if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions(-DTRAVIS=1)
-	if("$ENV{TRAVIS_OS_NAME}" STREQUAL "osx")
-		add_definitions(-DTRAVIS_OS_OSX=1)
-	elseif("$ENV{TRAVIS_OS_NAME}" STREQUAL "linux")
-		add_definitions(-DTRAVIS_OS_LINUX=1)
-	endif()
+# Pre-compiled headers
+if(WIN32)
+	set(USE_PCH 1)
+else()
+	set(USE_PCH 0)
+endif()
+if(USE_PCH)
+	include(cotire/CMake/cotire)
 endif()
 
 add_subdirectory(lib)
@@ -77,11 +89,21 @@ install(DIRECTORY release/ DESTINATION share/Grabber/
 		PATTERN "*.exe" EXCLUDE)
 install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
 
+# Replicate the behavior of "list(FILTER ${LIST} EXCLUDE REGEX ${REGEX})" on older CMake versions
+function(listFilterRegex LIST REGEX)
+	foreach(ITEM ${${LIST}})
+		if(NOT ITEM MATCHES "${REGEX}")
+			list(APPEND OUTPUT ${ITEM})
+		endif()
+	endforeach()
+	set(${LIST} ${OUTPUT} PARENT_SCOPE)
+endfunction()
+
 # Transpile TS sites into JS
 set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
 file(GLOB_RECURSE SITES_TS_FILES "${SITES_DIR}/**.ts")
-list(FILTER SITES_TS_FILES EXCLUDE REGEX ".*.d.ts$")
-list(FILTER SITES_TS_FILES EXCLUDE REGEX "node_modules")
+listFilterRegex(SITES_TS_FILES ".*.d.ts$")
+listFilterRegex(SITES_TS_FILES "node_modules")
 add_custom_command(
 	OUTPUT NPM_modules
 	DEPENDS "${SITES_DIR}/package.json"

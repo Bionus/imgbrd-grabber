@@ -1,5 +1,5 @@
 #include "fixed-size-grid-layout.h"
-#include <QtWidgets>
+#include <QWidget>
 
 
 FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent, int hSpacing, int vSpacing)
@@ -13,8 +13,9 @@ FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
 FixedSizeGridLayout::~FixedSizeGridLayout()
 {
 	QLayoutItem *item;
-	while ((item = takeAt(0)) != nullptr)
+	while ((item = takeAt(0)) != nullptr) {
 		delete item;
+	}
 }
 
 
@@ -33,8 +34,9 @@ void FixedSizeGridLayout::addItem(QLayoutItem *item)
 
 void FixedSizeGridLayout::insertItem(int index, QLayoutItem *item)
 {
-	if (index < 0)
+	if (index < 0) {
 		index = m_items.count();
+	}
 
 	m_items.insert(index, item);
 	invalidate();
@@ -58,8 +60,7 @@ QLayoutItem *FixedSizeGridLayout::itemAt(int index) const
 
 QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 {
-	if (index >= 0 && index < m_items.size())
-	{
+	if (index >= 0 && index < m_items.size()) {
 		auto item = m_items.takeAt(index);
 		invalidate();
 		return item;
@@ -101,8 +102,9 @@ int FixedSizeGridLayout::heightForWidth(int width) const
 QSize FixedSizeGridLayout::minimumSize() const
 {
 	QSize size;
-	for (QLayoutItem *item : m_items)
+	for (QLayoutItem *item : m_items) {
 		size = size.expandedTo(item->minimumSize());
+	}
 
 	size += QSize(2 * margin(), 2 * margin());
 	return size;
@@ -130,8 +132,7 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 	int w = effectiveRect.width();
 
 	int lineHeight = 0;
-	for (QLayoutItem *item : m_items)
-	{
+	for (QLayoutItem *item : m_items) {
 		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
 		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
@@ -140,16 +141,16 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElements - 1));
 
 		int nextX = x + item->sizeHint().width() + spaceX;
-		if (nextX - spaceX - 1 > effectiveRect.right() && lineHeight > 0)
-		{
+		if (nextX - spaceX - 1 > effectiveRect.right() && lineHeight > 0) {
 			x = effectiveRect.x();
 			y = y + lineHeight + spaceY;
 			nextX = x + item->sizeHint().width() + spaceX;
 			lineHeight = 0;
 		}
 
-		if (!testOnly)
+		if (!testOnly) {
 			item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+		}
 
 		x = nextX;
 		lineHeight = qMax(lineHeight, item->sizeHint().height());
@@ -160,14 +161,15 @@ int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 {
 	QObject *parent = this->parent();
-	if (parent == nullptr)
+	if (parent == nullptr) {
 		return -1;
+	}
 
-	if (parent->isWidgetType())
-	{
+	if (parent->isWidgetType()) {
 		auto *pw = dynamic_cast<QWidget*>(parent);
-		if (pw != nullptr)
+		if (pw != nullptr) {
 			return pw->style()->pixelMetric(pm, nullptr, pw);
+		}
 	}
 
 	return dynamic_cast<QLayout*>(parent)->spacing();
@@ -175,8 +177,9 @@ int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 
 int FixedSizeGridLayout::widgetSpacing(int spacing, QWidget *widget, Qt::Orientation orientation) const
 {
-	if (spacing >= 0)
+	if (spacing >= 0) {
 		return spacing;
+	}
 
 	const QSizePolicy::ControlType controlType = widget->sizePolicy().controlType();
 	return widget->style()->layoutSpacing(controlType, controlType, orientation);

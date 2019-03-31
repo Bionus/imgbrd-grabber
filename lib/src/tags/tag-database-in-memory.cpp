@@ -5,41 +5,47 @@
 
 
 TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(std::move(tagFile))
+	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
 bool TagDatabaseInMemory::load()
 {
 	// Don't reload databases
-	if (!m_database.isEmpty())
+	if (!m_database.isEmpty()) {
 		return true;
+	}
 
 	// Load tag types
-	if (!TagDatabase::load())
+	if (!TagDatabase::load()) {
 		return false;
+	}
 
 	QFile file(m_tagFile);
-	if (!file.exists())
+	if (!file.exists()) {
 		return true;
-	if (!file.open(QFile::ReadOnly | QFile::Text))
+	}
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		return false;
+	}
 
 	QTextStream in(&file);
-	while (!in.atEnd())
-	{
+	while (!in.atEnd()) {
 		QString line = in.readLine();
 
 		QStringList data = line.split(',');
-		if (data.count() != 2)
+		if (data.count() != 2) {
 			continue;
+		}
 
 		int tId = data[1].toInt();
-		if (!m_tagTypes.contains(tId))
+		if (!m_tagTypes.contains(tId)) {
 			continue;
+		}
 
 		QString tag = data[0];
-		if (tag.isEmpty())
+		if (tag.isEmpty()) {
 			continue;
+		}
 		tag.squeeze();
 
 		m_database.insert(tag, m_tagTypes[tId]);
@@ -53,17 +59,18 @@ bool TagDatabaseInMemory::load()
 bool TagDatabaseInMemory::save()
 {
 	QFile file(m_tagFile);
-	if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
+	if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
 		return false;
+	}
 
 	// Inverted tag type map to get the tag type ID from its name
 	QMap<QString, int> tagTypes;
-	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it)
+	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it) {
 		tagTypes.insert(it.value().name(), it.key());
+	}
 
 	QHashIterator<QString, TagType> i(m_database);
-	while (i.hasNext())
-	{
+	while (i.hasNext()) {
 		i.next();
 
 		TagType tagType = i.value();
@@ -79,21 +86,46 @@ bool TagDatabaseInMemory::save()
 void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
 {
 	m_database.clear();
-	for (const Tag &tag : tags)
+	for (const Tag &tag : tags) {
 		m_database.insert(tag.text(), tag.type());
+	}
 }
 
 QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
-	for (const QString &tag : tags)
-		if (m_database.contains(tag))
+	for (const QString &tag : tags) {
+		if (m_database.contains(tag)) {
 			ret.insert(tag, m_database[tag]);
+		}
+	}
 
 	return ret;
 }
 
 int TagDatabaseInMemory::count() const
 {
-	return m_database.count();
+	if (!m_database.isEmpty()) {
+		return m_database.count();
+	}
+
+	if (m_count != -1) {
+		return m_count;
+	}
+
+	m_count = 0;
+
+	QFile file(m_tagFile);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		return m_count;
+	}
+
+	QTextStream in(&file);
+	while (!in.atEnd()) {
+		m_count++;
+		in.readLine();
+	}
+	file.close();
+
+	return m_count;
 }

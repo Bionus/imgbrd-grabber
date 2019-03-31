@@ -35,5 +35,17 @@ void TokenTest::testLazyWithoutCaching()
 	QCOMPARE(val, 2);
 }
 
+void TokenTest::testCompare()
+{
+	QVERIFY(Token(13) == Token(13));
+	QVERIFY(Token(13) != Token(17));
+
+	QVERIFY(Token("test") == Token("test"));
+	QVERIFY(Token("test") != Token("not_test"));
+
+	QVERIFY(Token(QStringList() << "1" << "2") == Token(QStringList() << "1" << "2"));
+	QVERIFY(Token(QStringList() << "1" << "2") != Token(QStringList() << "1" << "2" << "3"));
+}
+
 
 QTEST_MAIN(TokenTest)

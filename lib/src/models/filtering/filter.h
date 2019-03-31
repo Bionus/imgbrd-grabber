@@ -9,8 +9,10 @@ class Token;
 
 class Filter
 {
-	public:
+	protected:
 		explicit Filter(bool invert = false);
+
+	public:
 		virtual ~Filter() = default;
 		virtual QString match(const QMap<QString, Token> &tokens, bool invert = false) const = 0;
 		virtual QString toString() const = 0;

@@ -26,8 +26,7 @@ void EmptyDirsFix1::next()
 	QStringList dirs = mkList(QDir(ui->lineFolder->text()));
 
 	// We don't continue if there were no folders found
-	if (dirs.isEmpty())
-	{
+	if (dirs.isEmpty()) {
 		QMessageBox::information(this, tr("Empty folders fixer"), tr("No empty folder found."));
 		close();
 		return;
@@ -42,12 +41,12 @@ QStringList EmptyDirsFix1::mkList(const QDir &dir)
 {
 	QStringList ret;
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dirs.size(); i++)
-	{
-		if (isEmpty(QDir(dir.path() + "/" + dirs.at(i))))
-		{ ret.append(dir.path() + "/" + dirs.at(i)); }
-		else
-		{ mkList(QDir(dir.path() + "/" + dirs.at(i))); }
+	for (int i = 0; i < dirs.size(); i++) {
+		if (isEmpty(QDir(dir.path() + "/" + dirs.at(i)))) {
+			ret.append(dir.path() + "/" + dirs.at(i));
+		} else {
+			mkList(QDir(dir.path() + "/" + dirs.at(i)));
+		}
 	}
 	return ret;
 }
@@ -55,12 +54,14 @@ QStringList EmptyDirsFix1::mkList(const QDir &dir)
 bool EmptyDirsFix1::isEmpty(const QDir &dir)
 {
 	QStringList files = dir.entryList(QDir::Files);
-	if (!files.isEmpty())
-	{ return false; }
+	if (!files.isEmpty()) {
+		return false;
+	}
 
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	bool empty = true;
-	for (int i = 0; i < dirs.size(); i++)
-	{ empty = empty && isEmpty(QDir(dir.path() + "/" + dirs.at(i))); }
+	for (int i = 0; i < dirs.size(); i++) {
+		empty = empty && isEmpty(QDir(dir.path() + "/" + dirs.at(i)));
+	}
 	return empty;
 }

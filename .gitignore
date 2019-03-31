@@ -50,6 +50,7 @@ releases/release.sh
 releases/translation_tools.rar
 CrashReporter/debug/
 CrashReporter/release/
+gui/android/AndroidManifest.xml
 
 
 # NPM
@@ -131,3 +132,8 @@ Makefile*
 
 *.qmlproject.user
 *.qmlproject.user.*
+
+
+# VS Code
+
+.vscode/

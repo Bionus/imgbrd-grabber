@@ -4,23 +4,16 @@
 #include <QDateTime>
 #include <QDir>
 #include <QDomElement>
+#include <QJSValue>
 #include <QMap>
 #include <QString>
 #include <QStringList>
-#include "logger.h"
+#include "backports/backports.h"
+#include "filename/conditional-filename.h"
 
 
 class QSettings;
 
-
-// qAsConst
-#if (QT_VERSION < QT_VERSION_CHECK(5, 7, 0))
-	template <typename T>
-	Q_DECL_CONSTEXPR typename std::add_const<T>::type &qAsConst(T &t) Q_DECL_NOTHROW { return t; }
-
-	template <typename T>
-	void qAsConst(const T &&) Q_DECL_EQ_DELETE;
-#endif
 
 // Filesize units
 #if defined(Q_OS_WIN)
@@ -58,10 +51,8 @@ QString fixFilename(QString filename, QString path = "", int maxLength = 0, bool
 QString fixFilenameWindows(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 QString fixFilenameLinux(const QString &fn, const QString &path = "", int maxLength = 0, bool invalidChars = true);
 
-QMap<QString, QString> domToMap(const QDomElement &);
-
 QMap<QString, QStringList> getCustoms(QSettings *settings);
-QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings);
+QList<ConditionalFilename> getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
 QStringList getExternalLogFilesSuffixes(QSettings *settings);
 
@@ -84,6 +75,9 @@ QString qFontToCss(const QFont &font);
 QFont qFontFromString(const QString &str);
 
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
+
+QUrl removeCacheBuster(QUrl url);
+QStringList jsToStringList(const QJSValue &val);
 
 
 

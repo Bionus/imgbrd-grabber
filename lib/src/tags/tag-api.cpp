@@ -15,28 +15,30 @@ TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObj
 
 TagApi::~TagApi()
 {
-	if (m_reply != nullptr)
+	if (m_reply != nullptr) {
 		m_reply->deleteLater();
+	}
 }
 
 void TagApi::load(bool rateLimit)
 {
 	// Load the request with a possible delay
 	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0)
-	{ QTimer::singleShot(ms, this, SLOT(loadNow())); }
-	else
-	{ loadNow(); }
+	if (ms > 0) {
+		QTimer::singleShot(ms, this, SLOT(loadNow()));
+	} else {
+		loadNow();
+	}
 }
 
 void TagApi::loadNow()
 {
 	log(QStringLiteral("[%1] Loading tags page `%2`").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
-	if (m_reply != nullptr)
-	{
-		if (m_reply->isRunning())
+	if (m_reply != nullptr) {
+		if (m_reply->isRunning()) {
 			m_reply->abort();
+		}
 
 		m_reply->deleteLater();
 	}
@@ -47,8 +49,9 @@ void TagApi::loadNow()
 
 void TagApi::abort()
 {
-	if (m_reply != nullptr && m_reply->isRunning())
+	if (m_reply != nullptr && m_reply->isRunning()) {
 		m_reply->abort();
+	}
 }
 
 void TagApi::parse()
@@ -57,8 +60,7 @@ void TagApi::parse()
 
 	// Check redirection
 	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redirection.isEmpty())
-	{
+	if (!redirection.isEmpty()) {
 		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
 		log(QStringLiteral("[%1] Redirecting tags page `%2` to `%3`").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
@@ -68,18 +70,18 @@ void TagApi::parse()
 
 	// Try to read the reply
 	QString source = m_reply->readAll();
-	if (source.isEmpty())
-	{
-		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error); }
+	if (source.isEmpty()) {
+		if (m_reply->error() != QNetworkReply::OperationCanceledError) {
+			log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error);
+		}
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
 
 	// Parse source
-	ParsedTags ret = m_api->parseTags(source, m_site);
-	if (!ret.error.isEmpty())
-	{
+	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	ParsedTags ret = m_api->parseTags(source, statusCode, m_site);
+	if (!ret.error.isEmpty()) {
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);
 		emit finishedLoading(this, LoadResult::Error);
 		return;

@@ -28,42 +28,6 @@ const completeImage = (data: any): IImage => {
     return data;
 };
 
-const auth: { [id: string]: IAuth } = {
-    url: {
-        type: "url",
-        fields: [
-            {
-                key: "login",
-                type: "username",
-            },
-            {
-                key: "password_hash",
-                type: "hash",
-                hash: "sha1",
-                salt: "choujin-steiner--%value%--",
-            },
-        ],
-    },
-    session: {
-        type: "post",
-        url: "/user/authenticate",
-        fields: [
-            {
-                key: "user[name]",
-                type: "username",
-            },
-            {
-                key: "user[password]",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "pass_hash",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "Danbooru",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "status:any", "status:deleted", "status:active", "status:flagged", "status:pending", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
@@ -80,7 +44,46 @@ export const source: ISource = {
         parenthesis: false,
         precedence: "or",
     },
-    auth,
+    auth: {
+        url: {
+            type: "url",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "login",
+                },
+                {
+                    id: "password",
+                    type: "password",
+                },
+                {
+                    key: "password_hash",
+                    type: "hash",
+                    hash: "sha1",
+                    salt: "choujin-steiner--%password%--",
+                },
+            ],
+        },
+        session: {
+            type: "post",
+            url: "/user/authenticate",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "user[name]",
+                },
+                {
+                    id: "password",
+                    key: "user[password]",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "pass_hash",
+            },
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -89,9 +92,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.json?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.json?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -109,8 +111,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -138,9 +139,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index.xml?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index.xml?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -163,8 +163,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index.xml?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.xml?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -193,9 +192,8 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "page={page}", "after_id={max}", "before_id={min}");
-                        return "/post/index?" + loginPart + "limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
+                        return "/post/index?limit=" + opts.limit + "&" + pagePart + "&typed_tags=true&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
@@ -225,8 +223,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tag/index?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

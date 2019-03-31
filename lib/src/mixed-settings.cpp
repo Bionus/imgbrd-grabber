@@ -9,35 +9,34 @@ MixedSettings::MixedSettings(QList<QSettings*> settings)
 
 MixedSettings::~MixedSettings()
 {
-	for (QSettings *setting : qAsConst(m_settings))
+	for (QSettings *setting : qAsConst(m_settings)) {
 		setting->deleteLater();
+	}
 }
 
 
 QVariant MixedSettings::value(const QString &key, const QVariant &defaultValue) const
 {
-	for (QSettings *setting : qAsConst(m_settings))
-	{
+	for (QSettings *setting : qAsConst(m_settings)) {
 		QVariant val = setting->value(key);
-		if (val.isValid())
+		if (val.isValid()) {
 			return val;
+		}
 	}
 	return defaultValue;
 }
 
 void MixedSettings::setValue(const QString &key, const QVariant &value, const QVariant &defaultValue)
 {
-	if (m_settings.isEmpty())
+	if (m_settings.isEmpty()) {
 		return;
+	}
 
 	// If the parent setting already have this value set
-	if (m_settings.count() > 1)
-	{
+	if (m_settings.count() > 1) {
 		QVariant parent = m_settings[1]->value(key);
-		if (parent.isValid())
-		{
-			if (parent == value)
-			{
+		if (parent.isValid()) {
+			if (parent == value) {
 				m_settings[0]->remove(key);
 				return;
 			}
@@ -49,8 +48,7 @@ void MixedSettings::setValue(const QString &key, const QVariant &value, const QV
 	}
 
 	// No valid parent value found
-	if (value == defaultValue)
-	{
+	if (value == defaultValue) {
 		m_settings.first()->remove(key);
 		return;
 	}
@@ -62,25 +60,29 @@ void MixedSettings::setValue(const QString &key, const QVariant &value, const QV
 QStringList MixedSettings::childKeys() const
 {
 	QStringList keys;
-	for (QSettings *setting : qAsConst(m_settings))
+	for (QSettings *setting : qAsConst(m_settings)) {
 		keys.append(setting->childKeys());
+	}
 	return keys;
 }
 
 void MixedSettings::beginGroup(const QString &prefix)
 {
-	for (QSettings *setting : qAsConst(m_settings))
+	for (QSettings *setting : qAsConst(m_settings)) {
 		setting->beginGroup(prefix);
+	}
 }
 
 void MixedSettings::endGroup()
 {
-	for (QSettings *setting : qAsConst(m_settings))
+	for (QSettings *setting : qAsConst(m_settings)) {
 		setting->endGroup();
+	}
 }
 
 void MixedSettings::sync()
 {
-	for (QSettings *setting : qAsConst(m_settings))
+	for (QSettings *setting : qAsConst(m_settings)) {
 		setting->sync();
+	}
 }

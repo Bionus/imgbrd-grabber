@@ -1,19 +1,22 @@
+function noWebp(url: string): string {
+    return url.replace(/(\.\w{3,4})\.webp/, "$1");
+}
+
 function completeImage(img: IImage): IImage {
-    if (img["ext"] && img["ext"][0] === ".") {
-        img["ext"] = img["ext"].substring(1);
+    if (img.ext && img.ext[0] === ".") {
+        img.ext = img.ext.substring(1);
     }
 
-    img["file_url"] = `/pictures/download_image/${img["id"]}.${img["ext"] || "jpg"}`;
+    img.file_url = `/pictures/download_image/${img.id}.${img.ext || "jpg"}`;
 
-    if ((!img["sample_url"] || img["sample_url"].length < 5) && img["preview_url"] && img["preview_url"].length >= 5) {
-        img["sample_url"] = img["preview_url"]
+    if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
+        img.sample_url = img.preview_url
             .replace("_cp.", "_bp.")
             .replace("_sp.", "_bp.");
     }
 
-    img["file_url"] = img["file_url"].replace(".jpg.webp", ".jpg");
-    img["sample_url"] = (img["sample_url"] || "").replace(".jpg.webp", ".jpg");
-    img["preview_url"] = (img["preview_url"] || "").replace(".jpg.webp", ".jpg");
+    img.sample_url = noWebp(img.sample_url || "");
+    img.preview_url = noWebp(img.preview_url || "");
 
     return img;
 }
@@ -47,7 +50,7 @@ function searchToUrl(search: string): string {
     for (const tag of parts) {
         const part = tag.trim();
         if (part.indexOf("width:") === 0) {
-            sizeToUrl(part.substr(6), "ret_x", ret);
+            sizeToUrl(part.substr(6), "res_x", ret);
         } else if (part.indexOf("height:") === 0) {
             sizeToUrl(part.substr(7), "res_y", ret);
         } else if (part.indexOf("ratio:") === 0) {
@@ -68,27 +71,6 @@ function searchToUrl(search: string): string {
     return ret.join("&");
 }
 
-const auth: { [id: string]: IAuth } = {
-    session: {
-        type: "post",
-        url: "/login/submit",
-        fields: [
-            {
-                key: "login",
-                type: "username",
-            },
-            {
-                key: "password",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "asian_server",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "Anime pictures",
     modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
@@ -103,7 +85,27 @@ export const source: ISource = {
         parenthesis: false,
         precedence: "and",
     },
-    auth,
+    auth: {
+        session: {
+            type: "post",
+            url: "/login/submit",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "login",
+                },
+                {
+                    id: "password",
+                    key: "password",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "asian_server",
+            },
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -137,7 +139,7 @@ export const source: ISource = {
                     return {
                         images,
                         imageCount: data["posts_count"],
-                        pageCount: data["max_pages"],
+                        pageCount: data["max_pages"] + 1, // max_pages is an index, not a count, and pages start at 0
                     };
                 },
             },
@@ -156,10 +158,14 @@ export const source: ISource = {
                         };
                     });
 
+                    const imgUrl: string = data["file_url"];
+                    const pos = imgUrl.lastIndexOf("/") + 1;
+                    const fn = imgUrl.substr(pos);
+
                     return {
                         tags,
                         createdAt: data["pubtime"],
-                        imageUrl: data["file_url"],
+                        imageUrl: imgUrl.substr(0, pos) + (fn.indexOf(" ") !== -1 ? encodeURIComponent(fn) : fn),
                     };
                 },
             },

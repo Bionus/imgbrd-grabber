@@ -26,8 +26,10 @@
 
 #include <QApplication>
 #include <QSettings>
+#include "analytics.h"
 #include "downloader/downloader.h"
 #include "functions.h"
+#include "logger.h"
 #include "main-window.h"
 #include "models/page-api.h"
 #include "models/profile.h"
@@ -41,6 +43,10 @@
 #if !defined(USE_CLI) && defined(USE_BREAKPAD)
 	#include <QFileInfo>
 	#include "crashhandler/crashhandler.h"
+#endif
+#if defined(Q_OS_ANDROID)
+	#include <QMessageBox>
+	#include "android.h"
 #endif
 
 
@@ -58,30 +64,40 @@ int main(int argc, char *argv[])
 	// Set window title according to the current build
 	#ifdef NIGHTLY
 		QString commit(NIGHTLY_COMMIT);
-		if (!commit.isEmpty())
+		if (!commit.isEmpty()) {
 			app.setApplicationDisplayName("Grabber Nightly - " + commit.left(8));
-		else
+			app.setApplicationVersion(QString(VERSION) + " - nightly " + commit.left(8));
+		} else {
 			app.setApplicationDisplayName("Grabber Nightly");
+			app.setApplicationVersion(QString(VERSION) + " - nightly");
+		}
 	#else
 		app.setApplicationDisplayName("Grabber");
 	#endif
 
 	// Copy settings files to writable directory
 	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
-	for (const QString &tgt : toCopy)
-	{
+	for (const QString &tgt : toCopy) {
 		const QString from = savePath(tgt, true, false);
 		const QString to = savePath(tgt, true, true);
-		if (!QDir(to).exists() && QDir(from).exists())
+		if (!QDir(to).exists() && QDir(from).exists()) {
 			copyRecursively(from, to);
+		}
 	}
+
+	#if defined(Q_OS_ANDROID)
+		if (!checkPermission("android.permission.WRITE_EXTERNAL_STORAGE")) {
+			QMessageBox::critical(nullptr, "Permission error", "Grabber needs storage writing permissions to download images");
+			return 0;
+		}
+	#endif
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();
 
 	#if !defined(USE_CLI)
-	const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
+		const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
 	#endif
 	const QCommandLineOption tagsOption(QStringList() << "t" << "tags", "Tags to search for.", "tags");
@@ -94,6 +110,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
+	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist" , "Tags to remove from results.", "tags-blacklist");
 	const QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
@@ -109,6 +126,7 @@ int main(int argc, char *argv[])
 	parser.addOption(userOption);
 	parser.addOption(passwordOption);
 	parser.addOption(blacklistOption);
+	parser.addOption(tagsBlacklistOption);
 	parser.addOption(postfilteringOption);
 	parser.addOption(tagsMinOption);
 	parser.addOption(tagsFormatOption);
@@ -133,29 +151,36 @@ int main(int argc, char *argv[])
 		const bool gui = false;
 	#endif
 
-		const bool verbose = parser.isSet(verboseOption);
+	const bool verbose = parser.isSet(verboseOption);
 	#if !defined(QT_DEBUG)
 		Logger::setupMessageOutput(gui || verbose);
 	#endif
-	if (verbose)
+	if (verbose) {
 		Logger::getInstance().setLogLevel(Logger::Debug);
+	}
 
 	#if defined(USE_BREAKPAD) && !defined(USE_CLI)
-		if (gui)
-		{
+		if (gui) {
 			QDir dir = QFileInfo(argv[0]).dir();
 			QString crashes = savePath("crashes");
-			if (!dir.exists(crashes))
-			{ dir.mkpath(crashes); }
+			if (!dir.exists(crashes)) {
+				dir.mkpath(crashes);
+			}
 			CrashHandler::instance()->Init(crashes);
 		}
 	#endif
 
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
+	QSettings *settings = profile->getSettings();
 
-	if (!gui)
-	{
+	// Analytics
+	Analytics::getInstance().setTrackingID("UA-22768717-6");
+	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
+	Analytics::getInstance().sendEvent("lifecycle", "start");
+
+	if (!gui) {
+		QString blacklistOverride = parser.value(tagsBlacklistOption);
 		Downloader *dwnldr = new Downloader(profile,
 			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 			parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
@@ -168,36 +193,34 @@ int main(int argc, char *argv[])
 			parser.value(userOption),
 			parser.value(passwordOption),
 			parser.isSet(blacklistOption),
-			profile->getBlacklist(),
+			blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
 			parser.isSet(noDuplicatesOption),
 			parser.value(tagsMinOption).toInt(),
 			parser.value(tagsFormatOption));
 
-		if (parser.isSet(returnCountOption))
+		if (parser.isSet(returnCountOption)) {
 			dwnldr->getPageCount();
-		else if (parser.isSet(returnTagsOption))
+		} else if (parser.isSet(returnTagsOption)) {
 			dwnldr->getPageTags();
-		else if (parser.isSet(returnPureTagsOption))
+		} else if (parser.isSet(returnPureTagsOption)) {
 			dwnldr->getTags();
-		else if (parser.isSet(returnImagesOption))
+		} else if (parser.isSet(returnImagesOption)) {
 			dwnldr->getUrls();
-		else if (parser.isSet(downloadOption))
+		} else if (parser.isSet(downloadOption)) {
 			dwnldr->getImages();
-		else
+		} else {
 			parser.showHelp();
+		}
 
 		dwnldr->setQuit(true);
 		QObject::connect(dwnldr, &Downloader::quit, qApp, &QApplication::quit);
 	}
 	#if !defined(USE_CLI)
-		else
-		{
+		else {
 			// Check for updates
-			QSettings *settings = profile->getSettings();
-			const int cfuInterval = settings->value("check_for_updates", 24*60*60).toInt();
+			const int cfuInterval = settings->value("check_for_updates", 24 * 60 * 60).toInt();
 			QDateTime lastCfu = settings->value("last_check_for_updates", QDateTime()).toDateTime();
-			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
-			{
+			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime())) {
 				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
 				bool shouldQuit = false;
@@ -211,8 +234,9 @@ int main(int argc, char *argv[])
 				el->deleteLater();
 				updateDialog->deleteLater();
 
-				if (shouldQuit)
+				if (shouldQuit) {
 					return 0;
+				}
 			}
 
 			QMap<QString, QString> params;

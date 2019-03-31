@@ -42,13 +42,10 @@ void showInGraphicalShell(const QString &pathIn)
 		ITEMIDLIST *pidl = nullptr;
 		SFGAOF out;
 		HRESULT hr = SHParseDisplayName(filename, nullptr, &pidl, SFGAO_FILESYSTEM, &out);
-		if (SUCCEEDED(hr))
-		{
+		if (SUCCEEDED(hr)) {
 			SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
 			ILFree(pidl);
-		}
-		else
-		{
+		} else {
 			LPCTSTR errMsg = _com_error(hr).ErrorMessage();
 			QString msg = QString::fromLatin1(errMsg);
 			log(QString("Error parsing path display name for '%1': %2").arg(pathIn, msg), Logger::Error);
@@ -67,19 +64,19 @@ void showInGraphicalShell(const QString &pathIn)
 
 void clearLayout(QLayout *layout)
 {
-	if (layout == nullptr)
+	if (layout == nullptr) {
 		return;
+	}
 
-	while (layout->count() > 0)
-	{
+	while (layout->count() > 0) {
 		QLayoutItem *item = layout->takeAt(0);
-		if (item->layout() != nullptr)
-		{
+		if (item->layout() != nullptr) {
 			clearLayout(item->layout());
 			item->layout()->deleteLater();
 		}
-		if (item->widget() != nullptr)
-		{ item->widget()->deleteLater(); }
+		if (item->widget() != nullptr) {
+			item->widget()->deleteLater();
+		}
 		delete item;
 	}
 }

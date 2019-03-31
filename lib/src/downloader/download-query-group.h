@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include "downloader/download-query.h"
+#include "models/search-query/search-query.h"
 
 
 class QSettings;
@@ -16,21 +17,23 @@ class DownloadQueryGroup : public DownloadQuery
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		explicit DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = QString());
-		explicit DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, QString unk = QString());
+		explicit DownloadQueryGroup(QSettings *settings, SearchQuery query, int page, int perPage, int total, QStringList postFiltering, Site *site);
+		explicit DownloadQueryGroup(SearchQuery query, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path);
 
 		// Serialization
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
 
 		// Public members
-		QString tags;
+		SearchQuery query;
 		int page;
 		int perpage;
 		int total;
 		QStringList postFiltering;
 		bool getBlacklisted;
-		QString unk;
+		bool galleriesCountAsOne = true;
+		int progressVal = 0;
+		bool progressFinished = false;
 };
 
 bool operator==(const DownloadQueryGroup &lhs, const DownloadQueryGroup &rhs);

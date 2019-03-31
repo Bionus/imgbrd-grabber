@@ -28,8 +28,7 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 	QStringList sourceKeys = profile->getSites().keys();
 	ui->comboMonitoringSource->addItems(sourceKeys);
 
-	if (!m_favorite.getMonitors().isEmpty())
-	{
+	if (!m_favorite.getMonitors().isEmpty()) {
 		Monitor monitor = m_favorite.getMonitors().first();
 		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60.0));
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
@@ -61,8 +60,9 @@ void FavoriteWindow::on_buttonRemove_clicked()
 void FavoriteWindow::on_openButton_clicked()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
-	if (!file.isEmpty())
-	{ ui->imageLineEdit->setText(file); }
+	if (!file.isEmpty()) {
+		ui->imageLineEdit->setText(file);
+	}
 }
 
 /**
@@ -76,12 +76,11 @@ void FavoriteWindow::save()
 	int interval = ui->spinMonitoringInterval->value() * 60;
 	Site *site = m_profile->getSites().value(ui->comboMonitoringSource->currentText());
 	QList<Monitor> monitors = oldFav.getMonitors();
-	if (interval == 0)
-	{ monitors.clear(); }
-	else if (monitors.isEmpty())
-	{ monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc())); }
-	else
-	{
+	if (interval == 0) {
+		monitors.clear();
+	} else if (monitors.isEmpty()) {
+		monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc()));
+	} else {
 		Monitor rep(site, interval, monitors[0].lastCheck());
 		monitors[0] = rep;
 	}
@@ -89,18 +88,18 @@ void FavoriteWindow::save()
 	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime(), monitors);
 	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
 
-	if (oldFav.getName() != m_favorite.getName())
-	{
-		if (QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
-		{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), m_favorite.getImagePath()); }
+	if (oldFav.getName() != m_favorite.getName()) {
+		if (QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png"))) {
+			QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), m_favorite.getImagePath());
+		}
 		m_profile->removeFavorite(oldFav);
 	}
 
-	if (QFile::exists(ui->imageLineEdit->text()))
-	{
+	if (QFile::exists(ui->imageLineEdit->text())) {
 		QPixmap img(ui->imageLineEdit->text());
-		if (!img.isNull())
-		{ m_favorite.setImage(img); }
+		if (!img.isNull()) {
+			m_favorite.setImage(img);
+		}
 	}
 	m_profile->addFavorite(m_favorite);
 }

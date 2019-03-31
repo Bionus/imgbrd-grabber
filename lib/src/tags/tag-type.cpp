@@ -9,11 +9,11 @@ TagType::TagType(const QString &name)
 	: m_isUnknown(name.isEmpty() || name == "unknown"), m_name(name.isEmpty() ? "unknown" : name)
 {
 	// Sometimes a type is found with multiple words, only the first is relevant
-	if (!m_isUnknown)
-	{
+	if (!m_isUnknown) {
 		const int typeSpace = m_name.indexOf(' ');
-		if (typeSpace != -1)
-		{ m_name = m_name.left(typeSpace); }
+		if (typeSpace != -1) {
+			m_name = m_name.left(typeSpace);
+		}
 	}
 }
 

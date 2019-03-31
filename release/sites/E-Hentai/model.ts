@@ -20,27 +20,6 @@ function sizeToInt(size: string): number {
     return val;
 }
 
-const auth: { [id: string]: IAuth } = {
-    post: {
-        type: "post",
-        url: "https://forums.e-hentai.org/index.php?act=Login&CODE=01",
-        fields: [
-            {
-                key: "UserName",
-                type: "username",
-            },
-            {
-                key: "PassWord",
-                type: "password",
-            },
-        ],
-        check: {
-            type: "cookie",
-            key: "ipb_member_id",
-        },
-    },
-};
-
 export const source: ISource = {
     name: "E-Hentai",
     modifiers: [],
@@ -48,7 +27,27 @@ export const source: ISource = {
     searchFormat: {
         and: " ",
     },
-    auth,
+    auth: {
+        post: {
+            type: "post",
+            url: "https://forums.e-hentai.org/index.php?act=Login&CODE=01",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "UserName",
+                },
+                {
+                    id: "password",
+                    key: "PassWord",
+                    type: "password",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "ipb_member_id",
+            },
+        },
+    },
     apis: {
         html: {
             name: "Regex",
@@ -59,8 +58,7 @@ export const source: ISource = {
                     return "/?page=" + (query.page - 1) + "&f_search=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
-                    // Gallery mode regex: <div class="id1"[^>]*><div class="id2"><a href="(?<page_url>[^"]+)">(?<name>[^<]+)<\/a><\/div><div class="id3"[^>]*><a[^>]*><img src="(?<preview_url>[^"]*)"[^>]*><\/a><\/div><div class="id4"><div class="id41"[^>]* title="(?<category>[^"]*)"><\/div><div class="id42">(?<images_count>[0-9,]+) files<\/div>
-                    const matches = Grabber.regexMatches('<tr class="gtr\\d"><td[^>]*><a[^>]*><img[^>]*alt="(?<category>[^"]*)"[^>]*></a></td><td[^>]*>(?<date>[^<]*)</td><td[^>]*><div[^>]*><div class="it2" id="i(?<id>\\d+)"[^>]*>(?:<img src="(?<preview_url>[^"]+)"[^>]*>|(?<encoded_thumbnail>[^<]*))</div><div class="it3">.*?</div><div class="it5"><a href="(?<page_url>[^"]+)"[^>]*>(?<name>[^<]*)</a></div><div class="it4">.*?</div></div></div></td><td[^>]*><div><a[^>]*>(?<uploader>[^<]*)</a></div></td></tr>', src);
+                    const matches = Grabber.regexMatches('<tr[^>]*><td[^>]*><div[^>]*>(?<category>[^<]*)</div></td><td[^>]*><div[^>]* id="i(?<id>\\d+)"[^>]*>(?:<img src="(?<preview_url>[^"]+)"[^>]*>|(?<encoded_thumbnail>[^<]*))</div><div[^>]*>(?<date>[^<]+)</div>.+?<div><a href="(?<page_url>[^"]+)">(?<name>[^<]+)</a>.+?<a[^>]+>(?<author>[^<]+)</a>', src);
                     const images = matches.map((match: any) => {
                         match["type"] = "gallery";
                         if ("encoded_thumbnail" in match && match["encoded_thumbnail"].length > 0) {
@@ -78,13 +76,13 @@ export const source: ISource = {
                     return {
                         images,
                         pageCount: Grabber.countToInt(Grabber.regexToConst("page", ">(?<page>[0-9,]+)</a></td><td[^>]*>(?:&gt;|<a[^>]*>&gt;</a>)</td>", src)),
-                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing \\d+-\\d+ of (?<count>[0-9,]+)<", src)),
+                        imageCount: Grabber.countToInt(Grabber.regexToConst("count", ">Showing page \\d+ of (?<count>[0-9,]+) results<", src)),
                     };
                 },
             },
             gallery: {
                 url: (query: any, opts: any): string => {
-                    return "/g/" + query.id + "/?p=" + (query.page - 1);
+                    return "/g/" + query.md5 + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {
                     const images: IImage[] = [];

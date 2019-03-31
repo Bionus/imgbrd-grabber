@@ -115,26 +115,13 @@ addHelper("fileSizeToInt", (str: string): number => {
     return parseInt(str, 10);
 });
 
-addHelper("loginUrl", (fields: any, values: any): string => {
-    let res = "";
-    for (const field of fields) {
-        const val = values[field.key];
-        if (val) {
-            res += field.key + "=" + val + "&";
-        }
-    }
-    return res;
-});
-
 addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
     url = url.replace("{page}", String(page));
     if (previous) {
         url = url.replace("{min}", previous.minId);
         url = url.replace("{max}", previous.maxId);
-        url = url.replace("{min-1}", String(previous.minId - 1));
-        url = url.replace("{max-1}", String(previous.maxId - 1));
-        url = url.replace("{min+1}", previous.minId + 1);
-        url = url.replace("{max+1}", previous.maxId + 1);
+        url = url.replace("{min-1}", previous.minIdM1);
+        url = url.replace("{max+1}", previous.maxIdP1);
     }
     return url;
 });

@@ -1,17 +1,17 @@
 function completeImage(img: IImage): IImage {
-    if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = img["preview_url"];
+    if (!img.file_url || img.file_url.length < 5) {
+        img.file_url = img.preview_url;
     }
 
-    img["file_url"] = img["file_url"]
+    img.file_url = img.file_url
         .replace(/\/s\d+\.zerochan/, "/static.zerochan")
         .replace(".240.", ".full.")
         .replace(".600.", ".full.")
         .replace("/240/", "/full/")
         .replace("/600/", "/full/");
 
-    if (img["file_size"]) {
-        img["file_size"] = Grabber.fileSizeToInt(img["file_size"]);
+    if (img.file_size) {
+        img.file_size = Grabber.fileSizeToInt(img.file_size);
     }
 
     return img;
@@ -28,7 +28,37 @@ export const source: ISource = {
     searchFormat: {
         and: ", ",
     },
-    auth: {},
+    auth: {
+        session: {
+            type: "post",
+            url: "/login",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "name",
+                },
+                {
+                    id: "password",
+                    key: "password",
+                    type: "password",
+                },
+                {
+                    key: "login",
+                    type: "const",
+                    value: "Login",
+                },
+                {
+                    key: "ref",
+                    type: "const",
+                    value: "ref",
+                },
+            ],
+            check: {
+                type: "cookie",
+                key: "z_hash",
+            },
+        },
+    },
     apis: {
         rss: {
             name: "RSS",
@@ -57,8 +87,8 @@ export const source: ISource = {
                             width: image["media:content"]["@attributes"]["width"],
                             height: image["media:content"]["@attributes"]["height"],
                         };
-                        img["id"] = Grabber.regexToConst("id", "/(?<id>\\d+)", img["page_url"]);
-                        img["sample_url"] = img["file_url"];
+                        img.id = Grabber.regexToConst("id", "/(?<id>\\d+)", img.page_url);
+                        img.sample_url = img.file_url;
                         images.push(completeImage(img));
                     }
 

@@ -1,10 +1,8 @@
 #include "login/login.h"
 
 
-QString Login::complementUrl(QString url, const QString &loginPart) const
+QString Login::complementUrl(QString url) const
 {
-	Q_UNUSED(loginPart);
-
 	return url;
 }
 

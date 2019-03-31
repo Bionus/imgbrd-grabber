@@ -12,10 +12,11 @@ AboutWindow::AboutWindow(const QString &version, QWidget *parent)
 	QString labelVersion = version;
 	#ifdef NIGHTLY
 		QString commit(NIGHTLY_COMMIT);
-		if (!commit.isEmpty())
+		if (!commit.isEmpty()) {
 			labelVersion += QString(" - nightly (%1)").arg(commit.left(8));
-		else
+		} else {
 			labelVersion += " - nightly";
+		}
 	#endif
 	ui->labelCurrent->setText(labelVersion);
 

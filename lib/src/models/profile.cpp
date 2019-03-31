@@ -6,16 +6,18 @@
 #include <QSettings>
 #include "commands/commands.h"
 #include "functions.h"
+#include "logger.h"
 #include "models/favorite.h"
+#include "models/md5-database.h"
 #include "models/site.h"
 #include "models/source.h"
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr)
+	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(std::move(path))
@@ -24,56 +26,48 @@ Profile::Profile(QString path)
 
 	// Load sources
 	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (const QString &dir : dirs)
-	{
+	for (const QString &dir : dirs) {
 		Source *source = new Source(this, m_path + "/sites/" + dir);
-		if (source->getApis().isEmpty())
-		{
+		if (source->getApis().isEmpty()) {
 			source->deleteLater();
 			continue;
 		}
 
 		m_sources.insert(source->getName(), source);
+		m_additionalTokens.append(source->getAdditionalTokens());
 
-		for (Site *site : source->getSites())
+		for (Site *site : source->getSites()) {
 			m_sites.insert(site->url(), site);
+		}
 	}
 
 	// Load favorites
 	QSet<QString> unique;
 	QFile fileFavoritesJson(m_path + "/favorites.json");
-	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text)) {
 		const QByteArray data = fileFavoritesJson.readAll();
 		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
 		QJsonObject object = loadDoc.object();
 
 		QJsonArray favorites = object["favorites"].toArray();
-		for (auto favoriteJson : favorites)
-		{
+		for (auto favoriteJson : favorites) {
 			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), m_sites);
-			if (!unique.contains(fav.getName()))
-			{
+			if (!unique.contains(fav.getName())) {
 				unique.insert(fav.getName());
 				m_favorites.append(fav);
 			}
 		}
-	}
-	else
-	{
+	} else {
 		QFile fileFavorites(m_path + "/favorites.txt");
-		if (fileFavorites.open(QFile::ReadOnly | QFile::Text))
-		{
+		if (fileFavorites.open(QFile::ReadOnly | QFile::Text)) {
 			QString favs = fileFavorites.readAll();
 			fileFavorites.close();
 
 			QStringList words = favs.split("\n", QString::SkipEmptyParts);
 			m_favorites.reserve(words.count());
-			for (const QString &word : words)
-			{
+			for (const QString &word : words) {
 				Favorite fav = Favorite::fromString(m_path, word);
-				if (!unique.contains(fav.getName()))
-				{
+				if (!unique.contains(fav.getName())) {
 					unique.insert(fav.getName());
 					m_favorites.append(fav);
 				}
@@ -83,8 +77,7 @@ Profile::Profile(QString path)
 
 	// Load view it later
 	QFile fileKfl(m_path + "/viewitlater.txt");
-	if (fileKfl.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileKfl.open(QFile::ReadOnly | QFile::Text)) {
 		QString vil = fileKfl.readAll();
 		fileKfl.close();
 
@@ -93,8 +86,7 @@ Profile::Profile(QString path)
 
 	// Load ignored
 	QFile fileIgnored(m_path + "/ignore.txt");
-	if (fileIgnored.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileIgnored.open(QFile::ReadOnly | QFile::Text)) {
 		QString ign = fileIgnored.readAll();
 		fileIgnored.close();
 
@@ -102,34 +94,26 @@ Profile::Profile(QString path)
 	}
 
 	// Load MD5s
-	QFile fileMD5(m_path + "/md5s.txt");
-	if (fileMD5.open(QFile::ReadOnly | QFile::Text))
-	{
-		QString line;
-		while (!(line = fileMD5.readLine()).isEmpty())
-			m_md5s.insert(line.left(32), line.mid(32).trimmed());
-
-		fileMD5.close();
-	}
+	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
 	QFile fileAutoComplete(m_path + "/words.txt");
-	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while (!(line = fileAutoComplete.readLine()).isEmpty())
+		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
 			m_autoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+		}
 
 		fileAutoComplete.close();
 	}
 
 	// Load custom auto-complete
 	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
-	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while (!(line = fileCustomAutoComplete.readLine()).isEmpty())
+		while (!(line = fileCustomAutoComplete.readLine()).isEmpty()) {
 			m_customAutoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+		}
 
 		fileCustomAutoComplete.close();
 	}
@@ -138,25 +122,36 @@ Profile::Profile(QString path)
 
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
-	for (const QString &bl : blacklist)
-	{ m_blacklist.add(bl); }
+	for (const QString &bl : blacklist) {
+		m_blacklist.add(bl);
+	}
 	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text))
-	{
+	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while (!(line = fileBlacklist.readLine()).isEmpty())
+		while (!(line = fileBlacklist.readLine()).isEmpty()) {
 			m_blacklist.add(line.trimmed().split(" ", QString::SkipEmptyParts));
+		}
 
 		fileBlacklist.close();
 	}
+
+	// Complete auto-complete
+	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());
+	m_autoComplete.append(m_customAutoComplete);
+	for (const Favorite &fav : qAsConst(m_favorites)) {
+		m_autoComplete.append(fav.getName());
+	}
+	m_autoComplete.removeDuplicates();
+	m_autoComplete.sort();
 }
 
 Profile::~Profile()
 {
 	sync();
 
-	if (m_settings != nullptr)
+	if (m_settings != nullptr) {
 		m_settings->deleteLater();
+	}
 
 	qDeleteAll(m_sources);
 	delete m_commands;
@@ -165,29 +160,20 @@ Profile::~Profile()
 
 void Profile::sync()
 {
-	if (m_path.isEmpty())
+	if (m_path.isEmpty()) {
 		return;
+	}
 
 	syncFavorites();
 	syncKeptForLater();
 	syncIgnored();
 
 	// MD5s
-	QFile fileMD5(m_path + "/md5s.txt");
-	if (fileMD5.open(QFile::WriteOnly | QFile::Truncate))
-	{
-		QStringList md5s = m_md5s.keys();
-		QStringList paths = m_md5s.values();
-		for (int i = 0; i < md5s.size(); i++)
-			fileMD5.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
-
-		fileMD5.close();
-	}
+	m_md5s->sync();
 
 	// Custom auto-complete
 	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
-	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
+	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		fileCustomAutoComplete.write(m_customAutoComplete.join("\r\n").toUtf8());
 		fileCustomAutoComplete.close();
 	}
@@ -200,26 +186,24 @@ void Profile::sync()
 
 	// Blacklisted tags
 	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
+	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		fileBlacklist.write(m_blacklist.toString().toUtf8());
 		fileBlacklist.close();
 	}
 	m_settings->remove("blacklistedtags");
 
 	// Sync settings
-	if (m_settings != nullptr)
+	if (m_settings != nullptr) {
 		m_settings->sync();
+	}
 }
 void Profile::syncFavorites() const
 {
 	QFile fileFavorites(m_path + "/favorites.json");
-	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
+	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		// Generate JSON array
 		QJsonArray favoritesJson;
-		for (const Favorite &fav : qAsConst(m_favorites))
-		{
+		for (const Favorite &fav : qAsConst(m_favorites)) {
 			QJsonObject unique;
 			fav.toJson(unique);
 			favoritesJson.append(unique);
@@ -239,8 +223,7 @@ void Profile::syncFavorites() const
 void Profile::syncKeptForLater() const
 {
 	QFile fileKfl(m_path + "/viewitlater.txt");
-	if (fileKfl.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
+	if (fileKfl.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		fileKfl.write(m_keptForLater.join("\r\n").toUtf8());
 		fileKfl.close();
 	}
@@ -248,8 +231,7 @@ void Profile::syncKeptForLater() const
 void Profile::syncIgnored() const
 {
 	QFile fileIgnored(m_path + "/ignore.txt");
-	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
-	{
+	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		fileIgnored.write(m_ignored.join("\r\n").toUtf8());
 		fileIgnored.close();
 	}
@@ -271,15 +253,14 @@ void Profile::purgeTemp(int maxAge) const
 
 	int purged = 0;
 	int failed = 0;
-	for (const QFileInfo &tempFile : tempFiles)
-	{
+	for (const QFileInfo &tempFile : tempFiles) {
 		const QDateTime lastModified = tempFile.lastModified();
-		if (lastModified < max)
-		{
-			if (QFile::remove(tempFile.absoluteFilePath()))
+		if (lastModified < max) {
+			if (QFile::remove(tempFile.absoluteFilePath())) {
 				purged++;
-			else
+			} else {
 				failed++;
+			}
 		}
 	}
 
@@ -288,8 +269,12 @@ void Profile::purgeTemp(int maxAge) const
 
 void Profile::addFavorite(const Favorite &fav)
 {
-	m_favorites.removeAll(fav);
+	const int already = m_favorites.removeAll(fav);
 	m_favorites.append(fav);
+
+	if (already == 0) {
+		m_autoComplete.append(fav.getName());
+	}
 
 	syncFavorites();
 	emit favoritesChanged();
@@ -298,8 +283,9 @@ void Profile::removeFavorite(const Favorite &fav)
 {
 	m_favorites.removeAll(fav);
 
-	if (QFile::exists(m_path + "/thumbs/" + fav.getName(true) + ".png"))
+	if (QFile::exists(m_path + "/thumbs/" + fav.getName(true) + ".png")) {
 		QFile::remove(m_path + "/thumbs/" + fav.getName(true) + ".png");
+	}
 
 	syncFavorites();
 	emit favoritesChanged();
@@ -344,25 +330,7 @@ void Profile::removeIgnored(const QString &tag)
 
 QPair<QString, QString> Profile::md5Action(const QString &md5)
 {
-	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
-	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
-
-	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
-	QString path = contains ? m_md5s[md5] : QString();
-	const bool exists = contains && QFile::exists(path);
-
-	if (contains && !exists)
-	{
-		if (!keepDeleted)
-		{
-			removeMd5(md5);
-			path = QString();
-		}
-		else
-		{ action = "ignore"; }
-	}
-
-	return QPair<QString, QString>(action, path);
+	return m_md5s->action(md5);
 }
 
 /**
@@ -372,15 +340,7 @@ QPair<QString, QString> Profile::md5Action(const QString &md5)
  */
 QString Profile::md5Exists(const QString &md5)
 {
-	if (m_md5s.contains(md5))
-	{
-		if (QFile::exists(m_md5s[md5]))
-			return m_md5s[md5];
-
-		if (!m_settings->value("Save/keepDeletedMd5", false).toBool())
-			removeMd5(md5);
-	}
-	return QString();
+	return m_md5s->exists(md5);
 }
 
 /**
@@ -390,8 +350,7 @@ QString Profile::md5Exists(const QString &md5)
  */
 void Profile::addMd5(const QString &md5, const QString &path)
 {
-	if (!md5.isEmpty())
-	{ m_md5s.insert(md5, path); }
+	m_md5s->add(md5, path);
 }
 
 /**
@@ -401,7 +360,7 @@ void Profile::addMd5(const QString &md5, const QString &path)
  */
 void Profile::setMd5(const QString &md5, const QString &path)
 {
-	m_md5s[md5] = path;
+	m_md5s->set(md5, path);
 }
 
 /**
@@ -410,7 +369,7 @@ void Profile::setMd5(const QString &md5, const QString &path)
  */
 void Profile::removeMd5(const QString &md5)
 {
-	m_md5s.remove(md5);
+	m_md5s->remove(md5);
 }
 
 
@@ -460,16 +419,18 @@ QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
 Commands &Profile::getCommands() { return *m_commands; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
-QStringList &Profile::getCustomAutoComplete() { return m_customAutoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
+const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {
 	QList<Site*> ret;
-	for (const QString &url : urls)
-		if (m_sites.contains(url))
+	for (const QString &url : urls) {
+		if (m_sites.contains(url)) {
 			ret.append(m_sites.value(url));
+		}
+	}
 	return ret;
 }

@@ -14,6 +14,7 @@ class TagDatabaseInMemoryTest : public TagDatabaseTestSuite
 	private slots:
 		void loadNonExistingFile();
 		void loadEmpty();
+		void testLoadInvalidTypes();
 		void loadInvalidLines();
 		void loadValidData();
 		void saveEmpty();

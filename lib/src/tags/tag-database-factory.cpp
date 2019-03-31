@@ -6,13 +6,15 @@
 
 TagDatabase *TagDatabaseFactory::Create(QString directory)
 {
-	if (!directory.endsWith("/") && !directory.endsWith("\\"))
+	if (!directory.endsWith("/") && !directory.endsWith("\\")) {
 		directory += "/";
+	}
 
 	const QString typesFile = directory + "tag-types.txt";
 
-	if (QFile::exists(directory + "tags.db"))
+	if (QFile::exists(directory + "tags.db")) {
 		return new TagDatabaseSqlite(typesFile, directory + "tags.db");
+	}
 
 	return new TagDatabaseInMemory(typesFile, directory + "tags.txt");
 }

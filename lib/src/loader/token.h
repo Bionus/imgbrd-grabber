@@ -34,4 +34,6 @@ class Token
 bool operator==(const Token &lhs, const Token &rhs);
 bool operator!=(const Token &lhs, const Token &rhs);
 
+Q_DECLARE_METATYPE(Token)
+
 #endif // TOKEN_H

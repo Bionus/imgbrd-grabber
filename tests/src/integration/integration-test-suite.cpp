@@ -26,8 +26,9 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	setupSite(site, source);
 
 	// Setup network
-	if (!file.isEmpty())
-	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
+	if (!file.isEmpty()) {
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file);
+	}
 
 	QSettings settings("tests/resources/sites/" + site + "/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -69,8 +70,9 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	// Wait for downloader
 	QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
 	m_downloader->getImages();
-	if (!spy.wait())
+	if (!spy.wait()) {
 		return result;
+	}
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();
@@ -78,8 +80,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 
 	// Convert results
 	result.reserve(variants.count());
-	for (const QVariant &variant : variants)
-	{
+	for (const QVariant &variant : variants) {
 		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
 		result.append(img.data());
 	}
@@ -102,8 +103,9 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
-	if (!file.isEmpty())
-	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
+	if (!file.isEmpty()) {
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file);
+	}
 
 	m_profile = new Profile("tests/resources/");
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
@@ -135,8 +137,9 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	// Wait for downloader
 	QSignalSpy spy(m_downloader, SIGNAL(finishedTags(QList<Tag>)));
 	m_downloader->getPageTags();
-	if (!spy.wait())
+	if (!spy.wait()) {
 		return result;
+	}
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();
@@ -144,8 +147,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 
 	// Convert results
 	result.reserve(variants.count());
-	for (const QVariant &variant : variants)
-	{
+	for (const QVariant &variant : variants) {
 		Tag tag = variant.value<Tag>();
 		result.append(tag);
 	}
@@ -168,8 +170,9 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
-	if (!file.isEmpty())
-	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
+	if (!file.isEmpty()) {
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file);
+	}
 
 	m_profile = new Profile("tests/resources/");
 	m_source = new Source(m_profile, "tests/resources/sites/" + site);
@@ -183,42 +186,41 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &sou
 	// Wait for tag api
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
 	tagApi.load(false);
-	if (!spy.wait())
+	if (!spy.wait()) {
 		return result;
+	}
 
 	// Check result type
 	QList<QVariant> arguments = spy.takeFirst();
 	TagApi::LoadResult res = arguments.at(1).value<TagApi::LoadResult>();
-	if (res != TagApi::LoadResult::Ok)
+	if (res != TagApi::LoadResult::Ok) {
 		return result;
+	}
 
 	return tagApi.tags();
 }
 
 void IntegrationTestSuite::cleanup()
 {
-	if (m_downloader != nullptr)
-	{
+	if (m_downloader != nullptr) {
 		m_downloader->deleteLater();
 		m_downloader = nullptr;
 	}
-	if (m_profile != nullptr)
-	{
+	if (m_profile != nullptr) {
 		delete m_profile;
 		m_profile = nullptr;
 	}
-	if (m_source != nullptr)
-	{
+	if (m_source != nullptr) {
 		delete m_source;
 		m_source = nullptr;
 	}
-	if (m_site != nullptr)
-	{
+	if (m_site != nullptr) {
 		delete m_site;
 		m_site = nullptr;
 	}
 
-	for (const QString &file : m_filesToRemove)
-	{ QFile(file).remove(); }
+	for (const QString &file : m_filesToRemove) {
+		QFile(file).remove();
+	}
 	m_filesToRemove.clear();
 }

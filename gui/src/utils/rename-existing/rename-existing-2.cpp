@@ -3,6 +3,7 @@
 #include <QFile>
 #include <ui_rename-existing-2.h>
 #include "functions.h"
+#include "logger.h"
 
 
 RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
@@ -14,10 +15,8 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 
 	int i = 0;
 	ui->tableWidget->setRowCount(m_details.size());
-	for (const RenameExistingFile &image : qAsConst(m_details))
-	{
-		if (showThumbnails)
-		{
+	for (const RenameExistingFile &image : qAsConst(m_details)) {
+		if (showThumbnails) {
 			QLabel *preview = new QLabel();
 			preview->setPixmap(QPixmap(image.path).scaledToHeight(50, Qt::SmoothTransformation));
 			m_previews.append(preview);
@@ -25,14 +24,13 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 		}
 
 		ui->tableWidget->setItem(i, 1, new QTableWidgetItem(image.path.right(image.path.length() - m_folder.length() - 1)));
-		if (image.path == image.newPath)
-		{
+		if (image.path == image.newPath) {
 			auto item = new QTableWidgetItem("No change");
 			item->setForeground(Qt::red);
 			ui->tableWidget->setItem(i, 2, item);
+		} else {
+			ui->tableWidget->setItem(i, 2, new QTableWidgetItem(image.newPath.right(image.newPath.length() - m_folder.length() - 1)));
 		}
-		else
-		{ ui->tableWidget->setItem(i, 2, new QTableWidgetItem(image.newPath.right(image.newPath.length() - m_folder.length() - 1))); }
 
 		i++;
 	}
@@ -43,8 +41,9 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 	headerView->setSectionResizeMode(1, QHeaderView::Stretch);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 
-	if (!showThumbnails)
+	if (!showThumbnails) {
 		ui->tableWidget->removeColumn(0);
+	}
 }
 
 RenameExisting2::~RenameExisting2()
@@ -60,12 +59,12 @@ void RenameExisting2::on_buttonCancel_clicked()
 
 void RenameExisting2::deleteDir(const QString &path)
 {
-	if (path == m_folder)
+	if (path == m_folder) {
 		return;
+	}
 
 	QDir directory(path);
-	if (directory.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() == 0)
-	{
+	if (directory.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() == 0) {
 		directory.removeRecursively();
 
 		const QString parent = path.left(path.lastIndexOf(QDir::separator()));
@@ -76,26 +75,25 @@ void RenameExisting2::deleteDir(const QString &path)
 void RenameExisting2::on_buttonOk_clicked()
 {
 	// Move all images
-	for (const RenameExistingFile &image : qAsConst(m_details))
-	{
+	for (const RenameExistingFile &image : qAsConst(m_details)) {
 		// Ignore images with no change in path
-		if (image.newPath.isEmpty() || image.newPath == image.path)
+		if (image.newPath.isEmpty() || image.newPath == image.path) {
 			continue;
+		}
 
 		// Create hierarchy
 		const QString path = image.newPath.left(image.newPath.lastIndexOf(QDir::separator()));
 		QDir directory(path);
-		if (!directory.exists())
-		{
+		if (!directory.exists()) {
 			QDir dir;
-			if (!dir.mkpath(path))
-			{ log(QStringLiteral("Could not create destination directory"), Logger::Error); }
+			if (!dir.mkpath(path)) {
+				log(QStringLiteral("Could not create destination directory"), Logger::Error);
+			}
 		}
 
 		// Move file
 		QFile::rename(image.path, image.newPath);
-		for (const QString &child : image.children)
-		{
+		for (const QString &child : image.children) {
 			const QString newPath = QString(child).replace(image.path, image.newPath);
 			QFile::rename(child, newPath);
 		}

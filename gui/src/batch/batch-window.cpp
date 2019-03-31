@@ -10,9 +10,12 @@
 #include "functions.h"
 #include "loader/downloadable.h"
 
+#define SPEED_SMOOTHING_IMAGE 0.3
+#define SPEED_SMOOTHING_AVERAGE 0.3
+
 
 BatchWindow::BatchWindow(QSettings *settings, QWidget *parent)
-	: QDialog(parent), ui(new Ui::BatchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
+	: QDialog(parent), ui(new Ui::BatchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_mean(SPEED_SMOOTHING_AVERAGE), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -62,13 +65,12 @@ void BatchWindow::closeEvent(QCloseEvent *e)
 	m_settings->setValue("Batch/scrollToDownload", ui->checkScrollToDownload->isChecked());
 	m_settings->sync();
 
-	if (m_images < m_imagesCount || m_imagesCount == -1)
-	{
+	if (m_images < m_imagesCount || m_imagesCount == -1) {
 		cancel();
 		emit rejected();
+	} else {
+		clear();
 	}
-	else
-	{ clear(); }
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setVisible(false);
@@ -82,6 +84,12 @@ void BatchWindow::pause()
 	m_paused = !m_paused;
 	ui->labelSpeed->setText(m_paused ? tr("Paused") : QString());
 	ui->buttonPause->setText(m_paused ? tr("Resume") : tr("Pause"));
+
+	// Reset download speeds
+	m_mean.clear();
+	for (auto it = m_speeds.begin(); it != m_speeds.end(); ++it) {
+		it.value().clear();
+	}
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setPaused(m_paused);
@@ -154,19 +162,17 @@ void BatchWindow::copyToClipboard()
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
 	int count = selected.size();
 	QStringList urls = QStringList();
-	if (count < 1)
-	{
+	if (count < 1) {
 		count = ui->tableWidget->rowCount();
 		urls.reserve(count);
-		for (int i = 0; i < count; i++)
-		{ urls.append(ui->tableWidget->item(i, 2)->text()); }
-	}
-	else
-	{
-		for (int i = 0; i < count; i++)
-		{
-			if (selected.at(i)->icon().isNull())
-			{ urls.append(selected.at(i)->text()); }
+		for (int i = 0; i < count; i++) {
+			urls.append(ui->tableWidget->item(i, 2)->text());
+		}
+	} else {
+		for (int i = 0; i < count; i++) {
+			if (selected.at(i)->icon().isNull()) {
+				urls.append(selected.at(i)->text());
+			}
 		}
 	}
 	qApp->clipboard()->setText(urls.join('\n'));
@@ -176,7 +182,11 @@ void BatchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
 void BatchWindow::addImage(const QUrl &url, int batch, double size)
 {
-	m_urls.insert(url, m_items);
+	if (m_urls.contains(url)) {
+		m_urls[url].append(m_items);
+	} else {
+		m_urls.insert(url, {m_items});
+	}
 
 	static QIcon pendingIcon(":/images/status/pending.png");
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items + 1));
@@ -213,29 +223,33 @@ void BatchWindow::updateColumns()
 }
 int BatchWindow::indexOf(const QUrl &url)
 {
-	const int i = m_urls[url];
-	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr)
+	const auto vals = m_urls.value(url);
+	const int i = vals.isEmpty() ? -1 : vals.first();
+	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr) {
 		return -1;
+	}
 	return i;
 }
 int BatchWindow::batch(const QUrl &url)
 {
 	const int i = indexOf(url);
-	if (i == -1)
+	if (i == -1) {
 		return -1;
+	}
 	return ui->tableWidget->item(i, 1)->text().toInt();
 }
 void BatchWindow::loadingImage(const QUrl &url)
 {
-	if (m_start->isNull())
+	if (m_start->isNull()) {
 		m_start->start();
-	m_speeds.insert(url, 0);
-	if (m_speeds.size() > m_maxSpeeds)
+	}
+	m_speeds.insert(url, ExponentialMovingAverage(SPEED_SMOOTHING_IMAGE));
+	if (m_speeds.size() > m_maxSpeeds) {
 		m_maxSpeeds = m_speeds.size();
+	}
 
 	const int i = indexOf(url);
-	if (i != -1)
-	{
+	if (i != -1) {
 		static QIcon downloadingIcon(":/images/status/downloading.png");
 		ui->tableWidget->item(i, 0)->setIcon(downloadingIcon);
 		scrollTo(i);
@@ -244,8 +258,7 @@ void BatchWindow::loadingImage(const QUrl &url)
 void BatchWindow::scrollTo(int i)
 {
 	// Go to downloading image
-	if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
-	{
+	if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading) {
 		ui->tableWidget->scrollToItem(ui->tableWidget->item(i, 0));
 		m_lastDownloading = i;
 	}
@@ -253,10 +266,14 @@ void BatchWindow::scrollTo(int i)
 void BatchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 {
 	const int i = indexOf(before);
-	if (i != -1)
-	{
-		m_urls.remove(before);
-		m_urls.insert(after, i);
+	if (i != -1) {
+		const auto vals = m_urls.value(before);
+		if (vals.count() == 1) {
+			m_urls.remove(before);
+		} else {
+			m_urls[before].removeFirst();
+		}
+		m_urls.insert(after, {i});
 		ui->tableWidget->item(i, 2)->setText(after.toString());
 		ui->tableWidget->item(i, 3)->setText(QString());
 		ui->tableWidget->item(i, 4)->setText(QString());
@@ -266,25 +283,28 @@ void BatchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 void BatchWindow::statusImage(const QUrl &url, int percent)
 {
 	const int i = indexOf(url);
-	if (i != -1)
+	if (i != -1) {
 		ui->tableWidget->item(i, 5)->setText(QString::number(percent) + " %");
+	}
 }
 void BatchWindow::speedImage(const QUrl &url, double speed)
 {
-	m_speeds[url] = static_cast<int>(speed);
-	const QString unit = getUnit(&speed) + "/s";
+	m_speeds[url].addValue(speed);
+
+	double average = m_speeds[url].average();
+	const QString unit = getUnit(&average) + "/s";
 
 	int i = indexOf(url);
-	if (i != -1)
-		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0) + " " + unit);
+	if (i != -1) {
+		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(average, 'f', average < 10 ? 2 : 0) + " " + unit);
+	}
 
 	drawSpeed();
 }
 void BatchWindow::sizeImage(const QUrl &url, double size)
 {
 	int i = indexOf(url);
-	if (i != -1)
-	{
+	if (i != -1) {
 		const QString unit = getUnit(&size);
 		const QString label = size > 0
 			? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0) + " " + unit
@@ -305,8 +325,7 @@ void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 
 	// Update table
 	const int i = indexOf(url);
-	if (i != -1)
-	{
+	if (i != -1) {
 		scrollTo(i);
 		ui->tableWidget->item(i, 4)->setText(QString());
 		ui->tableWidget->item(i, 5)->setText(QString());
@@ -342,25 +361,21 @@ void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 
 void BatchWindow::drawSpeed()
 {
-	if (m_time->elapsed() < 1000)
-	{ return; }
+	if (m_time->elapsed() < 1000) {
+		return;
+	}
 	m_time->restart();
 
 	double speed = 0;
-	for (auto sp = m_speeds.constBegin(); sp != m_speeds.constEnd(); ++sp)
-	{ speed += sp.value(); }
-	if (m_speeds.size() == m_maxSpeeds)
-	{ m_mean.append(qRound(speed)); }
+	for (auto sp = m_speeds.constBegin(); sp != m_speeds.constEnd(); ++sp) {
+		speed += sp.value().average();
+	}
+	if (m_speeds.size() == m_maxSpeeds) {
+		m_mean.addValue(speed);
+	}
 	const QString unit = getUnit(&speed) + "/s";
 
-	double speedMean = 0;
-	const int count = qMin(m_mean.count(), 60);
-	if (count > 0)
-	{
-		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
-		{ speedMean += m_mean[i]; }
-		speedMean = static_cast<int>(speedMean / count);
-	}
+	double speedMean = m_mean.average();
 	const QString unitMean = getUnit(&speedMean) + "/s";
 
 	const int elapsed = m_start->elapsed();
@@ -377,13 +392,10 @@ void BatchWindow::drawSpeed()
 
 void BatchWindow::on_buttonDetails_clicked(bool visible)
 {
-	if (ui->details->isHidden() || visible)
-	{
+	if (ui->details->isHidden() || visible) {
 		ui->details->show();
 		resize(m_currentSize);
-	}
-	else
-	{
+	} else {
 		ui->details->hide();
 		m_currentSize = size();
 		resize(QSize(300, 0));
@@ -404,8 +416,9 @@ void BatchWindow::setTotalValue(int val)
 	ui->labelImages->setText(QStringLiteral("%1/%2").arg(m_images).arg(m_imagesCount));
 	ui->progressTotal->setValue(val);
 
-	if (val >= m_imagesCount)
-	{ ui->cancelButton->setText(tr("Close")); }
+	if (val >= m_imagesCount) {
+		ui->cancelButton->setText(tr("Close"));
+	}
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setValue(val);

@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDebug>
 #include "functions.h"
+#include "logger.h"
 #if defined(Q_OS_MAC)
 	#include "client/mac/handler/exception_handler.h"
 #elif defined(Q_OS_LINUX)

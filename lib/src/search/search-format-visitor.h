@@ -3,7 +3,6 @@
 
 #include "search/ast/search-visitor.h"
 #include "search/search-format.h"
-#include "tags/tag-name-format.h"
 
 
 struct SearchNode;
@@ -11,7 +10,7 @@ struct SearchNode;
 class SearchFormatVisitor : public SearchVisitor
 {
 	public:
-		SearchFormatVisitor(SearchFormat searchFormat);
+		explicit SearchFormatVisitor(SearchFormat searchFormat);
 		QString run(const SearchNode &node);
 		QString error() const;
 
@@ -23,7 +22,7 @@ class SearchFormatVisitor : public SearchVisitor
 
 		QString m_result;
 		QString m_error;
-		bool m_inPrecedent;
+		bool m_inPrecedent = false;
 };
 
 #endif // SEARCH_FORMAT_VISITOR_H

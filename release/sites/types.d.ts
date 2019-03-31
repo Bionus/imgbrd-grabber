@@ -6,8 +6,55 @@ interface ITag {
     typeId?: number;
 }
 interface IImage {
+    // Known "meaningful" tokens
+    type?: "image" | "gallery";
+    md5?: string;
+    author?: string;
+    name?: string;
+    status?: string;
+    id?: number | string;
+    score?: number;
+    parent_id?: number | string;
+    author_id?: number | string;
+    has_children?: boolean;
+    has_note?: boolean;
+    has_comments?: boolean;
+    sources?: string[];
+    source?: string;
+    position?: number;
+    gallery_count?: number;
+    page_url?: string;
+    rating?: string;
+    tags?: string[];
+    ext?: string;
+    created_at?: string;
+    date?: string;
+
+    // Full size
     file_url: string;
-    [key: string]: any;
+    width?: number;
+    height?: number;
+    file_size?: number;
+    rect?: string;
+
+    // Sample
+    sample_url?: string;
+    sample_width?: number;
+    sample_height?: number;
+    sample_file_size?: number;
+    sample_rect?: string;
+
+    // Thumbnail
+    preview_url?: string;
+    preview_width?: number;
+    preview_height?: number;
+    preview_file_size?: number;
+    preview_rect?: string;
+
+    // Additional raw tokens to pass to the filename
+    tokens?: {
+        [key: string]: any;
+    };
 }
 interface IPool {
     id?: number;
@@ -45,12 +92,17 @@ interface IParsedDetails {
 }
 interface IParsedGallery extends IParsedSearch {}
 
-type IAuthField = IAuthNormalField | IAuthHashField;
+type IAuthField = IAuthNormalField | IAuthConstField | IAuthHashField;
 interface IAuthFieldBase {
-    key: string;
+    key?: string;
 }
 interface IAuthNormalField extends IAuthFieldBase {
-    type: "username" | "password";
+    id: string;
+    type?: "text" | "password";
+}
+interface IAuthConstField extends IAuthFieldBase {
+    type: "const";
+    value: string;
 }
 interface IAuthHashField extends IAuthFieldBase {
     type: "hash";
@@ -58,17 +110,35 @@ interface IAuthHashField extends IAuthFieldBase {
     salt: string;
 }
 
-type IAuthCheck = IAuthCheckCookie;
+type IAuthCheck = IAuthCheckCookie | IAuthCheckMaxPage;
 interface IAuthCheckCookie {
     type: "cookie";
     key: string;
 }
+interface IAuthCheckMaxPage {
+    type: "max_page";
+    value: number;
+}
 
-interface IAuth {
-    type: "url" | "get" | "post" | "oauth2";
+type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth;
+interface IOauth2Auth {
+    type: "oauth2";
+    authType: "password" | "client_credentials" | "header_basic";
+    requestUrl?: string;
+    tokenUrl?: string;
+    refreshTokenUrl?: string;
+    scope?: string[];
+}
+interface IBasicAuth {
+    type: "url";
     fields: IAuthField[];
     check?: IAuthCheck;
-    [name: string]: any;
+}
+interface IHttpAuth {
+    type: "get" | "post";
+    url: string;
+    fields: IAuthField[];
+    check?: IAuthCheck;
 }
 
 interface ITagFormat {
@@ -96,29 +166,35 @@ interface IApi {
     maxLimit?: number;
     forcedLimit?: number;
     search: {
+        parseErrors?: boolean;
         url: (query: any, opts: any, previous: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedSearch | IError;
+        parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
     details?: {
+        parseErrors?: boolean;
         url: (id: number, md5: string) => IUrl | IError | string;
-        parse: (src: string) => IParsedDetails | IError;
+        parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {
+        parseErrors?: boolean;
         url: (query: any, opts: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedGallery | IError;
+        parse: (src: string, statusCode: number) => IParsedGallery | IError;
     };
     tags?: {
+        parseErrors?: boolean;
         url: (query: any, opts: any) => IUrl | IError | string;
-        parse: (src: string) => IParsedTags | IError;
+        parse: (src: string, statusCode: number) => IParsedTags | IError;
     };
     check?: {
+        parseErrors?: boolean;
         url: () => IUrl | IError | string;
-        parse: (src: string) => boolean | IError;
+        parse: (src: string, statusCode: number) => boolean | IError;
     };
 }
 interface ISource {
     name: string;
     modifiers?: string[];
+    tokens?: string[];
     forcedTokens?: string[];
     tagFormat?: ITagFormat;
     searchFormat?: SearchFormat;

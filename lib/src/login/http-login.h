@@ -6,6 +6,7 @@
 
 
 class CustomNetworkAccessManager;
+class HttpAuth;
 class MixedSettings;
 class QNetworkReply;
 class QUrlQuery;
@@ -15,8 +16,10 @@ class HttpLogin : public Login
 {
 	Q_OBJECT
 
+	protected:
+		HttpLogin(QString type, HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
+
 	public:
-		explicit HttpLogin(QString type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
 		virtual ~HttpLogin() = default;
 		bool isTestable() const override;
 		virtual QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
@@ -29,6 +32,7 @@ class HttpLogin : public Login
 
 	protected:
 		QString m_type;
+		HttpAuth *m_auth;
 		Site *m_site;
 		QNetworkReply *m_loginReply;
 		CustomNetworkAccessManager *m_manager;

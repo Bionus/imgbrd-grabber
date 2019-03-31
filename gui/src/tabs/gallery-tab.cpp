@@ -6,7 +6,9 @@
 #include "downloader/download-query-group.h"
 #include "logger.h"
 #include "main-window.h"
+#include "models/image.h"
 #include "models/page.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
@@ -14,14 +16,13 @@
 #define MAX_TAB_NAME_LENGTH 40
 
 
-GalleryTab::GalleryTab(Site *site, QString name, QString id, Profile *profile, MainWindow *parent)
+GalleryTab::GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, MainWindow *parent)
 	: GalleryTab(profile, parent)
 {
 	m_site = site;
-	m_name = std::move(name);
-	m_id = std::move(id);
+	m_gallery = std::move(gallery);
 
-	ui->labelGalleryName->setText(m_name);
+	ui->labelGalleryName->setText(m_gallery->name());
 
 	load();
 }
@@ -73,7 +74,7 @@ void GalleryTab::closeEvent(QCloseEvent *e)
 void GalleryTab::load()
 {
 	updateTitle();
-	loadTags(QStringList() << "gallery:" + m_id);
+	loadTags(m_gallery);
 }
 
 QList<Site*> GalleryTab::loadSites() const
@@ -85,9 +86,11 @@ QList<Site*> GalleryTab::loadSites() const
 
 void GalleryTab::write(QJsonObject &json) const
 {
+	QJsonObject jsonGallery;
+	m_gallery->write(jsonGallery);
+	json["gallery"] = jsonGallery;
+
 	json["type"] = QStringLiteral("gallery");
-	json["name"] = m_name;
-	json["id"] = m_id;
 	json["site"] = m_site->url();
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
@@ -97,11 +100,19 @@ void GalleryTab::write(QJsonObject &json) const
 
 bool GalleryTab::read(const QJsonObject &json, bool preload)
 {
-	m_name = json["name"].toString();
-	m_id = json["id"].toString();
-	m_site = m_sites[json["site"].toString()];
+	const QString site = json["site"].toString();
+	if (!m_sites.contains(site)) {
+		return false;
+	}
+	m_site = m_sites[site];
 
-	ui->labelGalleryName->setText(m_name);
+	m_gallery = QSharedPointer<Image>(new Image());
+	if (!m_gallery->read(json["gallery"].toObject(), m_profile->getSites())) {
+		m_gallery->deleteLater();
+		return false;
+	}
+
+	ui->labelGalleryName->setText(m_gallery->name());
 	ui->spinPage->setValue(json["page"].toInt());
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
 	ui->spinColumns->setValue(json["columns"].toInt());
@@ -110,8 +121,9 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	QStringList postFilters;
 	postFilters.reserve(jsonPostFilters.count());
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
+	}
 	setPostFilter(postFilters.join(' '));
 
 	setTags("", preload);
@@ -121,17 +133,24 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 
 void GalleryTab::getPage()
 {
+	if (!m_pages.contains(m_site->url())) {
+		return;
+	}
+
 	const auto &page = m_pages[m_site->url()].first();
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QString tags = "gallery:" + m_id;
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, m_site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, m_gallery, ui->spinPage->value(), perPage, perPage, postFiltering, m_site));
 }
 void GalleryTab::getAll()
 {
+	if (!m_pages.contains(m_site->url())) {
+		return;
+	}
+
 	const auto &page = m_pages[m_site->url()].first();
 
 	const int highLimit = page->highLimit();
@@ -139,13 +158,13 @@ void GalleryTab::getAll()
 	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
+	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 		return;
+	}
 
-	const QString search = "gallery:" + m_id;
 	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, m_gallery, 1, perPage, total, postFiltering, m_site));
 }
 
 
@@ -153,12 +172,12 @@ void GalleryTab::setTags(const QString &tags, bool preload)
 {
 	Q_UNUSED(tags);
 
-	activateWindow();
-
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 
 void GalleryTab::focusSearch()
@@ -167,14 +186,13 @@ void GalleryTab::focusSearch()
 }
 
 QString GalleryTab::tags() const
-{ return "gallery:" + m_id; }
+{ return QString(); }
 
 
 void GalleryTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 
@@ -183,6 +201,7 @@ void GalleryTab::changeEvent(QEvent *event)
 
 void GalleryTab::updateTitle()
 {
-	setWindowTitle(m_name.length() > MAX_TAB_NAME_LENGTH ? m_name.left(MAX_TAB_NAME_LENGTH - 3) + "..." : m_name);
+	const QString &name = m_gallery->name();
+	setWindowTitle(name.length() > MAX_TAB_NAME_LENGTH ? name.left(MAX_TAB_NAME_LENGTH - 3) + "..." : name);
 	emit titleChanged(this);
 }

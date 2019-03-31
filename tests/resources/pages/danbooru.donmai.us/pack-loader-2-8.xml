@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283056</id>
+    <created-at type="dateTime">2018-10-11T11:19:51-04:00</created-at>
+    <uploader-id type="integer">81291</uploader-id>
+    <score type="integer">5</score>
+    <source>https://twitter.com/sankuro396/status/1050374328447987712</source>
+    <md5>8014b2f269ffdde38bd9ab5775b4af2a</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">840</image-width>
+    <image-height type="integer">1192</image-height>
+    <tag-string>1girl :d &gt;:d black_legwear blue_eyes blush bra breasts brown_hair cape cleavage cowboy_shot eyebrows_visible_through_hair frilled_bra frilled_panties frills hat love_live! love_live!_sunshine!! medium_breasts open_mouth panties purple_bra purple_panties rozen5 short_hair simple_background smile solo thigh_gap thighhighs underwear underwear_only watanabe_you white_background witch_hat</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">10</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">32</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">2</tag-count-copyright>
+    <file-size type="integer">122699</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">5</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">36</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:19:51-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer" nil="true"/>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">0</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">81291</uid>
+    </keeper-data>
+    <uploader-name>CodeKyuubi</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl :d &gt;:d black_legwear blue_eyes blush bra breasts brown_hair cape cleavage cowboy_shot eyebrows_visible_through_hair frilled_bra frilled_panties frills hat medium_breasts open_mouth panties purple_bra purple_panties short_hair simple_background smile solo thigh_gap thighhighs underwear underwear_only white_background witch_hat</tag-string-general>
+    <tag-string-character>watanabe_you</tag-string-character>
+    <tag-string-copyright>love_live! love_live!_sunshine!!</tag-string-copyright>
+    <tag-string-artist>rozen5</tag-string-artist>
+    <tag-string-meta></tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/8014b2f269ffdde38bd9ab5775b4af2a.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/8014b2f269ffdde38bd9ab5775b4af2a.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/80/14/8014b2f269ffdde38bd9ab5775b4af2a.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283055</id>
+    <created-at type="dateTime">2018-10-11T11:19:08-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">2</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p6.jpg</source>
+    <md5>5eafba79824126b742cee261f97b42c9</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">548</image-width>
+    <image-height type="integer">774</image-height>
+    <tag-string>1girl aqua_jacket bang_dream! bangs bed_sheet black_hair blush brown_eyes crying holding holding_jacket jacket lying mitake_ran mizukikushou multicolored_hair object_hug on_side pillow red_hair shirt short_hair short_sleeves solo streaked_hair striped striped_shirt</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">4</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">24</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">164107</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">2</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">27</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:19:08-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">0</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl aqua_jacket bangs bed_sheet black_hair blush brown_eyes crying holding holding_jacket jacket lying multicolored_hair object_hug on_side pillow red_hair shirt short_hair short_sleeves solo streaked_hair striped striped_shirt</tag-string-general>
+    <tag-string-character>mitake_ran</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta></tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/5eafba79824126b742cee261f97b42c9.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/5eafba79824126b742cee261f97b42c9.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/5e/af/5eafba79824126b742cee261f97b42c9.jpg</preview-file-url>
+  </post>
+</posts>

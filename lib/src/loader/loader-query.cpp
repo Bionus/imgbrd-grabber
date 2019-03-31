@@ -28,8 +28,9 @@ LoaderData LoaderQuery::next()
 	LoaderData ret;
 
 	// Early return if we try to load the next results of a finished query
-	if (m_finished)
+	if (m_finished) {
 		return ret;
+	}
 
 	// Options
 	Profile *profile = m_site->getSource()->getProfile();
@@ -52,11 +53,9 @@ LoaderData LoaderQuery::next()
 
 	// Add results to the data object
 	const QList<QSharedPointer<Image>> &images = request.images();
-	for (const QSharedPointer<Image> &img : images)
-	{
+	for (const QSharedPointer<Image> &img : images) {
 		// Skip blacklisted images
-		if (!getBlacklisted && !blacklist.match(img->tokens(profile)).empty())
-		{
+		if (!getBlacklisted && !blacklist.match(img->tokens(profile)).empty()) {
 			ret.ignored.append(img);
 			continue;
 		}

@@ -20,14 +20,10 @@ void DetailsWindow::setImage(const QSharedPointer<Image> &image)
 {
 	clearLayout(ui->formLayout);
 
-	for (const QPair<QString, QString> &row : image->detailsData())
-	{
-		if (row.first.isEmpty() && row.second.isEmpty())
-		{
+	for (const QPair<QString, QString> &row : image->detailsData()) {
+		if (row.first.isEmpty() && row.second.isEmpty()) {
 			ui->formLayout->addItem(new QSpacerItem(10, 10));
-		}
-		else
-		{
+		} else {
 			const auto label = new QLabel(QString("<b>%1</b>").arg(row.first), this);
 			auto field = new QLabel(row.second, this);
 			field->setWordWrap(true);

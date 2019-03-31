@@ -20,6 +20,7 @@ class SearchTab;
 class FavoritesTab;
 class Profile;
 class DownloadsTab;
+class Image;
 class LogTab;
 class Favorite;
 class MonitoringCenter;
@@ -58,10 +59,10 @@ class MainWindow : public QMainWindow
 		void updateFavorites();
 		void updateKeepForLater();
 		// Tabs
-		void addTab(const QString &tag = "", bool background = false, bool save = true);
-		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true);
-		void addGalleryTab(Site *site, QString name, QString id, bool background = false, bool save = true);
-		void addSearchTab(SearchTab*, bool background = false, bool save = true);
+		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background = false, bool save = true, SearchTab *source = nullptr);
+		void addSearchTab(SearchTab*, bool background = false, bool save = true, SearchTab *source = nullptr);
 		void updateTabTitle(SearchTab*);
 		void tabClosed(SearchTab*);
 		void restoreLastClosedTab();
@@ -74,8 +75,8 @@ class MainWindow : public QMainWindow
 		void tabNext();
 		void tabPrev();
 		// Tag list
-		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true);
-		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true);
+		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);
+		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);
 		void loadTagTab(const QString &tag);
 		void loadTagNoTab(const QString &tag);
 		void linkHovered(const QString &tag);

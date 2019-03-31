@@ -13,8 +13,9 @@ void PostFilterTest::init()
 {
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
+	if (!tmp.exists("tmp")) {
 		tmp.mkdir("tmp");
+	}
 
 	QFile::remove("tests/resources/md5s.txt");
 
@@ -64,6 +65,12 @@ void PostFilterTest::cleanup()
 	m_img->deleteLater();
 }
 
+
+void PostFilterTest::testCount()
+{
+	QCOMPARE(PostFilter(QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01").count(), 3);
+	QCOMPARE(PostFilter(QStringList() << "" << "id:<=10000").count(), 1);
+}
 
 void PostFilterTest::testFilterNumeric()
 {

@@ -5,19 +5,20 @@
 
 const DownloadQuery *BatchDownloadImage::query() const
 {
-	if (queryGroup != nullptr)
+	if (queryGroup != nullptr) {
 		return queryGroup;
+	}
 
 	return queryImage;
 }
 
 int BatchDownloadImage::siteId(const QList<DownloadQueryGroup> &groups) const
 {
-	if (queryGroup != nullptr)
-	{
+	if (queryGroup != nullptr) {
 		const int index = groups.indexOf(*queryGroup);
-		if (index >= 0)
+		if (index >= 0) {
 			return index + 1;
+		}
 	}
 
 	return -1;

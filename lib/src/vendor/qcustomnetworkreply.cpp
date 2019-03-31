@@ -35,9 +35,14 @@ void QCustomNetworkReply::setNetworkError( QNetworkReply::NetworkError errorCode
 	setError(errorCode, errorString);
 }
 
-void QCustomNetworkReply::setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value )
+void QCustomNetworkReply::setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value)
 {
-	QNetworkReply::setHeader( header, value );
+	QNetworkReply::setHeader(header, value);
+}
+
+void QCustomNetworkReply::setAttribute(QNetworkRequest::Attribute code, const QVariant &value)
+{
+	QNetworkReply::setAttribute(code, value);
 }
 
 void QCustomNetworkReply::setContentType( const QByteArray &contentType )

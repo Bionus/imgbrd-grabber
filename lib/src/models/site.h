@@ -6,11 +6,11 @@
 #include <QString>
 #include <QUrl>
 #include <QVariant>
-#include <functional>
 #include "login/login.h"
 
 
 class Api;
+class Auth;
 class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
@@ -18,7 +18,6 @@ class Page;
 class QNetworkCookie;
 class QNetworkCookieJar;
 class QNetworkReply;
-class QSettings;
 class Source;
 class Tag;
 class TagDatabase;
@@ -84,7 +83,8 @@ class Site : public QObject
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
-		QString fixLoginUrl(QString url, const QString &loginPart = "") const;
+		QString fixLoginUrl(QString url) const;
+		Auth *getAuth() const;
 
 	private:
 		QNetworkReply *getRequest(const QNetworkRequest &request);
@@ -92,8 +92,6 @@ class Site : public QObject
 	public slots:
 		void login(bool force = false);
 		void loginFinished(Login::Result result);
-		void loadTags(int page, int limit);
-		void finishedTags();
 
 	protected:
 		void resetCookieJar();
@@ -118,13 +116,12 @@ class Site : public QObject
 
 		// Login
 		Login *m_login;
+		Auth *m_auth;
 		LoginStatus m_loggedIn;
 		bool m_autoLogin;
 
 		// Async
-		std::function<void(QNetworkReply*)> m_lastCallback;
 		QDateTime m_lastRequest;
-		QNetworkRequest m_callbackRequest;
 };
 
 Q_DECLARE_METATYPE(Site::LoginResult)

@@ -9,8 +9,9 @@ EmptyDirsFix2::EmptyDirsFix2(const QStringList &folders, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	for (const QString &folder : folders)
-	{ ui->listWidget->addItem(new QListWidgetItem(folder)); }
+	for (const QString &folder : folders) {
+		ui->listWidget->addItem(new QListWidgetItem(folder));
+	}
 	ui->listWidget->selectAll();
 }
 EmptyDirsFix2::~EmptyDirsFix2()
@@ -23,8 +24,9 @@ bool EmptyDirsFix2::removeDir(QString path)
 	path = QDir::toNativeSeparators(path);
 	QDir dir(path);
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dirs.size(); i++)
-	{ removeDir(path+"/"+dirs.at(i)); }
+	for (int i = 0; i < dirs.size(); i++) {
+		removeDir(path + "/" + dirs.at(i));
+	}
 	return QDir().rmdir(path);
 }
 
@@ -33,20 +35,20 @@ void EmptyDirsFix2::deleteSel()
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
 	QStringList folders;
 	folders.reserve(sel.count());
-	for (QListWidgetItem *s : sel)
-	{ folders.append(s->text()); }
+	for (QListWidgetItem *s : sel) {
+		folders.append(s->text());
+	}
 
-	if (folders.isEmpty())
-	{
+	if (folders.isEmpty()) {
 		QMessageBox::information(this, tr("Empty folders fixer"), tr("No folder selected."));
 		return;
 	}
 
 	const int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
-	if (response == QMessageBox::Yes)
-	{
-		for (int i = 0; i < folders.size(); i++)
-		{ removeDir(folders.at(i)); }
+	if (response == QMessageBox::Yes) {
+		for (int i = 0; i < folders.size(); i++) {
+			removeDir(folders.at(i));
+		}
 		close();
 	}
 }

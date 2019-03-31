@@ -21,15 +21,17 @@ StartWindow::StartWindow(Profile *profile, QWidget *parent)
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it)
-	{ ui->comboLanguage->addItem(it.value(), it.key()); }
+	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it) {
+		ui->comboLanguage->addItem(it.value(), it.key());
+	}
 	ui->comboLanguage->setCurrentText("English");
 
 	// Sources
 	QStringList sources = profile->getSites().keys();
 	ui->comboSource->addItems(sources);
-	if (sources.contains("danbooru.donmai.us"))
-	{ ui->comboSource->setCurrentText("danbooru.donmai.us"); }
+	if (sources.contains("danbooru.donmai.us")) {
+		ui->comboSource->setCurrentText("danbooru.donmai.us");
+	}
 
 	// Default values
 	QDir desktop(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
@@ -50,8 +52,9 @@ StartWindow::~StartWindow()
 void StartWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
-	if (!folder.isEmpty())
-	{ ui->lineFolder->setText(folder); }
+	if (!folder.isEmpty()) {
+		ui->lineFolder->setText(folder);
+	}
 }
 void StartWindow::on_buttonFilenamePlus_clicked()
 {
@@ -76,25 +79,23 @@ void StartWindow::save()
 	settings->setValue("path", ui->lineFolder->text());
 	settings->setValue("path_real", ui->lineFolder->text());
 	QDir pth = QDir(ui->lineFolder->text());
-	if (!pth.exists())
-	{
+	if (!pth.exists()) {
 		QString op;
-		while (!pth.exists() && pth.path() != op)
-		{
+		while (!pth.exists() && pth.path() != op) {
 			op = pth.path();
 			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
-		if (pth.path() == op)
-		{ error(this, tr("An error occurred creating the save folder.")); }
-		else
-		{ pth.mkpath(ui->lineFolder->text()); }
+		if (pth.path() == op) {
+			error(this, tr("An error occurred creating the save folder."));
+		} else {
+			pth.mkpath(ui->lineFolder->text());
+		}
 	}
 	settings->endGroup();
 
 	// Language
 	QString lang = ui->comboLanguage->currentData().toString();
-	if (settings->value("language", "English").toString() != lang)
-	{
+	if (settings->value("language", "English").toString() != lang) {
 		settings->setValue("language", lang);
 		emit languageChanged(lang);
 	}

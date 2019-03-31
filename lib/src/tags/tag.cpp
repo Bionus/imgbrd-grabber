@@ -1,19 +1,20 @@
 #include "tag.h"
+#include <QJsonArray>
 #include "functions.h"
 #include "tag-type.h"
 
 
 Tag::Tag()
 	: m_id(0), m_type(TagType()), m_count(0)
-{ }
+{}
 
 Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
 	: Tag(text, TagType(type), count, related)
-{ }
+{}
 
 Tag::Tag(const QString &text, const TagType &type, int count, const QStringList &related)
 	: Tag(0, text, type, count, related)
-{ }
+{}
 
 Tag::Tag(int id, const QString &text, TagType type, int count, QStringList related)
 	: m_id(id), m_type(std::move(type)), m_count(count), m_related(std::move(related))
@@ -23,18 +24,15 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 	// Decode HTML entities in the tag text
 	m_text = decodeHtmlEntities(text).replace(' ', '_');
 
-	if (m_type.isUnknown() || weakTypes.contains(m_type.name()))
-	{
+	if (m_type.isUnknown() || weakTypes.contains(m_type.name())) {
 		// Some artist names end with " (artist)" so we can guess their type
-		if (m_text.endsWith(QLatin1String("(artist)")))
-		{
+		if (m_text.endsWith(QLatin1String("(artist)"))) {
 			m_type = TagType(QStringLiteral("artist"));
 			m_text = m_text.left(m_text.length() - 9);
 		}
 
 		const int sepPos = m_text.indexOf(':');
-		if (sepPos != -1)
-		{
+		if (sepPos != -1) {
 			static QMap<int, QString> prep =
 			{
 				{ 0, QStringLiteral("artist") },
@@ -49,8 +47,7 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 
 			const QString pre = Tag::GetType(m_text.left(sepPos));
 			const int prepIndex = prep.key(pre, -1);
-			if (prepIndex != -1)
-			{
+			if (prepIndex != -1) {
 				m_type = TagType(Tag::GetType(prep[prepIndex], prep));
 				m_text = m_text.mid(sepPos + 1);
 			}
@@ -61,33 +58,90 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 QString Tag::GetType(QString type, QMap<int, QString> ids)
 {
 	type = type.toLower().trimmed();
-	if (type.contains(", "))
+	if (type.contains(", ")) {
 		type = type.split(", ").at(0).trimmed();
+	}
 
-	if (type == QLatin1String("series"))
+	if (type == QLatin1String("idol")) {
+		return QStringLiteral("model");
+	}
+	if (type == QLatin1String("series")) {
 		return QStringLiteral("copyright");
-	if (type == QLatin1String("mangaka"))
+	}
+	if (type == QLatin1String("mangaka")) {
 		return QStringLiteral("artist");
-	if (type == QLatin1String("game"))
+	}
+	if (type == QLatin1String("game")) {
 		return QStringLiteral("copyright");
-	if (type == QLatin1String("studio"))
+	}
+	if (type == QLatin1String("studio")) {
 		return QStringLiteral("circle");
-	if (type == QLatin1String("source"))
+	}
+	if (type == QLatin1String("source")) {
 		return QStringLiteral("general");
-	if (type == QLatin1String("character group"))
+	}
+	if (type == QLatin1String("character group")) {
 		return QStringLiteral("general");
-	if (type == QLatin1String("oc"))
+	}
+	if (type == QLatin1String("oc")) {
 		return QStringLiteral("character");
+	}
 
-	if (type.length() == 1)
-	{
+	if (type.length() == 1) {
 		const int typeId = type.toInt();
-		if (ids.contains(typeId))
+		if (ids.contains(typeId)) {
 			return ids[typeId];
+		}
 	}
 
 	return type;
 }
+
+
+void Tag::write(QJsonObject &json) const
+{
+	json["text"] = m_text;
+
+	if (m_id > 0) {
+		json["id"] = m_id;
+	}
+	if (!m_type.isUnknown()) {
+		json["type"] = m_type.name();
+	}
+	if (m_count >= 0) {
+		json["count"] = m_count;
+	}
+	if (!m_related.isEmpty()) {
+		json["related"] = QJsonArray::fromStringList(m_related);
+	}
+}
+
+bool Tag::read(const QJsonObject &json)
+{
+	m_text = json["text"].toString();
+
+	if (json.contains("id")) {
+		m_id = json["id"].toInt();
+	}
+	if (json.contains("type")) {
+		m_type = TagType(json["type"].toString());
+	}
+	if (json.contains("count")) {
+		m_count = json["count"].toInt();
+	}
+
+	// Related
+	if (json.contains("related")) {
+		QJsonArray related = json["related"].toArray();
+		m_related.reserve(related.count());
+		for (auto tag : related) {
+			m_related.append(tag.toString());
+		}
+	}
+
+	return true;
+}
+
 
 void Tag::setId(int id) { m_id = id; }
 void Tag::setText(const QString &text) { m_text = text; }

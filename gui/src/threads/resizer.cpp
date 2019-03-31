@@ -4,17 +4,15 @@
 
 Resizer::Resizer(QObject *parent)
 	: QObject(parent), m_aspectMode(Qt::KeepAspectRatio)
-{ }
+{}
 
 void Resizer::run()
 {
-	if  (!m_inputFilename.isEmpty())
-	{
+	if (!m_inputFilename.isEmpty()) {
 		m_input.load(m_inputFilename);
 	}
 
-	if (m_input.isNull())
-	{
+	if (m_input.isNull()) {
 		emit error();
 		return;
 	}

@@ -20,13 +20,13 @@ class PostFilterTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testCount();
 		void testFilterNumeric();
 		void testFilterSpecial();
 		void testFilterInvert();
 
 	private:
 		Profile *m_profile;
-		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;
 		Image *m_img;

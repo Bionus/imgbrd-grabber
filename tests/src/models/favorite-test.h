@@ -35,6 +35,7 @@ class FavoriteTest : public TestSuite
 		void testSortByNote();
 		void testSortByName();
 		void testSortByLastViewed();
+		void testSerialization();
 };
 
 #endif // FAVORITE_TEST_H

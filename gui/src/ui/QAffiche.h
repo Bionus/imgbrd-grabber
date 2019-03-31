@@ -21,6 +21,9 @@ class QAffiche : public QLabel
 		void clicked();
 		void clicked(int);
 		void clicked(const QString &);
+		void rightClicked();
+		void rightClicked(int);
+		void rightClicked(const QString &);
 		void middleClicked();
 		void middleClicked(int);
 		void middleClicked(const QString &);
@@ -34,7 +37,7 @@ class QAffiche : public QLabel
 		void mouseOut(int);
 
 	protected:
-		//void paintEvent(QPaintEvent*);
+		// void paintEvent(QPaintEvent*);
 		void mouseDoubleClickEvent(QMouseEvent*) override;
 		void mousePressEvent(QMouseEvent*) override;
 		void mouseReleaseEvent(QMouseEvent*) override;

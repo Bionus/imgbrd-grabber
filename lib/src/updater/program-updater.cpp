@@ -12,11 +12,11 @@
 
 ProgramUpdater::ProgramUpdater()
 	: ProgramUpdater(QStringLiteral("https://api.github.com/repos/Bionus/imgbrd-grabber"))
-{ }
+{}
 
 ProgramUpdater::ProgramUpdater(QString baseUrl)
 	: m_baseUrl(std::move(baseUrl)), m_downloadReply(nullptr)
-{ }
+{}
 
 void ProgramUpdater::checkForUpdates() const
 {
@@ -83,8 +83,7 @@ void ProgramUpdater::downloadUpdate()
 void ProgramUpdater::downloadDone()
 {
 	QUrl redirection = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redirection.isEmpty())
-	{
+	if (!redirection.isEmpty()) {
 		log(QStringLiteral("Installer download redirected to \"%1\".").arg(redirection.toString()));
 		const QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
@@ -94,8 +93,7 @@ void ProgramUpdater::downloadDone()
 	}
 
 	QFile file(QDir::tempPath() + QDir::separator() + m_updateFilename);
-	if (!file.open(QFile::WriteOnly | QFile::Truncate))
-	{
+	if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
 		log(QStringLiteral("Error opening installer file \"%1\".").arg(file.fileName()));
 		return;
 	}

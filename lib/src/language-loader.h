@@ -16,11 +16,11 @@ class LanguageLoader : public QObject
 	public:
 		explicit LanguageLoader(QString path);
 		QMap<QString, QString> getAllLanguages() const;
-		void install(QCoreApplication *app);
-		void uninstall(QCoreApplication *app);
+		bool install(QCoreApplication *app);
+		bool uninstall(QCoreApplication *app);
 
 	public slots:
-		void setLanguage(const QString &lang);
+		bool setLanguage(const QString &lang);
 
 	private:
 		QString m_path;

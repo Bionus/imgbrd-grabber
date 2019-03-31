@@ -1,0 +1,4 @@
+{
+    "token_type": "not_a_bearer",
+    "some_token": "test_token"
+}

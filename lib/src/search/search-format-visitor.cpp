@@ -1,7 +1,7 @@
 #include "search/search-format-visitor.h"
-#include "search/ast/search-node.h"
 #include "search/ast/search-node-op.h"
 #include "search/ast/search-node-tag.h"
+#include "search/ast/search-node.h"
 
 
 SearchFormatVisitor::SearchFormatVisitor(SearchFormat searchFormat)

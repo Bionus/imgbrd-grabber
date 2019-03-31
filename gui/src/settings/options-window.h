@@ -14,6 +14,7 @@ namespace Ui
 
 
 class Profile;
+class TokenSettingsWidget;
 
 class OptionsWindow : public QDialog
 {
@@ -106,6 +107,7 @@ class OptionsWindow : public QDialog
 		QList<ReverseSearchEngine> m_webServices;
 		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
+		QList<TokenSettingsWidget*> m_tokenSettings;
 };
 
 #endif // OPTIONS_WINDOW_H

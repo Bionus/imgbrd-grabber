@@ -21,8 +21,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	QMenu *reverseSearchMenu = addMenu(QIcon(":/images/icons/globe.png"), tr("Web services"));
 	auto *reverseSearchMapper = new QSignalMapper(this);
 	connect(reverseSearchMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
-	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
-	{
+	for (int i = 0; i < m_reverseSearchEngines.count(); ++i) {
 		ReverseSearchEngine engine = m_reverseSearchEngines[i];
 		QAction *subMenuAct = reverseSearchMenu->addAction(engine.icon(), engine.name());
 		connect(subMenuAct, SIGNAL(triggered()), reverseSearchMapper, SLOT(map()));
@@ -46,8 +45,9 @@ void ImageContextMenu::searchMd5()
 
 void ImageContextMenu::reverseImageSearch(int i)
 {
-	if (m_reverseSearchEngines.count() < i)
+	if (m_reverseSearchEngines.count() < i) {
 		return;
+	}
 
 	m_reverseSearchEngines[i].searchByUrl(m_image->fileUrl());
 }

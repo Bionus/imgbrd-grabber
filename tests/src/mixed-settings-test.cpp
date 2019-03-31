@@ -108,5 +108,18 @@ void MixedSettingsTest::testChildKeys()
 	QCOMPARE(settings.childKeys(), QStringList() << "child" << "parent");
 }
 
+void MixedSettingsTest::testChildKeysInGroup()
+{
+	MixedSettings settings(QList<QSettings*>() << m_child << m_parent);
+
+	m_child->setValue("other", "value");
+	m_child->setValue("Group/child", "value");
+	m_parent->setValue("Group/parent", "value");
+
+	settings.beginGroup("Group");
+	QCOMPARE(settings.childKeys(), QStringList() << "child" << "parent");
+	settings.endGroup();
+}
+
 
 QTEST_MAIN(MixedSettingsTest)

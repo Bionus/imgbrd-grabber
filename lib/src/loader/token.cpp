@@ -17,12 +17,14 @@ Token::Token(std::function<QVariant()> func, bool cacheResult)
 
 QVariant Token::value() const
 {
-	if (m_func == nullptr || m_value.isValid())
-	{ return m_value; }
+	if (m_func == nullptr || m_value.isValid()) {
+		return m_value;
+	}
 
 	QVariant val = m_func();
-	if (m_cacheResult)
-	{ m_value = val; }
+	if (m_cacheResult) {
+		m_value = val;
+	}
 
 	return val;
 }

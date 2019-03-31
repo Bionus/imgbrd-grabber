@@ -16,11 +16,9 @@ TagLoader::TagLoader(Profile *profile, QWidget *parent)
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it)
-	{
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
 		Site *site = it.value();
-		if (!getCompatibleApis(site).isEmpty())
-		{
+		if (!getCompatibleApis(site).isEmpty()) {
 			m_options.append(it.key());
 			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
 		}
@@ -40,9 +38,11 @@ TagLoader::~TagLoader()
 QList<Api*> TagLoader::getCompatibleApis(Site *site) const
 {
 	QList<Api*> apis;
-	for (Api *a : site->getApis())
-		if (a->canLoadTags())
+	for (Api *a : site->getApis()) {
+		if (a->canLoadTags()) {
 			apis.append(a);
+		}
+	}
 
 	return apis;
 }
@@ -75,8 +75,7 @@ void TagLoader::start()
 	QList<Tag> allTags;
 	QList<Tag> tags;
 	int page = 1;
-	while (!tags.isEmpty() || page == 1)
-	{
+	while (!tags.isEmpty() || page == 1) {
 		// Load tags for the current page
 		QEventLoop loop;
 		auto *tagApi = new TagApi(m_profile, site, api, page, 500, this);

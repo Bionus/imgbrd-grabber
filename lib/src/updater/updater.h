@@ -11,8 +11,10 @@ class Updater : public QObject
 {
 	Q_OBJECT
 
-	public:
+	protected:
 		Updater();
+
+	public:
 		~Updater() override;
 		int compareVersions(QString a, QString b);
 

@@ -9,12 +9,14 @@ class Site;
 
 class DownloadQuery
 {
-	public:
+	protected:
 		// Constructors
 		DownloadQuery() = default;
-		virtual ~DownloadQuery() = default;
 		explicit DownloadQuery(Site *site);
 		explicit DownloadQuery(Site *site, QString filename, QString path);
+
+	public:
+		virtual ~DownloadQuery() = default;
 
 		// Serialization
 		virtual void write(QJsonObject &json) const = 0;

@@ -1,36 +1,12 @@
 function completeImage(img: IImage): IImage {
-    if (!img["file_url"] || img["file_url"].length < 5) {
-        img["file_url"] = img["preview_url"].replace("/preview/", "/");
+    if (!img.file_url || img.file_url.length < 5) {
+        img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    img["file_url"] = img["file_url"].replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
 
     return img;
 }
-
-const auth: { [id: string]: IAuth } = {
-    url: {
-        type: "url",
-        fields: [
-            {
-                key: "login",
-                type: "username",
-            },
-            {
-                key: "password_hash",
-                type: "hash",
-                hash: "sha1",
-                salt: "choujin-steiner--%value%--",
-            },
-            {
-                key: "appkey",
-                type: "hash",
-                hash: "sha1",
-                salt: "sankakuapp_%username%_Z5NE9YASej",
-            },
-        ],
-    },
-};
 
 export const source: ISource = {
     name: "Sankaku",
@@ -49,7 +25,37 @@ export const source: ISource = {
         parenthesis: false,
         precedence: "or",
     },
-    auth,
+    auth: {
+        url: {
+            type: "url",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "login",
+                },
+                {
+                    id: "password",
+                    type: "password",
+                },
+                {
+                    key: "password_hash",
+                    type: "hash",
+                    hash: "sha1",
+                    salt: "choujin-steiner--%password%--",
+                },
+                {
+                    key: "appkey",
+                    type: "hash",
+                    hash: "sha1",
+                    salt: "sankakuapp_%pseudo:lower%_Z5NE9YASej",
+                },
+            ],
+            check: {
+                type: "max_page",
+                value: 50,
+            },
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -60,16 +66,16 @@ export const source: ISource = {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-beta.")
                         .replace("//idol.", "//iapi.");
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return baseUrl + "/post/index.json?" + loginPart + "page=" + query.page + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
+                    return baseUrl + "/post/index.json?" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
                     for (const img of data) {
-                        img["created_at"] = img["created_at"]["s"];
-                        img["score"] = img["total_score"];
+                        img.created_at = img.created_at["s"];
+                        img.score = img.total_score;
                         images.push(completeImage(img));
                     }
 
@@ -84,14 +90,14 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
-                        const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
-                        return "/post/index?" + loginPart + pagePart + "&tags=" + encodeURIComponent(query.search);
+                        return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
                     }
                 },
                 parse: (src: string): IParsedSearch => {
+                    src = src.replace(/<div class="?popular-preview-post"?>[\s\S]+?<\/div>/g, "");
                     const searchImageCounts = Grabber.regexMatches('class="?tag-(?:count|type-none)"? title="Post Count: (?<count>[0-9,]+)"', src);
                     const lastPage = Grabber.regexToConst("page", '<span class="?current"?>\\s*(?<page>[0-9,]+)\\s*</span>\\s*>>\\s*</div>', src);
                     let wiki = Grabber.regexToConst("wiki", '<div id="?wiki-excerpt"?[^>]*>(?<wiki>.+?)</div>', src);
@@ -113,7 +119,7 @@ export const source: ISource = {
                     return {
                         pools: Grabber.regexToPools('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src),
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
-                        imageUrl: Grabber.regexToConst("url", '<li>Original: <a href="(?<url>[^"]+)"', src).replace(/&amp;/g, "&"),
+                        imageUrl: Grabber.regexToConst("url", '<li>Original: <a href="(?<url>[^"]+)"|<a href="(?<url_2>[^"]+)">Save this file', src).replace(/&amp;/g, "&"),
                         createdAt: Grabber.regexToConst("date", '<a href="/\\?tags=date[^"]+" title="(?<date>[^"]+)">', src),
                     };
                 },

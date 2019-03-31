@@ -70,8 +70,9 @@ void SqlWorkerTest::testExecCreateAndInsert()
 	QSqlQuery query = db.exec("SELECT some_value FROM test_table");
 	int idVal = query.record().indexOf("some_value");
 	QList<int> values;
-	while (query.next())
+	while (query.next()) {
 		values.append(query.value(idVal).toInt());
+	}
 
 	QCOMPARE(values, QList<int>() << 1 << 3 << 21);
 }

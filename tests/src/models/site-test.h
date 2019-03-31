@@ -26,7 +26,6 @@ class SiteTest : public TestSuite
 
 		void testGetSites();
 
-		void testLoadTags();
 		void testCookies();
 		void testLoginNone();
 		void testLoginGet();

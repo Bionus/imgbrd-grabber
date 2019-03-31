@@ -17,9 +17,13 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 	public:
 		explicit CustomNetworkAccessManager(QObject *parent = nullptr);
 		QNetworkReply *get(const QNetworkRequest &request);
+		QNetworkReply *post(const QNetworkRequest &request, const QByteArray &data);
 		void sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors);
 
 		static QQueue<QString> NextFiles;
+
+	protected:
+		QNetworkReply *makeTestReply(const QNetworkRequest &request);
 };
 
 #endif // CUSTOMNETWORKACCESSMANAGER_H

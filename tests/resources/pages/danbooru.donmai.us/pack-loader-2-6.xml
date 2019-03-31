@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts type="array">
+  <post>
+    <id type="integer">3283065</id>
+    <created-at type="dateTime">2018-10-11T11:28:34-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">0</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p9.jpg</source>
+    <md5>c2ea507f309a2f326296484b0e07d17c</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">625</image-width>
+    <image-height type="integer">625</image-height>
+    <tag-string>1girl alternate_hairstyle bang_dream! bangs black_choker black_hair black_jacket blush bob_cut choker claw_pose collarbone earrings embarrassed eyebrows_visible_through_hair gao hands_up hoop_earrings jacket jewelry looking_at_viewer mitake_ran mizukikushou multicolored_hair off_shoulder open_mouth pendant purple_eyes red_hair solo streaked_hair</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">1</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">28</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">194451</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">31</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:28:43-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">0</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl alternate_hairstyle bangs black_choker black_hair black_jacket blush bob_cut choker claw_pose collarbone earrings embarrassed eyebrows_visible_through_hair gao hands_up hoop_earrings jacket jewelry looking_at_viewer multicolored_hair off_shoulder open_mouth pendant purple_eyes red_hair solo streaked_hair</tag-string-general>
+    <tag-string-character>mitake_ran</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta></tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/c2ea507f309a2f326296484b0e07d17c.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/c2ea507f309a2f326296484b0e07d17c.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/c2/ea/c2ea507f309a2f326296484b0e07d17c.jpg</preview-file-url>
+  </post>
+  <post>
+    <id type="integer">3283064</id>
+    <created-at type="dateTime">2018-10-11T11:27:19-04:00</created-at>
+    <uploader-id type="integer">387740</uploader-id>
+    <score type="integer">0</score>
+    <source>https://i.pximg.net/img-original/img/2018/10/12/00/00/27/71137611_p8.jpg</source>
+    <md5>b69fc824354c7a47016bdb16bab0086c</md5>
+    <last-comment-bumped-at type="dateTime" nil="true"/>
+    <rating>s</rating>
+    <image-width type="integer">625</image-width>
+    <image-height type="integer">665</image-height>
+    <tag-string>1girl alternate_hairstyle aoba_moka bang_dream! black_choker black_jacket blue_border blue_eyes border breasts choker claw_pose cleavage cross-laced_clothes double_bun eyebrows_visible_through_hair fang gao grey_background grey_hair hands_up jacket jewelry long_sleeves looking_at_viewer mizukikushou off_shoulder open_mouth pendant short_hair solo strapless upper_body yellow_border</tag-string>
+    <is-note-locked type="boolean">false</is-note-locked>
+    <fav-count type="integer">0</fav-count>
+    <file-ext>jpg</file-ext>
+    <last-noted-at type="dateTime" nil="true"/>
+    <is-rating-locked type="boolean">false</is-rating-locked>
+    <parent-id type="integer" nil="true"/>
+    <has-children type="boolean">false</has-children>
+    <approver-id type="integer" nil="true"/>
+    <tag-count-general type="integer">31</tag-count-general>
+    <tag-count-artist type="integer">1</tag-count-artist>
+    <tag-count-character type="integer">1</tag-count-character>
+    <tag-count-copyright type="integer">1</tag-count-copyright>
+    <file-size type="integer">135035</file-size>
+    <is-status-locked type="boolean">false</is-status-locked>
+    <pool-string></pool-string>
+    <up-score type="integer">0</up-score>
+    <down-score type="integer">0</down-score>
+    <is-pending type="boolean">false</is-pending>
+    <is-flagged type="boolean">false</is-flagged>
+    <is-deleted type="boolean">false</is-deleted>
+    <tag-count type="integer">34</tag-count>
+    <updated-at type="dateTime">2018-10-11T11:27:27-04:00</updated-at>
+    <is-banned type="boolean">false</is-banned>
+    <pixiv-id type="integer">71137611</pixiv-id>
+    <last-commented-at type="dateTime" nil="true"/>
+    <has-active-children type="boolean">false</has-active-children>
+    <bit-flags type="integer">2</bit-flags>
+    <tag-count-meta type="integer">0</tag-count-meta>
+    <keeper-data>
+      <uid type="integer">387740</uid>
+    </keeper-data>
+    <uploader-name>fossilnix</uploader-name>
+    <has-large type="boolean">false</has-large>
+    <has-visible-children type="boolean">false</has-visible-children>
+    <children-ids nil="true"/>
+    <is-favorited type="boolean">false</is-favorited>
+    <tag-string-general>1girl alternate_hairstyle black_choker black_jacket blue_border blue_eyes border breasts choker claw_pose cleavage cross-laced_clothes double_bun eyebrows_visible_through_hair fang gao grey_background grey_hair hands_up jacket jewelry long_sleeves looking_at_viewer off_shoulder open_mouth pendant short_hair solo strapless upper_body yellow_border</tag-string-general>
+    <tag-string-character>aoba_moka</tag-string-character>
+    <tag-string-copyright>bang_dream!</tag-string-copyright>
+    <tag-string-artist>mizukikushou</tag-string-artist>
+    <tag-string-meta></tag-string-meta>
+    <file-url>https://danbooru.donmai.us/data/b69fc824354c7a47016bdb16bab0086c.jpg</file-url>
+    <large-file-url>https://danbooru.donmai.us/data/b69fc824354c7a47016bdb16bab0086c.jpg</large-file-url>
+    <preview-file-url>https://raikou4.donmai.us/preview/b6/9f/b69fc824354c7a47016bdb16bab0086c.jpg</preview-file-url>
+  </post>
+</posts>

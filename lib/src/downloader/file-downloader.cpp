@@ -1,6 +1,7 @@
 #include "downloader/file-downloader.h"
 #include <QNetworkReply>
 #include "functions.h"
+#include "logger.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 
@@ -22,8 +23,7 @@ bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 	m_writeError = false;
 	m_reply = reply;
 
-	if (ok)
-	{
+	if (ok) {
 		connect(reply, &QNetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
 		connect(reply, &QNetworkReply::finished, this, &FileDownloader::replyFinished);
 	}
@@ -34,11 +34,11 @@ bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 
 void FileDownloader::replyReadyRead()
 {
-	if (m_reply->bytesAvailable() < WRITE_BUFFER_SIZE)
+	if (m_reply->bytesAvailable() < WRITE_BUFFER_SIZE) {
 		return;
+	}
 
-	if (m_file.write(m_reply->readAll()) < 0)
-	{
+	if (m_file.write(m_reply->readAll()) < 0) {
 		m_writeError = true;
 		m_reply->abort();
 	}
@@ -52,23 +52,22 @@ void FileDownloader::replyFinished()
 
 	const bool failedLastWrite = data.length() > 0 && written < 0;
 	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
-	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite || invalidHtml)
-	{
+	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite || invalidHtml) {
 		m_file.remove();
-		if (failedLastWrite || m_writeError)
-		{ emit writeError(); }
-		else if (invalidHtml)
-		{
+		if (failedLastWrite || m_writeError) {
+			emit writeError();
+		} else if (invalidHtml) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(QNetworkReply::ContentNotFoundError, "Invalid HTML content returned");
+		} else {
+			emit networkError(m_reply->error(), m_reply->errorString());
 		}
-		else
-		{ emit networkError(m_reply->error(), m_reply->errorString()); }
 		return;
 	}
 
-	for (const QString &copy : qAsConst(m_copies))
+	for (const QString &copy : qAsConst(m_copies)) {
 		m_file.copy(copy);
+	}
 
 	emit success();
 }

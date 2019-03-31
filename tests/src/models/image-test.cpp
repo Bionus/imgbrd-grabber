@@ -12,8 +12,9 @@ void ImageTest::init()
 {
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
+	if (!tmp.exists("tmp")) {
 		tmp.mkdir("tmp");
+	}
 
 	QFile::remove("tests/resources/md5s.txt");
 
@@ -105,7 +106,6 @@ void ImageTest::testCopy()
 	QCOMPARE(clone.tokens(m_profile), m_img->tokens(m_profile));
 	QCOMPARE(clone.parentSite(), m_img->parentSite());
 	QCOMPARE(clone.page(), m_img->page());
-	QCOMPARE(clone.data(), m_img->data());
 }
 
 void ImageTest::testHasTag()
@@ -116,29 +116,8 @@ void ImageTest::testHasTag()
 	QCOMPARE(m_img->hasTag("tag7"), false);
 	QCOMPARE(m_img->hasTag("copyright3"), false);
 }
-void ImageTest::testHasAnyTag()
-{
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag1" << "tag2"), true);
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag7" << "tag1"), true);
-	QCOMPARE(m_img->hasAnyTag(QStringList() << "tag4" << "tag7"), false);
-}
-void ImageTest::testHasAllTags()
-{
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag1" << "tag2"), true);
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag7" << "tag1"), false);
-	QCOMPARE(m_img->hasAllTags(QStringList() << "tag4" << "tag7"), false);
-}
 
 
-void ImageTest::testMd5FromData()
-{
-	m_details.remove("md5");
-	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, m_profile);
-	m_img->setData(QString("test").toLatin1());
-
-	QCOMPARE(m_img->md5(), QString("098f6bcd4621d373cade4e832627b4f6"));
-}
 /*void ImageTest::testMd5FromFile()
 {
 	m_details.remove("md5");
@@ -239,10 +218,11 @@ void ImageTest::testSave()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
@@ -255,7 +235,7 @@ void ImageTest::testSaveError()
 {
 	QString path = "Z:/../tests/resources/tmp/";
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), path);
 
 	QCOMPARE(res.count(), 1);
@@ -266,10 +246,11 @@ void ImageTest::testSaveAlreadyExists()
 {
 	// Create file if not exists
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (!file.open(QFile::Truncate | QFile::WriteOnly))
+	if (!file.open(QFile::Truncate | QFile::WriteOnly)) {
 		QFAIL("Cannot create file");
+	}
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
@@ -279,10 +260,11 @@ void ImageTest::testSaveDuplicate()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res;
 
 	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/source.png");
@@ -315,17 +297,19 @@ void ImageTest::testSaveLog()
 {
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
-	if (file.exists())
+	if (file.exists()) {
 		file.remove();
+	}
 	QFile logFile("tests/resources/tmp/savelog.txt");
-	if (logFile.exists())
+	if (logFile.exists()) {
 		logFile.remove();
+	}
 
 	m_settings->setValue("LogFiles/0/locationType", 1);
 	m_settings->setValue("LogFiles/0/uniquePath", logFile.fileName());
 	m_settings->setValue("LogFiles/0/content", "id: %id%");
 
-	m_img->setData(QString("test").toLatin1());
+	m_img->setSavePath("tests/resources/image_1x1.png");
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);

@@ -1,37 +1,25 @@
-function completeImage(img: IImage): IImage {
-    if (img["json_uris"]) {
-        const uris = JSON.parse(img["json_uris"].replace(/&quot;/g, '"'));
+function completeImage(img: IImage & { json_uris: string }): IImage {
+    if (img.json_uris) {
+        const uris = JSON.parse(img.json_uris.replace(/&quot;/g, '"'));
         if ("thumb_small" in uris && uris["thumb_small"].length > 5) {
-            img["preview_url"] = uris["thumb_small"];
+            img.preview_url = uris["thumb_small"];
         }
         if ("large" in uris && uris["large"].length > 5) {
-            img["sample_url"] = uris["large"];
+            img.sample_url = uris["large"];
         }
         if ("full" in uris && uris["full"].length > 5) {
-            img["file_url"] = uris["full"];
+            img.file_url = uris["full"];
         }
     }
 
-    if (!img["preview_url"] && img["file_url"].length >= 5) {
-        img["preview_url"] = img["file_url"]
+    if (!img.preview_url && img.file_url.length >= 5) {
+        img.preview_url = img.file_url
             .replace("full", "thumb")
             .replace(".svg", ".png");
     }
 
     return img;
 }
-
-const auth: { [id: string]: IAuth } = {
-    url: {
-        type: "url",
-        fields: [
-            {
-                key: "key",
-                type: "password",
-            },
-        ],
-    },
-};
 
 export const source: ISource = {
     name: "Booru-on-rails",
@@ -47,7 +35,18 @@ export const source: ISource = {
         parenthesis: true,
         precedence: "and",
     },
-    auth,
+    auth: {
+        url: {
+            type: "url",
+            fields: [
+                {
+                    id: "apiKey",
+                    key: "key",
+                    type: "password",
+                },
+            ],
+        },
+    },
     apis: {
         json: {
             name: "JSON",
@@ -55,12 +54,10 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
-                        return "/images.json?" + loginPart + "page=" + query.page + "&nocomments=1&nofav=1";
+                        return "/images.json?page=" + query.page + "&nocomments=1&nofav=1";
                     }
-                    return "/search.json?" + loginPart + "page=" + query.page + "&q=" + encodeURIComponent(query.search) + "&nocomments=1&nofav=1";
+                    return "/search.json?page=" + query.page + "&q=" + encodeURIComponent(query.search) + "&nocomments=1&nofav=1";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -82,11 +79,11 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of results) {
                         const img = Grabber.mapFields(image, map);
-                        img["tags"] = image["tags"].split(", ");
-                        img["preview_url"] = image["representations"]["thumb"];
-                        img["sample_url"] = image["representations"]["large"];
-                        img["file_url"] = image["representations"]["full"];
-                        img["has_comments"] = image["comment_count"] > 0;
+                        img.tags = image["tags"].split(", ");
+                        img.preview_url = image["representations"]["thumb"];
+                        img.sample_url = image["representations"]["large"];
+                        img.file_url = image["representations"]["full"];
+                        img.has_comments = image["comment_count"] > 0;
                         images.push(completeImage(img));
                     }
 
@@ -98,9 +95,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags.json?" + loginPart + "limit=" + opts.limit + "&page=" + query.page;
+                    return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -127,12 +122,10 @@ export const source: ISource = {
             forcedLimit: 15,
             search: {
                 url: (query: any, opts: any, previous: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
                     if (!query.search || query.search.length === 0) {
-                        return "/images/page/" + query.page + "?" + loginPart;
+                        return "/images/page/" + query.page;
                     }
-                    return "/search?" + loginPart + "page=" + query.page + "&sbq=" + encodeURIComponent(query.search);
+                    return "/search?page=" + query.page + "&sbq=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     return {
@@ -154,9 +147,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: any, opts: any): string => {
-                    opts["auth"]["key"] = opts["auth"]["password"];
-                    const loginPart = Grabber.loginUrl(auth.url.fields, opts["auth"]);
-                    return "/tags?" + loginPart + "page=" + query.page;
+                    return "/tags?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

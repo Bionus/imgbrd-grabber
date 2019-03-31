@@ -37,8 +37,9 @@ PoolTab::PoolTab(Profile *profile, MainWindow *parent)
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites.keys();
-	for (const QString &source : sources)
-	{ ui->comboSites->addItem(source); }
+	for (const QString &source : sources) {
+		ui->comboSites->addItem(source);
+	}
 
 	// Search field
 	m_search = createAutocomplete();
@@ -118,16 +119,18 @@ bool PoolTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	QStringList postFilters;
 	postFilters.reserve(jsonPostFilters.count());
-	for (auto tag : jsonPostFilters)
+	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
+	}
 	setPostFilter(postFilters.join(' '));
 
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	QStringList tags;
 	tags.reserve(jsonTags.count());
-	for (auto tag : jsonTags)
+	for (auto tag : jsonTags) {
 		tags.append(tag.toString());
+	}
 	setTags(tags.join(' '), preload);
 
 	return true;
@@ -136,30 +139,42 @@ bool PoolTab::read(const QJsonObject &json, bool preload)
 
 void PoolTab::getPage()
 {
-	const auto &page = m_pages[ui->comboSites->currentText()].first();
-
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+
+	const QString &ste = ui->comboSites->currentText();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : QSharedPointer<Page>()) : m_pages.first().first();
+	if (page.isNull()) {
+		return;
+	}
+
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QString tags = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QStringList tags = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
 void PoolTab::getAll()
 {
-	const auto &page = m_pages[ui->comboSites->currentText()].first();
+	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
+
+	const QString &ste = ui->comboSites->currentText();
+	const auto &page = unloaded ? (m_pages.contains(ste) ? m_pages[ste].first() : QSharedPointer<Page>()) : m_pages.first().first();
+	if (page.isNull()) {
+		return;
+	}
 
 	const int highLimit = page->highLimit();
 	const int currentCount = page->pageImageCount();
 	const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
 	const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
 	const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
-	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0))
+	if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 		return;
+	}
 
-	const QString search = "pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed();
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));
@@ -168,28 +183,31 @@ void PoolTab::getAll()
 
 void PoolTab::setTags(const QString &tags, bool preload)
 {
-	activateWindow();
 	m_search->setText(tags);
 
-	if (preload)
+	if (preload) {
+		activateWindow();
 		load();
-	else
+	} else {
 		updateTitle();
+	}
 }
 void PoolTab::setPool(int id, const QString &site)
 {
 	activateWindow();
 	ui->spinPool->setValue(id);
 	const int index = ui->comboSites->findText(site);
-	if (index != -1)
-	{ ui->comboSites->setCurrentIndex(index); }
+	if (index != -1) {
+		ui->comboSites->setCurrentIndex(index);
+	}
 	load();
 }
 void PoolTab::setSite(const QString &site)
 {
 	const int index = ui->comboSites->findText(site);
-	if (index != -1)
-	{ ui->comboSites->setCurrentIndex(index); }
+	if (index != -1) {
+		ui->comboSites->setCurrentIndex(index);
+	}
 }
 
 void PoolTab::focusSearch()
@@ -204,8 +222,7 @@ QString PoolTab::tags() const
 void PoolTab::changeEvent(QEvent *event)
 {
 	// Automatically re-translate this tab on language change
-	if (event->type() == QEvent::LanguageChange)
-	{
+	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
 	}
 

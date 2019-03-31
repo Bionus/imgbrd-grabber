@@ -11,6 +11,7 @@
 
 
 class Commands;
+class Md5Database;
 class QSettings;
 class Site;
 class Source;
@@ -70,10 +71,10 @@ class Profile : public QObject
 		QStringList &getIgnored();
 		Commands &getCommands();
 		QStringList &getAutoComplete();
-		QStringList &getCustomAutoComplete();
 		Blacklist &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
+		const QStringList &getAdditionalTokens() const;
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 
 	private:
@@ -99,9 +100,10 @@ class Profile : public QObject
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
 		Blacklist m_blacklist;
-		QHash<QString, QString> m_md5s;
+		Md5Database *m_md5s;
 		QMap<QString, Source*> m_sources;
 		QMap<QString, Site*> m_sites;
+		QStringList m_additionalTokens;
 };
 
 #endif // PROFILE_H

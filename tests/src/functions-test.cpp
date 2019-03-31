@@ -12,8 +12,9 @@ QDateTime fileCreationDate(const QString &path)
 		return fi.created();
 	#else
 		QDateTime d = fi.birthTime();
-		if (d.isValid())
+		if (d.isValid()) {
 			return d;
+		}
 		return fi.metadataChangeTime();
 	#endif
 }
@@ -38,6 +39,7 @@ void FunctionsTest::testFixFilenameWindows()
 	assertFixFilename(0, "image.jpg", "C:\\test\\", "image.jpg");
 	assertFixFilename(0, "image", "C:\\test\\", "image");
 	assertFixFilename(0, "folder\\image.jpg", "C:\\test\\", "folder\\image.jpg");
+	assertFixFilename(0, "folder...\\image.jpg", "C:\\test\\", "folder\\image.jpg");
 }
 
 void FunctionsTest::testFixFilenameLinux()
@@ -51,8 +53,9 @@ void FunctionsTest::testFixFilenameLinux()
 static QByteArray readFile(const QString &path)
 {
 	QFile f(path);
-	if (!f.open(QFile::ReadOnly))
+	if (!f.open(QFile::ReadOnly)) {
 		return QByteArray();
+	}
 
 	return f.readAll();
 }
@@ -66,15 +69,17 @@ void FunctionsTest::testGetExtensionFromHeader()
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/mp4.mp4")), QString("mp4"));
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/swf.swf")), QString("swf"));
 	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/ico.ico")), QString("ico"));
+	QCOMPARE(getExtensionFromHeader(readFile("tests/resources/minimal/txt.txt")), QString());
 }
 
 static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
 {
 	QFont font(name);
-	if (usePixels)
+	if (usePixels) {
 		font.setPixelSize(size);
-	else
+	} else {
 		font.setPointSize(size);
+	}
 	font.setWeight(weight);
 	font.setStyle(style);
 	return font;
@@ -322,6 +327,39 @@ void FunctionsTest::testFixCloudflareEmails()
 {
 	QCOMPARE(fixCloudflareEmails(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls"><span class="__cf_email__" data-cfemail="145d505b58595447405146">[email&#160;protected]</span> Cinderella Girls</a>)"), QString(R"(<a class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=idolm%40ster_cinderella_girls">IDOLM@STER Cinderella Girls</a>)"));
 	QCOMPARE(fixCloudflareEmails(R"(Koshimizu Sachiko on <span class="__cf_email__" data-cfemail="cc9cbea3a6a9afb8e1a5818c9f">[email&#160;protected]</span>)"), QString("Koshimizu Sachiko on Project-iM@S"));
+}
+
+void FunctionsTest::testGetFileMd5()
+{
+	QCOMPARE(getFileMd5(QString()), QString());
+	QCOMPARE(getFileMd5("non_existing_path.txt"), QString());
+
+	QTemporaryFile file;
+	QVERIFY(file.open());
+	file.write("test");
+	file.seek(0);
+
+	QCOMPARE(getFileMd5(file.fileName()), QString("098f6bcd4621d373cade4e832627b4f6")); // md5("test")
+}
+void FunctionsTest::testGetFilenameMd5()
+{
+	QCOMPARE(getFilenameMd5("", "%md5%.%ext%"), QString());
+	QCOMPARE(getFilenameMd5("lol.jpg", "%md5%.%ext%"), QString());
+	QCOMPARE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%"), QString());
+
+	QCOMPARE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6", "%md5%"), QString("098f6bcd4621d373cade4e832627b4f6"));
+	QCOMPARE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%"), QString("098f6bcd4621d373cade4e832627b4f6"));
+	QCOMPARE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%/%md5%.%ext%"), QString("098f6bcd4621d373cade4e832627b4f6"));
+}
+
+void FunctionsTest::testRemoveCacheBuster()
+{
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com")), QUrl("https://test.com"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com?string")), QUrl("https://test.com?string"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com?1234")), QUrl("https://test.com"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path")), QUrl("https://test.com/path"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path?string")), QUrl("https://test.com/path?string"));
+	QCOMPARE(removeCacheBuster(QUrl("https://test.com/path?1234")), QUrl("https://test.com/path"));
 }
 
 
