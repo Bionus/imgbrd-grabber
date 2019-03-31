@@ -56,7 +56,7 @@ void LogTab::write(const QString &msg)
 	htmlMsg.insert(0, "<span style='color:darkgreen'>");
 
 	// Links color
-	static const QRegularExpression rxLinks("`(http[^']+)`");
+	static const QRegularExpression rxLinks("`(http[^`]+)`");
 	htmlMsg.replace(rxLinks, R"(<a href="\1">\1</a>)");
 
 	// File paths color
