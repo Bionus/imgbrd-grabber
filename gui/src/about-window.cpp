@@ -18,6 +18,7 @@ AboutWindow::AboutWindow(const QString &version, QWidget *parent)
 			labelVersion += " - nightly";
 		}
 	#endif
+	labelVersion += QString(" (%1)").arg(VERSION_PLATFORM);
 	ui->labelCurrent->setText(labelVersion);
 
 	ui->labelCreator->setText(ui->labelCreator->text().replace("{website}", PROJECT_WEBSITE_URL));
