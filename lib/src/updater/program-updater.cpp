@@ -68,7 +68,19 @@ void ProgramUpdater::downloadUpdate()
 {
 	QJsonDocument json = QJsonDocument::fromJson(m_source);
 	QJsonObject lastRelease = json.object();
-	QJsonObject lastAsset = lastRelease["assets"].toArray().first().toObject();
+	QJsonArray lastAssets = lastRelease["assets"].toArray();
+	QJsonObject lastAsset;
+	for (int i = 0; i < lastAssets.size(); ++i) {
+		const QJsonObject obj = lastAssets[i].toObject();
+		const QString name = obj["name"].toString();
+		if (name.endsWith(".exe") && name.contains(VERSION_PLATFORM)) {
+			lastAsset = obj;
+		}
+	}
+	if (lastAsset.isEmpty()) {
+		log("No proper release asset found for updatind", Logger::Error);
+		return;
+	}
 
 	QUrl url(lastAsset["browser_download_url"].toString());
 	m_updateFilename = url.fileName();
