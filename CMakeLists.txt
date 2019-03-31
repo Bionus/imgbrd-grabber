@@ -26,7 +26,7 @@ endif()
 
 project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "6.0.6")
+	set(VERSION "7.0.0")
 else()
 	string(REGEX REPLACE "^v" "" VERSION VERSION)
 endif()
