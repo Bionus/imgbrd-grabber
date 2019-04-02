@@ -139,6 +139,8 @@ void ImageDownloader::abort()
 
 void ImageDownloader::loadedSave()
 {
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
+
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty()) {
 		m_paths = m_image->paths(m_filename, m_path, m_count);
