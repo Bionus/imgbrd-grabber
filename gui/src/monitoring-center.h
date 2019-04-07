@@ -5,6 +5,7 @@
 
 
 class Favorite;
+class ImageDownloader;
 class Monitor;
 class Profile;
 class QSystemTrayIcon;
@@ -22,6 +23,8 @@ class MonitoringCenter : public QObject
 
 	protected slots:
 		void tick();
+        void startDownload();
+        void downloadFinished();
 
 	protected:
 		void checkMonitor(Monitor &monitor, const Favorite &favorite);
@@ -30,6 +33,8 @@ class MonitoringCenter : public QObject
 		Profile *m_profile;
 		QSystemTrayIcon *m_trayIcon;
 		bool m_stop = false;
+        QList<ImageDownloader*> m_downloadQueue;
+        bool m_downloading = false;
 };
 
 #endif // MONITORING_CENTER_H

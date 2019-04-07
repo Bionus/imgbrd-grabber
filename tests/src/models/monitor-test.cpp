@@ -23,14 +23,14 @@ void MonitorTest::cleanup()
 
 void MonitorTest::testSite()
 {
-	Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+    Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 	QCOMPARE(monitor.site(), m_site);
 }
 
 void MonitorTest::testInterval()
 {
-	Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+    Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 	QCOMPARE(monitor.interval(), 60);
 }
@@ -40,7 +40,7 @@ void MonitorTest::testLastCheck()
 	QDateTime before(QDate(2016, 7, 2), QTime(16, 35, 12));
 	QDateTime after(QDate(2018, 7, 2), QTime(16, 35, 12));
 
-	Monitor monitor(m_site, 60, before, 12, true);
+    Monitor monitor(m_site, 60, before, false, "", "", 12, true);
 
 	QCOMPARE(monitor.lastCheck(), before);
 	monitor.setLastCheck(after);
@@ -49,7 +49,7 @@ void MonitorTest::testLastCheck()
 
 void MonitorTest::testCumulated()
 {
-	Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+    Monitor monitor(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 	QCOMPARE(monitor.cumulated(), 12);
 	QCOMPARE(monitor.preciseCumulated(), true);
@@ -60,7 +60,7 @@ void MonitorTest::testCumulated()
 
 void MonitorTest::testSerialization()
 {
-	Monitor original(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+    Monitor original(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 	QJsonObject json;
 	original.toJson(json);
@@ -76,9 +76,9 @@ void MonitorTest::testSerialization()
 
 void MonitorTest::testCompare()
 {
-	Monitor a(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
-	Monitor b(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
-	Monitor c(m_site, 120, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), 12, true);
+    Monitor a(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+    Monitor b(m_site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+    Monitor c(m_site, 120, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 	QVERIFY(a == b);
 	QVERIFY(b == a);

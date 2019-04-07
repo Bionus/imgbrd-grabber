@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>331</width>
-    <height>197</height>
+    <width>400</width>
+    <height>293</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -128,6 +128,16 @@
        <string>Monitors</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_3">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelMonitoringSource">
+         <property name="text">
+          <string>Source</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboMonitoringSource"/>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="labelMonitoringInterval">
          <property name="text">
@@ -155,15 +165,39 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelMonitoringSource">
+       <item row="3" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkMonitoingDownload">
          <property name="text">
-          <string>Source</string>
+          <string>Download</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="comboMonitoringSource"/>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelPathOverride">
+         <property name="text">
+          <string>Path</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelFilenameOverride">
+         <property name="text">
+          <string>Filename</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QLabel" name="labelOverrideHelp">
+         <property name="text">
+          <string>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="linePathOverride"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lineFilenameOverride"/>
        </item>
       </layout>
      </widget>

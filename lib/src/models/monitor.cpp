@@ -3,8 +3,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, int cumulated, bool preciseCumulated)
-	: m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated)
+Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated)
+    : m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride))
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -48,6 +48,19 @@ void Monitor::setCumulated(int cumulated, bool isPrecise)
 	m_preciseCumulated = isPrecise;
 }
 
+bool Monitor::download() const
+{
+    return m_download;
+}
+const QString &Monitor::pathOverride() const
+{
+    return m_pathOverride;
+}
+const QString &Monitor::filenameOverride() const
+{
+    return m_filenameOverride;
+}
+
 
 void Monitor::toJson(QJsonObject &json) const
 {
@@ -55,7 +68,10 @@ void Monitor::toJson(QJsonObject &json) const
 	json["interval"] = m_interval;
 	json["lastCheck"] = m_lastCheck.toString(Qt::ISODate);
 	json["cumulated"] = m_cumulated;
-	json["preciseCumulated"] = m_preciseCumulated;
+    json["preciseCumulated"] = m_preciseCumulated;
+    json["download"] = m_download;
+    json["pathOverride"] = m_pathOverride;
+    json["filenameOverride"] = m_filenameOverride;
 }
 
 Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &sites)
@@ -65,7 +81,10 @@ Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &s
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
 	const int cumulated = json["cumulated"].toInt();
 	const bool preciseCumulated = json["preciseCumulated"].toBool();
-	return Monitor(site, interval, lastCheck, cumulated, preciseCumulated);
+    const bool download = json["download"].toBool();
+    const QString &pathOverride = json["pathOverride"].toString();
+    const QString &filenameOverride = json["filenameOverride"].toString();
+    return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated);
 }
 
 
@@ -75,7 +94,10 @@ bool operator==(const Monitor &lhs, const Monitor &rhs)
 		&& lhs.interval() == rhs.interval()
 		&& lhs.lastCheck() == rhs.lastCheck()
 		&& lhs.cumulated() == rhs.cumulated()
-		&& lhs.preciseCumulated() == rhs.preciseCumulated();
+        && lhs.preciseCumulated() == rhs.preciseCumulated()
+        && lhs.download() == rhs.download()
+        && lhs.pathOverride() == rhs.pathOverride()
+        && lhs.filenameOverride() == rhs.filenameOverride();
 }
 
 bool operator!=(const Monitor &lhs, const Monitor &rhs)
