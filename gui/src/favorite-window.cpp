@@ -32,6 +32,9 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 		Monitor monitor = m_favorite.getMonitors().first();
 		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60.0));
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
+		ui->checkMonitoingDownload->setChecked(monitor.download());
+		ui->linePathOverride->setText(monitor.pathOverride());
+		ui->lineFilenameOverride->setText(monitor.filenameOverride());
 	}
 
 	connect(this, &QDialog::accepted, this, &FavoriteWindow::save);
