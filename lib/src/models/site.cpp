@@ -160,6 +160,7 @@ void Site::loadConfig()
 	m_tagDatabase->loadTypes();
 
 	// Setup throttling
+	m_manager->setMaxConcurrency(setting("download/simultaneous", 10).toInt());
 	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 0).toInt() * 1000);
 	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
