@@ -103,6 +103,8 @@ void NetworkReply::startNow()
 	connect(m_reply, &QNetworkReply::readyRead, this, &NetworkReply::readyRead);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &NetworkReply::downloadProgress);
 	connect(m_reply, &QNetworkReply::finished, this, &NetworkReply::finished);
+
+	m_reply->setParent(this);
 }
 
 void NetworkReply::abort()
