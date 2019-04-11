@@ -82,6 +82,10 @@ void NetworkReply::start(int msDelay)
 	if (m_started) {
 		return;
 	}
+	if (m_aborted) {
+		m_aborted = false;
+		return;
+	}
 	m_started = true;
 
 	timer.setInterval(msDelay);
@@ -103,8 +107,9 @@ void NetworkReply::startNow()
 
 void NetworkReply::abort()
 {
+	m_aborted = true;
 	if (m_reply != nullptr) {
-		return m_reply->abort();
+		m_reply->abort();
 	}
 	if (timer.isActive()) {
 		timer.stop();

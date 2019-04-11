@@ -49,6 +49,7 @@ class NetworkReply : public QObject
 		CustomNetworkAccessManager *m_manager;
 		bool m_post = false;
 		bool m_started = false;
+		bool m_aborted = false;
 		QNetworkReply *m_reply = nullptr;
 		QTimer timer;
 };
