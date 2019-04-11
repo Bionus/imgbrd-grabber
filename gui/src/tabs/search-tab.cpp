@@ -519,7 +519,7 @@ void SearchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const 
 {
 	Site *site = page->site();
 
-	NetworkReply *reply = site->get(site->fixUrl(url.toString()), page, "preview");
+	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, page, "preview");
 	reply->setParent(this);
 
 	m_thumbnailsLoading[reply] = std::move(img);

@@ -219,7 +219,7 @@ void ImageDownloader::loadImage()
 
 	// Load the image directly on the disk
 	Site *site = m_image->parentSite();
-	m_reply = site->get(site->fixUrl(m_url.toString()), m_image->page(), QStringLiteral("image"), m_image.data());
+	m_reply = site->get(site->fixUrl(m_url.toString()), Site::QueryType::Img, m_image->page(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &NetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 

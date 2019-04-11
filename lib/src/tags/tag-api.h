@@ -29,7 +29,6 @@ class TagApi : public QObject
 		const QList<Tag> &tags() const;
 
 	public slots:
-		void loadNow();
 		void abort();
 
 	protected slots:

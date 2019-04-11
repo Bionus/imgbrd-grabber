@@ -158,6 +158,13 @@ void Site::loadConfig()
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 	m_tagDatabase->open();
 	m_tagDatabase->loadTypes();
+
+	// Setup throttling
+	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Retry, setting("download/throttle_retry", 60).toInt() * 1000);
 }
 
 Site::~Site()
@@ -291,32 +298,10 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	return request;
 }
 
-int Site::msToRequest(QueryType type) const
-{
-	if (!m_lastRequest.isValid()) {
-		return 0;
-	}
-
-	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
-
-	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
-	const int def = (type == QueryType::Retry ? 60 : 0);
-	int ms = setting("download/throttle_" + key, def).toInt() * 1000;
-	ms -= sinceLastRequest;
-
-	return ms;
-}
-
-NetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
+NetworkReply *Site::get(const QUrl &url,  Site::QueryType type, Page *page, const QString &ref, Image *img)
 {
 	const QNetworkRequest request = this->makeRequest(url, page, ref, img);
-	return this->getRequest(request);
-}
-
-NetworkReply *Site::getRequest(const QNetworkRequest &request)
-{
-	m_lastRequest = QDateTime::currentDateTime();
-	return m_manager->get(request);
+	return m_manager->get(request, static_cast<int>(type));
 }
 
 

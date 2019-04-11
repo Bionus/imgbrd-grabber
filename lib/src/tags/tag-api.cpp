@@ -22,17 +22,6 @@ TagApi::~TagApi()
 
 void TagApi::load(bool rateLimit)
 {
-	// Load the request with a possible delay
-	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0) {
-		QTimer::singleShot(ms, this, SLOT(loadNow()));
-	} else {
-		loadNow();
-	}
-}
-
-void TagApi::loadNow()
-{
 	log(QStringLiteral("[%1] Loading tags page `%2`").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
 	if (m_reply != nullptr) {
@@ -43,7 +32,8 @@ void TagApi::loadNow()
 		m_reply->deleteLater();
 	}
 
-	m_reply = m_site->get(m_url);
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	m_reply = m_site->get(m_url, type);
 	connect(m_reply, &NetworkReply::finished, this, &TagApi::parse);
 }
 

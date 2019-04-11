@@ -3,9 +3,12 @@
 
 #include <QAtomicInt>
 #include <QByteArray>
+#include <QMap>
 #include <QNetworkRequest>
 #include <QObject>
+#include <QPair>
 #include <QQueue>
+#include "throttling-manager.h"
 
 
 class CustomNetworkAccessManager;
@@ -19,24 +22,30 @@ class NetworkManager : public QObject
 
 	public:
 		explicit NetworkManager(QObject *parent = nullptr);
+
 		int maxConcurrency() const;
 		void setMaxConcurrency(int maxConcurrency);
+		int interval(int key) const;
+		void setInterval(int key, int msInterval);
+
 		void setCache(QAbstractNetworkCache *cache);
 		QNetworkCookieJar *cookieJar() const;
 		void setCookieJar(QNetworkCookieJar *cookieJar);
-		NetworkReply *get(QNetworkRequest request);
-		NetworkReply *post(QNetworkRequest request, QByteArray data);
+
+		NetworkReply *get(QNetworkRequest request, int type = -1);
+		NetworkReply *post(QNetworkRequest request, QByteArray data, int type = -1);
 
 	protected:
-		void append(NetworkReply *reply);
+		void append(NetworkReply *reply, int type = -1);
 
 	protected slots:
 		void next();
 
 	private:
 		CustomNetworkAccessManager *m_manager;
+		ThrottlingManager m_throttlingManager;
 		int m_maxConcurrency = 6;
-		QQueue<NetworkReply*> m_queue;
+		QQueue<QPair<int, NetworkReply*>> m_queue;
 		QAtomicInt m_activeQueries;
 };
 

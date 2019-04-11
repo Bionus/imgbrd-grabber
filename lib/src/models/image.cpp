@@ -390,16 +390,6 @@ void Image::loadDetails(bool rateLimit)
 		return;
 	}
 
-	// Load the request with a possible delay
-	const int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0) {
-		QTimer::singleShot(ms, this, SLOT(loadDetailsNow()));
-	} else {
-		loadDetailsNow();
-	}
-}
-void Image::loadDetailsNow()
-{
 	if (m_loadDetails != nullptr) {
 		if (m_loadDetails->isRunning()) {
 			m_loadDetails->abort();
@@ -408,7 +398,8 @@ void Image::loadDetailsNow()
 		m_loadDetails->deleteLater();
 	}
 
-	m_loadDetails = m_parentSite->get(m_pageUrl);
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	m_loadDetails = m_parentSite->get(m_pageUrl, type);
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 

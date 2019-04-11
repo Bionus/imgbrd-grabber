@@ -4,11 +4,21 @@
 
 NetworkReply::NetworkReply(QNetworkRequest request, CustomNetworkAccessManager *manager, QObject *parent)
 	: QObject(parent), m_request(std::move(request)), m_manager(manager)
-{}
+{
+	init();
+}
 
 NetworkReply::NetworkReply(QNetworkRequest request, QByteArray data, CustomNetworkAccessManager *manager, QObject *parent)
 	: QObject(parent), m_request(std::move(request)), m_data(std::move(data)), m_manager(manager), m_post(true)
-{}
+{
+	init();
+}
+
+void NetworkReply::init()
+{
+	timer.setSingleShot(true);
+	connect(&timer, &QTimer::timeout, this, &NetworkReply::startNow);
+}
 
 
 QUrl NetworkReply::url() const
@@ -67,18 +77,24 @@ bool NetworkReply::isRunning() const
 }
 
 
-void NetworkReply::start()
+void NetworkReply::start(int msDelay)
 {
 	if (m_started) {
 		return;
 	}
+	m_started = true;
 
+	timer.setInterval(msDelay);
+	timer.start();
+}
+
+void NetworkReply::startNow()
+{
 	if (m_post) {
 		m_reply = m_manager->post(m_request, m_data);
 	} else {
 		m_reply = m_manager->get(m_request);
 	}
-	m_started = true;
 
 	connect(m_reply, &QNetworkReply::readyRead, this, &NetworkReply::readyRead);
 	connect(m_reply, &QNetworkReply::downloadProgress, this, &NetworkReply::downloadProgress);
@@ -89,5 +105,8 @@ void NetworkReply::abort()
 {
 	if (m_reply != nullptr) {
 		return m_reply->abort();
+	}
+	if (timer.isActive()) {
+		timer.stop();
 	}
 }

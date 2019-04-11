@@ -29,9 +29,10 @@ class Site : public QObject
 	public:
 		enum QueryType
 		{
+			UnkownType = -1,
 			List = 0,
 			Img = 1,
-			Thumb = 2,
+			Thumbnail = 2,
 			Details = 3,
 			Retry = 4
 		};
@@ -65,8 +66,7 @@ class Site : public QObject
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		NetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		int msToRequest(QueryType type) const;
+		NetworkReply *get(const QUrl &url, Site::QueryType type, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
@@ -117,9 +117,6 @@ class Site : public QObject
 		Auth *m_auth;
 		LoginStatus m_loggedIn;
 		bool m_autoLogin;
-
-		// Async
-		QDateTime m_lastRequest;
 };
 
 Q_DECLARE_METATYPE(Site::LoginResult)

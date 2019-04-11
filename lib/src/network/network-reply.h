@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QUrl>
 #include <QVariant>
+#include <QTimer>
 
 
 class CustomNetworkAccessManager;
@@ -30,8 +31,12 @@ class NetworkReply : public QObject
 		bool isRunning() const;
 
 	public slots:
-		void start();
+		void start(int msDelay = 0);
 		void abort();
+
+	protected slots:
+		void init();
+		void startNow();
 
 	signals:
 		void readyRead();
@@ -45,6 +50,7 @@ class NetworkReply : public QObject
 		bool m_post = false;
 		bool m_started = false;
 		QNetworkReply *m_reply = nullptr;
+		QTimer timer;
 };
 
 #endif // NETWORK_REPLY_H

@@ -20,6 +20,17 @@ void NetworkManager::setMaxConcurrency(int maxConcurrency)
 	m_maxConcurrency = maxConcurrency;
 }
 
+int NetworkManager::interval(int key) const
+{
+	return m_throttlingManager.interval(key);
+}
+
+void NetworkManager::setInterval(int key, int msInterval)
+{
+	m_throttlingManager.setInterval(key, msInterval);
+}
+
+
 void NetworkManager::setCache(QAbstractNetworkCache *cache)
 {
 	return m_manager->setCache(cache);
@@ -36,25 +47,25 @@ void NetworkManager::setCookieJar(QNetworkCookieJar *cookieJar)
 }
 
 
-NetworkReply *NetworkManager::get(QNetworkRequest request)
+NetworkReply *NetworkManager::get(QNetworkRequest request, int type)
 {
 	auto *reply = new NetworkReply(std::move(request), m_manager, this);
-	append(reply);
+	append(reply, type);
 
 	return reply;
 }
 
-NetworkReply *NetworkManager::post(QNetworkRequest request, QByteArray data)
+NetworkReply *NetworkManager::post(QNetworkRequest request, QByteArray data, int type)
 {
 	auto *reply = new NetworkReply(std::move(request), std::move(data), m_manager, this);
-	append(reply);
+	append(reply, type);
 
 	return reply;
 }
 
-void NetworkManager::append(NetworkReply *reply)
+void NetworkManager::append(NetworkReply *reply, int type)
 {
-	m_queue.append(reply);
+	m_queue.append({ type, reply });
 
 	int activeQueries = m_activeQueries.fetchAndStoreRelaxed(m_maxConcurrency);
 	for (int i = activeQueries; i < m_maxConcurrency; ++i) {
@@ -70,7 +81,10 @@ void NetworkManager::next()
 		return;
 	}
 
-	NetworkReply *reply = m_queue.dequeue();
+	auto pair = m_queue.dequeue();
+	int type = pair.first;
+	NetworkReply *reply = pair.second;
 	connect(reply, &NetworkReply::finished, this, &NetworkManager::next);
-	reply->start();
+
+	m_throttlingManager.start(type, reply);
 }
