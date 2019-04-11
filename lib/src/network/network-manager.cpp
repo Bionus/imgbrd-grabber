@@ -73,6 +73,11 @@ void NetworkManager::append(NetworkReply *reply, int type)
 	}
 }
 
+void NetworkManager::clear()
+{
+	m_queue.clear();
+}
+
 
 void NetworkManager::next()
 {

@@ -34,6 +34,7 @@ class NetworkManager : public QObject
 
 		NetworkReply *get(QNetworkRequest request, int type = -1);
 		NetworkReply *post(QNetworkRequest request, QByteArray data, int type = -1);
+		void clear();
 
 	protected:
 		void append(NetworkReply *reply, int type = -1);
