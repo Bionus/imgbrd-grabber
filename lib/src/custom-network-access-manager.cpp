@@ -16,6 +16,30 @@ CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 	connect(this, &QNetworkAccessManager::sslErrors, this, &CustomNetworkAccessManager::sslErrorHandler);
 }
 
+QNetworkReply *CustomNetworkAccessManager::makeErrorReply(const QNetworkRequest &request, const QString &code)
+{
+	auto *reply = new QCustomNetworkReply(this);
+	reply->setUrl(request.url());
+
+	if (code == QLatin1String("404")) {
+		reply->setHttpStatusCode(404, "Not Found");
+		reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
+	} else if (code == QLatin1String("cookie")) {
+		cookieJar()->insertCookie(QNetworkCookie("test_cookie", "test_value"));
+		reply->setHttpStatusCode(200, "OK");
+	} else if (code == QLatin1String("redirect")) {
+		reply->setAttribute(QNetworkRequest::RedirectionTargetAttribute, QUrl("https://www.test-redirect.com"));
+		reply->setHttpStatusCode(200, "OK");
+	} else {
+		reply->setHttpStatusCode(500, "Internal Server Error");
+		reply->setNetworkError(QNetworkReply::UnknownNetworkError, QStringLiteral("Internal Server Error"));
+	}
+
+	reply->setContentType("text/html");
+	reply->setContent(QByteArray());
+	return reply;
+}
+
 QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &request)
 {
 	QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
@@ -31,29 +55,17 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 
 	// Error testing
 	if (path == QLatin1String("404") || path == QLatin1String("500") || path == QLatin1String("cookie") || path == QLatin1String("redirect")) {
-		auto *reply = new QCustomNetworkReply(this);
-		if (path == QLatin1String("404")) {
-			reply->setHttpStatusCode(404, "Not Found");
-			reply->setNetworkError(QNetworkReply::ContentNotFoundError, QStringLiteral("Not Found"));
-		} else if (path == QLatin1String("cookie")) {
-			cookieJar()->insertCookie(QNetworkCookie("test_cookie", "test_value"));
-			reply->setHttpStatusCode(200, "OK");
-		} else if (path == QLatin1String("redirect")) {
-			reply->setAttribute(QNetworkRequest::RedirectionTargetAttribute, QUrl("https://www.test-redirect.com"));
-			reply->setHttpStatusCode(200, "OK");
-		} else {
-			reply->setHttpStatusCode(500, "Internal Server Error");
-			reply->setNetworkError(QNetworkReply::UnknownNetworkError, QStringLiteral("Internal Server Error"));
-		}
-		reply->setContentType("text/html");
-		reply->setContent(QByteArray());
-		return reply;
+		return makeErrorReply(request, path);
 	}
 
 	QFile f(path);
 	const bool opened = f.open(QFile::ReadOnly);
 	const bool logFilename = !opened || !fromQueue;
 	if (!opened) {
+		if (fromQueue) {
+			qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
+		}
+
 		md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		f.setFileName("tests/resources/pages/" + host + "/" + md5 + "." + ext);
 
@@ -61,7 +73,7 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 			// LCOV_EXCL_START
 			if (ext != QLatin1String("jpg") && ext != QLatin1String("png")) {
 				qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
-				return nullptr;
+				return makeErrorReply(request, "404");
 			}
 			// LCOV_EXCL_STOP
 
@@ -81,6 +93,7 @@ QNetworkReply *CustomNetworkAccessManager::makeTestReply(const QNetworkRequest &
 	const QByteArray content = f.readAll();
 
 	auto *reply = new QCustomNetworkReply(this);
+	reply->setUrl(request.url());
 	reply->setHttpStatusCode(200, "OK");
 	reply->setContentType("text/html");
 	reply->setContent(content);

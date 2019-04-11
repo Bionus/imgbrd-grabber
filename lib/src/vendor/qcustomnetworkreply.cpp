@@ -21,6 +21,11 @@ QCustomNetworkReply::~QCustomNetworkReply()
 	delete d;
 }
 
+void QCustomNetworkReply::setUrl(const QUrl &url)
+{
+	QNetworkReply::setUrl(url);
+}
+
 void QCustomNetworkReply::setHttpStatusCode( int code, const QByteArray &statusText )
 {
 	setAttribute( QNetworkRequest::HttpStatusCodeAttribute, code );
