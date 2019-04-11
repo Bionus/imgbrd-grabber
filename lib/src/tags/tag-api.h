@@ -6,8 +6,8 @@
 
 
 class Api;
+class NetworkReply;
 class Profile;
-class QNetworkReply;
 class Site;
 class Tag;
 
@@ -45,7 +45,7 @@ class TagApi : public QObject
 		int m_page;
 		int m_limit;
 		QUrl m_url;
-		QNetworkReply *m_reply;
+		NetworkReply *m_reply;
 		QList<Tag> m_tags;
 };
 

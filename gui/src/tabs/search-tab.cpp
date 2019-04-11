@@ -266,7 +266,7 @@ void SearchTab::clear()
 		}
 	}
 	for (auto it = m_thumbnailsLoading.constBegin(); it != m_thumbnailsLoading.constEnd(); ++it) {
-		QNetworkReply *reply = it.key();
+		NetworkReply *reply = it.key();
 		if (reply->isRunning()) {
 			reply->abort();
 		}
@@ -519,11 +519,11 @@ void SearchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const 
 {
 	Site *site = page->site();
 
-	QNetworkReply *reply = site->get(site->fixUrl(url.toString()), page, "preview");
+	NetworkReply *reply = site->get(site->fixUrl(url.toString()), page, "preview");
 	reply->setParent(this);
 
 	m_thumbnailsLoading[reply] = std::move(img);
-	connect(reply, &QNetworkReply::finished, this, &SearchTab::finishedLoadingPreview);
+	connect(reply, &NetworkReply::finished, this, &SearchTab::finishedLoadingPreview);
 }
 
 void SearchTab::finishedLoadingPreview()
@@ -532,10 +532,10 @@ void SearchTab::finishedLoadingPreview()
 		return;
 	}
 
-	auto *reply = qobject_cast<QNetworkReply*>(sender());
+	auto *reply = qobject_cast<NetworkReply*>(sender());
 
 	// Aborted
-	if (reply->error() == QNetworkReply::OperationCanceledError) {
+	if (reply->error() == NetworkReply::NetworkError::OperationCanceledError) {
 		reply->deleteLater();
 		return;
 	}
@@ -559,7 +559,7 @@ void SearchTab::finishedLoadingPreview()
 	}
 
 	// Loading error
-	if (reply->error() != QNetworkReply::NoError) {
+	if (reply->error() != NetworkReply::NetworkError::NoError) {
 		const QString ext = getExtension(reply->url());
 		if (ext != "jpg") {
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(reply->errorString()), Logger::Warning);

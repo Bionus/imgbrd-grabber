@@ -28,6 +28,7 @@
 #include "models/filtering/post-filter.h"
 #include "models/profile.h"
 #include "monitoring-center.h"
+#include "network/network-reply.h"
 #include "settings/options-window.h"
 #include "settings/start-window.h"
 #include "tabs/downloads-tab.h"
@@ -1074,11 +1075,11 @@ void MainWindow::dropEvent(QDropEvent *event)
 		QString url = mimeData->text();
 		if (isUrl(url)) {
 			QEventLoop loopLoad;
-			QNetworkReply *reply = m_networkAccessManager.get(QNetworkRequest(QUrl(url)));
-			connect(reply, &QNetworkReply::finished, &loopLoad, &QEventLoop::quit);
+			NetworkReply *reply = m_networkManager.get(QNetworkRequest(QUrl(url)));
+			connect(reply, &NetworkReply::finished, &loopLoad, &QEventLoop::quit);
 			loopLoad.exec();
 
-			if (reply->error() == QNetworkReply::NoError) {
+			if (reply->error() == NetworkReply::NetworkError::NoError) {
 				QString md5 = QCryptographicHash::hash(reply->readAll(), QCryptographicHash::Md5).toHex();
 				loadTag("md5:" + md5, true, false);
 			}

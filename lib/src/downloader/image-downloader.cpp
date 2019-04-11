@@ -13,6 +13,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "network/network-reply.h"
 
 
 static void addMd5(Profile *profile, const QString &path)
@@ -220,7 +221,7 @@ void ImageDownloader::loadImage()
 	Site *site = m_image->parentSite();
 	m_reply = site->get(site->fixUrl(m_url.toString()), m_image->page(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
-	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
+	connect(m_reply, &NetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
 	// Create download root directory
 	const QString rootDir = m_temporaryPath.section(QDir::separator(), 0, -2);
@@ -268,9 +269,9 @@ void ImageDownloader::writeError()
 	emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 }
 
-void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QString &msg)
+void ImageDownloader::networkError(NetworkReply::NetworkError error, const QString &msg)
 {
-	if (error == QNetworkReply::ContentNotFoundError) {
+	if (error == NetworkReply::NetworkError::ContentNotFoundError) {
 		QSettings *settings = m_profile->getSettings();
 		ExtensionRotator *extensionRotator = m_image->extensionRotator();
 
@@ -294,7 +295,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 			log(QStringLiteral("Image not found."));
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NotFound));
 		}
-	} else if (error != QNetworkReply::OperationCanceledError) {
+	} else if (error != NetworkReply::NetworkError::OperationCanceledError) {
 		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 	}

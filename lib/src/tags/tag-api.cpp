@@ -1,9 +1,9 @@
 #include "tags/tag-api.h"
-#include <QNetworkReply>
 #include <QTimer>
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 
 
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
@@ -44,7 +44,7 @@ void TagApi::loadNow()
 	}
 
 	m_reply = m_site->get(m_url);
-	connect(m_reply, &QNetworkReply::finished, this, &TagApi::parse);
+	connect(m_reply, &NetworkReply::finished, this, &TagApi::parse);
 }
 
 void TagApi::abort()
@@ -71,7 +71,7 @@ void TagApi::parse()
 	// Try to read the reply
 	QString source = m_reply->readAll();
 	if (source.isEmpty()) {
-		if (m_reply->error() != QNetworkReply::OperationCanceledError) {
+		if (m_reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
 			log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_api->getName(), m_reply->errorString()).arg(m_reply->error()), Logger::Error);
 		}
 		emit finishedLoading(this, LoadResult::Error);

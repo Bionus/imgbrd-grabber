@@ -1,17 +1,17 @@
 #include "login/oauth2-login.h"
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QNetworkReply>
 #include "auth/oauth2-auth.h"
-#include "custom-network-access-manager.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/site.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 
 
 using QStrP = QPair<QString, QString>;
 
-OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
 	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_tokenReply(nullptr)
 {}
 
@@ -63,7 +63,7 @@ void OAuth2Login::login()
 		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second;
 	}
 	m_tokenReply = m_manager->post(request, bodyStr.toUtf8());
-	connect(m_tokenReply, &QNetworkReply::finished, this, &OAuth2Login::loginFinished);
+	connect(m_tokenReply, &NetworkReply::finished, this, &OAuth2Login::loginFinished);
 }
 
 void OAuth2Login::loginFinished()

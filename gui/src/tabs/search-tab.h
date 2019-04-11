@@ -20,6 +20,7 @@ class DownloadQueryGroup;
 class DownloadQueryImage;
 class Favorite;
 class MainWindow;
+class NetworkReply;
 class Profile;
 class QBouton;
 class FixedSizeGridLayout;
@@ -161,7 +162,7 @@ class SearchTab : public QWidget
 		QMap<QString, QString> m_lastUrls;
 
 		QStringList m_completion;
-		QMap<QNetworkReply*, QSharedPointer<Image>> m_thumbnailsLoading;
+		QMap<NetworkReply*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, QList<QSharedPointer<Page>>> m_pages;
 		QMap<QString, QSharedPointer<Page>> m_lastPages;

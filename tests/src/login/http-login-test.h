@@ -1,8 +1,7 @@
 #ifndef HTTP_LOGIN_TEST_H
 #define HTTP_LOGIN_TEST_H
 
-#include <QNetworkAccessManager>
-#include "custom-network-access-manager.h"
+#include "network/network-manager.h"
 #include "test-suite.h"
 
 
@@ -27,7 +26,7 @@ class HttpLoginTest : public TestSuite
 		Profile *m_profile;
 		Source *m_source;
 		Site *m_site;
-		CustomNetworkAccessManager m_manager;
+		NetworkManager m_manager;
 };
 
 #endif // HTTP_LOGIN_TEST_H

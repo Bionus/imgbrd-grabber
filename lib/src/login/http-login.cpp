@@ -1,16 +1,16 @@
 #include "login/http-login.h"
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
-#include <QNetworkReply>
 #include <QUrlQuery>
 #include "auth/auth-field.h"
 #include "auth/http-auth.h"
-#include "custom-network-access-manager.h"
 #include "mixed-settings.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 #include "models/site.h"
 
 
-HttpLogin::HttpLogin(QString type, HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+HttpLogin::HttpLogin(QString type, HttpAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
 	: m_type(std::move(type)), m_auth(auth), m_site(site), m_loginReply(nullptr), m_manager(manager), m_settings(settings)
 {}
 
@@ -33,14 +33,14 @@ void HttpLogin::login()
 		m_loginReply->deleteLater();
 	}
 
-	QNetworkReply *reply = getReply(m_auth->url(), query);
+	NetworkReply *reply = getReply(m_auth->url(), query);
 	if (reply == nullptr) {
 		emit loggedIn(Result::Failure);
 		return;
 	}
 
 	m_loginReply = reply;
-	connect(m_loginReply, &QNetworkReply::finished, this, &HttpLogin::loginFinished);
+	connect(m_loginReply, &NetworkReply::finished, this, &HttpLogin::loginFinished);
 }
 
 void HttpLogin::loginFinished()

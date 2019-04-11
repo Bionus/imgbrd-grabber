@@ -1,8 +1,7 @@
 #ifndef URL_LOGIN_TEST_H
 #define URL_LOGIN_TEST_H
 
-#include <QNetworkAccessManager>
-#include "custom-network-access-manager.h"
+#include "network/network-manager.h"
 #include "test-suite.h"
 
 
@@ -27,7 +26,7 @@ class UrlLoginTest : public TestSuite
 		Profile *m_profile;
 		Source *m_source;
 		Site *m_site;
-		CustomNetworkAccessManager m_manager;
+		NetworkManager m_manager;
 };
 
 #endif // URL_LOGIN_TEST_H

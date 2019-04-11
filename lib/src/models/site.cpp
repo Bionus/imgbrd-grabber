@@ -10,7 +10,6 @@
 #include "auth/http-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
-#include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
 #include "login/http-get-login.h"
@@ -23,6 +22,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "network/network-manager.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
@@ -37,11 +37,10 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_updateReply(nullptr), m_tagsReply(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
-	m_manager = new CustomNetworkAccessManager(this);
-	connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+	m_manager = new NetworkManager(this);
 
 	// Cache
 	auto *diskCache = new QNetworkDiskCache(m_manager);
@@ -308,13 +307,13 @@ int Site::msToRequest(QueryType type) const
 	return ms;
 }
 
-QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
+NetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
 {
 	const QNetworkRequest request = this->makeRequest(url, page, ref, img);
 	return this->getRequest(request);
 }
 
-QNetworkReply *Site::getRequest(const QNetworkRequest &request)
+NetworkReply *Site::getRequest(const QNetworkRequest &request)
 {
 	m_lastRequest = QDateTime::currentDateTime();
 	return m_manager->get(request);

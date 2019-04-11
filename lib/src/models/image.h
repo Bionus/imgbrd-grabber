@@ -4,7 +4,6 @@
 #include <QDateTime>
 #include <QMap>
 #include <QMetaType>
-#include <QNetworkReply>
 #include <QObject>
 #include <QPixmap>
 #include <QString>
@@ -16,6 +15,7 @@
 
 
 class ExtensionRotator;
+class NetworkReply;
 class Page;
 class Profile;
 class QSettings;
@@ -134,7 +134,7 @@ class Image : public QObject, public Downloadable
 		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QDateTime m_createdAt;
-		QNetworkReply *m_loadDetails;
+		NetworkReply *m_loadDetails;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;
 		QSettings *m_settings;

@@ -5,10 +5,10 @@
 #include "login/login.h"
 
 
-class CustomNetworkAccessManager;
 class HttpAuth;
 class MixedSettings;
-class QNetworkReply;
+class NetworkManager;
+class NetworkReply;
 class QUrlQuery;
 class Site;
 
@@ -17,12 +17,12 @@ class HttpLogin : public Login
 	Q_OBJECT
 
 	protected:
-		HttpLogin(QString type, HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
+		HttpLogin(QString type, HttpAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings);
 
 	public:
 		virtual ~HttpLogin() = default;
 		bool isTestable() const override;
-		virtual QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
+		virtual NetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
 
 	public slots:
 		void login() override;
@@ -34,8 +34,8 @@ class HttpLogin : public Login
 		QString m_type;
 		HttpAuth *m_auth;
 		Site *m_site;
-		QNetworkReply *m_loginReply;
-		CustomNetworkAccessManager *m_manager;
+		NetworkReply *m_loginReply;
+		NetworkManager *m_manager;
 		MixedSettings *m_settings;
 };
 

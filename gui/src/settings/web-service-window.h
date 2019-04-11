@@ -2,7 +2,6 @@
 #define WEB_SERVICE_WINDOW_H
 
 #include <QDialog>
-#include <QNetworkReply>
 
 
 namespace Ui
@@ -11,7 +10,8 @@ namespace Ui
 }
 
 
-class CustomNetworkAccessManager;
+class NetworkManager;
+class NetworkReply;
 class ReverseSearchEngine;
 
 class WebServiceWindow : public QDialog
@@ -33,8 +33,8 @@ class WebServiceWindow : public QDialog
 	private:
 		Ui::WebServiceWindow *ui;
 		const ReverseSearchEngine *m_webService;
-		QNetworkReply *m_faviconReply;
-		CustomNetworkAccessManager *m_networkAccessManager;
+		NetworkReply *m_faviconReply;
+		NetworkManager *m_networkAccessManager;
 };
 
 #endif // WEB_SERVICE_WINDOW_H

@@ -4,6 +4,7 @@
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/url-auth.h"
+#include "custom-network-access-manager.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
 #include "models/profile.h"

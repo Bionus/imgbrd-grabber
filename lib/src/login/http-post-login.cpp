@@ -1,14 +1,14 @@
 #include "login/http-post-login.h"
 #include <QUrlQuery>
-#include "custom-network-access-manager.h"
 #include "models/site.h"
+#include "network/network-manager.h"
 
 
-HttpPostLogin::HttpPostLogin(HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+HttpPostLogin::HttpPostLogin(HttpAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
 	: HttpLogin("post", auth, site, manager, settings)
 {}
 
-QNetworkReply *HttpPostLogin::getReply(const QString &url, const QUrlQuery &query) const
+NetworkReply *HttpPostLogin::getReply(const QString &url, const QUrlQuery &query) const
 {
 	QNetworkRequest request(m_site->fixUrl(url));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");

@@ -2,6 +2,7 @@
 #include <QSettings>
 #include <QtTest>
 #include "auth/oauth2-auth.h"
+#include "custom-network-access-manager.h"
 #include "login/oauth2-login.h"
 #include "mixed-settings.h"
 #include "models/profile.h"
@@ -32,7 +33,7 @@ void OAuth2LoginTest::testNonTestable()
 	QVERIFY(!login.isTestable());
 }
 
-void testLogin(const QString &type, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, CustomNetworkAccessManager *manager)
+void testLogin(const QString &type, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, NetworkManager *manager)
 {
 	MixedSettings *settings = site->settings();
 	settings->setValue("auth/consumerKey", "consumerKey");

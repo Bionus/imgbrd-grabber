@@ -1,7 +1,6 @@
 #include <QCryptographicHash>
 #include <QEventLoop>
 #include <QJsonArray>
-#include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSettings>
@@ -19,6 +18,7 @@
 #include "models/pool.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
@@ -412,7 +412,7 @@ void Image::loadDetailsNow()
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 
-	connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
+	connect(m_loadDetails, &NetworkReply::finished, this, &Image::parseDetails);
 }
 void Image::abortTags()
 {
@@ -442,7 +442,7 @@ void Image::parseDetails()
 
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
-		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
+		if (m_loadDetails->error() != NetworkReply::NetworkError::OperationCanceledError) {
 			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
 		}
 		m_loadDetails->deleteLater();

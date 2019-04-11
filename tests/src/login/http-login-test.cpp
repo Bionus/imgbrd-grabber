@@ -5,6 +5,7 @@
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/http-auth.h"
+#include "custom-network-access-manager.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
 #include "mixed-settings.h"
@@ -38,7 +39,7 @@ void HttpLoginTest::testNonTestable()
 }
 
 template <class T>
-void testLogin(const QString &type, const QString &url, Login::Result expected, Site *site, CustomNetworkAccessManager *manager)
+void testLogin(const QString &type, const QString &url, Login::Result expected, Site *site, NetworkManager *manager)
 {
 	// Clear all cookies
 	manager->setCookieJar(new QNetworkCookieJar(manager));

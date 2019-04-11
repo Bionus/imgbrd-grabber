@@ -5,10 +5,10 @@
 #include "login/login.h"
 
 
-class CustomNetworkAccessManager;
 class MixedSettings;
+class NetworkManager;
+class NetworkReply;
 class OAuth2Auth;
-class QNetworkReply;
 class QNetworkRequest;
 class Site;
 
@@ -17,7 +17,7 @@ class OAuth2Login : public Login
 	Q_OBJECT
 
 	public:
-		explicit OAuth2Login(OAuth2Auth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
+		explicit OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
 		void complementRequest(QNetworkRequest *request) const override;
 
@@ -30,9 +30,9 @@ class OAuth2Login : public Login
 	private:
 		OAuth2Auth *m_auth;
 		Site *m_site;
-		CustomNetworkAccessManager *m_manager;
+		NetworkManager *m_manager;
 		MixedSettings *m_settings;
-		QNetworkReply *m_tokenReply;
+		NetworkReply *m_tokenReply;
 		QString m_token;
 };
 

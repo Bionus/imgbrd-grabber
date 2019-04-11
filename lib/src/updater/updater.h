@@ -5,7 +5,7 @@
 #include <QString>
 
 
-class CustomNetworkAccessManager;
+class NetworkManager;
 
 class Updater : public QObject
 {
@@ -22,7 +22,7 @@ class Updater : public QObject
 		virtual void checkForUpdates() const = 0;
 
 	protected:
-		CustomNetworkAccessManager *m_networkAccessManager;
+		NetworkManager *m_networkAccessManager;
 };
 
 #endif // UPDATER_H

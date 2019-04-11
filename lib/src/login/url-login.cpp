@@ -7,7 +7,7 @@
 #include "models/source.h"
 
 
-UrlLogin::UrlLogin(UrlAuth *auth, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+UrlLogin::UrlLogin(UrlAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
 	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings), m_page(nullptr)
 {}
 

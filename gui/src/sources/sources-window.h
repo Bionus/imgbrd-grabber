@@ -4,7 +4,6 @@
 #include <QCheckBox>
 #include <QDialog>
 #include <QLabel>
-#include <QNetworkReply>
 #include <QSettings>
 
 
@@ -14,6 +13,7 @@ namespace Ui
 }
 
 
+class NetworkReply;
 class Profile;
 class QBouton;
 class Site;
@@ -77,7 +77,7 @@ class SourcesWindow : public QDialog
 		const QMap<QString, Site*> &m_sites;
 		const QMap<QString, Source*> &m_sources;
 		QMap<QString, QStringList> m_presets;
-		QNetworkReply *m_checkForSourceReply;
+		NetworkReply *m_checkForSourceReply;
 };
 
 #endif // SOURCESWINDOW_H

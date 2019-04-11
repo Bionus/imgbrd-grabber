@@ -11,13 +11,13 @@
 
 class Api;
 class Auth;
-class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
+class NetworkManager;
+class NetworkReply;
 class Page;
 class QNetworkCookie;
 class QNetworkCookieJar;
-class QNetworkReply;
 class Source;
 class Tag;
 class TagDatabase;
@@ -65,7 +65,7 @@ class Site : public QObject
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		NetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
 		int msToRequest(QueryType type) const;
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
@@ -87,7 +87,7 @@ class Site : public QObject
 		Auth *getAuth() const;
 
 	private:
-		QNetworkReply *getRequest(const QNetworkRequest &request);
+		NetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);
@@ -98,7 +98,6 @@ class Site : public QObject
 
 	signals:
 		void loggedIn(Site *site, Site::LoginResult result);
-		void finished(QNetworkReply *reply);
 		void finishedLoadingTags(const QList<Tag> &tags);
 
 	private:
@@ -108,9 +107,8 @@ class Site : public QObject
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;
-		CustomNetworkAccessManager *m_manager;
+		NetworkManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
-		QNetworkReply *m_updateReply, *m_tagsReply;
 		QList<Api*> m_apis;
 		TagDatabase *m_tagDatabase;
 

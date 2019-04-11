@@ -1,10 +1,10 @@
 #include "updater/updater.h"
 #include <QRegularExpression>
-#include "custom-network-access-manager.h"
+#include "network/network-manager.h"
 
 
 Updater::Updater()
-	: m_networkAccessManager(new CustomNetworkAccessManager(this))
+	: m_networkAccessManager(new NetworkManager(this))
 {}
 
 Updater::~Updater()
