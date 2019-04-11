@@ -41,6 +41,21 @@ export const source: ISource = {
                     key: "PassWord",
                     type: "password",
                 },
+                {
+                    type: "const",
+                    key: "CookieDate",
+                    value: "1",
+                },
+                {
+                    type: "const",
+                    key: "b",
+                    value: "d",
+                },
+                {
+                    type: "const",
+                    key: "bt",
+                    value: "1-1",
+                },
             ],
             check: {
                 type: "cookie",
