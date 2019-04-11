@@ -70,10 +70,10 @@ QNetworkReply *NetworkReply::networkReply() const
 
 bool NetworkReply::isRunning() const
 {
-	if (!m_started) {
+	if (!m_started && !m_aborted) {
 		return true;
 	}
-	return m_reply->isRunning();
+	return m_reply != nullptr && m_reply->isRunning();
 }
 
 
