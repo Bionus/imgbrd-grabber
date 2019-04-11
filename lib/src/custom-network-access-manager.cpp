@@ -19,7 +19,10 @@ CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 QNetworkReply *CustomNetworkAccessManager::makeErrorReply(const QNetworkRequest &request, const QString &code)
 {
 	auto *reply = new QCustomNetworkReply(this);
-	reply->setUrl(request.url());
+
+	if (code != QLatin1String("cookie")) {
+		reply->setUrl(request.url());
+	}
 
 	if (code == QLatin1String("404")) {
 		reply->setHttpStatusCode(404, "Not Found");

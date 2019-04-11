@@ -26,6 +26,7 @@ void HttpLoginTest::cleanup()
 	m_profile->deleteLater();
 	m_source->deleteLater();
 	m_site->deleteLater();
+	m_manager.clear();
 }
 
 
