@@ -7,7 +7,7 @@
 #include "logger.h"
 
 
-bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, Profile *profile)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly)) {
@@ -38,7 +38,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 			QJsonArray groupsJson = object["batchs"].toArray();
 			for (auto groupJson : groupsJson) {
 				DownloadQueryGroup batch;
-				if (batch.read(groupJson.toObject(), sites)) {
+				if (batch.read(groupJson.toObject(), profile)) {
 					groups.append(batch);
 				}
 			}
@@ -46,7 +46,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 			QJsonArray uniquesJson = object["uniques"].toArray();
 			for (auto uniqueJson : uniquesJson) {
 				DownloadQueryImage unique;
-				if (unique.read(uniqueJson.toObject(), sites)) {
+				if (unique.read(uniqueJson.toObject(), profile)) {
 					uniques.append(unique);
 				}
 			}

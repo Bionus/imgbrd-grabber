@@ -5,6 +5,7 @@
 #include <QString>
 
 
+class Profile;
 class Site;
 
 class DownloadQuery
@@ -20,7 +21,7 @@ class DownloadQuery
 
 		// Serialization
 		virtual void write(QJsonObject &json) const = 0;
-		virtual bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) = 0;
+		virtual bool read(const QJsonObject &json, Profile *profile) = 0;
 
 		// Public members
 		Site *site;

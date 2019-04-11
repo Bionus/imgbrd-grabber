@@ -51,7 +51,7 @@ void DownloadQueryImageTest::testSerialization()
 	original.write(json);
 
 	DownloadQueryImage dest;
-	dest.read(json, QMap<QString, Site*> {{ site.url(), &site }});
+	dest.read(json, &profile);
 
 	QCOMPARE(static_cast<int>(dest.image->id()), 1);
 	QCOMPARE(dest.image->md5(), QString("md5"));

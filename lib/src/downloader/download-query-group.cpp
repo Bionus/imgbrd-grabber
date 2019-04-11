@@ -1,6 +1,7 @@
 #include "downloader/download-query-group.h"
 #include <QJsonArray>
 #include <QSettings>
+#include "models/profile.h"
 #include "models/site.h"
 
 
@@ -38,8 +39,9 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["progressFinished"] = progressFinished;
 }
 
-bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
+bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 {
+	const QMap<QString, Site*> &sites = profile->getSites();
 	query.read(json.contains("query") ? json["query"].toObject() : json, sites);
 
 	page = json["page"].toInt();

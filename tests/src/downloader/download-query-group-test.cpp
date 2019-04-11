@@ -38,7 +38,7 @@ void DownloadQueryGroupTest::testSerialization()
 	original.write(json);
 
 	DownloadQueryGroup dest;
-	dest.read(json, QMap<QString, Site*> {{ site.url(), &site }});
+	dest.read(json, &profile);
 
 	QCOMPARE(dest.query.tags, QStringList() << "tags");
 	QCOMPARE(dest.page, 1);

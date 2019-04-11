@@ -11,6 +11,7 @@
 
 
 class Image;
+class Profile;
 class QSettings;
 class Site;
 
@@ -24,7 +25,7 @@ class DownloadQueryImage : public DownloadQuery
 
 		// Serialization
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
+		bool read(const QJsonObject &json, Profile *profile) override;
 
 		// Public members
 		QSharedPointer<Image> image;

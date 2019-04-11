@@ -439,7 +439,7 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 	QList<DownloadQueryImage> newBatchs;
 	QList<DownloadQueryGroup> newGroupBatchs;
 
-	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_profile->getSites())) {
+	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_profile)) {
 		return false;
 	}
 
