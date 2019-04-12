@@ -3,7 +3,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkCookie>
-#include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
@@ -23,6 +22,7 @@
 #include "models/profile.h"
 #include "models/source.h"
 #include "network/network-manager.h"
+#include "network/persistent-cookie-jar.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
@@ -48,9 +48,6 @@ Site::Site(QString url, Source *source)
 	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
 	m_manager->setCache(diskCache);
 
-	// Cookies
-	resetCookieJar();
-
 	loadConfig();
 }
 
@@ -65,6 +62,12 @@ void Site::loadConfig()
 	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
 	m_name = m_settings->value("name", m_url).toString();
+
+	// Cookies
+	if (m_cookieJar == nullptr) {
+		m_cookieJar = new PersistentCookieJar(siteDir + "cookies.txt", m_manager);
+		m_manager->setCookieJar(m_cookieJar);
+	}
 
 	// Get default source order
 	QSettings *pSettings = m_source->getProfile()->getSettings();
@@ -149,9 +152,7 @@ void Site::loadConfig()
 			m_cookies.append(cookie);
 		}
 	}
-	if (m_cookieJar != nullptr) {
-		resetCookieJar();
-	}
+	m_cookieJar->insertCookies(m_cookies);
 
 	// Tag database
 	delete m_tagDatabase;
@@ -172,27 +173,6 @@ Site::~Site()
 {
 	m_settings->deleteLater();
 	delete m_tagDatabase;
-}
-
-
-/**
- * Initialize or reset the site's cookie jar.
- */
-void Site::resetCookieJar()
-{
-	// Delete cookie jar if necessary
-	if (m_cookieJar != nullptr) {
-		m_cookieJar->deleteLater();
-	}
-
-	m_cookieJar = new QNetworkCookieJar(m_manager);
-
-	for (const QNetworkCookie &cookie : qAsConst(m_cookies)) {
-		m_cookieJar->insertCookie(cookie);
-	}
-
-	m_manager->setCookieJar(m_cookieJar);
-	m_loggedIn = LoginStatus::Unknown;
 }
 
 
@@ -221,7 +201,8 @@ void Site::login(bool force)
 
 	// Clear cookies if we want to force a re-login
 	if (force) {
-		resetCookieJar();
+		m_cookieJar->clear();
+		m_cookieJar->insertCookies(m_cookies);
 	}
 
 	m_loggedIn = LoginStatus::Pending;

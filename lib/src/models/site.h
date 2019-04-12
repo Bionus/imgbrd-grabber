@@ -16,8 +16,8 @@ class MixedSettings;
 class NetworkManager;
 class NetworkReply;
 class Page;
+class PersistentCookieJar;
 class QNetworkCookie;
-class QNetworkCookieJar;
 class Source;
 class Tag;
 class TagDatabase;
@@ -93,9 +93,6 @@ class Site : public QObject
 		void login(bool force = false);
 		void loginFinished(Login::Result result);
 
-	protected:
-		void resetCookieJar();
-
 	signals:
 		void loggedIn(Site *site, Site::LoginResult result);
 		void finishedLoadingTags(const QList<Tag> &tags);
@@ -108,14 +105,14 @@ class Site : public QObject
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;
 		NetworkManager *m_manager;
-		QNetworkCookieJar *m_cookieJar;
+		PersistentCookieJar *m_cookieJar;
 		QList<Api*> m_apis;
 		TagDatabase *m_tagDatabase;
 
 		// Login
 		Login *m_login;
 		Auth *m_auth;
-		LoginStatus m_loggedIn;
+		LoginStatus m_loggedIn = LoginStatus::Unknown;
 		bool m_autoLogin;
 };
 
