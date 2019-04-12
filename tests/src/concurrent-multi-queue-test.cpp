@@ -25,7 +25,7 @@ void ConcurrentMultiQueueTest::singleQueue()
 		multiQueue.next();
 	});
 
-	QSignalSpy spy(&multiQueue, &ConcurrentMultiQueue::finished);
+	QSignalSpy spy(&multiQueue, SIGNAL(finished()));
 	multiQueue.append(makeQueue({ 1, 2, 3 }));
 
 	if (!spy.wait()) {
@@ -44,7 +44,7 @@ void ConcurrentMultiQueueTest::multipleQueues()
 		multiQueue.next();
 	});
 
-	QSignalSpy spy(&multiQueue, &ConcurrentMultiQueue::finished);
+	QSignalSpy spy(&multiQueue, SIGNAL(finished()));
 	multiQueue.append(makeQueue({ 1, 2, 3 }));
 	multiQueue.append(makeQueue({ 4, 5 }));
 	multiQueue.append(makeQueue({ 6, 7, 8, 9 }));
@@ -65,7 +65,7 @@ void ConcurrentMultiQueueTest::multipleQueuesWithPriority()
 		multiQueue.next();
 	});
 
-	QSignalSpy spy(&multiQueue, &ConcurrentMultiQueue::finished);
+	QSignalSpy spy(&multiQueue, SIGNAL(finished()));
 	multiQueue.append(makeQueue({ 1, 2, 3 }), 2);
 	multiQueue.append(makeQueue({ 4, 5 }), 1);
 	multiQueue.append(makeQueue({ 6, 7, 8, 9 }), 100);
