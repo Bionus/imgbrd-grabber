@@ -2,6 +2,7 @@
 #define HTTP_LOGIN_H
 
 #include <QString>
+#include <QUrl>
 #include "login/login.h"
 
 
@@ -22,7 +23,10 @@ class HttpLogin : public Login
 	public:
 		virtual ~HttpLogin() = default;
 		bool isTestable() const override;
-		virtual NetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
+		virtual NetworkReply *getReply(const QUrl &url, const QUrlQuery &query) const = 0;
+
+	private:
+		bool hasCookie(const QUrl &url) const;
 
 	public slots:
 		void login() override;

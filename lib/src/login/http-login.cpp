@@ -21,6 +21,13 @@ bool HttpLogin::isTestable() const
 
 void HttpLogin::login()
 {
+	const QUrl url = m_site->fixUrl(m_auth->url());
+
+	if (hasCookie(url)) {
+		emit loggedIn(Result::Success);
+		return;
+	}
+
 	QUrlQuery query;
 	for (AuthField *field : m_auth->fields()) {
 		if (!field->key().isEmpty()) {
@@ -33,7 +40,7 @@ void HttpLogin::login()
 		m_loginReply->deleteLater();
 	}
 
-	NetworkReply *reply = getReply(m_auth->url(), query);
+	NetworkReply *reply = getReply(url, query);
 	if (reply == nullptr) {
 		emit loggedIn(Result::Failure);
 		return;
@@ -45,17 +52,25 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
+	const auto status = hasCookie(m_loginReply->url())
+		? Result::Success
+		: Result::Failure;
+
+	emit loggedIn(status);
+}
+
+bool HttpLogin::hasCookie(const QUrl &url) const
+{
 	const QString cookieName = m_auth->cookie();
 
 	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
-	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());
+	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(url);
 
 	for (const QNetworkCookie &cookie : cookies) {
 		if (cookie.name() == cookieName && !cookie.value().isEmpty() && cookie.value() != "0") {
-			emit loggedIn(Result::Success);
-			return;
+			return true;
 		}
 	}
 
-	emit loggedIn(Result::Failure);
+	return false;
 }

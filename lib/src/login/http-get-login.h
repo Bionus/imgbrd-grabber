@@ -17,7 +17,7 @@ class HttpGetLogin : public HttpLogin
 
 	public:
 		explicit HttpGetLogin(HttpAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings);
-		NetworkReply *getReply(const QString &url, const QUrlQuery &query) const override;
+		NetworkReply *getReply(const QUrl &url, const QUrlQuery &query) const override;
 };
 
 #endif // HTTP_GET_LOGIN_H

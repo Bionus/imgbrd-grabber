@@ -8,9 +8,9 @@ HttpGetLogin::HttpGetLogin(HttpAuth *auth, Site *site, NetworkManager *manager, 
 	: HttpLogin("get", auth, site, manager, settings)
 {}
 
-NetworkReply *HttpGetLogin::getReply(const QString &url, const QUrlQuery &query) const
+NetworkReply *HttpGetLogin::getReply(const QUrl &url, const QUrlQuery &query) const
 {
-	QUrl fixedUrl = m_site->fixUrl(url);
+	QUrl fixedUrl = url;
 	fixedUrl.setQuery(query);
 	const QNetworkRequest request(fixedUrl);
 
