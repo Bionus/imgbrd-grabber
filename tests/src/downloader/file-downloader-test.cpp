@@ -1,8 +1,8 @@
-#include "file-downloader-test.h"
-#include <QtTest>
+#include <QSignalSpy>
 #include "custom-network-access-manager.h"
 #include "downloader/file-downloader.h"
 #include "network/network-manager.h"
+#include "catch.h"
 
 
 QString fileMd5(const QString &path)
@@ -20,92 +20,96 @@ QString fileMd5(const QString &path)
 }
 
 
-void FileDownloaderTest::testSuccessSingle()
+TEST_CASE("FileDownloader")
 {
-	CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
+	const QString successUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/gui/resources/images/icon.png";
+	const QString successMd5 = "005ffe0a3ffcb67fb2da4671d28fd363";
+	NetworkManager accessManager;
 
-	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
-	QString dest = "single.png";
+	SECTION("SuccessSingle")
+	{
+		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
 
-	FileDownloader downloader(false);
-	QSignalSpy spy(&downloader, SIGNAL(success()));
-	QVERIFY(downloader.start(reply, dest));
-	QVERIFY(spy.wait());
+		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl(successUrl)));
+		QString dest = "single.png";
 
-	QCOMPARE(fileMd5(dest), m_successMd5);
-	QFile::remove(dest);
-}
+		FileDownloader downloader(false);
+		QSignalSpy spy(&downloader, SIGNAL(success()));
+		REQUIRE(downloader.start(reply, dest));
+		REQUIRE(spy.wait());
 
-void FileDownloaderTest::testSuccessMultiple()
-{
-	CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
+		REQUIRE(fileMd5(dest) == successMd5);
+		QFile::remove(dest);
+	}
 
-	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
-	QStringList dest = QStringList() << "multiple-1.png" << "multiple-2.png" << "multiple-3.png";
+	SECTION("SuccessMultiple")
+	{
+		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
 
-	FileDownloader downloader(false);
-	QSignalSpy spy(&downloader, SIGNAL(success()));
-	QVERIFY(downloader.start(reply, dest));
-	QVERIFY(spy.wait());
+		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl(successUrl)));
+		QStringList dest = QStringList() << "multiple-1.png" << "multiple-2.png" << "multiple-3.png";
 
-	for (const QString &path : dest) {
-		QCOMPARE(fileMd5(path), m_successMd5);
-		QFile::remove(path);
+		FileDownloader downloader(false);
+		QSignalSpy spy(&downloader, SIGNAL(success()));
+		REQUIRE(downloader.start(reply, dest));
+		REQUIRE(spy.wait());
+
+		for (const QString &path : dest) {
+			REQUIRE(fileMd5(path) == successMd5);
+			QFile::remove(path);
+		}
+	}
+
+	SECTION("NetworkError")
+	{
+		CustomNetworkAccessManager::NextFiles.enqueue("404");
+
+		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl("testNetworkError")));
+		QString dest = "single.png";
+
+		FileDownloader downloader(false);
+		qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
+		QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
+		REQUIRE(downloader.start(reply, dest));
+		REQUIRE(spy.wait());
+
+		QList<QVariant> arguments = spy.takeFirst();
+		auto code = arguments[0].value<NetworkReply::NetworkError>();
+
+		REQUIRE(code == NetworkReply::NetworkError::ContentNotFoundError);
+		REQUIRE(!QFile::exists(dest));
+	}
+
+	SECTION("FailedStart")
+	{
+		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl("testFailedStart")));
+		QString dest = "////////";
+
+		FileDownloader downloader(false);
+		REQUIRE(!downloader.start(reply, dest));
+
+		accessManager.clear();
+	}
+
+	SECTION("InvalidHtml")
+	{
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/homepage.html");
+
+		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl("testInvalidHtml")));
+		QString dest = "test.html";
+
+		FileDownloader downloader(false);
+		qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
+		QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
+		REQUIRE(downloader.start(reply, dest));
+		REQUIRE(spy.wait());
+
+		QList<QVariant> arguments = spy.takeFirst();
+		auto code = arguments[0].value<NetworkReply::NetworkError>();
+		QString error = arguments[1].toString();
+
+		REQUIRE(code == NetworkReply::NetworkError::ContentNotFoundError);
+		REQUIRE(error == QString("Invalid HTML content returned"));
+		REQUIRE(!QFile::exists(dest));
 	}
 }
-
-void FileDownloaderTest::testNetworkError()
-{
-	CustomNetworkAccessManager::NextFiles.enqueue("404");
-
-	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testNetworkError")));
-	QString dest = "single.png";
-
-	FileDownloader downloader(false);
-	qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
-	QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
-	QVERIFY(downloader.start(reply, dest));
-	QVERIFY(spy.wait());
-
-	QList<QVariant> arguments = spy.takeFirst();
-	NetworkReply::NetworkError code = arguments[0].value<NetworkReply::NetworkError>();
-
-	QCOMPARE(code, NetworkReply::NetworkError::ContentNotFoundError);
-	QVERIFY(!QFile::exists(dest));
-}
-
-void FileDownloaderTest::testFailedStart()
-{
-	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testFailedStart")));
-	QString dest = "////////";
-
-	FileDownloader downloader(false);
-	QVERIFY(!downloader.start(reply, dest));
-
-	m_accessManager.clear();
-}
-
-void FileDownloaderTest::testInvalidHtml()
-{
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/homepage.html");
-
-	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testInvalidHtml")));
-	QString dest = "test.html";
-
-	FileDownloader downloader(false);
-	qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
-	QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
-	QVERIFY(downloader.start(reply, dest));
-	QVERIFY(spy.wait());
-
-	QList<QVariant> arguments = spy.takeFirst();
-	NetworkReply::NetworkError code = arguments[0].value<NetworkReply::NetworkError>();
-	QString error = arguments[1].toString();
-
-	QCOMPARE(code, NetworkReply::NetworkError::ContentNotFoundError);
-	QCOMPARE(error, QString("Invalid HTML content returned"));
-	QVERIFY(!QFile::exists(dest));
-}
-
-
-QTEST_MAIN(FileDownloaderTest)

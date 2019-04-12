@@ -1,16 +1,11 @@
-#include "test-suite.h"
+#include "source-helpers.h"
 #include <QDir>
 #include <QFile>
 #include <QSettings>
 #include "models/profile.h"
 
 
-TestSuite::TestSuite()
-{
-	getSuites().append(this);
-}
-
-Profile *TestSuite::makeProfile() const
+Profile *makeProfile()
 {
 	QFile::remove("tests/resources/settings.ini");
 
@@ -20,7 +15,7 @@ Profile *TestSuite::makeProfile() const
 	return profile;
 }
 
-void TestSuite::setupSource(const QString &source, QString dir) const
+void setupSource(const QString &source, QString dir)
 {
 	if (dir.isEmpty()) {
 		dir = "tests/resources/sites/";
@@ -38,7 +33,7 @@ void TestSuite::setupSource(const QString &source, QString dir) const
 	QFile("release/sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
 }
 
-void TestSuite::setupSite(const QString &source, const QString &site, QString dir) const
+void setupSite(const QString &source, const QString &site, QString dir)
 {
 	if (dir.isEmpty()) {
 		dir = "tests/resources/sites/" + source + "/" + site;
@@ -50,10 +45,4 @@ void TestSuite::setupSite(const QString &source, const QString &site, QString di
 	if (QFile::exists("release/sites/" + source + "/" + site + "/defaults.ini")) {
 		QFile("release/sites/" + source + "/" + site + "/defaults.ini").copy(dir + "/defaults.ini");
 	}
-}
-
-QList<TestSuite*> &TestSuite::getSuites()
-{
-	static QList<TestSuite*> suites;
-	return suites;
 }

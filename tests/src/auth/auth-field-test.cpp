@@ -1,10 +1,9 @@
-#include "auth-field-test.h"
 #include <QSettings>
-#include <QtTest>
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "mixed-settings.h"
+#include "catch.h"
 
 
 MixedSettings *makeSettings(QString key, QString value)
@@ -16,56 +15,56 @@ MixedSettings *makeSettings(QString key, QString value)
 }
 
 
-void AuthFieldTest::testBasic()
+TEST_CASE("AuthField")
 {
-	AuthField field("id", "key", AuthField::FieldType::Text);
+	SECTION("Basic field")
+	{
+		AuthField field("id", "key", AuthField::FieldType::Text);
 
-	QCOMPARE(field.id(), QString("id"));
-	QCOMPARE(field.key(), QString("key"));
-	QCOMPARE(field.type(), AuthField::FieldType::Text);
+		REQUIRE(field.id() == QString("id"));
+		REQUIRE(field.key() == QString("key"));
+		REQUIRE(field.type() == AuthField::FieldType::Text);
 
-	MixedSettings *settings = makeSettings("auth/id", "user");
-	QCOMPARE(field.value(settings), QString("user"));
-	settings->deleteLater();
+		MixedSettings *settings = makeSettings("auth/id", "user");
+		REQUIRE(field.value(settings) == QString("user"));
+		settings->deleteLater();
+	}
+
+	SECTION("Const field")
+	{
+		AuthConstField field("key", "val");
+
+		REQUIRE(field.key() == QString("key"));
+		REQUIRE(field.type() == AuthField::FieldType::Const);
+
+		MixedSettings *settings = new MixedSettings(QList<QSettings*>());
+		REQUIRE(field.value(settings) == QString("val"));
+		settings->deleteLater();
+	}
+
+	SECTION("Hash field")
+	{
+		AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
+
+		REQUIRE(field.key() == QString("key"));
+		REQUIRE(field.type() == AuthField::FieldType::Hash);
+		REQUIRE(field.salt() == QString("test-%pseudo%"));
+
+		MixedSettings *settings = makeSettings("auth/pseudo", "user");
+		REQUIRE(field.value(settings) == QString("42b27efc1480b4fe6d7eaa5eec47424d")); // md5("test-user")
+		settings->deleteLater();
+	}
+
+	SECTION("Empty hash field")
+	{
+		AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
+
+		REQUIRE(field.key() == QString("key"));
+		REQUIRE(field.type() == AuthField::FieldType::Hash);
+		REQUIRE(field.salt() == QString("test-%pseudo%"));
+
+		MixedSettings *settings = new MixedSettings(QList<QSettings*>());
+		REQUIRE(field.value(settings) == QString());
+		settings->deleteLater();
+	}
 }
-
-void AuthFieldTest::testConst()
-{
-	AuthConstField field("key", "val");
-
-	QCOMPARE(field.key(), QString("key"));
-	QCOMPARE(field.type(), AuthField::FieldType::Const);
-
-	MixedSettings *settings = new MixedSettings(QList<QSettings*>());
-	QCOMPARE(field.value(settings), QString("val"));
-	settings->deleteLater();
-}
-
-void AuthFieldTest::testHash()
-{
-	AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
-
-	QCOMPARE(field.key(), QString("key"));
-	QCOMPARE(field.type(), AuthField::FieldType::Hash);
-	QCOMPARE(field.salt(), QString("test-%pseudo%"));
-
-	MixedSettings *settings = makeSettings("auth/pseudo", "user");
-	QCOMPARE(field.value(settings), QString("42b27efc1480b4fe6d7eaa5eec47424d")); // md5("test-user")
-	settings->deleteLater();
-}
-
-void AuthFieldTest::testEmptyHash()
-{
-	AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
-
-	QCOMPARE(field.key(), QString("key"));
-	QCOMPARE(field.type(), AuthField::FieldType::Hash);
-	QCOMPARE(field.salt(), QString("test-%pseudo%"));
-
-	MixedSettings *settings = new MixedSettings(QList<QSettings*>());
-	QCOMPARE(field.value(settings), QString());
-	settings->deleteLater();
-}
-
-
-QTEST_MAIN(AuthFieldTest)

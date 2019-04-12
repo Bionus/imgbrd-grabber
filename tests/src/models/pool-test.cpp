@@ -1,37 +1,36 @@
-#include "pool-test.h"
-#include <QtTest>
 #include "models/pool.h"
+#include "catch.h"
 
 
-void PoolTest::testGetId()
+TEST_CASE("Pool")
 {
-	Pool pool(123, "Test pool", 1, 2, 3);
-	QCOMPARE(pool.id(), 123);
+	SECTION("GetId")
+	{
+		Pool pool(123, "Test pool", 1, 2, 3);
+		REQUIRE(pool.id() == 123);
+	}
+
+	SECTION("GetName")
+	{
+		Pool pool(123, "Test pool", 1, 2, 3);
+		REQUIRE(pool.name() == QString("Test pool"));
+	}
+
+	SECTION("GetCurrent")
+	{
+		Pool pool(123, "Test pool", 1, 2, 3);
+		REQUIRE(pool.current() == 1);
+	}
+
+	SECTION("GetNext")
+	{
+		Pool pool(123, "Test pool", 1, 2, 3);
+		REQUIRE(pool.next() == 2);
+	}
+
+	SECTION("GetPrevious")
+	{
+		Pool pool(123, "Test pool", 1, 2, 3);
+		REQUIRE(pool.previous() == 3);
+	}
 }
-
-void PoolTest::testGetName()
-{
-	Pool pool(123, "Test pool", 1, 2, 3);
-	QCOMPARE(pool.name(), QString("Test pool"));
-}
-
-void PoolTest::testGetCurrent()
-{
-	Pool pool(123, "Test pool", 1, 2, 3);
-	QCOMPARE(pool.current(), 1);
-}
-
-void PoolTest::testGetNext()
-{
-	Pool pool(123, "Test pool", 1, 2, 3);
-	QCOMPARE(pool.next(), 2);
-}
-
-void PoolTest::testGetPrevious()
-{
-	Pool pool(123, "Test pool", 1, 2, 3);
-	QCOMPARE(pool.previous(), 3);
-}
-
-
-QTEST_MAIN(PoolTest)

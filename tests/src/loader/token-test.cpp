@@ -1,51 +1,50 @@
-#include "token-test.h"
-#include <QtTest>
 #include "loader/token.h"
+#include "catch.h"
 
 
-void TokenTest::testLazyNotCalled()
+TEST_CASE("Token")
 {
-	int callCount = 0;
-	Token token([&callCount]() { return ++callCount; });
+	SECTION("LazyNotCalled")
+	{
+		int callCount = 0;
+		Token token([&callCount]() { return ++callCount; });
 
-	QCOMPARE(callCount, 0);
+		REQUIRE(callCount == 0);
+	}
+
+	SECTION("LazyWithCaching")
+	{
+		int callCount = 0;
+		Token token([&callCount]() { return ++callCount; }, true);
+
+		token.value();
+		int val = token.value().toInt();
+
+		REQUIRE(callCount == 1);
+		REQUIRE(val == 1);
+	}
+
+	SECTION("LazyWithoutCaching")
+	{
+		int callCount = 0;
+		Token token([&callCount]() { return ++callCount; }, false);
+
+		token.value();
+		int val = token.value().toInt();
+
+		REQUIRE(callCount == 2);
+		REQUIRE(val == 2);
+	}
+
+	SECTION("Compare")
+	{
+		REQUIRE(Token(13) == Token(13));
+		REQUIRE(Token(13) != Token(17));
+
+		REQUIRE(Token("test") == Token("test"));
+		REQUIRE(Token("test") != Token("not_test"));
+
+		REQUIRE(Token(QStringList() << "1" << "2") == Token(QStringList() << "1" << "2"));
+		REQUIRE(Token(QStringList() << "1" << "2") != Token(QStringList() << "1" << "2" << "3"));
+	}
 }
-
-void TokenTest::testLazyWithCaching()
-{
-	int callCount = 0;
-	Token token([&callCount]() { return ++callCount; }, true);
-
-	token.value();
-	int val = token.value().toInt();
-
-	QCOMPARE(callCount, 1);
-	QCOMPARE(val, 1);
-}
-
-void TokenTest::testLazyWithoutCaching()
-{
-	int callCount = 0;
-	Token token([&callCount]() { return ++callCount; }, false);
-
-	token.value();
-	int val = token.value().toInt();
-
-	QCOMPARE(callCount, 2);
-	QCOMPARE(val, 2);
-}
-
-void TokenTest::testCompare()
-{
-	QVERIFY(Token(13) == Token(13));
-	QVERIFY(Token(13) != Token(17));
-
-	QVERIFY(Token("test") == Token("test"));
-	QVERIFY(Token("test") != Token("not_test"));
-
-	QVERIFY(Token(QStringList() << "1" << "2") == Token(QStringList() << "1" << "2"));
-	QVERIFY(Token(QStringList() << "1" << "2") != Token(QStringList() << "1" << "2" << "3"));
-}
-
-
-QTEST_MAIN(TokenTest)

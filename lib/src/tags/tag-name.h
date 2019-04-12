@@ -23,6 +23,7 @@ class TagName
 };
 
 bool operator==(const TagName &a, const TagName &b);
+bool operator!=(const TagName &a, const TagName &b);
 
 Q_DECLARE_METATYPE(TagName)
 

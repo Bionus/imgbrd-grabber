@@ -1,12 +1,14 @@
-#include "page-test.h"
-#include <QtTest>
+#include <QPointer>
+#include <QSignalSpy>
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "catch.h"
+#include "source-helpers.h"
 
 
-void PageTest::init()
+TEST_CASE("Page")
 {
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
@@ -14,45 +16,35 @@ void PageTest::init()
 	setupSource("Gelbooru (0.2)");
 	setupSite("Gelbooru (0.2)", "gelbooru.com");
 
-	m_profile = makeProfile();
-	m_sites.append(m_profile->getSites().value("danbooru.donmai.us"));
-	m_site = m_profile->getSites().value("gelbooru.com");
+	auto profile = QPointer<Profile>(makeProfile());
+	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
+	Site *site = profile->getSites().value("gelbooru.com");
+
+	SECTION("IncompatibleModifiers")
+	{
+		Page page(profile, site, sites, QStringList() << "test" << "status:deleted");
+
+		REQUIRE(page.search().count() == 1);
+		REQUIRE(page.search().first() == QString("test"));
+	}
+
+	SECTION("LoadAbort")
+	{
+		Page page(profile, site, sites, QStringList() << "test" << "status:deleted");
+
+		QSignalSpy spy(&page, SIGNAL(finishedLoading(Page*)));
+		page.load();
+		page.abort();
+		REQUIRE(!spy.wait(1000));
+	}
+
+	SECTION("LoadTagsAbort")
+	{
+		Page page(profile, site, sites, QStringList() << "test" << "status:deleted");
+
+		QSignalSpy spy(&page, SIGNAL(finishedLoadingTags(Page*)));
+		page.loadTags();
+		page.abortTags();
+		REQUIRE(!spy.wait(1000));
+	}
 }
-
-void PageTest::cleanup()
-{
-	m_profile->deleteLater();
-	m_sites.clear();
-}
-
-
-void PageTest::testIncompatibleModifiers()
-{
-	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
-
-	QCOMPARE(page.search().count(), 1);
-	QCOMPARE(page.search().first(), QString("test"));
-}
-
-void PageTest::testLoadAbort()
-{
-	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
-
-	QSignalSpy spy(&page, SIGNAL(finishedLoading(Page*)));
-	page.load();
-	page.abort();
-	QVERIFY(!spy.wait(1000));
-}
-
-void PageTest::testLoadTagsAbort()
-{
-	Page page(m_profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
-
-	QSignalSpy spy(&page, SIGNAL(finishedLoadingTags(Page*)));
-	page.loadTags();
-	page.abortTags();
-	QVERIFY(!spy.wait(1000));
-}
-
-
-QTEST_MAIN(PageTest)

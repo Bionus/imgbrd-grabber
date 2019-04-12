@@ -18,6 +18,7 @@ class Filter
 		virtual QString toString() const = 0;
 
 		bool operator==(const Filter &rhs) const;
+		bool operator!=(const Filter &rhs) const;
 		virtual bool compare(const Filter &rhs) const = 0;
 
 	protected:

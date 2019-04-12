@@ -4,3 +4,6 @@
 [submodule "cmake/cotire"]
 	path = cmake/cotire
 	url = https://github.com/sakra/cotire.git
+[submodule "tests/src/vendor/catch"]
+	path = tests/src/vendor/catch
+	url = https://github.com/catchorg/Catch2.git

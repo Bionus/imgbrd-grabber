@@ -2,9 +2,10 @@
 #include <QFile>
 #include <QtConcurrent>
 #include <ui_blacklist-fix-2.h>
+#include "functions.h"
+#include "helpers.h"
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
-#include "helpers.h"
 
 
 BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist blacklist, QWidget *parent)

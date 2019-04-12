@@ -1,6 +1,7 @@
-#include "integration-test-suite.h"
+#include "integration-helpers.h"
+#include <QSettings>
+#include <QSignalSpy>
 #include <QStringList>
-#include <QtTest>
 #include "custom-network-access-manager.h"
 #include "downloader/downloader.h"
 #include "logger.h"
@@ -8,18 +9,12 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "tags/tag-api.h"
+#include "catch.h"
+#include "raii-helpers.h"
+#include "source-helpers.h"
 
 
-void IntegrationTestSuite::initTestCase()
-{
-	Logger::getInstance().setLogFile("tests/test_log.log");
-
-	m_downloader = nullptr;
-	m_profile = nullptr;
-	m_site = nullptr;
-}
-
-QList<Image*> IntegrationTestSuite::getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
+QList<Image*> getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(source);
 	setupSite(source, site);
@@ -30,6 +25,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &source, const QStri
 	}
 
 	QSettings settings("tests/resources/sites/" + source + "/" + site + "/settings.ini", QSettings::IniFormat);
+	settings.clear();
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -37,18 +33,19 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &source, const QStri
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
-	m_filesToRemove.append(settings.fileName());
 
-	m_profile = makeProfile();
-	m_source = m_profile->getSources().value(source);
+	FileDeleter settingsDeleter(settings.fileName());
+
+	auto profile = QPointer<Profile>(makeProfile());
+	Source *srce = profile->getSources().value(source);
 
 	QList<Site*> sites;
-	m_site = new Site(site, m_source);
-	m_site->setAutoLogin(false);
-	sites.append(m_site);
+	Site *ste = new Site(site, srce);
+	ste->setAutoLogin(false);
+	sites.append(ste);
 
 	QList<Image*> result;
-	m_downloader = new Downloader(m_profile,
+	auto downloader = QPointer<Downloader>(new Downloader(profile,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -63,12 +60,12 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &source, const QStri
 		Blacklist(),
 		false,
 		0,
-		"%tag %count %type");
-	m_downloader->setQuit(false);
+		"%tag %count %type"));
+	downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
-	m_downloader->getImages();
+	QSignalSpy spy(downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
+	downloader->getImages();
 	if (!spy.wait()) {
 		return result;
 	}
@@ -86,12 +83,13 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &source, const QStri
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getPageTags(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
+QList<Tag> getPageTags(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(source);
 	setupSite(source, site);
 
 	QSettings settings("tests/resources/sites/" + source + "/" + site + "/settings.ini", QSettings::IniFormat);
+	settings.clear();
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -99,23 +97,24 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &source, const QStrin
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
-	m_filesToRemove.append(settings.fileName());
+
+	FileDeleter settingsDeleter(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty()) {
 		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + site + "/" + file);
 	}
 
-	m_profile = makeProfile();
-	m_source = m_profile->getSources().value(source);
+	auto profile = QPointer<Profile>(makeProfile());
+	Source *srce = profile->getSources().value(source);
 
 	QList<Site*> sites;
-	m_site = new Site(site, m_source);
-	m_site->setAutoLogin(false);
-	sites.append(m_site);
+	Site *ste = new Site(site, srce);
+	ste->setAutoLogin(false);
+	sites.append(ste);
 
 	QList<Tag> result;
-	m_downloader = new Downloader(m_profile,
+	auto downloader = QPointer<Downloader>(new Downloader(profile,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -130,12 +129,12 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &source, const QStrin
 		Blacklist(),
 		false,
 		0,
-		"%tag %count %type");
-	m_downloader->setQuit(false);
+		"%tag %count %type"));
+	downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, SIGNAL(finishedTags(QList<Tag>)));
-	m_downloader->getPageTags();
+	QSignalSpy spy(downloader, SIGNAL(finishedTags(QList<Tag>)));
+	downloader->getPageTags();
 	if (!spy.wait()) {
 		return result;
 	}
@@ -153,12 +152,13 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &source, const QStrin
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getTags(const QString &source, const QString &site, const QString &format, const QString &file)
+QList<Tag> getTags(const QString &source, const QString &site, const QString &format, const QString &file)
 {
 	setupSource(source);
 	setupSite(source, site);
 
 	QSettings settings("tests/resources/sites/" + source + "/" + site + "/settings.ini", QSettings::IniFormat);
+	settings.clear();
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -166,21 +166,22 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &source, const QString &s
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
-	m_filesToRemove.append(settings.fileName());
+
+	FileDeleter settingsDeleter(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty()) {
 		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + site + "/" + file);
 	}
 
-	m_profile = makeProfile();
-	m_source = m_profile->getSources().value(source);
+	auto profile = QPointer<Profile>(makeProfile());
+	Source *srce = profile->getSources().value(source);
 
-	m_site = new Site(site, m_source);
-	m_site->setAutoLogin(false);
+	Site *ste = new Site(site, srce);
+	ste->setAutoLogin(false);
 
 	QList<Tag> result;
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(profile, ste, ste->getApis().first(), 1, 100);
 
 	// Wait for tag api
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
@@ -197,25 +198,4 @@ QList<Tag> IntegrationTestSuite::getTags(const QString &source, const QString &s
 	}
 
 	return tagApi.tags();
-}
-
-void IntegrationTestSuite::cleanup()
-{
-	if (m_downloader != nullptr) {
-		m_downloader->deleteLater();
-		m_downloader = nullptr;
-	}
-	if (m_profile != nullptr) {
-		delete m_profile;
-		m_profile = nullptr;
-	}
-	if (m_site != nullptr) {
-		delete m_site;
-		m_site = nullptr;
-	}
-
-	for (const QString &file : m_filesToRemove) {
-		QFile(file).remove();
-	}
-	m_filesToRemove.clear();
 }

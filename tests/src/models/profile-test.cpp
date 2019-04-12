@@ -1,21 +1,27 @@
-#include "profile-test.h"
+#include <QDir>
 #include <QFile>
-#include <QtTest>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QPointer>
 #include "models/profile.h"
+#include "catch.h"
+#include "source-helpers.h"
 
 
-void ProfileTest::init()
+TEST_CASE("Profile")
 {
-	m_dates.clear();
-	m_dates.append(QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
-	m_dates.append(QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17)));
-	m_dates.append(QDateTime(QDate(2016, 7, 1), QTime(9, 12, 17)));
+	QList<QDateTime> dates
+	{
+		QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)),
+		QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17)),
+		QDateTime(QDate(2016, 7, 1), QTime(9, 12, 17))
+	};
 
 	QFile::remove("tests/resources/favorites.json");
 	QFile f("tests/resources/favorites.txt");
 	f.open(QFile::WriteOnly | QFile::Text);
-	f.write(Favorite("tag_1", 20, m_dates[0]).toString().toUtf8() + "\r\n");
-	f.write(Favorite("tag_2", 100, m_dates[1]).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_1", 20, dates[0]).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_2", 100, dates[1]).toString().toUtf8() + "\r\n");
 	f.close();
 
 	QFile f2("tests/resources/md5s.txt");
@@ -24,92 +30,84 @@ void ProfileTest::init()
 	f2.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
 	f2.close();
 
-	m_profile = makeProfile();
+	auto profile = QPointer<Profile>(makeProfile());
+
+	SECTION("ConstructorEmpty")
+	{
+		Profile newProfile;
+
+		REQUIRE(newProfile.getPath() == QString());
+		REQUIRE(newProfile.getSettings() == nullptr);
+		REQUIRE(newProfile.getFavorites().isEmpty());
+		REQUIRE(newProfile.getKeptForLater().isEmpty());
+	}
+
+	SECTION("ConstructorPath")
+	{
+		REQUIRE(profile->getPath() == QString("tests/resources"));
+		REQUIRE(profile->getSettings() != nullptr);
+	}
+
+	SECTION("LoadFavorites")
+	{
+		QList<Favorite> &favs = profile->getFavorites();
+
+		REQUIRE(favs.count() == 2);
+		REQUIRE(favs[0].getName() == QString("tag_1"));
+		REQUIRE(favs[0].getNote() == 20);
+		REQUIRE(favs[0].getLastViewed() == dates[0]);
+		REQUIRE(favs[1].getName() == QString("tag_2"));
+		REQUIRE(favs[1].getNote() == 100);
+		REQUIRE(favs[1].getLastViewed() == dates[1]);
+	}
+
+	SECTION("AddFavorite")
+	{
+		Favorite fav("tag_3", 70, dates[2]);
+		profile->addFavorite(fav);
+		profile->sync();
+
+		QFile f("tests/resources/favorites.json");
+		f.open(QFile::ReadOnly | QFile::Text);
+		QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
+		QJsonArray lines = json["favorites"].toArray();
+		f.close();
+
+		REQUIRE(lines.count() == 3);
+		REQUIRE(lines[0].toObject().value("tag").toString() == QString("tag_1"));
+		REQUIRE(lines[1].toObject().value("tag").toString() == QString("tag_2"));
+		REQUIRE(lines[2].toObject().value("tag").toString() == QString("tag_3"));
+	}
+
+	SECTION("RemoveFavorite")
+	{
+		profile->removeFavorite(Favorite("tag_1", 20, dates[0]));
+		profile->sync();
+
+		QFile f("tests/resources/favorites.json");
+		f.open(QFile::ReadOnly | QFile::Text);
+		QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
+		QJsonArray lines = json["favorites"].toArray();
+		f.close();
+
+		REQUIRE(lines.count() == 1);
+		REQUIRE(lines[0].toObject().value("tag").toString() == QString("tag_2"));
+	}
+
+	#ifndef Q_OS_WIN
+	SECTION("RemoveFavoriteThumb")
+	{
+		Favorite fav("tag_1", 20, dates[0]);
+
+		QDir(profile->getPath()).mkdir("thumb");
+		QFile thumb(profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
+		thumb.open(QFile::WriteOnly | QFile::Truncate);
+		thumb.write(QString("test").toUtf8());
+		thumb.close();
+
+		REQUIRE(thumb.exists());
+		profile->removeFavorite(fav);
+		REQUIRE(!thumb.exists());
+	}
+	#endif
 }
-
-void ProfileTest::cleanup()
-{
-	delete m_profile;
-}
-
-
-void ProfileTest::testConstructorEmpty()
-{
-	Profile newProfile;
-
-	QCOMPARE(newProfile.getPath(), QString());
-	QVERIFY(newProfile.getSettings() == nullptr);
-	QVERIFY(newProfile.getFavorites().isEmpty());
-	QVERIFY(newProfile.getKeptForLater().isEmpty());
-}
-
-void ProfileTest::testConstructorPath()
-{
-	QCOMPARE(m_profile->getPath(), QString("tests/resources"));
-	QVERIFY(m_profile->getSettings() != nullptr);
-}
-
-void ProfileTest::testLoadFavorites()
-{
-	QList<Favorite> &favs = m_profile->getFavorites();
-
-	QCOMPARE(favs.count(), 2);
-	QCOMPARE(favs[0].getName(), QString("tag_1"));
-	QCOMPARE(favs[0].getNote(), 20);
-	QCOMPARE(favs[0].getLastViewed(), m_dates[0]);
-	QCOMPARE(favs[1].getName(), QString("tag_2"));
-	QCOMPARE(favs[1].getNote(), 100);
-	QCOMPARE(favs[1].getLastViewed(), m_dates[1]);
-}
-
-void ProfileTest::testAddFavorite()
-{
-	Favorite fav("tag_3", 70, m_dates[2]);
-	m_profile->addFavorite(fav);
-	m_profile->sync();
-
-	QFile f("tests/resources/favorites.json");
-	f.open(QFile::ReadOnly | QFile::Text);
-	QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
-	QJsonArray lines = json["favorites"].toArray();
-	f.close();
-
-	QCOMPARE(lines.count(), 3);
-	QCOMPARE(lines[0].toObject().value("tag").toString(), QString("tag_1"));
-	QCOMPARE(lines[1].toObject().value("tag").toString(), QString("tag_2"));
-	QCOMPARE(lines[2].toObject().value("tag").toString(), QString("tag_3"));
-}
-
-void ProfileTest::testRemoveFavorite()
-{
-	m_profile->removeFavorite(Favorite("tag_1", 20, m_dates[0]));
-	m_profile->sync();
-
-	QFile f("tests/resources/favorites.json");
-	f.open(QFile::ReadOnly | QFile::Text);
-	QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
-	QJsonArray lines = json["favorites"].toArray();
-	f.close();
-
-	QCOMPARE(lines.count(), 1);
-	QCOMPARE(lines[0].toObject().value("tag").toString(), QString("tag_2"));
-}
-#ifndef Q_OS_WIN
-void ProfileTest::testRemoveFavoriteThumb()
-{
-	Favorite fav("tag_1", 20, m_dates[0]);
-
-	QDir(m_profile->getPath()).mkdir("thumb");
-	QFile thumb(m_profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
-	thumb.open(QFile::WriteOnly | QFile::Truncate);
-	thumb.write(QString("test").toUtf8());
-	thumb.close();
-
-	QVERIFY(thumb.exists());
-	m_profile->removeFavorite(fav);
-	QVERIFY(!thumb.exists());
-}
-#endif
-
-
-QTEST_MAIN(ProfileTest)

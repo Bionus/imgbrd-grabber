@@ -1,65 +1,48 @@
-#include "concurrent-multi-queue-test.h"
 #include <QList>
 #include <QQueue>
 #include <QSignalSpy>
-#include <QtTest>
 #include "concurrent-multi-queue.h"
+#include "catch.h"
 
 
-QQueue<QVariant> makeQueue(QList<QVariant> list)
+TEST_CASE("ConcurrentMultiQueue")
 {
-	QQueue<QVariant> q;
-	for (const auto &val : list) {
-		q.enqueue(val);
-	}
-	return q;
-}
+	SECTION("Single queue")
+	{
+		QList<int> results;
+		ConcurrentMultiQueue multiQueue;
+		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
+			results.append(item.toInt());
+			multiQueue.next();
+		});
 
+		QSignalSpy spy(&multiQueue, SIGNAL(finished()));
+		multiQueue.append(0, 1);
+		multiQueue.append(0, 2);
+		multiQueue.append(0, 3);
+		REQUIRE(spy.wait());
 
-void ConcurrentMultiQueueTest::singleQueue()
-{
-	QList<int> results;
-	ConcurrentMultiQueue multiQueue;
-	connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
-		results.append(item.toInt());
-		multiQueue.next();
-	});
-
-	QSignalSpy spy(&multiQueue, SIGNAL(finished()));
-	multiQueue.append(0, 1);
-	multiQueue.append(0, 2);
-	multiQueue.append(0, 3);
-
-	if (!spy.wait()) {
-		QFAIL("finished signal not received");
+		REQUIRE(results == QList<int>() << 1 << 2 << 3);
 	}
 
-	QCOMPARE(results, QList<int>() << 1 << 2 << 3);
-}
+	SECTION("Multiple queues")
+	{
+		QList<int> results;
+		ConcurrentMultiQueue multiQueue;
+		QObject::connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
+			results.append(item.toInt());
+			multiQueue.next();
+		});
 
-void ConcurrentMultiQueueTest::multipleQueues()
-{
-	QList<int> results;
-	ConcurrentMultiQueue multiQueue;
-	connect(&multiQueue, &ConcurrentMultiQueue::dequeued, [&](QVariant item) {
-		results.append(item.toInt());
-		multiQueue.next();
-	});
+		QSignalSpy spy(&multiQueue, SIGNAL(finished()));
+		multiQueue.append(2, 1);
+		multiQueue.append(1, 2);
+		multiQueue.append(2, 3);
+		multiQueue.append(0, 4);
+		multiQueue.append(0, 5);
+		multiQueue.append(1, 6);
+		REQUIRE(spy.wait());
 
-	QSignalSpy spy(&multiQueue, SIGNAL(finished()));
-	multiQueue.append(2, 1);
-	multiQueue.append(1, 2);
-	multiQueue.append(2, 3);
-	multiQueue.append(0, 4);
-	multiQueue.append(0, 5);
-	multiQueue.append(1, 6);
-
-	if (!spy.wait()) {
-		QFAIL("finished signal not received");
+		REQUIRE(results == QList<int>() << 4 << 5 << 2 << 6 << 1 << 3);
 	}
-
-	QCOMPARE(results, QList<int>() << 4 << 5 << 2 << 6 << 1 << 3);
 }
-
-
-QTEST_MAIN(ConcurrentMultiQueueTest)
