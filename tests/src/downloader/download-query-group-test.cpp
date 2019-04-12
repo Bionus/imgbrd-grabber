@@ -3,7 +3,6 @@
 #include "downloader/download-query-group.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "models/source.h"
 
 
 void DownloadQueryGroupTest::testCompare()
@@ -27,10 +26,9 @@ void DownloadQueryGroupTest::testCompare()
 void DownloadQueryGroupTest::testSerialization()
 {
 	Profile profile("tests/resources/");
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
-	Site site("danbooru.donmai.us", &source);
+	Site *site = profile.getSites().value("danbooru.donmai.us");
 
-	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, &site, "filename", "path");
+	DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, site, "filename", "path");
 	original.progressVal = 37;
 	original.progressFinished = false;
 
@@ -46,7 +44,7 @@ void DownloadQueryGroupTest::testSerialization()
 	QCOMPARE(dest.total, 3);
 	QCOMPARE(dest.postFiltering, QStringList() << "postFiltering");
 	QCOMPARE(dest.getBlacklisted, true);
-	QCOMPARE(dest.site, &site);
+	QCOMPARE(dest.site, site);
 	QCOMPARE(dest.filename, QString("filename"));
 	QCOMPARE(dest.path, QString("path"));
 	QCOMPARE(dest.progressVal, 37);
