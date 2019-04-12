@@ -1,6 +1,7 @@
 #ifndef OAUTH2_LOGIN_H
 #define OAUTH2_LOGIN_H
 
+#include <QDateTime>
 #include <QString>
 #include "login/login.h"
 
@@ -26,14 +27,23 @@ class OAuth2Login : public Login
 
 	protected slots:
 		void loginFinished();
+		void refreshLoginFinished();
+		void refreshFinished();
+
+	protected:
+		void refresh(bool login = false);
+		bool readResponse(NetworkReply *reply);
 
 	private:
 		OAuth2Auth *m_auth;
 		Site *m_site;
 		NetworkManager *m_manager;
 		MixedSettings *m_settings;
-		NetworkReply *m_tokenReply;
-		QString m_token;
+		NetworkReply *m_tokenReply = nullptr;
+		NetworkReply *m_refreshReply = nullptr;
+		QString m_accessToken;
+		QString m_refreshToken;
+		QDateTime m_expires;
 };
 
 #endif // OAUTH2_LOGIN_H

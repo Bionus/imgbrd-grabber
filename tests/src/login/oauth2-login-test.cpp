@@ -38,6 +38,8 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	MixedSettings *settings = site->settings();
 	settings->setValue("auth/consumerKey", "consumerKey");
 	settings->setValue("auth/consumerSecret", "consumerSecret");
+	settings->setValue("auth/accessToken", "");
+	settings->setValue("auth/refreshToken", "");
 
 	OAuth2Auth auth("oauth2", type, "/token");
 	OAuth2Login login(&auth, site, manager, settings);
