@@ -25,6 +25,9 @@ void DownloadQueryGroupTest::testCompare()
 
 void DownloadQueryGroupTest::testSerialization()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
 	Profile profile("tests/resources/");
 	Site *site = profile.getSites().value("danbooru.donmai.us");
 
