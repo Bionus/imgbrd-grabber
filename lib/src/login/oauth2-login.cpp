@@ -167,7 +167,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 		if (expires || expires_in) {
 			int expiresSecond = jsonObject.value(expires ? "expires" : "expires_in").toInt();
 			m_expires = QDateTime::currentDateTime().addSecs(expiresSecond);
-			QTimer::singleShot((expiresSecond / 2) * 1000, this, &OAuth2Login::basicRefresh);
+			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
 			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
 		}
 	}
