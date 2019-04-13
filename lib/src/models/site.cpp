@@ -137,7 +137,6 @@ void Site::loadConfig()
 			}
 		} else {
 			m_login = nullptr;
-			log(QStringLiteral("[%1] No auth found").arg(m_url), Logger::Error);
 		}
 	}
 

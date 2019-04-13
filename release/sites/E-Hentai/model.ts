@@ -143,17 +143,6 @@ export const source: ISource = {
                     };
                 },
             },
-            details: {
-                url: (id: number, md5: string): IError => {
-                    return { error: "Not supported (view token)" };
-                },
-                parse: (src: string): IParsedDetails => {
-                    // Grabber.regexMatches("<div>(?<filename>[^:]*) :: (?<width>\\d+) x (?<height>\\d+) :: (?<filesize>[^ ]+ [KM]B)</div>", src);
-                    return {
-                        imageUrl: Grabber.regexToConst("url", '<img id="img" src="(?<url>[^"]+)"', src),
-                    };
-                },
-            },
         },
     },
 };

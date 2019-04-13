@@ -31,7 +31,7 @@ interface IImage {
     date?: string;
 
     // Full size
-    file_url: string;
+    file_url?: string;
     width?: number;
     height?: number;
     file_size?: number;
