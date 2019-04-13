@@ -69,10 +69,8 @@ void FileDownloaderTest::testNetworkError()
 
 	QList<QVariant> arguments = spy.takeFirst();
 	NetworkReply::NetworkError code = arguments[0].value<NetworkReply::NetworkError>();
-	QString error = arguments[1].toString();
 
 	QCOMPARE(code, NetworkReply::NetworkError::ContentNotFoundError);
-	QCOMPARE(error, QString("Unknown error"));
 	QVERIFY(!QFile::exists(dest));
 }
 
