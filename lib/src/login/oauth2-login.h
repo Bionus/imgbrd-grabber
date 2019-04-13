@@ -29,6 +29,7 @@ class OAuth2Login : public Login
 		void loginFinished();
 		void refreshLoginFinished();
 		void refreshFinished();
+		void basicRefresh();
 
 	protected:
 		void refresh(bool login = false);
