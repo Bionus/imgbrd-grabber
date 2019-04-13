@@ -210,6 +210,10 @@ Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{
 Source: "..\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist
+Source: "..\release\sites\NHentai\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
+Source: "..\release\sites\NHentai\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
+Source: "..\release\sites\NHentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: onlyifdoesntexist
+Source: "..\release\sites\NHentai\nhentai.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai\nhentai.net"; Flags: ignoreversion
 Source: "..\release\sites\Pixiv\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
 Source: "..\release\sites\Pixiv\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
 Source: "..\release\sites\Pixiv\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: onlyifdoesntexist
