@@ -19,6 +19,7 @@
 #include "danbooru-downloader-importer.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
+#include "downloader/download-queue.h"
 #include "functions.h"
 #include "helpers.h"
 #include "logger.h"
@@ -220,12 +221,16 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
 
+	// Download queue
+	const int maxConcurrency = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
+	m_downloadQueue = new DownloadQueue(maxConcurrency, this);
+
 	// Tab bar context menu
 	ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
 
 	// Downloads tab
-	m_downloadsTab = new DownloadsTab(m_profile, this);
+	m_downloadsTab = new DownloadsTab(m_profile, m_downloadQueue, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
 
@@ -235,7 +240,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	// Favorites tab
-	m_favoritesTab = new FavoritesTab(m_profile, this);
+	m_favoritesTab = new FavoritesTab(m_profile, m_downloadQueue, this);
 	connect(m_favoritesTab, &SearchTab::batchAddGroup, m_downloadsTab, &DownloadsTab::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), m_downloadsTab, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(m_favoritesTab, &SearchTab::titleChanged, this, &MainWindow::updateTabTitle);
@@ -372,7 +377,7 @@ void MainWindow::initialLoginsDone()
 	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
 	m_forcedTab = -1;
 
-	m_monitoringCenter = new MonitoringCenter(m_profile, m_trayIcon, this);
+	m_monitoringCenter = new MonitoringCenter(m_profile, m_downloadQueue, m_trayIcon, this);
 	m_monitoringCenter->start();
 }
 
@@ -419,7 +424,7 @@ void MainWindow::onFirstLoad()
 
 void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTab *source)
 {
-	auto *w = new TagTab(m_profile, this);
+	auto *w = new TagTab(m_profile, m_downloadQueue, this);
 	this->addSearchTab(w, background, save, source);
 
 	if (!tag.isEmpty()) {
@@ -430,7 +435,7 @@ void MainWindow::addTab(const QString &tag, bool background, bool save, SearchTa
 }
 void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool save, SearchTab *source)
 {
-	auto *w = new PoolTab(m_profile, this);
+	auto *w = new PoolTab(m_profile, m_downloadQueue, this);
 	this->addSearchTab(w, background, save, source);
 
 	if (!site.isEmpty()) {
@@ -444,7 +449,7 @@ void MainWindow::addPoolTab(int pool, const QString &site, bool background, bool
 }
 void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool background, bool save, SearchTab *source)
 {
-	auto *w = new GalleryTab(site, std::move(gallery), m_profile, this);
+	auto *w = new GalleryTab(site, std::move(gallery), m_profile, m_downloadQueue, this);
 	this->addSearchTab(w, background, save, source);
 }
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
@@ -506,7 +511,7 @@ bool MainWindow::loadTabs(const QString &filename)
 	QList<SearchTab*> tabs;
 	int currentTab;
 
-	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, this)) {
+	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_downloadQueue, this)) {
 		return false;
 	}
 
@@ -562,7 +567,7 @@ void MainWindow::restoreLastClosedTab()
 	}
 
 	QJsonObject infos = m_closedTabs.takeLast();
-	SearchTab *tab = TabsLoader::loadTab(infos, m_profile, this, true);
+	SearchTab *tab = TabsLoader::loadTab(infos, m_profile, m_downloadQueue, this, true);
 	addSearchTab(tab);
 
 	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());

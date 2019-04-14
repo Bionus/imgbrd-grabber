@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include "downloader/download-queue.h"
 #include "downloader/image-downloader.h"
 #include "logger.h"
 #include "models/favorite.h"
@@ -15,8 +16,8 @@
 #define MONITOR_CHECK_LIMIT 20
 
 
-MonitoringCenter::MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent)
-	: QObject(parent), m_profile(profile), m_trayIcon(trayIcon)
+MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent)
+	: QObject(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_trayIcon(trayIcon)
 {}
 
 void MonitoringCenter::start()
@@ -74,9 +75,9 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
         }
 
         for (const QSharedPointer<Image> &img : newImagesList) {
-            m_downloadQueue.append(new ImageDownloader(m_profile, img, filename, path, 0, true, false, this));
-        }
-        startDownload();
+			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
+			m_downloadQueue->add(DownloadQueue::Background, downloader);
+		}
     }
 
 	// Update monitor
@@ -86,26 +87,6 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 	if (newImages > 0) {
 		emit m_profile->favoritesChanged();
 	}
-}
-
-void MonitoringCenter::startDownload()
-{
-    if (m_downloading || m_downloadQueue.isEmpty()) {
-        return;
-    }
-
-    m_downloading = true;
-
-    auto dwl = m_downloadQueue.takeFirst();
-    connect(dwl, &ImageDownloader::saved, this, &MonitoringCenter::downloadFinished);
-    connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
-    dwl->save();
-}
-
-void MonitoringCenter::downloadFinished()
-{
-    m_downloading = false;
-    startDownload();
 }
 
 void MonitoringCenter::tick()

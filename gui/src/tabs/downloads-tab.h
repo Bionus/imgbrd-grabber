@@ -20,6 +20,7 @@ class BatchDownloadImage;
 class BatchWindow;
 class DownloadQueryGroup;
 class DownloadQueryImage;
+class DownloadQueue;
 class ImageDownloader;
 struct ImageSaveResult;
 class PackLoader;
@@ -32,7 +33,7 @@ class DownloadsTab : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit DownloadsTab(Profile *profile, MainWindow *parent);
+		explicit DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 		~DownloadsTab() override;
 
 	public slots:
@@ -102,6 +103,7 @@ class DownloadsTab : public QWidget
 		Ui::DownloadsTab *ui;
 		Profile *m_profile;
 		QSettings *m_settings;
+		DownloadQueue *m_downloadQueue;
 		MainWindow *m_parent;
 
 		int m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllResumed, m_getAllLimit;

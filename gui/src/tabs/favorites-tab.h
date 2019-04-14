@@ -18,7 +18,7 @@ class FavoritesTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit FavoritesTab(Profile *profile, MainWindow *parent);
+		explicit FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 		~FavoritesTab() override;
 		Ui::FavoritesTab *ui;
 		QList<Site*> sources() override;

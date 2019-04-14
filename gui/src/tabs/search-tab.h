@@ -18,6 +18,7 @@
 
 class DownloadQueryGroup;
 class DownloadQueryImage;
+class DownloadQueue;
 class Favorite;
 class MainWindow;
 class NetworkReply;
@@ -33,7 +34,7 @@ class SearchTab : public QWidget
 	Q_OBJECT
 
 	protected:
-		SearchTab(Profile *profile, MainWindow *parent);
+		SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 
 	public:
 		~SearchTab() override;
@@ -144,6 +145,7 @@ class SearchTab : public QWidget
 
 	protected:
 		Profile *m_profile;
+		DownloadQueue *m_downloadQueue;
 		int m_lastPage;
 		qulonglong m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;

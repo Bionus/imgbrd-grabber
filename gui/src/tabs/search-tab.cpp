@@ -9,6 +9,7 @@
 #include <QtMath>
 #include <algorithm>
 #include "downloader/download-query-image.h"
+#include "downloader/download-queue.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"
@@ -32,8 +33,8 @@
 #define FIXED_IMAGE_WIDTH 150
 
 
-SearchTab::SearchTab(Profile *profile, MainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -609,8 +610,7 @@ void SearchTab::finishedLoadingPreview()
 
 		if (download) {
 			auto downloader = new ImageDownloader(m_profile, img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, this);
-			downloader->save();
-			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
 	}
 
@@ -953,8 +953,7 @@ void SearchTab::contextSaveImage(int position)
 
 		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
-		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
-		downloader->save();
+		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
 }
 void SearchTab::contextSaveImageAs(int position)
@@ -1005,8 +1004,7 @@ void SearchTab::contextSaveSelected()
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
 		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
-		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
-		downloader->save();
+		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
 }
 void SearchTab::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)

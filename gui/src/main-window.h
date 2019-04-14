@@ -19,6 +19,7 @@ namespace Ui
 class SearchTab;
 class FavoritesTab;
 class Profile;
+class DownloadQueue;
 class DownloadsTab;
 class Image;
 class LogTab;
@@ -130,6 +131,7 @@ class MainWindow : public QMainWindow
 		QLinkedList<QJsonObject> m_closedTabs;
 		NetworkManager m_networkManager;
 		TabSelector *m_tabSelector;
+		DownloadQueue *m_downloadQueue;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;

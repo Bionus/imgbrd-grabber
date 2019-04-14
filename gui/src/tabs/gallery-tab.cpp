@@ -16,8 +16,8 @@
 #define MAX_TAB_NAME_LENGTH 40
 
 
-GalleryTab::GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, MainWindow *parent)
-	: GalleryTab(profile, parent)
+GalleryTab::GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: GalleryTab(profile, downloadQueue, parent)
 {
 	m_site = site;
 	m_gallery = std::move(gallery);
@@ -27,8 +27,8 @@ GalleryTab::GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profi
 	load();
 }
 
-GalleryTab::GalleryTab(Profile *profile, MainWindow *parent)
-	: SearchTab(profile, parent), ui(new Ui::GalleryTab)
+GalleryTab::GalleryTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: SearchTab(profile, downloadQueue, parent), ui(new Ui::GalleryTab)
 {
 	ui->setupUi(this);
 

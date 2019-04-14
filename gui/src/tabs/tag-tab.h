@@ -19,7 +19,7 @@ class TagTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit TagTab(Profile *profile, MainWindow *parent);
+		explicit TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 		~TagTab() override;
 		Ui::TagTab *ui;
 		QString tags() const override;
