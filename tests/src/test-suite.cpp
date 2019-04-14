@@ -1,6 +1,7 @@
 #include "test-suite.h"
 #include <QDir>
 #include <QFile>
+#include <QSettings>
 #include "models/profile.h"
 
 
