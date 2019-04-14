@@ -18,25 +18,28 @@ void ConcurrentMultiQueue::setGlobalConcurrency(int globalConcurrency)
 }
 
 
-void ConcurrentMultiQueue::append(QQueue<QVariant> queue, int priority)
+void ConcurrentMultiQueue::append(int queue, QVariant item)
 {
-    if (!queue.isEmpty()) {
-        m_queues.append({ queue, priority });
-    }
+	if (queue >= m_queues.count()) {
+		m_queues.resize(queue + 1);
+	}
 
-    if (m_queues.isEmpty()) {
-		QTimer::singleShot(0, this, SIGNAL(finished()));
-    }
+	m_queues[queue].append(item);
 
-    int activeWorkers = m_activeWorkers.fetchAndStoreRelaxed(m_globalConcurrency);
-    for (int i = activeWorkers; i < m_globalConcurrency; ++i) {
+	if (m_activeWorkers < m_globalConcurrency) {
+		m_activeWorkers++;
 		QTimer::singleShot(0, this, SLOT(next()));
-    }
+	}
 }
 
 void ConcurrentMultiQueue::next()
 {
-    if (m_queues.isEmpty()) {
+	int index = 0;
+	while (index < m_queues.count() && m_queues[index].isEmpty()) {
+		index++;
+	}
+
+	if (index >= m_queues.count()) {
         int activeWorkers = m_activeWorkers.fetchAndAddRelaxed(-1);
         if (activeWorkers == 1) { // Compare to 1 because the returned value is the one BEFORE the modification
             emit finished();
@@ -44,19 +47,6 @@ void ConcurrentMultiQueue::next()
         return;
     }
 
-	QVariant next = m_queues[m_roundRobin].first.dequeue();
-    if (m_queues[m_roundRobin].first.isEmpty()) {
-        m_queues.removeAt(m_roundRobin);
-		m_priority = 0;
-    } else {
-        m_priority++;
-        if (m_priority >= m_queues[m_roundRobin].second) {
-			m_roundRobin++;
-        }
-    }
-	if (!m_queues.isEmpty()) {
-		m_roundRobin = m_roundRobin % m_queues.count();
-	}
-
+	QVariant next = m_queues[index].dequeue();
     emit dequeued(next);
 }

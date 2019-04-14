@@ -2,10 +2,9 @@
 #define CONCURRENT_MULTI_QUEUE_H
 
 #include <QAtomicInt>
-#include <QPair>
 #include <QQueue>
-#include <QList>
 #include <QVariant>
+#include <QVector>
 
 
 class ConcurrentMultiQueue : public QObject
@@ -16,7 +15,7 @@ class ConcurrentMultiQueue : public QObject
 		ConcurrentMultiQueue(QObject *parent = nullptr);
 		int globalConcurrency() const;
 		void setGlobalConcurrency(int globalConcurrency);
-		void append(QQueue<QVariant> queue, int priority = 1);
+		void append(int queue, QVariant item);
 
 	public slots:
 		void next();
@@ -27,11 +26,9 @@ class ConcurrentMultiQueue : public QObject
 
 	private:
 		int m_globalConcurrency = 1;
-		QList<QPair<QQueue<QVariant>, int>> m_queues;
+		QVector<QQueue<QVariant>> m_queues;
 
 		QAtomicInt m_activeWorkers;
-		int m_roundRobin = 0;
-		int m_priority = 0;
 };
 
 #endif // CONCURRENT_MULTI_QUEUE_H

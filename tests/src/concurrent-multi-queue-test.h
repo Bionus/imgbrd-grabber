@@ -11,7 +11,6 @@ class ConcurrentMultiQueueTest : public TestSuite
 	private slots:
 		void singleQueue();
 		void multipleQueues();
-		void multipleQueuesWithPriority();
 };
 
 #endif // CONCURRENT_MULTI_QUEUE_TEST_H
