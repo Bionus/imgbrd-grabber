@@ -11,12 +11,14 @@ void SourceTest::init()
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 }
 
 void SourceTest::cleanup()
 {
 	m_profile->deleteLater();
+
+	QDir("tests/resources/sites/tmp").removeRecursively();
 }
 
 

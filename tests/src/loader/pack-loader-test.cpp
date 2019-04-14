@@ -10,7 +10,7 @@
 
 void PackLoaderTest::init()
 {
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 }
 
 void PackLoaderTest::cleanup()

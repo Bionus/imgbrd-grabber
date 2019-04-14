@@ -10,14 +10,17 @@
 #define QTEST_MAIN(CLASS_NAME) static CLASS_NAME instance;
 
 
+class Profile;
+
 class TestSuite : public QObject
 {
 	Q_OBJECT
 
 	public:
 		TestSuite();
-		void setupSource(const QString &site, QString dir = QString());
-		void setupSite(const QString &site, const QString &source, QString dir = QString());
+		Profile *makeProfile() const;
+		void setupSource(const QString &site, QString dir = QString()) const;
+		void setupSite(const QString &site, const QString &source, QString dir = QString()) const;
 		static QList<TestSuite*> &getSuites();
 };
 

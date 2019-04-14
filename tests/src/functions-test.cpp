@@ -296,7 +296,7 @@ void FunctionsTest::testSetFileCreationDateUtf8()
 
 void FunctionsTest::testGetExternalLogFilesSuffixes()
 {
-	auto *profile = new Profile("tests/resources/");
+	auto *profile = makeProfile();
 	auto *settings = profile->getSettings();
 
 	QCOMPARE(getExternalLogFilesSuffixes(settings), QStringList());
@@ -316,6 +316,8 @@ void FunctionsTest::testGetExternalLogFilesSuffixes()
 	settings->remove("LogFiles/0/suffix");
 	settings->remove("LogFiles/0/uniquePath");
 	settings->remove("LogFiles/0/content");
+
+	profile->deleteLater();
 }
 
 void FunctionsTest::testFixCloudflareEmail()

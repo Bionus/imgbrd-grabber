@@ -11,7 +11,7 @@ void SourceGuesserTest::initTestCase()
 	setupSource("Danbooru");
 	setupSource("Danbooru (2.0)");
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 }
 
 void SourceGuesserTest::cleanupTestCase()

@@ -22,7 +22,7 @@ void PageApiTest::init()
 	settings.setValue("auth/password", "a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1");
 	settings.sync();
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_sites.append(m_profile->getSites().value("danbooru.donmai.us"));
 	m_site = m_profile->getSites().value("gelbooru.com");
 }

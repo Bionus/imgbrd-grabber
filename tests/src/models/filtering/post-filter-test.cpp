@@ -54,7 +54,7 @@ void PostFilterTest::init()
 	m_details["file_size"] = "358400";
 	m_details["file_size"] = "358400";
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_site = m_profile->getSites().value("danbooru.donmai.us");
 	m_img = new Image(m_site, m_details, m_profile);
 }

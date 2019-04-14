@@ -1,6 +1,7 @@
 #include "test-suite.h"
 #include <QDir>
 #include <QFile>
+#include "models/profile.h"
 
 
 TestSuite::TestSuite()
@@ -8,7 +9,17 @@ TestSuite::TestSuite()
 	getSuites().append(this);
 }
 
-void TestSuite::setupSource(const QString &source, QString dir)
+Profile *TestSuite::makeProfile() const
+{
+	QFile::remove("tests/resources/settings.ini");
+
+	Profile *profile = new Profile("tests/resources");
+	profile->getSettings()->clear();
+
+	return profile;
+}
+
+void TestSuite::setupSource(const QString &source, QString dir) const
 {
 	if (dir.isEmpty()) {
 		dir = "tests/resources/sites/";
@@ -26,7 +37,7 @@ void TestSuite::setupSource(const QString &source, QString dir)
 	QFile("release/sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
 }
 
-void TestSuite::setupSite(const QString &source, const QString &site, QString dir)
+void TestSuite::setupSite(const QString &source, const QString &site, QString dir) const
 {
 	if (dir.isEmpty()) {
 		dir = "tests/resources/sites/" + source + "/" + site;

@@ -53,7 +53,7 @@ void ImageTest::init()
 	m_details["file_size"] = "358400";
 	m_details["file_size"] = "358400";
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_settings = m_profile->getSettings();
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");

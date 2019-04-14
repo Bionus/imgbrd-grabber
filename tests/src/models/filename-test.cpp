@@ -49,9 +49,8 @@ void FilenameTest::init()
 	m_details["rating"] = "safe";
 	m_details["name"] = "Test gallery name";
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_settings = m_profile->getSettings();
-	m_settings->clear();
 	m_settings->setValue("ignoredtags", "");
 	m_settings->setValue("Save/separator", " ");
 	m_settings->setValue("Save/character_value", "group");

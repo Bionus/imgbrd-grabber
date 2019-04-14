@@ -14,7 +14,7 @@ void PageTest::init()
 	setupSource("Gelbooru (0.2)");
 	setupSite("Gelbooru (0.2)", "gelbooru.com");
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_sites.append(m_profile->getSites().value("danbooru.donmai.us"));
 	m_site = m_profile->getSites().value("gelbooru.com");
 }

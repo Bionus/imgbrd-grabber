@@ -19,7 +19,7 @@ void HttpLoginTest::init()
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
