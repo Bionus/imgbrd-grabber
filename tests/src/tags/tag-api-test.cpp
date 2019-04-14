@@ -10,14 +10,16 @@
 
 void TagApiTest::init()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
 	m_profile = new Profile("tests/resources/");
-	m_site = new Site("danbooru.donmai.us", new Source(m_profile, "release/sites/Danbooru (2.0)"));
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
 void TagApiTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_site->deleteLater();
 }
 
 

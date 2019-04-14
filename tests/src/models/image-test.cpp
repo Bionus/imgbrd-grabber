@@ -10,6 +10,9 @@
 
 void ImageTest::init()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
 	if (!tmp.exists("tmp")) {
@@ -58,15 +61,13 @@ void ImageTest::init()
 	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Save/md5Duplicates", "save");
 
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 	m_img = new Image(m_site, m_details, m_profile);
 }
 
 void ImageTest::cleanup()
 {
 	delete m_profile;
-	m_site->deleteLater();
 	m_img->deleteLater();
 }
 

@@ -23,16 +23,14 @@ void PageApiTest::init()
 	settings.sync();
 
 	m_profile = new Profile("tests/resources/");
-	m_sites.append(new Site("danbooru.donmai.us", new Source(m_profile, "tests/resources/sites/Danbooru (2.0)")));
-	m_site = new Site("gelbooru.com", new Source(m_profile, "tests/resources/sites/Gelbooru (0.2)"));
+	m_sites.append(m_profile->getSites().value("danbooru.donmai.us"));
+	m_site = m_profile->getSites().value("gelbooru.com");
 }
 
 void PageApiTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_sites.first()->deleteLater();
 	m_sites.clear();
-	m_site->deleteLater();
 
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 }

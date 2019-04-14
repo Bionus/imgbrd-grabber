@@ -16,16 +16,16 @@
 
 void HttpLoginTest::init()
 {
-	m_profile = new Profile("tests/resources/settings.ini");
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	m_profile = new Profile("tests/resources/");
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
 void HttpLoginTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_source->deleteLater();
-	m_site->deleteLater();
 	m_manager.clear();
 }
 

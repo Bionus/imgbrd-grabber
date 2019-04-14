@@ -9,9 +9,15 @@
 #include "models/source.h"
 
 
-void ImageDownloaderTest::initTestCase()
+void ImageDownloaderTest::init()
 {
 	QDir("tests/resources/").mkdir("tmp");
+
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	m_profile = new Profile("tests/resources/");
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
 void ImageDownloaderTest::cleanup()
@@ -23,9 +29,6 @@ void ImageDownloaderTest::cleanup()
 
 	delete m_profile;
 	m_profile = nullptr;
-
-	m_source->deleteLater();
-	m_site->deleteLater();
 }
 
 Image *ImageDownloaderTest::createImage(bool noMd5)
@@ -42,12 +45,6 @@ Image *ImageDownloaderTest::createImage(bool noMd5)
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
 
-	if (m_profile == nullptr) {
-		m_profile = new Profile("tests/resources/");
-	}
-
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
 	return new Image(m_site, details, m_profile);
 }
 

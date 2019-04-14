@@ -22,9 +22,7 @@ class SourceTest : public TestSuite
 		void testIgnoreEmptySites();
 
 	private:
-		QSettings *m_settings;
 		Profile *m_profile;
-		Source *m_source;
 };
 
 #endif // SOURCE_TEST_H

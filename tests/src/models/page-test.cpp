@@ -8,15 +8,21 @@
 
 void PageTest::init()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	setupSource("Gelbooru (0.2)");
+	setupSite("Gelbooru (0.2)", "gelbooru.com");
+
 	m_profile = new Profile("tests/resources/");
-	m_sites.append(new Site("danbooru.donmai.us", new Source(m_profile, "release/sites/Danbooru (2.0)")));
-	m_site = new Site("gelbooru.com", new Source(m_profile, "release/sites/Gelbooru (0.2)"));
+	m_sites.append(m_profile->getSites().value("danbooru.donmai.us"));
+	m_site = m_profile->getSites().value("gelbooru.com");
 }
 
 void PageTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_site->deleteLater();
+	m_sites.clear();
 }
 
 
