@@ -7,7 +7,7 @@
 #include <QString>
 
 
-class CustomNetworkAccessManager;
+class NetworkManager;
 class Source;
 
 class SourceGuesser : public QObject
@@ -25,7 +25,7 @@ class SourceGuesser : public QObject
 	private:
 		QString m_url;
 		QList<Source*> m_sources;
-		CustomNetworkAccessManager *m_manager;
+		NetworkManager *m_manager;
 		QMap<QString, QString> m_cache;
 };
 

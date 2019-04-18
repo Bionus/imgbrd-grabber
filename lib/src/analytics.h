@@ -20,12 +20,12 @@ class Analytics
 		void operator=(Analytics const &) = delete;
 
         // Setters
-        void setTrackingID(QString trackingId);
+        void setTrackingID(const QString& trackingId);
         void setEnabled(bool enabled);
 
         // API
-        void sendScreenView(QString screenName, QVariantMap customValues = {});
-        void sendEvent(QString category, QString action, QString label = {}, QVariant value = {}, QVariantMap customValues = {});
+        void sendScreenView(const QString& screenName, const QVariantMap &customValues = {});
+        void sendEvent(const QString& category, const QString &action, const QString &label = {}, const QVariant &value = {}, const QVariantMap &customValues = {});
 
     private:
 		Analytics() = default;

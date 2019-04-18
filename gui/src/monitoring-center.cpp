@@ -3,6 +3,8 @@
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include "downloader/download-queue.h"
+#include "downloader/image-downloader.h"
 #include "logger.h"
 #include "models/favorite.h"
 #include "models/image.h"
@@ -14,8 +16,8 @@
 #define MONITOR_CHECK_LIMIT 20
 
 
-MonitoringCenter::MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent)
-	: QObject(parent), m_profile(profile), m_trayIcon(trayIcon)
+MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent)
+	: QObject(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_trayIcon(trayIcon)
 {}
 
 void MonitoringCenter::start()
@@ -39,13 +41,14 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 	loop.exec();
 
 	// Count new images
-	int newImages = 0;
+    QList<QSharedPointer<Image>> newImagesList;
 	int count = page->images().count();
 	for (const QSharedPointer<Image> &img : page->images()) {
 		if (img->createdAt() > monitor.lastCheck()) {
-			newImages++;
+            newImagesList.append(img);
 		}
 	}
+    int newImages = newImagesList.count();
 
 	// Send notification
 	if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
@@ -59,6 +62,23 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 		}
 		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(favorite.getName(), site->name()), QSystemTrayIcon::Information);
 	}
+
+    // Add images to download queue
+    if (monitor.download()) {
+        QString path = monitor.pathOverride();
+        if (path.isEmpty()) {
+            path = m_profile->getSettings()->value("save/path").toString();
+        }
+        QString filename = monitor.filenameOverride();
+        if (filename.isEmpty()) {
+            filename = m_profile->getSettings()->value("save/filename").toString();
+        }
+
+        for (const QSharedPointer<Image> &img : newImagesList) {
+			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
+			m_downloadQueue->add(DownloadQueue::Background, downloader);
+		}
+    }
 
 	// Update monitor
 	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
@@ -75,13 +95,13 @@ void MonitoringCenter::tick()
 		return;
 	}
 
-	int minNextMonitoring = -1;
+    qint64 minNextMonitoring = -1;
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
 
 	for (Favorite &fav : m_profile->getFavorites()) {
 		for (Monitor &monitor : fav.getMonitors()) {
 			// If this favorite's monitoring expired, we check it for updates
-			int next = monitor.secsToNextCheck();
+            qint64 next = monitor.secsToNextCheck();
 			if (next <= 0) {
 				checkMonitor(monitor, fav);
 				next = monitor.secsToNextCheck();

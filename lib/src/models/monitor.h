@@ -10,7 +10,7 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(Site *site, int interval, QDateTime lastCheck, int cumulated = 0, bool preciseCumulated = true);
+        Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true);
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
@@ -21,6 +21,9 @@ class Monitor
 		int cumulated() const;
 		bool preciseCumulated() const;
 		void setCumulated(int cumulated, bool isPrecise);
+        bool download() const;
+        const QString &pathOverride() const;
+        const QString &filenameOverride() const;
 
 		// Serialization
 		void toJson(QJsonObject &json) const;
@@ -32,6 +35,9 @@ class Monitor
 		QDateTime m_lastCheck;
 		int m_cumulated;
 		bool m_preciseCumulated;
+        bool m_download;
+        QString m_pathOverride;
+        QString m_filenameOverride;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);

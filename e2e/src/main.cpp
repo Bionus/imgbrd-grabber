@@ -3,7 +3,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QNetworkAccessManager>
 #include <QTimer>
 #include "functions.h"
 #include "logger.h"
@@ -70,7 +69,6 @@ int main(int argc, char *argv[])
 	QJsonDocument input = QJsonDocument::fromJson(f.readAll());
 	f.close();
 
-	auto manager = new QNetworkAccessManager();
 	Profile *profile = new Profile(savePath());
 	auto allSources = profile->getSources();
 	auto allSites = profile->getSites();
@@ -187,8 +185,6 @@ int main(int argc, char *argv[])
 		}
 		allJson[sourceName] = sourceJson;
 	}
-
-	manager->deleteLater();
 
 	profile->setBlacklistedTags(oldBlacklist);
 

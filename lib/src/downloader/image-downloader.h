@@ -2,7 +2,6 @@
 #define IMAGE_DOWNLOADER_H
 
 #include <QList>
-#include <QNetworkReply>
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
@@ -13,6 +12,7 @@
 #include "loader/downloadable.h"
 #include "models/filename.h"
 #include "models/image.h"
+#include "network/network-reply.h"
 
 
 class Blacklist;
@@ -49,7 +49,7 @@ class ImageDownloader : public QObject
 		void loadImage();
 		void downloadProgressImage(qint64 v1, qint64 v2);
 		void writeError();
-		void networkError(QNetworkReply::NetworkError error, const QString &msg);
+		void networkError(NetworkReply::NetworkError error, const QString &msg);
 		void success();
 
 	private:
@@ -70,7 +70,7 @@ class ImageDownloader : public QObject
 		bool m_force;
 		Image::Size m_size = Image::Size::Unknown;
 
-		QNetworkReply *m_reply = nullptr;
+		NetworkReply *m_reply = nullptr;
 		QUrl m_url;
 		bool m_tryingSample = false;
 };

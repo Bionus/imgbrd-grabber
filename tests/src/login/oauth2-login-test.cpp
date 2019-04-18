@@ -2,6 +2,7 @@
 #include <QSettings>
 #include <QtTest>
 #include "auth/oauth2-auth.h"
+#include "custom-network-access-manager.h"
 #include "login/oauth2-login.h"
 #include "mixed-settings.h"
 #include "models/profile.h"
@@ -11,16 +12,16 @@
 
 void OAuth2LoginTest::init()
 {
-	m_profile = new Profile("tests/resources/settings.ini");
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	m_profile = makeProfile();
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
 void OAuth2LoginTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_source->deleteLater();
-	m_site->deleteLater();
 }
 
 
@@ -32,11 +33,13 @@ void OAuth2LoginTest::testNonTestable()
 	QVERIFY(!login.isTestable());
 }
 
-void testLogin(const QString &type, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, CustomNetworkAccessManager *manager)
+void testLogin(const QString &type, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, NetworkManager *manager)
 {
 	MixedSettings *settings = site->settings();
 	settings->setValue("auth/consumerKey", "consumerKey");
 	settings->setValue("auth/consumerSecret", "consumerSecret");
+	settings->setValue("auth/accessToken", "");
+	settings->setValue("auth/refreshToken", "");
 
 	OAuth2Auth auth("oauth2", type, "/token");
 	OAuth2Login login(&auth, site, manager, settings);

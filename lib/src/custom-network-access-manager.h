@@ -23,6 +23,7 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 		static QQueue<QString> NextFiles;
 
 	protected:
+		QNetworkReply *makeErrorReply(const QNetworkRequest &request, const QString &code = QString());
 		QNetworkReply *makeTestReply(const QNetworkRequest &request);
 };
 

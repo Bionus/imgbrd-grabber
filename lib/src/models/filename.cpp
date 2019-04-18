@@ -247,6 +247,7 @@ QString Filename::format() const
 void Filename::setFormat(const QString &format)
 {
 	m_format = format;
+	m_ast = FilenameCache::Get(format);
 }
 
 void Filename::setEscapeMethod(QString (*escapeMethod)(const QVariant &))

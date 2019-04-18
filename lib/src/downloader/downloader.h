@@ -46,7 +46,6 @@ class Downloader : public QObject
 		Page *lastPage() const;
 
 	signals:
-		void finished(QNetworkReply*);
 		void finishedPageCount(int);
 		void finishedTags(const QList<Tag> &);
 		void finishedPageTags(const QList<Tag> &);

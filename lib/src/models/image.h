@@ -4,7 +4,6 @@
 #include <QDateTime>
 #include <QMap>
 #include <QMetaType>
-#include <QNetworkReply>
 #include <QObject>
 #include <QPixmap>
 #include <QString>
@@ -16,6 +15,7 @@
 
 
 class ExtensionRotator;
+class NetworkReply;
 class Page;
 class Profile;
 class QSettings;
@@ -27,6 +27,7 @@ class Image : public QObject, public Downloadable
 
 	public:
 		Image();
+		explicit Image(Profile *profile);
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent = nullptr);
 		Image(const Image &other);
@@ -103,6 +104,7 @@ class Image : public QObject, public Downloadable
 		}*/
 
 	protected:
+		void init();
 		QList<Tag> filteredTags(const QStringList &remove) const;
 		void setRating(const QString &rating);
 
@@ -113,7 +115,6 @@ class Image : public QObject, public Downloadable
 
 	public slots:
 		void loadDetails(bool rateLimit = false);
-		void loadDetailsNow();
 		void abortTags();
 		void parseDetails();
 
@@ -124,7 +125,7 @@ class Image : public QObject, public Downloadable
 
 	private:
 		Profile *m_profile;
-		Page *m_parent;
+		Page *m_parent = nullptr;
 		qulonglong m_id;
 		int m_score, m_parentId, m_authorId;
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
@@ -134,14 +135,15 @@ class Image : public QObject, public Downloadable
 		QStringList m_sources;
 		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QDateTime m_createdAt;
-		QNetworkReply *m_loadDetails;
+		NetworkReply *m_loadDetails = nullptr;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;
 		QSettings *m_settings;
 		QStringList m_search;
 		Site *m_parentSite;
 		ExtensionRotator *m_extensionRotator;
-		bool m_loadingDetails, m_loadedDetails;
+		bool m_loadingDetails = false;
+		bool m_loadedDetails = false;
 		bool m_isGallery = false;
 		int m_galleryCount;
 		int m_position;

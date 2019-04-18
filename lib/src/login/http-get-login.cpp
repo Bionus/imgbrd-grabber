@@ -1,16 +1,16 @@
 #include "login/http-get-login.h"
 #include <QUrlQuery>
-#include "custom-network-access-manager.h"
 #include "models/site.h"
+#include "network/network-manager.h"
 
 
-HttpGetLogin::HttpGetLogin(HttpAuth *auth, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
+HttpGetLogin::HttpGetLogin(HttpAuth *auth, Site *site, NetworkManager *manager, MixedSettings *settings)
 	: HttpLogin("get", auth, site, manager, settings)
 {}
 
-QNetworkReply *HttpGetLogin::getReply(const QString &url, const QUrlQuery &query) const
+NetworkReply *HttpGetLogin::getReply(const QUrl &url, const QUrlQuery &query) const
 {
-	QUrl fixedUrl = m_site->fixUrl(url);
+	QUrl fixedUrl = url;
 	fixedUrl.setQuery(query);
 	const QNetworkRequest request(fixedUrl);
 

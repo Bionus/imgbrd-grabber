@@ -9,6 +9,7 @@
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "auth/field-auth.h"
+#include "auth/oauth2-auth.h"
 #include "functions.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
@@ -102,16 +103,26 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		}
 
 		// Build credential fields
+		// TODO(Bionus): factorize field creation
 		QWidget *credentialsWidget = new QWidget(this);
 		QFormLayout *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
 		if (type == "oauth2") {
+			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
 			m_credentialFields[type]["consumerKey"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerKey").toString(), false);
 			m_credentialFields[type]["consumerSecret"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerSecret").toString(), false);
 			formLayout->addRow(tr("Consumer key"), m_credentialFields[type]["consumerKey"]);
 			formLayout->addRow(tr("Consumer secret"), m_credentialFields[type]["consumerSecret"]);
 			fields.insert("consumerKey", m_credentialFields[type]["consumerKey"]);
 			fields.insert("consumerSecret", m_credentialFields[type]["consumerSecret"]);
+			if (oauth->authType() == "password") {
+				m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
+				m_credentialFields[type]["password"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/password").toString(), true);
+				formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
+				formLayout->addRow(fieldLabels["password"], m_credentialFields[type]["password"]);
+				fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
+				fields.insert("password", m_credentialFields[type]["password"]);
+			}
 		} else {
 			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
 			if (fieldAuth) {

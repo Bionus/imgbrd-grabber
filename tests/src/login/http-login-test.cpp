@@ -5,6 +5,7 @@
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/http-auth.h"
+#include "custom-network-access-manager.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
 #include "mixed-settings.h"
@@ -15,16 +16,17 @@
 
 void HttpLoginTest::init()
 {
-	m_profile = new Profile("tests/resources/settings.ini");
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	m_profile = makeProfile();
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 }
 
 void HttpLoginTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_source->deleteLater();
-	m_site->deleteLater();
+	m_manager.clear();
 }
 
 
@@ -38,7 +40,7 @@ void HttpLoginTest::testNonTestable()
 }
 
 template <class T>
-void testLogin(const QString &type, const QString &url, Login::Result expected, Site *site, CustomNetworkAccessManager *manager)
+void testLogin(const QString &type, const QString &url, Login::Result expected, Site *site, NetworkManager *manager)
 {
 	// Clear all cookies
 	manager->setCookieJar(new QNetworkCookieJar(manager));

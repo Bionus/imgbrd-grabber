@@ -11,6 +11,9 @@
 
 void PostFilterTest::init()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
 	if (!tmp.exists("tmp")) {
@@ -51,17 +54,14 @@ void PostFilterTest::init()
 	m_details["file_size"] = "358400";
 	m_details["file_size"] = "358400";
 
-	m_profile = new Profile("tests/resources/");
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	m_profile = makeProfile();
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 	m_img = new Image(m_site, m_details, m_profile);
 }
 
 void PostFilterTest::cleanup()
 {
 	m_profile->deleteLater();
-	m_source->deleteLater();
-	m_site->deleteLater();
 	m_img->deleteLater();
 }
 

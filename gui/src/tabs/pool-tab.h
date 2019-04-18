@@ -19,7 +19,7 @@ class PoolTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit PoolTab(Profile *profile, MainWindow *parent);
+		explicit PoolTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 		~PoolTab() override;
 		Ui::PoolTab *ui;
 		QString tags() const override;

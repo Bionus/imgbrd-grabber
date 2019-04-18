@@ -20,8 +20,8 @@ class GalleryTab : public SearchTab
 	Q_OBJECT
 
 	public:
-		explicit GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, MainWindow *parent);
-		explicit GalleryTab(Profile *profile, MainWindow *parent);
+		explicit GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
+		explicit GalleryTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
 		~GalleryTab() override;
 		Ui::GalleryTab *ui;
 		QString tags() const override;

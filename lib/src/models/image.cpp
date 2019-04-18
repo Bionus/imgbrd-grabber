@@ -1,7 +1,6 @@
 #include <QCryptographicHash>
 #include <QEventLoop>
 #include <QJsonArray>
-#include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSettings>
@@ -19,6 +18,7 @@
 #include "models/pool.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
@@ -80,12 +80,16 @@ Image::Image(const Image &other)
 	m_loadingDetails = other.m_loadingDetails;
 }
 
+Image::Image(Profile *profile)
+	: m_profile(profile), m_settings(profile->getSettings())
+{}
+
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 	: Image(site, details, QVariantMap(), profile, parent)
 {}
 
 Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
-	: m_profile(profile), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_data(std::move(data))
+	: m_profile(profile), m_parent(parent), m_id(0), m_parentSite(site), m_extensionRotator(nullptr), m_data(std::move(data))
 {
 	m_settings = m_profile->getSettings();
 
@@ -149,13 +153,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Page url
 	if (details.contains("page_url")) {
 		m_pageUrl = details["page_url"];
-	} else {
-		Api *api = m_parentSite->detailsApi();
-		if (api != nullptr) {
-			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url;
-		}
 	}
-	m_pageUrl = site->fixUrl(m_pageUrl).toString();
 
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
@@ -284,19 +282,26 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate);
 	}
 
+	init();
+}
+
+void Image::init()
+{
+	// Page URL
+	if (m_pageUrl.isEmpty()) {
+		Api *api = m_parentSite->detailsApi();
+		if (api != nullptr) {
+			m_pageUrl = api->detailsUrl(m_id, m_md5, m_parentSite).url;
+		}
+	}
+	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
+
 	// Setup extension rotator
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 	const QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
-
-	// Tech details
-	m_parent = parent;
-	m_loadDetails = nullptr;
-	m_loadingDetails = false;
-	m_loadedDetails = false;
-	m_pools = QList<Pool>();
 }
 
 
@@ -375,6 +380,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 		{ Image::Size::Thumbnail, QSharedPointer<ImageSize>::create() },
 	};
 
+	init();
 	return true;
 }
 
@@ -390,16 +396,6 @@ void Image::loadDetails(bool rateLimit)
 		return;
 	}
 
-	// Load the request with a possible delay
-	const int ms = m_parentSite->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0) {
-		QTimer::singleShot(ms, this, SLOT(loadDetailsNow()));
-	} else {
-		loadDetailsNow();
-	}
-}
-void Image::loadDetailsNow()
-{
 	if (m_loadDetails != nullptr) {
 		if (m_loadDetails->isRunning()) {
 			m_loadDetails->abort();
@@ -408,11 +404,12 @@ void Image::loadDetailsNow()
 		m_loadDetails->deleteLater();
 	}
 
-	m_loadDetails = m_parentSite->get(m_pageUrl);
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	m_loadDetails = m_parentSite->get(m_pageUrl, type);
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 
-	connect(m_loadDetails, &QNetworkReply::finished, this, &Image::parseDetails);
+	connect(m_loadDetails, &NetworkReply::finished, this, &Image::parseDetails);
 }
 void Image::abortTags()
 {
@@ -442,7 +439,7 @@ void Image::parseDetails()
 
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
-		if (m_loadDetails->error() != QNetworkReply::OperationCanceledError) {
+		if (m_loadDetails->error() != NetworkReply::NetworkError::OperationCanceledError) {
 			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
 		}
 		m_loadDetails->deleteLater();

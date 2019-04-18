@@ -119,7 +119,7 @@ QString FilenameParser::readUntil(const QList<QChar> &chars, bool allowEnd)
 	}
 
 	if (!allowEnd) {
-		return QString();
+		throw std::runtime_error("Unexpected EOF");
 	}
 
 	return ret;

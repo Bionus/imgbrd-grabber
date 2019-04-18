@@ -6,6 +6,7 @@
 #include <QString>
 
 
+class DownloadQueue;
 class Profile;
 class SearchTab;
 class MainWindow;
@@ -13,8 +14,8 @@ class MainWindow;
 class TabsLoader
 {
 	public:
-		static bool load(const QString &path, QList<SearchTab*> &allTabs, int &currentTab, Profile *profile, MainWindow *parent);
-		static SearchTab *loadTab(QJsonObject info, Profile *profile, MainWindow *parent, bool preload);
+		static bool load(const QString &path, QList<SearchTab*> &allTabs, int &currentTab, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
+		static SearchTab *loadTab(QJsonObject info, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent, bool preload);
 		static bool save(const QString &path, QList<SearchTab*> &allTabs, SearchTab *currentTab);
 };
 

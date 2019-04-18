@@ -14,7 +14,7 @@
 #include "ui_tag-tab.h"
 
 
-bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &currentTab, Profile *profile, MainWindow *parent)
+bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &currentTab, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
 	const bool preload = settings->value("preloadAllTabs", false).toBool();
@@ -38,7 +38,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &curr
 			QStringList infos = tabs[j].split("¤");
 			if (infos.size() > 3) {
 				if (infos[infos.size() - 1] == "pool") {
-					auto *tab = new PoolTab(profile, parent);
+					auto *tab = new PoolTab(profile, downloadQueue, parent);
 					tab->ui->spinPool->setValue(infos[0].toInt());
 					tab->ui->comboSites->setCurrentIndex(infos[1].toInt());
 					tab->ui->spinPage->setValue(infos[2].toInt());
@@ -48,7 +48,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &curr
 
 					allTabs.append(tab);
 				} else {
-					auto *tab = new TagTab(profile, parent);
+					auto *tab = new TagTab(profile, downloadQueue, parent);
 					tab->ui->spinPage->setValue(infos[1].toInt());
 					tab->ui->spinImagesPerPage->setValue(infos[2].toInt());
 					tab->ui->spinColumns->setValue(infos[3].toInt());
@@ -77,7 +77,7 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &curr
 			QJsonArray tabs = object["tabs"].toArray();
 			for (auto tabJson : tabs) {
 				QJsonObject infos = tabJson.toObject();
-				SearchTab *tab = loadTab(infos, profile, parent, preload);
+				SearchTab *tab = loadTab(infos, profile, downloadQueue, parent, preload);
 				if (tab != nullptr) {
 					allTabs.append(tab);
 				}
@@ -91,22 +91,22 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &curr
 	}
 }
 
-SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, MainWindow *parent, bool preload)
+SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent, bool preload)
 {
 	QString type = info["type"].toString();
 
 	if (type == "tag") {
-		auto *tab = new TagTab(profile, parent);
+		auto *tab = new TagTab(profile, downloadQueue, parent);
 		if (tab->read(info, preload)) {
 			return tab;
 		}
 	} else if (type == "pool") {
-		auto *tab = new PoolTab(profile, parent);
+		auto *tab = new PoolTab(profile, downloadQueue, parent);
 		if (tab->read(info, preload)) {
 			return tab;
 		}
 	} else if (type == "gallery") {
-		auto *tab = new GalleryTab(profile, parent);
+		auto *tab = new GalleryTab(profile, downloadQueue, parent);
 		if (tab->read(info, preload)) {
 			return tab;
 		}

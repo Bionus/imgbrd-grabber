@@ -1,5 +1,4 @@
 #include "models/page-api.h"
-#include <QNetworkReply>
 // #include <QtConcurrentRun>
 #include <QTimer>
 #include <QtMath>
@@ -11,6 +10,7 @@
 #include "models/page.h"
 #include "models/search-query/search-query.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 #include "tags/tag.h"
 
 
@@ -26,10 +26,6 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, Searc
 	m_page = page;
 	m_pool = pool;
 	m_format = m_api->getName();
-
-	m_replyTimer = new QTimer(this);
-	m_replyTimer->setSingleShot(true);
-	connect(m_replyTimer, &QTimer::timeout, this, &PageApi::loadNow);
 
 	updateUrls();
 }
@@ -78,7 +74,7 @@ void PageApi::updateUrls()
 	m_url = QString(url);
 }
 
-void PageApi::setReply(QNetworkReply *reply)
+void PageApi::setReply(NetworkReply *reply)
 {
 	if (m_reply != nullptr) {
 		if (m_reply->isRunning()) {
@@ -86,10 +82,6 @@ void PageApi::setReply(QNetworkReply *reply)
 		}
 
 		m_reply->deleteLater();
-	}
-
-	if (m_replyTimer->isActive()) {
-		m_replyTimer->stop();
 	}
 
 	m_reply = reply;
@@ -123,30 +115,13 @@ void PageApi::load(bool rateLimit, bool force)
 	m_maxImagesCount = -1;
 	m_pagesCount = -1;
 
-	// Load the request with a possible delay
-	int ms = m_site->msToRequest(rateLimit ? Site::QueryType::Retry : Site::QueryType::List);
-	if (ms > 0) {
-		if (m_replyTimer->isActive()) {
-			m_replyTimer->stop();
-		}
-
-		m_replyTimer->setInterval(ms);
-		m_replyTimer->start();
-	} else {
-		loadNow();
-	}
-}
-void PageApi::loadNow()
-{
 	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
-	setReply(m_site->get(m_url));
-	connect(m_reply, &QNetworkReply::finished, this, &PageApi::parse);
+	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
+	setReply(m_site->get(m_url, type));
+	connect(m_reply, &NetworkReply::finished, this, &PageApi::parse);
 }
 void PageApi::abort()
 {
-	if (m_replyTimer->isActive()) {
-		m_replyTimer->stop();
-	}
 	if (m_reply != nullptr && m_reply->isRunning()) {
 		m_reply->abort();
 	}
@@ -220,8 +195,8 @@ void PageApi::parseActual()
 
 	// Try to read the reply
 	m_source = m_reply->readAll();
-	if (m_source.isEmpty() || (m_reply->error() != QNetworkReply::NoError && !parseErrors)) {
-		if (m_reply->error() != QNetworkReply::OperationCanceledError) {
+	if (m_source.isEmpty() || (m_reply->error() != NetworkReply::NetworkError::NoError && !parseErrors)) {
+		if (m_reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
 			log(QStringLiteral("[%1][%2] Loading error: %3 (%4)").arg(m_site->url(), m_format, m_reply->errorString()).arg(m_reply->error()), Logger::Error);
 		}
 		setReply(nullptr);

@@ -32,6 +32,9 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 		Monitor monitor = m_favorite.getMonitors().first();
 		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60.0));
 		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
+		ui->checkMonitoingDownload->setChecked(monitor.download());
+		ui->linePathOverride->setText(monitor.pathOverride());
+		ui->lineFilenameOverride->setText(monitor.filenameOverride());
 	}
 
 	connect(this, &QDialog::accepted, this, &FavoriteWindow::save);
@@ -74,14 +77,17 @@ void FavoriteWindow::save()
 
 	// Update monitors
 	int interval = ui->spinMonitoringInterval->value() * 60;
+    bool download = ui->checkMonitoingDownload->isChecked();
+    QString pathOverride = ui->linePathOverride->text();
+    QString filenameOverride = ui->lineFilenameOverride->text();
 	Site *site = m_profile->getSites().value(ui->comboMonitoringSource->currentText());
 	QList<Monitor> monitors = oldFav.getMonitors();
 	if (interval == 0) {
 		monitors.clear();
 	} else if (monitors.isEmpty()) {
-		monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc()));
+        monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc(), download, pathOverride, filenameOverride));
 	} else {
-		Monitor rep(site, interval, monitors[0].lastCheck());
+        Monitor rep(site, interval, monitors[0].lastCheck(), download, pathOverride, filenameOverride);
 		monitors[0] = rep;
 	}
 

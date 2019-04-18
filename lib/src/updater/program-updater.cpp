@@ -4,10 +4,10 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QNetworkReply>
 #include <QNetworkRequest>
-#include "custom-network-access-manager.h"
 #include "logger.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 
 
 ProgramUpdater::ProgramUpdater()
@@ -28,12 +28,12 @@ void ProgramUpdater::checkForUpdates() const
 	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
-	connect(reply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
+	connect(reply, &NetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
 }
 
 void ProgramUpdater::checkForUpdatesDone()
 {
-	auto *reply = dynamic_cast<QNetworkReply*>(sender());
+	auto *reply = dynamic_cast<NetworkReply*>(sender());
 	m_source = reply->readAll();
 
 	QJsonDocument json = QJsonDocument::fromJson(m_source);
@@ -88,8 +88,8 @@ void ProgramUpdater::downloadUpdate()
 	log(QStringLiteral("Downloading installer from \"%1\".").arg(url.toString()));
 
 	m_downloadReply = m_networkAccessManager->get(request);
-	connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
-	connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
+	connect(m_downloadReply, &NetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
+	connect(m_downloadReply, &NetworkReply::finished, this, &ProgramUpdater::downloadDone);
 }
 
 void ProgramUpdater::downloadDone()
@@ -99,8 +99,8 @@ void ProgramUpdater::downloadDone()
 		log(QStringLiteral("Installer download redirected to \"%1\".").arg(redirection.toString()));
 		const QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
-		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
-		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
+		connect(m_downloadReply, &NetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
+		connect(m_downloadReply, &NetworkReply::finished, this, &ProgramUpdater::downloadDone);
 		return;
 	}
 

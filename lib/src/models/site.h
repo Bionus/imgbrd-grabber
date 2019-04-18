@@ -11,13 +11,13 @@
 
 class Api;
 class Auth;
-class CustomNetworkAccessManager;
 class Image;
 class MixedSettings;
+class NetworkManager;
+class NetworkReply;
 class Page;
+class PersistentCookieJar;
 class QNetworkCookie;
-class QNetworkCookieJar;
-class QNetworkReply;
 class Source;
 class Tag;
 class TagDatabase;
@@ -29,9 +29,10 @@ class Site : public QObject
 	public:
 		enum QueryType
 		{
+			UnkownType = -1,
 			List = 0,
 			Img = 1,
-			Thumb = 2,
+			Thumbnail = 2,
 			Details = 3,
 			Retry = 4
 		};
@@ -65,8 +66,7 @@ class Site : public QObject
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		int msToRequest(QueryType type) const;
+		NetworkReply *get(const QUrl &url, Site::QueryType type, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
@@ -87,18 +87,14 @@ class Site : public QObject
 		Auth *getAuth() const;
 
 	private:
-		QNetworkReply *getRequest(const QNetworkRequest &request);
+		NetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);
 		void loginFinished(Login::Result result);
 
-	protected:
-		void resetCookieJar();
-
 	signals:
 		void loggedIn(Site *site, Site::LoginResult result);
-		void finished(QNetworkReply *reply);
 		void finishedLoadingTags(const QList<Tag> &tags);
 
 	private:
@@ -108,20 +104,16 @@ class Site : public QObject
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
 		MixedSettings *m_settings;
-		CustomNetworkAccessManager *m_manager;
-		QNetworkCookieJar *m_cookieJar;
-		QNetworkReply *m_updateReply, *m_tagsReply;
+		NetworkManager *m_manager;
+		PersistentCookieJar *m_cookieJar;
 		QList<Api*> m_apis;
 		TagDatabase *m_tagDatabase;
 
 		// Login
 		Login *m_login;
 		Auth *m_auth;
-		LoginStatus m_loggedIn;
+		LoginStatus m_loggedIn = LoginStatus::Unknown;
 		bool m_autoLogin;
-
-		// Async
-		QDateTime m_lastRequest;
 };
 
 Q_DECLARE_METATYPE(Site::LoginResult)

@@ -4,7 +4,9 @@
 #include <QObject>
 
 
+class DownloadQueue;
 class Favorite;
+class ImageDownloader;
 class Monitor;
 class Profile;
 class QSystemTrayIcon;
@@ -14,7 +16,7 @@ class MonitoringCenter : public QObject
 	Q_OBJECT
 
 	public:
-		explicit MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
+		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
 
 	public slots:
 		void start();
@@ -28,6 +30,7 @@ class MonitoringCenter : public QObject
 
 	private:
 		Profile *m_profile;
+		DownloadQueue *m_downloadQueue;
 		QSystemTrayIcon *m_trayIcon;
 		bool m_stop = false;
 };

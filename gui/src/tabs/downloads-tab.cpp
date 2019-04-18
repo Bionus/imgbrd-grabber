@@ -31,8 +31,8 @@
 #include "models/profile.h"
 
 
-DownloadsTab::DownloadsTab(Profile *profile, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0)
+DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_downloadQueue(downloadQueue), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0)
 {
 	ui->setupUi(this);
 
@@ -439,7 +439,7 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 	QList<DownloadQueryImage> newBatchs;
 	QList<DownloadQueryGroup> newGroupBatchs;
 
-	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_profile->getSites())) {
+	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_profile)) {
 		return false;
 	}
 

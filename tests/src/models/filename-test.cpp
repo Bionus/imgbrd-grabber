@@ -10,6 +10,9 @@
 
 void FilenameTest::init()
 {
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
 	// Make tmp dir if not already existing
 	QDir tmp("tests/resources/");
 	if (!tmp.exists("tmp")) {
@@ -46,9 +49,8 @@ void FilenameTest::init()
 	m_details["rating"] = "safe";
 	m_details["name"] = "Test gallery name";
 
-	m_profile = new Profile("tests/resources/settings.ini");
+	m_profile = makeProfile();
 	m_settings = m_profile->getSettings();
-	m_settings->clear();
 	m_settings->setValue("ignoredtags", "");
 	m_settings->setValue("Save/separator", " ");
 	m_settings->setValue("Save/character_value", "group");
@@ -58,8 +60,7 @@ void FilenameTest::init()
 	m_settings->setValue("Save/character_empty", "unknown");
 	m_settings->setValue("Save/replaceblanks", true);
 
-	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
-	m_site = new Site("danbooru.donmai.us", m_source);
+	m_site = m_profile->getSites().value("danbooru.donmai.us");
 	m_gallery = new Image(m_site, m_details, m_profile);
 	m_details.remove("name");
 	m_img = new Image(m_site, m_details, m_profile);
@@ -69,7 +70,6 @@ void FilenameTest::init()
 void FilenameTest::cleanup()
 {
 	delete m_profile;
-	m_site->deleteLater();
 	m_img->deleteLater();
 }
 

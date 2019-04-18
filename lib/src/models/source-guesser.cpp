@@ -1,18 +1,18 @@
 #include "models/source-guesser.h"
 #include <QEventLoop>
-#include <QNetworkReply>
 #include <QNetworkRequest>
-#include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/source.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
 	: m_url(std::move(url)), m_sources(std::move(sources))
 {
-	m_manager = new CustomNetworkAccessManager(this);
+	m_manager = new NetworkManager(this);
 }
 
 Source *SourceGuesser::start()
@@ -26,11 +26,11 @@ Source *SourceGuesser::start()
 			const QString checkUrl = api->checkUrl().url;
 			if (!m_cache.contains(checkUrl)) {
 				QUrl getUrl(m_url + checkUrl);
-				QNetworkReply *reply;
+				NetworkReply *reply;
 				do {
 					reply = m_manager->get(QNetworkRequest(getUrl));
 					QEventLoop loop;
-					connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+					connect(reply, &NetworkReply::finished, &loop, &QEventLoop::quit);
 					loop.exec();
 
 					getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();

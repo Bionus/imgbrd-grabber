@@ -1,6 +1,8 @@
 #include "file-downloader-test.h"
 #include <QtTest>
+#include "custom-network-access-manager.h"
 #include "downloader/file-downloader.h"
+#include "network/network-manager.h"
 
 
 QString fileMd5(const QString &path)
@@ -20,7 +22,9 @@ QString fileMd5(const QString &path)
 
 void FileDownloaderTest::testSuccessSingle()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
+	CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
+
+	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
 	QString dest = "single.png";
 
 	FileDownloader downloader(false);
@@ -34,7 +38,9 @@ void FileDownloaderTest::testSuccessSingle()
 
 void FileDownloaderTest::testSuccessMultiple()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
+	CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
+
+	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(m_successUrl)));
 	QStringList dest = QStringList() << "multiple-1.png" << "multiple-2.png" << "multiple-3.png";
 
 	FileDownloader downloader(false);
@@ -50,47 +56,53 @@ void FileDownloaderTest::testSuccessMultiple()
 
 void FileDownloaderTest::testNetworkError()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("fail://error")));
+	CustomNetworkAccessManager::NextFiles.enqueue("404");
+
+	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testNetworkError")));
 	QString dest = "single.png";
 
 	FileDownloader downloader(false);
-	QSignalSpy spy(&downloader, SIGNAL(networkError(QNetworkReply::NetworkError, QString)));
+	qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
+	QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
 	QVERIFY(downloader.start(reply, dest));
 	QVERIFY(spy.wait());
 
 	QList<QVariant> arguments = spy.takeFirst();
-	QNetworkReply::NetworkError code = arguments[0].value<QNetworkReply::NetworkError>();
-	QString error = arguments[1].toString();
+	NetworkReply::NetworkError code = arguments[0].value<NetworkReply::NetworkError>();
 
-	QCOMPARE(code, QNetworkReply::ProtocolUnknownError);
-	QCOMPARE(error, QString("Protocol \"fail\" is unknown"));
+	QCOMPARE(code, NetworkReply::NetworkError::ContentNotFoundError);
 	QVERIFY(!QFile::exists(dest));
 }
 
 void FileDownloaderTest::testFailedStart()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("fail://error")));
+	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testFailedStart")));
 	QString dest = "////////";
 
 	FileDownloader downloader(false);
 	QVERIFY(!downloader.start(reply, dest));
+
+	m_accessManager.clear();
 }
 
 void FileDownloaderTest::testInvalidHtml()
 {
-	QNetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl(QString(PROJECT_WEBSITE_URL) + "/")));
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/homepage.html");
+
+	NetworkReply *reply = m_accessManager.get(QNetworkRequest(QUrl("testInvalidHtml")));
 	QString dest = "test.html";
 
 	FileDownloader downloader(false);
-	QSignalSpy spy(&downloader, SIGNAL(networkError(QNetworkReply::NetworkError, QString)));
+	qRegisterMetaType<NetworkReply::NetworkError>("NetworkReply::NetworkError");
+	QSignalSpy spy(&downloader, SIGNAL(networkError(NetworkReply::NetworkError, QString)));
 	QVERIFY(downloader.start(reply, dest));
 	QVERIFY(spy.wait());
 
 	QList<QVariant> arguments = spy.takeFirst();
-	QNetworkReply::NetworkError code = arguments[0].value<QNetworkReply::NetworkError>();
+	NetworkReply::NetworkError code = arguments[0].value<NetworkReply::NetworkError>();
 	QString error = arguments[1].toString();
 
-	QCOMPARE(code, QNetworkReply::ContentNotFoundError);
+	QCOMPARE(code, NetworkReply::NetworkError::ContentNotFoundError);
 	QCOMPARE(error, QString("Invalid HTML content returned"));
 	QVERIFY(!QFile::exists(dest));
 }

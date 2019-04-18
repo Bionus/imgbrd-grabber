@@ -22,8 +22,8 @@
 #define FAVORITES_THUMB_SIZE 150
 
 
-FavoritesTab::FavoritesTab(Profile *profile, MainWindow *parent)
-	: SearchTab(profile, parent), ui(new Ui::FavoritesTab), m_currentFav(0)
+FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: SearchTab(profile, downloadQueue, parent), ui(new Ui::FavoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 

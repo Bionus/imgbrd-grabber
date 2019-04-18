@@ -11,8 +11,8 @@
 #include "ui/text-edit.h"
 
 
-PoolTab::PoolTab(Profile *profile, MainWindow *parent)
-	: SearchTab(profile, parent), ui(new Ui::PoolTab)
+PoolTab::PoolTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: SearchTab(profile, downloadQueue, parent), ui(new Ui::PoolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

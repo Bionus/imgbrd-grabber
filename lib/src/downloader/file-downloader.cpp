@@ -1,7 +1,7 @@
 #include "downloader/file-downloader.h"
-#include <QNetworkReply>
 #include "functions.h"
 #include "logger.h"
+#include "network/network-reply.h"
 
 #define WRITE_BUFFER_SIZE (200 * 1024)
 
@@ -10,11 +10,11 @@ FileDownloader::FileDownloader(bool allowHtmlResponses, QObject *parent)
 	: QObject(parent), m_allowHtmlResponses(allowHtmlResponses), m_reply(nullptr), m_writeError(false)
 {}
 
-bool FileDownloader::start(QNetworkReply *reply, const QString &path)
+bool FileDownloader::start(NetworkReply *reply, const QString &path)
 {
 	return start(reply, QStringList(path));
 }
-bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
+bool FileDownloader::start(NetworkReply *reply, const QStringList &paths)
 {
 	m_copies = paths;
 	m_file.setFileName(m_copies.takeFirst());
@@ -24,8 +24,8 @@ bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 	m_reply = reply;
 
 	if (ok) {
-		connect(reply, &QNetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
-		connect(reply, &QNetworkReply::finished, this, &FileDownloader::replyFinished);
+		connect(reply, &NetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
+		connect(reply, &NetworkReply::finished, this, &FileDownloader::replyFinished);
 	}
 
 	return ok;
@@ -52,13 +52,13 @@ void FileDownloader::replyFinished()
 
 	const bool failedLastWrite = data.length() > 0 && written < 0;
 	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
-	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite || invalidHtml) {
+	if (m_reply->error() != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml) {
 		m_file.remove();
 		if (failedLastWrite || m_writeError) {
 			emit writeError();
 		} else if (invalidHtml) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
-			emit networkError(QNetworkReply::ContentNotFoundError, "Invalid HTML content returned");
+			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Invalid HTML content returned");
 		} else {
 			emit networkError(m_reply->error(), m_reply->errorString());
 		}

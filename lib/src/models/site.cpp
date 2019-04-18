@@ -3,14 +3,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkCookie>
-#include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
 #include "auth/http-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
-#include "custom-network-access-manager.h"
 #include "functions.h"
 #include "logger.h"
 #include "login/http-get-login.h"
@@ -23,6 +21,8 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "network/network-manager.h"
+#include "network/persistent-cookie-jar.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
 #include "tags/tag-database-factory.h"
@@ -37,20 +37,16 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_updateReply(nullptr), m_tagsReply(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
+	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_tagDatabase(nullptr), m_login(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
 	// Create the access manager and get its slots
-	m_manager = new CustomNetworkAccessManager(this);
-	connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+	m_manager = new NetworkManager(this);
 
 	// Cache
 	auto *diskCache = new QNetworkDiskCache(m_manager);
 	diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
 	diskCache->setMaximumCacheSize(50 * 1024 * 1024);
 	m_manager->setCache(diskCache);
-
-	// Cookies
-	resetCookieJar();
 
 	loadConfig();
 }
@@ -66,6 +62,12 @@ void Site::loadConfig()
 	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
 	m_name = m_settings->value("name", m_url).toString();
+
+	// Cookies
+	if (m_cookieJar == nullptr) {
+		m_cookieJar = new PersistentCookieJar(siteDir + "cookies.txt", m_manager);
+		m_manager->setCookieJar(m_cookieJar);
+	}
 
 	// Get default source order
 	QSettings *pSettings = m_source->getProfile()->getSettings();
@@ -135,7 +137,6 @@ void Site::loadConfig()
 			}
 		} else {
 			m_login = nullptr;
-			log(QStringLiteral("[%1] No auth found").arg(m_url), Logger::Error);
 		}
 	}
 
@@ -150,42 +151,27 @@ void Site::loadConfig()
 			m_cookies.append(cookie);
 		}
 	}
-	if (m_cookieJar != nullptr) {
-		resetCookieJar();
-	}
+	m_cookieJar->insertCookies(m_cookies);
 
 	// Tag database
 	delete m_tagDatabase;
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 	m_tagDatabase->open();
 	m_tagDatabase->loadTypes();
+
+	// Setup throttling
+	m_manager->setMaxConcurrency(setting("download/simultaneous", 10).toInt());
+	m_manager->setInterval(QueryType::List, setting("download/throttle_page", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Img, setting("download/throttle_image", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Thumbnail, setting("download/throttle_thumbnail", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Details, setting("download/throttle_details", 0).toInt() * 1000);
+	m_manager->setInterval(QueryType::Retry, setting("download/throttle_retry", 60).toInt() * 1000);
 }
 
 Site::~Site()
 {
 	m_settings->deleteLater();
 	delete m_tagDatabase;
-}
-
-
-/**
- * Initialize or reset the site's cookie jar.
- */
-void Site::resetCookieJar()
-{
-	// Delete cookie jar if necessary
-	if (m_cookieJar != nullptr) {
-		m_cookieJar->deleteLater();
-	}
-
-	m_cookieJar = new QNetworkCookieJar(m_manager);
-
-	for (const QNetworkCookie &cookie : qAsConst(m_cookies)) {
-		m_cookieJar->insertCookie(cookie);
-	}
-
-	m_manager->setCookieJar(m_cookieJar);
-	m_loggedIn = LoginStatus::Unknown;
 }
 
 
@@ -214,7 +200,8 @@ void Site::login(bool force)
 
 	// Clear cookies if we want to force a re-login
 	if (force) {
-		resetCookieJar();
+		m_cookieJar->clear();
+		m_cookieJar->insertCookies(m_cookies);
 	}
 
 	m_loggedIn = LoginStatus::Pending;
@@ -292,32 +279,10 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	return request;
 }
 
-int Site::msToRequest(QueryType type) const
-{
-	if (!m_lastRequest.isValid()) {
-		return 0;
-	}
-
-	const qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
-
-	const QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
-	const int def = (type == QueryType::Retry ? 60 : 0);
-	int ms = setting("download/throttle_" + key, def).toInt() * 1000;
-	ms -= sinceLastRequest;
-
-	return ms;
-}
-
-QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
+NetworkReply *Site::get(const QUrl &url,  Site::QueryType type, Page *page, const QString &ref, Image *img)
 {
 	const QNetworkRequest request = this->makeRequest(url, page, ref, img);
-	return this->getRequest(request);
-}
-
-QNetworkReply *Site::getRequest(const QNetworkRequest &request)
-{
-	m_lastRequest = QDateTime::currentDateTime();
-	return m_manager->get(request);
+	return m_manager->get(request, static_cast<int>(type));
 }
 
 

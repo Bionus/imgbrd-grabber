@@ -7,7 +7,7 @@
 #include "updater/updater.h"
 
 
-class QNetworkReply;
+class NetworkReply;
 
 class ProgramUpdater : public Updater
 {
@@ -33,7 +33,7 @@ class ProgramUpdater : public Updater
 
 	private:
 		QString m_baseUrl;
-		QNetworkReply *m_downloadReply;
+		NetworkReply *m_downloadReply;
 		QByteArray m_source;
 		QString m_newVersion;
 		QString m_updateFilename;

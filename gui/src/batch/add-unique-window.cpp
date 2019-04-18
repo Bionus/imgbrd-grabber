@@ -6,6 +6,7 @@
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
@@ -163,8 +164,9 @@ void AddUniqueWindow::loadNext()
 void AddUniqueWindow::replyFinished(Page *p)
 {
 	if (p->images().isEmpty()) {
+		log(QString("No image found for search '%1'").arg(p->search().join(' ')), Logger::Warning);
 		p->deleteLater();
-		error(this, tr("No image found."));
+		next();
 		return;
 	}
 
@@ -180,8 +182,11 @@ void AddUniqueWindow::addLoadedImage()
 void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
 	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
+	next();
+}
 
+void AddUniqueWindow::next()
+{
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
-
 	loadNext();
 }

@@ -1,8 +1,9 @@
 #include "settings/web-service-window.h"
 #include <QNetworkRequest>
 #include <ui_web-service-window.h>
-#include "custom-network-access-manager.h"
 #include "functions.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 #include "reverse-search/reverse-search-engine.h"
 
 
@@ -11,7 +12,7 @@ WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidge
 {
 	ui->setupUi(this);
 
-	m_networkAccessManager = new CustomNetworkAccessManager(this);
+	m_networkAccessManager = new NetworkManager(this);
 
 	if (webService != nullptr) {
 		ui->lineName->setText(webService->name());
@@ -33,7 +34,7 @@ void WebServiceWindow::getFavicon()
 	const QString favicon = url.scheme() + "://" + url.authority() + "/favicon.ico";
 
 	m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(favicon)));
-	connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
+	connect(m_faviconReply, &NetworkReply::finished, this, &WebServiceWindow::faviconReceived);
 }
 
 void WebServiceWindow::faviconReceived()
@@ -42,7 +43,7 @@ void WebServiceWindow::faviconReceived()
 	QUrl redirection = m_faviconReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty()) {
 		m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(redirection)));
-		connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
+		connect(m_faviconReply, &NetworkReply::finished, this, &WebServiceWindow::faviconReceived);
 		return;
 	}
 
@@ -59,7 +60,7 @@ void WebServiceWindow::save()
 
 	// Save favicon contents
 	QByteArray faviconData;
-	if (m_faviconReply->error() == QNetworkReply::NoError) {
+	if (m_faviconReply->error() == NetworkReply::NetworkError::NoError) {
 		faviconData = m_faviconReply->readAll();
 		m_faviconReply->deleteLater();
 	}

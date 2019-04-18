@@ -10,8 +10,8 @@
 #include "ui/text-edit.h"
 
 
-TagTab::TagTab(Profile *profile, MainWindow *parent)
-	: SearchTab(profile, parent), ui(new Ui::TagTab)
+TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+	: SearchTab(profile, downloadQueue, parent), ui(new Ui::TagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QSettings>
 #include "models/image.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag.h"
 
@@ -29,14 +30,16 @@ void DownloadQueryImage::write(QJsonObject &json) const
 	json["image"] = jsonImage;
 }
 
-bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site *> &sites)
+bool DownloadQueryImage::read(const QJsonObject &json, Profile *profile)
 {
+	const QMap<QString, Site*> &sites = profile->getSites();
+
 	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName)) {
 		return false;
 	}
 
-	auto img = new Image();
+	auto img = new Image(profile);
 	if (img->read(json["image"].toObject(), sites)) {
 		image = QSharedPointer<Image>(img);
 	} else {

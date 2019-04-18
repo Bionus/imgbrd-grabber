@@ -3,11 +3,12 @@
 #include <QDesktopServices>
 #include <QInputDialog>
 #include <ui_sources-window.h>
-#include "custom-network-access-manager.h"
 #include "functions.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 #include "sources/site-window.h"
 #include "sources/sources-settings-window.h"
 #include "ui/QAffiche.h"
@@ -300,14 +301,14 @@ void SourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNe
 
 void SourcesWindow::checkForSourceIssues()
 {
-	auto *accessManager = new CustomNetworkAccessManager(this);
+	auto *accessManager = new NetworkManager(this);
 	m_checkForSourceReply = accessManager->get(QNetworkRequest(QUrl(SOURCE_ISSUES_URL)));
 
-	connect(m_checkForSourceReply, &QNetworkReply::finished, this, &SourcesWindow::checkForSourceIssuesReceived);
+	connect(m_checkForSourceReply, &NetworkReply::finished, this, &SourcesWindow::checkForSourceIssuesReceived);
 }
 void SourcesWindow::checkForSourceIssuesReceived()
 {
-	if (m_checkForSourceReply->error() != QNetworkReply::NoError) {
+	if (m_checkForSourceReply->error() != NetworkReply::NetworkError::NoError) {
 		return;
 	}
 

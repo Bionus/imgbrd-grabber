@@ -24,7 +24,7 @@ void ProfileTest::init()
 	f2.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
 	f2.close();
 
-	m_profile = new Profile("tests/resources/");
+	m_profile = makeProfile();
 }
 
 void ProfileTest::cleanup()
@@ -45,7 +45,7 @@ void ProfileTest::testConstructorEmpty()
 
 void ProfileTest::testConstructorPath()
 {
-	QCOMPARE(m_profile->getPath(), QString("tests/resources/"));
+	QCOMPARE(m_profile->getPath(), QString("tests/resources"));
 	QVERIFY(m_profile->getSettings() != nullptr);
 }
 

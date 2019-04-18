@@ -9,6 +9,7 @@
 #include "models/search-query/search-query.h"
 
 
+class Profile;
 class QSettings;
 class Site;
 
@@ -22,7 +23,7 @@ class DownloadQueryGroup : public DownloadQuery
 
 		// Serialization
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites) override;
+		bool read(const QJsonObject &json, Profile *profile) override;
 
 		// Public members
 		SearchQuery query;

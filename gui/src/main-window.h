@@ -5,9 +5,9 @@
 
 #include <QLinkedList>
 #include <QMainWindow>
-#include <QNetworkAccessManager>
 #include <QSystemTrayIcon>
 #include "language-loader.h"
+#include "network/network-manager.h"
 
 
 namespace Ui
@@ -19,6 +19,7 @@ namespace Ui
 class SearchTab;
 class FavoritesTab;
 class Profile;
+class DownloadQueue;
 class DownloadsTab;
 class Image;
 class LogTab;
@@ -128,8 +129,9 @@ class MainWindow : public QMainWindow
 		bool m_restore;
 		QList<Tag> m_currentTags;
 		QLinkedList<QJsonObject> m_closedTabs;
-		QNetworkAccessManager m_networkAccessManager;
+		NetworkManager m_networkManager;
 		TabSelector *m_tabSelector;
+		DownloadQueue *m_downloadQueue;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;

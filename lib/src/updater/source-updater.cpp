@@ -1,8 +1,8 @@
 #include "updater/source-updater.h"
 #include <QFile>
-#include <QNetworkReply>
 #include <QNetworkRequest>
-#include "custom-network-access-manager.h"
+#include "network/network-manager.h"
+#include "network/network-reply.h"
 
 
 SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
@@ -20,12 +20,12 @@ void SourceUpdater::checkForUpdates() const
 	const QNetworkRequest request(url);
 
 	auto *reply = m_networkAccessManager->get(request);
-	connect(reply, &QNetworkReply::finished, this, &SourceUpdater::checkForUpdatesDone);
+	connect(reply, &NetworkReply::finished, this, &SourceUpdater::checkForUpdatesDone);
 }
 
 void SourceUpdater::checkForUpdatesDone()
 {
-	auto *reply = dynamic_cast<QNetworkReply*>(sender());
+	auto *reply = dynamic_cast<NetworkReply*>(sender());
 	bool isNew = false;
 
 	// TODO(Bionus): source check for updates is broken since switch to JS model files

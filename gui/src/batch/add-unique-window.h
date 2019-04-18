@@ -53,6 +53,7 @@ class AddUniqueWindow : public QDialog
 		void sendData(const DownloadQueryImage &);
 
 	protected:
+		void next();
 		void toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label);
 
 	private:

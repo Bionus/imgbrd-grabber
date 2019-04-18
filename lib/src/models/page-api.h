@@ -12,9 +12,9 @@
 
 class Api;
 class Image;
+class NetworkReply;
 class Page;
 class Profile;
-class QNetworkReply;
 class QTimer;
 class SearchQuery;
 class Site;
@@ -58,7 +58,6 @@ class PageApi : public QObject
 
 	public slots:
 		void load(bool rateLimit = false, bool force = false);
-		void loadNow();
 		void parse();
 		void abort();
 		void clear();
@@ -75,7 +74,7 @@ class PageApi : public QObject
 		void setImageCount(int count, bool sure);
 		void setImageMaxCount(int maxCount);
 		void setPageCount(int count, bool sure);
-		void setReply(QNetworkReply *reply);
+		void setReply(NetworkReply *reply);
 
 	private:
 		Page *m_parentPage;
@@ -92,8 +91,7 @@ class PageApi : public QObject
 		QUrl m_url, m_urlNextPage, m_urlPrevPage;
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
-		QNetworkReply *m_reply, *m_replyTags;
-		QTimer *m_replyTimer;
+		NetworkReply *m_reply, *m_replyTags;
 		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
 		bool m_imagesCountSafe, m_pagesCountSafe;
 		bool m_loading = false;
