@@ -340,7 +340,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	if (json.contains("gallery")) {
-		auto gallery = new Image();
+		auto gallery = new Image(m_profile);
 		if (gallery->read(json["gallery"].toObject(), sites)) {
 			m_parentGallery = QSharedPointer<Image>(gallery);
 		} else {
@@ -350,8 +350,6 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	m_parentSite = sites[site];
-	using ::savePath;
-	m_profile = new Profile(savePath()); // FIXME
 
 	m_name = json["name"].toString();
 	m_id = json["id"].toInt();

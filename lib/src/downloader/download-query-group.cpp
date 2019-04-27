@@ -41,8 +41,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 
 bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 {
-	const QMap<QString, Site*> &sites = profile->getSites();
-	query.read(json.contains("query") ? json["query"].toObject() : json, sites);
+	query.read(json.contains("query") ? json["query"].toObject() : json, profile);
 
 	page = json["page"].toInt();
 	perpage = json["perpage"].toInt();
@@ -64,6 +63,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 	}
 
 	// Get site
+	const QMap<QString, Site*> &sites = profile->getSites();
 	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName)) {
 		return false;
