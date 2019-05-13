@@ -292,24 +292,6 @@
   <context>
     <name>BlacklistFix1</name>
     <message>
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
-      <source>This directory does not exist.</source>
-      <translation>Ce dossier n&apos;existe pas.</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
-      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
-      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Vous vous apprêtez à télécharger les informations de %n image. Êtes-vous sûr de vouloir continuer ?</numerusform>
-        <numerusform>Vous vous apprêtez à télécharger les informations de %n images. Êtes-vous sûr de vouloir continuer ?</numerusform>
-      </translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="14"/>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>Blacklist fixer</source>
@@ -359,6 +341,24 @@
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="103"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
+      <source>This directory does not exist.</source>
+      <translation>Ce dossier n&apos;existe pas.</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
+      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
+      <translation>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
+      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
+      <translation>
+        <numerusform>Vous vous apprêtez à télécharger les informations de %n image. Êtes-vous sûr de vouloir continuer ?</numerusform>
+        <numerusform>Vous vous apprêtez à télécharger les informations de %n images. Êtes-vous sûr de vouloir continuer ?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -869,19 +869,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>EmptyDirsFix2</name>
     <message>
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
-      <source>No folder selected.</source>
-      <translation>Aucun dossier sélectionné.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
-      <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Vous vous apprêtez à supprimer %n dossier. Êtes-vous sûr de vouloir continuer ?</numerusform>
-        <numerusform>Vous vous apprêtez à supprimer %n dossiers. Êtes-vous sûr de vouloir continuer ?</numerusform>
-      </translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="14"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
@@ -902,6 +889,19 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="60"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
+      <source>No folder selected.</source>
+      <translation>Aucun dossier sélectionné.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
+      <source>You are about to delete %n folder. Are you sure you want to continue?</source>
+      <translation>
+        <numerusform>Vous vous apprêtez à supprimer %n dossier. Êtes-vous sûr de vouloir continuer ?</numerusform>
+        <numerusform>Vous vous apprêtez à supprimer %n dossiers. Êtes-vous sûr de vouloir continuer ?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1714,55 +1714,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/main-window.cpp" line="738"/>
       <source>Are you sure you want to quit?</source>
       <translation>Êtes vous sûr de vouloir quitter ?</translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) ignored.</numerusform>
-        <numerusform>%n file(s) ignored.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) already existing.</numerusform>
-        <numerusform>%n file(s) already existing.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) not found on the server.</numerusform>
-        <numerusform>%n file(s) not found on the server.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) skipped.</numerusform>
-        <numerusform>%n file(s) skipped.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform>%n error(s).</numerusform>
-        <numerusform>%n error(s).</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform>Loading %n download(s)</numerusform>
-        <numerusform>Loading %n download(s)</numerusform>
-      </translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="887"/>
@@ -3203,29 +3154,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>RenameExisting1</name>
     <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
-      <source>This folder does not exist.</source>
-      <translation>Ce dossier n&apos;existe pas.</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
-      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
-      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>
-        <numerusform>Vous vous apprêtez à télécharger les informations de %n image. Êtes-vous sûr de vouloir continuer ?</numerusform>
-        <numerusform>Vous vous apprêtez à télécharger les informations de %n images. Êtes-vous sûr de vouloir continuer ?</numerusform>
-      </translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
-      <translation>Aucune image trouvée en renommant &apos;%1&apos;</translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
       <source>Rename existing images</source>
@@ -3280,6 +3208,29 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="125"/>
       <source>Suffixes</source>
       <translation type="unfinished">Suffixes</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
+      <source>This folder does not exist.</source>
+      <translation>Ce dossier n&apos;existe pas.</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
+      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
+      <translation>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
+      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
+      <translation>
+        <numerusform>Vous vous apprêtez à télécharger les informations de %n image. Êtes-vous sûr de vouloir continuer ?</numerusform>
+        <numerusform>Vous vous apprêtez à télécharger les informations de %n images. Êtes-vous sûr de vouloir continuer ?</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
+      <source>No image found when renaming image &apos;%1&apos;</source>
+      <translation>Aucune image trouvée en renommant &apos;%1&apos;</translation>
     </message>
   </context>
   <context>
@@ -4664,92 +4615,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/viewer/zoom-window.cpp" line="917"/>
       <source>Save image</source>
       <translation>Enregistrer l&apos;image</translation>
-    </message>
-  </context>
-  <context>
-    <name>mainWindow</name>
-    <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
-      <translation>
-        <numerusform>Toutes les urls des images ont été reçues (%n image).</numerusform>
-        <numerusform>Toutes les urls des images ont été reçues (%n images).</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) downloaded successfully.</source>
-      <translation>
-        <numerusform>%n fichier récupéré avec succès.</numerusform>
-        <numerusform>%n fichiers récupérés avec succès.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) ignored.</source>
-      <translation>
-        <numerusform>%n fichier ignoré.</numerusform>
-        <numerusform>%n fichiers ignorés.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) already existing.</source>
-      <translation>
-        <numerusform>%n fichier déjà existant.</numerusform>
-        <numerusform>%n fichiers déjà existants.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) not found on the server.</source>
-      <translation>
-        <numerusform>%n fichier non trouvé sur le serveur.</numerusform>
-        <numerusform>%n fichiers non trouvés sur le serveur.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) skipped.</source>
-      <translation>
-        <numerusform>%n fichier passé.</numerusform>
-        <numerusform>%n fichiers passés.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n error(s).</source>
-      <translation>
-        <numerusform>%n erreur.</numerusform>
-        <numerusform>%n erreurs.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>Loading %n download(s)</source>
-      <translation>
-        <numerusform>Chargement de %n téléchargement</numerusform>
-        <numerusform>Chargement de %n téléchargements</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n download(s) in progress</source>
-      <translation>
-        <numerusform>%n téléchargement en cours</numerusform>
-        <numerusform>%n téléchargements en cours</numerusform>
-      </translation>
-    </message>
-  </context>
-  <context>
-    <name>md5Fix</name>
-    <message numerus="yes">
-      <source>%n MD5(s) loaded</source>
-      <translation>
-        <numerusform>%n MD5 chargé</numerusform>
-        <numerusform>%n MD5 chargés</numerusform>
-      </translation>
-    </message>
-  </context>
-  <context>
-    <name>searchTab</name>
-    <message numerus="yes">
-      <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation>
-        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
-        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
-      </translation>
     </message>
   </context>
 </TS>
