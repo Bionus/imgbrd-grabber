@@ -292,24 +292,6 @@
   <context>
     <name>BlacklistFix1</name>
     <message>
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
-      <source>This directory does not exist.</source>
-      <translation type="unfinished">This directory does not exist.</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
-      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished">If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
-      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform>You are about to download information from %n image(s). Are you sure you want to continue?</numerusform>
-        <numerusform>You are about to download information from %n image(s). Are you sure you want to continue?</numerusform>
-      </translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="14"/>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>Blacklist fixer</source>
@@ -359,6 +341,24 @@
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="103"/>
       <source>Cancel</source>
       <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
+      <source>This directory does not exist.</source>
+      <translation type="unfinished">This directory does not exist.</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
+      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
+      <translation type="unfinished">If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
+      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
+      <translation>
+        <numerusform>You are about to download information from %n image. Are you sure you want to continue?</numerusform>
+        <numerusform>You are about to download information from %n images. Are you sure you want to continue?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -703,9 +703,9 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="446"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform>Loading %n download(s)</numerusform>
-        <numerusform>Loading %n download(s)</numerusform>
+      <translation>
+        <numerusform>Loading %n download</numerusform>
+        <numerusform>Loading %n downloads</numerusform>
       </translation>
     </message>
     <message>
@@ -783,41 +783,41 @@ Please solve the issue before resuming the download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1194"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
+      <translation>
+        <numerusform>%n file downloaded successfully.</numerusform>
+        <numerusform>%n files downloaded successfully.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1195"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) ignored.</numerusform>
-        <numerusform>%n file(s) ignored.</numerusform>
+      <translation>
+        <numerusform>%n file ignored.</numerusform>
+        <numerusform>%n files ignored.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1196"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) already existing.</numerusform>
-        <numerusform>%n file(s) already existing.</numerusform>
+      <translation>
+        <numerusform>%n file already existing.</numerusform>
+        <numerusform>%n files already existing.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1197"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) not found on the server.</numerusform>
-        <numerusform>%n file(s) not found on the server.</numerusform>
+      <translation>
+        <numerusform>%n file not found on the server.</numerusform>
+        <numerusform>%n files not found on the server.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1198"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) skipped.</numerusform>
-        <numerusform>%n file(s) skipped.</numerusform>
+      <translation>
+        <numerusform>%n file skipped.</numerusform>
+        <numerusform>%n files skipped.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -831,9 +831,9 @@ Please solve the issue before resuming the download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
       <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform>%n error(s).</numerusform>
-        <numerusform>%n error(s).</numerusform>
+      <translation>
+        <numerusform>%n error.</numerusform>
+        <numerusform>%n errors.</numerusform>
       </translation>
     </message>
   </context>
@@ -869,19 +869,6 @@ Please solve the issue before resuming the download.</translation>
   <context>
     <name>EmptyDirsFix2</name>
     <message>
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
-      <source>No folder selected.</source>
-      <translation type="unfinished">No folder selected.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
-      <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform>You are about to delete %n folder. Are you sure you want to continue?</numerusform>
-        <numerusform>You are about to delete %n folder. Are you sure you want to continue?</numerusform>
-      </translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="14"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
@@ -902,6 +889,19 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="60"/>
       <source>Cancel</source>
       <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
+      <source>No folder selected.</source>
+      <translation type="unfinished">No folder selected.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
+      <source>You are about to delete %n folder. Are you sure you want to continue?</source>
+      <translation type="unfinished">
+        <numerusform>You are about to delete %n folder. Are you sure you want to continue?</numerusform>
+        <numerusform>You are about to delete %n folders. Are you sure you want to continue?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1336,9 +1336,9 @@ Please solve the issue before resuming the download.</translation>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="901"/>
       <source>Source(s)</source>
-      <translation type="unfinished">
-        <numerusform>Source(s)</numerusform>
-        <numerusform>Source(s)</numerusform>
+      <translation>
+        <numerusform>Source</numerusform>
+        <numerusform>Sources</numerusform>
       </translation>
     </message>
     <message>
@@ -1715,55 +1715,6 @@ Please solve the issue before resuming the download.</translation>
       <source>Are you sure you want to quit?</source>
       <translation type="unfinished">Are you sure you want to quit?</translation>
     </message>
-    <message numerus="yes">
-      <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) ignored.</numerusform>
-        <numerusform>%n file(s) ignored.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) already existing.</numerusform>
-        <numerusform>%n file(s) already existing.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) not found on the server.</numerusform>
-        <numerusform>%n file(s) not found on the server.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) skipped.</numerusform>
-        <numerusform>%n file(s) skipped.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform>%n error(s).</numerusform>
-        <numerusform>%n error(s).</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform>Loading %n download(s)</numerusform>
-        <numerusform>Loading %n download(s)</numerusform>
-      </translation>
-    </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="887"/>
       <source>Choose a save folder</source>
@@ -1840,9 +1791,9 @@ Please solve the issue before resuming the download.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform>%n MD5(s) loaded</numerusform>
-        <numerusform>%n MD5(s) loaded</numerusform>
+      <translation>
+        <numerusform>%n MD5 loaded</numerusform>
+        <numerusform>%n MD5s loaded</numerusform>
       </translation>
     </message>
   </context>
@@ -3203,29 +3154,6 @@ Please solve the issue before resuming the download.</translation>
   <context>
     <name>RenameExisting1</name>
     <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
-      <source>This folder does not exist.</source>
-      <translation type="unfinished">This folder does not exist.</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
-      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished">If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
-      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform>You are about to download information from %n image(s). Are you sure you want to continue?</numerusform>
-        <numerusform>You are about to download information from %n image(s). Are you sure you want to continue?</numerusform>
-      </translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
-      <translation type="unfinished">No image found when renaming image &apos;%1&apos;</translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
       <source>Rename existing images</source>
@@ -3280,6 +3208,29 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="125"/>
       <source>Suffixes</source>
       <translation type="unfinished">Suffixes</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
+      <source>This folder does not exist.</source>
+      <translation type="unfinished">This folder does not exist.</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
+      <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
+      <translation type="unfinished">If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
+      <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
+      <translation>
+        <numerusform>You are about to download information from %n image. Are you sure you want to continue?</numerusform>
+        <numerusform>You are about to download information from %n images. Are you sure you want to continue?</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
+      <source>No image found when renaming image &apos;%1&apos;</source>
+      <translation type="unfinished">No image found when renaming image &apos;%1&apos;</translation>
     </message>
   </context>
   <context>
@@ -3430,7 +3381,7 @@ Please solve the issue before resuming the download.</translation>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation type="unfinished">
         <numerusform>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
-        <numerusform>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
+        <numerusform>%n tags figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
       </translation>
     </message>
   </context>
@@ -4664,92 +4615,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="917"/>
       <source>Save image</source>
       <translation type="unfinished">Save image</translation>
-    </message>
-  </context>
-  <context>
-    <name>mainWindow</name>
-    <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
-      <translation type="unfinished">
-        <numerusform>All images&apos; urls have been received (%n image(s)).</numerusform>
-        <numerusform>All images&apos; urls have been received (%n image(s)).</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-        <numerusform>%n file(s) downloaded successfully.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) ignored.</numerusform>
-        <numerusform>%n file(s) ignored.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) already existing.</numerusform>
-        <numerusform>%n file(s) already existing.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) not found on the server.</numerusform>
-        <numerusform>%n file(s) not found on the server.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) skipped.</numerusform>
-        <numerusform>%n file(s) skipped.</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform>%n error(s).</numerusform>
-        <numerusform>%n error(s).</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform>Loading %n download(s)</numerusform>
-        <numerusform>Loading %n download(s)</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <source>%n download(s) in progress</source>
-      <translation type="unfinished">
-        <numerusform>%n download(s) in progress</numerusform>
-        <numerusform>%n download(s) in progress</numerusform>
-      </translation>
-    </message>
-  </context>
-  <context>
-    <name>md5Fix</name>
-    <message numerus="yes">
-      <source>%n MD5(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform>%n MD5(s) loaded</numerusform>
-        <numerusform>%n MD5(s) loaded</numerusform>
-      </translation>
-    </message>
-  </context>
-  <context>
-    <name>searchTab</name>
-    <message numerus="yes">
-      <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
-        <numerusform>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
-        <numerusform>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
-      </translation>
     </message>
   </context>
 </TS>
