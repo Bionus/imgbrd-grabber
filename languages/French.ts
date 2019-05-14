@@ -3880,12 +3880,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>Consumer key</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>

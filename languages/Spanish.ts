@@ -514,7 +514,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="81"/>
       <source>Images limit</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="86"/>
@@ -541,7 +541,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="106"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="111"/>
@@ -607,7 +607,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="249"/>
       <source>Download</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="256"/>
@@ -637,12 +637,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
       <source>Confirmation</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
       <source>Are you sure you want to clear your download list?</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="267"/>
@@ -721,12 +721,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="655"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
@@ -752,7 +752,7 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1068"/>
@@ -823,8 +823,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1199"/>
       <source>%n file(s) skipped from a previous download.</source>
       <translation type="unfinished">
-        <numerusform></numerusform>
-        <numerusform></numerusform>
+        <numerusform/>
+        <numerusform/>
       </translation>
     </message>
     <message numerus="yes">
@@ -973,12 +973,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="128"/>
       <source>Monitors</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="134"/>
       <source>Monitoring interval</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="141"/>
@@ -1524,7 +1524,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/main-window.ui" line="697"/>
       <location filename="../gui/src/main-window.ui" line="700"/>
       <source>Kept for later</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="298"/>
@@ -1662,7 +1662,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="778"/>
       <source>Restore last closed tab</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="786"/>
@@ -1682,7 +1682,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="162"/>
       <source>&amp;Quit</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="209"/>
@@ -1697,7 +1697,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="679"/>
@@ -1717,7 +1717,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="887"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1823,7 +1823,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="60"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1907,7 +1907,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="134"/>
       <source>Monitoring</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="139"/>
@@ -2190,7 +2190,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="749"/>
       <source>If a file already exists globally</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="765"/>
@@ -2207,7 +2207,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="775"/>
       <location filename="../gui/src/settings/options-window.ui" line="829"/>
       <source>Link</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
@@ -2409,17 +2409,17 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1295"/>
       <source>Use a scroll area</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1305"/>
       <source>Use a fixed-image-width layout</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1315"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1323"/>
@@ -2439,7 +2439,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1341"/>
       <source>Remember page number when infinite scrolling</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1348"/>
@@ -2634,22 +2634,22 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="337"/>
       <source>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="354"/>
       <source>Post-filters</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="364"/>
       <source>Send anonymous usage data</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
       <source>Use image samples</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1736"/>
@@ -2715,12 +2715,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2020"/>
       <source>Kept for later</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2048"/>
       <source>Metas</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2095"/>
@@ -2802,7 +2802,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2337"/>
       <source>Enable system tray icon</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2351"/>
@@ -3092,12 +3092,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
       <source>image has a "%1" token</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
       <source>image does not have a "%1" token</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
@@ -3128,7 +3128,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
       <source>An image needs a date to be filtered by age</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
@@ -3276,7 +3276,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="162"/>
       <source>all images filtered</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="168"/>
@@ -3583,7 +3583,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="45"/>
       <source>The url you entered is not valid.</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
@@ -3828,12 +3828,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
       <source>OAuth 2</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="544"/>
@@ -3875,17 +3875,17 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>API key</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>Consumer key</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -3973,12 +3973,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="382"/>
       <source>- No preset selected -</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="394"/>
       <source>Create a new preset</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="394"/>
@@ -3989,7 +3989,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="421"/>
       <source>Edit preset</source>
-      <translation type="unfinished"></translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
