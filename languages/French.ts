@@ -10,8 +10,8 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber est une création de Bionus.&lt;br/&gt;N&apos;hésitez pas à visiter le &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber est une création de Bionus.&lt;br/&gt;N'hésitez pas à visiter le &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation>Limite d&apos;images</translation>
+      <translation>Limite d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="167"/>
       <source>No image found.</source>
-      <translation>Aucune image n&apos;a été trouvée.</translation>
+      <translation>Aucune image n'a été trouvée.</translation>
     </message>
   </context>
   <context>
@@ -274,20 +274,20 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation>h 'h' m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation>m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>s &apos;s&apos;</source>
-      <translation>s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation>s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
@@ -356,7 +356,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
       <source>This directory does not exist.</source>
-      <translation>Ce dossier n&apos;existe pas.</translation>
+      <translation>Ce dossier n'existe pas.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
@@ -565,8 +565,8 @@
       <translation>Fermer</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;le&apos; dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -617,7 +617,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="81"/>
       <source>Images limit</source>
-      <translation>Limite d&apos;images</translation>
+      <translation>Limite d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="86"/>
@@ -750,17 +750,17 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="267"/>
       <source>This source is not valid.</source>
-      <translation>Cette source n&apos;est pas valide.</translation>
+      <translation>Cette source n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="276"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation>La limite d&apos;images par page doit être supérieure ou égale à 1.</translation>
+      <translation>La limite d'images par page doit être supérieure ou égale à 1.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="285"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation>La limite d&apos;images doit être supérieure ou égale à 0.</translation>
+      <translation>La limite d'images doit être supérieure ou égale à 0.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="361"/>
@@ -789,7 +789,7 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="416"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="434"/>
       <source>Error opening file.</source>
-      <translation>Erreur lors de l&apos;ouverture du fichier.</translation>
+      <translation>Erreur lors de l'ouverture du fichier.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="426"/>
@@ -814,21 +814,21 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="523"/>
       <source>You did not specify a save folder!</source>
-      <translation>Vous n&apos;avez pas précisé de dossier de sauvegarde !</translation>
+      <translation>Vous n'avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="527"/>
       <source>You did not specify a filename!</source>
-      <translation>Vous n&apos;avez pas précisé de nom de fichier !</translation>
+      <translation>Vous n'avez pas précisé de nom de fichier !</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="655"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation>Vous êtes sur le point de télécharger jusqu&apos;à %1 images, ce qui peut prendre beaucoup de temps et d&apos;espace disque. Êtes-vous sûr de vouloir continuer ?</translation>
+      <translation>Vous êtes sur le point de télécharger jusqu'à %1 images, ce qui peut prendre beaucoup de temps et d'espace disque. Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation>Ne pas me re-demander</translation>
     </message>
     <message>
@@ -853,17 +853,17 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
-      <source>Not enough space on the destination drive &quot;%1&quot;.
+      <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation>Pas assez d&apos;espace dans le disque de destination : %1.
-Veuillez libérer de l&apos;espace avant de reprendre le téléchargement.</translation>
+      <translation>Pas assez d'espace dans le disque de destination : %1.
+Veuillez libérer de l'espace avant de reprendre le téléchargement.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1068"/>
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
-      <translation>Une erreur est survenue lors de l&apos;enregistrement de l&apos;image.
+      <translation>Une erreur est survenue lors de l'enregistrement de l'image.
 %1
 Veuillez résoudre le problème avant de reprendre le téléchargement.</translation>
     </message>
@@ -1022,7 +1022,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/favorite-window.ui" line="40"/>
       <source>Tag corresponding to the favorite. It is not often useful to change it.</source>
-      <translation>Le tag correspond au favori. Il n&apos;est pas souvent utile de le modifier.</translation>
+      <translation>Le tag correspond au favori. Il n'est pas souvent utile de le modifier.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="43"/>
@@ -1046,8 +1046,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="76"/>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation>Dernière fois que vous avez cliqué sur &quot;Marquer comme vu&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation>Dernière fois que vous avez cliqué sur "Marquer comme vu".</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="79"/>
@@ -1062,7 +1062,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/favorite-window.ui" line="93"/>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation>Image dont l&apos;icone sera affichée dans la liste des favoris.</translation>
+      <translation>Image dont l'icone sera affichée dans la liste des favoris.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="96"/>
@@ -1092,7 +1092,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/favorite-window.ui" line="151"/>
       <source>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Mettre l&apos;intervalle à 0 pour désactiver le suivi.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Mettre l'intervalle à 0 pour désactiver le suivi.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="161"/>
@@ -1228,8 +1228,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation>dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
@@ -1267,7 +1267,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="141"/>
       <source>You script contains error, are you sure you want to save it?</source>
-      <translation>Votre script contient des erreurs, êtes-vous sûr de vouloir l&apos;enregistrer ?</translation>
+      <translation>Votre script contient des erreurs, êtes-vous sûr de vouloir l'enregistrer ?</translation>
     </message>
   </context>
   <context>
@@ -1327,44 +1327,44 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation type="vanished">&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). New try (%2/%3)...</source>
-      <translation type="vanished">une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</translation>
+      <source>one of the thumbnails is empty (&lt;a href="%1"&gt;%1&lt;/a&gt;). New try (%2/%3)...</source>
+      <translation type="vanished">une des miniatures est vide (&lt;a href="%1"&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</translation>
     </message>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">type &quot;%1&quot; inconnu (types disponibles : &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">type "%1" inconnu (types disponibles : "%2")</translation>
     </message>
     <message>
-      <source>image&apos;s %1 does not match</source>
-      <translation type="vanished">le %1 de l&apos;image ne correspond pas</translation>
+      <source>image's %1 does not match</source>
+      <translation type="vanished">le %1 de l'image ne correspond pas</translation>
     </message>
     <message>
-      <source>image&apos;s %1 match</source>
-      <translation type="vanished">le %1 de l&apos;image correspond</translation>
+      <source>image's %1 match</source>
+      <translation type="vanished">le %1 de l'image correspond</translation>
     </message>
     <message>
-      <source>image is not &quot;%1&quot;</source>
-      <translation type="vanished">l&apos;image n&apos;est pas &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation type="vanished">l'image n'est pas "%1"</translation>
     </message>
     <message>
-      <source>image is &quot;%1&quot;</source>
-      <translation type="vanished">l&apos;image est &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation type="vanished">l'image est "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation type="vanished">la source de l&apos;image ne commence pas par &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation type="vanished">la source de l'image ne commence pas par "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation type="vanished">la source de l&apos;image commence par &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation type="vanished">la source de l'image commence par "%1"</translation>
     </message>
     <message>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation type="vanished">l&apos;image ne contient pas &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation type="vanished">l'image ne contient pas "%1"</translation>
     </message>
     <message>
-      <source>image contains &quot;%1&quot;</source>
-      <translation type="vanished">l&apos;image contient &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation type="vanished">l'image contient "%1"</translation>
     </message>
     <message>
       <source>Image not found. New try with its sample...</source>
@@ -1372,27 +1372,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <source>Image not found. New try with extension %1...</source>
-      <translation type="vanished">Image non trouvée. Nouvel essai avec l&apos;extension %1...</translation>
+      <translation type="vanished">Image non trouvée. Nouvel essai avec l'extension %1...</translation>
     </message>
     <message>
       <source>Image not found.</source>
       <translation type="vanished">Image non trouvée.</translation>
     </message>
     <message>
-      <source>Saving image in &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
-      <translation type="vanished">Sauvegarde de l&apos;image dans le fichier &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
+      <source>Saving image in &lt;a href="file:///%1"&gt;%1&lt;/a&gt;</source>
+      <translation type="vanished">Sauvegarde de l'image dans le fichier &lt;a href="file:///%1"&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
       <source>Unable to open file</source>
-      <translation type="vanished">Impossible d&apos;ouvrir le fichier</translation>
+      <translation type="vanished">Impossible d'ouvrir le fichier</translation>
     </message>
     <message>
-      <source>Copy from &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; to &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
-      <translation type="vanished">Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
+      <source>Copy from &lt;a href="file:///%1"&gt;%1&lt;/a&gt; to &lt;a href="file:///%2"&gt;%2&lt;/a&gt;</source>
+      <translation type="vanished">Copie depuis &lt;a href="file:///%1"&gt;%1&lt;/a&gt; vers &lt;a href="file:///%2"&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-      <source>Moving from &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; to &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
-      <translation type="vanished">Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
+      <source>Moving from &lt;a href="file:///%1"&gt;%1&lt;/a&gt; to &lt;a href="file:///%2"&gt;%2&lt;/a&gt;</source>
+      <translation type="vanished">Déplacement depuis &lt;a href="file:///%1"&gt;%1&lt;/a&gt; vers &lt;a href="file:///%2"&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="859"/>
@@ -1442,8 +1442,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="866"/>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation>&apos;le&apos; dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation>'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="876"/>
@@ -1497,8 +1497,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="895"/>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>&apos;le&apos; dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation>'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="896"/>
@@ -1614,7 +1614,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="20"/>
       <source>Location type</source>
-      <translation>Type d&apos;emplacement</translation>
+      <translation>Type d'emplacement</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="28"/>
@@ -1655,7 +1655,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Chaque fois qu&apos;une image est enregristrée, un fichier texte avec le même nom sera enregistré au même emplacement.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Chaque fois qu'une image est enregristrée, un fichier texte avec le même nom sera enregistré au même emplacement.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="193"/>
@@ -1664,8 +1664,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Symboles disponibles : les mêmes que dans la partie &quot;Sauvegarde&quot;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Symboles disponibles : les mêmes que dans la partie "Sauvegarde".&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1703,7 +1703,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <source>Images limit</source>
-      <translation type="obsolete">Limite d&apos;images</translation>
+      <translation type="obsolete">Limite d'images</translation>
     </message>
     <message>
       <source>Filename</source>
@@ -1916,7 +1916,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.ui" line="665"/>
       <source>Close tab</source>
-      <translation>Fermer l&apos;onglet</translation>
+      <translation>Fermer l'onglet</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="670"/>
@@ -1981,7 +1981,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.cpp" line="147"/>
       <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
-      <translation>Aucune source n&apos;a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller.</translation>
+      <translation>Aucune source n'a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller.</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="162"/>
@@ -1991,16 +1991,16 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.cpp" line="209"/>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
-      <translation>Il semblerait que l&apos;application n&apos;ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
+      <translation>Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation>L&apos;extension pour Mozilla Firefox &quot;Danbooru Downloader&quot; a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation>L'extension pour Mozilla Firefox "Danbooru Downloader" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation>Ne pas me re-demander</translation>
     </message>
     <message>
@@ -2017,15 +2017,15 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <source>This source is not valid.</source>
-      <translation type="obsolete">Cette source n&apos;est pas valide.</translation>
+      <translation type="obsolete">Cette source n'est pas valide.</translation>
     </message>
     <message>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="obsolete">La limite d&apos;images par page doit être supérieure ou égale à 1.</translation>
+      <translation type="obsolete">La limite d'images par page doit être supérieure ou égale à 1.</translation>
     </message>
     <message>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="obsolete">La limite d&apos;images doit être supérieure ou égale à 0.</translation>
+      <translation type="obsolete">La limite d'images doit être supérieure ou égale à 0.</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="679"/>
@@ -2043,16 +2043,16 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Êtes vous sûr de vouloir quitter ?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="obsolete">Ne pas garder pour plus tard</translation>
     </message>
     <message>
       <source>You did not specify a save folder!</source>
-      <translation type="obsolete">Vous n&apos;avez pas précisé de dossier de sauvegarde !</translation>
+      <translation type="obsolete">Vous n'avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
       <source>You did not specify a filename!</source>
-      <translation type="obsolete">Vous n&apos;avez pas précisé de nom de fichier !</translation>
+      <translation type="obsolete">Vous n'avez pas précisé de nom de fichier !</translation>
     </message>
     <message>
       <source>Logging in, please wait...</source>
@@ -2074,7 +2074,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
-      <translation type="obsolete">Une erreur est survenue lors de l&apos;enregistrement de l&apos;image.
+      <translation type="obsolete">Une erreur est survenue lors de l'enregistrement de l'image.
 %1
 Veuillez résoudre le problème avant de reprendre le téléchargement. </translation>
     </message>
@@ -2146,7 +2146,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Error opening file.</source>
-      <translation type="obsolete">Erreur lors de l&apos;ouverture du fichier.</translation>
+      <translation type="obsolete">Erreur lors de l'ouverture du fichier.</translation>
     </message>
     <message>
       <source>Load link list</source>
@@ -2224,7 +2224,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="95"/>
       <source>This folder does not exist.</source>
-      <translation>Ce dossier n&apos;existe pas.</translation>
+      <translation>Ce dossier n'existe pas.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="103"/>
@@ -2249,23 +2249,23 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <name>MonitoringCenter</name>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
-      <source>New images found for tag &apos;%1&apos; on &apos;%2&apos;</source>
-      <translation>Nouvelles images trouvées pour le tag &apos;%1&apos; sur &apos;%2&apos;</translation>
+      <source>New images found for tag '%1' on '%2'</source>
+      <translation>Nouvelles images trouvées pour le tag '%1' sur '%2'</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
-      <source>%n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation>
-        <numerusform>%n nouvelle image trouvée pour le tag &apos;%1&apos; sur &apos;%2&apos;</numerusform>
-        <numerusform>%n nouvelles images trouvées pour le tag &apos;%1&apos; sur &apos;%2&apos;</numerusform>
+        <numerusform>%n nouvelle image trouvée pour le tag '%1' sur '%2'</numerusform>
+        <numerusform>%n nouvelles images trouvées pour le tag '%1' sur '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="58"/>
-      <source>More than %n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
-        <numerusform>Plus de %n nouvelle image trouvée pour le tag &apos;%1&apos; sur &apos;%2&apos;</numerusform>
-        <numerusform>Plus de %n nouvelles images trouvées pour le tag &apos;%1&apos; sur &apos;%2&apos;</numerusform>
+        <numerusform>Plus de %n nouvelle image trouvée pour le tag '%1' sur '%2'</numerusform>
+        <numerusform>Plus de %n nouvelles images trouvées pour le tag '%1' sur '%2'</numerusform>
       </translation>
     </message>
     <message>
@@ -2346,7 +2346,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="108"/>
       <source>Image window</source>
-      <translation>Fenêtre d&apos;image</translation>
+      <translation>Fenêtre d'image</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
@@ -2463,13 +2463,13 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation>Ne pas télécharger automatiquement</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="277"/>
       <source>When loading image</source>
-      <translation>Au chargement de l&apos;image</translation>
+      <translation>Au chargement de l'image</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="282"/>
@@ -2479,7 +2479,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="290"/>
       <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l&apos;option ci-dessus.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="300"/>
@@ -2489,7 +2489,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="310"/>
       <source>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l&apos;image.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="320"/>
@@ -2543,7 +2543,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="468"/>
       <source>Get more precise tags when searching images</source>
-      <translation>Récupérer les tags les plus précis lors de la recherche d&apos;images</translation>
+      <translation>Récupérer les tags les plus précis lors de la recherche d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="479"/>
@@ -2590,7 +2590,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="617"/>
       <source>Download sample on error</source>
-      <translation>Télécharger le sample en cas d&apos;erreur</translation>
+      <translation>Télécharger le sample en cas d'erreur</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="627"/>
@@ -2605,7 +2605,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="644"/>
       <source>Get extension from file header</source>
-      <translation>Récupérer l&apos;extension dans l&apos;en-tête du fichier</translation>
+      <translation>Récupérer l'extension dans l'en-tête du fichier</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="654"/>
@@ -2679,13 +2679,13 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>Ne pas sauvegarder</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;L&apos;identicité des fichiers est basée sur l&apos;algorithme MD5.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;L'identicité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="795"/>
@@ -2740,7 +2740,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1045"/>
       <source>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;À chaque fois qu&apos;une image est sauvegardée, ses informations peuvent être ajoutées dans un fichier texte pour un traitement ultérieur ou pour organiser sa collection.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;À chaque fois qu'une image est sauvegardée, ses informations peuvent être ajoutées dans un fichier texte pour un traitement ultérieur ou pour organiser sa collection.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1058"/>
@@ -2855,11 +2855,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1190"/>
       <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d&apos;images reçues sera atteint.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation>Affichage des types de source</translation>
     </message>
     <message>
@@ -2881,7 +2881,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1223"/>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation>Ne pas afficher</translation>
     </message>
     <message>
@@ -2906,7 +2906,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Nombre de lettres affichées à côté des cases à cocher des sources en bas de la fenêtre principale.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2957,12 +2957,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1358"/>
       <source>Enable autocompletion</source>
-      <translation>Activer l&apos;autocomplétion</translation>
+      <translation>Activer l'autocomplétion</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1368"/>
       <source>Show warning if an incompatible modifier is found</source>
-      <translation>Afficher l&apos;avertissement en cas de modificateur incompatible</translation>
+      <translation>Afficher l'avertissement en cas de modificateur incompatible</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1378"/>
@@ -2976,8 +2976,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d&apos;images par page, numéro de page, etc. même si elles n&apos;ont pas été chargées.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton "Télécharger cette page" prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1405"/>
@@ -3132,7 +3132,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1426"/>
       <source>Use a single image window</source>
-      <translation>Utiliser une seule fenêtre d&apos;images</translation>
+      <translation>Utiliser une seule fenêtre d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="93"/>
@@ -3152,7 +3152,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="364"/>
       <source>Send anonymous usage data</source>
-      <translation>Envoyer des statistiques d&apos;utilisation anonymes</translation>
+      <translation>Envoyer des statistiques d'utilisation anonymes</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
@@ -3269,8 +3269,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Une ligne par liste noire. Vous pouvez mettre plusieurs tags sur une seule ligne pour faire des conditions &quot;ET&quot;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Une ligne par liste noire. Vous pouvez mettre plusieurs tags sur une seule ligne pour faire des conditions "ET".&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2273"/>
@@ -3280,7 +3280,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2280"/>
       <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l&apos;affichage d&apos;une de ces images.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2294"/>
@@ -3295,22 +3295,22 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2311"/>
       <source>Tray icon</source>
-      <translation>Icône de la barre d&apos;état</translation>
+      <translation>Icône de la barre d'état</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2320"/>
       <source>Minimize to tray</source>
-      <translation>Minimiser dans la barre d&apos;état</translation>
+      <translation>Minimiser dans la barre d'état</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2330"/>
       <source>Close to tray</source>
-      <translation>Fermer dans la barre d&apos;état</translation>
+      <translation>Fermer dans la barre d'état</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2337"/>
       <source>Enable system tray icon</source>
-      <translation>Activer l&apos;icône de la barre d&apos;état</translation>
+      <translation>Activer l'icône de la barre d'état</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2351"/>
@@ -3375,8 +3375,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>Symboles additionels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation>Symboles additionels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, "general", "artist", "copyright", "character", "model" ou "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3446,7 +3446,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../lib/src/models/page.cpp" line="79"/>
       <source>No valid source of the site returned result.</source>
-      <translation>Aucune source valide du site n&apos;a retourné de résultat.</translation>
+      <translation>Aucune source valide du site n'a retourné de résultat.</translation>
     </message>
     <message>
       <source>Loading using %1 failed. Retry using %2.</source>
@@ -3457,7 +3457,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <name>PageApi</name>
     <message>
       <source>No source of this site is compatible with pools.</source>
-      <translation type="vanished">Aucune source du site n&apos;est compatible avec les pools.</translation>
+      <translation type="vanished">Aucune source du site n'est compatible avec les pools.</translation>
     </message>
     <message>
       <source>Image #%1 ignored. Reason: %2.</source>
@@ -3469,19 +3469,19 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Error parsing XML file: %1 (%2 - %3).</source>
-      <translation type="vanished">Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</translation>
+      <translation type="vanished">Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
     <message>
       <source>Error parsing RSS file: %1 (%2 - %3).</source>
-      <translation type="vanished">Erreur lors de l&apos;analyse du fichier RSS : %1 (%2 - %3).</translation>
+      <translation type="vanished">Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).</translation>
     </message>
     <message>
-      <source>JSON error reply: &quot;%1&quot;</source>
-      <translation type="vanished">Réponse JSON d&apos;erreur : &quot;%1&quot;</translation>
+      <source>JSON error reply: "%1"</source>
+      <translation type="vanished">Réponse JSON d'erreur : "%1"</translation>
     </message>
     <message>
-      <source>Error parsing JSON file: &quot;%1&quot;</source>
-      <translation type="vanished">Erreur lors de l&apos;analyse du fichier JSON : &quot;%1&quot;</translation>
+      <source>Error parsing JSON file: "%1"</source>
+      <translation type="vanished">Erreur lors de l'analyse du fichier JSON : "%1"</translation>
     </message>
     <message>
       <source>Tag search is impossible with the chosen source (%1).</source>
@@ -3541,7 +3541,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="358"/>
       <source>Displays version information.</source>
-      <translation>Affiche l&apos;information de version.</translation>
+      <translation>Affiche l'information de version.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="383"/>
@@ -3550,8 +3550,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
-      <source>Unknown option &apos;%1&apos;.</source>
-      <translation>Option inconnue &apos;%1&apos;.</translation>
+      <source>Unknown option '%1'.</source>
+      <translation>Option inconnue '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="477"/>
@@ -3560,13 +3560,13 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
-      <source>Missing value after &apos;%1&apos;.</source>
-      <translation>Valeur manquante après &apos;%1&apos;.</translation>
+      <source>Missing value after '%1'.</source>
+      <translation>Valeur manquante après '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
-      <source>Unexpected value after &apos;%1&apos;.</source>
-      <translation>Valeur non attendue après &apos;%1&apos;.</translation>
+      <source>Unexpected value after '%1'.</source>
+      <translation>Valeur non attendue après '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -3618,7 +3618,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Error in Javascript evaluation:&lt;br/&gt;</source>
-      <translation type="vanished">Erreur d&apos;évaluation du Javascript :&lt;br/&gt;</translation>
+      <translation type="vanished">Erreur d'évaluation du Javascript :&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="273"/>
@@ -3627,33 +3627,33 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
-      <source>Can&apos;t validate Javascript expressions.</source>
+      <source>Can't validate Javascript expressions.</source>
       <translation>Impossible de valider les expressions Javascript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
-      <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
+      <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation>Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="291"/>
       <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
-      <translation>Votre nom de fichier n&apos;est pas unique à chaque image et une image risque d&apos;en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</translation>
+      <translation>Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="312"/>
       <source>The %%1% token does not exist and will not be replaced.</source>
-      <translation>Le symbole %%1% n&apos;existe pas et ne sera pas remplacé.</translation>
+      <translation>Le symbole %%1% n'existe pas et ne sera pas remplacé.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
-      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
-      <translation>Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? &quot; : &lt; &gt; |</translation>
+      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
+      <translation>Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="326"/>
       <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
-      <translation>Vous avez choisi d&apos;utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</translation>
+      <translation>Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="330"/>
@@ -3690,43 +3690,43 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
-      <source>image has a &quot;%1&quot; token</source>
-      <translation>l&apos;image contient le token &quot;%1&quot;</translation>
+      <source>image has a "%1" token</source>
+      <translation>l'image contient le token "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
-      <source>image does not have a &quot;%1&quot; token</source>
-      <translation>l&apos;image ne contient pas le token &quot;%1&quot;</translation>
+      <source>image does not have a "%1" token</source>
+      <translation>l'image ne contient pas le token "%1"</translation>
     </message>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">type &quot;%1&quot; inconnu (types disponibles : &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">type "%1" inconnu (types disponibles : "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
-      <source>image&apos;s %1 does not match</source>
-      <translation>le %1 de l&apos;image ne correspond pas</translation>
+      <source>image's %1 does not match</source>
+      <translation>le %1 de l'image ne correspond pas</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
-      <source>image&apos;s %1 match</source>
-      <translation>le %1 de l&apos;image correspond</translation>
+      <source>image's %1 match</source>
+      <translation>le %1 de l'image correspond</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
-      <source>image is not &quot;%1&quot;</source>
-      <translation>l&apos;image n&apos;est pas &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation>l'image n'est pas "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
-      <source>image is &quot;%1&quot;</source>
-      <translation>l&apos;image est &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation>l'image est "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
@@ -3735,23 +3735,23 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation>la source de l&apos;image ne commence pas par &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation>la source de l'image ne commence pas par "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation>la source de l&apos;image commence par &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation>la source de l'image commence par "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation>l&apos;image ne contient pas &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation>l'image ne contient pas "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
-      <source>image contains &quot;%1&quot;</source>
-      <translation>l&apos;image contient &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation>l'image contient "%1"</translation>
     </message>
   </context>
   <context>
@@ -3780,7 +3780,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="51"/>
       <source>Origin filename</source>
-      <translation>Format d&apos;origine</translation>
+      <translation>Format d'origine</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="61"/>
@@ -3815,7 +3815,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
       <source>This folder does not exist.</source>
-      <translation>Ce dossier n&apos;existe pas.</translation>
+      <translation>Ce dossier n'existe pas.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
@@ -3832,8 +3832,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
-      <translation>Aucune image trouvée en renommant &apos;%1&apos;</translation>
+      <source>No image found when renaming image '%1'</source>
+      <translation>Aucune image trouvée en renommant '%1'</translation>
     </message>
   </context>
   <context>
@@ -3903,8 +3903,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
-      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
-      <translation>Une redirection HTTP vers HTTPS a été détéctée pour le site %1. Voulez vous activer SSL dessus? L&apos;option recommandée est &apos;oui&apos;.</translation>
+      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
+      <translation>Une redirection HTTP vers HTTPS a été détéctée pour le site %1. Voulez vous activer SSL dessus? L'option recommandée est 'oui'.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
@@ -3924,7 +3924,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="600"/>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
-      <translation>Certains tags de l&apos;image sont dans la liste blanche : %1. Cependant, certains dans la liste noire : %2. Voulez-vous la télécharger tout de même ?</translation>
+      <translation>Certains tags de l'image sont dans la liste blanche : %1. Cependant, certains dans la liste noire : %2. Voulez-vous la télécharger tout de même ?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="781"/>
@@ -3972,7 +3972,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="984"/>
       <source>Save image</source>
-      <translation>Enregistrer l&apos;image</translation>
+      <translation>Enregistrer l'image</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
@@ -3983,8 +3983,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation>
-        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
-        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
+        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
+        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
       </translation>
     </message>
   </context>
@@ -4113,7 +4113,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/search-window.ui" line="216"/>
       <source>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation>&lt;i&gt;N&apos;oubliez pas que certains imageboards empêchent l&apos;utilisation de plus d&apos;un certain nombre de tags pour les membres non premiums.</translation>
+      <translation>&lt;i&gt;N'oubliez pas que certains imageboards empêchent l'utilisation de plus d'un certain nombre de tags pour les membres non premiums.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="129"/>
@@ -4205,27 +4205,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="45"/>
       <source>The url you entered is not valid.</source>
-      <translation>L&apos;url que vous avez entrée n&apos;est pas valide.</translation>
+      <translation>L'url que vous avez entrée n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
-      <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
-      <translation>Impossible de deviner le type du site. Êtes-vous sûr de l&apos;url ?</translation>
+      <source>Unable to guess site's type. Are you sure about the url?</source>
+      <translation>Impossible de deviner le type du site. Êtes-vous sûr de l'url ?</translation>
     </message>
   </context>
   <context>
     <name>Source</name>
     <message>
       <source>Error parsing XML file: %1 (%2 - %3).</source>
-      <translation type="vanished">Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</translation>
+      <translation type="vanished">Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
     <message>
       <source>No valid source has been found in the model.xml file from %1.</source>
       <translation type="vanished">Aucune source valide trouvée dans le fichier model.xml de %1.</translation>
     </message>
     <message>
-      <source>Impossible to open the model file &apos;%1&apos;</source>
-      <translation type="vanished">Impossible d&apos;ouvrir le fichier de modèle &apos;%1&apos;</translation>
+      <source>Impossible to open the model file '%1'</source>
+      <translation type="vanished">Impossible d'ouvrir le fichier de modèle '%1'</translation>
     </message>
     <message>
       <source>No site for source %1</source>
@@ -4341,7 +4341,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="83"/>
       <source>Through URL</source>
-      <translation>Passage dans l&apos;url</translation>
+      <translation>Passage dans l'url</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
@@ -4487,7 +4487,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Through url</source>
-      <translation type="vanished">Passage dans l&apos;url</translation>
+      <translation type="vanished">Passage dans l'url</translation>
     </message>
     <message>
       <source>Method</source>
@@ -4529,11 +4529,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Authorize url</source>
-      <translation type="vanished">Url &apos;dautorisation</translation>
+      <translation type="vanished">Url 'dautorisation</translation>
     </message>
     <message>
       <source>Access token url</source>
-      <translation type="vanished">Url de token d&apos;accès</translation>
+      <translation type="vanished">Url de token d'accès</translation>
     </message>
     <message>
       <source>Request url</source>
@@ -4608,8 +4608,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Hasher un mot de passe</translation>
     </message>
     <message>
-      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-      <translation type="vanished">Veuillez entrer votre mot de passe ci-dessous.&lt;br/&gt;Il sera ensuite hashé en utilisant le format &quot;%1&quot;.</translation>
+      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format "%1".</source>
+      <translation type="vanished">Veuillez entrer votre mot de passe ci-dessous.&lt;br/&gt;Il sera ensuite hashé en utilisant le format "%1".</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -4760,12 +4760,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d&apos;abord lire la page &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="obsolete">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d&apos;abord lire la page &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="obsolete">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4802,7 +4802,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation>Ne pas garder pour plus tard</translation>
     </message>
     <message>
@@ -4812,7 +4812,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation>Retirer de la liste noire</translation>
     </message>
     <message>
@@ -4822,7 +4822,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation>Ne plus ignorer</translation>
     </message>
     <message>
@@ -4888,8 +4888,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
-      <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation>Génère une base de données de tags locale pour une source donnée. Après, même si l&apos;API de la source ne donne pas d&apos;informations sur le type des tags, Grabber peut directement regarder dans sa base de données locale.</translation>
+      <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
+      <translation>Génère une base de données de tags locale pour une source donnée. Après, même si l'API de la source ne donne pas d'informations sur le type des tags, Grabber peut directement regarder dans sa base de données locale.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -4953,7 +4953,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="264"/>
       <source>Images per page</source>
-      <translation>Limite d&apos;images</translation>
+      <translation>Limite d'images</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="351"/>
@@ -5172,7 +5172,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/viewer/zoom-window.ui" line="154"/>
       <source>More details</source>
-      <translation>Plus d&apos;infos</translation>
+      <translation>Plus d'infos</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.ui" line="161"/>
@@ -5230,7 +5230,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="312"/>
       <source>The save folder does not exist yet. Create it?</source>
-      <translation>Le dossier de sauvegarde n&apos;existe pas encore. Le créer ?</translation>
+      <translation>Le dossier de sauvegarde n'existe pas encore. Le créer ?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="316"/>
@@ -5341,7 +5341,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <source>An unexpected error occured loading the image (%1 - %2).
 %3</source>
-      <translation type="vanished">Une erreur non attendue a survenu lors du chargement de l&apos;image (%1 - %2).
+      <translation type="vanished">Une erreur non attendue a survenu lors du chargement de l'image (%1 - %2).
 %3</translation>
     </message>
     <message>
@@ -5353,22 +5353,22 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="841"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation>Vous n&apos;avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
+      <translation>Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="843"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation>Vous n&apos;avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
+      <translation>Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="897"/>
       <source>Error saving image.</source>
-      <translation>Erreur lors de la sauvegarde de l&apos;image.</translation>
+      <translation>Erreur lors de la sauvegarde de l'image.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="917"/>
       <source>Save image</source>
-      <translation>Enregistrer l&apos;image</translation>
+      <translation>Enregistrer l'image</translation>
     </message>
   </context>
   <context>
@@ -5466,16 +5466,16 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Reprendre</translation>
     </message>
     <message>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation type="vanished">h 'h' m 'm' s 's'</translation>
     </message>
     <message>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation type="vanished">m 'm' s 's'</translation>
     </message>
     <message>
-      <source>s &apos;s&apos;</source>
-      <translation type="vanished">s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation type="vanished">s 's'</translation>
     </message>
     <message>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
@@ -5604,8 +5604,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">&lt;b&gt;Notes&lt;/b&gt;</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;le&apos; dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -5639,8 +5639,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Comprise entre 0 et 100, la note peut être utilisée pour trier les favoris par ordre de préférence.</translation>
     </message>
     <message>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation type="vanished">Dernière fois que vous avez cliqué sur &quot;Marquer comme vu&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation type="vanished">Dernière fois que vous avez cliqué sur "Marquer comme vu".</translation>
     </message>
     <message>
       <source>Last view</source>
@@ -5652,7 +5652,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation type="vanished">Image dont l&apos;icone sera affichée dans la liste des favoris.</translation>
+      <translation type="vanished">Image dont l'icone sera affichée dans la liste des favoris.</translation>
     </message>
     <message>
       <source>Browse</source>
@@ -5672,7 +5672,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Tag corresponding to the favorite. It is not often useful to change it.</source>
-      <translation type="vanished">Le tag correspond au favori. Il n&apos;est pas souvent utile de le modifier.</translation>
+      <translation type="vanished">Le tag correspond au favori. Il n'est pas souvent utile de le modifier.</translation>
     </message>
     <message>
       <source> %</source>
@@ -5778,8 +5778,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Aucun résultat depuis le %1</translation>
     </message>
     <message>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <source>Mark as viewed</source>
@@ -5790,8 +5790,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?</translation>
     </message>
     <message>
-      <source>Marking &quot;%1&quot; as viewed...</source>
-      <translation type="vanished">Marquage comme vu de &quot;%1&quot;...</translation>
+      <source>Marking "%1" as viewed...</source>
+      <translation type="vanished">Marquage comme vu de "%1"...</translation>
     </message>
   </context>
   <context>
@@ -5822,7 +5822,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Images limit</source>
-      <translation type="vanished">Limite d&apos;images</translation>
+      <translation type="vanished">Limite d'images</translation>
     </message>
     <message>
       <source>Filename</source>
@@ -5958,7 +5958,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Close tab</source>
-      <translation type="vanished">Fermer l&apos;onglet</translation>
+      <translation type="vanished">Fermer l'onglet</translation>
     </message>
     <message>
       <source>Blacklist fixer</source>
@@ -6066,19 +6066,19 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
-      <translation type="vanished">Aucune source n&apos;a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller.</translation>
+      <translation type="vanished">Aucune source n'a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller.</translation>
     </message>
     <message>
       <source>It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?</source>
-      <translation type="vanished">Il semblerait que l&apos;application n&apos;ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière session ?</translation>
+      <translation type="vanished">Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière session ?</translation>
     </message>
     <message>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
-      <translation type="vanished">Il semblerait que l&apos;application n&apos;ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
+      <translation type="vanished">Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
     </message>
     <message>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="vanished">L&apos;extension pour Mozilla Firefox &quot;Danbooru Downloader&quot; a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation type="vanished">L'extension pour Mozilla Firefox "Danbooru Downloader" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
     </message>
     <message>
       <source>Groups (%1/%2)</source>
@@ -6094,15 +6094,15 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>This source is not valid.</source>
-      <translation type="vanished">Cette source n&apos;est pas valide.</translation>
+      <translation type="vanished">Cette source n'est pas valide.</translation>
     </message>
     <message>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="vanished">La limite d&apos;images par page doit être supérieure ou égale à 1.</translation>
+      <translation type="vanished">La limite d'images par page doit être supérieure ou égale à 1.</translation>
     </message>
     <message>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="vanished">La limite d&apos;images doit être supérieure ou égale à 0.</translation>
+      <translation type="vanished">La limite d'images doit être supérieure ou égale à 0.</translation>
     </message>
     <message>
       <source>MM/dd/yyyy</source>
@@ -6117,16 +6117,16 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Êtes vous sûr de vouloir quitter ?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">Ne pas garder pour plus tard</translation>
     </message>
     <message>
       <source>You did not specify a save folder!</source>
-      <translation type="vanished">Vous n&apos;avez pas précisé de dossier de sauvegarde !</translation>
+      <translation type="vanished">Vous n'avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
       <source>You did not specify a filename!</source>
-      <translation type="vanished">Vous n&apos;avez pas précisé de nom de fichier !</translation>
+      <translation type="vanished">Vous n'avez pas précisé de nom de fichier !</translation>
     </message>
     <message>
       <source>Logging in, please wait...</source>
@@ -6137,7 +6137,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Téléchargement des pages, veuillez patienter...</translation>
     </message>
     <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
+      <source>All images' urls have been received (%n image(s)).</source>
       <translation type="vanished">
         <numerusform>Toutes les urls des images ont été reçues (%n image).</numerusform>
         <numerusform>Toutes les urls des images ont été reçues (%n images).</numerusform>
@@ -6156,7 +6156,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
 %1
 %2
 Please solve the issue before resuming the download.</source>
-      <translation type="vanished">Une erreur est survenue lors de l&apos;enregistrement de l&apos;image.
+      <translation type="vanished">Une erreur est survenue lors de l'enregistrement de l'image.
 %1
 %2
 Veuillez résoudre le problème avant de reprendre le téléchargement.</translation>
@@ -6169,7 +6169,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
-      <translation type="vanished">Une erreur est survenue lors de l&apos;enregistrement de l&apos;image.
+      <translation type="vanished">Une erreur est survenue lors de l'enregistrement de l'image.
 %1
 Veuillez résoudre le problème avant de reprendre le téléchargement. </translation>
     </message>
@@ -6237,7 +6237,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Error opening file.</source>
-      <translation type="vanished">Erreur lors de l&apos;ouverture du fichier.</translation>
+      <translation type="vanished">Erreur lors de l'ouverture du fichier.</translation>
     </message>
     <message>
       <source>Load link list</source>
@@ -6330,7 +6330,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>This folder does not exist.</source>
-      <translation type="vanished">Ce dossier n&apos;existe pas.</translation>
+      <translation type="vanished">Ce dossier n'existe pas.</translation>
     </message>
     <message>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
@@ -6338,7 +6338,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Unable to open the MD5 file.</source>
-      <translation type="vanished">Impossible d&apos;ouvrir le fichier de MD5.</translation>
+      <translation type="vanished">Impossible d'ouvrir le fichier de MD5.</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -6448,7 +6448,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Image window</source>
-      <translation type="vanished">Fenêtre d&apos;image</translation>
+      <translation type="vanished">Fenêtre d'image</translation>
     </message>
     <message>
       <source>Coloring</source>
@@ -6504,7 +6504,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l&apos;affichage d&apos;une de ces images.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Whitelist</source>
@@ -6515,12 +6515,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Télécharger</translation>
     </message>
     <message>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="vanished">Ne pas télécharger automatiquement</translation>
     </message>
     <message>
       <source>When loading image</source>
-      <translation type="vanished">Au chargement de l&apos;image</translation>
+      <translation type="vanished">Au chargement de l'image</translation>
     </message>
     <message>
       <source>When loading thumbnail</source>
@@ -6528,7 +6528,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l&apos;option ci-dessus.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Ignored tags</source>
@@ -6536,7 +6536,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l&apos;image.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Download images containing blacklisted tags</source>
@@ -6588,7 +6588,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Get more precise tags when searching images</source>
-      <translation type="vanished">Récupérer les tags les plus précis lors de la recherche d&apos;images</translation>
+      <translation type="vanished">Récupérer les tags les plus précis lors de la recherche d'images</translation>
     </message>
     <message>
       <source>XML</source>
@@ -6616,7 +6616,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Download sample on error</source>
-      <translation type="vanished">Télécharger le sample en cas d&apos;erreur</translation>
+      <translation type="vanished">Télécharger le sample en cas d'erreur</translation>
     </message>
     <message>
       <source>Download images automatically</source>
@@ -6703,12 +6703,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Déplacer</translation>
     </message>
     <message>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="vanished">Ne pas sauvegarder</translation>
     </message>
     <message>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;L&apos;identicité des fichiers est basée sur l&apos;algorithme MD5.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;L'identicité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Automatic redownload</source>
@@ -6720,7 +6720,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Get extension from file header</source>
-      <translation type="vanished">Récupérer l&apos;extension dans l&apos;en-tête du fichier</translation>
+      <translation type="vanished">Récupérer l'extension dans l'en-tête du fichier</translation>
     </message>
     <message>
       <source>Default</source>
@@ -6731,8 +6731,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Ajouter un nom de fichier conditionnel</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;À chaque fois qu&apos;une image est sauvegardée, un fichier texte séparé sera enregistré avec le même nom au même endroit, contenant les tags de l&apos;image en question.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;À chaque fois qu'une image est sauvegardée, un fichier texte séparé sera enregistré avec le même nom au même endroit, contenant les tags de l'image en question.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Enable external text files</source>
@@ -6743,8 +6743,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Contenu du fichier texte</translation>
     </message>
     <message>
-      <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
-      <translation type="vanished">Symboles disponibles : les mêmes que dans la partie &quot;Sauvegarde&quot;.</translation>
+      <source>Available tokens: the same as in the "Save" part.</source>
+      <translation type="vanished">Symboles disponibles : les mêmes que dans la partie "Sauvegarde".</translation>
     </message>
     <message>
       <source>Enable external logging</source>
@@ -6760,7 +6760,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;Each time an image is saved, a new line will be added to the selected file.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;À chaque fois qu&apos;une image est sauvegardée, une ligne sera ajoutée au fichier séletionné.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;À chaque fois qu'une image est sauvegardée, une ligne sera ajoutée au fichier séletionné.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>If empty</source>
@@ -6812,7 +6812,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Enable autocompletion</source>
-      <translation type="vanished">Activer l&apos;autocomplétion</translation>
+      <translation type="vanished">Activer l'autocomplétion</translation>
     </message>
     <message>
       <source>Hide favorites</source>
@@ -6820,7 +6820,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;À chaque fois qu&apos;une image est sauvegardée, ses informations peuvent être ajoutées dans un fichier texte pour un traitement ultérieur ou pour organiser sa collection.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;À chaque fois qu'une image est sauvegardée, ses informations peuvent être ajoutées dans un fichier texte pour un traitement ultérieur ou pour organiser sa collection.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Add a separate log file</source>
@@ -6828,10 +6828,10 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d&apos;images reçues sera atteint.&lt;/i&gt;</translation>
+      <translation type="vanished">&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="vanished">Affichage des types de source</translation>
     </message>
     <message>
@@ -6843,7 +6843,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Image et texte</translation>
     </message>
     <message>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="vanished">Ne pas afficher</translation>
     </message>
     <message>
@@ -6863,7 +6863,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Avant le dernier point</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;Nombre de lettres affichées à côté des cases à cocher des sources en bas de la fenêtre principale.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6892,7 +6892,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Show warning if an incompatible modifier is found</source>
-      <translation type="vanished">Afficher l&apos;avertissement en cas de modificateur incompatible</translation>
+      <translation type="vanished">Afficher l'avertissement en cas de modificateur incompatible</translation>
     </message>
     <message>
       <source>Show other warnings</source>
@@ -6903,8 +6903,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Télécharger les pages non chargées</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d&apos;images par page, numéro de page, etc. même si elles n&apos;ont pas été chargées.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si vous activez cette option, appuyer sur le bouton "Télécharger cette page" prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Image, name and details</source>
@@ -7131,8 +7131,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Tag (avant)</translation>
     </message>
     <message>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="vanished">Symboles additionels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation type="vanished">Symboles additionels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, "general", "artist", "copyright", "character", "model" ou "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
     </message>
     <message>
       <source>Start</source>
@@ -7273,8 +7273,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
   <context>
     <name>searchTab</name>
     <message>
-      <source>Updating settings for tab &quot;%1&quot;.</source>
-      <translation type="vanished">Mise à jour des paramètres de l&apos;onglet &quot;%1&quot;.</translation>
+      <source>Updating settings for tab "%1".</source>
+      <translation type="vanished">Mise à jour des paramètres de l'onglet "%1".</translation>
     </message>
     <message>
       <source>server offline</source>
@@ -7289,8 +7289,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">page trop éloignée</translation>
     </message>
     <message>
-      <source>Receiving page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
-      <translation type="vanished">Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; </translation>
+      <source>Receiving page &lt;a href="%1"&gt;%1&lt;/a&gt;</source>
+      <translation type="vanished">Réception de la page &lt;a href="%1"&gt;%1&lt;/a&gt; </translation>
     </message>
     <message>
       <source>Image #%1 ignored. Reason: %2.</source>
@@ -7301,12 +7301,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-      <translation type="vanished">une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
+      <source>one of the thumbnails is empty (&lt;a href="%1"&gt;%1&lt;/a&gt;).</source>
+      <translation type="vanished">une des miniatures est vide (&lt;a href="%1"&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
-      <translation type="vanished">Certains tags de l&apos;image sont dans la liste blanche : %1. Cependant, certains dans la liste noire : %2. Voulez-vous la télécharger tout de même ?</translation>
+      <translation type="vanished">Certains tags de l'image sont dans la liste blanche : %1. Cependant, certains dans la liste noire : %2. Voulez-vous la télécharger tout de même ?</translation>
     </message>
     <message>
       <source>No result</source>
@@ -7353,8 +7353,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation type="vanished">&apos;le&apos; dd/MM/yyyy &apos;à&apos; hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation type="vanished">'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
       <source>Never</source>
@@ -7378,7 +7378,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Save image</source>
-      <translation type="vanished">Enregistrer l&apos;image</translation>
+      <translation type="vanished">Enregistrer l'image</translation>
     </message>
     <message>
       <source>Updating checkboxes.</source>
@@ -7391,8 +7391,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message numerus="yes">
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation type="vanished">
-        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
-        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
+        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
+        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
       </translation>
     </message>
     <message>
@@ -7404,8 +7404,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Chargement des résultats...</translation>
     </message>
     <message>
-      <source>Loading page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
-      <translation type="vanished">Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
+      <source>Loading page &lt;a href="%1"&gt;%1&lt;/a&gt;</source>
+      <translation type="vanished">Chargement de la page &lt;a href="%1"&gt;%1&lt;/a&gt;</translation>
     </message>
   </context>
   <context>
@@ -7494,12 +7494,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Source</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d&apos;abord lire la page &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d&apos;abord lire la page &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Options</source>
@@ -7597,7 +7597,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>The save folder does not exist yet. Create it?</source>
-      <translation type="vanished">Le dossier de sauvegarde n&apos;existe pas encore. Le créer ?</translation>
+      <translation type="vanished">Le dossier de sauvegarde n'existe pas encore. Le créer ?</translation>
     </message>
     <message>
       <source>Remove from favorites</source>
@@ -7612,7 +7612,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Ajouter aux favoris</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">Ne pas garder pour plus tard</translation>
     </message>
     <message>
@@ -7620,7 +7620,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Garder pour plus tard</translation>
     </message>
     <message>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation type="vanished">Retirer de la liste noire</translation>
     </message>
     <message>
@@ -7628,7 +7628,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
       <translation type="vanished">Ajouter à la liste noire</translation>
     </message>
     <message>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation type="vanished">Ne plus ignorer</translation>
     </message>
     <message>
@@ -7674,7 +7674,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <source>An unexpected error occured loading the image (%1).
 %2</source>
-      <translation type="vanished">Une erreur inattendue est survenue lors du chargement de l&apos;image (%1).
+      <translation type="vanished">Une erreur inattendue est survenue lors du chargement de l'image (%1).
 %2</translation>
     </message>
     <message>
@@ -7707,15 +7707,15 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation type="vanished">Vous n&apos;avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
+      <translation type="vanished">Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
     <message>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation type="vanished">Vous n&apos;avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
+      <translation type="vanished">Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
     <message>
       <source>Error saving image.</source>
-      <translation type="vanished">Erreur lors de la sauvegarde de l&apos;image.</translation>
+      <translation type="vanished">Erreur lors de la sauvegarde de l'image.</translation>
     </message>
     <message>
       <source>Saved! (fav)</source>
@@ -7740,7 +7740,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     <message>
       <source>An unexpected error occured loading the image (%1 - %2).
 %3</source>
-      <translation type="vanished">Une erreur non attendue a survenu lors du chargement de l&apos;image (%1 - %2).
+      <translation type="vanished">Une erreur non attendue a survenu lors du chargement de l'image (%1 - %2).
 %3</translation>
     </message>
     <message>
@@ -7769,7 +7769,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>Save image</source>
-      <translation type="vanished">Enregistrer l&apos;image</translation>
+      <translation type="vanished">Enregistrer l'image</translation>
     </message>
     <message>
       <source>Image</source>
@@ -7777,7 +7777,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement. </transl
     </message>
     <message>
       <source>More details</source>
-      <translation type="vanished">Plus d&apos;infos</translation>
+      <translation type="vanished">Plus d'infos</translation>
     </message>
     <message>
       <source>Save</source>

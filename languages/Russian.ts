@@ -10,8 +10,8 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;сайт программы&lt;/span&gt;&lt;/a&gt; чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt; чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -274,20 +274,20 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>ч &apos;ч&apos; м &apos;м&apos; с &apos;с&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation>ч 'ч' м 'м' с 'с'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>м &apos;м&apos; с &apos;с&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation>м 'м' с 'с'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>s &apos;s&apos;</source>
-      <translation>с &apos;с&apos;</translation>
+      <source>s 's'</source>
+      <translation>с 'с'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
@@ -566,8 +566,8 @@
       <translation>Закрыть</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -830,7 +830,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -855,7 +855,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
-      <source>Not enough space on the destination drive &quot;%1&quot;.
+      <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
       <translation type="unfinished"></translation>
     </message>
@@ -1055,8 +1055,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="76"/>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation type="unfinished">Последний раз когда вы нажали &quot;Отметить как просмотренное&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation type="unfinished">Последний раз когда вы нажали "Отметить как просмотренное".</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="79"/>
@@ -1237,8 +1237,8 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation>dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
@@ -1324,40 +1324,40 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>Image</name>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">неизвестный тип &quot;%1&quot; (доступные типы: &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">неизвестный тип "%1" (доступные типы: "%2")</translation>
     </message>
     <message>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation type="vanished">%1 изображения не совпадает</translation>
     </message>
     <message>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation type="vanished">%1 изображения совпадает</translation>
     </message>
     <message>
-      <source>image is not &quot;%1&quot;</source>
-      <translation type="vanished">изображение не &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation type="vanished">изображение не "%1"</translation>
     </message>
     <message>
-      <source>image is &quot;%1&quot;</source>
-      <translation type="vanished">изображение &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation type="vanished">изображение "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation type="vanished">источник изображения не начинается с &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation type="vanished">источник изображения не начинается с "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation type="vanished">источник изображения начинается с &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation type="vanished">источник изображения начинается с "%1"</translation>
     </message>
     <message>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation type="vanished">изображение не содержит &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation type="vanished">изображение не содержит "%1"</translation>
     </message>
     <message>
-      <source>image contains &quot;%1&quot;</source>
-      <translation type="vanished">изображение содержит &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation type="vanished">изображение содержит "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="859"/>
@@ -1407,8 +1407,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="866"/>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation>dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="876"/>
@@ -1462,8 +1462,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="895"/>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation>dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="896"/>
@@ -1630,8 +1630,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Доступные переменные такие же как во вкладке &quot;Сохранение&quot;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Доступные переменные такие же как во вкладке "Сохранение".&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1949,12 +1949,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation>Найден плагин &quot;Danbooru Downloader&quot; для Mozilla Firefox. Хотите загрузить его настройки?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation>Найден плагин "Danbooru Downloader" для Mozilla Firefox. Хотите загрузить его настройки?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1997,7 +1997,7 @@ Please solve the issue before resuming the download.</source>
       <translation>Вы уверены что хотите выйти?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="obsolete">Не оставлять на потом</translation>
     </message>
     <message>
@@ -2211,12 +2211,12 @@ Please solve the issue before resuming the download.</source>
     <name>MonitoringCenter</name>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
-      <source>New images found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>New images found for tag '%1' on '%2'</source>
       <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
-      <source>%n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
         <numerusform></numerusform>
@@ -2225,7 +2225,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="58"/>
-      <source>More than %n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
         <numerusform></numerusform>
@@ -2427,7 +2427,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="unfinished">Не скачивать автоматически</translation>
     </message>
     <message>
@@ -2643,12 +2643,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="unfinished">Не скачивать</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation type="unfinished">&lt;i&gt;Идентичность файла определяется по его MD5 сумме.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2679,7 +2679,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="921"/>
       <source>Replace spaces by underscores</source>
-      <translation type="unfinished">Заменять пробелы &quot;_&quot;</translation>
+      <translation type="unfinished">Заменять пробелы "_"</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="928"/>
@@ -2823,7 +2823,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="unfinished">Вид отоброжения источника</translation>
     </message>
     <message>
@@ -2845,7 +2845,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1223"/>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="unfinished">Не показывать</translation>
     </message>
     <message>
@@ -2870,7 +2870,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="unfinished">&lt;i&gt;Число отображаемых букв рядом с галочками источников в расширенном режиме поиска.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2940,8 +2940,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation type="unfinished">&lt;i&gt;Если активировать эту опцию, то при нажатии на кнопку &quot;Скачать эту страницу&quot; будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation type="unfinished">&lt;i&gt;Если активировать эту опцию, то при нажатии на кнопку "Скачать эту страницу" будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1405"/>
@@ -3233,7 +3233,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
+      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3339,8 +3339,8 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished">Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; или &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation type="unfinished">Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, "general", "artist", "copyright", "character", "model" или "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3490,7 +3490,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
-      <source>Unknown option &apos;%1&apos;.</source>
+      <source>Unknown option '%1'.</source>
       <translation>Неизвестный параметр: %1.</translation>
     </message>
     <message>
@@ -3500,13 +3500,13 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
-      <source>Missing value after &apos;%1&apos;.</source>
-      <translation>Отсутствует значение после &apos;%1&apos;.</translation>
+      <source>Missing value after '%1'.</source>
+      <translation>Отсутствует значение после '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
-      <source>Unexpected value after &apos;%1&apos;.</source>
-      <translation>Неожиданное значение после &apos;%1&apos;.</translation>
+      <source>Unexpected value after '%1'.</source>
+      <translation>Неожиданное значение после '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -3563,12 +3563,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
-      <source>Can&apos;t validate Javascript expressions.</source>
+      <source>Can't validate Javascript expressions.</source>
       <translation>Не удается проверить выражения JavaScript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
-      <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
+      <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation>Название файла не заканчивается на %ext%! Возможно, вы не сможете открыть скачанные файлы.</translation>
     </message>
     <message>
@@ -3583,8 +3583,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
-      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
-      <translation>Ваш формат содержит символы, запрещённые в Windows! Запрещённые символы: * ? &quot; : &lt; &gt; |</translation>
+      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
+      <translation>Ваш формат содержит символы, запрещённые в Windows! Запрещённые символы: * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="326"/>
@@ -3626,43 +3626,43 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
-      <source>image has a &quot;%1&quot; token</source>
+      <source>image has a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
-      <source>image does not have a &quot;%1&quot; token</source>
+      <source>image does not have a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">неизвестный тип &quot;%1&quot; (доступные типы: &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">неизвестный тип "%1" (доступные типы: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation>%1 изображения не совпадает</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation>%1 изображения совпадает</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
-      <source>image is not &quot;%1&quot;</source>
-      <translation>изображение не &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation>изображение не "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
-      <source>image is &quot;%1&quot;</source>
-      <translation>изображение &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation>изображение "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
@@ -3671,23 +3671,23 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation>источник изображения не начинается с &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation>источник изображения не начинается с "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation>источник изображения начинается с &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation>источник изображения начинается с "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation>изображение не содержит &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation>изображение не содержит "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
-      <source>image contains &quot;%1&quot;</source>
-      <translation>изображение содержит &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation>изображение содержит "%1"</translation>
     </message>
   </context>
   <context>
@@ -3769,7 +3769,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
+      <source>No image found when renaming image '%1'</source>
       <translation type="unfinished"></translation>
     </message>
   </context>
@@ -3840,7 +3840,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
-      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
+      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4139,7 +4139,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
-      <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
+      <source>Unable to guess site's type. Are you sure about the url?</source>
       <translation>Невозможно определить тип сайта. Вы уверенны что правильно ввели адрес?</translation>
     </message>
   </context>
@@ -4476,8 +4476,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Хешировать пароль</translation>
     </message>
     <message>
-      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-      <translation type="vanished">Пожалуйста введите ваш пароль ниже.&lt;br/&gt;Он будет захеширован в формате &quot;%1&quot;.</translation>
+      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format "%1".</source>
+      <translation type="vanished">Пожалуйста введите ваш пароль ниже.&lt;br/&gt;Он будет захеширован в формате "%1".</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -4628,12 +4628,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{website}/docs/&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href="{website}/docs/"&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="obsolete">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="obsolete">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href="{github}/wiki/GettingStarted"&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4670,7 +4670,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation>Не оставлять на потом</translation>
     </message>
     <message>
@@ -4680,7 +4680,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation>Убрать из чёрного списка</translation>
     </message>
     <message>
@@ -4690,7 +4690,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation>Не игнорировать</translation>
     </message>
     <message>
@@ -4756,7 +4756,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
-      <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
+      <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
       <translation>Создаёт локальную базу  тегов для данного источника. Впоследствии, даже если API  источника не предоставит информацию о типе тегов, Grabber сможет напрямую проверить его по своей локальной базе тегов.</translation>
     </message>
     <message>
@@ -5327,16 +5327,16 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Возобновить</translation>
     </message>
     <message>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">ч &apos;ч&apos; м &apos;м&apos; с &apos;с&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation type="vanished">ч 'ч' м 'м' с 'с'</translation>
     </message>
     <message>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">м &apos;м&apos; с &apos;с&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation type="vanished">м 'м' с 'с'</translation>
     </message>
     <message>
-      <source>s &apos;s&apos;</source>
-      <translation type="vanished">с &apos;с&apos;</translation>
+      <source>s 's'</source>
+      <translation type="vanished">с 'с'</translation>
     </message>
     <message>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
@@ -5465,8 +5465,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Закрыть</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -5508,8 +5508,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished"> %</translation>
     </message>
     <message>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation type="vanished">Последний раз когда вы нажали &quot;Отметить как просмотренное&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation type="vanished">Последний раз когда вы нажали "Отметить как просмотренное".</translation>
     </message>
     <message>
       <source>Last view</source>
@@ -5635,8 +5635,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Нет результатов с %1</translation>
     </message>
     <message>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <source>Mark as viewed</source>
@@ -5926,8 +5926,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Видимо приложение в прошлый раз было закрыто некорректно. Хотите ли вы восстановить сеанс?</translation>
     </message>
     <message>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="vanished">Найден плагин &quot;Danbooru Downloader&quot; для Mozilla Firefox. Хотите загрузить его настройки?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation type="vanished">Найден плагин "Danbooru Downloader" для Mozilla Firefox. Хотите загрузить его настройки?</translation>
     </message>
     <message>
       <source>Groups (%1/%2)</source>
@@ -5966,7 +5966,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Вы уверены что хотите выйти?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">Не оставлять на потом</translation>
     </message>
     <message>
@@ -5986,7 +5986,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Загрузка страниц, пожалуйста подождите...</translation>
     </message>
     <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
+      <source>All images' urls have been received (%n image(s)).</source>
       <translation type="vanished">
         <numerusform>Адреса всех изображений были получены (%n изображение)).</numerusform>
         <numerusform>Адреса всех изображений были получены (%n изображения)).</numerusform>
@@ -6354,7 +6354,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Скачивание</translation>
     </message>
     <message>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="vanished">Не скачивать автоматически</translation>
     </message>
     <message>
@@ -6507,7 +6507,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <source>Replace spaces by underscores</source>
-      <translation type="vanished">Заменять пробелы &quot;_&quot;</translation>
+      <translation type="vanished">Заменять пробелы "_"</translation>
     </message>
     <message>
       <source>Max length</source>
@@ -6554,11 +6554,11 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Заменить</translation>
     </message>
     <message>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="vanished">Не скачивать</translation>
     </message>
     <message>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;Идентичность файла определяется по его MD5 сумме.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6582,7 +6582,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Добавить условное имя файла</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6594,8 +6594,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Содержимое текстового файла</translation>
     </message>
     <message>
-      <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
-      <translation type="vanished">Доступные переменные такие же как во вкладке &quot;Сохранение&quot;.</translation>
+      <source>Available tokens: the same as in the "Save" part.</source>
+      <translation type="vanished">Доступные переменные такие же как во вкладке "Сохранение".</translation>
     </message>
     <message>
       <source>Enable external logging</source>
@@ -6686,7 +6686,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">&lt;i&gt;Список избранного будет скрыт как только будет достигнуто заданное количество изображений.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="vanished">Вид отоброжения источника</translation>
     </message>
     <message>
@@ -6702,7 +6702,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Изображение и текст</translation>
     </message>
     <message>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="vanished">Не показывать</translation>
     </message>
     <message>
@@ -6722,7 +6722,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">После последней точки</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;Число отображаемых букв рядом с галочками источников в расширенном режиме поиска.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6754,8 +6754,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Скачивать непрогруженные страницы</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Если активировать эту опцию, то при нажатии на кнопку &quot;Скачать эту страницу&quot; будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Если активировать эту опцию, то при нажатии на кнопку "Скачать эту страницу" будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Image, name and details</source>
@@ -7018,8 +7018,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Тег (после)</translation>
     </message>
     <message>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="vanished">Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; или &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation type="vanished">Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, "general", "artist", "copyright", "character", "model" или "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
     </message>
     <message>
       <source>Start</source>
@@ -7132,8 +7132,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">страница слишком далеко</translation>
     </message>
     <message>
-      <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-      <translation type="vanished">одна из миниатюр пустая (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
+      <source>one of the thumbnails is empty (&lt;a href="%1"&gt;%1&lt;/a&gt;).</source>
+      <translation type="vanished">одна из миниатюр пустая (&lt;a href="%1"&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
@@ -7184,8 +7184,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">&lt;b&gt;Дата:&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation type="vanished">dd/MM/yyyy&apos; в &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation type="vanished">dd/MM/yyyy' в 'hh:mm</translation>
     </message>
     <message>
       <source>Never</source>
@@ -7310,12 +7310,12 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Источник</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href="{github}/wiki/GettingStarted"&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href="{website}/wiki/GettingStarted"&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Options</source>
@@ -7464,7 +7464,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Добавить в избранное</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">Не оставлять на потом</translation>
     </message>
     <message>
@@ -7472,7 +7472,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Оставить на потом</translation>
     </message>
     <message>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation type="vanished">Убрать из чёрного списка</translation>
     </message>
     <message>
@@ -7480,7 +7480,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">Добавить в чёрный список</translation>
     </message>
     <message>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation type="vanished">Не игнорировать</translation>
     </message>
     <message>

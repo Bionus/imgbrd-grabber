@@ -10,8 +10,8 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber 是一个由 Bionus 开发的软件。&lt;br/&gt;请查看 &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;软件官网&lt;/span&gt;&lt;/a&gt; 来保持软件或站点和翻译文件处在最新状态。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber 是一个由 Bionus 开发的软件。&lt;br/&gt;请查看 &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;软件官网&lt;/span&gt;&lt;/a&gt; 来保持软件或站点和翻译文件处在最新状态。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -274,20 +274,20 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation>h 'h' m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation>m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>s &apos;s&apos;</source>
-      <translation>s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation>s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
@@ -564,8 +564,8 @@
       <translation>关闭</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'the' MM/dd/yyyy 'at' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -826,7 +826,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -851,7 +851,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
-      <source>Not enough space on the destination drive &quot;%1&quot;.
+      <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
       <translation type="unfinished"></translation>
     </message>
@@ -1035,7 +1035,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="76"/>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
+      <source>Last time you clicked on "Mark as viewed".</source>
       <translation>上一次你选择”标记为已看“。</translation>
     </message>
     <message>
@@ -1217,8 +1217,8 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>MM/dd/yyyy &apos;于&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation>MM/dd/yyyy '于' hh:mm</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
@@ -1304,40 +1304,40 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>Image</name>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">未知格式 &quot;%1&quot; （可用格式：&quot;%2&quot;）</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">未知格式 "%1" （可用格式："%2"）</translation>
     </message>
     <message>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation type="vanished">图片的 %1 不符合</translation>
     </message>
     <message>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation type="vanished">图片的 %1 符合</translation>
     </message>
     <message>
-      <source>image is not &quot;%1&quot;</source>
-      <translation type="vanished">图片不是 &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation type="vanished">图片不是 "%1"</translation>
     </message>
     <message>
-      <source>image is &quot;%1&quot;</source>
-      <translation type="vanished">图片是 &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation type="vanished">图片是 "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation type="vanished">图片的来源不以 &quot;%1&quot; 开头</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation type="vanished">图片的来源不以 "%1" 开头</translation>
     </message>
     <message>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation type="vanished">图片的来源以 &quot;%1&quot; 开头</translation>
+      <source>image's source starts with "%1"</source>
+      <translation type="vanished">图片的来源以 "%1" 开头</translation>
     </message>
     <message>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation type="vanished">图片不包含 &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation type="vanished">图片不包含 "%1"</translation>
     </message>
     <message>
-      <source>image contains &quot;%1&quot;</source>
-      <translation type="vanished">图片包含 &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation type="vanished">图片包含 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="859"/>
@@ -1387,8 +1387,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="866"/>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation>&apos;MM/dd/yyyy&apos; 于 &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation>'MM/dd/yyyy' 于 'hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="876"/>
@@ -1442,8 +1442,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="895"/>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation>'the' MM/dd/yyyy 'at' hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="896"/>
@@ -1608,7 +1608,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
       <translation>&lt;i&gt;有效的变量：和”保存“节的内容相同。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -1939,12 +1939,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation>检测到你有安装 Firefox 插件 &quot;Danbooru Downloader&quot;。你想要导入它的设置吗？</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation>检测到你有安装 Firefox 插件 "Danbooru Downloader"。你想要导入它的设置吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1975,7 +1975,7 @@ Please solve the issue before resuming the download.</source>
       <translation>你确定要退出吗？</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="obsolete">取消等下再看</translation>
     </message>
     <message>
@@ -2173,19 +2173,19 @@ Please solve the issue before resuming the download.</source>
     <name>MonitoringCenter</name>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
-      <source>New images found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>New images found for tag '%1' on '%2'</source>
       <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
-      <source>%n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="58"/>
-      <source>More than %n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
       </translation>
@@ -2381,7 +2381,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation>不要自动下载</translation>
     </message>
     <message>
@@ -2597,12 +2597,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>不要保存</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation>&lt;i&gt;文件的身份识别基于 MD5 值。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2777,7 +2777,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation>来源类型显示</translation>
     </message>
     <message>
@@ -2799,7 +2799,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1223"/>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation>不显示</translation>
     </message>
     <message>
@@ -2824,7 +2824,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation>&lt;i&gt;在主页面 ”+“ 的来源复选框旁显示的字母数量.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2894,7 +2894,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
       <translation>&lt;i&gt;如果你启用了这个选项，点击”获取此页“按钮将会对每页显示的图片数和页面数等等进行修改，无论他们是否已经被加载。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -3187,7 +3187,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
+      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3293,8 +3293,8 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; 或 &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation>额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, "general", "artist", "copyright", "character", "model" 或 "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3444,23 +3444,23 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
-      <source>Unknown option &apos;%1&apos;.</source>
-      <translation>未知选项 &apos;%1&apos;。</translation>
+      <source>Unknown option '%1'.</source>
+      <translation>未知选项 '%1'。</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="477"/>
       <source>Unknown options: %1.</source>
-      <translation>未知选项 &apos;%1&apos;。</translation>
+      <translation>未知选项 '%1'。</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
-      <source>Missing value after &apos;%1&apos;.</source>
-      <translation>&apos;%1&apos; 后缺失值。</translation>
+      <source>Missing value after '%1'.</source>
+      <translation>'%1' 后缺失值。</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
-      <source>Unexpected value after &apos;%1&apos;.</source>
-      <translation>&apos;%1&apos; 后的值不可用。</translation>
+      <source>Unexpected value after '%1'.</source>
+      <translation>'%1' 后的值不可用。</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -3517,12 +3517,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
-      <source>Can&apos;t validate Javascript expressions.</source>
+      <source>Can't validate Javascript expressions.</source>
       <translation>无法验证 Javascript 表达式。</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
-      <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
+      <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation>你的文件名不以扩展名结束，请添加 %ext%！否则你可能无法打开保存的文件。</translation>
     </message>
     <message>
@@ -3537,8 +3537,8 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
-      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
-      <translation>你的文件名格式存在 Windows 不允许的字符！不允许的字符： * ? &quot; : &lt; &gt; |</translation>
+      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
+      <translation>你的文件名格式存在 Windows 不允许的字符！不允许的字符： * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="326"/>
@@ -3552,43 +3552,43 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
-      <source>image has a &quot;%1&quot; token</source>
+      <source>image has a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
-      <source>image does not have a &quot;%1&quot; token</source>
+      <source>image does not have a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">未知格式 &quot;%1&quot; （可用格式：&quot;%2&quot;）</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">未知格式 "%1" （可用格式："%2"）</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation>图片的 %1 不符合</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation>图片的 %1 符合</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
-      <source>image is not &quot;%1&quot;</source>
-      <translation>图片不是 &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation>图片不是 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
-      <source>image is &quot;%1&quot;</source>
-      <translation>图片是 &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation>图片是 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
@@ -3597,23 +3597,23 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation>图片的来源不以 &quot;%1&quot; 开头</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation>图片的来源不以 "%1" 开头</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation>图片的来源以 &quot;%1&quot; 开头</translation>
+      <source>image's source starts with "%1"</source>
+      <translation>图片的来源以 "%1" 开头</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation>图片不包含 &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation>图片不包含 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
-      <source>image contains &quot;%1&quot;</source>
-      <translation>图片包含 &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation>图片包含 "%1"</translation>
     </message>
   </context>
   <context>
@@ -3693,7 +3693,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
+      <source>No image found when renaming image '%1'</source>
       <translation type="unfinished"></translation>
     </message>
   </context>
@@ -3764,7 +3764,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
-      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
+      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4061,7 +4061,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
-      <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
+      <source>Unable to guess site's type. Are you sure about the url?</source>
       <translation>无法猜测站点类型。你确定这是一个 url 吗？</translation>
     </message>
   </context>
@@ -4394,8 +4394,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">计算密码哈希值</translation>
     </message>
     <message>
-      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-      <translation type="vanished">请在下面输入你的密码。&lt;br/&gt;它将以 &quot;%1&quot; 的格式计算哈希值。</translation>
+      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format "%1".</source>
+      <translation type="vanished">请在下面输入你的密码。&lt;br/&gt;它将以 "%1" 的格式计算哈希值。</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -4546,12 +4546,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="obsolete">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="obsolete">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4588,7 +4588,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation>取消等下再看</translation>
     </message>
     <message>
@@ -4598,7 +4598,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4608,7 +4608,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation>取消忽略</translation>
     </message>
     <message>
@@ -4674,7 +4674,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
-      <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
+      <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5238,16 +5238,16 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">恢复</translation>
     </message>
     <message>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation type="vanished">h 'h' m 'm' s 's'</translation>
     </message>
     <message>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation type="vanished">m 'm' s 's'</translation>
     </message>
     <message>
-      <source>s &apos;s&apos;</source>
-      <translation type="vanished">s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation type="vanished">s 's'</translation>
     </message>
     <message>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
@@ -5376,8 +5376,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">关闭</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'the' MM/dd/yyyy 'at' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -5423,7 +5423,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished"> %</translation>
     </message>
     <message>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
+      <source>Last time you clicked on "Mark as viewed".</source>
       <translation type="vanished">上一次你选择”标记为已看“。</translation>
     </message>
     <message>
@@ -5550,8 +5550,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">从 %1 开始没有结果</translation>
     </message>
     <message>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">MM/dd/yyyy &apos;于&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">MM/dd/yyyy '于' hh:mm</translation>
     </message>
     <message>
       <source>Mark as viewed</source>
@@ -5829,8 +5829,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">看来上次程序没有正常结束。你想要恢复会话吗？</translation>
     </message>
     <message>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="vanished">检测到你有安装 Firefox 插件 &quot;Danbooru Downloader&quot;。你想要导入它的设置吗？</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation type="vanished">检测到你有安装 Firefox 插件 "Danbooru Downloader"。你想要导入它的设置吗？</translation>
     </message>
     <message>
       <source>Groups (%1/%2)</source>
@@ -5857,7 +5857,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">你确定要退出吗？</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">取消等下再看</translation>
     </message>
     <message>
@@ -5877,7 +5877,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">下载页面中，请稍候...</translation>
     </message>
     <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
+      <source>All images' urls have been received (%n image(s)).</source>
       <translation type="vanished">
         <numerusform>已获取所有图片的 url (%n image(s))。</numerusform>
       </translation>
@@ -6205,7 +6205,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">下载图片</translation>
     </message>
     <message>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="vanished">不要自动下载</translation>
     </message>
     <message>
@@ -6373,11 +6373,11 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">移动</translation>
     </message>
     <message>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="vanished">不要保存</translation>
     </message>
     <message>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;文件的身份识别基于 MD5 值。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6397,7 +6397,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">添加一个条件文件名</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;每当图片保存时，一个文本文件将储存在相同的地方，包含这个图片的标签。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6409,7 +6409,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">文本文件内容</translation>
     </message>
     <message>
-      <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
+      <source>Available tokens: the same as in the "Save" part.</source>
       <translation type="vanished">有效的变量：和”保存“节的内容相同。</translation>
     </message>
     <message>
@@ -6485,7 +6485,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">&lt;i&gt;当到达特定图片数时，收藏列表将被隐藏。&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="vanished">来源类型显示</translation>
     </message>
     <message>
@@ -6501,7 +6501,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">图片和文本</translation>
     </message>
     <message>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="vanished">不显示</translation>
     </message>
     <message>
@@ -6521,7 +6521,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">在最后一个点前</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;在主页面 ”+“ 的来源复选框旁显示的字母数量.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6553,7 +6553,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">下载没有加载的页面</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;如果你启用了这个选项，点击”获取此页“按钮将会对每页显示的图片数和页面数等等进行修改，无论他们是否已经被加载。&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6713,8 +6713,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">标签（之后）</translation>
     </message>
     <message>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="vanished">额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; 或 &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation type="vanished">额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, "general", "artist", "copyright", "character", "model" 或 "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
     </message>
     <message>
       <source>Start</source>
@@ -6831,8 +6831,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">页面过多</translation>
     </message>
     <message>
-      <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-      <translation type="vanished">有一个缩略图是空的 (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;)。</translation>
+      <source>one of the thumbnails is empty (&lt;a href="%1"&gt;%1&lt;/a&gt;).</source>
+      <translation type="vanished">有一个缩略图是空的 (&lt;a href="%1"&gt;%1&lt;/a&gt;)。</translation>
     </message>
     <message>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
@@ -6883,8 +6883,8 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">&lt;b&gt;日期：&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation type="vanished">&apos;MM/dd/yyyy&apos; 于 &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation type="vanished">'MM/dd/yyyy' 于 'hh:mm</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -6991,12 +6991,12 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">来源</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;如果你第一次使用 Grabber，推荐您先阅读 &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki 页。&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Options</source>
@@ -7137,7 +7137,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="vanished">添加到收藏</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">取消等下再看</translation>
     </message>
     <message>
@@ -7149,7 +7149,7 @@ Please solve the issue before resuming the download.</source>
       <translation type="obsolete">黑名单</translation>
     </message>
     <message>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation type="vanished">取消忽略</translation>
     </message>
     <message>

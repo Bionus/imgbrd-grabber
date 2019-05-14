@@ -10,8 +10,8 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber es una creación de Bionus.&lt;br/&gt;Por favor visite la &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;página web&lt;/span&gt;&lt;/a&gt; para mantenerse actualizado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber es una creación de Bionus.&lt;br/&gt;Por favor visite la &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;página web&lt;/span&gt;&lt;/a&gt; para mantenerse actualizado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -274,20 +274,20 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation>h 'h' m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation>m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation>m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>s &apos;s&apos;</source>
-      <translation>s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation>s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
@@ -565,8 +565,8 @@
       <translation>Cerrar</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;el&apos; MM/dd/yyyy &apos;-&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'el' MM/dd/yyyy '-' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -828,7 +828,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -853,7 +853,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
-      <source>Not enough space on the destination drive &quot;%1&quot;.
+      <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
       <translation type="unfinished"></translation>
     </message>
@@ -1045,8 +1045,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="76"/>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation>La última vez que dio clic sobre &quot;Marcar como visto&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation>La última vez que dio clic sobre "Marcar como visto".</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="79"/>
@@ -1227,8 +1227,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>MM/dd/yyyy &apos;-&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation>MM/dd/yyyy '-' hh:mm</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="319"/>
@@ -1314,40 +1314,40 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
   <context>
     <name>Image</name>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">Tipo desconocido &quot;%1&quot; (tipos disponibles: &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">Tipo desconocido "%1" (tipos disponibles: "%2")</translation>
     </message>
     <message>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation type="vanished">%1 de la imagen no coincide</translation>
     </message>
     <message>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation type="vanished">%1 de la imagen coincide</translation>
     </message>
     <message>
-      <source>image is not &quot;%1&quot;</source>
-      <translation type="vanished">la imagen no es &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation type="vanished">la imagen no es "%1"</translation>
     </message>
     <message>
-      <source>image is &quot;%1&quot;</source>
-      <translation type="vanished">la imagen no es &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation type="vanished">la imagen no es "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation type="vanished">la fuente de la imagen no comienza con &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation type="vanished">la fuente de la imagen no comienza con "%1"</translation>
     </message>
     <message>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation type="vanished">la fuente de la imagen no comienza con &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation type="vanished">la fuente de la imagen no comienza con "%1"</translation>
     </message>
     <message>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation type="vanished">la imagen no contiene &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation type="vanished">la imagen no contiene "%1"</translation>
     </message>
     <message>
-      <source>image contains &quot;%1&quot;</source>
-      <translation type="vanished">la imagen contiene &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation type="vanished">la imagen contiene "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="859"/>
@@ -1397,8 +1397,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="866"/>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation>&apos;el &apos;MM/dd/yyyy&apos; - &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation>'el 'MM/dd/yyyy' - 'hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="876"/>
@@ -1452,8 +1452,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="895"/>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation>&apos;el&apos; MM/dd/yyyy &apos;-&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation>'el' MM/dd/yyyy '-' hh:mm</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="896"/>
@@ -1619,8 +1619,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Identificadores disponibles: Los mismos que se utilizan en la sección &quot;Guardar&quot;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Identificadores disponibles: Los mismos que se utilizan en la sección "Guardar".&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1946,12 +1946,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation>Se detectó el complemento de Firefox &quot;Danbooru Downloader&quot; en el sistema. ¿Desea cargar su configuración?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation>Se detectó el complemento de Firefox "Danbooru Downloader" en el sistema. ¿Desea cargar su configuración?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1986,7 +1986,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation>¿Seguro que desea salir de la aplicación?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="obsolete">No guardar para más tarde</translation>
     </message>
     <message>
@@ -2193,23 +2193,23 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <name>MonitoringCenter</name>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
-      <source>New images found for tag &apos;%1&apos; on &apos;%2&apos;</source>
-      <translation>Nuevas imagenes encontradas para la etiqueta &apos;%1&apos;  en &apos;%2&apos;</translation>
+      <source>New images found for tag '%1' on '%2'</source>
+      <translation>Nuevas imagenes encontradas para la etiqueta '%1'  en '%2'</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
-      <source>%n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation>
-        <numerusform>%n nueva imagen encontrada para la etiqueta &apos;%1&apos; en &apos;%2&apos;</numerusform>
-        <numerusform>%n nueva imagenes  encontradas para la etiqueta &apos;%1&apos; en &apos;%2&apos;</numerusform>
+        <numerusform>%n nueva imagen encontrada para la etiqueta '%1' en '%2'</numerusform>
+        <numerusform>%n nueva imagenes  encontradas para la etiqueta '%1' en '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="58"/>
-      <source>More than %n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
-        <numerusform>Mas de %n nueva imagen encontrada para la etiqueta &apos;%1&apos; en &apos;%2&apos;</numerusform>
-        <numerusform>Mas de %n nuevas imagenes encontradas para la etiqueta &apos;%1&apos; en &apos;%2&apos;</numerusform>
+        <numerusform>Mas de %n nueva imagen encontrada para la etiqueta '%1' en '%2'</numerusform>
+        <numerusform>Mas de %n nuevas imagenes encontradas para la etiqueta '%1' en '%2'</numerusform>
       </translation>
     </message>
     <message>
@@ -2411,7 +2411,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation>No descargar automáticamente</translation>
     </message>
     <message>
@@ -2627,12 +2627,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>No guardar</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation>&lt;i&gt;La identidad del archivo se encuentra usando el algoritmo MD5.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2811,7 +2811,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation>Tipo de visualización de la fuente</translation>
     </message>
     <message>
@@ -2833,7 +2833,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1223"/>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation>No mostrar</translation>
     </message>
     <message>
@@ -2858,7 +2858,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation>&lt;i&gt;El número de letras que se mostrará junto a las casillas de las fuentes en la ventana principal.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -2928,8 +2928,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Si esta opción está activa, al presionar el botón &quot;Obtener esta página&quot; se tomarán en cuenta las modificaciones hechas al número de imágenes por página, el número de la página, etc. incluso si no pudo cargarse.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Si esta opción está activa, al presionar el botón "Obtener esta página" se tomarán en cuenta las modificaciones hechas al número de imágenes por página, el número de la página, etc. incluso si no pudo cargarse.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1405"/>
@@ -3221,8 +3221,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Una linea por lista negra. Tu puedes poner multiples etiquetas en una sola linea para hacer condiciones &quot;AND&quot;.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Una linea por lista negra. Tu puedes poner multiples etiquetas en una sola linea para hacer condiciones "AND".&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2273"/>
@@ -3327,8 +3327,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>Etiquetas adicionales: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: la etiqueta&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de etiqueta, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; o &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: el número del tipo de etiqueta (entre 0 y 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation>Etiquetas adicionales: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: la etiqueta&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de etiqueta, "general", "artist", "copyright", "character", "model" o "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: el número del tipo de etiqueta (entre 0 y 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3478,8 +3478,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
-      <source>Unknown option &apos;%1&apos;.</source>
-      <translation>Opción desconocida &apos;%1&apos;.</translation>
+      <source>Unknown option '%1'.</source>
+      <translation>Opción desconocida '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="477"/>
@@ -3488,13 +3488,13 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
-      <source>Missing value after &apos;%1&apos;.</source>
-      <translation>Falta un valor después de &apos;%1&apos;.</translation>
+      <source>Missing value after '%1'.</source>
+      <translation>Falta un valor después de '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
-      <source>Unexpected value after &apos;%1&apos;.</source>
-      <translation>Valor inesperado después de &apos;%1&apos;.</translation>
+      <source>Unexpected value after '%1'.</source>
+      <translation>Valor inesperado después de '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -3547,12 +3547,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
-      <source>Can&apos;t validate Javascript expressions.</source>
+      <source>Can't validate Javascript expressions.</source>
       <translation>No se pueden validar las expresiones Javascript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
-      <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
+      <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation>¡El nombre de archivo no termina con una extensión, identificada con %ext%! Es posible que no pueda abrir los archivos guardados.</translation>
     </message>
     <message>
@@ -3567,8 +3567,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
-      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
-      <translation>¡El formato contiene caracteres prohibidos en Windows! Caracteres prohibidos: * ? &quot; : &lt; &gt; |</translation>
+      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
+      <translation>¡El formato contiene caracteres prohibidos en Windows! Caracteres prohibidos: * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="326"/>
@@ -3610,43 +3610,43 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
-      <source>image has a &quot;%1&quot; token</source>
+      <source>image has a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
-      <source>image does not have a &quot;%1&quot; token</source>
+      <source>image does not have a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-      <translation type="vanished">Tipo desconocido &quot;%1&quot; (tipos disponibles: &quot;%2&quot;)</translation>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation type="vanished">Tipo desconocido "%1" (tipos disponibles: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation>%1 de la imagen no coincide</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation>%1 de la imagen coincide</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
-      <source>image is not &quot;%1&quot;</source>
-      <translation>la imagen no es &quot;%1&quot;</translation>
+      <source>image is not "%1"</source>
+      <translation>la imagen no es "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
-      <source>image is &quot;%1&quot;</source>
-      <translation>la imagen no es &quot;%1&quot;</translation>
+      <source>image is "%1"</source>
+      <translation>la imagen no es "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
@@ -3655,23 +3655,23 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-      <translation>la fuente de la imagen no comienza con &quot;%1&quot;</translation>
+      <source>image's source does not starts with "%1"</source>
+      <translation>la fuente de la imagen no comienza con "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
-      <translation>la fuente de la imagen no comienza con &quot;%1&quot;</translation>
+      <source>image's source starts with "%1"</source>
+      <translation>la fuente de la imagen no comienza con "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
-      <source>image does not contains &quot;%1&quot;</source>
-      <translation>la imagen no contiene &quot;%1&quot;</translation>
+      <source>image does not contains "%1"</source>
+      <translation>la imagen no contiene "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
-      <source>image contains &quot;%1&quot;</source>
-      <translation>la imagen contiene &quot;%1&quot;</translation>
+      <source>image contains "%1"</source>
+      <translation>la imagen contiene "%1"</translation>
     </message>
   </context>
   <context>
@@ -3752,8 +3752,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
-      <translation>Ninguna imagen encontrada cuando se renombraba la imagen &apos;%1&apos;</translation>
+      <source>No image found when renaming image '%1'</source>
+      <translation>Ninguna imagen encontrada cuando se renombraba la imagen '%1'</translation>
     </message>
   </context>
   <context>
@@ -3823,8 +3823,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
-      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
-      <translation>Una redireccion de HTTPS a HTTPS ha sido detectada por la página %1. ¿Quieres activar SSL en ella? La configuracion recomendada es &apos;Sí&apos;.</translation>
+      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
+      <translation>Una redireccion de HTTPS a HTTPS ha sido detectada por la página %1. ¿Quieres activar SSL en ella? La configuracion recomendada es 'Sí'.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
@@ -4121,7 +4121,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
-      <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
+      <source>Unable to guess site's type. Are you sure about the url?</source>
       <translation>No se pudo encontrar el tipo del sitio web. ¿La URL es correcta?</translation>
     </message>
   </context>
@@ -4474,8 +4474,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Cifrar una contraseña</translation>
     </message>
     <message>
-      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-      <translation type="vanished">Por favor introduzca su contraseña abajo. &lt;/br&gt;Se cifrará usando el formato &quot;%1&quot;.</translation>
+      <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format "%1".</source>
+      <translation type="vanished">Por favor introduzca su contraseña abajo. &lt;/br&gt;Se cifrará usando el formato "%1".</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -4626,12 +4626,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Si estás usando Grabber por primera vez,te recomendamos primero leer la  &lt;a href=&quot;{website}/docs/&quot;&gt;Primeros pasos&lt;/a&gt; pagina de la wiki.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Si estás usando Grabber por primera vez,te recomendamos primero leer la  &lt;a href="{website}/docs/"&gt;Primeros pasos&lt;/a&gt; pagina de la wiki.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="obsolete">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="obsolete">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href="{github}/wiki/GettingStarted"&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4668,7 +4668,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation>No guardar para más tarde</translation>
     </message>
     <message>
@@ -4678,7 +4678,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation>No meter a la lista negra</translation>
     </message>
     <message>
@@ -4688,7 +4688,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation>No ignorar</translation>
     </message>
     <message>
@@ -4754,7 +4754,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
-      <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
+      <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
       <translation>Genera la etiqueta de la base de datos con una fuente preestablecida. Despues, incluso si la API de la fuente no proporciona un tipo de informacion de la etiqueta, Grabber podrá comprobar directamente en su base de datos de etiquetas.</translation>
     </message>
     <message>
@@ -5324,16 +5324,16 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Continuar</translation>
     </message>
     <message>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>h 'h' m 'm' s 's'</source>
+      <translation type="vanished">h 'h' m 'm' s 's'</translation>
     </message>
     <message>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
-      <translation type="vanished">m &apos;m&apos; s &apos;s&apos;</translation>
+      <source>m 'm' s 's'</source>
+      <translation type="vanished">m 'm' s 's'</translation>
     </message>
     <message>
-      <source>s &apos;s&apos;</source>
-      <translation type="vanished">s &apos;s&apos;</translation>
+      <source>s 's'</source>
+      <translation type="vanished">s 's'</translation>
     </message>
     <message>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
@@ -5462,8 +5462,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Cerrar</translation>
     </message>
     <message>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">&apos;el&apos; MM/dd/yyyy &apos;-&apos; hh:mm</translation>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">'el' MM/dd/yyyy '-' hh:mm</translation>
     </message>
     <message>
       <source>yes</source>
@@ -5509,8 +5509,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">%</translation>
     </message>
     <message>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-      <translation type="vanished">La última vez que dio clic sobre &quot;Marcar como visto&quot;.</translation>
+      <source>Last time you clicked on "Mark as viewed".</source>
+      <translation type="vanished">La última vez que dio clic sobre "Marcar como visto".</translation>
     </message>
     <message>
       <source>Last view</source>
@@ -5636,8 +5636,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Ningún resultado desde %1</translation>
     </message>
     <message>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-      <translation type="vanished">MM/dd/yyyy &apos;-&apos; hh:mm</translation>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
+      <translation type="vanished">MM/dd/yyyy '-' hh:mm</translation>
     </message>
     <message>
       <source>Mark as viewed</source>
@@ -5915,8 +5915,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Parece que la aplicación no se cerró correctamente la última vez. ¿Desea restaurar la sesión anterior?</translation>
     </message>
     <message>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="vanished">Se detectó el complemento de Firefox &quot;Danbooru Downloader&quot; en el sistema. ¿Desea cargar su configuración?</translation>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
+      <translation type="vanished">Se detectó el complemento de Firefox "Danbooru Downloader" en el sistema. ¿Desea cargar su configuración?</translation>
     </message>
     <message>
       <source>Groups (%1/%2)</source>
@@ -5947,7 +5947,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">¿Seguro que desea salir de la aplicación?</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">No guardar para más tarde</translation>
     </message>
     <message>
@@ -5967,7 +5967,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Descargando páginas, por favor espere...</translation>
     </message>
     <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
+      <source>All images' urls have been received (%n image(s)).</source>
       <translation type="vanished">
         <numerusform>Se recibieron todos los URLs de las imágenes (%n imagen).</numerusform>
         <numerusform>Se recibieron todos los URLs de las imágenes (%n imágenes).</numerusform>
@@ -6309,7 +6309,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Descargar</translation>
     </message>
     <message>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="vanished">No descargar automáticamente</translation>
     </message>
     <message>
@@ -6501,11 +6501,11 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Mover</translation>
     </message>
     <message>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="vanished">No guardar</translation>
     </message>
     <message>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;La identidad del archivo se encuentra usando el algoritmo MD5.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6529,7 +6529,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Añadir nombre de archivo condicional</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;Cada vez que se guarde una imagen, se creará un archivo de texto adicional con el mismo nombre en el mismo lugar, conteniendo las etiquetas de la imagen.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6541,8 +6541,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Contenido del archivo de texto</translation>
     </message>
     <message>
-      <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
-      <translation type="vanished">Identificadores disponibles: Los mismos que se utilizan en la sección &quot;Guardar&quot;.</translation>
+      <source>Available tokens: the same as in the "Save" part.</source>
+      <translation type="vanished">Identificadores disponibles: Los mismos que se utilizan en la sección "Guardar".</translation>
     </message>
     <message>
       <source>Enable external logging</source>
@@ -6625,7 +6625,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">&lt;i&gt;La lista de favoritos se esconderá al alcanzar este número de imágenes.&lt;/i&gt;</translation>
     </message>
     <message>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="vanished">Tipo de visualización de la fuente</translation>
     </message>
     <message>
@@ -6641,7 +6641,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Imagen y texto</translation>
     </message>
     <message>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="vanished">No mostrar</translation>
     </message>
     <message>
@@ -6661,7 +6661,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Antes del último punto</translation>
     </message>
     <message>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="vanished">&lt;i&gt;El número de letras que se mostrará junto a las casillas de las fuentes en la ventana principal.&lt;/i&gt;</translation>
     </message>
     <message>
@@ -6693,8 +6693,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Descargar páginas no cargadas</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si esta opción está activa, al presionar el botón &quot;Obtener esta página&quot; se tomarán en cuenta las modificaciones hechas al número de imágenes por página, el número de la página, etc. incluso si no pudo cargarse.&lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si esta opción está activa, al presionar el botón "Obtener esta página" se tomarán en cuenta las modificaciones hechas al número de imágenes por página, el número de la página, etc. incluso si no pudo cargarse.&lt;/i&gt;</translation>
     </message>
     <message>
       <source>Image, name and details</source>
@@ -6889,8 +6889,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Etiqueta (antes)</translation>
     </message>
     <message>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="vanished">Etiquetas adicionales: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: la etiqueta&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de etiqueta, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; o &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: el número del tipo de etiqueta (entre 0 y 6)</translation>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <translation type="vanished">Etiquetas adicionales: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: la etiqueta&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tipo de etiqueta, "general", "artist", "copyright", "character", "model" o "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: el número del tipo de etiqueta (entre 0 y 6)</translation>
     </message>
     <message>
       <source>Start</source>
@@ -7003,8 +7003,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">página demasiado lejos</translation>
     </message>
     <message>
-      <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-      <translation type="vanished">una de las miniaturas está vacía (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
+      <source>one of the thumbnails is empty (&lt;a href="%1"&gt;%1&lt;/a&gt;).</source>
+      <translation type="vanished">una de las miniaturas está vacía (&lt;a href="%1"&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
@@ -7055,8 +7055,8 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">&lt;b&gt;Fecha:&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-      <translation type="vanished">&apos;el &apos;MM/dd/yyyy&apos; - &apos;hh:mm</translation>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
+      <translation type="vanished">'el 'MM/dd/yyyy' - 'hh:mm</translation>
     </message>
     <message>
       <source>Never</source>
@@ -7168,12 +7168,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Fuente</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href=&quot;{github}/wiki/GettingStarted&quot;&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{github}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href="{github}/wiki/GettingStarted"&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
     </message>
     <message>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="vanished">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/wiki/GettingStarted"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <translation type="vanished">&lt;i&gt;Si es la primera vez que usa Grabber, es aconsejable que primero lea la página &lt;a href="{website}/wiki/GettingStarted"&gt;getting started.&lt;/a&gt; &lt;/i&gt;</translation>
     </message>
     <message>
       <source>Options</source>
@@ -7310,7 +7310,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="vanished">Añadir a favoritos</translation>
     </message>
     <message>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="vanished">No guardar para más tarde</translation>
     </message>
     <message>
@@ -7322,7 +7322,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="obsolete">Lista negra</translation>
     </message>
     <message>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation type="vanished">No ignorar</translation>
     </message>
     <message>

@@ -10,7 +10,7 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;{website}&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -263,19 +263,19 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
+      <source>h 'h' m 'm' s 's'</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>m &apos;m&apos; s &apos;s&apos;</source>
+      <source>m 'm' s 's'</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
-      <source>s &apos;s&apos;</source>
+      <source>s 's'</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -725,7 +725,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -750,7 +750,7 @@
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
-      <source>Not enough space on the destination drive &quot;%1&quot;.
+      <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
       <translation type="unfinished"></translation>
     </message>
@@ -940,7 +940,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="76"/>
-      <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
+      <source>Last time you clicked on "Mark as viewed".</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1122,7 +1122,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="228"/>
-      <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
+      <source>MM/dd/yyyy 'at' hh:mm</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1252,7 +1252,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="866"/>
-      <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
+      <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1307,7 +1307,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="895"/>
-      <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
+      <source>'the' MM/dd/yyyy 'at' hh:mm</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1470,7 +1470,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1689,12 +1689,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
-      <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
+      <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
-      <source>Don&apos;t ask me again</source>
+      <source>Don't ask me again</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1847,12 +1847,12 @@ Please solve the issue before resuming the download.</source>
     <name>MonitoringCenter</name>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
-      <source>New images found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>New images found for tag '%1' on '%2'</source>
       <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
-      <source>%n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
         <numerusform></numerusform>
@@ -1860,7 +1860,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="58"/>
-      <source>More than %n new image(s) found for tag &apos;%1&apos; on &apos;%2&apos;</source>
+      <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation type="unfinished">
         <numerusform></numerusform>
         <numerusform></numerusform>
@@ -2045,7 +2045,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
-      <source>Don&apos;t download automatically</source>
+      <source>Don't download automatically</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2262,12 +2262,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
+      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2402,7 +2402,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
-      <source>Source&apos;s type display</source>
+      <source>Source's type display</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2424,7 +2424,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1223"/>
-      <source>Don&apos;t show</source>
+      <source>Don't show</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2449,7 +2449,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
+      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2519,7 +2519,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
-      <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
+      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2807,7 +2807,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make &quot;AND&quot; conditions.&lt;/i&gt;</source>
+      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2913,7 +2913,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
+      <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3049,7 +3049,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
-      <source>Unknown option &apos;%1&apos;.</source>
+      <source>Unknown option '%1'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3059,12 +3059,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
-      <source>Missing value after &apos;%1&apos;.</source>
+      <source>Missing value after '%1'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
-      <source>Unexpected value after &apos;%1&apos;.</source>
+      <source>Unexpected value after '%1'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3097,12 +3097,12 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
-      <source>Can&apos;t validate Javascript expressions.</source>
+      <source>Can't validate Javascript expressions.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
-      <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
+      <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3117,7 +3117,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
-      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
+      <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3137,38 +3137,38 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
-      <source>image has a &quot;%1&quot; token</source>
+      <source>image has a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
-      <source>image does not have a &quot;%1&quot; token</source>
+      <source>image does not have a "%1" token</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
-      <source>image&apos;s %1 does not match</source>
+      <source>image's %1 does not match</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
-      <source>image&apos;s %1 match</source>
+      <source>image's %1 match</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
-      <source>image is not &quot;%1&quot;</source>
+      <source>image is not "%1"</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
-      <source>image is &quot;%1&quot;</source>
+      <source>image is "%1"</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3178,22 +3178,22 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
-      <source>image&apos;s source does not starts with &quot;%1&quot;</source>
+      <source>image's source does not starts with "%1"</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
-      <source>image&apos;s source starts with &quot;%1&quot;</source>
+      <source>image's source starts with "%1"</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
-      <source>image does not contains &quot;%1&quot;</source>
+      <source>image does not contains "%1"</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
-      <source>image contains &quot;%1&quot;</source>
+      <source>image contains "%1"</source>
       <translation type="unfinished"></translation>
     </message>
   </context>
@@ -3219,7 +3219,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
-      <source>No image found when renaming image &apos;%1&apos;</source>
+      <source>No image found when renaming image '%1'</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3346,7 +3346,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
-      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is &apos;yes&apos;.</source>
+      <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3633,7 +3633,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
-      <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
+      <source>Unable to guess site's type. Are you sure about the url?</source>
       <translation type="unfinished"></translation>
     </message>
   </context>
@@ -4082,7 +4082,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/docs/&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
+      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4120,7 +4120,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
-      <source>Don&apos;t keep for later</source>
+      <source>Don't keep for later</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4130,7 +4130,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
-      <source>Don&apos;t blacklist</source>
+      <source>Don't blacklist</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4140,7 +4140,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
-      <source>Don&apos;t ignore</source>
+      <source>Don't ignore</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4198,7 +4198,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
-      <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
+      <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
       <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4664,10 +4664,10 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>mainWindow</name>
     <message numerus="yes">
-      <source>All images&apos; urls have been received (%n image(s)).</source>
+      <source>All images' urls have been received (%n image(s)).</source>
       <translation type="vanished">
-        <numerusform>All images&apos; urls have been received (%n image).</numerusform>
-        <numerusform>All images&apos; urls have been received (%n images).</numerusform>
+        <numerusform>All images' urls have been received (%n image).</numerusform>
+        <numerusform>All images' urls have been received (%n images).</numerusform>
       </translation>
     </message>
     <message numerus="yes">
