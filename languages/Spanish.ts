@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_MX" sourcelanguage="en_US">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>AboutWindow</name>
     <message>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="40"/>
       <source>Md5</source>
-      <translation>MD5</translation>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="68"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="89"/>
       <source>Url</source>
-      <translation>URL</translation>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation>Forzar el cálculo de MD5</translation>
+      <translation>Forzar el cálculo de md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation>Usar MD5 en el nombre del archivo</translation>
+      <translation>Usar md5 en el nombre del archivo</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
@@ -567,7 +567,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="160"/>
       <source>Md5</source>
-      <translation>MD5</translation>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="165"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="175"/>
       <source>Url</source>
-      <translation>URL</translation>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="180"/>
@@ -955,7 +955,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="93"/>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation>Imagen cuyo ícono se mostrará en la lista de favoritos.</translation>
+      <translation>Imagen cuyo icono se mostrará en la lista de favoritos.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="96"/>
@@ -980,7 +980,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="141"/>
       <source> min</source>
-      <translation> minimo</translation>
+      <translation> mínimo</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="151"/>
@@ -1150,7 +1150,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/filename-window.ui" line="68"/>
       <source>Javascript filenaming</source>
-      <translation>Renombrado por javascript</translation>
+      <translation>Renombrado por Javascript</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/filename-window.cpp" line="141"/>
@@ -1232,7 +1232,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../lib/src/models/image.cpp" line="863"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation>&lt;b&gt;Usuario:&lt;/b&gt; %1&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;Usuario:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="864"/>
@@ -1654,7 +1654,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="766"/>
       <source>Project GitHub</source>
-      <translation>Github del proyecto</translation>
+      <translation>GitHub del proyecto</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="778"/>
@@ -1722,7 +1722,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="14"/>
       <source>Md5 list fixer</source>
-      <translation>Arreglar lista MD5</translation>
+      <translation>Arreglar lista md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
@@ -1737,13 +1737,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="47"/>
       <source>Force md5 calculation</source>
-      <translatorcomment>Forzar cálculos md5</translatorcomment>
       <translation>Forzar calculo md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="54"/>
       <source>Get md5 in filename</source>
-      <translation>Usar MD5 en el nombre del archivo</translation>
+      <translation>Usar md5 en el nombre del archivo</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="64"/>
@@ -1799,14 +1798,14 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="54"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation>Nuevas imagenes encontradas para la etiqueta '%1'  en '%2'</translation>
+      <translation>Nuevas imagenes encontradas para la etiqueta '%1' en '%2'</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="56"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation>
         <numerusform>%n nueva imagen encontrada para la etiqueta '%1' en '%2'</numerusform>
-        <numerusform>%n nueva imagenes  encontradas para la etiqueta '%1' en '%2'</numerusform>
+        <numerusform>%n nueva imagenes encontradas para la etiqueta '%1' en '%2'</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -2481,7 +2480,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1412"/>
       <source>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Con esta opcion activada, clicar sobre una imagen lo marcará para descargar, mientras Ctrl+Click abrirá una ventana con los detalles&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Con esta opción activada, clicar sobre una imagen lo marcará para descargar, mientras Ctrl+Click abrirá una ventana con los detalles&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1433"/>
@@ -2789,7 +2788,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2320"/>
       <source>Minimize to tray</source>
-      <translation>Minimzar para trazari</translation>
+      <translation>Minimizar a la bandeja</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2330"/>
@@ -3059,7 +3058,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="291"/>
       <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
-      <translation>¡El nombre de archivo no es único para cada imagen y se pueden sobreescribir al guardarse! Debería usar %md5%, lo cual es único para cada imagen para evitar este inconveniente.</translation>
+      <translation>¡El nombre de archivo no es único para cada imagen y se pueden sobrescribir al guardarse! Debería usar %md5%, lo cual es único para cada imagen para evitar este inconveniente.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="312"/>
@@ -3164,12 +3163,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation>Forzar el cálculo de MD5</translation>
+      <translation>Forzar el cálculo de md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation>Usar MD5 en el nombre del archivo</translation>
+      <translation>Usar md5 en el nombre del archivo</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="51"/>
@@ -3298,7 +3297,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation>Una redireccion de HTTPS a HTTPS ha sido detectada por la página %1. ¿Quieres activar SSL en ella? La configuracion recomendada es 'Sí'.</translation>
+      <translation>Una redirección de HTTP a HTTPS ha sido detectada por la página %1. ¿Quieres activar SSL en ella? La configuración recomendada es 'Sí'.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
@@ -3308,7 +3307,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
       <source>Never for that website</source>
-      <translation>Nunca para esa pagina erb</translation>
+      <translation>Nunca para esa pagina web</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
@@ -3462,7 +3461,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="124"/>
       <source>Safe (no)</source>
-      <translation>No seguro</translation>
+      <translation>Seguro (no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="129"/>
@@ -3472,7 +3471,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="134"/>
       <source>Questionable (no)</source>
-      <translation>No dudoso</translation>
+      <translation>Dudoso (no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="139"/>
@@ -3482,7 +3481,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="144"/>
       <source>Explicit (no)</source>
-      <translation>No explícito</translation>
+      <translation>Explícito (no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="154"/>
@@ -3570,7 +3569,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="53"/>
       <source>Url</source>
-      <translation>URL</translation>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="74"/>
@@ -3585,7 +3584,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation>No se pudo encontrar el tipo del sitio web. ¿La URL es correcta?</translation>
+      <translation>No se pudo encontrar el tipo del sitio web. ¿La url es correcta?</translation>
     </message>
   </context>
   <context>
@@ -3825,12 +3824,12 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
       <source>OAuth 2</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="544"/>
@@ -4034,7 +4033,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
       <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Si estás usando Grabber por primera vez,te recomendamos primero leer la  &lt;a href="{website}/docs/"&gt;Primeros pasos&lt;/a&gt; pagina de la wiki.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Si estás usando Grabber por primera vez, te recomendamos primero leer la &lt;a href="{website}/docs/"&gt;Primeros pasos&lt;/a&gt; pagina de la wiki.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4150,7 +4149,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation>Genera la etiqueta de la base de datos con una fuente preestablecida. Despues, incluso si la API de la fuente no proporciona un tipo de informacion de la etiqueta, Grabber podrá comprobar directamente en su base de datos de etiquetas.</translation>
+      <translation>Genera la etiqueta de la base de datos con una fuente preestablecida. Después, incluso si la API de la fuente no proporciona un tipo de información de la etiqueta, Grabber podrá comprobar directamente en su base de datos de etiquetas.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -4400,7 +4399,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="30"/>
       <source>Url</source>
-      <translation>URL</translation>
+      <translation>Url</translation>
     </message>
   </context>
   <context>
@@ -4443,18 +4442,18 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/viewer/zoom-window.ui" line="219"/>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="536"/>
       <source>Save (fav)</source>
-      <translation>Guardar (favorito)</translation>
+      <translation>Guardar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.ui" line="226"/>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="579"/>
       <source>Save and close (fav)</source>
-      <translation>Guardar y cerrar (favorito)</translation>
+      <translation>Guardar y cerrar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.ui" line="233"/>
       <source>Destination folder (fav)</source>
-      <translation>Carpeta de destino (favorito)</translation>
+      <translation>Carpeta de destino (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="225"/>
@@ -4492,7 +4491,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="540"/>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="583"/>
       <source>Saving... (fav)</source>
-      <translation>Guardando... (favorito)</translation>
+      <translation>Guardando... (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="540"/>
@@ -4503,7 +4502,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="544"/>
       <source>Saved! (fav)</source>
-      <translation>¡Guardado! (favorito)</translation>
+      <translation>¡Guardado! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="544"/>
@@ -4513,7 +4512,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="548"/>
       <source>Copied! (fav)</source>
-      <translation>¡Copiado! (favorito)</translation>
+      <translation>¡Copiado! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="548"/>
@@ -4523,7 +4522,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="552"/>
       <source>Moved! (fav)</source>
-      <translation>¡Movido! (favorito)</translation>
+      <translation>¡Movido! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="552"/>
@@ -4533,7 +4532,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
       <source>Link created! (fav)</source>
-      <translation>¡Enlace creado! (favorito)</translation>
+      <translation>¡Enlace creado! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
@@ -4543,7 +4542,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
       <source>MD5 already exists (fav)</source>
-      <translation>MD5 ya existe (favorito)</translation>
+      <translation>MD5 ya existe (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
@@ -4553,7 +4552,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
       <source>Already exists (fav)</source>
-      <translation>Ya existe (favorito)</translation>
+      <translation>Ya existe (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
@@ -4563,7 +4562,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
       <source>Delete (fav)</source>
-      <translation>Eliminar (favorito)</translation>
+      <translation>Eliminar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
@@ -4573,7 +4572,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="587"/>
       <source>Close (fav)</source>
-      <translation>Cerrar (favorito)</translation>
+      <translation>Cerrar (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="587"/>

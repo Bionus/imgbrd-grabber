@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.1" language="ru" sourcelanguage="en">
   <context>
     <name>AboutWindow</name>
     <message>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="40"/>
       <source>Md5</source>
-      <translation>MD5</translation>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="68"/>
@@ -264,13 +264,13 @@
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
       <source>h 'h' m 'm' s 's'</source>
-      <translation>ч 'ч' м 'м' с 'с'</translation>
+      <translation>h 'ч' m 'м' s 'с'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
       <source>m 'm' s 's'</source>
-      <translation>м 'м' с 'с'</translation>
+      <translation>m 'м' s 'с'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation>Принудительно вычислять MD5</translation>
+      <translation>Принудительно вычислять md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation>Получать MD5 из имени файла</translation>
+      <translation>Получать md5 из имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак % md5%.</translation>
+      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак %md5%.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
@@ -358,6 +358,7 @@
       <translation>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображения. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
       </translation>
     </message>
@@ -568,7 +569,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="160"/>
       <source>Md5</source>
-      <translation>MD5</translation>
+      <translation>Md5</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="165"/>
@@ -708,6 +709,7 @@
         <numerusform>Загружается %n загрузка</numerusform>
         <numerusform>Загружаются %n загрузки</numerusform>
         <numerusform>Загружаются %n загрузок</numerusform>
+        <numerusform>Загружаются %n загрузок</numerusform>
       </translation>
     </message>
     <message>
@@ -733,7 +735,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
       <source>Logging in, please wait...</source>
-      <translation>Вход в аккаунт, пожалуйста, подождите ...</translation>
+      <translation>Вход в аккаунт, пожалуйста, подождите...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="779"/>
@@ -788,6 +790,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл успешно загружен.</numerusform>
         <numerusform>%n файла успешно загружено.</numerusform>
         <numerusform>%n файлов успешно загружено.</numerusform>
+        <numerusform>%n файлов успешно загружено.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -796,6 +799,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл проигнорирован.</numerusform>
         <numerusform>%n файла проигнорированно.</numerusform>
+        <numerusform>%n файлов проигнорированно.</numerusform>
         <numerusform>%n файлов проигнорированно.</numerusform>
       </translation>
     </message>
@@ -806,6 +810,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл уже существует.</numerusform>
         <numerusform>%n файла уже существуют.</numerusform>
         <numerusform>%n файлов уже существуют.</numerusform>
+        <numerusform>%n файлов уже существуют.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -815,6 +820,7 @@ Please solve the issue before resuming the download.</source>
         <numerusform>%n файл не найден на сервере.</numerusform>
         <numerusform>%n файла не найдено на сервере.</numerusform>
         <numerusform>%n файлов не найдено на сервере.</numerusform>
+        <numerusform>%n файлов не найдено на сервере.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -823,6 +829,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n файл пропущен.</numerusform>
         <numerusform>%n файла пропущено.</numerusform>
+        <numerusform>%n файлов пропущено.</numerusform>
         <numerusform>%n файлов пропущено.</numerusform>
       </translation>
     </message>
@@ -837,6 +844,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n ошибка.</numerusform>
         <numerusform>%n ошибки.</numerusform>
+        <numerusform>%n ошибок.</numerusform>
         <numerusform>%n ошибок.</numerusform>
       </translation>
     </message>
@@ -905,6 +913,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>Вы собираетесь удалить %n папку. Вы уверены что хотите продолжить?</numerusform>
         <numerusform>Вы собираетесь удалить %n папки. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
         <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
       </translation>
     </message>
@@ -1119,7 +1128,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation>&lt;b&gt;Название:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Заметка:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Последний просмотр:&lt;/b&gt; %3</translation>
+      <translation>&lt;b&gt;Название:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Заметка:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Последний просмотр:&lt;/b&gt; %3</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
@@ -1221,7 +1230,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/models/image.cpp" line="851"/>
       <location filename="../lib/src/models/image.cpp" line="860"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="852"/>
@@ -1728,7 +1737,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="14"/>
       <source>Md5 list fixer</source>
-      <translation>Фиксер списка MD5</translation>
+      <translation>Фиксер списка md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
@@ -1743,12 +1752,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="47"/>
       <source>Force md5 calculation</source>
-      <translation>Принудительно вычислять MD5</translation>
+      <translation>Принудительно вычислять md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="54"/>
       <source>Get md5 in filename</source>
-      <translation>Получать MD5 из имени файла</translation>
+      <translation>Получать md5 из имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="64"/>
@@ -1783,7 +1792,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="103"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак % md5%.</translation>
+      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак %md5%.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
@@ -1795,6 +1804,7 @@ Please solve the issue before resuming the download.</source>
       <source>%n MD5(s) loaded</source>
       <translation>
         <numerusform>%n MD5(s) загружен</numerusform>
+        <numerusform>%n MD5(s) загружено</numerusform>
         <numerusform>%n MD5(s) загружено</numerusform>
         <numerusform>%n MD5(s) загружено</numerusform>
       </translation>
@@ -2779,7 +2789,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2301"/>
       <source> s</source>
-      <translation type="unfinished"/>
+      <translation> s</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2311"/>
@@ -3049,7 +3059,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="278"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation>Не удается проверить выражения JavaScript.</translation>
+      <translation>Не удается проверить выражения Javascript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="286"/>
@@ -3164,12 +3174,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation>Принудительно вычислять MD5</translation>
+      <translation>Принудительно вычислять md5</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation>Получать MD5 из имени файла</translation>
+      <translation>Получать md5 из имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="51"/>
@@ -3214,12 +3224,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="63"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак % md5%.</translation>
+      <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак %md5%.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
       <translation>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
         <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
@@ -3377,10 +3388,11 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
-        <numerusform/>
-        <numerusform/>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
       </translation>
     </message>
   </context>
@@ -3812,7 +3824,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="83"/>
       <source>Through URL</source>
-      <translation>Через url</translation>
+      <translation>Через URL</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
@@ -4152,7 +4164,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation>Создаёт локальную базу  тегов для данного источника. Впоследствии, даже если API  источника не предоставит информацию о типе тегов, Grabber сможет напрямую проверить его по своей локальной базе тегов.</translation>
+      <translation>Создаёт локальную базу тегов для данного источника. Впоследствии, даже если API источника не предоставит информацию о типе тегов, Grabber сможет напрямую проверить его по своей локальной базе тегов.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -4170,6 +4182,7 @@ Please solve the issue before resuming the download.</source>
       <translation>
         <numerusform>%n тег загружен</numerusform>
         <numerusform>%n тега загружено</numerusform>
+        <numerusform>%n тегов загружено</numerusform>
         <numerusform>%n тегов загружено</numerusform>
       </translation>
     </message>
