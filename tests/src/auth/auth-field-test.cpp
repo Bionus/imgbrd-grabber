@@ -54,5 +54,18 @@ void AuthFieldTest::testHash()
 	settings->deleteLater();
 }
 
+void AuthFieldTest::testEmptyHash()
+{
+	AuthHashField field("key", QCryptographicHash::Algorithm::Md5, "test-%pseudo%");
+
+	QCOMPARE(field.key(), QString("key"));
+	QCOMPARE(field.type(), AuthField::FieldType::Hash);
+	QCOMPARE(field.salt(), QString("test-%pseudo%"));
+
+	MixedSettings *settings = new MixedSettings(QList<QSettings*>());
+	QCOMPARE(field.value(settings), QString());
+	settings->deleteLater();
+}
+
 
 QTEST_MAIN(AuthFieldTest)
