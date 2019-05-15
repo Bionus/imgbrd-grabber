@@ -25,13 +25,13 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>Grabber is up to date</source>
-      <translation>Grabber 已经是最新版本</translation>
+      <source>A new version is available: %1</source>
+      <translation>有新版本可用：%1</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>A new version is available: %1</source>
-      <translation>有新版本可用：%1</translation>
+      <source>Grabber is up to date</source>
+      <translation>Grabber 已经是最新版本</translation>
     </message>
   </context>
   <context>
@@ -2022,6 +2022,11 @@ Please solve the issue before resuming the download.</source>
       <translation>关闭窗口前确认</translation>
     </message>
     <message>
+      <location filename="../gui/src/settings/options-window.ui" line="364"/>
+      <source>Send anonymous usage data</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/settings/options-window.ui" line="400"/>
       <source>Images per page</source>
       <translation>每页图片数</translation>
@@ -2621,11 +2626,6 @@ Please solve the issue before resuming the download.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="364"/>
-      <source>Send anonymous usage data</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
       <source>Use image samples</source>
       <translation type="unfinished"/>
@@ -3024,11 +3024,6 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../gui/src/helpers.cpp" line="27"/>
-      <source>Error</source>
-      <translation>错误</translation>
-    </message>
-    <message>
       <location filename="../lib/src/models/filename.cpp" line="273"/>
       <source>Filename must not be empty!</source>
       <translation>文件名不能为空！</translation>
@@ -3067,6 +3062,11 @@ Please solve the issue before resuming the download.</source>
       <location filename="../lib/src/models/filename.cpp" line="330"/>
       <source>Valid filename!</source>
       <translation>文件名有效！</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/helpers.cpp" line="27"/>
+      <source>Error</source>
+      <translation>错误</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
