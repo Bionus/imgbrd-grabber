@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR" sourcelanguage="en_US">
+<TS version="2.1" language="fr" sourcelanguage="en">
   <context>
     <name>AboutWindow</name>
     <message>
@@ -602,7 +602,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="242"/>
       <source>Delete selected</source>
-      <translation>Effacer la séléction</translation>
+      <translation>Effacer la sélection</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="249"/>
@@ -612,7 +612,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="256"/>
       <source>Download selected</source>
-      <translation>Télécharger la séléction</translation>
+      <translation>Télécharger la sélection</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="273"/>
@@ -863,7 +863,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="30"/>
       <source>No empty folder found.</source>
-      <translation>Aucun dossie vide trouvé.</translation>
+      <translation>Aucun dossier vide trouvé.</translation>
     </message>
   </context>
   <context>
@@ -959,7 +959,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/favorite-window.ui" line="93"/>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation>Image dont l'icone sera affichée dans la liste des favoris.</translation>
+      <translation>Image dont l'icône sera affichée dans la liste des favoris.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="96"/>
@@ -1464,7 +1464,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Chaque fois qu'une image est enregristrée, un fichier texte avec le même nom sera enregistré au même emplacement.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Chaque fois qu'une image est enregistrée, un fichier texte avec le même nom sera enregistré au même emplacement.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="193"/>
@@ -1693,7 +1693,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.cpp" line="404"/>
       <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
-      <translation>L'extension pour Mozilla Firefox "Danbooru Downloader" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
+      <translation>L'extension pour Mozilla Firefox "Danbooru Downloader" a été détectée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="740"/>
@@ -1934,7 +1934,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="176"/>
       <source>Language</source>
-      <translation>Language</translation>
+      <translation>Langue</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="186"/>
@@ -2195,7 +2195,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="749"/>
       <source>If a file already exists globally</source>
-      <translation>Si un fichier existe déj globalement</translation>
+      <translation>Si un fichier existe déjà globalement</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="765"/>
@@ -2222,7 +2222,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
       <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;L'identicité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;L'identité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="795"/>
@@ -2262,7 +2262,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="938"/>
       <source>Max length</source>
-      <translation>Longeur limite</translation>
+      <translation>Longueur limite</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="952"/>
@@ -2297,7 +2297,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1107"/>
       <source>Upscaling</source>
-      <translation>Suréchantillonnage</translation>
+      <translation>Sur-échantillonnage</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1114"/>
@@ -2414,7 +2414,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1295"/>
       <source>Use a scroll area</source>
-      <translation>Utiliser une zonne scrollable</translation>
+      <translation>Utiliser une zone scrollable</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1305"/>
@@ -2454,7 +2454,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1358"/>
       <source>Enable autocompletion</source>
-      <translation>Activer l'autocomplétion</translation>
+      <translation>Activer l'auto-complétion</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1368"/>
@@ -2720,7 +2720,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2048"/>
       <source>Metas</source>
-      <translation>Metas</translation>
+      <translation>Métas</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2095"/>
@@ -2868,7 +2868,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>Symboles additionels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, "general", "artist", "copyright", "character", "model" ou "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
+      <translation>Symboles additionnels : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, "general", "artist", "copyright", "character", "model" ou "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3072,7 +3072,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../lib/src/models/filename.cpp" line="320"/>
       <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
-      <translation>Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? " : &lt; &gt; |</translation>
+      <translation>Votre format contient des caractères interdits sur Windows ! Caractères interdits : * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="326"/>
@@ -3128,7 +3128,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
       <source>An image needs a date to be filtered by age</source>
-      <translation>Une image nécéssite une date pour être filtrée par age</translation>
+      <translation>Une image nécessite une date pour être filtrée par age</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
@@ -3296,12 +3296,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="382"/>
       <source>HTTPS redirection detected</source>
-      <translation>Redirection HTTPS détéctée</translation>
+      <translation>Redirection HTTPS détectée</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation>Une redirection HTTP vers HTTPS a été détéctée pour le site %1. Voulez vous activer SSL dessus? L'option recommandée est 'oui'.</translation>
+      <translation>Une redirection HTTP vers HTTPS a été détectée pour le site %1. Voulez vous activer SSL dessus? L'option recommandée est 'oui'.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
@@ -3380,8 +3380,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation>
-        <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
-        <numerusform>%n tags figurant dans la liste noire détéctés sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
+        <numerusform>%n tag figurant dans la liste noire détecté sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
+        <numerusform>%n tags figurant dans la liste noire détectés sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
       </translation>
     </message>
   </context>
@@ -3500,7 +3500,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/search-window.ui" line="172"/>
       <source>Active</source>
-      <translation>Active</translation>
+      <translation>Actif</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="177"/>
@@ -3545,12 +3545,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/search-window.cpp" line="24"/>
       <source>Choose a date</source>
-      <translation>Choose a date</translation>
+      <translation>Sélectionner une date</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.cpp" line="113"/>
       <source>Search an image</source>
-      <translation>Search an image</translation>
+      <translation>Rechercher une image</translation>
     </message>
   </context>
   <context>
@@ -3606,7 +3606,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="37"/>
       <source>Referer (default)</source>
-      <translation>Referer (par défaut)</translation>
+      <translation>Référent (par défaut)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="45"/>
@@ -3639,7 +3639,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="68"/>
       <source>Referer (preview)</source>
-      <translation>Referer (miniature)</translation>
+      <translation>Référent (miniature)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="76"/>
@@ -3650,7 +3650,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="104"/>
       <source>Referer (image)</source>
-      <translation>Referer (image)</translation>
+      <translation>Référent (image)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="132"/>
@@ -3855,7 +3855,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
       <source>Headers</source>
-      <translation>Headers</translation>
+      <translation>En-têtes</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="617"/>
@@ -3880,12 +3880,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>Consumer key</source>
-      <translation type="unfinished"/>
+      <translation>Clé consommateur</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"/>
+      <translation>Secret consommateur</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
@@ -4002,7 +4002,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation>Avant de commencer, le programme a besoin de quelques informations nécéssaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</translation>
+      <translation>Avant de commencer, le programme a besoin de quelques informations nécessaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="41"/>
@@ -4170,7 +4170,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <source>%n tag(s) loaded</source>
       <translation>
         <numerusform>%n tags chargé</numerusform>
-        <numerusform>%n tagss chargés</numerusform>
+        <numerusform>%n tags chargés</numerusform>
       </translation>
     </message>
   </context>
