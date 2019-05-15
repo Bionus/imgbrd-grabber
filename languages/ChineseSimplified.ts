@@ -4296,7 +4296,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="56"/>
       <source>Original</source>
-      <translation type="unfinished">源文件名</translation>
+      <translation>源文件名</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="61"/>
