@@ -37,6 +37,7 @@ class ImageTest : public TestSuite
 		void testSaveLog();
 		void testSetUrl();
 		void testGrabberFavoritedToken();
+		void testSerialization();
 
 	private:
 		Profile *m_profile;
