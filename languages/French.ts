@@ -25,13 +25,13 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>Grabber is up to date</source>
-      <translation>Grabber est à jour</translation>
+      <source>A new version is available: %1</source>
+      <translation>Une nouvelle version est disponible : %1</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>A new version is available: %1</source>
-      <translation>Une nouvelle version est disponible : %1</translation>
+      <source>Grabber is up to date</source>
+      <translation>Grabber est à jour</translation>
     </message>
   </context>
   <context>
@@ -394,14 +394,14 @@
       <translation>Sélectionner les images trouvées</translation>
     </message>
     <message>
-      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="99"/>
-      <source>Cancel</source>
-      <translation>Annuler</translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="92"/>
       <source>Ok</source>
       <translation>Ok</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="99"/>
+      <source>Cancel</source>
+      <translation>Annuler</translation>
     </message>
   </context>
   <context>
@@ -869,6 +869,13 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>EmptyDirsFix2</name>
     <message>
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="14"/>
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
+      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
+      <source>Empty folders fixer</source>
+      <translation>Réparateur de dossiers vides</translation>
+    </message>
+    <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="24"/>
       <source>Choose folders to delete in the list below.</source>
       <translation>Choisissez les dossiers à supprimer dans la liste ci-dessous.</translation>
@@ -882,13 +889,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="60"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="14"/>
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
-      <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
-      <source>Empty folders fixer</source>
-      <translation>Réparateur de dossiers vides</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
@@ -2043,6 +2043,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Demander confirmation avant la fermeture de la fenêtre</translation>
     </message>
     <message>
+      <location filename="../gui/src/settings/options-window.ui" line="364"/>
+      <source>Send anonymous usage data</source>
+      <translation>Envoyer des statistiques d'utilisation anonymes</translation>
+    </message>
+    <message>
       <location filename="../gui/src/settings/options-window.ui" line="400"/>
       <source>Images per page</source>
       <translation>Images par page</translation>
@@ -2642,11 +2647,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Post-filtrage</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="364"/>
-      <source>Send anonymous usage data</source>
-      <translation>Envoyer des statistiques d'utilisation anonymes</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
       <source>Use image samples</source>
       <translation>Utiliser les images de sample</translation>
@@ -3045,11 +3045,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../gui/src/helpers.cpp" line="27"/>
-      <source>Error</source>
-      <translation>Erreur</translation>
-    </message>
-    <message>
       <location filename="../lib/src/models/filename.cpp" line="273"/>
       <source>Filename must not be empty!</source>
       <translation>Le nom de fichier ne doit pas être vide !</translation>
@@ -3088,6 +3083,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../lib/src/models/filename.cpp" line="330"/>
       <source>Valid filename!</source>
       <translation>Format valide !</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/helpers.cpp" line="27"/>
+      <source>Error</source>
+      <translation>Erreur</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
@@ -3468,9 +3468,19 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Safe (non)</translation>
     </message>
     <message>
+      <location filename="../gui/src/search-window.ui" line="129"/>
+      <source>Questionable</source>
+      <translation>Questionable</translation>
+    </message>
+    <message>
       <location filename="../gui/src/search-window.ui" line="134"/>
       <source>Questionable (no)</source>
       <translation>Questionable (non)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/search-window.ui" line="139"/>
+      <source>Explicit</source>
+      <translation>Explicite</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="144"/>
@@ -3488,6 +3498,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Supprimée</translation>
     </message>
     <message>
+      <location filename="../gui/src/search-window.ui" line="172"/>
+      <source>Active</source>
+      <translation>Active</translation>
+    </message>
+    <message>
       <location filename="../gui/src/search-window.ui" line="177"/>
       <source>Flagged</source>
       <translation>Signalée</translation>
@@ -3503,6 +3518,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Tous</translation>
     </message>
     <message>
+      <location filename="../gui/src/search-window.ui" line="195"/>
+      <source>Date</source>
+      <translation>Date</translation>
+    </message>
+    <message>
       <location filename="../gui/src/search-window.ui" line="207"/>
       <source>Calendar</source>
       <translation>Calendrier</translation>
@@ -3511,26 +3531,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/search-window.ui" line="216"/>
       <source>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
       <translation>&lt;i&gt;N'oubliez pas que certains imageboards empêchent l'utilisation de plus d'un certain nombre de tags pour les membres non premiums.</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/search-window.ui" line="129"/>
-      <source>Questionable</source>
-      <translation>Questionable</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/search-window.ui" line="139"/>
-      <source>Explicit</source>
-      <translation>Explicite</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/search-window.ui" line="172"/>
-      <source>Active</source>
-      <translation>Active</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/search-window.ui" line="195"/>
-      <source>Date</source>
-      <translation>Date</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="244"/>
@@ -3594,6 +3594,28 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>SourcesSettingsWindow</name>
     <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="14"/>
+      <source>Site options</source>
+      <translation>Options de site</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="28"/>
+      <source>General</source>
+      <translation>Général</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="37"/>
+      <source>Referer (default)</source>
+      <translation>Referer (par défaut)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="45"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="81"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="117"/>
+      <source>None</source>
+      <translation>Aucun</translation>
+    </message>
+    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="50"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="86"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="122"/>
@@ -3615,9 +3637,82 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Image</translation>
     </message>
     <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="68"/>
+      <source>Referer (preview)</source>
+      <translation>Referer (miniature)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="76"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="112"/>
+      <source>Default</source>
+      <translation>Par défaut</translation>
+    </message>
+    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="104"/>
       <source>Referer (image)</source>
       <translation>Referer (image)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="132"/>
+      <source>Details</source>
+      <translation>Détails</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="145"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="551"/>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="579"/>
+      <source>Name</source>
+      <translation>Nom</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="155"/>
+      <source>Ignore (always)</source>
+      <translation>Ignorer (toujours)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="162"/>
+      <source>Ignore (page 1)</source>
+      <translation>Ignorer (page 1)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
+      <source>Use a secure connection (https)</source>
+      <translation>Utiliser une connexion sécurisée (https)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
+      <source>Download</source>
+      <translation>Téléchargement</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
+      <source>Max simultaneous downloads</source>
+      <translation>Téléchargements simultanés max</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="209"/>
+      <source>Interval (thumbnail)</source>
+      <translation>Intervalle (miniature)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="226"/>
+      <source>Interval (image)</source>
+      <translation>Intervalle (image)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="243"/>
+      <source>Interval (page)</source>
+      <translation>Intervalle (page)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="260"/>
+      <source>Interval (details)</source>
+      <translation>Intervalle (détails)</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="277"/>
+      <source>Interval (error)</source>
+      <translation>Intervalle (erreur)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="216"/>
@@ -3686,6 +3781,31 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Source 4</translation>
     </message>
     <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="481"/>
+      <source>Use default sources</source>
+      <translation>Utiliser les sources par défaut</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
+      <source>Username</source>
+      <translation>Utilisateur</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
+      <source>Password</source>
+      <translation>Mot de passe</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="533"/>
+      <source>Test</source>
+      <translation>Tester</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="492"/>
+      <source>Login</source>
+      <translation>Connexion</translation>
+    </message>
+    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="498"/>
       <source>Type</source>
       <translation>Type</translation>
@@ -3704,126 +3824,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
       <source>POST</source>
       <translation>POST</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
-      <source>Password</source>
-      <translation>Mot de passe</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="14"/>
-      <source>Site options</source>
-      <translation>Options de site</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="28"/>
-      <source>General</source>
-      <translation>Général</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="37"/>
-      <source>Referer (default)</source>
-      <translation>Referer (par défaut)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="45"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="81"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="117"/>
-      <source>None</source>
-      <translation>Aucun</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="68"/>
-      <source>Referer (preview)</source>
-      <translation>Referer (miniature)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="76"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="112"/>
-      <source>Default</source>
-      <translation>Par défaut</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="132"/>
-      <source>Details</source>
-      <translation>Détails</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="145"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="551"/>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="579"/>
-      <source>Name</source>
-      <translation>Nom</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="155"/>
-      <source>Ignore (always)</source>
-      <translation>Ignorer (toujours)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="162"/>
-      <source>Ignore (page 1)</source>
-      <translation>Ignorer (page 1)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
-      <source>Use a secure connection (https)</source>
-      <translation>Utiliser une connexion sécurisée (https)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
-      <source>Download</source>
-      <translation>Téléchargement</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="192"/>
-      <source>Max simultaneous downloads</source>
-      <translation>Téléchargements simultanés max</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="209"/>
-      <source>Interval (thumbnail)</source>
-      <translation>Intervalle (miniature)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="226"/>
-      <source>Interval (image)</source>
-      <translation>Intervalle (image)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="243"/>
-      <source>Interval (page)</source>
-      <translation>Intervalle (page)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="260"/>
-      <source>Interval (details)</source>
-      <translation>Intervalle (détails)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="277"/>
-      <source>Interval (error)</source>
-      <translation>Intervalle (erreur)</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="481"/>
-      <source>Use default sources</source>
-      <translation>Utiliser les sources par défaut</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
-      <source>Username</source>
-      <translation>Utilisateur</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="533"/>
-      <source>Test</source>
-      <translation>Tester</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="492"/>
-      <source>Login</source>
-      <translation>Connexion</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
@@ -3853,6 +3853,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Ajouter</translation>
     </message>
     <message>
+      <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
+      <source>Headers</source>
+      <translation>Headers</translation>
+    </message>
+    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="617"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
@@ -3866,11 +3871,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/sources/sources-settings-window.ui" line="644"/>
       <source>Confirm</source>
       <translation>Valider</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.ui" line="572"/>
-      <source>Headers</source>
-      <translation>Headers</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>

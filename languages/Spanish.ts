@@ -25,13 +25,13 @@
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>Grabber is up to date</source>
-      <translation>Grabber está actualizado</translation>
+      <source>A new version is available: %1</source>
+      <translation>Hay una nueva versión disponible: %1</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="37"/>
-      <source>A new version is available: %1</source>
-      <translation>Hay una nueva versión disponible: %1</translation>
+      <source>Grabber is up to date</source>
+      <translation>Grabber está actualizado</translation>
     </message>
   </context>
   <context>
@@ -2040,6 +2040,11 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation>Pedir confirmación antes de cerrar la ventana</translation>
     </message>
     <message>
+      <location filename="../gui/src/settings/options-window.ui" line="364"/>
+      <source>Send anonymous usage data</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <location filename="../gui/src/settings/options-window.ui" line="400"/>
       <source>Images per page</source>
       <translation>Imágenes por página</translation>
@@ -2639,11 +2644,6 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="364"/>
-      <source>Send anonymous usage data</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
       <source>Use image samples</source>
       <translation type="unfinished"/>
@@ -3042,11 +3042,6 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../gui/src/helpers.cpp" line="27"/>
-      <source>Error</source>
-      <translation>Error</translation>
-    </message>
-    <message>
       <location filename="../lib/src/models/filename.cpp" line="273"/>
       <source>Filename must not be empty!</source>
       <translation>¡El nombre de archivo no debe estar vacío!</translation>
@@ -3085,6 +3080,11 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../lib/src/models/filename.cpp" line="330"/>
       <source>Valid filename!</source>
       <translation>¡Nombre de archivo válido!</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/helpers.cpp" line="27"/>
+      <source>Error</source>
+      <translation>Error</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
@@ -3803,16 +3803,6 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <translation>Inicio de sesión</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
-      <source>GET</source>
-      <translation>GET</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
-      <source>POST</source>
-      <translation>POST</translation>
-    </message>
-    <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="498"/>
       <source>Type</source>
       <translation>Tipo</translation>
@@ -3821,6 +3811,16 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="83"/>
       <source>Through URL</source>
       <translation>A través de URL</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
+      <source>GET</source>
+      <translation>GET</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
+      <source>POST</source>
+      <translation>POST</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
