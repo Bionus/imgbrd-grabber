@@ -90,13 +90,14 @@ void UrlLoginTest::testComplementUrl()
 {
 	QList<AuthField*> fields;
 	fields.append(new AuthConstField("a", "1"));
-	fields.append(new AuthConstField("b", "2"));
+	fields.append(new AuthConstField("b", ""));
+	fields.append(new AuthConstField("c", "2"));
 
 	UrlAuth auth("url", fields, 10);
 	UrlLogin login(&auth, m_site, &m_manager, m_site->settings());
 
-	QCOMPARE(login.complementUrl("/"), QString("/?a=1&b=2"));
-	QCOMPARE(login.complementUrl("/?test=1"), QString("/?test=1&a=1&b=2"));
+	QCOMPARE(login.complementUrl("/"), QString("/?a=1&c=2"));
+	QCOMPARE(login.complementUrl("/?ho=&test=1"), QString("/?ho=&test=1&a=1&c=2"));
 }
 
 
