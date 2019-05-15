@@ -305,16 +305,38 @@ void Image::init()
 }
 
 
+static QMap<Image::Size, QString> sizeToStringMap
+{
+	{ Image::Size::Full, "full" },
+	{ Image::Size::Sample, "sample" },
+	{ Image::Size::Thumbnail, "thumbnail" },
+};
+
 void Image::write(QJsonObject &json) const
 {
 	json["website"] = m_parentSite->url();
 
+	// Parent gallery
 	if (!m_parentGallery.isNull()) {
 		QJsonObject jsonGallery;
 		m_parentGallery->write(jsonGallery);
 		json["gallery"] = jsonGallery;
 	}
 
+	// Sizes
+	QJsonObject jsonSizes;
+	for (const auto &size : m_sizes.keys()) {
+		QJsonObject jsonSize;
+		m_sizes[size]->write(jsonSize);
+		if (!jsonSize.isEmpty() && sizeToStringMap.contains(size)) {
+			jsonSizes[sizeToStringMap[size]] = jsonSize;
+		}
+	}
+	if (!jsonSizes.isEmpty()) {
+		json["sizes"] = jsonSizes;
+	}
+
+	// Tags
 	QStringList tags;
 	tags.reserve(m_tags.count());
 	for (const Tag &tag : m_tags) {
@@ -358,6 +380,19 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	m_fileUrl = json["file_url"].toString();
 	m_createdAt = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
 
+	// Sizes
+	for (const auto &size : sizeToStringMap.keys()) {
+		auto sizeObj = QSharedPointer<ImageSize>::create();
+		const QString &key = sizeToStringMap[size];
+		if (json.contains("sizes")) {
+			const auto &jsonSizes = json["sizes"].toObject();
+			if (jsonSizes.contains(key)) {
+				sizeObj->read(jsonSizes[key].toObject());
+			}
+		}
+		m_sizes[size] = sizeObj;
+	}
+
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	m_tags.reserve(jsonTags.count());
@@ -371,12 +406,6 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	for (const auto &tag : jsonSearch) {
 		m_search.append(tag.toString());
 	}
-
-	m_sizes = {
-		{ Image::Size::Full, QSharedPointer<ImageSize>::create() },
-		{ Image::Size::Sample, QSharedPointer<ImageSize>::create() },
-		{ Image::Size::Thumbnail, QSharedPointer<ImageSize>::create() },
-	};
 
 	init();
 	return true;
