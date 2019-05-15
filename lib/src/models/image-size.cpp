@@ -98,6 +98,10 @@ void ImageSize::setPixmap(const QPixmap &pixmap)
 
 void ImageSize::read(const QJsonObject &json)
 {
+	if (json.contains("url")) {
+		url = json["url"].toString();
+	}
+
 	if (json.contains("fileSize")) {
 		fileSize = json["fileSize"].toInt();
 	}
@@ -123,6 +127,10 @@ void ImageSize::read(const QJsonObject &json)
 
 void ImageSize::write(QJsonObject &json) const
 {
+	if (!url.isEmpty()) {
+		json["url"] = url.toString();
+	}
+
 	if (fileSize > 0) {
 		json["fileSize"] = fileSize;
 	}

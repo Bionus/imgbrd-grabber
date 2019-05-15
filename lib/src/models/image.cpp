@@ -57,9 +57,6 @@ Image::Image(const Image &other)
 	m_sources = other.m_sources;
 
 	m_pageUrl = other.m_pageUrl;
-	m_fileUrl = other.m_fileUrl;
-	m_sampleUrl = other.m_sampleUrl;
-	m_previewUrl = other.m_previewUrl;
 
 	m_sizes = other.m_sizes;
 	m_createdAt = other.m_createdAt;
@@ -114,9 +111,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_hasChildren = details.contains("has_children") && details["has_children"] == "true";
 	m_hasNote = details.contains("has_note") && details["has_note"] == "true";
 	m_hasComments = details.contains("has_comments") && details["has_comments"] == "true";
-	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
-	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
-	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
@@ -132,6 +126,9 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		const QString &prefix = it.value();
 
 		auto is = QSharedPointer<ImageSize>::create();
+
+		const QString &urlKey = (prefix.isEmpty() ? "file_" : prefix) + "url";
+		is->url = details.contains(urlKey) ? removeCacheBuster(m_parentSite->fixUrl(details[urlKey])) : QString();
 
 		is->size = details.contains(prefix + "width") && details.contains(prefix + "height")
 			? QSize(details[prefix + "width"].toInt(), details[prefix + "height"].toInt())
@@ -225,19 +222,19 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	}
 
 	// Get file url and try to improve it to save bandwidth
-	m_url = m_fileUrl;
+	m_url = m_sizes[Size::Full]->url;
 	const QString ext = getExtension(m_url);
 	if (details.contains("ext") && !details["ext"].isEmpty()) {
 		const QString realExt = details["ext"];
 		if (ext != realExt) {
 			setFileExtension(realExt);
 		}
-	} else if (ext == QLatin1String("jpg") && !m_previewUrl.isEmpty()) {
+	} else if (ext == QLatin1String("jpg") && !url(Size::Thumbnail).isEmpty()) {
 		bool fixed = false;
-		const QString previewExt = getExtension(QUrl(details["preview_url"]));
-		if (!m_sampleUrl.isEmpty()) {
+		const QString previewExt = getExtension(url(Size::Thumbnail));
+		if (!url(Size::Sample).isEmpty()) {
 			// Guess extension from sample url
-			const QString sampleExt = getExtension(QUrl(details["sample_url"]));
+			const QString sampleExt = getExtension(url(Size::Sample));
 			if (sampleExt != QLatin1String("jpg") && sampleExt != QLatin1String("png") && sampleExt != ext && previewExt == ext) {
 				m_url = setExtension(m_url, sampleExt);
 				fixed = true;
@@ -264,14 +261,11 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 
 	// Remove ? in urls
 	m_url = removeCacheBuster(m_url);
-	m_fileUrl = removeCacheBuster(m_fileUrl);
-	m_sampleUrl = removeCacheBuster(m_sampleUrl);
-	m_previewUrl = removeCacheBuster(m_previewUrl);
 
 	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
 	const bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals)) {
-		m_url = m_sampleUrl.toString();
+	if (!url(Size::Sample).isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals)) {
+		m_url = url(Size::Sample).toString();
 	}
 
 	// Creation date
@@ -349,7 +343,7 @@ void Image::write(QJsonObject &json) const
 	json["md5"] = m_md5;
 	json["rating"] = m_rating;
 	json["tags"] = QJsonArray::fromStringList(tags);
-	json["file_url"] = m_fileUrl.toString();
+	json["url"] = m_url.toString();
 	json["date"] = m_createdAt.toString(Qt::ISODate);
 	json["search"] = QJsonArray::fromStringList(m_search);
 }
@@ -372,13 +366,6 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	}
 
 	m_parentSite = sites[site];
-
-	m_name = json["name"].toString();
-	m_id = json["id"].toInt();
-	m_md5 = json["md5"].toString();
-	m_rating = json["rating"].toString();
-	m_fileUrl = json["file_url"].toString();
-	m_createdAt = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
 
 	// Sizes
 	for (const auto &size : sizeToStringMap.keys()) {
@@ -405,6 +392,23 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	m_search.reserve(jsonSearch.count());
 	for (const auto &tag : jsonSearch) {
 		m_search.append(tag.toString());
+	}
+
+	// Basic fields
+	m_name = json["name"].toString();
+	m_id = json["id"].toInt();
+	m_md5 = json["md5"].toString();
+	m_rating = json["rating"].toString();
+	m_createdAt = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+
+	// URL with fallback
+	if (json.contains("file_url")) {
+		m_url = json["file_url"].toString();
+		if (m_sizes[Size::Full]->url.isEmpty()) {
+			m_sizes[Size::Full]->url = m_url;
+		}
+	} else {
+		m_url = json.contains("url") ? json["url"].toString() : m_sizes[Size::Full]->url;
 	}
 
 	init();
@@ -508,7 +512,7 @@ void Image::parseDetails()
 		const QUrl newUrl = m_parentSite->fixUrl(ret.imageUrl, before);
 
 		m_url = newUrl;
-		m_fileUrl = newUrl;
+		m_sizes[Size::Full]->url = newUrl;
 
 		delete m_extensionRotator;
 		m_extensionRotator = nullptr;
@@ -751,7 +755,7 @@ int Image::height() const { return size(Image::Size::Full).height(); }
 const QString &Image::rating() const { return m_rating; }
 const QStringList &Image::search() const { return m_search; }
 const QDateTime &Image::createdAt() const { return m_createdAt; }
-const QUrl &Image::fileUrl() const { return m_fileUrl; }
+const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size(Size size) const { return m_sizes[size]->size; }
 const QString &Image::name() const { return m_name; }
@@ -787,7 +791,7 @@ Image::Size Image::preferredDisplaySize() const
 	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
 	const bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
 
-	return !m_sampleUrl.isEmpty() && (!getOriginals || viewSample)
+	return !url(Size::Sample).isEmpty() && (!getOriginals || viewSample)
 		? Size::Sample
 		: Size::Full;
 }
@@ -921,10 +925,10 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
-		QStrP(tr("URL"), !m_fileUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_fileUrl.toString()) : unknown),
+		QStrP(tr("URL"), !m_sizes[Size::Full]->url.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_sizes[Size::Full]->url.toString()) : unknown),
 		QStrP(tr("Source(s)", "", m_sources.count()), !sources.isEmpty() ? sources : unknown),
-		QStrP(tr("Sample"), !m_sampleUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_sampleUrl.toString()) : unknown),
-		QStrP(tr("Thumbnail"), !m_previewUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_previewUrl.toString()) : unknown),
+		QStrP(tr("Sample"), !url(Size::Sample).isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(url(Size::Sample).toString()) : unknown),
+		QStrP(tr("Thumbnail"), !url(Size::Thumbnail).isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(url(Size::Thumbnail).toString()) : unknown),
 		QStrP(),
 		QStrP(tr("Parent"), m_parentId != 0 ? tr("yes (#%1)").arg(m_parentId) : no),
 		QStrP(tr("Comments"), m_hasComments ? yes : no),
@@ -995,7 +999,7 @@ void Image::setRating(const QString &rating)
 void Image::setFileExtension(const QString &ext)
 {
 	m_url = setExtension(m_url, ext);
-	m_fileUrl = setExtension(m_fileUrl, ext);
+	m_sizes[Size::Full]->url = setExtension(m_sizes[Size::Full]->url, ext);
 	refreshTokens();
 }
 
@@ -1022,12 +1026,10 @@ QString Image::isAnimated() const
 
 QUrl Image::url(Size size) const
 {
-	switch (size)
-	{
-		case Size::Thumbnail: return m_previewUrl;
-		case Size::Sample: return m_sampleUrl;
-		default: return m_url;
+	if (size == Size::Full) {
+		return m_url;
 	}
+	return m_sizes[size]->url;
 }
 
 void Image::preload(const Filename &filename)
@@ -1077,9 +1079,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("width", Token(width()));
 	tokens.insert("mpixels", Token(width() * height()));
 	tokens.insert("url_file", Token(m_url));
-	tokens.insert("url_original", Token(m_fileUrl.toString()));
-	tokens.insert("url_sample", Token(m_sampleUrl.toString()));
-	tokens.insert("url_thumbnail", Token(m_previewUrl.toString()));
+	tokens.insert("url_original", Token(m_sizes[Size::Full]->url.toString()));
+	tokens.insert("url_sample", Token(url(Size::Sample).toString()));
+	tokens.insert("url_thumbnail", Token(url(Size::Thumbnail).toString()));
 	tokens.insert("url_page", Token(m_pageUrl.toString()));
 	tokens.insert("source", Token(!m_sources.isEmpty() ? m_sources.first() : ""));
 	tokens.insert("sources", Token(m_sources));

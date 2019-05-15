@@ -363,6 +363,10 @@ void ImageTest::testSerialization()
 	QCOMPARE(dest.id(), m_img->id());
 	QCOMPARE(dest.md5(), m_img->md5());
 	QCOMPARE(dest.fileSize(), m_img->fileSize());
+
+	QCOMPARE(dest.url(), m_img->url());
+	QCOMPARE(dest.url(Image::Size::Sample), m_img->url(Image::Size::Sample));
+	QCOMPARE(dest.url(Image::Size::Thumbnail), m_img->url(Image::Size::Thumbnail));
 }
 
 

@@ -133,7 +133,7 @@ class Image : public QObject, public Downloadable
 		QString mutable m_md5;
 		QString m_author, m_name, m_status, m_rating;
 		QStringList m_sources;
-		QUrl m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
+		QUrl m_pageUrl;
 		QDateTime m_createdAt;
 		NetworkReply *m_loadDetails = nullptr;
 		QList<Tag> m_tags;
