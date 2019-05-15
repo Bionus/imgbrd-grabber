@@ -355,7 +355,12 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображения. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображений. Продолжить?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -700,7 +705,12 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="446"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Загружается %n загрузка</numerusform>
+        <numerusform>Загружаются %n загрузки</numerusform>
+        <numerusform>Загружаются %n загрузок</numerusform>
+        <numerusform>Загружаются %n загрузок</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="523"/>
@@ -776,27 +786,52 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1194"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл успешно загружен.</numerusform>
+        <numerusform>%n файла успешно загружено.</numerusform>
+        <numerusform>%n файлов успешно загружено.</numerusform>
+        <numerusform>%n файлов успешно загружено.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1195"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл проигнорирован.</numerusform>
+        <numerusform>%n файла проигнорированно.</numerusform>
+        <numerusform>%n файлов проигнорированно.</numerusform>
+        <numerusform>%n файлов проигнорированно.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1196"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл уже существует.</numerusform>
+        <numerusform>%n файла уже существуют.</numerusform>
+        <numerusform>%n файлов уже существуют.</numerusform>
+        <numerusform>%n файлов уже существуют.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1197"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл не найден на сервере.</numerusform>
+        <numerusform>%n файла не найдено на сервере.</numerusform>
+        <numerusform>%n файлов не найдено на сервере.</numerusform>
+        <numerusform>%n файлов не найдено на сервере.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1198"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n файл пропущен.</numerusform>
+        <numerusform>%n файла пропущено.</numerusform>
+        <numerusform>%n файлов пропущено.</numerusform>
+        <numerusform>%n файлов пропущено.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1199"/>
@@ -806,7 +841,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
       <source>%n error(s).</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n ошибка.</numerusform>
+        <numerusform>%n ошибки.</numerusform>
+        <numerusform>%n ошибок.</numerusform>
+        <numerusform>%n ошибок.</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -870,7 +910,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Вы собираетесь удалить %n папку. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папки. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1757,7 +1802,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n MD5(s) загружен</numerusform>
+        <numerusform>%n MD5(s) загружено</numerusform>
+        <numerusform>%n MD5(s) загружено</numerusform>
+        <numerusform>%n MD5(s) загружено</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -3179,7 +3229,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
+        <numerusform>Вы хотите сохранить %n изображение. Продолжить?</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
@@ -3333,7 +3388,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+        <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -4119,7 +4179,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="104"/>
       <source>%n tag(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n тег загружен</numerusform>
+        <numerusform>%n тега загружено</numerusform>
+        <numerusform>%n тегов загружено</numerusform>
+        <numerusform>%n тегов загружено</numerusform>
+      </translation>
     </message>
   </context>
   <context>
