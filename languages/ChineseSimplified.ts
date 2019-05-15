@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_CN" sourcelanguage="en_US">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>AboutWindow</name>
     <message>
@@ -1712,7 +1712,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="14"/>
       <source>Md5 list fixer</source>
-      <translation>MD5 列表修复</translation>
+      <translation>Md5 列表修复</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
@@ -2761,7 +2761,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2301"/>
       <source> s</source>
-      <translation type="unfinished"/>
+      <translation> s</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2311"/>
@@ -3805,12 +3805,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
       <source>OAuth 2</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="544"/>
