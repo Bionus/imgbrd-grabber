@@ -48,6 +48,9 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 		ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt());
 	}
 
+	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
+	ui->splitter->setSizes(QList<int>() << splitterSizes[0].toInt() << splitterSizes[1].toInt());
+
 	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &DownloadsTab::batchClearSelGroups);
@@ -79,12 +82,22 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event);
 
+	// Columns
 	QStringList sizes;
 	sizes.reserve(ui->tableBatchGroups->columnCount());
 	for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++) {
 		sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i)));
 	}
 	m_settings->setValue("batch", sizes.join(","));
+
+	// Splitter
+	QList<int> splitterSizesOrig = ui->splitter->sizes();
+	QStringList splitterSizes;
+	splitterSizes.reserve(splitterSizesOrig.count());
+	for (int size : splitterSizesOrig) {
+		splitterSizes.append(QString::number(size));
+	}
+	m_settings->setValue("batchSplitter", splitterSizes.join(","));
 }
 
 

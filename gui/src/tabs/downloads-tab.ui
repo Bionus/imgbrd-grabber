@@ -31,182 +31,215 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="labelGroups">
-     <property name="text">
-      <string>Groups (0/0)</string>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="tableBatchGroups">
-     <property name="verticalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="horizontalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Tags</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Source</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Page</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Images per page</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Images limit</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Filename</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Folder</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Post-filtering</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Get blacklisted</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Galleries count as one</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Progress</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="pushButton_12">
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Single images</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="tableBatchUniques">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="showDropIndicator" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="dragDropOverwriteMode">
-      <bool>false</bool>
-     </property>
-     <property name="verticalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="horizontalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>Id</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Md5</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Rating</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Tags</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Url</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Date</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Search</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Site</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Filename</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Folder</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="pushButton_13">
-     <property name="text">
-      <string>Add</string>
-     </property>
+     <widget class="QWidget" name="widgetGroups" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelGroups">
+         <property name="text">
+          <string>Groups (0/0)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableBatchGroups">
+         <property name="verticalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tags</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Source</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Images per page</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Images limit</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Filename</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Folder</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Post-filtering</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Get blacklisted</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Galleries count as one</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Progress</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonAddGroup">
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="widgetUniques" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelUniques">
+         <property name="text">
+          <string>Single images</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableBatchUniques">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="showDropIndicator" stdset="0">
+          <bool>false</bool>
+         </property>
+         <property name="dragDropOverwriteMode">
+          <bool>false</bool>
+         </property>
+         <property name="verticalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Id</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Md5</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Rating</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tags</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Url</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Date</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Search</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Filename</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Folder</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonAddUnique">
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -244,14 +277,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_14">
+         <widget class="QPushButton" name="buttonDownload">
           <property name="text">
            <string>Download</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="buttonDownloadSel">
           <property name="text">
            <string>Download selected</string>
           </property>
@@ -323,7 +356,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_12</sender>
+   <sender>buttonAddGroup</sender>
    <signal>clicked()</signal>
    <receiver>DownloadsTab</receiver>
    <slot>addGroup()</slot>
@@ -339,7 +372,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_13</sender>
+   <sender>buttonAddUnique</sender>
    <signal>clicked()</signal>
    <receiver>DownloadsTab</receiver>
    <slot>addUnique()</slot>
@@ -387,7 +420,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonDownloadSel</sender>
    <signal>clicked()</signal>
    <receiver>DownloadsTab</receiver>
    <slot>batchSel()</slot>
@@ -403,7 +436,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_14</sender>
+   <sender>buttonDownload</sender>
    <signal>clicked()</signal>
    <receiver>DownloadsTab</receiver>
    <slot>getAll()</slot>
