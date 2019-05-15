@@ -6,6 +6,7 @@
 
 class Profile;
 class Site;
+class Api;
 
 class TagApiTest : public TestSuite
 {
@@ -25,6 +26,7 @@ class TagApiTest : public TestSuite
 	private:
 		Profile *m_profile;
 		Site *m_site;
+		Api *m_api;
 };
 
 #endif // TAG_API_TEST_H
