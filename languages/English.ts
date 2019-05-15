@@ -703,7 +703,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="446"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Loading %n download</numerusform>
         <numerusform>Loading %n downloads</numerusform>
       </translation>
@@ -780,7 +780,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1194"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n file downloaded successfully.</numerusform>
         <numerusform>%n files downloaded successfully.</numerusform>
       </translation>
@@ -788,7 +788,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1195"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n file ignored.</numerusform>
         <numerusform>%n files ignored.</numerusform>
       </translation>
@@ -796,7 +796,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1196"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n file already existing.</numerusform>
         <numerusform>%n files already existing.</numerusform>
       </translation>
@@ -804,7 +804,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1197"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n file not found on the server.</numerusform>
         <numerusform>%n files not found on the server.</numerusform>
       </translation>
@@ -812,7 +812,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1198"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n file skipped.</numerusform>
         <numerusform>%n files skipped.</numerusform>
       </translation>
@@ -825,7 +825,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
       <source>%n error(s).</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n error.</numerusform>
         <numerusform>%n errors.</numerusform>
       </translation>
@@ -1785,7 +1785,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n MD5 loaded</numerusform>
         <numerusform>%n MD5s loaded</numerusform>
       </translation>
@@ -3367,7 +3367,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
         <numerusform>%n tags figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</numerusform>
       </translation>
