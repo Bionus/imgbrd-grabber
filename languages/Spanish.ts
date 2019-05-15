@@ -822,10 +822,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1199"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished">
-        <numerusform/>
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
