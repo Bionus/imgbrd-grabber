@@ -7,6 +7,9 @@
 #include <QMimeData>
 #include <QNetworkProxy>
 #include <QShortcut>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+	#include <QSysInfo>
+#endif
 #include <QTimer>
 #include <algorithm>
 #if defined(Q_OS_WIN)
@@ -73,6 +76,12 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	log(QStringLiteral("New session started."), Logger::Info);
 	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
+	log(QStringLiteral("Software CPU architecture: %1.").arg(VERSION_PLATFORM), Logger::Info);
+	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+		log(QStringLiteral("Computer CPU architecture: %1.").arg(QSysInfo::currentCpuArchitecture()), Logger::Info);
+		log(QStringLiteral("Qt CPU architecture: %1.").arg(QSysInfo::buildCpuArchitecture()), Logger::Info);
+		log(QStringLiteral("Computer platform: %1.").arg(QSysInfo::prettyProductName()), Logger::Info);
+	#endif
 	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
 	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
 
