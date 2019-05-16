@@ -24,12 +24,12 @@
       <translation>Traduction russe par Николай Тихонов.</translation>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="37"/>
+      <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>A new version is available: %1</source>
       <translation>Une nouvelle version est disponible : %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/about-window.cpp" line="37"/>
+      <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>Grabber is up to date</source>
       <translation>Grabber est à jour</translation>
     </message>
@@ -85,7 +85,7 @@
       <translation>Ajouter une image</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="100"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="103"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -110,18 +110,18 @@
       <translation>Nom de fichier</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="130"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Un ID par ligne.&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="147"/>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="202"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="205"/>
       <source>+</source>
       <translation>+</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="185"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
       <source>&lt;i&gt;One MD5 per line.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Un MD5 par ligne.&lt;/i&gt;</translation>
     </message>
@@ -136,14 +136,9 @@
       <translation>Parcourir</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.cpp" line="79"/>
+      <location filename="../gui/src/batch/add-unique-window.cpp" line="80"/>
       <source>Choose a save folder</source>
       <translation>Choisir un dossier de sauvegarde</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/batch/add-unique-window.cpp" line="167"/>
-      <source>No image found.</source>
-      <translation>Aucune image n'a été trouvée.</translation>
     </message>
   </context>
   <context>
@@ -486,222 +481,222 @@
       <translation>Téléchargements</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="36"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="52"/>
       <source>Groups (0/0)</source>
       <translation>Groupes (0/0)</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="61"/>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="170"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="77"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="199"/>
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="66"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="82"/>
       <source>Source</source>
       <translation>Source</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="71"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="87"/>
       <source>Page</source>
       <translation>Page</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="76"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="92"/>
       <source>Images per page</source>
       <translation>Images par page</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="81"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="97"/>
       <source>Images limit</source>
       <translation>Limite d'images</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="86"/>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="195"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="102"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="224"/>
       <source>Filename</source>
       <translation>Nom de fichier</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="91"/>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="200"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="107"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="229"/>
       <source>Folder</source>
       <translation>Dossier</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="96"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="112"/>
       <source>Post-filtering</source>
       <translation>Post-filtrage</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="101"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="117"/>
       <source>Get blacklisted</source>
       <translation>Récupérer liste noire</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="106"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="122"/>
       <source>Galleries count as one</source>
       <translation>Les galeries comptent pour un</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="111"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="127"/>
       <source>Progress</source>
       <translation>Progression</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="119"/>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="208"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="135"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="237"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="126"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="155"/>
       <source>Single images</source>
       <translation>Images seules</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="155"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="184"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="160"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="189"/>
       <source>Md5</source>
       <translation>Md5</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="165"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="194"/>
       <source>Rating</source>
       <translation>Classe</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="175"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="204"/>
       <source>Url</source>
       <translation>Url</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="180"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="209"/>
       <source>Date</source>
       <translation>Date</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="185"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="214"/>
       <source>Search</source>
       <translation>Recherche</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="190"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="219"/>
       <source>Site</source>
       <translation>Site</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="235"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="268"/>
       <source>Delete all</source>
       <translation>Tout effacer</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="242"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="275"/>
       <source>Delete selected</source>
       <translation>Effacer la sélection</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="249"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="282"/>
       <source>Download</source>
       <translation>Télécharger</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="256"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="289"/>
       <source>Download selected</source>
       <translation>Télécharger la sélection</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="273"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="306"/>
       <source>Move down</source>
       <translation>Descendre</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="280"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="313"/>
       <source>Load</source>
       <translation>Charger</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="287"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="320"/>
       <source>Save</source>
       <translation>Enregistrer</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.ui" line="294"/>
+      <location filename="../gui/src/tabs/downloads-tab.ui" line="327"/>
       <source>Move up</source>
       <translation>Monter</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Confirmation</source>
       <translation>Validation</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="120"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Are you sure you want to clear your download list?</source>
       <translation>Êtes-vous sûr de vouloir vider votre liste de téléchargement ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="267"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="280"/>
       <source>This source is not valid.</source>
       <translation>Cette source n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="276"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="289"/>
       <source>The image per page value must be greater or equal to 1.</source>
       <translation>La limite d'images par page doit être supérieure ou égale à 1.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="285"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="298"/>
       <source>The image limit must be greater or equal to 0.</source>
       <translation>La limite d'images doit être supérieure ou égale à 0.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="361"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="374"/>
       <source>Groups (%1/%2)</source>
       <translation>Groupes (%1/%2)</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="405"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="414"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="416"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="418"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
       <source>Save link list</source>
       <translation>Enregistrer la liste de liens</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="405"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="426"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="418"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="439"/>
       <source>Imageboard-Grabber links (*.igl)</source>
       <translation>Liens Imageboard-Grabber (*.igl)</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="414"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
       <source>Link list saved successfully!</source>
       <translation>Liste de liens enregistrée avec succès !</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="416"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="434"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Error opening file.</source>
       <translation>Erreur lors de l'ouverture du fichier.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="426"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="432"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="434"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="439"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Load link list</source>
       <translation>Charger une liste de liens</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="432"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
       <source>Link list loaded successfully!</source>
       <translation>Liste de liens chargée avec succès !</translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="446"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="459"/>
       <source>Loading %n download(s)</source>
       <translation>
         <numerusform>Chargement de %n téléchargement</numerusform>
@@ -709,54 +704,54 @@
       </translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="523"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
       <source>You did not specify a save folder!</source>
       <translation>Vous n'avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="527"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="540"/>
       <source>You did not specify a filename!</source>
       <translation>Vous n'avez pas précisé de nom de fichier !</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="655"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="668"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
       <translation>Vous êtes sur le point de télécharger jusqu'à %1 images, ce qui peut prendre beaucoup de temps et d'espace disque. Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="657"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="670"/>
       <source>Don't ask me again</source>
       <translation>Ne pas me re-demander</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="707"/>
       <source>Logging in, please wait...</source>
       <translation>Connexion aux sources, veuillez patienter...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="779"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="792"/>
       <source>Downloading pages, please wait...</source>
       <translation>Téléchargement des pages, veuillez patienter...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="856"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="869"/>
       <source>Preparing images, please wait...</source>
       <translation>Préparation des images, veuillez patienter...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="870"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="883"/>
       <source>Downloading images...</source>
       <translation>Téléchargement des images en cours...</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1066"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1079"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
       <translation>Pas assez d'espace dans le disque de destination : %1.
 Veuillez libérer de l'espace avant de reprendre le téléchargement.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1068"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1081"/>
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
@@ -765,23 +760,23 @@ Please solve the issue before resuming the download.</source>
 Veuillez résoudre le problème avant de reprendre le téléchargement.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1070"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1083"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1163"/>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1192"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1176"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1205"/>
       <source>Getting images</source>
       <translation>Récupération des images</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1163"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1176"/>
       <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
       <translation>Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1194"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1207"/>
       <source>%n file(s) downloaded successfully.</source>
       <translation>
         <numerusform>%n fichier récupéré avec succès.</numerusform>
@@ -789,7 +784,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1195"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1208"/>
       <source>%n file(s) ignored.</source>
       <translation>
         <numerusform>%n fichier ignoré.</numerusform>
@@ -797,7 +792,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1196"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1209"/>
       <source>%n file(s) already existing.</source>
       <translation>
         <numerusform>%n fichier déjà existant.</numerusform>
@@ -805,7 +800,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1197"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1210"/>
       <source>%n file(s) not found on the server.</source>
       <translation>
         <numerusform>%n fichier non trouvé sur le serveur.</numerusform>
@@ -813,7 +808,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1198"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1211"/>
       <source>%n file(s) skipped.</source>
       <translation>
         <numerusform>%n fichier passé.</numerusform>
@@ -821,7 +816,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1199"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
       <translation>
         <numerusform>%n fichier du téléchargement repris passé.</numerusform>
@@ -829,7 +824,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1200"/>
+      <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
       <source>%n error(s).</source>
       <translation>
         <numerusform>%n erreur.</numerusform>
@@ -977,32 +972,52 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Suivi</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="134"/>
+      <location filename="../gui/src/favorite-window.ui" line="144"/>
       <source>Monitoring interval</source>
       <translation>Intervalle de suivi</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="141"/>
+      <location filename="../gui/src/favorite-window.ui" line="151"/>
       <source> min</source>
       <translation> min</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="151"/>
+      <location filename="../gui/src/favorite-window.ui" line="161"/>
       <source>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Mettre l'intervalle à 0 pour désactiver le suivi.&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="161"/>
+      <location filename="../gui/src/favorite-window.ui" line="134"/>
       <source>Source</source>
       <translation>Source</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="177"/>
+      <location filename="../gui/src/favorite-window.ui" line="171"/>
+      <source>Download</source>
+      <translation>Télécharger</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/favorite-window.ui" line="178"/>
+      <source>Path</source>
+      <translation>Chemin</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/favorite-window.ui" line="185"/>
+      <source>Filename</source>
+      <translation>Nom de fichier</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/favorite-window.ui" line="192"/>
+      <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Laisser vide pour laisser les options par défaut.&lt;/i&gt;</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/favorite-window.ui" line="211"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.cpp" line="62"/>
+      <location filename="../gui/src/favorite-window.cpp" line="65"/>
       <source>Choose an image</source>
       <translation>Choisir une image</translation>
     </message>
@@ -1011,8 +1026,8 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <name>FavoritesTab</name>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="26"/>
-      <location filename="../gui/src/tabs/favorites-tab.cpp" line="389"/>
-      <location filename="../gui/src/tabs/favorites-tab.cpp" line="395"/>
+      <location filename="../gui/src/tabs/favorites-tab.cpp" line="390"/>
+      <location filename="../gui/src/tabs/favorites-tab.cpp" line="396"/>
       <source>Favorites</source>
       <translation>Favoris</translation>
     </message>
@@ -1208,133 +1223,133 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>Image</name>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="859"/>
+      <location filename="../lib/src/models/image.cpp" line="887"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;Tags :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="851"/>
-      <location filename="../lib/src/models/image.cpp" line="860"/>
+      <location filename="../lib/src/models/image.cpp" line="879"/>
+      <location filename="../lib/src/models/image.cpp" line="888"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="852"/>
+      <location filename="../lib/src/models/image.cpp" line="880"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="861"/>
+      <location filename="../lib/src/models/image.cpp" line="889"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Classe :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="862"/>
+      <location filename="../lib/src/models/image.cpp" line="890"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
       <translation>&lt;b&gt;Score :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="863"/>
+      <location filename="../lib/src/models/image.cpp" line="891"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
       <translation>&lt;b&gt;Auteur :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="864"/>
+      <location filename="../lib/src/models/image.cpp" line="892"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="865"/>
+      <location filename="../lib/src/models/image.cpp" line="893"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
       <translation>&lt;b&gt;Taille :&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="866"/>
+      <location filename="../lib/src/models/image.cpp" line="894"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
       <translation>&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="866"/>
+      <location filename="../lib/src/models/image.cpp" line="894"/>
       <source>'the 'MM/dd/yyyy' at 'hh:mm</source>
       <translation>'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="876"/>
+      <location filename="../lib/src/models/image.cpp" line="904"/>
       <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
       <translation>&lt;i&gt;Inconnu&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="877"/>
+      <location filename="../lib/src/models/image.cpp" line="905"/>
       <source>yes</source>
       <translation>oui</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="878"/>
+      <location filename="../lib/src/models/image.cpp" line="906"/>
       <source>no</source>
       <translation>non</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="887"/>
+      <location filename="../lib/src/models/image.cpp" line="915"/>
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="889"/>
+      <location filename="../lib/src/models/image.cpp" line="917"/>
       <source>ID</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="890"/>
+      <location filename="../lib/src/models/image.cpp" line="918"/>
       <source>MD5</source>
       <translation>MD5</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="891"/>
+      <location filename="../lib/src/models/image.cpp" line="919"/>
       <source>Rating</source>
       <translation>Classe</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="892"/>
+      <location filename="../lib/src/models/image.cpp" line="920"/>
       <source>Score</source>
       <translation>Score</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="893"/>
+      <location filename="../lib/src/models/image.cpp" line="921"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="895"/>
+      <location filename="../lib/src/models/image.cpp" line="923"/>
       <source>Date</source>
       <translation>Date</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="895"/>
+      <location filename="../lib/src/models/image.cpp" line="923"/>
       <source>'the' MM/dd/yyyy 'at' hh:mm</source>
       <translation>'le' dd/MM/yyyy 'à' hh:mm</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="896"/>
+      <location filename="../lib/src/models/image.cpp" line="924"/>
       <source>Size</source>
       <translation>Dimensions</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="897"/>
+      <location filename="../lib/src/models/image.cpp" line="925"/>
       <source>Filesize</source>
       <translation>Taille</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="899"/>
+      <location filename="../lib/src/models/image.cpp" line="927"/>
       <source>Page</source>
       <translation>Page</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="900"/>
+      <location filename="../lib/src/models/image.cpp" line="928"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message numerus="yes">
-      <location filename="../lib/src/models/image.cpp" line="901"/>
+      <location filename="../lib/src/models/image.cpp" line="929"/>
       <source>Source(s)</source>
       <translation>
         <numerusform>Source</numerusform>
@@ -1342,37 +1357,37 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="902"/>
+      <location filename="../lib/src/models/image.cpp" line="930"/>
       <source>Sample</source>
       <translation>Sample</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="903"/>
+      <location filename="../lib/src/models/image.cpp" line="931"/>
       <source>Thumbnail</source>
       <translation>Miniature</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="905"/>
+      <location filename="../lib/src/models/image.cpp" line="933"/>
       <source>Parent</source>
       <translation>Parent</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="905"/>
+      <location filename="../lib/src/models/image.cpp" line="933"/>
       <source>yes (#%1)</source>
       <translation>oui (#%1)</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="906"/>
+      <location filename="../lib/src/models/image.cpp" line="934"/>
       <source>Comments</source>
       <translation>Commentaires</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="907"/>
+      <location filename="../lib/src/models/image.cpp" line="935"/>
       <source>Children</source>
       <translation>Enfants</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/image.cpp" line="908"/>
+      <location filename="../lib/src/models/image.cpp" line="936"/>
       <source>Notes</source>
       <translation>Notes</translation>
     </message>
@@ -1606,7 +1621,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="656"/>
-      <location filename="../gui/src/main-window.cpp" line="474"/>
+      <location filename="../gui/src/main-window.cpp" line="489"/>
       <source>New tab</source>
       <translation>Nouvel onglet</translation>
     </message>
@@ -1671,52 +1686,52 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Chargeur de tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="147"/>
+      <location filename="../gui/src/main-window.cpp" line="158"/>
       <source>No source found</source>
       <translation>Aucune source trouvée</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="147"/>
+      <location filename="../gui/src/main-window.cpp" line="158"/>
       <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
       <translation>Aucune source n'a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller.</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="162"/>
+      <location filename="../gui/src/main-window.cpp" line="173"/>
       <source>&amp;Quit</source>
       <translation>&amp;Quitter</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="209"/>
+      <location filename="../gui/src/main-window.cpp" line="220"/>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
       <translation>Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="404"/>
+      <location filename="../gui/src/main-window.cpp" line="419"/>
       <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
       <translation>L'extension pour Mozilla Firefox "Danbooru Downloader" a été détectée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="740"/>
+      <location filename="../gui/src/main-window.cpp" line="755"/>
       <source>Don't ask me again</source>
       <translation>Ne pas me re-demander</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="679"/>
+      <location filename="../gui/src/main-window.cpp" line="694"/>
       <source>MM/dd/yyyy</source>
       <translation>dd/MM/yyyy</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="684"/>
+      <location filename="../gui/src/main-window.cpp" line="699"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
       <translation>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="738"/>
+      <location filename="../gui/src/main-window.cpp" line="753"/>
       <source>Are you sure you want to quit?</source>
       <translation>Êtes vous sûr de vouloir quitter ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/main-window.cpp" line="887"/>
+      <location filename="../gui/src/main-window.cpp" line="902"/>
       <source>Choose a save folder</source>
       <translation>Choisir un dossier de sauvegarde</translation>
     </message>
@@ -1800,12 +1815,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>MonitoringCenter</name>
     <message>
-      <location filename="../gui/src/monitoring-center.cpp" line="54"/>
+      <location filename="../gui/src/monitoring-center.cpp" line="57"/>
       <source>New images found for tag '%1' on '%2'</source>
       <translation>Nouvelles images trouvées pour le tag '%1' sur '%2'</translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/monitoring-center.cpp" line="56"/>
+      <location filename="../gui/src/monitoring-center.cpp" line="59"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
       <translation>
         <numerusform>%n nouvelle image trouvée pour le tag '%1' sur '%2'</numerusform>
@@ -1813,7 +1828,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/monitoring-center.cpp" line="58"/>
+      <location filename="../gui/src/monitoring-center.cpp" line="61"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
         <numerusform>Plus de %n nouvelle image trouvée pour le tag '%1' sur '%2'</numerusform>
@@ -1821,7 +1836,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       </translation>
     </message>
     <message>
-      <location filename="../gui/src/monitoring-center.cpp" line="60"/>
+      <location filename="../gui/src/monitoring-center.cpp" line="63"/>
       <source>Grabber monitoring</source>
       <translation>Suivi de Grabber</translation>
     </message>
@@ -3045,42 +3060,47 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="273"/>
+      <location filename="../lib/src/models/filename.cpp" line="274"/>
       <source>Filename must not be empty!</source>
       <translation>Le nom de fichier ne doit pas être vide !</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="278"/>
+      <location filename="../lib/src/models/filename.cpp" line="279"/>
       <source>Can't validate Javascript expressions.</source>
       <translation>Impossible de valider les expressions Javascript.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="286"/>
+      <location filename="../lib/src/models/filename.cpp" line="285"/>
+      <source>Can't compile your filename: %1</source>
+      <translation>Erreur de compilation: %1</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/models/filename.cpp" line="292"/>
       <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
       <translation>Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="291"/>
+      <location filename="../lib/src/models/filename.cpp" line="297"/>
       <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
       <translation>Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="312"/>
+      <location filename="../lib/src/models/filename.cpp" line="318"/>
       <source>The %%1% token does not exist and will not be replaced.</source>
       <translation>Le symbole %%1% n'existe pas et ne sera pas remplacé.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="320"/>
+      <location filename="../lib/src/models/filename.cpp" line="326"/>
       <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
       <translation>Votre format contient des caractères interdits sur Windows ! Caractères interdits : * ? " : &lt; &gt; |</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="326"/>
+      <location filename="../lib/src/models/filename.cpp" line="332"/>
       <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
       <translation>Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</translation>
     </message>
     <message>
-      <location filename="../lib/src/models/filename.cpp" line="330"/>
+      <location filename="../lib/src/models/filename.cpp" line="336"/>
       <source>Valid filename!</source>
       <translation>Format valide !</translation>
     </message>
@@ -3129,6 +3149,11 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
       <source>An image needs a date to be filtered by age</source>
       <translation>Une image nécessite une date pour être filtrée par age</translation>
+    </message>
+    <message>
+      <location filename="../lib/src/models/filtering/meta-filter.cpp" line="162"/>
+      <source>unknown type "%1" (available types: "%2")</source>
+      <translation>type "%1" inconnu (types disponibles: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
@@ -3274,52 +3299,52 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
   <context>
     <name>SearchTab</name>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="162"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="163"/>
       <source>all images filtered</source>
       <translation>toutes les images ont été filtrées</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="168"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="169"/>
       <source>server offline</source>
       <translation>serveur hors ligne</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="173"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="174"/>
       <source>too many tags</source>
       <translation>trop de tags</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="178"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="179"/>
       <source>page too far</source>
       <translation>page trop éloignée</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="382"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
       <source>HTTPS redirection detected</source>
       <translation>Redirection HTTPS détectée</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="384"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
       <translation>Une redirection HTTP vers HTTPS a été détectée pour le site %1. Voulez vous activer SSL dessus? L'option recommandée est 'oui'.</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="385"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
       <source>Always</source>
       <translation>Toujours</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
       <source>Never for that website</source>
       <translation>Jamais pour ce site</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="388"/>
       <source>Never</source>
       <translation>Jamais</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="600"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="601"/>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
       <translation>Certains tags de l'image sont dans la liste blanche : %1. Cependant, certains dans la liste noire : %2. Voulez-vous la télécharger tout de même ?</translation>
     </message>
@@ -3367,17 +3392,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Enregistrer la sélection</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="984"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="983"/>
       <source>Save image</source>
       <translation>Enregistrer l'image</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="1199"/>
       <source>Blacklist</source>
       <translation>Liste noire</translation>
     </message>
     <message numerus="yes">
-      <location filename="../gui/src/tabs/search-tab.cpp" line="1201"/>
+      <location filename="../gui/src/tabs/search-tab.cpp" line="1199"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
       <translation>
         <numerusform>%n tag figurant dans la liste noire détecté sur cette image : %1. Voulez-vous l'afficher tout de même ?</numerusform>
@@ -3786,12 +3811,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Utiliser les sources par défaut</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="90"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
       <source>Username</source>
       <translation>Utilisateur</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="91"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
       <source>Password</source>
       <translation>Mot de passe</translation>
     </message>
@@ -3811,27 +3836,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="83"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
       <source>Through URL</source>
       <translation>Passage dans l'url</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="84"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
       <source>GET</source>
       <translation>GET</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="85"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
       <source>POST</source>
       <translation>POST</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="86"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
       <source>OAuth 1</source>
       <translation>OAuth 1</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="87"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="88"/>
       <source>OAuth 2</source>
       <translation>OAuth 2</translation>
     </message>
@@ -3873,57 +3898,57 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Valider</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="92"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>API key</source>
       <translation>Clé API</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
       <source>Consumer key</source>
       <translation>Clé consommateur</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
       <source>Consumer secret</source>
       <translation>Secret consommateur</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="197"/>
       <source>Delete a site</source>
       <translation>Supprimer un site</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="186"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="197"/>
       <source>Are you sure you want to delete the site %1?</source>
       <translation>Êtes-vous sûr de vouloir supprimer le site %1 ?</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="207"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="218"/>
       <source>Connection...</source>
       <translation>Connexion...</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="220"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="231"/>
       <source>Success!</source>
       <translation>Succès !</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="224"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="235"/>
       <source>Failure</source>
       <translation>Échec</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="228"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="239"/>
       <source>Unable to test</source>
       <translation>Impossible de tester</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="284"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="295"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-settings-window.cpp" line="284"/>
+      <location filename="../gui/src/sources/sources-settings-window.cpp" line="295"/>
       <source>You should at least select one source</source>
       <translation>Vous devez sélectionner au moins une source</translation>
     </message>
@@ -3961,33 +3986,33 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="237"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="238"/>
       <source>Options</source>
       <translation>Options</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="297"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="298"/>
       <source>An update for this source is available.</source>
       <translation>Une mise à jour de cette source est disponible.</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="382"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="383"/>
       <source>- No preset selected -</source>
       <translation>- Aucun preset sélectionné -</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="394"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
       <source>Create a new preset</source>
       <translation>Créer un nouveau preset</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="394"/>
-      <location filename="../gui/src/sources/sources-window.cpp" line="421"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="422"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.cpp" line="421"/>
+      <location filename="../gui/src/sources/sources-window.cpp" line="422"/>
       <source>Edit preset</source>
       <translation>Modifier un preset</translation>
     </message>
@@ -4242,7 +4267,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation>Prendre &amp;tous</translation>
     </message>
     <message>
-      <location filename="../gui/src/tabs/tag-tab.cpp" line="256"/>
+      <location filename="../gui/src/tabs/tag-tab.cpp" line="257"/>
       <source>Search</source>
       <translation>Recherche</translation>
     </message>
