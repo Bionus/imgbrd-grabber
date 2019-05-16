@@ -380,7 +380,7 @@ FilenameNodeConditionIgnore *FilenameParser::parseConditionIgnore()
 {
 	m_index++; // -
 
-	auto cond = parseSingleCondition();
+	auto cond = parseSingleCondition(true);
 
 	return new FilenameNodeConditionIgnore(cond);
 }
