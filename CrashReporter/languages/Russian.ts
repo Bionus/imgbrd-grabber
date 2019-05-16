@@ -1,100 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
-<context>
+  <context>
     <name>CrashReporterWindow</name>
     <message>
-        <location filename="../crash-reporter-window.ui" line="14"/>
-        <source>Crash Reporter</source>
-        <translation>Отчёт об ошибке</translation>
+      <location filename="../crash-reporter-window.ui" line="14"/>
+      <source>Crash Reporter</source>
+      <translation>Отчёт об ошибке</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="28"/>
-        <source>Sorry</source>
-        <translation>Извините</translation>
+      <location filename="../crash-reporter-window.ui" line="28"/>
+      <source>Sorry</source>
+      <translation>Извините</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="44"/>
-        <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-        <translation>Grabber аварийно завершился. Мы попытаемся восстановить ранее открытые вкладки и другие параметры после перезапуска.</translation>
+      <location filename="../crash-reporter-window.ui" line="44"/>
+      <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
+      <translation>Grabber аварийно завершился. Мы попытаемся восстановить ранее открытые вкладки и другие параметры после перезапуска.</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="60"/>
-        <source>To help us fix this crash, you can send us a bug report.</source>
-        <translation>Вы можете отправить отчёт об ошибке чтобы помочь нам исправить проблему.</translation>
+      <location filename="../crash-reporter-window.ui" line="60"/>
+      <source>To help us fix this crash, you can send us a bug report.</source>
+      <translation>Вы можете отправить отчёт об ошибке чтобы помочь нам исправить проблему.</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="70"/>
-        <source>Send a bug report</source>
-        <translation>Отправить отчёт</translation>
+      <location filename="../crash-reporter-window.ui" line="70"/>
+      <source>Send a bug report</source>
+      <translation>Отправить отчёт</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="95"/>
-        <source>Log</source>
-        <translation>Лог</translation>
+      <location filename="../crash-reporter-window.ui" line="95"/>
+      <source>Log</source>
+      <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="102"/>
-        <source>Settings</source>
-        <translation>Настройки</translation>
+      <location filename="../crash-reporter-window.ui" line="102"/>
+      <source>Settings</source>
+      <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="109"/>
-        <source>Dump</source>
-        <translation>Дамп</translation>
+      <location filename="../crash-reporter-window.ui" line="109"/>
+      <source>Dump</source>
+      <translation>Дамп</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="155"/>
-        <source>Restart</source>
-        <translation>Перезапуск</translation>
+      <location filename="../crash-reporter-window.ui" line="155"/>
+      <source>Restart</source>
+      <translation>Перезапуск</translation>
     </message>
     <message>
-        <location filename="../crash-reporter-window.ui" line="162"/>
-        <source>Quit</source>
-        <translation>Выход</translation>
+      <location filename="../crash-reporter-window.ui" line="162"/>
+      <source>Quit</source>
+      <translation>Выход</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MainWindow</name>
     <message>
-        <source>Crash Reporter</source>
-        <translation type="vanished">Отчёт об ошибке</translation>
+      <source>Crash Reporter</source>
+      <translation type="vanished">Отчёт об ошибке</translation>
     </message>
     <message>
-        <source>Sorry</source>
-        <translation type="vanished">Извините</translation>
+      <source>Sorry</source>
+      <translation type="vanished">Извините</translation>
     </message>
     <message>
-        <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-        <translation type="vanished">Grabber аварийно завершился. Мы попытаемся восстановить ранее открытые вкладки и другие параметры после перезапуска.</translation>
+      <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
+      <translation type="vanished">Grabber аварийно завершился. Мы попытаемся восстановить ранее открытые вкладки и другие параметры после перезапуска.</translation>
     </message>
     <message>
-        <source>To help us fix this crash, you can send us a bug report.</source>
-        <translation type="vanished">Вы можете отправить отчёт об ошибке чтобы помочь нам исправить проблему.</translation>
+      <source>To help us fix this crash, you can send us a bug report.</source>
+      <translation type="vanished">Вы можете отправить отчёт об ошибке чтобы помочь нам исправить проблему.</translation>
     </message>
     <message>
-        <source>Send a bug report</source>
-        <translation type="vanished">Отправить отчёт</translation>
+      <source>Send a bug report</source>
+      <translation type="vanished">Отправить отчёт</translation>
     </message>
     <message>
-        <source>Log</source>
-        <translation type="vanished">Лог</translation>
+      <source>Log</source>
+      <translation type="vanished">Лог</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation type="vanished">Настройки</translation>
+      <source>Settings</source>
+      <translation type="vanished">Настройки</translation>
     </message>
     <message>
-        <source>Dump</source>
-        <translation type="vanished">Дамп</translation>
+      <source>Dump</source>
+      <translation type="vanished">Дамп</translation>
     </message>
     <message>
-        <source>Restart</source>
-        <translation type="vanished">Перезапуск</translation>
+      <source>Restart</source>
+      <translation type="vanished">Перезапуск</translation>
     </message>
     <message>
-        <source>Quit</source>
-        <translation type="vanished">Выход</translation>
+      <source>Quit</source>
+      <translation type="vanished">Выход</translation>
     </message>
-</context>
+  </context>
 </TS>
