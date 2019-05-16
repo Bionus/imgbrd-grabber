@@ -211,9 +211,12 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		QList<FilenameNodeCondition*> conds;
 
 		while (peek() != '>') {
-			QList<QChar> stop { '>', '-', '!', '"', '%' };
+			static const QList<QChar> stop { '>', '-', '!', '"', '%' };
+			static const QList<QChar> stopCond { '"', '%' };
 			if (!stop.contains(peek())) {
 				exprs.append(parseExpr(stop));
+			} else if (peek() == '-' && m_index + 1 < m_str.count() && !stopCond.contains(m_str[m_index + 1])) {
+				exprs.append(parseExpr({ '>', '"', '%' }));
 			}
 
 			if (peek() != '>') {
