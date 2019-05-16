@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR" sourcelanguage="en_US">
+<TS version="2.1" language="fr" sourcelanguage="en">
   <context>
     <name>CrashReporterWindow</name>
     <message>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="44"/>
       <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation>Grabber a rencontré un problème et a planté. Le programme essaiera de réstaurer vos onglets et autres paramètres lors de son prochain démarrage.</translation>
+      <translation>Grabber a rencontré un problème et a planté. Le programme essaiera de restaurer vos onglets et autres paramètres lors de son prochain démarrage.</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="60"/>
