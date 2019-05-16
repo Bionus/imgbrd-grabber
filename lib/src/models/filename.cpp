@@ -280,6 +280,11 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		return true;
 	}
 
+	// Can't validate invalid grammar
+	if (!m_ast->error().isEmpty()) {
+		returnError(red.arg(QObject::tr("Can't compile your filename: %1").arg(m_ast->error())), error);
+	}
+
 	const auto &toks = m_ast->tokens();
 
 	// Field must end by an extension
