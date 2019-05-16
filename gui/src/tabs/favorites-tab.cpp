@@ -376,9 +376,10 @@ void FavoritesTab::focusSearch()
 
 void FavoritesTab::changeEvent(QEvent *event)
 {
-	// Automatically retranslate this tab on language change
+	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
+		updateTitle();
 	}
 
 	QWidget::changeEvent(event);
