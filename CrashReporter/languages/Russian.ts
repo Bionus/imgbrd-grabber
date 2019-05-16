@@ -54,47 +54,4 @@
       <translation>Выход</translation>
     </message>
   </context>
-  <context>
-    <name>MainWindow</name>
-    <message>
-      <source>Crash Reporter</source>
-      <translation type="vanished">Отчёт об ошибке</translation>
-    </message>
-    <message>
-      <source>Sorry</source>
-      <translation type="vanished">Извините</translation>
-    </message>
-    <message>
-      <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation type="vanished">Grabber аварийно завершился. Мы попытаемся восстановить ранее открытые вкладки и другие параметры после перезапуска.</translation>
-    </message>
-    <message>
-      <source>To help us fix this crash, you can send us a bug report.</source>
-      <translation type="vanished">Вы можете отправить отчёт об ошибке чтобы помочь нам исправить проблему.</translation>
-    </message>
-    <message>
-      <source>Send a bug report</source>
-      <translation type="vanished">Отправить отчёт</translation>
-    </message>
-    <message>
-      <source>Log</source>
-      <translation type="vanished">Лог</translation>
-    </message>
-    <message>
-      <source>Settings</source>
-      <translation type="vanished">Настройки</translation>
-    </message>
-    <message>
-      <source>Dump</source>
-      <translation type="vanished">Дамп</translation>
-    </message>
-    <message>
-      <source>Restart</source>
-      <translation type="vanished">Перезапуск</translation>
-    </message>
-    <message>
-      <source>Quit</source>
-      <translation type="vanished">Выход</translation>
-    </message>
-  </context>
 </TS>

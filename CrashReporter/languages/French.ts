@@ -54,47 +54,4 @@
       <translation>Quitter</translation>
     </message>
   </context>
-  <context>
-    <name>MainWindow</name>
-    <message>
-      <source>Crash Reporter</source>
-      <translation type="vanished">Crash Reporter</translation>
-    </message>
-    <message>
-      <source>Sorry</source>
-      <translation type="vanished">Désolé</translation>
-    </message>
-    <message>
-      <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation type="vanished">Grabber a rencontré un problème et a planté. Le programme essaiera de réstaurer vos onglets et autres paramètres lors de son prochain démarrage.</translation>
-    </message>
-    <message>
-      <source>To help us fix this crash, you can send us a bug report.</source>
-      <translation type="vanished">Pour nous aider à résoudre le problème, vous pouvez nous envoyer un rapport de crash.</translation>
-    </message>
-    <message>
-      <source>Send a bug report</source>
-      <translation type="vanished">Envoyer un rapport de crash</translation>
-    </message>
-    <message>
-      <source>Log</source>
-      <translation type="vanished">Log</translation>
-    </message>
-    <message>
-      <source>Settings</source>
-      <translation type="vanished">Options</translation>
-    </message>
-    <message>
-      <source>Dump</source>
-      <translation type="vanished">Dump</translation>
-    </message>
-    <message>
-      <source>Restart</source>
-      <translation type="vanished">Redémarrer</translation>
-    </message>
-    <message>
-      <source>Quit</source>
-      <translation type="vanished">Quitter</translation>
-    </message>
-  </context>
 </TS>
