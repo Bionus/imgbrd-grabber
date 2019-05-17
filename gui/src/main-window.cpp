@@ -854,7 +854,7 @@ void MainWindow::aboutAuthor()
 
 void MainWindow::blacklistFix()
 {
-	auto *win = new BlacklistFix1(m_profile, this);
+	auto *win = new BlacklistFix1(getSelectedSiteOrDefault(), m_profile, this);
 	win->show();
 }
 void MainWindow::emptyDirsFix()
