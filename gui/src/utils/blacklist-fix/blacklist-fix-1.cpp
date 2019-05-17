@@ -95,6 +95,8 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		ui->progressBar->show();
 
 		getAll();
+	} else {
+		ui->buttonContinue->setEnabled(true);
 	}
 }
 
