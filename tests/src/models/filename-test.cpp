@@ -412,6 +412,7 @@ void FilenameTest::testPathOptionNumNoExt()
 }
 void FilenameTest::testPathOptionNumAboveTen()
 {
+#if !defined(Q_OS_MACOS)
 	int count = 15;
 	for (int i = 1; i < count; ++i) {
 		QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
@@ -424,6 +425,7 @@ void FilenameTest::testPathOptionNumAboveTen()
 	for (int i = 1; i < count; ++i) {
 		QFile::remove("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
 	}
+#endif
 }
 
 void FilenameTest::testPathOptionSort()

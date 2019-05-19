@@ -11,13 +11,13 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	ui->setupUi(this);
 
 	ui->tableWidget->setRowCount(m_details.size());
-	QStringList found = QStringList(), tags;
 	m_previews.reserve(m_details.count());
 	for (int i = 0; i < m_details.size(); i++) {
+		QStringList found;
 		QString color = "blue";
-		if (m_details.at(i).contains("tags")) {
+		if (m_details[i].contains("tags")) {
 			QMap<QString, Token> tokens;
-			tokens.insert("allos", Token(tags));
+			tokens.insert("allos", Token(m_details[i]["tags"].split(' ')));
 			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}

@@ -10,7 +10,7 @@
 
 
 class Image;
-class Site;
+class Profile;
 
 class SearchQuery
 {
@@ -27,7 +27,7 @@ class SearchQuery
 
 		// Serialization
 		void write(QJsonObject &json) const;
-		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
+		bool read(const QJsonObject &json, Profile *profile);
 
 		// Public members
 		QString url;

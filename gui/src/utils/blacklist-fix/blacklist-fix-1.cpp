@@ -11,18 +11,22 @@
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "models/site.h"
 #include "utils/blacklist-fix/blacklist-fix-2.h"
 
 
-BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
+BlacklistFix1::BlacklistFix1(Site *selected, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 
+	QStringList keys = m_sites.keys();
+	ui->comboSource->addItems(keys);
+	ui->comboSource->setCurrentIndex(keys.indexOf(selected->url()));
+
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
-	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
@@ -87,22 +91,24 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		}
 	}
 
-	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.count()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes) {
 		// Show progress bar
 		ui->progressBar->setValue(0);
-		ui->progressBar->setMaximum(files.size());
+		ui->progressBar->setMaximum(m_details.count());
 		ui->progressBar->show();
 
 		getAll();
+	} else {
+		ui->buttonContinue->setEnabled(true);
 	}
 }
 
 void BlacklistFix1::getAll(Page *p)
 {
 	if (p != nullptr && !p->images().empty()) {
-		QSharedPointer<Image> img = p->images().at(0);
-		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));
+		QSharedPointer<Image> img = p->images().first();
+		m_getAll[img->md5()].insert("tags", img->tagsString().join(' '));
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 		p->deleteLater();
 	}

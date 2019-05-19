@@ -1,6 +1,7 @@
 #include "tag-api-test.h"
 #include <QtTest>
 #include "custom-network-access-manager.h"
+#include "models/api/api.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -15,6 +16,13 @@ void TagApiTest::init()
 
 	m_profile = makeProfile();
 	m_site = m_profile->getSites().value("danbooru.donmai.us");
+
+	m_api = nullptr;
+	for (Api *a : m_site->getApis()) {
+		if (a->getName() == "Xml") {
+			m_api = a;
+		}
+	}
 }
 
 void TagApiTest::cleanup()
@@ -41,7 +49,7 @@ TagApi::LoadResult load(TagApi *api)
 
 void TagApiTest::testBasic()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
 
 	TagApi::LoadResult result = load(&tagApi);
@@ -54,7 +62,7 @@ void TagApiTest::testBasic()
 
 void TagApiTest::testNetworkError()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 	CustomNetworkAccessManager::NextFiles.enqueue("404");
 
 	TagApi::LoadResult result = load(&tagApi);
@@ -65,7 +73,7 @@ void TagApiTest::testNetworkError()
 
 void TagApiTest::testParseError()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.html");
 
 	TagApi::LoadResult result = load(&tagApi);
@@ -76,7 +84,7 @@ void TagApiTest::testParseError()
 
 void TagApiTest::testDoubleLoad()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
 
@@ -88,7 +96,7 @@ void TagApiTest::testDoubleLoad()
 
 void TagApiTest::testRedirect()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 	CustomNetworkAccessManager::NextFiles.enqueue("redirect");
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
 
@@ -99,7 +107,7 @@ void TagApiTest::testRedirect()
 
 void TagApiTest::testAbort()
 {
-	TagApi tagApi(m_profile, m_site, m_site->getApis().first(), 1, 100);
+	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
 
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
 	tagApi.load(false);

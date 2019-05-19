@@ -27,7 +27,7 @@ void SearchQuery::write(QJsonObject &json) const
 	}
 }
 
-bool SearchQuery::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
+bool SearchQuery::read(const QJsonObject &json, Profile *profile)
 {
 	// Tags
 	if (json.contains("tags")) {
@@ -40,7 +40,8 @@ bool SearchQuery::read(const QJsonObject &json, const QMap<QString, Site*> &site
 
 	// Gallery
 	if (json.contains("gallery")) {
-		auto image = new Image();
+		const QMap<QString, Site*> &sites = profile->getSites();
+		auto image = new Image(profile);
 		if (image->read(json["gallery"].toObject(), sites)) {
 			gallery = QSharedPointer<Image>(image);
 		} else {

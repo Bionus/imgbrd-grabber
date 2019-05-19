@@ -124,7 +124,6 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${VERSION})
 
 if(ANDROID)
 	# SSL

@@ -13,6 +13,7 @@ struct ImageSize
 {
 	~ImageSize();
 
+	QUrl url;
 	QSize size;
 	qint64 fileSize = 0;
 	QRect rect;

@@ -21,8 +21,15 @@ Source *SourceGuesser::start()
 	int current = 0;
 
 	for (Source *source : qAsConst(m_sources)) {
-		Api *api = source->getApis().first();
-		if (api->canLoadCheck()) {
+		Api *api = nullptr;
+		for (Api *a : source->getApis()) {
+			if (a->canLoadCheck()) {
+				api = a;
+				break;
+			}
+		}
+
+		if (api != nullptr) {
 			const QString checkUrl = api->checkUrl().url;
 			if (!m_cache.contains(checkUrl)) {
 				QUrl getUrl(m_url + checkUrl);

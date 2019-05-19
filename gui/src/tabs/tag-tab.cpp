@@ -245,6 +245,7 @@ void TagTab::changeEvent(QEvent *event)
 	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
+		updateTitle();
 	}
 
 	QWidget::changeEvent(event);

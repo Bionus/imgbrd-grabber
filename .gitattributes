@@ -1,2 +1,3 @@
+*.sh eol=lf
 languages/* linguist-documentation
 tests/resources/** linguist-documentation

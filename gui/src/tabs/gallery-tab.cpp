@@ -106,7 +106,7 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 	}
 	m_site = m_sites[site];
 
-	m_gallery = QSharedPointer<Image>(new Image());
+	m_gallery = QSharedPointer<Image>(new Image(m_profile));
 	if (!m_gallery->read(json["gallery"].toObject(), m_profile->getSites())) {
 		m_gallery->deleteLater();
 		return false;

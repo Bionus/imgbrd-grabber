@@ -12,6 +12,7 @@ class AuthFieldTest : public TestSuite
 		void testBasic();
 		void testConst();
 		void testHash();
+		void testEmptyHash();
 };
 
 #endif // AUTH_FIELD_TEST_H

@@ -119,8 +119,9 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 {
 	QSettings *settings = profile->getSettings();
 
-	// Count token
+	// Computed tokens
 	tokens.insert("count", Token(counter));
+	tokens.insert("current_date", Token(QDateTime::currentDateTime()));
 
 	// Conditional filenames
 	if (flags.testFlag(PathFlag::ConditionalFilenames)) {
@@ -280,6 +281,11 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		return true;
 	}
 
+	// Can't validate invalid grammar
+	if (!m_ast->error().isEmpty()) {
+		returnError(red.arg(QObject::tr("Can't compile your filename: %1").arg(m_ast->error())), error);
+	}
+
 	const auto &toks = m_ast->tokens();
 
 	// Field must end by an extension
@@ -293,7 +299,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num" << "name" << "position";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num" << "name" << "position" << "current_date";
 	if (profile != nullptr) {
 		tokens.append(profile->getAdditionalTokens());
 		tokens.append(getCustoms(profile->getSettings()).keys());

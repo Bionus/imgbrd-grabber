@@ -17,7 +17,7 @@ void FilenameParserTest::testParseEmpty()
 {
 	FilenameParser parser("");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QVERIFY(filename->exprs.isEmpty());
 }
@@ -26,7 +26,7 @@ void FilenameParserTest::testParseText()
 {
 	FilenameParser parser("image.png");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -39,7 +39,7 @@ void FilenameParserTest::testParseVariable()
 {
 	FilenameParser parser("%md5%");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -53,7 +53,7 @@ void FilenameParserTest::testParseVariableWithOptions()
 {
 	FilenameParser parser("%md5:flag,opt=val%");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 1);
 
@@ -70,7 +70,7 @@ void FilenameParserTest::testParseMixed()
 {
 	FilenameParser parser("out/%md5%.%ext%");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 4);
 }
@@ -80,7 +80,7 @@ void FilenameParserTest::testParseConditional()
 {
 	FilenameParser parser("out/<\"tag\"?some tag is present:%artist%>/image.png");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 3);
 
@@ -114,7 +114,7 @@ void FilenameParserTest::testParseConditionalLegacy()
 {
 	FilenameParser parser("out/<some \"tag\" is present/>image.png");
 	auto filename = parser.parseRoot();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	QCOMPARE(filename->exprs.count(), 3);
 
@@ -152,6 +152,40 @@ void FilenameParserTest::testParseConditionalLegacy()
 	QCOMPARE(txt2->text, QString("image.png"));
 }
 
+void FilenameParserTest::testParseConditionalLegacyDash()
+{
+	FilenameParser parser("<\"tag\"-out/>image.png");
+	auto filename = parser.parseRoot();
+	QCOMPARE(parser.error(), QString());
+
+	QCOMPARE(filename->exprs.count(), 2);
+
+	auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[0]);
+	QVERIFY(conditional != nullptr);
+	QVERIFY(conditional->ifTrue != nullptr);
+	QVERIFY(conditional->ifFalse == nullptr);
+
+	auto cond = dynamic_cast<FilenameNodeConditionTag*>(conditional->condition);
+	QVERIFY(cond != nullptr);
+	QCOMPARE(cond->tag.text(), QString("tag"));
+
+	auto ifTrue = dynamic_cast<FilenameNodeRoot*>(conditional->ifTrue);
+	QVERIFY(ifTrue != nullptr);
+	QCOMPARE(ifTrue->exprs.count(), 2);
+
+	auto ifTrue1 = dynamic_cast<FilenameNodeConditionTag*>(ifTrue->exprs[0]);
+	QVERIFY(ifTrue1 != nullptr);
+	QCOMPARE(ifTrue1->tag.text(), QString("tag"));
+
+	auto ifTrue2 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[1]);
+	QVERIFY(ifTrue2 != nullptr);
+	QCOMPARE(ifTrue2->text, QString("-out/"));
+
+	auto txt = dynamic_cast<FilenameNodeText*>(filename->exprs[1]);
+	QVERIFY(txt != nullptr);
+	QCOMPARE(txt->text, QString("image.png"));
+}
+
 void FilenameParserTest::testParseConditionalNoCondition()
 {
 	FilenameParser parser("<no condition here>");
@@ -181,7 +215,7 @@ void FilenameParserTest::testParseConditionTag()
 {
 	FilenameParser parser("\"my_tag\"");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
 	QVERIFY(tagCond != nullptr);
@@ -192,7 +226,7 @@ void FilenameParserTest::testParseConditionTagWithoutQuotes()
 {
 	FilenameParser parser("my_tag");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
 	QVERIFY(tagCond != nullptr);
@@ -203,7 +237,7 @@ void FilenameParserTest::testParseConditionToken()
 {
 	FilenameParser parser("%my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto tokenCond = dynamic_cast<FilenameNodeConditionToken*>(cond);
 	QVERIFY(tokenCond != nullptr);
@@ -214,7 +248,7 @@ void FilenameParserTest::testParseConditionInvert()
 {
 	FilenameParser parser("!%my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto invertCond = dynamic_cast<FilenameNodeConditionInvert*>(cond);
 	QVERIFY(invertCond != nullptr);
@@ -228,7 +262,7 @@ void FilenameParserTest::testParseConditionOperator()
 {
 	FilenameParser parser("\"my_tag\" & %my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
@@ -247,7 +281,7 @@ void FilenameParserTest::testParseConditionMixedOperators()
 {
 	FilenameParser parser("\"my_tag\" | %some_token% & !%my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
@@ -265,7 +299,7 @@ void FilenameParserTest::testParseConditionNoOperator()
 {
 	FilenameParser parser("\"my_tag\" %my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);
@@ -284,7 +318,7 @@ void FilenameParserTest::testParseConditionTagParenthesis()
 {
 	FilenameParser parser("(\"my_tag\")");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto tagCond = dynamic_cast<FilenameNodeConditionTag*>(cond);
 	QVERIFY(tagCond != nullptr);
@@ -303,7 +337,7 @@ void FilenameParserTest::testParseConditionMixedParenthesis()
 {
 	FilenameParser parser("(\"my_tag\" | %some_token%) & %my_token%");
 	auto cond = parser.parseCondition();
-	QVERIFY(parser.error().isEmpty());
+	QCOMPARE(parser.error(), QString());
 
 	auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
 	QVERIFY(opCond != nullptr);

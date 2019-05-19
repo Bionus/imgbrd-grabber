@@ -19,11 +19,16 @@ QString AuthHashField::value(MixedSettings *settings) const
 	}
 
 	QString data = password;
-	if (!m_salt.isEmpty()) {
+	if (!m_salt.isEmpty() && (!username.isEmpty() || !password.isEmpty())) {
 		data = QString(m_salt);
 		data.replace("%pseudo%", username);
 		data.replace("%pseudo:lower%", username.toLower());
 		data.replace("%password%", password);
+	}
+
+	// Don't hash empty strings
+	if (data.isEmpty()) {
+		return data;
 	}
 
 	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();

@@ -19,6 +19,7 @@ class FilenameParserTest : public TestSuite
 		// Conditionals
 		void testParseConditional();
 		void testParseConditionalLegacy();
+		void testParseConditionalLegacyDash();
 		void testParseConditionalNoCondition();
 		void testParseConditionalNoContent();
 		void testParseConditionalUnterminated();
