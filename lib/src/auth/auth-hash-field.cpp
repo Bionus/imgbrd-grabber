@@ -2,8 +2,8 @@
 #include "mixed-settings.h"
 
 
-AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt)
-	: AuthField(QString(), std::move(key), AuthField::Hash), m_algo(algo), m_salt(std::move(salt))
+AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algorithm, QString salt)
+	: AuthField(QString(), std::move(key), AuthField::Hash), m_algorithm(algorithm), m_salt(std::move(salt))
 {}
 
 
@@ -31,7 +31,7 @@ QString AuthHashField::value(MixedSettings *settings) const
 		return data;
 	}
 
-	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();
+	return QCryptographicHash::hash(data.toUtf8(), m_algorithm).toHex();
 }
 
 QString AuthHashField::salt() const

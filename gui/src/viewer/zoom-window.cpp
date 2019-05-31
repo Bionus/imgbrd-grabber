@@ -327,7 +327,7 @@ void ZoomWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
 void ZoomWindow::contextMenu(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	if (m_link.isEmpty()) {
 		return;
@@ -394,7 +394,7 @@ void ZoomWindow::load(bool force)
 #define TIME 500
 void ZoomWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
@@ -859,7 +859,7 @@ void ZoomWindow::saveImageNow()
 }
 void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result)
 {
-	Q_UNUSED(img);
+	Q_UNUSED(img)
 
 	const bool fav = m_pendingAction == PendingSaveFav;
 
@@ -1049,7 +1049,8 @@ void ZoomWindow::closeEvent(QCloseEvent *e)
 
 void ZoomWindow::showEvent(QShowEvent *e)
 {
-	Q_UNUSED(e);
+	Q_UNUSED(e)
+
 	showThumbnail();
 }
 

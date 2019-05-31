@@ -69,7 +69,7 @@ void TextEdit::doColor()
 		txt.replace(" " + tag + " ", " <span style=\"" + styleKeptForLater + "\">" + tag + "</span> ");
 	}
 
-	// Color metatags
+	// Color meta-tags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
 		regexExclude(" -([^ ]+)"),
 		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
@@ -96,21 +96,21 @@ void TextEdit::doColor()
 	txt.replace(QChar(29), "&nbsp;");
 
 	// Setup cursor
-	QTextCursor crsr = textCursor();
-	const int pos = crsr.columnNumber();
-	const int start = crsr.selectionStart();
-	const int end = crsr.selectionEnd();
+	QTextCursor cursor = textCursor();
+	const int pos = cursor.columnNumber();
+	const int start = cursor.selectionStart();
+	const int end = cursor.selectionEnd();
 	setHtml(txt);
 
 	// If the cursor is at the right side of (if any) selected text
 	if (pos == end) {
-		crsr.setPosition(start, QTextCursor::MoveAnchor);
-		crsr.setPosition(end, QTextCursor::KeepAnchor);
+		cursor.setPosition(start, QTextCursor::MoveAnchor);
+		cursor.setPosition(end, QTextCursor::KeepAnchor);
 	} else {
-		crsr.setPosition(end, QTextCursor::MoveAnchor);
-		crsr.setPosition(start, QTextCursor::KeepAnchor);
+		cursor.setPosition(end, QTextCursor::MoveAnchor);
+		cursor.setPosition(start, QTextCursor::KeepAnchor);
 	}
-	setTextCursor(crsr);
+	setTextCursor(cursor);
 }
 
 /**
@@ -245,9 +245,9 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	c->complete(cr);
 }
 
-void TextEdit::customContextMenuRequested(const QPoint &pos)
+void TextEdit::openCustomContextMenu(const QPoint &pos)
 {
-	Q_UNUSED(pos);
+	Q_UNUSED(pos)
 
 	auto *menu = new QMenu(this);
 		auto *favs = new QMenu(tr("Favorites"), menu);

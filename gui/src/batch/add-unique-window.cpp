@@ -37,27 +37,27 @@ AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *pare
 	ui->progressBar->hide();
 }
 
-void setTextEditRows(QPlainTextEdit *ptxt, int nRows)
+void setTextEditRows(QPlainTextEdit *plainTextEdit, int nRows)
 {
-	const QTextDocument *pdoc = ptxt->document();
-	const QFontMetrics fm(pdoc->defaultFont());
-	const QMargins margins = ptxt->contentsMargins();
+	const QTextDocument *plainDoc = plainTextEdit->document();
+	const QFontMetrics fm(plainDoc->defaultFont());
+	const QMargins margins = plainTextEdit->contentsMargins();
 
 	const int nHeight = fm.lineSpacing() * nRows
-			+ qRound((pdoc->documentMargin() + ptxt->frameWidth()) * 2)
+			+ qRound((plainDoc->documentMargin() + plainTextEdit->frameWidth()) * 2)
 			+ margins.top()
 			+ margins.bottom();
-	ptxt->setFixedHeight(nHeight);
+	plainTextEdit->setFixedHeight(nHeight);
 }
-void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label)
+void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *plainTextEdit, QLabel *label)
 {
 	if (toggle) {
-		setTextEditRows(ptxt, 6);
+		setTextEditRows(plainTextEdit, 6);
 	} else {
-		setTextEditRows(ptxt, 1);
+		setTextEditRows(plainTextEdit, 1);
 	}
 
-	ptxt->verticalScrollBar()->setVisible(toggle);
+	plainTextEdit->verticalScrollBar()->setVisible(toggle);
 	label->setVisible(toggle);
 
 	update();

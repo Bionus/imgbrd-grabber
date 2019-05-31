@@ -91,9 +91,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	}
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
-	int i = settings->value("Sources/Letters", 3).toInt();
-	ui->comboSourcesLetters->setCurrentIndex((i < 0 ? 1 : 0) + (i < -1 ? 1 : 0));
-	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
+	int letterCount = settings->value("Sources/Letters", 3).toInt();
+	ui->comboSourcesLetters->setCurrentIndex((letterCount < 0 ? 1 : 0) + (letterCount < -1 ? 1 : 0));
+	ui->spinSourcesLetters->setValue(letterCount < 0 ? 3 : letterCount);
 	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
@@ -182,7 +182,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
-	i = 0;
+	int i = 0;
 	for (auto it = customs.constBegin(); it != customs.constEnd(); ++it) {
 		auto *leName = new QLineEdit(it.key());
 		auto *leTags = new QLineEdit(it.value().join(" "));
@@ -749,7 +749,7 @@ void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current,
 
 void OptionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
-	Q_UNUSED(previous);
+	Q_UNUSED(previous)
 
 	bool found = false;
 	int index = 0;

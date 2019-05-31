@@ -17,7 +17,6 @@
 
 void loadMoreDetails(const QList<QSharedPointer<Image>> &images);
 QJsonObject serializeImg(const Image *image, const QMap<QString, Token>& tokens);
-void writeToFile(QString filename, QByteArray data);
 
 void returnJsonArray(const QJsonArray &array)
 {
@@ -320,12 +319,4 @@ QJsonObject serializeImg(const Image *image, const QMap<QString, Token> &tokens)
 	jsObject.insert("isGallery", image->isGallery());
 	jsObject.insert("isAnimated", image->isAnimated());
 	return jsObject;
-}
-
-void writeToFile(QString filename, QByteArray data)
-{
-	QFile file(filename);
-	file.open(QFile::WriteOnly);
-	file.write(data);
-	file.close();
 }

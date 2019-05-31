@@ -170,7 +170,7 @@ void GalleryTab::getAll()
 
 void GalleryTab::setTags(const QString &tags, bool preload)
 {
-	Q_UNUSED(tags);
+	Q_UNUSED(tags)
 
 	if (preload) {
 		activateWindow();

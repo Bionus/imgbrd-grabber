@@ -1,5 +1,5 @@
-#ifndef ADDUNIQUEWINDOW_H
-#define ADDUNIQUEWINDOW_H
+#ifndef ADD_UNIQUE_WINDOW_H
+#define ADD_UNIQUE_WINDOW_H
 
 #include <QDialog>
 #include <QMap>
@@ -54,7 +54,7 @@ class AddUniqueWindow : public QDialog
 
 	protected:
 		void next();
-		void toggleMultiLine(bool toggle, QPlainTextEdit *ptxt, QLabel *label);
+		void toggleMultiLine(bool toggle, QPlainTextEdit *plainTextEdit, QLabel *label);
 
 	private:
 		Ui::AddUniqueWindow *ui;
@@ -66,4 +66,4 @@ class AddUniqueWindow : public QDialog
 		QSharedPointer<Image> m_image;
 };
 
-#endif // ADDUNIQUEWINDOW_H
+#endif // ADD_UNIQUE_WINDOW_H

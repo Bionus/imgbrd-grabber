@@ -211,20 +211,22 @@ bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &erro
 
 void FavoritesTab::write(QJsonObject &json) const
 {
-	Q_UNUSED(json);
+	Q_UNUSED(json)
 }
 
 
 void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
 {
-	Q_UNUSED(noResultsMessage);
+	Q_UNUSED(noResultsMessage)
+
 	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
 void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
-	Q_UNUSED(noResultsMessage);
+	Q_UNUSED(noResultsMessage)
+
 	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 

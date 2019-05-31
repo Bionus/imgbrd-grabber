@@ -48,7 +48,7 @@ void TabSelector::updateCounter()
 
 void TabSelector::tabChanged(int index)
 {
-	Q_UNUSED(index);
+	Q_UNUSED(index)
 
 	m_lastTab = nullptr;
 	m_backButton->hide();

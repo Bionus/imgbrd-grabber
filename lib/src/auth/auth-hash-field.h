@@ -11,12 +11,12 @@ class MixedSettings;
 class AuthHashField : public AuthField
 {
 	public:
-		AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt);
+		AuthHashField(QString key, QCryptographicHash::Algorithm algorithm, QString salt);
 		QString value(MixedSettings *settings) const override;
 		QString salt() const;
 
 	private:
-		QCryptographicHash::Algorithm m_algo;
+		QCryptographicHash::Algorithm m_algorithm;
 		QString m_salt;
 };
 

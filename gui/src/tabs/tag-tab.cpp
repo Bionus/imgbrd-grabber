@@ -197,14 +197,14 @@ void TagTab::getPage()
 
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
 	for (const QSharedPointer<Page> &page : pages) {
-		const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
-		if (perpage <= 0 || page->pageImageCount() <= 0) {
+		const int perPage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
+		if (perPage <= 0 || page->pageImageCount() <= 0) {
 			continue;
 		}
 
 		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), ui->spinPage->value(), perPage, perPage, postFiltering, page->site()));
 	}
 }
 void TagTab::getAll()

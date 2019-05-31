@@ -111,13 +111,13 @@ void QBouton::paintEvent(QPaintEvent *event)
 		const int right = qMax(x, 0) + qMin(w, size().width());
 		const int dim = 10 + 5 * m_counter.length();
 		const double pad = 2.5;
-		const QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
+		const QRectF notificationRect(right - dim - pad, qMax(y, 0) + pad, dim, 20);
 		const int radius = qFloor(qMin(dim, 20) / 2.0);
 
 		painter.setRenderHint(QPainter::Antialiasing);
 
 		QPainterPath path;
-		path.addRoundedRect(notif, radius, radius);
+		path.addRoundedRect(notificationRect, radius, radius);
 
 		const QPen pen(Qt::black, 1);
 		painter.setPen(pen);
@@ -125,7 +125,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		painter.drawPath(path);
 
 		painter.setPen(QPen(Qt::white));
-		painter.drawText(notif, Qt::AlignCenter, m_counter);
+		painter.drawText(notificationRect, Qt::AlignCenter, m_counter);
 	}
 }
 
@@ -140,11 +140,11 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 
 	// Calculate ratio to resize by keeping proportions
 	if (m_resizeInsteadOfCropping) {
-		const qreal coef = wOnly
+		const qreal coefficient = wOnly
 			? qMin(1.0, static_cast<qreal>(regionWidth) / static_cast<qreal>(w))
 			: qMin(1.0, qMin(static_cast<qreal>(regionWidth) / static_cast<qreal>(w), static_cast<qreal>(regionHeight) / static_cast<qreal>(h)));
-		w *= coef;
-		h *= coef;
+		w *= coefficient;
+		h *= coefficient;
 	}
 
 	return { w, h };

@@ -52,7 +52,7 @@ class SearchTab : public QWidget
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
-		void setPostFilter(const QString &postfilter);
+		void setPostFilter(const QString &postFilter);
 		virtual QList<Site*> loadSites() const;
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
@@ -109,9 +109,9 @@ class SearchTab : public QWidget
 		void loadTags(SearchQuery query);
 		void endlessLoad();
 		void loadPage();
-		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr);
-		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
-		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr);
+		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &images, bool merged, const QString &noResultsMessage = nullptr);
+		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &images);
+		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, const QString &noResultsMessage = nullptr);
 		void addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge = false);
 		void finishedLoadingPreview();
 		// Merged
@@ -122,7 +122,7 @@ class SearchTab : public QWidget
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
 		void httpsRedirect(Page *page);
-		void postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		void postLoading(Page *page, const QList<QSharedPointer<Image>> &images);
 		void finishedLoadingTags(Page *page);
 		void updatePaginationButtons(Page *page);
 		// Image selection
@@ -172,7 +172,7 @@ class SearchTab : public QWidget
 		QMap<Site*, QVBoxLayout*> m_siteLayouts;
 		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
-		int m_pagemax;
+		int m_pageMax;
 		bool m_stop;
 		int m_lastToggle;
 		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;

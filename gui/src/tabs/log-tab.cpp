@@ -31,7 +31,7 @@ LogTab::~LogTab()
 
 void LogTab::write(const QString &msg)
 {
-	// Find meta delimitations
+	// Find meta stop characters
 	QString htmlMsg = msg;
 	int timeEnd = msg.indexOf(']');
 	int levelEnd = msg.indexOf(']', timeEnd + 1);

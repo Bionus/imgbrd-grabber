@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
 		<title>Source status</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
@@ -52,7 +52,7 @@
                                 if (typeof state !== "object") {
                                     state = { status: state };
                                 }
-                                html += "<img src='img/" + state.status + ".png' " + (state.message && state.message.length > 0 ? "title='" + state.message + "' " : "") + "/>";
+                                html += "<img src='img/" + state.status + ".png' alt='" + state.message + "' " + (state.message && state.message.length > 0 ? "title='" + state.message + "' " : "") + "/>";
                                 html += "</td>";
                             }
                             html += "</tr>";

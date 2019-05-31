@@ -223,7 +223,7 @@ void SourcesSettingsWindow::testLogin()
 
 void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 {
-	Q_UNUSED(site);
+	Q_UNUSED(site)
 
 	switch (result)
 	{

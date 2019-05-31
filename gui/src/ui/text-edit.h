@@ -34,7 +34,7 @@ class TextEdit : public QTextEdit
 	private slots:
 		void insertCompletion(const QString &completion);
 		void insertFav(QAction *act);
-		void customContextMenuRequested(const QPoint &pos);
+		void openCustomContextMenu(const QPoint &pos);
 		void setFavorite();
 		void unsetFavorite();
 		void setKfl();
