@@ -202,6 +202,9 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 								dval = date;
 							}
 						}
+						if (dit.value().isString() && dval.toString().startsWith("b64:")) {
+							dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
+						}
 						data[dit.name()] = dval;
 					}
 				} else if (val.isArray()) {
