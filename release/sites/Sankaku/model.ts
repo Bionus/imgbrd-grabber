@@ -64,10 +64,10 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string => {
                     const baseUrl = opts.baseUrl
-                        .replace("//chan.", "//capi-beta.")
+                        .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
-                    return baseUrl + "/post/index.json?" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    return baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
