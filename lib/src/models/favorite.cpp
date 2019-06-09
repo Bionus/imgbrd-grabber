@@ -85,13 +85,15 @@ void Favorite::toJson(QJsonObject &json) const
 	json["note"] = getNote();
 	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
 
-	QJsonArray monitorsJson;
-	for (const Monitor &monitor : m_monitors) {
-		QJsonObject obj;
-		monitor.toJson(obj);
-		monitorsJson.append(obj);
+	if (!m_monitors.isEmpty()) {
+		QJsonArray monitorsJson;
+		for (const Monitor &monitor : m_monitors) {
+			QJsonObject obj;
+			monitor.toJson(obj);
+			monitorsJson.append(obj);
+		}
+		json["monitors"] = monitorsJson;
 	}
-	json["monitors"] = monitorsJson;
 }
 Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
@@ -105,9 +107,11 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const 
 	}
 
 	QList<Monitor> monitors;
-	QJsonArray monitorsJson = json["monitors"].toArray();
-	for (auto monitorJson : monitorsJson) {
-		monitors.append(Monitor::fromJson(monitorJson.toObject(), sites));
+	if (json.contains("monitors")) {
+		QJsonArray monitorsJson = json["monitors"].toArray();
+		for (auto monitorJson : monitorsJson) {
+			monitors.append(Monitor::fromJson(monitorJson.toObject(), sites));
+		}
 	}
 
 	return Favorite(tag, note, lastViewed, monitors, thumbPath);
