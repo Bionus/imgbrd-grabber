@@ -1,5 +1,6 @@
 #include "utils/blacklist-fix/blacklist-fix-2.h"
 #include <QFile>
+#include <QtConcurrent>
 #include <ui_blacklist-fix-2.h>
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
@@ -22,12 +23,14 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
+
 		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i + 1));
 		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
-		ui->tableWidget->setItem(i, 0, id);
+
 		QLabel *preview = new QLabel();
-		preview->setPixmap(QPixmap(m_details.at(i).value("path_full")).scaledToHeight(50, Qt::SmoothTransformation));
 		m_previews.append(preview);
+
+		ui->tableWidget->setItem(i, 0, id);
 		ui->tableWidget->setCellWidget(i, 1, preview);
 		ui->tableWidget->setItem(i, 2, new QTableWidgetItem(m_details.at(i).value("path")));
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(found.join(" ")));
@@ -37,10 +40,19 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	headerView->setSectionResizeMode(QHeaderView::Interactive);
 	headerView->resizeSection(1, 50);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
+
+	QtConcurrent::run(this, &BlacklistFix2::loadThumbnails);
 }
 BlacklistFix2::~BlacklistFix2()
 {
 	delete ui;
+}
+
+void BlacklistFix2::loadThumbnails()
+{
+	for (int i = 0; i < m_previews.count(); ++i) {
+		m_previews[i]->setPixmap(QPixmap(m_details[i]["path_full"]).scaledToHeight(50, Qt::SmoothTransformation));
+	}
 }
 
 void BlacklistFix2::on_buttonSelectBlacklisted_clicked()

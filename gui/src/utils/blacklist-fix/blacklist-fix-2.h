@@ -22,6 +22,7 @@ class BlacklistFix2 : public QDialog
 		~BlacklistFix2() override;
 
 	private slots:
+		void loadThumbnails();
 		void on_buttonSelectBlacklisted_clicked();
 		void on_buttonCancel_clicked();
 		void on_buttonOk_clicked();
