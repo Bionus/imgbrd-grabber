@@ -22,7 +22,7 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(sizeHint().height());
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::customContextMenuRequested);
+	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::openCustomContextMenu);
 }
 
 QSize TextEdit::sizeHint() const
