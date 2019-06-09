@@ -3,6 +3,7 @@
 #include <ui_blacklist-fix-2.h>
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
+#include "helpers.h"
 
 
 BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist blacklist, QWidget *parent)
@@ -59,15 +60,29 @@ void BlacklistFix2::on_buttonOk_clicked()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
-	const int count = selected.size();
-	QSet<int> toDelete = QSet<int>();
-	for (int i = 0; i < count; i++) {
-		toDelete.insert(selected.at(i)->row());
+	if (selected.isEmpty()) {
+		error(this, "You didn't select any image do delete.");
+		return;
 	}
+
+	// List all rows to be deleted
+	QList<int> rows;
+	for (QTableWidgetItem *item : selected) {
+		int row = item->row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
+	}
+
+	// Sort in ascending order to help the following foreach with deletion
+	std::sort(rows.begin(), rows.end());
+
+	// Delete files and their associated rows
 	int rem = 0;
-	for (int i : toDelete) {
-		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt() - 1).value("path_full"));
-		ui->tableWidget->removeRow(i - rem);
+	for (int i : qAsConst(rows)) {
+		int pos = i - rem;
+		QFile::remove(m_details.at(ui->tableWidget->item(pos, 0)->text().toInt() - 1).value("path_full"));
+		ui->tableWidget->removeRow(pos);
 		rem++;
 	}
 
