@@ -119,3 +119,5 @@ add_custom_command(
 	COMMENT "Transpiling TypeScript sources into JavaScript..."
 )
 add_custom_target(sites ALL DEPENDS JavaScript_sites)
+add_dependencies(gui sites)
+add_dependencies(cli sites)
