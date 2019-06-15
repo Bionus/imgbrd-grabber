@@ -1,4 +1,7 @@
 #include "auth/auth-hash-field.h"
+#include <QByteArray>
+#include <QVariant>
+#include <utility>
 #include "mixed-settings.h"
 
 

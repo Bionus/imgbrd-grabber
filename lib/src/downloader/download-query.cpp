@@ -1,4 +1,5 @@
 #include "downloader/download-query.h"
+#include <utility>
 
 
 DownloadQuery::DownloadQuery(Site *site)

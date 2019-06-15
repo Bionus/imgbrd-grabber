@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QSet>
 #include <QSettings>
+#include <utility>
 #include "commands/commands.h"
 #include "functions.h"
 #include "logger.h"

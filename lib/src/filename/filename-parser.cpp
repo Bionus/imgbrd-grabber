@@ -2,6 +2,7 @@
 #include <QChar>
 #include <QList>
 #include <QStack>
+#include <utility>
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"

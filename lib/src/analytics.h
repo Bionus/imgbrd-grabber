@@ -1,11 +1,12 @@
 #ifndef ANALYTICS_H
 #define ANALYTICS_H
 
-#include <QString>
-#include <QVariant>
 #include <QVariantMap>
 #include "vendor/ganalytics.h"
 
+
+class QString;
+class QVariant;
 
 class Analytics
 {

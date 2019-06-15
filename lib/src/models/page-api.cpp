@@ -2,6 +2,7 @@
 // #include <QtConcurrentRun>
 #include <QTimer>
 #include <QtMath>
+#include <utility>
 #include "functions.h"
 #include "image.h"
 #include "logger.h"

@@ -1,6 +1,7 @@
 #include "loader/pack-loader.h"
 #include <QEventLoop>
 #include <QtMath>
+#include <utility>
 #include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"

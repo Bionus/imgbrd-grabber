@@ -1,4 +1,5 @@
 #include "models/search-query/tag-search-query.h"
+#include <utility>
 
 
 TagSearchQuery::TagSearchQuery(QStringList tags)

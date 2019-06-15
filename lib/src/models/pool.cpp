@@ -1,5 +1,6 @@
 #include "pool.h"
 #include <QString>
+#include <utility>
 
 
 Pool::Pool(int id, QString name, int current, int next, int previous)

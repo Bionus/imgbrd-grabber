@@ -1,6 +1,7 @@
 #include "updater/source-updater.h"
 #include <QFile>
 #include <QNetworkRequest>
+#include <utility>
 #include "network/network-manager.h"
 #include "network/network-reply.h"
 

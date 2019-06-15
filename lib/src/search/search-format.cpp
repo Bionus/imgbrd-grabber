@@ -1,4 +1,5 @@
 #include "search/search-format.h"
+#include <utility>
 
 
 SearchFormat::SearchFormat(SearchFormatType andOp, SearchFormatType orOp, bool parenthesis, Precedence precedence)

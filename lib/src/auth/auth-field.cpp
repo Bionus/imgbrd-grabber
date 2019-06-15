@@ -1,4 +1,7 @@
 #include "auth/auth-field.h"
+#include <QString>
+#include <QVariant>
+#include <utility>
 #include "mixed-settings.h"
 
 

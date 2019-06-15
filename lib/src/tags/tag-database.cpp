@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
+#include <utility>
 #include "tag-type.h"
 
 

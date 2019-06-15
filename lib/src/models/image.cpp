@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTimer>
+#include <utility>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
 #include "favorite.h"

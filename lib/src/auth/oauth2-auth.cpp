@@ -1,4 +1,5 @@
 #include "auth/oauth2-auth.h"
+#include <utility>
 
 
 OAuth2Auth::OAuth2Auth(QString type, QString authType, QString tokenUrl)

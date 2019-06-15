@@ -1,4 +1,5 @@
 #include "tags/tag-name-format.h"
+#include <utility>
 
 
 TagNameFormat::TagNameFormat(CaseFormat caseFormat, QString wordSeparator)

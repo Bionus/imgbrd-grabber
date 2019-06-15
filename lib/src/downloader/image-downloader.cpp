@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QSize>
 #include <QUuid>
+#include <utility>
 #include "extension-rotator.h"
 #include "file-downloader.h"
 #include "functions.h"

@@ -1,5 +1,6 @@
 #include "token-filter.h"
 #include <QStringBuilder>
+#include <utility>
 #include "functions.h"
 #include "loader/token.h"
 

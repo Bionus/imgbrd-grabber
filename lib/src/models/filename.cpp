@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <algorithm>
+#include <utility>
 #include "filename/ast/filename-node-variable.h"
 #include "filename/ast-filename.h"
 #include "filename/filename-cache.h"

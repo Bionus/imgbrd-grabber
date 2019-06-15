@@ -1,6 +1,7 @@
 #include "downloader/download-query-group.h"
 #include <QJsonArray>
 #include <QSettings>
+#include <utility>
 #include "models/profile.h"
 #include "models/site.h"
 

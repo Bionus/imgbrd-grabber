@@ -1,4 +1,5 @@
 #include "tags/tag-name.h"
+#include <utility>
 
 
 TagName::TagName(QString name, TagNameFormat format)

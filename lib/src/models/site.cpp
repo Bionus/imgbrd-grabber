@@ -6,6 +6,7 @@
 #include <QNetworkDiskCache>
 #include <QSettings>
 #include <QStringList>
+#include <utility>
 #include "auth/http-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"

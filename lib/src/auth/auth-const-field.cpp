@@ -1,4 +1,6 @@
 #include "auth/auth-const-field.h"
+#include <QtGlobal>
+#include <utility>
 #include "mixed-settings.h"
 
 

@@ -4,6 +4,7 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
 #include <QtSql/QSqlQuery>
+#include <utility>
 #include "logger.h"
 
 

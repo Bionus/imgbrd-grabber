@@ -1,4 +1,5 @@
 #include "auth/http-auth.h"
+#include <utility>
 
 
 HttpAuth::HttpAuth(QString type, QString url, QList<AuthField*> fields, QString cookie)

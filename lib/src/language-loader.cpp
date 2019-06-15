@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QLocale>
 #include <QSettings>
+#include <utility>
 #include "logger.h"
 
 

@@ -1,6 +1,7 @@
 #include "persistent-cookie-jar.h"
 #include <QFile>
 #include <QMutexLocker>
+#include <utility>
 
 
 PersistentCookieJar::PersistentCookieJar(QString filename, QObject *parent)

@@ -1,4 +1,5 @@
 #include "auth/field-auth.h"
+#include <utility>
 
 
 FieldAuth::FieldAuth(QString type, QList<AuthField*> fields)
