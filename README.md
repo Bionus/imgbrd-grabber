@@ -81,7 +81,21 @@ For users interested, a nightly version is built automatically on every commit o
 * Rename already downloaded images
 
 ## Default sources
-You can add additional sources very easily, but here's a short list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, e621, Konachan, rule34, safebooru, behoimi, Zerochan, Twitter...
+You can add additional sources very easily, but here's a short list of some sources that are included and supported by default:
+* Danbooru
+* Gelbooru
+* E-Hentai
+* Pixiv
+* yande.re
+* Shimmie
+* e621
+* Konachan
+* rule34
+* safebooru
+* Anime-Pictures
+* behoimi
+* Zerochan
+* Twitter
 
 ## Compilation
 See the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page to know how to build Grabber.
