@@ -181,8 +181,8 @@ Source: "..\release\sites\Danbooru\behoimi.org\defaults.ini";              DestD
 Source: "..\release\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Danbooru\e621.net\defaults.ini";                 DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\e621.net"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\e621.net\tag-types.txt";                DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\e621.net"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
-Source: "..\release\sites\Sankaku\model.js";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion deleteafterinstall
+Source: "..\release\sites\Sankaku\model.js";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion deleteafterinstall
 Source: "..\release\sites\Sankaku\sites.txt";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com"; Flags: ignoreversion
