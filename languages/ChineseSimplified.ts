@@ -601,7 +601,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="282"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="289"/>
@@ -631,17 +631,17 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Confirmation</source>
-      <translation type="unfinished"/>
+      <translation>确认</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Are you sure you want to clear your download list?</source>
-      <translation type="unfinished"/>
+      <translation>确定清空下载列表？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="280"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>此来源无效</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="289"/>
@@ -714,12 +714,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="668"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation type="unfinished"/>
+      <translation>你将要下载 %1 张图片，可能花费很长时间并占用大量空间。你确定要继续吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="670"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>不再询问</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="707"/>
@@ -745,7 +745,8 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1079"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>目标驱动器 "%1" 容量不足。
+请清理出可用空间后继续下载。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1081"/>
@@ -810,7 +811,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>跳过 %n 个已经下载过的文件</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
@@ -846,7 +849,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="30"/>
       <source>No empty folder found.</source>
-      <translation type="unfinished"/>
+      <translation>找不到空文件夹</translation>
     </message>
   </context>
   <context>
@@ -876,7 +879,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
       <source>No folder selected.</source>
-      <translation type="unfinished"/>
+      <translation>未选中文件夹</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
@@ -956,12 +959,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="128"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>监视</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="144"/>
       <source>Monitoring interval</source>
-      <translation type="unfinished"/>
+      <translation>监视间隔</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="151"/>
@@ -971,7 +974,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="161"/>
       <source>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt; 设置间隔为 0 禁用监视 &lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="134"/>
@@ -981,22 +984,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="171"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="178"/>
       <source>Path</source>
-      <translation type="unfinished"/>
+      <translation>路径</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="185"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>文件名</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="192"/>
       <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt; 留空将使用默认设置 &lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="211"/>
@@ -1223,7 +1226,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="880"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="889"/>
@@ -1388,12 +1391,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="21"/>
       <source>Web services</source>
-      <translation type="unfinished"/>
+      <translation>在线服务</translation>
     </message>
     <message>
       <location filename="../gui/src/image-context-menu.cpp" line="32"/>
       <source>Search MD5</source>
-      <translation type="unfinished"/>
+      <translation>MD5 搜索</translation>
     </message>
   </context>
   <context>
@@ -1429,7 +1432,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="28"/>
       <source>Path and filename</source>
-      <translation type="unfinished"/>
+      <translation>路径和文件名</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="33"/>
@@ -1440,7 +1443,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/log-window.ui" line="38"/>
       <location filename="../gui/src/settings/log-window.ui" line="169"/>
       <source>Suffix</source>
-      <translation type="unfinished"/>
+      <translation>后缀</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="62"/>
@@ -1659,12 +1662,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="766"/>
       <source>Project GitHub</source>
-      <translation type="unfinished"/>
+      <translation>项目 Github</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="778"/>
       <source>Restore last closed tab</source>
-      <translation type="unfinished"/>
+      <translation>恢复最近关闭的标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="786"/>
@@ -1684,7 +1687,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="173"/>
       <source>&amp;Quit</source>
-      <translation type="unfinished"/>
+      <translation>&amp;退出</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="220"/>
@@ -1699,7 +1702,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="755"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>不再询问</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="694"/>
@@ -1719,7 +1722,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="902"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>选择保存文件夹</translation>
     </message>
   </context>
   <context>
@@ -1772,7 +1775,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="115"/>
       <source>Suffixes</source>
-      <translation type="unfinished"/>
+      <translation>后缀</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="95"/>
@@ -1802,22 +1805,26 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="57"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>在 '%2' 上发现标签含 '%1' 的新图片</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="59"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>在 '%2' 上发现 %n 张标签 '%1' 的新图片</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="61"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>在 '%2' 上发现 %n + 张标签 '%1' 的新图片</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="63"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Gabber 监视器</translation>
     </message>
   </context>
   <context>
@@ -1871,12 +1878,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Search results</source>
-      <translation type="unfinished"/>
+      <translation>搜索结果</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="108"/>
       <source>Image window</source>
-      <translation type="unfinished"/>
+      <translation>图像浏览窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
@@ -1901,7 +1908,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="134"/>
       <source>Monitoring</source>
-      <translation type="unfinished"/>
+      <translation>监控</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="139"/>
@@ -1911,7 +1918,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="144"/>
       <source>Web services</source>
-      <translation type="unfinished"/>
+      <translation>在线服务</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="149"/>
@@ -1954,32 +1961,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="212"/>
       <source>Check for updates</source>
-      <translation type="unfinished"/>
+      <translation>检查更新</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="223"/>
       <source>Every time</source>
-      <translation type="unfinished"/>
+      <translation>每次启动</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="228"/>
       <source>Once a day</source>
-      <translation type="unfinished"/>
+      <translation>每天</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="233"/>
       <source>Once a week</source>
-      <translation type="unfinished"/>
+      <translation>每周</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="238"/>
       <source>Once a month</source>
-      <translation type="unfinished"/>
+      <translation>每月</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="243"/>
       <source>Never</source>
-      <translation type="unfinished"/>
+      <translation>从不</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="251"/>
@@ -1989,7 +1996,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="261"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>何时下载原图</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="272"/>
@@ -2039,7 +2046,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="364"/>
       <source>Send anonymous usage data</source>
-      <translation type="unfinished"/>
+      <translation>发送匿名用量数据</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="400"/>
@@ -2136,7 +2143,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="644"/>
       <source>Get extension from file header</source>
-      <translation type="unfinished"/>
+      <translation>从文件头读取扩展名</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="654"/>
@@ -2189,7 +2196,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="749"/>
       <source>If a file already exists globally</source>
-      <translation type="unfinished"/>
+      <translation>如果一个图片文件已经存在于文件夹中</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="765"/>
@@ -2206,7 +2213,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="775"/>
       <location filename="../gui/src/settings/options-window.ui" line="829"/>
       <source>Link</source>
-      <translation type="unfinished"/>
+      <translation>软链接</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="780"/>
@@ -2226,7 +2233,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="809"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation type="unfinished"/>
+      <translation>保留已删除的文件的 MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="816"/>
