@@ -50,6 +50,7 @@ then
 	[[ $? -ne 0 ]] && echo "Failed to install gcc. Aborting." && exit 1
 fi
 
+#Is node installed? {{{2
 which node > /dev/null 2>&1
 if [[ $? -ne 0 ]]
 then
