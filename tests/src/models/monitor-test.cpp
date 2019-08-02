@@ -14,6 +14,7 @@ TEST_CASE("Monitor")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
 
 	SECTION("Site")
 	{

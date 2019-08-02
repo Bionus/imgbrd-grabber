@@ -75,6 +75,7 @@ TEST_CASE("ImageDownloader")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
 
 	QDir dir("tests/resources/tmp/");
 	for (const QString &file : dir.entryList(QDir::Files)) {

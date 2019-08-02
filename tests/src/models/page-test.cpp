@@ -20,6 +20,9 @@ TEST_CASE("Page")
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
 	Site *site = profile->getSites().value("gelbooru.com");
 
+	REQUIRE(site != nullptr);
+	REQUIRE(sites[0] != nullptr);
+
 	SECTION("IncompatibleModifiers")
 	{
 		Page page(profile, site, sites, QStringList() << "test" << "status:deleted");

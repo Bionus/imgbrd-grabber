@@ -51,8 +51,10 @@ TEST_CASE("OAuth2Login")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
 	NetworkManager accessManager;
-	
+
 	SECTION("NonTestable")
 	{
 		OAuth2Auth auth("oauth2", "password", "");

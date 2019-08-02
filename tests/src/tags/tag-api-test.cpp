@@ -34,6 +34,7 @@ TEST_CASE("TagApi")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
 
 	Api *api = nullptr;
 	for (Api *a : site->getApis()) {

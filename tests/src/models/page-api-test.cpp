@@ -26,10 +26,12 @@ TEST_CASE("PageApi")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
+	REQUIRE(sites[0] != nullptr);
 
 	SECTION("ParseUrlBasic")
 	{
 		Site *site = profile->getSites().value("gelbooru.com");
+		REQUIRE(site != nullptr);
 
 		QStringList tags = QStringList() << "test" << "tag";
 		Page page(profile, site, sites, tags);
