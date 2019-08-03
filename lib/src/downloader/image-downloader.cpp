@@ -147,6 +147,13 @@ void ImageDownloader::loadedSave()
 	if (m_paths.isEmpty()) {
 		m_paths = m_image->paths(m_filename, m_path, m_count);
 
+		// If we still don't have any paths, that means the filename is invalid
+		if (m_paths.isEmpty()) {
+			log(QStringLiteral("No path could be generated for filename: '%1'").arg(m_filename.format()), Logger::Error);
+			emit saved(m_image, makeResult({ "" }, Image::SaveResult::Error));
+			return;
+		}
+
 		// Use a random temporary file if we need the MD5 or equivalent
 		if (m_filename.needTemporaryFile(m_image->tokens(m_profile))) {
 			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();

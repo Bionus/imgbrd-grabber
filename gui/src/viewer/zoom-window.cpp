@@ -895,6 +895,9 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageS
 
 			default:
 				error(this, tr("Error saving image."));
+				setButtonState(fav, SaveButtonState::Save);
+				m_pendingAction = PendingNothing;
+				m_pendingClose = false;
 				return;
 		}
 	}

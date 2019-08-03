@@ -118,6 +118,10 @@ QStringList Filename::path(const Image &img, Profile *profile, const QString &pt
 { return path(img.tokens(profile), profile, pth, counter, flags); }
 QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, PathFlags flags) const
 {
+	if (m_ast->ast() == nullptr) {
+		return QStringList();
+	}
+
 	QSettings *settings = profile->getSettings();
 
 	// Computed tokens
