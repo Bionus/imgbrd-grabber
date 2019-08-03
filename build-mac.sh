@@ -50,6 +50,16 @@ then
 	[[ $? -ne 0 ]] && echo "Failed to install gcc. Aborting." && exit 1
 fi
 
+#Is node installed? {{{2
+which node > /dev/null 2>&1
+if [[ $? -ne 0 ]]
+then
+	echo "node is required to build imgbrd-grabber. Installing with brew..."
+	${BREW_BIN} install node
+	which npm > /dev/null 2>&1
+	[[ $? -ne 0 ]] && echo "Failed to install nodejs. Aborting." && exit 1
+fi
+
 # Is Qt installed?  {{{2
 QT_BIN_ROOT="$(${BREW_BIN} --prefix)/opt/qt/bin"
 if [[ ! -e "${QT_BIN_ROOT}" ]]
