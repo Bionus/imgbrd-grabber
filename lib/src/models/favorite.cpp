@@ -7,11 +7,11 @@
 Favorite::Favorite(QString name)
 	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
-	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath, QStringList postFiltering)
+	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath), std::move(postFiltering))
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath)
-	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath, QStringList postFiltering)
+	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath)), m_postFiltering(std::move(postFiltering))
 {}
 
 void Favorite::setImagePath(const QString &imagePath)
@@ -20,6 +20,8 @@ void Favorite::setLastViewed(const QDateTime &lastViewed)
 { m_lastViewed = lastViewed; }
 void Favorite::setNote(int note)
 { m_note = note; }
+void Favorite::setPostFiltering(const QStringList &postFiltering)
+{ m_postFiltering = postFiltering; }
 
 QString Favorite::getName(bool clean) const
 {
@@ -36,6 +38,8 @@ QString Favorite::getImagePath() const
 { return m_imagePath; }
 QList<Monitor> &Favorite::getMonitors()
 { return m_monitors; }
+QStringList Favorite::getPostFiltering() const
+{ return m_postFiltering; }
 
 bool Favorite::setImage(const QPixmap &img)
 {
@@ -83,6 +87,7 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 void Favorite::toJson(QJsonObject &json) const
 {
 	json["tag"] = getName();
+	json["postFiltering"] = QJsonArray::fromStringList(getPostFiltering());
 	json["note"] = getNote();
 	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
 
@@ -107,6 +112,7 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const 
 		thumbPath = ":/images/noimage.png";
 	}
 
+	// Monitors
 	QList<Monitor> monitors;
 	if (json.contains("monitors")) {
 		QJsonArray monitorsJson = json["monitors"].toArray();
@@ -115,7 +121,17 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const 
 		}
 	}
 
-	return Favorite(tag, note, lastViewed, monitors, thumbPath);
+	// Post-filtering
+	QStringList postFiltering;
+	if (json.contains("postFiltering")) {
+		QJsonArray jsonPostFiltering = json["postFiltering"].toArray();
+		postFiltering.reserve(jsonPostFiltering.count());
+		for (auto filter : jsonPostFiltering) {
+			postFiltering.append(filter.toString());
+		}
+	}
+
+	return Favorite(tag, note, lastViewed, monitors, thumbPath, postFiltering);
 }
 
 bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)

@@ -292,6 +292,7 @@ void FavoritesTab::loadFavorite(const QString &name)
 	Favorite fav = m_favorites[index];
 	m_currentTags = fav.getName();
 	m_loadFavorite = fav.getLastViewed();
+	m_postFiltering->setPlainText(fav.getPostFiltering().join(' '));
 
 	ui->widgetResults->show();
 	load();
