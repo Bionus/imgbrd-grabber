@@ -1,5 +1,4 @@
 # Grabber
-
 *.qm
 e2e/viewer/result.json
 release/sites/helper.js
@@ -55,12 +54,10 @@ gui/android/AndroidManifest.xml
 
 
 # NPM
-
 node_modules/
 
 
 # CMake
-
 CMakeLists.txt.user*
 CMakeCache.txt
 CMakeFiles
@@ -73,13 +70,7 @@ compile_commands.json
 CTestTestfile.cmake
 
 
-# Unix
-
-*~
-
-
 # Visual Studio
-
 .vs/
 *.sln
 *.vcxproj
@@ -91,12 +82,10 @@ CMakeSettings.json
 
 
 # CLion
-
 .idea/
 
 
 # C++ objects and libs
-
 *.slo
 *.lo
 *.o
@@ -109,7 +98,6 @@ CMakeSettings.json
 
 
 # Qt-es
-
 /.qmake.cache
 /.qmake.stash
 *.pro.user
@@ -125,16 +113,34 @@ Makefile*
 
 
 # QtCreator
-
 *.autosave
 
 
 # QtCtreator Qml
-
 *.qmlproject.user
 *.qmlproject.user.*
 
 
 # VS Code
-
 .vscode/
+
+# Vim
+## Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+## Session
+Session.vim
+Sessionx.vim
+
+## Temporary
+.netrwhist
+*~
+## Auto-generated tag files
+tags
+## Persistent undo
+[._]*.un~
+
