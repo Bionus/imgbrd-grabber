@@ -2,6 +2,9 @@ project(tests)
 
 enable_testing()
 add_definitions(-DTEST=1)
+if(DEFINED HEADLESS)
+	add_definitions(-DHEADLESS=1)
+endif()
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
