@@ -153,6 +153,46 @@ TEST_CASE("FilenameParser")
 		REQUIRE(txt2->text == QString("image.png"));
 	}
 
+	SECTION("Parse legacy conditional with trailing dash")
+	{
+		FilenameParser parser("<!%token% out->image.png");
+		auto filename = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
+
+		REQUIRE(filename->exprs.count() == 2);
+
+		auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[0]);
+		REQUIRE(conditional != nullptr);
+		REQUIRE(conditional->ifTrue != nullptr);
+		REQUIRE(conditional->ifFalse == nullptr);
+
+		auto invertCond = dynamic_cast<FilenameNodeConditionInvert*>(conditional->condition);
+		REQUIRE(invertCond != nullptr);
+
+		auto cond = dynamic_cast<FilenameNodeConditionToken*>(invertCond->node);
+		REQUIRE(cond != nullptr);
+		REQUIRE(cond->token == QString("token"));
+
+		auto ifTrue = dynamic_cast<FilenameNodeRoot*>(conditional->ifTrue);
+		REQUIRE(ifTrue != nullptr);
+		REQUIRE(ifTrue->exprs.count() == 2);
+
+		auto ifTrue1Invert = dynamic_cast<FilenameNodeConditionInvert*>(ifTrue->exprs[0]);
+		REQUIRE(ifTrue1Invert != nullptr);
+
+		auto ifTrue1 = dynamic_cast<FilenameNodeConditionToken*>(ifTrue1Invert->node);
+		REQUIRE(ifTrue1 != nullptr);
+		REQUIRE(ifTrue1->token == QString("token"));
+
+		auto ifTrue2 = dynamic_cast<FilenameNodeText*>(ifTrue->exprs[1]);
+		REQUIRE(ifTrue2 != nullptr);
+		REQUIRE(ifTrue2->text == QString(" out-"));
+
+		auto txt = dynamic_cast<FilenameNodeText*>(filename->exprs[1]);
+		REQUIRE(txt != nullptr);
+		REQUIRE(txt->text == QString("image.png"));
+	}
+
 	SECTION("ParseConditionalLegacyDash")
 	{
 		FilenameParser parser("<\"tag\"-out/>image.png");

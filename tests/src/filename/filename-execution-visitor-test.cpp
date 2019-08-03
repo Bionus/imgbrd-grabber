@@ -19,6 +19,9 @@ TEST_CASE("FilenameExecutionVisitor")
 		FilenameParser parser("");
 		auto ast = parser.parseRoot();
 
+		REQUIRE(parser.error() == QString());
+		REQUIRE(ast != nullptr);
+
 		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 		FilenameExecutionVisitor executionVisitor(tokens, &settings);
 		QString result = executionVisitor.run(*ast);
@@ -36,6 +39,9 @@ TEST_CASE("FilenameExecutionVisitor")
 		FilenameParser parser("image.jpg");
 		auto ast = parser.parseRoot();
 
+		REQUIRE(parser.error() == QString());
+		REQUIRE(ast != nullptr);
+
 		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 		FilenameExecutionVisitor executionVisitor(tokens, &settings);
 		QString result = executionVisitor.run(*ast);
@@ -52,6 +58,9 @@ TEST_CASE("FilenameExecutionVisitor")
 
 		FilenameParser parser("out/%md5%.%ext%");
 		auto ast = parser.parseRoot();
+
+		REQUIRE(parser.error() == QString());
+		REQUIRE(ast != nullptr);
 
 		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 		FilenameExecutionVisitor executionVisitor(tokens, &settings);

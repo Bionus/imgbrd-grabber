@@ -214,10 +214,25 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 		while (peek() != '>') {
 			static const QList<QChar> stop { '>', '-', '!', '"', '%' };
 			static const QList<QChar> stopCond { '"', '%' };
-			if (!stop.contains(peek())) {
+
+			bool notStop = !stop.contains(peek());
+			if (notStop) {
 				exprs.append(parseExpr(stop));
-			} else if (peek() == '-' && m_index + 1 < m_str.count() && !stopCond.contains(m_str[m_index + 1])) {
-				exprs.append(parseExpr({ '>', '"', '%' }));
+			}
+			if ((peek() == '-' || peek() == '!') && m_index + 1 < m_str.count() && (!stopCond.contains(m_str[m_index + 1]) || m_str[m_index + 1] == '>')) {
+				auto xpr = parseExpr({ '>', '"', '%' });
+				if (notStop) {
+					// Merge following text nodes
+					auto xprTxt = dynamic_cast<FilenameNodeText*>(xpr);
+					auto lastTxt = dynamic_cast<FilenameNodeText*>(exprs.last());
+					if (xprTxt != nullptr && lastTxt != nullptr) {
+						lastTxt->text += xprTxt->text;
+					} else {
+						exprs.append(xpr);
+					}
+				} else {
+					exprs.append(xpr);
+				}
 			}
 
 			if (peek() != '>') {
