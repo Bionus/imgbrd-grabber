@@ -240,6 +240,11 @@ void Profile::syncIgnored() const
 
 QString Profile::tempPath() const
 {
+	const QString override = m_settings->value("tempPathOverride", "").toString();
+	if (!override.isEmpty() && QFile::exists(override)) {
+		return override;
+	}
+
 	const QString tmp = QDir::tempPath();
 	const QString subDir = "Grabber";
 	QDir(tmp).mkpath(subDir);

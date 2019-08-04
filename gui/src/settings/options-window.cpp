@@ -61,6 +61,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkSendUsageData->setChecked(settings->value("send_usage_data", true).toBool());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
 	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24 * 60 * 60).toInt()));
+	ui->lineTempPathOverride->setText(settings->value("tempPathOverride").toString());
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -316,6 +317,13 @@ void OptionsWindow::on_buttonFolderFavorites_clicked()
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty()) {
 		ui->lineFolderFavorites->setText(folder);
+	}
+}
+void OptionsWindow::on_buttonTempPathOverride_clicked()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a temporary folder"), ui->lineTempPathOverride->text());
+	if (!folder.isEmpty()) {
+		ui->lineTempPathOverride->setText(folder);
 	}
 }
 
@@ -798,6 +806,7 @@ void OptionsWindow::save()
 	settings->setValue("send_usage_data", ui->checkSendUsageData->isChecked());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
+	settings->setValue("tempPathOverride", ui->lineTempPathOverride->text());
 
 	settings->beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++) {
