@@ -87,9 +87,12 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 void Favorite::toJson(QJsonObject &json) const
 {
 	json["tag"] = getName();
-	json["postFiltering"] = QJsonArray::fromStringList(getPostFiltering());
 	json["note"] = getNote();
 	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
+
+	if (!m_postFiltering.isEmpty() && (m_postFiltering.count() > 1 || !m_postFiltering[0].isEmpty())) {
+		json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering);
+	}
 
 	if (!m_monitors.isEmpty()) {
 		QJsonArray monitorsJson;

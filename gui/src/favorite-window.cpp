@@ -98,7 +98,7 @@ void FavoriteWindow::save()
 		ui->lastViewedDateTimeEdit->dateTime(),
 		monitors,
 		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
-		ui->postFilteringLineEdit->text().split(' ')
+		ui->postFilteringLineEdit->text().split(' ', QString::SkipEmptyParts)
 	);
 
 	if (oldFav.getName() != m_favorite.getName()) {
