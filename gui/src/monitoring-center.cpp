@@ -33,9 +33,11 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 {
 	Site *site = monitor.site();
 
+	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(favorite.getName(), site->name()), Logger::Info);
+
 	// Load the last page to check for new images
 	QEventLoop loop;
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), favorite.getName().split(' '), 1, MONITOR_CHECK_LIMIT, QStringList(), false, this);
+	Page *page = new Page(m_profile, site, m_profile->getSites().values(), favorite.getName().split(' '), 1, MONITOR_CHECK_LIMIT, favorite.getPostFiltering(), false, this);
 	connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
 	page->load();
 	loop.exec();
@@ -45,7 +47,10 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 	int count = page->images().count();
 	for (const QSharedPointer<Image> &img : page->images()) {
 		if (img->createdAt() > monitor.lastCheck()) {
-            newImagesList.append(img);
+			QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
+			if (detected.isEmpty()) {
+				newImagesList.append(img);
+			}
 		}
 	}
     int newImages = newImagesList.count();
