@@ -217,12 +217,20 @@ void DownloadsTab::batchMove(int diff)
 		rows.insert(item->row());
 	}
 
+	m_allow = false;
 	for (int sourceRow : rows) {
 		int destRow = sourceRow + diff;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount()) {
 			return;
 		}
 
+		// Swap batch items
+		auto sourceBatch = m_groupBatchs[sourceRow];
+		auto destBatch = m_groupBatchs[destRow];
+		m_groupBatchs[sourceRow] = destBatch;
+		m_groupBatchs[destRow] = sourceBatch;
+
+		// Swap row table items
 		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col) {
 			QTableWidgetItem *sourceItem = ui->tableBatchGroups->takeItem(sourceRow, col);
 			QTableWidgetItem *destItem = ui->tableBatchGroups->takeItem(destRow, col);
@@ -231,6 +239,7 @@ void DownloadsTab::batchMove(int diff)
 			ui->tableBatchGroups->setItem(destRow, col, sourceItem);
 		}
 	}
+	m_allow = true;
 
 	QItemSelection selection;
 	for (int i = 0; i < selected.count(); i++) {
