@@ -7,9 +7,35 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
+function parseSearch(search: string): { mode: string, tags: string[] } {
+    const modes = {
+        "partial": "partial_match_for_tags",
+        "full": "exact_match_for_tags",
+        "tc": "title_and_caption",
+    };
+
+    let mode = "partial_match_for_tags";
+    const tags = [];
+
+    const parts = search.split(" ");
+    for (const tag of parts) {
+        const part = tag.trim();
+        if (part.indexOf("mode:") === 0) {
+            const tmode = part.substr(5);
+            if (tmode in modes) {
+                mode = (modes as any)[tmode];
+                continue;
+            }
+        }
+        tags.push(part);
+    }
+
+    return { mode, tags };
+}
+
 export const source: ISource = {
     name: "Pixiv",
-    modifiers: [],
+    modifiers: ["mode:partial", "mode:full", "mode:tc"],
     forcedTokens: [],
     searchFormat: {
         and: " ",
@@ -28,8 +54,20 @@ export const source: ISource = {
             maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
             search: {
                 url: (query: any, opts: any, previous: any): string => {
+                    const search = parseSearch(query.search);
+                    if (search.mode !== "title_and_caption") {
+                        const illustParams: string[] = [
+                            "word=" + encodeURIComponent(search.tags.join(" ")),
+                            "offset=" + ((query.page - 1) * 30),
+                            "search_target=" + search.mode,
+                            "sort=date_desc", // date_desc, date_asc
+                            "filter=for_ios",
+                            "image_sizes=small,medium,large",
+                        ];
+                        return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
+                    }
                     const params: string[] = [
-                        "q=" + query.search,
+                        "q=" + search.tags.join(" "),
                         "page=" + query.page,
                         "per_page=" + opts.limit,
                         "period=all",
@@ -43,7 +81,6 @@ export const source: ISource = {
                 parse: (src: string): IParsedSearch => {
                     const map = {
                         "name": "title",
-                        "created_at": "created_time",
                         "file_url": "image_urls.large",
                         "sample_url": "image_urls.medium",
                         "preview_url": "image_urls.small",
@@ -59,7 +96,7 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
-                    for (const image of data["response"]) {
+                    for (const image of (data["response"] || data["illusts"])) {
                         const img = Grabber.mapFields(image, map);
                         if (image["age_limit"] === "all-age") {
                             img.rating = "safe";
@@ -70,14 +107,32 @@ export const source: ISource = {
                             img.type = "gallery";
                             img.gallery_count = image["page_count"];
                         }
+                        if (image["meta_pages"] && image["meta_pages"].length > 1) {
+                            img.type = "gallery";
+                            img.gallery_count = image["meta_pages"].length;
+                        }
+                        img.created_at = image["created_time"] || image["create_date"];
+                        if (image["caption"]) {
+                            img.description = image["caption"];
+                        }
+                        if (!img.preview_url) {
+                            img.preview_url = image["image_urls"]["medium"];
+                        }
                         images.push(img);
                     }
 
-                    return {
-                        images,
-                        imageCount: data["pagination"]["total"],
-                        pageCount: data["pagination"]["pages"],
-                    };
+                    if (data["response"]) {
+                        return {
+                            images,
+                            imageCount: data["pagination"]["total"],
+                            pageCount: data["pagination"]["pages"],
+                        };
+                    } else {
+                        return {
+                            images,
+                            urlNextPage: data["next_url"],
+                        };
+                    }
                 },
             },
             gallery: {
