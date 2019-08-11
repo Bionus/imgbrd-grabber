@@ -452,7 +452,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 		for (auto ps : qAsConst(m_pages)) {
 			const int pagesCount = ps.first()->pagesCount();
 			const int imagesPerPage = ps.first()->imagesPerPage();
-			if (ps.last()->page() < pagesCount && ps.last()->pageImageCount() >= imagesPerPage) {
+			if ((ps.last()->page() < pagesCount || pagesCount == -1) && ps.last()->pageImageCount() >= imagesPerPage) {
 				allFinished = false;
 			}
 		}
