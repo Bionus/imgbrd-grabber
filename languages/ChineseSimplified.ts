@@ -112,7 +112,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;每行一个ID&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
@@ -123,7 +123,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
       <source>&lt;i&gt;One MD5 per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;每行一个 MD5&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -2293,7 +2293,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1097"/>
       <source>Theme</source>
-      <translation type="unfinished"/>
+      <translation>主题</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1107"/>
@@ -2410,42 +2410,42 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1284"/>
       <source>Preload all tabs when restoring a previous session</source>
-      <translation type="unfinished"/>
+      <translation>恢复上次会话时预加载所有标签</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1295"/>
       <source>Use a scroll area</source>
-      <translation type="unfinished"/>
+      <translation>界面可滚动</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1305"/>
       <source>Use a fixed-image-width layout</source>
-      <translation type="unfinished"/>
+      <translation>固定图片预览大小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1315"/>
       <source>Infinite scroll</source>
-      <translation type="unfinished"/>
+      <translation>无限滚动</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1323"/>
       <source>Disabled</source>
-      <translation type="unfinished"/>
+      <translation>禁用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1328"/>
       <source>Button</source>
-      <translation type="unfinished"/>
+      <translation>按钮翻页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1333"/>
       <source>Scroll</source>
-      <translation type="unfinished"/>
+      <translation>滚轮翻页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1341"/>
       <source>Remember page number when infinite scrolling</source>
-      <translation type="unfinished"/>
+      <translation>无限滚动时记住页码</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1348"/>
@@ -2480,12 +2480,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1405"/>
       <source>Invert Click and Ctrl+Click actions</source>
-      <translation type="unfinished"/>
+      <translation>交换 左键单击 和 Ctrl+左键单击 操作</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1412"/>
       <source>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;启用此选项，左键单击图片时会将其加入下载列表，Ctrl + 左键单击将会打开详情窗口&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1433"/>
@@ -2516,12 +2516,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1459"/>
       <source>Preloading</source>
-      <translation type="unfinished"/>
+      <translation>预载图片数</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1469"/>
       <source>Slideshow</source>
-      <translation type="unfinished"/>
+      <translation>幻灯片切换时间</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1476"/>
@@ -2531,22 +2531,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1486"/>
       <source>Middle click to close window</source>
-      <translation type="unfinished"/>
+      <translation>鼠标中键单击关闭窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1496"/>
       <source>Enable scroll wheel navigation</source>
-      <translation type="unfinished"/>
+      <translation>启用鼠标滚轮导航</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1506"/>
       <source>Show tag count</source>
-      <translation type="unfinished"/>
+      <translation>显示标签顺序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>Tag order</source>
-      <translation type="unfinished"/>
+      <translation>标签排序方式</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1521"/>
@@ -2562,12 +2562,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1531"/>
       <source>Count</source>
-      <translation type="unfinished"/>
+      <translation>顺序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1539"/>
       <source>Image position</source>
-      <translation type="unfinished"/>
+      <translation>图片显示位置</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1557"/>
@@ -2577,36 +2577,36 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1667"/>
       <location filename="../gui/src/settings/options-window.ui" line="1689"/>
       <source>Center</source>
-      <translation type="unfinished"/>
+      <translation>居中</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1562"/>
       <location filename="../gui/src/settings/options-window.ui" line="1617"/>
       <location filename="../gui/src/settings/options-window.ui" line="1672"/>
       <source>Bottom</source>
-      <translation type="unfinished"/>
+      <translation>底部对齐</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1584"/>
       <location filename="../gui/src/settings/options-window.ui" line="1639"/>
       <location filename="../gui/src/settings/options-window.ui" line="1694"/>
       <source>Right</source>
-      <translation type="unfinished"/>
+      <translation>右侧对齐</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1594"/>
       <source>Animation position</source>
-      <translation type="unfinished"/>
+      <translation>动画显示位置</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1649"/>
       <source>Video position</source>
-      <translation type="unfinished"/>
+      <translation>视频显示位置</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1704"/>
       <source>Background color</source>
-      <translation type="unfinished"/>
+      <translation>背景颜色</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1716"/>
@@ -2630,7 +2630,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1426"/>
       <source>Use a single image window</source>
-      <translation type="unfinished"/>
+      <translation>只显示单张图片</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="93"/>
@@ -2640,17 +2640,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="337"/>
       <source>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;这些标签或过滤器将会自动加入每次搜索的参数中&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="354"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>过滤器</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1725"/>
       <source>Use image samples</source>
-      <translation type="unfinished"/>
+      <translation>显示缩略图</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1736"/>
@@ -2711,7 +2711,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1992"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>物种 (Species)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2020"/>
@@ -2721,7 +2721,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2048"/>
       <source>Metas</source>
-      <translation type="unfinished"/>
+      <translation>元信息 (Metas)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2095"/>
@@ -2758,12 +2758,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2250"/>
       <source>Blacklisted tags</source>
-      <translation type="unfinished"/>
+      <translation>标签黑名单</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
       <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;每行一条黑名单规则。你可以将多个标签填入一行。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2273"/>
@@ -2778,7 +2778,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2294"/>
       <source>Delay on startup</source>
-      <translation type="unfinished"/>
+      <translation>启动时延迟</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2301"/>
@@ -2788,22 +2788,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2311"/>
       <source>Tray icon</source>
-      <translation type="unfinished"/>
+      <translation>托盘图标</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2320"/>
       <source>Minimize to tray</source>
-      <translation type="unfinished"/>
+      <translation>最小化到托盘</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2330"/>
       <source>Close to tray</source>
-      <translation type="unfinished"/>
+      <translation>关闭时隐藏到托盘</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2337"/>
       <source>Enable system tray icon</source>
-      <translation type="unfinished"/>
+      <translation>显示托盘图标</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2351"/>
@@ -4376,22 +4376,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="14"/>
       <source>Updater</source>
-      <translation type="unfinished"/>
+      <translation>更新检查器</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="33"/>
       <source>A new version is available.&lt;br/&gt;Do you want to update now?</source>
-      <translation type="unfinished"/>
+      <translation>新版本可用&lt;br/&gt;你想要现在升级吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="53"/>
       <source>See changelog</source>
-      <translation type="unfinished"/>
+      <translation>查看更新日志</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.cpp" line="59"/>
       <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
-      <translation type="unfinished"/>
+      <translation>版本 &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
   </context>
   <context>
@@ -4468,17 +4468,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="225"/>
       <source>Reload</source>
-      <translation type="unfinished"/>
+      <translation>刷新</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="229"/>
       <source>Copy file</source>
-      <translation type="unfinished"/>
+      <translation>复制文件</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="231"/>
       <source>Copy data</source>
-      <translation type="unfinished"/>
+      <translation>复制数据</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="312"/>
@@ -4557,7 +4557,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
       <source>MD5 already exists</source>
-      <translation type="unfinished"/>
+      <translation>MD5 已存在</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
@@ -4593,7 +4593,8 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="603"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>以下文件过大无法显示
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="841"/>
