@@ -6,32 +6,32 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="20"/>
       <source>About Grabber</source>
-      <translation type="unfinished"/>
+      <translation>Über Grabber</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber ist eine Bionus-Entwicklung.&lt;br/&gt;Bitte besuche die &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;Website&lt;/span&gt;&lt;/a&gt; um das Projekt zu verfolgen oder Seiten- bzw Übersetzungsdateien zu erhalten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</source>
-      <translation type="unfinished"/>
+      <translation>Besonderer Dank gilt YMI für seine Hilfe beim Aufspüren und Beheben von Bugs als auch für seine Funktionsvorschläge.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>Russian translation by Николай Тихонов.</source>
-      <translation type="unfinished"/>
+      <translation>Russische Übersetzung von Николай Тихонов.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>A new version is available: %1</source>
-      <translation type="unfinished"/>
+      <translation>Eine neue Version ist verfügbar: %1</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>Grabber is up to date</source>
-      <translation type="unfinished"/>
+      <translation>Grabber ist auf dem aktuellsten Stand</translation>
     </message>
   </context>
   <context>
@@ -39,42 +39,42 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="14"/>
       <source>Add group</source>
-      <translation type="unfinished"/>
+      <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="33"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="40"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="57"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>Bilder pro Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>Bild-Limit</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
       <source>Download images with blacklisted tags</source>
-      <translation type="unfinished"/>
+      <translation>Downloade Bilder mit ausgeschlossenen Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Post-Filter</translation>
     </message>
   </context>
   <context>
@@ -82,63 +82,63 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="14"/>
       <source>Add an image</source>
-      <translation type="unfinished"/>
+      <translation>Füge ein Bild hinzu</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="103"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>Hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="33"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>ID</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="40"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="68"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Dateiname</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Eine ID pro Zeile.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
       <location filename="../gui/src/batch/add-unique-window.ui" line="205"/>
       <source>+</source>
-      <translation type="unfinished"/>
+      <translation>+</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
       <source>&lt;i&gt;One MD5 per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Ein MD5-Hash pro Zeile.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="59"/>
       <source>Browse</source>
-      <translation type="unfinished"/>
+      <translation>Browse</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="80"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Wähle einen Speicherort</translation>
     </message>
   </context>
   <context>
@@ -146,126 +146,126 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="20"/>
       <source>Batch download</source>
-      <translation type="unfinished"/>
+      <translation>Batch-Download</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="84"/>
       <source>Batch</source>
-      <translation type="unfinished"/>
+      <translation>Batch</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="89"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
       <source>Filesize</source>
-      <translation type="unfinished"/>
+      <translation>Dateigröße</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="99"/>
       <source>Speed</source>
-      <translation type="unfinished"/>
+      <translation>Geschwindigkeit</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="104"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>Fortschritt</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded images</source>
-      <translation type="unfinished"/>
+      <translation>Folge gedownloadeten Bildern</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
       <source>Copy links to clipboard</source>
-      <translation type="unfinished"/>
+      <translation>Kopiere Links in die Zwischenablage</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="132"/>
       <source>When the download is finished</source>
-      <translation type="unfinished"/>
+      <translation>Wenn der Download abgeschlossen wurde</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="140"/>
       <source>Do nothing</source>
-      <translation type="unfinished"/>
+      <translation>Mache nichts</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="145"/>
       <source>Close window</source>
-      <translation type="unfinished"/>
+      <translation>Schließe das Fenster</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="150"/>
       <source>Open CD tray</source>
-      <translation type="unfinished"/>
+      <translation>Öffne CD-Schublade</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="155"/>
       <source>Open destination folder</source>
-      <translation type="unfinished"/>
+      <translation>Öffne Ziel-Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="160"/>
       <source>Play a sound</source>
-      <translation type="unfinished"/>
+      <translation>Spiele einen Sound</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="165"/>
       <source>Shutdown</source>
-      <translation type="unfinished"/>
+      <translation>Herunterfahren</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="173"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Entfernen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="185"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>Details</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="211"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="86"/>
       <source>Pause</source>
-      <translation type="unfinished"/>
+      <translation>Anhalten</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="218"/>
       <source>Skip</source>
-      <translation type="unfinished"/>
+      <translation>Überspringen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="225"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="126"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>Abbrechen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="85"/>
       <source>Paused</source>
-      <translation type="unfinished"/>
+      <translation>Angehalten</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="86"/>
       <source>Resume</source>
-      <translation type="unfinished"/>
+      <translation>Fortsetzen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
       <source>h 'h' m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h' m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
       <source>m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
@@ -544,158 +544,161 @@
       <location filename="../gui/src/tabs/downloads-tab.ui" line="135"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="237"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>Hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="155"/>
       <source>Single images</source>
-      <translation type="unfinished"/>
+      <translation>Einzelne Bilder</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="184"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>ID</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="189"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="194"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>Bewertung</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="204"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="209"/>
       <source>Date</source>
-      <translation type="unfinished"/>
+      <translation>Datum</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="214"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Suche</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="219"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="268"/>
       <source>Delete all</source>
-      <translation type="unfinished"/>
+      <translation>Alle löschen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="275"/>
       <source>Delete selected</source>
-      <translation type="unfinished"/>
+      <translation>Markierte löschen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="282"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>Download</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="289"/>
       <source>Download selected</source>
-      <translation type="unfinished"/>
+      <translation>Markierte Downloaden</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="306"/>
       <source>Move down</source>
-      <translation type="unfinished"/>
+      <translation>Weiter runter</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="313"/>
       <source>Load</source>
-      <translation type="unfinished"/>
+      <translation>Öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="320"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="327"/>
       <source>Move up</source>
-      <translation type="unfinished"/>
+      <translation>Weiter hoch</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Confirmation</source>
-      <translation type="unfinished"/>
+      <translation>Bestätigung</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Are you sure you want to clear your download list?</source>
-      <translation type="unfinished"/>
+      <translation>Bist du dir sicher, dass du deine Download-Liste zurücksetzen möchtest?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="280"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>Diese Quelle ist nicht gültig.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="289"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="unfinished"/>
+      <translation>Der Wert "Bilder pro Seite" muss mindestens auf 1 gestellt sein.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="298"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="unfinished"/>
+      <translation>Das Bilder-Limit muss mindestens auf 0 eingestellt sein.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="374"/>
       <source>Groups (%1/%2)</source>
-      <translation type="unfinished"/>
+      <translation>Gruppen (%1/%2)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="418"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
       <source>Save link list</source>
-      <translation type="unfinished"/>
+      <translation>Link-Liste speichern</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="418"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="439"/>
       <source>Imageboard-Grabber links (*.igl)</source>
-      <translation type="unfinished"/>
+      <translation>Imageboard-Grabber Links (*.igl)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
       <source>Link list saved successfully!</source>
-      <translation type="unfinished"/>
+      <translation>Link-Liste erfolgreich gespeichert!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Error opening file.</source>
-      <translation type="unfinished"/>
+      <translation>Fehler beim Öffnen der Datei.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="439"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Load link list</source>
-      <translation type="unfinished"/>
+      <translation>Öffne Link-Liste</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
       <source>Link list loaded successfully!</source>
-      <translation type="unfinished"/>
+      <translation>Link-Liste erfolgreich geladen!</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="459"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Lade %n download</numerusform>
+        <numerusform>Lade %n downloads</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
