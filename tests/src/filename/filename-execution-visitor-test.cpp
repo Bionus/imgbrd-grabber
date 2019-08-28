@@ -68,4 +68,21 @@ TEST_CASE("FilenameExecutionVisitor")
 
 		REQUIRE(result == QString("out/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
 	}
+
+	SECTION("Token list count")
+	{
+		QMap<QString, Token> tokens {{ "list", Token(QStringList() << "a" << "b" << "c") }};
+
+		FilenameParser parser("%list:count%");
+		auto ast = parser.parseRoot();
+
+		REQUIRE(parser.error() == QString());
+		REQUIRE(ast != nullptr);
+
+		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+		FilenameExecutionVisitor executionVisitor(tokens, &settings);
+		QString result = executionVisitor.run(*ast);
+
+		REQUIRE(result == QString("3"));
+	}
 }
