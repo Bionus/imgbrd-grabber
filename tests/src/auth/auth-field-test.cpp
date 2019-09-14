@@ -37,6 +37,7 @@ TEST_CASE("AuthField")
 		REQUIRE(field.id() == QString("id"));
 		REQUIRE(field.key() == QString("key"));
 		REQUIRE(field.type() == AuthField::FieldType::Text);
+		REQUIRE(field.def() == QString("default"));
 
 		MixedSettings *settings = makeSettings("auth/id", "");
 		REQUIRE(field.value(settings) == QString("default"));

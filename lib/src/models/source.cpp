@@ -146,7 +146,7 @@ Source::Source(Profile *profile, const QString &dir)
 							fields.append(new AuthConstField(key, value));
 						} else {
 							const QString def = !field.property("def").isUndefined() ? field.property("def").toString() : QString();
-							fields.append(new AuthField(fid, key, type == "password" ? AuthField::Password : AuthField::Text));
+							fields.append(new AuthField(fid, key, type == "password" ? AuthField::Password : AuthField::Text, def));
 						}
 					}
 

@@ -25,6 +25,11 @@ AuthField::FieldType AuthField::type() const
 	return m_type;
 }
 
+QString AuthField::def() const
+{
+	return m_default;
+}
+
 
 QString AuthField::value(MixedSettings *settings) const
 {

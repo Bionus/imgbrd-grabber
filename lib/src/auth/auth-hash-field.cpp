@@ -15,6 +15,9 @@ QString AuthHashField::value(MixedSettings *settings) const
 	const QString username = settings->value("auth/pseudo").toString();
 	const QString password = settings->value("auth/password").toString();
 
+	QString salt = settings->value("auth/salt").toString();
+	salt.replace("--your-password--", "--%password%--");
+
 	// Don't hash passwords twice
 	// FIXME: very long passwords won't get hashed
 	if (password.length() >= 32) {
@@ -24,6 +27,7 @@ QString AuthHashField::value(MixedSettings *settings) const
 	QString data = password;
 	if (!m_salt.isEmpty() && (!username.isEmpty() || !password.isEmpty())) {
 		data = QString(m_salt);
+		data.replace("%salt%", salt);
 		data.replace("%pseudo%", username);
 		data.replace("%pseudo:lower%", username.toLower());
 		data.replace("%password%", password);

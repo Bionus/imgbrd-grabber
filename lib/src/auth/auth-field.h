@@ -23,6 +23,7 @@ class AuthField
 		QString id() const;
 		QString key() const;
 		FieldType type() const;
+		QString def() const;
 
 		virtual QString value(MixedSettings *settings) const;
 

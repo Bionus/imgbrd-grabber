@@ -98,7 +98,7 @@ interface IAuthFieldBase {
 }
 interface IAuthNormalField extends IAuthFieldBase {
     id: string;
-    type?: "text" | "password";
+    type?: "text" | "password" | "salt";
     def?: string;
 }
 interface IAuthConstField extends IAuthFieldBase {

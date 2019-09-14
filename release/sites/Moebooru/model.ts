@@ -36,10 +36,15 @@ export const source: any = {
                     type: "password",
                 },
                 {
+                    id: "salt",
+                    type: "salt",
+                    def: "choujin-steiner--%password%--",
+                },
+                {
                     key: "password_hash",
                     type: "hash",
                     hash: "sha1",
-                    salt: "choujin-steiner--%password%--",
+                    salt: "%salt%",
                 },
             ],
         },
