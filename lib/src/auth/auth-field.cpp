@@ -5,8 +5,8 @@
 #include "mixed-settings.h"
 
 
-AuthField::AuthField(QString id, QString key, FieldType type)
-	: m_id(std::move(id)), m_key(std::move(key)), m_type(type)
+AuthField::AuthField(QString id, QString key, FieldType type, QString def)
+	: m_id(std::move(id)), m_key(std::move(key)), m_type(type), m_default(std::move(def))
 {}
 
 
@@ -28,5 +28,6 @@ AuthField::FieldType AuthField::type() const
 
 QString AuthField::value(MixedSettings *settings) const
 {
-	return settings->value("auth/" + m_id).toString();
+	QString val = settings->value("auth/" + m_id).toString();
+	return val.isEmpty() ? m_default : val;
 }

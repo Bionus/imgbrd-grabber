@@ -30,6 +30,20 @@ TEST_CASE("AuthField")
 		settings->deleteLater();
 	}
 
+	SECTION("Basic field with default value")
+	{
+		AuthField field("id", "key", AuthField::FieldType::Text, "default");
+
+		REQUIRE(field.id() == QString("id"));
+		REQUIRE(field.key() == QString("key"));
+		REQUIRE(field.type() == AuthField::FieldType::Text);
+
+		MixedSettings *settings = makeSettings("auth/id", "");
+		REQUIRE(field.value(settings) == QString("default"));
+		settings->deleteLater();
+	}
+
+
 	SECTION("Const field")
 	{
 		AuthConstField field("key", "val");
