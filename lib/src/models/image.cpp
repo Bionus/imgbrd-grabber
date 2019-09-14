@@ -457,7 +457,8 @@ void Image::parseDetails()
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty()) {
-		m_pageUrl = redir;
+		m_pageUrl = m_parentSite->fixUrl(redir);
+		log(QStringLiteral("Redirecting details page to `%1`").arg(m_pageUrl.toString()));
 		loadDetails();
 		return;
 	}
