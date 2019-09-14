@@ -28,6 +28,11 @@ const QString &FilenameParser::error() const
 	return m_error;
 }
 
+const QString &FilenameParser::str() const
+{
+	return m_str;
+}
+
 
 FilenameNodeRoot *FilenameParser::parseRoot()
 {
