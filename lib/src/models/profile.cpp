@@ -130,7 +130,10 @@ Profile::Profile(QString path)
 	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileBlacklist.readLine()).isEmpty()) {
-			m_blacklist.add(line.trimmed().split(" ", QString::SkipEmptyParts));
+			line = line.trimmed();
+			if (!line.startsWith('#')) {
+				m_blacklist.add(line.split(" ", QString::SkipEmptyParts));
+			}
 		}
 
 		fileBlacklist.close();
