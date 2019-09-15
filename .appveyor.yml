@@ -3,6 +3,7 @@ version: '{build}'
 environment:
   APPVEYOR: 1
   DEPLOY: 0
+  BREAKPAD: 0
   MYSQL_VERSION: mysql-5.7.14-win32
   APNG_PLUGIN: apng-1.1.05.10.1
   QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
@@ -62,7 +63,7 @@ build_script:
 
   # Build Google Breakpad
   - set "BREAKPAD_BUILD=0"
-  - if %DEPLOY%==1 if not exist "breakpad" set "BREAKPAD_BUILD=1"
+  - if %BREAKPAD%==1 if not exist "breakpad" set "BREAKPAD_BUILD=1"
   - if %BREAKPAD_BUILD%==1 mkdir breakpad
   - if %BREAKPAD_BUILD%==1 cd breakpad
   - if %BREAKPAD_BUILD%==1 gclient config https://github.com/google/breakpad --unmanaged --name=src
