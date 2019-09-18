@@ -403,7 +403,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>添加自定义变量</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="27"/>
@@ -1427,7 +1427,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="20"/>
       <source>Location type</source>
-      <translation type="unfinished"/>
+      <translation>位置类型</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="28"/>
@@ -1437,7 +1437,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="33"/>
       <source>Unique file</source>
-      <translation type="unfinished"/>
+      <translation>唯一文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="38"/>
@@ -1458,7 +1458,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="129"/>
       <source>Path</source>
-      <translation type="unfinished"/>
+      <translation>路径</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="147"/>
@@ -1672,7 +1672,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="786"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>标签加载器</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="158"/>
@@ -1863,7 +1863,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="83"/>
       <source>Separate log files</source>
-      <translation type="unfinished"/>
+      <translation>单独的日志文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
@@ -2238,7 +2238,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="816"/>
       <source>If an image yields multiple files</source>
-      <translation type="unfinished"/>
+      <translation>如果一个图像生成多个文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="841"/>
@@ -2283,12 +2283,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1058"/>
       <source>Add a separate log file</source>
-      <translation type="unfinished"/>
+      <translation>添加一个单独的日志文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1082"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>添加自定义变量</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1097"/>
@@ -2846,12 +2846,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2460"/>
       <source>Use system-wide proxy settings</source>
-      <translation type="unfinished"/>
+      <translation>使用全局代理设置</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2477"/>
       <source>Add a web service</source>
-      <translation type="unfinished"/>
+      <translation>添加一个网络服务</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2514"/>
@@ -2894,7 +2894,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="309"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>选择保存的文件夹</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="316"/>
@@ -2905,7 +2905,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.cpp" line="390"/>
       <location filename="../gui/src/settings/options-window.cpp" line="500"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>编辑</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="395"/>
@@ -2977,7 +2977,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="415"/>
       <source>Get &amp;selected</source>
-      <translation type="unfinished"/>
+      <translation>获取 &amp;已选择的图片</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="422"/>
@@ -3058,7 +3058,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="285"/>
       <source>Can't compile your filename: %1</source>
-      <translation type="unfinished"/>
+      <translation>无法编译您的文件名: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="292"/>
@@ -3098,12 +3098,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
       <source>image has a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>图像有一个“%1”标记</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
       <source>image does not have a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>图像没有“%1”标记</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
@@ -3139,7 +3139,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="162"/>
       <source>unknown type "%1" (available types: "%2")</source>
-      <translation type="unfinished"/>
+      <translation>未知类型 “%1“ (可用类型: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
@@ -3218,7 +3218,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="125"/>
       <source>Suffixes</source>
-      <translation type="unfinished"/>
+      <translation>后缀</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="56"/>
@@ -3240,7 +3240,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
       <source>No image found when renaming image '%1'</source>
-      <translation type="unfinished"/>
+      <translation>重命名图像 '%1' 时未找到图像</translation>
     </message>
   </context>
   <context>
@@ -3286,7 +3286,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="163"/>
       <source>all images filtered</source>
-      <translation type="unfinished"/>
+      <translation>所有图像已过滤</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="169"/>
@@ -3306,17 +3306,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
       <source>HTTPS redirection detected</source>
-      <translation type="unfinished"/>
+      <translation>检测到 HTTPS 重定向</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="384"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation type="unfinished"/>
+      <translation>网站 %1检测到 HTTP 至 HTTPS 重定向。您想启用 SSL 吗？建议设置为“是”。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
       <source>Always</source>
-      <translation type="unfinished"/>
+      <translation>总是</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
@@ -3326,7 +3326,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="388"/>
       <source>Never</source>
-      <translation type="unfinished"/>
+      <translation>从不</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="601"/>
@@ -3374,7 +3374,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="933"/>
       <source>Save selected</source>
-      <translation type="unfinished"/>
+      <translation>保存所选</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="983"/>
@@ -3592,7 +3592,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="45"/>
       <source>The url you entered is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>您输入的 url 无效。</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
@@ -3884,17 +3884,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>API key</source>
-      <translation type="unfinished"/>
+      <translation>API 密钥</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
       <source>Consumer key</source>
-      <translation type="unfinished"/>
+      <translation>客户密钥</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"/>
+      <translation>客户密码</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="197"/>
@@ -3934,7 +3934,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="295"/>
       <source>You should at least select one source</source>
-      <translation type="unfinished"/>
+      <translation>您至少应选择一个源</translation>
     </message>
   </context>
   <context>
@@ -3982,12 +3982,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="383"/>
       <source>- No preset selected -</source>
-      <translation type="unfinished"/>
+      <translation>- 没有选择预设 -</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
       <source>Create a new preset</source>
-      <translation type="unfinished"/>
+      <translation>创建新预设</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
@@ -3998,7 +3998,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="422"/>
       <source>Edit preset</source>
-      <translation type="unfinished"/>
+      <translation>编辑预设</translation>
     </message>
   </context>
   <context>
@@ -4114,12 +4114,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="47"/>
       <source>Copy tag</source>
-      <translation type="unfinished"/>
+      <translation>复制标签</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="49"/>
       <source>Copy all tags</source>
-      <translation type="unfinished"/>
+      <translation>复制所有标签</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="54"/>
@@ -4142,7 +4142,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>标签加载器</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="55"/>
@@ -4162,7 +4162,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>生成给定源的本地标签数据库。之后，即使源API没有提供标签类型信息，Grabber也可以在本地标签数据库中直接检查。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -4177,7 +4177,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="104"/>
       <source>%n tag(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>已加载 %n 个标签</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -4205,7 +4207,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="254"/>
       <source>How many sources should appear per line.</source>
-      <translation type="unfinished"/>
+      <translation>每行应该显示多少来源。</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="257"/>
@@ -4220,7 +4222,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="351"/>
       <source>Load more results</source>
-      <translation type="unfinished"/>
+      <translation>加载更多结果</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="412"/>
@@ -4323,7 +4325,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="48"/>
       <source>Sort</source>
-      <translation type="unfinished"/>
+      <translation>排序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="56"/>
@@ -4542,17 +4544,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
       <source>Link created! (fav)</source>
-      <translation type="unfinished"/>
+      <translation>链接已创建! (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="556"/>
       <source>Link created!</source>
-      <translation type="unfinished"/>
+      <translation>链接已创建！</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
       <source>MD5 already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>MD5 已存在 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="561"/>
@@ -4562,12 +4564,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
       <source>Already exists (fav)</source>
-      <translation type="unfinished"/>
+      <translation>已存在 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
       <source>Already exists</source>
-      <translation type="unfinished"/>
+      <translation>已存在</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>

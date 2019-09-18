@@ -271,17 +271,17 @@
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="387"/>
       <source>s 's'</source>
-      <translation type="unfinished"/>
+      <translation>s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Durchschnittsgeschwindigkeit:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;verstrichene Zeit:&lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;verbleibende Zeit:&lt;/b&gt; %4</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="420"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Schließen</translation>
     </message>
   </context>
   <context>
@@ -295,62 +295,65 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>MD5-berechnung erzwingen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>MD5 im Dateinamen holen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Dateiname</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="115"/>
       <source>Blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Blacklist</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="61"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Quelle</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="74"/>
       <source>%v/%m</source>
-      <translation type="unfinished"/>
+      <translation>%v/%m</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="96"/>
       <source>Continue</source>
-      <translation type="unfinished"/>
+      <translation>Fortfahren</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="103"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>Abbrechen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
       <source>This directory does not exist.</source>
-      <translation type="unfinished"/>
+      <translation>Verzeichnis existiert nicht.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>Wenn sie die MD5 aus dem Dateinamen erhalten wollen, muss das %md5% -Token darin erhalten sein.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Sie sind dabei, Informationen von %n Bild herunterzuladen. Sind sie sicher, dass sie fortfahren möchten?</numerusform>
+        <numerusform>Sie sind dabei, Informationen von %n Bildern herunterzuladen. Sind sie sicher, dass sie fortfahren möchten?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -363,37 +366,37 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
       <source>Choose images to delete in the list below.</source>
-      <translation type="unfinished"/>
+      <translation>Wählen sie zu löschende Bilder aus der Liste unten.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>Vorschaubild</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="57"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Name</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="62"/>
       <source>Tag</source>
-      <translation type="unfinished"/>
+      <translation>Tag</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="72"/>
       <source>Select found images</source>
-      <translation type="unfinished"/>
+      <translation>Gefundene Bilder auswählen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="92"/>
       <source>Ok</source>
-      <translation type="unfinished"/>
+      <translation>Ok</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="99"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>Abbrechen</translation>
     </message>
   </context>
   <context>
@@ -401,37 +404,37 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>Benutzerdefiniertes Token hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="27"/>
       <source>&lt;i&gt;You can either use a token or tags as a condition.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Sie können entweder ein Token oder Tags als Bedingung verwenden.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="34"/>
       <source>Condition</source>
-      <translation type="unfinished"/>
+      <translation>Bedingung</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="44"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Dateiname</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="64"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="71"/>
       <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Frei lassen, um den Standardordner zu nutzen.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>&lt;i&gt;Leave empty to use the default filename.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Frei lassen, um den Standarddateinamen zu nutzen.&lt;/i&gt;</translation>
     </message>
   </context>
   <context>
@@ -439,22 +442,22 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="17"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>Benutzerdefiniertes Token hinzufügen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="27"/>
       <source>&lt;i&gt;Separate tags by spaces or line breaks&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Tags nach Leerzeichen oder Zeilenumbrüchen trennen&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="34"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Name</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="44"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
   </context>
   <context>
@@ -462,12 +465,12 @@
     <message>
       <location filename="../gui/src/viewer/details-window.ui" line="17"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>Details</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/details-window.ui" line="46"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Schließen</translation>
     </message>
   </context>
   <context>
@@ -475,70 +478,70 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>Downloads</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="52"/>
       <source>Groups (0/0)</source>
-      <translation type="unfinished"/>
+      <translation>Gruppen (0/0)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="77"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="199"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="82"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>Quelle</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="87"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="92"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>Bilder pro Seite</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="97"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>Bilderlimit</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="102"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="224"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Dateiname</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="107"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="229"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Ordner</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="112"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Post-filterung</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="117"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Von der Blacklist erhalten</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="122"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>Gallerien zählen als eins</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="127"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>Fortschritt</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="135"/>
@@ -703,32 +706,32 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
       <source>You did not specify a save folder!</source>
-      <translation type="unfinished"/>
+      <translation>Sie haben keinen Speicherordner angegeben!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="540"/>
       <source>You did not specify a filename!</source>
-      <translation type="unfinished"/>
+      <translation>Sie haben keinen Dateinamen angegeben!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="668"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation type="unfinished"/>
+      <translation>Sie werden bis zu %1 Bilder herunterladen, was sehr viel Zeit und Speicherplatz auf ihrem PC benötigen könnte. Sind sie sicher, dass sie fortfahren wollen?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="670"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>Nicht mehr nachfragen</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="707"/>
       <source>Logging in, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>Anmeldung, bitte warten...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="792"/>
       <source>Downloading pages, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>Lädt Seiten herunter, bitte warten...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="869"/>
