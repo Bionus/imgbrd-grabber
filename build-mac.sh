@@ -211,6 +211,9 @@ then
 fi
 mv "${srcDir}/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
 
+#Add the macos Icon files
+cp -r "${srcDir}"/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
+
 #Decide if we are supposed to move the App to ${HOME}/Applications {{{2
 echo "Finished Compiling updated version of imgbrd-grabber. Application is now at '${srcDir}/TEMP-Grabber.app'"
 read -p "Would you like to copy this to '${HOME}/Applications/Grabber.app'? [Y|n]" AGREE
