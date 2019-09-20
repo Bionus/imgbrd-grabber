@@ -217,9 +217,6 @@ then
 	rm -rf "$srcDir/grabber-release"
 fi
 
-#Add the macos Icon files
-cp -r "${srcDir}"/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
-
 mv "${srcDir}/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
 
 #Decide if we are supposed to move the App to ${HOME}/Applications {{{2
