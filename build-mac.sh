@@ -164,6 +164,9 @@ else
 	mkdir "${srcDir}/build"
 fi
 
+#Add the macos Icon files
+cp -r "${srcDir}"/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
+
 #Create the template directory structure for a MacOS App {{{2
 mkdir -p "${appDir}"
 
@@ -209,19 +212,24 @@ if [[ -e "${srcDir}/TEMP-Grabber.app" ]]
 then
 	rm -rf "${srcDir}/TEMP-Grabber.app"
 fi
-mv "${srcDir}/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
+if [[ -e "${srcDir}/grabber-release" ]]
+then
+	rm -rf "$srcDir/grabber-release"
+fi
 
 #Add the macos Icon files
 cp -r "${srcDir}"/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
+
+mv "${srcDir}/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
 
 #Decide if we are supposed to move the App to ${HOME}/Applications {{{2
 echo "Finished Compiling updated version of imgbrd-grabber. Application is now at '${srcDir}/TEMP-Grabber.app'"
 read -p "Would you like to copy this to '${HOME}/Applications/Grabber.app'? [Y|n]" AGREE
 case "${AGREE}" in
 	[nN]|[nN][oO]) #{{{3
-		echo "Will not move application from '${srcDir}/TEMP-Grabber.app' to ~/Applications/Grabber.app"
+		echo "Will not copy application from '${srcDir}/TEMP-Grabber.app' to ~/Applications/Grabber.app"
 		echo "WARNING - This application will be destroyed the next time ${0} executes!"
-		mv "${srcDir}/TEMP-Grabber.app/Contents/MacOS/Grabber" "${srcDir}/TEMP-Grabber.app/Contents/MacOS/TEMP-Grabber" >/dev/null 2>&1
+		cp -R "${srcDir}/TEMP-Grabber.app/Contents/MacOS/Grabber" "${srcDir}/TEMP-Grabber.app/Contents/MacOS/TEMP-Grabber" >/dev/null 2>&1
 		APP_PATH="${srcDir}/TEMP-Grabber.app"
 		;;
 	*) #{{{3
@@ -229,28 +237,47 @@ case "${AGREE}" in
 		then
 			echo "A copy of imgbrd-grabber already exists at '${HOME}/Applications/Grabber.app'"
 			DATE=$(date +%Y-%m-%d_%H%M%S)
-			read -p "Move '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'? [y|N]" AGREE
+			read -p "Copy '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'? [y|N]" AGREE
 			case "${AGREE}" in
 				[yY]|[yY][eE]|[yY][eE][sS]) #{{{5
-					mv ${HOME}/Applications/Grabber.app ${HOME}/Applications/Grabber_${DATE}.app >/dev/null 2>&1
+					cp -R ${HOME}/Applications/Grabber.app ${HOME}/Applications/Grabber_${DATE}.app >/dev/null 2>&1
 					ERR=$?
-					[[ $ERR -ne 0 ]] && echo "Unable to move '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'. Aborting." && exit 1
-					mv "${srcDir}/TEMP-Grabber.app" "${HOME}/Applications/Grabber.app" >/dev/null 2>&1
+					[[ $ERR -ne 0 ]] && echo "Unable to copy '${HOME}/Applications/Grabber.app' to '${HOME}/Applications/Grabber_${DATE}.app'. Aborting." && exit 1
+					cp -R "${srcDir}/TEMP-Grabber.app" "${HOME}/Applications/Grabber.app" >/dev/null 2>&1
 					APP_PATH="${HOME}/Applications/Grabber.app"
 					;;
 				*) #{{{5
 					echo "Will not move application from '${srcDir}/TEMP-Grabber.app' to ~/Applications/Grabber.app"
 					echo "WARNING - This application will be destroyed the next time ${0} executes!"
-					mv "${srcDir}/TEMP-Grabber.app/Contents/MacOS/Grabber" "${srcDir}/TEMP-Grabber.app/Contents/MacOS/TEMP-Grabber" >/dev/null 2>&1
+					cp -R "${srcDir}/TEMP-Grabber.app/Contents/MacOS/Grabber" "${srcDir}/TEMP-Grabber.app/Contents/MacOS/TEMP-Grabber" >/dev/null 2>&1
 					APP_PATH="${srcDir}/TEMP-Grabber.app"
 					;; #}}}5
 			esac
 		else #{{{4
-			mv "${srcDir}/TEMP-Grabber.app" "${HOME}/Applications/Grabber.app" >/dev/null 2>&1
+			cp -R "${srcDir}/TEMP-Grabber.app" "${HOME}/Applications/Grabber.app" >/dev/null 2>&1
 			APP_PATH="${HOME}/Applications/Grabber.app"
 		fi #}}}4
 		;; #}}}3
 esac
+
+
+#Create a .dmg file? {{{2
+echo "${srcDir}"
+read -p 'Would you like to create a .dmg file? [Y|n]' AGREE
+case "${AGREE}" in
+	[yY]|[yY][eE]|[yY][eE][sS]|'') #{{{3
+		mkdir -p "${srcDir}/grabber-release"
+		ln -s  /Applications "${srcDir}/grabber-release/Applications" 
+		mv "${srcDir}/TEMP-Grabber.app" "${srcDir}/grabber-release/Grabber.app"
+		macdeployqt "${srcDir}/grabber-release/Grabber.app"
+		hdiutil create -volname grabber -srcfolder "${srcDir}/grabber-release/" -ov -format UDRW -o "${srcDir}/grabber"
+		;;
+	*) #{{{3
+		echo "Finished dmg can be found at '${srcDir/grabber.dmg}'"
+		;; #}}}3
+esac #}}}2
+
+
 
 #Launch the finished app? {{{2
 echo "${APP_PATH}"
