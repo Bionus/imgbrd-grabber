@@ -82,6 +82,8 @@ script:
   - ./build/tests/tests
 
 after_success:
+  # Clean-up workspace
+  - git checkout .
   # Upload code coverage (codecov)
   - if [[ "$COVERAGE" == 1 ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       lcov --directory . --capture --output-file coverage.info &&
@@ -110,3 +112,40 @@ after_success:
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.dmg" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.dmg $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
+
+# Add the nightly tag on develop package-enabled commits to push them to Github
+before_deploy:
+  - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "develop" ]]; then
+      git tag -f nightly
+    ; fi
+
+deploy:
+  # Nightly
+  - provider: releases
+    api_key:
+      secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
+    file:
+      - Grabber.zip
+      - Grabber.dmg
+    skip_cleanup: true
+    draft: true
+    overwrite: true
+    on:
+      repo: Bionus/imgbrd-grabber
+      branch: develop
+      condition: $PACKAGE == 1
+  # Releases
+  - provider: releases
+    api_key:
+      secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
+    file:
+      - Grabber.zip
+      - Grabber.dmg
+    skip_cleanup: true
+    draft: false
+    overwrite: true
+    on:
+      repo: Bionus/imgbrd-grabber
+      branch: master
+      tags: true
+      condition: $PACKAGE == 1
