@@ -112,7 +112,8 @@ after_success:
 # Add the nightly tag on develop package-enabled commits to push them to Github
 before_deploy:
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "develop" ]]; then
-      git tag -f nightly
+      export TRAVIS_TAG=nightly &&
+      git tag -f $TRAVIS_TAG
     ; fi
 
 deploy:
