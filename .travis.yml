@@ -102,7 +102,7 @@ after_success:
   # Build and upload release
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       ./scripts/package-linux.sh &&
-      mv "Grabber.zip" "Grabber_${BUILD_LABEL}.zip"
+      mv "Grabber.tar.gz" "Grabber_${BUILD_LABEL}.tar.gz"
     ; fi
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       ./scripts/package-mac.sh &&
@@ -121,7 +121,7 @@ deploy:
     api_key:
       secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
     file:
-      - Grabber_$BUILD_LABEL.zip
+      - Grabber_$BUILD_LABEL.tar.gz
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
     draft: true
@@ -135,7 +135,7 @@ deploy:
     api_key:
       secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
     file:
-      - Grabber_$BUILD_LABEL.zip
+      - Grabber_$BUILD_LABEL.tar.gz
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
     draft: false
