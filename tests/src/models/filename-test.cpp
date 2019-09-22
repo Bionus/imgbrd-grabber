@@ -485,7 +485,7 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathOptionNumAboveTen")
 	{
-	#if !defined(Q_OS_MACOS)
+	#if false
 		int count = 15;
 		for (int i = 1; i < count; ++i) {
 			QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
