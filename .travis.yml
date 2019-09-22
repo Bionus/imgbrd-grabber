@@ -95,7 +95,7 @@ after_success:
     ; fi
   # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
-      export BUILD_LABEL=develop
+      export BUILD_LABEL=nightly
     ; else
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
