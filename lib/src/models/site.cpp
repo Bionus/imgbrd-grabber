@@ -229,7 +229,7 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img)
+QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img, QMap<QString, QString> cHeaders)
 {
 	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
@@ -276,13 +276,21 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
+	// Additional headers
+	for (const QString &name : cHeaders.keys()) {
+		QByteArray val = cHeaders[name].startsWith("md5:")
+			? QCryptographicHash::hash(cHeaders[name].toLatin1(), QCryptographicHash::Md5)
+			: cHeaders[name].toLatin1();
+		request.setRawHeader(name.toLatin1(), val);
+	}
+
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return request;
 }
 
-NetworkReply *Site::get(const QUrl &url,  Site::QueryType type, Page *page, const QString &ref, Image *img)
+NetworkReply *Site::get(const QUrl &url, Site::QueryType type, Page *page, const QString &ref, Image *img, QMap<QString, QString> headers)
 {
-	const QNetworkRequest request = this->makeRequest(url, page, ref, img);
+	const QNetworkRequest request = this->makeRequest(url, page, ref, img, headers);
 	return m_manager->get(request, static_cast<int>(type));
 }
 

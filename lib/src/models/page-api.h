@@ -2,6 +2,7 @@
 #define PAGE_API_H
 
 #include <QList>
+#include <QMap>
 #include <QObject>
 #include <QSharedPointer>
 #include <QUrl>
@@ -89,6 +90,7 @@ class PageApi : public QObject
 		bool m_smart, m_isAltPage;
 		QString m_format, m_source, m_wiki, m_originalUrl;
 		QUrl m_url, m_urlNextPage, m_urlPrevPage;
+		QMap<QString, QString> m_headers;
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
 		NetworkReply *m_reply, *m_replyTags;

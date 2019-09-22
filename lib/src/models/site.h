@@ -65,8 +65,8 @@ class Site : public QObject
 		void syncSettings() const;
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
-		NetworkReply *get(const QUrl &url, Site::QueryType type, Page *page = nullptr, const QString &ref = "", Image *img = nullptr);
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
+		NetworkReply *get(const QUrl &url, Site::QueryType type, Page *page = nullptr, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 

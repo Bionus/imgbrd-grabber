@@ -19,6 +19,7 @@ struct PageUrl
 {
 	QString error;
 	QString url;
+	QMap<QString, QString> headers;
 };
 
 struct ParsedPage

@@ -45,6 +45,15 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 		}
 
 		url = result.property("url").toString();
+
+		if (result.hasProperty("headers")) {
+			const QJSValue headers = result.property("headers");
+			QJSValueIterator headersIt(headers);
+			while (headersIt.hasNext()) {
+				headersIt.next();
+				ret.headers[headersIt.name()] = headersIt.value().toString();
+			}
+		}
 	} else {
 		url = result.toString();
 	}
