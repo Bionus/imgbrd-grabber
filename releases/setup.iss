@@ -98,8 +98,8 @@ Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; 
 #include "scripts\products\winversion.iss"
 #include "scripts\products\fileversion.iss"
 #include "scripts\products\msiproduct.iss"
-#include "scripts\products\vcredist2013.iss"
 #include "scripts\products\vcredist2015.iss"
+#include "scripts\products\vcredist2017.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -271,12 +271,9 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 function InitializeSetup(): Boolean;
 begin
   initwinversion();
-  
-  SetForceX86(true);
-	vcredist2013('12');
-  SetForceX86(false);
 
   vcredist2015('14');
+  vcredist2017('14');
 
   Result := true;
 end;
