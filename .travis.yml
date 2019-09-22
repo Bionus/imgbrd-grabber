@@ -14,7 +14,6 @@ addons:
       - qtmultimedia5-dev
       - qttools5-dev
       - qttools5-dev-tools
-      - sshpass
       - lcov
 
 # OS X build
@@ -57,7 +56,6 @@ before_install:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
-      brew install https://raw.githubusercontent.com/hudochenkov/homebrew-sshpass/master/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
@@ -97,20 +95,18 @@ after_success:
     ; fi
   # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
-      export BUILD_LABEL=$TRAVIS_BRANCH
+      export BUILD_LABEL=develop
     ; else
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
   # Build and upload release
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       ./scripts/package-linux.sh &&
-      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
-      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+      mv "Grabber.zip" "Grabber_${BUILD_LABEL}.zip"
     ; fi
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       ./scripts/package-mac.sh &&
-      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.dmg" &&
-      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.dmg $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+      mv "Grabber.dmg" "Grabber_${BUILD_LABEL}.dmg"
     ; fi
 
 # Add the nightly tag on develop package-enabled commits to push them to Github
@@ -125,8 +121,8 @@ deploy:
     api_key:
       secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
     file:
-      - Grabber.zip
-      - Grabber.dmg
+      - Grabber_$BUILD_LABEL.zip
+      - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
     draft: true
     overwrite: true
@@ -139,8 +135,8 @@ deploy:
     api_key:
       secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
     file:
-      - Grabber.zip
-      - Grabber.dmg
+      - Grabber_$BUILD_LABEL.zip
+      - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
     draft: false
     overwrite: true
