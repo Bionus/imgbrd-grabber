@@ -279,7 +279,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	// Additional headers
 	for (const QString &name : cHeaders.keys()) {
 		QByteArray val = cHeaders[name].startsWith("md5:")
-			? QCryptographicHash::hash(cHeaders[name].toLatin1(), QCryptographicHash::Md5)
+			? QCryptographicHash::hash(cHeaders[name].toLatin1(), QCryptographicHash::Md5).toHex()
 			: cHeaders[name].toLatin1();
 		request.setRawHeader(name.toLatin1(), val);
 	}
