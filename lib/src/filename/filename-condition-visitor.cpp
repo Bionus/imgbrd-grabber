@@ -74,5 +74,18 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionToken &node)
 {
-	m_result = m_tokens.contains(node.token) && !isVariantEmpty(m_tokens[node.token].value());
+	QStringList var = node.token.split('.');
+	QMap<QString, Token> context = m_tokens;
+
+	for (int i = 0; i < var.count() - 1; ++i) {
+		QString name = var[i];
+		if (!context.contains(name) || !context[name].value().canConvert<QMap<QString, Token>>()) {
+			m_result = false;
+			return;
+		}
+		context = context[name].value<QMap<QString, Token>>();
+	}
+
+	QString last = var.last();
+	m_result = context.contains(last) && !isVariantEmpty(context[last].value());
 }

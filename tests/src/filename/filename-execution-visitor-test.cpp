@@ -85,4 +85,51 @@ TEST_CASE("FilenameExecutionVisitor")
 
 		REQUIRE(result == QString("3"));
 	}
+
+	SECTION("Sub-object conditional")
+	{
+		SECTION("The token exists")
+		{
+			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
+			QMap<QString, Token> tokens {
+					{ "gallery", Token(QVariant::fromValue(gallery)) },
+					{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+					{ "ext", Token("jpg") }
+			};
+
+			FilenameParser parser("<galleries/%gallery.name%/>%md5%.%ext%");
+			auto ast = parser.parseRoot();
+
+			REQUIRE(parser.error() == QString());
+			REQUIRE(ast != nullptr);
+
+			QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+			FilenameExecutionVisitor executionVisitor(tokens, &settings);
+			QString result = executionVisitor.run(*ast);
+
+			REQUIRE(result == QString("galleries/some gallery/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+		}
+
+		SECTION("Missing token")
+		{
+			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
+			QMap<QString, Token> tokens {
+					{ "gallery", Token(QVariant::fromValue(gallery)) },
+					{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+					{ "ext", Token("jpg") }
+			};
+
+			FilenameParser parser("<galleries/%gallery.id%/>%md5%.%ext%");
+			auto ast = parser.parseRoot();
+
+			REQUIRE(parser.error() == QString());
+			REQUIRE(ast != nullptr);
+
+			QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+			FilenameExecutionVisitor executionVisitor(tokens, &settings);
+			QString result = executionVisitor.run(*ast);
+
+			REQUIRE(result == QString("1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+		}
+	}
 }
