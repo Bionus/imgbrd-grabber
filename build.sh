@@ -11,11 +11,7 @@ else
 fi
 
 # Build the project in the build directory
-mkdir build
-cd build
-cmake ..
-make -j8
-cd ..
+./scripts/build.sh
 
 # Move the built binary to the release folder with its config
 mv "build/gui/Grabber" "release/"

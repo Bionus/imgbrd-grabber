@@ -78,10 +78,7 @@ before_script:
 
 # Build Grabber
 script:
-  - mkdir build && cd build
-  - cmake ..
-  - make -j8
-  - cd ..
+  - ./scripts/build.sh
   - ./build/tests/tests
 
 after_success:
@@ -104,18 +101,12 @@ after_success:
     ; fi
   # Build and upload release
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      cp "build/gui/Grabber" "release/Grabber" &&
-      touch "release/settings.ini" &&
-      rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
+      ./scripts/package-linux.sh &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      cp "build/gui/Grabber" "release/Grabber" &&
-      touch "release/settings.ini" &&
-      rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
-      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
-      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+      ./scripts/package-mac.sh &&
+      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.dmg" &&
+      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.dmg $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
