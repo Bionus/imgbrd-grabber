@@ -10,6 +10,7 @@ mkdir -p $APP_DIR
 cp "build/gui/Grabber" $APP_DIR
 cp -r release/* $APP_DIR
 cp -r macos/* "$APP_ROOT/Contents"
+cp build/languages/*.qm "$APP_DIR/languages/"
 touch "$APP_DIR/settings.ini"
 rm "$APP_DIR/CDR.exe"
 rm -rf "$APP_DIR/sites/node_modules/"

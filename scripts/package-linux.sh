@@ -3,6 +3,7 @@
 
 # Copy all required files to the release directory
 cp "build/gui/Grabber" "release/Grabber"
+cp build/languages/*.qm "release/languages/"
 touch "release/settings.ini"
 rm "release/CDR.exe"
 
