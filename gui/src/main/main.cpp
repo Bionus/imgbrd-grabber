@@ -26,6 +26,7 @@
 
 #include <QApplication>
 #include <QSettings>
+#include <QTextStream>
 #include "analytics.h"
 #include "downloader/downloader.h"
 #include "functions.h"
@@ -183,6 +184,11 @@ int main(int argc, char *argv[])
 	Analytics::getInstance().sendEvent("lifecycle", "start");
 
 	if (!gui) {
+		if (parser.value(filenameOption).isEmpty() && parser.isSet(downloadOption)) {
+			QTextStream(stderr) << "You need a filename for downloading images";
+			exit(1);
+		}
+
 		QString blacklistOverride = parser.value(tagsBlacklistOption);
 		Downloader *downloader = new Downloader(profile,
 			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
