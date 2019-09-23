@@ -96,6 +96,13 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
+	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+	QSettings *settings = profile->getSettings();
+
+	QString dPath = settings->value("Save/path", "").toString();
+	QString dFilename = settings->value("Save/filename", "").toString();
+
 	#if !defined(USE_CLI)
 		const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
@@ -105,8 +112,8 @@ int main(int argc, char *argv[])
 	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
 	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
 	const QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
-	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
-	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
+	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path", dPath);
+	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename", dFilename);
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
@@ -169,10 +176,6 @@ int main(int argc, char *argv[])
 			CrashHandler::instance()->Init(crashes);
 		}
 	#endif
-
-	Profile *profile = new Profile(savePath());
-	profile->purgeTemp(24 * 60 * 60);
-	QSettings *settings = profile->getSettings();
 
 	// Analytics
 	Analytics::getInstance().setTrackingID("UA-22768717-6");
