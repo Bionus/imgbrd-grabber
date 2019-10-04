@@ -535,7 +535,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="122"/>
       <source>Galleries count as one</source>
-      <translation type="unfinished"/>
+      <translation>相册计为一个</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="127"/>
@@ -969,7 +969,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="151"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分钟</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="161"/>
@@ -1084,7 +1084,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="544"/>
       <source>Get &amp;selected</source>
-      <translation type="unfinished"/>
+      <translation>获取 &amp;已选择的图片</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="551"/>
@@ -3134,7 +3134,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
       <source>An image needs a date to be filtered by age</source>
-      <translation type="unfinished"/>
+      <translation>图像需要一个日期以便按年龄筛选</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="162"/>
@@ -3321,7 +3321,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="387"/>
       <source>Never for that website</source>
-      <translation type="unfinished"/>
+      <translation>对此网站禁用</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="388"/>
@@ -3344,7 +3344,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/search-tab.cpp" line="819"/>
       <location filename="../gui/src/tabs/search-tab.cpp" line="822"/>
       <source>max %1</source>
-      <translation type="unfinished"/>
+      <translation>最大 %1</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="813"/>
@@ -3909,7 +3909,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="218"/>
       <source>Connection...</source>
-      <translation type="unfinished"/>
+      <translation>连接...</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="231"/>
@@ -4094,7 +4094,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>不要应用黑名单</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
