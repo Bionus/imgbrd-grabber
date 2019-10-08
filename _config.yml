@@ -10,6 +10,7 @@ relative_permalinks: false
 baseurl: /imgbrd-grabber
 
 exclude:
+- vendor/
 - release/
 - releases/
 - languages/

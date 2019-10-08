@@ -3,6 +3,7 @@
 _site
 .sass-cache
 .bundle
+vendor/
 
 
 # Grabber
