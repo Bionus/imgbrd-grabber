@@ -27,34 +27,57 @@ A more complex one could be:
 ```
 Which would generate files such as:
 * `namu (ratias7777)/sword art online/leafa/362333f4fb4c458577ee72919cfbe10d.png`
-* `moneti (daifuku)/original/unknown/1ed625e41e7ea853fedf15d5e1a397d9.jpg`
+* `moneti (daifuku)/touhou/flandre scarlet/0498c78f67d5545bea731d4b1051096c.jpg`
+* `moneti (daifuku)/touhou/izayoi sakuya/fe2e6eb294f33f455d43b3effcf4ec6c.jpg`
+
+Note that here, each slash (`/`) corresponds to a different directory:
+```
+├── namu (ratias7777)
+│   └── sword art online
+│       └── leafa
+│           └── 362333f4fb4c458577ee72919cfbe10d.png
+└── moneti (daifuku)
+    └── touhou
+        ├── flandre scarlet
+        │   └── 0498c78f67d5545bea731d4b1051096c.jpg
+        └── izayoi sakuya
+            └── fe2e6eb294f33f455d43b3effcf4ec6c.jpg
+```
 
 # Available tokens
 
-* `%ext%`: the file extension.
-* `%artist%`
-* `%copyright%`
-* `%character%`
-* `%model%`: boorus such as [Behoimi](http://behoimi.org/) use, adding to classical type, the "model" type.
-* `%general%`
-* `%search%`: the search that returned this image (as is).
-* `%search_1%`, `%search_2%`, `%search_3%`...: first/second/third... tag of the search.
-* `%filename%`: image filename, as stored on the booru's server.
-* `%rating%`: `safe`, `questionable`, `explicit`, or `unknown`.
-* `%score%`
-* `%md5%`: the file's MD5 hash. If not returned by the server, it is generated automatically.
-* `%id%`
-* `%website%`: the website's URL (without HTTP and trailing slash).
-* `%websitename%`: the website name as set in the sources' settings.
-* `%height%`: the image's height.
-* `%width%`: the image's width.
-* `%date%`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
-* `%all%`: all tags.
-* `%allo%`: do not use this unless you know what you're doing. It is the same as %all%, but without the removal of forbidden characters and any other kind treatment (using it as a filename may cause some images to not save).
-* `%url_file%`: the original URL of that file.
-* `%url_page%`: the URL of the details page of that file.
-* `%count%`: counts the current image downloaded during a batch download. Useful to have unique counters per batchs.
-* `%num%`: counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
+* `ext`: the file extension.
+* `artist`
+* `copyright`
+* `character`
+* `model`: boorus such as [Behoimi](http://behoimi.org/) use, adding to classical type, the "model" type.
+* `general`
+* `search`: the search that returned this image (as is).
+* `search_1`, `search_2`, `search_3`...: first/second/third... tag of the search.
+* `filename`: image filename, as stored on the booru's server.
+* `rating`: `safe`, `questionable`, `explicit`, or `unknown`.
+* `score`
+* `md5`: the file's MD5 hash. If not returned by the server, it is generated automatically.
+* `id`
+* `website`: the website's URL (without HTTP and trailing slash).
+* `websitename`: the website name as set in the sources' settings.
+* `height`: the image's height.
+* `width`: the image's width.
+* `mpixels`: the image's height multiplied by the image's width.
+* `author`: the name of the author of the image.
+* `authorid`: the ID of the author of the image.
+* `date`: the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
+* `all`: all tags.
+* `allo`: do not use this unless you know what you're doing. It is the same as `%all%`, but without the removal of forbidden characters and any other kind treatment (using it as a filename may cause some images to not save).
+* `source`: the source of this file, usually an URL.
+* `sources`: all sources for this file, usually a list of URLs.
+* `url_file`: the URL of that file.
+* `url_original`: the URL of that file's original.
+* `url_sample`: the URL of that file's sample.
+* `url_thumbnail`: the URL of that file's thumbnail.
+* `url_page`: the URL of the details page of that file.
+* `count`: counts the current image downloaded during a batch download. Useful to have unique counters per batchs.
+* `num`: counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
 
 
 # Options
@@ -69,7 +92,7 @@ The value can be omitted for boolean options. In this case, `option_name` will b
 Example: `%token:option1=value1,option2%`
 
 ## Common options
-### maxlength (int)
+### Max length (int)
 If the contents of the token is longer than this value, it will be cut.
 
 Example:
@@ -81,7 +104,7 @@ Example:
 37d49104
 ```
 
-### unsafe (bool)
+### Unsafe (bool)
 Disable removal of unsafe characters. Don't use it in normal filenames, as they won't save on Windows if they contain special characters.
 
 Example:
@@ -93,9 +116,33 @@ fate_stay_night
 fate/stay_night
 ```
 
-## Counters
+### Underscores (bool)
+If the "replace spaces by underscores" setting is not enabled globally, you can enable for a given token using this option.
+
+Example:
+```
+%copyright%
+fate stay night
+
+%copyright:underscores%
+fate_stay_night
+```
+
+### Spaces (bool)
+If the "replace spaces by underscores" setting is enabled globally, you can disable for a given token using this option.
+
+Example:
+```
+%copyright%
+fate_stay_night
+
+%copyright:spaces%
+fate stay night
+```
+
+## Numbers
 ### Length (int)
-Length of the left-pad of the counter.
+Length of the left-pad of the number.
 
 Example:
 ```
@@ -106,7 +153,7 @@ Example:
 007.jpg
 ```
 
-## Tags
+## Lists
 ### Separator (string)
 The separator to use in a tag list.
 
@@ -119,6 +166,31 @@ character1 character2
 character1---character2
 ```
 
+### Count (boolean)
+If enabled, the token will be replace by the number of values in the list.
+
+Example:
+```
+%character%
+character1 character2
+
+%character:count%
+2
+```
+
+### Sort (boolean)
+If enabled, the list will be sorted alphabetically.
+
+Example:
+```
+%character%
+artist1 tag1 character1 tag2
+
+%character:sort%
+artist1 character1 tag1 tag2
+```
+
+## Tag lists
 ### Include namespace (boolean)
 If enabled, the namespace of the tags will be included in the result. Better used with the `usafe` option to keep the `:`.
 
@@ -150,6 +222,18 @@ artist:artist1 tag1 character:character1 tag2
 
 %all:includenamespace,excludenamespace=general character,unsafe%
 artist:artist1 tag1 character1 tag2
+```
+
+### Ignore namespace (string list)
+The list of namespaces you don't want to see in the results.
+
+Example:
+```
+%all%
+artist1 tag1 character1 tag2
+
+%all:ignorenamespace:character%
+artist1 tag1 tag2
 ```
 
 ## Dates
