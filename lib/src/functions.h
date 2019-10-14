@@ -32,7 +32,7 @@ class QSettings;
 
 
 QDateTime qDateTimeFromString(const QString &str);
-QString savePath(const QString &file = "", bool exists = false, bool writable = false);
+QString savePath(const QString &file = "", bool exists = false, bool writable = true);
 bool copyRecursively(QString srcFilePath, QString tgtFilePath);
 int levenshtein(QString, QString);
 QString stripTags(QString);
