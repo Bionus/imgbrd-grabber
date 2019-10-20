@@ -1,5 +1,5 @@
 function completeImage(img: IImage): IImage {
-    if (!img.file_url && img.file_url.length < 5) {
+    if (!img.file_url || img.file_url.length < 5) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
