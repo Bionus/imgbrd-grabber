@@ -42,6 +42,8 @@ static QDateTime stringToDate(const QString &text)
 
 static int stringToInt(const QString &text)
 { return text.toInt(); }
+static int stringToFloat(const QString &text)
+{ return qRound(text.toFloat() * 1000); }
 
 // FIXME(Bionus): remove globals
 static QDateTime ageToDateImage;
@@ -164,7 +166,7 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	}
 
 	const QVariant &token = tokens[m_type].value();
-	if (token.type() == QVariant::Int || token.type() == QVariant::DateTime || token.type() == QVariant::ULongLong) {
+	if (token.type() == QVariant::Int || token.type() == QVariant::DateTime || token.type() == QVariant::ULongLong || m_type == "score") {
 		int input = 0;
 		if (token.type() == QVariant::Int) {
 			input = token.toInt();
@@ -175,6 +177,8 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 		bool cond;
 		if (token.type() == QVariant::DateTime) {
 			cond = rangeCheck(stringToDate, token.toDateTime(), m_val);
+		} else if (m_type == "score") {
+			cond = rangeCheck(stringToFloat, qRound(token.toFloat() * 1000), m_val);
 		} else {
 			cond = rangeCheck(stringToInt, input, m_val);
 		}
