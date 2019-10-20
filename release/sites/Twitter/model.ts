@@ -6,6 +6,33 @@ function getExtension(url: string): string {
     return "";
 }
 
+interface ISearch {
+    user: string;
+    retweets: boolean;
+    replies: boolean;
+}
+
+function parseSearch(search: string[]): ISearch {
+    let user = "";
+    let retweets = true;
+    let replies = true;
+    for (let tag of search) {
+        tag = tag.trim();
+        if (tag.substr(0, 9) === "retweets:") {
+            retweets = tag.substr(9) === "yes";
+        } else if (tag.substr(0, 8) === "replies:") {
+            replies = tag.substr(8) === "yes";
+        } else {
+            user = tag;
+        }
+    }
+    return {
+        user,
+        retweets,
+        replies,
+    };
+}
+
 function parseTweetMedia(sc: any, original: any, media: any): any {
     const d: IImage = {} as any;
     const sizes = media["sizes"];
@@ -93,6 +120,7 @@ function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
 
 export const source: ISource = {
     name: "Twitter",
+    modifiers: ["retweets:yes", "retweets:no", "replies:yes", "replies:no"],
     tokens: ["tweet_id", "original_tweet_id", "original_author", "original_author_id", "original_date"],
     auth: {
         oauth2: {
@@ -109,8 +137,15 @@ export const source: ISource = {
             search: {
                 url: (query: any, opts: any, previous: any): string | IError => {
                     try {
+                        const search = parseSearch(query.search.split(" "));
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
-                        return "/1.1/statuses/user_timeline.json?include_rts=true&exclude_replies=false&tweet_mode=extended&screen_name=" + encodeURIComponent(query.search) + pageUrl;
+                        const params = [
+                            "include_rts=" + (search.retweets ? "true" : "false"),
+                            "exclude_replies=" + (!search.replies ? "true" : "false"),
+                            "tweet_mode=extended",
+                            "screen_name=" + encodeURIComponent(search.user),
+                        ];
+                        return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
                     } catch (e) {
                         return { error: e.message };
                     }
