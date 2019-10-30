@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="it" sourcelanguage="en">
   <context>
     <name>AboutWindow</name>
     <message>
@@ -350,9 +350,7 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -697,9 +695,7 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="459"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
@@ -773,51 +769,37 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1207"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1208"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1209"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1210"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1211"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
       <source>%n error(s).</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -881,9 +863,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1338,9 +1318,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="929"/>
       <source>Source(s)</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="930"/>
@@ -1792,9 +1770,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1807,16 +1783,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="59"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="61"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="63"/>
@@ -3230,9 +3202,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="106"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
@@ -3386,9 +3356,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1199"/>
       <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -4174,9 +4142,7 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="104"/>
       <source>%n tag(s) loaded</source>
-      <translation type="unfinished">
-        <numerusform/>
-      </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
