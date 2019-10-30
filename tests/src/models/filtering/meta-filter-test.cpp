@@ -161,4 +161,17 @@ TEST_CASE("MetaFilter")
 		REQUIRE(MetaFilter("age", ">=1y", true).match(tokens) == QString());
 		REQUIRE(MetaFilter("age", "<1year", true).match(tokens) == QString("image's age match"));
 	}
+
+	SECTION("Match floats")
+	{
+		QMap<QString, Token> tokens;
+		tokens.insert("score", Token("3.0"));
+
+		REQUIRE(MetaFilter("score", "3").match(tokens) == QString());
+		REQUIRE(MetaFilter("score", ">=3").match(tokens) == QString());
+		REQUIRE(MetaFilter("score", "<=3").match(tokens) == QString());
+		REQUIRE(MetaFilter("score", ">2.5").match(tokens) == QString());
+		REQUIRE(MetaFilter("score", "<3.5").match(tokens) == QString());
+		REQUIRE(MetaFilter("score", ">3").match(tokens) == QString("image's score does not match"));
+	}
 }

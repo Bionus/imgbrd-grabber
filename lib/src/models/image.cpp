@@ -105,7 +105,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_status = details.contains("status") ? details["status"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
-	m_score = details.contains("score") ? details["score"].toInt() : 0;
+	m_score = details.contains("score") ? details["score"] : 0;
 	m_hasScore = details.contains("score");
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
 	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
@@ -190,7 +190,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 				if (tp == "user") {
 					m_author = tg.mid(colon + 1);
 				} else if (tp == "score") {
-					m_score = tg.midRef(colon + 1).toInt();
+					m_score = tg.mid(colon + 1);
 				} else if (tp == "size") {
 					QStringList size = tg.mid(colon + 1).split('x');
 					if (size.size() == 2) {
@@ -919,7 +919,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
 		QStrP(tr("Rating"), !m_rating.isEmpty() ? m_rating : unknown),
-		QStrP(tr("Score"), QString::number(m_score)),
+		QStrP(tr("Score"), m_score),
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),

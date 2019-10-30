@@ -4,10 +4,10 @@
 if type pacman > /dev/null 2>&1
 then
   sudo pacman -Sy
-  sudo pacman -S "qt" "gcc" "cmake" "libpulse"
+  sudo pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm"
 else
   sudo apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools"
-  sudo apt-get install -qq "g++" "cmake" "libssl-dev"
+  sudo apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs"
 fi
 
 # Build the project in the build directory
