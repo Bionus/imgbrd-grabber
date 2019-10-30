@@ -1,4 +1,5 @@
 #include "models/site.h"
+#include <QCryptographicHash>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
