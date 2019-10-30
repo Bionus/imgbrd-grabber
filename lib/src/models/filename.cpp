@@ -185,7 +185,14 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 					filter = filter.left(filter.length() - ext.length()) + "*";
 				}
 			}
-			QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+			QFileInfoList allFiles = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+
+			QFileInfoList files;
+			for (const auto &file : allFiles) {
+				if (!file.fileName().endsWith(".tmp")) {
+					files.append(file);
+				}
+			}
 
 			if (!files.isEmpty()) {
 				// Get last file
