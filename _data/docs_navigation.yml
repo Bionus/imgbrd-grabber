@@ -19,6 +19,11 @@
   children:
     - link: /docs/plugins/translation.html
     - link: /docs/plugins/theme.html
+- name: Tools
+  children:
+    - link: /docs/tools/blacklist-fixer.html
+    - link: /docs/tools/image-renamer.html
+    - link: /docs/tools/tag-loader.html
 - name: Advanced
   children:
     - link: /docs/compilation.html
