@@ -67,6 +67,8 @@ TEST_CASE("Image")
 	settings->setValue("Save/md5Duplicates", "save");
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
 	auto img = QPointer<Image>(new Image(site, details, profile));
 
 	SECTION("Constructor")

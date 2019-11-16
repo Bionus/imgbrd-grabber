@@ -32,6 +32,7 @@ TEST_CASE("DownloadQueryGroup")
 
 		Profile profile("tests/resources/");
 		Site *site = profile.getSites().value("danbooru.donmai.us");
+		REQUIRE(site != nullptr);
 
 		DownloadQueryGroup original(QStringList() << "tags", 1, 2, 3, QStringList() << "postFiltering", true, site, "filename", "path");
 		original.progressVal = 37;

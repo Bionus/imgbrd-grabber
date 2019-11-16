@@ -112,6 +112,8 @@ TEST_CASE("Filename")
 	settings->setValue("Save/replaceblanks", true);
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
 	Image *gallery = new Image(site, details, profile);
 	details.remove("name");
 	Image *img = new Image(site, details, profile);

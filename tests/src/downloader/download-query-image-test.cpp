@@ -9,11 +9,12 @@
 
 TEST_CASE("DownloadQueryImage")
 {
+	Profile profile("tests/resources/");
+	Site *site = profile.getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
 	SECTION("Compare")
 	{
-		Profile profile("tests/resources/");
-		Site *site = profile.getSites().value("danbooru.donmai.us");
-
 		auto img1 = QSharedPointer<Image>(new Image(site, {{ "id", "1" }}, &profile));
 		auto img2 = QSharedPointer<Image>(new Image(site, {{ "id", "2" }}, &profile));
 
@@ -30,9 +31,6 @@ TEST_CASE("DownloadQueryImage")
 
 	SECTION("Serialization")
 	{
-		Profile profile("tests/resources/");
-		Site *site = profile.getSites().value("danbooru.donmai.us");
-
 		QMap<QString, QString> details = {
 			{ "id", "1" },
 			{ "md5", "md5" },

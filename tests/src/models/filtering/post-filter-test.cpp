@@ -59,6 +59,8 @@ TEST_CASE("PostFilter")
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
 	Image *img = new Image(site, details, profile);
 
 	SECTION("Count")

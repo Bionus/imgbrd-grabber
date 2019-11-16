@@ -35,7 +35,6 @@ TEST_CASE("BatchDownloader")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-
 	QDir dir("tests/resources/tmp/");
 	for (const QString &file : dir.entryList(QDir::Files)) {
 		dir.remove(file);
