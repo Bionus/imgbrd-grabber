@@ -38,6 +38,7 @@ QList<Image*> getImages(const QString &source, const QString &site, const QStrin
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Source *srce = profile->getSources().value(source);
+	REQUIRE(srce != nullptr);
 
 	QList<Site*> sites;
 	Site *ste = new Site(site, srce);
@@ -107,6 +108,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Source *srce = profile->getSources().value(source);
+	REQUIRE(srce != nullptr);
 
 	QList<Site*> sites;
 	Site *ste = new Site(site, srce);
@@ -176,6 +178,7 @@ QList<Tag> getTags(const QString &source, const QString &site, const QString &fo
 
 	auto profile = QPointer<Profile>(makeProfile());
 	Source *srce = profile->getSources().value(source);
+	REQUIRE(srce != nullptr);
 
 	Site *ste = new Site(site, srce);
 	ste->setAutoLogin(false);

@@ -9,7 +9,7 @@ Profile *makeProfile()
 {
 	QFile::remove("tests/resources/settings.ini");
 
-	Profile *profile = new Profile("tests/resources");
+	auto *profile = new Profile("tests/resources");
 	profile->getSettings()->clear();
 
 	return profile;
