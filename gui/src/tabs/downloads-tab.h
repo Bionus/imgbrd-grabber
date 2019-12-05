@@ -26,6 +26,7 @@ struct ImageSaveResult;
 class PackLoader;
 class Page;
 class Profile;
+class QTimer;
 class MainWindow;
 
 class DownloadsTab : public QWidget
@@ -65,6 +66,8 @@ class DownloadsTab : public QWidget
 		// Downloads lists
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
+		void saveLinkListLater();
+		bool saveLinkListDefault();
 		bool saveLinkList(const QString &filename);
 		bool loadLinkList(const QString &filename);
 
@@ -125,6 +128,7 @@ class DownloadsTab : public QWidget
 		QList<Site*> m_getAllLogins;
 		int m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		QAtomicInt m_getAllCurrentlyProcessing;
+		QTimer *m_saveLinkList;
 };
 
 #endif // DOWNLOADS_TAB_H

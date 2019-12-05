@@ -60,6 +60,11 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &DownloadsTab::batchClearSelUniques);
 
 	connect(m_profile, &Profile::siteDeleted, this, &DownloadsTab::siteDeleted);
+
+	m_saveLinkList = new QTimer(this);
+	m_saveLinkList->setInterval(100);
+	m_saveLinkList->setSingleShot(true);
+	connect(m_saveLinkList, &QTimer::timeout, this, &DownloadsTab::saveLinkListDefault);
 }
 
 DownloadsTab::~DownloadsTab()
@@ -313,7 +318,7 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 				break;
 		}
 
-		saveLinkList(m_profile->getPath() + "/restore.igl");
+		saveLinkListLater();
 	}
 }
 
@@ -371,7 +376,7 @@ void DownloadsTab::batchAddGroup(const DownloadQueryGroup &values)
 	ui->tableBatchGroups->setCellWidget(row, 11, progressBar);
 
 	m_allow = true;
-	saveLinkList(m_profile->getPath() + "/restore.igl");
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::updateGroupCount()
@@ -407,7 +412,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 	addTableItem(ui->tableBatchUniques, row, 9, query.path);
 
 	if (save) {
-		saveLinkList(m_profile->getPath() + "/restore.igl");
+		saveLinkListLater();
 	}
 }
 
@@ -437,6 +442,14 @@ void DownloadsTab::on_buttonSaveLinkList_clicked()
 	} else {
 		QMessageBox::critical(this, tr("Save link list"), tr("Error opening file."));
 	}
+}
+void DownloadsTab::saveLinkListLater()
+{
+	m_saveLinkList->start();
+}
+bool DownloadsTab::saveLinkListDefault()
+{
+	return saveLinkList(m_profile->getPath() + "/restore.igl");
 }
 bool DownloadsTab::saveLinkList(const QString &filename)
 {
