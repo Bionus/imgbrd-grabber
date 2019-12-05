@@ -58,11 +58,13 @@ void BlacklistFix2::loadThumbnails()
 
 void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
 {
+	ui->tableWidget->setSelectionMode(QTableWidget::MultiSelection);
 	for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
 		if (!ui->tableWidget->item(i, 3)->text().isEmpty()) {
 			ui->tableWidget->selectRow(i);
 		}
 	}
+	ui->tableWidget->setSelectionMode(QTableWidget::ExtendedSelection);
 }
 void BlacklistFix2::on_buttonCancel_clicked()
 {
