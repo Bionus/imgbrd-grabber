@@ -19,8 +19,11 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 		QStringList found;
 		QString color = "blue";
 		if (m_details[i].contains("tags")) {
-			QMap<QString, Token> tokens;
-			tokens.insert("allos", Token(m_details[i]["tags"].split(' ')));
+			QMap<QString, Token> tokens
+			{
+				{ "allos", Token(m_details[i]["tags"].split(' ')) },
+				{ "md5", Token(m_details[i]["md5"]) }
+			};
 			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
