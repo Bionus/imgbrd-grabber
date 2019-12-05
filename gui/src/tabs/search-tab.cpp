@@ -1256,6 +1256,11 @@ void SearchTab::unselectImage(const QSharedPointer<Image> &img)
 
 void SearchTab::toggleImage(const QSharedPointer<Image> &img)
 {
+	// Sometimes happen with range selection when an image hasn't loaded yet
+	if (!m_boutons.contains(img.data())) {
+		return;
+	}
+
 	const bool selected = m_selectedImagesPtrs.contains(img);
 	m_boutons[img.data()]->setChecked(!selected);
 
