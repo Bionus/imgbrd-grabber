@@ -6,13 +6,13 @@ environment:
   DEPLOY: 0
   BREAKPAD: 0
   MYSQL_VERSION: mysql-5.7.14-win32
-  APNG_PLUGIN: apng-1.1.1-35.12.3
+  APNG_PLUGIN: apng-1.1.2-55.12.5
   QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
 
   matrix:
     # MSVC x86
     - PLATFORM: amd64_x86
-      QTDIR: C:\Qt\5.12.3\msvc2017
+      QTDIR: C:\Qt\5.12.5\msvc2017
       OPENSSLDIR: C:\OpenSSL-Win32
       MAKE: nmake
       MAKEFILES: NMake Makefiles
@@ -20,7 +20,7 @@ environment:
 
     # MSVC x64
     - PLATFORM: amd64
-      QTDIR: C:\Qt\5.12.3\msvc2017_64
+      QTDIR: C:\Qt\5.12.5\msvc2017_64
       OPENSSLDIR: C:\OpenSSL-Win64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
@@ -28,7 +28,7 @@ environment:
 
     # MinGW
     - PLATFORM: mingw
-      QTDIR: C:\Qt\5.12.3\mingw73_32
+      QTDIR: C:\Qt\5.12.5\mingw73_32
       OPENSSLDIR: C:\OpenSSL-Win32
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
@@ -36,7 +36,7 @@ environment:
 cache:
   - release\sites\node_modules -> release\sites\package.json
   - mysql-5.7.14-win32 -> .appveyor.yml
-  - apng-1.1.1-35.12.3 -> .appveyor.yml
+  - apng-1.1.2-55.12.5 -> .appveyor.yml
   - QScintilla_gpl-2.10.8 -> .appveyor.yml
   - depot_tools -> .appveyor.yml
   - breakpad -> .appveyor.yml
@@ -98,7 +98,7 @@ build_script:
   - cd ..
 
   # Download APNG plugin DLL
-  - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5123/qt.qt5.5123.skycoder42.apng.win32_msvc2017/1.1.1-35.12.3.7z -o "%APNG_PLUGIN%.7z"
+  - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5125/qt.qt5.5125.skycoder42.apng.win32_msvc2017/1.1.2-55.12.5.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
 
   # Download Mysql DLL
@@ -106,7 +106,7 @@ build_script:
   - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.3\msvc2017\plugins\imageformats\qapng.dll" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.5\msvc2017\plugins\imageformats\qapng.dll" releases/setup.iss
 
   # Package symbol files to zip
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
