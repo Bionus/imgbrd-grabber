@@ -19,9 +19,9 @@ jobs:
     - name: Set environment
       shell: cmd
       run: |
-        set GRABBER_VERSION=nightly
-        set GRABBER_IS_NIGHTLY=1
-        set PLATFORM_NAME=x64
+        echo ::set-env name=GRABBER_VERSION::nightly
+        echo ::set-env name=GRABBER_IS_NIGHTLY::1
+        echo ::set-env name=PLATFORM_NAME::x64
 
     - name: Vendor cache
       uses: actions/cache@v1
@@ -37,10 +37,9 @@ jobs:
         mkdir vendor_qt
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v1.0.0
+      uses: jurplel/install-qt-action@v2.1.0
       with:
-        version: 5.12.3
-        dir: vendor_qt\Qt
+        version: 5.12.5
 
     - name: Install QScintilla
       working-directory: vendor_qt
@@ -49,9 +48,7 @@ jobs:
         curl -Lo "%QSCINTILLA_VERSION%.zip" "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip"
         7z x "%QSCINTILLA_VERSION%.zip" -y
         cd "%QSCINTILLA_VERSION%\Qt4Qt5"
-        dir "%Qt5_Dir%\bin"
-        dir "%Qt5_Dir%"
-        call "%Qt5_Dir%\bin\qtenv2.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         qmake qscintilla.pro
         nmake
         nmake install
@@ -63,7 +60,8 @@ jobs:
       shell: cmd
       run: |
         curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_0_2t.exe
-        set OPENSSL_ROOT_DIR="%GITHUB_WORKSPACE%\vendor\OpenSSL"
+        set OPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\vendor\OpenSSL
+        echo ::set-env name=OPENSSL_ROOT_DIR::%OPENSSL_ROOT_DIR%
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
 
     - name: Download MySQL
@@ -73,16 +71,16 @@ jobs:
       run: |
         curl -Lo "%MYSQL_VERSION%.zip" "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
         7z x "%MYSQL_VERSION%.zip" -y
-        set MYSQL_INSTALL_DIR=%GITHUB_WORKSPACE%\vendor\%MYSQL_VERSION%
+        echo ::set-env name=MYSQL_INSTALL_DIR::%GITHUB_WORKSPACE%\vendor\%MYSQL_VERSION%
 
     - name: Download APNG plugin
       if: steps.vendor-cache.outputs.cache-hit != 'true'
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5123/qt.qt5.5123.skycoder42.apng.win64_msvc2017_64/1.1.1-35.12.3.7z
+        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5125/qt.qt5.5125.skycoder42.apng.win32_msvc2017/1.1.2-55.12.5.7z
         7z x APNG.7z -y -oAPNG
-        set APNG_PLUGIN_DLL=%GITHUB_WORKSPACE%\vendor\APNG\5.12.3\msvc2017\plugins\imageformats\qapng.dll
+        echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.5\msvc2017\plugins\imageformats\qapng.dll
 
     - name: Create build dir
       shell: cmd
@@ -110,3 +108,9 @@ jobs:
     - name: Generate installer
       shell: cmd
       run: iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_INSTALL_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" releases\setup.iss
+
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: windows-setup
+        path: releases/Grabber_${{ env.GRABBER_VERSION }}_${{ env.PLATFORM_NAME }}.exe
