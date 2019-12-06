@@ -345,3 +345,16 @@ As well as tags:
 You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.
 
 For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".
+
+# Similar tags
+Sometimes, you have similar tags in your image, which can be problematic for your filename. For example, if you have an image tagged as both "pokemon" and "pokemon_bw", you might get "crossover" when using `%copyright%`, or "pokemon pokemon_bw", which can become annoying for organization.
+
+In order to fix this, there are a few options.
+
+## The "use shortest if possible" setting
+This setting is specific for copyright tags, and can be found in the option window, in the "Save > Tags > Copyright" category, as a checkbox at the bottom of the window.
+
+This feature takes all tags marked as "copyright", and remove all those which are another copyright with a suffix appended. So in our example, "pokemon pokemon_bw" would be simplified as "pokemon", since "pokemon_bw" is "pokemon" + "\_bw"..
+
+## Ignored tags
+You can "ignore" tags by right-clicking on them then choosing "ignore". This causes the tag to not be treated as having any particular type, and therefore not appearing, in our example, in `%copyright%`. It will however still be in `%all%`.

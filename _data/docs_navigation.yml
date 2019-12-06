@@ -2,6 +2,7 @@
   children:
     - link: /docs/
     - link: /docs/filename.html
+    - link: /docs/search.html
     - link: /docs/favorites.html
     - link: /docs/website-login.html
 - name: Commands
