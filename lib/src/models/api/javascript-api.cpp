@@ -532,7 +532,7 @@ QJSValue JavascriptApi::getJsConst(const QString &fullKey, const QJSValue &def) 
 
 bool JavascriptApi::needAuth() const
 {
-	QStringList requiredAuths = jsToStringList(getJsConst("forcedLimit"));
+	QStringList requiredAuths = jsToStringList(getJsConst("auth"));
 	return !requiredAuths.isEmpty();
 }
 
