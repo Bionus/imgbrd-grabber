@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>471</height>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -973,14 +973,14 @@
         <item row="5" column="1">
          <widget class="QSpinBox" name="spinLimit">
           <property name="maximum">
-           <number>260</number>
+           <number>10000</number>
           </property>
          </widget>
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
           <property name="text">
-           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
+           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1026,8 +1026,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>68</width>
+             <height>16</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
