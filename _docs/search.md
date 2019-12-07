@@ -28,9 +28,9 @@ In this case, the best solution is to use a post-filter, which loads the results
 Post-filtering uses the most popular search syntax in boorus, which is:
 * Separate tags by spaces to make a "AND" (ex: `tag1 tag2`)
 * Prefix a tag or a filter by a caret (`-`) to negate it (ex: `-tag`)
-* `field:value` to filter by a token (ex: `rating:safe`)
+* `field:value` to filter by a token (ex: `rating:safe`), the list of tokens can be found on the [Filename]({{ site.baseurl }}{% link _docs/filename.md %}) page
 * `field:>value` to filter by a token value using a comparison (ex: `id:>1000`), you can use any of these operators: `>`, `>=`, `<`, `<=`
-* `field:from..to` to filter by a range (ex: `id:1000..2000`)
+* `field:from..to` to filter by a range (ex: `date:2019-09-02..2019-09-07`)
 
 
 # Blacklist
