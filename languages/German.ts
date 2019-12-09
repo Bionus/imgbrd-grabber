@@ -290,7 +290,7 @@
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="14"/>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>Blacklist fixer</source>
-      <translation type="unfinished"/>
+      <translation>Blacklist Fixer</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="14"/>
       <source>Blacklist fixer</source>
-      <translation type="unfinished"/>
+      <translation>Blacklist Fixer</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
@@ -736,12 +736,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="869"/>
       <source>Preparing images, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>Bilder werden vorbereitet, bitte warten...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="883"/>
       <source>Downloading images...</source>
-      <translation type="unfinished"/>
+      <translation>Bilder werden heruntergeladen...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1079"/>
