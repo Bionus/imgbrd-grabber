@@ -46,12 +46,12 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="155"/>
       <source>Restart</source>
-      <translation type="unfinished"/>
+      <translation>Mulai Ulang</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="162"/>
       <source>Quit</source>
-      <translation type="unfinished"/>
+      <translation>Keluar</translation>
     </message>
   </context>
 </TS>
