@@ -112,7 +112,7 @@ build_script:
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
 
 test_script:
-  - build\tests\tests.exe
+  - build\tests\tests.exe -s
 
 artifacts:
   - path: releases\Grabber_*.exe
