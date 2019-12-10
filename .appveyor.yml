@@ -13,7 +13,7 @@ environment:
     # MSVC x86
     - PLATFORM: amd64_x86
       QTDIR: C:\Qt\5.12.5\msvc2017
-      OPENSSLDIR: C:\OpenSSL-Win32
+      OPENSSLDIR: C:\OpenSSL-v111-Win32
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
@@ -21,7 +21,7 @@ environment:
     # MSVC x64
     - PLATFORM: amd64
       QTDIR: C:\Qt\5.12.5\msvc2017_64
-      OPENSSLDIR: C:\OpenSSL-Win64
+      OPENSSLDIR: C:\OpenSSL-v111-Win64
       MAKE: nmake
       MAKEFILES: NMake Makefiles
       DEPLOY: 1
@@ -29,7 +29,7 @@ environment:
     # MinGW
     - PLATFORM: mingw
       QTDIR: C:\Qt\5.12.5\mingw73_32
-      OPENSSLDIR: C:\OpenSSL-Win32
+      OPENSSLDIR: C:\OpenSSL-v111-Win32
       MAKE: mingw32-make
       MAKEFILES: MinGW Makefiles
 

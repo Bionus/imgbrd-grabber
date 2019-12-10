@@ -60,7 +60,7 @@ jobs:
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_0_2t.exe
+        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1d.exe
         set OPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\vendor\OpenSSL
         echo ::set-env name=OPENSSL_ROOT_DIR::%OPENSSL_ROOT_DIR%
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"

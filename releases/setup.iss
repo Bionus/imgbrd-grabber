@@ -11,7 +11,7 @@
 #define QtLib QtDir + "\..\lib"
 
 #ifndef OpenSSLDir
-# define OpenSSLDir "C:\bin\OpenSSL-Win32-1.0.2k"
+# define OpenSSLDir "C:\bin\OpenSSL-Win32-1.1.1d"
 #endif
 
 #ifndef MySQLDir
@@ -112,11 +112,11 @@ Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: 
 Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\release\words.txt";                 DestDir: "{app}";
-Source: "{#OpenSSLDir}\libeay32.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion
+Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
-Source: "{#OpenSSLDir}\libssl32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
@@ -130,7 +130,6 @@ Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#OpenSSLDir}\ssleay32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -240,6 +239,9 @@ Type: files; Name: "{app}\Updater.exe"
 Type: files; Name: "{app}\VERSION"
 Type: files; Name: "{app}\MD5"
 Type: files; Name: "{app}\libgcc_s_dw2-1.dll"
+Type: files; Name: "{app}\libeay32.dll"
+Type: files; Name: "{app}\libssl32.dll"
+Type: files; Name: "{app}\ssleay32.dll"
 Type: files; Name: "{app}\QtCore4.dll"
 Type: files; Name: "{app}\QtGui4.dll"
 Type: files; Name: "{app}\QtNetwork4.dll"
