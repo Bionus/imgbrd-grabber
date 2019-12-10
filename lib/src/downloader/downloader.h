@@ -68,7 +68,6 @@ class Downloader : public QObject
 		void finishedLoadingUrls(Page *page);
 		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
-		void clear();
 
 	private:
 		Profile *m_profile;
