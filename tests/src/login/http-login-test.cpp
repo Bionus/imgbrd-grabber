@@ -46,7 +46,7 @@ TEST_CASE("HttpLogin")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> profile(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 

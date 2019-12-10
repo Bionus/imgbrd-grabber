@@ -1,4 +1,5 @@
 #include <QDir>
+#include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>
 #include "catch.h"
@@ -31,7 +32,9 @@ TEST_CASE("BatchDownloader")
 	siteSettings.setValue("sources/source_1", "html");
 	siteSettings.sync();
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 

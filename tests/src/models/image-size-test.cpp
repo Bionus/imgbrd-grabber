@@ -18,16 +18,17 @@ TEST_CASE("ImageSize")
 		file2.write("test");
 		file2.close();
 
-		auto *is = new ImageSize();
+		{
+			ImageSize is;
 
-		REQUIRE(is->setTemporaryPath(file1.fileName()));
-		REQUIRE(!is->setTemporaryPath(file1.fileName()));
-		REQUIRE(is->fileSize == 4);
+			REQUIRE(is.setTemporaryPath(file1.fileName()));
+			REQUIRE(!is.setTemporaryPath(file1.fileName()));
+			REQUIRE(is.fileSize == 4);
 
-		REQUIRE(is->setTemporaryPath(file2.fileName()));
-		REQUIRE(!file1.exists());
+			REQUIRE(is.setTemporaryPath(file2.fileName()));
+			REQUIRE(!file1.exists());
+		}
 
-		delete is;
 		REQUIRE(!file2.exists());
 	}
 

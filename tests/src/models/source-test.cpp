@@ -1,5 +1,5 @@
 #include <QDir>
-#include <QPointer>
+#include <QScopedPointer>
 #include "models/profile.h"
 #include "models/source.h"
 #include "catch.h"
@@ -14,7 +14,8 @@ TEST_CASE("Source")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
 
 	SECTION("MissingJavascript")
 	{

@@ -1,5 +1,5 @@
 #include <QDir>
-#include <QPointer>
+#include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>
 #include "loader/token.h"
@@ -58,7 +58,9 @@ TEST_CASE("Image")
 	details["file_size"] = "358400";
 	details["file_size"] = "358400";
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	auto settings = profile->getSettings();
 	settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
@@ -69,7 +71,7 @@ TEST_CASE("Image")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-	auto img = QPointer<Image>(new Image(site, details, profile));
+	QScopedPointer<Image> img(new Image(site, details, profile));
 
 	SECTION("Constructor")
 	{
@@ -78,25 +80,25 @@ TEST_CASE("Image")
 		// Default
 		img = new Image();
 		REQUIRE(img->url() == QUrl());
-		img->deleteLater();
+		delete img;
 
 		// Without parent site
 		img = new Image(nullptr, details, profile);
 		REQUIRE(static_cast<int>(img->id()) == 0);
-		img->deleteLater();
+		delete img;
 
 		// With a given page URL
 		details["page_url"] = "https://test.com/view/7331";
 		img = new Image(site, details, profile);
 		REQUIRE(img->pageUrl().toString() == QString("https://test.com/view/7331"));
-		img->deleteLater();
+		delete img;
 
 		// CreatedAt from ISO time
 		details.remove("created_at");
 		details["date"] = "2016-08-26T16:26:30+01:00";
 		img = new Image(site, details, profile);
 		REQUIRE(img->createdAt().toString("yyyy-MM-dd HH:mm:ss") == QString("2016-08-26 16:26:30"));
-		img->deleteLater();
+		delete img;
 	}
 
 	SECTION("Copy")
@@ -121,8 +123,7 @@ TEST_CASE("Image")
 	/*SECTION("Md5FromFile")
 	{
 		details.remove("md5");
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		img->setSavePath("tests/resources/image_1x1.png");
 
 		REQUIRE(img->md5() == QString("956ddde86fb5ce85218b21e2f49e5c50"));
@@ -135,43 +136,37 @@ TEST_CASE("Image")
 
 		// Even with a tag, still use image size if possible
 		details["tags_general"] = "lowres";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 800 * 600);
 
 		// Default value if nothing is given
 		details.remove("width");
 		details.remove("height");
 		details["tags_general"] = "";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 1200 * 900);
 
 		details["tags_general"] = "incredibly_absurdres";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 10000 * 10000);
 
 		details["tags_general"] = "absurdres";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 3200 * 2400);
 
 		details["tags_general"] = "highres";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 1600 * 1200);
 
 		details["tags_general"] = "lowres";
-		img->deleteLater();
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 		REQUIRE(img->value() == 500 * 500);
 	}
 
 	SECTION("LoadDetails")
 	{
 		// Load details
-		QSignalSpy spy(img, SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
 		img->loadDetails();
 		REQUIRE(spy.wait());
 
@@ -193,7 +188,7 @@ TEST_CASE("Image")
 	}
 	SECTION("LoadDetailsAbort")
 	{
-		QSignalSpy spy(img, SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
 		img->loadDetails();
 		img->abortTags();
 		REQUIRE(!spy.wait(1000));
@@ -201,12 +196,11 @@ TEST_CASE("Image")
 
 	SECTION("LoadDetailsImageUrl")
 	{
-		img->deleteLater();
 		details.remove("file_url");
-		img = new Image(site, details, profile);
+		img.reset(new Image(site, details, profile));
 
 		// Load details
-		QSignalSpy spy(img, SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
 		img->loadDetails();
 		REQUIRE(spy.wait());
 

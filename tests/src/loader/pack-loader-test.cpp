@@ -30,7 +30,8 @@ QList<int> getResults(Profile *profile, Site *site, QString search, int perPage,
 
 TEST_CASE("PackLoader")
 {
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
 	
 	SECTION("GetQuery")
 	{

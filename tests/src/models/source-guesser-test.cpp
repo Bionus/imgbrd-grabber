@@ -1,4 +1,4 @@
-#include <QPointer>
+#include <QScopedPointer>
 #include "custom-network-access-manager.h"
 #include "models/profile.h"
 #include "models/source.h"
@@ -12,7 +12,7 @@ TEST_CASE("SourceGuesser")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> profile(makeProfile());
 
 	SECTION("NotFound")
 	{

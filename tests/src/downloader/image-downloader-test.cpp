@@ -12,7 +12,7 @@
 #include "source-helpers.h"
 
 
-Image *createImage(Profile *profile, Site *site, bool noMd5 = false)
+QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = false)
 {
 	QMap<QString, QString> details;
 	if (!noMd5) {
@@ -26,7 +26,7 @@ Image *createImage(Profile *profile, Site *site, bool noMd5 = false)
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
 
-	return new Image(site, details, profile);
+	return QSharedPointer<Image>(new Image(site, details, profile));
 }
 
 void assertDownload(Profile *profile, QSharedPointer<Image> img, ImageDownloader *downloader, const QList<ImageSaveResult> &expected, bool shouldExist, bool onlyCheckValues = false, bool sampleFallback = false)
@@ -73,7 +73,9 @@ TEST_CASE("ImageDownloader")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
@@ -84,7 +86,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("SuccessBasic")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -95,7 +97,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("SuccessLoadTags")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
 
 		QList<ImageSaveResult> expected;
@@ -106,7 +108,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("SuccessLoadTagsExternal")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, true, false);
 
 		// Delete already existing
@@ -139,7 +141,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("SuccessLoadSize")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "%copyright%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, true, false);
 
 		QList<ImageSaveResult> expected;
@@ -152,7 +154,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("OpenError")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "///", "///root/toto", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -163,7 +165,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("NotFound")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -176,7 +178,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("NetworkError")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -189,7 +191,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("OriginalMd5")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -200,7 +202,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("GeneratedMd5")
 	{
-		QSharedPointer<Image> img(createImage(profile, site, true));
+		auto img = createImage(profile, site, true);
 		ImageDownloader downloader(profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -211,7 +213,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("RotateExtension")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, true);
 
 		QList<ImageSaveResult> expected;
@@ -224,7 +226,7 @@ TEST_CASE("ImageDownloader")
 
 	SECTION("SampleFallback")
 	{
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 
 		QList<ImageSaveResult> expected;
@@ -239,7 +241,7 @@ TEST_CASE("ImageDownloader")
 	{
 		Blacklist blacklist(QStringList() << "tag1");
 
-		QSharedPointer<Image> img(createImage(profile, site));
+		auto img = createImage(profile, site);
 		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
 		downloader.setBlacklist(&blacklist);
 

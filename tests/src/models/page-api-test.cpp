@@ -1,4 +1,4 @@
-#include <QPointer>
+#include <QScopedPointer>
 #include <QSettings>
 #include "models/page.h"
 #include "models/page-api.h"
@@ -24,7 +24,9 @@ TEST_CASE("PageApi")
 	settings.setValue("auth/password", "a867ce3dbb1f52ccb763d4a1ff4bee5baaea37c1");
 	settings.sync();
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
 	REQUIRE(sites[0] != nullptr);
 

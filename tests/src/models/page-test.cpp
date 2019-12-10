@@ -1,4 +1,4 @@
-#include <QPointer>
+#include <QScopedPointer>
 #include <QSignalSpy>
 #include "models/page.h"
 #include "models/profile.h"
@@ -16,7 +16,9 @@ TEST_CASE("Page")
 	setupSource("Gelbooru (0.2)");
 	setupSite("Gelbooru (0.2)", "gelbooru.com");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	QList<Site*> sites { profile->getSites().value("danbooru.donmai.us") };
 	Site *site = profile->getSites().value("gelbooru.com");
 

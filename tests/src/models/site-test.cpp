@@ -1,5 +1,5 @@
 #include <QNetworkCookie>
-#include <QPointer>
+#include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>
 #include <QTimer>
@@ -17,7 +17,9 @@ TEST_CASE("Site")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
@@ -153,7 +155,6 @@ TEST_CASE("Site")
 		timer->setSingleShot(true);
 		QObject::connect(timer, &QTimer::timeout, [=]() {
 			site->login(true);
-			timer->deleteLater();
 		});
 		timer->start(0);
 		REQUIRE(spy.wait());
@@ -163,6 +164,8 @@ TEST_CASE("Site")
 		Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
 
 		REQUIRE(result == Site::LoginResult::Error);
+
+		delete timer;
 	}
 
 	SECTION("LoginPost")
@@ -184,7 +187,6 @@ TEST_CASE("Site")
 		timer->setSingleShot(true);
 		QObject::connect(timer, &QTimer::timeout, [=]() {
 			site->login(true);
-			timer->deleteLater();
 		});
 		timer->start(0);
 		REQUIRE(spy.wait());
@@ -194,5 +196,7 @@ TEST_CASE("Site")
 		Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
 
 		REQUIRE(result == Site::LoginResult::Error);
+
+		delete timer;
 	}
 }

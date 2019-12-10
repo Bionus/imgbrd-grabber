@@ -1,5 +1,5 @@
 #include <QDir>
-#include <QPointer>
+#include <QScopedPointer>
 #include <QSettings>
 #include <QStringList>
 #include "loader/token.h"
@@ -100,7 +100,9 @@ TEST_CASE("Filename")
 	details["rating"] = "safe";
 	details["name"] = "Test gallery name";
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	auto settings = profile->getSettings();
 	settings->setValue("ignoredtags", "");
 	settings->setValue("Save/separator", " ");
@@ -172,7 +174,7 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathSort")
 	{
-		img->deleteLater();
+		delete img;
 		details["tags_copyright"] = "copyright2 copyright1";
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		settings->setValue("Save/copyright_sort", "name");
@@ -196,21 +198,21 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathIgnoredTags")
 	{
-		img->deleteLater();
+		delete img;
 		settings->setValue("ignoredtags", "character1");
 		img = new Image(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",
 				"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		img->deleteLater();
+		delete img;
 		settings->setValue("ignoredtags", "character*");
 		img = new Image(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",
 				"artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		img->deleteLater();
+		delete img;
 		settings->setValue("Save/character_empty", "");
 		img = new Image(site, details, profile);
 		assertPath(profile, img,
@@ -307,7 +309,7 @@ TEST_CASE("Filename")
 	{
 		assertPath(profile, img, "<\"fate/stay_night\"/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		img->deleteLater();
+		delete img;
 		details["tags_copyright"] = "fate/stay_night";
 		img = new Image(site, details, profile);
 
@@ -506,7 +508,7 @@ TEST_CASE("Filename")
 
 	SECTION("PathOptionSort")
 	{
-		img->deleteLater();
+		delete img;
 		details["tags_copyright"] = "copyright2 copyright1";
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		img = new Image(site, details, profile);
@@ -517,7 +519,7 @@ TEST_CASE("Filename")
 
 	SECTION("PathSpecies")
 	{
-		img->deleteLater();
+		delete img;
 		details["tags_species"] = "test_species";
 		img = new Image(site, details, profile);
 
@@ -526,7 +528,7 @@ TEST_CASE("Filename")
 
 	SECTION("PathMeta")
 	{
-		img->deleteLater();
+		delete img;
 		details["tags_meta"] = "test_meta";
 		img = new Image(site, details, profile);
 
@@ -535,13 +537,13 @@ TEST_CASE("Filename")
 
 	SECTION("PathNoJpeg")
 	{
-		img->deleteLater();
+		delete img;
 		details["ext"] = "jpeg";
 		settings->setValue("Save/noJpeg", true);
 		img = new Image(site, details, profile);
 		assertPath(profile, img, "%ext%", "jpg");
 
-		img->deleteLater();
+		delete img;
 		details["ext"] = "jpeg";
 		settings->setValue("Save/noJpeg", false);
 		img = new Image(site, details, profile);
@@ -645,12 +647,12 @@ TEST_CASE("Filename")
 	{
 		details["tags_copyright"] = "test test_2";
 
-		img->deleteLater();
+		delete img;
 		settings->setValue("Save/copyright_useshorter", true);
 		img = new Image(site, details, profile);
 		assertPath(profile, img, "%copyright%", "test");
 
-		img->deleteLater();
+		delete img;
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		settings->setValue("Save/copyright_useshorter", false);
 		img = new Image(site, details, profile);
@@ -658,7 +660,7 @@ TEST_CASE("Filename")
 
 		details["tags_copyright"] = "test_2 test";
 
-		img->deleteLater();
+		delete img;
 		settings->setValue("Save/copyright_useshorter", true);
 		img = new Image(site, details, profile);
 		assertPath(profile, img, "%copyright%", "test");
@@ -775,7 +777,7 @@ TEST_CASE("Filename")
 
 	SECTION("FilenameWithMultipleUnderscores")
 	{
-		img->deleteLater();
+		delete img;
 
 		details["file_url"] = "http://test.com/img/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
 		details["sample_url"] = "http://test.com/sample/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
@@ -829,7 +831,7 @@ TEST_CASE("Filename")
 
 	SECTION("EscapeMethod")
 	{
-		img->deleteLater();
+		delete img;
 		details["md5"] = "good'ol' md5";
 		img = new Image(site, details, profile);
 

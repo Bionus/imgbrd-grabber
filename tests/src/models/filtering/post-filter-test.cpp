@@ -1,6 +1,6 @@
 #include <QDir>
 #include <QFile>
-#include <QPointer>
+#include <QScopedPointer>
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
 #include "models/image.h"
@@ -57,7 +57,9 @@ TEST_CASE("PostFilter")
 	details["file_size"] = "358400";
 	details["file_size"] = "358400";
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 

@@ -19,7 +19,7 @@ TEST_CASE("UrlLogin")
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> profile(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
@@ -96,5 +96,7 @@ TEST_CASE("UrlLogin")
 
 		REQUIRE(login.complementUrl("/") == QString("/?a=1&c=2"));
 		REQUIRE(login.complementUrl("/?ho=&test=1") == QString("/?ho=&test=1&a=1&c=2"));
+
+		qDeleteAll(fields);
 	}
 }

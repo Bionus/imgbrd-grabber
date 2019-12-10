@@ -36,7 +36,9 @@ QList<Image*> getImages(const QString &source, const QString &site, const QStrin
 
 	FileDeleter settingsDeleter(settings.fileName());
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
 
@@ -106,7 +108,9 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + site + "/" + file);
 	}
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
 
@@ -176,7 +180,9 @@ QList<Tag> getTags(const QString &source, const QString &site, const QString &fo
 		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + site + "/" + file);
 	}
 
-	auto profile = QPointer<Profile>(makeProfile());
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
+
 	Source *srce = profile->getSources().value(source);
 	REQUIRE(srce != nullptr);
 

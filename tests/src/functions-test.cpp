@@ -342,7 +342,7 @@ TEST_CASE("Functions")
 		settings->remove("LogFiles/0/uniquePath");
 		settings->remove("LogFiles/0/content");
 
-		profile->deleteLater();
+		delete profile;
 	}
 
 	SECTION("FixCloudflareEmail")
