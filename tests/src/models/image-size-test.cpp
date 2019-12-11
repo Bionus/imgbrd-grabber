@@ -113,6 +113,15 @@ TEST_CASE("ImageSize")
 		REQUIRE(is.pixmap().size() == QSize(20, 40));
 	}
 
+	SECTION("MD5 calculation")
+	{
+		ImageSize is;
+		REQUIRE(is.md5() == "");
+
+		is.setSavePath("tests/resources/image_1x1.png");
+		REQUIRE(is.md5() == "956ddde86fb5ce85218b21e2f49e5c50");
+	}
+
 	SECTION("Serialization")
 	{
 		ImageSize original;

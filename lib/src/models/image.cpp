@@ -941,22 +941,14 @@ QList<QStrP> Image::detailsData() const
 
 QString Image::md5() const
 {
-	const QString savePath = m_sizes[Image::Size::Full]->savePath();
-
-	// If we know the path to the image or its content but not its md5, we calculate it first
-	if (m_md5.isEmpty() && !savePath.isEmpty()) {
-		QCryptographicHash hash(QCryptographicHash::Md5);
-
-		// Calculate from image path
-		QFile f(savePath);
-		f.open(QFile::ReadOnly);
-		hash.addData(&f);
-		f.close();
-
-		m_md5 = hash.result().toHex();
+	if (m_md5.isEmpty()) {
+		return md5forced();
 	}
-
 	return m_md5;
+}
+QString Image::md5forced() const
+{
+	return m_sizes[Image::Size::Full]->md5();
 }
 
 bool Image::hasTag(QString tag) const
@@ -1073,6 +1065,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("website", Token(m_parentSite->url()));
 	tokens.insert("websitename", Token(m_parentSite->name()));
 	tokens.insert("md5", Token(md5()));
+	tokens.insert("md5_forced", Token([this]() { return this->md5forced(); }));
 	tokens.insert("date", Token(m_createdAt));
 	tokens.insert("id", Token(m_id));
 	tokens.insert("rating", Token(m_rating, "unknown"));

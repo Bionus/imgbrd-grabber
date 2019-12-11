@@ -96,6 +96,26 @@ void ImageSize::setPixmap(const QPixmap &pixmap)
 }
 
 
+QString ImageSize::md5() const
+{
+	if (m_md5.isEmpty()) {
+		const QString path = !m_savePath.isEmpty() ? m_savePath : m_temporaryPath;
+		if (!path.isEmpty()) {
+			QCryptographicHash hash(QCryptographicHash::Md5);
+
+			QFile f(path);
+			f.open(QFile::ReadOnly);
+			hash.addData(&f);
+			f.close();
+
+			m_md5 = hash.result().toHex();
+		}
+	}
+
+	return m_md5;
+}
+
+
 void ImageSize::read(const QJsonObject &json)
 {
 	if (json.contains("url")) {

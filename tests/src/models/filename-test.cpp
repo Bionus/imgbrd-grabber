@@ -380,6 +380,15 @@ TEST_CASE("Filename")
 		assertPath(profile, img, "<<Value>>%md5%<</Value>>", "<Value>1bc29b36f623ba82aaf6724fd3b16718</Value>", "", false);
 	}
 
+	SECTION("Forced MD5 calculation")
+	{
+		img->setSavePath("");
+		assertPath(profile, img, "%md5_forced%", QStringList());
+
+		img->setSavePath("tests/resources/image_1x1.png");
+		assertPath(profile, img, "%md5_forced%", "956ddde86fb5ce85218b21e2f49e5c50");
+	}
+
 	SECTION("PathOptionMax")
 	{
 		assertPath(profile, img, "%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
