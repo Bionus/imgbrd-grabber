@@ -130,7 +130,8 @@ void FavoritesTab::updateFavorites()
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	const int borderSize = m_settings->value("borders", 3).toInt();
-	const int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+	const int imageSize = qFloor(FAVORITES_THUMB_SIZE * upscale);
+	const int dim = imageSize + borderSize * 2;
 
 	for (Favorite &fav : m_favorites) {
 		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -153,7 +154,7 @@ void FavoritesTab::updateFavorites()
 
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
-				image->scale(img, upscale);
+				image->scale(img, QSize(imageSize, imageSize));
 				image->setFixedSize(dim, dim);
 				image->setFlat(true);
 				image->setToolTip(xt);

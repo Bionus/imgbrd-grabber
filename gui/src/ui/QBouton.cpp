@@ -8,15 +8,13 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, 
 	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(std::move(color)), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
 {}
 
-void QBouton::scale(const QPixmap &image, qreal scale)
+void QBouton::scale(const QPixmap &image, QSize bounds)
 {
-	QSize size;
-	if (scale - 1.0 > 0.001) {
-		size = image.size() * scale;
-		setIcon(image.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+	const QSize size = image.size().scaled(bounds, Qt::KeepAspectRatio);
+	if (size != image.size()) {
+		setIcon(image.scaled(bounds, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	} else {
 		setIcon(image);
-		size = image.size();
 	}
 	setIconSize(size);
 	resize(size);

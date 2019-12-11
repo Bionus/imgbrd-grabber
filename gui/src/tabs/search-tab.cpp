@@ -853,6 +853,7 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	const int borderSize = m_settings->value("borders", 3).toInt();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
+	const int imageSize = qFloor(FIXED_IMAGE_WIDTH * upscale);
 
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
@@ -860,9 +861,9 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	l->setInvertToggle(m_settings->value("invertToggle", false).toBool());
 	l->setToolTip(img->tooltip());
 	if (img->previewImage().isNull()) {
-		l->scale(QPixmap(":/images/noimage.png"), upscale);
+		l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
 	} else {
-		l->scale(img->previewImage(), upscale);
+		l->scale(img->previewImage(), QSize(imageSize, imageSize));
 	}
 	l->setFlat(true);
 
@@ -875,7 +876,7 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
 	if (fixedWidthLayout) {
-		const int dim = qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
+		const int dim = imageSize + borderSize * 2;
 		l->setFixedSize(dim, dim);
 	}
 
