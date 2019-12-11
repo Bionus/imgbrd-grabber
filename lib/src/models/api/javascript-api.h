@@ -17,23 +17,38 @@ class JavascriptApi : public Api
 	public:
 		explicit JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
-		// API
+		// Normal search
 		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const override;
 		bool parsePageErrors() const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const override;
+
+		// Gallery
 		PageUrl galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const override;
 		bool parseGalleryErrors() const override;
 		ParsedPage parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const override;
+
+		// Tag types
+		PageUrl tagTypesUrl(Site *site) const override;
+		bool parseTagTypesErrors() const override;
+		ParsedTagTypes parseTagTypes(const QString &source, int statusCode, Site *site) const override;
+
+		// Tags
 		PageUrl tagsUrl(int page, int limit, Site *site) const override;
 		bool parseTagsErrors() const override;
 		ParsedTags parseTags(const QString &source, int statusCode, Site *site) const override;
+
+		// Image details
 		PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const override;
 		bool parseDetailsErrors() const override;
 		ParsedDetails parseDetails(const QString &source, int statusCode, Site *site) const override;
+
+		// Check
 		PageUrl checkUrl() const override;
 		bool parseCheckErrors() const override;
 		ParsedCheck parseCheck(const QString &source, int statusCode) const override;
+
 		bool needAuth() const override;
+		bool canLoadTagTypes() const override;
 		bool canLoadTags() const override;
 		bool canLoadDetails() const override;
 		bool canLoadCheck() const override;

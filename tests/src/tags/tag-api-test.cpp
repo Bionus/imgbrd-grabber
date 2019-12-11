@@ -13,7 +13,7 @@
 TagApi::LoadResult load(TagApi *api)
 {
 	// Wait for downloader
-	QSignalSpy spy(api, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	QSignalSpy spy(api, SIGNAL(finishedLoading(TagApiBase*, TagApiBase::LoadResult)));
 	api->load(false);
 	if (!spy.wait()) {
 		return TagApi::LoadResult::Error;
@@ -108,7 +108,7 @@ TEST_CASE("TagApi")
 	{
 		TagApi tagApi(profile, site, api, 1, 100);
 
-		QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+		QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApiBase*, TagApiBase::LoadResult)));
 		tagApi.load(false);
 		tagApi.abort();
 		REQUIRE(!spy.wait(1000));

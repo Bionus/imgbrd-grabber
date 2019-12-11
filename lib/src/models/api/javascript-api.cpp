@@ -303,6 +303,74 @@ ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, 
 }
 
 
+bool JavascriptApi::canLoadTagTypes() const
+{
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tagTypes").property("url");
+	return !urlFunction.isUndefined();
+}
+
+PageUrl JavascriptApi::tagTypesUrl(Site *site) const
+{
+	PageUrl ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tagTypes").property("url");
+	if (urlFunction.isUndefined()) {
+		ret.error = "This API does not support tag type loading";
+		return ret;
+	}
+
+	const QJSValue result = urlFunction.call();
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+bool JavascriptApi::parseTagTypesErrors() const
+{
+	return getJsConst("tagTypes.parseErrors").toBool();
+}
+
+ParsedTagTypes JavascriptApi::parseTagTypes(const QString &source, int statusCode, Site *site) const
+{
+	ParsedTagTypes ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue parseFunction = api.property("tagTypes").property("parse");
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+
+	// Script errors and exceptions
+	if (results.isError()) {
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	if (results.hasProperty("error")) {
+		ret.error = results.property("error").toString();
+	}
+	if (results.hasProperty("types")) {
+		const auto &types = results.property("types");
+		const quint32 length = types.property("length").toUInt();
+		for (quint32 i = 0; i < length; ++i) {
+			const QJSValue tagType = types.property(i);
+			if (!tagType.isObject()) {
+				continue;
+			}
+			TagTypeWithId tt;
+			tt.id = tagType.property("id").toInt();
+			tt.name = tagType.property("name").toString();
+			ret.types.append(tt);
+		}
+	}
+
+	return ret;
+}
+
+
 bool JavascriptApi::canLoadTags() const
 {
 	// QMutexLocker locker(m_engineMutex);

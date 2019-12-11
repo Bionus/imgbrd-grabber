@@ -248,7 +248,7 @@ void Downloader::loadNext()
 		return;
 	}
 }
-void Downloader::finishedLoadingTags(TagApi *api, TagApi::LoadResult status)
+void Downloader::finishedLoadingTags(TagApiBase *a, TagApi::LoadResult status)
 {
 	if (m_cancelled) {
 		return;
@@ -259,6 +259,7 @@ void Downloader::finishedLoadingTags(TagApi *api, TagApi::LoadResult status)
 		return;
 	}
 
+	const auto api = dynamic_cast<TagApi*>(a);
 	const QList<Tag> tags = api->tags();
 	log(QStringLiteral("Received pure tags (%1)").arg(tags.count()));
 	api->deleteLater();

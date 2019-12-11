@@ -193,7 +193,7 @@ QList<Tag> getTags(const QString &source, const QString &site, const QString &fo
 	TagApi tagApi(profile, ste, ste->getApis().first(), 1, 100);
 
 	// Wait for tag api
-	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApiBase*, TagApiBase::LoadResult)));
 	tagApi.load(false);
 	if (!spy.wait()) {
 		return result;

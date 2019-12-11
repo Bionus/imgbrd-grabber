@@ -62,7 +62,7 @@ class Downloader : public QObject
 		void returnTagList(const QList<Tag> &tags);
 		void returnStringList(const QStringList &ret);
 		void finishedLoadingPageCount(Page *page);
-		void finishedLoadingTags(TagApi *api, TagApi::LoadResult status);
+		void finishedLoadingTags(TagApiBase *api, TagApi::LoadResult status);
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
