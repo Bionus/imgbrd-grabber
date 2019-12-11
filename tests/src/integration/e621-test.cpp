@@ -1,3 +1,4 @@
+#include <QSharedPointer>
 #include <QStringList>
 #include "models/image.h"
 #include "tags/tag.h"
@@ -9,13 +10,13 @@ TEST_CASE("E621")
 {
 	SECTION("SwfUrls")
 	{
-		QList<Image*> images = getImages("Danbooru", "e621.net", "regex", "swf rating:safe", "results.html");
+		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "regex", "swf rating:safe", "results.html");
 
 		// Convert results
 		QStringList md5s, urls;
 		md5s.reserve(images.count());
 		urls.reserve(images.count());
-		for (Image *img : images) {
+		for (const auto &img : images) {
 			md5s.append(img->md5());
 			urls.append(img->url().toString());
 		}
@@ -37,7 +38,7 @@ TEST_CASE("E621")
 
 	SECTION("XmlTypedTags")
 	{
-		QList<Image*> images = getImages("Danbooru", "e621.net", "xml", "rating:safe", "results-typed.xml");
+		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "xml", "rating:safe", "results-typed.xml");
 		REQUIRE(!images.isEmpty());
 
 		QList<Tag> tags = images.first()->tags();
@@ -51,7 +52,7 @@ TEST_CASE("E621")
 
 	SECTION("JsonTypedTags")
 	{
-		QList<Image*> images = getImages("Danbooru", "e621.net", "json", "rating:safe", "results-typed.json");
+		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "json", "rating:safe", "results-typed.json");
 		REQUIRE(!images.isEmpty());
 
 		QList<Tag> tags = images.first()->tags();

@@ -2,13 +2,14 @@
 #define INTEGRATION_HELPERS_H
 
 #include <QList>
+#include <QSharedPointer>
 #include <QString>
 
 
 class Image;
 class Tag;
 
-QList<Image*> getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file);
+QList<QSharedPointer<Image>> getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file);
 QList<Tag> getPageTags(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file);
 QList<Tag> getTags(const QString &source, const QString &site, const QString &format, const QString &file);
 

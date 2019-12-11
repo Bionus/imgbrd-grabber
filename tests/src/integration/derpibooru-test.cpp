@@ -1,3 +1,4 @@
+#include <QSharedPointer>
 #include <QStringList>
 #include "models/image.h"
 #include "tags/tag.h"
@@ -9,12 +10,12 @@ TEST_CASE("Derpibooru")
 {
 	SECTION("Html")
 	{
-		QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "regex", "safe", "results.html");
+		QList<QSharedPointer<Image>> images = getImages("Booru-on-rails", "derpibooru.org", "regex", "safe", "results.html");
 
 		// Convert results
 		QList<qulonglong> ids;
 		ids.reserve(images.count());
-		for (Image *img : images) {
+		for (const auto &img : images) {
 			ids.append(img->id());
 		}
 
@@ -27,12 +28,12 @@ TEST_CASE("Derpibooru")
 
 	SECTION("Json")
 	{
-		QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "json", "safe", "results.json");
+		QList<QSharedPointer<Image>> images = getImages("Booru-on-rails", "derpibooru.org", "json", "safe", "results.json");
 
 		// Convert results
 		QList<qulonglong> ids;
 		ids.reserve(images.count());
-		for (Image *img : images) {
+		for (const auto &img : images) {
 			ids.append(img->id());
 		}
 

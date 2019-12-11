@@ -1,3 +1,4 @@
+#include <QSharedPointer>
 #include <QStringList>
 #include "models/image.h"
 #include "tags/tag.h"
@@ -9,7 +10,7 @@ TEST_CASE("Sankaku")
 {
 	SECTION("Html")
 	{
-		QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "rating:safe", "results.html");
+		QList<QSharedPointer<Image>> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "rating:safe", "results.html");
 
 		// Check results
 		REQUIRE(images.count() == 20);
@@ -20,7 +21,7 @@ TEST_CASE("Sankaku")
 
 	SECTION("Json")
 	{
-		QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "json", "rating:safe", "results.json");
+		QList<QSharedPointer<Image>> images = getImages("Sankaku", "idol.sankakucomplex.com", "json", "rating:safe", "results.json");
 
 		// Check results
 		REQUIRE(images.count() == 20);
@@ -34,7 +35,7 @@ TEST_CASE("Sankaku")
 
 	SECTION("AnimatedUrls")
 	{
-		QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "animated rating:safe", "results-animated.html");
+		QList<QSharedPointer<Image>> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "animated rating:safe", "results-animated.html");
 
 		// Check results
 		REQUIRE(images.count() == 20);

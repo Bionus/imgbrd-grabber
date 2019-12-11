@@ -14,7 +14,7 @@
 #include "source-helpers.h"
 
 
-QList<Image*> getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
+QList<QSharedPointer<Image>> getImages(const QString &source, const QString &site, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(source);
 	setupSite(source, site);
@@ -47,8 +47,8 @@ QList<Image*> getImages(const QString &source, const QString &site, const QStrin
 	ste->setAutoLogin(false);
 	sites.append(ste);
 
-	QList<Image*> result;
-	auto downloader = QPointer<Downloader>(new Downloader(profile,
+	QList<QSharedPointer<Image>> result;
+	const QScopedPointer<Downloader> downloader(new Downloader(profile,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -67,7 +67,7 @@ QList<Image*> getImages(const QString &source, const QString &site, const QStrin
 	downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
+	QSignalSpy spy(downloader.data(), SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
 	downloader->getImages();
 	if (!spy.wait()) {
 		return result;
@@ -81,7 +81,7 @@ QList<Image*> getImages(const QString &source, const QString &site, const QStrin
 	result.reserve(variants.count());
 	for (const QVariant &variant : variants) {
 		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
-		result.append(img.data());
+		result.append(img);
 	}
 	return result;
 }
@@ -120,7 +120,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	sites.append(ste);
 
 	QList<Tag> result;
-	auto downloader = QPointer<Downloader>(new Downloader(profile,
+	const QScopedPointer<Downloader> downloader(new Downloader(profile,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -139,7 +139,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(downloader, SIGNAL(finishedTags(QList<Tag>)));
+	QSignalSpy spy(downloader.data(), SIGNAL(finishedTags(QList<Tag>)));
 	downloader->getPageTags();
 	if (!spy.wait()) {
 		return result;
