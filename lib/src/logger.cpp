@@ -61,7 +61,12 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, co
 		label += QStringLiteral("[%1(%2)::%3]").arg(context.file).arg(context.line).arg(context.function);
 	#endif
 
-	Logger::getInstance().log(QStringLiteral("%1 %2").arg(label, message), messageTypes[type]);
+	LogLevel level = messageTypes[type];
+	if (message == QStringLiteral("libpng warning: iCCP: known incorrect sRGB profile")) {
+		level = Logger::Debug;
+	}
+
+	Logger::getInstance().log(QStringLiteral("%1 %2").arg(label, message), level);
 }
 
 void Logger::noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
