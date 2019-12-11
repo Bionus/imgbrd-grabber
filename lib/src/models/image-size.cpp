@@ -1,4 +1,5 @@
 #include "image-size.h"
+#include <QCryptographicHash>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonObject>

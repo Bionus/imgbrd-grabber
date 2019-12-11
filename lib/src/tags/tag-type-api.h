@@ -1,6 +1,7 @@
 #ifndef TAG_TYPE_API_H
 #define TAG_TYPE_API_H
 
+#include "models/api/api.h"
 #include "tags/tag-api-base.h"
 #include <QObject>
 #include <QUrl>
@@ -9,7 +10,6 @@
 class Api;
 class Profile;
 class Site;
-class TagTypeWithId;
 
 class TagTypeApi : public TagApiBase
 {

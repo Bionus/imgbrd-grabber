@@ -1,6 +1,7 @@
 #ifndef TAG_LOADER_H
 #define TAG_LOADER_H
 
+#include "models/api/api.h"
 #include <QDialog>
 #include <QMap>
 
