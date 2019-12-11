@@ -9,8 +9,8 @@
 
 TEST_CASE("SourceGuesser")
 {
+	setupSource("Danbooru");
 	setupSource("Danbooru (2.0)");
-	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
 	const QScopedPointer<Profile> profile(makeProfile());
 
