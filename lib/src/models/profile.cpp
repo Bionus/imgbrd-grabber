@@ -321,6 +321,13 @@ void Profile::removeKeptForLater(const QString &tag)
 	emit keptForLaterChanged();
 }
 
+void Profile::setIgnored(const QStringList &tags)
+{
+	m_ignored = tags;
+
+	syncIgnored();
+	emit ignoredChanged();
+}
 void Profile::addIgnored(const QString &tag)
 {
 	m_ignored.removeAll(tag);

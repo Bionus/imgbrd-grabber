@@ -109,6 +109,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
+	// Ignored tags
+	ui->textIgnoredTags->setPlainText(profile->getIgnored().join('\n'));
+
 	// Monitoring
 	settings->beginGroup("Monitoring");
 		ui->spinMonitoringStartupDelay->setValue(settings->value("startupDelay", 0).toInt());
@@ -846,6 +849,9 @@ void OptionsWindow::save()
 	}
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
+
+	// Ignored tags
+	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', QString::SkipEmptyParts));
 
 	// Monitoring
 	settings->beginGroup("Monitoring");

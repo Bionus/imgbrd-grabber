@@ -131,6 +131,11 @@
       </item>
       <item>
        <property name="text">
+        <string>Ignored tags</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Monitoring</string>
        </property>
       </item>
@@ -2309,6 +2314,30 @@
          <widget class="QLabel" name="labelHideBlacklisted">
           <property name="text">
            <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageIgnoredTags">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QLabel" name="labelIgnoredTags">
+          <property name="text">
+           <string>Ignored tags</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textIgnoredTags"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelIgnoredTagsInfos">
+          <property name="text">
+           <string>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>

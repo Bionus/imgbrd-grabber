@@ -41,6 +41,7 @@ class Profile : public QObject
 		void removeKeptForLater(const QString &tag);
 
 		// Ignore management
+		void setIgnored(const QStringList &tags);
 		void addIgnored(const QString &tag);
 		void removeIgnored(const QString &tag);
 
