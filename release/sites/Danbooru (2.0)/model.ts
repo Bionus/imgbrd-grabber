@@ -312,6 +312,20 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tags";
+                },
+                parse: (src: string): IParsedTagTypes => {
+                    const contents = src.match(/<select[^>]* name="search\[category\]"[^>]*>([\s\S]+)<\/select>/)[1];
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
             tags: {
                 url: (query: any, opts: any): string => {
                     return "/tags?limit=" + opts.limit + "&page=" + query.page;

@@ -24,7 +24,8 @@ class TagLoader : public QDialog
 		~TagLoader() override;
 
 	protected:
-		QList<Api*> getCompatibleApis(Site *site) const;
+		QList<Api*> getApisToLoadTagTypes(Site *site) const;
+		QList<Api*> getApisToLoadTags(Site *site) const;
 
 	private slots:
 		void start();

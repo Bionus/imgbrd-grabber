@@ -175,9 +175,23 @@ export const source: any = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tag";
+                },
+                parse: (src: string): IParsedTagTypes => {
+                    const contents = src.match(/<select[^>]* name="type"[^>]*>([\s\S]+)<\/select>/)[1];
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
             tags: {
                 url: (query: any, opts: any): string => {
-                    return "/tag?page=" + query.page;
+                    return "/tag?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

@@ -5,6 +5,10 @@ interface ITag {
     type?: string;
     typeId?: number;
 }
+interface ITagType {
+    id: number;
+    name: string;
+}
 interface IImage {
     // Known "meaningful" tokens
     type?: "image" | "gallery";
@@ -80,6 +84,9 @@ interface IParsedSearch {
     imageCount?: number;
     urlNextPage?: string;
     urlPrevPage?: string;
+}
+interface IParsedTagTypes {
+    types: ITagType[];
 }
 interface IParsedTags {
     tags: ITag[] | string[];
@@ -181,6 +188,11 @@ interface IApi {
         url: (query: any, opts: any) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedGallery | IError;
     };
+    tagTypes?: {
+        parseErrors?: boolean;
+        url: () => IUrl | IError | string;
+        parse: (src: string, statusCode: number) => IParsedTagTypes | IError;
+    },
     tags?: {
         parseErrors?: boolean;
         url: (query: any, opts: any) => IUrl | IError | string;

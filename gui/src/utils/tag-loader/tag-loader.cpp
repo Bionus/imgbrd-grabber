@@ -8,6 +8,7 @@
 #include "tags/tag.h"
 #include "tags/tag-api.h"
 #include "tags/tag-database.h"
+#include "tags/tag-type-api.h"
 
 
 TagLoader::TagLoader(Profile *profile, QWidget *parent)
@@ -18,7 +19,10 @@ TagLoader::TagLoader(Profile *profile, QWidget *parent)
 	QStringList keys;
 	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
 		Site *site = it.value();
-		if (!getCompatibleApis(site).isEmpty()) {
+		bool hasApiForTags = !getApisToLoadTags(site).isEmpty();
+		bool hasApiForTagTypes = !getApisToLoadTagTypes(site).isEmpty();
+		bool needTagTypes = site->tagDatabase()->tagTypes().isEmpty();
+		if (hasApiForTags && (!needTagTypes || hasApiForTagTypes)) {
 			m_options.append(it.key());
 			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
 		}
@@ -35,7 +39,19 @@ TagLoader::~TagLoader()
 	delete ui;
 }
 
-QList<Api*> TagLoader::getCompatibleApis(Site *site) const
+QList<Api*> TagLoader::getApisToLoadTagTypes(Site *site) const
+{
+	QList<Api*> apis;
+	for (Api *a : site->getApis()) {
+		if (a->canLoadTagTypes()) {
+			apis.append(a);
+		}
+	}
+
+	return apis;
+}
+
+QList<Api*> TagLoader::getApisToLoadTags(Site *site) const
 {
 	QList<Api*> apis;
 	for (Api *a : site->getApis()) {
@@ -56,9 +72,33 @@ void TagLoader::cancel()
 
 void TagLoader::start()
 {
-	// Get site and API
 	Site *site = m_sites.value(m_options[ui->comboSource->currentIndex()]);
-	QList<Api*> apis = getCompatibleApis(site);
+
+	// Load tag types first if necessary
+	if (site->tagDatabase()->tagTypes().isEmpty()) 	{
+		ui->labelProgress->setText(tr("Loading tag types..."));
+
+		// Get tag type loading API
+		QList<Api*> apisTypes = getApisToLoadTagTypes(site);
+		Api *apiTypes = apisTypes.first();
+
+		// Load tag types
+		QEventLoop loop;
+		auto *tagTypeApi = new TagTypeApi(m_profile, site, apiTypes, this);
+		connect(tagTypeApi, &TagTypeApi::finishedLoading, &loop, &QEventLoop::quit);
+		tagTypeApi->load();
+		loop.exec();
+
+		auto tagTypes = tagTypeApi->tagTypes();
+		if (tagTypes.isEmpty()) {
+			error(this, tr("Error loading tag types."));
+			return;
+		}
+		site->tagDatabase()->setTagTypes(tagTypes);
+	}
+
+	// Get tag loading API
+	QList<Api*> apis = getApisToLoadTags(site);
 	Api *api = apis.first();
 	site->tagDatabase()->load();
 
