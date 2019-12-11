@@ -70,10 +70,8 @@ void QBouton::paintEvent(QPaintEvent *event)
 	const QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
 	if (w > h) {
 		icon().paint(&painter, x + p, y + p, w - 2 * p, w - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
-		h = h - ((h * 2 * p) / w) + 2 * p - 1;
 	} else {
 		icon().paint(&painter, x + p, y + p, h - 2 * p, h - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
-		w = w - ((w * 2 * p) / h) + 2 * p - 1;
 	}
 
 	// Clip borders overflows
@@ -108,7 +106,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	if (!m_counter.isEmpty()) {
 		const int right = qMax(x, 0) + qMin(w, size().width());
 		const int dim = 10 + 5 * m_counter.length();
-		const double pad = 2.5;
+		const double pad = 1.5;
 		const QRectF notificationRect(right - dim - pad, qMax(y, 0) + pad, dim, 20);
 		const int radius = qFloor(qMin(dim, 20) / 2.0);
 
