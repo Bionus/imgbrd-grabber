@@ -3,17 +3,20 @@
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTimer>
+#include "downloader/download-query-group.h"
 #include "downloader/download-queue.h"
 #include "downloader/image-downloader.h"
+#include "loader/pack-loader.h"
 #include "logger.h"
 #include "models/favorite.h"
 #include "models/image.h"
 #include "models/monitor.h"
-#include "models/page.h"
 #include "models/profile.h"
+#include "models/search-query/tag-search-query.h"
 #include "models/site.h"
 
 #define MONITOR_CHECK_LIMIT 20
+#define MONITOR_CHECK_TOTAL 1000
 
 
 MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent)
@@ -35,25 +38,33 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 
 	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(favorite.getName(), site->name()), Logger::Info);
 
-	// Load the last page to check for new images
-	QEventLoop loop;
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), favorite.getName().split(' '), 1, MONITOR_CHECK_LIMIT, favorite.getPostFiltering(), false, this);
-	connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
-	page->load();
-	loop.exec();
+	// Create a pack loader
+	QStringList tags = favorite.getName().split(' ', QString::SkipEmptyParts);
+	DownloadQueryGroup query(m_profile->getSettings(), tags, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, favorite.getPostFiltering(), site);
+	PackLoader loader(m_profile, query, MONITOR_CHECK_LIMIT, this);
+	loader.start();
 
-	// Count new images
-    QList<QSharedPointer<Image>> newImagesList;
-	int count = page->images().count();
-	for (const QSharedPointer<Image> &img : page->images()) {
-		if (img->createdAt() > monitor.lastCheck()) {
-			QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
-			if (detected.isEmpty()) {
-				newImagesList.append(img);
+	// Load all images
+	bool firstRun = true;
+	int count = 0;
+	int newImages = 0;
+	QList<QSharedPointer<Image>> newImagesList;
+	while ((firstRun || monitor.download()) && loader.hasNext() && newImages == count) {
+		// Load the next page
+		QList<QSharedPointer<Image>> allImages = loader.next();
+		count += allImages.count();
+
+		// Filter out old images
+		for (const QSharedPointer<Image> &img : allImages) {
+			if (img->createdAt() > monitor.lastCheck()) {
+				QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
+				if (detected.isEmpty()) {
+					newImagesList.append(img);
+					newImages++;
+				}
 			}
 		}
 	}
-    int newImages = newImagesList.count();
 
 	// Send notification
 	if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
