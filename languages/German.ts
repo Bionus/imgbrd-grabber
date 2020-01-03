@@ -201,17 +201,17 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="150"/>
       <source>Open CD tray</source>
-      <translation>Öffne CD-Schublade</translation>
+      <translation>CD-Tray öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="155"/>
       <source>Open destination folder</source>
-      <translation>Öffne Ziel-Ordner</translation>
+      <translation>Ziel-Ordner öffnen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="160"/>
       <source>Play a sound</source>
-      <translation>Spiele einen Sound</translation>
+      <translation>Sound abspielen</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="165"/>
