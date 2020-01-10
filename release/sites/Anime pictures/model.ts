@@ -7,8 +7,6 @@ function completeImage(img: IImage): IImage {
         img.ext = img.ext.substring(1);
     }
 
-    img.file_url = `/pictures/download_image/${img.id}.${img.ext || "jpg"}`;
-
     if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
         img.sample_url = img.preview_url
             .replace("_cp.", "_bp.")
@@ -17,6 +15,7 @@ function completeImage(img: IImage): IImage {
 
     img.sample_url = noWebp(img.sample_url || "");
     img.preview_url = noWebp(img.preview_url || "");
+    img.file_url = img.sample_url.replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
 
     return img;
 }
