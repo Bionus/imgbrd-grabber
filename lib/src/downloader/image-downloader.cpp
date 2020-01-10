@@ -295,7 +295,7 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 		} else if (shouldFallback && !m_tryingSample) {
 			m_url = m_image->url(Image::Size::Sample);
 			m_tryingSample = true;
-			log(QStringLiteral("Image not found. New try with its sample (%1)...").arg(m_url.toString()));
+			log(QStringLiteral("Image not found. New try with its sample (%1)...").arg(m_url.toString()), Logger::Warning);
 			m_image->setUrl(m_url);
 			loadImage();
 		} else {
