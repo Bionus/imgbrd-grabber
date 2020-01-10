@@ -23,7 +23,7 @@ DownloadQueryImage::DownloadQueryImage(QSharedPointer<Image> img, Site *site, co
 void DownloadQueryImage::write(QJsonObject &json) const
 {
 	json["site"] = site->url();
-	json["filename"] = QString(filename).replace("\n", "\\n");
+	json["filename"] = QString(filename).replace("\\n", "\\\\n").replace("\n", "\\n");
 	json["path"] = path;
 
 	QJsonObject jsonImage;
@@ -49,7 +49,8 @@ bool DownloadQueryImage::read(const QJsonObject &json, Profile *profile)
 	}
 
 	site = sites[siteName];
-	filename = json["filename"].toString().replace("\\n", "\n");
+	static QRegularExpression nlExpr("(?<=^|[^\\\\])\\\\n");
+	filename = json["filename"].toString().replace(nlExpr, "\n").replace("\\\\n", "\\n");
 	path = json["path"].toString();
 
 	return true;
