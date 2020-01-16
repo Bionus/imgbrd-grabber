@@ -94,10 +94,11 @@ add_subdirectory(CrashReporter)
 
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
-install(DIRECTORY release/ DESTINATION share/Grabber/
+install(DIRECTORY release DESTINATION share/Grabber
 		PATTERN "*.desktop" EXCLUDE
-		PATTERN "*.exe" EXCLUDE)
-install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
+		PATTERN "*.exe" EXCLUDE
+        PATTERN "node_modules" EXCLUDE)
+install(FILES "release/Grabber.desktop" DESTINATION share/applications)
 
 add_subdirectory(release/sites)
 add_dependencies(gui sites)
