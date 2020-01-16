@@ -26,7 +26,7 @@ TEST_CASE("FileDownloader")
 	const QString successMd5 = "005ffe0a3ffcb67fb2da4671d28fd363";
 	NetworkManager accessManager;
 
-	SECTION("SuccessSingle")
+	SECTION("Success")
 	{
 		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
 
@@ -40,24 +40,6 @@ TEST_CASE("FileDownloader")
 
 		REQUIRE(fileMd5(dest) == successMd5);
 		QFile::remove(dest);
-	}
-
-	SECTION("SuccessMultiple")
-	{
-		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/icon.png");
-
-		NetworkReply *reply = accessManager.get(QNetworkRequest(QUrl(successUrl)));
-		QStringList dest = QStringList() << "multiple-1.png" << "multiple-2.png" << "multiple-3.png";
-
-		FileDownloader downloader(false);
-		QSignalSpy spy(&downloader, SIGNAL(success()));
-		REQUIRE(downloader.start(reply, dest));
-		REQUIRE(spy.wait());
-
-		for (const QString &path : dest) {
-			REQUIRE(fileMd5(path) == successMd5);
-			QFile::remove(path);
-		}
 	}
 
 	SECTION("NetworkError")

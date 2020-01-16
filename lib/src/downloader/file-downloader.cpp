@@ -12,12 +12,7 @@ FileDownloader::FileDownloader(bool allowHtmlResponses, QObject *parent)
 
 bool FileDownloader::start(NetworkReply *reply, const QString &path)
 {
-	return start(reply, QStringList(path));
-}
-bool FileDownloader::start(NetworkReply *reply, const QStringList &paths)
-{
-	m_copies = paths;
-	m_file.setFileName(m_copies.takeFirst());
+	m_file.setFileName(path);
 	const bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
 	m_writeError = false;
@@ -63,10 +58,6 @@ void FileDownloader::replyFinished()
 			emit networkError(m_reply->error(), m_reply->errorString());
 		}
 		return;
-	}
-
-	for (const QString &copy : qAsConst(m_copies)) {
-		m_file.copy(copy);
 	}
 
 	emit success();
