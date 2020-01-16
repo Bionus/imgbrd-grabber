@@ -324,16 +324,39 @@ void ImageDownloader::success()
 
 QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
-	const QString multipleFiles = m_profile->getSettings()->value("Save/multiple_files", "copy").toString();
+	QSettings *settings = m_profile->getSettings();
+
+	const QString multipleFiles = settings->value("Save/multiple_files", "copy").toString();
 	const Image::Size size = currentSize();
 
 	m_image->setSavePath(m_temporaryPath, size);
 
+	// Load size if necessary
 	if (m_image->size(size).isEmpty()) {
 		QImageReader reader(m_temporaryPath);
 		QSize imgSize = reader.size();
 		if (imgSize.isValid()) {
 			m_image->setSize(imgSize, size);
+		}
+	}
+
+	// Resize image if necessary
+	bool maxWidthEnabled = settings->value("ImageSize/maxWidthEnabled", false).toBool();
+	bool maxHeightEnabled = settings->value("ImageSize/maxHeightEnabled", false).toBool();
+	QSize resizeBox = m_image->size(size);
+	if (!resizeBox.isEmpty() && (maxWidthEnabled || maxHeightEnabled)) {
+		int maxWidth = settings->value("ImageSize/maxWidth", 1000).toInt();
+		if (maxWidthEnabled && resizeBox.width() > maxWidth) {
+			resizeBox.setWidth(maxWidth);
+		}
+		int maxHeight = settings->value("ImageSize/maxHeight", 1000).toInt();
+		if (maxHeightEnabled && resizeBox.height() > maxHeight) {
+			resizeBox.setWidth(maxHeight);
+		}
+		if (resizeBox != m_image->size(size)) {
+			QImage img(m_temporaryPath);
+			img = img.scaled(resizeBox, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			img.save(m_temporaryPath, m_image->extension().toStdString().c_str());
 		}
 	}
 

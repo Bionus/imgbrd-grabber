@@ -93,6 +93,11 @@
          <string>Tags</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Image size</string>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
@@ -1031,8 +1036,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>68</width>
-             <height>16</height>
+             <width>363</width>
+             <height>387</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1122,6 +1127,82 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageTags"/>
+      <widget class="QWidget" name="pageImageSize">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Resize</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_5">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="checkResizeMaxWidth">
+             <property name="text">
+              <string>Max width</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinResizeMaxWidth">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="checkResizeMaxHeight">
+             <property name="text">
+              <string>Max height</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinResizeMaxHeight">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelResizeHelp">
+             <property name="text">
+              <string>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageInterface">
        <layout class="QFormLayout" name="formLayout_7">
         <property name="fieldGrowthPolicy">

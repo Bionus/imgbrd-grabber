@@ -29,7 +29,7 @@ QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = fal
 	return QSharedPointer<Image>(new Image(site, details, profile));
 }
 
-void assertDownload(Profile *profile, QSharedPointer<Image> img, ImageDownloader *downloader, const QList<ImageSaveResult> &expected, bool shouldExist, bool onlyCheckValues = false, bool sampleFallback = false)
+void assertDownload(Profile *profile, QSharedPointer<Image> img, ImageDownloader *downloader, const QList<ImageSaveResult> &expected, bool shouldExist, bool onlyCheckValues = false, bool sampleFallback = false, bool remove = true)
 {
 	const bool oldSampleFallback = profile->getSettings()->value("Save/samplefallback", true).toBool();
 	profile->getSettings()->setValue("Save/samplefallback", sampleFallback);
@@ -59,7 +59,7 @@ void assertDownload(Profile *profile, QSharedPointer<Image> img, ImageDownloader
 		QFile f(res.path);
 		bool exists = f.exists();
 		REQUIRE(exists == shouldExist);
-		if (exists) {
+		if (exists && remove) {
 			f.remove();
 		}
 	}
@@ -251,5 +251,51 @@ TEST_CASE("ImageDownloader")
 		assertDownload(profile, img, &downloader, expected, false);
 
 		profile->removeBlacklistedTag("tag1");
+	}
+
+	SECTION("Resize too big image")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("ImageSize/maxWidthEnabled", true);
+		settings->setValue("ImageSize/maxWidth", 50);
+
+		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/colors/original.jpg"); // 256x256
+		QString path = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
+
+		auto img = createImage(profile, site);
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ path, Image::Size::Full, Image::SaveResult::Saved });
+
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+		REQUIRE(QImage(path).size() == QSize(50, 50));
+		QFile::remove(path);
+
+		settings->remove("ImageSize/maxWidthEnabled");
+		settings->remove("ImageSize/maxWidth");
+	}
+
+	SECTION("Resize already small image")
+	{
+		QSettings *settings = profile->getSettings();
+		settings->setValue("ImageSize/maxWidthEnabled", true);
+		settings->setValue("ImageSize/maxWidth", 500);
+
+		CustomNetworkAccessManager::NextFiles.enqueue("gui/resources/images/colors/original.jpg"); // 256x256
+		QString path = QDir::toNativeSeparators("tests/resources/tmp/out.jpg");
+
+		auto img = createImage(profile, site);
+		ImageDownloader downloader(profile, img, "out.jpg", "tests/resources/tmp", 1, false, false, nullptr, false, false);
+
+		QList<ImageSaveResult> expected;
+		expected.append({ path, Image::Size::Full, Image::SaveResult::Saved });
+
+		assertDownload(profile, img, &downloader, expected, true, false, false, false);
+		REQUIRE(QImage(path).size() == QSize(256, 256));
+		QFile::remove(path);
+
+		settings->remove("ImageSize/maxWidthEnabled");
+		settings->remove("ImageSize/maxWidth");
 	}
 }

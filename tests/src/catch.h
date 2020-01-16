@@ -1,4 +1,5 @@
 #include <QLatin1String>
+#include <QSize>
 #include <QString>
 #include <QUrl>
 #include <string>
@@ -40,6 +41,15 @@ namespace Catch
 		static std::string convert(QUrl const &value)
 		{
 			return value.toDisplayString().toStdString();
+		}
+	};
+
+	template<>
+	struct StringMaker<QSize>
+	{
+		static std::string convert(QSize const &value)
+		{
+			return QString("(%1 x %2)").arg(value.width()).arg(value.height()).toStdString();
 		}
 	};
 }

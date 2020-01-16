@@ -128,6 +128,14 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 
+	// Resize
+	settings->beginGroup("ImageSize");
+		ui->spinResizeMaxWidth->setValue(settings->value("maxWidth", 1000).toInt());
+		ui->checkResizeMaxWidth->setChecked(settings->value("maxWidthEnabled", false).toBool());
+		ui->spinResizeMaxHeight->setValue(settings->value("maxHeight", 1000).toInt());
+		ui->checkResizeMaxHeight->setChecked(settings->value("maxHeightEnabled", false).toBool());
+	settings->endGroup();
+
 	// External log files
 	showLogFiles(settings);
 
@@ -932,6 +940,14 @@ void OptionsWindow::save()
 				settings->setValue(m_customNames[j]->text(), m_customTags[j]->text());
 			}
 		settings->endGroup();
+	settings->endGroup();
+
+	// Resize
+	settings->beginGroup("ImageSize");
+		settings->setValue("maxWidth", ui->spinResizeMaxWidth->value());
+		settings->setValue("maxWidthEnabled", ui->checkResizeMaxWidth->isChecked());
+		settings->setValue("maxHeight", ui->spinResizeMaxHeight->value());
+		settings->setValue("maxHeightEnabled", ui->checkResizeMaxHeight->isChecked());
 	settings->endGroup();
 
 	// Web services
