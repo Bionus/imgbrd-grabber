@@ -285,6 +285,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
 	fillUrlObject(result, site, ret);
