@@ -45,33 +45,23 @@ export const source: ISource = {
     apis: {
         json: {
             name: "JSON",
-            auth: ["oauth2"],
+            auth: [],
             maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions): string => {
-                    const search = parseSearch(query.search);
-                    if (search.mode !== "title_and_caption") {
-                        const illustParams: string[] = [
-                            "word=" + encodeURIComponent(search.tags.join(" ")),
-                            "offset=" + ((query.page - 1) * 30),
-                            "search_target=" + search.mode,
-                            "sort=date_desc", // date_desc, date_asc
-                            "filter=for_ios",
-                            "image_sizes=small,medium,large",
-                        ];
-                        return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    if (!opts.loggedIn) {
+                        return { error: "You need to be logged in to use the Pixiv source." };
                     }
-                    const params: string[] = [
-                        "q=" + search.tags.join(" "),
-                        "page=" + query.page,
-                        "per_page=" + opts.limit,
-                        "period=all",
-                        "order=desc",
-                        "mode=caption",
-                        "sort=date",
+                    const search = parseSearch(query.search);
+                    const illustParams: string[] = [
+                        "word=" + encodeURIComponent(search.tags.join(" ")),
+                        "offset=" + ((query.page - 1) * 30),
+                        "search_target=" + search.mode,
+                        "sort=date_desc", // date_desc, date_asc
+                        "filter=for_ios",
                         "image_sizes=small,medium,large",
                     ];
-                    return "https://public-api.secure.pixiv.net/v1/search/works.json?" + params.join("&");
+                    return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
