@@ -168,6 +168,33 @@ interface ISearchFormatType {
     prefix?: string;
 }
 
+interface ISearchQuery {
+    search: string;
+    page: number;
+}
+interface IGalleryQuery {
+    id: string;
+    md5: string;
+    page: number;
+}
+interface ITagsQuery {
+    page: number;
+}
+
+interface IUrlOptions {
+    limit: number;
+    baseUrl: string;
+    loggedIn: boolean;
+}
+
+interface IPreviousSearch {
+    page: number;
+    minIdM1: string;
+    minId: string;
+    maxId: string;
+    maxIdP1: string;
+}
+
 interface IApi {
     name: string;
     auth: string[];
@@ -175,7 +202,7 @@ interface IApi {
     forcedLimit?: number;
     search: {
         parseErrors?: boolean;
-        url: (query: any, opts: any, previous: any) => IUrl | IError | string;
+        url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
     details?: {
@@ -185,7 +212,7 @@ interface IApi {
     };
     gallery?: {
         parseErrors?: boolean;
-        url: (query: any, opts: any) => IUrl | IError | string;
+        url: (query: IGalleryQuery, opts: IUrlOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedGallery | IError;
     };
     tagTypes?: {
@@ -195,7 +222,7 @@ interface IApi {
     },
     tags?: {
         parseErrors?: boolean;
-        url: (query: any, opts: any) => IUrl | IError | string;
+        url: (query: ITagsQuery, opts: IUrlOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedTags | IError;
     };
     check?: {

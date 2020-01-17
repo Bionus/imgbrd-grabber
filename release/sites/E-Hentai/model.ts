@@ -87,7 +87,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     const s = parseSearch(query.search);
                     return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
@@ -131,7 +131,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "/g/" + query.md5 + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {

@@ -62,7 +62,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
@@ -88,7 +88,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 20,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
                         return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(query.search);

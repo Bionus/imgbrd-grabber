@@ -55,7 +55,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -71,7 +71,7 @@ export const source: any = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     return "/tag.json?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -98,7 +98,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -119,7 +119,7 @@ export const source: any = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     return "/tag.xml?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -147,7 +147,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -190,7 +190,7 @@ export const source: any = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tag?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {

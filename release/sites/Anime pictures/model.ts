@@ -110,7 +110,7 @@ export const source: ISource = {
             name: "JSON",
             auth: [],
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string => {
                     const page = query.page - 1;
                     return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
                 },
@@ -174,7 +174,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 80,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     const page = query.page - 1;
                     return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&lang=en";
                 },
@@ -199,7 +199,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     const page = query.page - 1;
                     return "/pictures/view_all_tags/" + page + "?lang=en";
                 },

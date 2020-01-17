@@ -135,7 +135,7 @@ export const source: ISource = {
             auth: ["oauth2"],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const search = parseSearch(query.search.split(" "));
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
@@ -165,7 +165,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery, opts: IUrlOptions): string => {
                     return "/1.1/statuses/show.json?id=" + query.id;
                 },
                 parse: (src: string): IParsedGallery => {

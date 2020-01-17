@@ -38,7 +38,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
                         return "/api/galleries/search?page=" + query.page + "&sort=date&query=" + encodeURIComponent(query.search);
                     }
@@ -71,7 +71,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "/api/gallery/" + query.id;
                 },
                 parse: (src: string): IParsedGallery => {
@@ -105,7 +105,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
                         return "/search/?page=" + query.page + "&q=" + encodeURIComponent(query.search);
                     }
@@ -122,7 +122,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "/g/" + query.id + "/";
                 },
                 parse: (src: string): IParsedGallery => {

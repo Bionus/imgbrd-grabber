@@ -25,7 +25,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 20,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     const page: number = (query.page - 1) * 20;
                     const search = query.search && query.search.length > 0 ? encodeURIComponent(query.search) : "all";
                     return "/index.php?page=post&s=list&tags=" + search + "&pid=" + page;

@@ -17,7 +17,7 @@ export const source: ISource = {
             forcedLimit: 24,
             search: {
                 parseErrors: true,
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery): string | IError => {
                     return "/search/?q=" + encodeURIComponent(query.search) + "&order-by=date&page=" + query.page + "&perpage=24";
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {

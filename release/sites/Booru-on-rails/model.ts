@@ -82,7 +82,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 15,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     if (!query.search || query.search.length === 0) {
                         return "/images.json?page=" + query.page + "&nocomments=1&nofav=1";
                     }
@@ -123,7 +123,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -150,7 +150,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 15,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     if (!query.search || query.search.length === 0) {
                         return "/images/page/" + query.page;
                     }
@@ -175,7 +175,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     return "/tags?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {

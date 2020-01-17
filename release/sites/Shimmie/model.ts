@@ -57,7 +57,7 @@ export const source: ISource = {
             name: "RSS",
             auth: [],
             search: {
-                url: (query: any, opts: any, previous: any): IError | string => {
+                url: (query: ISearchQuery): IError | string => {
                     if (query.search.length > 0) {
                         return { error: "Tag search is impossible with Shimmie RSS API." };
                     }
@@ -108,7 +108,7 @@ export const source: ISource = {
             name: "Regex",
             auth: [],
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
                         return "/post/list/" + query.search + "/" + query.page;
                     }
