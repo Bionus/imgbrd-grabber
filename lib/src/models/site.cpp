@@ -230,7 +230,7 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img, QMap<QString, QString> cHeaders)
+QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> cHeaders)
 {
 	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
@@ -246,14 +246,14 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	if (referer.isEmpty() && !ref.isEmpty()) {
 		referer = m_settings->value("referer", "none").toString();
 	}
-	if (referer != "none" && (referer != "page" || page != nullptr)) {
+	if (referer != "none" && (referer != "page" || !pageUrl.isEmpty())) {
 		QString refHeader;
 		if (referer == "host") {
 			refHeader = url.scheme() + "://" + url.host();
 		} else if (referer == "image") {
 			refHeader = fixUrl(url).toString();
-		} else if (referer == "page" && page != nullptr) {
-			refHeader = fixUrl(page->url()).toString();
+		} else if (referer == "page" && !pageUrl.isEmpty()) {
+			refHeader = fixUrl(pageUrl).toString();
 		} else if (referer == "details" && img != nullptr) {
 			refHeader = fixUrl(img->pageUrl()).toString();
 		}
@@ -289,9 +289,9 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	return request;
 }
 
-NetworkReply *Site::get(const QUrl &url, Site::QueryType type, Page *page, const QString &ref, Image *img, QMap<QString, QString> headers)
+NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> headers)
 {
-	const QNetworkRequest request = this->makeRequest(url, page, ref, img, headers);
+	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
 	return m_manager->get(request, static_cast<int>(type));
 }
 

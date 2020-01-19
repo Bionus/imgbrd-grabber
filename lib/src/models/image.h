@@ -56,6 +56,7 @@ class Image : public QObject, public Downloadable
 		QSize size(Size size = Size::Full) const;
 		const QString &name() const;
 		Page *page() const;
+		const QUrl &parentUrl() const;
 		Site *parentSite() const;
 		ExtensionRotator *extensionRotator() const;
 		bool hasTag(QString tag) const;
@@ -136,6 +137,7 @@ class Image : public QObject, public Downloadable
 		QString m_author, m_name, m_status, m_rating;
 		QStringList m_sources;
 		QUrl m_pageUrl;
+		QUrl m_parentUrl;
 		QDateTime m_createdAt;
 		NetworkReply *m_loadDetails = nullptr;
 		QList<Tag> m_tags;

@@ -64,7 +64,7 @@ class SearchTab : public QWidget
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
-		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url);
+		void loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url);
 		QBouton *createImageThumbnail(int position, const QSharedPointer<Image> &img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);

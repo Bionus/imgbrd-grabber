@@ -107,7 +107,7 @@ TEST_CASE("Image")
 
 		REQUIRE(clone.tokens(profile) == img->tokens(profile));
 		REQUIRE(clone.parentSite() == img->parentSite());
-		REQUIRE(clone.page() == img->page());
+		REQUIRE(clone.parentUrl() == img->parentUrl());
 	}
 
 	SECTION("HasTag")

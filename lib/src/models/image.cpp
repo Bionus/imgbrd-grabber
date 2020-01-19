@@ -37,6 +37,7 @@ Image::Image(const Image &other)
 	: QObject(other.parent())
 {
 	m_parent = other.m_parent;
+	m_parentUrl = other.m_parentUrl;
 	m_isGallery = other.m_isGallery;
 
 	m_id = other.m_id;
@@ -95,6 +96,9 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	if (m_parentSite == nullptr) {
 		log(QStringLiteral("Image has nullptr parent, aborting creation."));
 		return;
+	}
+	if (m_parent != nullptr) {
+		m_parentUrl = m_parent->url();
 	}
 
 	// Other details
@@ -764,6 +768,7 @@ const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 Page *Image::page() const { return m_parent; }
+const QUrl &Image::parentUrl() const { return m_parentUrl; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
 QString Image::extension() const { return getExtension(m_url).toLower(); }

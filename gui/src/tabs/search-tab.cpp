@@ -442,7 +442,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 	for (const auto &img : images) {
 		const QUrl thumbnailUrl = img->url(Image::Size::Thumbnail);
 		if (thumbnailUrl.isValid()) {
-			loadImageThumbnail(page, img, thumbnailUrl);
+			loadImageThumbnail(img, thumbnailUrl);
 		}
 	}
 
@@ -516,11 +516,11 @@ void SearchTab::finishedLoadingTags(Page *page)
 	}
 }
 
-void SearchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url)
+void SearchTab::loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url)
 {
-	Site *site = page->site();
+	Site *site = img->parentSite();
 
-	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, page, "preview");
+	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, img->parentUrl(), "preview");
 	reply->setParent(this);
 
 	m_thumbnailsLoading[reply] = std::move(img);
@@ -554,7 +554,7 @@ void SearchTab::finishedLoadingPreview()
 	// Check redirection
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty()) {
-		loadImageThumbnail(img->page(), img, redirection);
+		loadImageThumbnail(img, redirection);
 		reply->deleteLater();
 		return;
 	}
@@ -565,7 +565,7 @@ void SearchTab::finishedLoadingPreview()
 		if (ext != "jpg") {
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(reply->errorString()), Logger::Warning);
 			const QUrl newUrl = setExtension(reply->url(), "jpg");
-			loadImageThumbnail(img->page(), img, newUrl);
+			loadImageThumbnail(img, newUrl);
 		} else {
 			log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
 		}
@@ -1214,12 +1214,12 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 	}
 
 	if (m_settings->value("Zoom/singleWindow", false).toBool() && !m_lastZoomWindow.isNull()) {
-		m_lastZoomWindow->reuse(m_images, image, image->page()->site());
+		m_lastZoomWindow->reuse(m_images, image, image->parentSite());
 		m_lastZoomWindow->activateWindow();
 		return;
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent, this);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->parentSite(), m_profile, m_parent, this);
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 	zoom->show();

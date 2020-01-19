@@ -120,7 +120,7 @@ void PageApi::load(bool rateLimit, bool force)
 
 	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
-	setReply(m_site->get(m_url, type, nullptr, "", nullptr, m_headers));
+	setReply(m_site->get(m_url, type, QUrl(), "", nullptr, m_headers));
 	connect(m_reply, &NetworkReply::finished, this, &PageApi::parse);
 }
 void PageApi::abort()
