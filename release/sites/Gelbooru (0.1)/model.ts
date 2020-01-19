@@ -40,7 +40,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {

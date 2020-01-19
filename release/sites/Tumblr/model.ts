@@ -100,7 +100,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
                 },
                 parse: (src: string): IParsedDetails => {
@@ -176,7 +176,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/member_illust.php?mode=medium&illust_id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {

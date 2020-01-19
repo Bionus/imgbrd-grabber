@@ -207,7 +207,7 @@ interface IApi {
     };
     details?: {
         parseErrors?: boolean;
-        url: (id: number, md5: string) => IUrl | IError | string;
+        url: (id: string, md5: string) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {

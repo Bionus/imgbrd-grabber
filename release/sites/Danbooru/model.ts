@@ -210,7 +210,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/post/show/" + id;
                 },
                 parse: (src: string): IParsedDetails => {

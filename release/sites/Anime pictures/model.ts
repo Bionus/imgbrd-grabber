@@ -143,7 +143,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/pictures/view_post/" + id + "?lang=en&type=json";
                 },
                 parse: (src: string): IParsedDetails => {
@@ -189,7 +189,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/pictures/view_post/" + id + "?lang=en";
                 },
                 parse: (src: string): IParsedDetails => {
