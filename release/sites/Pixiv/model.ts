@@ -141,6 +141,7 @@ export const source: ISource = {
             },
             details: {
                 url: (id: string, md5: string): string => {
+                    if (id === "" || id === "0") { return ""; } // Gallery images don't have an ID
                     return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
                 },
                 parse: (src: string): IParsedDetails => {
