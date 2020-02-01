@@ -183,7 +183,7 @@ git clone https://github.com/Bionus/imgbrd-grabber.git --single-branch -b develo
 ## Compilation
 ```bash
 cd imgbrd-grabber
-./make.sh
+./build.sh
 ```
 
 You can now run your program from `/home/pi/imgbrd-grabber/release`.
