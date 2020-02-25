@@ -24,7 +24,7 @@ jobs:
         echo ::set-env name=PLATFORM_NAME::x64
         echo ::set-env name=OPENSSL_ROOT_DIR::%GITHUB_WORKSPACE%\vendor\OpenSSL
         echo ::set-env name=MYSQL_INSTALL_DIR::%GITHUB_WORKSPACE%\vendor\%MYSQL_VERSION%
-        echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.5\msvc2017\plugins\imageformats\qapng.dll
+        echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll
 
     - name: Vendor cache
       uses: actions/cache@v1
@@ -42,7 +42,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.1.0
       with:
-        version: 5.12.5
+        version: 5.12.6
 
     - name: Install QScintilla
       working-directory: vendor_qt
@@ -81,7 +81,7 @@ jobs:
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5125/qt.qt5.5125.skycoder42.apng.win32_msvc2017/1.1.2-55.12.5.7z
+        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5126/qt.qt5.5126.skycoder42.apng.win32_msvc2017/1.1.2-65.12.6.7z
         7z x APNG.7z -y -oAPNG
         rm APNG.7z
 
