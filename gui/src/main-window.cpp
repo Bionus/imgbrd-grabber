@@ -464,15 +464,6 @@ void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool b
 }
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
-	// TODO(Bionus): remove this and always pass it when necessary
-	if (source == nullptr || !m_tabs.contains(source)) {
-		if (m_tabs.size() > ui->tabWidget->currentIndex()) {
-			source = m_tabs[ui->tabWidget->currentIndex()];
-		} else {
-			source = nullptr;
-		}
-	}
-
 	if (source != nullptr) {
 		w->setSources(source->sources());
 		w->setImagesPerPage(source->imagesPerPage());
