@@ -923,7 +923,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="53"/>
       <source>Between 0 and 100, the note can be used to sort the favorites in preference order.</source>
-      <translation type="unfinished"/>
+      <translation>Eine Notiz kann verwendet werden, um 0 bis 100 Favoriten in der Präferenzreihenfolge zu sortieren.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="56"/>
@@ -1745,7 +1745,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will clear your MD5 list and fill it again with the MD5 of the files found in the folder set below.</source>
-      <translation type="unfinished"/>
+      <translation>Dieses Tool löscht Ihre MD5-Liste und füllt sie erneut mit den MD5 der Dateien aus, die im darunterstehenden Ordner gefunden wurden.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -1837,7 +1837,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="63"/>
       <source>Grabber monitoring</source>
-      <translation type="unfinished"/>
+      <translation>Grabber-Überwachung</translation>
     </message>
   </context>
   <context>
@@ -2241,7 +2241,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="795"/>
       <source>Automatic redownload</source>
-      <translation type="unfinished"/>
+      <translation>Automatischer Redownload</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="809"/>
@@ -2281,7 +2281,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="952"/>
       <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Wenn die Dateinamenlänge größer als diese Zahl ist, wird sie gekürzt. Lassen Sie sie auf 0 um das Standardlimit zu verwenden.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="966"/>
@@ -2549,7 +2549,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1496"/>
       <source>Enable scroll wheel navigation</source>
-      <translation type="unfinished"/>
+      <translation>Scrollrad Navigation aktivieren</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1506"/>
