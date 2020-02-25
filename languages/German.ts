@@ -953,7 +953,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="93"/>
       <source>Image whose icon will be displayed in the favorites list.</source>
-      <translation type="unfinished"/>
+      <translation>Bild, dessen Icon in der Favoritenliste angezeigt wird.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="96"/>
@@ -1722,7 +1722,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/main-window.cpp" line="699"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Hinweis:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Letzte Ansicht:&lt;/b&gt; %3</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="753"/>
@@ -2029,7 +2029,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="290"/>
       <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Bilder, die ein Whitelist-Tag enthalten, werden gemäß der obigen Option automatisch heruntergeladen.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="300"/>
@@ -2039,7 +2039,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="310"/>
       <source>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Diese Tags werden beim Speichern des Bildes nicht berücksichtigt.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="320"/>
@@ -2236,7 +2236,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="788"/>
       <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Die Identität der Datei basiert auf dem MD5-Algorithmus.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="795"/>
@@ -2653,7 +2653,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="337"/>
       <source>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Die Tags und Post-Filter werden automatisch zu jeder Suche hinzugefügt.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="354"/>
@@ -2776,7 +2776,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2263"/>
       <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Eine Zeile pro Blacklist. Sie können mehrere Tags in einer einzigen Zeile platzieren, um "UND"-Bedingungen zu erstellen.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2273"/>
@@ -2786,7 +2786,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2280"/>
       <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Bilder mit einem Tag auf der Blacklist werden nicht in den Ergebnissen angezeigt, wenn diese Option aktiviert ist. Andernfalls wird eine Bestätigung angefordert, bevor eines dieser Bilder angezeigt wird.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2294"/>
@@ -2882,7 +2882,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="2534"/>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished"/>
+      <translation>Zusätzliche Tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: der Tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: Tag-Typ, "Allgemein", "Künstler", "Copyright", "Charakter", "Model" oder "Photo-Set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Die Tag-Typ-Nummer (zwischen 0 und 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2554"/>
@@ -3123,14 +3123,14 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="182"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="218"/>
       <source>image's %1 does not match</source>
-      <translation type="unfinished"/>
+      <translation>das %1 des Bildes stimmt nicht überein</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="153"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="185"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
       <source>image's %1 match</source>
-      <translation type="unfinished"/>
+      <translation>das %1 des Bildes stimmt überein</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
@@ -3157,12 +3157,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="207"/>
       <source>image's source does not starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>die Quelle des Bildes beginnt nicht mit "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="210"/>
       <source>image's source starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>die Quelle des Bildes beginnt mit "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
