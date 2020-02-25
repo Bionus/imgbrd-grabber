@@ -104,7 +104,7 @@ void PoolTab::write(QJsonObject &json) const
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
-	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["postFiltering"] = QJsonArray::fromStringList(postFilter());
 }
 
 bool PoolTab::read(const QJsonObject &json, bool preload)
@@ -122,7 +122,7 @@ bool PoolTab::read(const QJsonObject &json, bool preload)
 	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
 	}
-	setPostFilter(postFilters.join(' '));
+	setPostFilter(postFilters);
 
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
@@ -149,7 +149,7 @@ void PoolTab::getPage()
 
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 	const QStringList tags = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
-	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = postFilter(true);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
@@ -174,7 +174,7 @@ void PoolTab::getAll()
 	}
 
 	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
-	const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = postFilter(true);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, site));

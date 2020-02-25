@@ -251,7 +251,7 @@ void FavoritesTab::getPage()
 	for (const QSharedPointer<Page> &page : pages) {
 		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = postFilter(true);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
 	}
@@ -270,7 +270,7 @@ void FavoritesTab::getAll()
 		}
 
 		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = postFilter(true);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, page->site()));
 	}

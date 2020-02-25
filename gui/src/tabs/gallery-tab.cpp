@@ -95,7 +95,7 @@ void GalleryTab::write(QJsonObject &json) const
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
-	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["postFiltering"] = QJsonArray::fromStringList(postFilter());
 }
 
 bool GalleryTab::read(const QJsonObject &json, bool preload)
@@ -124,7 +124,7 @@ bool GalleryTab::read(const QJsonObject &json, bool preload)
 	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
 	}
-	setPostFilter(postFilters.join(' '));
+	setPostFilter(postFilters);
 
 	setTags("", preload);
 	return true;
@@ -141,7 +141,7 @@ void GalleryTab::getPage()
 
 	const bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+	const QStringList postFiltering = postFilter(true);
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, m_gallery, ui->spinPage->value(), perPage, perPage, postFiltering, m_site));
 }
@@ -162,8 +162,7 @@ void GalleryTab::getAll()
 		return;
 	}
 
-	const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-
+	const QStringList postFiltering = postFilter(true);
 	emit batchAddGroup(DownloadQueryGroup(m_settings, m_gallery, 1, perPage, total, postFiltering, m_site));
 }
 

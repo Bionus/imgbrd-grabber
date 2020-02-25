@@ -1438,7 +1438,7 @@ void SearchTab::loadPage()
 		}
 
 		// Load results
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = postFilter(true);
 		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
@@ -1591,12 +1591,21 @@ void SearchTab::setImagesPerPage(int ipp)
 { ui_spinImagesPerPage->setValue(ipp); }
 void SearchTab::setColumns(int columns)
 { ui_spinColumns->setValue(columns); }
-void SearchTab::setPostFilter(const QString &postFilter)
-{ m_postFiltering->setText(postFilter); }
+void SearchTab::setPostFilter(const QStringList &postFilter)
+{ m_postFiltering->setText(postFilter.join(' ')); }
 
-int SearchTab::imagesPerPage()
+int SearchTab::imagesPerPage() const
 { return ui_spinImagesPerPage->value(); }
-int SearchTab::columns()
+int SearchTab::columns() const
 { return ui_spinColumns->value(); }
-QString SearchTab::postFilter()
-{ return m_postFiltering->toPlainText(); }
+QStringList SearchTab::postFilter(bool includeGlobal) const
+{
+	QString ret = m_postFiltering->toPlainText();
+	if (includeGlobal && !m_settings->value("globalPostFilterExplicit", false).toBool()) {
+		QString globalPostFilter = m_settings->value("globalPostFilter").toString();
+		if (!globalPostFilter.isEmpty()) {
+			ret += " " + globalPostFilter;
+		}
+	}
+	return ret.split(' ', QString::SkipEmptyParts);
+}
