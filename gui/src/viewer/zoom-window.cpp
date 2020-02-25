@@ -342,7 +342,9 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 
 void ZoomWindow::openInNewTab()
 {
-	m_parent->addTab(m_link, false, true, m_tab);
+	if (!m_link.isEmpty()) {
+		m_parent->addTab(m_link, false, true, m_tab);
+	}
 }
 void ZoomWindow::setfavorite()
 {
