@@ -6,32 +6,32 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="20"/>
       <source>About Grabber</source>
-      <translation type="unfinished"/>
+      <translation>Grabber 정보</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber는 Binous가 제작하였습니다.&lt;br/&gt;&lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt; 웹사이트&lt;/span&gt;&lt;/a&gt; 를 방문하여 업데이트 정보, 사이트/번역 파일을 받으세요.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</source>
-      <translation type="unfinished"/>
+      <translation>버그 발견, 해결과 새 기능 추가를 도와준 YMI에게 감사의 말씀을 드립니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="89"/>
       <source>Russian translation by Николай Тихонов.</source>
-      <translation type="unfinished"/>
+      <translation>러시아어 번역 - Николай Тихонов.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>A new version is available: %1</source>
-      <translation type="unfinished"/>
+      <translation>새로운 업데이트가 존재합니다: %1</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
       <source>Grabber is up to date</source>
-      <translation type="unfinished"/>
+      <translation>Grabber가 최신 버전입니다.</translation>
     </message>
   </context>
   <context>
@@ -39,42 +39,42 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="14"/>
       <source>Add group</source>
-      <translation type="unfinished"/>
+      <translation>그룹 추가</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>사이트</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="33"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="40"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="57"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>페이지 당 이미지 수</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>이미지 제한</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
       <source>Download images with blacklisted tags</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트 태그를 포함한 이미지 다운로드</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>후처리</translation>
     </message>
   </context>
   <context>
@@ -82,43 +82,43 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="14"/>
       <source>Add an image</source>
-      <translation type="unfinished"/>
+      <translation>이미지 추가</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="103"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>추가</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>사이트</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="33"/>
       <source>Id</source>
-      <translation type="unfinished"/>
+      <translation>아이디</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="40"/>
       <source>Md5</source>
-      <translation type="unfinished"/>
+      <translation>MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="68"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>파일명</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;한 줄당 한 개의 아이디를 입력하세요.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
       <location filename="../gui/src/batch/add-unique-window.ui" line="205"/>
       <source>+</source>
-      <translation type="unfinished"/>
+      <translation>+</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
