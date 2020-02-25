@@ -396,14 +396,14 @@ TEST_CASE("Filename")
 
 		SECTION("'And' operator")
 		{
-			assertPath(profile, img, "<!\"tag1\" & \"not_found\"?yes/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
-			assertPath(profile, img, "<!\"tag1\" & \"tag2\"?yes/>%md5%.%ext%", "yes/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			assertPath(profile, img, "<\"tag1\" & \"not_found\"?yes/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			assertPath(profile, img, "<\"tag1\" & \"tag2\"?yes/>%md5%.%ext%", "yes/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		}
 
 		SECTION("'Or' operator")
 		{
-			assertPath(profile, img, "<!\"tag1\" & \"not_found\"?yes/>%md5%.%ext%", "yes/1bc29b36f623ba82aaf6724fd3b16718.jpg");
-			assertPath(profile, img, "<!\"not_found\" & \"not_found_2\"?yes/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			assertPath(profile, img, "<\"tag1\" | \"not_found\"?yes/>%md5%.%ext%", "yes/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			assertPath(profile, img, "<\"not_found\" | \"not_found_2\"?yes/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		}
 	}
 
