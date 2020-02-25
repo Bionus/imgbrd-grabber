@@ -777,37 +777,58 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1207"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei erfolgreich heruntergeladen.</numerusform>
+        <numerusform>%n Dateien erfolgreich heruntergeladen.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1208"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei ignoriert.</numerusform>
+        <numerusform>%n Datei ignoriert.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1209"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei bereits vorhanden.</numerusform>
+        <numerusform>%n Dateien bereits vorhanden.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1210"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei auf dem Server nicht gefunden.</numerusform>
+        <numerusform>%n Dateien auf dem Server nicht gefunden.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1211"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei übersprungen.</numerusform>
+        <numerusform>%n Dateien übersprungen.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Datei von einem vorherigen Download übersprungen.</numerusform>
+        <numerusform>%n Dateien von einem vorherigen Download übersprungen.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
       <source>%n error(s).</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n Fehler.</numerusform>
+        <numerusform>%n Fehler.</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -871,7 +892,10 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Sie sind dabei, %n Ordner zu löschen. Möchten sie dennoch fortfahren?</numerusform>
+        <numerusform>Sie sind dabei, %n Ordner zu löschen. Möchten sie dennoch fortfahren?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -954,12 +978,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="151"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="161"/>
       <source>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Setze den Intervall auf 0, um die Überwachung zu deaktivieren.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="134"/>
@@ -1104,7 +1128,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Hinweis:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Letzter Aufruf:&lt;/b&gt; %3</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="221"/>
@@ -1200,48 +1224,48 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/image.cpp" line="887"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="879"/>
       <location filename="../lib/src/models/image.cpp" line="888"/>
       <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="880"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="889"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Bewertung:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="890"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Bewertung:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="891"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Benutzer:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="892"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Größe:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="893"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Dateigröße:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="894"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Datum:&lt;/b&gt; %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="894"/>
@@ -1251,7 +1275,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/image.cpp" line="904"/>
       <source>&lt;i&gt;Unknown&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Unbekannt&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="905"/>
@@ -1349,7 +1373,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/image.cpp" line="933"/>
       <source>yes (#%1)</source>
-      <translation type="unfinished"/>
+      <translation>Ja (#%1)</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="934"/>
@@ -1454,17 +1478,17 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Jedes Mal, wenn ein Bild gespeichert wird, wird eine externe Textdatei mit dem gleichen Namen am selben Ort gespeichert.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="193"/>
       <source>Text file content</source>
-      <translation type="unfinished"/>
+      <translation>Text-Datei Inhalt</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
       <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Verfügbare Token: identisch mit im "Speichern" Teil.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1716,7 +1740,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="14"/>
       <source>Md5 list fixer</source>
-      <translation type="unfinished"/>
+      <translation>MD5-Listenfixer</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
@@ -1761,27 +1785,30 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="115"/>
       <source>Suffixes</source>
-      <translation type="unfinished"/>
+      <translation>Suffixe</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="95"/>
       <source>This folder does not exist.</source>
-      <translation type="unfinished"/>
+      <translation>Dieser Ordner existiert nicht.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="103"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>Wenn sie die MD5 aus dem Dateinamen erhalten wollen, muss das %md5% -Token darin erhalten sein.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>Fertiggestellt</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n MD5 geladen</numerusform>
+        <numerusform>%n MD5s geladen</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1789,17 +1816,23 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="57"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>Neue Bilder für Tag '%1' auf '%2 ' gefunden</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="59"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n neues Bild für Tag '%1' auf '%2 ' gefunden</numerusform>
+        <numerusform>%n neue Bilder für Tag '%1' auf '%2 ' gefunden</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="61"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Mehr als %n neues Bild für Tag '%1' auf '%2 ' gefunden</numerusform>
+        <numerusform>Mehr als %n neue Bilder für Tag '%1' auf '%2 ' gefunden</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="63"/>
@@ -2338,7 +2371,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
       <source>Source's type display</source>
-      <translation type="unfinished"/>
+      <translation>Quellentyp anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1208"/>
@@ -2370,7 +2403,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1241"/>
       <source>Display n letters</source>
-      <translation type="unfinished"/>
+      <translation>n Buchstaben anzeigen</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1246"/>
@@ -2470,7 +2503,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1433"/>
       <source>Tag list position</source>
-      <translation type="unfinished"/>
+      <translation>Position der Tagliste</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1441"/>
@@ -3078,12 +3111,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="35"/>
       <source>image has a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>Bild hat einen "%1" Token</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="38"/>
       <source>image does not have a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>Bild hat keinen "%1" Token</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="150"/>
@@ -3103,13 +3136,13 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="129"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="198"/>
       <source>image is not "%1"</source>
-      <translation type="unfinished"/>
+      <translation>Bild ist nicht "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="132"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="201"/>
       <source>image is "%1"</source>
-      <translation type="unfinished"/>
+      <translation>Bild ist "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="141"/>
@@ -4070,7 +4103,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Nicht blacklisten</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -4324,7 +4357,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="93"/>
       <source>Keep n tags</source>
-      <translation type="unfinished"/>
+      <translation>n Tags behalten</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="103"/>
@@ -4580,12 +4613,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="841"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>Sie haben keinen Speicher-Ordner angegeben! Möchten Sie das Optionenfenster öffnen?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="843"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>Sie haben kein Speicher-Format angegeben! Möchten Sie das Optionenfenster öffnen?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/zoom-window.cpp" line="897"/>
