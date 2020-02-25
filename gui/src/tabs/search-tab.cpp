@@ -74,6 +74,12 @@ void SearchTab::init()
 	if (infinite != "disabled" && ui_checkMergeResults != nullptr) {
 		connect(ui_checkMergeResults, &QCheckBox::toggled, this, &SearchTab::setMergeResultsMode);
 	}
+
+	// Fill post-filter explicitely if necessary
+	if (m_settings->value("globalPostFilterExplicit", false).toBool()) {
+		QString globalPostFilter = m_settings->value("globalPostFilter").toString();
+		m_postFiltering->setText(globalPostFilter);
+	}
 }
 
 SearchTab::~SearchTab()

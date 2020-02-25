@@ -351,7 +351,7 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="13" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
            <string>Ask for confirmation before closing the window</string>
@@ -368,10 +368,17 @@
         <item row="10" column="1">
          <widget class="QLineEdit" name="lineGlobalPostFilter"/>
         </item>
-        <item row="13" column="0" colspan="2">
+        <item row="14" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSendUsageData">
           <property name="text">
            <string>Send anonymous usage data</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkGlobalPostFilterExplicit">
+          <property name="text">
+           <string>Explicitely add global post-filter to tab post-filter field</string>
           </property>
          </widget>
         </item>
@@ -398,6 +405,7 @@
        <zorder>labelGlobalPostFilter</zorder>
        <zorder>lineGlobalPostFilter</zorder>
        <zorder>checkSendUsageData</zorder>
+       <zorder>checkGlobalPostFilterExplicit</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -1036,8 +1044,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>363</width>
-             <height>387</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
