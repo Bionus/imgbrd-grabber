@@ -2291,7 +2291,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1045"/>
       <source>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Jedes Mal, wenn ein Bild gespeichert wird, können dessen Informationen zu einer separaten Textdatei zur späteren Bearbeitung oder zu Organisationszwecken hinzugefügt werden.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1058"/>
@@ -2366,7 +2366,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1190"/>
       <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Die Favoritenliste wird ausgeblendet, sobald diese Bildnummer erreicht wurde.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
@@ -2418,7 +2418,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1274"/>
       <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Anzahl der angezeigten Buchstaben neben den Kontrollkästchen der Quellen im "+" Teil des Hauptfensters.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1284"/>
@@ -2488,7 +2488,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1395"/>
       <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Wenn Sie diese Option aktivieren, wird die Schaltfläche "Diese Seite holen" Änderungen an der Anzahl der Bilder pro Seite, der Seitennummer, etc. berücksichtigen, auch wenn sie nicht geladen wurden.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1405"/>
@@ -2498,7 +2498,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1412"/>
       <source>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Wenn diese Option aktiviert ist, wird der Klick auf ein Bild dieses zum Download markieren, während Strg+Klick das Detailfenster öffnet&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1433"/>
@@ -3167,12 +3167,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="49"/>
       <source>image does not contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>Bild enthält nicht "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="52"/>
       <source>image contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>Bild enthält "%1"</translation>
     </message>
   </context>
   <context>
@@ -3317,12 +3317,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
       <source>HTTPS redirection detected</source>
-      <translation type="unfinished"/>
+      <translation>HTTPS-Weiterleitung erkannt</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="384"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation type="unfinished"/>
+      <translation>Für die Webseite %1wurde eine HTTP-zu-HTTPS-Weiterleitung erkannt. Möchten Sie SSL aktivieren? Die empfohlene Einstellung ist 'Ja'.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="386"/>
@@ -3548,7 +3548,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="216"/>
       <source>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Denken Sie daran, dass einige Imageboards die Verwendung von mehr als einer bestimmten Anzahl von Tags für Nicht-Premium-Mitglieder verbieten.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="244"/>
@@ -3601,12 +3601,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="45"/>
       <source>The url you entered is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>Die eingegebene URL ist ungültig.</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="77"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation type="unfinished"/>
+      <translation>Erkennung des Seiten-Typ nicht möglich. Sind sie sich mit der URL sicher?</translation>
     </message>
   </context>
   <context>
@@ -4055,7 +4055,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
       <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Wenn Sie Grabber zum ersten Mal verwenden, wird empfohlen, zuerst die &lt;a href="{website}/docs/"&gt;Anfangen&lt;/a&gt; Wiki-Seite zu lesen.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4390,7 +4390,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="33"/>
       <source>A new version is available.&lt;br/&gt;Do you want to update now?</source>
-      <translation type="unfinished"/>
+      <translation>Eine neue Version ist verfügbar.&lt;br/&gt;Möchten Sie jetzt aktualisieren?</translation>
     </message>
     <message>
       <location filename="../gui/src/updater/update-dialog.ui" line="53"/>
@@ -4400,7 +4400,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/updater/update-dialog.cpp" line="59"/>
       <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
-      <translation type="unfinished"/>
+      <translation>Version &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
   </context>
   <context>
