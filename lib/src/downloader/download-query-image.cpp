@@ -1,5 +1,6 @@
 #include "downloader/download-query-image.h"
 #include <QJsonArray>
+#include <QRegularExpression>
 #include <QSettings>
 #include <utility>
 #include "models/image.h"
