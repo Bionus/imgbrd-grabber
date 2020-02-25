@@ -1755,12 +1755,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="47"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>MD5-Berechnung erzwingen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="54"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>MD5 im Dateinamen holen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="64"/>
@@ -3191,12 +3191,12 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>MD5-Berechnung erzwingen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>MD5 im Dateinamen holen</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="51"/>
@@ -3302,7 +3302,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="169"/>
       <source>server offline</source>
-      <translation type="unfinished"/>
+      <translation>Server offline</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="174"/>
@@ -3312,7 +3312,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="179"/>
       <source>page too far</source>
-      <translation type="unfinished"/>
+      <translation>Seite zu weit</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="383"/>
@@ -3695,7 +3695,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
       <source>Use a secure connection (https)</source>
-      <translation type="unfinished"/>
+      <translation>Sichere Verbindung verwenden (HTTPS)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
@@ -3893,7 +3893,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="93"/>
       <source>API key</source>
-      <translation type="unfinished"/>
+      <translation>API-Key</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
@@ -3903,7 +3903,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
       <source>Consumer secret</source>
-      <translation type="unfinished"/>
+      <translation>Benutzer-Secret</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="197"/>
