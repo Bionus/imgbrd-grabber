@@ -1,7 +1,6 @@
-#include "login/http-login-test.h"
 #include <QNetworkCookieJar>
 #include <QSettings>
-#include <QtTest>
+#include <QSignalSpy>
 #include "auth/auth-const-field.h"
 #include "auth/auth-field.h"
 #include "auth/http-auth.h"
@@ -12,32 +11,10 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "network/network-manager.h"
+#include "catch.h"
+#include "source-helpers.h"
 
-
-void HttpLoginTest::init()
-{
-	setupSource("Danbooru (2.0)");
-	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
-
-	m_profile = makeProfile();
-	m_site = m_profile->getSites().value("danbooru.donmai.us");
-}
-
-void HttpLoginTest::cleanup()
-{
-	m_profile->deleteLater();
-	m_manager.clear();
-}
-
-
-void HttpLoginTest::testNonTestable()
-{
-	QList<AuthField*> fields;
-	HttpAuth auth("url", "", fields, "");
-	HttpGetLogin login(&auth, m_site, &m_manager, m_site->settings());
-
-	QVERIFY(!login.isTestable());
-}
 
 template <class T>
 void testLogin(const QString &type, const QString &url, Login::Result expected, Site *site, NetworkManager *manager)
@@ -49,40 +26,59 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	HttpAuth auth(type, "/login", fields, "test_cookie");
 	T login(&auth, site, manager, site->settings());
 
-	QVERIFY(login.isTestable());
+	REQUIRE(login.isTestable());
 
 	CustomNetworkAccessManager::NextFiles.enqueue(url);
 
 	QSignalSpy spy(&login, SIGNAL(loggedIn(Login::Result)));
 	login.login();
-	QVERIFY(spy.wait());
+	REQUIRE(spy.wait());
 
 	QList<QVariant> arguments = spy.takeFirst();
-	Login::Result result = arguments.at(0).value<Login::Result>();
+	auto result = arguments.at(0).value<Login::Result>();
 
-	QCOMPARE(result, expected);
+	REQUIRE(result == expected);
 }
 
-void HttpLoginTest::testLoginSuccess()
+
+TEST_CASE("HttpLogin")
 {
-	testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, m_site, &m_manager);
-	testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, m_site, &m_manager);
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
+
+	const QScopedPointer<Profile> profile(makeProfile());
+	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
+	NetworkManager accessManager;
+
+	SECTION("NonTestable")
+	{
+		QList<AuthField*> fields;
+		HttpAuth auth("url", "", fields, "");
+		HttpGetLogin login(&auth, site, &accessManager, site->settings());
+
+		REQUIRE(!login.isTestable());
+	}
+
+	SECTION("LoginSuccess")
+	{
+		testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, site, &accessManager);
+		testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, site, &accessManager);
+	}
+
+	SECTION("LoginFailure")
+	{
+		testLogin<HttpGetLogin>("get", "404", Login::Result::Failure, site, &accessManager);
+		testLogin<HttpPostLogin>("post", "404", Login::Result::Failure, site, &accessManager);
+	}
+
+	SECTION("DoubleLogin")
+	{
+		testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, site, &accessManager);
+		testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, site, &accessManager);
+
+		testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, site, &accessManager);
+		testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, site, &accessManager);
+	}
 }
-
-void HttpLoginTest::testLoginFailure()
-{
-	testLogin<HttpGetLogin>("get", "404", Login::Result::Failure, m_site, &m_manager);
-	testLogin<HttpPostLogin>("post", "404", Login::Result::Failure, m_site, &m_manager);
-}
-
-void HttpLoginTest::testDoubleLogin()
-{
-	testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, m_site, &m_manager);
-	testLogin<HttpGetLogin>("get", "cookie", Login::Result::Success, m_site, &m_manager);
-
-	testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, m_site, &m_manager);
-	testLogin<HttpPostLogin>("post", "cookie", Login::Result::Success, m_site, &m_manager);
-}
-
-
-QTEST_MAIN(HttpLoginTest)

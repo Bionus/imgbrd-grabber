@@ -7,8 +7,6 @@ function completeImage(img: IImage): IImage {
         img.ext = img.ext.substring(1);
     }
 
-    img.file_url = `/pictures/download_image/${img.id}.${img.ext || "jpg"}`;
-
     if ((!img.sample_url || img.sample_url.length < 5) && img.preview_url && img.preview_url.length >= 5) {
         img.sample_url = img.preview_url
             .replace("_cp.", "_bp.")
@@ -17,6 +15,7 @@ function completeImage(img: IImage): IImage {
 
     img.sample_url = noWebp(img.sample_url || "");
     img.preview_url = noWebp(img.preview_url || "");
+    img.file_url = img.sample_url.replace(/_[scb]p.\w{2,5}$/, "." + img.ext);
 
     return img;
 }
@@ -111,7 +110,7 @@ export const source: ISource = {
             name: "JSON",
             auth: [],
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string => {
                     const page = query.page - 1;
                     return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
                 },
@@ -144,7 +143,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/pictures/view_post/" + id + "?lang=en&type=json";
                 },
                 parse: (src: string): IParsedDetails => {
@@ -175,7 +174,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 80,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     const page = query.page - 1;
                     return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&lang=en";
                 },
@@ -190,7 +189,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/pictures/view_post/" + id + "?lang=en";
                 },
                 parse: (src: string): IParsedDetails => {
@@ -200,7 +199,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     const page = query.page - 1;
                     return "/pictures/view_all_tags/" + page + "?lang=en";
                 },

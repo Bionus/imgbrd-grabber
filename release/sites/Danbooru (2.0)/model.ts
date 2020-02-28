@@ -87,7 +87,7 @@ export const source: ISource = {
             maxLimit: 200,
             search: {
                 parseErrors: true,
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
@@ -148,7 +148,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -181,7 +181,7 @@ export const source: ISource = {
             maxLimit: 200,
             search: {
                 parseErrors: true,
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
@@ -243,7 +243,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tags.xml?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -276,7 +276,7 @@ export const source: ISource = {
             maxLimit: 200,
             search: {
                 parseErrors: true,
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
@@ -301,7 +301,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/posts/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
@@ -312,8 +312,22 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tags";
+                },
+                parse: (src: string): IParsedTagTypes => {
+                    const contents = src.match(/<select[^>]* name="search\[category\]"[^>]*>([\s\S]+)<\/select>/)[1];
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
                     return "/tags?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {

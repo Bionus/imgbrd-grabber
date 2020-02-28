@@ -59,6 +59,13 @@ void OAuth2Login::login()
 		const QString pseudo = m_settings->value("auth/pseudo").toString();
 		const QString password = m_settings->value("auth/password").toString();
 
+		// Fix for Pixiv (issue #1765)
+		// TODO(Bionus): do this correctly in the JS file
+		QString time = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+		QString hash = time + "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c";
+		request.setRawHeader("X-Client-Time", time.toLatin1());
+		request.setRawHeader("X-Client-Hash", QCryptographicHash::hash(hash.toLatin1(), QCryptographicHash::Md5).toHex());
+
 		body << QStrP("grant_type", "password")
 			 << QStrP("username", pseudo)
 			 << QStrP("password", password);

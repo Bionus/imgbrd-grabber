@@ -45,6 +45,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
 	ui->lineAdd->setText(settings->value("add").toString());
 	ui->lineGlobalPostFilter->setText(settings->value("globalPostFilter").toString());
+	ui->checkGlobalPostFilterExplicit->setChecked(settings->value("globalPostFilterExplicit", false).toBool());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
 	ui->lineIgnored->setText(settings->value("ignoredtags").toString());
@@ -61,6 +62,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkSendUsageData->setChecked(settings->value("send_usage_data", true).toBool());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
 	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24 * 60 * 60).toInt()));
+	ui->lineTempPathOverride->setText(settings->value("tempPathOverride").toString());
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -91,9 +93,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	}
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
-	int i = settings->value("Sources/Letters", 3).toInt();
-	ui->comboSourcesLetters->setCurrentIndex((i < 0 ? 1 : 0) + (i < -1 ? 1 : 0));
-	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
+	int letterCount = settings->value("Sources/Letters", 3).toInt();
+	ui->comboSourcesLetters->setCurrentIndex((letterCount < 0 ? 1 : 0) + (letterCount < -1 ? 1 : 0));
+	ui->spinSourcesLetters->setValue(letterCount < 0 ? 3 : letterCount);
 	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
@@ -107,6 +109,9 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	// Blacklist
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
+
+	// Ignored tags
+	ui->textIgnoredTags->setPlainText(profile->getIgnored().join('\n'));
 
 	// Monitoring
 	settings->beginGroup("Monitoring");
@@ -123,6 +128,14 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
+
+	// Resize
+	settings->beginGroup("ImageSize");
+		ui->spinResizeMaxWidth->setValue(settings->value("maxWidth", 1000).toInt());
+		ui->checkResizeMaxWidth->setChecked(settings->value("maxWidthEnabled", false).toBool());
+		ui->spinResizeMaxHeight->setValue(settings->value("maxHeight", 1000).toInt());
+		ui->checkResizeMaxHeight->setChecked(settings->value("maxHeightEnabled", false).toBool());
+	settings->endGroup();
 
 	// External log files
 	showLogFiles(settings);
@@ -182,7 +195,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
-	i = 0;
+	int i = 0;
 	for (auto it = customs.constBegin(); it != customs.constEnd(); ++it) {
 		auto *leName = new QLineEdit(it.key());
 		auto *leTags = new QLineEdit(it.value().join(" "));
@@ -316,6 +329,13 @@ void OptionsWindow::on_buttonFolderFavorites_clicked()
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty()) {
 		ui->lineFolderFavorites->setText(folder);
+	}
+}
+void OptionsWindow::on_buttonTempPathOverride_clicked()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a temporary folder"), ui->lineTempPathOverride->text());
+	if (!folder.isEmpty()) {
+		ui->lineTempPathOverride->setText(folder);
 	}
 }
 
@@ -749,7 +769,7 @@ void treeWidgetRec(int depth, bool &found, int &index, QTreeWidgetItem *current,
 
 void OptionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
-	Q_UNUSED(previous);
+	Q_UNUSED(previous)
 
 	bool found = false;
 	int index = 0;
@@ -774,6 +794,7 @@ void OptionsWindow::save()
 	settings->setValue("ignoredtags", ui->lineIgnored->text());
 	settings->setValue("add", ui->lineAdd->text());
 	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
+	settings->setValue("globalPostFilterExplicit", ui->checkGlobalPostFilterExplicit->isChecked());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	settings->setValue("whitelist_download", wl.at(ui->comboWhitelist->currentIndex()));
 
@@ -798,6 +819,7 @@ void OptionsWindow::save()
 	settings->setValue("send_usage_data", ui->checkSendUsageData->isChecked());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
+	settings->setValue("tempPathOverride", ui->lineTempPathOverride->text());
 
 	settings->beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++) {
@@ -837,6 +859,9 @@ void OptionsWindow::save()
 	}
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
+
+	// Ignored tags
+	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', QString::SkipEmptyParts));
 
 	// Monitoring
 	settings->beginGroup("Monitoring");
@@ -917,6 +942,14 @@ void OptionsWindow::save()
 				settings->setValue(m_customNames[j]->text(), m_customTags[j]->text());
 			}
 		settings->endGroup();
+	settings->endGroup();
+
+	// Resize
+	settings->beginGroup("ImageSize");
+		settings->setValue("maxWidth", ui->spinResizeMaxWidth->value());
+		settings->setValue("maxWidthEnabled", ui->checkResizeMaxWidth->isChecked());
+		settings->setValue("maxHeight", ui->spinResizeMaxHeight->value());
+		settings->setValue("maxHeightEnabled", ui->checkResizeMaxHeight->isChecked());
 	settings->endGroup();
 
 	// Web services

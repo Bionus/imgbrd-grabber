@@ -1,54 +1,53 @@
-#include "filename-resolution-visitor-test.h"
 #include <QSet>
 #include <QString>
-#include <QtTest>
 #include "filename/filename-parser.h"
 #include "filename/filename-resolution-visitor.h"
+#include "catch.h"
 
 
-void FilenameResolutionVisitorTest::testEmpty()
+TEST_CASE("FilenameResolutionVisitor")
 {
-	FilenameParser parser("");
-	auto ast = parser.parseRoot();
+	SECTION("Empty")
+	{
+		FilenameParser parser("");
+		auto ast = parser.parseRoot();
 
-	FilenameResolutionVisitor resolutionVisitor;
-	auto results = resolutionVisitor.run(*ast);
+		FilenameResolutionVisitor resolutionVisitor;
+		auto results = resolutionVisitor.run(*ast);
 
-	QCOMPARE(results, QSet<QString>());
+		REQUIRE(results == QSet<QString>());
+	}
+
+	SECTION("Basic")
+	{
+		FilenameParser parser("out/%md5:opt%.%ext%");
+		auto ast = parser.parseRoot();
+
+		FilenameResolutionVisitor resolutionVisitor;
+		auto results = resolutionVisitor.run(*ast);
+
+		REQUIRE(results == QSet<QString>() << "md5" << "ext");
+	}
+
+	SECTION("Conditional")
+	{
+		FilenameParser parser("out/<%id%?some tag is present:%rating%>/%md5%.%ext%");
+		auto ast = parser.parseRoot();
+
+		FilenameResolutionVisitor resolutionVisitor;
+		auto results = resolutionVisitor.run(*ast);
+
+		REQUIRE(results == QSet<QString>() << "id" << "rating" << "md5" << "ext");
+	}
+
+	SECTION("Duplicates")
+	{
+		FilenameParser parser("%md5%/file-%md5:opt%.%ext%");
+		auto ast = parser.parseRoot();
+
+		FilenameResolutionVisitor resolutionVisitor;
+		auto results = resolutionVisitor.run(*ast);
+
+		REQUIRE(results == QSet<QString>() << "md5" << "ext");
+	}
 }
-
-void FilenameResolutionVisitorTest::testBasic()
-{
-	FilenameParser parser("out/%md5:opt%.%ext%");
-	auto ast = parser.parseRoot();
-
-	FilenameResolutionVisitor resolutionVisitor;
-	auto results = resolutionVisitor.run(*ast);
-
-	QCOMPARE(results, QSet<QString>() << "md5" << "ext");
-}
-
-void FilenameResolutionVisitorTest::testConditional()
-{
-	FilenameParser parser("out/<%id%?some tag is present:%rating%>/%md5%.%ext%");
-	auto ast = parser.parseRoot();
-
-	FilenameResolutionVisitor resolutionVisitor;
-	auto results = resolutionVisitor.run(*ast);
-
-	QCOMPARE(results, QSet<QString>() << "id" << "rating" << "md5" << "ext");
-}
-
-void FilenameResolutionVisitorTest::testDuplicates()
-{
-	FilenameParser parser("%md5%/file-%md5:opt%.%ext%");
-	auto ast = parser.parseRoot();
-
-	FilenameResolutionVisitor resolutionVisitor;
-	auto results = resolutionVisitor.run(*ast);
-
-	QCOMPARE(results, QSet<QString>() << "md5" << "ext");
-}
-
-
-QTEST_MAIN(FilenameResolutionVisitorTest)

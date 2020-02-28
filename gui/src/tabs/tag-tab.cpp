@@ -105,7 +105,7 @@ void TagTab::write(QJsonObject &json) const
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
-	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["postFiltering"] = QJsonArray::fromStringList(postFilter());
 	json["mergeResults"] = ui->checkMergeResults->isChecked();
 
 	// Last urls
@@ -145,7 +145,7 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 	for (auto tag : jsonPostFilters) {
 		postFilters.append(tag.toString());
 	}
-	setPostFilter(postFilters.join(' '));
+	setPostFilter(postFilters);
 
 	// Sources
 	QJsonArray jsonSelectedSources = json["sites"].toArray();
@@ -197,14 +197,13 @@ void TagTab::getPage()
 
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
 	for (const QSharedPointer<Page> &page : pages) {
-		const int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
-		if (perpage <= 0 || page->pageImageCount() <= 0) {
+		const int perPage = unloaded ? ui->spinImagesPerPage->value() : (page->pageImageCount() > ui->spinImagesPerPage->value() ? page->pageImageCount() : ui->spinImagesPerPage->value());
+		if (perPage <= 0 || page->pageImageCount() <= 0) {
 			continue;
 		}
 
-		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-
-		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
+		const QStringList postFiltering = postFilter(true);
+		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), ui->spinPage->value(), perPage, perPage, postFiltering, page->site()));
 	}
 }
 void TagTab::getAll()
@@ -224,8 +223,7 @@ void TagTab::getAll()
 			continue;
 		}
 
-		const QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-
+		const QStringList postFiltering = postFilter(true);
 		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), 1, perPage, total, postFiltering, page->site()));
 	}
 }

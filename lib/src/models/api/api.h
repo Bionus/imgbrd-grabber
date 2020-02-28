@@ -19,6 +19,7 @@ struct PageUrl
 {
 	QString error;
 	QString url;
+	QMap<QString, QString> headers;
 };
 
 struct ParsedPage
@@ -31,6 +32,17 @@ struct ParsedPage
 	QUrl urlNextPage;
 	QUrl urlPrevPage;
 	QString wiki;
+};
+
+struct TagTypeWithId
+{
+	int id;
+	QString name;
+};
+struct ParsedTagTypes
+{
+	QString error;
+	QList<TagTypeWithId> types;
 };
 
 struct ParsedTags
@@ -67,22 +79,37 @@ class Api : public QObject
 		QString getName() const;
 		virtual bool needAuth() const = 0;
 
-		// API
+		// Normal search
 		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const = 0;
 		virtual bool parsePageErrors() const = 0;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
+
+		// Gallery
 		virtual PageUrl galleryUrl(const QSharedPointer<Image> &gallery, int page, int limit, Site *site) const = 0;
 		virtual bool parseGalleryErrors() const = 0;
 		virtual ParsedPage parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
+
+		// Tag types
+		virtual PageUrl tagTypesUrl(Site *site) const = 0;
+		virtual bool parseTagTypesErrors() const = 0;
+		virtual ParsedTagTypes parseTagTypes(const QString &source, int statusCode, Site *site) const = 0;
+
+		// Tags
 		virtual PageUrl tagsUrl(int page, int limit, Site *site) const = 0;
 		virtual bool parseTagsErrors() const = 0;
 		virtual ParsedTags parseTags(const QString &source, int statusCode, Site *site) const = 0;
+
+		// Image details
 		virtual PageUrl detailsUrl(qulonglong id, const QString &md5, Site *site) const = 0;
 		virtual bool parseDetailsErrors() const = 0;
 		virtual ParsedDetails parseDetails(const QString &source, int statusCode, Site *site) const = 0;
+
+		// Check
 		virtual PageUrl checkUrl() const = 0;
 		virtual bool parseCheckErrors() const = 0;
 		virtual ParsedCheck parseCheck(const QString &source, int statusCode) const = 0;
+
+		virtual bool canLoadTagTypes() const = 0;
 		virtual bool canLoadTags() const = 0;
 		virtual bool canLoadDetails() const = 0;
 		virtual bool canLoadCheck() const = 0;

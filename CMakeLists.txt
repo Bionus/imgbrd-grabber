@@ -26,7 +26,7 @@ endif()
 
 project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.1.1")
+	set(VERSION "7.2.0")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()
@@ -60,6 +60,7 @@ if(USE_SSL AND (NOT ANDROID))
 	message(STATUS "Compiling with SSL support")
 	find_package(OpenSSL REQUIRED)
 	if (OPENSSL_FOUND)
+		message(STATUS "OpenSSL version: ${OPENSSL_VERSION}")
 		message(STATUS "OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
 		message(STATUS "OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 		include_directories(${OPENSSL_INCLUDE_DIR})
@@ -93,29 +94,12 @@ add_subdirectory(CrashReporter)
 
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
-install(DIRECTORY release/ DESTINATION share/Grabber/
+install(DIRECTORY release DESTINATION share/Grabber
 		PATTERN "*.desktop" EXCLUDE
-		PATTERN "*.exe" EXCLUDE)
-install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
+		PATTERN "*.exe" EXCLUDE
+        PATTERN "node_modules" EXCLUDE)
+install(FILES "release/Grabber.desktop" DESTINATION share/applications)
 
-# Transpile TS sites into JS
-set(SITES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/release/sites")
-file(GLOB_RECURSE SITES_TS_FILES "${SITES_DIR}/**.ts")
-include(ListFilterRegex)
-listFilterRegex(SITES_TS_FILES ".*.d.ts$")
-listFilterRegex(SITES_TS_FILES "node_modules")
-add_custom_command(
-	OUTPUT NPM_modules
-	DEPENDS "${SITES_DIR}/package.json"
-	COMMAND npm install
-	WORKING_DIRECTORY ${SITES_DIR}
-	COMMENT "Installing npm packages..."
-)
-add_custom_command(
-	OUTPUT JavaScript_sites
-	COMMAND npm run build
-	DEPENDS NPM_modules ${SITES_TS_FILES}
-	WORKING_DIRECTORY ${SITES_DIR}
-	COMMENT "Transpiling TypeScript sources into JavaScript..."
-)
-add_custom_target(sites ALL DEPENDS JavaScript_sites)
+add_subdirectory(release/sites)
+add_dependencies(gui sites)
+add_dependencies(cli sites)

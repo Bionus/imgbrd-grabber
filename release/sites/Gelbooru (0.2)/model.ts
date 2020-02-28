@@ -45,7 +45,7 @@ export const source: ISource = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
                     const page: number = query.page - 1;
                     const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                     const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
@@ -82,7 +82,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 42,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
@@ -109,7 +109,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {
@@ -120,7 +120,7 @@ export const source: ISource = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     const page: number = (query.page - 1) * 50;
                     return "/index.php?page=tags&s=list&pid=" + page;
                 },

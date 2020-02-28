@@ -24,6 +24,7 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 	ui->tagLineEdit->setText(m_favorite.getName());
 	ui->noteSpinBox->setValue(m_favorite.getNote());
 	ui->lastViewedDateTimeEdit->setDateTime(m_favorite.getLastViewed());
+	ui->postFilteringLineEdit->setText(m_favorite.getPostFiltering().join(' '));
 
 	QStringList sourceKeys = profile->getSites().keys();
 	ui->comboMonitoringSource->addItems(sourceKeys);
@@ -91,8 +92,14 @@ void FavoriteWindow::save()
 		monitors[0] = rep;
 	}
 
-	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime(), monitors);
-	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
+	m_favorite = Favorite(
+		ui->tagLineEdit->text(),
+		ui->noteSpinBox->value(),
+		ui->lastViewedDateTimeEdit->dateTime(),
+		monitors,
+		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
+		ui->postFilteringLineEdit->text().split(' ', QString::SkipEmptyParts)
+	);
 
 	if (oldFav.getName() != m_favorite.getName()) {
 		if (QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png"))) {

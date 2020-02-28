@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTimer>
+#include <utility>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
 #include "favorite.h"
@@ -36,6 +37,7 @@ Image::Image(const Image &other)
 	: QObject(other.parent())
 {
 	m_parent = other.m_parent;
+	m_parentUrl = other.m_parentUrl;
 	m_isGallery = other.m_isGallery;
 
 	m_id = other.m_id;
@@ -95,6 +97,9 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		log(QStringLiteral("Image has nullptr parent, aborting creation."));
 		return;
 	}
+	if (m_parent != nullptr) {
+		m_parentUrl = m_parent->url();
+	}
 
 	// Other details
 	m_isGallery = details.contains("type") && details["type"] == "gallery";
@@ -104,7 +109,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_status = details.contains("status") ? details["status"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
-	m_score = details.contains("score") ? details["score"].toInt() : 0;
+	m_score = details.contains("score") ? details["score"] : 0;
 	m_hasScore = details.contains("score");
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
 	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
@@ -189,7 +194,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 				if (tp == "user") {
 					m_author = tg.mid(colon + 1);
 				} else if (tp == "score") {
-					m_score = tg.midRef(colon + 1).toInt();
+					m_score = tg.mid(colon + 1);
 				} else if (tp == "size") {
 					QStringList size = tg.mid(colon + 1).split('x');
 					if (size.size() == 2) {
@@ -456,7 +461,8 @@ void Image::parseDetails()
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty()) {
-		m_pageUrl = redir;
+		m_pageUrl = m_parentSite->fixUrl(redir);
+		log(QStringLiteral("Redirecting details page to `%1`").arg(m_pageUrl.toString()));
 		loadDetails();
 		return;
 	}
@@ -762,6 +768,7 @@ const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 Page *Image::page() const { return m_parent; }
+const QUrl &Image::parentUrl() const { return m_parentUrl; }
 bool Image::isGallery() const { return m_isGallery; }
 ExtensionRotator *Image::extensionRotator() const { return m_extensionRotator; }
 QString Image::extension() const { return getExtension(m_url).toLower(); }
@@ -917,7 +924,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
 		QStrP(tr("Rating"), !m_rating.isEmpty() ? m_rating : unknown),
-		QStrP(tr("Score"), QString::number(m_score)),
+		QStrP(tr("Score"), m_score),
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
@@ -939,22 +946,14 @@ QList<QStrP> Image::detailsData() const
 
 QString Image::md5() const
 {
-	const QString savePath = m_sizes[Image::Size::Full]->savePath();
-
-	// If we know the path to the image or its content but not its md5, we calculate it first
-	if (m_md5.isEmpty() && !savePath.isEmpty()) {
-		QCryptographicHash hash(QCryptographicHash::Md5);
-
-		// Calculate from image path
-		QFile f(savePath);
-		f.open(QFile::ReadOnly);
-		hash.addData(&f);
-		f.close();
-
-		m_md5 = hash.result().toHex();
+	if (m_md5.isEmpty()) {
+		return md5forced();
 	}
-
 	return m_md5;
+}
+QString Image::md5forced() const
+{
+	return m_sizes[Image::Size::Full]->md5();
 }
 
 bool Image::hasTag(QString tag) const
@@ -1071,6 +1070,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("website", Token(m_parentSite->url()));
 	tokens.insert("websitename", Token(m_parentSite->name()));
 	tokens.insert("md5", Token(md5()));
+	tokens.insert("md5_forced", Token([this]() { return this->md5forced(); }));
 	tokens.insert("date", Token(m_createdAt));
 	tokens.insert("id", Token(m_id));
 	tokens.insert("rating", Token(m_rating, "unknown"));

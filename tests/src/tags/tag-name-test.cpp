@@ -1,49 +1,48 @@
-#include "tag-name-test.h"
-#include <QtTest>
 #include "tags/tag-name.h"
+#include "catch.h"
 
 
-void TagNameTest::testNormalizedValid()
+TEST_CASE("TagName")
 {
-	TagNameFormat capsSpace(TagNameFormat::Caps, " ");
-	TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
+	SECTION("NormalizedValid")
+	{
+		TagNameFormat capsSpace(TagNameFormat::Caps, " ");
+		TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
 
-	QCOMPARE(TagName("tag_name").normalized(), QString("tag_name"));
-	QCOMPARE(TagName("TAG NAME", capsSpace).normalized(), QString("tag_name"));
-	QCOMPARE(TagName("Tag-name", upperFirstDash).normalized(), QString("tag_name"));
+		REQUIRE(TagName("tag_name").normalized() == QString("tag_name"));
+		REQUIRE(TagName("TAG NAME", capsSpace).normalized() == QString("tag_name"));
+		REQUIRE(TagName("Tag-name", upperFirstDash).normalized() == QString("tag_name"));
+	}
+
+	SECTION("NormalizedInvalid")
+	{
+		REQUIRE(TagName("TAG NAME").normalized() == QString("TAG NAME"));
+	}
+
+	SECTION("Formatted")
+	{
+		TagNameFormat capsSpace(TagNameFormat::Caps, " ");
+		TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
+
+		REQUIRE(TagName("tag_name").formatted(capsSpace) == QString("TAG NAME"));
+		REQUIRE(TagName("tag_name").formatted(upperFirstDash) == QString("Tag-name"));
+		REQUIRE(TagName("Tag-name", upperFirstDash).formatted(capsSpace) == QString("TAG NAME"));
+		REQUIRE(TagName("TAG NAME", capsSpace).formatted(upperFirstDash) == QString("Tag-name"));
+	}
+
+	SECTION("Compare")
+	{
+		TagNameFormat capsSpace(TagNameFormat::Caps, " ");
+		TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
+
+		// Valid
+		REQUIRE(TagName("Tag-name", upperFirstDash) == TagName("tag_name"));
+		REQUIRE(TagName("TAG NAME", capsSpace) == TagName("tag_name"));
+		REQUIRE(TagName("Tag-name", upperFirstDash) == TagName("TAG NAME", capsSpace));
+
+		// Invalid
+		REQUIRE(TagName("Tag-name-2", upperFirstDash) != TagName("tag_name"));
+		REQUIRE(TagName("TAG NAME 2", capsSpace) != TagName("tag_name"));
+		REQUIRE(TagName("Tag-name 2", upperFirstDash) != TagName("TAG NAME", capsSpace));
+	}
 }
-
-void TagNameTest::testNormalizedInvalid()
-{
-	QCOMPARE(TagName("TAG NAME").normalized(), QString("TAG NAME"));
-}
-
-void TagNameTest::testFormatted()
-{
-	TagNameFormat capsSpace(TagNameFormat::Caps, " ");
-	TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
-
-	QCOMPARE(TagName("tag_name").formatted(capsSpace), QString("TAG NAME"));
-	QCOMPARE(TagName("tag_name").formatted(upperFirstDash), QString("Tag-name"));
-	QCOMPARE(TagName("Tag-name", upperFirstDash).formatted(capsSpace), QString("TAG NAME"));
-	QCOMPARE(TagName("TAG NAME", capsSpace).formatted(upperFirstDash), QString("Tag-name"));
-}
-
-void TagNameTest::testCompare()
-{
-	TagNameFormat capsSpace(TagNameFormat::Caps, " ");
-	TagNameFormat upperFirstDash(TagNameFormat::UpperFirst, "-");
-
-	// Valid
-	QCOMPARE(TagName("Tag-name", upperFirstDash) == TagName("tag_name"), true);
-	QCOMPARE(TagName("TAG NAME", capsSpace) == TagName("tag_name"), true);
-	QCOMPARE(TagName("Tag-name", upperFirstDash) == TagName("TAG NAME", capsSpace), true);
-
-	// Invalid
-	QCOMPARE(TagName("Tag-name-2", upperFirstDash) == TagName("tag_name"), false);
-	QCOMPARE(TagName("TAG NAME 2", capsSpace) == TagName("tag_name"), false);
-	QCOMPARE(TagName("Tag-name 2", upperFirstDash) == TagName("TAG NAME", capsSpace), false);
-}
-
-
-QTEST_MAIN(TagNameTest)

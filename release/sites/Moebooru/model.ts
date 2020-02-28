@@ -1,5 +1,5 @@
 function completeImage(img: IImage): IImage {
-    if (!img.file_url && img.file_url.length < 5) {
+    if (!img.file_url || img.file_url.length < 5) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
@@ -36,10 +36,15 @@ export const source: any = {
                     type: "password",
                 },
                 {
+                    id: "salt",
+                    type: "salt",
+                    def: "choujin-steiner--%password%--",
+                },
+                {
                     key: "password_hash",
                     type: "hash",
                     hash: "sha1",
-                    salt: "choujin-steiner--%password%--",
+                    salt: "%salt%",
                 },
             ],
         },
@@ -50,7 +55,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -66,7 +71,7 @@ export const source: any = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     return "/tag.json?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -93,7 +98,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -114,7 +119,7 @@ export const source: any = {
                 },
             },
             tags: {
-                url: (query: any, opts: any): string => {
+                url: (query: ITagsQuery): string => {
                     return "/tag.xml?page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
@@ -142,7 +147,7 @@ export const source: any = {
             auth: [],
             maxLimit: 1000,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const pagePart = Grabber.pageUrl(query.page, previous, -1, "{page}");
                     return "/post/index?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                 },
@@ -160,7 +165,7 @@ export const source: any = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/post/show/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
@@ -170,9 +175,23 @@ export const source: any = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tag";
+                },
+                parse: (src: string): IParsedTagTypes => {
+                    const contents = src.match(/<select[^>]* name="type"[^>]*>([\s\S]+)<\/select>/)[1];
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
             tags: {
-                url: (query: any, opts: any): string => {
-                    return "/tag?page=" + query.page;
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
+                    return "/tag?limit=" + opts.limit + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {

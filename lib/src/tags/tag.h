@@ -47,7 +47,9 @@ class Tag
 bool sortTagsByType(const Tag &, const Tag &);
 bool sortTagsByName(const Tag &, const Tag &);
 bool sortTagsByCount(const Tag &, const Tag &);
+
 bool operator==(const Tag &t1, const Tag &t2);
+bool operator!=(const Tag &t1, const Tag &t2);
 
 Q_DECLARE_METATYPE(Tag)
 

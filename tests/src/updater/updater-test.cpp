@@ -1,76 +1,78 @@
-#include "updater-test.h"
-#include <QtTest>
+#include "updater/program-updater.h"
+#include "catch.h"
 
 
-void UpdaterTest::testCompareEqual()
+TEST_CASE("Updater")
 {
-	QCOMPARE(m_updater.compareVersions("1.0.0", "1.0.0"), 0);
-	QCOMPARE(m_updater.compareVersions("1.4.0", "1.4.0"), 0);
-	QCOMPARE(m_updater.compareVersions("1.4.7", "1.4.7"), 0);
+	ProgramUpdater updater;
+	
+	SECTION("CompareEqual")
+	{
+		REQUIRE(updater.compareVersions("1.0.0", "1.0.0") == 0);
+		REQUIRE(updater.compareVersions("1.4.0", "1.4.0") == 0);
+		REQUIRE(updater.compareVersions("1.4.7", "1.4.7") == 0);
+	}
+
+	SECTION("CompareEqualAlphas")
+	{
+		REQUIRE(updater.compareVersions("1.0.0a2", "1.0.0a2") == 0);
+		REQUIRE(updater.compareVersions("1.4.0a2", "1.4.0a2") == 0);
+		REQUIRE(updater.compareVersions("1.4.7a2", "1.4.7a2") == 0);
+	}
+
+
+	SECTION("CompareMinor")
+	{
+		REQUIRE(updater.compareVersions("1.0.1", "1.0.0") == 1);
+		REQUIRE(updater.compareVersions("1.0.0", "1.0.1") == -1);
+	}
+
+	SECTION("CompareNormal")
+	{
+		REQUIRE(updater.compareVersions("1.1.0", "1.0.0") == 1);
+		REQUIRE(updater.compareVersions("1.0.0", "1.1.0") == -1);
+	}
+
+	SECTION("CompareMajor")
+	{
+		REQUIRE(updater.compareVersions("2.0.0", "1.0.0") == 1);
+		REQUIRE(updater.compareVersions("1.0.0", "2.0.0") == -1);
+	}
+
+	SECTION("CompareTen")
+	{
+		REQUIRE(updater.compareVersions("2.0.0", "1.10.0") == 1);
+		REQUIRE(updater.compareVersions("1.10.0", "2.0.0") == -1);
+	}
+
+	SECTION("CompareMissing")
+	{
+		REQUIRE(updater.compareVersions("1.0.1", "1.0") == 1);
+		REQUIRE(updater.compareVersions("1.0", "1.0.1") == -1);
+	}
+
+
+	SECTION("CompareAlphas")
+	{
+		REQUIRE(updater.compareVersions("1.0.0a3", "1.0.0a2") == 1);
+		REQUIRE(updater.compareVersions("1.0.0a2", "1.0.0a3") == -1);
+	}
+
+	SECTION("CompareAlphaToNew")
+	{
+		REQUIRE(updater.compareVersions("1.0.0", "1.0.0a3") == 1);
+		REQUIRE(updater.compareVersions("1.0.0a3", "1.0.0") == -1);
+	}
+
+	SECTION("CompareAlphaToOld")
+	{
+		REQUIRE(updater.compareVersions("1.0.0a3", "0.1.0") == 1);
+		REQUIRE(updater.compareVersions("0.1.0", "1.0.0a3") == -1);
+	}
+
+	SECTION("CompareAlphaToBeta")
+	{
+		REQUIRE(updater.compareVersions("1.0.0b1", "1.0.0a3") == 1);
+		REQUIRE(updater.compareVersions("1.0.0a3", "1.0.0b1") == -1);
+	}
 }
-
-void UpdaterTest::testCompareEqualAlphas()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.0a2", "1.0.0a2"), 0);
-	QCOMPARE(m_updater.compareVersions("1.4.0a2", "1.4.0a2"), 0);
-	QCOMPARE(m_updater.compareVersions("1.4.7a2", "1.4.7a2"), 0);
-}
-
-
-void UpdaterTest::testCompareMinor()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.1", "1.0.0"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0", "1.0.1"), -1);
-}
-
-void UpdaterTest::testCompareNormal()
-{
-	QCOMPARE(m_updater.compareVersions("1.1.0", "1.0.0"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0", "1.1.0"), -1);
-}
-
-void UpdaterTest::testCompareMajor()
-{
-	QCOMPARE(m_updater.compareVersions("2.0.0", "1.0.0"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0", "2.0.0"), -1);
-}
-
-void UpdaterTest::testCompareTen()
-{
-	QCOMPARE(m_updater.compareVersions("2.0.0", "1.10.0"), 1);
-	QCOMPARE(m_updater.compareVersions("1.10.0", "2.0.0"), -1);
-}
-
-void UpdaterTest::testCompareMissing()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.1", "1.0"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0", "1.0.1"), -1);
-}
-
-
-void UpdaterTest::testCompareAlphas()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.0a3", "1.0.0a2"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0a2", "1.0.0a3"), -1);
-}
-
-void UpdaterTest::testCompareAlphaToNew()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.0", "1.0.0a3"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0a3", "1.0.0"), -1);
-}
-
-void UpdaterTest::testCompareAlphaToOld()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.0a3", "0.1.0"), 1);
-	QCOMPARE(m_updater.compareVersions("0.1.0", "1.0.0a3"), -1);
-}
-
-void UpdaterTest::testCompareAlphaToBeta()
-{
-	QCOMPARE(m_updater.compareVersions("1.0.0b1", "1.0.0a3"), 1);
-	QCOMPARE(m_updater.compareVersions("1.0.0a3", "1.0.0b1"), -1);
-}
-
-
-QTEST_MAIN(UpdaterTest)

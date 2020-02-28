@@ -23,6 +23,7 @@ class FilenameParser
 	public:
 		explicit FilenameParser(QString str);
 		const QString &error() const;
+		const QString &str() const;
 
 		FilenameNodeRoot *parseRoot();
 		FilenameNodeCondition *parseCondition();

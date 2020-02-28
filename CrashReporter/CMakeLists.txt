@@ -14,5 +14,6 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/CrashReporter/$<0:>" OUTPUT_NAME "CrashReporter")
 
 add_subdirectory(languages) # Translations

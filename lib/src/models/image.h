@@ -56,6 +56,7 @@ class Image : public QObject, public Downloadable
 		QSize size(Size size = Size::Full) const;
 		const QString &name() const;
 		Page *page() const;
+		const QUrl &parentUrl() const;
 		Site *parentSite() const;
 		ExtensionRotator *extensionRotator() const;
 		bool hasTag(QString tag) const;
@@ -107,6 +108,7 @@ class Image : public QObject, public Downloadable
 		void init();
 		QList<Tag> filteredTags(const QStringList &remove) const;
 		void setRating(const QString &rating);
+		QString md5forced() const;
 
 		// Saving
 		SaveResult save(const QString &path, Size size, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool postSave = true);
@@ -127,13 +129,15 @@ class Image : public QObject, public Downloadable
 		Profile *m_profile;
 		Page *m_parent = nullptr;
 		qulonglong m_id;
-		int m_score, m_parentId, m_authorId;
+		QString m_score;
+		int m_parentId, m_authorId;
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
 		QString m_author, m_name, m_status, m_rating;
 		QStringList m_sources;
 		QUrl m_pageUrl;
+		QUrl m_parentUrl;
 		QDateTime m_createdAt;
 		NetworkReply *m_loadDetails = nullptr;
 		QList<Tag> m_tags;

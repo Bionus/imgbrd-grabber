@@ -2,6 +2,7 @@
 // #include <QtConcurrentRun>
 #include <QTimer>
 #include <QtMath>
+#include <utility>
 #include "functions.h"
 #include "image.h"
 #include "logger.h"
@@ -64,7 +65,9 @@ void PageApi::updateUrls()
 		if (!ret.error.isEmpty()) {
 			m_errors.append(ret.error);
 		}
+
 		url = ret.url;
+		m_headers = ret.headers;
 	}
 
 	// Add site information to URL
@@ -117,7 +120,7 @@ void PageApi::load(bool rateLimit, bool force)
 
 	log(QStringLiteral("[%1][%2] Loading page `%3`").arg(m_site->url(), m_format, m_url.toString().toHtmlEscaped()), Logger::Info);
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
-	setReply(m_site->get(m_url, type));
+	setReply(m_site->get(m_url, type, QUrl(), "", nullptr, m_headers));
 	connect(m_reply, &NetworkReply::finished, this, &PageApi::parse);
 }
 void PageApi::abort()

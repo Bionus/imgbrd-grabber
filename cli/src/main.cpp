@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QNetworkProxy>
+#include <QSettings>
 #include <QUrl>
 #include "downloader/downloader.h"
 #include "functions.h"
@@ -17,7 +18,6 @@
 
 void loadMoreDetails(const QList<QSharedPointer<Image>> &images);
 QJsonObject serializeImg(const Image *image, const QMap<QString, Token>& tokens);
-void writeToFile(QString filename, QByteArray data);
 
 void returnJsonArray(const QJsonArray &array)
 {
@@ -60,6 +60,13 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
+	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+
+	QSettings *settings = profile->getSettings();
+	QString dPath = settings->value("Save/path", "").toString();
+	QString dFilename = settings->value("Save/filename", "").toString();
+
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();
@@ -69,8 +76,8 @@ int main(int argc, char *argv[])
 	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
 	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
 	const QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
-	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
-	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
+	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path", dPath);
+	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename", dFilename);
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
@@ -158,9 +165,6 @@ int main(int argc, char *argv[])
 		log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(proxyUrl.host()).arg(proxyUrl.port()), Logger::Info);
 	}
 
-	Profile *profile = new Profile(savePath());
-	profile->purgeTemp(24 * 60 * 60);
-
 	auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts));
 	if (parser.isSet(noLoginOption)) {
 		for (auto& site : sites) {
@@ -195,6 +199,11 @@ int main(int argc, char *argv[])
 		QTextStream(stdout) << qPrintable(jsonResult);
 
 		exit(0);
+	}
+
+	if (parser.value(filenameOption).isEmpty() && parser.isSet(downloadOption)) {
+		QTextStream(stderr) << "You need a filename for downloading images";
+		exit(1);
 	}
 
 	QString blacklistOverride = parser.value(tagsBlacklistOption);
@@ -320,12 +329,4 @@ QJsonObject serializeImg(const Image *image, const QMap<QString, Token> &tokens)
 	jsObject.insert("isGallery", image->isGallery());
 	jsObject.insert("isAnimated", image->isAnimated());
 	return jsObject;
-}
-
-void writeToFile(QString filename, QByteArray data)
-{
-	QFile file(filename);
-	file.open(QFile::WriteOnly);
-	file.write(data);
-	file.close();
 }

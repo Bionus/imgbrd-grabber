@@ -1,4 +1,5 @@
 #include "auth/url-auth.h"
+#include <utility>
 
 
 UrlAuth::UrlAuth(QString type, QList<AuthField*> fields, int maxPage)

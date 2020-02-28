@@ -1,4 +1,5 @@
 #include "tags/tag-name.h"
+#include <utility>
 
 
 TagName::TagName(QString name, TagNameFormat format)
@@ -6,6 +7,7 @@ TagName::TagName(QString name, TagNameFormat format)
 {
 	m_normalized = normalized();
 }
+
 
 QString TagName::normalized() const
 {
@@ -25,7 +27,12 @@ QString TagName::formatted(const TagNameFormat &format) const
 	return format.formatted(m_words);
 }
 
+
 bool operator==(const TagName &a, const TagName &b)
 {
 	return a.normalized() == b.normalized();
+}
+bool operator!=(const TagName &a, const TagName &b)
+{
+	return !(a == b);
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>471</height>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,6 +93,11 @@
          <string>Tags</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Image size</string>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
@@ -127,6 +132,11 @@
       <item>
        <property name="text">
         <string>Blacklist</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ignored tags</string>
        </property>
       </item>
       <item>
@@ -341,7 +351,7 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="13" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
            <string>Ask for confirmation before closing the window</string>
@@ -358,10 +368,17 @@
         <item row="10" column="1">
          <widget class="QLineEdit" name="lineGlobalPostFilter"/>
         </item>
-        <item row="13" column="0" colspan="2">
+        <item row="14" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSendUsageData">
           <property name="text">
            <string>Send anonymous usage data</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkGlobalPostFilterExplicit">
+          <property name="text">
+           <string>Explicitely add global post-filter to tab post-filter field</string>
           </property>
          </widget>
         </item>
@@ -388,6 +405,7 @@
        <zorder>labelGlobalPostFilter</zorder>
        <zorder>lineGlobalPostFilter</zorder>
        <zorder>checkSendUsageData</zorder>
+       <zorder>checkGlobalPostFilterExplicit</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -831,6 +849,37 @@
           </item>
          </widget>
         </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Temporary directory</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0" colspan="2">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>&lt;i&gt;Leave empty to use the default temporary directory.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="lineTempPathOverride"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonTempPathOverride">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSaveFilenames">
@@ -942,14 +991,14 @@
         <item row="5" column="1">
          <widget class="QSpinBox" name="spinLimit">
           <property name="maximum">
-           <number>260</number>
+           <number>10000</number>
           </property>
          </widget>
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
           <property name="text">
-           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
+           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -995,8 +1044,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>65</width>
-             <height>16</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1086,6 +1135,82 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageTags"/>
+      <widget class="QWidget" name="pageImageSize">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Resize</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_5">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="checkResizeMaxWidth">
+             <property name="text">
+              <string>Max width</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinResizeMaxWidth">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="checkResizeMaxHeight">
+             <property name="text">
+              <string>Max height</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinResizeMaxHeight">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelResizeHelp">
+             <property name="text">
+              <string>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageInterface">
        <layout class="QFormLayout" name="formLayout_7">
         <property name="fieldGrowthPolicy">
@@ -2278,6 +2403,30 @@
          <widget class="QLabel" name="labelHideBlacklisted">
           <property name="text">
            <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageIgnoredTags">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QLabel" name="labelIgnoredTags">
+          <property name="text">
+           <string>Ignored tags</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textIgnoredTags"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelIgnoredTagsInfos">
+          <property name="text">
+           <string>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>

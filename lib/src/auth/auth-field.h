@@ -17,12 +17,13 @@ class AuthField
 			Const
 		};
 
-		AuthField(QString id, QString key, FieldType type);
+		AuthField(QString id, QString key, FieldType type, QString def = QString());
 		virtual ~AuthField() = default;
 
 		QString id() const;
 		QString key() const;
 		FieldType type() const;
+		QString def() const;
 
 		virtual QString value(MixedSettings *settings) const;
 
@@ -30,6 +31,7 @@ class AuthField
 		QString m_id;
 		QString m_key;
 		FieldType m_type;
+		QString m_default;
 };
 
 #endif // AUTH_FIELD_H

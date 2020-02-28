@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
+#include <utility>
 #include "tag-type.h"
 
 
@@ -56,6 +57,22 @@ bool TagDatabase::loadTypes()
 	f.close();
 
 	return true;
+}
+
+void TagDatabase::setTagTypes(const QList<TagTypeWithId> &tagTypes)
+{
+	m_tagTypes.clear();
+	for (const auto &tagType : tagTypes) {
+		m_tagTypes.insert(tagType.id, TagType(tagType.name));
+	}
+
+	QFile f(m_typeFile);
+	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+		for (const auto &tagType : tagTypes) {
+			f.write(QString("%1,%2\n").arg(QString::number(tagType.id), tagType.name).toUtf8());
+		}
+		f.close();
+	}
 }
 
 const QMap<int, TagType> &TagDatabase::tagTypes() const

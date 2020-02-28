@@ -90,6 +90,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	static QMap<QString, QString> fieldLabels {
 		{ "pseudo", tr("Username") },
 		{ "password", tr("Password") },
+		{ "salt", tr("Salt") },
 		{ "apiKey", tr("API key") }
 	};
 	QStringList types;
@@ -223,7 +224,7 @@ void SourcesSettingsWindow::testLogin()
 
 void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 {
-	Q_UNUSED(site);
+	Q_UNUSED(site)
 
 	switch (result)
 	{

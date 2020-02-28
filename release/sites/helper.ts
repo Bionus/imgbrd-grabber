@@ -115,7 +115,7 @@ addHelper("fileSizeToInt", (str: string): number => {
     return parseInt(str, 10);
 });
 
-addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
+addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined): string => {
     url = url.replace("{page}", String(page));
     if (previous) {
         url = url.replace("{min}", previous.minId);
@@ -126,7 +126,7 @@ addHelper("fixPageUrl", (url: string, page: number, previous: any): string => {
     return url;
 });
 
-addHelper("pageUrl", (page: number, previous: any, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
+addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
     if (page <= limit || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous);
     }

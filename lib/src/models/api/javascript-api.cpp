@@ -45,6 +45,15 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 		}
 
 		url = result.property("url").toString();
+
+		if (result.hasProperty("headers")) {
+			const QJSValue headers = result.property("headers");
+			QJSValueIterator headersIt(headers);
+			while (headersIt.hasNext()) {
+				headersIt.next();
+				ret.headers[headersIt.name()] = headersIt.value().toString();
+			}
+		}
 	} else {
 		url = result.toString();
 	}
@@ -202,6 +211,9 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 								dval = date;
 							}
 						}
+						if (dit.value().isString() && dval.toString().startsWith("b64:")) {
+							dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
+						}
 						data[dit.name()] = dval;
 					}
 				} else if (val.isArray()) {
@@ -273,6 +285,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
 	fillUrlObject(result, site, ret);
@@ -288,6 +301,74 @@ bool JavascriptApi::parseGalleryErrors() const
 ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, int statusCode, int first) const
 {
 	return parsePageInternal("gallery", parentPage, source, statusCode, first);
+}
+
+
+bool JavascriptApi::canLoadTagTypes() const
+{
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tagTypes").property("url");
+	return !urlFunction.isUndefined();
+}
+
+PageUrl JavascriptApi::tagTypesUrl(Site *site) const
+{
+	PageUrl ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue urlFunction = api.property("tagTypes").property("url");
+	if (urlFunction.isUndefined()) {
+		ret.error = "This API does not support tag type loading";
+		return ret;
+	}
+
+	const QJSValue result = urlFunction.call();
+	fillUrlObject(result, site, ret);
+
+	return ret;
+}
+
+bool JavascriptApi::parseTagTypesErrors() const
+{
+	return getJsConst("tagTypes.parseErrors").toBool();
+}
+
+ParsedTagTypes JavascriptApi::parseTagTypes(const QString &source, int statusCode, Site *site) const
+{
+	ParsedTagTypes ret;
+
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue parseFunction = api.property("tagTypes").property("parse");
+	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+
+	// Script errors and exceptions
+	if (results.isError()) {
+		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	if (results.hasProperty("error")) {
+		ret.error = results.property("error").toString();
+	}
+	if (results.hasProperty("types")) {
+		const auto &types = results.property("types");
+		const quint32 length = types.property("length").toUInt();
+		for (quint32 i = 0; i < length; ++i) {
+			const QJSValue tagType = types.property(i);
+			if (!tagType.isObject()) {
+				continue;
+			}
+			TagTypeWithId tt;
+			tt.id = tagType.property("id").toInt();
+			tt.name = tagType.property("name").toString();
+			ret.types.append(tt);
+		}
+	}
+
+	return ret;
 }
 
 
@@ -520,7 +601,7 @@ QJSValue JavascriptApi::getJsConst(const QString &fullKey, const QJSValue &def) 
 
 bool JavascriptApi::needAuth() const
 {
-	QStringList requiredAuths = jsToStringList(getJsConst("forcedLimit"));
+	QStringList requiredAuths = jsToStringList(getJsConst("auth"));
 	return !requiredAuths.isEmpty();
 }
 

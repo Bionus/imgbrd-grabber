@@ -1,5 +1,5 @@
-#ifndef BATCHWINDOW_H
-#define BATCHWINDOW_H
+#ifndef BATCH_WINDOW_H
+#define BATCH_WINDOW_H
 
 #include <QDialog>
 #include <QList>
@@ -89,4 +89,4 @@ class BatchWindow : public QDialog
 		#endif
 };
 
-#endif // BATCHWINDOW_H
+#endif // BATCH_WINDOW_H

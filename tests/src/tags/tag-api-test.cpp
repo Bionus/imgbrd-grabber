@@ -1,5 +1,4 @@
-#include "tag-api-test.h"
-#include <QtTest>
+#include <QSignalSpy>
 #include "custom-network-access-manager.h"
 #include "models/api/api.h"
 #include "models/profile.h"
@@ -7,34 +6,14 @@
 #include "models/source.h"
 #include "tags/tag.h"
 #include "tags/tag-api.h"
-
-
-void TagApiTest::init()
-{
-	setupSource("Danbooru (2.0)");
-	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
-
-	m_profile = makeProfile();
-	m_site = m_profile->getSites().value("danbooru.donmai.us");
-
-	m_api = nullptr;
-	for (Api *a : m_site->getApis()) {
-		if (a->getName() == "Xml") {
-			m_api = a;
-		}
-	}
-}
-
-void TagApiTest::cleanup()
-{
-	m_profile->deleteLater();
-}
+#include "catch.h"
+#include "source-helpers.h"
 
 
 TagApi::LoadResult load(TagApi *api)
 {
 	// Wait for downloader
-	QSignalSpy spy(api, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	QSignalSpy spy(api, SIGNAL(finishedLoading(TagApiBase*, TagApiBase::LoadResult)));
 	api->load(false);
 	if (!spy.wait()) {
 		return TagApi::LoadResult::Error;
@@ -47,73 +26,91 @@ TagApi::LoadResult load(TagApi *api)
 	return result;
 }
 
-void TagApiTest::testBasic()
+
+TEST_CASE("TagApi")
 {
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+	setupSource("Danbooru (2.0)");
+	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 
-	TagApi::LoadResult result = load(&tagApi);
+	const QScopedPointer<Profile> pProfile(makeProfile());
+	auto profile = pProfile.data();
 
-	QCOMPARE(result, TagApi::LoadResult::Ok);
-	QCOMPARE(tagApi.tags().count(), 100);
-	QCOMPARE(tagApi.tags().at(1).text(), QString("walkr"));
-	QCOMPARE(tagApi.tags().at(1).type().name(), QString("copyright"));
+	Site *site = profile->getSites().value("danbooru.donmai.us");
+	REQUIRE(site != nullptr);
+
+	Api *api = nullptr;
+	for (Api *a : site->getApis()) {
+		if (a->getName() == "Xml") {
+			api = a;
+		}
+	}
+
+
+	SECTION("Basic")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
+		TagApi::LoadResult result = load(&tagApi);
+
+		REQUIRE(result == TagApi::LoadResult::Ok);
+		REQUIRE(tagApi.tags().count() == 100);
+		REQUIRE(tagApi.tags().at(1).text() == QString("walkr"));
+		REQUIRE(tagApi.tags().at(1).type().name() == QString("copyright"));
+	}
+
+	SECTION("NetworkError")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+		CustomNetworkAccessManager::NextFiles.enqueue("404");
+
+		TagApi::LoadResult result = load(&tagApi);
+
+		REQUIRE(result == TagApi::LoadResult::Error);
+		REQUIRE(tagApi.tags().count() == 0);
+	}
+
+	SECTION("ParseError")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.html");
+
+		TagApi::LoadResult result = load(&tagApi);
+
+		REQUIRE(result == TagApi::LoadResult::Error);
+		REQUIRE(tagApi.tags().count() == 0);
+	}
+
+	SECTION("DoubleLoad")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
+		load(&tagApi);
+		TagApi::LoadResult result = load(&tagApi);
+
+		REQUIRE(result == TagApi::LoadResult::Ok);
+	}
+
+	SECTION("Redirect")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+		CustomNetworkAccessManager::NextFiles.enqueue("redirect");
+		CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
+		TagApi::LoadResult result = load(&tagApi);
+
+		REQUIRE(result == TagApi::LoadResult::Ok);
+	}
+
+	SECTION("Abort")
+	{
+		TagApi tagApi(profile, site, api, 1, 100);
+
+		QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApiBase*, TagApiBase::LoadResult)));
+		tagApi.load(false);
+		tagApi.abort();
+		REQUIRE(!spy.wait(1000));
+	}
 }
-
-void TagApiTest::testNetworkError()
-{
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-	CustomNetworkAccessManager::NextFiles.enqueue("404");
-
-	TagApi::LoadResult result = load(&tagApi);
-
-	QCOMPARE(result, TagApi::LoadResult::Error);
-	QCOMPARE(tagApi.tags().count(), 0);
-}
-
-void TagApiTest::testParseError()
-{
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.html");
-
-	TagApi::LoadResult result = load(&tagApi);
-
-	QCOMPARE(result, TagApi::LoadResult::Error);
-	QCOMPARE(tagApi.tags().count(), 0);
-}
-
-void TagApiTest::testDoubleLoad()
-{
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
-
-	load(&tagApi);
-	TagApi::LoadResult result = load(&tagApi);
-
-	QCOMPARE(result, TagApi::LoadResult::Ok);
-}
-
-void TagApiTest::testRedirect()
-{
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-	CustomNetworkAccessManager::NextFiles.enqueue("redirect");
-	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
-
-	TagApi::LoadResult result = load(&tagApi);
-
-	QCOMPARE(result, TagApi::LoadResult::Ok);
-}
-
-void TagApiTest::testAbort()
-{
-	TagApi tagApi(m_profile, m_site, m_api, 1, 100);
-
-	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
-	tagApi.load(false);
-	tagApi.abort();
-	QVERIFY(!spy.wait(1000));
-}
-
-
-QTEST_MAIN(TagApiTest)

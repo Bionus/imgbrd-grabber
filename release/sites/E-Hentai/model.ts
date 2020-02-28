@@ -20,9 +20,27 @@ function sizeToInt(size: string): number {
     return val;
 }
 
+function parseSearch(srch: string): { cats: string, search: string } {
+    let cats = "0";
+    const tags: string[] = [];
+
+    const parts = srch.split(" ");
+    for (const tag of parts) {
+        const part = tag.trim();
+        if (part.indexOf("cats:") === 0) {
+            cats = part.substr(5);
+        } else {
+            tags.push(part);
+        }
+    }
+
+    const search = tags.join(" ");
+    return { cats, search };
+}
+
 export const source: ISource = {
     name: "E-Hentai",
-    modifiers: [],
+    modifiers: ["cats:"],
     forcedTokens: ["*"],
     searchFormat: {
         and: " ",
@@ -69,8 +87,9 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 25,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
-                    return "/?page=" + (query.page - 1) + "&f_search=" + encodeURIComponent(query.search);
+                url: (query: ISearchQuery): string => {
+                    const s = parseSearch(query.search);
+                    return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const rows = src.match(/<tr[^>]*>(.+?)<\/tr>/g);
@@ -112,7 +131,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "/g/" + query.md5 + "/?p=" + (query.page - 1);
                 },
                 parse: (src: string): IParsedGallery => {

@@ -1,45 +1,46 @@
-#include "zerochan-test.h"
+#include <QSharedPointer>
 #include <QStringList>
-#include <QtTest>
 #include "models/image.h"
 #include "tags/tag.h"
+#include "catch.h"
+#include "integration-helpers.h"
 
 
-void ZerochanTest::testHtml()
+TEST_CASE("Zerochan")
 {
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html");
+	SECTION("Html")
+	{
+		QList<QSharedPointer<Image>> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html");
 
-	// Convert results
-	QList<qulonglong> ids;
-	ids.reserve(images.count());
-	for (Image *img : images) {
-		ids.append(img->id());
+		// Convert results
+		QList<qulonglong> ids;
+		ids.reserve(images.count());
+		for (const auto &img : images) {
+			ids.append(img->id());
+		}
+
+		// Check results
+		ids = ids.mid(0, 3);
+		QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
+		REQUIRE(images.count() == 20);
+		REQUIRE(ids == expected);
 	}
 
-	// Check results
-	ids = ids.mid(0, 3);
-	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
-	QCOMPARE(images.count(), 20);
-	QCOMPARE(ids, expected);
-}
+	SECTION("Rss")
+	{
+		QList<QSharedPointer<Image>> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss");
 
-void ZerochanTest::testRss()
-{
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss");
+		// Convert results
+		QList<qulonglong> ids;
+		ids.reserve(images.count());
+		for (const auto &img : images) {
+			ids.append(img->id());
+		}
 
-	// Convert results
-	QList<qulonglong> ids;
-	ids.reserve(images.count());
-	for (Image *img : images) {
-		ids.append(img->id());
+		// Check results
+		ids = ids.mid(0, 3);
+		QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
+		REQUIRE(images.count() == 20);
+		REQUIRE(ids == expected);
 	}
-
-	// Check results
-	ids = ids.mid(0, 3);
-	QList<qulonglong> expected = QList<qulonglong>() << 2034435 << 2034432 << 2034431;
-	QCOMPARE(images.count(), 20);
-	QCOMPARE(ids, expected);
 }
-
-
-QTEST_MAIN(ZerochanTest)

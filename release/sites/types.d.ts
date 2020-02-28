@@ -5,6 +5,10 @@ interface ITag {
     type?: string;
     typeId?: number;
 }
+interface ITagType {
+    id: number;
+    name: string;
+}
 interface IImage {
     // Known "meaningful" tokens
     type?: "image" | "gallery";
@@ -81,6 +85,9 @@ interface IParsedSearch {
     urlNextPage?: string;
     urlPrevPage?: string;
 }
+interface IParsedTagTypes {
+    types: ITagType[];
+}
 interface IParsedTags {
     tags: ITag[] | string[];
 }
@@ -98,7 +105,8 @@ interface IAuthFieldBase {
 }
 interface IAuthNormalField extends IAuthFieldBase {
     id: string;
-    type?: "text" | "password";
+    type?: "text" | "password" | "salt";
+    def?: string;
 }
 interface IAuthConstField extends IAuthFieldBase {
     type: "const";
@@ -160,6 +168,33 @@ interface ISearchFormatType {
     prefix?: string;
 }
 
+interface ISearchQuery {
+    search: string;
+    page: number;
+}
+interface IGalleryQuery {
+    id: string;
+    md5: string;
+    page: number;
+}
+interface ITagsQuery {
+    page: number;
+}
+
+interface IUrlOptions {
+    limit: number;
+    baseUrl: string;
+    loggedIn: boolean;
+}
+
+interface IPreviousSearch {
+    page: number;
+    minIdM1: string;
+    minId: string;
+    maxId: string;
+    maxIdP1: string;
+}
+
 interface IApi {
     name: string;
     auth: string[];
@@ -167,22 +202,27 @@ interface IApi {
     forcedLimit?: number;
     search: {
         parseErrors?: boolean;
-        url: (query: any, opts: any, previous: any) => IUrl | IError | string;
+        url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
     details?: {
         parseErrors?: boolean;
-        url: (id: number, md5: string) => IUrl | IError | string;
+        url: (id: string, md5: string) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {
         parseErrors?: boolean;
-        url: (query: any, opts: any) => IUrl | IError | string;
+        url: (query: IGalleryQuery, opts: IUrlOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedGallery | IError;
     };
+    tagTypes?: {
+        parseErrors?: boolean;
+        url: () => IUrl | IError | string;
+        parse: (src: string, statusCode: number) => IParsedTagTypes | IError;
+    },
     tags?: {
         parseErrors?: boolean;
-        url: (query: any, opts: any) => IUrl | IError | string;
+        url: (query: ITagsQuery, opts: IUrlOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedTags | IError;
     };
     check?: {

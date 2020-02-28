@@ -1,5 +1,8 @@
 #include "analytics.h"
 
+class QString;
+class QVariant;
+
 
 void Analytics::setTrackingID(const QString& trackingId)
 {

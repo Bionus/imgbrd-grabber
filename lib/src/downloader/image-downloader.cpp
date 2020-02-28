@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QSize>
 #include <QUuid>
+#include <utility>
 #include "extension-rotator.h"
 #include "file-downloader.h"
 #include "functions.h"
@@ -146,9 +147,16 @@ void ImageDownloader::loadedSave()
 	if (m_paths.isEmpty()) {
 		m_paths = m_image->paths(m_filename, m_path, m_count);
 
+		// If we still don't have any paths, that means the filename is invalid
+		if (m_paths.isEmpty()) {
+			log(QStringLiteral("No path could be generated for filename: '%1'").arg(m_filename.format()), Logger::Error);
+			emit saved(m_image, makeResult({ "" }, Image::SaveResult::Error));
+			return;
+		}
+
 		// Use a random temporary file if we need the MD5 or equivalent
 		if (m_filename.needTemporaryFile(m_image->tokens(m_profile))) {
-			const QString tmpDir = !m_path.isEmpty() ? m_path : QDir::tempPath();
+			const QString tmpDir = !m_path.isEmpty() ? m_path : m_profile->tempPath();
 			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 		}
 	}
@@ -219,7 +227,7 @@ void ImageDownloader::loadImage()
 
 	// Load the image directly on the disk
 	Site *site = m_image->parentSite();
-	m_reply = site->get(site->fixUrl(m_url.toString()), Site::QueryType::Img, m_image->page(), QStringLiteral("image"), m_image.data());
+	m_reply = site->get(site->fixUrl(m_url.toString()), Site::QueryType::Img, m_image->parentUrl(), QStringLiteral("image"), m_image.data());
 	m_reply->setParent(this);
 	connect(m_reply, &NetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
@@ -232,7 +240,7 @@ void ImageDownloader::loadImage()
 	}
 
 	// If we can't start writing for some reason, return an error
-	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath)) {
+	if (!m_fileDownloader.start(m_reply, m_temporaryPath)) {
 		log(QStringLiteral("Unable to open file"), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
@@ -287,7 +295,7 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 		} else if (shouldFallback && !m_tryingSample) {
 			m_url = m_image->url(Image::Size::Sample);
 			m_tryingSample = true;
-			log(QStringLiteral("Image not found. New try with its sample (%1)...").arg(m_url.toString()));
+			log(QStringLiteral("Image not found. New try with its sample (%1)...").arg(m_url.toString()), Logger::Warning);
 			m_image->setUrl(m_url);
 			loadImage();
 		} else {
@@ -316,16 +324,39 @@ void ImageDownloader::success()
 
 QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 {
-	const QString multipleFiles = m_profile->getSettings()->value("Save/multiple_files", "copy").toString();
+	QSettings *settings = m_profile->getSettings();
+
+	const QString multipleFiles = settings->value("Save/multiple_files", "copy").toString();
 	const Image::Size size = currentSize();
 
 	m_image->setSavePath(m_temporaryPath, size);
 
+	// Load size if necessary
 	if (m_image->size(size).isEmpty()) {
 		QImageReader reader(m_temporaryPath);
 		QSize imgSize = reader.size();
 		if (imgSize.isValid()) {
 			m_image->setSize(imgSize, size);
+		}
+	}
+
+	// Resize image if necessary
+	bool maxWidthEnabled = settings->value("ImageSize/maxWidthEnabled", false).toBool();
+	bool maxHeightEnabled = settings->value("ImageSize/maxHeightEnabled", false).toBool();
+	QSize resizeBox = m_image->size(size);
+	if (!resizeBox.isEmpty() && (maxWidthEnabled || maxHeightEnabled)) {
+		int maxWidth = settings->value("ImageSize/maxWidth", 1000).toInt();
+		if (maxWidthEnabled && resizeBox.width() > maxWidth) {
+			resizeBox.setWidth(maxWidth);
+		}
+		int maxHeight = settings->value("ImageSize/maxHeight", 1000).toInt();
+		if (maxHeightEnabled && resizeBox.height() > maxHeight) {
+			resizeBox.setWidth(maxHeight);
+		}
+		if (resizeBox != m_image->size(size)) {
+			QImage img(m_temporaryPath);
+			img = img.scaled(resizeBox, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			img.save(m_temporaryPath, m_image->extension().toStdString().c_str());
 		}
 	}
 

@@ -60,6 +60,11 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &DownloadsTab::batchClearSelUniques);
 
 	connect(m_profile, &Profile::siteDeleted, this, &DownloadsTab::siteDeleted);
+
+	m_saveLinkList = new QTimer(this);
+	m_saveLinkList->setInterval(100);
+	m_saveLinkList->setSingleShot(true);
+	connect(m_saveLinkList, &QTimer::timeout, this, &DownloadsTab::saveLinkListDefault);
 }
 
 DownloadsTab::~DownloadsTab()
@@ -80,7 +85,7 @@ void DownloadsTab::changeEvent(QEvent *event)
 
 void DownloadsTab::closeEvent(QCloseEvent *event)
 {
-	Q_UNUSED(event);
+	Q_UNUSED(event)
 
 	// Columns
 	QStringList sizes;
@@ -130,8 +135,8 @@ void DownloadsTab::batchClear()
 	}
 
 	// Confirm deletion
-	auto reponse = QMessageBox::question(this, tr("Confirmation"), tr("Are you sure you want to clear your download list?"), QMessageBox::Yes | QMessageBox::No);
-	if (reponse != QMessageBox::Yes) {
+	auto response = QMessageBox::question(this, tr("Confirmation"), tr("Are you sure you want to clear your download list?"), QMessageBox::Yes | QMessageBox::No);
+	if (response != QMessageBox::Yes) {
 		return;
 	}
 
@@ -217,12 +222,20 @@ void DownloadsTab::batchMove(int diff)
 		rows.insert(item->row());
 	}
 
+	m_allow = false;
 	for (int sourceRow : rows) {
 		int destRow = sourceRow + diff;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount()) {
 			return;
 		}
 
+		// Swap batch items
+		auto sourceBatch = m_groupBatchs[sourceRow];
+		auto destBatch = m_groupBatchs[destRow];
+		m_groupBatchs[sourceRow] = destBatch;
+		m_groupBatchs[destRow] = sourceBatch;
+
+		// Swap row table items
 		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col) {
 			QTableWidgetItem *sourceItem = ui->tableBatchGroups->takeItem(sourceRow, col);
 			QTableWidgetItem *destItem = ui->tableBatchGroups->takeItem(destRow, col);
@@ -231,6 +244,7 @@ void DownloadsTab::batchMove(int diff)
 			ui->tableBatchGroups->setItem(destRow, col, sourceItem);
 		}
 	}
+	m_allow = true;
 
 	QItemSelection selection;
 	for (int i = 0; i < selected.count(); i++) {
@@ -304,7 +318,7 @@ void DownloadsTab::updateBatchGroups(int y, int x)
 				break;
 		}
 
-		saveLinkList(m_profile->getPath() + "/restore.igl");
+		saveLinkListLater();
 	}
 }
 
@@ -355,14 +369,14 @@ void DownloadsTab::batchAddGroup(const DownloadQueryGroup &values)
 	addTableItem(ui->tableBatchGroups, row, 9, values.getBlacklisted ? "true" : "false");
 	addTableItem(ui->tableBatchGroups, row, 10, values.galleriesCountAsOne ? "true" : "false");
 
-	auto *prog = new QProgressBar(this);
-	prog->setTextVisible(false);
-	prog->setMaximum(values.total);
-	m_progressBars.append(prog);
-	ui->tableBatchGroups->setCellWidget(row, 11, prog);
+	auto *progressBar = new QProgressBar(this);
+	progressBar->setTextVisible(false);
+	progressBar->setMaximum(values.total);
+	m_progressBars.append(progressBar);
+	ui->tableBatchGroups->setCellWidget(row, 11, progressBar);
 
 	m_allow = true;
-	saveLinkList(m_profile->getPath() + "/restore.igl");
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::updateGroupCount()
@@ -398,7 +412,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 	addTableItem(ui->tableBatchUniques, row, 9, query.path);
 
 	if (save) {
-		saveLinkList(m_profile->getPath() + "/restore.igl");
+		saveLinkListLater();
 	}
 }
 
@@ -428,6 +442,14 @@ void DownloadsTab::on_buttonSaveLinkList_clicked()
 	} else {
 		QMessageBox::critical(this, tr("Save link list"), tr("Error opening file."));
 	}
+}
+void DownloadsTab::saveLinkListLater()
+{
+	m_saveLinkList->start();
+}
+bool DownloadsTab::saveLinkListDefault()
+{
+	return saveLinkList(m_profile->getPath() + "/restore.igl");
 }
 bool DownloadsTab::saveLinkList(const QString &filename)
 {
@@ -491,13 +513,13 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 		it->setTextAlignment(Qt::AlignCenter);
 		ui->tableBatchGroups->setItem(row, 0, it);
 
-		auto *prog = new QProgressBar(this);
-		prog->setMaximum(queryGroup.total);
-		prog->setValue(val < 0 || val > max ? 0 : val);
-		prog->setMinimum(0);
-		prog->setTextVisible(false);
-		m_progressBars.append(prog);
-		ui->tableBatchGroups->setCellWidget(row, 11, prog);
+		auto *progressBar = new QProgressBar(this);
+		progressBar->setMaximum(queryGroup.total);
+		progressBar->setValue(val < 0 || val > max ? 0 : val);
+		progressBar->setMinimum(0);
+		progressBar->setTextVisible(false);
+		m_progressBars.append(progressBar);
+		ui->tableBatchGroups->setCellWidget(row, 11, progressBar);
 	}
 	m_allow = true;
 	updateGroupCount();
@@ -612,17 +634,17 @@ void DownloadsTab::getAll(bool all)
 	m_profile->getCommands().before();
 	m_batchDownloading.clear();
 
-	QSet<int> todownload = QSet<int>();
+	QSet<int> toDownload = QSet<int>();
 	for (QTableWidgetItem *item : ui->tableBatchGroups->selectedItems()) {
-		if (!todownload.contains(item->row())) {
-			todownload.insert(item->row());
+		if (!toDownload.contains(item->row())) {
+			toDownload.insert(item->row());
 		}
 	}
 
 	int resumeCount = 0;
-	if (all || !todownload.isEmpty()) {
+	if (all || !toDownload.isEmpty()) {
 		for (int j = 0; j < m_groupBatchs.count(); ++j) {
-			if (all || todownload.contains(j)) {
+			if (all || toDownload.contains(j)) {
 				if (m_progressBars.length() > j && m_progressBars[j] != nullptr) {
 					m_progressBars[j]->setValue(0);
 					m_progressBars[j]->setMinimum(0);
@@ -642,7 +664,6 @@ void DownloadsTab::getAll(bool all)
 	}
 
 	// Try to resume downloads that were stopped in the middle
-	bool clear = false;
 	bool resume = resumeCount > 0;
 	if (resume) {
 		int resumeAnswer = QMessageBox::question(this, "", "Some downloads were started but not finished. Do you want to continue from where you left off?");
@@ -729,7 +750,7 @@ void DownloadsTab::getAllLogin()
 }
 void DownloadsTab::getAllFinishedLogin(Site *site, Site::LoginResult result)
 {
-	Q_UNUSED(result);
+	Q_UNUSED(result)
 
 	if (m_getAllLogins.empty()) {
 		return;
@@ -809,7 +830,7 @@ void DownloadsTab::getAllGetPages()
  */
 void DownloadsTab::getAllFinishedPage(Page *page)
 {
-	Q_UNUSED(page);
+	Q_UNUSED(page)
 
 	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
@@ -1159,10 +1180,10 @@ void DownloadsTab::getAllFinished()
 	// Retry in case of error
 	int failedCount = m_getAllErrors + m_getAllSkipped;
 	if (failedCount > 0) {
-		int reponse;
+		int response;
 		if (m_batchAutomaticRetries > 0) {
 			m_batchAutomaticRetries--;
-			reponse = QMessageBox::Yes;
+			response = QMessageBox::Yes;
 		} else {
 			// Trigger minor end actions on retry
 			switch (m_progressDialog->endAction())
@@ -1173,10 +1194,10 @@ void DownloadsTab::getAllFinished()
 			activateWindow();
 
 			int totalCount = m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors + m_getAllSkipped + m_getAllResumed;
-			reponse = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(failedCount).arg(totalCount), QMessageBox::Yes | QMessageBox::No);
+			response = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(failedCount).arg(totalCount), QMessageBox::Yes | QMessageBox::No);
 		}
 
-		if (reponse == QMessageBox::Yes) {
+		if (response == QMessageBox::Yes) {
 			m_getAll = true;
 			m_progressDialog->clear();
 			m_getAllRemaining.clear();

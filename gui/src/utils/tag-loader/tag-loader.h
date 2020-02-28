@@ -1,6 +1,7 @@
 #ifndef TAG_LOADER_H
 #define TAG_LOADER_H
 
+#include "models/api/api.h"
 #include <QDialog>
 #include <QMap>
 
@@ -24,7 +25,8 @@ class TagLoader : public QDialog
 		~TagLoader() override;
 
 	protected:
-		QList<Api*> getCompatibleApis(Site *site) const;
+		QList<Api*> getApisToLoadTagTypes(Site *site) const;
+		QList<Api*> getApisToLoadTags(Site *site) const;
 
 	private slots:
 		void start();

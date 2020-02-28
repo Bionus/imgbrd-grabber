@@ -27,7 +27,7 @@ export const source: ISource = {
             auth: ["oauth2"],
             maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions): string => {
                     const params: string[] = [
                         "q=" + query.search,
                         "page=" + query.page,
@@ -81,7 +81,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "https://public-api.secure.pixiv.net/v1/works/" + query.id + ".json?image_sizes=large";
                 },
                 parse: (src: string): IParsedGallery => {
@@ -100,7 +100,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
                 },
                 parse: (src: string): IParsedDetails => {
@@ -118,7 +118,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 40,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery): string => {
                     return "/search.php?s_mode=s_tag&order=date_d&p=" + query.page + "&word=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
@@ -162,7 +162,7 @@ export const source: ISource = {
                 },
             },
             gallery: {
-                url: (query: any, opts: any): string => {
+                url: (query: IGalleryQuery): string => {
                     return "/member_illust.php?mode=manga&illust_id=" + query.id;
                 },
                 parse: (src: string): IParsedGallery => {
@@ -176,7 +176,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/member_illust.php?mode=medium&illust_id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {

@@ -8,15 +8,13 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, 
 	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(std::move(color)), m_border(border), m_center(true), m_progress(0), m_progressMax(0), m_invertToggle(false), m_counter(QString())
 {}
 
-void QBouton::scale(const QPixmap &image, qreal scale)
+void QBouton::scale(const QPixmap &image, QSize bounds)
 {
-	QSize size;
-	if (scale - 1.0 > 0.001) {
-		size = image.size() * scale;
-		setIcon(image.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+	const QSize size = image.size().scaled(bounds, Qt::KeepAspectRatio);
+	if (size != image.size()) {
+		setIcon(image.scaled(bounds, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	} else {
 		setIcon(image);
-		size = image.size();
 	}
 	setIconSize(size);
 	resize(size);
@@ -72,10 +70,8 @@ void QBouton::paintEvent(QPaintEvent *event)
 	const QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
 	if (w > h) {
 		icon().paint(&painter, x + p, y + p, w - 2 * p, w - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
-		h = h - ((h * 2 * p) / w) + 2 * p - 1;
 	} else {
 		icon().paint(&painter, x + p, y + p, h - 2 * p, h - 2 * p, Qt::AlignLeft | Qt::AlignTop, mode);
-		w = w - ((w * 2 * p) / h) + 2 * p - 1;
 	}
 
 	// Clip borders overflows
@@ -110,14 +106,14 @@ void QBouton::paintEvent(QPaintEvent *event)
 	if (!m_counter.isEmpty()) {
 		const int right = qMax(x, 0) + qMin(w, size().width());
 		const int dim = 10 + 5 * m_counter.length();
-		const double pad = 2.5;
-		const QRectF notif(right - dim - pad, qMax(y, 0) + pad, dim, 20);
+		const double pad = 1.5;
+		const QRectF notificationRect(right - dim - pad, qMax(y, 0) + pad, dim, 20);
 		const int radius = qFloor(qMin(dim, 20) / 2.0);
 
 		painter.setRenderHint(QPainter::Antialiasing);
 
 		QPainterPath path;
-		path.addRoundedRect(notif, radius, radius);
+		path.addRoundedRect(notificationRect, radius, radius);
 
 		const QPen pen(Qt::black, 1);
 		painter.setPen(pen);
@@ -125,7 +121,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		painter.drawPath(path);
 
 		painter.setPen(QPen(Qt::white));
-		painter.drawText(notif, Qt::AlignCenter, m_counter);
+		painter.drawText(notificationRect, Qt::AlignCenter, m_counter);
 	}
 }
 
@@ -140,11 +136,11 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 
 	// Calculate ratio to resize by keeping proportions
 	if (m_resizeInsteadOfCropping) {
-		const qreal coef = wOnly
+		const qreal coefficient = wOnly
 			? qMin(1.0, static_cast<qreal>(regionWidth) / static_cast<qreal>(w))
 			: qMin(1.0, qMin(static_cast<qreal>(regionWidth) / static_cast<qreal>(w), static_cast<qreal>(regionHeight) / static_cast<qreal>(h)));
-		w *= coef;
-		h *= coef;
+		w *= coefficient;
+		h *= coefficient;
 	}
 
 	return { w, h };

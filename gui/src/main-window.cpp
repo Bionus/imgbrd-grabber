@@ -84,6 +84,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	#endif
 	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
 	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
+	log(QStringLiteral("Temporary path: `%1`").arg(m_profile->tempPath()), Logger::Info);
 
 	if (!QSslSocket::supportsSsl()) {
 		log(QStringLiteral("Missing SSL libraries"), Logger::Error);
@@ -463,15 +464,6 @@ void MainWindow::addGalleryTab(Site *site, QSharedPointer<Image> gallery, bool b
 }
 void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTab *source)
 {
-	// TODO(Bionus): remove this and always pass it when necessary
-	if (source == nullptr || !m_tabs.contains(source)) {
-		if (m_tabs.size() > ui->tabWidget->currentIndex()) {
-			source = m_tabs[ui->tabWidget->currentIndex()];
-		} else {
-			source = nullptr;
-		}
-	}
-
 	if (source != nullptr) {
 		w->setSources(source->sources());
 		w->setImagesPerPage(source->imagesPerPage());

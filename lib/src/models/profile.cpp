@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QSet>
 #include <QSettings>
+#include <utility>
 #include "commands/commands.h"
 #include "functions.h"
 #include "logger.h"
@@ -129,7 +130,10 @@ Profile::Profile(QString path)
 	if (fileBlacklist.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileBlacklist.readLine()).isEmpty()) {
-			m_blacklist.add(line.trimmed().split(" ", QString::SkipEmptyParts));
+			line = line.trimmed();
+			if (!line.startsWith('#')) {
+				m_blacklist.add(line.split(" ", QString::SkipEmptyParts));
+			}
 		}
 
 		fileBlacklist.close();
@@ -239,6 +243,11 @@ void Profile::syncIgnored() const
 
 QString Profile::tempPath() const
 {
+	const QString override = m_settings->value("tempPathOverride", "").toString();
+	if (!override.isEmpty() && QFile::exists(override)) {
+		return override;
+	}
+
 	const QString tmp = QDir::tempPath();
 	const QString subDir = "Grabber";
 	QDir(tmp).mkpath(subDir);
@@ -312,6 +321,13 @@ void Profile::removeKeptForLater(const QString &tag)
 	emit keptForLaterChanged();
 }
 
+void Profile::setIgnored(const QStringList &tags)
+{
+	m_ignored = tags;
+
+	syncIgnored();
+	emit ignoredChanged();
+}
 void Profile::addIgnored(const QString &tag)
 {
 	m_ignored.removeAll(tag);

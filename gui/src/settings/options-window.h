@@ -31,6 +31,7 @@ class OptionsWindow : public QDialog
 		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();
+		void on_buttonTempPathOverride_clicked();
 		void on_lineColoringArtists_textChanged();
 		void on_lineColoringCircles_textChanged();
 		void on_lineColoringCopyrights_textChanged();

@@ -1,6 +1,7 @@
 #include "loader/loader-query.h"
 #include <QEventLoop>
 #include <QtMath>
+#include <utility>
 #include "loader/loader-data.h"
 #include "models/filtering/blacklist.h"
 #include "models/image.h"

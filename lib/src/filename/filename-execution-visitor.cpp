@@ -193,6 +193,11 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, int val,
 
 QString FilenameExecutionVisitor::variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options)
 {
+	// Count
+	if (options.contains("count")) {
+		return variableToString(name, val.count(), options);
+	}
+
 	// Namespaces
 	bool ignoreNamespace = options.contains("ignorenamespace");
 	bool includeNamespace = options.contains("includenamespace");

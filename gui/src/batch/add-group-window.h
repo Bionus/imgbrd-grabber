@@ -1,5 +1,5 @@
-#ifndef ADDGROUPWINDOW_H
-#define ADDGROUPWINDOW_H
+#ifndef ADD_GROUP_WINDOW_H
+#define ADD_GROUP_WINDOW_H
 
 #include <QDialog>
 #include <QMap>
@@ -38,4 +38,4 @@ class AddGroupWindow : public QDialog
 		QSettings *m_settings;
 };
 
-#endif // ADDGROUPWINDOW_H
+#endif // ADD_GROUP_WINDOW_H

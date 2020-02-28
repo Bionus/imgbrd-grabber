@@ -1,5 +1,6 @@
 #include "models/page.h"
 #include <QUrl>
+#include <utility>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"

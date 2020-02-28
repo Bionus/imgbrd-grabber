@@ -56,28 +56,30 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 
 QString TagStylist::stylished(const Tag &tag, const QMap<QString, QString> &styles, bool count, bool noUnderscores) const
 {
+	const QString &txt = tag.text();
+
 	// Guess the correct tag family
 	const QString plural = tag.type().name() + "s";
 	QString key = styles.contains(plural) ? plural : "generals";
-	if (m_profile->getBlacklist().contains(tag.text())) {
+	if (m_profile->getBlacklist().contains(txt)) {
 		key = "blacklisteds";
 	}
-	if (m_profile->getIgnored().contains(tag.text(), Qt::CaseInsensitive)) {
+	if (m_profile->getIgnored().contains(txt, Qt::CaseInsensitive)) {
 		key = "ignoreds";
 	}
 	for (const QString &t : qAsConst(m_profile->getKeptForLater())) {
-		if (t == tag.text()) {
+		if (t == txt) {
 			key = "keptForLater";
 		}
 	}
 	for (const Favorite &fav : qAsConst(m_profile->getFavorites())) {
-		if (fav.getName() == tag.text()) {
+		if (fav.getName() == txt) {
 			key = "favorites";
 		}
 	}
 
-	QString txt = tag.text();
-	QString ret = QString(R"(<a href="%1" style="%2">%3</a>)").arg(QUrl::toPercentEncoding(tag.text()), styles.value(key), noUnderscores ? txt.replace('_', ' ') : tag.text());
+	QString escaped = txt.toHtmlEscaped();
+	QString ret = QString(R"(<a href="%1" style="%2">%3</a>)").arg(QUrl::toPercentEncoding(txt), styles.value(key), noUnderscores ? escaped.replace('_', ' ') : escaped);
 	if (count && tag.count() > 0) {
 		ret += QString(" <span style=\"color:#aaa\">(%L1)</span>").arg(tag.count());
 	}

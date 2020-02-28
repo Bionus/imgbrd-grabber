@@ -223,8 +223,8 @@ void BatchWindow::updateColumns()
 }
 int BatchWindow::indexOf(const QUrl &url)
 {
-	const auto vals = m_urls.value(url);
-	const int i = vals.isEmpty() ? -1 : vals.first();
+	const auto values = m_urls.value(url);
+	const int i = values.isEmpty() ? -1 : values.first();
 	if (i < 0 || ui->tableWidget->item(i, 1) == nullptr) {
 		return -1;
 	}
@@ -267,8 +267,8 @@ void BatchWindow::imageUrlChanged(const QUrl &before, const QUrl &after)
 {
 	const int i = indexOf(before);
 	if (i != -1) {
-		const auto vals = m_urls.value(before);
-		if (vals.count() == 1) {
+		const auto values = m_urls.value(before);
+		if (values.count() == 1) {
 			m_urls.remove(before);
 		} else {
 			m_urls[before].removeFirst();

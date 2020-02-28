@@ -1,6 +1,7 @@
 #include "models/source-guesser.h"
 #include <QEventLoop>
 #include <QNetworkRequest>
+#include <utility>
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"

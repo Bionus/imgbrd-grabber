@@ -130,7 +130,8 @@ void FavoritesTab::updateFavorites()
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	const int borderSize = m_settings->value("borders", 3).toInt();
-	const int dim = qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
+	const int imageSize = qFloor(FAVORITES_THUMB_SIZE * upscale);
+	const int dim = imageSize + borderSize * 2;
 
 	for (Favorite &fav : m_favorites) {
 		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -153,7 +154,7 @@ void FavoritesTab::updateFavorites()
 
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), resizeInsteadOfCropping, false, 0, QColor(), this);
-				image->scale(img, upscale);
+				image->scale(img, QSize(imageSize, imageSize));
 				image->setFixedSize(dim, dim);
 				image->setFlat(true);
 				image->setToolTip(xt);
@@ -211,20 +212,22 @@ bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &erro
 
 void FavoritesTab::write(QJsonObject &json) const
 {
-	Q_UNUSED(json);
+	Q_UNUSED(json)
 }
 
 
 void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
 {
-	Q_UNUSED(noResultsMessage);
+	Q_UNUSED(noResultsMessage)
+
 	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
 void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
-	Q_UNUSED(noResultsMessage);
+	Q_UNUSED(noResultsMessage)
+
 	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
@@ -248,7 +251,7 @@ void FavoritesTab::getPage()
 	for (const QSharedPointer<Page> &page : pages) {
 		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = postFilter(true);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, page->site()));
 	}
@@ -267,7 +270,7 @@ void FavoritesTab::getAll()
 		}
 
 		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
+		const QStringList postFiltering = postFilter(true);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, page->site()));
 	}
@@ -290,6 +293,7 @@ void FavoritesTab::loadFavorite(const QString &name)
 	Favorite fav = m_favorites[index];
 	m_currentTags = fav.getName();
 	m_loadFavorite = fav.getLastViewed();
+	m_postFiltering->setPlainText(fav.getPostFiltering().join(' '));
 
 	ui->widgetResults->show();
 	load();

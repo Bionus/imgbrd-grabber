@@ -1,4 +1,5 @@
 #include "auth/auth.h"
+#include <utility>
 
 
 Auth::Auth(QString type)

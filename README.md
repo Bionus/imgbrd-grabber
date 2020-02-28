@@ -7,7 +7,7 @@
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/latest/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases)
 [![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
-[![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=bio%2enus%40hotmail%2efr&lc=EN&item_name=Bionus&item_number=Grabber&currency_code=EUR)
+[![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.me/jvasti)
 [![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg?branch=master)](https://travis-ci.org/Bionus/imgbrd-grabber)
 [![Build Status](https://ci.appveyor.com/api/projects/status/lm08r4q0kuui7a5y/branch/master?svg=true)](https://ci.appveyor.com/project/Bionus/imgbrd-grabber)
@@ -81,7 +81,21 @@ For users interested, a nightly version is built automatically on every commit o
 * Rename already downloaded images
 
 ## Default sources
-You can add additional sources very easily, but here's a short list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, e621, Konachan, rule34, safebooru, behoimi, Zerochan, Twitter...
+You can add additional sources very easily, but here's a short list of some sources that are included and supported by default:
+* Danbooru
+* Gelbooru
+* E-Hentai
+* Pixiv
+* yande.re
+* Shimmie
+* e621
+* Konachan
+* rule34
+* safebooru
+* Anime-Pictures
+* behoimi
+* Zerochan
+* Twitter
 
 ## Compilation
 See the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page to know how to build Grabber.

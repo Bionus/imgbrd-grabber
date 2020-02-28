@@ -34,7 +34,7 @@
 
 
 SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pageMax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -73,6 +73,12 @@ void SearchTab::init()
 
 	if (infinite != "disabled" && ui_checkMergeResults != nullptr) {
 		connect(ui_checkMergeResults, &QCheckBox::toggled, this, &SearchTab::setMergeResultsMode);
+	}
+
+	// Fill post-filter explicitely if necessary
+	if (m_settings->value("globalPostFilterExplicit", false).toBool()) {
+		QString globalPostFilter = m_settings->value("globalPostFilter").toString();
+		m_postFiltering->setText(globalPostFilter);
 	}
 }
 
@@ -236,7 +242,7 @@ void SearchTab::clear()
 {
 	// Reset loading variables
 	m_stop = true;
-	m_pagemax = -1;
+	m_pageMax = -1;
 	m_endlessLoadOffset = 0;
 
 	// Clear page details
@@ -345,18 +351,18 @@ void SearchTab::finishedLoading(Page *page)
 
 	// Remove already existing images for merged results
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
-	const QList<QSharedPointer<Image>> imgs = merged ? mergeResults(page->page(), validImages) : validImages;
+	const QList<QSharedPointer<Image>> images = merged ? mergeResults(page->page(), validImages) : validImages;
 
-	m_images.append(imgs);
+	m_images.append(images);
 
 	updatePaginationButtons(page);
-	addResultsPage(page, imgs, merged);
+	addResultsPage(page, images, merged);
 
 	if (!m_settings->value("useregexfortags", true).toBool()) {
 		setTagsFromPages(m_pages);
 	}
 
-	postLoading(page, imgs);
+	postLoading(page, images);
 }
 
 void SearchTab::failedLoading(Page *page)
@@ -406,7 +412,7 @@ void SearchTab::httpsRedirect(Page *page)
 	}
 }
 
-void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs)
+void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &images)
 {
 	m_page++;
 
@@ -439,10 +445,10 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 	}
 
 	// Load thumbnails
-	for (const auto &img : imgs) {
+	for (const auto &img : images) {
 		const QUrl thumbnailUrl = img->url(Image::Size::Thumbnail);
 		if (thumbnailUrl.isValid()) {
-			loadImageThumbnail(page, img, thumbnailUrl);
+			loadImageThumbnail(img, thumbnailUrl);
 		}
 	}
 
@@ -452,7 +458,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 		for (auto ps : qAsConst(m_pages)) {
 			const int pagesCount = ps.first()->pagesCount();
 			const int imagesPerPage = ps.first()->imagesPerPage();
-			if (ps.last()->page() < pagesCount && ps.last()->pageImageCount() >= imagesPerPage) {
+			if ((ps.last()->page() < pagesCount || pagesCount == -1) && ps.last()->pageImageCount() >= imagesPerPage) {
 				allFinished = false;
 			}
 		}
@@ -476,16 +482,16 @@ void SearchTab::updatePaginationButtons(Page *page)
 	if (pageCount <= 0 && maxPages > 0) {
 		pageCount = maxPages;
 	}
-	if (pageCount > m_pagemax || m_pagemax == -1) {
-		m_pagemax = pageCount;
+	if (pageCount > m_pageMax || m_pageMax == -1) {
+		m_pageMax = pageCount;
 	}
 
 	// Update page spinbox max value
-	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : qMax(1, qMax(pageNum, m_pagemax)));
+	ui_spinPage->setMaximum(page->imagesCount() == -1 || page->pagesCount() == -1 ? 100000 : qMax(1, qMax(pageNum, m_pageMax)));
 
 	// Enable/disable buttons
-	ui_buttonNextPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
-	ui_buttonLastPage->setEnabled(m_pagemax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1);
+	ui_buttonNextPage->setEnabled(m_pageMax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0));
+	ui_buttonLastPage->setEnabled(m_pageMax > pageNum || page->imagesCount() == -1 || page->pagesCount() == -1);
 }
 
 void SearchTab::finishedLoadingTags(Page *page)
@@ -501,26 +507,26 @@ void SearchTab::finishedLoadingTags(Page *page)
 	updatePaginationButtons(page);
 
 	// Update image and page count
-	QList<QSharedPointer<Image>> imgs;
+	QList<QSharedPointer<Image>> images;
 	QString error;
 	for (const QSharedPointer<Image> &img : page->images()) {
 		if (validateImage(img, error)) {
-			imgs.append(img);
+			images.append(img);
 		}
 	}
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr)) {
 		setMergedLabelText(m_siteLabels[nullptr], m_images);
 	} else if (m_siteLabels.contains(page->site())) {
-		setPageLabelText(m_siteLabels[page->site()], page, imgs);
+		setPageLabelText(m_siteLabels[page->site()], page, images);
 	}
 }
 
-void SearchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url)
+void SearchTab::loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url)
 {
-	Site *site = page->site();
+	Site *site = img->parentSite();
 
-	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, page, "preview");
+	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, img->parentUrl(), "preview");
 	reply->setParent(this);
 
 	m_thumbnailsLoading[reply] = std::move(img);
@@ -554,7 +560,7 @@ void SearchTab::finishedLoadingPreview()
 	// Check redirection
 	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty()) {
-		loadImageThumbnail(img->page(), img, redirection);
+		loadImageThumbnail(img, redirection);
 		reply->deleteLater();
 		return;
 	}
@@ -565,7 +571,7 @@ void SearchTab::finishedLoadingPreview()
 		if (ext != "jpg") {
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(reply->errorString()), Logger::Warning);
 			const QUrl newUrl = setExtension(reply->url(), "jpg");
-			loadImageThumbnail(img->page(), img, newUrl);
+			loadImageThumbnail(img, newUrl);
 		} else {
 			log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
 		}
@@ -598,10 +604,10 @@ void SearchTab::finishedLoadingPreview()
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page") {
 		bool download = false;
 		if (!detected.isEmpty()) {
-			const int reponse = QMessageBox::question(this, "Grabber", tr("Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
-			if (reponse == QMessageBox::Yes) {
+			const int answer = QMessageBox::question(this, "Grabber", tr("Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
+			if (answer == QMessageBox::Yes) {
 				download = true;
-			} else if (reponse == QMessageBox::Open) {
+			} else if (answer == QMessageBox::Open) {
 				openImage(img);
 			}
 		} else {
@@ -709,7 +715,7 @@ bool SearchTab::containsMergedMd5(int page, const QString &md5)
 	return false;
 }
 
-void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
+void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &images, bool merged, const QString &noResultsMessage)
 {
 	if (merged) {
 		return;
@@ -732,13 +738,13 @@ void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 		ui_layoutResults->addWidget(txt, page_y, page_x);
 		ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 	}
-	setPageLabelText(m_siteLabels[site], page, imgs, noResultsMessage);
+	setPageLabelText(m_siteLabels[site], page, images, noResultsMessage);
 
 	if (m_siteLayouts.contains(page->site()) && m_pages.value(page->website()).count() == 1) {
 		addLayout(m_siteLayouts[page->site()], page_y + 1, page_x);
 	}
 }
-void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
+void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &images)
 {
 	int maxPage = 0;
 	int sumImages = 0;
@@ -778,16 +784,16 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	}
 
 	const QString page = firstPage != lastPage ? QStringLiteral("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(tr("max %1").arg(sumImages));
+	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(page).arg(maxPage).arg(images.count()).arg(tr("max %1").arg(sumImages));
 	txt->setText(QString(links + " - " + countLabel));
 }
-void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
+void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, const QString &noResultsMessage)
 {
 	const int pageCount = page->pagesCount();
 	const int imageCount = page->imagesCount();
 
-	int firstPage = imgs.count() > 0 ? page->page() : 0;
-	int lastPage = imgs.count() > 0 ? page->page() : 0;
+	int firstPage = images.count() > 0 ? page->page() : 0;
+	int lastPage = images.count() > 0 ? page->page() : 0;
 	int totalCount = 0;
 	for (const QSharedPointer<Page> &p : m_pages[page->website()]) {
 		if (p->images().count() == 0) {
@@ -803,7 +809,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 
 	// No results message
-	if (imgs.isEmpty()) {
+	if (images.isEmpty()) {
 		QString meant;
 		QStringList reasons = reasonsToFail(page, m_completion, &meant);
 		if (!meant.isEmpty() && ui_widgetMeant != nullptr) {
@@ -853,6 +859,7 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	const int borderSize = m_settings->value("borders", 3).toInt();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
+	const int imageSize = qFloor(FIXED_IMAGE_WIDTH * upscale);
 
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
@@ -860,9 +867,9 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	l->setInvertToggle(m_settings->value("invertToggle", false).toBool());
 	l->setToolTip(img->tooltip());
 	if (img->previewImage().isNull()) {
-		l->scale(QPixmap(":/images/noimage.png"), upscale);
+		l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
 	} else {
-		l->scale(img->previewImage(), upscale);
+		l->scale(img->previewImage(), QSize(imageSize, imageSize));
 	}
 	l->setFlat(true);
 
@@ -875,7 +882,7 @@ QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Imag
 	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
 	if (fixedWidthLayout) {
-		const int dim = qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
+		const int dim = imageSize + borderSize * 2;
 		l->setFixedSize(dim, dim);
 	}
 
@@ -1070,16 +1077,16 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 
 void SearchTab::addHistory(const SearchQuery &query, int page, int ipp, int cols)
 {
-	QMap<QString, QString> srch;
+	QMap<QString, QString> history;
 	if (!query.gallery.isNull()) {
-		srch["gallery"] = query.gallery->name();
+		history["gallery"] = query.gallery->name();
 	} else {
-		srch["tags"] = query.tags.join(' ');
+		history["tags"] = query.tags.join(' ');
 	}
-	srch["page"] = QString::number(page);
-	srch["ipp"] = QString::number(ipp);
-	srch["columns"] = QString::number(cols);
-	m_history.append(srch);
+	history["page"] = QString::number(page);
+	history["ipp"] = QString::number(ipp);
+	history["columns"] = QString::number(cols);
+	m_history.append(history);
 
 	if (m_history.size() > 1) {
 		m_history_cursor++;
@@ -1213,12 +1220,12 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 	}
 
 	if (m_settings->value("Zoom/singleWindow", false).toBool() && !m_lastZoomWindow.isNull()) {
-		m_lastZoomWindow->reuse(m_images, image, image->page()->site());
+		m_lastZoomWindow->reuse(m_images, image, image->parentSite());
 		m_lastZoomWindow->activateWindow();
 		return;
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent, this);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->parentSite(), m_profile, m_parent, this);
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 	zoom->show();
@@ -1256,6 +1263,11 @@ void SearchTab::unselectImage(const QSharedPointer<Image> &img)
 
 void SearchTab::toggleImage(const QSharedPointer<Image> &img)
 {
+	// Sometimes happen with range selection when an image hasn't loaded yet
+	if (!m_boutons.contains(img.data())) {
+		return;
+	}
+
 	const bool selected = m_selectedImagesPtrs.contains(img);
 	m_boutons[img.data()]->setChecked(!selected);
 
@@ -1420,7 +1432,7 @@ void SearchTab::endlessLoad()
 void SearchTab::loadPage()
 {
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
-	const int perpage = ui_spinImagesPerPage->value();
+	const int perPage = ui_spinImagesPerPage->value();
 	const int currentPage = ui_spinPage->value() + m_endlessLoadOffset;
 	setEndlessLoadingMode(false);
 
@@ -1432,8 +1444,8 @@ void SearchTab::loadPage()
 		}
 
 		// Load results
-		const QStringList postFiltering = (m_postFiltering->toPlainText() + " " + m_settings->value("globalPostFilter").toString()).split(' ', QString::SkipEmptyParts);
-		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perpage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		const QStringList postFiltering = postFilter(true);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);
@@ -1577,7 +1589,7 @@ void SearchTab::nextPage()
 }
 void SearchTab::lastPage()
 {
-	ui_spinPage->setValue(m_pagemax);
+	ui_spinPage->setValue(m_pageMax);
 	load();
 }
 
@@ -1585,12 +1597,21 @@ void SearchTab::setImagesPerPage(int ipp)
 { ui_spinImagesPerPage->setValue(ipp); }
 void SearchTab::setColumns(int columns)
 { ui_spinColumns->setValue(columns); }
-void SearchTab::setPostFilter(const QString &postfilter)
-{ m_postFiltering->setText(postfilter); }
+void SearchTab::setPostFilter(const QStringList &postFilter)
+{ m_postFiltering->setText(postFilter.join(' ')); }
 
-int SearchTab::imagesPerPage()
+int SearchTab::imagesPerPage() const
 { return ui_spinImagesPerPage->value(); }
-int SearchTab::columns()
+int SearchTab::columns() const
 { return ui_spinColumns->value(); }
-QString SearchTab::postFilter()
-{ return m_postFiltering->toPlainText(); }
+QStringList SearchTab::postFilter(bool includeGlobal) const
+{
+	QString ret = m_postFiltering->toPlainText();
+	if (includeGlobal && !m_settings->value("globalPostFilterExplicit", false).toBool()) {
+		QString globalPostFilter = m_settings->value("globalPostFilter").toString();
+		if (!globalPostFilter.isEmpty()) {
+			ret += " " + globalPostFilter;
+		}
+	}
+	return ret.split(' ', QString::SkipEmptyParts);
+}

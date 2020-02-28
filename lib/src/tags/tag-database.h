@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QString>
+#include "models/api/api.h"
 #include "tags/tag-type.h"
 
 
@@ -19,6 +20,7 @@ class TagDatabase
 		virtual bool load();
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
+		virtual void setTagTypes(const QList<TagTypeWithId> &tagTypes);
 		virtual QMap<QString, TagType> getTagTypes(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
 		const QMap<int, TagType> &tagTypes() const;

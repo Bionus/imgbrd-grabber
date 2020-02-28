@@ -1,4 +1,5 @@
 #include "search/search-format-visitor.h"
+#include <utility>
 #include "search/ast/search-node-op.h"
 #include "search/ast/search-node-tag.h"
 #include "search/ast/search-node.h"

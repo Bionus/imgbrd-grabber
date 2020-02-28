@@ -1,4 +1,5 @@
 #include "network-manager.h"
+#include <utility>
 #include "custom-network-access-manager.h"
 #include "network-reply.h"
 
@@ -89,7 +90,11 @@ void NetworkManager::next()
 	auto pair = m_queue.dequeue();
 	int type = pair.first;
 	NetworkReply *reply = pair.second;
-	connect(reply, &NetworkReply::finished, this, &NetworkManager::next);
 
-	m_throttlingManager.start(type, reply);
+	if (reply->isRunning()) {
+		connect(reply, &NetworkReply::finished, this, &NetworkManager::next);
+		m_throttlingManager.start(type, reply);
+	} else {
+		next();
+	}
 }

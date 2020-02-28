@@ -5,6 +5,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 #include <QVariant>
+#include <utility>
 #include "logger.h"
 #include "tags/tag.h"
 

@@ -2,6 +2,7 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QUrlQuery>
+#include <utility>
 #include "auth/auth-field.h"
 #include "auth/http-auth.h"
 #include "mixed-settings.h"

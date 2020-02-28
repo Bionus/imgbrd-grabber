@@ -29,6 +29,9 @@ struct ImageSize
 	const QPixmap &pixmap();
 	void setPixmap(const QPixmap &pixmap);
 
+	// MD5 calculation
+	QString md5() const;
+
 	// Serialization
 	void read(const QJsonObject &json);
 	void write(QJsonObject &json) const;
@@ -37,6 +40,7 @@ struct ImageSize
 		QString m_temporaryPath;
 		QString m_savePath;
 		QPixmap m_pixmap;
+		QString mutable m_md5;
 };
 
 #endif // IMAGE_SIZE_H

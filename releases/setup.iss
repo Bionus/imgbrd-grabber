@@ -11,7 +11,7 @@
 #define QtLib QtDir + "\..\lib"
 
 #ifndef OpenSSLDir
-# define OpenSSLDir "C:\bin\OpenSSL-Win32-1.0.2k"
+# define OpenSSLDir "C:\bin\OpenSSL-Win32-1.1.1d"
 #endif
 
 #ifndef MySQLDir
@@ -19,7 +19,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.1.1"
+# define MyAppVersion "7.2.0"
 #endif
 
 #ifndef QtApngDll
@@ -98,8 +98,8 @@ Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; 
 #include "scripts\products\winversion.iss"
 #include "scripts\products\fileversion.iss"
 #include "scripts\products\msiproduct.iss"
-#include "scripts\products\vcredist2013.iss"
 #include "scripts\products\vcredist2015.iss"
+#include "scripts\products\vcredist2017.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -112,11 +112,13 @@ Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: 
 Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\release\words.txt";                 DestDir: "{app}";
-Source: "{#OpenSSLDir}\libeay32.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libcrypto-1_1-x64.dll";  DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
-Source: "{#OpenSSLDir}\libssl32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
@@ -130,7 +132,6 @@ Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#OpenSSLDir}\ssleay32.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -160,7 +161,7 @@ Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; F
 Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; Flags: ignoreversion
-Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
+Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\sqldrivers\qsqlodbc.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlpsql.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\styles\qwindowsvistastyle.dll";   DestDir: "{app}\styles"; Flags: ignoreversion
@@ -181,8 +182,8 @@ Source: "..\release\sites\Danbooru\behoimi.org\defaults.ini";              DestD
 Source: "..\release\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Danbooru\e621.net\defaults.ini";                 DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\e621.net"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\e621.net\tag-types.txt";                DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\e621.net"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
-Source: "..\release\sites\Sankaku\model.js";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion deleteafterinstall
+Source: "..\release\sites\Sankaku\model.js";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion deleteafterinstall
 Source: "..\release\sites\Sankaku\sites.txt";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com"; Flags: ignoreversion
@@ -240,6 +241,9 @@ Type: files; Name: "{app}\Updater.exe"
 Type: files; Name: "{app}\VERSION"
 Type: files; Name: "{app}\MD5"
 Type: files; Name: "{app}\libgcc_s_dw2-1.dll"
+Type: files; Name: "{app}\libeay32.dll"
+Type: files; Name: "{app}\libssl32.dll"
+Type: files; Name: "{app}\ssleay32.dll"
 Type: files; Name: "{app}\QtCore4.dll"
 Type: files; Name: "{app}\QtGui4.dll"
 Type: files; Name: "{app}\QtNetwork4.dll"
@@ -271,12 +275,9 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 function InitializeSetup(): Boolean;
 begin
   initwinversion();
-  
-  SetForceX86(true);
-	vcredist2013('12');
-  SetForceX86(false);
 
   vcredist2015('14');
+  vcredist2017('14');
 
   Result := true;
 end;

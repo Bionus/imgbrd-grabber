@@ -1,6 +1,7 @@
 #include "tag-filter.h"
 #include <QRegExp>
 #include <QStringBuilder>
+#include <utility>
 #include "loader/token.h"
 
 

@@ -2,6 +2,9 @@ project(tests)
 
 enable_testing()
 add_definitions(-DTEST=1)
+if(DEFINED HEADLESS)
+	add_definitions(-DHEADLESS=1)
+endif()
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -10,6 +13,8 @@ find_package(Qt5Widgets REQUIRED)
 set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Test Qt5::Widgets)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+include(ListFilterRegex)
+listFilterRegex(SOURCES "vendor")
 include_directories("src/" "../lib/src/")
 
 add_executable(${PROJECT_NAME} ${SOURCES})

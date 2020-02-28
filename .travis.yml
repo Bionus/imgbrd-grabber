@@ -14,7 +14,6 @@ addons:
       - qtmultimedia5-dev
       - qttools5-dev
       - qttools5-dev-tools
-      - sshpass
       - lcov
 
 # OS X build
@@ -57,7 +56,6 @@ before_install:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
-      brew install https://raw.githubusercontent.com/hudochenkov/homebrew-sshpass/master/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
@@ -78,13 +76,12 @@ before_script:
 
 # Build Grabber
 script:
-  - mkdir build && cd build
-  - cmake ..
-  - make -j8
-  - cd ..
+  - ./scripts/build.sh
   - ./build/tests/tests
 
 after_success:
+  # Clean-up workspace
+  - git checkout .
   # Upload code coverage (codecov)
   - if [[ "$COVERAGE" == 1 ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       lcov --directory . --capture --output-file coverage.info &&
@@ -98,24 +95,54 @@ after_success:
     ; fi
   # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
-      export BUILD_LABEL=$TRAVIS_BRANCH
+      export BUILD_LABEL=nightly
     ; else
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
   # Build and upload release
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      cp "build/gui/Grabber" "release/Grabber" &&
-      touch "release/settings.ini" &&
-      rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
-      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
-      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+      ./scripts/package-linux.sh &&
+      mv "Grabber.tar.gz" "Grabber_${BUILD_LABEL}.tar.gz"
     ; fi
   - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      cp "build/gui/Grabber" "release/Grabber" &&
-      touch "release/settings.ini" &&
-      rm "release/CDR.exe" &&
-      cd release && zip -r ../Grabber.zip . -x "sites/node_modules/*" && cd - &&
-      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
-      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+      ./scripts/package-mac.sh &&
+      mv "Grabber.dmg" "Grabber_${BUILD_LABEL}.dmg"
     ; fi
+
+# Add the nightly tag on develop package-enabled commits to push them to Github
+before_deploy:
+  - if [[ "$PACKAGE" == "1" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "develop" ]]; then
+      export TRAVIS_TAG=nightly &&
+      git tag -f $TRAVIS_TAG
+    ; fi
+
+deploy:
+  # Nightly
+  - provider: releases
+    api_key:
+      secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
+    file:
+      - Grabber_$BUILD_LABEL.tar.gz
+      - Grabber_$BUILD_LABEL.dmg
+    skip_cleanup: true
+    draft: true
+    overwrite: true
+    on:
+      repo: Bionus/imgbrd-grabber
+      branch: develop
+      condition: $PACKAGE == 1
+  # Releases
+  - provider: releases
+    api_key:
+      secure: k8kiBfDzlVuL1x2A9Eh3U3uWMZzcKmx9GZjMWjC7wgxmG83cSZRu6RVyFamqbtmoFR8CRoCb+WFRxzUTn46sav6P4w329U2S2Izf3xeSGnONFz5GALqWIMbJ6tS81pQpLYn6GUKbey4f6uqhuyouVAj95lRu2W7K4/lN/Yb4hgA=
+    file:
+      - Grabber_$BUILD_LABEL.tar.gz
+      - Grabber_$BUILD_LABEL.dmg
+    skip_cleanup: true
+    draft: false
+    overwrite: true
+    on:
+      repo: Bionus/imgbrd-grabber
+      branch: master
+      tags: true
+      condition: $PACKAGE == 1

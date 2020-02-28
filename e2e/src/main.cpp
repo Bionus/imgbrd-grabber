@@ -42,7 +42,7 @@ bool jsonCompare(const QVariant &value, QJsonValue opt)
 		return value.toString() == opt.toString();
 	}
 
-	return opCompare(op, value.toInt(), opt.toDouble());
+	return opCompare(op, value.toInt(), opt.toInt());
 }
 
 int main(int argc, char *argv[])
@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
 				}
 
 				const QString search = apiSearch[0].toString();
-				const int pagei = apiSearch[1].toDouble();
-				const int limit = apiSearch[2].toDouble();
+				const int pageI = apiSearch[1].toInt();
+				const int limit = apiSearch[2].toInt();
 
 				Api *api = nullptr;
 				for (Api *a : site->getApis()) {
@@ -135,8 +135,8 @@ int main(int argc, char *argv[])
 					continue;
 				}
 
-				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pagei, limit);
-				auto pageApi = new PageApi(page, profile, site, api, search.split(' '), pagei, limit);
+				auto page = new Page(profile, site, allSites.values(), QStringList() << search, pageI, limit);
+				auto pageApi = new PageApi(page, profile, site, api, search.split(' '), pageI, limit);
 				QEventLoop loop;
 				QObject::connect(pageApi, &PageApi::finishedLoading, &loop, &QEventLoop::quit);
 				QTimer::singleShot(1, pageApi, SLOT(load()));

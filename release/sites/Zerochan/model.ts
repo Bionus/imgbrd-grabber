@@ -65,7 +65,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 100,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
                         return "/" + query.search + "?s=id&xml&" + pagePart;
@@ -108,7 +108,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 22,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
                         return "/" + query.search + "?" + pagePart;
@@ -129,7 +129,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/" + id;
                 },
                 parse: (src: string): IParsedDetails => {

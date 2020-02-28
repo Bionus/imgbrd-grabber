@@ -1,6 +1,9 @@
 #include "utils/blacklist-fix/blacklist-fix-2.h"
 #include <QFile>
+#include <QtConcurrent>
 #include <ui_blacklist-fix-2.h>
+#include "functions.h"
+#include "helpers.h"
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
 
@@ -16,17 +19,22 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 		QStringList found;
 		QString color = "blue";
 		if (m_details[i].contains("tags")) {
-			QMap<QString, Token> tokens;
-			tokens.insert("allos", Token(m_details[i]["tags"].split(' ')));
+			QMap<QString, Token> tokens
+			{
+				{ "allos", Token(m_details[i]["tags"].split(' ')) },
+				{ "md5", Token(m_details[i]["md5"]) }
+			};
 			found = m_blacklist.match(tokens);
 			color = found.empty() ? "green" : "red";
 		}
+
 		QTableWidgetItem *id = new QTableWidgetItem(QString::number(i + 1));
 		id->setIcon(QIcon(":/images/colors/" + color + ".png"));
-		ui->tableWidget->setItem(i, 0, id);
+
 		QLabel *preview = new QLabel();
-		preview->setPixmap(QPixmap(m_details.at(i).value("path_full")).scaledToHeight(50, Qt::SmoothTransformation));
 		m_previews.append(preview);
+
+		ui->tableWidget->setItem(i, 0, id);
 		ui->tableWidget->setCellWidget(i, 1, preview);
 		ui->tableWidget->setItem(i, 2, new QTableWidgetItem(m_details.at(i).value("path")));
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(found.join(" ")));
@@ -36,19 +44,30 @@ BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, Blacklist bl
 	headerView->setSectionResizeMode(QHeaderView::Interactive);
 	headerView->resizeSection(1, 50);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
+
+	QtConcurrent::run(this, &BlacklistFix2::loadThumbnails);
 }
 BlacklistFix2::~BlacklistFix2()
 {
 	delete ui;
 }
 
+void BlacklistFix2::loadThumbnails()
+{
+	for (int i = 0; i < m_previews.count(); ++i) {
+		m_previews[i]->setPixmap(QPixmap(m_details[i]["path_full"]).scaledToHeight(50, Qt::SmoothTransformation));
+	}
+}
+
 void BlacklistFix2::on_buttonSelectBlacklisted_clicked()
 {
+	ui->tableWidget->setSelectionMode(QTableWidget::MultiSelection);
 	for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
 		if (!ui->tableWidget->item(i, 3)->text().isEmpty()) {
 			ui->tableWidget->selectRow(i);
 		}
 	}
+	ui->tableWidget->setSelectionMode(QTableWidget::ExtendedSelection);
 }
 void BlacklistFix2::on_buttonCancel_clicked()
 {
@@ -59,15 +78,29 @@ void BlacklistFix2::on_buttonOk_clicked()
 {
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
-	const int count = selected.size();
-	QSet<int> toDelete = QSet<int>();
-	for (int i = 0; i < count; i++) {
-		toDelete.insert(selected.at(i)->row());
+	if (selected.isEmpty()) {
+		error(this, "You didn't select any image do delete.");
+		return;
 	}
+
+	// List all rows to be deleted
+	QList<int> rows;
+	for (QTableWidgetItem *item : selected) {
+		int row = item->row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
+	}
+
+	// Sort in ascending order to help the following foreach with deletion
+	std::sort(rows.begin(), rows.end());
+
+	// Delete files and their associated rows
 	int rem = 0;
-	for (int i : toDelete) {
-		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt() - 1).value("path_full"));
-		ui->tableWidget->removeRow(i - rem);
+	for (int i : qAsConst(rows)) {
+		int pos = i - rem;
+		QFile::remove(m_details.at(ui->tableWidget->item(pos, 0)->text().toInt() - 1).value("path_full"));
+		ui->tableWidget->removeRow(pos);
 		rem++;
 	}
 

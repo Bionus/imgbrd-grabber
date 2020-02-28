@@ -1,6 +1,8 @@
 #include "downloader/download-query-group.h"
 #include <QJsonArray>
+#include <QRegularExpression>
 #include <QSettings>
+#include <utility>
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -32,7 +34,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["galleriesCountAsOne"] = galleriesCountAsOne;
 
 	json["site"] = site->url();
-	json["filename"] = QString(filename).replace("\n", "\\n");
+	json["filename"] = QString(filename).replace("\\n", "\\\\n").replace("\n", "\\n");
 	json["path"] = path;
 
 	json["progressVal"] = progressVal;
@@ -49,7 +51,8 @@ bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 	getBlacklisted = json["getBlacklisted"].toBool();
 	galleriesCountAsOne = json["galleriesCountAsOne"].toBool();
 
-	filename = json["filename"].toString().replace("\\n", "\n");
+	static QRegularExpression nlExpr("(?<=^|[^\\\\])\\\\n");
+	filename = json["filename"].toString().replace(nlExpr, "\n").replace("\\\\n", "\\n");
 	path = json["path"].toString();
 
 	progressVal = json["progressVal"].toInt();

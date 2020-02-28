@@ -26,6 +26,7 @@
 
 #include <QApplication>
 #include <QSettings>
+#include <QTextStream>
 #include "analytics.h"
 #include "downloader/downloader.h"
 #include "functions.h"
@@ -96,6 +97,13 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
+	Profile *profile = new Profile(savePath());
+	profile->purgeTemp(24 * 60 * 60);
+	QSettings *settings = profile->getSettings();
+
+	QString dPath = settings->value("Save/path", "").toString();
+	QString dFilename = settings->value("Save/filename", "").toString();
+
 	#if !defined(USE_CLI)
 		const QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
@@ -104,14 +112,14 @@ int main(int argc, char *argv[])
 	const QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
 	const QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
 	const QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
-	const QCommandLineOption perpageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
-	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
-	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
+	const QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
+	const QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path", dPath);
+	const QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename", dFilename);
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
 	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist" , "Tags to remove from results.", "tags-blacklist");
-	const QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
+	const QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
 	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
@@ -120,14 +128,14 @@ int main(int argc, char *argv[])
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
 	parser.addOption(limitOption);
-	parser.addOption(perpageOption);
+	parser.addOption(perPageOption);
 	parser.addOption(pathOption);
 	parser.addOption(filenameOption);
 	parser.addOption(userOption);
 	parser.addOption(passwordOption);
 	parser.addOption(blacklistOption);
 	parser.addOption(tagsBlacklistOption);
-	parser.addOption(postfilteringOption);
+	parser.addOption(postFilteringOption);
 	parser.addOption(tagsMinOption);
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
@@ -170,24 +178,25 @@ int main(int argc, char *argv[])
 		}
 	#endif
 
-	Profile *profile = new Profile(savePath());
-	profile->purgeTemp(24 * 60 * 60);
-	QSettings *settings = profile->getSettings();
-
 	// Analytics
 	Analytics::getInstance().setTrackingID("UA-22768717-6");
 	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
 	Analytics::getInstance().sendEvent("lifecycle", "start");
 
 	if (!gui) {
+		if (parser.value(filenameOption).isEmpty() && parser.isSet(downloadOption)) {
+			QTextStream(stderr) << "You need a filename for downloading images";
+			exit(1);
+		}
+
 		QString blacklistOverride = parser.value(tagsBlacklistOption);
-		Downloader *dwnldr = new Downloader(profile,
+		Downloader *downloader = new Downloader(profile,
 			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-			parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
+			parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
 			profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 			parser.value(pageOption).toInt(),
 			parser.value(limitOption).toInt(),
-			parser.value(perpageOption).toInt(),
+			parser.value(perPageOption).toInt(),
 			parser.value(pathOption),
 			parser.value(filenameOption),
 			parser.value(userOption),
@@ -199,21 +208,21 @@ int main(int argc, char *argv[])
 			parser.value(tagsFormatOption));
 
 		if (parser.isSet(returnCountOption)) {
-			dwnldr->getPageCount();
+			downloader->getPageCount();
 		} else if (parser.isSet(returnTagsOption)) {
-			dwnldr->getPageTags();
+			downloader->getPageTags();
 		} else if (parser.isSet(returnPureTagsOption)) {
-			dwnldr->getTags();
+			downloader->getTags();
 		} else if (parser.isSet(returnImagesOption)) {
-			dwnldr->getUrls();
+			downloader->getUrls();
 		} else if (parser.isSet(downloadOption)) {
-			dwnldr->getImages();
+			downloader->getImages();
 		} else {
 			parser.showHelp();
 		}
 
-		dwnldr->setQuit(true);
-		QObject::connect(dwnldr, &Downloader::quit, qApp, &QApplication::quit);
+		downloader->setQuit(true);
+		QObject::connect(downloader, &Downloader::quit, qApp, &QApplication::quit);
 	}
 	#if !defined(USE_CLI)
 		else {
@@ -250,9 +259,9 @@ int main(int argc, char *argv[])
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 			params.insert("tags", parser.value(tagsOption));
 
-			auto *mainwindow = new MainWindow(profile);
-			mainwindow->init(parser.positionalArguments(), params);
-			mainwindow->show();
+			auto *mainWindow = new MainWindow(profile);
+			mainWindow->init(parser.positionalArguments(), params);
+			mainWindow->show();
 		}
 	#endif
 

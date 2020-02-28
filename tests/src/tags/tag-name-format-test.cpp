@@ -1,57 +1,56 @@
-#include "tag-name-format-test.h"
-#include <QtTest>
 #include "tags/tag-name-format.h"
+#include "catch.h"
 
 
-void TagNameFormatTest::testLower()
+TEST_CASE("TagNameFormat")
 {
-	TagNameFormat format(TagNameFormat::Lower, "_");
+	SECTION("Lower")
+	{
+		TagNameFormat format(TagNameFormat::Lower, "_");
 
-	QCOMPARE(format.formatted(QStringList()), QString(""));
-	QCOMPARE(format.formatted(QStringList() << "test"), QString("test"));
-	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("test_tag"));
-	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("test_tag"));
+		REQUIRE(format.formatted(QStringList()) == QString(""));
+		REQUIRE(format.formatted(QStringList() << "test") == QString("test"));
+		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("test_tag"));
+		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("test_tag"));
+	}
+
+	SECTION("UpperFirst")
+	{
+		TagNameFormat format(TagNameFormat::UpperFirst, "_");
+
+		REQUIRE(format.formatted(QStringList()) == QString(""));
+		REQUIRE(format.formatted(QStringList() << "test") == QString("Test"));
+		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("Test_tag"));
+		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test_tag"));
+	}
+
+	SECTION("Upper")
+	{
+		TagNameFormat format(TagNameFormat::Upper, "_");
+
+		REQUIRE(format.formatted(QStringList()) == QString(""));
+		REQUIRE(format.formatted(QStringList() << "test") == QString("Test"));
+		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("Test_Tag"));
+		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test_Tag"));
+	}
+
+	SECTION("Caps")
+	{
+		TagNameFormat format(TagNameFormat::Caps, "_");
+
+		REQUIRE(format.formatted(QStringList()) == QString(""));
+		REQUIRE(format.formatted(QStringList() << "test") == QString("TEST"));
+		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("TEST_TAG"));
+		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("TEST_TAG"));
+	}
+
+	SECTION("Unknown")
+	{
+		TagNameFormat format((TagNameFormat::CaseFormat)123, " ");
+
+		REQUIRE(format.formatted(QStringList()) == QString(""));
+		REQUIRE(format.formatted(QStringList() << "test") == QString("test"));
+		REQUIRE(format.formatted(QStringList() << "test" << "tag") == QString("test tag"));
+		REQUIRE(format.formatted(QStringList() << "Test" << "tAG") == QString("Test tAG"));
+	}
 }
-
-void TagNameFormatTest::testUpperFirst()
-{
-	TagNameFormat format(TagNameFormat::UpperFirst, "_");
-
-	QCOMPARE(format.formatted(QStringList()), QString(""));
-	QCOMPARE(format.formatted(QStringList() << "test"), QString("Test"));
-	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("Test_tag"));
-	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("Test_tag"));
-}
-
-void TagNameFormatTest::testUpper()
-{
-	TagNameFormat format(TagNameFormat::Upper, "_");
-
-	QCOMPARE(format.formatted(QStringList()), QString(""));
-	QCOMPARE(format.formatted(QStringList() << "test"), QString("Test"));
-	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("Test_Tag"));
-	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("Test_Tag"));
-}
-
-void TagNameFormatTest::testCaps()
-{
-	TagNameFormat format(TagNameFormat::Caps, "_");
-
-	QCOMPARE(format.formatted(QStringList()), QString(""));
-	QCOMPARE(format.formatted(QStringList() << "test"), QString("TEST"));
-	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("TEST_TAG"));
-	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("TEST_TAG"));
-}
-
-void TagNameFormatTest::testUnknown()
-{
-	TagNameFormat format((TagNameFormat::CaseFormat)123, " ");
-
-	QCOMPARE(format.formatted(QStringList()), QString(""));
-	QCOMPARE(format.formatted(QStringList() << "test"), QString("test"));
-	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("test tag"));
-	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("Test tAG"));
-}
-
-
-QTEST_MAIN(TagNameFormatTest)

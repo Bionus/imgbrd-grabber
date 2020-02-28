@@ -44,15 +44,15 @@ class SearchTab : public QWidget
 		virtual QString tags() const = 0;
 		const QList<Tag> &results() const;
 		const QString &wiki() const;
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
+		int imagesPerPage() const;
+		int columns() const;
+		QStringList postFilter(bool includeGlobal = false) const;
 		virtual void setTags(const QString &tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
 		void setSources(const QList<Site*> &sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
-		void setPostFilter(const QString &postfilter);
+		void setPostFilter(const QStringList &postFilter);
 		virtual QList<Site*> loadSites() const;
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
@@ -64,7 +64,7 @@ class SearchTab : public QWidget
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
-		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QUrl &url);
+		void loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url);
 		QBouton *createImageThumbnail(int position, const QSharedPointer<Image> &img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);
@@ -109,9 +109,9 @@ class SearchTab : public QWidget
 		void loadTags(SearchQuery query);
 		void endlessLoad();
 		void loadPage();
-		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr);
-		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
-		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr);
+		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &images, bool merged, const QString &noResultsMessage = nullptr);
+		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &images);
+		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, const QString &noResultsMessage = nullptr);
 		void addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge = false);
 		void finishedLoadingPreview();
 		// Merged
@@ -122,7 +122,7 @@ class SearchTab : public QWidget
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
 		void httpsRedirect(Page *page);
-		void postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		void postLoading(Page *page, const QList<QSharedPointer<Image>> &images);
 		void finishedLoadingTags(Page *page);
 		void updatePaginationButtons(Page *page);
 		// Image selection
@@ -172,7 +172,7 @@ class SearchTab : public QWidget
 		QMap<Site*, QVBoxLayout*> m_siteLayouts;
 		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
-		int m_pagemax;
+		int m_pageMax;
 		bool m_stop;
 		int m_lastToggle;
 		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;

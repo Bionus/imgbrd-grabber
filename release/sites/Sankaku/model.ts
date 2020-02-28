@@ -62,12 +62,12 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: any, opts: any, previous: any): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const baseUrl = opts.baseUrl
-                        .replace("//chan.", "//capi-beta.")
+                        .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
-                    return baseUrl + "/post/index.json?" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    return baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
@@ -88,7 +88,7 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 20,
             search: {
-                url: (query: any, opts: any, previous: any): string | IError => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
                         return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(query.search);
@@ -112,7 +112,7 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: number, md5: string): string => {
+                url: (id: string, md5: string): string => {
                     return "/post/show/" + id;
                 },
                 parse: (src: string): IParsedDetails => {

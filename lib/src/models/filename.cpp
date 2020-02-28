@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <algorithm>
+#include <utility>
 #include "filename/ast/filename-node-variable.h"
 #include "filename/ast-filename.h"
 #include "filename/filename-cache.h"
@@ -117,6 +118,10 @@ QStringList Filename::path(const Image &img, Profile *profile, const QString &pt
 { return path(img.tokens(profile), profile, pth, counter, flags); }
 QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, PathFlags flags) const
 {
+	if (m_ast->ast() == nullptr) {
+		return QStringList();
+	}
+
 	QSettings *settings = profile->getSettings();
 
 	// Computed tokens
@@ -180,7 +185,14 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 					filter = filter.left(filter.length() - ext.length()) + "*";
 				}
 			}
-			QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+			QFileInfoList allFiles = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+
+			QFileInfoList files;
+			for (const auto &file : allFiles) {
+				if (!file.fileName().endsWith(".tmp")) {
+					files.append(file);
+				}
+			}
 
 			if (!files.isEmpty()) {
 				// Get last file
@@ -283,7 +295,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 	// Can't validate invalid grammar
 	if (!m_ast->error().isEmpty()) {
-		returnError(red.arg(QObject::tr("Can't compile your filename: %1").arg(m_ast->error())), error);
+		return returnError(red.arg(QObject::tr("Can't compile your filename: %1").arg(m_ast->error())), error);
 	}
 
 	const auto &toks = m_ast->tokens();

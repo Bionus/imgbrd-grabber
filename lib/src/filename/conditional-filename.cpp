@@ -1,5 +1,6 @@
 #include "filename/conditional-filename.h"
 #include <QSettings>
+#include <utility>
 #include "filename/filename-cache.h"
 #include "filename/filename-condition-visitor.h"
 #include "filename/filename-parser.h"

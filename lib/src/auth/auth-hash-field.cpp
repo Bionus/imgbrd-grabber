@@ -1,9 +1,12 @@
 #include "auth/auth-hash-field.h"
+#include <QByteArray>
+#include <QVariant>
+#include <utility>
 #include "mixed-settings.h"
 
 
-AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algo, QString salt)
-	: AuthField(QString(), std::move(key), AuthField::Hash), m_algo(algo), m_salt(std::move(salt))
+AuthHashField::AuthHashField(QString key, QCryptographicHash::Algorithm algorithm, QString salt)
+	: AuthField(QString(), std::move(key), AuthField::Hash), m_algorithm(algorithm), m_salt(std::move(salt))
 {}
 
 
@@ -11,6 +14,9 @@ QString AuthHashField::value(MixedSettings *settings) const
 {
 	const QString username = settings->value("auth/pseudo").toString();
 	const QString password = settings->value("auth/password").toString();
+
+	QString salt = settings->value("auth/salt").toString();
+	salt.replace("--your-password--", "--%password%--");
 
 	// Don't hash passwords twice
 	// FIXME: very long passwords won't get hashed
@@ -21,6 +27,7 @@ QString AuthHashField::value(MixedSettings *settings) const
 	QString data = password;
 	if (!m_salt.isEmpty() && (!username.isEmpty() || !password.isEmpty())) {
 		data = QString(m_salt);
+		data.replace("%salt%", salt);
 		data.replace("%pseudo%", username);
 		data.replace("%pseudo:lower%", username.toLower());
 		data.replace("%password%", password);
@@ -31,7 +38,7 @@ QString AuthHashField::value(MixedSettings *settings) const
 		return data;
 	}
 
-	return QCryptographicHash::hash(data.toUtf8(), m_algo).toHex();
+	return QCryptographicHash::hash(data.toUtf8(), m_algorithm).toHex();
 }
 
 QString AuthHashField::salt() const

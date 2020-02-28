@@ -1,6 +1,7 @@
 #include "models/md5-database.h"
 #include <QFile>
 #include <QSettings>
+#include <utility>
 
 
 Md5Database::Md5Database(QString path, QSettings *settings)
