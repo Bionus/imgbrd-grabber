@@ -158,57 +158,13 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	}
 
 	// Rating
-	setRating(details.contains("rating") ? details["rating"] : "");
+	if (m_data.contains("rating")) {
+		m_rating = m_data["rating"].toString();
+	}
 
 	// Tags
-	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species" << "meta";
-	for (const QString &typ : types) {
-		const QString key = "tags_" + typ;
-		if (!details.contains(key)) {
-			continue;
-		}
-
-		const TagType ttype(typ);
-		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
-		for (QString tg : t) {
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, ttype));
-		}
-	}
-	if (m_tags.isEmpty() && details.contains("tags")) {
-		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
-
-		// Automatically find tag separator and split the list
-		const int commas = tgs.count(", ");
-		const int spaces = tgs.count(" ");
-		const QStringList &t = commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2)
-			? tgs.split(", ", QString::SkipEmptyParts)
-			: tgs.split(" ", QString::SkipEmptyParts);
-
-		for (QString tg : t) {
-			tg.replace("&amp;", "&");
-
-			const int colon = tg.indexOf(':');
-			if (colon != -1) {
-				const QString tp = tg.left(colon).toLower();
-				if (tp == "user") {
-					m_author = tg.mid(colon + 1);
-				} else if (tp == "score") {
-					m_score = tg.mid(colon + 1);
-				} else if (tp == "size") {
-					QStringList size = tg.mid(colon + 1).split('x');
-					if (size.size() == 2) {
-						setSize(QSize(size[0].toInt(), size[1].toInt()), Size::Full);
-					}
-				} else if (tp == "rating") {
-					setRating(tg.mid(colon + 1));
-				} else {
-					m_tags.append(Tag(tg));
-				}
-			} else {
-				m_tags.append(Tag(tg));
-			}
-		}
+	if (m_data.contains("tags")) {
+		m_tags = m_data["tags"].value<QList<Tag>>();
 	}
 
 	// Complete missing tag type information
@@ -274,11 +230,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	}
 
 	// Creation date
-	m_createdAt = QDateTime();
-	if (details.contains("created_at")) {
-		m_createdAt = qDateTimeFromString(details["created_at"]);
-	} else if (details.contains("date")) {
-		m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate);
+	if (m_data.contains("date")) {
+		m_createdAt = m_data["date"].toDateTime();
 	}
 
 	init();
@@ -977,22 +930,6 @@ bool Image::hasUnknownTag() const
 		}
 	}
 	return false;
-}
-
-void Image::setRating(const QString &rating)
-{
-	static QMap<QString, QString> assoc =
-	{
-		{ "s", "safe" },
-		{ "q", "questionable" },
-		{ "e", "explicit" }
-	};
-
-	m_rating = assoc.contains(rating)
-		? assoc[rating]
-		: rating.toLower();
-
-	refreshTokens();
 }
 
 void Image::setFileExtension(const QString &ext)

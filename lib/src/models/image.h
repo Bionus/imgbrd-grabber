@@ -107,7 +107,6 @@ class Image : public QObject, public Downloadable
 	protected:
 		void init();
 		QList<Tag> filteredTags(const QStringList &remove) const;
-		void setRating(const QString &rating);
 		QString md5forced() const;
 
 		// Saving
