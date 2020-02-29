@@ -14,13 +14,26 @@ class Token
 		explicit Token(QVariant value, QString whatToDoDefault, QString emptyDefault, QString multipleDefault);
 		explicit Token(std::function<QVariant()> func, bool cacheResult = true);
 
+		const QVariant &valueRef() const;
 		QVariant value() const;
-		template <typename T> T value() const { return m_value.value<T>(); }
 		QString toString() const;
 
 		const QString &whatToDoDefault() const;
 		const QString &emptyDefault() const;
 		const QString &multipleDefault() const;
+
+		template <typename T>
+		const T &value() const
+		{
+			static T defaultValue;
+
+			const QVariant &variant = valueRef();
+			if (variant.userType() == qMetaTypeId<T>()) {
+				return *reinterpret_cast<const T*>(variant.constData());
+			}
+
+			return defaultValue;
+		}
 
 	private:
 		mutable QVariant m_value;

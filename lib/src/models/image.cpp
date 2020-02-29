@@ -55,13 +55,11 @@ Image::Image(const Image &other)
 	m_author = other.m_author;
 	m_name = other.m_name;
 	m_status = other.m_status;
-	m_rating = other.m_rating;
 	m_sources = other.m_sources;
 
 	m_pageUrl = other.m_pageUrl;
 
 	m_sizes = other.m_sizes;
-	m_createdAt = other.m_createdAt;
 
 	m_galleryCount = other.m_galleryCount;
 	m_position = other.m_position;
@@ -157,11 +155,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		m_pageUrl = details["page_url"];
 	}
 
-	// Rating
-	if (m_data.contains("rating")) {
-		m_rating = m_data["rating"].toString();
-	}
-
 	// Tags
 	if (m_data.contains("tags")) {
 		m_tags = m_data["tags"].value<QList<Tag>>();
@@ -229,11 +222,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		m_url = url(Size::Sample).toString();
 	}
 
-	// Creation date
-	if (m_data.contains("date")) {
-		m_createdAt = m_data["date"].toDateTime();
-	}
-
 	init();
 }
 
@@ -299,11 +287,20 @@ void Image::write(QJsonObject &json) const
 	json["name"] = m_name;
 	json["id"] = static_cast<int>(m_id);
 	json["md5"] = m_md5;
-	json["rating"] = m_rating;
 	json["tags"] = QJsonArray::fromStringList(tags);
 	json["url"] = m_url.toString();
-	json["date"] = m_createdAt.toString(Qt::ISODate);
 	json["search"] = QJsonArray::fromStringList(m_search);
+
+	// Arbitrary tokens
+	QJsonObject jsonData;
+	for (const auto &key : m_data.keys()) {
+		jsonData[key] = m_data[key].type() == QMetaType::QDateTime
+			? "date:" + m_data[key].toDateTime().toString(Qt::ISODate)
+			: QJsonValue::fromVariant(m_data[key]);
+	}
+	if (!jsonData.isEmpty()) {
+		json["data"] = jsonData;
+	}
 }
 
 bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
@@ -356,8 +353,18 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	m_name = json["name"].toString();
 	m_id = json["id"].toInt();
 	m_md5 = json["md5"].toString();
-	m_rating = json["rating"].toString();
-	m_createdAt = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+
+	// Arbitrary tokens
+	if (json.contains("data")) {
+		const auto &jsonData = json["data"].toObject();
+		for (const auto &key : jsonData.keys()) {
+			QVariant val = jsonData[key].toVariant();
+			if (val.toString().startsWith("date:")) {
+				val = QDateTime::fromString(val.toString().mid(5), Qt::ISODate);
+			}
+			m_data[key] = val;
+		}
+	}
 
 	// URL with fallback
 	if (json.contains("file_url")) {
@@ -462,7 +469,7 @@ void Image::parseDetails()
 		m_tags = ret.tags;
 	}
 	if (ret.createdAt.isValid()) {
-		m_createdAt = ret.createdAt;
+		m_data["date"] = ret.createdAt;
 	}
 
 	// Image url
@@ -481,21 +488,6 @@ void Image::parseDetails()
 				setFileSize(0, Size::Full);
 			}
 			emit urlChanged(before, m_url);
-		}
-	}
-
-	// Get rating from tags
-	if (m_rating.isEmpty()) {
-		int ratingTagIndex = -1;
-		for (int it = 0; it < m_tags.count(); ++it) {
-			if (m_tags[it].type().name() == "rating") {
-				m_rating = m_tags[it].text();
-				ratingTagIndex = it;
-				break;
-			}
-		}
-		if (ratingTagIndex != -1) {
-			m_tags.removeAt(ratingTagIndex);
 		}
 	}
 
@@ -712,7 +704,7 @@ int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
 const QStringList &Image::search() const { return m_search; }
-const QDateTime &Image::createdAt() const { return m_createdAt; }
+const QDateTime &Image::createdAt() const { return token<QDateTime>("date"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size(Size size) const { return m_sizes[size]->size; }
@@ -842,15 +834,18 @@ QString Image::tooltip() const
 	double size = m_sizes[Image::Size::Full]->fileSize;
 	const QString unit = getUnit(&size);
 
+	const QString &rating = token<QString>("rating");
+	const QDateTime &createdAt = token<QDateTime>("date");
+
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
-		.arg(m_rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(m_rating))
+		.arg(rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(rating))
 		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
 		.arg(m_author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(m_author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!m_createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(m_createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
+		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
 }
 
 QString Image::counter() const
@@ -869,17 +864,20 @@ QList<QStrP> Image::detailsData() const
 		sources += (!sources.isEmpty() ? "<br/>" : "") + QString("<a href=\"%1\">%1</a>").arg(source);
 	}
 
+	const QString &rating = token<QString>("rating");
+	const QDateTime &createdAt = token<QDateTime>("date");
+
 	return
 	{
 		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
-		QStrP(tr("Rating"), !m_rating.isEmpty() ? m_rating : unknown),
+		QStrP(tr("Rating"), !rating.isEmpty() ? rating : unknown),
 		QStrP(tr("Score"), m_score),
 		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
 		QStrP(),
-		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
+		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),

@@ -47,4 +47,29 @@ TEST_CASE("Token")
 		REQUIRE(Token(QStringList() << "1" << "2") == Token(QStringList() << "1" << "2"));
 		REQUIRE(Token(QStringList() << "1" << "2") != Token(QStringList() << "1" << "2" << "3"));
 	}
+
+	SECTION("Value")
+	{
+		Token token(13);
+
+		QVariant val = token.value();
+		REQUIRE(val.toInt() == 13);
+
+		const QVariant &valRef = token.value();
+		REQUIRE(valRef.toInt() == 13);
+	}
+
+	SECTION("Value template")
+	{
+		REQUIRE(Token(13).value<int>() == 13);
+
+		Token token("test");
+		REQUIRE(token.value<QString>() == "test");
+
+		QString val = token.value<QString>();
+		REQUIRE(val.toUpper() == "TEST");
+
+		const QString &valRef = token.value<QString>();
+		REQUIRE(valRef.toUpper() == "TEST");
+	}
 }

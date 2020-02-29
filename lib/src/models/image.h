@@ -98,9 +98,9 @@ class Image : public QObject, public Downloadable
 
 		// Tokens
 		template <typename T>
-		T token(const QString &name) const
+		const T& token(const QString &name) const
 		{
-			return tokens(m_profile).value(name).value<T>();
+			return tokens(m_profile)[name].value<T>();
 		}
 
 	protected:
@@ -132,11 +132,10 @@ class Image : public QObject, public Downloadable
 		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
-		QString m_author, m_name, m_status, m_rating;
+		QString m_author, m_name, m_status;
 		QStringList m_sources;
 		QUrl m_pageUrl;
 		QUrl m_parentUrl;
-		QDateTime m_createdAt;
 		NetworkReply *m_loadDetails = nullptr;
 		QList<Tag> m_tags;
 		QList<Pool> m_pools;

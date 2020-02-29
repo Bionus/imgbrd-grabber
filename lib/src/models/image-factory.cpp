@@ -137,9 +137,9 @@ void ImageFactory::parseTags(const QString &val, QVariantMap &data)
 		if (colon != -1) {
 			const QString tp = tg.left(colon).toLower();
 			if (tp == "user") {
-				//m_author = tg.mid(colon + 1);
+				data["author"] = tg.mid(colon + 1);
 			} else if (tp == "score") {
-				//m_score = tg.mid(colon + 1);
+				data["score"] = tg.mid(colon + 1).toInt();
 			} else if (tp == "size") {
 				/*QStringList size = tg.mid(colon + 1).split('x');
 				if (size.size() == 2) {
