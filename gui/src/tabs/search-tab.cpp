@@ -414,6 +414,8 @@ void SearchTab::httpsRedirect(Page *page)
 
 void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &images)
 {
+	Q_UNUSED(page);
+
 	m_page++;
 
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();

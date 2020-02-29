@@ -294,7 +294,7 @@ void Image::write(QJsonObject &json) const
 	// Arbitrary tokens
 	QJsonObject jsonData;
 	for (const auto &key : m_data.keys()) {
-		jsonData[key] = m_data[key].type() == QMetaType::QDateTime
+		jsonData[key] = (QMetaType::Type) m_data[key].type() == QMetaType::QDateTime
 			? "date:" + m_data[key].toDateTime().toString(Qt::ISODate)
 			: QJsonValue::fromVariant(m_data[key]);
 	}

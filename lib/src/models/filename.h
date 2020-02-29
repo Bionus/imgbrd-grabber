@@ -64,6 +64,6 @@ class Filename
 		QString (*m_escapeMethod)(const QVariant &) = nullptr;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Filename::PathFlags);
+Q_DECLARE_OPERATORS_FOR_FLAGS(Filename::PathFlags)
 
 #endif // FILENAME_H

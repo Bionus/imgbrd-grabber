@@ -337,6 +337,8 @@ bool JavascriptApi::parseTagTypesErrors() const
 
 ParsedTagTypes JavascriptApi::parseTagTypes(const QString &source, int statusCode, Site *site) const
 {
+	Q_UNUSED(site);
+
 	ParsedTagTypes ret;
 
 	// QMutexLocker locker(m_engineMutex);

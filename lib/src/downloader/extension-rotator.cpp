@@ -3,6 +3,7 @@
 
 
 ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
+	: QObject(other.parent())
 {
 	m_initialExtension = other.m_initialExtension;
 	m_extensions = other.m_extensions;

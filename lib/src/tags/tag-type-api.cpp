@@ -13,6 +13,8 @@ TagTypeApi::TagTypeApi(Profile *profile, Site *site, Api *api, QObject *parent)
 
 void TagTypeApi::parse(const QString &source, int statusCode, Site *site)
 {
+	Q_UNUSED(site);
+
 	ParsedTagTypes ret = m_api->parseTagTypes(source, statusCode, m_site);
 	if (!ret.error.isEmpty()) {
 		log(QStringLiteral("[%1][%2] %3").arg(m_site->url(), m_api->getName(), ret.error), Logger::Warning);
