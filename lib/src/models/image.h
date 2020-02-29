@@ -48,7 +48,6 @@ class Image : public QObject, public Downloadable
 		int fileSize() const;
 		int width() const;
 		int height() const;
-		const QString &rating() const;
 		const QStringList &search() const;
 		const QDateTime &createdAt() const;
 		const QUrl &pageUrl() const;
@@ -97,12 +96,12 @@ class Image : public QObject, public Downloadable
 		SaveResult preSave(const QString &path, Size size) override;
 		void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count) override;
 
-		// Templates
-		/*template <typename T>
+		// Tokens
+		template <typename T>
 		T token(const QString &name) const
 		{
 			return tokens(m_profile).value(name).value<T>();
-		}*/
+		}
 
 	protected:
 		void init();

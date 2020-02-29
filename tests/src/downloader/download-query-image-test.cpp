@@ -51,7 +51,7 @@ TEST_CASE("DownloadQueryImage")
 
 		REQUIRE(static_cast<int>(dest.image->id()) == 1);
 		REQUIRE(dest.image->md5() == QString("md5"));
-		REQUIRE(dest.image->rating() == QString("rating"));
+		REQUIRE(dest.image->token<QString>("rating") == QString("rating"));
 		REQUIRE(dest.image->tagsString() == QStringList() << "tags");
 		REQUIRE(dest.image->fileUrl().toString() == QString("https://test.com/fileUrl"));
 		REQUIRE(dest.image->createdAt().toString("yyyy-MM-dd HH:mm:ss") == QString("2016-08-26 16:26:30"));

@@ -711,7 +711,6 @@ qulonglong Image::id() const { return m_id; }
 int Image::fileSize() const { return m_sizes[Image::Size::Full]->fileSize; }
 int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
-const QString &Image::rating() const { return m_rating; }
 const QStringList &Image::search() const { return m_search; }
 const QDateTime &Image::createdAt() const { return m_createdAt; }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
@@ -1008,9 +1007,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("websitename", Token(m_parentSite->name()));
 	tokens.insert("md5", Token(md5()));
 	tokens.insert("md5_forced", Token([this]() { return this->md5forced(); }));
-	tokens.insert("date", Token(m_createdAt));
 	tokens.insert("id", Token(m_id));
-	tokens.insert("rating", Token(m_rating, "unknown"));
 	tokens.insert("score", Token(m_score));
 	tokens.insert("height", Token(height()));
 	tokens.insert("width", Token(width()));
@@ -1106,8 +1103,12 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	// Extra tokens
+	static QVariantMap defaultValues
+	{
+		{ "rating", "unknown" },
+	};
 	for (auto it = m_data.constBegin(); it != m_data.constEnd(); ++it) {
-		tokens.insert(it.key(), Token(it.value()));
+		tokens.insert(it.key(), Token(it.value(), defaultValues.value(it.key())));
 	}
 
 	return tokens;

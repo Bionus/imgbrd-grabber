@@ -45,6 +45,28 @@ Image *ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantM
 }
 
 
+vTransformToken ImageFactory::parseString(const QString &key)
+{
+	return [key](const QString &val, QVariantMap &data) {
+		data[key] = val;
+	};
+}
+
+vTransformToken ImageFactory::parseInt(const QString &key)
+{
+	return [key](const QString &val, QVariantMap &data) {
+		data[key] = val.toInt();
+	};
+}
+
+vTransformToken ImageFactory::parseBool(const QString &key)
+{
+	return [key](const QString &val, QVariantMap &data) {
+		data[key] = val == "true";
+	};
+}
+
+
 void ImageFactory::parseCreatedAt(const QString &val, QVariantMap &data)
 {
 	data["date"] = qDateTimeFromString(val);

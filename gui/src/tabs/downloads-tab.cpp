@@ -402,7 +402,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 	int row = ui->tableBatchUniques->rowCount() - 1;
 	addTableItem(ui->tableBatchUniques, row, 0, QString::number(query.image->id()));
 	addTableItem(ui->tableBatchUniques, row, 1, query.image->md5());
-	addTableItem(ui->tableBatchUniques, row, 2, query.image->rating());
+	addTableItem(ui->tableBatchUniques, row, 2, query.image->token<QString>("rating"));
 	addTableItem(ui->tableBatchUniques, row, 3, query.image->tagsString().join(' '));
 	addTableItem(ui->tableBatchUniques, row, 4, query.image->fileUrl().toString());
 	addTableItem(ui->tableBatchUniques, row, 5, query.image->createdAt().toString(Qt::ISODate));
