@@ -17,6 +17,7 @@ typedef std::function<void(const QString &val, QVariantMap &data)> vTransformTok
 class ImageFactory
 {
 	public:
+		static Image *build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
 		static Image *build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent = nullptr);
 
 	private:

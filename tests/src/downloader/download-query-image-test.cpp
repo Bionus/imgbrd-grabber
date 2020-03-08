@@ -2,6 +2,7 @@
 #include <QSharedPointer>
 #include "downloader/download-query-image.h"
 #include "models/image.h"
+#include "models/image-factory.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "catch.h"
@@ -40,7 +41,7 @@ TEST_CASE("DownloadQueryImage")
 			{ "date", "2016-08-26T16:26:30+01:00" },
 			{ "search", "search" },
 		};
-		auto img = QSharedPointer<Image>(new Image(site, details, &profile));
+		auto img = QSharedPointer<Image>(ImageFactory::build(site, details, &profile));
 		DownloadQueryImage original(img, site, "filename", "path");
 
 		QJsonObject json;

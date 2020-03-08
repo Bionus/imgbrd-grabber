@@ -60,6 +60,7 @@ Image::Image(const Image &other)
 	m_pageUrl = other.m_pageUrl;
 
 	m_sizes = other.m_sizes;
+	m_data = other.m_data;
 
 	m_galleryCount = other.m_galleryCount;
 	m_position = other.m_position;

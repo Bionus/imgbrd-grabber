@@ -30,21 +30,21 @@ TEST_CASE("LanguageLoader")
 
 		// The first call should not have any impact because the translators are not installed yet
 		REQUIRE(loader.setLanguage("French"));
-		REQUIRE(QObject::tr("Translation test") == QString("Translation test"));
+		REQUIRE(LanguageLoader::tr("Translation test") == QString("Translation test"));
 
 		return; // FIXME
 
 		// Once installed, the translations should immediately be effective
 		REQUIRE(loader.install(qApp));
-		REQUIRE(QObject::tr("Translation test") == QString("Test de traduction"));
+		REQUIRE(LanguageLoader::tr("Translation test") == QString("Test de traduction"));
 
 		// Another call to setLanguage should not require to re-install translators
 		REQUIRE(loader.setLanguage("English"));
-		REQUIRE(QObject::tr("Translation test") == QString("Translation test"));
+		REQUIRE(LanguageLoader::tr("Translation test") == QString("Translation test"));
 
 		// Uninstalling the translator should restore the original language
 		REQUIRE(loader.setLanguage("French"));
 		REQUIRE(loader.uninstall(qApp));
-		REQUIRE(QObject::tr("Translation test") == QString("Translation test"));
+		REQUIRE(LanguageLoader::tr("Translation test") == QString("Translation test"));
 	}
 }

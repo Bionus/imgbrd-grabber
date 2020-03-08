@@ -4,6 +4,7 @@
 #include "loader/token.h"
 #include "models/filtering/post-filter.h"
 #include "models/image.h"
+#include "models/image-factory.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -63,7 +64,7 @@ TEST_CASE("PostFilter")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-	Image *img = new Image(site, details, profile);
+	Image *img = ImageFactory::build(site, details, profile);
 
 	SECTION("Count")
 	{

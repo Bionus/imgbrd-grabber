@@ -25,6 +25,7 @@ TEST_CASE("Sankaku")
 
 		// Check results
 		REQUIRE(images.count() == 20);
+		auto a = images[0]->createdAt();
 		REQUIRE(images[0]->md5() == QString("26d8d649afde8fab74f1cf09607daebb"));
 		REQUIRE(images[0]->createdAt() == QDateTime::fromMSecsSinceEpoch(1484391423000));
 		REQUIRE(images[1]->md5() == QString("c68c77540ab3813c9bc7c5059f3a0ac2"));

@@ -3,6 +3,7 @@
 #include <QList>
 #include <QMap>
 #include <QPair>
+#include <QRegularExpression>
 #include <QString>
 #include <QVariant>
 #include <QVariantMap>
@@ -14,6 +15,11 @@
 #include "tags/tag.h"
 #include "tags/tag-type.h"
 
+
+Image *ImageFactory::build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
+{
+	return ImageFactory::build(site, details, QVariantMap(), profile, parent);
+}
 
 Image *ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
 {

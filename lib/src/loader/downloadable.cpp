@@ -4,13 +4,14 @@
 #include "loader/token.h"
 #include "models/filename.h"
 #include "models/profile.h"
+#include "tags/tag.h"
 
 
-bool isFavorited(const QStringList &tags, const QList<Favorite> &favorites)
+bool isFavorited(const QList<Tag> &tags, const QList<Favorite> &favorites)
 {
-	for (const QString &tag : tags) {
+	for (const Tag &tag : tags) {
 		for (const Favorite &fav : favorites) {
-			if (fav.getName() == tag) {
+			if (fav.getName() == tag.text()) {
 				return true;
 			}
 		}
@@ -25,17 +26,17 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 
 		// Custom tokens (if the tokens contain tags)
 		if (tokens.contains("tags")) {
-			const QStringList &tags = tokens["tags"].value().toStringList();
+			const QList<Tag> &tags = tokens["tags"].value<QList<Tag>>();
 			QMap<QString, QStringList> scustom = getCustoms(profile->getSettings());
 			QMap<QString, QStringList> custom;
-			for (const QString &tag : tags) {
+			for (const Tag &tag : tags) {
 				for (auto it = scustom.constBegin(); it != scustom.constEnd(); ++it) {
 					const QString &key = it.key();
 					if (!custom.contains(key)) {
 						custom.insert(key, QStringList());
 					}
-					if (it.value().contains(tag, Qt::CaseInsensitive)) {
-						custom[key].append(tag);
+					if (it.value().contains(tag.text(), Qt::CaseInsensitive)) {
+						custom[key].append(tag.text());
 					}
 				}
 			}
@@ -73,7 +74,7 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 
 			// Favorited
 			if (tokens.contains("tags")) {
-				const QStringList &tags = tokens["tags"].value().toStringList();
+				const QList<Tag> &tags = tokens["tags"].value<QList<Tag>>();
 				if (isFavorited(tags, profile->getFavorites())) {
 					metas.append("favorited");
 				}
