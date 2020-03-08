@@ -23,16 +23,9 @@ class Token
 		const QString &multipleDefault() const;
 
 		template <typename T>
-		const T &value() const
+		T value() const
 		{
-			static T defaultValue;
-
-			const QVariant &variant = valueRef();
-			if (variant.userType() == qMetaTypeId<T>()) {
-				return *reinterpret_cast<const T*>(variant.constData());
-			}
-
-			return defaultValue;
+			return m_value.value<T>();
 		}
 
 	private:
