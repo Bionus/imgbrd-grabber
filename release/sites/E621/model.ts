@@ -270,7 +270,7 @@ export const source: ISource = {
                         return { error: match[1] };
                     }
 
-                    // Broken due to -status:deleted added to search tag
+                    // Broken due to -status:deleted added to search query
                     //let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
                     //wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
                     const wiki: string = "<p>This feature is now broken due to '-status:deleted' is added to search tag.</p>";
@@ -290,7 +290,10 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        pools: Grabber.regexToPools('<div class="status-notice" id="pool\\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(?<previous>\\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(?<id>\\d+)" >(?<name>[^<]+)</a>[^<]*(?:<a href="/post/show/(?<next>\\d+)" >&gt;&gt;</a>)?[^<]*</div>', src),
+                        /* pool regex
+                        <div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\d+" class="pool-\w+-\w+ pool-\w+-\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?<\/a>|<span class="first">.*?<\/span>)[^<]*(?:<a rel="prev" class="prev" title="to page \d+" href="\/posts\/(?<previous>\d+)\?pool_id=\d+">.*?<\/a>|<span class="prev">.*?<\/span>)?[^<]*<span class="pool-name">[^<]*<a title="page \d+\/\d+" href="\/pools\/(?<id>\d+)">Pool: (?<name>[^<]+)<\/a>[^<]*<\/span>[^<]*(?:<a rel="next" class="next" title="to page \d+" href="\/posts\/(?<next>\d+)\?pool_id=\d+">.*?<\/a>|<span class="next">.*?<\/span>)?[^<]*(?:<a class="last" title="to page \d+" href=".*?">.*?<\/a>|<span class="last">.*?<\/span>)[^<]*<\/li>[^<]*<\/ul>[^<]*<\/div>
+                        */
+                        pools: Grabber.regexToPools('<div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\\d+" class="pool-\\w+-\\w+ pool-\\w+-\\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?</a>|<span class="first">.*?</span>)[^<]*(?:<a rel="prev" class="prev" title="to page \\d+" href="/posts/(?<previous>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="prev">.*?</span>)?[^<]*<span class="pool-name">[^<]*<a title="page \\d+/\\d+" href="/pools/(?<id>\\d+)">Pool: (?<name>[^<]+)</a>[^<]*</span>[^<]*(?:<a rel="next" class="next" title="to page \\d+" href="/posts/(?<next>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="next">.*?</span>)?[^<]*(?:<a class="last" title="to page \\d+" href=".*?">.*?</a>|<span class="last">.*?</span>)[^<]*</li>[^<]*</ul>[^<]*</div>', src),
                         tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" rel="nofollow" href="[^"]+">\\?</a>)?\\s*<a rel="nofollow" class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", 'Size: <a href="(?<url>[^"]+?)(?:\\?download=1[^"]*)?"', src),
                     };
