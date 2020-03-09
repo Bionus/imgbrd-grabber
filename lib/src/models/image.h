@@ -98,9 +98,13 @@ class Image : public QObject, public Downloadable
 
 		// Tokens
 		template <typename T>
-		T token(const QString &name) const
+		T token(const QString &name, const T &defaultValue = T()) const
 		{
-			return tokens(m_profile)[name].value<T>();
+			const QMap<QString, Token> &toks = tokens(m_profile);
+			if (!toks.contains(name)) {
+				return defaultValue;
+			}
+			return toks[name].value<T>();
 		}
 
 	protected:
@@ -127,8 +131,6 @@ class Image : public QObject, public Downloadable
 		Profile *m_profile;
 		Page *m_parent = nullptr;
 		qulonglong m_id;
-		QString m_score;
-		bool m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
 		QString m_name;

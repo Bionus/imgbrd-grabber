@@ -29,6 +29,7 @@ QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> det
 		{ "authorid", ImageFactory::parseInt("creator_id") },
 		{ "author", ImageFactory::parseString("author") },
 		{ "status", ImageFactory::parseString("status") },
+		{ "score", ImageFactory::parseString("score") },
 		{ "rating", &ImageFactory::parseRating },
 		{ "has_children", ImageFactory::parseBool("has_children") },
 		{ "has_note", ImageFactory::parseBool("has_note") },

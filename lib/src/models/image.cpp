@@ -41,9 +41,6 @@ Image::Image(const Image &other)
 	m_isGallery = other.m_isGallery;
 
 	m_id = other.m_id;
-	m_score = other.m_score;
-
-	m_hasScore = other.m_hasScore;
 
 	m_url = other.m_url;
 	m_md5 = other.m_md5;
@@ -99,8 +96,6 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_name = details.contains("name") ? details["name"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
-	m_score = details.contains("score") ? details["score"] : 0;
-	m_hasScore = details.contains("score");
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
@@ -824,12 +819,13 @@ QString Image::tooltip() const
 	const QString &rating = token<QString>("rating");
 	const QDateTime &createdAt = token<QDateTime>("date");
 	const QString &author = token<QString>("author");
+	const QString &score = token<QString>("score");
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 		.arg(rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(rating))
-		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
+		.arg(!score.isEmpty() ? tr("<b>Score:</b> %1<br/>").arg(score) : " ")
 		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
@@ -864,7 +860,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
 		QStrP(tr("Rating"), !rating.isEmpty() ? rating : unknown),
-		QStrP(tr("Score"), m_score),
+		QStrP(tr("Score"), token<QString>("score")),
 		QStrP(tr("Author"), !author.isEmpty() ? author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
@@ -996,7 +992,6 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("md5", Token(md5()));
 	tokens.insert("md5_forced", Token([this]() { return this->md5forced(); }));
 	tokens.insert("id", Token(m_id));
-	tokens.insert("score", Token(m_score));
 	tokens.insert("height", Token(height()));
 	tokens.insert("width", Token(width()));
 	tokens.insert("mpixels", Token(width() * height()));
