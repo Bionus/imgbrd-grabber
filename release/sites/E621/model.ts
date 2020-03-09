@@ -1,10 +1,9 @@
 function completeImage(img: IImage): IImage {
-    if (img.ext && img.ext[0] === ".") {
-        img.ext = img.ext.substr(1);
-    }
-
+    const resourcesURL: string = "https://static1.e621.net/data";
+    const md5PartOne: string = img.md5.slice(0, 2);
+    const md5PartTwo: string = img.md5.slice(2, 4);
     if (!img.file_url || img.file_url.length < 5) {
-        img.file_url = `/data/${img.md5}.${img.ext || "jpg"}`;
+        img.file_url = `${resourcesURL}/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
     } else {
         img.file_url = img.file_url
             .replace("/preview/", "/")
@@ -13,18 +12,18 @@ function completeImage(img: IImage): IImage {
     }
 
     if (!img.sample_url || img.sample_url.length < 5) {
-        img.sample_url = `/data/sample/sample-${img.md5}.jpg`;
+        img.sample_url = `${resourcesURL}/sample/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
     }
 
     if (!img.preview_url || img.preview_url.length < 5) {
-        img.preview_url = `/data/preview/${img.md5}.jpg`;
+        img.sample_url = `${resourcesURL}/preview/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
     }
 
     return img;
 }
 
 export const source: ISource = {
-    name: "Danbooru (2.0)",
+    name: "E621",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "rating:s", "rating:q", "rating:e", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "status:any", "status:deleted", "status:active", "status:flagged", "status:pending", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
     forcedTokens: ["filename"],
     tagFormat: {
@@ -103,7 +102,7 @@ export const source: ISource = {
                         "has_comments": "has_comments",
                         "file_url": "file_url",
                         "sample_url": "large_file_url",
-                        "change": "change",
+                        "change": "change_seq",
                         "sample_width": "sample_width",
                         "has_children": "has_children",
                         "preview_url": "preview_file_url",
@@ -129,18 +128,94 @@ export const source: ISource = {
                         "tags_meta": "tag_string_meta",
                     };
 
-                    const data = JSON.parse(src);
+                    let data = JSON.parse(src);
 
                     if ("success" in data && data["success"] === false && "message" in data) {
                         return { error: data["message"] };
                     }
 
+                    //Data in "posts" array
+                    data = data["posts"];
+
                     const images: IImage[] = [];
                     for (const image of data) {
                         const img = Grabber.mapFields(image, map);
-                        if (!img.md5 || img.md5.length === 0) {
+
+                        img.ext = image.file.ext;
+                        img.created_at = Math.floor(Date.parse(image.created_at) / 1000);
+
+                        //Determine flags
+                        img.status = "active";
+                        if(image.flags.pending === true) {
+                            img.status = "pending";
+                        } else if(image.flags.flagged === true) {
+                            img.status = "flagged";
+                        } else if(image.flags.deleted === true) {
+                            img.status = "deleted";
+                        }
+
+                        img.has_comments = image.comment_count > 0 ? true : false;
+                        img.file_url = image.file.url;
+                        img.sample_url = image.sample.url;
+                        img.has_children = image.relationships.has_children;
+                        img.preview_url = image.preview.url;
+                        img.width = image.file.width;
+                        img.md5 = image.file.md5;
+                        img.preview_width = image.preview.width;
+                        img.sample_height = image.sample.height;
+                        img.parent_id = image.relationships.parent_id;
+                        img.height = image.file.height;
+                        img.file_size = image.file.size;
+                        img.preview_height = image.preview.height;
+                        img.score = image.score.total;
+
+                        //If multiple sources exists, use first one.
+                        if(image.sources.length == 0) {
+                            img.source = null;
+                        } else {
+                            img.source = image.sources[0];
+                        }
+
+                        //Tags to string
+                        const tags_array: string[] = [];
+                        const tags_artist_array: string[] = [];
+                        const tags_character_array: string[] = [];
+                        const tags_copyright_array: string[] = [];
+                        const tags_general_array: string[] = [];
+                        const tags_meta_array: string[] = [];
+
+                        Object.keys(image.tags).forEach(function(key){
+                            Array.prototype.push.apply(tags_array, image.tags[key]);
+                            switch(key) {
+                                case "general":
+                                    Array.prototype.push.apply(tags_general_array, image.tags[key]);
+                                    break;
+                                case "artist":
+                                    Array.prototype.push.apply(tags_artist_array, image.tags[key]);
+                                    break;
+                                case "character":
+                                    Array.prototype.push.apply(tags_character_array, image.tags[key]);
+                                    break;
+                                case "copyright":
+                                    Array.prototype.push.apply(tags_copyright_array, image.tags[key]);
+                                    break;
+                                case "meta":
+                                    Array.prototype.push.apply(tags_meta_array, image.tags[key]);
+                                    break;
+                            }
+                        });
+
+                        img.tags = tags_array.sort().join(" ");
+                        img.tags_general = tags_general_array.sort().join(" ");
+                        img.tags_artist = tags_artist_array.sort().join(" ");
+                        img.tags_character = tags_character_array.sort().join(" ");
+                        img.tags_copyright = tags_copyright_array.sort().join(" ");
+                        img.tags_meta = tags_meta_array.sort().join(" ");
+
+                        if (!image.file.md5 || image.file.md5.length === 0) {
                             continue;
                         }
+
                         images.push(completeImage(img));
                     }
 
@@ -175,101 +250,6 @@ export const source: ISource = {
                 },
             },
         },
-        xml: {
-            name: "XML",
-            auth: [],
-            maxLimit: 200,
-            search: {
-                parseErrors: true,
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
-                    try {
-                        const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
-                        return "/posts.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
-                        return { error: e.message };
-                    }
-                },
-                parse: (src: string): IParsedSearch | IError => {
-                    const map = {
-                        "created_at": "created-at",
-                        "status": "status",
-                        "source": "source",
-                        "has_comments": "has-comments",
-                        "file_url": "file-url",
-                        "sample_url": "large-file-url",
-                        "change": "change",
-                        "sample_width": "sample-width",
-                        "has_children": "has-children",
-                        "preview_url": "preview-file-url",
-                        "width": "image-width",
-                        "md5": "md5",
-                        "preview_width": "preview-width",
-                        "sample_height": "sample-height",
-                        "parent_id": "parent-id",
-                        "height": "image-height",
-                        "has_notes": "has-notes",
-                        "creator_id": "uploader-id",
-                        "file_size": "file-size",
-                        "id": "id",
-                        "preview_height": "preview-height",
-                        "rating": "rating",
-                        "tags": "tag-string",
-                        "author": "uploader-name",
-                        "score": "score",
-                        "tags_artist": "tag-string-artist",
-                        "tags_character": "tag-string-character",
-                        "tags_copyright": "tag-string-copyright",
-                        "tags_general": "tag-string-general",
-                        "tags_meta": "tag-string-meta",
-                    };
-
-                    const xml = Grabber.parseXML(src);
-
-                    if ("result" in xml && "@attributes" in xml["result"] && "success" in xml["result"]["@attributes"] && xml["result"]["@attributes"]["success"] === "false") {
-                        return { error: xml["result"]["#text"] };
-                    }
-
-                    const data = Grabber.makeArray(Grabber.typedXML(xml).posts.post);
-                    const images: IImage[] = [];
-                    for (const image of data) {
-                        const img = Grabber.mapFields(image, map);
-                        if (!img.md5 || img.md5.length === 0) {
-                            continue;
-                        }
-                        images.push(completeImage(img));
-                    }
-
-                    return { images };
-                },
-            },
-            tags: {
-                url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags.xml?limit=" + opts.limit + "&page=" + query.page;
-                },
-                parse: (src: string): IParsedTags => {
-                    const map = {
-                        "id": "id",
-                        "name": "name",
-                        "count": "post-count",
-                        "typeId": "category",
-                        "related": "related-tags",
-                    };
-
-                    const data = Grabber.makeArray(Grabber.typedXML(Grabber.parseXML(src)).tags.tag);
-
-                    const tags: ITag[] = [];
-                    for (const tag of data) {
-                        const ret = Grabber.mapFields(tag, map);
-                        if (ret.related) {
-                            ret.related = ret.related.split(" ").filter((_: string, i: number) => i % 2 === 0);
-                        }
-                        tags.push(ret);
-                    }
-
-                    return { tags };
-                },
-            },
-        },
         html: {
             name: "Regex",
             auth: [],
@@ -290,10 +270,13 @@ export const source: ISource = {
                         return { error: match[1] };
                     }
 
+                    /* Broken due to -status:deleted added to search tag
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
                     wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
+                    */
+                    const wiki: string = "<p>This feature is now broken due to '-status:deleted' is added to search tag.</p>";
                     return {
-                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" rel="nofollow" href="[^"]+">\\?</a>)?\\s*<a rel="nofollow" class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="(?<source>[^"]*)"\\s+data-top-tagger="[^"]*"\\s+data-uploader-id="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki,
                         pageCount: Grabber.regexToConst("page", '>(?<page>\\d+)</(?:a|span)></li><li[^<]*><(?:a|span)[^>]*>(?:&gt;&gt;|<i class="[^"]+"></i>)<', src),
@@ -341,8 +324,7 @@ export const source: ISource = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.indexOf("Running Danbooru v2") !== -1
-                        || src.search(/Running Danbooru <a[^>]*>v2/) !== -1;
+                    return src.indexOf("Running e621") !== -1;
                 },
             },
         },
