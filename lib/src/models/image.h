@@ -128,11 +128,10 @@ class Image : public QObject, public Downloadable
 		Page *m_parent = nullptr;
 		qulonglong m_id;
 		QString m_score;
-		int m_parentId, m_authorId;
-		bool m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
+		bool m_hasScore;
 		QUrl m_url;
 		QString mutable m_md5;
-		QString m_author, m_name, m_status;
+		QString m_name;
 		QStringList m_sources;
 		QUrl m_pageUrl;
 		QUrl m_parentUrl;

@@ -42,19 +42,12 @@ Image::Image(const Image &other)
 
 	m_id = other.m_id;
 	m_score = other.m_score;
-	m_parentId = other.m_parentId;
-	m_authorId = other.m_authorId;
 
-	m_hasChildren = other.m_hasChildren;
-	m_hasNote = other.m_hasNote;
-	m_hasComments = other.m_hasComments;
 	m_hasScore = other.m_hasScore;
 
 	m_url = other.m_url;
 	m_md5 = other.m_md5;
-	m_author = other.m_author;
 	m_name = other.m_name;
-	m_status = other.m_status;
 	m_sources = other.m_sources;
 
 	m_pageUrl = other.m_pageUrl;
@@ -103,18 +96,11 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Other details
 	m_isGallery = details.contains("type") && details["type"] == "gallery";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
-	m_author = details.contains("author") ? details["author"] : "";
 	m_name = details.contains("name") ? details["name"] : "";
-	m_status = details.contains("status") ? details["status"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
 	m_score = details.contains("score") ? details["score"] : 0;
 	m_hasScore = details.contains("score");
-	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
-	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
-	m_hasChildren = details.contains("has_children") && details["has_children"] == "true";
-	m_hasNote = details.contains("has_note") && details["has_note"] == "true";
-	m_hasComments = details.contains("has_comments") && details["has_comments"] == "true";
 	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
@@ -807,17 +793,17 @@ QColor Image::color() const
 	}
 
 	// Image with a parent
-	if (m_parentId != 0) {
+	if (token<int>("parentid") != 0) {
 		return { 204, 204, 0 };
 	}
 
 	// Image with children
-	if (m_hasChildren) {
+	if (token<bool>("has_children")) {
 		return { 0, 255, 0 };
 	}
 
 	// Pending image
-	if (m_status == "pending") {
+	if (token<QString>("status") == "pending") {
 		return { 0, 0, 255 };
 	}
 
@@ -837,13 +823,14 @@ QString Image::tooltip() const
 
 	const QString &rating = token<QString>("rating");
 	const QDateTime &createdAt = token<QDateTime>("date");
+	const QString &author = token<QString>("author");
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
 		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 		.arg(rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(rating))
 		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
-		.arg(m_author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(m_author))
+		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
 		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
@@ -867,6 +854,8 @@ QList<QStrP> Image::detailsData() const
 
 	const QString &rating = token<QString>("rating");
 	const QDateTime &createdAt = token<QDateTime>("date");
+	const QString &author = token<QString>("author");
+	int parentId = token<int>("parentid");
 
 	return
 	{
@@ -876,7 +865,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
 		QStrP(tr("Rating"), !rating.isEmpty() ? rating : unknown),
 		QStrP(tr("Score"), m_score),
-		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
+		QStrP(tr("Author"), !author.isEmpty() ? author : unknown),
 		QStrP(),
 		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
@@ -888,10 +877,10 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Sample"), !url(Size::Sample).isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(url(Size::Sample).toString()) : unknown),
 		QStrP(tr("Thumbnail"), !url(Size::Thumbnail).isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(url(Size::Thumbnail).toString()) : unknown),
 		QStrP(),
-		QStrP(tr("Parent"), m_parentId != 0 ? tr("yes (#%1)").arg(m_parentId) : no),
-		QStrP(tr("Comments"), m_hasComments ? yes : no),
-		QStrP(tr("Children"), m_hasChildren ? yes : no),
-		QStrP(tr("Notes"), m_hasNote ? yes : no),
+		QStrP(tr("Parent"), parentId != 0 ? tr("yes (#%1)").arg(parentId) : no),
+		QStrP(tr("Comments"), token<bool>("has_comments") ? yes : no),
+		QStrP(tr("Children"), token<bool>("has_children") ? yes : no),
+		QStrP(tr("Notes"), token<bool>("has_note") ? yes : no),
 	};
 }
 
@@ -1019,16 +1008,8 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("source", Token(!m_sources.isEmpty() ? m_sources.first() : ""));
 	tokens.insert("sources", Token(m_sources));
 	tokens.insert("filesize", Token(m_sizes[Image::Size::Full]->fileSize));
-	tokens.insert("author", Token(m_author));
-	tokens.insert("authorid", Token(m_authorId));
-	tokens.insert("parentid", Token(m_parentId));
 	tokens.insert("name", Token(m_name));
 	tokens.insert("position", Token(m_position > 0 ? QString::number(m_position) : ""));
-
-	// Flags
-	tokens.insert("has_children", Token(m_hasChildren));
-	tokens.insert("has_note", Token(m_hasNote));
-	tokens.insert("has_comments", Token(m_hasComments));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i) {
