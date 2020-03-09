@@ -130,29 +130,40 @@ class Image : public QObject, public Downloadable
 	private:
 		Profile *m_profile;
 		Page *m_parent = nullptr;
-		qulonglong m_id;
 		QUrl m_url;
-		QString mutable m_md5;
-		QString m_name;
-		QStringList m_sources;
 		QUrl m_pageUrl;
 		QUrl m_parentUrl;
-		NetworkReply *m_loadDetails = nullptr;
-		QList<Tag> m_tags;
-		QList<Pool> m_pools;
 		QSettings *m_settings;
-		QStringList m_search;
 		Site *m_parentSite;
-		ExtensionRotator *m_extensionRotator;
 		bool m_loadingDetails = false;
 		bool m_loadedDetails = false;
-		bool m_isGallery = false;
-		int m_galleryCount;
-		int m_position;
 		bool m_detailsParsWarnAsErr = false;
+
+		// Shared
+		// - Technical
+		int m_position;
+		QStringList m_search;
+		// - Data
+		qulonglong m_id;
+		QVariantMap m_data;
+		bool m_isGallery = false;
+
+		// Image
+		// - Technical
+		ExtensionRotator *m_extensionRotator;
+		NetworkReply *m_loadDetails = nullptr;
+		// - Data
+		QString mutable m_md5;
 		QSharedPointer<Image> m_parentGallery;
 		QMap<Image::Size, QSharedPointer<ImageSize>> m_sizes;
-		QVariantMap m_data;
+		QList<Tag> m_tags;
+		QList<Pool> m_pools;
+		QStringList m_sources;
+
+		// Gallery
+		// - Data
+		int m_galleryCount;
+		QString m_name;
 };
 
 Q_DECLARE_METATYPE(Image)
