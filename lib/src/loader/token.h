@@ -14,7 +14,6 @@ class Token
 		explicit Token(QVariant value, QString whatToDoDefault, QString emptyDefault, QString multipleDefault);
 		explicit Token(std::function<QVariant()> func, bool cacheResult = true);
 
-		const QVariant &valueRef() const;
 		QVariant value() const;
 		QString toString() const;
 
@@ -25,7 +24,7 @@ class Token
 		template <typename T>
 		T value() const
 		{
-			return m_value.value<T>();
+			return value().value<T>();
 		}
 
 	private:

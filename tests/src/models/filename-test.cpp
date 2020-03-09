@@ -13,7 +13,7 @@
 #include "source-helpers.h"
 
 
-void assertPath(Profile *profile, Image *img, const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false, bool useTokens = true)
+void assertPath(Profile *profile, QSharedPointer<Image> img, const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false, bool useTokens = true)
 {
 	if (path.isEmpty()) {
 		path = QDir::homePath();
@@ -53,7 +53,7 @@ void assertPath(Profile *profile, Image *img, const QString &format, const QStri
 	REQUIRE(actual == expectedNative);
 }
 
-void assertPath(Profile *profile, Image *img, const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false)
+void assertPath(Profile *profile, QSharedPointer<Image> img, const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false)
 {
 	assertPath(profile, img, format, QStringList() << expected, path, shouldFixFilename, fullPath, keepInvalidTokens);
 }
@@ -117,10 +117,10 @@ TEST_CASE("Filename")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-	Image *gallery = ImageFactory::build(site, details, profile);
+	auto gallery = ImageFactory::build(site, details, profile);
 	details.remove("name");
-	Image *img = ImageFactory::build(site, details, profile);
-	img->setParentGallery(QSharedPointer<Image>(gallery));
+	auto img = ImageFactory::build(site, details, profile);
+	img->setParentGallery(gallery);
 
 	SECTION("DefaultConstructor")
 	{
@@ -175,7 +175,6 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathSort")
 	{
-		delete img;
 		details["tags_copyright"] = "copyright2 copyright1";
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		settings->setValue("Save/copyright_sort", "name");
@@ -199,21 +198,18 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathIgnoredTags")
 	{
-		delete img;
 		settings->setValue("ignoredtags", "character1");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",
 				"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		delete img;
 		settings->setValue("ignoredtags", "character*");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",
 				"artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		delete img;
 		settings->setValue("Save/character_empty", "");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
@@ -310,7 +306,6 @@ TEST_CASE("Filename")
 	{
 		assertPath(profile, img, "<\"fate/stay_night\"/>%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		delete img;
 		details["tags_copyright"] = "fate/stay_night";
 		img = ImageFactory::build(site, details, profile);
 
@@ -545,7 +540,6 @@ TEST_CASE("Filename")
 
 	SECTION("PathOptionSort")
 	{
-		delete img;
 		details["tags_copyright"] = "copyright2 copyright1";
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		img = ImageFactory::build(site, details, profile);
@@ -556,7 +550,6 @@ TEST_CASE("Filename")
 
 	SECTION("PathSpecies")
 	{
-		delete img;
 		details["tags_species"] = "test_species";
 		img = ImageFactory::build(site, details, profile);
 
@@ -565,7 +558,6 @@ TEST_CASE("Filename")
 
 	SECTION("PathMeta")
 	{
-		delete img;
 		details["tags_meta"] = "test_meta";
 		img = ImageFactory::build(site, details, profile);
 
@@ -574,13 +566,11 @@ TEST_CASE("Filename")
 
 	SECTION("PathNoJpeg")
 	{
-		delete img;
 		details["ext"] = "jpeg";
 		settings->setValue("Save/noJpeg", true);
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img, "%ext%", "jpg");
 
-		delete img;
 		details["ext"] = "jpeg";
 		settings->setValue("Save/noJpeg", false);
 		img = ImageFactory::build(site, details, profile);
@@ -684,12 +674,10 @@ TEST_CASE("Filename")
 	{
 		details["tags_copyright"] = "test test_2";
 
-		delete img;
 		settings->setValue("Save/copyright_useshorter", true);
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img, "%copyright%", "test");
 
-		delete img;
 		settings->setValue("Save/copyright_multiple", "keepAll");
 		settings->setValue("Save/copyright_useshorter", false);
 		img = ImageFactory::build(site, details, profile);
@@ -697,7 +685,6 @@ TEST_CASE("Filename")
 
 		details["tags_copyright"] = "test_2 test";
 
-		delete img;
 		settings->setValue("Save/copyright_useshorter", true);
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img, "%copyright%", "test");
@@ -814,8 +801,6 @@ TEST_CASE("Filename")
 
 	SECTION("FilenameWithMultipleUnderscores")
 	{
-		delete img;
-
 		details["file_url"] = "http://test.com/img/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
 		details["sample_url"] = "http://test.com/sample/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
 		details["preview_url"] = "http://test.com/preview/__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2.jpg";
@@ -868,7 +853,6 @@ TEST_CASE("Filename")
 
 	SECTION("EscapeMethod")
 	{
-		delete img;
 		details["md5"] = "good'ol' md5";
 		img = ImageFactory::build(site, details, profile);
 

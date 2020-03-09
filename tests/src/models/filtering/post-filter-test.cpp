@@ -64,7 +64,7 @@ TEST_CASE("PostFilter")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-	Image *img = ImageFactory::build(site, details, profile);
+	auto img = ImageFactory::build(site, details, profile);
 
 	SECTION("Count")
 	{

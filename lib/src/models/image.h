@@ -98,11 +98,9 @@ class Image : public QObject, public Downloadable
 
 		// Tokens
 		template <typename T>
-		const T& token(const QString &name) const
+		T token(const QString &name) const
 		{
-			const QMap<QString, Token> &toks = tokens(m_profile);
-			const Token &tok = toks[name];
-			return tok.value<T>();
+			return tokens(m_profile)[name].value<T>();
 		}
 
 	protected:

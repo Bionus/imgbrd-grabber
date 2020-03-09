@@ -16,15 +16,6 @@ Token::Token(std::function<QVariant()> func, bool cacheResult)
 {}
 
 
-const QVariant &Token::valueRef() const
-{
-	static QVariant defaultValue;
-	if (m_func == nullptr || m_value.isValid()) {
-		return m_value;
-	}
-	return defaultValue;
-}
-
 QVariant Token::value() const
 {
 	if (m_func == nullptr || m_value.isValid()) {

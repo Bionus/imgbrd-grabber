@@ -27,7 +27,7 @@ QSharedPointer<Image> createImage(Profile *profile, Site *site, bool noMd5 = fal
 	details["page_url"] = "/posts/7331";
 	details["tags"] = "tag1 tag2 tag3";
 
-	return QSharedPointer<Image>(ImageFactory::build(site, details, profile));
+	return ImageFactory::build(site, details, profile);
 }
 
 void assertDownload(Profile *profile, QSharedPointer<Image> img, ImageDownloader *downloader, const QList<ImageSaveResult> &expected, bool shouldExist, bool onlyCheckValues = false, bool sampleFallback = false, bool remove = true)

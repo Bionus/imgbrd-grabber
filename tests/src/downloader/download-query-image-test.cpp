@@ -41,7 +41,7 @@ TEST_CASE("DownloadQueryImage")
 			{ "date", "2016-08-26T16:26:30+01:00" },
 			{ "search", "search" },
 		};
-		auto img = QSharedPointer<Image>(ImageFactory::build(site, details, &profile));
+		auto img = ImageFactory::build(site, details, &profile);
 		DownloadQueryImage original(img, site, "filename", "path");
 
 		QJsonObject json;

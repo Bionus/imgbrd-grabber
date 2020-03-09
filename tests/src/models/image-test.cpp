@@ -72,34 +72,30 @@ TEST_CASE("Image")
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
 
-	QScopedPointer<Image> img(ImageFactory::build(site, details, profile));
+	auto img = ImageFactory::build(site, details, profile);
 
 	SECTION("Constructor")
 	{
-		Image *img;
+		QSharedPointer<Image> img;
 
 		// Default
-		img = new Image();
+		img = QSharedPointer<Image>(new Image());
 		REQUIRE(img->url() == QUrl());
-		delete img;
 
 		// Without parent site
 		img = ImageFactory::build(nullptr, details, profile);
 		REQUIRE(static_cast<int>(img->id()) == 0);
-		delete img;
 
 		// With a given page URL
 		details["page_url"] = "https://test.com/view/7331";
 		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->pageUrl().toString() == QString("https://test.com/view/7331"));
-		delete img;
 
 		// CreatedAt from ISO time
 		details.remove("created_at");
 		details["date"] = "2016-08-26T16:26:30+01:00";
 		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->createdAt().toString("yyyy-MM-dd HH:mm:ss") == QString("2016-08-26 16:26:30"));
-		delete img;
 	}
 
 	SECTION("Copy")
@@ -124,7 +120,7 @@ TEST_CASE("Image")
 	/*SECTION("Md5FromFile")
 	{
 		details.remove("md5");
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		img->setSavePath("tests/resources/image_1x1.png");
 
 		REQUIRE(img->md5() == QString("956ddde86fb5ce85218b21e2f49e5c50"));
@@ -137,30 +133,30 @@ TEST_CASE("Image")
 
 		// Even with a tag, still use image size if possible
 		details["tags_general"] = "lowres";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 800 * 600);
 
 		// Default value if nothing is given
 		details.remove("width");
 		details.remove("height");
 		details["tags_general"] = "";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 1200 * 900);
 
 		details["tags_general"] = "incredibly_absurdres";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 10000 * 10000);
 
 		details["tags_general"] = "absurdres";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 3200 * 2400);
 
 		details["tags_general"] = "highres";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 1600 * 1200);
 
 		details["tags_general"] = "lowres";
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 		REQUIRE(img->value() == 500 * 500);
 	}
 
@@ -198,7 +194,7 @@ TEST_CASE("Image")
 	SECTION("LoadDetailsImageUrl")
 	{
 		details.remove("file_url");
-		img.reset(ImageFactory::build(site, details, profile));
+		img = ImageFactory::build(site, details, profile);
 
 		// Load details
 		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));

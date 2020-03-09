@@ -16,12 +16,12 @@
 #include "tags/tag-type.h"
 
 
-Image *ImageFactory::build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
+QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 {
 	return ImageFactory::build(site, details, QVariantMap(), profile, parent);
 }
 
-Image *ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
+QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)
 {
 	static QList<QPair<QString, vTransformToken>> transforms
 	{
@@ -47,7 +47,7 @@ Image *ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantM
 		}
 	}
 
-	return new Image(site, details, data, profile, parent);
+	return QSharedPointer<Image>(new Image(site, details, data, profile, parent));
 }
 
 
