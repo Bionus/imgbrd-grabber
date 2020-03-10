@@ -24,6 +24,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "sources/sources-window.h"
+#include "tabs/image-preview.h"
 #include "ui/fixed-size-grid-layout.h"
 #include "ui/QBouton.h"
 #include "ui/text-edit.h"
@@ -273,10 +274,7 @@ void SearchTab::clear()
 		}
 	}
 	for (auto it = m_thumbnailsLoading.constBegin(); it != m_thumbnailsLoading.constEnd(); ++it) {
-		NetworkReply *reply = it.key();
-		if (reply->isRunning()) {
-			reply->abort();
-		}
+		it.key()->abort();
 	}
 
 	m_pages.clear();
@@ -448,10 +446,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 
 	// Load thumbnails
 	for (const auto &img : images) {
-		const QUrl thumbnailUrl = img->url(Image::Size::Thumbnail);
-		if (thumbnailUrl.isValid()) {
-			loadImageThumbnail(img, thumbnailUrl);
-		}
+		addResultsImage(img, page, merged);
 	}
 
 	// Re-enable endless loading if all sources have reached the last page
@@ -524,77 +519,23 @@ void SearchTab::finishedLoadingTags(Page *page)
 	}
 }
 
-void SearchTab::loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url)
-{
-	Site *site = img->parentSite();
-
-	NetworkReply *reply = site->get(site->fixUrl(url.toString()), Site::QueryType::Thumbnail, img->parentUrl(), "preview");
-	reply->setParent(this);
-
-	m_thumbnailsLoading[reply] = std::move(img);
-	connect(reply, &NetworkReply::finished, this, &SearchTab::finishedLoadingPreview);
-}
-
 void SearchTab::finishedLoadingPreview()
 {
+	auto *preview = qobject_cast<ImagePreview*>(sender());
+
 	if (m_stop) {
-		return;
-	}
-
-	auto *reply = qobject_cast<NetworkReply*>(sender());
-
-	// Aborted
-	if (reply->error() == NetworkReply::NetworkError::OperationCanceledError) {
-		reply->deleteLater();
 		return;
 	}
 
 	// Try to find associated image
 	QSharedPointer<Image> img;
-	if (m_thumbnailsLoading.contains(reply)) {
-		img = m_thumbnailsLoading[reply];
-		m_thumbnailsLoading.remove(reply);
+	if (m_thumbnailsLoading.contains(preview)) {
+		img = m_thumbnailsLoading[preview];
+		m_thumbnailsLoading.remove(preview);
 	} else {
-		log(QStringLiteral("Could not find image related to loaded thumbnail '%1'").arg(reply->url().toString()), Logger::Error);
+		log(QStringLiteral("Could not find image related to loaded thumbnail"), Logger::Error);
 		return;
 	}
-
-	// Check redirection
-	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redirection.isEmpty()) {
-		loadImageThumbnail(img, redirection);
-		reply->deleteLater();
-		return;
-	}
-
-	// Loading error
-	if (reply->error() != NetworkReply::NetworkError::NoError) {
-		const QString ext = getExtension(reply->url());
-		if (ext != "jpg") {
-			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(reply->errorString()), Logger::Warning);
-			const QUrl newUrl = setExtension(reply->url(), "jpg");
-			loadImageThumbnail(img, newUrl);
-		} else {
-			log(QStringLiteral("Error loading thumbnail (%1)").arg(reply->errorString()), Logger::Error);
-		}
-
-		reply->deleteLater();
-		return;
-	}
-
-	// Load preview from result
-	QPixmap preview;
-	preview.loadFromData(reply->readAll());
-	reply->deleteLater();
-	if (preview.isNull()) {
-		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(img->url(Image::Size::Thumbnail).toString()), Logger::Error);
-		if (img->hasTag(QStringLiteral("flash"))) {
-			preview.load(QStringLiteral(":/images/flash.png"));
-		} else {
-			return;
-		}
-	}
-	img->setPreviewImage(preview);
 
 	// Download whitelist images on thumbnail view
 	Blacklist whitelistedTags;
@@ -621,9 +562,6 @@ void SearchTab::finishedLoadingPreview()
 			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
 	}
-
-	const bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
-	addResultsImage(img, img->page(), merge);
 }
 
 /**
@@ -852,159 +790,35 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 }
 
-QBouton *SearchTab::createImageThumbnail(int position, const QSharedPointer<Image> &img)
+QWidget *SearchTab::createImageThumbnail()
 {
-	const QColor &color = img->color();
+	QWidget *w = new QWidget(this);
 
-	const bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
-	const bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 	const bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	const int borderSize = m_settings->value("borders", 3).toInt();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	const int imageSize = qFloor(FIXED_IMAGE_WIDTH * upscale);
 
-	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
-	l->setCheckable(true);
-	l->setChecked(m_selectedImages.contains(img->url()));
-	l->setInvertToggle(m_settings->value("invertToggle", false).toBool());
-	l->setToolTip(img->tooltip());
-	if (img->previewImage().isNull()) {
-		l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
-	} else {
-		l->scale(img->previewImage(), QSize(imageSize, imageSize));
-	}
-	l->setFlat(true);
-
-	QString counter = img->counter();
-	if (!counter.isEmpty()) {
-		l->setCounter(counter);
-	}
-
-	l->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
-
 	if (fixedWidthLayout) {
 		const int dim = imageSize + borderSize * 2;
-		l->setFixedSize(dim, dim);
+		w->setFixedSize(dim, dim);
 	}
 
-	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
-
-	return l;
+	return w;
 }
 
-QString getImageAlreadyExists(Image *img, Profile *profile)
+void SearchTab::thumbnailContextMenu(QMenu *menu)
 {
-	QSettings *settings = profile->getSettings();
-	const QString path = settings->value("Save/path").toString().replace("\\", "/");
-	const QString fn = settings->value("Save/filename").toString();
-
-	if (Filename(fn).needExactTags(img->parentSite()) == 0) {
-		QStringList files = img->paths(fn, path, 0);
-		for (const QString &file : files) {
-			if (QFile(file).exists()) {
-				return file;
-			}
-		}
-	}
-
-	return profile->md5Exists(img->md5());
-}
-
-void SearchTab::thumbnailContextMenu(int position, const QSharedPointer<Image> &img)
-{
-	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
 	QAction *first = menu->actions().first();
 
-	// Save image
-	auto *mapperSave = new QSignalMapper(this);
-	connect(mapperSave, SIGNAL(mapped(int)), this, SLOT(contextSaveImage(int)));
-	QAction *actionSave;
-	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty()) {
-		actionSave = new QAction(QIcon(":/images/status/error.png"), tr("Delete"), menu);
-	} else {
-		actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu);
-	}
-	menu->insertAction(first, actionSave);
-	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
-	mapperSave->setMapping(actionSave, position);
-
-	// Save image as...
-	auto *mapperSaveAs = new QSignalMapper(this);
-	connect(mapperSaveAs, SIGNAL(mapped(int)), this, SLOT(contextSaveImageAs(int)));
-	QAction *actionSaveAs = new QAction(QIcon(":/images/icons/save-as.png"), tr("Save as..."), menu);
-	menu->insertAction(first, actionSaveAs);
-	connect(actionSaveAs, SIGNAL(triggered()), mapperSaveAs, SLOT(map()));
-	mapperSaveAs->setMapping(actionSaveAs, position);
-
+	// Save selected
 	if (!m_selectedImagesPtrs.empty()) {
 		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
 		connect(actionSaveSelected, &QAction::triggered, this, &SearchTab::contextSaveSelected);
 		menu->insertAction(first, actionSaveSelected);
 	}
-
-	menu->insertSeparator(first);
-
-	menu->exec(QCursor::pos());
 }
-void SearchTab::contextSaveImage(int position)
-{
-	QSharedPointer<Image> image = m_images.at(position);
-	Image *img = image.data();
 
-	QString already = getImageAlreadyExists(img, m_profile);
-	if (!already.isEmpty()) {
-		QFile(already).remove();
-	} else {
-		const QString fn = m_settings->value("Save/filename").toString();
-		const QString path = m_settings->value("Save/path").toString();
-
-		auto downloader = new ImageDownloader(m_profile, image, fn, path, 1, true, true, this);
-		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
-		m_downloadQueue->add(DownloadQueue::Manual, downloader);
-	}
-}
-void SearchTab::contextSaveImageAs(int position)
-{
-	QSharedPointer<Image> image = m_images.at(position);
-	Image *img = image.data();
-
-	QString fn = m_settings->value("Save/filename").toString();
-	QString tmpPath;
-
-	// If the MD5 is required for the filename, we first download the image
-	if (fn.contains("%md5") && image->md5().isEmpty()) {
-		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
-
-		QEventLoop loop;
-		ImageDownloader downloader(m_profile, image, QStringList() << tmpPath, 1, true, true, this);
-		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
-		downloader.save();
-		loop.exec();
-	}
-
-	Filename format(fn);
-	const QStringList filenames = format.path(*img, m_profile);
-	const QString filename = filenames.first().section(QDir::separator(), -1);
-	const QString lastDir = m_settings->value("Zoom/lastDir").toString();
-
-	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
-	if (!path.isEmpty()) {
-		path = QDir::toNativeSeparators(path);
-		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
-
-		if (!tmpPath.isEmpty()) {
-			QFile::rename(tmpPath, path);
-		} else {
-			auto downloader = new ImageDownloader(m_profile, image, QStringList() << path, 1, true, true, this);
-			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
-			downloader->save();
-		}
-	} else if (!tmpPath.isEmpty()) {
-		QFile::remove(tmpPath);
-	}
-}
 void SearchTab::contextSaveSelected()
 {
 	const QString fn = m_settings->value("Save/filename").toString();
@@ -1012,16 +826,17 @@ void SearchTab::contextSaveSelected()
 
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
 		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
-		connect(downloader, &ImageDownloader::downloadProgress, this, &SearchTab::contextSaveImageProgress);
+		if (m_boutons.contains(img.data())) {
+			ImagePreview *preview = m_boutons[img.data()];
+			connect(downloader, &ImageDownloader::downloadProgress, [preview](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
+				Q_UNUSED(img);
+				preview->setDownloadProgress(v1, v2);
+			});
+		}
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
 }
-void SearchTab::contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2)
-{
-	if (m_boutons.contains(img.data())) {
-		m_boutons[img.data()]->setProgress(v1, v2);
-	}
-}
+
 
 QList<QSharedPointer<Page>> SearchTab::getPagesToDownload()
 {
@@ -1070,11 +885,20 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 		? absolutePosition
 		: m_validImages[page].indexOf(img);
 
-	QBouton *button = createImageThumbnail(absolutePosition, img);
-	m_boutons.insert(img.data(), button);
+	auto *widget = createImageThumbnail();
+
+	auto *preview = new ImagePreview(img, widget, m_profile, m_downloadQueue, m_parent, this);
+	preview->setCustomContextMenu([this](QMenu *menu) { this->thumbnailContextMenu(menu); });
+	m_boutons.insert(img.data(), preview);
+	m_thumbnailsLoading.insert(preview, img);
 
 	FixedSizeGridLayout *layout = m_layouts[layoutKey];
-	layout->insertWidget(relativePosition, button);
+	layout->insertWidget(relativePosition, widget);
+
+	connect(preview, &ImagePreview::finished, this, &SearchTab::finishedLoadingPreview);
+	connect(preview, &ImagePreview::clicked, [this, absolutePosition]() { this->webZoom(absolutePosition); });
+	connect(preview, &ImagePreview::toggled, [this, absolutePosition](bool toggle, bool range) { this->toggleImage(absolutePosition, toggle, range); });
+	preview->load();
 }
 
 void SearchTab::addHistory(const SearchQuery &query, int page, int ipp, int cols)
@@ -1147,7 +971,7 @@ void SearchTab::getSel()
 
 	m_selectedImagesPtrs.clear();
 	m_selectedImages.clear();
-	for (QBouton *l : qAsConst(m_boutons)) {
+	for (auto *l : qAsConst(m_boutons)) {
 		l->setChecked(false);
 	}
 }

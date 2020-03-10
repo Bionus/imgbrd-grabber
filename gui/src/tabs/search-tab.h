@@ -23,7 +23,7 @@ class Favorite;
 class MainWindow;
 class NetworkReply;
 class Profile;
-class QBouton;
+class ImagePreview;
 class FixedSizeGridLayout;
 class TextEdit;
 class VerticalScrollArea;
@@ -64,17 +64,13 @@ class SearchTab : public QWidget
 		QStringList reasonsToFail(Page *page, const QStringList &completion = QStringList(), QString *meant = nullptr);
 		void clear();
 		TextEdit *createAutocomplete();
-		void loadImageThumbnail(QSharedPointer<Image> img, const QUrl &url);
-		QBouton *createImageThumbnail(int position, const QSharedPointer<Image> &img);
+		QWidget *createImageThumbnail();
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
-		void thumbnailContextMenu(int position, const QSharedPointer<Image> &img);
+		void thumbnailContextMenu(QMenu *menu);
 		QList<QSharedPointer<Page>> getPagesToDownload();
 
 	protected slots:
-		void contextSaveImage(int position);
-		void contextSaveImageAs(int position);
 		void contextSaveSelected();
-		void contextSaveImageProgress(const QSharedPointer<Image> &img, qint64 v1, qint64 v2);
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
 		void toggleSource(const QString &url);
@@ -149,7 +145,7 @@ class SearchTab : public QWidget
 		int m_lastPage;
 		qulonglong m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;
-		QMap<Image*, QBouton*> m_boutons;
+		QMap<Image*, ImagePreview*> m_boutons;
 		QList<QUrl> m_selectedImages;
 		QList<QSharedPointer<Image>> m_selectedImagesPtrs;
 		QList<Site*> m_selectedSources;
@@ -164,7 +160,7 @@ class SearchTab : public QWidget
 		QMap<QString, QString> m_lastUrls;
 
 		QStringList m_completion;
-		QMap<NetworkReply*, QSharedPointer<Image>> m_thumbnailsLoading;
+		QMap<ImagePreview*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, QList<QSharedPointer<Page>>> m_pages;
 		QMap<QString, QSharedPointer<Page>> m_lastPages;
