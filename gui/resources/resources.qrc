@@ -64,5 +64,6 @@
         <file>images/icons/edit.png</file>
         <file>images/status/ignored.png</file>
         <file>images/back.png</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>

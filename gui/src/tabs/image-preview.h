@@ -16,6 +16,7 @@ class NetworkReply;
 class Profile;
 class QBouton;
 class QMenu;
+class QMovie;
 class QWidget;
 
 class ImagePreview : public QObject
@@ -34,6 +35,7 @@ class ImagePreview : public QObject
 		void setDownloadProgress(qint64 v1, qint64 v2);
 
 	protected:
+		void showLoadingMessage();
 		void finishedLoading();
 
 	protected slots:
@@ -55,6 +57,7 @@ class ImagePreview : public QObject
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
 		MainWindow *m_mainWindow;
+		static QMovie *m_loadingMovie;
 
 		NetworkReply *m_reply = nullptr;
 		bool m_aborted = false;

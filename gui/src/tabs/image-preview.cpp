@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QMenu>
+#include <QMovie>
 #include <QtMath>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -19,6 +20,8 @@
 #include "ui/QBouton.h"
 
 
+QMovie *ImagePreview::m_loadingMovie = nullptr;
+
 ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent)
 	: QObject(parent), m_image(image), m_container(container), m_profile(profile), m_downloadQueue(downloadQueue), m_mainWindow(mainWindow)
 {
@@ -28,9 +31,6 @@ ImagePreview::ImagePreview(QSharedPointer<Image> image, QWidget *container, Prof
 
 	auto *layout = new QVBoxLayout();
 	layout->setContentsMargins(0, 0, 0, 0);
-
-	auto *loadingLabel = new QLabel("Loading...");
-	layout->addWidget(loadingLabel);
 	container->setLayout(layout);
 
 	container->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -44,11 +44,34 @@ ImagePreview::~ImagePreview()
 }
 
 
+void ImagePreview::showLoadingMessage()
+{
+	if (m_loadingMovie == nullptr) {
+		auto *loadingMovie = new QMovie(":/images/loading.gif");
+		if (m_loadingMovie == nullptr) {
+			m_loadingMovie = loadingMovie;
+			m_loadingMovie->start();
+		} else {
+			loadingMovie->deleteLater();
+		}
+	}
+
+	auto *loadingLabel = new QLabel();
+	loadingLabel->setMovie(m_loadingMovie);
+	loadingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	loadingLabel->setScaledContents(true);
+
+	auto *layout = m_container->layout();
+	layout->addWidget(loadingLabel);
+}
+
 void ImagePreview::load()
 {
 	if (m_thumbnailUrl.isValid()) {
 		if (m_reply != nullptr) {
 			m_reply->deleteLater();
+		} else {
+			showLoadingMessage();
 		}
 
 		Site *site = m_image->parentSite();
