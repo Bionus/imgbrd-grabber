@@ -2,6 +2,11 @@ function completeImage(img: IImage): IImage {
     const resourcesURL: string = "https://static1.e621.net/data";
     const md5PartOne: string = img.md5.slice(0, 2);
     const md5PartTwo: string = img.md5.slice(2, 4);
+
+    if (img.ext && img.ext[0] === ".") {
+        img.ext = img.ext.substr(1);
+    }
+
     if (!img.file_url || img.file_url.length < 5) {
         img.file_url = `${resourcesURL}/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
     } else {
@@ -16,7 +21,7 @@ function completeImage(img: IImage): IImage {
     }
 
     if (!img.preview_url || img.preview_url.length < 5) {
-        img.sample_url = `${resourcesURL}/preview/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
+        img.preview_url = `${resourcesURL}/preview/${md5PartOne}/${md5PartTwo}/${img.md5}.${img.ext || "jpg"}`;
     }
 
     return img;
@@ -276,7 +281,7 @@ export const source: ISource = {
                     const wiki: string = "<p>This feature is now broken due to '-status:deleted' is added to search tag.</p>";
                     return {
                         tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" rel="nofollow" href="[^"]+">\\?</a>)?\\s*<a rel="nofollow" class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
-                        images : Grabber.regexToImages(),
+                        images : Grabber.regexToImages(' '),
                         //Not enough infomation in HTML
                         //images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-uploader-id="[^"]*"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki,
