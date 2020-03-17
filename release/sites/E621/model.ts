@@ -53,35 +53,11 @@ export const source: ISource = {
                     key: "login",
                 },
                 {
-                    id: "password",
-                    type: "password",
-                },
-                {
-                    key: "password_hash",
-                    type: "hash",
-                    hash: "sha1",
-                    salt: "choujin-steiner--%password%--",
+                    id: "api_key",
+                    key: "api_key",
+                    type: "text",
                 },
             ],
-        },
-        session: {
-            type: "post",
-            url: "/session",
-            fields: [
-                {
-                    id: "pseudo",
-                    key: "name",
-                },
-                {
-                    id: "password",
-                    key: "password",
-                    type: "password",
-                },
-            ],
-            check: {
-                type: "cookie",
-                key: "password_hash",
-            },
         },
     },
     apis: {
@@ -280,7 +256,7 @@ export const source: ISource = {
                     //wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
                     const wiki: string = "<p>This feature is now broken due to '-status:deleted' is added to search tag.</p>";
                     return {
-                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" rel="nofollow" href="[^"]+">\\?</a>)?\\s*<a rel="nofollow" class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         images : Grabber.regexToImages(' '),
                         //Not enough infomation in HTML
                         //images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-uploader-id="[^"]*"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
