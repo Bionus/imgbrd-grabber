@@ -163,6 +163,7 @@ export const source: ISource = {
                         const tags_character_array: string[] = [];
                         const tags_copyright_array: string[] = [];
                         const tags_general_array: string[] = [];
+                        const tags_species_array: string[] = [];
                         const tags_meta_array: string[] = [];
 
                         Object.keys(image.tags).forEach(function(key){
@@ -173,6 +174,9 @@ export const source: ISource = {
                                     break;
                                 case "artist":
                                     Array.prototype.push.apply(tags_artist_array, image.tags[key]);
+                                    break;
+                                case "species":
+                                    Array.prototype.push.apply(tags_species_array, image.tags[key]);
                                     break;
                                 case "character":
                                     Array.prototype.push.apply(tags_character_array, image.tags[key]);
@@ -189,6 +193,7 @@ export const source: ISource = {
                         img.tags = tags_array.sort().join(" ");
                         img.tags_general = tags_general_array.sort().join(" ");
                         img.tags_artist = tags_artist_array.sort().join(" ");
+                        img.tags_species = tags_species_array.sort().join(" ");
                         img.tags_character = tags_character_array.sort().join(" ");
                         img.tags_copyright = tags_copyright_array.sort().join(" ");
                         img.tags_meta = tags_meta_array.sort().join(" ");
@@ -275,7 +280,7 @@ export const source: ISource = {
                         <div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\d+" class="pool-\w+-\w+ pool-\w+-\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?<\/a>|<span class="first">.*?<\/span>)[^<]*(?:<a rel="prev" class="prev" title="to page \d+" href="\/posts\/(?<previous>\d+)\?pool_id=\d+">.*?<\/a>|<span class="prev">.*?<\/span>)?[^<]*<span class="pool-name">[^<]*<a title="page \d+\/\d+" href="\/pools\/(?<id>\d+)">Pool: (?<name>[^<]+)<\/a>[^<]*<\/span>[^<]*(?:<a rel="next" class="next" title="to page \d+" href="\/posts\/(?<next>\d+)\?pool_id=\d+">.*?<\/a>|<span class="next">.*?<\/span>)?[^<]*(?:<a class="last" title="to page \d+" href=".*?">.*?<\/a>|<span class="last">.*?<\/span>)[^<]*<\/li>[^<]*<\/ul>[^<]*<\/div>
                         */
                         pools: Grabber.regexToPools('<div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\\d+" class="pool-\\w+-\\w+ pool-\\w+-\\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?</a>|<span class="first">.*?</span>)[^<]*(?:<a rel="prev" class="prev" title="to page \\d+" href="/posts/(?<previous>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="prev">.*?</span>)?[^<]*<span class="pool-name">[^<]*<a title="page \\d+/\\d+" href="/pools/(?<id>\\d+)">Pool: (?<name>[^<]+)</a>[^<]*</span>[^<]*(?:<a rel="next" class="next" title="to page \\d+" href="/posts/(?<next>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="next">.*?</span>)?[^<]*(?:<a class="last" title="to page \\d+" href=".*?">.*?</a>|<span class="last">.*?</span>)[^<]*</li>[^<]*</ul>[^<]*</div>', src),
-                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link" rel="nofollow" href="[^"]+">\\?</a>)?\\s*<a rel="nofollow" class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        //tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", 'Size: <a href="(?<url>[^"]+?)(?:\\?download=1[^"]*)?"', src),
                     };
                 },
