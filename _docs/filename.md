@@ -140,6 +140,30 @@ fate_stay_night
 fate stay night
 ```
 
+### SQL escape (bool)
+Escapes unsafe SQL characters. Useful for SQL commands. Note that it encloses strings in single quotes.
+
+Example:
+```
+%all%
+let's_try \o/
+
+%all:escape%
+'let''s_try \\o/'
+```
+
+### HTML escape (bool)
+Escapes unsafe HTML characters.
+
+Example:
+```
+%all%
+>_<
+
+%all:htmlescape%
+&gt;_&lt;
+```
+
 ## Numbers
 ### Length (int)
 Length of the left-pad of the number.
