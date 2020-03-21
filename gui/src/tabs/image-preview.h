@@ -47,9 +47,9 @@ class ImagePreview : public QObject
 		void toggledWithId(int id, bool toggle, bool range);
 
 	signals:
-		finished();
-		clicked();
-		toggled(bool toggle, bool range);
+		void finished();
+		void clicked();
+		void toggled(bool toggle, bool range);
 
 	private:
 		QSharedPointer<Image> m_image;
