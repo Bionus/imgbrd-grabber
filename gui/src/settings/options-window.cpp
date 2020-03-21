@@ -35,7 +35,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
-	LanguageLoader languageLoader(savePath("languages/", true));
+	LanguageLoader languageLoader(savePath("languages/", true, false));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
 	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it) {
 		ui->comboLanguages->addItem(it.value(), it.key());
