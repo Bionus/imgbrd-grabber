@@ -1,6 +1,7 @@
 #ifndef ZOOM_WINDOW_H
 #define ZOOM_WINDOW_H
 
+#include <QPointer>
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QtNetwork>
@@ -127,7 +128,7 @@ class ZoomWindow : public QWidget
 
 	private:
 		MainWindow *m_parent;
-		SearchTab *m_tab;
+		QPointer<SearchTab> m_tab;
 		Profile *m_profile;
 		QList<Favorite> &m_favorites;
 		QStringList &m_viewItLater;
