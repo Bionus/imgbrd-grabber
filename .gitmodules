@@ -7,3 +7,6 @@
 [submodule "tests/src/vendor/catch"]
 	path = tests/src/vendor/catch
 	url = https://github.com/catchorg/Catch2.git
+[submodule "releases/innodependencyinstaller"]
+	path = releases/innodependencyinstaller
+	url = https://github.com/domgho/innodependencyinstaller.git

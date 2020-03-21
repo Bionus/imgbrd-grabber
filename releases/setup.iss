@@ -80,26 +80,26 @@ Root: HKCR; Subkey: "Imageboard-Grabber\DefaultIcon"; ValueType: string; ValueNa
 Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
 
 ; Languages
-#include "scripts\lang\english.iss"
-#include "scripts\lang\german.iss"
-#include "scripts\lang\french.iss"
-#include "scripts\lang\italian.iss"
-#include "scripts\lang\dutch.iss"
+#include "innodependencyinstaller\scripts\lang\english.iss"
+#include "innodependencyinstaller\scripts\lang\german.iss"
+#include "innodependencyinstaller\scripts\lang\french.iss"
+#include "innodependencyinstaller\scripts\lang\italian.iss"
+#include "innodependencyinstaller\scripts\lang\dutch.iss"
 
 #ifdef UNICODE
-#include "scripts\lang\chinese.iss"
-#include "scripts\lang\polish.iss"
-#include "scripts\lang\russian.iss"
-#include "scripts\lang\japanese.iss"
+#include "innodependencyinstaller\scripts\lang\chinese.iss"
+#include "innodependencyinstaller\scripts\lang\polish.iss"
+#include "innodependencyinstaller\scripts\lang\russian.iss"
+#include "innodependencyinstaller\scripts\lang\japanese.iss"
 #endif
 
-#include "scripts\products.iss"
-#include "scripts\products\stringversion.iss"
-#include "scripts\products\winversion.iss"
-#include "scripts\products\fileversion.iss"
-#include "scripts\products\msiproduct.iss"
-#include "scripts\products\vcredist2015.iss"
-#include "scripts\products\vcredist2017.iss"
+#include "innodependencyinstaller\scripts\products.iss"
+#include "innodependencyinstaller\scripts\products\stringversion.iss"
+#include "innodependencyinstaller\scripts\products\winversion.iss"
+#include "innodependencyinstaller\scripts\products\fileversion.iss"
+#include "innodependencyinstaller\scripts\products\msiproduct.iss"
+#include "innodependencyinstaller\scripts\products\vcredist2015.iss"
+#include "innodependencyinstaller\scripts\products\vcredist2017.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
