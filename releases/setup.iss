@@ -15,7 +15,7 @@
 #endif
 
 #ifndef MySQLDir
-# define MySQLDir "C:\Program Files (x86)\MySQL\MySQL Server 5.7"
+# define MySQLDir "C:\Program Files (x86)\MySQL\MySQL Server 5.7\lib"
 #endif
 
 #ifndef MyAppVersion
@@ -118,7 +118,7 @@ Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignorev
 Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
-Source: "{#MySQLDir}\lib\libmysql.dll";         DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MySQLDir}\libmysql.dll";             DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion

@@ -5,7 +5,7 @@ environment:
   APPVEYOR: 1
   DEPLOY: 0
   BREAKPAD: 0
-  MYSQL_VERSION: mysql-5.7.14-win32
+  MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/4114066/qsqlmysql.dll_Qt_SQL_driver_5.12.6_MSVC2017_64-Bit.zip
   APNG_PLUGIN: apng-1.1.2-65.12.6
   QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
 
@@ -35,7 +35,7 @@ environment:
 
 cache:
   - release\sites\node_modules -> release\sites\package.json
-  - mysql-5.7.14-win32 -> .appveyor.yml
+  - mysql_driver -> .appveyor.yml
   - apng-1.1.2-65.12.6 -> .appveyor.yml
   - QScintilla_gpl-2.10.8 -> .appveyor.yml
   - depot_tools -> .appveyor.yml
@@ -101,12 +101,13 @@ build_script:
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% curl -L https://install.skycoder42.de/qtmodules/windows_x86/qt5126/qt.qt5.5126.skycoder42.apng.win32_msvc2017/1.1.2-65.12.6.7z -o "%APNG_PLUGIN%.7z"
   - if %DEPLOY%==1 if not exist %APNG_PLUGIN% 7z x "%APNG_PLUGIN%.7z" -y -o"%APNG_PLUGIN%"
 
-  # Download Mysql DLL
-  - if %DEPLOY%==1 if not exist %MYSQL_VERSION% curl -L -O "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
-  - if %DEPLOY%==1 if not exist %MYSQL_VERSION% 7z x "%MYSQL_VERSION%.zip" -y
+  # Download MySQL DLL
+  - if %DEPLOY%==1 if not exist "mysql_driver" curl -L -o "mysql_driver.zip" "%MYSQL_DRIVER_URL%"
+  - if %DEPLOY%==1 if not exist "mysql_driver" 7z x "mysql_driver.zip" -y -o"mysql_driver"
+  - if %DEPLOY%==1 copy /Y "mysql_driver\sqldrivers\*.dll" "%QTDIR%\plugins\sqldrivers"
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\%MYSQL_VERSION%" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.6\msvc2017\plugins\imageformats\qapng.dll" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\mysql_driver" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.6\msvc2017\plugins\imageformats\qapng.dll" releases/setup.iss
 
   # Package symbol files to zip
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
