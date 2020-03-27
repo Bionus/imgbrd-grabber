@@ -23,8 +23,8 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
-		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool loadTags = true, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown, bool postSave = true);
+		ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = nullptr, bool rotate = true, bool force = false, Image::Size size = Image::Size::Unknown, bool postSave = true);
 		~ImageDownloader();
 		bool isRunning() const;
 		void setSize(Image::Size size);
@@ -69,6 +69,7 @@ class ImageDownloader : public QObject
 		bool m_rotate;
 		bool m_force;
 		Image::Size m_size = Image::Size::Unknown;
+		bool m_postSave;
 
 		NetworkReply *m_reply = nullptr;
 		QUrl m_url;
