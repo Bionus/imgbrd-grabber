@@ -9,30 +9,68 @@ If your site is not based on Danbooru, Gelbooru, Shimmie, or another already-inc
 
 **⚠️ You must have knowledge of JavaScript to make your own JavaScript source ⚠️**
 
+**⚠️ Note that all examples below are using TypeScript⚠️**
+
+
+# Structure
+
+Sources can be found in your settings folder. On Windows, by default, it is `C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber\sites`.
+
+A source is defined by:
+* `icon.png`: a PNG icon, usually the favicon of the source (recommended size: 16x16, it will be resized if larger)
+* `model.js`: the JS script that decides which URLs to load and how to parse the results into images, usually compiled from a `model.ts` TypeScript file
+* `sites.txt`: the list of the sites based on this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
+
 # Utils
 
-* [JavaScript model helper](javascript-helper.html)
+The JS environment is not fully fledged. Therefore, there is an helper to do a few things that are not easily possible otherwise: [JavaScript model helper](javascript-helper.html).
+
+Also, you can use the `console` commands as in JavaScript to generate logs in Grabber's console. Supported methods:
+* `console.debug` (debug level, not shown by default)
+* `console.info` (info level)
+* `console.log` (info level)
+* `console.warn` (warning level)
+* `console.error` (error level)
 
 # Basics
 
-```javascript
-__source = {
-    name: "Danbooru (2.0)",
+A basic source file simply exports a `source` object, defined by the `ISource` type. It must have a name and at least one API. All other fields are optional.
+
+**Full example**
+```typescript
+export const source: ISource = {
+    name: "New source", // The name of the source
+    modifiers: [], // Allowed "modifiers" on this source
+    forcedTokens: [], // Filename tokens that should trigger a full details load
+    tagFormat,
+    searchFormat,
+    auth: {
+        auth_id: auth, // The auth ID can be used to reference this auth method
+    }
+    apis: {
+        api_id: api, // The API ID can be used to reference this API
+    },
+};
+```
+
+**Minimal example**
+```typescript
+export const source: ISource = {
+    name: "New source",
     apis: {
         api_id: api,
-    },
-    auth: {
-        auth_id: auth,
     },
 };
 ```
 
 # API
 
-```javascript
+A source can have one or more APIs. It must have a name, an `auth` array (which can be empty), and the `search` API.
+
+```typescript
 {
     name: "JSON", // The name of the API
-    auth: [], // The auth required to use this API, multiple values means OR
+    auth: [], // The ID of the auth required to use this API, multiple values means OR
     maxLimit: 200, // The maximum "images per page" the user can set with this API
 
     search: {
@@ -54,7 +92,10 @@ __source = {
 * opts (`{ limit: number, auth: {} }`)
 * previous (`{ page: number, minId: number, maxId: number }`)
 
-**Returns:** `string | { url: string, headers?: {}, error?: string }`
+**Returns:** (either)
+* `string`: an URL
+* `{ url: string, headers?: { [key: string]: string }`: an URL and headers
+* `{ error?: string }`: an error
 
 ### Description
 Builds a search API url from a search query.
@@ -79,7 +120,10 @@ function(query, opts, previous) {
 * query (`{ search: string, page: number }`)
 * opts (`{ limit: number, auth: {} }`)
 
-**Returns:** `string | { url: string, headers?: {}, error?: string }`
+**Returns:** (either)
+* `string`: an URL
+* `{ url: string, headers?: { [key: string]: string }`: an URL and headers
+* `{ error?: string }`: an error
 
 ### Description
 Builds a tag listing API url from a search query.
@@ -102,6 +146,8 @@ function(query, opts) {
 
 ## URL auth
 
+The credentials are passed directly in the URL of each request.
+
 ### Example
 ```javascript
 {
@@ -121,12 +167,14 @@ function(query, opts) {
 }
 ```
 
-## POST auth
+## GET and POST auth
+
+The credentials are sent to a given URL on the website to login before doing any request.
 
 ### Example
 ```javascript
 {
-    type: "post",
+    type: "post", // Either "get" or "post"
     url: "/session",
     fields: [
         {
@@ -145,6 +193,58 @@ function(query, opts) {
 }
 ```
 
-# Location
+## OAuth 2 auth
 
-Then, save it to `C:\Users\%USERNAME%\AppData\Local\Bionus\Grabber/sites/Source name/model.js`. You should also put in this directory an `icon.png` file, which is the 16x16 image that will be displayed in the sources window.
+### Example
+```javascript
+{
+    type: "oauth2",
+    authType: "password", // Either "password", "client_credentials", or "header_basic"
+    tokenUrl: "/auth/token",
+    requestUrl: "/auth/request", // Optional
+    refreshTokenUrl: "/auth/refresh", // Optional
+    scope: ["user"], // Optional
+}
+```
+
+# Tag format
+A tag format is defined by two fields:
+* `case`: the word casing:
+  * `lower`: some tag
+  * `upper_first`: Some tag
+  * `upper`: Some Tag
+  * `caps`: SOME TAG
+* `wordSeparator`: the separator to add between each word
+
+### Example
+```typescript
+{
+    case: "lower",
+    wordSeparator: "_",
+}
+```
+Will have tags looking like "some_tag".
+
+# Search format
+A search format must define at least a `and` operator. An operator is either:
+* A string such as ` && `
+* An object of type `{ separator: string, prefix?: string }`, where the separator is what should be added between both operands, and the prefix what should be added before each operand
+
+If the search also support the OR operator, you must then define `or`, `parenthesis`, and `precedence`:
+* `or`: same as `and`, either a string or an object
+* `parenthesis`: a boolean to say whether this source supports parenthesis
+* `precedence`: which operator has precedence over the other, either `or` or `and`
+
+### Example
+```typescript
+{
+    and: " ",
+    or: {
+        separator: " ",
+        prefix: "~",
+    },
+    parenthesis: false,
+    precedence: "or",
+}
+```
+Will convert the logical search `(A | B) & C` into the text "~A ~B C".
