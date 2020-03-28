@@ -4,7 +4,7 @@
 #include "catch.h"
 
 
-TEST_CASE("TagDatabaseSqliteTest")
+TEST_CASE("TagDatabaseSqlite")
 {
 	TagDatabaseSqlite database("tests/resources/tag-types.txt", "tests/resources/tags.db");
 
