@@ -18,7 +18,7 @@ class TagDatabaseSqlite : public TagDatabase
 		bool close() override;
 		bool load() override;
 		bool save() override;
-		void setTags(const QList<Tag> &tags) override;
+		void setTags(const QList<Tag> &tags, bool createTagTypes = false) override;
 		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
 		int count() const override;
 

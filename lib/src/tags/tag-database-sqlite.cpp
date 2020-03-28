@@ -54,17 +54,11 @@ bool TagDatabaseSqlite::load()
 
 bool TagDatabaseSqlite::save()
 {
-	return true;
+	return TagDatabase::save();
 }
 
-void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
+void TagDatabaseSqlite::setTags(const QList<Tag> &tags, bool createTagTypes)
 {
-	// Inverted tag type map to get the tag type ID from its name
-	QMap<QString, int> tagTypes;
-	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it) {
-		tagTypes.insert(it.value().name(), it.key());
-	}
-
 	QSqlQuery clearQuery(m_database);
 	clearQuery.prepare(QStringLiteral("DELETE FROM tags"));
 	if (!clearQuery.exec()) {
@@ -80,10 +74,9 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 	addQuery.prepare(QStringLiteral("INSERT INTO tags (id, tag, ttype) VALUES (:id, :tag, :ttype)"));
 
 	for (const Tag &tag : tags) {
-		const QString &type = tag.type().name();
 		addQuery.bindValue(":id", tag.id());
 		addQuery.bindValue(":tag", tag.text());
-		addQuery.bindValue(":ttype", tagTypes.contains(type) ? tagTypes[type] : -1);
+		addQuery.bindValue(":ttype", m_tagTypeDatabase.get(tag.type(), createTagTypes));
 		if (!addQuery.exec()) {
 			log(QStringLiteral("SQL error when adding tag: %1").arg(addQuery.lastError().text()), Logger::Error);
 			return;
@@ -133,7 +126,11 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) c
 	const int idTtype = query.record().indexOf("ttype");
 	while (query.next()) {
 		const QString tag = query.value(idTag).toString();
-		const TagType type = m_tagTypes[query.value(idTtype).toInt()];
+		const int typeId = query.value(idTtype).toInt();
+		if (!m_tagTypeDatabase.contains(typeId)) {
+			continue;
+		}
+		const TagType type = m_tagTypeDatabase.get(typeId);
 		ret.insert(tag, type);
 		m_cache.insert(tag, type);
 	}

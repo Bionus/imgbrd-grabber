@@ -39,7 +39,7 @@ bool TagDatabaseInMemory::load()
 		}
 
 		int tId = data[1].toInt();
-		if (!m_tagTypes.contains(tId)) {
+		if (!m_tagTypeDatabase.contains(tId)) {
 			continue;
 		}
 
@@ -49,7 +49,7 @@ bool TagDatabaseInMemory::load()
 		}
 		tag.squeeze();
 
-		m_database.insert(tag, m_tagTypes[tId]);
+		m_database.insert(tag, m_tagTypeDatabase.get(tId));
 	}
 	file.close();
 	m_database.squeeze();
@@ -64,31 +64,30 @@ bool TagDatabaseInMemory::save()
 		return false;
 	}
 
-	// Inverted tag type map to get the tag type ID from its name
-	QMap<QString, int> tagTypes;
-	for (auto it = m_tagTypes.constBegin(); it != m_tagTypes.constEnd(); ++it) {
-		tagTypes.insert(it.value().name(), it.key());
-	}
-
 	QHashIterator<QString, TagType> i(m_database);
 	while (i.hasNext()) {
 		i.next();
 
 		TagType tagType = i.value();
-		const int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
+		const int tagTypeId = m_tagTypeDatabase.get(tagType);
+		if (tagTypeId == -1)
+			continue;
 
 		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
 	}
-
 	file.close();
-	return true;
+
+	return TagDatabase::save();
 }
 
-void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
+void TagDatabaseInMemory::setTags(const QList<Tag> &tags, bool createTagTypes)
 {
 	m_database.clear();
 	for (const Tag &tag : tags) {
 		m_database.insert(tag.text(), tag.type());
+		if (createTagTypes) {
+			m_tagTypeDatabase.get(tag.type(), true);
+		}
 	}
 }
 

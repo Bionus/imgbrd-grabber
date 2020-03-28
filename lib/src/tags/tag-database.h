@@ -5,6 +5,7 @@
 #include <QString>
 #include "models/api/api.h"
 #include "tags/tag-type.h"
+#include "tags/tag-type-database.h"
 
 
 class Tag;
@@ -18,8 +19,8 @@ class TagDatabase
 		bool isOpen() const;
 		virtual bool close();
 		virtual bool load();
-		virtual bool save() = 0;
-		virtual void setTags(const QList<Tag> &tags) = 0;
+		virtual bool save();
+		virtual void setTags(const QList<Tag> &tags, bool createTagTypes = false) = 0;
 		virtual void setTagTypes(const QList<TagTypeWithId> &tagTypes);
 		virtual QMap<QString, TagType> getTagTypes(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
@@ -29,11 +30,8 @@ class TagDatabase
 		explicit TagDatabase(QString typeFile);
 
 	protected:
-		QMap<int, TagType> m_tagTypes;
+		TagTypeDatabase m_tagTypeDatabase;
 		bool m_isOpen = false;
-
-	private:
-		QString m_typeFile;
 };
 
 #endif // TAG_DATABASE_H

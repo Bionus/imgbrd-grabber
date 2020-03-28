@@ -18,7 +18,7 @@ class TagDatabaseInMemory : public TagDatabase
 		~TagDatabaseInMemory() override = default;
 		bool load() override;
 		bool save() override;
-		void setTags(const QList<Tag> &tags) override;
+		void setTags(const QList<Tag> &tags, bool createTagTypes = false) override;
 		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
 		int count() const override;
 
