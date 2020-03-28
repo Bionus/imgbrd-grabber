@@ -26,7 +26,7 @@ class TagLoader : public QDialog
 
 	protected:
 		QList<Api*> getApisToLoadTagTypes(Site *site) const;
-		QList<Api*> getApisToLoadTags(Site *site) const;
+		QList<Api*> getApisToLoadTags(Site *site, bool needTagTypes) const;
 
 	private slots:
 		void start();

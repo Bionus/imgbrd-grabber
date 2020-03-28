@@ -52,7 +52,7 @@ bool TagTypeDatabase::save()
 bool TagTypeDatabase::flush()
 {
 	QFile f(m_file);
-	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+	if (!f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
 		return false;
 	}
 

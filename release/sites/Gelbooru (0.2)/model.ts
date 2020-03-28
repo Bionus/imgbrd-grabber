@@ -119,6 +119,7 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: false,
             tags: {
                 url: (query: ITagsQuery): string => {
                     const page: number = (query.page - 1) * 50;

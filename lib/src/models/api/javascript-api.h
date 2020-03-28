@@ -48,6 +48,7 @@ class JavascriptApi : public Api
 		ParsedCheck parseCheck(const QString &source, int statusCode) const override;
 
 		bool needAuth() const override;
+		bool mustLoadTagTypes() const override;
 		bool canLoadTagTypes() const override;
 		bool canLoadTags() const override;
 		bool canLoadDetails() const override;

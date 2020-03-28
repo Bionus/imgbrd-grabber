@@ -304,12 +304,20 @@ ParsedPage JavascriptApi::parseGallery(Page *parentPage, const QString &source, 
 }
 
 
+bool JavascriptApi::mustLoadTagTypes() const
+{
+	// QMutexLocker locker(m_engineMutex);
+	QJSValue api = m_source.property("apis").property(m_key);
+	QJSValue tagTypes = api.property("tagTypes");
+	return tagTypes.isUndefined() || !tagTypes.isBool();
+}
+
 bool JavascriptApi::canLoadTagTypes() const
 {
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue urlFunction = api.property("tagTypes").property("url");
-	return !urlFunction.isUndefined();
+	return !urlFunction.isUndefined() && urlFunction.isCallable();
 }
 
 PageUrl JavascriptApi::tagTypesUrl(Site *site) const

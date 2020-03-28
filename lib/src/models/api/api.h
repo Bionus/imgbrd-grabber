@@ -109,6 +109,7 @@ class Api : public QObject
 		virtual bool parseCheckErrors() const = 0;
 		virtual ParsedCheck parseCheck(const QString &source, int statusCode) const = 0;
 
+		virtual bool mustLoadTagTypes() const = 0;
 		virtual bool canLoadTagTypes() const = 0;
 		virtual bool canLoadTags() const = 0;
 		virtual bool canLoadDetails() const = 0;
