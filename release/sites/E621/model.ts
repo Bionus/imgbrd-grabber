@@ -47,7 +47,7 @@ export const source: ISource = {
                     key: "login",
                 },
                 {
-                    id: "api_key",
+                    id: "apiKey",
                     key: "api_key",
                     type: "text",
                 },
