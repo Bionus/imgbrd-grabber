@@ -10,6 +10,8 @@
 #include "tags/tag-database.h"
 #include "tags/tag-type-api.h"
 
+#define MIN_TAG_COUNT 20
+
 
 TagLoader::TagLoader(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(profile->getSites())
@@ -120,13 +122,17 @@ void TagLoader::start()
 	while (!tags.isEmpty() || page == 1) {
 		// Load tags for the current page
 		QEventLoop loop;
-		auto *tagApi = new TagApi(m_profile, site, api, page, 500, this);
+		auto *tagApi = new TagApi(m_profile, site, api, page, 500, "count", this);
 		connect(tagApi, &TagApi::finishedLoading, &loop, &QEventLoop::quit);
 		tagApi->load();
 		loop.exec();
 
 		tags = tagApi->tags();
-		allTags.append(tags);
+		for (const auto &tag : tags) {
+			if (tag.count() == 0 || tag.count() >= MIN_TAG_COUNT) {
+				allTags.append(tag);
+			}
+		}
 		tagApi->deleteLater();
 
 		ui->progressBar->setValue(page);
