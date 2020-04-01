@@ -37,12 +37,6 @@ export const source: ISource = {
     },
     searchFormat: {
         and: " ",
-        or: {
-            separator: " ",
-            prefix: "~",
-        },
-        parenthesis: false,
-        precedence: "or",
     },
     auth: {
         url: {
