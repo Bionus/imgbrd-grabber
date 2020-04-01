@@ -196,7 +196,7 @@ void Downloader::loadNext()
 			return;
 		}
 
-		auto *tagApi = new TagApi(m_profile, site, api, tag.second, m_perPage, this);
+		auto *tagApi = new TagApi(m_profile, site, api, tag.second, m_perPage, "count", this);
 		connect(tagApi, &TagApi::finishedLoading, this, &Downloader::finishedLoadingTags);
 		tagApi->load();
 		return;

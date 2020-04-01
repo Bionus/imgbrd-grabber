@@ -4,10 +4,10 @@
 #include "models/site.h"
 
 
-TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)
-	: TagApiBase(profile, site, api, parent), m_page(page), m_limit(limit)
+TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, const QString &order, QObject *parent)
+	: TagApiBase(profile, site, api, parent)
 {
-	const QString url = api->tagsUrl(page, limit, site).url;
+	const QString url = api->tagsUrl(page, limit, order, site).url;
 	setUrl(site->fixUrl(url));
 }
 

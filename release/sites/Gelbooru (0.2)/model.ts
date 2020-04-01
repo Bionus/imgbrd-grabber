@@ -122,8 +122,10 @@ export const source: ISource = {
             tagTypes: false,
             tags: {
                 url: (query: ITagsQuery): string => {
+                    const sorts = { count: "desc", date: "asc", name: "asc" };
+                    const orderBys = { count: "index_count", date: "updated", name: "tag" };
                     const page: number = (query.page - 1) * 50;
-                    return "/index.php?page=tags&s=list&pid=" + page;
+                    return "/index.php?page=tags&s=list&pid=" + page + "&sort=" + sorts[query.order] + "&order_by=" + orderBys[query.order];
                 },
                 parse: (src: string): IParsedTags => {
                     return {

@@ -390,7 +390,7 @@ bool JavascriptApi::canLoadTags() const
 	return !urlFunction.isUndefined();
 }
 
-PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
+PageUrl JavascriptApi::tagsUrl(int page, int limit, const QString &order, Site *site) const
 {
 	PageUrl ret;
 
@@ -404,6 +404,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, Site *site) const
 
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("page", page);
+	query.setProperty("order", order);
 
 	QJSValue opts = m_source.engine()->newObject();
 	opts.setProperty("limit", limit);

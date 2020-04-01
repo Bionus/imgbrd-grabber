@@ -33,7 +33,7 @@ class JavascriptApi : public Api
 		ParsedTagTypes parseTagTypes(const QString &source, int statusCode, Site *site) const override;
 
 		// Tags
-		PageUrl tagsUrl(int page, int limit, Site *site) const override;
+		PageUrl tagsUrl(int page, int limit, const QString &order, Site *site) const override;
 		bool parseTagsErrors() const override;
 		ParsedTags parseTags(const QString &source, int statusCode, Site *site) const override;
 

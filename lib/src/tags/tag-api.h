@@ -16,15 +16,13 @@ class TagApi : public TagApiBase
 	Q_OBJECT
 
 	public:
-		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = nullptr);
+		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, const QString &order = "count", QObject *parent = nullptr);
 		const QList<Tag> &tags() const;
 
 	protected:
 		void parse(const QString &source, int statusCode, Site *site) override;
 
 	private:
-		int m_page;
-		int m_limit;
 		QList<Tag> m_tags;
 };
 

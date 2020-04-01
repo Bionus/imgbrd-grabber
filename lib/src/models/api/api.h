@@ -95,7 +95,7 @@ class Api : public QObject
 		virtual ParsedTagTypes parseTagTypes(const QString &source, int statusCode, Site *site) const = 0;
 
 		// Tags
-		virtual PageUrl tagsUrl(int page, int limit, Site *site) const = 0;
+		virtual PageUrl tagsUrl(int page, int limit, const QString &order, Site *site) const = 0;
 		virtual bool parseTagsErrors() const = 0;
 		virtual ParsedTags parseTags(const QString &source, int statusCode, Site *site) const = 0;
 

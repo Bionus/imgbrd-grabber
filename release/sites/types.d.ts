@@ -179,6 +179,7 @@ interface IGalleryQuery {
 }
 interface ITagsQuery {
     page: number;
+    order: "count" | "date" | "name";
 }
 
 interface IUrlOptions {

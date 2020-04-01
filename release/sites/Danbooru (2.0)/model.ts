@@ -149,7 +149,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tags.json?limit=" + opts.limit + "&search[order]=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
