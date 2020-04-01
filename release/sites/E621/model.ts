@@ -63,7 +63,7 @@ export const source: ISource = {
                 parseErrors: true,
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
-                        const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
+                        const pagePart = Grabber.pageUrl(query.page, previous, 750, "{page}", "a{max}", "b{min}");
                         return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
                     } catch (e) {
                         return { error: e.message };
