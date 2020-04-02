@@ -109,7 +109,7 @@ export const source: ISource = {
                         return { error: data["message"] };
                     }
 
-                    //Data in "posts" array
+                    // Data in "posts" array
                     data = data["posts"];
 
                     const images: IImage[] = [];
@@ -119,13 +119,13 @@ export const source: ISource = {
                         img.ext = image.file.ext;
                         img.created_at = Math.floor(Date.parse(image.created_at) / 1000);
 
-                        //Determine flags
+                        // Determine flags
                         img.status = "active";
-                        if(image.flags.pending === true) {
+                        if (image.flags.pending === true) {
                             img.status = "pending";
-                        } else if(image.flags.flagged === true) {
+                        } else if (image.flags.flagged === true) {
                             img.status = "flagged";
-                        } else if(image.flags.deleted === true) {
+                        } else if (image.flags.deleted === true) {
                             img.status = "deleted";
                         }
 
@@ -212,14 +212,14 @@ export const source: ISource = {
                     }
 
                     // Broken due to -status:deleted added to search query
-                    //let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
-                    //wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
+                    // let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
+                    // wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
                     const wiki: string = "<p>This feature is now broken due to '-status:deleted' is added to search tag.</p>";
                     return {
                         tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         images : Grabber.regexToImages(' '),
-                        //Not enough infomation in HTML
-                        //images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-uploader-id="[^"]*"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
+                        // Not enough infomation in HTML
+                        // images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-uploader-id="[^"]*"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki,
                         pageCount: Grabber.regexToConst("page", '>(?<page>\\d+)</(?:a|span)></li><li[^<]*><(?:a|span)[^>]*>(?:&gt;&gt;|<i class="[^"]+"></i>)<', src),
                     };
@@ -235,7 +235,7 @@ export const source: ISource = {
                         <div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\d+" class="pool-\w+-\w+ pool-\w+-\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?<\/a>|<span class="first">.*?<\/span>)[^<]*(?:<a rel="prev" class="prev" title="to page \d+" href="\/posts\/(?<previous>\d+)\?pool_id=\d+">.*?<\/a>|<span class="prev">.*?<\/span>)?[^<]*<span class="pool-name">[^<]*<a title="page \d+\/\d+" href="\/pools\/(?<id>\d+)">Pool: (?<name>[^<]+)<\/a>[^<]*<\/span>[^<]*(?:<a rel="next" class="next" title="to page \d+" href="\/posts\/(?<next>\d+)\?pool_id=\d+">.*?<\/a>|<span class="next">.*?<\/span>)?[^<]*(?:<a class="last" title="to page \d+" href=".*?">.*?<\/a>|<span class="last">.*?<\/span>)[^<]*<\/li>[^<]*<\/ul>[^<]*<\/div>
                         */
                         pools: Grabber.regexToPools('<div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\\d+" class="pool-\\w+-\\w+ pool-\\w+-\\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?</a>|<span class="first">.*?</span>)[^<]*(?:<a rel="prev" class="prev" title="to page \\d+" href="/posts/(?<previous>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="prev">.*?</span>)?[^<]*<span class="pool-name">[^<]*<a title="page \\d+/\\d+" href="/pools/(?<id>\\d+)">Pool: (?<name>[^<]+)</a>[^<]*</span>[^<]*(?:<a rel="next" class="next" title="to page \\d+" href="/posts/(?<next>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="next">.*?</span>)?[^<]*(?:<a class="last" title="to page \\d+" href=".*?">.*?</a>|<span class="last">.*?</span>)[^<]*</li>[^<]*</ul>[^<]*</div>', src),
-                        //tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        // tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", 'Size: <a href="(?<url>[^"]+?)(?:\\?download=1[^"]*)?"', src),
                     };
                 },
