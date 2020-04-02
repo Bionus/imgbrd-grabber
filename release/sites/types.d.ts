@@ -29,7 +29,7 @@ interface IImage {
     gallery_count?: number;
     page_url?: string;
     rating?: string;
-    tags?: string[];
+    tags?: string[] | ITag[];
     ext?: string;
     created_at?: string;
     date?: string;

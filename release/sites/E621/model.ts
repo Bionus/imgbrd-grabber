@@ -145,53 +145,13 @@ export const source: ISource = {
                         img.score = image.score.total;
                         img.sources = image.sources;
 
-                        //If multiple sources exists, use first one.
-                        if(image.sources.length == 0) {
-                            img.source = null;
-                        } else {
-                            img.source = image.sources[0];
-                        }
-
-                        //Tags to string
-                        const tags_array: string[] = [];
-                        const tags_artist_array: string[] = [];
-                        const tags_character_array: string[] = [];
-                        const tags_copyright_array: string[] = [];
-                        const tags_general_array: string[] = [];
-                        const tags_species_array: string[] = [];
-                        const tags_meta_array: string[] = [];
-
-                        Object.keys(image.tags).forEach(function(key){
-                            Array.prototype.push.apply(tags_array, image.tags[key]);
-                            switch(key) {
-                                case "general":
-                                    Array.prototype.push.apply(tags_general_array, image.tags[key]);
-                                    break;
-                                case "artist":
-                                    Array.prototype.push.apply(tags_artist_array, image.tags[key]);
-                                    break;
-                                case "species":
-                                    Array.prototype.push.apply(tags_species_array, image.tags[key]);
-                                    break;
-                                case "character":
-                                    Array.prototype.push.apply(tags_character_array, image.tags[key]);
-                                    break;
-                                case "copyright":
-                                    Array.prototype.push.apply(tags_copyright_array, image.tags[key]);
-                                    break;
-                                case "meta":
-                                    Array.prototype.push.apply(tags_meta_array, image.tags[key]);
-                                    break;
+                        const tags: ITag[] = [];
+                        for (const type in image.tags) {
+                            for (const name of image.tags[type]) {
+                                tags.push({ name, type });
                             }
-                        });
-
-                        img.tags = tags_array.sort().join(" ");
-                        img.tags_general = tags_general_array.sort().join(" ");
-                        img.tags_artist = tags_artist_array.sort().join(" ");
-                        img.tags_species = tags_species_array.sort().join(" ");
-                        img.tags_character = tags_character_array.sort().join(" ");
-                        img.tags_copyright = tags_copyright_array.sort().join(" ");
-                        img.tags_meta = tags_meta_array.sort().join(" ");
+                        }
+                        img.tags = tags;
 
                         if (!image.file.md5 || image.file.md5.length === 0) {
                             continue;
