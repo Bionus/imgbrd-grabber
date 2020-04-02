@@ -143,6 +143,7 @@ export const source: ISource = {
                         img.file_size = image.file.size;
                         img.preview_height = image.preview.height;
                         img.score = image.score.total;
+                        img.sources = image.sources;
 
                         //If multiple sources exists, use first one.
                         if(image.sources.length == 0) {
