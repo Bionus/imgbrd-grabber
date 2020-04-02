@@ -75,7 +75,6 @@ jobs:
         curl -Lo "mysql_driver.zip" "%MYSQL_DRIVER_URL%"
         7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
         rm "mysql_driver.zip"
-        copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
 
     - name: Download APNG plugin
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -111,7 +110,9 @@ jobs:
 
     - name: Generate installer
       shell: cmd
-      run: iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" releases\setup.iss
+      run: |
+        copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
+        iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" releases\setup.iss
 
     - name: Upload installer artifact
       uses: actions/upload-artifact@v1
