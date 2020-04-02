@@ -117,9 +117,9 @@ void TagLoader::start()
 
 	// Load all tags
 	QList<Tag> allTags;
-	QList<Tag> tags;
+	int oldCount = -1;
 	int page = 1;
-	while (!tags.isEmpty() || page == 1) {
+	while (oldCount != allTags.count()) {
 		// Load tags for the current page
 		QEventLoop loop;
 		auto *tagApi = new TagApi(m_profile, site, api, page, 500, "count", this);
@@ -127,7 +127,8 @@ void TagLoader::start()
 		tagApi->load();
 		loop.exec();
 
-		tags = tagApi->tags();
+		oldCount = allTags.count();
+		QList<Tag> tags = tagApi->tags();
 		for (const auto &tag : tags) {
 			if (tag.count() == 0 || tag.count() >= MIN_TAG_COUNT) {
 				allTags.append(tag);

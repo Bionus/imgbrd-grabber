@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-2019
 
     env:
-      MYSQL_VERSION: mysql-5.7.14-win32
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/4114066/qsqlmysql.dll_Qt_SQL_driver_5.12.6_MSVC2017_64-Bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         echo ::set-env name=GRABBER_IS_NIGHTLY::1
         echo ::set-env name=PLATFORM_NAME::x64
         echo ::set-env name=OPENSSL_ROOT_DIR::%GITHUB_WORKSPACE%\vendor\OpenSSL
-        echo ::set-env name=MYSQL_INSTALL_DIR::%GITHUB_WORKSPACE%\vendor\%MYSQL_VERSION%
+        echo ::set-env name=MYSQL_DRIVER_DIR::%GITHUB_WORKSPACE%\vendor\MySQL_driver
         echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll
 
     - name: Vendor cache
@@ -67,14 +67,15 @@ jobs:
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
         rm OpenSSL.exe
 
-    - name: Download MySQL
+    - name: Download MySQL driver
       if: steps.vendor-cache.outputs.cache-hit != 'true'
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo "%MYSQL_VERSION%.zip" "https://dev.mysql.com/get/Downloads/MySQL-5.7/%MYSQL_VERSION%.zip"
-        7z x "%MYSQL_VERSION%.zip" -y
-        rm "%MYSQL_VERSION%.zip"
+        curl -Lo "mysql_driver.zip" "%MYSQL_DRIVER_URL%"
+        7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
+        rm "mysql_driver.zip"
+        copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
 
     - name: Download APNG plugin
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -110,7 +111,7 @@ jobs:
 
     - name: Generate installer
       shell: cmd
-      run: iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_INSTALL_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" releases\setup.iss
+      run: iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" releases\setup.iss
 
     - name: Upload installer artifact
       uses: actions/upload-artifact@v1
