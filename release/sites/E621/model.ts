@@ -71,36 +71,26 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const map = {
-                        "created_at": "created_at",
-                        "status": "status",
-                        "source": "source",
-                        "has_comments": "has_comments",
-                        "file_url": "file_url",
-                        "sample_url": "large_file_url",
+                        "ext": "file.ext",
                         "change": "change_seq",
-                        "sample_width": "sample_width",
-                        "has_children": "has_children",
-                        "preview_url": "preview_file_url",
-                        "width": "image_width",
-                        "md5": "md5",
-                        "preview_width": "preview_width",
-                        "sample_height": "sample_height",
-                        "parent_id": "parent_id",
-                        "height": "image_height",
-                        "has_notes": "has_notes",
                         "creator_id": "uploader_id",
-                        "file_size": "file_size",
                         "id": "id",
-                        "preview_height": "preview_height",
                         "rating": "rating",
-                        "tags": "tag_string",
-                        "author": "uploader_name",
-                        "score": "score",
-                        "tags_artist": "tag_string_artist",
-                        "tags_character": "tag_string_character",
-                        "tags_copyright": "tag_string_copyright",
-                        "tags_general": "tag_string_general",
-                        "tags_meta": "tag_string_meta",
+                        "file_url": "file.url",
+                        "width": "file.width",
+                        "height": "file.height",
+                        "file_size": "file.size",
+                        "preview_url": "preview.url",
+                        "preview_width": "preview.width",
+                        "preview_height": "preview.height",
+                        "sample_url": "sample.url",
+                        "sample_height": "sample.height",
+                        "sample_width": "sample.width",
+                        "md5": "file.md5",
+                        "has_children": "relationships.has_children",
+                        "parent_id": "relationships.parent_id",
+                        "score": "score.total",
+                        "sources": "sources",
                     };
 
                     let data = JSON.parse(src);
@@ -109,15 +99,12 @@ export const source: ISource = {
                         return { error: data["message"] };
                     }
 
-                    // Data in "posts" array
-                    data = data["posts"];
-
                     const images: IImage[] = [];
-                    for (const image of data) {
+                    for (const image of data["posts"]) {
                         const img = Grabber.mapFields(image, map);
 
-                        img.ext = image.file.ext;
                         img.created_at = Math.floor(Date.parse(image.created_at) / 1000);
+                        img.has_comments = image.comment_count > 0 ? true : false;
 
                         // Determine flags
                         img.status = "active";
@@ -128,22 +115,6 @@ export const source: ISource = {
                         } else if (image.flags.deleted === true) {
                             img.status = "deleted";
                         }
-
-                        img.has_comments = image.comment_count > 0 ? true : false;
-                        img.file_url = image.file.url;
-                        img.sample_url = image.sample.url;
-                        img.has_children = image.relationships.has_children;
-                        img.preview_url = image.preview.url;
-                        img.width = image.file.width;
-                        img.md5 = image.file.md5;
-                        img.preview_width = image.preview.width;
-                        img.sample_height = image.sample.height;
-                        img.parent_id = image.relationships.parent_id;
-                        img.height = image.file.height;
-                        img.file_size = image.file.size;
-                        img.preview_height = image.preview.height;
-                        img.score = image.score.total;
-                        img.sources = image.sources;
 
                         const tags: ITag[] = [];
                         for (const type in image.tags) {
@@ -231,11 +202,8 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        /* pool regex
-                        <div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\d+" class="pool-\w+-\w+ pool-\w+-\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?<\/a>|<span class="first">.*?<\/span>)[^<]*(?:<a rel="prev" class="prev" title="to page \d+" href="\/posts\/(?<previous>\d+)\?pool_id=\d+">.*?<\/a>|<span class="prev">.*?<\/span>)?[^<]*<span class="pool-name">[^<]*<a title="page \d+\/\d+" href="\/pools\/(?<id>\d+)">Pool: (?<name>[^<]+)<\/a>[^<]*<\/span>[^<]*(?:<a rel="next" class="next" title="to page \d+" href="\/posts\/(?<next>\d+)\?pool_id=\d+">.*?<\/a>|<span class="next">.*?<\/span>)?[^<]*(?:<a class="last" title="to page \d+" href=".*?">.*?<\/a>|<span class="last">.*?<\/span>)[^<]*<\/li>[^<]*<\/ul>[^<]*<\/div>
-                        */
                         pools: Grabber.regexToPools('<div id="pool-nav">[^<]*<ul>[^<]*<li id="nav-link-for-pool-\\d+" class="pool-\\w+-\\w+ pool-\\w+-\\w+">[^<]*(?:<a class="first" title="to page 1" href=".*?">.*?</a>|<span class="first">.*?</span>)[^<]*(?:<a rel="prev" class="prev" title="to page \\d+" href="/posts/(?<previous>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="prev">.*?</span>)?[^<]*<span class="pool-name">[^<]*<a title="page \\d+/\\d+" href="/pools/(?<id>\\d+)">Pool: (?<name>[^<]+)</a>[^<]*</span>[^<]*(?:<a rel="next" class="next" title="to page \\d+" href="/posts/(?<next>\\d+)\\?pool_id=\\d+">.*?</a>|<span class="next">.*?</span>)?[^<]*(?:<a class="last" title="to page \\d+" href=".*?">.*?</a>|<span class="last">.*?</span>)[^<]*</li>[^<]*</ul>[^<]*</div>', src),
-                        // tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count">(?<count>[^<]+)</span>\\s*</li>', src),
+                        tags: Grabber.regexToTags('<li class="category-(?<typeId>[^"]+)">(?:\\s*<a class="wiki-link"[^>]* href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a[^>]* class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span[^>]* class="[^"]*post-count[^"]*">(?<count>[^<]+)</span>\\s*</li>', src),
                         imageUrl: Grabber.regexToConst("url", 'Size: <a href="(?<url>[^"]+?)(?:\\?download=1[^"]*)?"', src),
                     };
                 },
