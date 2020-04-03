@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Restore submodules in case the repo was clone without --recursive
+git submodule update --init --recursive
+
 # Install required packages
 if type pacman > /dev/null 2>&1
 then
