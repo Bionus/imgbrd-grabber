@@ -3,5 +3,5 @@
 mkdir build
 pushd build
     cmake ..
-    make -j8
+    make gui cli -j8
 popd
