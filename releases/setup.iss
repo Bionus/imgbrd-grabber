@@ -175,10 +175,10 @@ Source: "..\release\sites\Anime pictures\model.js";     DestDir: "{localappdata}
 Source: "..\release\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
 Source: "..\release\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
-Source: "..\release\sites\Booru-on-rails\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
-Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Booru-on-rails\derpibooru.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails\derpibooru.org"; Flags: ignoreversion
+Source: "..\release\sites\Philomena\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
+Source: "..\release\sites\Philomena\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
+Source: "..\release\sites\Philomena\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Philomena\derpibooru.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena\derpibooru.org"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\model.js";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist

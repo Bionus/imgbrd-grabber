@@ -21,6 +21,17 @@ function completeImage(img: IImage & { json_uris: string }): IImage {
     return img;
 }
 
+function makeTags(tags: string[], tagIds: number[]): ITag[] {
+    const ret: ITag[] = [];
+    for (const i in tags) {
+        ret.push({
+            id: tagIds[i],
+            name: tags[i],
+        })
+    }
+    return ret;
+}
+
 function searchToArg(search: string): string {
     let sf: string;
     let sd = "desc";
@@ -40,7 +51,7 @@ function searchToArg(search: string): string {
         }
     }
 
-    let ret = encodeURIComponent(tags.join(" "));
+    let ret = encodeURIComponent(tags.join(" ") || "*");
     if (sf) {
         ret += "&sf=" + sf;
         if (sd) {
@@ -51,7 +62,7 @@ function searchToArg(search: string): string {
 }
 
 export const source: ISource = {
-    name: "Booru-on-rails",
+    name: "Philomena",
     modifiers: ["faved_by:", "width:", "height:", "uploader:", "source_url:", "description:", "sha512_hash:", "aspect_ratio:"],
     forcedTokens: [],
     tagFormat: {
@@ -80,13 +91,10 @@ export const source: ISource = {
         json: {
             name: "JSON",
             auth: [],
-            forcedLimit: 15,
+            maxLimit: 50,
             search: {
-                url: (query: ISearchQuery): string => {
-                    if (!query.search || query.search.length === 0) {
-                        return "/images.json?page=" + query.page + "&nocomments=1&nofav=1";
-                    }
-                    return "/search.json?page=" + query.page + "&q=" + searchToArg(query.search) + "&nocomments=1&nofav=1";
+                url: (query: ISearchQuery, opts: IUrlOptions): string => {
+                    return "/api/v1/json/search/images?per_page=" + opts.limit + "&page=" + query.page + "&q=" + searchToArg(query.search);
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -97,21 +105,20 @@ export const source: ISource = {
                         "height": "height",
                         "creator_id": "uploader_id",
                         "id": "id",
-                        "ext": "original_format",
+                        "ext": "format",
+                        "file_url": "representations.full",
+                        "sample_url": "representations.large",
+                        "preview_url": "representations.thumb",
                         "author": "uploader",
                         "score": "score",
                     };
 
                     const data = JSON.parse(src);
-                    const results = "search" in data ? data.search : data.images;
 
                     const images: IImage[] = [];
-                    for (const image of results) {
+                    for (const image of data["images"]) {
                         const img = Grabber.mapFields(image, map);
-                        img.tags = image["tags"].split(", ");
-                        img.preview_url = image["representations"]["thumb"];
-                        img.sample_url = image["representations"]["large"];
-                        img.file_url = image["representations"]["full"];
+                        img.tags = makeTags(image["tags"], image["tag_ids"]);
                         img.has_comments = image["comment_count"] > 0;
                         images.push(completeImage(img));
                     }
@@ -122,9 +129,22 @@ export const source: ISource = {
                     };
                 },
             },
+            details: {
+                url: (id: string): string => {
+                    return "/api/v1/json/images/" + id;
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src);
+                    return {
+                        createdAt: data["created_at"],
+                        imageUrl: data["representations"]["full"],
+                        tags: makeTags(data["tags"], data["tag_ids"]),
+                    };
+                },
+            },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags.json?limit=" + opts.limit + "&page=" + query.page;
+                    return "/api/v1/json/search/tags?per_page=" + opts.limit + "&page=" + query.page + "&q=*";
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -189,7 +209,7 @@ export const source: ISource = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.indexOf("Powered by the booru-on-rails project") !== -1;
+                    return src.indexOf("philomena project") !== -1;
                 },
             },
         },
