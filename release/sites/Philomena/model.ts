@@ -157,7 +157,7 @@ export const source: ISource = {
                     const data = JSON.parse(src);
 
                     const tags: ITag[] = [];
-                    for (const tag of data) {
+                    for (const tag of data["tags"]) {
                         tags.push(Grabber.mapFields(tag, map));
                     }
 
