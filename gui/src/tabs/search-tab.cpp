@@ -261,7 +261,12 @@ void SearchTab::clear()
 	qDeleteAll(m_siteLayouts);
 	m_siteLayouts.clear();
 	m_layouts.clear();
+
+	for (auto b : m_boutons) {
+		b->deleteLater();
+	}
 	m_boutons.clear();
+
 	qDeleteAll(m_siteLabels);
 	m_siteLabels.clear();
 	clearLayout(ui_layoutResults);

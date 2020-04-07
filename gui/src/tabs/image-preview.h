@@ -4,6 +4,7 @@
 #include <functional>
 #include <QObject>
 #include <QPixmap>
+#include <QPointer>
 #include <QSharedPointer>
 #include <QString>
 #include <QUrl>
@@ -67,7 +68,7 @@ class ImagePreview : public QObject
 		QString m_name;
 		int m_childrenCount = 0;
 		QPixmap m_thumbnail;
-		QBouton *m_bouton = nullptr;
+		QPointer<QBouton> m_bouton = nullptr;
 		std::function<void (QMenu *)> m_customContextMenu = nullptr;
 };
 
