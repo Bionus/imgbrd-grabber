@@ -264,7 +264,7 @@ void ImagePreview::contextSaveImage()
 		const QString fn = settings->value("Save/filename").toString();
 		const QString path = settings->value("Save/path").toString();
 
-		auto downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, this);
+		auto downloader = new ImageDownloader(m_profile, m_image, fn, path, 1, true, true, m_downloadQueue);
 		connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
 	}
