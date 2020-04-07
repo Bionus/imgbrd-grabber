@@ -10,7 +10,7 @@ TEST_CASE("Derpibooru")
 {
 	SECTION("Html")
 	{
-		QList<QSharedPointer<Image>> images = getImages("Booru-on-rails", "derpibooru.org", "regex", "safe", "results.html");
+		QList<QSharedPointer<Image>> images = getImages("Philomena", "derpibooru.org", "regex", "safe", "results.html");
 
 		// Convert results
 		QList<qulonglong> ids;
@@ -28,7 +28,7 @@ TEST_CASE("Derpibooru")
 
 	SECTION("Json")
 	{
-		QList<QSharedPointer<Image>> images = getImages("Booru-on-rails", "derpibooru.org", "json", "safe", "results.json");
+		QList<QSharedPointer<Image>> images = getImages("Philomena", "derpibooru.org", "json", "safe", "results.json");
 
 		// Convert results
 		QList<qulonglong> ids;
@@ -39,14 +39,14 @@ TEST_CASE("Derpibooru")
 
 		// Check results
 		ids = ids.mid(0, 3);
-		QList<qulonglong> expected = QList<qulonglong>() << 1248664 << 1248663 << 1248661;
-		REQUIRE(images.count() == 15);
+		QList<qulonglong> expected = QList<qulonglong>() << 2316404 << 2316401 << 2316400;
+		REQUIRE(images.count() == 5);
 		REQUIRE(ids == expected);
 	}
 
 	SECTION("HtmlTags")
 	{
-		QList<Tag> tags = getTags("Booru-on-rails", "derpibooru.org", "regex", "tags.html");
+		QList<Tag> tags = getTags("Philomena", "derpibooru.org", "regex", "tags.html");
 
 		REQUIRE(tags.count() == 250);
 
@@ -57,12 +57,13 @@ TEST_CASE("Derpibooru")
 
 	SECTION("JsonTags")
 	{
-		QList<Tag> tags = getTags("Booru-on-rails", "derpibooru.org", "json", "tags.json");
+		QList<Tag> tags = getTags("Philomena", "derpibooru.org", "json", "tags.json");
 
-		REQUIRE(tags.count() == 250);
+		REQUIRE(tags.count() == 10);
 
+		REQUIRE(tags[1].id() == 42350);
 		REQUIRE(tags[1].text() == QString("solo"));
-		REQUIRE(tags[1].count() == 599506);
+		REQUIRE(tags[1].count() == 938816);
 		REQUIRE(tags[1].type().isUnknown() == true);
 	}
 }
