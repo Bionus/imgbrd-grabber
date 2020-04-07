@@ -304,6 +304,12 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NotFound));
 		}
 	} else if (error != NetworkReply::NetworkError::OperationCanceledError) {
+		// Ignore those errors as they are caused by a bug in Qt
+		if (msg.contains("140E0197")) {
+			log(QStringLiteral("Ignored network error '140E0197' for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Info);
+			return;
+		}
+
 		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 	}
