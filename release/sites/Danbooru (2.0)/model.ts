@@ -41,6 +41,10 @@ export const source: ISource = {
         precedence: "or",
     },
     auth: {
+        httpBasic: {
+            type: "http_basic",
+            passwordType: "apiKey",
+        },
         url: {
             type: "url",
             fields: [
