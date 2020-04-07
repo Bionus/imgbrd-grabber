@@ -112,6 +112,7 @@ function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
         const d = parseTweetMedia(sc, original, medias[0]);
         d.type = "gallery";
         d.gallery_count = medias.length;
+        d.id = original["id_str"];
         return d;
     }
 
