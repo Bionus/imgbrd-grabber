@@ -9,10 +9,12 @@
 #include <QStringList>
 #include <utility>
 #include "auth/http-auth.h"
+#include "auth/http-basic-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
 #include "logger.h"
+#include "login/http-basic-login.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
 #include "login/oauth2-login.h"
@@ -133,6 +135,8 @@ void Site::loadConfig()
 				m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "get") {
 				m_login = new HttpGetLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "http_basic") {
+				m_login = new HttpBasicLogin(dynamic_cast<HttpBasicAuth*>(m_auth), this, m_manager, m_settings);
 			} else {
 				m_login = nullptr;
 				log(QStringLiteral("[%1] Invalid login type '%1'").arg(m_url, type), Logger::Error);

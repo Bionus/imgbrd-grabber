@@ -7,6 +7,7 @@
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "auth/http-auth.h"
+#include "auth/http-basic-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
@@ -126,6 +127,10 @@ Source::Source(Profile *profile, const QString &dir)
 					const QString authType = auth.property("authType").toString();
 					const QString tokenUrl = auth.property("tokenUrl").toString();
 					ret = new OAuth2Auth(type, authType, tokenUrl);
+				} else if (type == "http_basic") {
+					const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
+					const QString passwordType = auth.property("passwordType").toString();
+					ret = new HttpBasicAuth(type, maxPage, passwordType);
 				} else {
 					QList<AuthField*> fields;
 					const QJSValue &jsFields = auth.property("fields");

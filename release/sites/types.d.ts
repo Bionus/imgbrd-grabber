@@ -128,7 +128,7 @@ interface IAuthCheckMaxPage {
     value: number;
 }
 
-type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth;
+type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth | IHttpBasicAuth;
 interface IOauth2Auth {
     type: "oauth2";
     authType: "password" | "client_credentials" | "header_basic";
@@ -146,6 +146,11 @@ interface IHttpAuth {
     type: "get" | "post";
     url: string;
     fields: IAuthField[];
+    check?: IAuthCheck;
+}
+interface IHttpBasicAuth {
+    type: "http_basic";
+    passwordType?: "password" | "apiKey";
     check?: IAuthCheck;
 }
 

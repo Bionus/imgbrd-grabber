@@ -9,6 +9,7 @@
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "auth/field-auth.h"
+#include "auth/http-basic-auth.h"
 #include "auth/oauth2-auth.h"
 #include "functions.h"
 #include "mixed-settings.h"
@@ -82,6 +83,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	const QString loginType = site->setting("login/type", "url").toString();
 	static QMap<QString, QString> typeNames {
 		{ "url", tr("Through URL") },
+		{ "http_basic", tr("HTTP Basic") },
 		{ "get", tr("GET") },
 		{ "post", tr("POST") },
 		{ "oauth1", tr("OAuth 1") },
@@ -124,6 +126,15 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 				fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
 				fields.insert("password", m_credentialFields[type]["password"]);
 			}
+		} else if (type == "http_basic") {
+			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
+			QString passwordType = basicAuth->passwordType();
+			m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
+			m_credentialFields[type][passwordType] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/" + passwordType).toString(), true);
+			formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
+			formLayout->addRow(fieldLabels[passwordType], m_credentialFields[type][passwordType]);
+			fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
+			fields.insert(passwordType, m_credentialFields[type][passwordType]);
 		} else {
 			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
 			if (fieldAuth) {
