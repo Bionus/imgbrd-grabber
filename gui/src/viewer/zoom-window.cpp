@@ -464,7 +464,9 @@ void ZoomWindow::replyFinishedDetails()
 		}
 	}
 
-	QString md5Exists = m_profile->md5Exists(m_image->md5());
+	QPair<QString, QString> md5ActionPair = m_profile->md5Action(m_image->md5());
+	QString md5Action = md5ActionPair.first;
+	QString md5Exists = md5ActionPair.second;
 
 	// If the file already exists, we directly display it
 	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty()) {
@@ -474,7 +476,7 @@ void ZoomWindow::replyFinishedDetails()
 		log(QStringLiteral("Image loaded from the file `%1`").arg(m_source));
 
 		// Update save button state
-		const SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
+		const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
 		setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
 		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
 
