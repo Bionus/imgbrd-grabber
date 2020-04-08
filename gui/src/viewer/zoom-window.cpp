@@ -807,6 +807,7 @@ void ZoomWindow::saveImage(bool fav)
 			m_image->setTemporaryPath(m_imagePath);
 			m_source = "";
 			setButtonState(fav, SaveButtonState::Save);
+			m_profile->removeMd5(m_image->md5());
 			break;
 		}
 
