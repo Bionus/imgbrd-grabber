@@ -1,6 +1,7 @@
 #include "models/page.h"
 #include <QUrl>
 #include <utility>
+#include "analytics.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
@@ -114,8 +115,10 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 	}
 
 	if (status == PageApi::LoadResult::Ok) {
+		Analytics::getInstance().sendEvent("Page load", "Success", m_site->url());
 		emit finishedLoading(this);
 	} else {
+		Analytics::getInstance().sendEvent("Page load", "Error", m_site->url());
 		if (!api->errors().isEmpty()) {
 			m_errors.append(api->errors());
 		}
