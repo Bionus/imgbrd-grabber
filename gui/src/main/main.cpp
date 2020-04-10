@@ -181,6 +181,7 @@ int main(int argc, char *argv[])
 	// Analytics
 	Analytics::getInstance().setTrackingID("UA-22768717-6");
 	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
+	Analytics::getInstance().startSession();
 	Analytics::getInstance().sendEvent("lifecycle", "start");
 
 	if (!gui) {

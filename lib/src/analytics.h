@@ -24,8 +24,11 @@ class Analytics
         void setTrackingID(const QString& trackingId);
         void setEnabled(bool enabled);
 
-        // API
-        void sendScreenView(const QString& screenName, const QVariantMap &customValues = {});
+		// API
+		void startSending();
+		void startSession();
+		void endSession();
+		void sendScreenView(const QString& screenName, const QVariantMap &customValues = {});
         void sendEvent(const QString& category, const QString &action, const QString &label = {}, const QVariant &value = {}, const QVariantMap &customValues = {});
 
     private:

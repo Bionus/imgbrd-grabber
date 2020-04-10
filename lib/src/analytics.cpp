@@ -15,6 +15,21 @@ void Analytics::setEnabled(bool enabled)
 }
 
 
+void Analytics::startSending()
+{
+	m_googleAnalytics.startSending();
+}
+
+void Analytics::startSession()
+{
+	m_googleAnalytics.startSession();
+}
+
+void Analytics::endSession()
+{
+	m_googleAnalytics.endSession();
+}
+
 void Analytics::sendScreenView(const QString& screenName, const QVariantMap& customValues)
 {
     if (!m_enabled) {

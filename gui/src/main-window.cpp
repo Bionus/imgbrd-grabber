@@ -19,6 +19,7 @@
 #include <qmath.h>
 #include <ui_main-window.h>
 #include "about-window.h"
+#include "analytics.h"
 #include "danbooru-downloader-importer.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
@@ -767,6 +768,10 @@ void MainWindow::closeEvent(QCloseEvent *e)
 			m_settings->setValue("confirm_close", false);
 		}
 	}
+
+	// End analytics session
+	Analytics::getInstance().endSession();
+	Analytics::getInstance().startSending();
 
 	log(QStringLiteral("Saving..."), Logger::Debug);
 		m_downloadsTab->saveLinkList(m_profile->getPath() + "/restore.igl");
