@@ -1,4 +1,5 @@
 #include "tabs/image-preview.h"
+#include <QEventLoop>
 #include <QFileDialog>
 #include <QLabel>
 #include <QMenu>
