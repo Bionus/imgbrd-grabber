@@ -14,7 +14,7 @@ else
 fi
 
 # Build the project in the build directory
-./scripts/build.sh
+./scripts/build.sh gui cli
 
 # Move the built binary to the release folder with its config
 mv "build/gui/Grabber" "release/"
