@@ -4,7 +4,10 @@
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
+#include "models/monitor.h"
+#include "models/monitor-manager.h"
 #include "models/page.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
@@ -226,6 +229,12 @@ void TagTab::getAll()
 		const QStringList postFiltering = postFilter(true);
 		emit batchAddGroup(DownloadQueryGroup(m_settings, page->search(), 1, perPage, total, postFiltering, page->site()));
 	}
+}
+void TagTab::monitor()
+{
+	QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
+	Monitor monitor(loadSites().first(), 24 * 60 * 60, QDateTime(), true, QString(), QString(), 0, true, tags);
+	m_profile->monitorManager()->add(monitor);
 }
 
 

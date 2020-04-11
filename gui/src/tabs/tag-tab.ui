@@ -326,7 +326,7 @@
         <x>0</x>
         <y>0</y>
         <width>780</width>
-        <height>325</height>
+        <height>323</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -373,7 +373,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,1,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,0,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -464,6 +464,13 @@
         </layout>
        </widget>
        <widget class="QWidget" name="page_2"/>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonMonitor">
+       <property name="text">
+        <string>Monitor (WIP)</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -743,6 +750,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonMonitor</sender>
+   <signal>clicked()</signal>
+   <receiver>TagTab</receiver>
+   <slot>monitor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>508</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>524</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -760,5 +783,6 @@
   <slot>getAll()</slot>
   <slot>getSel()</slot>
   <slot>endlessLoad()</slot>
+  <slot>monitor()</slot>
  </slots>
 </ui>
