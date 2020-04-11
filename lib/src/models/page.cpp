@@ -114,11 +114,12 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 		return;
 	}
 
+	QString eventLabel = QStringLiteral("%1 (%2)").arg(m_site->url(), m_siteApis[m_currentApi]->getName());
 	if (status == PageApi::LoadResult::Ok) {
-		Analytics::getInstance().sendEvent("Page load", "Success", m_site->url());
+		Analytics::getInstance().sendEvent("Page load", "Success", eventLabel);
 		emit finishedLoading(this);
 	} else {
-		Analytics::getInstance().sendEvent("Page load", "Error", m_site->url());
+		Analytics::getInstance().sendEvent("Page load", "Error", eventLabel);
 		if (!api->errors().isEmpty()) {
 			m_errors.append(api->errors());
 		}
