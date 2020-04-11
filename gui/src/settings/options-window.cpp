@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <ui_options-window.h>
 #include <algorithm>
+#include "analytics.h"
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"
@@ -26,6 +27,8 @@
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::OptionsWindow), m_profile(profile)
 {
+	Analytics::getInstance().sendScreenView("Settings");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 

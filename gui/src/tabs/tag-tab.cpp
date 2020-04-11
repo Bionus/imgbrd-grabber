@@ -11,7 +11,7 @@
 
 
 TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: SearchTab(profile, downloadQueue, parent), ui(new Ui::TagTab)
+	: SearchTab(profile, downloadQueue, parent, "Tag"), ui(new Ui::TagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

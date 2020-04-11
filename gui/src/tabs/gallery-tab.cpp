@@ -28,7 +28,7 @@ GalleryTab::GalleryTab(Site *site, QSharedPointer<Image> gallery, Profile *profi
 }
 
 GalleryTab::GalleryTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: SearchTab(profile, downloadQueue, parent), ui(new Ui::GalleryTab)
+	: SearchTab(profile, downloadQueue, parent, "Gallery"), ui(new Ui::GalleryTab)
 {
 	ui->setupUi(this);
 

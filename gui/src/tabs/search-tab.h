@@ -34,7 +34,7 @@ class SearchTab : public QWidget
 	Q_OBJECT
 
 	protected:
-		SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
+		SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent, QString screenName);
 
 	public:
 		~SearchTab() override;
@@ -56,6 +56,7 @@ class SearchTab : public QWidget
 		virtual QList<Site*> loadSites() const;
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
+		const QString &screenName() const;
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -142,6 +143,7 @@ class SearchTab : public QWidget
 	protected:
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
+		QString m_screenName;
 		int m_lastPage;
 		qulonglong m_lastPageMaxId, m_lastPageMinId;
 		const QMap<QString, Site*> &m_sites;

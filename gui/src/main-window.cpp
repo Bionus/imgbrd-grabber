@@ -242,7 +242,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
 
 	// Monitors tab
-	m_monitorsTab = new MonitorsTab(m_profile, m_downloadQueue, this);
+	m_monitorsTab = new MonitorsTab(m_profile->monitorManager(), this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
 
@@ -582,19 +582,34 @@ void MainWindow::restoreLastClosedTab()
 }
 void MainWindow::currentTabChanged(int tab)
 {
-	if (m_loaded && tab < m_tabs.size()) {
-		auto currentSearchTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
-		if (currentSearchTab != nullptr) {
+	if (!m_loaded) {
+		return;
+	}
+
+	QWidget *widget = ui->tabWidget->currentWidget();
+
+	if (qobject_cast<DownloadsTab*>(widget) != nullptr) {
+		Analytics::getInstance().sendScreenView("Downloads");
+	} else if (qobject_cast<MonitorsTab*>(widget) != nullptr) {
+		Analytics::getInstance().sendScreenView("Monitors");
+	} else if (qobject_cast<LogTab*>(widget) != nullptr) {
+		Analytics::getInstance().sendScreenView("Log");
+	}
+
+	auto searchTab = qobject_cast<SearchTab*>(widget);
+	if (searchTab != nullptr) {
+		if (tab < m_tabs.size()) {
 			SearchTab *tb = m_tabs[tab];
 			if (m_tabsWaitingForPreload.contains(tb)) {
 				tb->load();
 				m_tabsWaitingForPreload.removeAll(tb);
-			} else if (m_currentTab != currentSearchTab) {
+			} else if (m_currentTab != searchTab) {
 				setTags(tb->results());
 				setWiki(tb->wiki());
 			}
-			m_currentTab = currentSearchTab;
+			m_currentTab = searchTab;
 		}
+		Analytics::getInstance().sendScreenView(searchTab->screenName());
 	}
 }
 

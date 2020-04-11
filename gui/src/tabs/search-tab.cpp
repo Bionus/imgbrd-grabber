@@ -34,8 +34,8 @@
 #define FIXED_IMAGE_WIDTH 150
 
 
-SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pageMax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+SearchTab::SearchTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent, QString screenName)
+	: QWidget(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_screenName(std::move(screenName)), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pageMax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -1446,3 +1446,6 @@ QStringList SearchTab::postFilter(bool includeGlobal) const
 	}
 	return ret.split(' ', QString::SkipEmptyParts);
 }
+
+const QString &SearchTab::screenName() const
+{ return m_screenName; }

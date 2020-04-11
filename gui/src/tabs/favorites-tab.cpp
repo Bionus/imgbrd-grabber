@@ -23,7 +23,7 @@
 
 
 FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: SearchTab(profile, downloadQueue, parent), ui(new Ui::FavoritesTab), m_currentFav(0)
+	: SearchTab(profile, downloadQueue, parent, "Favorites"), ui(new Ui::FavoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 

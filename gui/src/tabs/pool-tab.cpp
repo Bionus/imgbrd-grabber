@@ -12,7 +12,7 @@
 
 
 PoolTab::PoolTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: SearchTab(profile, downloadQueue, parent), ui(new Ui::PoolTab)
+	: SearchTab(profile, downloadQueue, parent, "Pool"), ui(new Ui::PoolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
