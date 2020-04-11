@@ -60,7 +60,7 @@ TEST_CASE("Monitor")
 		QJsonObject json;
 		original.toJson(json);
 
-		Monitor dest = Monitor::fromJson(json, QMap<QString, Site*> {{ site->url(), site }});
+		Monitor dest = Monitor::fromJson(json, profile);
 
 		REQUIRE(dest.site() == original.site());
 		REQUIRE(dest.interval() == original.interval());

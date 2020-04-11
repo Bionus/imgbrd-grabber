@@ -53,7 +53,7 @@ Profile::Profile(QString path)
 
 		QJsonArray favorites = object["favorites"].toArray();
 		for (auto favoriteJson : favorites) {
-			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), m_sites);
+			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), this);
 			if (!unique.contains(fav.getName())) {
 				unique.insert(fav.getName());
 				m_favorites.append(fav);
@@ -141,7 +141,7 @@ Profile::Profile(QString path)
 	}
 
 	// Monitors
-	m_monitorManager = new MonitorManager(m_path + "/monitors.json", m_sites);
+	m_monitorManager = new MonitorManager(m_path + "/monitors.json", this);
 
 	// Complete auto-complete
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());

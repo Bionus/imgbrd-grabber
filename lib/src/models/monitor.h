@@ -3,6 +3,7 @@
 
 #include <QDateTime>
 #include <QJsonObject>
+#include "models/search-query/search-query.h"
 
 
 class Site;
@@ -10,7 +11,7 @@ class Site;
 class Monitor
 {
 	public:
-        Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true);
+		Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {});
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
@@ -23,11 +24,12 @@ class Monitor
 		void setCumulated(int cumulated, bool isPrecise);
         bool download() const;
         const QString &pathOverride() const;
-        const QString &filenameOverride() const;
+		const QString &filenameOverride() const;
+		const SearchQuery &query() const;
 
 		// Serialization
 		void toJson(QJsonObject &json) const;
-		static Monitor fromJson(const QJsonObject &json, const QMap<QString, Site*> &sites);
+		static Monitor fromJson(const QJsonObject &json, Profile *profile);
 
 	private:
 		Site *m_site;
@@ -38,6 +40,7 @@ class Monitor
         bool m_download;
         QString m_pathOverride;
         QString m_filenameOverride;
+		SearchQuery m_query;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);

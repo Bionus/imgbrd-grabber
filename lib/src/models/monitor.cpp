@@ -1,10 +1,12 @@
 #include "models/monitor.h"
 #include <QMap>
 #include <utility>
+#include "models/profile.h"
+#include "models/search-query/search-query.h"
 #include "models/site.h"
 
 
-Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated)
+Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query)
     : m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride))
 {}
 
@@ -61,6 +63,10 @@ const QString &Monitor::filenameOverride() const
 {
     return m_filenameOverride;
 }
+const SearchQuery &Monitor::query() const
+{
+	return m_query;
+}
 
 
 void Monitor::toJson(QJsonObject &json) const
@@ -71,13 +77,19 @@ void Monitor::toJson(QJsonObject &json) const
 	json["cumulated"] = m_cumulated;
     json["preciseCumulated"] = m_preciseCumulated;
     json["download"] = m_download;
-    json["pathOverride"] = m_pathOverride;
-    json["filenameOverride"] = m_filenameOverride;
+	json["pathOverride"] = m_pathOverride;
+	json["filenameOverride"] = m_filenameOverride;
+
+	QJsonObject jsonQuery;
+	m_query.write(jsonQuery);
+	json["query"] = jsonQuery;
 }
 
-Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &sites)
+Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 {
+	const QMap<QString, Site*> &sites = profile->getSites();
 	Site *site = sites.value(json["site"].toString());
+
 	const int interval = json["interval"].toInt();
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
 	const int cumulated = json["cumulated"].toInt();
@@ -85,7 +97,9 @@ Monitor Monitor::fromJson(const QJsonObject &json, const QMap<QString, Site*> &s
     const bool download = json["download"].toBool();
     const QString &pathOverride = json["pathOverride"].toString();
     const QString &filenameOverride = json["filenameOverride"].toString();
-    return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated);
+	SearchQuery query;
+	query.read(json["query"].toObject(), profile);
+	return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query);
 }
 
 

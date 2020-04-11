@@ -286,7 +286,7 @@ TEST_CASE("Favorite")
 		QJsonObject json;
 		original.toJson(json);
 
-		Favorite dest = Favorite::fromJson("", json, QMap<QString, Site*> {{ site.url(), &site }});
+		Favorite dest = Favorite::fromJson("", json, profile);
 
 		REQUIRE(dest.getName() == original.getName());
 		REQUIRE(dest.getNote() == original.getNote());

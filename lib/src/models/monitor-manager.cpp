@@ -8,8 +8,8 @@
 #include "models/monitor.h"
 
 
-MonitorManager::MonitorManager(QString file, const QMap<QString, Site*> &sites)
-	: m_file(std::move(file)), m_sites(sites)
+MonitorManager::MonitorManager(QString file, Profile *profile)
+	: m_file(std::move(file)), m_profile(profile)
 {
 	load();
 }
@@ -27,7 +27,7 @@ void MonitorManager::load()
 
 	QJsonArray monitors = object["monitors"].toArray();
 	for (const auto &monitorJson : monitors) {
-		m_monitors.append(Monitor::fromJson(monitorJson.toObject(), m_sites));
+		m_monitors.append(Monitor::fromJson(monitorJson.toObject(), m_profile));
 	}
 }
 

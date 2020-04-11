@@ -8,14 +8,14 @@
 
 
 class Monitor;
-class Site;
+class Profile;
 
 class MonitorManager : public QObject
 {
 	Q_OBJECT
 
 	public:
-		MonitorManager(QString file, const QMap<QString, Site*> &sites);
+		MonitorManager(QString file, Profile *profile);
 		void add(const Monitor &monitor);
 		void remove(const Monitor &monitor);
 		const QList<Monitor> &monitors() const;
@@ -29,7 +29,7 @@ class MonitorManager : public QObject
 
 	private:
 		QString m_file;
-		const QMap<QString, Site*> &m_sites;
+		Profile *m_profile;
 		QList<Monitor> m_monitors;
 };
 

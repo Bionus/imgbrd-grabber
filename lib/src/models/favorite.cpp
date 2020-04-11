@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <utility>
 #include "functions.h"
+#include "models/profile.h"
 
 
 Favorite::Favorite(QString name)
@@ -104,7 +105,7 @@ void Favorite::toJson(QJsonObject &json) const
 		json["monitors"] = monitorsJson;
 	}
 }
-Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const QMap<QString, Site *> &sites)
+Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profile *profile)
 {
 	const QString tag = json["tag"].toString();
 	const int note = json["note"].toInt();
@@ -120,7 +121,7 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const 
 	if (json.contains("monitors")) {
 		QJsonArray monitorsJson = json["monitors"].toArray();
 		for (auto monitorJson : monitorsJson) {
-			monitors.append(Monitor::fromJson(monitorJson.toObject(), sites));
+			monitors.append(Monitor::fromJson(monitorJson.toObject(), profile));
 		}
 	}
 
