@@ -1,7 +1,7 @@
 #ifndef MONITORS_TAB_H
 #define MONITORS_TAB_H
 
-#include "tabs/search-tab.h"
+#include <QWidget>
 
 
 namespace Ui
@@ -14,25 +14,14 @@ class MainWindow;
 class MonitorManager;
 class Profile;
 
-class MonitorsTab : public SearchTab
+class MonitorsTab : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		explicit MonitorsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent);
+		explicit MonitorsTab(MonitorManager *monitorManager, MainWindow *parent);
 		~MonitorsTab() override;
 		Ui::MonitorsTab *ui;
-
-		// SearchTab
-		QString tags() const override;
-		void setTags(const QString &tags, bool preload = true) override;
-		void write(QJsonObject &json) const override;
-
-	public slots:
-		// SearchTab
-		void focusSearch() override;
-		void load() override;
-		void updateTitle() override;
 
 	protected:
 		void changeEvent(QEvent *event) override;
@@ -42,6 +31,7 @@ class MonitorsTab : public SearchTab
 
 	private:
 		MonitorManager *m_monitorManager;
+		MainWindow *m_parent;
 };
 
 #endif // MONITORS_TAB_H

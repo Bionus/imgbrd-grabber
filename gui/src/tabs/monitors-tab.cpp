@@ -9,8 +9,8 @@
 #include "models/site.h"
 
 
-MonitorsTab::MonitorsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: SearchTab(profile, downloadQueue, parent), ui(new Ui::MonitorsTab), m_monitorManager(profile->monitorManager())
+MonitorsTab::MonitorsTab(MonitorManager *monitorManager, MainWindow *parent)
+	: QWidget(parent), ui(new Ui::MonitorsTab), m_monitorManager(monitorManager), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -29,7 +29,6 @@ void MonitorsTab::changeEvent(QEvent *event)
 	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange) {
 		ui->retranslateUi(this);
-		updateTitle();
 	}
 
 	QWidget::changeEvent(event);
@@ -51,11 +50,3 @@ void MonitorsTab::refresh()
 		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(""));
 	}
 }
-
-// SearchTab
-void MonitorsTab::write(QJsonObject &json) const {	Q_UNUSED(json); }
-QString MonitorsTab::tags() const { return QString(); }
-void MonitorsTab::setTags(const QString &tags, bool preload) { Q_UNUSED(tags); Q_UNUSED(preload); }
-void MonitorsTab::focusSearch() {}
-void MonitorsTab::load() {}
-void MonitorsTab::updateTitle() {}
