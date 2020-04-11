@@ -40,6 +40,7 @@
 #include "tabs/favorites-tab.h"
 #include "tabs/gallery-tab.h"
 #include "tabs/log-tab.h"
+#include "tabs/monitors-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/search-tab.h"
 #include "tabs/tabs-loader.h"
@@ -239,6 +240,11 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Tab bar context menu
 	ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
+
+	// Monitors tab
+	m_monitorsTab = new MonitorsTab(m_profile, m_downloadQueue, this);
+	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
+	ui->tabWidget->setCurrentIndex(0);
 
 	// Downloads tab
 	m_downloadsTab = new DownloadsTab(m_profile, m_downloadQueue, this);

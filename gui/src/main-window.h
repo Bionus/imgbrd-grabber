@@ -25,6 +25,7 @@ class Image;
 class LogTab;
 class Favorite;
 class MonitoringCenter;
+class MonitorsTab;
 class QSettings;
 class Site;
 class TabSelector;
@@ -124,6 +125,7 @@ class MainWindow : public QMainWindow
 		QList<Site*> m_selectedSites;
 		FavoritesTab *m_favoritesTab;
 		DownloadsTab *m_downloadsTab;
+		MonitorsTab *m_monitorsTab;
 		LogTab *m_logTab;
 		QStringList m_lineFilename_completer, m_lineFolder_completer;
 		bool m_restore;
