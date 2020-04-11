@@ -10,6 +10,7 @@
 #include "logger.h"
 #include "models/favorite.h"
 #include "models/md5-database.h"
+#include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
 
@@ -138,6 +139,9 @@ Profile::Profile(QString path)
 
 		fileBlacklist.close();
 	}
+
+	// Monitors
+	m_monitorManager = new MonitorManager(m_path + "/monitors.json", m_sites);
 
 	// Complete auto-complete
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());
@@ -439,6 +443,7 @@ Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
+MonitorManager *Profile::monitorManager() const { return m_monitorManager; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {
