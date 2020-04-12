@@ -10,6 +10,7 @@ class ImageDownloader;
 class Monitor;
 class Profile;
 class QSystemTrayIcon;
+class SearchQuery;
 
 class MonitoringCenter : public QObject
 {
@@ -27,6 +28,7 @@ class MonitoringCenter : public QObject
 
 	protected:
 		void checkMonitor(Monitor &monitor, const Favorite &favorite);
+		bool checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering);
 
 	private:
 		Profile *m_profile;

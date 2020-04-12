@@ -242,7 +242,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::tabContextMenuRequested);
 
 	// Monitors tab
-	m_monitorsTab = new MonitorsTab(m_profile->monitorManager(), this);
+	m_monitorsTab = new MonitorsTab(m_profile->monitorManager(), m_monitoringCenter, this);
 	ui->tabWidget->insertTab(m_tabs.size(), m_monitorsTab, m_monitorsTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
 

@@ -11,6 +11,7 @@ namespace Ui
 
 
 class MainWindow;
+class MonitoringCenter;
 class MonitorManager;
 class Profile;
 
@@ -19,7 +20,7 @@ class MonitorsTab : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit MonitorsTab(MonitorManager *monitorManager, MainWindow *parent);
+		explicit MonitorsTab(MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent);
 		~MonitorsTab() override;
 		Ui::MonitorsTab *ui;
 
@@ -31,6 +32,7 @@ class MonitorsTab : public QWidget
 
 	private:
 		MonitorManager *m_monitorManager;
+		MonitoringCenter *m_monitoringCenter;
 		MainWindow *m_parent;
 };
 

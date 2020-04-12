@@ -9,8 +9,8 @@
 #include "models/site.h"
 
 
-MonitorsTab::MonitorsTab(MonitorManager *monitorManager, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::MonitorsTab), m_monitorManager(monitorManager), m_parent(parent)
+MonitorsTab::MonitorsTab(MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
+	: QWidget(parent), ui(new Ui::MonitorsTab), m_monitorManager(monitorManager), m_monitoringCenter(monitoringCenter), m_parent(parent)
 {
 	ui->setupUi(this);
 

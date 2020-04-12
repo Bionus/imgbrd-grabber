@@ -73,7 +73,7 @@ void MonitorManager::remove(const Monitor &monitor)
 	emit changed();
 }
 
-const QList<Monitor> &MonitorManager::monitors() const
+QList<Monitor> &MonitorManager::monitors()
 {
 	return m_monitors;
 }

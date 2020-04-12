@@ -11,6 +11,7 @@
 #include "models/favorite.h"
 #include "models/image.h"
 #include "models/monitor.h"
+#include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/search-query/tag-search-query.h"
 #include "models/site.h"
@@ -34,13 +35,20 @@ void MonitoringCenter::start()
 
 void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 {
+	bool newImages = checkMonitor(monitor, favorite.getName().split(' ', QString::SkipEmptyParts), favorite.getPostFiltering());
+	if (newImages) {
+		emit m_profile->favoritesChanged();
+	}
+}
+
+bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering)
+{
 	Site *site = monitor.site();
 
-	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(favorite.getName(), site->name()), Logger::Info);
+	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(search.toString(), site->name()), Logger::Info);
 
 	// Create a pack loader
-	QStringList tags = favorite.getName().split(' ', QString::SkipEmptyParts);
-	DownloadQueryGroup query(m_profile->getSettings(), tags, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, favorite.getPostFiltering(), site);
+	DownloadQueryGroup query(m_profile->getSettings(), search, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, postFiltering, site);
 	PackLoader loader(m_profile, query, MONITOR_CHECK_LIMIT, this);
 	loader.start();
 
@@ -76,7 +84,7 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 		} else {
 			msg = tr("More than %n new image(s) found for tag '%1' on '%2'", "", newImages);
 		}
-		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(favorite.getName(), site->name()), QSystemTrayIcon::Information);
+		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(search.toString(), site->name()), QSystemTrayIcon::Information);
 	}
 
     // Add images to download queue
@@ -100,9 +108,7 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
 
-	if (newImages > 0) {
-		emit m_profile->favoritesChanged();
-	}
+	return newImages > 0;
 }
 
 void MonitoringCenter::tick()
@@ -114,6 +120,7 @@ void MonitoringCenter::tick()
     qint64 minNextMonitoring = -1;
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
 
+	// Favorites
 	for (Favorite &fav : m_profile->getFavorites()) {
 		for (Monitor &monitor : fav.getMonitors()) {
 			// If this favorite's monitoring expired, we check it for updates
@@ -127,6 +134,21 @@ void MonitoringCenter::tick()
 			if (next < minNextMonitoring || minNextMonitoring == -1) {
 				minNextMonitoring = next;
 			}
+		}
+	}
+
+	// Normal monitors
+	for (Monitor &monitor : m_profile->monitorManager()->monitors()) {
+		// If this favorite's monitoring expired, we check it for updates
+		qint64 next = monitor.secsToNextCheck();
+		if (next <= 0) {
+			checkMonitor(monitor, monitor.query(), QStringList());
+			next = monitor.secsToNextCheck();
+		}
+
+		// Only keep the soonest expiring timeout
+		if (next < minNextMonitoring || minNextMonitoring == -1) {
+			minNextMonitoring = next;
 		}
 	}
 

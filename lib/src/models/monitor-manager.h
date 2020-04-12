@@ -18,7 +18,7 @@ class MonitorManager : public QObject
 		MonitorManager(QString file, Profile *profile);
 		void add(const Monitor &monitor);
 		void remove(const Monitor &monitor);
-		const QList<Monitor> &monitors() const;
+		QList<Monitor> &monitors();
 
 	private:
 		void load();
