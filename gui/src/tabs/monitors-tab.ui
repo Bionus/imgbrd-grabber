@@ -32,6 +32,9 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
    <item>
     <widget class="QTableWidget" name="tableMonitors">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -73,5 +76,25 @@
  <resources>
   <include location="../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>tableMonitors</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MonitorsTab</receiver>
+   <slot>monitorsTableContextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>798</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>monitorsTableContextMenu(QPoint)</slot>
+ </slots>
 </ui>

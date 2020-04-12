@@ -1,4 +1,5 @@
 #include "tabs/monitors-tab.h"
+#include <QMenu>
 #include <ui_monitors-tab.h>
 #include <algorithm>
 #include "logger.h"
@@ -7,10 +8,11 @@
 #include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "monitor-window.h"
 
 
-MonitorsTab::MonitorsTab(MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::MonitorsTab), m_monitorManager(monitorManager), m_monitoringCenter(monitoringCenter), m_parent(parent)
+MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
+	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_monitorManager(monitorManager), m_monitoringCenter(monitoringCenter), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -79,4 +81,20 @@ void MonitorsTab::refresh()
 		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(QString::number(monitor.interval())));
 		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(monitor.download() ? "Download" : ""));
 	}
+}
+
+void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
+{
+	auto *item = ui->tableMonitors->itemAt(pos);
+	if (item == nullptr) {
+		return;
+	}
+
+	int row = item->row();
+	const Monitor &monitor = m_monitorManager->monitors()[row];
+
+	auto *menu = new QMenu(this);
+	menu->addAction(tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
+	menu->addAction(tr("Remove"), [this, monitor]() { m_monitorManager->remove(monitor); });
+	menu->exec(QCursor::pos());
 }

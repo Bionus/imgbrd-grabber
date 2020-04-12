@@ -33,7 +33,7 @@ class Monitor
 
 	private:
 		Site *m_site;
-		int m_interval;
+		int m_interval; // In seconds
 		QDateTime m_lastCheck;
 		int m_cumulated;
 		bool m_preciseCumulated;

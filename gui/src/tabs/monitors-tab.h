@@ -24,7 +24,7 @@ class MonitorsTab : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit MonitorsTab(MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent);
+		explicit MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent);
 		~MonitorsTab() override;
 		Ui::MonitorsTab *ui;
 
@@ -35,8 +35,10 @@ class MonitorsTab : public QWidget
 	protected slots:
 		void refresh();
 		void statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);
+		void monitorsTableContextMenu(const QPoint &pos);
 
 	private:
+		Profile *m_profile;
 		MonitorManager *m_monitorManager;
 		MonitoringCenter *m_monitoringCenter;
 		MainWindow *m_parent;
