@@ -1,7 +1,9 @@
 #ifndef MONITORS_TAB_H
 #define MONITORS_TAB_H
 
+#include <QMap>
 #include <QWidget>
+#include "monitoring-center.h"
 
 
 namespace Ui
@@ -11,9 +13,11 @@ namespace Ui
 
 
 class MainWindow;
-class MonitoringCenter;
+class Monitor;
 class MonitorManager;
 class Profile;
+class QIcon;
+class QString;
 
 class MonitorsTab : public QWidget
 {
@@ -26,14 +30,17 @@ class MonitorsTab : public QWidget
 
 	protected:
 		void changeEvent(QEvent *event) override;
+		QIcon &getIcon(const QString &path);
 
 	protected slots:
 		void refresh();
+		void statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);
 
 	private:
 		MonitorManager *m_monitorManager;
 		MonitoringCenter *m_monitoringCenter;
 		MainWindow *m_parent;
+		QMap<QString, QIcon> m_icons;
 };
 
 #endif // MONITORS_TAB_H

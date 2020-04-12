@@ -15,8 +15,16 @@ class SearchQuery;
 class MonitoringCenter : public QObject
 {
 	Q_OBJECT
+	Q_ENUMS(LoadResult)
 
 	public:
+		enum MonitoringStatus
+		{
+			Waiting,
+			Checking,
+			Performing,
+		};
+
 		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
 
 	public slots:
@@ -29,6 +37,9 @@ class MonitoringCenter : public QObject
 	protected:
 		void checkMonitor(Monitor &monitor, const Favorite &favorite);
 		bool checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering);
+
+	signals:
+		void statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);
 
 	private:
 		Profile *m_profile;

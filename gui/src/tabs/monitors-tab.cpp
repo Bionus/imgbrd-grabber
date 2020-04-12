@@ -14,6 +14,7 @@ MonitorsTab::MonitorsTab(MonitorManager *monitorManager, MonitoringCenter *monit
 {
 	ui->setupUi(this);
 
+	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, this, &MonitorsTab::statusChanged);
 	connect(m_monitorManager, &MonitorManager::changed, this, &MonitorsTab::refresh);
 	refresh();
 }
@@ -35,6 +36,34 @@ void MonitorsTab::changeEvent(QEvent *event)
 }
 
 
+QIcon &MonitorsTab::getIcon(const QString &path)
+{
+	if (!m_icons.contains(path)) {
+		m_icons.insert(path, QIcon(path));
+	}
+
+	return m_icons[path];
+}
+
+void MonitorsTab::statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status)
+{
+	int row = m_monitorManager->monitors().indexOf(monitor);
+	if (row == -1) {
+		return;
+	}
+
+	QString path;
+	switch (status)
+	{
+		case MonitoringCenter::MonitoringStatus::Waiting: path = ":/images/status/pending.png"; break;
+		case MonitoringCenter::MonitoringStatus::Checking: path = ":/images/status/downloading.png"; break;
+		case MonitoringCenter::MonitoringStatus::Performing: path = ":/images/status/ok.png"; break;
+		default: return;
+	}
+
+	ui->tableMonitors->item(row, 0)->setIcon(getIcon(path));
+}
+
 void MonitorsTab::refresh()
 {
 	const QList<Monitor> &monitors = m_monitorManager->monitors();
@@ -44,9 +73,10 @@ void MonitorsTab::refresh()
 	for (int i = 0; i < monitors.count(); ++i) {
 		const Monitor &monitor = monitors[i];
 
-		ui->tableMonitors->setItem(i, 0, new QTableWidgetItem(""));
-		ui->tableMonitors->setItem(i, 1, new QTableWidgetItem(monitor.site()->url()));
-		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(QString::number(monitor.interval())));
-		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(""));
+		ui->tableMonitors->setItem(i, 0, new QTableWidgetItem(getIcon(":/images/status/pending.png"), ""));
+		ui->tableMonitors->setItem(i, 1, new QTableWidgetItem(monitor.query().toString()));
+		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(monitor.site()->url()));
+		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(QString::number(monitor.interval())));
+		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(monitor.download() ? "Download" : ""));
 	}
 }

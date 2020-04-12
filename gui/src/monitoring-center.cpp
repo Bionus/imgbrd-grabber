@@ -45,6 +45,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 {
 	Site *site = monitor.site();
 
+	emit statusChanged(monitor, MonitoringStatus::Checking);
 	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(search.toString(), site->name()), Logger::Info);
 
 	// Create a pack loader
@@ -73,6 +74,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 			}
 		}
 	}
+	emit statusChanged(monitor, MonitoringStatus::Performing);
 
 	// Send notification
 	if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
@@ -107,6 +109,8 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	// Update monitor
 	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
+
+	emit statusChanged(monitor, MonitoringStatus::Waiting);
 
 	return newImages > 0;
 }
