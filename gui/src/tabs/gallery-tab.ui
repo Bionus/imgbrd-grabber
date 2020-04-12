@@ -239,7 +239,7 @@
         <x>0</x>
         <y>0</y>
         <width>780</width>
-        <height>390</height>
+        <height>388</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -279,7 +279,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -309,6 +309,13 @@
        </property>
        <property name="text">
         <string notr="true">&lt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonMonitor">
+       <property name="text">
+        <string>Monitor (WIP)</string>
        </property>
       </widget>
      </item>
@@ -548,12 +555,28 @@
    <slot>getSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>506</y>
+     <x>395</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>227</x>
      <y>526</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMonitor</sender>
+   <signal>clicked()</signal>
+   <receiver>GalleryTab</receiver>
+   <slot>monitor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>179</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>166</x>
+     <y>528</y>
     </hint>
    </hints>
   </connection>
@@ -573,5 +596,6 @@
   <slot>historyNext()</slot>
   <slot>getAll()</slot>
   <slot>getSel()</slot>
+  <slot>monitor()</slot>
  </slots>
 </ui>

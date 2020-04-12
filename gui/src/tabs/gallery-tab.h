@@ -40,6 +40,7 @@ class GalleryTab : public SearchTab
 		void getPage();
 		void getAll();
 		// Others
+		void monitor();
 		void closeEvent(QCloseEvent *) override;
 		void focusSearch() override;
 		void updateTitle() override;

@@ -7,6 +7,8 @@
 #include "logger.h"
 #include "main-window.h"
 #include "models/image.h"
+#include "models/monitor.h"
+#include "models/monitor-manager.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -164,6 +166,12 @@ void GalleryTab::getAll()
 
 	const QStringList postFiltering = postFilter(true);
 	emit batchAddGroup(DownloadQueryGroup(m_settings, m_gallery, 1, perPage, total, postFiltering, m_site));
+}
+
+void GalleryTab::monitor()
+{
+	Monitor monitor(loadSites().first(), 24 * 60 * 60, QDateTime(), true, QString(), QString(), 0, true, m_gallery);
+	m_profile->monitorManager()->add(monitor);
 }
 
 
