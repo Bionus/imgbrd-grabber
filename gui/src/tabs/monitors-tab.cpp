@@ -94,7 +94,7 @@ void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
 	const Monitor &monitor = m_monitorManager->monitors()[row];
 
 	auto *menu = new QMenu(this);
-	menu->addAction(tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
-	menu->addAction(tr("Remove"), [this, monitor]() { m_monitorManager->remove(monitor); });
+	menu->addAction(getIcon(":/images/icons/edit.png"), tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
+	menu->addAction(getIcon(":/images/icons/remove.png"), tr("Remove"), [this, monitor]() { m_monitorManager->remove(monitor); });
 	menu->exec(QCursor::pos());
 }
