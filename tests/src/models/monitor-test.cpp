@@ -60,7 +60,7 @@ TEST_CASE("Monitor")
 		QJsonObject json;
 		original.toJson(json);
 
-		Monitor dest = Monitor::fromJson(json, profile);
+		Monitor dest = Monitor::fromJson(json, profile.data());
 
 		REQUIRE(dest.site() == original.site());
 		REQUIRE(dest.interval() == original.interval());
