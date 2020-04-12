@@ -315,7 +315,7 @@
      <item>
       <widget class="QPushButton" name="buttonMonitor">
        <property name="text">
-        <string>Monitor (WIP)</string>
+        <string>Monitor</string>
        </property>
       </widget>
      </item>
