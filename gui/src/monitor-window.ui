@@ -46,12 +46,15 @@
        </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="lineSearch">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="labelLastSearch">
          <property name="whatsThis">
           <string>Last time you clicked on &quot;Mark as viewed&quot;.</string>
@@ -61,8 +64,11 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QDateTimeEdit" name="dateLastCheck">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -71,30 +77,47 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="labelSource">
          <property name="text">
           <string>Source</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QComboBox" name="comboSource"/>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="labelInterval">
          <property name="text">
           <string>Interval</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QSpinBox" name="spinInterval">
          <property name="suffix">
           <string> min</string>
          </property>
          <property name="maximum">
           <number>100000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelPostFilters">
+         <property name="text">
+          <string>Post-filters</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="linePostFilters">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

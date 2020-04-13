@@ -146,7 +146,7 @@ void MonitoringCenter::tick()
 		// If this favorite's monitoring expired, we check it for updates
 		qint64 next = monitor.secsToNextCheck();
 		if (next <= 0) {
-			checkMonitor(monitor, monitor.query(), QStringList());
+			checkMonitor(monitor, monitor.query(), monitor.postFilters());
 			next = monitor.secsToNextCheck();
 		}
 

@@ -11,7 +11,7 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {});
+		Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {});
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
@@ -26,6 +26,7 @@ class Monitor
         const QString &pathOverride() const;
 		const QString &filenameOverride() const;
 		const SearchQuery &query() const;
+		const QStringList &postFilters() const;
 
 		// Serialization
 		void toJson(QJsonObject &json) const;
@@ -41,6 +42,7 @@ class Monitor
         QString m_pathOverride;
         QString m_filenameOverride;
 		SearchQuery m_query;
+		QStringList m_postFilters;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);

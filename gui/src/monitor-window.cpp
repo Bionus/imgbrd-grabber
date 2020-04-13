@@ -17,6 +17,7 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	ui->comboSource->setCurrentIndex(sourceKeys.indexOf(m_monitor.site()->url()));
 
 	ui->lineSearch->setText(m_monitor.query().toString());
+	ui->linePostFilters->setText(m_monitor.postFilters().join(' '));
 	ui->dateLastCheck->setDateTime(m_monitor.lastCheck());
 	ui->spinInterval->setValue(qFloor(m_monitor.interval() / 60.0));
 
@@ -50,6 +51,6 @@ void MonitorWindow::save()
 	QString pathOverride = ui->lineDownloadPathOverride->text();
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 
-	Monitor newMonitor(site, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query());
+	Monitor newMonitor(site, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters());
 	m_monitorManager->add(newMonitor);
 }
