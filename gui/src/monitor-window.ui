@@ -130,11 +130,11 @@
       <layout class="QFormLayout" name="formLayout_2">
        <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="checkNotificationEnabled">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
          <property name="text">
           <string>Enabled</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

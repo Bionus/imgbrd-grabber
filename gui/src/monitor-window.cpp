@@ -21,7 +21,7 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	ui->dateLastCheck->setDateTime(m_monitor.lastCheck());
 	ui->spinInterval->setValue(qFloor(m_monitor.interval() / 60.0));
 
-	ui->checkNotificationEnabled->setChecked(false); // FIXME
+	ui->checkNotificationEnabled->setChecked(m_monitor.notify());
 
 	ui->checkDownloadEnabled->setChecked(m_monitor.download());
 	ui->lineDownloadPathOverride->setText(m_monitor.pathOverride());
@@ -47,10 +47,11 @@ void MonitorWindow::save()
 
 	Site *site = m_profile->getSites().value(ui->comboSource->currentText());
 	int interval = ui->spinInterval->value() * 60;
+	bool notify = ui->checkNotificationEnabled->isChecked();
 	bool download = ui->checkDownloadEnabled->isChecked();
 	QString pathOverride = ui->lineDownloadPathOverride->text();
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 
-	Monitor newMonitor(site, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters());
+	Monitor newMonitor(site, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters(), notify);
 	m_monitorManager->add(newMonitor);
 }

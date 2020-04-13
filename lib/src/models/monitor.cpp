@@ -6,8 +6,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters)
-	: m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters)
+Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify)
+	: m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify)
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -71,6 +71,10 @@ const QStringList &Monitor::postFilters() const
 {
 	return m_postFilters;
 }
+bool Monitor::notify() const
+{
+	return m_notify;
+}
 
 
 void Monitor::toJson(QJsonObject &json) const
@@ -84,6 +88,7 @@ void Monitor::toJson(QJsonObject &json) const
 	json["pathOverride"] = m_pathOverride;
 	json["filenameOverride"] = m_filenameOverride;
 	json["postFilters"] = QJsonArray::fromStringList(m_postFilters);
+	json["notify"] = m_notify;
 
 	QJsonObject jsonQuery;
 	m_query.write(jsonQuery);
@@ -102,6 +107,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
     const bool download = json["download"].toBool();
 	const QString &pathOverride = json["pathOverride"].toString();
 	const QString &filenameOverride = json["filenameOverride"].toString();
+	const bool notify = json["notify"].toBool();
 
 	QStringList postFilters;
 	QJsonArray jsonPostFilters = json["postFilters"].toArray();
@@ -112,7 +118,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	SearchQuery query;
 	query.read(json["query"].toObject(), profile);
 
-	return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters);
+	return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify);
 }
 
 

@@ -77,7 +77,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	emit statusChanged(monitor, MonitoringStatus::Performing);
 
 	// Send notification
-	if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
+	if (monitor.notify() && newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible()) {
 		QString msg;
 		if (count == 1) {
 			msg = tr("New images found for tag '%1' on '%2'");

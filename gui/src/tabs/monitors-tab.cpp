@@ -84,11 +84,19 @@ void MonitorsTab::refresh()
 		QString sDate = days > 0 ? QString("%1 d ").arg(days) : "";
 		QString sTime = mins > 0 ? QTime(0, 0, 0).addSecs(mins * 60).toString(timeFormat) : "";
 
+		QStringList actions;
+		if (monitor.notify()) {
+			actions.append("Notify");
+		}
+		if (monitor.download()) {
+			actions.append("Download");
+		}
+
 		ui->tableMonitors->setItem(i, 0, new QTableWidgetItem(getIcon(":/images/status/pending.png"), ""));
 		ui->tableMonitors->setItem(i, 1, new QTableWidgetItem(monitor.query().toString()));
 		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(monitor.site()->url()));
 		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(sDate + sTime));
-		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(monitor.download() ? "Download" : ""));
+		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(actions.join(", ")));
 	}
 }
 
