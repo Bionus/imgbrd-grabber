@@ -1,5 +1,6 @@
 #include "tabs/monitors-tab.h"
 #include <QMenu>
+#include <QtMath>
 #include <ui_monitors-tab.h>
 #include <algorithm>
 #include "logger.h"
@@ -75,10 +76,18 @@ void MonitorsTab::refresh()
 	for (int i = 0; i < monitors.count(); ++i) {
 		const Monitor &monitor = monitors[i];
 
+		const int interval = qFloor(monitor.interval() / 60.0);
+		const int days = interval / 1440;
+		const int mins = interval % 1440;
+		const QString timeFormat = mins > 60 ? (mins % 60 != 0 ? tr("h 'h' m 'm'") : tr("h 'h'")) : tr("m 'm'");
+
+		QString sDate = days > 0 ? QString("%1 d ").arg(days) : "";
+		QString sTime = mins > 0 ? QTime(0, 0, 0).addSecs(mins * 60).toString(timeFormat) : "";
+
 		ui->tableMonitors->setItem(i, 0, new QTableWidgetItem(getIcon(":/images/status/pending.png"), ""));
 		ui->tableMonitors->setItem(i, 1, new QTableWidgetItem(monitor.query().toString()));
 		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(monitor.site()->url()));
-		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(QString::number(monitor.interval())));
+		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(sDate + sTime));
 		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(monitor.download() ? "Download" : ""));
 	}
 }
