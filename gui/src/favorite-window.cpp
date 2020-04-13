@@ -32,7 +32,7 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 	if (!m_favorite.getMonitors().isEmpty()) {
 		Monitor monitor = m_favorite.getMonitors().first();
 		ui->spinMonitoringInterval->setValue(qFloor(monitor.interval() / 60.0));
-		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.site()->url()));
+		ui->comboMonitoringSource->setCurrentIndex(sourceKeys.indexOf(monitor.sites().first()->url()));
 		ui->checkMonitoingDownload->setChecked(monitor.download());
 		ui->linePathOverride->setText(monitor.pathOverride());
 		ui->lineFilenameOverride->setText(monitor.filenameOverride());
@@ -86,9 +86,9 @@ void FavoriteWindow::save()
 	if (interval == 0) {
 		monitors.clear();
 	} else if (monitors.isEmpty()) {
-        monitors.append(Monitor(site, interval, QDateTime::currentDateTimeUtc(), download, pathOverride, filenameOverride));
+		monitors.append(Monitor(QList<Site*> { site }, interval, QDateTime::currentDateTimeUtc(), download, pathOverride, filenameOverride));
 	} else {
-        Monitor rep(site, interval, monitors[0].lastCheck(), download, pathOverride, filenameOverride);
+		Monitor rep(QList<Site*> { site }, interval, monitors[0].lastCheck(), download, pathOverride, filenameOverride);
 		monitors[0] = rep;
 	}
 

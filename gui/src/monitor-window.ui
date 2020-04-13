@@ -80,12 +80,9 @@
        <item row="3" column="0">
         <widget class="QLabel" name="labelSource">
          <property name="text">
-          <string>Source</string>
+          <string>Sources</string>
          </property>
         </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="comboSource"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="labelInterval">
@@ -118,6 +115,16 @@
          </property>
          <property name="readOnly">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QPushButton" name="pushButton">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Edit sources</string>
          </property>
         </widget>
        </item>
@@ -184,38 +191,14 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="buttonRemove">
-       <property name="text">
-        <string>Delete</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -255,8 +238,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MonitorWindow</receiver>
+   <slot>openSourcesWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>364</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>removeFavorite()</slot>
+  <slot>openSourcesWindow()</slot>
  </slots>
 </ui>

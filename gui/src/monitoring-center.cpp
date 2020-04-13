@@ -43,37 +43,49 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 
 bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering)
 {
-	Site *site = monitor.site();
+	QStringList siteNames;
+	for (Site *site : monitor.sites()) {
+		siteNames.append(site->name());
+	}
 
 	emit statusChanged(monitor, MonitoringStatus::Checking);
-	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(search.toString(), site->name()), Logger::Info);
+	log(QStringLiteral("Monitoring new images for '%1' on '%2'").arg(search.toString(), siteNames.join(", ")), Logger::Info);
 
-	// Create a pack loader
-	DownloadQueryGroup query(m_profile->getSettings(), search, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, postFiltering, site);
-	PackLoader loader(m_profile, query, MONITOR_CHECK_LIMIT, this);
-	loader.start();
-
-	// Load all images
-	bool firstRun = true;
 	int count = 0;
 	int newImages = 0;
 	QList<QSharedPointer<Image>> newImagesList;
-	while ((firstRun || monitor.download()) && loader.hasNext() && newImages == count) {
-		// Load the next page
-		QList<QSharedPointer<Image>> allImages = loader.next();
-		count += allImages.count();
 
-		// Filter out old images
-		for (const QSharedPointer<Image> &img : allImages) {
-			if (img->createdAt() > monitor.lastCheck()) {
-				QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
-				if (detected.isEmpty()) {
-					newImagesList.append(img);
-					newImages++;
+	for (Site *site : monitor.sites()) {
+		// Create a pack loader
+		DownloadQueryGroup query(m_profile->getSettings(), search, 1, MONITOR_CHECK_LIMIT, MONITOR_CHECK_TOTAL, postFiltering, site);
+		PackLoader loader(m_profile, query, MONITOR_CHECK_LIMIT, this);
+		loader.start();
+
+		// Load all images
+		bool firstRun = true;
+		int countRun = 0;
+		int newImagesRun = 0;
+		while ((firstRun || monitor.download()) && loader.hasNext() && newImagesRun == countRun) {
+			// Load the next page
+			QList<QSharedPointer<Image>> allImages = loader.next();
+			countRun += allImages.count();
+
+			// Filter out old images
+			for (const QSharedPointer<Image> &img : allImages) {
+				if (img->createdAt() > monitor.lastCheck()) {
+					QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
+					if (detected.isEmpty()) {
+						newImagesList.append(img);
+						newImagesRun++;
+					}
 				}
 			}
 		}
+
+		count += countRun;
+		newImages += newImagesRun;
 	}
+
 	emit statusChanged(monitor, MonitoringStatus::Performing);
 
 	// Send notification
@@ -86,7 +98,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 		} else {
 			msg = tr("More than %n new image(s) found for tag '%1' on '%2'", "", newImages);
 		}
-		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(search.toString(), site->name()), QSystemTrayIcon::Information);
+		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(search.toString(), siteNames.join(", ")), QSystemTrayIcon::Information);
 	}
 
     // Add images to download queue

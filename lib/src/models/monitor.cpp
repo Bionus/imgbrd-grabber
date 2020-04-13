@@ -6,8 +6,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify)
-	: m_site(site), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify)
+Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify)
+	: m_sites(sites), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify)
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -18,9 +18,9 @@ qint64 Monitor::secsToNextCheck() const
 
 
 
-Site *Monitor::site() const
+QList<Site*> Monitor::sites() const
 {
-	return m_site;
+	return m_sites;
 }
 
 int Monitor::interval() const
@@ -79,7 +79,12 @@ bool Monitor::notify() const
 
 void Monitor::toJson(QJsonObject &json) const
 {
-	json["site"] = m_site->url();
+	QStringList sites;
+	for (auto site : m_sites) {
+		sites.append(site->url());
+	}
+	json["sites"] = QJsonArray::fromStringList(sites);
+
 	json["interval"] = m_interval;
 	json["lastCheck"] = m_lastCheck.toString(Qt::ISODate);
 	json["cumulated"] = m_cumulated;
@@ -97,8 +102,16 @@ void Monitor::toJson(QJsonObject &json) const
 
 Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 {
-	const QMap<QString, Site*> &sites = profile->getSites();
-	Site *site = sites.value(json["site"].toString());
+	const QMap<QString, Site*> &siteMap = profile->getSites();
+
+	QList<Site*> sites;
+	QJsonArray jsonSites = json["sites"].toArray();
+	for (auto site : jsonSites) {
+		sites.append(siteMap.value(site.toString()));
+	}
+	if (json.contains("site")) {
+		sites.append(siteMap.value(json["site"].toString()));
+	}
 
 	const int interval = json["interval"].toInt();
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
@@ -118,13 +131,13 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	SearchQuery query;
 	query.read(json["query"].toObject(), profile);
 
-	return Monitor(site, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify);
+	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify);
 }
 
 
 bool operator==(const Monitor &lhs, const Monitor &rhs)
 {
-	return lhs.site() == rhs.site()
+	return lhs.sites() == rhs.sites()
 		&& lhs.interval() == rhs.interval()
 		&& lhs.lastCheck() == rhs.lastCheck()
 		&& lhs.cumulated() == rhs.cumulated()

@@ -92,9 +92,14 @@ void MonitorsTab::refresh()
 			actions.append("Download");
 		}
 
+		QStringList sites;
+		for (auto site : monitor.sites()) {
+			sites.append(site->url());
+		}
+
 		ui->tableMonitors->setItem(i, 0, new QTableWidgetItem(getIcon(":/images/status/pending.png"), ""));
 		ui->tableMonitors->setItem(i, 1, new QTableWidgetItem(monitor.query().toString()));
-		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(monitor.site()->url()));
+		ui->tableMonitors->setItem(i, 2, new QTableWidgetItem(sites.join(", ")));
 		ui->tableMonitors->setItem(i, 3, new QTableWidgetItem(sDate + sTime));
 		ui->tableMonitors->setItem(i, 4, new QTableWidgetItem(actions.join(", ")));
 	}

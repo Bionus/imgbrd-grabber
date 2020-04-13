@@ -233,7 +233,7 @@ void TagTab::getAll()
 void TagTab::monitor()
 {
 	QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
-	Monitor monitor(loadSites().first(), 24 * 60 * 60, QDateTime(), true, QString(), QString(), 0, true, tags, postFilter());
+	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime(), true, QString(), QString(), 0, true, tags, postFilter());
 	m_profile->monitorManager()->add(monitor);
 }
 

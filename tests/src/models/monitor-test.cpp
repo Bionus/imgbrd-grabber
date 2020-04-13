@@ -15,17 +15,18 @@ TEST_CASE("Monitor")
 	const QScopedPointer<Profile> profile(makeProfile());
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
+	QList<Site*> sites { site };
 
 	SECTION("Site")
 	{
-		Monitor monitor(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor monitor(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
-		REQUIRE(monitor.site() == site);
+		REQUIRE(monitor.sites() == sites);
 	}
 
 	SECTION("Interval")
 	{
-		Monitor monitor(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor monitor(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 		REQUIRE(monitor.interval() == 60);
 	}
@@ -35,7 +36,7 @@ TEST_CASE("Monitor")
 		QDateTime before(QDate(2016, 7, 2), QTime(16, 35, 12));
 		QDateTime after(QDate(2018, 7, 2), QTime(16, 35, 12));
 
-		Monitor monitor(site, 60, before, false, "", "", 12, true);
+		Monitor monitor(sites, 60, before, false, "", "", 12, true);
 
 		REQUIRE(monitor.lastCheck() == before);
 		monitor.setLastCheck(after);
@@ -44,7 +45,7 @@ TEST_CASE("Monitor")
 
 	SECTION("Cumulated")
 	{
-		Monitor monitor(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor monitor(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 		REQUIRE(monitor.cumulated() == 12);
 		REQUIRE(monitor.preciseCumulated() == true);
@@ -55,14 +56,14 @@ TEST_CASE("Monitor")
 
 	SECTION("Serialization")
 	{
-		Monitor original(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor original(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 		QJsonObject json;
 		original.toJson(json);
 
 		Monitor dest = Monitor::fromJson(json, profile.data());
 
-		REQUIRE(dest.site() == original.site());
+		REQUIRE(dest.sites() == original.sites());
 		REQUIRE(dest.interval() == original.interval());
 		REQUIRE(dest.lastCheck() == original.lastCheck());
 		REQUIRE(dest.cumulated() == original.cumulated());
@@ -71,9 +72,9 @@ TEST_CASE("Monitor")
 
 	SECTION("Compare")
 	{
-		Monitor a(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
-		Monitor b(site, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
-		Monitor c(site, 120, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor a(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor b(sites, 60, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
+		Monitor c(sites, 120, QDateTime(QDate(2016, 7, 2), QTime(16, 35, 12)), false, "", "", 12, true);
 
 		REQUIRE(a == b);
 		REQUIRE(b == a);

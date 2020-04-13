@@ -26,12 +26,15 @@ class MonitorWindow : public QDialog
 	public slots:
 		void save();
 		void remove();
+		void openSourcesWindow();
+		void setSources(const QList<Site*> &sources);
 
 	private:
 		Ui::MonitorWindow *ui;
 		Profile *m_profile;
 		MonitorManager *m_monitorManager;
 		Monitor m_monitor;
+		QList<Site*> m_selectedSources;
 };
 
 #endif // MONITOR_WINDOW_H

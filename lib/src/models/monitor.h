@@ -2,6 +2,7 @@
 #define MONITOR_H
 
 #include <QDateTime>
+#include <QList>
 #include <QJsonObject>
 #include "models/search-query/search-query.h"
 
@@ -11,11 +12,11 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(Site *site, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true);
+		Monitor(QList<Site*> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true);
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
-		Site *site() const;
+		QList<Site*> sites() const;
 		int interval() const;
 		const QDateTime &lastCheck() const;
 		void setLastCheck(const QDateTime &lastCheck);
@@ -34,7 +35,7 @@ class Monitor
 		static Monitor fromJson(const QJsonObject &json, Profile *profile);
 
 	private:
-		Site *m_site;
+		QList<Site*> m_sites;
 		int m_interval; // In seconds
 		QDateTime m_lastCheck;
 		int m_cumulated;

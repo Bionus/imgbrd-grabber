@@ -4,6 +4,7 @@
 #include "models/monitor-manager.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "sources/sources-window.h"
 
 
 MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
@@ -12,9 +13,7 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
-	QStringList sourceKeys = profile->getSites().keys();
-	ui->comboSource->addItems(sourceKeys);
-	ui->comboSource->setCurrentIndex(sourceKeys.indexOf(m_monitor.site()->url()));
+	m_selectedSources = m_monitor.sites();
 
 	ui->lineSearch->setText(m_monitor.query().toString());
 	ui->linePostFilters->setText(m_monitor.postFilters().join(' '));
@@ -45,13 +44,24 @@ void MonitorWindow::save()
 {
 	m_monitorManager->remove(m_monitor);
 
-	Site *site = m_profile->getSites().value(ui->comboSource->currentText());
 	int interval = ui->spinInterval->value() * 60;
 	bool notify = ui->checkNotificationEnabled->isChecked();
 	bool download = ui->checkDownloadEnabled->isChecked();
 	QString pathOverride = ui->lineDownloadPathOverride->text();
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 
-	Monitor newMonitor(site, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters(), notify);
+	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters(), notify);
 	m_monitorManager->add(newMonitor);
+}
+
+void MonitorWindow::openSourcesWindow()
+{
+	auto w = new SourcesWindow(m_profile, m_selectedSources, this);
+	connect(w, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
+	w->show();
+}
+
+void MonitorWindow::setSources(const QList<Site*> &sources)
+{
+	m_selectedSources = sources;
 }
