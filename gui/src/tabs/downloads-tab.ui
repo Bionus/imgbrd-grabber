@@ -47,11 +47,22 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QLabel" name="labelGroups">
-         <property name="text">
-          <string>Groups (0/0)</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelGroups">
+           <property name="text">
+            <string>Groups (0/0)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAddGroup">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTableWidget" name="tableBatchGroups">
@@ -129,13 +140,6 @@
          </column>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="buttonAddGroup">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="widgetUniques" native="true">
@@ -150,11 +154,22 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QLabel" name="labelUniques">
-         <property name="text">
-          <string>Single images</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelUniques">
+           <property name="text">
+            <string>Single images</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAddUnique">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTableWidget" name="tableBatchUniques">
@@ -229,13 +244,6 @@
            <string>Folder</string>
           </property>
          </column>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonAddUnique">
-         <property name="text">
-          <string>Add</string>
-         </property>
         </widget>
        </item>
       </layout>
