@@ -11,6 +11,7 @@
 
 
 class Commands;
+class DownloadQueryManager;
 class Md5Database;
 class MonitorManager;
 class QSettings;
@@ -79,6 +80,7 @@ class Profile : public QObject
 		const QStringList &getAdditionalTokens() const;
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 		MonitorManager *monitorManager() const;
+		DownloadQueryManager *downloadQueryManager() const;
 
 	private:
 		void syncFavorites() const;
@@ -108,6 +110,7 @@ class Profile : public QObject
 		QMap<QString, Site*> m_sites;
 		QStringList m_additionalTokens;
 		MonitorManager *m_monitorManager;
+		DownloadQueryManager *m_downloadQueryManager;
 };
 
 #endif // PROFILE_H

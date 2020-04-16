@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <utility>
 #include "commands/commands.h"
+#include "downloader/download-query-manager.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
@@ -143,6 +144,9 @@ Profile::Profile(QString path)
 	// Monitors
 	m_monitorManager = new MonitorManager(m_path + "/monitors.json", this);
 
+	// Downloads
+	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
+
 	// Complete auto-complete
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());
 	m_autoComplete.append(m_customAutoComplete);
@@ -163,6 +167,8 @@ Profile::~Profile()
 
 	qDeleteAll(m_sources);
 	delete m_commands;
+	delete m_monitorManager;
+	delete m_downloadQueryManager;
 }
 
 
@@ -444,6 +450,7 @@ const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
 const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
 MonitorManager *Profile::monitorManager() const { return m_monitorManager; }
+DownloadQueryManager *Profile::downloadQueryManager() const { return m_downloadQueryManager; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {
