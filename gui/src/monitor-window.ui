@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Edit a favorite</string>
+   <string>Edit a monitor</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/resources.qrc">
