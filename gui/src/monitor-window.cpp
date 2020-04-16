@@ -16,6 +16,10 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	m_selectedSources = m_monitor.sites();
 
 	ui->lineSearch->setText(m_monitor.query().toString());
+	if (!m_monitor.query().gallery.isNull()) {
+		ui->lineSearch->setEnabled(false);
+	}
+
 	ui->linePostFilters->setText(m_monitor.postFilters().join(' '));
 	ui->dateLastCheck->setDateTime(m_monitor.lastCheck());
 	ui->spinInterval->setValue(qFloor(m_monitor.interval() / 60.0));
@@ -44,13 +48,15 @@ void MonitorWindow::save()
 {
 	m_monitorManager->remove(m_monitor);
 
+	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', QString::SkipEmptyParts);
+	QStringList postFilters = ui->linePostFilters->text().split(' ', QString::SkipEmptyParts);
 	int interval = ui->spinInterval->value() * 60;
 	bool notify = ui->checkNotificationEnabled->isChecked();
 	bool download = ui->checkDownloadEnabled->isChecked();
 	QString pathOverride = ui->lineDownloadPathOverride->text();
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 
-	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), m_monitor.query(), m_monitor.postFilters(), notify);
+	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify);
 	m_monitorManager->add(newMonitor);
 }
 
