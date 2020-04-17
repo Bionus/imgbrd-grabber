@@ -15,8 +15,10 @@ class MainWindow;
 class Monitor;
 class MonitorManager;
 class Profile;
+class QCloseEvent;
 class QEvent;
 class QPoint;
+class QSettings;
 class QSortFilterProxyModel;
 
 class MonitorsTab : public QWidget
@@ -30,12 +32,14 @@ class MonitorsTab : public QWidget
 
 	protected:
 		void changeEvent(QEvent *event) override;
+		void closeEvent(QCloseEvent *event) override;
 
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);
 
 	private:
 		Profile *m_profile;
+		QSettings *m_settings;
 		MonitorManager *m_monitorManager;
 		MainWindow *m_parent;
 		QSortFilterProxyModel *m_monitorTableModel;

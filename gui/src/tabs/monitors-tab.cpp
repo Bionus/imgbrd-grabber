@@ -3,6 +3,7 @@
 #include <QModelIndex>
 #include <QSortFilterProxyModel>
 #include <QtMath>
+#include <QSettings>
 #include <ui_monitors-tab.h>
 #include <algorithm>
 #include "logger.h"
@@ -16,7 +17,7 @@
 
 
 MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_monitorManager(monitorManager), m_parent(parent)
+	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_settings(profile->getSettings()), m_monitorManager(monitorManager), m_parent(parent)
 {
 	Q_UNUSED(monitoringCenter);
 
@@ -26,6 +27,13 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
+
+	// Restore headers' sizes
+	QStringList sizes = m_settings->value("Monitoring/tableHeaders", "100,100,100,100,100").toString().split(',');
+	int m = sizes.size() > m_monitorTableModel->columnCount() ? m_monitorTableModel->columnCount() : sizes.size();
+	for (int i = 0; i < m; i++) {
+		ui->tableMonitors->horizontalHeader()->resizeSection(i, sizes.at(i).toInt());
+	}
 }
 
 MonitorsTab::~MonitorsTab()
@@ -44,6 +52,19 @@ void MonitorsTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void MonitorsTab::closeEvent(QCloseEvent *event)
+{
+	// Save headers' sizes
+	QStringList sizes;
+	sizes.reserve(m_monitorTableModel->columnCount());
+	for (int i = 0; i < m_monitorTableModel->columnCount(); i++) {
+		sizes.append(QString::number(ui->tableMonitors->horizontalHeader()->sectionSize(i)));
+	}
+	m_settings->setValue("Monitoring/tableHeaders", sizes.join(","));
+
+	QWidget::closeEvent(event);
 }
 
 void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
