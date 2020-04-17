@@ -57,20 +57,30 @@ void MonitorManager::save() const
 	file.close();
 }
 
-void MonitorManager::add(const Monitor &monitor)
+void MonitorManager::add(const Monitor &monitor, int index)
 {
-	m_monitors.append(monitor);
+	if (index < 0) {
+		index = m_monitors.count();
+	}
+
+	m_monitors.insert(index, monitor);
 
 	save();
-	emit changed();
+	emit inserted(index);
 }
 
-void MonitorManager::remove(const Monitor &monitor)
+int MonitorManager::remove(const Monitor &monitor)
 {
-	m_monitors.removeAll(monitor);
+	int index = m_monitors.indexOf(monitor);
+	if (index != -1)
+	{
+		m_monitors.removeAt(index);
 
-	save();
-	emit changed();
+		save();
+		emit removed(index);
+	}
+
+	return index;
 }
 
 QList<Monitor> &MonitorManager::monitors()

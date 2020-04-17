@@ -46,7 +46,7 @@ void MonitorWindow::remove()
 
 void MonitorWindow::save()
 {
-	m_monitorManager->remove(m_monitor);
+	int index = m_monitorManager->remove(m_monitor);
 
 	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', QString::SkipEmptyParts);
 	QStringList postFilters = ui->linePostFilters->text().split(' ', QString::SkipEmptyParts);
@@ -57,7 +57,7 @@ void MonitorWindow::save()
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
 
 	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify);
-	m_monitorManager->add(newMonitor);
+	m_monitorManager->add(newMonitor, index);
 }
 
 void MonitorWindow::openSourcesWindow()

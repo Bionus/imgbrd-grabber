@@ -16,8 +16,8 @@ class MonitorManager : public QObject
 
 	public:
 		MonitorManager(QString file, Profile *profile);
-		void add(const Monitor &monitor);
-		void remove(const Monitor &monitor);
+		void add(const Monitor &monitor, int index = -1);
+		int remove(const Monitor &monitor);
 		QList<Monitor> &monitors();
 
 	private:
@@ -25,7 +25,8 @@ class MonitorManager : public QObject
 		void save() const;
 
 	signals:
-		void changed();
+		void inserted(int index);
+		void removed(int index);
 
 	private:
 		QString m_file;

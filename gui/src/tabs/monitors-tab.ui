@@ -31,44 +31,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
    <item>
-    <widget class="QTableWidget" name="tableMonitors">
+    <widget class="QTableView" name="tableMonitors">
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
-     <property name="showDropIndicator" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="dragDropOverwriteMode">
-      <bool>false</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Search</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Source</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Interval</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Actions</string>
-      </property>
-     </column>
     </widget>
    </item>
   </layout>
@@ -84,12 +53,12 @@
    <slot>monitorsTableContextMenu(QPoint)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>560</x>
-     <y>71</y>
+     <x>641</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel">
-     <x>798</x>
-     <y>112</y>
+     <x>796</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>
