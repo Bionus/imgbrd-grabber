@@ -17,10 +17,10 @@
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr)
+	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(std::move(path))
