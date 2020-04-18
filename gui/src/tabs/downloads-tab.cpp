@@ -17,6 +17,7 @@
 #include "batch/batch-window.h"
 #include "batch-download-image.h"
 #include "commands/commands.h"
+#include "download-group-table-model.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
@@ -29,6 +30,7 @@
 #include "models/filename.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "progress-bar-delegate.h"
 
 
 DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
@@ -36,14 +38,13 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 {
 	ui->setupUi(this);
 
-	/*ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);*/
-
-	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+	m_groupBatchsModel = new DownloadGroupTableModel(m_profile, m_groupBatchs, this);
+	ui->tableBatchGroups->setModel(m_groupBatchsModel);
+	ui->tableBatchGroups->setItemDelegate(new ProgressBarDelegate(m_groupBatchsModel));
+	connect(m_groupBatchsModel, &DownloadGroupTableModel::dataChanged, this, DownloadsTab::saveLinkListLater);
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
-	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
+	int m = sizes.size() > m_groupBatchsModel->columnCount() ? m_groupBatchsModel->columnCount() : sizes.size();
 	for (int i = 0; i < m; i++) {
 		ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt());
 	}
@@ -89,8 +90,8 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 
 	// Columns
 	QStringList sizes;
-	sizes.reserve(ui->tableBatchGroups->columnCount());
-	for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++) {
+	sizes.reserve(m_groupBatchsModel->columnCount());
+	for (int i = 0; i < m_groupBatchsModel->columnCount(); i++) {
 		sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i)));
 	}
 	m_settings->setValue("batch", sizes.join(","));
@@ -127,10 +128,22 @@ void DownloadsTab::siteDeleted(Site *site)
 	batchRemoveUniques(uniquesRows);
 }
 
+QSet<int> DownloadsTab::selectedRows(QTableView *table) const
+{
+	QSet<int> rows;
+	for (const QModelIndex &index : table->selectionModel()->selection().indexes()) {
+		const int row = index.row();
+		if (!rows.contains(row)) {
+			rows.insert(row);
+		}
+	}
+	return rows;
+}
+
 void DownloadsTab::batchClear()
 {
 	// Don't do anything if there's nothing to clear
-	if (ui->tableBatchGroups->rowCount() == 0 && ui->tableBatchUniques->rowCount() == 0) {
+	if (m_groupBatchsModel->rowCount() == 0 && ui->tableBatchUniques->rowCount() == 0) {
 		return;
 	}
 
@@ -144,10 +157,7 @@ void DownloadsTab::batchClear()
 	ui->tableBatchUniques->clearContents();
 	ui->tableBatchUniques->setRowCount(0);
 	m_groupBatchs.clear();
-	ui->tableBatchGroups->clearContents();
-	ui->tableBatchGroups->setRowCount(0);
-	qDeleteAll(m_progressBars);
-	m_progressBars.clear();
+	m_groupBatchsModel->cleared();
 	updateGroupCount();
 }
 void DownloadsTab::batchClearSel()
@@ -157,15 +167,7 @@ void DownloadsTab::batchClearSel()
 }
 void DownloadsTab::batchClearSelGroups()
 {
-	QList<int> rows;
-	for (QTableWidgetItem *selected : ui->tableBatchGroups->selectedItems()) {
-		int row = selected->row();
-		if (!rows.contains(row)) {
-			rows.append(row);
-		}
-	}
-
-	batchRemoveGroups(rows);
+	batchRemoveGroups(selectedRows(ui->tableBatchGroups).toList());
 }
 void DownloadsTab::batchClearSelUniques()
 {
@@ -186,10 +188,8 @@ void DownloadsTab::batchRemoveGroups(QList<int> rows)
 	int rem = 0;
 	for (int i : qAsConst(rows)) {
 		int pos = i - rem;
-		m_progressBars[pos]->deleteLater();
-		m_progressBars.removeAt(pos);
+		m_groupBatchsModel->removed(pos);
 		m_groupBatchs.removeAt(pos);
-		ui->tableBatchGroups->removeRow(pos);
 		rem++;
 	}
 
@@ -212,20 +212,14 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 
 void DownloadsTab::batchMove(int diff)
 {
-	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.isEmpty()) {
+	QSet<int> rows = selectedRows(ui->tableBatchGroups);
+	if (rows.isEmpty()) {
 		return;
 	}
 
-	QSet<int> rows;
-	for (QTableWidgetItem *item : selected) {
-		rows.insert(item->row());
-	}
-
-	m_allow = false;
 	for (int sourceRow : rows) {
 		int destRow = sourceRow + diff;
-		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount()) {
+		if (destRow < 0 || destRow >= m_groupBatchsModel->rowCount()) {
 			return;
 		}
 
@@ -235,24 +229,17 @@ void DownloadsTab::batchMove(int diff)
 		m_groupBatchs[sourceRow] = destBatch;
 		m_groupBatchs[destRow] = sourceBatch;
 
-		// Swap row table items
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col) {
-			QTableWidgetItem *sourceItem = ui->tableBatchGroups->takeItem(sourceRow, col);
-			QTableWidgetItem *destItem = ui->tableBatchGroups->takeItem(destRow, col);
-
-			ui->tableBatchGroups->setItem(sourceRow, col, destItem);
-			ui->tableBatchGroups->setItem(destRow, col, sourceItem);
-		}
+		m_groupBatchsModel->changed(sourceRow);
+		m_groupBatchsModel->changed(destRow);
 	}
-	m_allow = true;
 
 	QItemSelection selection;
-	for (int i = 0; i < selected.count(); i++) {
-		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-		selection.select(index, index);
+	for (const auto &index : ui->tableBatchGroups->selectionModel()->selection().indexes()) {
+		QModelIndex shifted = m_groupBatchsModel->index(index.row() + diff, index.column());
+		selection.select(shifted, shifted);
 	}
 
-	auto *selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
+	auto *selectionModel = new QItemSelectionModel(m_groupBatchsModel, this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
@@ -263,63 +250,6 @@ void DownloadsTab::batchMoveUp()
 void DownloadsTab::batchMoveDown()
 {
 	batchMove(1);
-}
-
-void DownloadsTab::updateBatchGroups(int y, int x)
-{
-	if (m_allow && x > 0) {
-		QString val = ui->tableBatchGroups->item(y, x)->text();
-		int toInt = val.toInt();
-
-		m_groupBatchs[y].progressVal = 0;
-		m_groupBatchs[y].progressFinished = false;
-
-		switch (x)
-		{
-			case 1:
-				if (m_groupBatchs[y].query.gallery.isNull()) {
-					m_groupBatchs[y].query.tags = val.split(' ', QString::SkipEmptyParts);
-				}
-				break;
-
-			case 3:	m_groupBatchs[y].page = toInt;						break;
-			case 6:	m_groupBatchs[y].filename = val;					break;
-			case 7:	m_groupBatchs[y].path = val;						break;
-			case 8:	m_groupBatchs[y].postFiltering = val.split(' ', QString::SkipEmptyParts);	break;
-			case 9:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
-			case 10: m_groupBatchs[y].galleriesCountAsOne = (val != "false");	break;
-
-			case 2:
-				if (!m_profile->getSites().contains(val)) {
-					error(this, tr("This source is not valid."));
-					ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y].site->url());
-				} else {
-					m_groupBatchs[y].site = m_profile->getSites().value(val);
-				}
-				break;
-
-			case 4:
-				if (toInt < 1) {
-					error(this, tr("The image per page value must be greater or equal to 1."));
-					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].perpage));
-				} else {
-					m_groupBatchs[y].perpage = toInt;
-				}
-				break;
-
-			case 5:
-				if (toInt < 0) {
-					error(this, tr("The image limit must be greater or equal to 0."));
-					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].total));
-				} else {
-					m_groupBatchs[y].total = toInt;
-					m_progressBars[y]->setMaximum(toInt);
-				}
-				break;
-		}
-
-		saveLinkListLater();
-	}
 }
 
 void DownloadsTab::addGroup()
@@ -344,48 +274,18 @@ void DownloadsTab::batchAddGroup(const DownloadQueryGroup &values)
 	}
 
 	m_groupBatchs.append(values);
-	int pos = m_groupBatchs.count();
+	m_groupBatchsModel->inserted(m_groupBatchs.count() - 1);
 
-	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
-	int row = ui->tableBatchGroups->rowCount() - 1;
-	m_allow = false;
-
-	auto *item = new QTableWidgetItem(getIcon(":/images/status/pending.png"), QString::number(pos));
-	item->setFlags(item->flags() ^ Qt::ItemIsEditable);
-	ui->tableBatchGroups->setItem(row, 0, item);
-
-	auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, values.query.toString());
-	if (!values.query.gallery.isNull()) {
-		gItem->setFlags(gItem->flags() & (~Qt::ItemIsEditable));
-	}
-
-	addTableItem(ui->tableBatchGroups, row, 2, values.site->url());
-	addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
-	addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
-	addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
-	addTableItem(ui->tableBatchGroups, row, 6, values.filename);
-	addTableItem(ui->tableBatchGroups, row, 7, values.path);
-	addTableItem(ui->tableBatchGroups, row, 8, values.postFiltering.join(' '));
-	addTableItem(ui->tableBatchGroups, row, 9, values.getBlacklisted ? "true" : "false");
-	addTableItem(ui->tableBatchGroups, row, 10, values.galleriesCountAsOne ? "true" : "false");
-
-	auto *progressBar = new QProgressBar(this);
-	progressBar->setTextVisible(false);
-	progressBar->setMaximum(values.total);
-	m_progressBars.append(progressBar);
-	ui->tableBatchGroups->setCellWidget(row, 11, progressBar);
-
-	m_allow = true;
 	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::updateGroupCount()
 {
 	int groups = 0;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++) {
-		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
+	for (const auto &batch : m_groupBatchs) {
+		groups += batch.total;
 	}
-	ui->labelGroups->setText(tr("Groups (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
+	ui->labelGroups->setText(tr("Groups (%1/%2)").arg(m_groupBatchsModel->rowCount()).arg(groups));
 }
 void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 {
@@ -480,48 +380,13 @@ bool DownloadsTab::loadLinkList(const QString &filename)
 
 	log(tr("Loading %n download(s)", "", newBatchs.count() + newGroupBatchs.count()), Logger::Info);
 
-	m_allow = false;
 	for (const auto &queryImage : qAsConst(newBatchs)) {
 		batchAddUnique(queryImage, false);
 	}
 	for (const auto &queryGroup : qAsConst(newGroupBatchs)) {
-		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
-
-		const int val = queryGroup.progressVal;
-		const int max = queryGroup.total;
-
-		int row = ui->tableBatchGroups->rowCount() - 1;
-
-		auto *gItem = addTableItem(ui->tableBatchGroups, row, 1, queryGroup.query.toString());
-		if (!queryGroup.query.gallery.isNull()) {
-			gItem->setFlags(gItem->flags() & (~Qt::ItemIsEditable));
-		}
-
-		addTableItem(ui->tableBatchGroups, row, 2, queryGroup.site->url());
-		addTableItem(ui->tableBatchGroups, row, 3, QString::number(queryGroup.page));
-		addTableItem(ui->tableBatchGroups, row, 4, QString::number(queryGroup.perpage));
-		addTableItem(ui->tableBatchGroups, row, 5, QString::number(queryGroup.total));
-		addTableItem(ui->tableBatchGroups, row, 6, queryGroup.filename);
-		addTableItem(ui->tableBatchGroups, row, 7, queryGroup.path);
-		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.postFiltering.join(' '));
-		addTableItem(ui->tableBatchGroups, row, 9, queryGroup.getBlacklisted ? "true" : "false");
-		addTableItem(ui->tableBatchGroups, row, 10, queryGroup.galleriesCountAsOne ? "true" : "false");
-
 		m_groupBatchs.append(queryGroup);
-		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/" + QString(val >= max ? "ok" : (val > 0 ? "downloading" : "pending")) + ".png"), "");
-		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
-		it->setTextAlignment(Qt::AlignCenter);
-		ui->tableBatchGroups->setItem(row, 0, it);
-
-		auto *progressBar = new QProgressBar(this);
-		progressBar->setMaximum(queryGroup.total);
-		progressBar->setValue(val < 0 || val > max ? 0 : val);
-		progressBar->setMinimum(0);
-		progressBar->setTextVisible(false);
-		m_progressBars.append(progressBar);
-		ui->tableBatchGroups->setCellWidget(row, 11, progressBar);
+		m_groupBatchsModel->inserted(m_groupBatchs.count() - 1);
 	}
-	m_allow = true;
 	updateGroupCount();
 
 	return true;
@@ -626,31 +491,18 @@ void DownloadsTab::getAll(bool all)
 	}
 	m_getAllLimit = m_batchs.size();
 
-	m_allow = false;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++) {
-		ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/status/pending.png"));
+	for (const auto &batch : m_groupBatchs) {
+		m_groupBatchsModel->setStatus(batch, 0);
 	}
-	m_allow = true;
 	m_profile->getCommands().before();
 	m_batchDownloading.clear();
 
-	QSet<int> toDownload = QSet<int>();
-	for (QTableWidgetItem *item : ui->tableBatchGroups->selectedItems()) {
-		if (!toDownload.contains(item->row())) {
-			toDownload.insert(item->row());
-		}
-	}
+	QSet<int> toDownload = selectedRows(ui->tableBatchGroups);
 
 	int resumeCount = 0;
 	if (all || !toDownload.isEmpty()) {
 		for (int j = 0; j < m_groupBatchs.count(); ++j) {
 			if (all || toDownload.contains(j)) {
-				if (m_progressBars.length() > j && m_progressBars[j] != nullptr) {
-					m_progressBars[j]->setValue(0);
-					m_progressBars[j]->setMinimum(0);
-					// m_progressBars[j]->setMaximum(100);
-				}
-
 				DownloadQueryGroup b = m_groupBatchs[j];
 				m_batchPending.insert(j, b);
 				m_getAllLimit += b.total;
@@ -863,9 +715,6 @@ void DownloadsTab::getAllFinishedImages(const QList<QSharedPointer<Image>> &imag
 
 	// Ignore for aborted/resumed calls (partial packs)
 	if (m_getAll && !images.isEmpty()) {
-		m_progressBars[row]->setValue(0);
-		m_progressBars[row]->setMaximum(images.count());
-
 		// Update image to take into account unlisted images
 		int unlisted = m_batchCurrentPackSize - images.count();
 		m_getAllImagesCount -= unlisted;
@@ -951,13 +800,13 @@ void DownloadsTab::getAllImageOk(const BatchDownloadImage &download, int siteId,
 
 	if (siteId >= 0) {
 		int row = getRowForSite(siteId);
-		m_progressBars[siteId - 1]->setValue(m_progressBars[siteId - 1]->value() + 1);
-		if (m_progressBars[siteId - 1]->value() >= m_progressBars[siteId - 1]->maximum()) {
-			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png"));
-		}
+		m_groupBatchs[row].progressVal++;
+		m_batchPending[row].progressVal++;
+		m_groupBatchsModel->changed(row);
 
-		m_groupBatchs[siteId - 1].progressVal++;
-		m_batchPending[siteId - 1].progressVal++;
+		if (m_groupBatchs[row].progressVal >= m_groupBatchs[row].total) {
+			m_groupBatchsModel->setStatus(m_groupBatchs[row], 2);
+		}
 	}
 
 	m_getAllDownloading.removeAll(download);
@@ -1024,7 +873,7 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 	QString filename = download.query()->filename;
 	QString path = download.query()->path;
 	if (siteId >= 0) {
-		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
+		m_groupBatchsModel->setStatus(m_groupBatchs[row], 1);
 	}
 
 	// Track download progress

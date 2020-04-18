@@ -65,7 +65,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableBatchGroups">
+        <widget class="QTableView" name="tableBatchGroups">
          <property name="verticalScrollMode">
           <enum>QAbstractItemView::ScrollPerPixel</enum>
          </property>
@@ -78,66 +78,6 @@
          <attribute name="verticalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Tags</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Source</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Page</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Images per page</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Images limit</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Filename</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Folder</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Post-filtering</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Get blacklisted</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Galleries count as one</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Progress</string>
-          </property>
-         </column>
         </widget>
        </item>
       </layout>
@@ -347,22 +287,6 @@
   <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>tableBatchGroups</sender>
-   <signal>cellChanged(int,int)</signal>
-   <receiver>DownloadsTab</receiver>
-   <slot>updateBatchGroups(int,int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>728</x>
-     <y>103</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>792</x>
-     <y>165</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>buttonAddGroup</sender>
    <signal>clicked()</signal>

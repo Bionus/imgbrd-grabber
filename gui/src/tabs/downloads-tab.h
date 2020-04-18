@@ -3,6 +3,7 @@
 
 #include <QProgressBar>
 #include <QQueue>
+#include <QSet>
 #include <QSettings>
 #include <QTableWidget>
 #include <QWidget>
@@ -18,6 +19,7 @@ namespace Ui
 
 class BatchDownloadImage;
 class BatchWindow;
+class DownloadGroupTableModel;
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class DownloadQueue;
@@ -60,7 +62,6 @@ class DownloadsTab : public QWidget
 		QTableWidgetItem *addTableItem(QTableWidget *table, int row, int col, const QString &text);
 
 		// Update
-		void updateBatchGroups(int, int);
 		void updateGroupCount();
 
 		// Downloads lists
@@ -101,6 +102,7 @@ class DownloadsTab : public QWidget
 	protected:
 		void changeEvent(QEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
+		QSet<int> selectedRows(QTableView *table) const;
 
 	private:
 		Ui::DownloadsTab *ui;
@@ -110,11 +112,10 @@ class DownloadsTab : public QWidget
 		MainWindow *m_parent;
 
 		int m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllResumed, m_getAllLimit;
-		bool m_allow, m_getAll;
+		bool m_getAll;
 		BatchWindow *m_progressDialog;
 		QMap<QUrl, QTime> m_downloadTime;
 		QMap<QUrl, QTime> m_downloadTimeLast;
-		QList<QProgressBar*> m_progressBars;
 		QList<DownloadQueryImage> m_batchs;
 		QMap<int, DownloadQueryGroup> m_batchPending;
 		QSet<int> m_batchDownloading;
@@ -129,6 +130,7 @@ class DownloadsTab : public QWidget
 		int m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		QAtomicInt m_getAllCurrentlyProcessing;
 		QTimer *m_saveLinkList;
+		DownloadGroupTableModel *m_groupBatchsModel;
 };
 
 #endif // DOWNLOADS_TAB_H
