@@ -12,6 +12,8 @@ namespace Ui
 }
 
 
+class RenameExistingTableModel;
+
 class RenameExisting2 : public QDialog
 {
 	Q_OBJECT
@@ -30,6 +32,7 @@ class RenameExisting2 : public QDialog
 		QList<RenameExistingFile> m_details;
 		QList<QLabel*> m_previews;
 		QString m_folder;
+		RenameExistingTableModel *m_model;
 };
 
 #endif // RENAME_EXISTING_2_H

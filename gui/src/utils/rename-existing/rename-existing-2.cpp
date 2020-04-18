@@ -4,6 +4,7 @@
 #include <ui_rename-existing-2.h>
 #include "functions.h"
 #include "logger.h"
+#include "rename-existing-table-model.h"
 
 
 RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
@@ -11,39 +12,18 @@ RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString fold
 {
 	ui->setupUi(this);
 
-	const bool showThumbnails = details.count() < 50;
+	m_model = new RenameExistingTableModel(m_details, m_folder, this);
+	ui->tableView->setModel(m_model);
 
-	int i = 0;
-	ui->tableWidget->setRowCount(m_details.size());
-	for (const RenameExistingFile &image : qAsConst(m_details)) {
-		if (showThumbnails) {
-			QLabel *preview = new QLabel();
-			preview->setPixmap(QPixmap(image.path).scaledToHeight(50, Qt::SmoothTransformation));
-			m_previews.append(preview);
-			ui->tableWidget->setCellWidget(i, 0, preview);
-		}
+	QHeaderView *verticalHeader = ui->tableView->verticalHeader();
+	verticalHeader->setSectionResizeMode(QHeaderView::Fixed);
+	verticalHeader->setDefaultSectionSize(50);
 
-		ui->tableWidget->setItem(i, 1, new QTableWidgetItem(image.path.right(image.path.length() - m_folder.length() - 1)));
-		if (image.path == image.newPath) {
-			auto item = new QTableWidgetItem("No change");
-			item->setForeground(Qt::red);
-			ui->tableWidget->setItem(i, 2, item);
-		} else {
-			ui->tableWidget->setItem(i, 2, new QTableWidgetItem(image.newPath.right(image.newPath.length() - m_folder.length() - 1)));
-		}
-
-		i++;
-	}
-
-	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
+	QHeaderView *headerView = ui->tableView->horizontalHeader();
 	headerView->setSectionResizeMode(QHeaderView::Interactive);
 	headerView->resizeSection(0, 50);
 	headerView->setSectionResizeMode(1, QHeaderView::Stretch);
 	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
-
-	if (!showThumbnails) {
-		ui->tableWidget->removeColumn(0);
-	}
 }
 
 RenameExisting2::~RenameExisting2()

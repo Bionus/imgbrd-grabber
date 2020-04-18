@@ -26,38 +26,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="showDropIndicator" stdset="0">
-      <bool>false</bool>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>50</number>
-     </attribute>
-     <attribute name="verticalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>Thumbnail</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Original</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Destination</string>
-      </property>
-     </column>
-    </widget>
+    <widget class="QTableView" name="tableView"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
