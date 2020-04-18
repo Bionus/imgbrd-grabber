@@ -171,7 +171,7 @@ bool MonitorTableModel::setStatus(const Monitor &monitor, MonitoringCenter::Moni
 
 	m_statuses[position] = status;
 
-	auto index = this->	index(position, 0);
+	auto index = this->index(position, 0);
 	emit dataChanged(index, index);
 
 	return true;
