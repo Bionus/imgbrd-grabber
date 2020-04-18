@@ -20,6 +20,7 @@ namespace Ui
 class BatchDownloadImage;
 class BatchWindow;
 class DownloadGroupTableModel;
+class DownloadImageTableModel;
 class DownloadQueryGroup;
 class DownloadQueryImage;
 class DownloadQueue;
@@ -131,6 +132,7 @@ class DownloadsTab : public QWidget
 		QAtomicInt m_getAllCurrentlyProcessing;
 		QTimer *m_saveLinkList;
 		DownloadGroupTableModel *m_groupBatchsModel;
+		DownloadImageTableModel *m_batchsModel;
 };
 
 #endif // DOWNLOADS_TAB_H

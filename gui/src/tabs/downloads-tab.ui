@@ -112,16 +112,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableBatchUniques">
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="showDropIndicator" stdset="0">
-          <bool>false</bool>
-         </property>
-         <property name="dragDropOverwriteMode">
-          <bool>false</bool>
-         </property>
+        <widget class="QTableView" name="tableBatchUniques">
          <property name="verticalScrollMode">
           <enum>QAbstractItemView::ScrollPerPixel</enum>
          </property>
@@ -134,56 +125,6 @@
          <attribute name="verticalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
-         <column>
-          <property name="text">
-           <string>Id</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Md5</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Rating</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Tags</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Url</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Date</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Search</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Site</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Filename</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Folder</string>
-          </property>
-         </column>
         </widget>
        </item>
       </layout>

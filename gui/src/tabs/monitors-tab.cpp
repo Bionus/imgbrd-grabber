@@ -25,7 +25,7 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
-	connect(monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, MonitorTableModel::setStatus);
+	connect(monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
 	// Restore headers' sizes
 	QStringList sizes = m_settings->value("Monitoring/tableHeaders", "100,100,100,100,100").toString().split(',');

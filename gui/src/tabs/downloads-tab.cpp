@@ -18,6 +18,7 @@
 #include "batch-download-image.h"
 #include "commands/commands.h"
 #include "download-group-table-model.h"
+#include "download-image-table-model.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
@@ -41,7 +42,10 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	m_groupBatchsModel = new DownloadGroupTableModel(m_profile, m_groupBatchs, this);
 	ui->tableBatchGroups->setModel(m_groupBatchsModel);
 	ui->tableBatchGroups->setItemDelegate(new ProgressBarDelegate(m_groupBatchsModel));
-	connect(m_groupBatchsModel, &DownloadGroupTableModel::dataChanged, this, DownloadsTab::saveLinkListLater);
+	connect(m_groupBatchsModel, &DownloadGroupTableModel::dataChanged, this, &DownloadsTab::saveLinkListLater);
+
+	m_batchsModel = new DownloadImageTableModel(m_batchs, this);
+	ui->tableBatchUniques->setModel(m_batchsModel);
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
 	int m = sizes.size() > m_groupBatchsModel->columnCount() ? m_groupBatchsModel->columnCount() : sizes.size();
@@ -143,7 +147,7 @@ QSet<int> DownloadsTab::selectedRows(QTableView *table) const
 void DownloadsTab::batchClear()
 {
 	// Don't do anything if there's nothing to clear
-	if (m_groupBatchsModel->rowCount() == 0 && ui->tableBatchUniques->rowCount() == 0) {
+	if (m_groupBatchsModel->rowCount() == 0 && m_batchsModel->rowCount() == 0) {
 		return;
 	}
 
@@ -154,10 +158,11 @@ void DownloadsTab::batchClear()
 	}
 
 	m_batchs.clear();
-	ui->tableBatchUniques->clearContents();
-	ui->tableBatchUniques->setRowCount(0);
+	m_batchsModel->cleared();
+
 	m_groupBatchs.clear();
 	m_groupBatchsModel->cleared();
+
 	updateGroupCount();
 }
 void DownloadsTab::batchClearSel()
@@ -171,15 +176,7 @@ void DownloadsTab::batchClearSelGroups()
 }
 void DownloadsTab::batchClearSelUniques()
 {
-	QList<int> rows;
-	for (QTableWidgetItem *selected : ui->tableBatchUniques->selectedItems()) {
-		int row = selected->row();
-		if (!rows.contains(row)) {
-			rows.append(row);
-		}
-	}
-
-	batchRemoveUniques(rows);
+	batchRemoveUniques(selectedRows(ui->tableBatchUniques).toList());
 }
 void DownloadsTab::batchRemoveGroups(QList<int> rows)
 {
@@ -202,7 +199,7 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 	int rem = 0;
 	for (int i : qAsConst(rows)) {
 		int pos = i - rem;
-		ui->tableBatchUniques->removeRow(pos);
+		m_batchsModel->removed(pos);
 		m_batchs.removeAt(pos);
 		rem++;
 	}
@@ -297,19 +294,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 	log(QStringLiteral("Adding single image: %1").arg(query.image->fileUrl().toString()), Logger::Info);
 
 	m_batchs.append(query);
-	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount() + 1);
-
-	int row = ui->tableBatchUniques->rowCount() - 1;
-	addTableItem(ui->tableBatchUniques, row, 0, QString::number(query.image->id()));
-	addTableItem(ui->tableBatchUniques, row, 1, query.image->md5());
-	addTableItem(ui->tableBatchUniques, row, 2, query.image->token<QString>("rating"));
-	addTableItem(ui->tableBatchUniques, row, 3, query.image->tagsString().join(' '));
-	addTableItem(ui->tableBatchUniques, row, 4, query.image->fileUrl().toString());
-	addTableItem(ui->tableBatchUniques, row, 5, query.image->createdAt().toString(Qt::ISODate));
-	addTableItem(ui->tableBatchUniques, row, 6, query.image->search().join(' '));
-	addTableItem(ui->tableBatchUniques, row, 7, query.site->name());
-	addTableItem(ui->tableBatchUniques, row, 8, query.filename);
-	addTableItem(ui->tableBatchUniques, row, 9, query.path);
+	m_batchsModel->inserted(m_batchs.count() - 1);
 
 	if (save) {
 		saveLinkListLater();
@@ -457,14 +442,8 @@ void DownloadsTab::getAll(bool all)
 	m_batchUniqueDownloading.clear();
 
 	if (!all) {
-		QList<int> tdl;
-		for (QTableWidgetItem *item : ui->tableBatchUniques->selectedItems()) {
-			int row = item->row();
-			if (tdl.contains(row)) {
-				continue;
-			}
-			tdl.append(row);
-
+		QSet<int> tdl = selectedRows(ui->tableBatchUniques);
+		for (const int row : tdl) {
 			DownloadQueryImage batch = m_batchs[row];
 			BatchDownloadImage d;
 			d.image = batch.image;
