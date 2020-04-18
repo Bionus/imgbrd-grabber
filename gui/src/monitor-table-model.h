@@ -3,6 +3,8 @@
 
 #include <QAbstractTableModel>
 #include <QList>
+#include <QMap>
+#include "monitoring-center.h"
 
 
 class MonitorManager;
@@ -25,6 +27,9 @@ class MonitorTableModel : public QAbstractTableModel
 		bool insertRows(int position, int rows, const QModelIndex &parent) override;
 		bool removeRows(int position, int rows, const QModelIndex &parent) override;
 
+	public slots:
+		bool setStatus(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);
+
 	protected slots:
 		// Handle signals when the underlying data changes
 		void inserted(int position);
@@ -32,6 +37,7 @@ class MonitorTableModel : public QAbstractTableModel
 
 	private:
 		MonitorManager *m_monitorManager;
+		QMap<int, MonitoringCenter::MonitoringStatus> m_statuses;
 		bool m_freeze = false;
 };
 

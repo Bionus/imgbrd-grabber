@@ -19,14 +19,13 @@
 MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
 	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_settings(profile->getSettings()), m_monitorManager(monitorManager), m_parent(parent)
 {
-	Q_UNUSED(monitoringCenter);
-
 	ui->setupUi(this);
 
 	auto monitorTableModel = new MonitorTableModel(m_monitorManager, this);
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
+	connect(monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, MonitorTableModel::setStatus);
 
 	// Restore headers' sizes
 	QStringList sizes = m_settings->value("Monitoring/tableHeaders", "100,100,100,100,100").toString().split(',');

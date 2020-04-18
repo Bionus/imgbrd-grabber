@@ -49,7 +49,8 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 
 QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 {
-	const Monitor &monitor = m_monitorManager->monitors()[index.row()];
+	const int row = index.row();
+	const Monitor &monitor = m_monitorManager->monitors()[row];
 
 	// Icon in the first column
 	if (role == Qt::DecorationRole && index.column() == 0) {
@@ -59,8 +60,8 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			{ MonitoringCenter::Checking, QIcon(":/images/status/downloading.png") },
 			{ MonitoringCenter::Performing, QIcon(":/images/status/ok.png") },
 		};
-		auto status = MonitoringCenter::Waiting; // FIXME
-		if (role != Qt::DecorationRole || !s_iconMap.contains(status)) {
+		auto status = m_statuses.contains(row) ? m_statuses[row] : MonitoringCenter::Waiting;
+		if (!s_iconMap.contains(status)) {
 			return {};
 		}
 		return s_iconMap[status];
@@ -157,6 +158,21 @@ bool MonitorTableModel::removeRows(int position, int rows, const QModelIndex &pa
 
 	endRemoveRows();
 	m_freeze = false;
+
+	return true;
+}
+
+bool MonitorTableModel::setStatus(const Monitor &monitor, MonitoringCenter::MonitoringStatus status)
+{
+	int position = m_monitorManager->monitors().indexOf(monitor);
+	if (position < 0) {
+		return false;
+	}
+
+	m_statuses[position] = status;
+
+	auto index = this->	index(position, 0);
+	emit dataChanged(index, index);
 
 	return true;
 }
