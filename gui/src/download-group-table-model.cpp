@@ -193,7 +193,7 @@ void DownloadGroupTableModel::removed(int position)
 void DownloadGroupTableModel::changed(int position)
 {
 	auto topLeft = index(position, 0);
-	auto bottomRight = index(position, 0);
+	auto bottomRight = index(position, columnCount() - 1);
 	emit dataChanged(topLeft, bottomRight);
 }
 

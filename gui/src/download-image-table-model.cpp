@@ -75,8 +75,9 @@ void DownloadImageTableModel::removed(int position)
 
 void DownloadImageTableModel::changed(int position)
 {
-	auto index = this->index(position, 0);
-	emit dataChanged(index, index);
+	auto topLeft = index(position, 0);
+	auto bottomRight = index(position, columnCount() - 1);
+	emit dataChanged(topLeft, bottomRight);
 }
 
 void DownloadImageTableModel::cleared()

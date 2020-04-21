@@ -291,7 +291,7 @@ void DownloadsTab::batchAddUnique(const DownloadQueryImage &query, bool save)
 		return;
 	}
 
-	log(QStringLiteral("Adding single image: %1").arg(query.image->fileUrl().toString()), Logger::Info);
+	log(QStringLiteral("Adding single image: `%1`").arg(query.image->fileUrl().toString()), Logger::Info);
 
 	m_batchs.append(query);
 	m_batchsModel->inserted(m_batchs.count() - 1);
