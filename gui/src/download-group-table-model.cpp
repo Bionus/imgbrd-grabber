@@ -88,10 +88,11 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 Qt::ItemFlags DownloadGroupTableModel::flags(const QModelIndex &index) const
 {
 	if (!index.isValid()) {
-		return Qt::ItemIsEnabled;
+		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 	}
 
 	Qt::ItemFlags flags = QAbstractItemModel::flags(index);
+	flags |= Qt::ItemIsDragEnabled;
 
 	const int minColumn = m_downloads[index.row()].query.gallery.isNull() ? 1 : 2; // Cannot edit gallery queries
 	if (index.column() >= minColumn && index.column() <= 10) {
@@ -175,6 +176,70 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 
 	emit dataChanged(index, index, { role });
 	return true;
+}
+
+bool DownloadGroupTableModel::setItemData(const QModelIndex &index, const QMap<int, QVariant> &roles)
+{
+	if (!roles.contains(Qt::EditRole) && !roles.contains(Qt::DisplayRole)) {
+		return false;
+	}
+	return setData(index, roles[Qt::DisplayRole]);
+}
+
+
+Qt::DropActions DownloadGroupTableModel::supportedDropActions() const
+{
+	return Qt::MoveAction | Qt::CopyAction;
+}
+
+bool DownloadGroupTableModel::insertRows(int row, int count, const QModelIndex &parent)
+{
+	Q_UNUSED(parent);
+	beginInsertRows(QModelIndex(), row, row + count - 1);
+	for (int i = 0; i < count; ++i) {
+		m_downloads.insert(row, DownloadQueryGroup(m_profile->getSettings(), QStringList(), 1, 10, 10, QStringList(), m_profile->getSites().first()));
+	}
+	endInsertRows();
+	return true;
+}
+
+bool DownloadGroupTableModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+	Q_UNUSED(parent);
+	beginRemoveRows(QModelIndex(), row, row + count - 1);
+	for (int i = 0; i < count; ++i) {
+		m_downloads.removeAt(row);
+	}
+	endRemoveRows();
+	return true;
+}
+
+bool DownloadGroupTableModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild)
+{
+	Q_UNUSED(sourceParent);
+	Q_UNUSED(destinationParent);
+
+	beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild);
+
+	for (int i = 0; i < count; ++i) {
+		m_downloads.insert(destinationChild + i, m_downloads[sourceRow]);
+		int removeIndex = destinationChild > sourceRow ? sourceRow : sourceRow + 1;
+		m_downloads.removeAt(removeIndex);
+	}
+
+	endMoveRows();
+	return true;
+}
+
+bool DownloadGroupTableModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+	Q_UNUSED(column);
+
+	if (row == -1) {
+		row = rowCount();
+	}
+
+	return QAbstractTableModel::dropMimeData(data, action, row, 0, parent);
 }
 
 

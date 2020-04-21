@@ -26,6 +26,14 @@ class DownloadGroupTableModel : public QAbstractTableModel
 		// Edition
 		Qt::ItemFlags flags(const QModelIndex &index) const override;
 		bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+		bool setItemData(const QModelIndex &index, const QMap<int, QVariant> &roles) override;
+
+		// Drag & drop
+		Qt::DropActions supportedDropActions() const override;
+		bool insertRows(int row, int count, const QModelIndex &parent) override;
+		bool removeRows(int row, int count, const QModelIndex &parent) override;
+		bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild) override;
+		bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
 	public slots:
 		// Handle signals when the underlying data changes
