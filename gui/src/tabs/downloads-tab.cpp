@@ -23,6 +23,7 @@
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-loader.h"
 #include "downloader/image-downloader.h"
+#include "full-width-drop-proxy-style.h"
 #include "functions.h"
 #include "helpers.h"
 #include "loader/pack-loader.h"
@@ -42,6 +43,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	m_groupBatchsModel = new DownloadGroupTableModel(m_profile, m_groupBatchs, this);
 	ui->tableBatchGroups->setModel(m_groupBatchsModel);
 	ui->tableBatchGroups->setItemDelegate(new ProgressBarDelegate(m_groupBatchsModel));
+	ui->tableBatchGroups->setStyle(new FullWidthDropProxyStyle(ui->tableBatchGroups->style()));
 	connect(m_groupBatchsModel, &DownloadGroupTableModel::dataChanged, this, &DownloadsTab::saveLinkListLater);
 
 	m_batchsModel = new DownloadImageTableModel(m_batchs, this);
