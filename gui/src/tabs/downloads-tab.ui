@@ -150,7 +150,18 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,1,1,0">
+        <item>
+         <widget class="QPushButton" name="buttonMoveDown">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resources/resources.qrc">
+            <normaloff>:/images/icons/arrow-down.png</normaloff>:/images/icons/arrow-down.png</iconset>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QPushButton" name="buttonClear">
           <property name="text">
@@ -179,41 +190,14 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="buttonMoveDown">
-          <property name="text">
-           <string>Move down</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonLoadLinkList">
-          <property name="text">
-           <string>Load</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonSaveLinkList">
-          <property name="text">
-           <string>Save</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QPushButton" name="buttonMoveUp">
           <property name="text">
-           <string>Move up</string>
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resources/resources.qrc">
+            <normaloff>:/images/icons/arrow-up.png</normaloff>:/images/icons/arrow-up.png</iconset>
           </property>
          </widget>
         </item>
