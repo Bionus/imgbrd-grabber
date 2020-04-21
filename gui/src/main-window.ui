@@ -64,7 +64,7 @@
      <x>0</x>
      <y>0</y>
      <width>999</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -109,6 +109,9 @@
     <addaction name="separator"/>
     <addaction name="actionFolder"/>
     <addaction name="actionSettingsFolder"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveDownloadsList"/>
+    <addaction name="actionLoadDownloadsList"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -157,8 +160,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>215</width>
-          <height>43</height>
+          <width>190</width>
+          <height>45</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockInternetScrollLayout_1">
@@ -245,8 +248,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>215</width>
-          <height>44</height>
+          <width>190</width>
+          <height>45</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="dockKflScrollLayout_1">
@@ -366,8 +369,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>203</width>
-          <height>57</height>
+          <width>178</width>
+          <height>72</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -466,8 +469,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>215</width>
-          <height>134</height>
+          <width>190</width>
+          <height>45</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -784,6 +787,24 @@
   <action name="actionTagLoader">
    <property name="text">
     <string>Tag loader</string>
+   </property>
+  </action>
+  <action name="actionSaveDownloadsList">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/save-as.png</normaloff>:/images/icons/save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save downloads list</string>
+   </property>
+  </action>
+  <action name="actionLoadDownloadsList">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/open.png</normaloff>:/images/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load downloads list</string>
    </property>
   </action>
  </widget>

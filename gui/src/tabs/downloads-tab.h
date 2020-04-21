@@ -66,8 +66,8 @@ class DownloadsTab : public QWidget
 		void updateGroupCount();
 
 		// Downloads lists
-		void on_buttonSaveLinkList_clicked();
-		void on_buttonLoadLinkList_clicked();
+		void saveFile();
+		void loadFile();
 		void saveLinkListLater();
 		bool saveLinkListDefault();
 		bool saveLinkList(const QString &filename);

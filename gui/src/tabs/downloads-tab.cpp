@@ -311,7 +311,7 @@ QTableWidgetItem *DownloadsTab::addTableItem(QTableWidget *table, int row, int c
 }
 
 
-void DownloadsTab::on_buttonSaveLinkList_clicked()
+void DownloadsTab::saveFile()
 {
 	QString lastDir = m_settings->value("linksLastDir", "").toString();
 	QString save = QFileDialog::getSaveFileName(this, tr("Save link list"), QDir::toNativeSeparators(lastDir), tr("Imageboard-Grabber links (*.igl)"));
@@ -341,7 +341,7 @@ bool DownloadsTab::saveLinkList(const QString &filename)
 	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
 }
 
-void DownloadsTab::on_buttonLoadLinkList_clicked()
+void DownloadsTab::loadFile()
 {
 	QString load = QFileDialog::getOpenFileName(this, tr("Load link list"), QString(), tr("Imageboard-Grabber links (*.igl)"));
 	if (load.isEmpty()) {

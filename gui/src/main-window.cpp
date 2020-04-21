@@ -252,6 +252,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->tabWidget->insertTab(m_tabs.size(), m_downloadsTab, m_downloadsTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
 
+	// "File" actions to load/save downloads list
+	connect(ui->actionSaveDownloadsList, &QAction::triggered, m_downloadsTab, &DownloadsTab::saveFile);
+	connect(ui->actionLoadDownloadsList, &QAction::triggered, m_downloadsTab, &DownloadsTab::loadFile);
+
 	// Restore download lists
 	if (m_restore) {
 		m_downloadsTab->loadLinkList(m_profile->getPath() + "/restore.igl");
