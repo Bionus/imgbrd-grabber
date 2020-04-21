@@ -1,12 +1,14 @@
 #include "download-group-table-model.h"
 #include <QIcon>
 #include <QVariant>
+#include <QWidget>
 #include <utility>
+#include "helpers.h"
 #include "models/profile.h"
 #include "models/site.h"
 
 
-DownloadGroupTableModel::DownloadGroupTableModel(Profile *profile, QList<DownloadQueryGroup> &downloads, QObject *parent)
+DownloadGroupTableModel::DownloadGroupTableModel(Profile *profile, QList<DownloadQueryGroup> &downloads, QWidget *parent)
 	: QAbstractTableModel(parent), m_profile(profile), m_downloads(downloads)
 {}
 
@@ -61,7 +63,7 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 		return s_iconMap[status];
 	}
 
-	if (role != Qt::DisplayRole) {
+	if (role != Qt::DisplayRole && role != Qt::EditRole) {
 		return {};
 	}
 
@@ -92,7 +94,7 @@ Qt::ItemFlags DownloadGroupTableModel::flags(const QModelIndex &index) const
 	Qt::ItemFlags flags = QAbstractItemModel::flags(index);
 
 	const int minColumn = m_downloads[index.row()].query.gallery.isNull() ? 1 : 2; // Cannot edit gallery queries
-	if (index.column() > minColumn && index.column() <= 10) {
+	if (index.column() >= minColumn && index.column() <= 10) {
 		flags |= Qt::ItemIsEditable;
 	}
 
@@ -111,7 +113,8 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 	download.progressFinished = false;
 
 	const QString val = value.toString();
-	const int toInt = val.toInt();
+	bool isInt = false;
+	const int toInt = val.toInt(&isInt);
 
 	switch (index.column())
 	{
@@ -123,7 +126,7 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 
 		case 2:
 			if (!m_profile->getSites().contains(val)) {
-				// error(this, tr("This source is not valid."));
+				error(qobject_cast<QWidget*>(parent()), tr("This source is not valid."));
 				return false;
 			}
 			download.site = m_profile->getSites().value(val);
@@ -134,16 +137,16 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 4:
-			if (toInt < 1) {
-				// error(this, tr("The image per page value must be greater or equal to 1."));
+			if (toInt < 1 || !isInt) {
+				error(qobject_cast<QWidget*>(parent()), tr("The image per page value must be greater or equal to 1."));
 				return false;
 			}
 			download.perpage = toInt;
 			break;
 
 		case 5:
-			if (toInt < 0) {
-				// error(this, tr("The image limit must be greater or equal to 0."));
+			if (toInt < 0 || !isInt) {
+				error(qobject_cast<QWidget*>(parent()), tr("The image limit must be greater or equal to 0."));
 				return false;
 			}
 			download.total = toInt;

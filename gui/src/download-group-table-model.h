@@ -14,7 +14,7 @@ class DownloadGroupTableModel : public QAbstractTableModel
 	Q_OBJECT
 
 	public:
-		DownloadGroupTableModel(Profile *profile, QList<DownloadQueryGroup> &downloads, QObject *parent = nullptr);
+		DownloadGroupTableModel(Profile *profile, QList<DownloadQueryGroup> &downloads, QWidget *parent = nullptr);
 		const DownloadQueryGroup &dataForRow(int row);
 
 		// Data
