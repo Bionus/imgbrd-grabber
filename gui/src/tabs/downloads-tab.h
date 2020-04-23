@@ -52,8 +52,10 @@ class DownloadsTab : public QWidget
 
 		// Move
 		void batchMove(int);
+		void batchMoveToTop();
 		void batchMoveUp();
 		void batchMoveDown();
+		void batchMoveToBottom();
 
 		// Add
 		void addGroup();
@@ -99,6 +101,7 @@ class DownloadsTab : public QWidget
 		// Others
 		QIcon &getIcon(const QString &path);
 		bool isDownloading() const;
+		void batchDownloadsTableContextMenu(const QPoint &pos);
 
 	protected:
 		void changeEvent(QEvent *event) override;

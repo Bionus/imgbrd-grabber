@@ -66,6 +66,9 @@
        </item>
        <item>
         <widget class="QTableView" name="tableBatchGroups">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="dragEnabled">
           <bool>true</bool>
          </property>
@@ -77,9 +80,6 @@
          </property>
          <property name="defaultDropAction">
           <enum>Qt::MoveAction</enum>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -237,8 +237,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>771</x>
-     <y>218</y>
+     <x>787</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -253,8 +253,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>776</x>
-     <y>444</y>
+     <x>787</x>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
      <x>790</x>
@@ -269,8 +269,8 @@
    <slot>batchMoveDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>79</x>
-     <y>504</y>
+     <x>37</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -301,8 +301,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>761</x>
-     <y>477</y>
+     <x>753</x>
+     <y>518</y>
     </hint>
     <hint type="destinationlabel">
      <x>792</x>
@@ -317,8 +317,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>532</x>
-     <y>480</y>
+     <x>574</x>
+     <y>518</y>
     </hint>
     <hint type="destinationlabel">
      <x>581</x>
@@ -333,8 +333,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>482</y>
+     <x>145</x>
+     <y>518</y>
     </hint>
     <hint type="destinationlabel">
      <x>73</x>
@@ -349,12 +349,28 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>280</x>
-     <y>482</y>
+     <x>395</x>
+     <y>518</y>
     </hint>
     <hint type="destinationlabel">
      <x>301</x>
      <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchDownloadsTableContextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -369,5 +385,6 @@
   <slot>getAll()</slot>
   <slot>batchClear()</slot>
   <slot>batchClearSel()</slot>
+  <slot>batchDownloadsTableContextMenu(QPoint)</slot>
  </slots>
 </ui>

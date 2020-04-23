@@ -2,6 +2,7 @@
 #include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
+#include <QMenu>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSound>
@@ -112,6 +113,25 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 	m_settings->setValue("batchSplitter", splitterSizes.join(","));
 }
 
+void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)
+{
+	auto index = ui->tableBatchGroups->indexAt(pos);
+	if (!index.isValid()) {
+		return;
+	}
+
+	auto *menu = new QMenu(this);
+	menu->addAction(QIcon(":/images/icons/save.png"), tr("Download"), [this]() { batchSel(); });
+	menu->addSeparator();
+	menu->addAction(QIcon(":/images/icons/arrow-top.png"), tr("Move to top"), [this]() { batchMoveToTop(); });
+	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), [this]() { batchMoveUp(); });
+	menu->addAction(QIcon(":/images/icons/arrow-down.png"), tr("Move down"), [this]() { batchMoveDown(); });
+	menu->addAction(QIcon(":/images/icons/arrow-bottom.png"), tr("Move to bottom"), [this]() { batchMoveToBottom(); });
+	menu->addSeparator();
+	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this]() { batchClearSelGroups(); });
+	menu->exec(QCursor::pos());
+}
+
 
 void DownloadsTab::siteDeleted(Site *site)
 {
@@ -217,8 +237,8 @@ void DownloadsTab::batchMove(int diff)
 	}
 
 	for (int sourceRow : rows) {
-		int destRow = sourceRow + diff;
-		if (destRow < 0 || destRow >= m_groupBatchsModel->rowCount()) {
+		int destRow = qMin(qMax(0, sourceRow + diff), m_groupBatchsModel->rowCount() - 1);
+		if (destRow == sourceRow) {
 			return;
 		}
 
@@ -234,13 +254,18 @@ void DownloadsTab::batchMove(int diff)
 
 	QItemSelection selection;
 	for (const auto &index : ui->tableBatchGroups->selectionModel()->selection().indexes()) {
-		QModelIndex shifted = m_groupBatchsModel->index(index.row() + diff, index.column());
+		int destRow = qMin(qMax(0, index.row() + diff), m_groupBatchsModel->rowCount() - 1);
+		QModelIndex shifted = m_groupBatchsModel->index(destRow, index.column());
 		selection.select(shifted, shifted);
 	}
 
 	auto *selectionModel = new QItemSelectionModel(m_groupBatchsModel, this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
+}
+void DownloadsTab::batchMoveToTop()
+{
+	batchMove(-99999);
 }
 void DownloadsTab::batchMoveUp()
 {
@@ -249,6 +274,10 @@ void DownloadsTab::batchMoveUp()
 void DownloadsTab::batchMoveDown()
 {
 	batchMove(1);
+}
+void DownloadsTab::batchMoveToBottom()
+{
+	batchMove(99999);
 }
 
 void DownloadsTab::addGroup()

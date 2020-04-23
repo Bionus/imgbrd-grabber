@@ -66,5 +66,7 @@
         <file>images/back.png</file>
         <file>images/loading.gif</file>
         <file>images/icons/open.png</file>
+        <file>images/icons/arrow-bottom.png</file>
+        <file>images/icons/arrow-top.png</file>
     </qresource>
 </RCC>
