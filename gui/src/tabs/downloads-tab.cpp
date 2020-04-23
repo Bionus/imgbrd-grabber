@@ -231,9 +231,15 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 
 void DownloadsTab::batchMove(int diff)
 {
-	QSet<int> rows = selectedRows(ui->tableBatchGroups);
+	QList<int> rows = selectedRows(ui->tableBatchGroups).toList();
 	if (rows.isEmpty()) {
 		return;
+	}
+
+	if (diff > 0) {
+		std::sort(rows.rbegin(), rows.rend());
+	} else {
+		std::sort(rows.begin(), rows.end());
 	}
 
 	for (int sourceRow : rows) {
