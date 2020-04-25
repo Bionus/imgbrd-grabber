@@ -33,6 +33,7 @@ class MonitoringCenter : public QObject
 
 	protected slots:
 		void tick();
+		void queueEmpty();
 
 	protected:
 		void checkMonitor(Monitor &monitor, const Favorite &favorite);
@@ -45,6 +46,7 @@ class MonitoringCenter : public QObject
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
 		QSystemTrayIcon *m_trayIcon;
+		bool m_waitingForQueue = false;
 		bool m_stop = false;
 };
 

@@ -22,7 +22,9 @@
 
 MonitoringCenter::MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent)
 	: QObject(parent), m_profile(profile), m_downloadQueue(downloadQueue), m_trayIcon(trayIcon)
-{}
+{
+	connect(m_downloadQueue, &DownloadQueue::finished, this, &MonitoringCenter::queueEmpty);
+}
 
 void MonitoringCenter::start()
 {
@@ -116,6 +118,8 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
 			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
+
+		m_waitingForQueue = true;
     }
 
 	// Update monitor
@@ -137,13 +141,19 @@ void MonitoringCenter::tick()
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
 
 	// Favorites
-	for (Favorite &fav : m_profile->getFavorites()) {
+	QList<Favorite> &favs = m_profile->getFavorites();
+	for (int j = 0; j < favs.count(); ++j) {
+		Favorite &fav = favs[j];
 		for (Monitor &monitor : fav.getMonitors()) {
 			// If this favorite's monitoring expired, we check it for updates
             qint64 next = monitor.secsToNextCheck();
 			if (next <= 0) {
 				checkMonitor(monitor, fav);
 				next = monitor.secsToNextCheck();
+			}
+
+			if (m_waitingForQueue) {
+				return;
 			}
 
 			// Only keep the soonest expiring timeout
@@ -162,6 +172,10 @@ void MonitoringCenter::tick()
 			next = monitor.secsToNextCheck();
 		}
 
+		if (m_waitingForQueue) {
+			return;
+		}
+
 		// Only keep the soonest expiring timeout
 		if (next < minNextMonitoring || minNextMonitoring == -1) {
 			minNextMonitoring = next;
@@ -174,6 +188,14 @@ void MonitoringCenter::tick()
 		QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(tick()));
 	} else {
 		log(QStringLiteral("Monitoring finished"), Logger::Info);
+	}
+}
+
+void MonitoringCenter::queueEmpty()
+{
+	if (m_waitingForQueue) {
+		m_waitingForQueue = false;
+		tick();
 	}
 }
 
