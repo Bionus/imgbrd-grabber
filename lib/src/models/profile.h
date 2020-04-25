@@ -27,7 +27,12 @@ class Profile : public QObject
 		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
 		explicit Profile(QString path);
 		~Profile() override;
+
+		// Sync
 		void sync();
+		void syncFavorites() const;
+		void syncKeptForLater() const;
+		void syncIgnored() const;
 
 		// Temporary path
 		QString tempPath() const;
@@ -81,11 +86,6 @@ class Profile : public QObject
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 		MonitorManager *monitorManager() const;
 		DownloadQueryManager *downloadQueryManager() const;
-
-	private:
-		void syncFavorites() const;
-		void syncKeptForLater() const;
-		void syncIgnored() const;
 
 	signals:
 		void favoritesChanged();

@@ -47,6 +47,7 @@ class MonitoringCenter : public QObject
 		DownloadQueue *m_downloadQueue;
 		QSystemTrayIcon *m_trayIcon;
 		bool m_waitingForQueue = false;
+		bool m_changed = false;
 		bool m_stop = false;
 };
 

@@ -20,7 +20,6 @@ class MonitorManager : public QObject
 		int remove(const Monitor &monitor);
 		QList<Monitor> &monitors();
 
-	private:
 		void load();
 		void save() const;
 

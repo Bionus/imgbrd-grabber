@@ -125,6 +125,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	// Update monitor
 	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
+	m_changed = true;
 
 	emit statusChanged(monitor, MonitoringStatus::Waiting);
 
@@ -139,6 +140,13 @@ void MonitoringCenter::tick()
 
     qint64 minNextMonitoring = -1;
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
+
+	// Save if there were changes to the monitors since the last tick
+	if (m_changed) {
+		m_profile->syncFavorites();
+		m_profile->monitorManager()->save();
+		m_changed = false;
+	}
 
 	// Favorites
 	QList<Favorite> &favs = m_profile->getFavorites();
