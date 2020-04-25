@@ -119,6 +119,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
 
+		log(QStringLiteral("Added %1 images to the download queue for monitor '%2' on '%3'").arg(QString::number(newImages), search.toString(), siteNames.join(", ")), Logger::Info);
 		m_waitingForQueue = true;
     }
 
