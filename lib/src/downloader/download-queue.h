@@ -23,6 +23,9 @@ class DownloadQueue : public QObject
 		explicit DownloadQueue(int maxConcurrency, QObject *parent = nullptr);
 		void add(Queue queue, ImageDownloader *downloader);
 
+	signals:
+		void finished();
+
 	protected slots:
 		void dequeued(const QVariant &item);
 

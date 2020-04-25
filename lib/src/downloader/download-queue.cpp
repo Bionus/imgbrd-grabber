@@ -10,6 +10,7 @@ DownloadQueue::DownloadQueue(int maxConcurrency, QObject *parent)
 	m_queue->setGlobalConcurrency(maxConcurrency);
 
 	connect(m_queue, &ConcurrentMultiQueue::dequeued, this, &DownloadQueue::dequeued);
+	connect(m_queue, &ConcurrentMultiQueue::finished, this, &DownloadQueue::finished);
 }
 
 
