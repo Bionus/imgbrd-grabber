@@ -1,4 +1,6 @@
 #include "downloader/image-downloader.h"
+#include <QDir>
+#include <QFile>
 #include <QImageReader>
 #include <QSettings>
 #include <QSize>

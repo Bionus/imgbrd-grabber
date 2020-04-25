@@ -1,5 +1,7 @@
 #include "download-image-table-model.h"
+#include <QDateTime>
 #include <QIcon>
+#include <QStringList>
 #include <QVariant>
 #include <utility>
 #include "models/image.h"

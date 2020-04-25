@@ -1,14 +1,14 @@
 #ifndef TAG_TYPE_API_H
 #define TAG_TYPE_API_H
 
-#include "models/api/api.h"
+#include <QList>
 #include "tags/tag-api-base.h"
-#include <QObject>
-#include <QUrl>
+#include "tags/tag-type-with-id.h"
 
 
 class Api;
 class Profile;
+class QObject;
 class Site;
 
 class TagTypeApi : public TagApiBase

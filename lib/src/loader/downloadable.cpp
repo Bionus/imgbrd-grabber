@@ -1,5 +1,7 @@
 #include "loader/downloadable.h"
+#include <QFile>
 #include <QSettings>
+#include <QStringList>
 #include "functions.h"
 #include "loader/token.h"
 #include "models/filename.h"

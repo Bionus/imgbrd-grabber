@@ -1,18 +1,20 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <QDateTime>
-#include <QDir>
-#include <QDomElement>
-#include <QJSValue>
 #include <QMap>
 #include <QString>
-#include <QStringList>
 #include "backports/backports.h"
-#include "filename/conditional-filename.h"
 
 
+class ConditionalFilename;
+class QDateTime;
+class QDir;
+class QFont;
+class QJSValue;
+class QStringList;
 class QSettings;
+class QUrl;
+class QVariant;
 
 
 // Filesize units

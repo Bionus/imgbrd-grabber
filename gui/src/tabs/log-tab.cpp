@@ -1,5 +1,6 @@
 #include "tabs/log-tab.h"
 #include <QDesktopServices>
+#include <QFile>
 #include <QRegularExpression>
 #include <QScrollBar>
 #include <ui_log-tab.h>

@@ -1,13 +1,13 @@
 #ifndef URL_LOGIN_H
 #define URL_LOGIN_H
 
-#include <QString>
 #include "login/login.h"
 
 
 class MixedSettings;
 class NetworkManager;
 class Page;
+class QString;
 class Site;
 class UrlAuth;
 

@@ -1,16 +1,20 @@
 #include "functions.h"
 #include <QCoreApplication>
 #include <QCryptographicHash>
+#include <QDate>
+#include <QDateTime>
 #include <QDir>
 #include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
 #include <QFont>
+#include <QJSValue>
 #include <QLocale>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTime>
 #include <QtMath>
 #include <QUrl>
 #include <QVector>
@@ -23,6 +27,7 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
+#include "filename/conditional-filename.h"
 #include "logger.h"
 #include "vendor/html-entities.h"
 

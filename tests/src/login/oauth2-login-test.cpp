@@ -1,3 +1,4 @@
+#include <QNetworkRequest>
 #include <QSettings>
 #include <QSignalSpy>
 #include "auth/oauth2-auth.h"

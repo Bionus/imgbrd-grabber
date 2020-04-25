@@ -1,9 +1,7 @@
 #include "tag-database.h"
-#include <QFile>
-#include <QStringList>
-#include <QTextStream>
 #include <utility>
 #include "tag-type.h"
+#include "tag-type-with-id.h"
 
 
 TagDatabase::TagDatabase(QString typeFile)

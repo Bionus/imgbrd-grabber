@@ -4,10 +4,10 @@
 #include <QHash>
 #include <QList>
 #include <QString>
-#include <QStringList>
 #include "tags/tag-database.h"
 
 
+class QStringList;
 class Tag;
 class TagType;
 

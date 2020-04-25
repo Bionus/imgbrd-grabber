@@ -25,7 +25,9 @@
 
 
 #include <QApplication>
+#include <QDir>
 #include <QSettings>
+#include <QStringList>
 #include <QTextStream>
 #include "analytics.h"
 #include "downloader/downloader.h"

@@ -1,4 +1,5 @@
 #include "tags/tag-name-format.h"
+#include <QStringList>
 #include <utility>
 
 

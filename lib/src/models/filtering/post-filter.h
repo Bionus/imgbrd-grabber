@@ -4,11 +4,11 @@
 #include <QList>
 #include <QMap>
 #include <QSharedPointer>
-#include <QString>
 #include <QStringList>
 
 
 class Filter;
+class QString;
 class Token;
 
 class PostFilter

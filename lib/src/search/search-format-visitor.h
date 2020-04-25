@@ -1,11 +1,14 @@
 #ifndef SEARCH_FORMAT_VISITOR_H
 #define SEARCH_FORMAT_VISITOR_H
 
+#include <QString>
 #include "search/ast/search-visitor.h"
 #include "search/search-format.h"
 
 
 struct SearchNode;
+struct SearchNodeOp;
+struct SearchNodeTag;
 
 class SearchFormatVisitor : public SearchVisitor
 {

@@ -2,6 +2,8 @@
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QSettings>
+#include <QStringList>
+#include <QTime>
 #ifdef Q_OS_WIN
 	#include <QWinTaskbarButton>
 	#include <QWinTaskbarProgress>

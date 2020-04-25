@@ -3,10 +3,10 @@
 
 #include <QDateTime>
 #include <QList>
-#include <QJsonObject>
 #include "models/search-query/search-query.h"
 
 
+class QJsonObject;
 class Site;
 
 class Monitor

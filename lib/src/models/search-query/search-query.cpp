@@ -1,5 +1,6 @@
 #include "models/search-query/search-query.h"
 #include <QJsonArray>
+#include <QJsonObject>
 #include "functions.h"
 #include "models/image.h"
 #include "models/profile.h"

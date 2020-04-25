@@ -2,9 +2,9 @@
 #define FILTER_H
 
 #include <QMap>
-#include <QString>
 
 
+class QString;
 class Token;
 
 class Filter

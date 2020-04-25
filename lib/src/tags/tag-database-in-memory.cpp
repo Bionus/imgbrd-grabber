@@ -1,5 +1,6 @@
 #include "tags/tag-database-in-memory.h"
 #include <QFile>
+#include <QStringList>
 #include <QTextStream>
 #include <utility>
 #include "tags/tag.h"

@@ -7,6 +7,7 @@
 #include <QSharedPointer>
 #include <QUrl>
 #include "tags/tag.h"
+#include "tags/tag-type-with-id.h"
 
 
 class Image;
@@ -34,11 +35,6 @@ struct ParsedPage
 	QString wiki;
 };
 
-struct TagTypeWithId
-{
-	int id;
-	QString name;
-};
 struct ParsedTagTypes
 {
 	QString error;

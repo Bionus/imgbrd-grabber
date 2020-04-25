@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QScopedPointer>
 #include "models/profile.h"
 #include "catch.h"

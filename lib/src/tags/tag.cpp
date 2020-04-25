@@ -1,5 +1,7 @@
 #include "tag.h"
 #include <QJsonArray>
+#include <QJsonObject>
+#include <QStringList>
 #include <utility>
 #include "functions.h"
 #include "tag-type.h"

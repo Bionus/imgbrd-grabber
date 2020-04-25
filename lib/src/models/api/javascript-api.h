@@ -2,6 +2,7 @@
 #define JAVASCRIPT_API_H
 
 #include <QJSValue>
+#include <QString>
 #include "models/api/api.h"
 
 

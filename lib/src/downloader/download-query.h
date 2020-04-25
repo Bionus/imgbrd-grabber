@@ -1,11 +1,11 @@
 #ifndef DOWNLOAD_QUERY_H
 #define DOWNLOAD_QUERY_H
 
-#include <QJsonObject>
 #include <QString>
 
 
 class Profile;
+class QJsonObject;
 class Site;
 
 class DownloadQuery

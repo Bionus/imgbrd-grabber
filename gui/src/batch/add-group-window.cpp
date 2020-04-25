@@ -1,6 +1,7 @@
 #include "batch/add-group-window.h"
 #include <QCompleter>
 #include <QSettings>
+#include <QStringList>
 #include <ui_add-group-window.h>
 #include "downloader/download-query-group.h"
 #include "models/profile.h"

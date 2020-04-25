@@ -5,6 +5,8 @@
 #include <QString>
 
 
+class QUrl;
+
 class ReverseSearchEngine
 {
 	public:

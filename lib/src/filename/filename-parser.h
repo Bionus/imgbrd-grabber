@@ -1,7 +1,6 @@
 #ifndef FILENAME_PARSER_H
 #define FILENAME_PARSER_H
 
-#include <QChar>
 #include <QList>
 #include <QString>
 
@@ -17,6 +16,7 @@ struct FilenameNodeConditionToken;
 struct FilenameNodeJavaScript;
 struct FilenameNodeRoot;
 struct FilenameNodeVariable;
+class QChar;
 
 class FilenameParser
 {

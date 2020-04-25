@@ -5,6 +5,8 @@
 #include "tags/tag.h"
 
 
+class SearchVisitor;
+
 struct SearchNodeTag : public SearchNode
 {
 	Tag tag;

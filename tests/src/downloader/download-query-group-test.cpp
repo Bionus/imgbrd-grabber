@@ -1,4 +1,5 @@
 #include "downloader/download-query-group.h"
+#include <QJsonObject>
 #include "models/profile.h"
 #include "models/site.h"
 #include "catch.h"

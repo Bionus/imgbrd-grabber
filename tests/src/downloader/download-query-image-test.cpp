@@ -1,3 +1,4 @@
+#include <QJsonObject>
 #include <QMap>
 #include <QSharedPointer>
 #include "downloader/download-query-image.h"

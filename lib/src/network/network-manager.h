@@ -2,9 +2,6 @@
 #define NETWORK_MANAGER_H
 
 #include <QAtomicInt>
-#include <QByteArray>
-#include <QMap>
-#include <QNetworkRequest>
 #include <QObject>
 #include <QPair>
 #include <QQueue>
@@ -14,7 +11,9 @@
 class CustomNetworkAccessManager;
 class NetworkReply;
 class QAbstractNetworkCache;
+class QByteArray;
 class QNetworkCookieJar;
+class QNetworkRequest;
 
 class NetworkManager : public QObject
 {

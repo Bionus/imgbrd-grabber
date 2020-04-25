@@ -1,5 +1,6 @@
 #include "downloader/download-query-group.h"
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QRegularExpression>
 #include <QSettings>
 #include <utility>

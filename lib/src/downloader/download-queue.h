@@ -2,7 +2,6 @@
 #define DOWNLOAD_QUEUE_H
 
 #include <QObject>
-#include <QSharedPointer>
 
 
 class ConcurrentMultiQueue;

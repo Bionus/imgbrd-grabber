@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QFile>
 #include <QTemporaryFile>
 #include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"

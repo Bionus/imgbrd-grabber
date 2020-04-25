@@ -2,13 +2,13 @@
 #define TAG_DATABASE_H
 
 #include <QMap>
-#include <QString>
-#include "models/api/api.h"
-#include "tags/tag-type.h"
 #include "tags/tag-type-database.h"
 
 
+class QString;
 class Tag;
+class TagType;
+struct TagTypeWithId;
 
 class TagDatabase
 {

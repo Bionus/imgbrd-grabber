@@ -1,18 +1,16 @@
 #ifndef DOWNLOAD_QUERY_IMAGE_H
 #define DOWNLOAD_QUERY_IMAGE_H
 
-#include <QJsonObject>
-#include <QMap>
 #include <QMetaType>
 #include <QSharedPointer>
-#include <QString>
-#include <QStringList>
 #include "downloader/download-query.h"
 
 
 class Image;
 class Profile;
+class QJsonObject;
 class QSettings;
+class QString;
 class Site;
 
 class DownloadQueryImage : public DownloadQuery

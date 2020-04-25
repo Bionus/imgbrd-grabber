@@ -2,7 +2,6 @@
 #define HTTP_LOGIN_H
 
 #include <QString>
-#include <QUrl>
 #include "login/login.h"
 
 
@@ -10,6 +9,7 @@ class HttpAuth;
 class MixedSettings;
 class NetworkManager;
 class NetworkReply;
+class QUrl;
 class QUrlQuery;
 class Site;
 

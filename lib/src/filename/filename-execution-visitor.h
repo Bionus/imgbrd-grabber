@@ -1,8 +1,6 @@
 #ifndef FILENAME_EXECUTION_VISITOR_H
 #define FILENAME_EXECUTION_VISITOR_H
 
-#include <QJSEngine>
-#include <QJSValue>
 #include <QMap>
 #include <QString>
 #include "filename/filename-visitor-javascript.h"

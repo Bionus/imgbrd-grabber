@@ -2,11 +2,11 @@
 #define URL_AUTH_H
 
 #include <QList>
-#include <QString>
 #include "auth/field-auth.h"
 
 
 class AuthField;
+class QString;
 
 class UrlAuth : public FieldAuth
 {

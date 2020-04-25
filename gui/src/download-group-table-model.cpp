@@ -1,5 +1,6 @@
 #include "download-group-table-model.h"
 #include <QIcon>
+#include <QStringList>
 #include <QVariant>
 #include <QWidget>
 #include <utility>

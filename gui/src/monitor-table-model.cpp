@@ -1,5 +1,6 @@
 #include "monitor-table-model.h"
 #include <QIcon>
+#include <QStringList>
 #include <QtMath>
 #include <QVariant>
 #include <utility>

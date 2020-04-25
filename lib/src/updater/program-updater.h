@@ -3,11 +3,11 @@
 
 #include <QByteArray>
 #include <QString>
-#include <QUrl>
 #include "updater/updater.h"
 
 
 class NetworkReply;
+class QUrl;
 
 class ProgramUpdater : public Updater
 {

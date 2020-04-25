@@ -2,11 +2,12 @@
 #define MIXED_SETTINGS_H
 
 #include <QList>
-#include <QString>
 #include <QVariant>
 
 
 class QSettings;
+class QString;
+class QStringList;
 
 class MixedSettings : public QObject
 {

@@ -1,4 +1,5 @@
 #include "blacklist.h"
+#include <QStringList>
 #include "filter.h"
 #include "filter-factory.h"
 #include "functions.h"

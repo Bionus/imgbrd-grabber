@@ -1,10 +1,12 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-#include <QVariant>
+#include <QMap>
+#include <QString>
 
 
 class LoaderQuery;
+class QVariant;
 class Site;
 
 class Loader

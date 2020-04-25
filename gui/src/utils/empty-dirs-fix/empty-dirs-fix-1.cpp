@@ -1,6 +1,8 @@
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
+#include <QDir>
 #include <QMessageBox>
 #include <QSettings>
+#include <QStringList>
 #include <ui_empty-dirs-fix-1.h>
 #include "models/profile.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-2.h"

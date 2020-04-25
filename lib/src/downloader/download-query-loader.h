@@ -1,13 +1,13 @@
 #ifndef DOWNLOAD_QUERY_LOADER_H
 #define DOWNLOAD_QUERY_LOADER_H
 
-#include <QMap>
-#include <QString>
+#include <QList>
 
 
 class DownloadQueryImage;
 class DownloadQueryGroup;
 class Profile;
+class QString;
 
 class DownloadQueryLoader
 {

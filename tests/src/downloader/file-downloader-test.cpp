@@ -1,3 +1,4 @@
+#include <QFile>
 #include <QSignalSpy>
 #include "custom-network-access-manager.h"
 #include "downloader/file-downloader.h"

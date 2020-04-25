@@ -1,13 +1,14 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <QJsonObject>
 #include <QMap>
 #include <QMetaType>
 #include <QString>
 #include <QStringList>
 #include "tags/tag-type.h"
 
+
+class QJsonObject;
 
 class Tag
 {

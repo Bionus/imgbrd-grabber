@@ -1,6 +1,7 @@
 #include "tabs/tag-tab.h"
 #include <QCloseEvent>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"

@@ -1,5 +1,8 @@
+#include <QDir>
+#include <QFile>
 #include <QFileInfo>
 #include <QFont>
+#include <QRect>
 #include <QSettings>
 #include <QTemporaryFile>
 #include "functions.h"

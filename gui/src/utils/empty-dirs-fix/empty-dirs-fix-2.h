@@ -2,7 +2,6 @@
 #define EMPTY_DIRS_FIX_2_H
 
 #include <QDialog>
-#include <QDir>
 #include <QTreeWidgetItem>
 
 

@@ -12,6 +12,7 @@
 #include "models/site.h"
 #include "tags/tag.h"
 #include "tags/tag-database.h"
+#include "tags/tag-type-with-id.h"
 
 
 QString normalize(QString key)

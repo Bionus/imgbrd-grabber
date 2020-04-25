@@ -1,4 +1,5 @@
 #include "post-filter.h"
+#include <QStringList>
 #include "filter.h"
 #include "filter-factory.h"
 

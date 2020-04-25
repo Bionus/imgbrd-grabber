@@ -6,8 +6,9 @@
 
 #include <QFile>
 #include <QObject>
-#include <QString>
 
+
+class QString;
 
 class Logger : public QObject
 {

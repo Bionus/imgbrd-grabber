@@ -2,6 +2,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QVariant>
 #include "commands/sql-worker.h"
 #include "catch.h"
 

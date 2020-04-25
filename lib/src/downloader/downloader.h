@@ -2,7 +2,6 @@
 #define DOWNLOADER_H
 
 #include <QList>
-#include <QMap>
 #include <QObject>
 #include <QPair>
 #include <QSharedPointer>

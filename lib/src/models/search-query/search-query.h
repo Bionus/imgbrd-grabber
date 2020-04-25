@@ -1,8 +1,6 @@
 #ifndef SEARCH_QUERY_H
 #define SEARCH_QUERY_H
 
-#include <QJsonObject>
-#include <QMap>
 #include <QMetaType>
 #include <QSharedPointer>
 #include <QString>
@@ -11,6 +9,7 @@
 
 class Image;
 class Profile;
+class QJsonObject;
 
 class SearchQuery
 {

@@ -5,6 +5,7 @@
 #include <QtMath>
 #include <utility>
 #include "tag-type.h"
+#include "tag-type-with-id.h"
 
 
 TagTypeDatabase::TagTypeDatabase(QString file)

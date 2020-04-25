@@ -1,5 +1,8 @@
 #include "models/source.h"
 #include <QCryptographicHash>
+#include <QFile>
+#include <QFileInfo>
+#include <QJSEngine>
 #include <QJSValue>
 #include <QJSValueIterator>
 #include <QMutex>

@@ -2,6 +2,7 @@
 #include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QMenu>
 #include <QMessageBox>
 #include <QShortcut>

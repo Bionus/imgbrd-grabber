@@ -3,10 +3,10 @@
 
 #include <QMap>
 #include <QString>
-#include "models/api/api.h"
+#include "tags/tag-type.h"
 
 
-class TagType;
+struct TagTypeWithId;
 
 class TagTypeDatabase
 {

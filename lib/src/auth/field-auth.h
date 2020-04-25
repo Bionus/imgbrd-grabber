@@ -2,11 +2,11 @@
 #define FIELD_AUTH_H
 
 #include <QList>
-#include <QString>
 #include "auth/auth.h"
 
 
 class AuthField;
+class QString;
 
 class FieldAuth : public Auth
 {

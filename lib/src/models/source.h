@@ -6,12 +6,13 @@
 #include <QMap>
 #include <QObject>
 #include <QString>
-#include "auth/auth.h"
+#include <QStringList>
 #include "tags/tag-name-format.h"
 #include "updater/source-updater.h"
 
 
 class Api;
+class Auth;
 class Profile;
 class QJSEngine;
 class QMutex;

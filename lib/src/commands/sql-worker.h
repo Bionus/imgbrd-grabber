@@ -3,8 +3,9 @@
 
 #include <QString>
 #include <QThread>
-#include <QVariant>
 
+
+class QVariant;
 
 class SqlWorker : public QThread
 {

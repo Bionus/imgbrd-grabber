@@ -2,6 +2,7 @@
 #define FAVORITES_TAB_H
 
 #include "tabs/search-tab.h"
+#include <QDateTime>
 
 
 namespace Ui

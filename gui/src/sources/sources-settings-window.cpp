@@ -1,5 +1,6 @@
 #include "sources/sources-settings-window.h"
 #include <QCryptographicHash>
+#include <QFile>
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QMessageBox>

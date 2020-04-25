@@ -2,11 +2,14 @@
 #include <QCloseEvent>
 #include <QCompleter>
 #include <QDesktopServices>
+#include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QNetworkProxy>
 #include <QShortcut>
+#include <QStringList>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QSysInfo>
 #endif

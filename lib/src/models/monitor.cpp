@@ -1,5 +1,6 @@
 #include "models/monitor.h"
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QMap>
 #include <utility>
 #include "models/profile.h"

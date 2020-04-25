@@ -3,10 +3,10 @@
 
 #include <QFile>
 #include <QObject>
-#include <QString>
-#include <QStringList>
 #include "network/network-reply.h"
 
+
+class QString;
 
 class FileDownloader : public QObject
 {

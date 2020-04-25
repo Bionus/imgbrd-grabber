@@ -7,13 +7,13 @@
 #include <QSharedPointer>
 #include <QString>
 #include <QStringList>
-#include <QVariant>
 
 
 class AstFilename;
 class Image;
 class Profile;
 class QSettings;
+class QVariant;
 class Site;
 class Token;
 

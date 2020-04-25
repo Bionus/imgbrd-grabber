@@ -2,7 +2,6 @@
 #define MONITOR_MANAGER_H
 
 #include <QList>
-#include <QMap>
 #include <QObject>
 #include <QString>
 

@@ -1,13 +1,13 @@
 #ifndef FILENAME_VISITOR_JAVASCRIPT_H
 #define FILENAME_VISITOR_JAVASCRIPT_H
 
-#include <QJSEngine>
-#include <QJSValue>
 #include <QMap>
 #include <QString>
 #include "filename/ast/filename-visitor-base.h"
 
 
+class QJSEngine;
+class QJSValue;
 class QSettings;
 class Token;
 

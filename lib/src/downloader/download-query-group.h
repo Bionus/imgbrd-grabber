@@ -1,7 +1,6 @@
 #ifndef DOWNLOAD_QUERY_GROUP_H
 #define DOWNLOAD_QUERY_GROUP_H
 
-#include <QJsonObject>
 #include <QMetaType>
 #include <QString>
 #include <QStringList>
@@ -10,6 +9,7 @@
 
 
 class Profile;
+class QJsonObject;
 class QSettings;
 class Site;
 

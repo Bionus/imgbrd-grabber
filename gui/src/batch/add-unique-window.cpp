@@ -3,6 +3,7 @@
 #include <QPlainTextEdit>
 #include <QScrollBar>
 #include <QSettings>
+#include <QStringList>
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
 #include "helpers.h"

@@ -1,4 +1,5 @@
 #include "login/http-post-login.h"
+#include <QNetworkRequest>
 #include <QUrlQuery>
 #include "models/site.h"
 #include "network/network-manager.h"

@@ -5,12 +5,12 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QUrl>
-#include <QVariant>
 #include <QTimer>
 
 
 class CustomNetworkAccessManager;
+class QUrl;
+class QVariant;
 
 class NetworkReply : public QObject
 {

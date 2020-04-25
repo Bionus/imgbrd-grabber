@@ -1,4 +1,5 @@
 #include <QDir>
+#include <QFile>
 #include <QSettings>
 #include <QSignalSpy>
 #include "custom-network-access-manager.h"

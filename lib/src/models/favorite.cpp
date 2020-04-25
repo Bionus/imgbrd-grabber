@@ -1,5 +1,10 @@
 #include "models/favorite.h"
+#include <QDir>
+#include <QFile>
 #include <QJsonArray>
+#include <QJsonObject>
+#include <QPixmap>
+#include <QSize>
 #include <utility>
 #include "functions.h"
 #include "models/profile.h"

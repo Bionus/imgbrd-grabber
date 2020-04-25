@@ -1,4 +1,5 @@
 #include <QDir>
+#include <QFile>
 #include <QScopedPointer>
 #include <QSettings>
 #include <QSignalSpy>

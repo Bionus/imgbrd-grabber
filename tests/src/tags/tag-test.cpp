@@ -1,3 +1,4 @@
+#include <QJsonObject>
 #include <algorithm>
 #include "tags/tag.h"
 #include "catch.h"

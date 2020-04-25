@@ -1,19 +1,19 @@
 #ifndef DOWNLOADABLE_H
 #define DOWNLOADABLE_H
 
-#include <QColor>
 #include <QList>
 #include <QMap>
 #include <QPair>
 #include <QString>
-#include <QStringList>
-#include <QUrl>
 
 
 typedef QPair<QString, QString> QStrP;
 
 class Filename;
 class Profile;
+class QColor;
+class QStringList;
+class QUrl;
 class Token;
 
 class Downloadable

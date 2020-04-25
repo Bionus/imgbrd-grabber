@@ -1,3 +1,7 @@
+#include <QDir>
+#include <QFile>
+#include <QJsonObject>
+#include <QPixmap>
 #include <algorithm>
 #include "functions.h"
 #include "models/favorite.h"

@@ -23,6 +23,8 @@ namespace Ui
 }
 
 
+class QTime;
+
 class BatchWindow : public QDialog
 {
 	Q_OBJECT

@@ -1,5 +1,8 @@
 #include "models/filename.h"
 #include <QCollator>
+#include <QDir>
+#include <QFileInfo>
+#include <QFileInfoList>
 #include <QJSEngine>
 #include <QRegularExpression>
 #include <QSettings>
@@ -7,6 +10,7 @@
 #include <utility>
 #include "filename/ast/filename-node-variable.h"
 #include "filename/ast-filename.h"
+#include "filename/conditional-filename.h"
 #include "filename/filename-cache.h"
 #include "filename/filename-execution-visitor.h"
 #include "functions.h"

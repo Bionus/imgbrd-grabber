@@ -1,8 +1,6 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QDateTime>
-#include <QNetworkRequest>
 #include <QString>
 #include <QUrl>
 #include <QVariant>
@@ -18,6 +16,7 @@ class NetworkReply;
 class Page;
 class PersistentCookieJar;
 class QNetworkCookie;
+class QNetworkRequest;
 class Source;
 class Tag;
 class TagDatabase;

@@ -1,3 +1,4 @@
+#include <QFile>
 #include <QJsonObject>
 #include <QTemporaryFile>
 #include "models/image-size.h"

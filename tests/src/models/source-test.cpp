@@ -1,4 +1,4 @@
-#include <QDir>
+#include <QFile>
 #include <QScopedPointer>
 #include "models/profile.h"
 #include "models/source.h"

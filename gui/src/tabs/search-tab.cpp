@@ -1,7 +1,6 @@
 #include "tabs/search-tab.h"
 #include <QCompleter>
 #include <QEventLoop>
-#include <QFileDialog>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>

@@ -2,12 +2,13 @@
 #define PERSISTENT_COOKIE_JAR_H
 
 #include <QMutex>
-#include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QList>
-#include <QObject>
-#include <QUrl>
 
+
+class QNetworkCookie;
+class QObject;
+class QUrl;
 
 class PersistentCookieJar : public QNetworkCookieJar
 {

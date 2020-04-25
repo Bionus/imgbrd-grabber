@@ -2,6 +2,7 @@
 #if defined(Q_OS_ANDROID)
 
 #include "android.h"
+#include <QStringList>
 #include <QtAndroid>
 
 

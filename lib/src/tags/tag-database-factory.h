@@ -1,10 +1,9 @@
 #ifndef TAG_DATABASE_FACTORY_H
 #define TAG_DATABASE_FACTORY_H
 
-#include <QString>
-
-
+class QString;
 class TagDatabase;
+
 
 class TagDatabaseFactory
 {

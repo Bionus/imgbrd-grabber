@@ -1,4 +1,5 @@
 #include "downloader/file-downloader.h"
+#include <QFile>
 #include "functions.h"
 #include "logger.h"
 #include "network/network-reply.h"

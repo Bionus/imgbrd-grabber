@@ -1,5 +1,7 @@
 #include "logger.h"
 #include <QDateTime>
+#include <QFile>
+#include <QStringList>
 #include "functions.h"
 
 #ifdef QT_DEBUG

@@ -1,5 +1,6 @@
 #include "custom-network-access-manager.h"
 #include <QDebug>
+#include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkReply>

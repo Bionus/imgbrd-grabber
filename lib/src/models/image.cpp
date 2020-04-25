@@ -1,6 +1,9 @@
 #include <QCryptographicHash>
+#include <QDir>
 #include <QEventLoop>
+#include <QFile>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSettings>

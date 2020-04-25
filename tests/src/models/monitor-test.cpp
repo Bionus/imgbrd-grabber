@@ -1,3 +1,4 @@
+#include <QJsonObject>
 #include <QScopedPointer>
 #include "models/monitor.h"
 #include "models/profile.h"

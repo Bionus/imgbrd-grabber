@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "logger.h"

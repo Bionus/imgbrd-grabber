@@ -1,13 +1,15 @@
 #ifndef TAG_API_H
 #define TAG_API_H
 
+#include <QList>
+#include "tags/tag.h"
 #include "tags/tag-api-base.h"
-#include <QObject>
-#include <QUrl>
 
 
 class Api;
 class Profile;
+class QObject;
+class QString;
 class Site;
 class Tag;
 

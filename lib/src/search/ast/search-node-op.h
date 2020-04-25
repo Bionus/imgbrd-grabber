@@ -4,6 +4,8 @@
 #include "search/ast/search-node.h"
 
 
+class SearchVisitor;
+
 struct SearchNodeOp : public SearchNode
 {
 	enum Operator

@@ -3,11 +3,11 @@
 
 #include <QDateTime>
 #include <QList>
-#include <QPixmap>
 #include <QString>
 #include "models/monitor.h"
 
 
+class QPixmap;
 class Site;
 
 class Favorite

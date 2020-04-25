@@ -2,6 +2,7 @@
 #define TAG_DATABASE_SQLITE_H
 
 #include <QHash>
+#include <QMap>
 #include <QSqlDatabase>
 #include <QString>
 #include "tags/tag-database.h"

@@ -1,8 +1,10 @@
 #include <QCoreApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkProxy>
 #include <QSettings>
+#include <QStringList>
 #include <QUrl>
 #include "downloader/downloader.h"
 #include "functions.h"

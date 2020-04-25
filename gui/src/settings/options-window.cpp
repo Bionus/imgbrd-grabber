@@ -1,5 +1,7 @@
 #include "settings/options-window.h"
 #include <QColorDialog>
+#include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QNetworkProxy>
@@ -9,6 +11,7 @@
 #include <algorithm>
 #include "analytics.h"
 #include "functions.h"
+#include "filename/conditional-filename.h"
 #include "helpers.h"
 #include "language-loader.h"
 #include "logger.h"

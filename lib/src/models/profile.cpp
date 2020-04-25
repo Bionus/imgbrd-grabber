@@ -1,4 +1,9 @@
 #include "models/profile.h"
+#include <QDateTime>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QFileInfoList>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>

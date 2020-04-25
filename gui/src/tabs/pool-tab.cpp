@@ -1,6 +1,7 @@
 #include "tabs/pool-tab.h"
 #include <QCloseEvent>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QSettings>
 #include <ui_pool-tab.h>
 #include "downloader/download-query-group.h"

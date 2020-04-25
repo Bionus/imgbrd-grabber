@@ -1,7 +1,6 @@
 #include "auth/auth-const-field.h"
 #include <QtGlobal>
 #include <utility>
-#include "mixed-settings.h"
 
 
 AuthConstField::AuthConstField(QString key, QString value)

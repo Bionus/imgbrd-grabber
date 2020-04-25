@@ -2,10 +2,10 @@
 #define LOGIN_H
 
 #include <QObject>
-#include <QString>
 
 
 class QNetworkRequest;
+class QString;
 
 class Login : public QObject
 {

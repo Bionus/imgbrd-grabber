@@ -1,6 +1,7 @@
 #include "tags/tag-stylist.h"
 #include <QFont>
 #include <QSettings>
+#include <QStringList>
 #include <QUrl>
 #include <algorithm>
 #include "functions.h"

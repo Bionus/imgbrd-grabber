@@ -9,7 +9,6 @@
 #include <QUrl>
 #include "downloader/file-downloader.h"
 #include "downloader/image-save-result.h"
-#include "loader/downloadable.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "network/network-reply.h"

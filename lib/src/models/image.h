@@ -1,11 +1,9 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <QDateTime>
 #include <QMap>
 #include <QMetaType>
 #include <QObject>
-#include <QPixmap>
 #include <QString>
 #include "image-size.h"
 #include "loader/downloadable.h"
@@ -18,6 +16,8 @@ class ExtensionRotator;
 class NetworkReply;
 class Page;
 class Profile;
+class QDateTime;
+class QPixmap;
 class QSettings;
 class Site;
 
