@@ -9,6 +9,7 @@
 
 
 class Profile;
+class QTimer;
 
 class DownloadQueryManager : public QObject
 {

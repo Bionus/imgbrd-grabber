@@ -1,4 +1,5 @@
 #include "downloader/download-query-manager.h"
+#include <QTimer>
 #include <utility>
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
