@@ -47,9 +47,18 @@ void FileDownloader::replyFinished()
 	const qint64 written = m_file.write(data);
 	m_file.close();
 
+	const auto error = m_reply->error();
+	const auto msg = m_reply->errorString();
 	const bool failedLastWrite = data.length() > 0 && written < 0;
 	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
-	if (m_reply->error() != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml) {
+	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml) {
+		// Ignore those errors as they are caused by a bug in Qt
+		if (error != NetworkReply::NetworkError::NoError && msg.contains("140E0197")) {
+			log(QStringLiteral("Ignored network error '140E0197' for the image: `%1`: %2 (%3)").arg(m_reply->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Info);
+			emit success();
+			return;
+		}
+
 		m_file.remove();
 		if (failedLastWrite || m_writeError) {
 			emit writeError();
