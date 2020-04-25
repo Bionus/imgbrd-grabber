@@ -36,6 +36,8 @@ void FileDownloader::replyReadyRead()
 	if (m_file.write(m_reply->readAll()) < 0) {
 		m_writeError = true;
 		m_reply->abort();
+	} else {
+		m_file.flush();
 	}
 }
 
