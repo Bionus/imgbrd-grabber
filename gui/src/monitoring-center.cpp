@@ -102,7 +102,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	}
 
     // Add images to download queue
-    if (monitor.download()) {
+	if (monitor.download() && newImages > 0) {
         QString path = monitor.pathOverride();
         if (path.isEmpty()) {
             path = m_profile->getSettings()->value("save/path").toString();
