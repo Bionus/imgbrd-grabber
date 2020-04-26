@@ -1,3 +1,7 @@
+// Reference:
+// - https://github.com/upbit/pixivpy/blob/master/pixivpy3/aapi.py
+// - https://github.com/akameco/pixiv-app-api/blob/master/src/index.ts
+
 function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
@@ -15,6 +19,9 @@ function parseSearch(search: string): { mode: string, tags: string[] } {
     const parts = search.split(" ");
     for (const tag of parts) {
         const part = tag.trim();
+        if (part.length === 0) {
+            continue;
+        }
         if (part.indexOf("mode:") === 0) {
             const tmode = part.substr(5);
             if (tmode in modes) {
@@ -52,15 +59,23 @@ export const source: ISource = {
                     if (!opts.loggedIn) {
                         return { error: "You need to be logged in to use the Pixiv source." };
                     }
+
                     const search = parseSearch(query.search);
                     const illustParams: string[] = [
-                        "word=" + encodeURIComponent(search.tags.join(" ")),
                         "offset=" + ((query.page - 1) * 30),
-                        "search_target=" + search.mode,
-                        "sort=date_desc", // date_desc, date_asc
                         "filter=for_ios",
                         "image_sizes=small,medium,large",
                     ];
+
+                    console.log("TAGS: " + JSON.stringify(search.tags));
+                    if (search.tags.length === 0) {
+                        illustParams.push("content_type=illust");
+                        return "https://app-api.pixiv.net/v1/illust/new?" + illustParams.join("&");
+                    }
+
+                    illustParams.push("word=" + encodeURIComponent(search.tags.join(" ")));
+                    illustParams.push("search_target=" + search.mode);
+                    illustParams.push("sort=date_desc"); // date_desc, date_asc
                     return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
                 },
                 parse: (src: string): IParsedSearch => {
