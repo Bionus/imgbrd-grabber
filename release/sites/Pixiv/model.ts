@@ -6,7 +6,7 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
-function parseSearch(search: string): { mode: string, tags: string[] } {
+function parseSearch(search: string): { mode: string, tags: string[], bookmarks: number | undefined } {
     const modes = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
@@ -14,6 +14,7 @@ function parseSearch(search: string): { mode: string, tags: string[] } {
     };
 
     let mode = "partial_match_for_tags";
+    let bookmarks = undefined;
     const tags = [];
 
     const parts = search.split(" ");
@@ -29,15 +30,18 @@ function parseSearch(search: string): { mode: string, tags: string[] } {
                 continue;
             }
         }
+        if (part.indexOf("bookmarks:") === 0) {
+            bookmarks = parseInt(part.substr(10), 10);
+        }
         tags.push(part);
     }
 
-    return { mode, tags };
+    return { mode, tags, bookmarks };
 }
 
 export const source: ISource = {
     name: "Pixiv",
-    modifiers: ["mode:partial", "mode:full", "mode:tc"],
+    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:"],
     forcedTokens: [],
     searchFormat: {
         and: " ",
@@ -67,7 +71,12 @@ export const source: ISource = {
                         "image_sizes=small,medium,large",
                     ];
 
-                    console.log("TAGS: " + JSON.stringify(search.tags));
+                    if (search.bookmarks > 0) {
+                        illustParams.push("user_id=" + search.bookmarks);
+                        illustParams.push("restrict=public");
+                        return "https://app-api.pixiv.net/v1/user/bookmarks/illust?" + illustParams.join("&");
+                    }
+
                     if (search.tags.length === 0) {
                         illustParams.push("content_type=illust");
                         return "https://app-api.pixiv.net/v1/illust/new?" + illustParams.join("&");
