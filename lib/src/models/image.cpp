@@ -270,7 +270,7 @@ void Image::write(QJsonObject &json) const
 
 	// FIXME: real serialization
 	json["name"] = m_name;
-	json["id"] = static_cast<int>(m_id);
+	json["id"] = QString::number(m_id);
 	json["md5"] = m_md5;
 	json["tags"] = QJsonArray::fromStringList(tags);
 	json["url"] = m_url.toString();
@@ -336,7 +336,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 
 	// Basic fields
 	m_name = json["name"].toString();
-	m_id = json["id"].toInt();
+	m_id = json["id"].toString().toULongLong();
 	m_md5 = json["md5"].toString();
 
 	// Arbitrary tokens
