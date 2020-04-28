@@ -167,7 +167,7 @@ export const source: ISource = {
             },
             gallery: {
                 url: (query: IGalleryQuery, opts: IUrlOptions): string => {
-                    return "/1.1/statuses/show.json?id=" + query.id;
+                    return "/1.1/statuses/show.json?id=" + query.id + "&tweet_mode=extended";
                 },
                 parse: (src: string): IParsedGallery => {
                     const data = JSON.parse(src);
