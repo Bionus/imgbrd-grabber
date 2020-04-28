@@ -1,8 +1,10 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QStringList>
 #include <QTimer>
 #include "functions.h"
 #include "logger.h"
