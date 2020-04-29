@@ -125,7 +125,8 @@ deploy:
       - Grabber_$BUILD_LABEL.tar.gz
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
-    draft: true
+    draft: false
+    prerelease: true
     overwrite: true
     on:
       repo: Bionus/imgbrd-grabber
@@ -140,6 +141,7 @@ deploy:
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
     draft: true
+    prerelease: false
     overwrite: true
     on:
       repo: Bionus/imgbrd-grabber
