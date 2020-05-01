@@ -6,7 +6,7 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
-function parseSearch(search: string): { mode: string, tags: string[], bookmarks: number | undefined } {
+function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number } {
     const modes = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
@@ -15,6 +15,7 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks:
 
     let mode = "partial_match_for_tags";
     let bookmarks = undefined;
+    let user = undefined;
     const tags = [];
 
     const parts = search.split(" ");
@@ -33,15 +34,18 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks:
         if (part.indexOf("bookmarks:") === 0) {
             bookmarks = parseInt(part.substr(10), 10);
         }
+        if (part.indexOf("user:") === 0) {
+            user = parseInt(part.substr(5), 10);
+        }
         tags.push(part);
     }
 
-    return { mode, tags, bookmarks };
+    return { mode, tags, bookmarks, user };
 }
 
 export const source: ISource = {
     name: "Pixiv",
-    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:"],
+    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:"],
     forcedTokens: [],
     searchFormat: {
         and: " ",
@@ -71,17 +75,27 @@ export const source: ISource = {
                         "image_sizes=small,medium,large",
                     ];
 
-                    if (search.bookmarks > 0) {
+                    // User's bookmarks
+                    if (search.bookmarks !== undefined && search.bookmarks > 0) {
                         illustParams.push("user_id=" + search.bookmarks);
                         illustParams.push("restrict=public");
                         return "https://app-api.pixiv.net/v1/user/bookmarks/illust?" + illustParams.join("&");
                     }
 
+                    // User's illusts
+                    if (search.user !== undefined && search.user > 0) {
+                        illustParams.push("user_id=" + search.user);
+                        illustParams.push("type=illust");
+                        return "https://app-api.pixiv.net/v1/user/illusts?" + illustParams.join("&");
+                    }
+
+                    // Newest (when no tag is provided)
                     if (search.tags.length === 0) {
                         illustParams.push("content_type=illust");
                         return "https://app-api.pixiv.net/v1/illust/new?" + illustParams.join("&");
                     }
 
+                    // Search by tag
                     illustParams.push("word=" + encodeURIComponent(search.tags.join(" ")));
                     illustParams.push("search_target=" + search.mode);
                     illustParams.push("sort=date_desc"); // date_desc, date_asc
