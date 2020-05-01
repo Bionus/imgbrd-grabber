@@ -4,6 +4,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMimeData>
@@ -1130,7 +1131,12 @@ void MainWindow::dropEvent(QDropEvent *event)
 	if (mimeData->hasUrls()) {
 		QList<QUrl> urlList = mimeData->urls();
 		for (int i = 0; i < urlList.size() && i < 32; ++i) {
-			loadMd5(urlList.at(i).toLocalFile(), true, false);
+			const QString local = urlList.at(i).toLocalFile();
+			if (QFileInfo(local).suffix() == "igl") {
+				m_downloadsTab->loadLinkList(local);
+			} else {
+				loadMd5(local, true, false);
+			}
 		}
 	}
 }
