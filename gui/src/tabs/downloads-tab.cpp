@@ -381,12 +381,17 @@ bool DownloadsTab::saveLinkList(const QString &filename)
 
 void DownloadsTab::loadFile()
 {
-	QString load = QFileDialog::getOpenFileName(this, tr("Load link list"), QString(), tr("Imageboard-Grabber links (*.igl)"));
-	if (load.isEmpty()) {
+	QStringList files = QFileDialog::getOpenFileNames(this, tr("Load link list"), QString(), tr("Imageboard-Grabber links (*.igl)"));
+	if (files.isEmpty()) {
 		return;
 	}
 
-	if (loadLinkList(load)) {
+	bool allOk = true;
+	for (const QString &file : files) {
+		allOk = allOk && loadLinkList(file);
+	}
+
+	if (allOk) {
 		QMessageBox::information(this, tr("Load link list"), tr("Link list loaded successfully!"));
 	} else {
 		QMessageBox::critical(this, tr("Load link list"), tr("Error opening file."));
