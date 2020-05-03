@@ -37,8 +37,10 @@ void PageApi::setLastPage(Page *page)
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
 
-	if (!page->nextPage().isEmpty()) {
+	if (!page->nextPage().isEmpty() && page->page() == m_page - 1) {
 		m_url = page->nextPage();
+	} 	else if (!page->prevPage().isEmpty() && page->page() == m_page + 1) {
+		m_url = page->prevPage();
 	}
 
 	updateUrls();
