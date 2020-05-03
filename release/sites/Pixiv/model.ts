@@ -77,6 +77,9 @@ export const source: ISource = {
 
                     // User's bookmarks
                     if (search.bookmarks !== undefined && search.bookmarks > 0) {
+                        if (query.page > 1) {
+                            return { error: "Cannot jump to arbitrary bookmark pages, have to browse from the first page." };
+                        }
                         illustParams.push("user_id=" + search.bookmarks);
                         illustParams.push("restrict=public");
                         return "https://app-api.pixiv.net/v1/user/bookmarks/illust?" + illustParams.join("&");
