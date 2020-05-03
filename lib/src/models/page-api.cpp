@@ -56,6 +56,8 @@ void PageApi::updateUrls()
 		url = m_query.url;
 	} else if (m_query.tags.count() == 1 && isUrl(m_query.tags.first())) {
 		url = m_query.tags.first();
+	} else if (!m_url.isEmpty()) {
+		url = m_url.toString();
 	} else {
 		PageUrl ret;
 		if (!m_query.gallery.isNull()) {
