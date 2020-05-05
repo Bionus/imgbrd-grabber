@@ -1382,6 +1382,7 @@ void SearchTab::setFavoriteImage(const QString &name)
 		if (fav.getName() == name) {
 			fav.setImage(m_images.first()->previewImage());
 			m_profile->emitFavorite();
+			return;
 		}
 	}
 }
