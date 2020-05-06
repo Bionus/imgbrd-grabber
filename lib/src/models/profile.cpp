@@ -153,11 +153,13 @@ Profile::Profile(QString path)
 	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
 
 	// Complete auto-complete
-	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count());
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
+	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
 	m_autoComplete.append(m_customAutoComplete);
 	for (const Favorite &fav : qAsConst(m_favorites)) {
 		m_autoComplete.append(fav.getName());
 	}
+	m_autoComplete.append(specialCompletes);
 	m_autoComplete.removeDuplicates();
 	m_autoComplete.sort();
 }
