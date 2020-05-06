@@ -8,8 +8,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify)
-	: m_sites(sites), m_interval(interval), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify)
+Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay)
+	: m_sites(sites), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify)
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -28,6 +28,11 @@ QList<Site*> Monitor::sites() const
 int Monitor::interval() const
 {
 	return m_interval;
+}
+
+int Monitor::delay() const
+{
+	return m_delay;
 }
 
 const QDateTime &Monitor::lastCheck() const
@@ -88,6 +93,7 @@ void Monitor::toJson(QJsonObject &json) const
 	json["sites"] = QJsonArray::fromStringList(sites);
 
 	json["interval"] = m_interval;
+	json["delay"] = m_delay;
 	json["lastCheck"] = m_lastCheck.toString(Qt::ISODate);
 	json["cumulated"] = m_cumulated;
     json["preciseCumulated"] = m_preciseCumulated;
@@ -116,6 +122,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	}
 
 	const int interval = json["interval"].toInt();
+	const int delay = json["delay"].toInt();
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
 	const int cumulated = json["cumulated"].toInt();
 	const bool preciseCumulated = json["preciseCumulated"].toBool();
@@ -133,7 +140,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	SearchQuery query;
 	query.read(json["query"].toObject(), profile);
 
-	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify);
+	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify, delay);
 }
 
 
@@ -141,6 +148,7 @@ bool operator==(const Monitor &lhs, const Monitor &rhs)
 {
 	return lhs.sites() == rhs.sites()
 		&& lhs.interval() == rhs.interval()
+		&& lhs.delay() == rhs.delay()
 		&& lhs.lastCheck() == rhs.lastCheck()
 		&& lhs.cumulated() == rhs.cumulated()
         && lhs.preciseCumulated() == rhs.preciseCumulated()

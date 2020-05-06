@@ -12,12 +12,13 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(QList<Site*> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true);
+		Monitor(QList<Site*> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true, int delay = 0);
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
 		QList<Site*> sites() const;
 		int interval() const;
+		int delay() const;
 		const QDateTime &lastCheck() const;
 		void setLastCheck(const QDateTime &lastCheck);
 		int cumulated() const;
@@ -37,6 +38,7 @@ class Monitor
 	private:
 		QList<Site*> m_sites;
 		int m_interval; // In seconds
+		int m_delay; // In seconds
 		QDateTime m_lastCheck;
 		int m_cumulated;
 		bool m_preciseCumulated;

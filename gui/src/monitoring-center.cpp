@@ -45,6 +45,9 @@ void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 
 bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering)
 {
+	const int delay = monitor.delay();
+	const QDateTime limit = QDateTime::currentDateTimeUtc().addSecs(-delay);
+
 	QStringList siteNames;
 	for (Site *site : monitor.sites()) {
 		siteNames.append(site->name());
@@ -74,7 +77,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 			// Filter out old images
 			for (const QSharedPointer<Image> &img : allImages) {
-				if (img->createdAt() > monitor.lastCheck()) {
+				if (img->createdAt() > monitor.lastCheck() && (delay <= 0 || img->createdAt() <= limit)) {
 					QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
 					if (detected.isEmpty()) {
 						newImagesList.append(img);
@@ -124,7 +127,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
     }
 
 	// Update monitor
-	monitor.setLastCheck(QDateTime::currentDateTimeUtc());
+	monitor.setLastCheck(limit);
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
 	m_changed = true;
 
