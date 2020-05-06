@@ -1,4 +1,5 @@
 #include "models/md5-database.h"
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QSettings>

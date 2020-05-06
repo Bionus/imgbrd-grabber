@@ -70,6 +70,7 @@ TEST_CASE("Image")
 	settings->setValue("Coloring/Fonts/characters", ",8.25,-1,5,50,0,0,0,0,0");
 	settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
 	settings->setValue("Save/md5Duplicates", "save");
+	settings->setValue("Save/md5DuplicatesSameDir", "save");
 
 	Site *site = profile->getSites().value("danbooru.donmai.us");
 	REQUIRE(site != nullptr);
@@ -262,12 +263,14 @@ TEST_CASE("Image")
 		profile->addMd5(img->md5(), "tests/resources/tmp/source.png");
 
 		settings->setValue("Save/md5Duplicates", "ignore");
+		settings->setValue("Save/md5DuplicatesSameDir", "ignore");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
 		REQUIRE(res.first() == Image::AlreadyExistsMd5);
 		REQUIRE(!file.exists());
 
 		settings->setValue("Save/md5Duplicates", "copy");
+		settings->setValue("Save/md5DuplicatesSameDir", "copy");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
 		REQUIRE(res.first() == Image::Copied);
@@ -276,6 +279,7 @@ TEST_CASE("Image")
 		file.remove();
 
 		settings->setValue("Save/md5Duplicates", "move");
+		settings->setValue("Save/md5DuplicatesSameDir", "move");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
 		REQUIRE(res.first() == Image::Moved);
