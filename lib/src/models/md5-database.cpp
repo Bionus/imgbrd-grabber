@@ -1,5 +1,6 @@
 #include "models/md5-database.h"
 #include <QFile>
+#include <QFileInfo>
 #include <QSettings>
 #include <utility>
 
@@ -71,14 +72,17 @@ void Md5Database::sync()
 	}
 }
 
-QPair<QString, QString> Md5Database::action(const QString &md5)
+QPair<QString, QString> Md5Database::action(const QString &md5, const QString &target)
 {
-	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
 	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
 
 	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
 	QString path = contains ? m_md5s[md5] : QString();
 	const bool exists = contains && QFile::exists(path);
+
+	QString action = contains && !target.isEmpty() && QFileInfo(target).dir() == QFileInfo(path).dir()
+		? m_settings->value("Save/md5DuplicatesSameDir", "save").toString()
+		: m_settings->value("Save/md5Duplicates", "save").toString();
 
 	if (contains && !exists) {
 		if (!keepDeleted) {

@@ -60,7 +60,7 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 					break;
 				}
 			}
-			const bool inMd5List = !profile->md5Action(tokens["md5"].value().toString()).second.isEmpty();
+			const bool inMd5List = !profile->md5Exists(tokens["md5"].value().toString()).isEmpty();
 
 			// Generate corresponding combination
 			QStringList metas;

@@ -122,19 +122,19 @@ TEST_CASE("Md5Database")
 
 		QPair<QString, QString> action;
 
-		action = md5s.action("new");
+		action = md5s.action("new", "");
 		REQUIRE(action.first == QString("move"));
 		REQUIRE(action.second == QString(""));
 
 		md5s.add("new", "tests/resources/image_1x1.png");
 
-		action = md5s.action("new");
+		action = md5s.action("new", "");
 		REQUIRE(action.first == QString("move"));
 		REQUIRE(action.second == QString("tests/resources/image_1x1.png"));
 
 		md5s.remove("new");
 
-		action = md5s.action("new");
+		action = md5s.action("new", "");
 		REQUIRE(action.first == QString("move"));
 		REQUIRE(action.second == QString(""));
 
@@ -150,13 +150,13 @@ TEST_CASE("Md5Database")
 
 		QPair<QString, QString> action;
 
-		action = md5s.action("new");
+		action = md5s.action("new", "");
 		REQUIRE(action.first == QString("move"));
 		REQUIRE(action.second == QString(""));
 
 		md5s.add("new", "NON_EXISTING_FILE");
 
-		action = md5s.action("new");
+		action = md5s.action("new", "");
 		REQUIRE(action.first == QString("ignore"));
 		REQUIRE(action.second == QString("NON_EXISTING_FILE"));
 
@@ -164,5 +164,31 @@ TEST_CASE("Md5Database")
 		md5s.remove("new");
 		settings.setValue("Save/md5Duplicates", "save");
 		settings.setValue("Save/keepDeletedMd5", false);
+	}
+
+
+	SECTION("Action for files in the same directory")
+	{
+		Md5Database md5s("tests/resources/md5s.txt", &settings);
+		md5s.add("new", "tests/resources/image_1x1.png");
+
+		settings.setValue("Save/md5Duplicates", "save");
+		settings.setValue("Save/md5DuplicatesSameDir", "move");
+		settings.setValue("Save/keepDeletedMd5", false);
+
+		QPair<QString, QString> action;
+
+		action = md5s.action("new", "tests/resources/different/different.png");
+		REQUIRE(action.first == QString("save"));
+		REQUIRE(action.second == QString("tests/resources/image_1x1.png"));
+
+		action = md5s.action("new", "tests/resources/same.png");
+		REQUIRE(action.first == QString("move"));
+		REQUIRE(action.second == QString("tests/resources/image_1x1.png"));
+
+		// Restore state
+		md5s.remove("new");
+		settings.setValue("Save/md5Duplicates", "save");
+		settings.setValue("Save/md5DuplicatesSameDir", "save");
 	}
 }

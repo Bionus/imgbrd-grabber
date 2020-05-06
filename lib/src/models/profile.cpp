@@ -359,9 +359,9 @@ void Profile::removeIgnored(const QString &tag)
 	emit ignoredChanged();
 }
 
-QPair<QString, QString> Profile::md5Action(const QString &md5)
+QPair<QString, QString> Profile::md5Action(const QString &md5, const QString &target)
 {
-	return m_md5s->action(md5);
+	return m_md5s->action(md5, target);
 }
 
 /**

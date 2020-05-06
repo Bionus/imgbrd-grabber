@@ -521,7 +521,7 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 
 	QFile f(path);
 	if (!f.exists() || force) {
-		const QPair<QString, QString> md5action = m_profile->md5Action(md5());
+		const QPair<QString, QString> md5action = m_profile->md5Action(md5(), path);
 		const QString &whatToDo = md5action.first;
 		const QString &md5Duplicate = md5action.second;
 

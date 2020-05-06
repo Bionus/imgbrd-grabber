@@ -19,7 +19,7 @@ class Md5Database : public QObject
 		~Md5Database() override;
 		void sync();
 
-		QPair<QString, QString> action(const QString &md5);
+		QPair<QString, QString> action(const QString &md5, const QString &target);
 		QString exists(const QString &md5);
 		void add(const QString &md5, const QString &path);
 		void set(const QString &md5, const QString &path);

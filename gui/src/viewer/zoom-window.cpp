@@ -467,7 +467,7 @@ void ZoomWindow::replyFinishedDetails()
 		}
 	}
 
-	QPair<QString, QString> md5ActionPair = m_profile->md5Action(m_image->md5());
+	QPair<QString, QString> md5ActionPair = m_profile->md5Action(m_image->md5(), !source1.isEmpty() ? source1 : source2);
 	QString md5Action = md5ActionPair.first;
 	QString md5Exists = md5ActionPair.second;
 
