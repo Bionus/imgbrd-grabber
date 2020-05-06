@@ -1,3 +1,60 @@
+// https://shimmie.shishnet.org/ext_doc/index
+
+function transformQuery(query: string): string {
+    let widthIndex: number = undefined;
+    let heightIndex: number = undefined;
+
+    const tags = query.split(" ").map(transformTag);
+    for (var i = 0; i < tags.length; ++i) {
+        const tag = tags[i];
+        if (tag.indexOf("width:") === 0) {
+            widthIndex = i;
+        } else if (tag.indexOf("height:") === 0) {
+            heightIndex = i;
+        }
+    }
+
+    // If both height and width are found, we try to transform them into a "size" operator
+    if (widthIndex !== undefined && heightIndex !== undefined) {
+        const width = tags[widthIndex].substr(6);
+        const height = tags[heightIndex].substr(7);
+
+        const bothEq = width[1] === height[1] && width[1] === "=";
+        if (width[0] === height[0] && (bothEq || (width[1] !== "=" && height[1] !== "="))) { // Ensure they both use the same operator
+            tags[heightIndex] = "size:" + width + "x" + height.substr(bothEq ? 2 : 1);
+            tags.splice(widthIndex, 1);
+        }
+    }
+
+    return tags.join(" ");
+}
+
+function transformTag(query: string): string {
+    // Ignore basic tag searches
+    const parts = query.split(":");
+    if (parts.length <= 1) {
+        return query;
+    }
+
+    // Some meta-tokens have different names than usual
+    const metaMapping: any = {
+        date: "posted",
+        downvote: "downvoted_by",
+        upvote: "upvoted_by",
+        tagcount: "tags",
+    }
+    if (parts[0] in metaMapping) {
+        parts[0] = metaMapping[parts[0]];
+    }
+
+    // Range search is not supported so should be split into two parts
+    if (parts.length == 2 && parts[1].indexOf("..") > 0) {
+        parts[1] = ">=" + parts[1].replace("..", " " + parts[0] + "<=");
+    }
+
+    return parts.join(":");
+}
+
 function completeImage(img: IImage): IImage {
     if (img.ext && img.ext[0] === ".") {
         img.ext = img.ext.substr(1);
@@ -110,7 +167,7 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
-                        return "/post/list/" + query.search + "/" + query.page;
+                        return "/post/list/" + transformQuery(query.search) + "/" + query.page;
                     }
                     return "/post/list/" + query.page;
                 },
