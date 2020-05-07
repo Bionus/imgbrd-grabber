@@ -2,6 +2,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QDir>
+#include <QFile>
 #include <QProcess>
 #include <QMainWindow>
 #include <QSettings>
