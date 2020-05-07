@@ -1378,6 +1378,11 @@ void SearchTab::toggleSource(const QString &url)
 }
 void SearchTab::setFavoriteImage(const QString &name)
 {
+	// When all images are filtered or if there are no results, we can't use any thumbnail for the new favorite
+	if (m_images.isEmpty()) {
+		return;
+	}
+
 	for (Favorite &fav : m_favorites) {
 		if (fav.getName() == name) {
 			fav.setImage(m_images.first()->previewImage());
