@@ -61,7 +61,7 @@ export const source: ISource = {
         json: {
             name: "JSON",
             auth: [],
-            maxLimit: 1000, // Actual max limit is higher but unnecessary, slow, and unreliable
+            forcedLimit: 30,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
                     if (!opts.loggedIn) {
