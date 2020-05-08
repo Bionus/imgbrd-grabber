@@ -141,6 +141,9 @@ export const source: ISource = {
                         if (image["caption"]) {
                             img.description = image["caption"];
                         }
+                        if (image["meta_single_page"] && image["meta_single_page"]["original_image_url"]) {
+                            img.file_url = image["meta_single_page"]["original_image_url"];
+                        }
                         if (!img.preview_url) {
                             img.preview_url = image["image_urls"]["medium"];
                         }
