@@ -23,6 +23,7 @@ class Downloadable
 		{
 			AlreadyExistsDisk,
 			AlreadyExistsMd5,
+			AlreadyExistsDeletedMd5,
 			Blacklisted,
 			Moved,
 			Copied,

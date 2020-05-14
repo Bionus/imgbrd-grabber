@@ -563,6 +563,9 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 			#endif
 
 			res = SaveResult::Linked;
+		} else if (!QFile::exists(md5Duplicate)) {
+			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in non-existing file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
+			return SaveResult::AlreadyExistsDeletedMd5;
 		} else {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsMd5;

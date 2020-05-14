@@ -223,7 +223,7 @@ void BatchDownloader::loadImageFinished(const QSharedPointer<Image> &img, QList<
 		m_counters[Counter::NotFound]++;
 	} else if (res == Image::SaveResult::AlreadyExistsDisk) {
 		m_counters[Counter::AlreadyExists]++;
-	} else if (res == Image::SaveResult::Blacklisted || res == Image::SaveResult::AlreadyExistsMd5) {
+	} else if (res == Image::SaveResult::Blacklisted || res == Image::SaveResult::AlreadyExistsMd5 || res == Image::SaveResult::AlreadyExistsDeletedMd5) {
 		m_counters[Counter::Ignored]++;
 	} else if (!diskError) {
 		m_counters[Counter::Downloaded]++;

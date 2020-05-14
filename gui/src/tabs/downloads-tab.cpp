@@ -984,7 +984,7 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QList<I
 		m_getAll404s++;
 	} else if (res == Image::SaveResult::AlreadyExistsDisk) {
 		m_getAllExists++;
-	} else if (res == Image::SaveResult::Blacklisted || res == Image::SaveResult::AlreadyExistsMd5) {
+	} else if (res == Image::SaveResult::Blacklisted || res == Image::SaveResult::AlreadyExistsMd5 || res == Image::SaveResult::AlreadyExistsDeletedMd5) {
 		m_getAllIgnored++;
 	} else if (!diskError) {
 		m_getAllDownloaded++;

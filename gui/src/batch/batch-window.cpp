@@ -336,6 +336,7 @@ void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 		{
 			case Downloadable::SaveResult::AlreadyExistsDisk:
 			case Downloadable::SaveResult::AlreadyExistsMd5:
+			case Downloadable::SaveResult::AlreadyExistsDeletedMd5:
 			case Downloadable::SaveResult::Blacklisted:
 				ui->tableWidget->item(i, 0)->setIcon(ignoredIcon);
 				break;
