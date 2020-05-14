@@ -304,7 +304,7 @@ void ImagePreview::contextSaveImageAs()
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);
 		} else {
-			auto downloader = new ImageDownloader(m_profile, m_image, QStringList() << path, 1, true, true, this);
+			auto downloader = new ImageDownloader(m_profile, m_image, QStringList() << path, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
 			connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 			m_downloadQueue->add(DownloadQueue::Manual, downloader);
 		}

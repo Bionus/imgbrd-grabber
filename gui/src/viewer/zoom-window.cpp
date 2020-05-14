@@ -382,7 +382,7 @@ void ZoomWindow::load(bool force)
 	if (dwl == nullptr) {
 		const Filename fn = Filename(QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
 		const QStringList paths = fn.path(*m_image.data(), m_profile, m_profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
-		dwl = new ImageDownloader(m_profile, m_image, paths, 1, false, false, this, true, force, size, false);
+		dwl = new ImageDownloader(m_profile, m_image, paths, 1, false, false, this, true, force, size, false, true);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
 	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
@@ -471,12 +471,11 @@ void ZoomWindow::replyFinishedDetails()
 	QString md5Action = md5ActionPair.first;
 	QString md5Exists = md5ActionPair.second;
 
+	QString imagePath = m_image->savePath();
+
 	// If the file already exists, we directly display it
 	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty()) {
-		m_source = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
-		m_imagePath = m_source;
-		m_image->setSavePath(m_source);
-		log(QStringLiteral("Image loaded from the file `%1`").arg(m_source));
+		imagePath = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 
 		// Update save button state
 		const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
@@ -484,19 +483,20 @@ void ZoomWindow::replyFinishedDetails()
 		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
 
 		// Fix extension when it should be guessed
-		const QString fext = m_source.section('.', -1);
+		const QString fext = imagePath.section('.', -1);
 		m_image->setFileExtension(fext);
 
-		m_finished = true;
-		m_loadedImage = true;
-		pendingUpdate();
-
-		draw();
+		// Ensure the file actually exists before trying to set it as the source
+		if (QFile::exists(imagePath)) {
+			m_source = imagePath;
+			m_image->setSavePath(m_source);
+		}
 	}
-	// If the image already has an associated file on disk
-	else if (!m_image->savePath().isEmpty() && QFile::exists(m_image->savePath())) {
-		m_imagePath = m_image->savePath();
-		log(QStringLiteral("Image loaded from the file `%1`").arg(m_imagePath));
+
+	// If a file to load the image from was found
+	if (!imagePath.isEmpty() && QFile::exists(imagePath)) {
+		m_imagePath = imagePath;
+		log(QStringLiteral("Image loaded from the file `%1`").arg(imagePath));
 
 		m_finished = true;
 		m_loadedImage = true;
@@ -1161,7 +1161,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 		const Filename fn = Filename(QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
 		const QStringList paths = fn.path(*img.data(), m_profile, m_profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
 		const Image::Size size = img->preferredDisplaySize();
-		auto dwl = new ImageDownloader(m_profile, img, paths, 1, false, false, this, true, false, size, false);
+		auto dwl = new ImageDownloader(m_profile, img, paths, 1, false, false, this, true, false, size, false, true);
 		m_imageDownloaders.insert(img, dwl);
 		dwl->save();
 	}

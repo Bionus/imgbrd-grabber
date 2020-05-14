@@ -32,14 +32,14 @@ static void addMd5(Profile *profile, const QString &path)
 }
 
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size, bool postSave)
-	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force), m_postSave(postSave)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate, bool force, Image::Size size, bool postSave, bool forceExisting)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_filename(std::move(filename)), m_path(std::move(path)), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force), m_postSave(postSave), m_forceExisting(forceExisting)
 {
 	setSize(size);
 }
 
-ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate, bool force, Image::Size size, bool postSave)
-	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force), m_postSave(postSave)
+ImageDownloader::ImageDownloader(Profile *profile, QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate, bool force, Image::Size size, bool postSave, bool forceExisting)
+	: QObject(parent), m_profile(profile), m_image(std::move(img)), m_fileDownloader(false, this), m_loadTags(false), m_paths(std::move(paths)), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate), m_force(force), m_postSave(postSave), m_forceExisting(forceExisting)
 {
 	setSize(size);
 }
@@ -199,7 +199,7 @@ void ImageDownloader::loadedSave()
 
 		// If we don't need any loading, we can return already
 		Image::SaveResult res = m_image->preSave(m_temporaryPath, m_size);
-		if (res != Image::SaveResult::NotLoaded) {
+		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
 			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
 
 			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Linked) {
