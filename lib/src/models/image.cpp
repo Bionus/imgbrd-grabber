@@ -526,7 +526,7 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 		const QString &md5Duplicate = md5action.second;
 
 		// Only create the destination directory if we're going to put a file there
-		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore") {
+		if (force || whatToDo != "ignore") {
 			const QString p = path.section(QDir::separator(), 0, -2);
 			QDir pathToFile(p), dir;
 			if (!pathToFile.exists() && !dir.mkpath(p)) {
@@ -535,7 +535,7 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 			}
 		}
 
-		if (md5Duplicate.isEmpty() || whatToDo == "save" || force) {
+		if (whatToDo == "save" || force) {
 			const QString savePath = m_sizes[size]->save(path);
 			if (!savePath.isEmpty()) {
 				log(QStringLiteral("Saving image in `%1` (from `%2`)").arg(path, savePath));

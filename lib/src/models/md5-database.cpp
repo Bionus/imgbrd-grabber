@@ -75,26 +75,34 @@ void Md5Database::sync()
 
 QPair<QString, QString> Md5Database::action(const QString &md5, const QString &target)
 {
-	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+	// If the MD5 is not found, just save the image
+	if (md5.isEmpty() || !m_md5s.contains(md5)) {
+		return { "save", "" };
+	}
 
-	const bool contains = !md5.isEmpty() && m_md5s.contains(md5);
-	QString path = contains ? m_md5s[md5] : QString();
-	const bool exists = contains && QFile::exists(path);
-
-	QString action = contains && !target.isEmpty() && QFileInfo(target).dir() == QFileInfo(path).dir()
+	// Detect if the next file and the one in the MD5 list are from the same directory, and choose the setting accordingly
+	QString path = m_md5s[md5];
+	QString action = !target.isEmpty() && QFileInfo(target).dir() == QFileInfo(path).dir()
 		? m_settings->value("Save/md5DuplicatesSameDir", "save").toString()
 		: m_settings->value("Save/md5Duplicates", "save").toString();
 
-	if (contains && !exists) {
-		if (!keepDeleted) {
-			remove(md5);
-			path = QString();
-		} else {
-			action = "ignore";
-		}
+	// If the file already exists, return its path with the relevant action
+	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+	if (QFile::exists(path)) {
+		return { action, path };
 	}
 
-	return QPair<QString, QString>(action, path);
+	// If we want to keep deleted files, we can't return a "move" action or similar, as there are no files to move
+	if (keepDeleted) {
+		if (action != "ignore") {
+			action = "save";
+		}
+		return { action, path };
+	}
+
+	// If we don't want to keep deleted files, clean-up the database and act as if we didn't find the MD5 in the first place
+	remove(md5);
+	return { "save", "" };
 }
 
 /**
@@ -104,15 +112,16 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QString &t
  */
 QString Md5Database::exists(const QString &md5)
 {
-	if (m_md5s.contains(md5)) {
-		if (QFile::exists(m_md5s[md5])) {
-			return m_md5s[md5];
-		}
-
-		if (!m_settings->value("Save/keepDeletedMd5", false).toBool()) {
-			remove(md5);
-		}
+	if (md5.isEmpty() || !m_md5s.contains(md5)) {
+		return QString();
 	}
+
+	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+	if (QFile::exists(m_md5s[md5]) || keepDeleted) {
+		return m_md5s[md5];
+	}
+
+	remove(md5);
 	return QString();
 }
 
