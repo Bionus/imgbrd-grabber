@@ -262,6 +262,7 @@ void ImagePreview::contextSaveImage()
 	QString already = getImageAlreadyExists(m_image, m_profile);
 	if (!already.isEmpty()) {
 		QFile(already).remove();
+		m_profile->removeMd5(m_image->md5());
 	} else {
 		QSettings *settings = m_profile->getSettings();
 		const QString fn = settings->value("Save/filename").toString();
