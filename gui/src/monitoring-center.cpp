@@ -81,8 +81,8 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 					QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
 					if (detected.isEmpty()) {
 						newImagesList.append(img);
-						newImagesRun++;
 					}
+					newImagesRun++;
 				}
 			}
 		}
