@@ -5,6 +5,7 @@
 #include "functions.h"
 #if !defined(Q_OS_WIN)
 	#include <QDesktopServices>
+	#include <QUrl>
 #endif
 
 
