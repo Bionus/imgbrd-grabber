@@ -1,4 +1,6 @@
 #include "utils/rename-existing/rename-existing-table-model.h"
+#include <QColor>
+#include <QPixmap>
 #include <QVariant>
 
 
