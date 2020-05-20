@@ -122,14 +122,14 @@ void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)
 	}
 
 	auto *menu = new QMenu(this);
-	menu->addAction(QIcon(":/images/icons/save.png"), tr("Download"), [this]() { batchSel(); });
+	menu->addAction(QIcon(":/images/icons/save.png"), tr("Download"), this, &DownloadsTab::batchSel);
 	menu->addSeparator();
-	menu->addAction(QIcon(":/images/icons/arrow-top.png"), tr("Move to top"), [this]() { batchMoveToTop(); });
-	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), [this]() { batchMoveUp(); });
-	menu->addAction(QIcon(":/images/icons/arrow-down.png"), tr("Move down"), [this]() { batchMoveDown(); });
-	menu->addAction(QIcon(":/images/icons/arrow-bottom.png"), tr("Move to bottom"), [this]() { batchMoveToBottom(); });
+	menu->addAction(QIcon(":/images/icons/arrow-top.png"), tr("Move to top"), this, &DownloadsTab::batchMoveToTop);
+	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), this, &DownloadsTab::batchMoveUp);
+	menu->addAction(QIcon(":/images/icons/arrow-down.png"), tr("Move down"), this, &DownloadsTab::batchMoveDown);
+	menu->addAction(QIcon(":/images/icons/arrow-bottom.png"), tr("Move to bottom"), this, &DownloadsTab::batchMoveToBottom);
 	menu->addSeparator();
-	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this]() { batchClearSelGroups(); });
+	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, &DownloadsTab::batchClearSelGroups);
 	menu->exec(QCursor::pos());
 }
 
