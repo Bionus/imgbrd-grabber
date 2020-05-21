@@ -5,6 +5,7 @@
     - link: /docs/search.html
     - link: /docs/favorites.html
     - link: /docs/website-login.html
+    - link: /docs/shortcuts.html
     - link: /docs/faq.html
 - name: Commands
   children:

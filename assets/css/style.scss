@@ -269,6 +269,36 @@ section .flags .flag p {
 	line-height: 16px;
 }
 
+section table {
+	width: 100%;
+	border: 1px dotted #999;
+	border-radius: 4px;
+	margin: 0 0 10px;
+}
+
+section table tr th {
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid darkorange;
+	padding: 5px;
+}
+
+section table tr td {
+	padding: 1px 5px;
+}
+section table tr:first-child td {
+	padding-top: 5px;
+}
+section table tr:last-child td {
+	padding-bottom: 5px;
+}
+
+section table kbd {
+	background-color: #f8f8f8;
+	border: 1px solid #ccc;
+	color: #333;
+}
+
 
 /* Footer */
 
