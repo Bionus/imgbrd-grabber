@@ -80,6 +80,11 @@ QLocale LanguageLoader::localeFromString(const QString &lang)
 		{ "Spanish", QLocale::Spanish }
 	};
 	if (languages.contains(lang)) {
+		// If using the same language as the system, directly use the system's locale
+		if (QLocale::system().language() == languages[lang]) {
+			return QLocale::system();
+		}
+
 		return QLocale(languages[lang]);
 	}
 
