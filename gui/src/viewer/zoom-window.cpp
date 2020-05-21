@@ -736,7 +736,9 @@ void ZoomWindow::update(bool onlySize, bool force)
 		return;
 	}
 
-	const bool needScaling = (m_displayImage.width() > m_labelImage->width() || m_displayImage.height() > m_labelImage->height());
+	const bool needScaling = m_settings->value("Zoom/scaleUp", false).toBool()
+		|| m_displayImage.width() > m_labelImage->width()
+		|| m_displayImage.height() > m_labelImage->height();
 	if (needScaling && (onlySize || m_loadedImage || force)) {
 		const Qt::TransformationMode mode = onlySize ? Qt::FastTransformation : Qt::SmoothTransformation;
 		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));

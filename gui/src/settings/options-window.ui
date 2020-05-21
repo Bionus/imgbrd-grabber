@@ -1081,7 +1081,7 @@
              <x>0</x>
              <y>0</y>
              <width>363</width>
-             <height>387</height>
+             <height>418</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1661,6 +1661,13 @@
           </property>
          </widget>
         </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkZoomViewSamples">
+          <property name="text">
+           <string>Use image samples</string>
+          </property>
+         </widget>
+        </item>
         <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkZoomShowTagCount">
           <property name="text">
@@ -1880,10 +1887,10 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkZoomViewSamples">
+        <item row="13" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageScaleUp">
           <property name="text">
-           <string>Use image samples</string>
+           <string>Scale up small images to fit window</string>
           </property>
          </widget>
         </item>
