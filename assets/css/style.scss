@@ -59,6 +59,9 @@ header .nav {
 		border-radius: 0;
 	}
 }
+header .nav.navbar-bottom {
+	border-radius: 10px 10px 0 0;
+}
 header .nav > li > a:focus,
 header .nav > li > a:hover {
 	background-color: #f5f5ff;
