@@ -1,6 +1,7 @@
 #ifndef LANGUAGE_LOADER_H
 #define LANGUAGE_LOADER_H
 
+#include <QLocale>
 #include <QMap>
 #include <QObject>
 #include <QString>
@@ -21,6 +22,9 @@ class LanguageLoader : public QObject
 
 	public slots:
 		bool setLanguage(const QString &lang);
+
+	protected:
+		QLocale localeFromString(const QString &lang);
 
 	private:
 		QString m_path;

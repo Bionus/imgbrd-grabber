@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QLocale>
+#include <QMap>
 #include <QSettings>
 #include <utility>
 #include "logger.h"
@@ -49,9 +50,38 @@ bool LanguageLoader::setLanguage(const QString &lang)
 {
 	log(QStringLiteral("Setting language to '%1'...").arg(lang), Logger::Info);
 
-	QLocale::setDefault(QLocale(lang));
-
 	const bool general = m_translator.load(m_path + lang + ".qm");
 	const bool qt = m_qtTranslator.load(m_path + "qt/" + lang + ".qm");
+
+	QLocale::setDefault(localeFromString(lang));
+
 	return general && qt;
+}
+
+QLocale LanguageLoader::localeFromString(const QString &lang)
+{
+	// Special case for simplified Chinese because we need to set the "script" parameter
+	if (lang == QStringLiteral("ChineseSimplified")) {
+		return QLocale(QLocale::Chinese, QLocale::SimplifiedChineseScript, QLocale::AnyCountry);
+	}
+
+	static const QMap<QString, QLocale::Language> languages
+	{
+		{ "English", QLocale::English },
+		{ "French", QLocale::French },
+		{ "German", QLocale::German },
+		{ "Indonesian", QLocale::Indonesian },
+		{ "Italian", QLocale::Italian },
+		{ "Japanese", QLocale::Japanese },
+		{ "Korean", QLocale::Korean },
+		{ "Polish", QLocale::Polish },
+		{ "Portuguese", QLocale::Portuguese },
+		{ "Russian", QLocale::Russian },
+		{ "Spanish", QLocale::Spanish }
+	};
+	if (languages.contains(lang)) {
+		return QLocale(languages[lang]);
+	}
+
+	return QLocale(tr("en_US")); // TODO: only use the line below after translations are updated
 }
