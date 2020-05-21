@@ -20,6 +20,9 @@ class ConcurrentMultiQueue : public QObject
 	public slots:
 		void next();
 
+	protected slots:
+		void nextInternal();
+
 	signals:
 		void dequeued(QVariant next);
 		void finished();

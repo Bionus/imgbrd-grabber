@@ -28,11 +28,17 @@ void ConcurrentMultiQueue::append(int queue, QVariant item)
 
 	if (m_activeWorkers.load() < m_globalConcurrency) {
 		m_activeWorkers.fetchAndAddRelaxed(1);
-		QTimer::singleShot(0, this, SLOT(next()));
+		next();
 	}
 }
 
 void ConcurrentMultiQueue::next()
+{
+	// Avoid a stack overflow if the call to "dequeue" directly calls "next"
+	QTimer::singleShot(0, this, SLOT(nextInternal()));
+}
+
+void ConcurrentMultiQueue::nextInternal()
 {
 	int index = 0;
 	while (index < m_queues.count() && m_queues[index].isEmpty()) {
