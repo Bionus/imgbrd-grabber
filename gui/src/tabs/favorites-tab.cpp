@@ -124,7 +124,6 @@ void FavoritesTab::updateFavorites()
 		m_favorites = reversed(m_favorites);
 	}
 
-	const QString format = tr("MM/dd/yyyy");
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
@@ -134,7 +133,7 @@ void FavoritesTab::updateFavorites()
 	const int dim = imageSize + borderSize * 2;
 
 	for (Favorite &fav : m_favorites) {
-		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		const QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		auto *l = new QVBoxLayout;
 		l->setMargin(0);
@@ -176,7 +175,7 @@ void FavoritesTab::updateFavorites()
 			}
 		}
 		if (display.contains("d")) {
-			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + fav.getLastViewed().toString(format) + ")";
+			label += "<br/>(" + QString::number(fav.getNote()) + " % - " + fav.getLastViewed().date().toString(Qt::DefaultLocaleShortDate) + ")";
 		}
 
 		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
@@ -220,7 +219,7 @@ void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>>
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
 	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
@@ -228,7 +227,7 @@ void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
 }
 
 void FavoritesTab::setTags(const QString &tags, bool preload)
