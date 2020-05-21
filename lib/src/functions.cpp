@@ -392,7 +392,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
  */
 QString stripTags(QString str)
 {
-	static QRegularExpression strip(QStringLiteral("<[^>]*>"));
+	static const QRegularExpression strip(QStringLiteral("<[^>]*>"));
 	return str.remove(strip);
 }
 
@@ -448,7 +448,7 @@ QUrl setExtension(QUrl url, const QString &extension)
 
 bool isUrl(const QString &str)
 {
-	static QRegularExpression regexUrl(QStringLiteral("^https?://[^\\s/$.?#].[^\\s]*$"));
+	static const QRegularExpression regexUrl(QStringLiteral("^https?://[^\\s/$.?#].[^\\s]*$"));
 	return regexUrl.match(str).hasMatch();
 }
 
@@ -702,7 +702,7 @@ QString fixCloudflareEmail(const QString &a)
 }
 QString fixCloudflareEmails(QString html)
 {
-	static QRegularExpression rx("<span class=\"__cf_email__\" data-cfemail=\"([^\"]+)\">\\[[^<]+\\]<\\/span>");
+	static const QRegularExpression rx("<span class=\"__cf_email__\" data-cfemail=\"([^\"]+)\">\\[[^<]+\\]<\\/span>");
 	auto matches = rx.globalMatch(html);
 	while (matches.hasNext()) {
 		auto match = matches.next();
@@ -724,7 +724,7 @@ QString getFileMd5(const QString &path)
 
 QString getFilenameMd5(const QString &fileName, const QString &format)
 {
-	QRegularExpression regx("%([^%]*)%");
+	static const QRegularExpression regx("%([^%]*)%");
 	QString reg = "^" + QRegExp::escape(format) + "$";
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
@@ -733,12 +733,12 @@ QString getFilenameMd5(const QString &fileName, const QString &format)
 		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
 	}
 
-	QRegularExpression rx(reg);
+	const QRegularExpression rx(reg);
 	const auto match = rx.match(fileName);
 	if (match.hasMatch()) {
 		const QString md5 = match.captured("md5");
 
-		static QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
+		static const QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
 		if (rxMd5.match(md5).hasMatch()) {
 			return md5;
 		}

@@ -42,7 +42,7 @@ void Logger::setExitOnError(bool val)
 
 void Logger::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
-	static QMap<QtMsgType, LogLevel> messageTypes
+	static const QMap<QtMsgType, LogLevel> messageTypes
 	{
 		{ QtMsgType::QtDebugMsg, Logger::Debug },
 		#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))

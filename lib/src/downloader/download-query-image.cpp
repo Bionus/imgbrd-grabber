@@ -51,7 +51,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, Profile *profile)
 	}
 
 	site = sites[siteName];
-	static QRegularExpression nlExpr("(?<=^|[^\\\\])\\\\n");
+	static const QRegularExpression nlExpr("(?<=^|[^\\\\])\\\\n");
 	filename = json["filename"].toString().replace(nlExpr, "\n").replace("\\\\n", "\\n");
 	path = json["path"].toString();
 

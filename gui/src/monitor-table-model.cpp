@@ -55,7 +55,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 
 	// Icon in the first column
 	if (role == Qt::DecorationRole && index.column() == 0) {
-		static QMap<MonitoringCenter::MonitoringStatus, QIcon> s_iconMap
+		static const QMap<MonitoringCenter::MonitoringStatus, QIcon> s_iconMap
 		{
 			{ MonitoringCenter::Waiting, QIcon(":/images/status/pending.png") },
 			{ MonitoringCenter::Checking, QIcon(":/images/status/downloading.png") },

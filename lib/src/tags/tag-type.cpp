@@ -29,7 +29,7 @@ const QString &TagType::name() const
 
 int TagType::number() const
 {
-	static QMap<QString, int> shortTypes
+	static const QMap<QString, int> shortTypes
 	{
 		{ "general", 0 },
 		{ "artist", 1 },

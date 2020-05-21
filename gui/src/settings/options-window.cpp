@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QNetworkProxy>
+#include <QRegularExpression>
 #include <QSignalMapper>
 #include <QSqlDatabase>
 #include <ui_options-window.h>

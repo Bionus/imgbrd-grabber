@@ -82,7 +82,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Login
 	const QString loginType = site->setting("login/type", "url").toString();
-	static QMap<QString, QString> typeNames {
+	static const QMap<QString, QString> typeNames
+	{
 		{ "url", tr("Through URL") },
 		{ "http_basic", tr("HTTP Basic") },
 		{ "get", tr("GET") },
@@ -90,7 +91,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "oauth1", tr("OAuth 1") },
 		{ "oauth2", tr("OAuth 2") }
 	};
-	static QMap<QString, QString> fieldLabels {
+	static const QMap<QString, QString> fieldLabels
+	{
 		{ "pseudo", tr("Username") },
 		{ "password", tr("Password") },
 		{ "salt", tr("Salt") },

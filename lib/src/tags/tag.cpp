@@ -36,7 +36,7 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 
 		const int sepPos = m_text.indexOf(':');
 		if (sepPos != -1) {
-			static QMap<int, QString> prep =
+			static const QMap<int, QString> prep
 			{
 				{ 0, QStringLiteral("artist") },
 				{ 1, QStringLiteral("copyright") },

@@ -2,6 +2,7 @@
 #include <QCloseEvent>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QRegularExpression>
 #include <QSettings>
 #include <ui_tag-tab.h>
 #include "downloader/download-query-group.h"
@@ -92,7 +93,7 @@ void TagTab::load()
 
 	// Search an image directly by typing its MD5
 	if (m_settings->value("enable_md5_fast_search", true).toBool()) {
-		static QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
+		static const QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
 		if (md5Matcher.match(search).hasMatch()) {
 			search.prepend("md5:");
 		}

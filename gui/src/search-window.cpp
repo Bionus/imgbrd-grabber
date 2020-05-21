@@ -4,6 +4,7 @@
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
+#include <QRegularExpression>
 #include <QSettings>
 #include <ui_search-window.h>
 #include "functions.h"
@@ -41,25 +42,25 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
 	if (tags.contains("order:")) {
-		QRegularExpression reg("order:([^ ]+)");
+		static const QRegularExpression reg("order:([^ ]+)");
 		auto match = reg.match(tags);
 		ui->comboOrder->setCurrentIndex(orders.indexOf(match.captured(1)) + 1);
 		tags.remove(match.captured(0));
 	}
 	if (tags.contains("rating:")) {
-		QRegularExpression reg("-?rating:[^ ]+");
+		static const QRegularExpression reg("-?rating:[^ ]+");
 		auto match = reg.match(tags);
 		ui->comboRating->setCurrentIndex(ratings.indexOf(match.captured(0)) + 1);
 		tags.remove(match.captured(0));
 	}
 	if (tags.contains("status:")) {
-		QRegularExpression reg("status:([^ ]+)");
+		static const QRegularExpression reg("status:([^ ]+)");
 		auto match = reg.match(tags);
 		ui->comboStatus->setCurrentIndex(status.indexOf(match.captured(1)) + 1);
 		tags.remove(match.captured(0));
 	}
 	if (tags.contains("date:")) {
-		QRegularExpression reg("date:([^ ]+)");
+		static const QRegularExpression reg("date:([^ ]+)");
 		auto match = reg.match(tags);
 		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), QStringLiteral("MM/dd/yyyy")));
 		ui->lineDate->setText(match.captured(1));

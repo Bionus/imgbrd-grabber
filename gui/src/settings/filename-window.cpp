@@ -54,7 +54,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 	text = text.replace("\\", "\\\\").replace("'", "\\'");
 
-	QRegExp date("%date:format=([^%]+)%");
+	static const QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;
 	while ((pos = date.indexIn(text, pos)) != -1) {
 		QString cap = date.cap(1);

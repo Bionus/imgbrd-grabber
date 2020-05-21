@@ -93,7 +93,7 @@ void ImageFactory::parseDate(const QString &val, QVariantMap &data)
 
 void ImageFactory::parseRating(const QString &val, QVariantMap &data)
 {
-	static QMap<QString, QString> assoc =
+	static const QMap<QString, QString> assoc
 	{
 		{ "s", "safe" },
 		{ "q", "questionable" },

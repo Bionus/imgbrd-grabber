@@ -70,7 +70,7 @@ void TextEdit::doColor()
 	}
 
 	// Color meta-tags
-	static QRegularExpression regexOr(" ~([^ ]+)"),
+	static const QRegularExpression regexOr(" ~([^ ]+)"),
 		regexExclude(" -([^ ]+)"),
 		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
 		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),

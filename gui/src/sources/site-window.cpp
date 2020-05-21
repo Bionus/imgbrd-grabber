@@ -1,6 +1,7 @@
 #include "sources/site-window.h"
 #include <QFile>
 #include <QPushButton>
+#include <QRegularExpression>
 #include <ui_site-window.h>
 #include "functions.h"
 #include "helpers.h"

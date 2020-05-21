@@ -30,24 +30,28 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	}
 
 	const QString source = prefs.readAll();
-	QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-	QMap<QString, QString> firefox, assoc;
-	assoc["blacklist"] = "blacklistedtags";
-	assoc["generalTagsSeparator"] = "separator";
-	assoc["multipleArtistsAll"] = "artist_useall";
-	assoc["multipleArtistsDefault"] = "artist_value";
-	assoc["multipleArtistsSeparator"] = "artist_sep";
-	assoc["multipleCharactersAll"] = "character_useall";
-	assoc["multipleCharactersDefault"] = "character_value";
-	assoc["multipleCharactersSeparator"] = "character_sep";
-	assoc["multipleCopyrightsAll"] = "copyright_useall";
-	assoc["multipleCopyrightsDefault"] = "copyright_value";
-	assoc["multipleCopyrightsSeparator"] = "copyright_sep";
-	assoc["noArtist"] = "artist_empty";
-	assoc["noCharacter"] = "character_empty";
-	assoc["noCopyright"] = "copyright_empty";
-	assoc["targetFolder"] = "path";
-	assoc["targetName"] = "filename";
+	static const QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
+	static const QMap<QString, QString> assoc
+	{
+		{ "blacklist", "blacklistedtags" },
+		{ "generalTagsSeparator", "separator" },
+		{ "multipleArtistsAll", "artist_useall" },
+		{ "multipleArtistsDefault", "artist_value" },
+		{ "multipleArtistsSeparator", "artist_sep" },
+		{ "multipleCharactersAll", "character_useall" },
+		{ "multipleCharactersDefault", "character_value" },
+		{ "multipleCharactersSeparator", "character_sep" },
+		{ "multipleCopyrightsAll", "copyright_useall" },
+		{ "multipleCopyrightsDefault", "copyright_value" },
+		{ "multipleCopyrightsSeparator", "copyright_sep" },
+		{ "noArtist", "artist_empty" },
+		{ "noCharacter", "character_empty" },
+		{ "noCopyright", "copyright_empty" },
+		{ "targetFolder", "path" },
+		{ "targetName", "filename" },
+	};
+
+	QMap<QString, QString> firefox;
 
 	auto matches = rx.globalMatch(source);
 	while (matches.hasNext()) {

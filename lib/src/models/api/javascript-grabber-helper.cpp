@@ -21,7 +21,7 @@ QJSValue JavascriptGrabberHelper::regexMatches(const QString &regex, const QStri
 {
 	QJSValue ret = m_engine.newArray();
 
-	QRegularExpression reg(regex, QRegularExpression::DotMatchesEverythingOption);
+	const QRegularExpression reg(regex, QRegularExpression::DotMatchesEverythingOption);
 	const QStringList &groups = reg.namedCaptureGroups();
 	auto matches = reg.globalMatch(txt);
 

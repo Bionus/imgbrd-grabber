@@ -1,6 +1,7 @@
 #include "settings/start-window.h"
 #include <QDir>
 #include <QFileDialog>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 #include <ui_start-window.h>

@@ -50,7 +50,7 @@ static QDateTime ageToDateImage;
 static QDateTime ageToDateTestNow;
 static QDateTime ageToDate(const QString &text)
 {
-	static QRegularExpression rx("^(\\d+)(\\w+)$");
+	static const QRegularExpression rx("^(\\d+)(\\w+)$");
 	auto match = rx.match(text);
 	if (!match.hasMatch()) {
 		return QDateTime();

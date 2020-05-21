@@ -104,7 +104,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
 
 	// Sizes
-	static QMap<Image::Size, QString> prefixes =
+	static const QMap<Image::Size, QString> prefixes
 	{
 		{ Image::Size::Full, "" },
 		{ Image::Size::Sample, "sample_" },
@@ -230,7 +230,7 @@ void Image::init()
 }
 
 
-static QMap<Image::Size, QString> sizeToStringMap
+static const QMap<Image::Size, QString> sizeToStringMap
 {
 	{ Image::Size::Full, "full" },
 	{ Image::Size::Sample, "sample" },
@@ -987,7 +987,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	QMap<QString, Token> tokens;
 
 	// Pool
-	QRegularExpression poolRegexp("pool:(\\d+)");
+	static const QRegularExpression poolRegexp("pool:(\\d+)");
 	QRegularExpressionMatch poolMatch = poolRegexp.match(m_search.join(' '));
 	tokens.insert("pool", Token(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 

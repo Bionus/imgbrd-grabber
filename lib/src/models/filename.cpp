@@ -169,7 +169,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		}
 
 		// "num" special token
-		QRegularExpression rxNum("%num(?::.+)?%");
+		static const QRegularExpression rxNum("%num(?::.+)?%");
 		auto numMatch = rxNum.match(cFilename);
 		if (numMatch.hasMatch()) {
 			FilenameParser parser(numMatch.captured());
@@ -231,8 +231,9 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	for (int i = 0; i < cnt; ++i) {
 		if (flags.testFlag(PathFlag::Fix)) {
 			// Trim directory names
+			static const QRegularExpression rxTrimDirs(" */ *");
 			fns[i] = fns[i].trimmed();
-			fns[i].replace(QRegularExpression(" */ *"), "/");
+			fns[i].replace(rxTrimDirs, "/");
 
 			// Max filename size option
 			const int limit = !flags.testFlag(PathFlag::CapLength) ? 0 : settings->value("Save/limit").toInt();
@@ -250,7 +251,8 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 			// We remove empty directory names
 			const QChar sep = QDir::separator();
-			fns[i].replace(QRegularExpression("(.)" + QRegularExpression::escape(sep) + "{2,}"), QString("\\1") + sep);
+			static const QRegularExpression rxMultiDirs("(.)" + QRegularExpression::escape(sep) + "{2,}");
+			fns[i].replace(rxMultiDirs, QString("\\1") + sep);
 		}
 	}
 
