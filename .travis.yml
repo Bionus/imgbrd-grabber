@@ -34,9 +34,9 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - *shared_deps
-            - g++-7
+            - g++-6
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
       dist: bionic
       sudo: required
       services:

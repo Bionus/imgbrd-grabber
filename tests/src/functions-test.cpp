@@ -14,14 +14,18 @@
 QDateTime fileCreationDate(const QString &path)
 {
 	QFileInfo fi(path);
-	#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-		return fi.created();
+	#ifdef Q_OS_WIN
+		#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+			return fi.created();
+		#else
+			QDateTime d = fi.birthTime();
+			if (d.isValid()) {
+				return d;
+			}
+			return fi.metadataChangeTime();
+		#endif
 	#else
-		QDateTime d = fi.birthTime();
-		if (d.isValid()) {
-			return d;
-		}
-		return fi.metadataChangeTime();
+		return fi.lastModified(); // You can't properly change the "creation" time (st_ctime) so we change the mtime on unix
 	#endif
 }
 
@@ -299,28 +303,28 @@ TEST_CASE("Functions")
 		REQUIRE(parseMarkdown("issue 123") == QString("issue 123"));
 	}
 
-	#if !defined(Q_OS_MACOS)
-		SECTION("SetFileCreationDate")
-		{
-			QString path = "tests/resources/pages/behoimi.org/results.json";
-			QDateTime date = QDateTime::currentDateTimeUtc();
+#ifdef Q_OS_WIN
+	SECTION("SetFileCreationDate")
+	{
+		QString path = "tests/resources/pages/behoimi.org/results.json";
+		QDateTime date = QDateTime::currentDateTimeUtc();
 
-			setFileCreationDate(path, date);
+		REQUIRE(setFileCreationDate(path, date));
 
-			QDateTime created = fileCreationDate(path);
-			REQUIRE(created.toTime_t() == date.toTime_t());
-		}
-		SECTION("SetFileCreationDateUtf8")
-		{
-			QString path = "tests/resources/你好.txt";
-			QDateTime date = QDateTime::currentDateTimeUtc();
+		QDateTime created = fileCreationDate(path);
+		REQUIRE(created.toTime_t() == date.toTime_t());
+	}
+	SECTION("SetFileCreationDateUtf8")
+	{
+		QString path = "tests/resources/你好.txt";
+		QDateTime date = QDateTime::currentDateTimeUtc();
 
-			setFileCreationDate(path, date);
+		REQUIRE(setFileCreationDate(path, date));
 
-			QDateTime created = fileCreationDate(path);
-			REQUIRE(created.toTime_t() == date.toTime_t());
-		}
-	#endif
+		QDateTime created = fileCreationDate(path);
+		REQUIRE(created.toTime_t() == date.toTime_t());
+	}
+#endif
 
 	SECTION("GetExternalLogFilesSuffixes")
 	{
