@@ -1,4 +1,5 @@
 #include "tabs/favorites-tab.h"
+#include <QMenu>
 #include <QMessageBox>
 #include <QSettings>
 #include <QtMath>
@@ -331,7 +332,7 @@ void FavoritesTab::viewed()
 
 	m_profile->emitFavorite();
 }
-void FavoritesTab::setFavoriteViewed(const QString &tag)
+void FavoritesTab::setFavoriteViewed(const QString &tag, QDateTime date)
 {
 	log(QStringLiteral("Marking \"%1\" as viewed...").arg(tag));
 
@@ -341,10 +342,15 @@ void FavoritesTab::setFavoriteViewed(const QString &tag)
 	}
 
 	Favorite &fav = m_favorites[index];
-	fav.setLastViewed(QDateTime::currentDateTime());
 
-	for (Monitor &monitor : fav.getMonitors()) {
-		monitor.setCumulated(0, true);
+	if (!date.isValid()) {
+		fav.setLastViewed(QDateTime::currentDateTime());
+
+		for (Monitor &monitor : fav.getMonitors()) {
+			monitor.setCumulated(0, true);
+		}
+	} else {
+		fav.setLastViewed(date);
 	}
 
 	DONE();
@@ -386,6 +392,26 @@ void FavoritesTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img)
+{
+	SearchTab::thumbnailContextMenu(menu, img);
+
+	if (m_currentTags.isEmpty() || !img->createdAt().isValid()) {
+		return;
+	}
+
+	QAction *first = menu->actions().first();
+
+	// Mark as "last viewed"
+	QAction *actionMarkAsLastViewed = new QAction(QIcon(":/images/icons/eye.png"), tr("Mark as last viewed"), menu);
+	connect(actionMarkAsLastViewed, &QAction::triggered, [this, img]() {
+		this->setFavoriteViewed(m_currentTags, img->createdAt());
+	});
+	menu->insertAction(first, actionMarkAsLastViewed);
+
+	menu->insertSeparator(first);
 }
 
 void FavoritesTab::updateTitle()

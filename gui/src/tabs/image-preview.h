@@ -27,7 +27,7 @@ class ImagePreview : public QObject
 	public:
 		ImagePreview(QSharedPointer<Image> image, QWidget *container, Profile *profile, DownloadQueue *downloadQueue, MainWindow *mainWindow, QObject *parent = nullptr);
 		~ImagePreview();
-		void setCustomContextMenu(std::function<void (QMenu *)> customContextMenu);
+		void setCustomContextMenu(std::function<void (QMenu *, const QSharedPointer<Image> &)> customContextMenu);
 
 	public slots:
 		void load();
@@ -69,7 +69,7 @@ class ImagePreview : public QObject
 		int m_childrenCount = 0;
 		QPixmap m_thumbnail;
 		QPointer<QBouton> m_bouton = nullptr;
-		std::function<void (QMenu *)> m_customContextMenu = nullptr;
+		std::function<void (QMenu *, const QSharedPointer<Image> &)> m_customContextMenu = nullptr;
 };
 
 #endif // IMAGE_PREVIEW_H

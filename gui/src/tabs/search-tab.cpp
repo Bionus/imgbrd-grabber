@@ -811,8 +811,10 @@ QWidget *SearchTab::createImageThumbnail()
 	return w;
 }
 
-void SearchTab::thumbnailContextMenu(QMenu *menu)
+void SearchTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img)
 {
+	Q_UNUSED(img);
+
 	QAction *first = menu->actions().first();
 
 	// Save selected
@@ -892,7 +894,7 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	auto *widget = createImageThumbnail();
 
 	auto *preview = new ImagePreview(img, widget, m_profile, m_downloadQueue, m_parent, this);
-	preview->setCustomContextMenu([this](QMenu *menu) { this->thumbnailContextMenu(menu); });
+	preview->setCustomContextMenu([this](QMenu *menu, const QSharedPointer<Image> &img) { this->thumbnailContextMenu(menu, img); });
 	m_boutons.insert(img.data(), preview);
 	m_thumbnailsLoading.insert(preview, img);
 

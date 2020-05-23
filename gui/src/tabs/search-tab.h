@@ -67,7 +67,7 @@ class SearchTab : public QWidget
 		TextEdit *createAutocomplete();
 		QWidget *createImageThumbnail();
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
-		void thumbnailContextMenu(QMenu *menu);
+		virtual void thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img);
 		QList<QSharedPointer<Page>> getPagesToDownload();
 
 	protected slots:

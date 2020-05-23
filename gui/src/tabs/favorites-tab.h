@@ -13,6 +13,7 @@ namespace Ui
 
 class MainWindow;
 class Page;
+class QMenu;
 
 class FavoritesTab : public SearchTab
 {
@@ -28,6 +29,7 @@ class FavoritesTab : public SearchTab
 
 	protected:
 		void changeEvent(QEvent *event) override;
+		void thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image> &img) override;
 
 	public slots:
 		// Zooms
@@ -45,7 +47,7 @@ class FavoritesTab : public SearchTab
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
-		void setFavoriteViewed(const QString &tag);
+		void setFavoriteViewed(const QString &tag, QDateTime date = {});
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent *) override;

@@ -68,5 +68,6 @@
         <file>images/icons/open.png</file>
         <file>images/icons/arrow-bottom.png</file>
         <file>images/icons/arrow-top.png</file>
+        <file>images/icons/eye.png</file>
     </qresource>
 </RCC>

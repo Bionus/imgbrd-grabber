@@ -249,7 +249,7 @@ void ImagePreview::customContextMenuRequested()
 
 	// Custom elements
 	if (m_customContextMenu != nullptr) {
-		m_customContextMenu(menu);
+		m_customContextMenu(menu, m_image);
 	}
 
 	menu->insertSeparator(first);
@@ -319,7 +319,7 @@ void ImagePreview::contextSaveImageProgress(const QSharedPointer<Image> &img, qi
 	setDownloadProgress(v1, v2);
 }
 
-void ImagePreview::setCustomContextMenu(std::function<void (QMenu *)> customContextMenu)
+void ImagePreview::setCustomContextMenu(std::function<void (QMenu *, const QSharedPointer<Image> &)> customContextMenu)
 {
 	m_customContextMenu = customContextMenu;
 }
