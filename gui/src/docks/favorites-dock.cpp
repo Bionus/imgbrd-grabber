@@ -10,7 +10,7 @@
 
 
 FavoritesDock::FavoritesDock(Profile *profile, QWidget *parent)
-	: QWidget(parent), ui(new Ui::FavoritesDock), m_favorites(profile->getFavorites())
+	: Dock(parent), ui(new Ui::FavoritesDock), m_favorites(profile->getFavorites())
 {
 	ui->setupUi(this);
 

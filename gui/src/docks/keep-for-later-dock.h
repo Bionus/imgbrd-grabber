@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QWidget>
+#include "dock.h"
 
 
 namespace Ui
@@ -14,7 +15,7 @@ namespace Ui
 class Profile;
 class QEvent;
 
-class KeepForLaterDock : public QWidget
+class KeepForLaterDock : public Dock
 {
 	Q_OBJECT
 

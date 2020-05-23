@@ -13,7 +13,7 @@
 
 
 SettingsDock::SettingsDock(Profile *profile, QWidget *parent)
-	: QWidget(parent), ui(new Ui::SettingsDock), m_profile(profile), m_settings(profile->getSettings())
+	: Dock(parent), ui(new Ui::SettingsDock), m_profile(profile), m_settings(profile->getSettings())
 {
 	ui->setupUi(this);
 

@@ -101,6 +101,9 @@ class MainWindow : public QMainWindow
 		void dragEnterEvent(QDragEnterEvent *event) override;
 		void dropEvent(QDropEvent *event) override;
 
+	signals:
+		void tabChanged(SearchTab *tab);
+
 	protected:
 		void initialLoginsDone();
 

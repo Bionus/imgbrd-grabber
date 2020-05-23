@@ -8,7 +8,7 @@
 
 
 KeepForLaterDock::KeepForLaterDock(Profile *profile, QWidget *parent)
-	: QWidget(parent), ui(new Ui::KeepForLaterDock), m_profile(profile)
+	: Dock(parent), ui(new Ui::KeepForLaterDock), m_profile(profile)
 {
 	ui->setupUi(this);
 

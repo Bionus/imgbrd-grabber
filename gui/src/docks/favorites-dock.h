@@ -4,6 +4,7 @@
 #include <QList>
 #include <QString>
 #include <QWidget>
+#include "dock.h"
 
 
 namespace Ui
@@ -16,7 +17,7 @@ class Favorite;
 class Profile;
 class QEvent;
 
-class FavoritesDock : public QWidget
+class FavoritesDock : public Dock
 {
 	Q_OBJECT
 

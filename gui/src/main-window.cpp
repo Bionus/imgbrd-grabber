@@ -621,6 +621,7 @@ void MainWindow::currentTabChanged(int tab)
 				tb->load();
 				m_tabsWaitingForPreload.removeAll(tb);
 			} else if (m_currentTab != searchTab) {
+				emit tabChanged(tb);
 				setTags(tb->results());
 				setWiki(tb->wiki());
 			}

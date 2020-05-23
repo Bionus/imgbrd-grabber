@@ -3,6 +3,7 @@
 
 #include <QStringList>
 #include <QWidget>
+#include "dock.h"
 
 
 namespace Ui
@@ -15,7 +16,7 @@ class Profile;
 class QEvent;
 class QSettings;
 
-class SettingsDock : public QWidget
+class SettingsDock : public Dock
 {
 	Q_OBJECT
 
