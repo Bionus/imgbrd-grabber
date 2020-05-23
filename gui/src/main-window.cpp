@@ -25,6 +25,7 @@
 #include "about-window.h"
 #include "analytics.h"
 #include "danbooru-downloader-importer.h"
+#include "docks/favorites-dock.h"
 #include "docks/keep-for-later-dock.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
@@ -343,8 +344,10 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
 
 	// "Favorites" dock
-	connect(m_profile, &Profile::favoritesChanged, this, &MainWindow::updateFavorites);
-	updateFavorites();
+	auto *favoritesDock = new FavoritesDock(m_profile, this);
+	connect(favoritesDock, &FavoritesDock::open, this, &MainWindow::loadTagNoTab);
+	connect(favoritesDock, &FavoritesDock::openInNewTab, this, &MainWindow::loadTagTab);
+	ui->dockFavoritesLayout->addWidget(favoritesDock);
 
 	// "Keep for later" dock
 	auto *kflDock = new KeepForLaterDock(m_profile, this);
@@ -702,33 +705,6 @@ Site *MainWindow::getSelectedSiteOrDefault()
 	}
 
 	return m_selectedSites.first();
-}
-
-void MainWindow::updateFavorites()
-{
-	clearLayout(ui->layoutFavoritesDock);
-
-	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
-	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
-	bool reverse = (ui->comboAscFav->currentIndex() == 1);
-
-	if (order == "note") {
-		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote);
-	} else if (order == "lastviewed") {
-		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastViewed);
-	} else {
-		std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByName);
-	}
-	if (reverse) {
-		m_favorites = reversed(m_favorites);
-	}
-
-	for (const Favorite &fav : qAsConst(m_favorites)) {
-		QLabel *lab = new QLabel(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()), this);
-		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
-		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate)));
-		ui->layoutFavoritesDock->addWidget(lab);
-	}
 }
 
 

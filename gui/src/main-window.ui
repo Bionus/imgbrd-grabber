@@ -239,129 +239,20 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContentsFavorites">
-    <layout class="QVBoxLayout" name="verticalLayout_5">
+   <widget class="QWidget" name="dockFavoritesContents">
+    <layout class="QVBoxLayout" name="dockFavoritesLayout">
      <property name="leftMargin">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="topMargin">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="bottomMargin">
-      <number>6</number>
+      <number>0</number>
      </property>
-     <item>
-      <widget class="QComboBox" name="comboOrderFav">
-       <item>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Note</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Last viewed</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboAscFav">
-       <item>
-        <property name="text">
-         <string>Ascending</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Descending</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QScrollArea" name="scrollArea_5">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_5">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>178</width>
-          <height>72</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="layoutFavoritesDock">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-          </layout>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -755,9 +646,6 @@
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>dockInternetScroll</tabstop>
-  <tabstop>comboOrderFav</tabstop>
-  <tabstop>comboAscFav</tabstop>
-  <tabstop>scrollArea_5</tabstop>
   <tabstop>scrollArea_4</tabstop>
   <tabstop>lineFolder</tabstop>
   <tabstop>buttonFolder</tabstop>
@@ -929,38 +817,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboOrderFav</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateFavorites()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>51</x>
-     <y>196</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>99</x>
-     <y>251</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>comboAscFav</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateFavorites()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>58</x>
-     <y>222</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>98</x>
-     <y>279</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>labelWiki</sender>
    <signal>linkActivated(QString)</signal>
    <receiver>MainWindow</receiver>
@@ -983,8 +839,8 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>429</y>
+     <x>136</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
@@ -1047,8 +903,8 @@
    <slot>updateCompleters()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>178</x>
-     <y>429</y>
+     <x>153</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>
