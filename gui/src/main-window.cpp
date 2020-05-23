@@ -28,6 +28,7 @@
 #include "docks/favorites-dock.h"
 #include "docks/keep-for-later-dock.h"
 #include "docks/settings-dock.h"
+#include "docks/wiki-dock.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-queue.h"
@@ -352,6 +353,12 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(kflDock, &KeepForLaterDock::openInNewTab, this, &MainWindow::loadTagTab);
 	ui->dockKflLayout->addWidget(kflDock);
 
+	// "Wiki" dock
+	auto *wikiDock = new WikiDock(this);
+	connect(wikiDock, &WikiDock::open, this, &MainWindow::loadTagNoTab);
+	connect(this, &MainWindow::tabChanged, wikiDock, &WikiDock::tabChanged);
+	ui->dockWikiLayout->addWidget(wikiDock);
+
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
 
@@ -623,7 +630,6 @@ void MainWindow::currentTabChanged(int tab)
 			} else if (m_currentTab != searchTab) {
 				emit tabChanged(tb);
 				setTags(tb->results());
-				setWiki(tb->wiki());
 			}
 			m_currentTab = searchTab;
 		}
@@ -869,15 +875,6 @@ void MainWindow::utilTagLoader()
 {
 	auto *win = new TagLoader(m_profile);
 	win->show();
-}
-
-void MainWindow::setWiki(const QString &wiki, SearchTab *from)
-{
-	if (from != nullptr && from != m_currentTab) {
-		return;
-	}
-
-	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
 
 void MainWindow::tabContextMenuRequested(const QPoint &pos)

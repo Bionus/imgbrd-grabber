@@ -248,7 +248,8 @@ void SearchTab::clear()
 	// Clear page details
 	m_tags.clear();
 	m_parent->setTags(m_tags, this);
-	m_parent->setWiki(QString(), this);
+	m_wiki.clear();
+	emit wikiChanged();
 
 	// Clear layout
 	for (int i = 0; i < ui_layoutResults->rowCount(); ++i) {
@@ -502,7 +503,7 @@ void SearchTab::finishedLoadingTags(Page *page)
 	// Wiki
 	if (!page->wiki().isEmpty()) {
 		m_wiki = page->wiki();
-		m_parent->setWiki(m_wiki, this);
+		emit wikiChanged();
 	}
 
 	updatePaginationButtons(page);

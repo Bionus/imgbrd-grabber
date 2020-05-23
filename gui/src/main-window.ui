@@ -263,8 +263,8 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_6">
+   <widget class="QWidget" name="dockWikiContents">
+    <layout class="QVBoxLayout" name="dockWikiLayout">
      <property name="leftMargin">
       <number>0</number>
      </property>
@@ -277,53 +277,6 @@
      <property name="bottomMargin">
       <number>0</number>
      </property>
-     <item>
-      <widget class="QScrollArea" name="scrollArea_4">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_4">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>68</width>
-          <height>45</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_11">
-         <item>
-          <widget class="QLabel" name="labelWiki">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextBrowserInteraction</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -571,7 +524,6 @@
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>dockInternetScroll</tabstop>
-  <tabstop>scrollArea_4</tabstop>
  </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>
@@ -734,22 +686,6 @@
     <hint type="destinationlabel">
      <x>39</x>
      <y>136</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelWiki</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>0</x>
-     <y>480</y>
     </hint>
    </hints>
   </connection>

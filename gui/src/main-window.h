@@ -94,7 +94,6 @@ class MainWindow : public QMainWindow
 		void setSource(const QString &site);
 		void setTags(const QList<Tag> &tags, SearchTab *from = nullptr);
 		void initialLoginsFinished();
-		void setWiki(const QString &wiki, SearchTab *from = nullptr);
 		void tabContextMenuRequested(const QPoint &pos);
 
 		// Drag & drop

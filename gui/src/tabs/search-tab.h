@@ -140,6 +140,8 @@ class SearchTab : public QWidget
 		void batchAddGroup(const DownloadQueryGroup &);
 		void batchAddUnique(const DownloadQueryImage &);
 
+		void wikiChanged();
+
 	protected:
 		Profile *m_profile;
 		DownloadQueue *m_downloadQueue;
