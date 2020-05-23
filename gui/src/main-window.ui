@@ -160,7 +160,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>190</width>
+          <width>68</width>
           <height>45</height>
          </rect>
         </property>
@@ -296,7 +296,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>190</width>
+          <width>68</width>
           <height>45</height>
          </rect>
         </property>
@@ -334,98 +334,23 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QFormLayout" name="formLayout">
+   <widget class="QWidget" name="dockSettingsContents">
+    <layout class="QFormLayout" name="dockSettingsLayout">
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Folder</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QLineEdit" name="lineFolder"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonFolder">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>24</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>24</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string notr="true">...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QLabel" name="labelFilename">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QPushButton" name="buttonInitSettings">
-         <property name="text">
-          <string>Reset</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonSaveSettings">
-         <property name="text">
-          <string>Save</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="comboFilename">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAtTop</enum>
-       </property>
-      </widget>
-     </item>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
     </layout>
    </widget>
   </widget>
@@ -647,10 +572,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>dockInternetScroll</tabstop>
   <tabstop>scrollArea_4</tabstop>
-  <tabstop>lineFolder</tabstop>
-  <tabstop>buttonFolder</tabstop>
-  <tabstop>buttonInitSettings</tabstop>
-  <tabstop>buttonSaveSettings</tabstop>
  </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>
@@ -833,22 +754,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>lineFolder</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>saveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>136</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>0</x>
-     <y>398</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionAddpooltab</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -893,22 +798,6 @@
     <hint type="destinationlabel">
      <x>0</x>
      <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineFolder</sender>
-   <signal>editingFinished()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateCompleters()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>153</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>126</x>
-     <y>540</y>
     </hint>
    </hints>
   </connection>

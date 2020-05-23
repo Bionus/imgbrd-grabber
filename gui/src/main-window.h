@@ -27,6 +27,7 @@ class Favorite;
 class MonitoringCenter;
 class MonitorsTab;
 class QSettings;
+class SettingsDock;
 class Site;
 class TabSelector;
 class Tag;
@@ -90,11 +91,6 @@ class MainWindow : public QMainWindow
 		void onFirstLoad();
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
-		void on_buttonSaveSettings_clicked();
-		void on_buttonInitSettings_clicked();
-		void saveSettings();
-		void on_buttonFolder_clicked();
-		void updateCompleters();
 		void setSource(const QString &site);
 		void setTags(const QList<Tag> &tags, SearchTab *from = nullptr);
 		void initialLoginsFinished();
@@ -124,13 +120,13 @@ class MainWindow : public QMainWindow
 		DownloadsTab *m_downloadsTab;
 		MonitorsTab *m_monitorsTab;
 		LogTab *m_logTab;
-		QStringList m_lineFilename_completer, m_lineFolder_completer;
 		bool m_restore;
 		QList<Tag> m_currentTags;
 		QLinkedList<QJsonObject> m_closedTabs;
 		NetworkManager m_networkManager;
 		TabSelector *m_tabSelector;
 		DownloadQueue *m_downloadQueue;
+		SettingsDock *m_settingsDock;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;

@@ -27,6 +27,7 @@
 #include "danbooru-downloader-importer.h"
 #include "docks/favorites-dock.h"
 #include "docks/keep-for-later-dock.h"
+#include "docks/settings-dock.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-queue.h"
@@ -335,13 +336,9 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		}
 	}
 
-	on_buttonInitSettings_clicked();
-
-	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
-	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer, ui->lineFolder));
-	// m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
-	// ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
-	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
+	// "Settings" dock
+	m_settingsDock = new SettingsDock(m_profile, this);
+	ui->dockSettingsLayout->addWidget(m_settingsDock);
 
 	// "Favorites" dock
 	auto *favoritesDock = new FavoritesDock(m_profile, this);
@@ -454,7 +451,7 @@ void MainWindow::onFirstLoad()
 	// Open startup window
 	auto *swin = new StartWindow(m_profile, this);
 	connect(swin, &StartWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
-	connect(swin, &StartWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
+	connect(swin, &StartWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
 	connect(swin, &StartWindow::sourceChanged, this, &MainWindow::setSource);
 	swin->show();
 }
@@ -797,7 +794,7 @@ void MainWindow::options()
 
 	auto *options = new OptionsWindow(m_profile, this);
 	connect(options, &OptionsWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
-	connect(options, &OptionsWindow::settingsChanged, this, &MainWindow::on_buttonInitSettings_clicked);
+	connect(options, &OptionsWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
 	connect(options, &QDialog::accepted, this, &MainWindow::optionsClosed);
 	options->show();
 
@@ -890,93 +887,6 @@ void MainWindow::tabContextMenuRequested(const QPoint &pos)
 	menu->addAction(ui->actionAddtab);
 	menu->addAction(ui->actionRestoreLastClosedTab);
 	menu->exec(QCursor::pos());
-}
-
-void MainWindow::on_buttonFolder_clicked()
-{
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
-	if (!folder.isEmpty()) {
-		ui->lineFolder->setText(folder);
-		updateCompleters();
-		saveSettings();
-	}
-}
-void MainWindow::on_buttonSaveSettings_clicked()
-{
-	QString folder = fixFilename("", ui->lineFolder->text());
-	if (!QDir(folder).exists()) {
-		QDir::root().mkpath(folder);
-	}
-
-	m_settings->setValue("Save/path_real", folder);
-	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
-	saveSettings();
-}
-void MainWindow::on_buttonInitSettings_clicked()
-{
-	// Reload filename history
-	QFile f(m_profile->getPath() + "/filenamehistory.txt");
-	QStringList filenames;
-	if (f.open(QFile::ReadOnly | QFile::Text)) {
-		QString line;
-		while ((line = f.readLine()) > 0) {
-			QString l = line.trimmed();
-			if (!l.isEmpty() && !filenames.contains(l)) {
-				filenames.append(l);
-				ui->comboFilename->addItem(l);
-			}
-		}
-		f.close();
-	}
-
-	// Update quick settings dock
-	ui->lineFolder->setText(m_settings->value("Save/path_real").toString());
-	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
-
-	// Save settings
-	saveSettings();
-}
-void MainWindow::updateCompleters()
-{
-	if (ui->lineFolder->text() != m_settings->value("Save/path").toString()) {
-		m_lineFolder_completer.append(ui->lineFolder->text());
-		ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
-	}
-	/*if (ui->labelFilename->text() != m_settings->value("Save/filename").toString()) {
-		m_lineFilename_completer.append(ui->lineFilename->text());
-		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
-	}*/
-}
-void MainWindow::saveSettings()
-{
-	// Filename combobox
-	QString txt = ui->comboFilename->currentText();
-	for (int i = ui->comboFilename->count() - 1; i >= 0; --i) {
-		if (ui->comboFilename->itemText(i) == txt) {
-			ui->comboFilename->removeItem(i);
-		}
-	}
-	ui->comboFilename->insertItem(0, txt);
-	ui->comboFilename->setCurrentIndex(0);
-	QString message;
-	Filename fn(ui->comboFilename->currentText());
-	fn.isValid(m_profile, &message);
-	ui->labelFilename->setText(message);
-
-	// Save filename history
-	QFile f(m_profile->getPath() + "/filenamehistory.txt");
-	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		for (int i = qMax(0, ui->comboFilename->count() - 50); i < ui->comboFilename->count(); ++i) {
-			f.write(QString(ui->comboFilename->itemText(i) + "\n").toUtf8());
-		}
-		f.close();
-	}
-
-	// Update settings
-	QString folder = fixFilename("", ui->lineFolder->text());
-	m_settings->setValue("Save/path", folder);
-	m_settings->setValue("Save/filename", ui->comboFilename->currentText());
-	m_settings->sync();
 }
 
 
