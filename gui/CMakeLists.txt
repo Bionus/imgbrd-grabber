@@ -74,6 +74,7 @@ file(GLOB SOURCES
 	"src/main/main.cpp"
 	"src/*.cpp"
 	"src/batch/*.cpp"
+	"src/docks/*.cpp"
 	"src/settings/*.cpp"
 	"src/sources/*.cpp"
 	"src/tabs/*.cpp"

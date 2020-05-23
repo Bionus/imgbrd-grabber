@@ -25,6 +25,7 @@
 #include "about-window.h"
 #include "analytics.h"
 #include "danbooru-downloader-importer.h"
+#include "docks/keep-for-later-dock.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-queue.h"
@@ -341,10 +342,15 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
 
+	// "Favorites" dock
 	connect(m_profile, &Profile::favoritesChanged, this, &MainWindow::updateFavorites);
-	connect(m_profile, &Profile::keptForLaterChanged, this, &MainWindow::updateKeepForLater);
 	updateFavorites();
-	updateKeepForLater();
+
+	// "Keep for later" dock
+	auto *kflDock = new KeepForLaterDock(m_profile, this);
+	connect(kflDock, &KeepForLaterDock::open, this, &MainWindow::loadTagNoTab);
+	connect(kflDock, &KeepForLaterDock::openInNewTab, this, &MainWindow::loadTagTab);
+	ui->dockKflLayout->addWidget(kflDock);
 
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
@@ -722,21 +728,6 @@ void MainWindow::updateFavorites()
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
 		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate)));
 		ui->layoutFavoritesDock->addWidget(lab);
-	}
-}
-void MainWindow::updateKeepForLater()
-{
-	QStringList kfl = m_profile->getKeptForLater();
-
-	clearLayout(ui->dockKflScrollLayout);
-
-	for (const QString &tag : kfl) {
-		auto *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
-		taglabel->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%1</a>)").arg(tag));
-		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-		connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &MainWindow::loadTagTab);
-		connect(taglabel, &QAffiche::linkActivated, this, &MainWindow::loadTagNoTab);
-		ui->dockKflScrollLayout->addWidget(taglabel);
 	}
 }
 

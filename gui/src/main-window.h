@@ -59,7 +59,6 @@ class MainWindow : public QMainWindow
 		void changeEvent(QEvent *event) override;
 		// Favorites
 		void updateFavorites();
-		void updateKeepForLater();
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr);
 		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true, SearchTab *source = nullptr);
