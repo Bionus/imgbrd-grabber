@@ -1,6 +1,5 @@
 #include "docks/favorites-dock.h"
 #include <QEvent>
-#include <QLabel>
 #include <QStringList>
 #include <ui_favorites-dock.h>
 #include "functions.h"
@@ -58,10 +57,12 @@ void FavoritesDock::refresh()
 	}
 
 	for (const Favorite &fav : qAsConst(m_favorites)) {
-		QLabel *lab = new QLabel(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()), this);
+		QAffiche *lab = new QAffiche(QString(fav.getName()), 0, QColor(), this);
+		lab->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()));
 		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate)));
 
-		connect(lab, SIGNAL(linkActivated(QString)), this, SIGNAL(openInNewTab(QString)));
+		connect(lab, SIGNAL(linkActivated(QString)), this, SIGNAL(open(QString)));
+		connect(lab, SIGNAL(middleClicked(QString)), this, SIGNAL(openInNewTab(QString)));
 
 		ui->layoutFavorites->addWidget(lab);
 	}
