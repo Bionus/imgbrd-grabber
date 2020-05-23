@@ -190,8 +190,10 @@ void ImageDownloader::loadedSave()
 		}
 		if (allExists) {
 			log(QStringLiteral("File already exists: `%1`").arg(m_paths.first()), Logger::Info);
-			for (const QString &path : qAsConst(m_paths)) {
-				addMd5(m_profile, path);
+			if (m_addMd5) {
+				for (const QString &path : qAsConst(m_paths)) {
+					addMd5(m_profile, path);
+				}
 			}
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::AlreadyExistsDisk));
 			return;
@@ -383,7 +385,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 		// Don't overwrite already existing files
 		if (QFile::exists(file) || (!suffix.isEmpty() && QFile::exists(path))) {
 			log(QStringLiteral("File already exists: `%1`").arg(file), Logger::Info);
-			if (suffix.isEmpty()) {
+			if (suffix.isEmpty() && m_addMd5) {
 				addMd5(m_profile, file);
 			}
 			result.append({ path, size, Image::SaveResult::AlreadyExistsDisk });
