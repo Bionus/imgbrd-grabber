@@ -998,7 +998,7 @@ void MainWindow::loadTag(const QString &tag, bool newTab, bool background, bool 
 		return;
 	}
 
-	if (newTab) {
+	if (newTab || m_tabs.isEmpty()) {
 		addTab(tag, background, save, source);
 	} else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count()) {
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
