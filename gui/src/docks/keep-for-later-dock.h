@@ -29,6 +29,12 @@ class KeepForLaterDock : public Dock
 	protected slots:
 		void refresh();
 
+		// Context menu
+		void setHover(const QString &tag);
+		void clearHover();
+		void contextMenu(const QPoint &pos);
+		void emitOpenInNewTab();
+
 	signals:
 		void open(const QString &tag);
 		void openInNewTab(const QString &tag);
@@ -36,6 +42,8 @@ class KeepForLaterDock : public Dock
 	private:
 		Ui::KeepForLaterDock *ui;
 		Profile *m_profile;
+		bool m_isHover = false;
+		QString m_hover;
 };
 
 #endif // KEEP_FOR_LATER_DOCK_H

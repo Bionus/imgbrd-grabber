@@ -83,11 +83,28 @@
         </spacer>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="layoutTags">
-         <property name="spacing">
-          <number>0</number>
+        <widget class="QWidget" name="widgetTags" native="true">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
          </property>
-        </layout>
+         <layout class="QVBoxLayout" name="layoutTags">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacerBottom">
@@ -111,17 +128,25 @@
  <resources>
   <include location="../../resources/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>widgetTags</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>KeepForLaterDock</receiver>
+   <slot>contextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>124</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
-  <slot>updateBatchGroups(int,int)</slot>
-  <slot>addGroup()</slot>
-  <slot>addUnique()</slot>
-  <slot>batchMoveUp()</slot>
-  <slot>batchMoveDown()</slot>
-  <slot>batchSel()</slot>
-  <slot>getAll()</slot>
-  <slot>batchClear()</slot>
-  <slot>batchClearSel()</slot>
-  <slot>batchKeepForLaterDockleContextMenu(QPoint)</slot>
+  <slot>contextMenu(QPoint)</slot>
  </slots>
 </ui>
