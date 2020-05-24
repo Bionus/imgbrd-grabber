@@ -9,7 +9,7 @@ WikiDock::WikiDock(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	connect(ui->labelWiki, &QLabel::linkActivated, this, WikiDock::open);
+	connect(ui->labelWiki, &QLabel::linkActivated, this, &WikiDock::open);
 }
 
 WikiDock::~WikiDock()

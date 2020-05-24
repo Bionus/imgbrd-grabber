@@ -11,6 +11,7 @@ class Profile;
 class SearchTab;
 class MainWindow;
 class QVariant;
+class QWidget;
 
 class TabsLoader
 {
