@@ -327,17 +327,6 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_selectedSites.append(site);
 	}
 
-	// Initial login on selected sources
-	m_waitForLogin = 0;
-	if (m_selectedSites.isEmpty()) {
-		initialLoginsDone();
-	} else {
-		m_waitForLogin += m_selectedSites.count();
-		for (Site *site : qAsConst(m_selectedSites)) {
-			site->login();
-		}
-	}
-
 	// "Settings" dock
 	m_settingsDock = new SettingsDock(m_profile, this);
 	ui->dockSettingsLayout->addWidget(m_settingsDock);
@@ -366,6 +355,17 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(tagsDock, &TagsDock::openInNewTab, this, &MainWindow::loadTagTab);
 	connect(this, &MainWindow::tabChanged, tagsDock, &TagsDock::tabChanged);
 	ui->dockTagsLayout->addWidget(tagsDock);
+
+	// Initial login on selected sources
+	m_waitForLogin = 0;
+	if (m_selectedSites.isEmpty()) {
+		initialLoginsDone();
+	} else {
+		m_waitForLogin += m_selectedSites.count();
+		for (Site *site : qAsConst(m_selectedSites)) {
+			site->login();
+		}
+	}
 
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
@@ -421,11 +421,16 @@ void MainWindow::initialLoginsDone()
 		addTab();
 	}
 
+	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
+	m_forcedTab = -1;
+
 	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
 	m_loaded = true;
 
-	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
-	m_forcedTab = -1;
+	// Can be null if not a SearchTab
+	if (m_currentTab != nullptr) {
+		emit tabChanged(m_currentTab);
+	}
 
 	m_monitoringCenter->start();
 }
