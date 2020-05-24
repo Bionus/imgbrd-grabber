@@ -66,11 +66,16 @@ void FavoritesDock::refresh()
 		m_favorites = reversed(m_favorites);
 	}
 
+	int i = 0;
 	for (const Favorite &fav : qAsConst(m_favorites)) {
 		QAffiche *lab = new QAffiche(QString(fav.getName()), 0, QColor(), this);
 		lab->setText(fav.getName());
 		lab->setToolTip("<img src=\"" + fav.getImagePath() + "\" /><br/>" + tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(Qt::DefaultLocaleShortDate)));
 		lab->setCursor(Qt::PointingHandCursor);
+
+		if (i++ % 2 == 1) {
+			lab->setStyleSheet("QAffiche { background-color: rgba(128, 128, 128, 10%); }");
+		}
 
 		connect(lab, SIGNAL(clicked(QString)), this, SIGNAL(open(QString)));
 		connect(lab, SIGNAL(middleClicked(QString)), this, SIGNAL(openInNewTab(QString)));
