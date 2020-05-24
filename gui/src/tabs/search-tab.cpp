@@ -157,7 +157,7 @@ void SearchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 	std::sort(tagList.begin(), tagList.end(), sortTagsByCount);
 
 	m_tags = tagList;
-	m_parent->setTags(m_tags, this);
+	emit tagsChanged();
 }
 
 QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, QString *meant)
@@ -247,7 +247,7 @@ void SearchTab::clear()
 
 	// Clear page details
 	m_tags.clear();
-	m_parent->setTags(m_tags, this);
+	emit tagsChanged();
 	m_wiki.clear();
 	emit wikiChanged();
 

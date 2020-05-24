@@ -79,9 +79,6 @@ class MainWindow : public QMainWindow
 		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);
 		void loadTagTab(const QString &tag);
 		void loadTagNoTab(const QString &tag);
-		void linkHovered(const QString &tag);
-		void contextMenu();
-		void openInNewTab();
 		// System tray
 		void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 		void trayMessageClicked();
@@ -92,7 +89,6 @@ class MainWindow : public QMainWindow
 		void init(const QStringList &args, const QMap<QString, QString> &params);
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void setSource(const QString &site);
-		void setTags(const QList<Tag> &tags, SearchTab *from = nullptr);
 		void initialLoginsFinished();
 		void tabContextMenuRequested(const QPoint &pos);
 

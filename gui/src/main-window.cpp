@@ -28,6 +28,7 @@
 #include "docks/favorites-dock.h"
 #include "docks/keep-for-later-dock.h"
 #include "docks/settings-dock.h"
+#include "docks/tags-dock.h"
 #include "docks/wiki-dock.h"
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
@@ -359,6 +360,13 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(this, &MainWindow::tabChanged, wikiDock, &WikiDock::tabChanged);
 	ui->dockWikiLayout->addWidget(wikiDock);
 
+	// "Tags" dock
+	auto *tagsDock = new TagsDock(m_profile, this);
+	connect(tagsDock, &TagsDock::open, this, &MainWindow::loadTagNoTab);
+	connect(tagsDock, &TagsDock::openInNewTab, this, &MainWindow::loadTagTab);
+	connect(this, &MainWindow::tabChanged, tagsDock, &TagsDock::tabChanged);
+	ui->dockTagsLayout->addWidget(tagsDock);
+
 	log(QStringLiteral("End of initialization"), Logger::Debug);
 }
 
@@ -629,35 +637,11 @@ void MainWindow::currentTabChanged(int tab)
 				m_tabsWaitingForPreload.removeAll(tb);
 			} else if (m_currentTab != searchTab) {
 				emit tabChanged(tb);
-				setTags(tb->results());
 			}
 			m_currentTab = searchTab;
 		}
 		Analytics::getInstance().sendScreenView(searchTab->screenName());
 	}
-}
-
-void MainWindow::setTags(const QList<Tag> &tags, SearchTab *from)
-{
-	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex()) {
-		return;
-	}
-
-	clearLayout(ui->dockInternetScrollLayout);
-	m_currentTags = tags;
-
-	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
-	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-	connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &MainWindow::loadTagTab);
-	connect(taglabel, &QAffiche::linkHovered, this, &MainWindow::linkHovered);
-	connect(taglabel, &QAffiche::linkActivated, this, &MainWindow::loadTagNoTab);
-	taglabel->setText(TagStylist(m_profile).stylished(tags, true, true).join("<br/>"));
-
-	// Context menu
-	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(taglabel, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenu);
-
-	ui->dockInternetScrollLayout->addWidget(taglabel);
 }
 
 void MainWindow::closeCurrentTab()
@@ -916,24 +900,6 @@ void MainWindow::loadTagTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : QUrl::fromPercentEncoding(tag.toUtf8()), true); }
 void MainWindow::loadTagNoTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : QUrl::fromPercentEncoding(tag.toUtf8()), false); }
-void MainWindow::linkHovered(const QString &tag)
-{
-	m_link = QUrl::fromPercentEncoding(tag.toUtf8());
-}
-void MainWindow::contextMenu()
-{
-	if (m_link.isEmpty()) {
-		return;
-	}
-
-	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTags, QUrl(), m_profile, false, this);
-	connect(menu, &TagContextMenu::openNewTab, this, &MainWindow::openInNewTab);
-	menu->exec(QCursor::pos());
-}
-void MainWindow::openInNewTab()
-{
-	addTab(m_link);
-}
 
 
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)

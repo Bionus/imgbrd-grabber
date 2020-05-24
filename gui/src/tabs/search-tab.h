@@ -140,6 +140,7 @@ class SearchTab : public QWidget
 		void batchAddGroup(const DownloadQueryGroup &);
 		void batchAddUnique(const DownloadQueryImage &);
 
+		void tagsChanged();
 		void wikiChanged();
 
 	protected:
