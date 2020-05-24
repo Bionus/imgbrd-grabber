@@ -53,7 +53,7 @@
           <string>Between 0 and 100, the note can be used to sort the favorites in preference order.</string>
          </property>
          <property name="text">
-          <string>Note</string>
+          <string>Priority</string>
          </property>
         </widget>
        </item>
