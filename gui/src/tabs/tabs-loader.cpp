@@ -4,17 +4,22 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSettings>
+#include <QVariant>
+#include "downloads-tab.h"
+#include "favorites-tab.h"
 #include "gallery-tab.h"
+#include "log-tab.h"
 #include "logger.h"
 #include "main-window.h"
 #include "models/profile.h"
+#include "monitors-tab.h"
 #include "pool-tab.h"
 #include "tag-tab.h"
 #include "ui_pool-tab.h"
 #include "ui_tag-tab.h"
 
 
-bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &currentTab, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
+bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, QVariant &currentTab, Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
 	const bool preload = settings->value("preloadAllTabs", false).toBool();
@@ -73,7 +78,12 @@ bool TabsLoader::load(const QString &path, QList<SearchTab*> &allTabs, int &curr
 	{
 		case 2:
 		{
-			currentTab = object["current"].toInt();
+			if (object["current"].isString()) {
+				currentTab = object["current"].toString();
+			} else {
+				currentTab = object["current"].toInt();
+			}
+
 			QJsonArray tabs = object["tabs"].toArray();
 			for (auto tabJson : tabs) {
 				QJsonObject infos = tabJson.toObject();
@@ -115,7 +125,7 @@ SearchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, DownloadQueue
 	return nullptr;
 }
 
-bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, SearchTab *currentTab)
+bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, QWidget *currentTab)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly)) {
@@ -129,10 +139,25 @@ bool TabsLoader::save(const QString &path, QList<SearchTab*> &allTabs, SearchTab
 		tabsJson.append(tabJson);
 	}
 
+	// Find tab index
+	// TODO(Bionus): just remember the overall index over all opened tabs
+	QVariant current;
+	if (qobject_cast<FavoritesTab*>(currentTab) != nullptr) {
+		current = "favorites";
+	} else if (qobject_cast<DownloadsTab*>(currentTab) != nullptr) {
+		current = "downloads";
+	} else if (qobject_cast<MonitorsTab*>(currentTab) != nullptr) {
+		current = "monitors";
+	} else if (qobject_cast<LogTab*>(currentTab) != nullptr) {
+		current = "log";
+	} else {
+		current = allTabs.indexOf(qobject_cast<SearchTab*>(currentTab));
+	}
+
 	// Generate result
 	QJsonObject full;
 	full["version"] = 2;
-	full["current"] = allTabs.indexOf(currentTab);
+	full["current"] = QJsonValue::fromVariant(current);
 	full["tabs"] = tabsJson;
 
 	// Write result

@@ -6,6 +6,7 @@
 #include <QLinkedList>
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include <QVariant>
 #include "language-loader.h"
 #include "network/network-manager.h"
 
@@ -107,7 +108,7 @@ class MainWindow : public QMainWindow
 		QList<Favorite> &m_favorites;
 		int m_waitForLogin;
 		bool m_loaded;
-		int m_forcedTab;
+		QVariant m_forcedTab;
 		QSettings *m_settings;
 		QString m_link;
 		LanguageLoader m_languageLoader;

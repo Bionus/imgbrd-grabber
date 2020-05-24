@@ -67,7 +67,7 @@
 
 
 MainWindow::MainWindow(Profile *profile)
-	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_forcedTab(-1), m_languageLoader(savePath("languages/", true)), m_currentTab(nullptr)
+	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_languageLoader(savePath("languages/", true)), m_currentTab(nullptr)
 {}
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
@@ -379,7 +379,7 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 		QFileInfo info(args[0]);
 		if (info.suffix() == QLatin1String("igl")) {
 			m_downloadsTab->loadLinkList(info.absoluteFilePath());
-			m_forcedTab = m_tabs.size() + 1;
+			m_forcedTab = "downloads";
 			return;
 		}
 
@@ -421,8 +421,21 @@ void MainWindow::initialLoginsDone()
 		addTab();
 	}
 
-	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
-	m_forcedTab = -1;
+	if (m_forcedTab.type() == QMetaType::QString) {
+		QString name = m_forcedTab.toString();
+		if (name == "favorites") {
+			ui->tabWidget->setCurrentWidget(m_favoritesTab);
+		} else if (name == "downloads") {
+			ui->tabWidget->setCurrentWidget(m_downloadsTab);
+		} else if (name == "monitors") {
+			ui->tabWidget->setCurrentWidget(m_monitorsTab);
+		} else if (name == "log") {
+			ui->tabWidget->setCurrentWidget(m_logTab);
+		}
+	} else {
+		ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab.toInt()));
+	}
+	m_forcedTab.clear();
 
 	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
 	m_loaded = true;
@@ -548,13 +561,12 @@ void MainWindow::addSearchTab(SearchTab *w, bool background, bool save, SearchTa
 
 bool MainWindow::saveTabs(const QString &filename)
 {
-	auto currentSearchTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
-	return TabsLoader::save(filename, m_tabs, currentSearchTab);
+	return TabsLoader::save(filename, m_tabs, ui->tabWidget->currentWidget());
 }
 bool MainWindow::loadTabs(const QString &filename)
 {
 	QList<SearchTab*> tabs;
-	int currentTab;
+	QVariant currentTab;
 
 	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_downloadQueue, this)) {
 		return false;
