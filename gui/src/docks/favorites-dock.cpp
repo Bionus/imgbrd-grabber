@@ -35,6 +35,17 @@ void FavoritesDock::changeEvent(QEvent *event)
 	QWidget::changeEvent(event);
 }
 
+void FavoritesDock::changeSortDirection()
+{
+	m_descending = !m_descending;
+
+	static const QIcon asc(":/images/icons/arrow-down.png");
+	static const QIcon desc(":/images/icons/arrow-up.png");
+	ui->buttonSortDirection->setIcon(m_descending ? desc : asc);
+
+	refresh();
+}
+
 void FavoritesDock::refresh()
 {
 	clearLayout(ui->layoutFavorites);
@@ -51,8 +62,7 @@ void FavoritesDock::refresh()
 	}
 
 	// Reverse
-	const bool reverse = ui->comboSortDirection->currentIndex() == 1;
-	if (reverse) {
+	if (m_descending) {
 		m_favorites = reversed(m_favorites);
 	}
 

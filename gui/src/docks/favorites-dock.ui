@@ -29,39 +29,40 @@
    <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <item>
-    <widget class="QComboBox" name="comboSortBy">
+    <layout class="QHBoxLayout" name="layoutSort" stretch="1,0">
      <item>
-      <property name="text">
-       <string>Name</string>
-      </property>
+      <widget class="QComboBox" name="comboSortBy">
+       <item>
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Priority</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Last viewed</string>
+        </property>
+       </item>
+      </widget>
      </item>
      <item>
-      <property name="text">
-       <string>Priority</string>
-      </property>
+      <widget class="QPushButton" name="buttonSortDirection">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources/resources.qrc">
+         <normaloff>:/images/icons/arrow-down.png</normaloff>:/images/icons/arrow-down.png</iconset>
+       </property>
+      </widget>
      </item>
-     <item>
-      <property name="text">
-       <string>Last viewed</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item>
-    <widget class="QComboBox" name="comboSortDirection">
-     <item>
-      <property name="text">
-       <string>Ascending</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Descending</string>
-      </property>
-     </item>
-    </widget>
+    </layout>
    </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
@@ -83,7 +84,7 @@
         <x>0</x>
         <y>0</y>
         <width>232</width>
-        <height>426</height>
+        <height>450</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -109,8 +110,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -129,8 +130,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -152,8 +153,8 @@
    <slot>refresh()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>226</x>
-     <y>25</y>
+     <x>205</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>244</x>
@@ -162,33 +163,24 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboSortDirection</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <sender>buttonSortDirection</sender>
+   <signal>clicked()</signal>
    <receiver>FavoritesDock</receiver>
-   <slot>refresh()</slot>
+   <slot>changeSortDirection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>42</y>
+     <x>223</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>246</x>
-     <y>55</y>
+     <x>245</x>
+     <y>16</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>updateBatchGroups(int,int)</slot>
-  <slot>addGroup()</slot>
-  <slot>addUnique()</slot>
-  <slot>batchMoveUp()</slot>
-  <slot>batchMoveDown()</slot>
-  <slot>batchSel()</slot>
-  <slot>getAll()</slot>
-  <slot>batchClear()</slot>
-  <slot>batchClearSel()</slot>
-  <slot>batchFavoritesDockleContextMenu(QPoint)</slot>
   <slot>refresh()</slot>
+  <slot>changeSortDirection()</slot>
  </slots>
 </ui>

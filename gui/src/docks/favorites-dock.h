@@ -29,6 +29,7 @@ class FavoritesDock : public Dock
 		void changeEvent(QEvent *event) override;
 
 	protected slots:
+		void changeSortDirection();
 		void refresh();
 
 	signals:
@@ -38,6 +39,7 @@ class FavoritesDock : public Dock
 	private:
 		Ui::FavoritesDock *ui;
 		QList<Favorite> &m_favorites;
+		bool m_descending = false;
 };
 
 #endif // FAVORITES_DOCK_H
