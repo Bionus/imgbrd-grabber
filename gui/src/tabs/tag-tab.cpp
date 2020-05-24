@@ -117,7 +117,12 @@ void TagTab::write(QJsonObject &json) const
 	QJsonObject lastUrls;
 	for (const QString &site : m_pages.keys()) {
 		if (!m_pages[site].isEmpty()) {
-			lastUrls.insert(site, m_pages[site].last()->url().toString());
+			QJsonObject siteUrls;
+			const auto urls = m_pages[site].last()->urls();
+			for (const QString &key : urls.keys()) {
+				siteUrls.insert(key, urls[key].toString());
+			}
+			lastUrls.insert(site, siteUrls);
 		}
 	}
 	json["lastUrls"] = lastUrls;
@@ -139,8 +144,13 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 
 	// Last urls
 	QJsonObject jsonLastUrls = json["lastUrls"].toObject();
-	for (const QString &key : jsonLastUrls.keys()) {
-		m_lastUrls[key] = jsonLastUrls[key].toString();
+	for (const QString &site : jsonLastUrls.keys()) {
+		QJsonObject siteLastUrls = jsonLastUrls[site].toObject();
+		QMap<QString, QString> siteUrls;
+		for (const QString &api : siteLastUrls.keys()) {
+			siteUrls[api] = siteLastUrls[api].toString();
+		}
+		m_lastUrls[site] = siteUrls;
 	}
 
 	// Post filtering

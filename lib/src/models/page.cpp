@@ -189,6 +189,19 @@ int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
 
+QMap<QString, QUrl> Page::urls() const
+{
+	QMap<QString, QUrl> ret;
+	for (int i = 0; i < m_siteApis.count(); ++i) {
+		auto *siteApi = m_siteApis[i];
+		auto *pageApi = m_pageApis[i];
+		if (!pageApi->url().isEmpty()) {
+			ret[siteApi->getName()] = pageApi->url();
+		}
+	}
+	return ret;
+}
+
 bool Page::hasSource() const
 {
 	for (auto pageApi : qAsConst(m_pageApis)) {

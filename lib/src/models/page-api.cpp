@@ -52,8 +52,8 @@ void PageApi::updateUrls()
 	m_errors.clear();
 
 	// URL searches
-	if (!m_query.url.isEmpty()) {
-		url = m_query.url;
+	if (m_query.urls.contains(m_api->getName())) {
+		url = m_query.urls[m_api->getName()];
 	} else if (m_query.tags.count() == 1 && isUrl(m_query.tags.first())) {
 		url = m_query.tags.first();
 	} else if (!m_url.isEmpty()) {

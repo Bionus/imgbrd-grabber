@@ -52,6 +52,7 @@ class Page : public QObject
 		const QUrl &nextPage() const;
 		const QUrl &prevPage() const;
 		bool isLoaded() const;
+		QMap<QString, QUrl> urls() const;
 
 	public slots:
 		void abort();

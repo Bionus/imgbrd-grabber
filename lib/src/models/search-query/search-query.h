@@ -1,6 +1,7 @@
 #ifndef SEARCH_QUERY_H
 #define SEARCH_QUERY_H
 
+#include <QMap>
 #include <QMetaType>
 #include <QSharedPointer>
 #include <QString>
@@ -29,7 +30,7 @@ class SearchQuery
 		bool read(const QJsonObject &json, Profile *profile);
 
 		// Public members
-		QString url;
+		QMap<QString, QString> urls;
 		QStringList tags;
 		QSharedPointer<Image> gallery;
 };
