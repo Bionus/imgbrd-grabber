@@ -117,11 +117,28 @@
         </spacer>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="layoutFavorites">
-         <property name="spacing">
-          <number>0</number>
+        <widget class="QWidget" name="widgetFavorites" native="true">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
          </property>
-        </layout>
+         <layout class="QVBoxLayout" name="layoutFavorites">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacerBottom">
@@ -178,9 +195,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>widgetFavorites</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>FavoritesDock</receiver>
+   <slot>contextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>124</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>244</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>refresh()</slot>
   <slot>changeSortDirection()</slot>
+  <slot>contextMenu(QPoint)</slot>
  </slots>
 </ui>

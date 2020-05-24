@@ -33,8 +33,10 @@ class QAffiche : public QLabel
 		void released(int);
 		void mouseOver();
 		void mouseOver(int);
+		void mouseOver(const QString &);
 		void mouseOut();
 		void mouseOut(int);
+		void mouseOut(const QString &);
 
 	protected:
 		// void paintEvent(QPaintEvent*);

@@ -1,4 +1,5 @@
 #include "docks/favorites-dock.h"
+#include <QCursor>
 #include <QEvent>
 #include <QStringList>
 #include <ui_favorites-dock.h>
@@ -6,24 +7,54 @@
 #include "helpers.h"
 #include "models/favorite.h"
 #include "models/profile.h"
+#include "tag-context-menu.h"
+#include "tags/tag.h"
 #include "ui/QAffiche.h"
 
 
 FavoritesDock::FavoritesDock(Profile *profile, QWidget *parent)
-	: Dock(parent), ui(new Ui::FavoritesDock), m_favorites(profile->getFavorites())
+	: Dock(parent), ui(new Ui::FavoritesDock), m_profile(profile), m_favorites(profile->getFavorites())
 {
 	ui->setupUi(this);
 
 	connect(profile, &Profile::favoritesChanged, this, &FavoritesDock::refresh);
 
 	refresh();
-
 }
 
 FavoritesDock::~FavoritesDock()
 {
 	close();
 	delete ui;
+}
+
+void FavoritesDock::setHover(const QString &tag)
+{
+	m_isHover = true;
+	m_hover = tag;
+}
+
+void FavoritesDock::clearHover()
+{
+	m_isHover = false;
+}
+
+void FavoritesDock::contextMenu(const QPoint &pos)
+{
+	Q_UNUSED(pos);
+
+	if (!m_isHover) {
+		return;
+	}
+
+	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, false, this);
+	connect(menu, &TagContextMenu::openNewTab, this, &FavoritesDock::emitOpenInNewTab);
+	menu->exec(QCursor::pos());
+}
+
+void FavoritesDock::emitOpenInNewTab()
+{
+	emit openInNewTab(m_hover);
 }
 
 void FavoritesDock::changeEvent(QEvent *event)
@@ -79,6 +110,8 @@ void FavoritesDock::refresh()
 
 		connect(lab, SIGNAL(clicked(QString)), this, SIGNAL(open(QString)));
 		connect(lab, SIGNAL(middleClicked(QString)), this, SIGNAL(openInNewTab(QString)));
+		connect(lab, SIGNAL(mouseOver(QString)), this, SLOT(setHover(QString)));
+		connect(lab, SIGNAL(mouseOut()), this, SLOT(clearHover()));
 
 		ui->layoutFavorites->addWidget(lab);
 	}

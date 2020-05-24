@@ -57,6 +57,7 @@ void QAffiche::enterEvent(QEvent *e)
 {
 	emit mouseOver();
 	emit mouseOver(m_id.toInt());
+	emit mouseOver(m_id.toString());
 	QLabel::enterEvent(e);
 }
 
@@ -64,6 +65,7 @@ void QAffiche::leaveEvent(QEvent *e)
 {
 	emit mouseOut();
 	emit mouseOut(m_id.toInt());
+	emit mouseOut(m_id.toString());
 	QLabel::leaveEvent(e);
 }
 
