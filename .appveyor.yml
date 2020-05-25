@@ -107,7 +107,7 @@ build_script:
   - if %DEPLOY%==1 copy /Y "mysql_driver\sqldrivers\*.dll" "%QTDIR%\plugins\sqldrivers"
 
   # Generate installer
-  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\mysql_driver" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.6\msvc2017\plugins\imageformats\qapng.dll" releases/setup.iss
+  - if %DEPLOY%==1 iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%QTDIR%\bin" /DOpenSSLDir="%OPENSSLDIR%" /DMySQLDir="%APPVEYOR_BUILD_FOLDER%\mysql_driver" /DQtApngDll="%APPVEYOR_BUILD_FOLDER%\%APNG_PLUGIN%\5.12.6\msvc2017\plugins\imageformats\qapng.dll" scripts/windows-setup/setup.iss
 
   # Package symbol files to zip
   - if %DEPLOY%==1 if "%BUILD_TYPE%"=="RelWithDebInfo" 7z a "releases\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
