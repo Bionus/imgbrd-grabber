@@ -165,7 +165,7 @@ else
 fi
 
 #Add the macos Icon files
-cp -r "${srcDir}"/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
+cp -r "${srcDir}"/dist/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
 
 #Create the template directory structure for a MacOS App {{{2
 mkdir -p "${appDir}"
