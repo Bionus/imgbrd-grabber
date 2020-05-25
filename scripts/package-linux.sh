@@ -5,7 +5,6 @@
 cp "build/gui/Grabber" "release/Grabber"
 cp build/languages/*.qm "release/languages/"
 touch "release/settings.ini"
-rm "release/CDR.exe"
 
 # Zip the whole directory
 pushd release
