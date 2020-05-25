@@ -221,6 +221,35 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);
 	connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
 
+	// "Settings" dock
+	m_settingsDock = new SettingsDock(m_profile, this);
+	ui->dockSettingsLayout->addWidget(m_settingsDock);
+
+	// "Favorites" dock
+	auto *favoritesDock = new FavoritesDock(m_profile, this);
+	connect(favoritesDock, &FavoritesDock::open, this, &MainWindow::loadTagNoTab);
+	connect(favoritesDock, &FavoritesDock::openInNewTab, this, &MainWindow::loadTagTab);
+	ui->dockFavoritesLayout->addWidget(favoritesDock);
+
+	// "Keep for later" dock
+	auto *kflDock = new KeepForLaterDock(m_profile, this);
+	connect(kflDock, &KeepForLaterDock::open, this, &MainWindow::loadTagNoTab);
+	connect(kflDock, &KeepForLaterDock::openInNewTab, this, &MainWindow::loadTagTab);
+	ui->dockKflLayout->addWidget(kflDock);
+
+	// "Wiki" dock
+	auto *wikiDock = new WikiDock(this);
+	connect(wikiDock, &WikiDock::open, this, &MainWindow::loadTagNoTab);
+	connect(this, &MainWindow::tabChanged, wikiDock, &WikiDock::tabChanged);
+	ui->dockWikiLayout->addWidget(wikiDock);
+
+	// "Tags" dock
+	auto *tagsDock = new TagsDock(m_profile, this);
+	connect(tagsDock, &TagsDock::open, this, &MainWindow::loadTagNoTab);
+	connect(tagsDock, &TagsDock::openInNewTab, this, &MainWindow::loadTagTab);
+	connect(this, &MainWindow::tabChanged, tagsDock, &TagsDock::tabChanged);
+	ui->dockTagsLayout->addWidget(tagsDock);
+
 	// Action on first load
 	if (m_settings->value("firstload", true).toBool()) {
 		this->onFirstLoad();
@@ -326,35 +355,6 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		connect(site, &Site::loggedIn, this, &MainWindow::initialLoginsFinished);
 		m_selectedSites.append(site);
 	}
-
-	// "Settings" dock
-	m_settingsDock = new SettingsDock(m_profile, this);
-	ui->dockSettingsLayout->addWidget(m_settingsDock);
-
-	// "Favorites" dock
-	auto *favoritesDock = new FavoritesDock(m_profile, this);
-	connect(favoritesDock, &FavoritesDock::open, this, &MainWindow::loadTagNoTab);
-	connect(favoritesDock, &FavoritesDock::openInNewTab, this, &MainWindow::loadTagTab);
-	ui->dockFavoritesLayout->addWidget(favoritesDock);
-
-	// "Keep for later" dock
-	auto *kflDock = new KeepForLaterDock(m_profile, this);
-	connect(kflDock, &KeepForLaterDock::open, this, &MainWindow::loadTagNoTab);
-	connect(kflDock, &KeepForLaterDock::openInNewTab, this, &MainWindow::loadTagTab);
-	ui->dockKflLayout->addWidget(kflDock);
-
-	// "Wiki" dock
-	auto *wikiDock = new WikiDock(this);
-	connect(wikiDock, &WikiDock::open, this, &MainWindow::loadTagNoTab);
-	connect(this, &MainWindow::tabChanged, wikiDock, &WikiDock::tabChanged);
-	ui->dockWikiLayout->addWidget(wikiDock);
-
-	// "Tags" dock
-	auto *tagsDock = new TagsDock(m_profile, this);
-	connect(tagsDock, &TagsDock::open, this, &MainWindow::loadTagNoTab);
-	connect(tagsDock, &TagsDock::openInNewTab, this, &MainWindow::loadTagTab);
-	connect(this, &MainWindow::tabChanged, tagsDock, &TagsDock::tabChanged);
-	ui->dockTagsLayout->addWidget(tagsDock);
 
 	// Initial login on selected sources
 	m_waitForLogin = 0;
