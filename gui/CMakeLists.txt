@@ -139,7 +139,7 @@ if(ANDROID)
 	endif()
 
 	# Generate manifest file
-	set(ANDROID_PACKAGE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/android")
+	set(ANDROID_PACKAGE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../dist/android")
 	configure_file("${ANDROID_PACKAGE_SOURCES}/AndroidManifest.xml.in" "${ANDROID_PACKAGE_SOURCES}/AndroidManifest.xml" @ONLY)
 
 	include("qt-android-cmake/AddQtAndroidApk")
