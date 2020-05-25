@@ -9,7 +9,7 @@ TEST_CASE("SourceUpdater")
 {
 	SECTION("No update")
 	{
-		SourceUpdater updater("Danbooru (2.0)", "tests/resources/sites/Danbooru (2.0)", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+		SourceUpdater updater("Danbooru (2.0)", "tests/resources/sites/Danbooru (2.0)", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/src/sites");
 
 		// Wait for updater
 		QSignalSpy spy(&updater, SIGNAL(finished(QString, bool)));
@@ -25,7 +25,7 @@ TEST_CASE("SourceUpdater")
 
 	SECTION("Changed")
 	{
-		SourceUpdater updater("Danbooru", "tests/resources/sites/Danbooru", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+		SourceUpdater updater("Danbooru", "tests/resources/sites/Danbooru", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/src/sites");
 
 		// Wait for updater
 		QSignalSpy spy(&updater, SIGNAL(finished(QString, bool)));

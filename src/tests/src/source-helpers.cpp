@@ -21,7 +21,7 @@ void setupSource(const QString &source, QString dir)
 		dir = "tests/resources/sites/";
 
 		QFile::remove(dir + "helper.js");
-		QFile("release/sites/helper.js").copy(dir + "helper.js");
+		QFile("sites/helper.js").copy(dir + "helper.js");
 
 		dir += source;
 	}
@@ -29,8 +29,8 @@ void setupSource(const QString &source, QString dir)
 	QDir().mkpath(dir);
 	QFile::remove(dir + "/model.js");
 	QFile::remove(dir + "/sites.txt");
-	QFile("release/sites/" + source + "/model.js").copy(dir + "/model.js");
-	QFile("release/sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
+	QFile("sites/" + source + "/model.js").copy(dir + "/model.js");
+	QFile("sites/" + source + "/sites.txt").copy(dir + "/sites.txt");
 }
 
 void setupSite(const QString &source, const QString &site, QString dir)
@@ -42,7 +42,7 @@ void setupSite(const QString &source, const QString &site, QString dir)
 	QDir().mkpath(dir);
 	QFile::remove(dir + "/defaults.ini");
 	QFile::remove(dir + "/settings.ini");
-	if (QFile::exists("release/sites/" + source + "/" + site + "/defaults.ini")) {
-		QFile("release/sites/" + source + "/" + site + "/defaults.ini").copy(dir + "/defaults.ini");
+	if (QFile::exists("sites/" + source + "/" + site + "/defaults.ini")) {
+		QFile("sites/" + source + "/" + site + "/defaults.ini").copy(dir + "/defaults.ini");
 	}
 }

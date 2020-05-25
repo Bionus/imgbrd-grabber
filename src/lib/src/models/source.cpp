@@ -25,9 +25,9 @@
 QString getUpdaterBaseUrl()
 {
 	#if defined NIGHTLY || defined QT_DEBUG
-		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/release/sites");
+		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/src/sites");
 	#else
-		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/src/sites");
 	#endif
 }
 

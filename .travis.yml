@@ -47,7 +47,7 @@ matrix:
 
 cache:
   directories:
-    - release/sites/node_modules
+    - src/sites/node_modules
 
 # Install coveralls sender
 before_install:
@@ -75,7 +75,9 @@ before_script:
 # Build Grabber
 script:
   - ./scripts/build.sh
-  - ./build/tests/tests
+  - cd src
+  - ../build/tests/tests
+  - cd ..
 
 after_success:
   # Clean-up workspace
