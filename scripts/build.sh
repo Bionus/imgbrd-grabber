@@ -2,7 +2,7 @@
 
 set -e
 
-mkdir build
+mkdir -p build
 pushd build
     cmake ..
     make $@ -j8
