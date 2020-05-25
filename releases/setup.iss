@@ -111,7 +111,7 @@ Source: "..\dist\windows\CDR.exe";              DestDir: "{app}"; Flags: ignorev
 Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\release\words.txt";                 DestDir: "{app}";
+Source: "..\dist\common\words.txt";             DestDir: "{app}";
 Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#OpenSSLDir}\libcrypto-1_1-x64.dll";  DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
