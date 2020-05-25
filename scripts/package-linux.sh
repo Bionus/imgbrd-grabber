@@ -6,6 +6,7 @@ cp "build/gui/Grabber" "release/Grabber"
 cp build/languages/*.qm "release/languages/"
 touch "release/settings.ini"
 cp -r dist/common/* "release/"
+cp -r dist/linux/* "release/"
 
 # Zip the whole directory
 pushd release

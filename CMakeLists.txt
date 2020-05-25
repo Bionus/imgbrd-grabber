@@ -98,7 +98,7 @@ install(DIRECTORY release DESTINATION share/Grabber
 		PATTERN "*.desktop" EXCLUDE
 		PATTERN "*.exe" EXCLUDE
         PATTERN "node_modules" EXCLUDE)
-install(FILES "release/Grabber.desktop" DESTINATION share/applications)
+install(FILES "dist/linux/Grabber.desktop" DESTINATION share/applications)
 
 add_subdirectory(release/sites)
 add_dependencies(gui sites)
