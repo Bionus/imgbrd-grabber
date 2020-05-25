@@ -193,6 +193,7 @@ then
 fi
 #Pack up the MacOS Application {{{2
 \cp "${srcDir}/build/gui/Grabber" "${appDir}"
+\cp -r "${srcDir}"/dist/common/* "${appDir}"
 \cp -r "${srcDir}"/release/* "${appDir}"
 \touch "${appDir}/settings.ini"
 
