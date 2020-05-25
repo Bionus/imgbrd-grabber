@@ -4,6 +4,6 @@ set -e
 
 mkdir -p build
 pushd build
-    cmake ..
+    cmake ../src
     make $@ -j8
 popd

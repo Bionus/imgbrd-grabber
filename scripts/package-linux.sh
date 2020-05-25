@@ -5,10 +5,10 @@ APP_DIR="release"
 
 # Copy all required files to the release directory
 ./scripts/package.sh $APP_DIR
-cp -r dist/linux/* $APP_DIR
+cp -r src/dist/linux/* $APP_DIR
 
 # Zip the whole directory
-pushd release
+pushd $APP_DIR
     tar -czvf "../Grabber.tar.gz" .
 popd
 

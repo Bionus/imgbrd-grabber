@@ -8,7 +8,7 @@ mkdir -p $APP_DIR
 
 # Copy all required files to the application directory
 ./scripts/package.sh $APP_DIR
-cp -r dist/macos/* "$APP_ROOT/Contents"
+cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
 # Create the DMG file
 macdeployqt $APP_ROOT -dmg

@@ -18,6 +18,6 @@ fi
 
 # Move the built binary to the release folder with its config
 ./scripts/package.sh "release"
-cp -r dist/linux/* "release"
+cp -r src/dist/linux/* "release"
 
 echo "Grabber has been compiled in the release directory. To run it, type './release/Grabber'"

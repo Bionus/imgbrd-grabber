@@ -4,7 +4,7 @@
 #####################
 srcDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 oldApp="${HOME}/Applications/Grabber.app/Contents/MacOS"
-appDir="${srcDir}/gui/build/release/Grabber.app/Contents/MacOS"
+appDir="${srcDir}/src/gui/build/release/Grabber.app/Contents/MacOS"
 logfile="$(mktemp -t $(basename $0))"
 [[ $? -ne 0 ]] && echo -e "${logfile}" && exit 1
 
@@ -165,7 +165,7 @@ else
 fi
 
 #Add the macos Icon files
-cp -r "${srcDir}"/dist/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
+cp -r "${srcDir}"/src/dist/macos/* "${srcDir}/TEMP-Grabber.app/Contents"
 
 #Create the template directory structure for a MacOS App {{{2
 mkdir -p "${appDir}"
@@ -193,8 +193,8 @@ then
 fi
 #Pack up the MacOS Application {{{2
 \cp "${srcDir}/build/gui/Grabber" "${appDir}"
-\cp -r "${srcDir}"/dist/common/* "${appDir}"
-\cp -r "${srcDir}"/release/* "${appDir}"
+\cp -r "${srcDir}"/src/dist/common/* "${appDir}"
+\cp -r "${srcDir}"/src/sites/* "${appDir}"
 \touch "${appDir}/settings.ini"
 
 #Copy imgbrd-grabber configs from previous builds and inject into new App {{{2
@@ -218,7 +218,7 @@ then
 	rm -rf "$srcDir/grabber-release"
 fi
 
-mv "${srcDir}/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
+mv "${srcDir}/src/gui/build/release/Grabber.app" "${srcDir}/TEMP-Grabber.app"
 
 #Decide if we are supposed to move the App to ${HOME}/Applications {{{2
 echo "Finished Compiling updated version of imgbrd-grabber. Application is now at '${srcDir}/TEMP-Grabber.app'"
