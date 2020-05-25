@@ -169,69 +169,69 @@ Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; 
 Source: "{#QtPlugins}\sqldrivers\qsqlodbc.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlpsql.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\styles\qwindowsvistastyle.dll";   DestDir: "{app}\styles"; Flags: ignoreversion
-Source: "..\release\sites\helper.js";                   DestDir: "{localappdata}\Bionus\Grabber\sites"; Flags: ignoreversion
-Source: "..\release\sites\Anime pictures\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
-Source: "..\release\sites\Anime pictures\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
-Source: "..\release\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
-Source: "..\release\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Philomena\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
-Source: "..\release\sites\Philomena\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
-Source: "..\release\sites\Philomena\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Philomena\derpibooru.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena\derpibooru.org"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\model.js";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Danbooru\behoimi.org\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru (2.0)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Danbooru (2.0)\danbooru.donmai.us\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru (2.0)\danbooru.donmai.us\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: onlyifdoesntexist
-Source: "..\release\sites\E621\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
-Source: "..\release\sites\E621\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
-Source: "..\release\sites\E621\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: onlyifdoesntexist
-Source: "..\release\sites\E621\e621.net\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\E621\e621.net"; Flags: ignoreversion
-Source: "..\release\sites\E621\e621.net\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\E621\e621.net"; Flags: onlyifdoesntexist
-Source: "..\release\sites\E-Hentai\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: ignoreversion
-Source: "..\release\sites\E-Hentai\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: ignoreversion
-Source: "..\release\sites\E-Hentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: onlyifdoesntexist
-Source: "..\release\sites\E-Hentai\e-hentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\e-hentai.org"; Flags: ignoreversion
-Source: "..\release\sites\E-Hentai\exhentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\exhentai.org"; Flags: ignoreversion
-Source: "..\release\sites\FurAffinity\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
-Source: "..\release\sites\FurAffinity\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
-Source: "..\release\sites\FurAffinity\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: onlyifdoesntexist
-Source: "..\release\sites\FurAffinity\www.furaffinity.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity\www.furaffinity.net"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.1)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.1)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.1)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Gelbooru (0.2)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.2)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
-Source: "..\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
-Source: "..\release\sites\Moebooru\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
-Source: "..\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist
-Source: "..\release\sites\NHentai\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
-Source: "..\release\sites\NHentai\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
-Source: "..\release\sites\NHentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: onlyifdoesntexist
-Source: "..\release\sites\NHentai\nhentai.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai\nhentai.net"; Flags: ignoreversion
-Source: "..\release\sites\Pixiv\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
-Source: "..\release\sites\Pixiv\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
-Source: "..\release\sites\Pixiv\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Pixiv\www.pixiv.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv\www.pixiv.net"; Flags: ignoreversion
-Source: "..\release\sites\Shimmie\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
-Source: "..\release\sites\Shimmie\model.js";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
-Source: "..\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Twitter\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
-Source: "..\release\sites\Twitter\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
-Source: "..\release\sites\Twitter\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter\api.twitter.com"; Flags: ignoreversion
-Source: "..\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
-Source: "..\release\sites\Zerochan\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
-Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Zerochan\www.zerochan.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: ignoreversion
+Source: "..\sites\helper.js";                   DestDir: "{localappdata}\Bionus\Grabber\sites"; Flags: ignoreversion
+Source: "..\sites\Anime pictures\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\sites\Anime pictures\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
+Source: "..\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
+Source: "..\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: onlyifdoesntexist
+Source: "..\sites\Philomena\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
+Source: "..\sites\Philomena\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: ignoreversion
+Source: "..\sites\Philomena\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena"; Flags: onlyifdoesntexist
+Source: "..\sites\Philomena\derpibooru.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Philomena\derpibooru.org"; Flags: ignoreversion
+Source: "..\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
+Source: "..\sites\Danbooru\model.js";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
+Source: "..\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
+Source: "..\sites\Danbooru\behoimi.org\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: ignoreversion
+Source: "..\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
+Source: "..\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
+Source: "..\sites\Danbooru (2.0)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
+Source: "..\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
+Source: "..\sites\Danbooru (2.0)\danbooru.donmai.us\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: ignoreversion
+Source: "..\sites\Danbooru (2.0)\danbooru.donmai.us\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: onlyifdoesntexist
+Source: "..\sites\E621\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
+Source: "..\sites\E621\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
+Source: "..\sites\E621\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: onlyifdoesntexist
+Source: "..\sites\E621\e621.net\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\E621\e621.net"; Flags: ignoreversion
+Source: "..\sites\E621\e621.net\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\E621\e621.net"; Flags: onlyifdoesntexist
+Source: "..\sites\E-Hentai\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: ignoreversion
+Source: "..\sites\E-Hentai\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: ignoreversion
+Source: "..\sites\E-Hentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: onlyifdoesntexist
+Source: "..\sites\E-Hentai\e-hentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\e-hentai.org"; Flags: ignoreversion
+Source: "..\sites\E-Hentai\exhentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\exhentai.org"; Flags: ignoreversion
+Source: "..\sites\FurAffinity\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
+Source: "..\sites\FurAffinity\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
+Source: "..\sites\FurAffinity\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: onlyifdoesntexist
+Source: "..\sites\FurAffinity\www.furaffinity.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity\www.furaffinity.net"; Flags: ignoreversion
+Source: "..\sites\Gelbooru (0.1)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
+Source: "..\sites\Gelbooru (0.1)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
+Source: "..\sites\Gelbooru (0.1)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist
+Source: "..\sites\Gelbooru (0.2)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
+Source: "..\sites\Gelbooru (0.2)\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
+Source: "..\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
+Source: "..\sites\Gelbooru (0.2)\gelbooru.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com"; Flags: ignoreversion
+Source: "..\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
+Source: "..\sites\Moebooru\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
+Source: "..\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist
+Source: "..\sites\NHentai\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
+Source: "..\sites\NHentai\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: ignoreversion
+Source: "..\sites\NHentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai"; Flags: onlyifdoesntexist
+Source: "..\sites\NHentai\nhentai.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\NHentai\nhentai.net"; Flags: ignoreversion
+Source: "..\sites\Pixiv\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
+Source: "..\sites\Pixiv\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: ignoreversion
+Source: "..\sites\Pixiv\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv"; Flags: onlyifdoesntexist
+Source: "..\sites\Pixiv\www.pixiv.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Pixiv\www.pixiv.net"; Flags: ignoreversion
+Source: "..\sites\Shimmie\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
+Source: "..\sites\Shimmie\model.js";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
+Source: "..\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: onlyifdoesntexist
+Source: "..\sites\Twitter\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
+Source: "..\sites\Twitter\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
+Source: "..\sites\Twitter\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: onlyifdoesntexist
+Source: "..\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter\api.twitter.com"; Flags: ignoreversion
+Source: "..\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
+Source: "..\sites\Zerochan\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
+Source: "..\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
+Source: "..\sites\Zerochan\www.zerochan.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: ignoreversion
 Source: "..\dist\common\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist recursesubdirs
 Source: "..\dist\common\themes\QDarkStyleSheet\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"; Flags: onlyifdoesntexist recursesubdirs
 Source: "..\dist\common\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"; Flags: onlyifdoesntexist

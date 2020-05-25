@@ -1,12 +1,12 @@
 # Grabber
 *.qm
 e2e/viewer/result.json
-release/sites/helper.js
-release/sites/*/model.js
-release/sites/*/*/cookies.txt
-release/sites/*/*/settings.ini
-release/sites/*/*/tags.txt
-release/sites/*/*/tags.db
+sites/helper.js
+sites/*/model.js
+sites/*/*/cookies.txt
+sites/*/*/settings.ini
+sites/*/*/tags.txt
+sites/*/*/tags.db
 tests/resources/tags.txt
 tests/resources/tags.db
 tests/resources/md5s.txt
