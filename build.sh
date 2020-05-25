@@ -14,7 +14,7 @@ else
 fi
 
 # Build the project in the build directory
-./scripts/build.sh gui cli
+./scripts/build.sh gui translations
 
 # Move the built binary to the release folder with its config
 ./scripts/package.sh "release"
