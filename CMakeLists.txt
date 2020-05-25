@@ -90,7 +90,7 @@ add_subdirectory(gui)
 add_subdirectory(cli)
 add_subdirectory(tests)
 add_subdirectory(e2e EXCLUDE_FROM_ALL)
-add_subdirectory(CrashReporter)
+add_subdirectory(crash-reporter)
 
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
