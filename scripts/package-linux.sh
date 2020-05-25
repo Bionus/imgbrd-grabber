@@ -3,10 +3,10 @@
 
 # Copy all required files to the release directory
 cp "build/gui/Grabber" "release/Grabber"
-cp build/languages/*.qm "release/languages/"
-touch "release/settings.ini"
 cp -r dist/common/* "release/"
 cp -r dist/linux/* "release/"
+cp build/languages/*.qm "release/languages/"
+touch "release/settings.ini"
 
 # Zip the whole directory
 pushd release
