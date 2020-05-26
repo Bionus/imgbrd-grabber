@@ -1,0 +1,364 @@
+---
+---
+
+@import "fonts";
+@import "rouge";
+
+
+/* Responsive */
+
+$screen-xs-max: 767px;
+$screen-sm-min: 768px;
+$screen-sm-max: 991px;
+$screen-md-min: 992px;
+$screen-md-max: 1199px;
+$screen-lg-min: 1200px;
+
+
+/* Global */
+
+html {
+	position: relative;
+	min-height: 100%;
+	font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight:400;
+}
+
+body {
+	color: #333;
+	margin-bottom: 80px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		margin-bottom: 50px;
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+ul {
+	padding-left: 20px;
+}
+
+
+/* Header */
+
+header {
+	background-image: url('../img/lightnoise.png');
+	background-color: #eef;
+}
+
+header .nav {
+	background-color: #fff;
+	border-radius: 0 0 10px 10px;
+	overflow: hidden;
+	margin-top: 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		border-radius: 0;
+	}
+}
+header .nav.navbar-bottom {
+	border-radius: 10px 10px 0 0;
+}
+header .nav > li > a:focus,
+header .nav > li > a:hover {
+	background-color: #f5f5ff;
+}
+
+header .head {
+	padding: 50px 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+		text-align: center;
+	}
+}
+
+header .head img {
+	float: left;
+	margin: 40px 50px 0 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		float: none;
+		margin: 0 0 20px 0;
+	}
+}
+
+header h1 {
+	margin-top: 0;
+}
+
+header .hright {
+	overflow: hidden;
+}
+
+header p.subtitle {
+	font-size: 20px;
+}
+
+header p.download {
+	margin-top: 25px;
+	margin-bottom: 5px;
+}
+header p.download a {
+	display: block;
+	width: 300px;
+	height: 50px;
+	padding: 8px 0;
+	line-height: 36px;
+	background-color: #4a4;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 100%;
+	}
+}
+header p.download a:hover,
+header p.download a:active {
+	text-decoration: none;
+	background-color: #6b6;
+}
+
+header p.view {
+	margin-bottom: 0;
+}
+
+header nav ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+
+
+/* Body */
+
+section {
+	padding: 30px 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+	}
+}
+
+.index {
+	section h2 {
+		clear: both;
+		text-align: center;
+		margin: 30px 0 30px 0;
+		font-size: 30px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #ccc;
+
+		@media screen and (max-width: $screen-xs-max) {
+			font-size: 26px;
+		}
+	}
+}
+
+section .sources > p {
+	margin-bottom: 25px;
+	text-align: center;
+	margin-top: -15px;
+}
+
+section .sources .source {
+	float: left;
+	width: 20%;
+	text-align: center;
+	overflow: hidden;
+	margin-bottom: 20px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 33.333%;
+	}
+}
+section .sources .source:last-child {
+	float: none;
+}
+
+section .sources .source p {
+	margin-bottom: 0;
+}
+section .sources .source img {
+	margin-bottom: 10px;
+}
+
+section .feature {
+	clear: both;
+	padding: 20px 0;
+	overflow: hidden;
+	border-bottom: 2px dotted #eee;
+}
+section .feature:first-child {
+	padding-top: 0;
+}
+section .feature:last-child {
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
+section .feature > p:first-child a {
+	display: none;
+}
+section .feature > p:first-child a:first-child {
+	display: inline;
+}
+
+section .feature > ul {
+	overflow: hidden;
+}
+
+section .feature > p:first-child,
+section .feature > p:last-child {
+	margin-bottom: 0;
+}
+
+section .feature img {
+	width: 30%;
+	float: left;
+	margin-right: 5%;
+
+	@media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+		width: 40%;
+	}
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 100%;
+		float: none;
+		margin-right: 0;
+		margin-bottom: 10px;
+	}
+}
+section .feature:nth-of-type(2n) img {
+	float: right;
+	margin-left: 5%;
+	margin-right: 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		float: none;
+		margin-left: 0;
+	}
+}
+
+section .feature h3 {
+	margin-top: 0;
+	font-size: 26px;
+	clear: none;
+}
+
+section .flags .flag {
+	float: left;
+	width: 20%;
+	text-align: center;
+	overflow: hidden;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 50%;
+	}
+}
+section .flags .flag:last-child {
+	float: none;
+}
+
+section .flags .flag p {
+	line-height: 16px;
+}
+
+section table {
+	width: 100%;
+	border: 1px dotted #999;
+	border-radius: 4px;
+	margin: 0 0 10px;
+}
+
+section table tr th {
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid darkorange;
+	padding: 5px;
+}
+
+section table tr td {
+	padding: 1px 5px;
+}
+section table tr:first-child td {
+	padding-top: 5px;
+}
+section table tr:last-child td {
+	padding-bottom: 5px;
+}
+
+section table kbd {
+	background-color: #f8f8f8;
+	border: 1px solid #ccc;
+	color: #333;
+}
+
+
+/* Footer */
+
+footer {
+	background-color: #eaeff2;
+	padding: 30px 0;
+	height: 80px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 20px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+		height: 50px;
+	}
+}
+
+footer p {
+	margin: 0;
+	text-align: center;
+	font-size: 12px;
+	color: #555;
+}
+
+
+/* Left navigation menu */
+
+aside.menu {
+	ul {
+		list-style: none;
+		padding-left: 0;
+
+		li {
+			span {
+				font-size: 1.4em;
+				border-bottom: 1px dotted darkorange;
+				display: block;
+				padding-bottom: 4px;
+				margin-bottom: 8px;
+			}
+
+			&.active a {
+				color: #666;
+			}
+		}
+	}
+
+	> ul > li {
+		margin-bottom: 20px;
+	}
+}
+
+
+/* Documentation text */
+
+.docs .content {
+	> *:first-child {
+		margin-top: 0 !important;
+	}
+}

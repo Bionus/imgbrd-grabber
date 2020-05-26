@@ -1,0 +1,27 @@
+---
+layout: default
+class: index
+---
+
+{% capture header %}
+	<div class="head">
+		{% if site.logo %}
+			<img src="{{ site.logo | relative_url }}" alt="logo" />
+		{% endif %}
+
+		<div class="hright">
+			<h1>{{ site.title | default: site.github.repository_name }}</h1>
+			{% if site.subtitle %}
+				<p class="subtitle">{{ site.subtitle }}</p>
+			{% endif %}
+			<p class="description">{{ site.description | default: site.github.project_tagline }}</p>
+
+			{% if site.show_download %}
+				<p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}" data-label="Download">Free Download</a></p>
+			{% endif %}
+			<p class="view"><a href="{{ site.github.repository_url }}" data-label="GitHub project">View the Project on GitHub</a></p>
+		</div>
+	</div>
+{% endcapture %}
+
+{% include body.html %}

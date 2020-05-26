@@ -1,0 +1,46 @@
+title: Imgbrd-Grabber
+subtitle: Booru browsing made easy
+description: Very customizable imageboard/booru browser and mass downloader, with powerful filenaming features.
+logo: assets/img/icon.png
+show_download: true
+google_analytics: UA-22768717-4
+theme:
+lang: en_US
+relative_permalinks: false
+baseurl: /imgbrd-grabber
+
+exclude:
+- vendor/
+- release/
+- releases/
+- languages/
+- cli/
+- gui/
+- tests/
+
+kramdown:
+  header_offset: 1
+
+collections:
+  docs:
+    permalink: "/:collection/:path.html"
+    output: true
+
+gems:
+  - jemoji
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+webmaster_verifications:
+  google: HUsU9v5lhoPPeKdafhViSRi1NofQwzQrRwLN1nEzsA8
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: assets/img/icon.png
+  - scope:
+      path: _docs
+      type: docs
+    values:
+      layout: docs
