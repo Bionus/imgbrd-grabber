@@ -1,4 +1,4 @@
-name: CI
+name: Windows
 on: [push]
 
 jobs:
@@ -31,21 +31,21 @@ jobs:
       id: vendor-cache
       with:
         path: vendor
-        key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/build.yml') }}
+        key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
 
     - name: Create vendor dirs
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
       shell: cmd
-      run: |
-        mkdir vendor
-        mkdir vendor_qt
+      run: mkdir vendor
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.1.0
       with:
         version: 5.12.6
 
-    - name: Install QScintilla
-      working-directory: vendor_qt
+    - name: Build QScintilla
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
       shell: cmd
       run: |
         curl -Lo "%QSCINTILLA_VERSION%.zip" "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip"
@@ -55,8 +55,14 @@ jobs:
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         qmake qscintilla.pro
         nmake
+
+    - name: Install QScintilla
+      working-directory: vendor
+      shell: cmd
+      run: |
+        cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         nmake install
-        cd ..\..
 
     - name: Install OpenSSL
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -114,9 +120,3 @@ jobs:
       run: |
         copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
         iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" scripts\windows-setup\setup.iss
-
-    - name: Upload installer artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows-setup
-        path: scripts/windows-setup/Grabber_${{ env.GRABBER_VERSION }}_${{ env.PLATFORM_NAME }}.exe

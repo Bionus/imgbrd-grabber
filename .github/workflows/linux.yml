@@ -1,0 +1,49 @@
+name: Linux
+on: [push]
+
+jobs:
+  Linux:
+    timeout-minutes: 15
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Set environment
+      run: |
+        echo ::set-env name=GRABBER_VERSION::nightly
+        echo ::set-env name=GRABBER_IS_NIGHTLY::1
+        echo ::set-env name=PLATFORM_NAME::x64
+
+    - name: Install packages
+      run: sudo apt-get install libpulse-dev
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2.1.0
+      with:
+        version: 5.12.6
+
+    - name: Create build dir
+      run: mkdir build
+
+    - name: Configure
+      working-directory: build
+      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+
+    - name: Compile
+      working-directory: build
+      run: |
+        cmake --build . --config Release --target sites
+        cmake --build . --config Release
+
+    - name: Test
+      uses: GabrielBB/xvfb-action@v1.2
+      with:
+        working-directory: src
+        run: ../build/tests/tests
+
+    - name: Generate package
+      run: ./scripts/package-linux.sh
