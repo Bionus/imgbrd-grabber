@@ -135,13 +135,13 @@ Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\German.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\German.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
