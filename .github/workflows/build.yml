@@ -63,7 +63,7 @@ jobs:
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1f.exe
+        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1g.exe
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
         rm OpenSSL.exe
 
