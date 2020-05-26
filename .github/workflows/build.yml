@@ -103,8 +103,8 @@ jobs:
 
     - name: Test
       shell: cmd
-	  working-directory: src
-	  run: ..\build\tests\Release\tests.exe
+      working-directory: src
+      run: ..\build\tests\Release\tests.exe
       env:
         QTDIR: ${{ env.Qt5_Dir }}
         QT_PLUGIN_PATH: ${{ env.Qt5_Dir }}\plugins
