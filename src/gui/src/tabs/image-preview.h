@@ -67,7 +67,6 @@ class ImagePreview : public QObject
 		QUrl m_thumbnailUrl;
 		QString m_name;
 		int m_childrenCount = 0;
-		QPixmap m_thumbnail;
 		QPointer<QBouton> m_bouton = nullptr;
 		std::function<void (QMenu *, const QSharedPointer<Image> &)> m_customContextMenu = nullptr;
 };

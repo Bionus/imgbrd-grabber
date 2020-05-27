@@ -144,16 +144,17 @@ void ImagePreview::finishedLoadingPreview()
 	}
 
 	// Load preview from result
-	m_thumbnail.loadFromData(m_reply->readAll());
-	if (m_thumbnail.isNull()) {
+	QPixmap thumbnail;
+	thumbnail.loadFromData(m_reply->readAll());
+	if (thumbnail.isNull()) {
 		log(QStringLiteral("One of the thumbnails is empty (`%1`).").arg(m_image->url(Image::Size::Thumbnail).toString()), Logger::Error);
 		if (m_image->hasTag(QStringLiteral("flash"))) {
-			m_thumbnail.load(QStringLiteral(":/images/flash.png"));
+			thumbnail.load(QStringLiteral(":/images/flash.png"));
 		} else {
 			return;
 		}
 	}
-	m_image->setPreviewImage(m_thumbnail);
+	m_image->setPreviewImage(thumbnail);
 
 	finishedLoading();
 }
@@ -178,10 +179,12 @@ void ImagePreview::finishedLoading()
 		l->setChecked(m_checked);
 		l->setInvertToggle(settings->value("invertToggle", false).toBool());
 		l->setToolTip(m_image->tooltip());
-		if (m_thumbnail.isNull()) {
+
+		const QPixmap &thumbnail = m_image->previewImage();
+		if (thumbnail.isNull()) {
 			l->scale(QPixmap(":/images/noimage.png"), QSize(imageSize, imageSize));
 		} else {
-			l->scale(m_thumbnail, QSize(imageSize, imageSize));
+			l->scale(thumbnail, QSize(imageSize, imageSize));
 		}
 		if (m_childrenCount > 0) {
 			l->setCounter(QString::number(m_childrenCount));
