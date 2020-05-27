@@ -88,6 +88,7 @@ endif()
 
 add_subdirectory(lib)
 add_subdirectory(gui)
+add_subdirectory(gui-qml)
 add_subdirectory(cli)
 add_subdirectory(tests)
 add_subdirectory(e2e EXCLUDE_FROM_ALL)
