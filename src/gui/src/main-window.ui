@@ -577,54 +577,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionTags</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dock_internet</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>39</x>
-     <y>78</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionFavorites</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dock_favorites</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>39</x>
-     <y>267</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionKfl</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dock_kfl</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>39</x>
-     <y>261</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionAddpooltab</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
