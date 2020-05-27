@@ -295,6 +295,10 @@ void FavoritesTab::loadFavorite(const QString &name)
 	m_loadFavorite = fav.getLastViewed();
 	m_postFiltering->setPlainText(fav.getPostFiltering().join(' '));
 
+	if (!fav.getSites().isEmpty()) {
+		setSources(fav.getSites());
+	}
+
 	ui->widgetResults->show();
 	load();
 }

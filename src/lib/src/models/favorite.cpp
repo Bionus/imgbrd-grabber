@@ -13,11 +13,11 @@
 Favorite::Favorite(QString name)
 	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath, QStringList postFiltering)
-	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath), std::move(postFiltering))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath, QStringList postFiltering, QList<Site*> sites)
+	: Favorite(std::move(name), note, std::move(lastViewed), QList<Monitor>(), std::move(imagePath), std::move(postFiltering), std::move(sites))
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath, QStringList postFiltering)
-	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath)), m_postFiltering(std::move(postFiltering))
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath, QStringList postFiltering, QList<Site*> sites)
+	: m_name(std::move(name)), m_note(note), m_lastViewed(std::move(lastViewed)), m_monitors(std::move(monitors)), m_imagePath(std::move(imagePath)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sites))
 {}
 
 void Favorite::setImagePath(const QString &imagePath)
@@ -28,6 +28,8 @@ void Favorite::setNote(int note)
 { m_note = note; }
 void Favorite::setPostFiltering(const QStringList &postFiltering)
 { m_postFiltering = postFiltering; }
+void Favorite::setSites(const QList<Site*> &sites)
+{ m_sites = sites; }
 
 QString Favorite::getName(bool clean) const
 {
@@ -46,6 +48,8 @@ QList<Monitor> &Favorite::getMonitors()
 { return m_monitors; }
 QStringList Favorite::getPostFiltering() const
 { return m_postFiltering; }
+QList<Site*> Favorite::getSites() const
+{ return m_sites; }
 
 bool Favorite::setImage(const QPixmap &img)
 {

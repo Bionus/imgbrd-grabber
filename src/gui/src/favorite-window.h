@@ -13,6 +13,7 @@ namespace Ui
 
 
 class Profile;
+class Site;
 
 class FavoriteWindow : public QDialog
 {
@@ -26,11 +27,14 @@ class FavoriteWindow : public QDialog
 		void save();
 		void on_openButton_clicked();
 		void on_buttonRemove_clicked();
+		void openSourcesWindow();
+		void setSources(const QList<Site*> &sources);
 
 	private:
 		Ui::FavoriteWindow *ui;
 		Profile *m_profile;
 		Favorite m_favorite;
+		QList<Site*> m_selectedSources;
 };
 
 #endif // FAVORITE_WINDOW_H

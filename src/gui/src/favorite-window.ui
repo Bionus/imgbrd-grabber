@@ -131,6 +131,20 @@
        <item row="4" column="1">
         <widget class="QLineEdit" name="postFilteringLineEdit"/>
        </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelSources">
+         <property name="text">
+          <string>Sources</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QPushButton" name="buttonSources">
+         <property name="text">
+          <string>Edit sources</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabMonitoring">
@@ -260,8 +274,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>293</x>
-     <y>141</y>
+     <x>389</x>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -276,8 +290,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>293</x>
-     <y>141</y>
+     <x>389</x>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -285,8 +299,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonSources</sender>
+   <signal>clicked()</signal>
+   <receiver>FavoriteWindow</receiver>
+   <slot>openSourcesWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>removeFavorite()</slot>
+  <slot>openSourcesWindow()</slot>
  </slots>
 </ui>

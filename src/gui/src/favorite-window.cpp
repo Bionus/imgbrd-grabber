@@ -7,6 +7,7 @@
 #include "functions.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "sources/sources-window.h"
 
 
 /**
@@ -20,6 +21,8 @@ FavoriteWindow::FavoriteWindow(Profile *profile, Favorite favorite, QWidget *par
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
+
+	m_selectedSources = m_favorite.getSites();
 
 	ui->tagLineEdit->setText(m_favorite.getName());
 	ui->noteSpinBox->setValue(m_favorite.getNote());
@@ -69,6 +72,18 @@ void FavoriteWindow::on_openButton_clicked()
 	}
 }
 
+void FavoriteWindow::openSourcesWindow()
+{
+	auto w = new SourcesWindow(m_profile, m_selectedSources, this);
+	connect(w, SIGNAL(valid(QList<Site*>)), this, SLOT(setSources(QList<Site*>)));
+	w->show();
+}
+
+void FavoriteWindow::setSources(const QList<Site*> &sources)
+{
+	m_selectedSources = sources;
+}
+
 /**
  * Update the local favorites file and add thumb if necessary.
  */
@@ -98,7 +113,8 @@ void FavoriteWindow::save()
 		ui->lastViewedDateTimeEdit->dateTime(),
 		monitors,
 		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
-		ui->postFilteringLineEdit->text().split(' ', QString::SkipEmptyParts)
+		ui->postFilteringLineEdit->text().split(' ', QString::SkipEmptyParts),
+		m_selectedSources
 	);
 
 	if (oldFav.getName() != m_favorite.getName()) {

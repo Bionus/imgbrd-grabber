@@ -14,19 +14,21 @@ class Favorite
 {
 	public:
 		explicit Favorite(QString name);
-		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "", QStringList postFiltering = QStringList());
-		Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath = "", QStringList postFiltering = QStringList());
+		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
+		Favorite(QString name, int note, QDateTime lastViewed, QList<Monitor> monitors, QString imagePath = "", QStringList postFiltering = {}, QList<Site*> sites = {});
 
 		// Getters and setters
 		void setNote(int note);
 		void setLastViewed(const QDateTime &lastViewed);
 		void setImagePath(const QString &imagePath);
 		void setPostFiltering(const QStringList &postFiltering);
+		void setSites(const QList<Site*> &sites);
 		int getNote() const;
 		QDateTime getLastViewed() const;
 		QString getImagePath() const;
 		QList<Monitor> &getMonitors();
 		QStringList getPostFiltering() const;
+		QList<Site*> getSites() const;
 
 		/**
 		 * @brief Return the name of this favorite.
@@ -54,6 +56,7 @@ class Favorite
 		QList<Monitor> m_monitors;
 		QString m_imagePath;
 		QStringList m_postFiltering;
+		QList<Site*> m_sites;
 };
 
 bool operator==(const Favorite &lhs, const Favorite &rhs);
