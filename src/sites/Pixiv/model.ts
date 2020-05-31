@@ -43,6 +43,51 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
     return { mode, tags, bookmarks, user };
 }
 
+function parseImage(image: any, fromGallery: boolean): IImage {
+    const map = {
+        "name": "title",
+        "file_url": "image_urls.large",
+        "sample_url": "image_urls.medium",
+        "preview_url": "image_urls.small",
+        "width": "width",
+        "parent_id": "parent_id",
+        "height": "height",
+        "creator_id": "user.id",
+        "id": "id",
+        "tags": "tags",
+        "author": "user.name",
+    };
+
+    const img = Grabber.mapFields(image, map);
+    if (image["age_limit"] === "all-age") {
+        img.rating = "safe";
+    } else if (image["age_limit"] === "r18") {
+        img.rating = "explicit";
+    }
+    img.created_at = image["created_time"] || image["create_date"];
+    if (image["caption"]) {
+        img.description = image["caption"];
+    }
+    if (!fromGallery) {
+        if (image["is_manga"]) {
+            img.type = "gallery";
+            img.gallery_count = image["page_count"];
+        }
+        if (image["meta_pages"] && image["meta_pages"].length > 1) {
+            img.type = "gallery";
+            img.gallery_count = image["meta_pages"].length;
+        }
+        if (image["meta_single_page"] && image["meta_single_page"]["original_image_url"]) {
+            img.file_url = image["meta_single_page"]["original_image_url"];
+        }
+    }
+    if (!img.preview_url) {
+        img.preview_url = urlSampleToThumbnail(image["image_urls"]["medium"]);
+    }
+
+    return img;
+}
+
 export const source: ISource = {
     name: "Pixiv",
     modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:"],
@@ -105,49 +150,11 @@ export const source: ISource = {
                     return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
                 },
                 parse: (src: string): IParsedSearch => {
-                    const map = {
-                        "name": "title",
-                        "file_url": "image_urls.large",
-                        "sample_url": "image_urls.medium",
-                        "preview_url": "image_urls.small",
-                        "width": "width",
-                        "parent_id": "parent_id",
-                        "height": "height",
-                        "creator_id": "user.id",
-                        "id": "id",
-                        "tags": "tags",
-                        "author": "user.name",
-                    };
-
                     const data = JSON.parse(src);
 
                     const images: IImage[] = [];
                     for (const image of (data["response"] || data["illusts"])) {
-                        const img = Grabber.mapFields(image, map);
-                        if (image["age_limit"] === "all-age") {
-                            img.rating = "safe";
-                        } else if (image["age_limit"] === "r18") {
-                            img.rating = "explicit";
-                        }
-                        if (image["is_manga"]) {
-                            img.type = "gallery";
-                            img.gallery_count = image["page_count"];
-                        }
-                        if (image["meta_pages"] && image["meta_pages"].length > 1) {
-                            img.type = "gallery";
-                            img.gallery_count = image["meta_pages"].length;
-                        }
-                        img.created_at = image["created_time"] || image["create_date"];
-                        if (image["caption"]) {
-                            img.description = image["caption"];
-                        }
-                        if (image["meta_single_page"] && image["meta_single_page"]["original_image_url"]) {
-                            img.file_url = image["meta_single_page"]["original_image_url"];
-                        }
-                        if (!img.preview_url) {
-                            img.preview_url = image["image_urls"]["medium"];
-                        }
-                        images.push(img);
+                        images.push(parseImage(image, false));
                     }
 
                     if (data["response"]) {
@@ -171,13 +178,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedGallery => {
                     const data = JSON.parse(src)["response"][0];
                     return {
-                        images: data["metadata"]["pages"].map((page: any): IImage => {
-                            return {
-                                file_url: page["image_urls"]["large"],
-                                sample_url: page["image_urls"]["medium"],
-                                preview_url: urlSampleToThumbnail(page["image_urls"]["medium"]),
-                            };
-                        }),
+                        images: data["metadata"]["pages"].map((page: any) => parseImage({ ...data, ...page }, true)),
                         tags: data["tags"],
                         imageCount: data["page_count"],
                     };
