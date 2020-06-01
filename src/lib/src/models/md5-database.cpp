@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <utility>
+#include "logger.h"
 
 
 Md5Database::Md5Database(QString path, QSettings *settings)
@@ -134,6 +135,7 @@ void Md5Database::add(const QString &md5, const QString &path)
 {
 	if (!md5.isEmpty()) {
 		m_md5s.insert(md5, path);
+		log(QString("Added MD5: %1").arg(md5), Logger::Debug);
 
 		m_pendingAdd.insert(md5, path);
 		if (m_pendingAdd.count() >= 100) {
