@@ -176,7 +176,7 @@ echo
 echo "	${logfile}"
 echo
 cd "${srcDir}/build"
-cmake .. -DOPENSSL_ROOT_DIR="${OPENSSL_ROOT_DIR}" -DOPENSSL_LIBRARIES="${OPENSSL_INCLUDE_DIR}" > "${logfile}" 2>&1
+cmake ../src -DOPENSSL_ROOT_DIR="${OPENSSL_ROOT_DIR}" -DOPENSSL_LIBRARIES="${OPENSSL_INCLUDE_DIR}" > "${logfile}" 2>&1
 ERR=$?
 make -j8 > "${logfile}" 2>&1
 ERR=$(( $ERR + $? ))
