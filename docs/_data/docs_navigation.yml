@@ -10,6 +10,7 @@
 - name: Commands
   children:
     - link: /docs/commands/
+    - link: /docs/commands/szurubooru.html
     - link: /docs/commands/my-imouto.html
     - link: /docs/commands/gelbooru.html
     - link: /docs/commands/shimmie.html
