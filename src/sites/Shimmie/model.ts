@@ -165,13 +165,24 @@ export const source: ISource = {
             name: "Regex",
             auth: [],
             search: {
+                parseErrors: true,
                 url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
                         return "/post/list/" + transformQuery(query.search) + "/" + query.page;
                     }
                     return "/post/list/" + query.page;
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string, statusCode: number): IParsedSearch | IError => {
+                    // 404 are not really "errors" as they just mean "no result"
+                    if (statusCode == 404) {
+                        return { images: [] };
+                    }
+
+                    // Other invalid status codes must be treated as proper errors
+                    if (statusCode < 200 || statusCode >= 300) {
+                        return { error: "Loading error: HTTP " + statusCode };
+                    }
+
                     const pageCount = /\| Next \| Last<br>/.test(src)
                         ? Grabber.regexToConst("page", "<a href=['\"]/post/list(?:/[^/]+)?/(?<page>\\d+)['\"]>[^<]+<\/a>(?:<\/b>)? &gt;&gt;", src)
                         : Grabber.regexToConst("page", "<a href=['\"]/post/list(?:/[^/]+)?/(?<page>\\d*)['\"]>Last</a>", src);
