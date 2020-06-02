@@ -71,7 +71,7 @@ bool Commands::image(const Image &img, const QString &path)
 
 			const int code = QProcess::execute(exec);
 			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
 			}
 		}
 	}
@@ -116,7 +116,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 
 			const int code = QProcess::execute(exec);
 			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code));
+				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
 			}
 		}
 	}
