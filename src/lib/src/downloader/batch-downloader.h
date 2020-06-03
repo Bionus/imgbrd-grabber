@@ -88,4 +88,4 @@ class BatchDownloader : public QObject
 		int m_counterSum;
 };
 
-#endif //BATCH_DOWNLOADER_H
+#endif // BATCH_DOWNLOADER_H

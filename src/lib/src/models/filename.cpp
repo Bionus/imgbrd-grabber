@@ -202,17 +202,20 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				// Get last file
 				QCollator collator;
 				collator.setNumericMode(true);
-				const QFileInfo highest = noExt
-					? *std::max_element(
+				QFileInfo highest;
+				if (noExt) {
+					highest = *std::max_element(
 						files.begin(),
 						files.end(),
 						[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.completeBaseName(), b.completeBaseName()) < 0; }
-					)
-					: *std::max_element(
+					);
+				} else {
+					highest = *std::max_element(
 						files.begin(),
 						files.end(),
 						[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
 					);
+				}
 
 				const QString last = highest.fileName();
 				const int pos = cRight.indexOf(hasNum);

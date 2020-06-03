@@ -13,7 +13,7 @@ class Page;
 class Profile;
 class Site;
 
-typedef std::function<void(const QString &val, QVariantMap &data)> vTransformToken;
+typedef std::function<void (const QString &val, QVariantMap &data)> vTransformToken;
 
 class ImageFactory
 {

@@ -10,9 +10,9 @@ class QVariant;
 
 class Analytics
 {
-    public:
+	public:
 		// Singleton pattern
-        static Analytics &getInstance()
+		static Analytics &getInstance()
 		{
 			static Analytics instance;
 			return instance;
@@ -20,22 +20,22 @@ class Analytics
 		Analytics(Analytics const &) = delete;
 		void operator=(Analytics const &) = delete;
 
-        // Setters
-        void setTrackingID(const QString& trackingId);
-        void setEnabled(bool enabled);
+		// Setters
+		void setTrackingID(const QString& trackingId);
+		void setEnabled(bool enabled);
 
 		// API
 		void startSending();
 		void startSession();
 		void endSession();
 		void sendScreenView(const QString& screenName, const QVariantMap &customValues = {});
-        void sendEvent(const QString& category, const QString &action, const QString &label = {}, const QVariant &value = {}, const QVariantMap &customValues = {});
+		void sendEvent(const QString& category, const QString &action, const QString &label = {}, const QVariant &value = {}, const QVariantMap &customValues = {});
 
-    private:
+	private:
 		Analytics() = default;
 
-        bool m_enabled = false;
-        GAnalytics m_googleAnalytics;
+		bool m_enabled = false;
+		GAnalytics m_googleAnalytics;
 };
 
 #endif // ANALYTICS_H

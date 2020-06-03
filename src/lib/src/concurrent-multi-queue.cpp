@@ -9,12 +9,12 @@ ConcurrentMultiQueue::ConcurrentMultiQueue(QObject *parent)
 
 int ConcurrentMultiQueue::globalConcurrency() const
 {
-    return m_globalConcurrency;
+	return m_globalConcurrency;
 }
 
 void ConcurrentMultiQueue::setGlobalConcurrency(int globalConcurrency)
 {
-    m_globalConcurrency = globalConcurrency;
+	m_globalConcurrency = globalConcurrency;
 }
 
 
@@ -46,13 +46,13 @@ void ConcurrentMultiQueue::nextInternal()
 	}
 
 	if (index >= m_queues.count()) {
-        int activeWorkers = m_activeWorkers.fetchAndAddRelaxed(-1);
-        if (activeWorkers == 1) { // Compare to 1 because the returned value is the one BEFORE the modification
-            emit finished();
-        }
-        return;
-    }
+		int activeWorkers = m_activeWorkers.fetchAndAddRelaxed(-1);
+		if (activeWorkers == 1) { // Compare to 1 because the returned value is the one BEFORE the modification
+			emit finished();
+		}
+		return;
+	}
 
 	QVariant next = m_queues[index].dequeue();
-    emit dequeued(next);
+	emit dequeued(next);
 }

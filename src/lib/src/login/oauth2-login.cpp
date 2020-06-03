@@ -52,9 +52,9 @@ void OAuth2Login::login()
 		const QByteArray base64BearerCredentials = bearerCredentials.toBase64();
 		request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
 	} else if (type == "client_credentials") {
-		body << QStrP("grant_type", "client_credentials")
-			 << QStrP("client_id", consumerKey)
-			 << QStrP("client_secret", consumerSecret);
+		body << QStrP("grant_type", "client_credentials");
+		body << QStrP("client_id", consumerKey);
+		body << QStrP("client_secret", consumerSecret);
 	} else if (type == "password") {
 		const QString pseudo = m_settings->value("auth/pseudo").toString();
 		const QString password = m_settings->value("auth/password").toString();
@@ -66,9 +66,9 @@ void OAuth2Login::login()
 		request.setRawHeader("X-Client-Time", time.toLatin1());
 		request.setRawHeader("X-Client-Hash", QCryptographicHash::hash(hash.toLatin1(), QCryptographicHash::Md5).toHex());
 
-		body << QStrP("grant_type", "password")
-			 << QStrP("username", pseudo)
-			 << QStrP("password", password);
+		body << QStrP("grant_type", "password");
+		body << QStrP("username", pseudo);
+		body << QStrP("password", password);
 
 		if (!consumerKey.isEmpty()) {
 			body << QStrP("client_id", consumerKey);

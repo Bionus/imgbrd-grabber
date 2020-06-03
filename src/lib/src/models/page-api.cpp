@@ -39,7 +39,7 @@ void PageApi::setLastPage(Page *page)
 
 	if (!page->nextPage().isEmpty() && page->page() == m_page - 1) {
 		m_url = page->nextPage();
-	} 	else if (!page->prevPage().isEmpty() && page->page() == m_page + 1) {
+	} else if (!page->prevPage().isEmpty() && page->page() == m_page + 1) {
 		m_url = page->prevPage();
 	}
 

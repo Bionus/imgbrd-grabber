@@ -34,7 +34,8 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 {
 	if (role == Qt::DisplayRole) {
 		if (orientation == Qt::Horizontal) {
-			switch (section) {
+			switch (section)
+			{
 				case 0: return QString("");
 				case 1: return QString("Search");
 				case 2: return QString("Source");
@@ -72,7 +73,8 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		return {};
 	}
 
-	switch (index.column()) {
+	switch (index.column())
+	{
 		case 1:
 			return monitor.query().toString();
 

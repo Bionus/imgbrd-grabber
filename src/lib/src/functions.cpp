@@ -62,9 +62,9 @@ QList<ConditionalFilename> getFilenames(QSettings *settings)
 		const QString strI = QString::number(i);
 		if (settings->contains(strI + "_cond")) {
 			ret.append(ConditionalFilename(
-			   settings->value(strI + "_cond").toString(),
-			   settings->value(strI + "_fn").toString(),
-			   settings->value(strI + "_dir").toString()
+				settings->value(strI + "_cond").toString(),
+				settings->value(strI + "_fn").toString(),
+				settings->value(strI + "_dir").toString()
 			));
 		}
 	}

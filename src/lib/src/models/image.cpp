@@ -609,7 +609,7 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 
 				// Replace some post-save tokens
 				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
-						.replace("%path%", QDir::toNativeSeparators(path));
+					.replace("%path%", QDir::toNativeSeparators(path));
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
@@ -632,15 +632,19 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 
 	// Commands
 	Commands &commands = m_profile->getCommands();
-	if (startCommands)
-	{ commands.before(); }
-		for (const Tag &tag : qAsConst(m_tags))
-		{ commands.tag(*this, tag, false); }
-		commands.image(*this, path);
-		for (const Tag &tag : qAsConst(m_tags))
-		{ commands.tag(*this, tag, true); }
-	if (startCommands)
-	{ commands.after(); }
+	if (startCommands) {
+		commands.before();
+	}
+	for (const Tag &tag : qAsConst(m_tags)) {
+		commands.tag(*this, tag, false);
+	}
+	commands.image(*this, path);
+	for (const Tag &tag : qAsConst(m_tags)) {
+		commands.tag(*this, tag, true);
+	}
+	if (startCommands) {
+		commands.after();
+	}
 
 	setSavePath(path, size);
 }
@@ -859,8 +863,7 @@ QList<QStrP> Image::detailsData() const
 	const QString &author = token<QString>("author");
 	int parentId = token<int>("parentid");
 
-	return
-	{
+	return {
 		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),

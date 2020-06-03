@@ -106,25 +106,25 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 		m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(search.toString(), siteNames.join(", ")), QSystemTrayIcon::Information);
 	}
 
-    // Add images to download queue
+	// Add images to download queue
 	if (monitor.download() && newImages > 0) {
-        QString path = monitor.pathOverride();
-        if (path.isEmpty()) {
-            path = m_profile->getSettings()->value("save/path").toString();
-        }
-        QString filename = monitor.filenameOverride();
-        if (filename.isEmpty()) {
-            filename = m_profile->getSettings()->value("save/filename").toString();
-        }
+		QString path = monitor.pathOverride();
+		if (path.isEmpty()) {
+			path = m_profile->getSettings()->value("save/path").toString();
+		}
+		QString filename = monitor.filenameOverride();
+		if (filename.isEmpty()) {
+			filename = m_profile->getSettings()->value("save/filename").toString();
+		}
 
-        for (const QSharedPointer<Image> &img : newImagesList) {
+		for (const QSharedPointer<Image> &img : newImagesList) {
 			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
 			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
 
 		log(QStringLiteral("Added %1 images to the download queue for monitor '%2' on '%3'").arg(QString::number(newImages), search.toString(), siteNames.join(", ")), Logger::Info);
 		m_waitingForQueue = true;
-    }
+	}
 
 	// Update monitor
 	monitor.setLastCheck(limit);
@@ -142,7 +142,7 @@ void MonitoringCenter::tick()
 		return;
 	}
 
-    qint64 minNextMonitoring = -1;
+	qint64 minNextMonitoring = -1;
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
 
 	// Save if there were changes to the monitors since the last tick
@@ -158,7 +158,7 @@ void MonitoringCenter::tick()
 		Favorite &fav = favs[j];
 		for (Monitor &monitor : fav.getMonitors()) {
 			// If this favorite's monitoring expired, we check it for updates
-            qint64 next = monitor.secsToNextCheck();
+			qint64 next = monitor.secsToNextCheck();
 			if (next <= 0) {
 				checkMonitor(monitor, fav);
 				next = monitor.secsToNextCheck();

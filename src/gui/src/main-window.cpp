@@ -421,7 +421,7 @@ void MainWindow::initialLoginsDone()
 		addTab();
 	}
 
-	if (m_forcedTab.type() == QMetaType::QString) {
+	if ((QMetaType::Type) m_forcedTab.type() == QMetaType::QString) {
 		QString name = m_forcedTab.toString();
 		if (name == "favorites") {
 			ui->tabWidget->setCurrentWidget(m_favoritesTab);

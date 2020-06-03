@@ -5,7 +5,7 @@
 #include "models/search-query/search-query.h"
 
 
-class TagSearchQuery //: public SearchQuery
+class TagSearchQuery // : public SearchQuery
 {
 	public:
 		explicit TagSearchQuery(QStringList tags);

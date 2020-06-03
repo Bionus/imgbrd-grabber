@@ -5,7 +5,6 @@
 
 
 struct FilenameNodeCondition : public FilenameNode
-{
-};
+{};
 
 #endif // FILENAME_NODE_CONDITION_H

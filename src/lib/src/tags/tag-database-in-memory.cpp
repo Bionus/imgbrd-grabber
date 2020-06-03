@@ -71,8 +71,9 @@ bool TagDatabaseInMemory::save()
 
 		TagType tagType = i.value();
 		const int tagTypeId = m_tagTypeDatabase.get(tagType);
-		if (tagTypeId == -1)
+		if (tagTypeId == -1) {
 			continue;
+		}
 
 		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
 	}

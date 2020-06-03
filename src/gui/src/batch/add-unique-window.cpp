@@ -45,9 +45,9 @@ void setTextEditRows(QPlainTextEdit *plainTextEdit, int nRows)
 	const QMargins margins = plainTextEdit->contentsMargins();
 
 	const int nHeight = fm.lineSpacing() * nRows
-			+ qRound((plainDoc->documentMargin() + plainTextEdit->frameWidth()) * 2)
-			+ margins.top()
-			+ margins.bottom();
+		+ qRound((plainDoc->documentMargin() + plainTextEdit->frameWidth()) * 2)
+		+ margins.top()
+		+ margins.bottom();
 	plainTextEdit->setFixedHeight(nHeight);
 }
 void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *plainTextEdit, QLabel *label)

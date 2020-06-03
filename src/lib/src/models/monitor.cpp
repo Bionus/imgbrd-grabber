@@ -60,15 +60,15 @@ void Monitor::setCumulated(int cumulated, bool isPrecise)
 
 bool Monitor::download() const
 {
-    return m_download;
+	return m_download;
 }
 const QString &Monitor::pathOverride() const
 {
-    return m_pathOverride;
+	return m_pathOverride;
 }
 const QString &Monitor::filenameOverride() const
 {
-    return m_filenameOverride;
+	return m_filenameOverride;
 }
 const SearchQuery &Monitor::query() const
 {
@@ -96,8 +96,8 @@ void Monitor::toJson(QJsonObject &json) const
 	json["delay"] = m_delay;
 	json["lastCheck"] = m_lastCheck.toString(Qt::ISODate);
 	json["cumulated"] = m_cumulated;
-    json["preciseCumulated"] = m_preciseCumulated;
-    json["download"] = m_download;
+	json["preciseCumulated"] = m_preciseCumulated;
+	json["download"] = m_download;
 	json["pathOverride"] = m_pathOverride;
 	json["filenameOverride"] = m_filenameOverride;
 	json["postFilters"] = QJsonArray::fromStringList(m_postFilters);
@@ -126,7 +126,7 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 	const QDateTime lastCheck = QDateTime::fromString(json["lastCheck"].toString(), Qt::ISODate);
 	const int cumulated = json["cumulated"].toInt();
 	const bool preciseCumulated = json["preciseCumulated"].toBool();
-    const bool download = json["download"].toBool();
+	const bool download = json["download"].toBool();
 	const QString &pathOverride = json["pathOverride"].toString();
 	const QString &filenameOverride = json["filenameOverride"].toString();
 	const bool notify = json["notify"].toBool();
@@ -151,10 +151,10 @@ bool operator==(const Monitor &lhs, const Monitor &rhs)
 		&& lhs.delay() == rhs.delay()
 		&& lhs.lastCheck() == rhs.lastCheck()
 		&& lhs.cumulated() == rhs.cumulated()
-        && lhs.preciseCumulated() == rhs.preciseCumulated()
-        && lhs.download() == rhs.download()
-        && lhs.pathOverride() == rhs.pathOverride()
-        && lhs.filenameOverride() == rhs.filenameOverride();
+		&& lhs.preciseCumulated() == rhs.preciseCumulated()
+		&& lhs.download() == rhs.download()
+		&& lhs.pathOverride() == rhs.pathOverride()
+		&& lhs.filenameOverride() == rhs.filenameOverride();
 }
 
 bool operator!=(const Monitor &lhs, const Monitor &rhs)

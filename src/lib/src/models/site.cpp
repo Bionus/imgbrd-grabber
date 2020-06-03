@@ -415,4 +415,3 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 
 	return m_loggedIn == LoginStatus::LoggedIn;
 }
-

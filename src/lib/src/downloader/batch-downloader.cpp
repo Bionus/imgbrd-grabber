@@ -77,7 +77,7 @@ void BatchDownloader::start()
 	auto *group = dynamic_cast<DownloadQueryGroup*>(m_query);
 	m_totalCount = group != nullptr ? group->total : 1;
 
-	//m_profile->getCommands().before();
+	// m_profile->getCommands().before();
 	login();
 }
 
@@ -252,7 +252,7 @@ void BatchDownloader::allFinished()
 		m_packLoader = nullptr;
 	}
 
-	//m_profile->getCommands().after();
+	// m_profile->getCommands().after();
 	setCurrentStep(BatchDownloadStep::Finished);
 
 	emit finished();

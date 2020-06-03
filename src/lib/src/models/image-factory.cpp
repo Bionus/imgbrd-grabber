@@ -131,8 +131,9 @@ void ImageFactory::parseTags(const QString &val, QVariantMap &data)
 	}
 	QList<Tag> tagList = data["tags"].value<QList<Tag>>();
 
-	if (!tagList.isEmpty())
+	if (!tagList.isEmpty()) {
 		return;
+	}
 
 	QString raw = val;
 	raw.replace(QRegularExpression("[\r\n\t]+"), " ");

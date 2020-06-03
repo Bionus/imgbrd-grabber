@@ -24,8 +24,8 @@ class Monitor
 		int cumulated() const;
 		bool preciseCumulated() const;
 		void setCumulated(int cumulated, bool isPrecise);
-        bool download() const;
-        const QString &pathOverride() const;
+		bool download() const;
+		const QString &pathOverride() const;
 		const QString &filenameOverride() const;
 		const SearchQuery &query() const;
 		const QStringList &postFilters() const;
@@ -42,9 +42,9 @@ class Monitor
 		QDateTime m_lastCheck;
 		int m_cumulated;
 		bool m_preciseCumulated;
-        bool m_download;
-        QString m_pathOverride;
-        QString m_filenameOverride;
+		bool m_download;
+		QString m_pathOverride;
+		QString m_filenameOverride;
 		SearchQuery m_query;
 		QStringList m_postFilters;
 		bool m_notify;
