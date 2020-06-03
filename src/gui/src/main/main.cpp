@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	#endif
 
 	// Copy settings files to writable directory
-	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+	const QStringList toCopy { "sites/", "themes/", "webservices/" };
 	for (const QString &tgt : toCopy) {
 		const QString from = savePath(tgt, true, false);
 		const QString to = savePath(tgt, true, true);

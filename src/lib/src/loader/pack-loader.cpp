@@ -32,7 +32,7 @@ bool PackLoader::start()
 	}
 
 	// Add the first results page
-	m_pendingPages.append(new Page(m_profile, m_site, QList<Site*>() << m_site, m_query.query, page, m_query.perpage, m_query.postFiltering, false, nullptr));
+	m_pendingPages.append(new Page(m_profile, m_site, { m_site }, m_query.query, page, m_query.perpage, m_query.postFiltering, false, nullptr));
 
 	return true;
 }
@@ -89,7 +89,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 
 		// Add next page to the pending queue
 		if (page->hasNext()) {
-			Page *next = new Page(m_profile, m_site, QList<Site*>() << m_site, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+			Page *next = new Page(m_profile, m_site, { m_site }, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 			next->setLastPage(page);
 			if (gallery) {
 				m_pendingGalleries.prepend(next);
@@ -106,7 +106,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 				SearchQuery q;
 				q.gallery = img;
 				q.tags = page->search();
-				Page *galleryPage = new Page(m_profile, m_site, QList<Site*>() << m_site, q, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+				Page *galleryPage = new Page(m_profile, m_site, { m_site }, q, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
 				m_pendingGalleries.insert(itGallery, galleryPage);
 				continue;
 			}

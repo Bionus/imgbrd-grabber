@@ -99,7 +99,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_name = details.contains("name") ? details["name"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
-	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
+	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList { details["source"] } : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
 
@@ -224,8 +224,8 @@ void Image::init()
 	// Setup extension rotator
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 	const QStringList extensions = animated
-		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
-		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+		? QStringList { "webm", "mp4", "gif", "jpg", "png", "jpeg", "swf" }
+		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
 

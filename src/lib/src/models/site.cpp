@@ -64,7 +64,7 @@ void Site::loadConfig()
 	}
 	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
 	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
-	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
+	m_settings = new MixedSettings(QList<QSettings*> { settingsCustom, settingsDefaults });
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Cookies
@@ -75,14 +75,15 @@ void Site::loadConfig()
 
 	// Get default source order
 	QSettings *pSettings = m_source->getProfile()->getSettings();
-	QStringList defaults;
-	defaults << pSettings->value("source_1").toString()
-		<< pSettings->value("source_2").toString()
-		<< pSettings->value("source_3").toString()
-		<< pSettings->value("source_4").toString();
+	QStringList defaults {
+		pSettings->value("source_1").toString(),
+		pSettings->value("source_2").toString(),
+		pSettings->value("source_3").toString(),
+		pSettings->value("source_4").toString()
+	};
 	defaults.removeAll("");
 	if (defaults.isEmpty()) {
-		defaults = QStringList() << "Xml" << "Json" << "Regex" << "Rss";
+		defaults = QStringList { "Xml", "Json", "Regex", "Rss" };
 	}
 
 	// Get overridden source order

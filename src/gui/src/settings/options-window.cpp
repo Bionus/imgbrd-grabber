@@ -38,7 +38,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 
 	QSettings *settings = profile->getSettings();
 
-	ui->splitter->setSizes(QList<int>() << 160 << ui->stackedWidget->sizeHint().width());
+	ui->splitter->setSizes({ 160, ui->stackedWidget->sizeHint().width() });
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
@@ -53,10 +53,10 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->lineAdd->setText(settings->value("add").toString());
 	ui->lineGlobalPostFilter->setText(settings->value("globalPostFilter").toString());
 	ui->checkGlobalPostFilterExplicit->setChecked(settings->value("globalPostFilterExplicit", false).toBool());
-	QStringList wl = QStringList() << "never" << "image" << "page";
+	const QStringList wl { "never", "image", "page" };
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
 	ui->lineIgnored->setText(settings->value("ignoredtags").toString());
-	QStringList starts = QStringList() << "none" << "loadfirst" << "restore";
+	const QStringList starts { "none", "loadfirst", "restore" };
 	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "none").toString()));
 	ui->spinHideFavorites->setValue(settings->value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings->value("autodownload", false).toBool());
@@ -67,13 +67,13 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkInvertToggle->setChecked(settings->value("invertToggle", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
 	ui->checkSendUsageData->setChecked(settings->value("send_usage_data", true).toBool());
-	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
+	const QList<int> checkForUpdates { 0, 24 * 60 * 60, 7 * 24 * 60 * 60, 30 * 24 * 60 * 60, -1 };
 	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24 * 60 * 60).toInt()));
 	ui->lineTempPathOverride->setText(settings->value("tempPathOverride").toString());
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	const QStringList sources { "xml", "json", "regex", "rss" };
 	ui->comboSource1->setCurrentIndex(sources.indexOf(settings->value("source_1", "xml").toString()));
 	ui->comboSource2->setCurrentIndex(sources.indexOf(settings->value("source_2", "json").toString()));
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings->value("source_3", "regex").toString()));
@@ -98,14 +98,14 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		layout->addWidget(leFolder);
 		ui->layoutConditionals->addLayout(layout);
 	}
-	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
+	const QStringList types { "text", "icon", "both", "hide" };
 	ui->comboSources->setCurrentIndex(types.indexOf(settings->value("Sources/Types", "icon").toString()));
 	int letterCount = settings->value("Sources/Letters", 3).toInt();
 	ui->comboSourcesLetters->setCurrentIndex((letterCount < 0 ? 1 : 0) + (letterCount < -1 ? 1 : 0));
 	ui->spinSourcesLetters->setValue(letterCount < 0 ? 3 : letterCount);
 	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
-	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
+	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
 	// Log
@@ -132,7 +132,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->spinThumbnailUpscale->setValue(qRound(settings->value("thumbnailUpscale", 1.0).toDouble() * 100));
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
-	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
+	QStringList infiniteScroll { "disabled", "button", "scroll" };
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 
@@ -162,11 +162,11 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
-		QStringList md5Duplicates = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
+		const QStringList md5Duplicates { "save", "copy", "move", "link", "ignore" };
 		ui->comboMd5Duplicates->setCurrentIndex(md5Duplicates.indexOf(settings->value("md5Duplicates", "save").toString()));
 		ui->comboMd5DuplicatesSameDir->setCurrentIndex(md5Duplicates.indexOf(settings->value("md5DuplicatesSameDir", "save").toString()));
 		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
-		QStringList multipleFiles = QStringList() << "copy" << "link";
+		const QStringList multipleFiles { "copy", "link" };
 		ui->comboMultipleFiles->setCurrentIndex(multipleFiles.indexOf(settings->value("multiple_files", "copy").toString()));
 
 		ui->lineFilename->setText(settings->value("filename_real").toString());
@@ -177,13 +177,13 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 
 		// Build the "tags" settings
 		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(4);
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Artist", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Copyright", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Character", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Model", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Photo set", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Species", tagsTree->type()));
-		tagsTree->addChild(new QTreeWidgetItem(QStringList() << "Meta", tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Model" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Photo set" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Species" }, tagsTree->type()));
+		tagsTree->addChild(new QTreeWidgetItem({ "Meta" }, tagsTree->type()));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "artist", false, "anonymous", "multiple artists", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "copyright", true, "misc", "crossover", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "character", false, "unknown", "group", this));
@@ -221,7 +221,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
 	ui->checkSingleDetailsWindow->setChecked(settings->value("Zoom/singleWindow", false).toBool());
-	QStringList positions = QStringList() << "top" << "left" << "auto";
+	const QStringList positions { "top", "left", "auto" };
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
@@ -232,10 +232,10 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
 	ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	ui->checkImageScaleUp->setChecked(settings->value("Zoom/scaleUp", false).toBool());
-	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
+	const QStringList imageTagOrder { "type", "name", "count" };
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
-	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
-	QStringList positionsH = QStringList() << "left" << "center" << "right";
+	const QStringList positionsV { "top", "center", "bottom" };
+	const QStringList positionsH { "left", "center", "right" };
 	ui->comboImagePositionImageV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionImageV", "center").toString()));
 	ui->comboImagePositionImageH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionImageH", "left").toString()));
 	ui->comboImagePositionAnimationV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionAnimationV", "center").toString()));
@@ -287,7 +287,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	settings->beginGroup("Proxy");
 		ui->checkProxyUse->setChecked(settings->value("use", false).toBool());
 		ui->checkProxyUseSystem->setChecked(settings->value("useSystem", false).toBool());
-		QStringList ptypes = QStringList() << "http" << "socks5";
+		const QStringList ptypes { "http", "socks5" };
 		ui->comboProxyType->setCurrentIndex(ptypes.indexOf(settings->value("type", "http").toString()));
 		ui->widgetProxy->setEnabled(settings->value("use", false).toBool());
 		ui->lineProxyHostName->setText(settings->value("hostName").toString());
@@ -804,18 +804,18 @@ void OptionsWindow::save()
 	settings->setValue("add", ui->lineAdd->text());
 	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
 	settings->setValue("globalPostFilterExplicit", ui->checkGlobalPostFilterExplicit->isChecked());
-	QStringList wl = QStringList() << "never" << "image" << "page";
+	const QStringList wl { "never", "image", "page" };
 	settings->setValue("whitelist_download", wl.at(ui->comboWhitelist->currentIndex()));
 
 	settings->setValue("limit", ui->spinImagesPerPage->value());
 	settings->setValue("columns", ui->spinColumns->value());
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	const QStringList sources { "xml", "json", "regex", "rss" };
 	settings->setValue("source_1", sources.at(ui->comboSource1->currentIndex()));
 	settings->setValue("source_2", sources.at(ui->comboSource2->currentIndex()));
 	settings->setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings->setValue("source_4", sources.at(ui->comboSource4->currentIndex()));
 	settings->setValue("tagsautoadd", ui->spinAutoTagAdd->value());
-	QStringList starts = QStringList() << "none" << "loadfirst" << "restore";
+	const QStringList starts { "none", "loadfirst", "restore" };
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings->setValue("autodownload", ui->checkAutodownload->isChecked());
@@ -826,7 +826,7 @@ void OptionsWindow::save()
 	settings->setValue("invertToggle", ui->checkInvertToggle->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
 	settings->setValue("send_usage_data", ui->checkSendUsageData->isChecked());
-	QList<int> checkForUpdates = QList<int>() << 0 << 24 * 60 * 60 << 7 * 24 * 60 * 60 << 30 * 24 * 60 * 60 << -1;
+	const QList<int> checkForUpdates { 0, 24 * 60 * 60, 7 * 24 * 60 * 60, 30 * 24 * 60 * 60, -1 };
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
 	settings->setValue("tempPathOverride", ui->lineTempPathOverride->text());
 
@@ -844,13 +844,13 @@ void OptionsWindow::save()
 		}
 	settings->endGroup();
 
-	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
+	const QStringList types { "text", "icon", "both", "hide" };
 	settings->setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
 	const int i = ui->comboSourcesLetters->currentIndex();
 	settings->setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
 	settings->setValue("preloadAllTabs", ui->checkPreloadAllTabs->isChecked());
 
-	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
+	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex())) {
 		settings->setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
 		m_profile->emitFavorite();
@@ -884,7 +884,7 @@ void OptionsWindow::save()
 	settings->setValue("thumbnailUpscale", static_cast<double>(ui->spinThumbnailUpscale->value()) / 100.0);
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
-	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
+	const QStringList infiniteScroll { "disabled", "button", "scroll" };
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
 
@@ -929,11 +929,11 @@ void OptionsWindow::save()
 				pth.mkpath(folder);
 			}
 		}
-		QStringList md5Duplicates = QStringList() << "save" << "copy" << "move" << "link" << "ignore";
+		const QStringList md5Duplicates { "save", "copy", "move", "link", "ignore" };
 		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("md5DuplicatesSameDir", md5Duplicates.at(ui->comboMd5DuplicatesSameDir->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
-		QStringList multipleFiles = QStringList() << "copy" << "link";
+		const QStringList multipleFiles { "copy", "link" };
 		settings->setValue("multiple_files", multipleFiles.at(ui->comboMultipleFiles->currentIndex()));
 
 		settings->setValue("filename", ui->lineFilename->text());
@@ -981,7 +981,7 @@ void OptionsWindow::save()
 	}
 
 	settings->setValue("Zoom/singleWindow", ui->checkSingleDetailsWindow->isChecked());
-	QStringList positions = QStringList() << "top" << "left" << "auto";
+	const QStringList positions { "top", "left", "auto" };
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
 	settings->setValue("slideshow", ui->spinSlideshow->value());
@@ -992,10 +992,10 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
 	settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	settings->setValue("Zoom/scaleUp", ui->checkImageScaleUp->isChecked());
-	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
+	const QStringList imageTagOrder { "type", "name", "count" };
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
-	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
-	QStringList positionsH = QStringList() << "left" << "center" << "right";
+	const QStringList positionsV { "top", "center", "bottom" };
+	const QStringList positionsH { "left", "center", "right" };
 	settings->setValue("imagePositionImageV", positionsV.at(ui->comboImagePositionImageV->currentIndex()));
 	settings->setValue("imagePositionImageH", positionsH.at(ui->comboImagePositionImageH->currentIndex()));
 	settings->setValue("imagePositionAnimationV", positionsV.at(ui->comboImagePositionAnimationV->currentIndex()));
@@ -1047,7 +1047,7 @@ void OptionsWindow::save()
 	settings->beginGroup("Proxy");
 		settings->setValue("use", ui->checkProxyUse->isChecked());
 		settings->setValue("useSystem", ui->checkProxyUseSystem->isChecked());
-		QStringList ptypes = QStringList() << "http" << "socks5";
+		const QStringList ptypes { "http", "socks5" };
 		settings->setValue("type", ptypes.at(ui->comboProxyType->currentIndex()));
 		settings->setValue("hostName", ui->lineProxyHostName->text());
 		settings->setValue("port", ui->spinProxyPort->value());

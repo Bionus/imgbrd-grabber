@@ -289,7 +289,7 @@ void ImagePreview::contextSaveImageAs()
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
 
 		QEventLoop loop;
-		ImageDownloader downloader(m_profile, m_image, QStringList() << tmpPath, 1, true, true, this);
+		ImageDownloader downloader(m_profile, m_image, { tmpPath }, 1, true, true, this);
 		connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit);
 		downloader.save();
 		loop.exec();
@@ -307,7 +307,7 @@ void ImagePreview::contextSaveImageAs()
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);
 		} else {
-			auto downloader = new ImageDownloader(m_profile, m_image, QStringList() << path, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
+			auto downloader = new ImageDownloader(m_profile, m_image, { path }, 1, true, true, this, true, false, Image::Size::Unknown, true, true);
 			connect(downloader, &ImageDownloader::downloadProgress, this, &ImagePreview::contextSaveImageProgress);
 			m_downloadQueue->add(DownloadQueue::Manual, downloader);
 		}

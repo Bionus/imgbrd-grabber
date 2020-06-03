@@ -176,7 +176,7 @@ QDateTime qDateTimeFromString(const QString &str)
 			return date;
 		}
 
-		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
+		const QStringList months { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 		const int year = str.midRef(26, 4).toInt();
 		const int month = months.indexOf(str.mid(4, 3)) + 1;
 		const int day = str.midRef(8, 2).toInt();
@@ -556,7 +556,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	}
 
 	// Fobidden directories or filenames
-	static const QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
+	static const QStringList forbidden { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
 
 	// Divide filename
 	QStringList parts = filename.split(sep);

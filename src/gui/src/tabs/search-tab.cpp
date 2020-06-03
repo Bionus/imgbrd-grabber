@@ -188,7 +188,7 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 	// Auto-correct
 	if (meant != nullptr && !page->search().isEmpty()) {
 		QMap<QString, QString> results, clean;
-		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
+		QList<QChar> modifiers { '~', '-' };
 
 		int c = 0;
 		for (QString tag : page->search()) {

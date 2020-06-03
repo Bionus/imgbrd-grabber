@@ -67,7 +67,7 @@ FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
 	// Open tab with closed result splitter
-	ui->splitter->setSizes(QList<int>() << 1 << 0);
+	ui->splitter->setSizes({ 1, 0 });
 
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
@@ -76,7 +76,7 @@ FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 
-	static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
+	static const QStringList assoc { QStringLiteral("name"), QStringLiteral("note"), QStringLiteral("lastviewed") };
 		ui->comboOrder->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboAsc->setCurrentIndex(static_cast<int>(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
@@ -96,7 +96,7 @@ void FavoritesTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->beginGroup("Favorites");
-		static QStringList assoc = QStringList() << QStringLiteral("name") << QStringLiteral("note") << QStringLiteral("lastviewed");
+		static const QStringList assoc { QStringLiteral("name"), QStringLiteral("note"), QStringLiteral("lastviewed") };
 		m_settings->setValue("order", assoc[ui->comboOrder->currentIndex()]);
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	m_settings->endGroup();
@@ -110,7 +110,7 @@ void FavoritesTab::closeEvent(QCloseEvent *e)
 
 void FavoritesTab::updateFavorites()
 {
-	static const QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+	static const QStringList assoc { "name", "note", "lastviewed" };
 	const QString &order = assoc[ui->comboOrder->currentIndex()];
 	const bool reverse = (ui->comboAsc->currentIndex() == 1);
 
@@ -221,7 +221,7 @@ void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>>
 	Q_UNUSED(noResultsMessage)
 
 	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
-	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
+	ui->splitter->setSizes({ (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1), 1 });
 }
 
 void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
@@ -363,7 +363,7 @@ void FavoritesTab::favoritesBack()
 {
 	ui->widgetResults->hide();
 	ui->widgetFavorites->show();
-	ui->splitter->setSizes(QList<int>() << 1 << 0);
+	ui->splitter->setSizes({ 1, 0 });
 
 	if (!m_currentTags.isEmpty() || m_currentFav != -1) {
 		m_currentTags = QString();

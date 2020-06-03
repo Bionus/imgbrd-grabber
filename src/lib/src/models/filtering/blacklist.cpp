@@ -32,7 +32,7 @@ void Blacklist::add(const QString &tag)
 {
 	auto filter = QSharedPointer<Filter>(FilterFactory::build(tag));
 	if (!filter.isNull()) {
-		m_filters.append(QList<QSharedPointer<Filter>>() << filter);
+		m_filters.append({ filter });
 	}
 }
 

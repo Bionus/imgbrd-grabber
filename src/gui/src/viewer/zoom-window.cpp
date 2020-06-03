@@ -272,7 +272,7 @@ void ZoomWindow::openPool(const QString &url)
 	if (url.startsWith(QLatin1String("pool:"))) {
 		emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->parentSite()->url());
 	} else {
-		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:" + url, 1, 1, QStringList(), false, this);
+		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList { "id:" + url }, 1, 1, QStringList(), false, this);
 		connect(p, &Page::finishedLoading, this, &ZoomWindow::openPoolId);
 		p->load();
 	}
@@ -336,7 +336,7 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 		return;
 	}
 
-	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << m_link);
+	Page page(m_profile, m_site, { m_site }, QStringList { m_link });
 	auto *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &ZoomWindow::openInNewTab);
 	connect(menu, &TagContextMenu::setFavoriteImage, this, &ZoomWindow::setfavorite);

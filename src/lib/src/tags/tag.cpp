@@ -22,7 +22,7 @@ Tag::Tag(const QString &text, const TagType &type, int count, const QStringList 
 Tag::Tag(int id, const QString &text, TagType type, int count, QStringList related)
 	: m_id(id), m_type(std::move(type)), m_count(count), m_related(std::move(related))
 {
-	static QStringList weakTypes = QStringList() << QStringLiteral("origin");
+	static const QStringList weakTypes { QStringLiteral("origin") };
 
 	// Decode HTML entities in the tag text
 	m_text = decodeHtmlEntities(text).replace(' ', '_');

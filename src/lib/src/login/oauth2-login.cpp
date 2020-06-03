@@ -109,11 +109,12 @@ void OAuth2Login::refresh(bool login)
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 
-	QList<QStrP> body;
-	body << QStrP("grant_type", "refresh_token")
-		 << QStrP("client_id", consumerKey)
-		 << QStrP("client_secret", consumerSecret)
-		 << QStrP("refresh_token", m_refreshToken);
+	const QList<QStrP> body {
+		{ "grant_type", "refresh_token" },
+		{ "client_id", consumerKey },
+		{ "client_secret", consumerSecret },
+		{ "refresh_token", m_refreshToken }
+	};
 
 	// Post request and wait for a reply
 	QString bodyStr;
