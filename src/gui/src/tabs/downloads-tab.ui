@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DownloadsTab</class>
+ <widget class="QWidget" name="DownloadsTab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>798</width>
+    <height>531</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777214</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Downloads</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources/resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QWidget" name="widgetGroups" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelGroups">
+           <property name="text">
+            <string>Groups (0/0)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAddGroup">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableView" name="tableBatchGroups">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="dragEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="dragDropOverwriteMode">
+          <bool>false</bool>
+         </property>
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::InternalMove</enum>
+         </property>
+         <property name="defaultDropAction">
+          <enum>Qt::MoveAction</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="verticalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="widgetUniques" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelUniques">
+           <property name="text">
+            <string>Single images</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAddUnique">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableView" name="tableBatchUniques">
+         <property name="verticalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widgetDownloadButtons" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,1,1,0">
+        <item>
+         <widget class="QPushButton" name="buttonMoveDown">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resources/resources.qrc">
+            <normaloff>:/images/icons/arrow-down.png</normaloff>:/images/icons/arrow-down.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonClear">
+          <property name="text">
+           <string>Delete all</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonClearSel">
+          <property name="text">
+           <string>Delete selected</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonDownload">
+          <property name="text">
+           <string>Download</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonDownloadSel">
+          <property name="text">
+           <string>Download selected</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonMoveUp">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resources/resources.qrc">
+            <normaloff>:/images/icons/arrow-up.png</normaloff>:/images/icons/arrow-up.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../resources/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonAddGroup</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>addGroup()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>787</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>221</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddUnique</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>addUnique()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>787</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>790</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMoveDown</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchMoveDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>511</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMoveUp</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchMoveUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>760</x>
+     <y>508</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>790</x>
+     <y>509</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonDownloadSel</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>753</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>478</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonDownload</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>getAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>574</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>581</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClear</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchClear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>145</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>73</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClearSel</sender>
+   <signal>clicked()</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchClearSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>301</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>DownloadsTab</receiver>
+   <slot>batchDownloadsTableContextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>updateBatchGroups(int,int)</slot>
+  <slot>addGroup()</slot>
+  <slot>addUnique()</slot>
+  <slot>batchMoveUp()</slot>
+  <slot>batchMoveDown()</slot>
+  <slot>batchSel()</slot>
+  <slot>getAll()</slot>
+  <slot>batchClear()</slot>
+  <slot>batchClearSel()</slot>
+  <slot>batchDownloadsTableContextMenu(QPoint)</slot>
+ </slots>
+</ui>

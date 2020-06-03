@@ -7,13 +7,8 @@ APP_DIR="$APP_ROOT/Contents/MacOS"
 mkdir -p $APP_DIR
 
 # Copy all required files to the application directory
-cp "build/gui/Grabber" $APP_DIR
-cp -r release/* $APP_DIR
-cp -r macos/* "$APP_ROOT/Contents"
-cp build/languages/*.qm "$APP_DIR/languages/"
-touch "$APP_DIR/settings.ini"
-rm "$APP_DIR/CDR.exe"
-rm -rf "$APP_DIR/sites/node_modules/"
+./scripts/package.sh $APP_DIR
+cp -r src/dist/macos/* "$APP_ROOT/Contents"
 
 # Create the DMG file
 macdeployqt $APP_ROOT -dmg

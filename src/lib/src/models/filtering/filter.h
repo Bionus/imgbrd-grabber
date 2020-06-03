@@ -1,0 +1,28 @@
+#ifndef FILTER_H
+#define FILTER_H
+
+#include <QMap>
+
+
+class QString;
+class Token;
+
+class Filter
+{
+	protected:
+		explicit Filter(bool invert = false);
+
+	public:
+		virtual ~Filter() = default;
+		virtual QString match(const QMap<QString, Token> &tokens, bool invert = false) const = 0;
+		virtual QString toString() const = 0;
+
+		bool operator==(const Filter &rhs) const;
+		bool operator!=(const Filter &rhs) const;
+		virtual bool compare(const Filter &rhs) const = 0;
+
+	protected:
+		bool m_invert;
+};
+
+#endif // FILTER_H

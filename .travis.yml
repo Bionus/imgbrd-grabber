@@ -20,8 +20,10 @@ addons:
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: bionic
       sudo: required
+      services:
+        - xvfb # X is required for tests on Linux
       env:
         - COVERAGE=1
         - PACKAGE=1
@@ -35,15 +37,17 @@ matrix:
             - g++-6
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-      dist: trusty
+      dist: bionic
       sudo: required
+      services:
+        - xvfb # X is required for tests on Linux
     - os: osx
       env:
         - PACKAGE=1
 
 cache:
   directories:
-    - release/sites/node_modules
+    - src/sites/node_modules
 
 # Install coveralls sender
 before_install:
@@ -63,12 +67,6 @@ install:
     ; fi
 
 before_script:
-  # Start X before running tests on Linux
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export DISPLAY=:99.0 &&
-      sh -e /etc/init.d/xvfb start &&
-      sleep 3
-    ; fi
   # Set the OpenSSL path on OSX
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OPENSSL_ROOT_DIR=/usr/local/opt/openssl/
@@ -77,7 +75,9 @@ before_script:
 # Build Grabber
 script:
   - ./scripts/build.sh
-  - ./build/tests/tests
+  - cd src
+  - ../build/tests/tests
+  - cd ..
 
 after_success:
   # Clean-up workspace
@@ -125,7 +125,8 @@ deploy:
       - Grabber_$BUILD_LABEL.tar.gz
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
-    draft: true
+    draft: false
+    prerelease: true
     overwrite: true
     on:
       repo: Bionus/imgbrd-grabber
@@ -139,7 +140,8 @@ deploy:
       - Grabber_$BUILD_LABEL.tar.gz
       - Grabber_$BUILD_LABEL.dmg
     skip_cleanup: true
-    draft: false
+    draft: true
+    prerelease: false
     overwrite: true
     on:
       repo: Bionus/imgbrd-grabber

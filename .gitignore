@@ -1,22 +1,22 @@
 # Grabber
 *.qm
-e2e/viewer/result.json
-release/sites/helper.js
-release/sites/*/model.js
-release/sites/*/*/cookies.txt
-release/sites/*/*/settings.ini
-release/sites/*/*/tags.txt
-release/sites/*/*/tags.db
-tests/resources/tags.txt
-tests/resources/tags.db
-tests/resources/md5s.txt
-tests/resources/settings.ini
-tests/resources/settings.ini.*
-tests/resources/*.txt
-tests/resources/favorites.*
-tests/resources/thumbs/
-tests/resources/tmp/
-tests/resources/sites/
+src/e2e/viewer/result.json
+src/sites/helper.js
+src/sites/*/model.js
+src/sites/*/*/cookies.txt
+src/sites/*/*/settings.ini
+src/sites/*/*/tags.txt
+src/sites/*/*/tags.db
+src/tests/resources/tags.txt
+src/tests/resources/tags.db
+src/tests/resources/md5s.txt
+src/tests/resources/settings.ini
+src/tests/resources/settings.ini.*
+src/tests/resources/*.txt
+src/tests/resources/favorites.*
+src/tests/resources/thumbs/
+src/tests/resources/tmp/
+src/tests/resources/sites/
 /test_*
 target_wrapper.bat
 symbols/
@@ -36,21 +36,7 @@ build*/
 debug/
 {gui,cli}/release/
 cache/
-release/*.txt
-release/*.ini
-release/*.json
-release/lastdump
-release/crashes/
-release/thumbs/
-release/crashreporter/
-releases/Grabber_*.tar.gz
-releases/Grabber_*.exe
-releases/Grabber_*.rar
-releases/release.sh
-releases/translation_tools.rar
-CrashReporter/debug/
-CrashReporter/release/
-gui/android/AndroidManifest.xml
+release/
 
 
 # NPM

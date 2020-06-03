@@ -1,0 +1,26 @@
+<div class="wrapper">
+	<header>
+		<div class="container">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{{ '/' | relative_url }}">Home</a></li>
+				<li><a href="{{ '/docs/' | relative_url }}">Documentation</a></li>
+				<li><a href="{{ site.github.repository_url }}/blob/master/LICENSE">License</a></li>
+				<li><a href="{{ site.github.repository_url }}/issues">Issue tracker</a></li>
+			</ul>
+
+			{{ header }}
+		</div>
+	</header>
+
+	<section>
+		<div class="container">
+			{{ content }}
+		</div>
+	</section>
+
+	<footer>
+		<div class="container">
+			<p>This project is maintained by <a href="{{ site.github.owner_url }}" data-label="Owner">{{ site.github.owner_name }}</a></p>
+		</div>
+	</footer>
+</div>

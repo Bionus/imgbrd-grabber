@@ -1,0 +1,122 @@
+name: Windows
+on: [push]
+
+jobs:
+  Windows:
+    timeout-minutes: 15
+    runs-on: windows-2019
+
+    env:
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/4114066/qsqlmysql.dll_Qt_SQL_driver_5.12.6_MSVC2017_64-Bit.zip
+      QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Set environment
+      shell: cmd
+      run: |
+        echo ::set-env name=GRABBER_VERSION::nightly
+        echo ::set-env name=GRABBER_IS_NIGHTLY::1
+        echo ::set-env name=PLATFORM_NAME::x64
+        echo ::set-env name=OPENSSL_ROOT_DIR::%GITHUB_WORKSPACE%\vendor\OpenSSL
+        echo ::set-env name=MYSQL_DRIVER_DIR::%GITHUB_WORKSPACE%\vendor\MySQL_driver
+        echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll
+
+    - name: Vendor cache
+      uses: actions/cache@v1
+      id: vendor-cache
+      with:
+        path: vendor
+        key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
+
+    - name: Create vendor dirs
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      shell: cmd
+      run: mkdir vendor
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2.1.0
+      with:
+        version: 5.12.6
+
+    - name: Build QScintilla
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
+      shell: cmd
+      run: |
+        curl -Lo "%QSCINTILLA_VERSION%.zip" "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip"
+        7z x "%QSCINTILLA_VERSION%.zip" -y
+        rm "%QSCINTILLA_VERSION%.zip"
+        cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        qmake qscintilla.pro
+        nmake
+
+    - name: Install QScintilla
+      working-directory: vendor
+      shell: cmd
+      run: |
+        cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        nmake install
+
+    - name: Install OpenSSL
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
+      shell: cmd
+      run: |
+        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1g.exe
+        OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
+        rm OpenSSL.exe
+
+    - name: Download MySQL driver
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
+      shell: cmd
+      run: |
+        curl -Lo "mysql_driver.zip" "%MYSQL_DRIVER_URL%"
+        7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
+        rm "mysql_driver.zip"
+
+    - name: Download APNG plugin
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
+      shell: cmd
+      run: |
+        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5126/qt.qt5.5126.skycoder42.apng.win32_msvc2017/1.1.2-65.12.6.7z
+        7z x APNG.7z -y -oAPNG
+        rm APNG.7z
+
+    - name: Create build dir
+      shell: cmd
+      run: mkdir build
+
+    - name: Configure
+      working-directory: build
+      shell: cmd
+      run: cmake ..\src -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+
+    - name: Compile
+      working-directory: build
+      shell: cmd
+      run: |
+        cmake --build . --config Release --target sites
+        cmake --build . --config Release
+
+    - name: Test
+      shell: cmd
+      working-directory: src
+      run: ..\build\tests\Release\tests.exe
+      env:
+        QTDIR: ${{ env.Qt5_Dir }}
+        QT_PLUGIN_PATH: ${{ env.Qt5_Dir }}\plugins
+
+    - name: Generate installer
+      shell: cmd
+      run: |
+        copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
+        iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" scripts\windows-setup\setup.iss

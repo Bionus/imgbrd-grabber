@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>999</width>
+    <height>626</height>
+   </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QClosableTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>999</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menu_propos">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAboutGrabber"/>
+    <addaction name="actionAboutWebsite"/>
+    <addaction name="actionAboutGithub"/>
+    <addaction name="actionAboutReportBug"/>
+    <addaction name="separator"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionBlacklistFix"/>
+    <addaction name="actionEmptyDirsFix"/>
+    <addaction name="actionMd5Fix"/>
+    <addaction name="actionRenameExistingImages"/>
+    <addaction name="actionTagLoader"/>
+    <addaction name="separator"/>
+    <addaction name="actionOptions"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionAddtab"/>
+    <addaction name="actionAddpooltab"/>
+    <addaction name="actionClosetab"/>
+    <addaction name="actionRestoreLastClosedTab"/>
+    <addaction name="separator"/>
+    <addaction name="actionFolder"/>
+    <addaction name="actionSettingsFolder"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveDownloadsList"/>
+    <addaction name="actionLoadDownloadsList"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuOutils"/>
+   <addaction name="menuView"/>
+   <addaction name="menu_propos"/>
+  </widget>
+  <widget class="QDockWidget" name="dock_internet">
+   <property name="windowTitle">
+    <string>Tags</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockTagsContents">
+    <layout class="QVBoxLayout" name="dockTagsLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_kfl">
+   <property name="windowTitle">
+    <string>Kept for later</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockKflContents">
+    <layout class="QVBoxLayout" name="dockKflLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_favorites">
+   <property name="windowTitle">
+    <string>Favorites</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockFavoritesContents">
+    <layout class="QVBoxLayout" name="dockFavoritesLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_wiki">
+   <property name="windowTitle">
+    <string>Wiki</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWikiContents">
+    <layout class="QVBoxLayout" name="dockWikiLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockOptions">
+   <property name="windowTitle">
+    <string>Destination</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockSettingsContents">
+    <layout class="QFormLayout" name="dockSettingsLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionFolder">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open destination folder</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionAboutGrabber">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>About Grabber</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
+   </property>
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAddtab">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>New tab</string>
+   </property>
+  </action>
+  <action name="actionClosetab">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close tab</string>
+   </property>
+  </action>
+  <action name="actionBlacklistFix">
+   <property name="text">
+    <string>Blacklist fixer</string>
+   </property>
+  </action>
+  <action name="actionEmptyDirsFix">
+   <property name="text">
+    <string>Empty folders fixer</string>
+   </property>
+  </action>
+  <action name="actionTags">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tags</string>
+   </property>
+  </action>
+  <action name="actionKfl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Kept for later</string>
+   </property>
+   <property name="toolTip">
+    <string>Kept for later</string>
+   </property>
+  </action>
+  <action name="actionFavorites">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Favorites</string>
+   </property>
+  </action>
+  <action name="actionAddpooltab">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
+   </property>
+   <property name="text">
+    <string>New pool tab</string>
+   </property>
+  </action>
+  <action name="actionMd5Fix">
+   <property name="text">
+    <string>MD5 list fixer</string>
+   </property>
+  </action>
+  <action name="actionSettingsFolder">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open options folder</string>
+   </property>
+  </action>
+  <action name="actionAboutWebsite">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Project website</string>
+   </property>
+  </action>
+  <action name="actionAboutReportBug">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>Report an issue</string>
+   </property>
+  </action>
+  <action name="actionRenameExistingImages">
+   <property name="text">
+    <string>Rename existing images</string>
+   </property>
+  </action>
+  <action name="actionAboutGithub">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/github.png</normaloff>:/images/icons/github.png</iconset>
+   </property>
+   <property name="text">
+    <string>Project GitHub</string>
+   </property>
+  </action>
+  <action name="actionRestoreLastClosedTab">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-arrow.png</normaloff>:/images/icons/tab-arrow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Restore last closed tab</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionTagLoader">
+   <property name="text">
+    <string>Tag loader</string>
+   </property>
+  </action>
+  <action name="actionSaveDownloadsList">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/save-as.png</normaloff>:/images/icons/save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save downloads list</string>
+   </property>
+  </action>
+  <action name="actionLoadDownloadsList">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/open.png</normaloff>:/images/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load downloads list</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QClosableTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ui/qclosabletabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionOptions</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>options()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutGrabber</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutAuthor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAddtab</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>540</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClosetab</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>closeCurrentTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBlacklistFix</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>blacklistFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEmptyDirsFix</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>emptyDirsFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAddpooltab</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addPoolTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMd5Fix</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>md5FixOpen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>currentTabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>344</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>0</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSettingsFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openSettingsFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutReportBug</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutReportBug()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutWebsite</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutWebsite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRenameExistingImages</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>renameExisting()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutGithub</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutGithub()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestoreLastClosedTab</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>restoreLastClosedTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTagLoader</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>utilTagLoader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>help()</slot>
+  <slot>options()</slot>
+  <slot>aboutAuthor()</slot>
+  <slot>updateFavorites()</slot>
+  <slot>webUpdateTags()</slot>
+  <slot>webUpdatePopular()</slot>
+  <slot>batchClear()</slot>
+  <slot>addGroup()</slot>
+  <slot>addUnique()</slot>
+  <slot>logClear()</slot>
+  <slot>getPage()</slot>
+  <slot>getAll()</slot>
+  <slot>favoritesBack()</slot>
+  <slot>viewed()</slot>
+  <slot>updateBatchGroups(int,int)</slot>
+  <slot>saveFolder()</slot>
+  <slot>widgetPlusChange()</slot>
+  <slot>checkFavorites()</slot>
+  <slot>previousPage()</slot>
+  <slot>nextPage()</slot>
+  <slot>firstPage()</slot>
+  <slot>lastPage()</slot>
+  <slot>addTab()</slot>
+  <slot>closeCurrentTab()</slot>
+  <slot>batchClearSel()</slot>
+  <slot>batchSel()</slot>
+  <slot>blacklistFix()</slot>
+  <slot>emptyDirsFix()</slot>
+  <slot>loadTag(QString)</slot>
+  <slot>updateFavoritesDock()</slot>
+  <slot>currentTabChanged(int)</slot>
+  <slot>logOpen()</slot>
+  <slot>saveSettings()</slot>
+  <slot>addPoolTab()</slot>
+  <slot>md5FixOpen()</slot>
+  <slot>updateCompleters()</slot>
+  <slot>batchMoveUp()</slot>
+  <slot>batchMoveDown()</slot>
+  <slot>openSettingsFolder()</slot>
+  <slot>aboutWebsite()</slot>
+  <slot>aboutReportBug()</slot>
+  <slot>renameExisting()</slot>
+  <slot>aboutGithub()</slot>
+  <slot>restoreLastClosedTab()</slot>
+  <slot>utilTagLoader()</slot>
+ </slots>
+</ui>

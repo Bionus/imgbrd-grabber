@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Restore submodules in case the repo was clone without --recursive
+git submodule update --init --recursive
+
 # Install required packages
 if type pacman > /dev/null 2>&1
 then
@@ -11,10 +14,10 @@ else
 fi
 
 # Build the project in the build directory
-./scripts/build.sh
+./scripts/build.sh gui translations
 
 # Move the built binary to the release folder with its config
-mv "build/gui/Grabber" "release/"
-touch "release/settings.ini"
+./scripts/package.sh "release"
+cp -r src/dist/linux/* "release"
 
 echo "Grabber has been compiled in the release directory. To run it, type './release/Grabber'"

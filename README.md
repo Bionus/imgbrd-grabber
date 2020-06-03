@@ -1,4 +1,4 @@
-<p align="center"><img src="gui/resources/images/readme-icon.png" alt="" /></p>
+<p align="center"><img src="src/gui/resources/images/readme-icon.png" alt="" /></p>
 
 <h1 align="center">Grabber</h1>
 
@@ -98,7 +98,10 @@ You can add additional sources very easily, but here's a short list of some sour
 * Twitter
 
 ## Compilation
-See the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page to know how to build Grabber.
+See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.html) documentation to know how to build Grabber.
+
+* Linux: run `./build.sh` at the root of the repository
+* macOS: run `./build-mac.sh` at the root of the repository
 
 ## Contributors
 <!-- ALL-CONTRIBUTORS-LIST:START -->

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-mkdir build
+set -e
+
+mkdir -p build
 pushd build
-    cmake ..
-    make -j8
+    cmake ../src
+    make $@ -j8
 popd
