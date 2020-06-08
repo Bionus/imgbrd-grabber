@@ -1,5 +1,6 @@
 #include "ui/QBouton.h"
 #include <QPainter>
+#include <QPainterPath>
 #include <QPaintEvent>
 #include <QtMath>
 
