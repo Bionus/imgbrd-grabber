@@ -41,7 +41,7 @@ function sizeToUrl(size: string, key: string, ret: string[]): void {
     }
 }
 
-function searchToUrl(search: string): string {
+function searchToUrl(page: number, search: string, previous: IPreviousSearch | undefined): string {
     const parts = search.split(" ");
     const tags: string[] = [];
     const denied: string[] = [];
@@ -70,6 +70,10 @@ function searchToUrl(search: string): string {
     }
     if (denied.length > 0) {
         ret.unshift("denied_tags=" + denied.join(" "));
+    }
+    if (previous && previous.minDate && previous.page === page - 1) {
+        ret.push("last_page=" + (previous.page - 1));
+        ret.push("last_post_date=" + previous.minDate);
     }
     return ret.join("&");
 }
@@ -114,9 +118,9 @@ export const source: ISource = {
             name: "JSON",
             auth: [],
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.page, query.search, previous) + "&posts_per_page=" + opts.limit + "&lang=en&type=json";
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {
@@ -178,9 +182,9 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 80,
             search: {
-                url: (query: ISearchQuery): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
                     const page = query.page - 1;
-                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.search) + "&lang=en";
+                    return "/pictures/view_posts/" + page + "?" + searchToUrl(query.page, query.search, previous) + "&lang=en";
                 },
                 parse: (src: string): IParsedSearch => {
                     let wiki = Grabber.regexToConst("wiki", '<div class="posts_body_head">\\s*<h2>[^<]+</h2>\\s*(?<wiki>.+?)\s*</div>', src);
