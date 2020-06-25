@@ -61,12 +61,16 @@ function searchToUrl(search: string): string {
             ret.push("ext_" + ext + "=" + ext);
         } else if (part[0] === "-") {
             denied.push(encodeURIComponent(tag.substr(1)));
-        } else {
+        } else if (tag.length > 0) {
             tags.push(encodeURIComponent(tag));
         }
     }
-    ret.unshift("search_tag=" + tags.join(" "));
-    ret.unshift("denied_tags=" + denied.join(" "));
+    if (tags.length > 0) {
+        ret.unshift("search_tag=" + tags.join(" "));
+    }
+    if (denied.length > 0) {
+        ret.unshift("denied_tags=" + denied.join(" "));
+    }
     return ret.join("&");
 }
 
