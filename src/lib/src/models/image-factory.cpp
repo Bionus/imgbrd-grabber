@@ -84,11 +84,13 @@ vTransformToken ImageFactory::parseBool(const QString &key)
 void ImageFactory::parseCreatedAt(const QString &val, QVariantMap &data)
 {
 	data["date"] = qDateTimeFromString(val);
+	data["date_raw"] = val;
 }
 
 void ImageFactory::parseDate(const QString &val, QVariantMap &data)
 {
 	data["date"] = QDateTime::fromString(val, Qt::ISODate);
+	data["date_raw"] = val;
 }
 
 void ImageFactory::parseRating(const QString &val, QVariantMap &data)
