@@ -339,6 +339,8 @@ void SearchTab::finishedLoading(Page *page)
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
+	m_lastPageMinDate = page->minDate();
+	m_lastPageMaxDate = page->maxDate();
 
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
@@ -1278,7 +1280,7 @@ void SearchTab::loadPage()
 
 		// Load results
 		const QStringList postFiltering = postFilter(true);
-		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, currentPage, perPage, postFiltering, false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_lastPageMinDate, m_lastPageMaxDate);
 		connect(page, &Page::finishedLoading, this, &SearchTab::finishedLoading);
 		connect(page, &Page::failedLoading, this, &SearchTab::failedLoading);
 		connect(page, &Page::httpsRedirect, this, &SearchTab::httpsRedirect);

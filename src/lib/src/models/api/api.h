@@ -62,6 +62,15 @@ struct ParsedCheck
 	bool ok = false;
 };
 
+struct LastPageInformation
+{
+	int page;
+	qulonglong minId;
+	QString minDate;
+	qulonglong maxId;
+	QString maxDate;
+};
+
 
 class Api : public QObject
 {
@@ -76,7 +85,7 @@ class Api : public QObject
 		virtual bool needAuth() const = 0;
 
 		// Normal search
-		virtual PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const = 0;
+		virtual PageUrl pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const = 0;
 		virtual bool parsePageErrors() const = 0;
 		virtual ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const = 0;
 

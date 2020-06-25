@@ -69,7 +69,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
-PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const
+PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
 {
 	PageUrl ret;
 
@@ -91,13 +91,15 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
-	if (lastPage > 0) {
+	if (lastPage.page > 0) {
 		previous = m_source.engine()->newObject();
-		previous.setProperty("page", lastPage);
-		previous.setProperty("minIdM1", QString::number(lastPageMinId - 1));
-		previous.setProperty("minId", QString::number(lastPageMinId));
-		previous.setProperty("maxId", QString::number(lastPageMaxId));
-		previous.setProperty("maxIdP1", QString::number(lastPageMaxId + 1));
+		previous.setProperty("page", lastPage.page);
+		previous.setProperty("minIdM1", QString::number(lastPage.minId - 1));
+		previous.setProperty("minId", QString::number(lastPage.minId));
+		previous.setProperty("maxId", QString::number(lastPage.maxId));
+		previous.setProperty("maxIdP1", QString::number(lastPage.maxId + 1));
+		previous.setProperty("minDate", lastPage.minDate);
+		previous.setProperty("maxDate", lastPage.maxDate);
 	}
 
 	const QJSValue result = urlFunction.call(QList<QJSValue> { query, opts, previous });

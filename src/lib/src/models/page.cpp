@@ -9,7 +9,7 @@
 #include "models/site.h"
 
 
-Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
+Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, QString lastPageMinDate, QString lastPageMaxDate)
 	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -51,7 +51,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 	m_siteApis = m_site->getLoggedInApis();
 	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : qAsConst(m_siteApis)) {
-		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId);
+		auto *pageApi = new PageApi(this, profile, m_site, api, m_query, page, limit, postFilter, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId, lastPageMinDate, lastPageMaxDate);
 		if (m_pageApis.count() == 0) {
 			connect(pageApi, &PageApi::httpsRedirect, this, &Page::httpsRedirectSlot);
 		}
@@ -260,4 +260,12 @@ qulonglong Page::maxId() const
 qulonglong Page::minId() const
 {
 	return m_pageApis[m_currentApi]->minId();
+}
+QString Page::maxDate() const
+{
+	return m_pageApis[m_currentApi]->maxDate();
+}
+QString Page::minDate() const
+{
+	return m_pageApis[m_currentApi]->minDate();
 }

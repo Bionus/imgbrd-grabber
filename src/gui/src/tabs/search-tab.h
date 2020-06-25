@@ -149,6 +149,7 @@ class SearchTab : public QWidget
 		QString m_screenName;
 		int m_lastPage;
 		qulonglong m_lastPageMaxId, m_lastPageMinId;
+		QString m_lastPageMinDate, m_lastPageMaxDate;
 		const QMap<QString, Site*> &m_sites;
 		QMap<Image*, ImagePreview*> m_boutons;
 		QList<QUrl> m_selectedImages;

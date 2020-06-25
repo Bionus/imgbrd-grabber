@@ -19,7 +19,7 @@ class JavascriptApi : public Api
 		explicit JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key);
 
 		// Normal search
-		PageUrl pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const override;
+		PageUrl pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const override;
 		bool parsePageErrors() const override;
 		ParsedPage parsePage(Page *parentPage, const QString &source, int statusCode, int first) const override;
 
