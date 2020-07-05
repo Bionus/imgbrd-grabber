@@ -5,6 +5,7 @@
         "max-line-length": false,
         "member-ordering": false,
         "no-string-literal": false,
+        "no-unnecessary-initializer": false,
         "object-literal-key-quotes": false,
         "object-literal-sort-keys": false
     }

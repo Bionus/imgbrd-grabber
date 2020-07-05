@@ -93,7 +93,7 @@ export const source: ISource = {
                         "sources": "sources",
                     };
 
-                    let data = JSON.parse(src);
+                    const data = JSON.parse(src);
 
                     if ("success" in data && data["success"] === false && "message" in data) {
                         return { error: data["message"] };

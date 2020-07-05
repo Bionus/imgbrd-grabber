@@ -5,7 +5,7 @@ function transformQuery(query: string): string {
     let heightIndex: number = undefined;
 
     const tags = query.split(" ").map(transformTag);
-    for (var i = 0; i < tags.length; ++i) {
+    for (let i = 0; i < tags.length; ++i) {
         const tag = tags[i];
         if (tag.indexOf("width:") === 0) {
             widthIndex = i;
@@ -48,7 +48,7 @@ function transformTag(query: string): string {
     }
 
     // Range search is not supported so should be split into two parts
-    if (parts.length == 2 && parts[1].indexOf("..") > 0) {
+    if (parts.length === 2 && parts[1].indexOf("..") > 0) {
         parts[1] = ">=" + parts[1].replace("..", " " + parts[0] + "<=");
     }
 
@@ -174,7 +174,7 @@ export const source: ISource = {
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {
                     // 404 are not really "errors" as they just mean "no result"
-                    if (statusCode == 404) {
+                    if (statusCode === 404) {
                         return { images: [] };
                     }
 
