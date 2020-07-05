@@ -5,7 +5,6 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "strict": true,
-        "strictNullChecks": false,
         "target": "es5"
     },
     "include": [

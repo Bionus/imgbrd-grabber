@@ -12,7 +12,7 @@ function completeImage(img: IImage & { json_uris: string }): IImage {
         }
     }
 
-    if (!img.preview_url && img.file_url.length >= 5) {
+    if (!img.preview_url && img.file_url && img.file_url.length >= 5) {
         img.preview_url = img.file_url
             .replace("full", "thumb")
             .replace(".svg", ".png");
@@ -33,7 +33,7 @@ function makeTags(tags: string[], tagIds: number[]): ITag[] {
 }
 
 function searchToArg(search: string): string {
-    let sf: string;
+    let sf: string  | undefined;
     let sd = "desc";
     const tags = [];
 

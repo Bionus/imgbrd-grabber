@@ -3,7 +3,7 @@ function completeImage(img: IImage): IImage {
         img.file_url = img.preview_url;
     }
 
-    img.file_url = img.file_url
+    img.file_url = img.file_url!
         .replace(/\/s\d+\.zerochan/, "/static.zerochan")
         .replace(".240.", ".full.")
         .replace(".600.", ".full.")

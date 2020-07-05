@@ -1,5 +1,5 @@
 function completeImage(img: IImage): IImage {
-    if (!img.file_url || img.file_url.length < 5) {
+    if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
@@ -179,9 +179,12 @@ export const source: any = {
                 url: (): string => {
                     return "/tag";
                 },
-                parse: (src: string): IParsedTagTypes => {
-                    const contents = src.match(/<select[^>]* name="type"[^>]*>([\s\S]+)<\/select>/)[1];
-                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                parse: (src: string): IParsedTagTypes | IError => {
+                    const contents = src.match(/<select[^>]* name="type"[^>]*>([\s\S]+)<\/select>/);
+                    if (!contents) {
+                        return { error: "Parse error: could not find the tag type <select> tag" };
+                    }
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents[1]);
                     const types = results.map((r: any) => ({
                         id: r.id,
                         name: r.name.toLowerCase(),

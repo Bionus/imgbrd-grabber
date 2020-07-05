@@ -21,7 +21,7 @@ function completeImage(img: IImage): IImage {
 }
 
 function sizeToUrl(size: string, key: string, ret: string[]): void {
-    let op: number;
+    let op: number | undefined;
     if (size.indexOf("<=") === 0) {
         size = size.substr(2);
         op = 0;

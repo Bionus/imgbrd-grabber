@@ -1,7 +1,7 @@
 function completeImage(img: IImage): IImage {
     const resourcesURL: string = "https://static1.e621.net/data";
-    const md5PartOne: string = img.md5.slice(0, 2);
-    const md5PartTwo: string = img.md5.slice(2, 4);
+    const md5PartOne: string = img.md5!.slice(0, 2);
+    const md5PartTwo: string = img.md5!.slice(2, 4);
 
     if (img.ext && img.ext[0] === ".") {
         img.ext = img.ext.substr(1);
@@ -212,9 +212,12 @@ export const source: ISource = {
                 url: (): string => {
                     return "/tags";
                 },
-                parse: (src: string): IParsedTagTypes => {
-                    const contents = src.match(/<select[^>]* name="search\[category\]"[^>]*>([\s\S]+)<\/select>/)[1];
-                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents);
+                parse: (src: string): IParsedTagTypes | IError => {
+                    const contents = src.match(/<select[^>]* name="search\[category\]"[^>]*>([\s\S]+)<\/select>/);
+                    if (!contents) {
+                        return { error: "Parse error: could not find the tag type <select> tag" };
+                    }
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents[1]);
                     const types = results.map((r: any) => ({
                         id: r.id,
                         name: r.name.toLowerCase(),

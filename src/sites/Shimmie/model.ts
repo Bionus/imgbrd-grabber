@@ -1,8 +1,8 @@
 // https://shimmie.shishnet.org/ext_doc/index
 
 function transformQuery(query: string): string {
-    let widthIndex: number = undefined;
-    let heightIndex: number = undefined;
+    let widthIndex: number | undefined;
+    let heightIndex: number | undefined;
 
     const tags = query.split(" ").map(transformTag);
     for (let i = 0; i < tags.length; ++i) {
@@ -198,7 +198,7 @@ export const source: ISource = {
                     return "/post/view/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    let tags: ITag[] | string[];
+                    let tags: ITag[] | string[] | undefined;
                     const leftTagBlock = src.match(/<section[^>]*><h3[^>]*>Tags<\/h3>([\s\S]+?)<\/section>/);
                     if (leftTagBlock) {
                         tags = Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', leftTagBlock[1]);

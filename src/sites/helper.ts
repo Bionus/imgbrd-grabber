@@ -84,7 +84,7 @@ addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     return result;
 });
 
-addHelper("countToInt", (str: string): number => {
+addHelper("countToInt", (str: string): number | undefined => {
     if (!str) {
         return undefined;
     }
@@ -181,7 +181,7 @@ addHelper("regexToPools", (regexp: string, src: string): IPool[] => {
     return pools;
 });
 
-addHelper("regexToConst", (key: string, regexp: string, src: string): string => {
+addHelper("regexToConst", (key: string, regexp: string, src: string): string | undefined => {
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
         return match[key];
