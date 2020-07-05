@@ -12,4 +12,13 @@ module.exports = {
             },
         },
     },
+
+    // Code coverage
+    collectCoverage: true,
+    coverageDirectory: "../../coverage/",
+    collectCoverageFrom: [
+        "**/*.ts",
+        "!**/node_modules/**",
+        "!test-*.ts",
+    ],
 };
