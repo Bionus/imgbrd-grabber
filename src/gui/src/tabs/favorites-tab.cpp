@@ -415,6 +415,16 @@ void FavoritesTab::thumbnailContextMenu(QMenu *menu, const QSharedPointer<Image>
 	});
 	menu->insertAction(first, actionMarkAsLastViewed);
 
+	// Choose selected image as favorite thumbnail
+	QAction *actionUseAsThumbnail = new QAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), menu);
+	connect(actionUseAsThumbnail, &QAction::triggered, [this, img]() {
+		const int index = m_favorites.indexOf(Favorite(m_currentTags));
+		if (index >= 0) {
+			m_favorites[index].setImage(img->previewImage());
+		}
+	});
+	menu->insertAction(first, actionUseAsThumbnail);
+
 	menu->insertSeparator(first);
 }
 
