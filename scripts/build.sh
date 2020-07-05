@@ -5,5 +5,5 @@ set -e
 mkdir -p build
 pushd build
     cmake ../src
-    make $@ -j8
+    make $@ -j$[$(nproc)+1]
 popd
