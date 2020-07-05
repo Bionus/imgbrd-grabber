@@ -256,7 +256,7 @@ Example:
 %all%
 artist1 tag1 character1 tag2
 
-%all:ignorenamespace:character%
+%all:ignorenamespace=character%
 artist1 tag1 tag2
 ```
 
