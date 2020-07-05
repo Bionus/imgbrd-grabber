@@ -5,10 +5,14 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "strict": true,
-        "target": "es5"
+        "target": "es5",
+        "types": []
     },
     "include": [
         "**/*.ts"
     ],
-    "exclude": []
+    "exclude": [
+        "test-*.ts",
+        "**/*.spec.ts",
+    ]
 }

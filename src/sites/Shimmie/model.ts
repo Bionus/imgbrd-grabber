@@ -1,5 +1,9 @@
 // https://shimmie.shishnet.org/ext_doc/index
 
+function isNum(char: string): boolean {
+    return char >= "0" && char <= "9";
+}
+
 function transformQuery(query: string): string {
     let widthIndex: number | undefined;
     let heightIndex: number | undefined;
@@ -19,9 +23,11 @@ function transformQuery(query: string): string {
         const width = tags[widthIndex].substr(6);
         const height = tags[heightIndex].substr(7);
 
+        const bothNum = isNum(width[0]) && isNum(height[0]);
         const bothEq = width[1] === height[1] && width[1] === "=";
-        if (width[0] === height[0] && (bothEq || (width[1] !== "=" && height[1] !== "="))) { // Ensure they both use the same operator
-            tags[heightIndex] = "size:" + width + "x" + height.substr(bothEq ? 2 : 1);
+        const sameOp = width[0] === height[0] && (bothEq || (width[1] !== "=" && height[1] !== "=")); // Ensure they both use the same operator
+        if (bothNum || sameOp) {
+            tags[heightIndex] = "size:" + width + "x" + height.substr(bothNum ? 0 : (bothEq ? 2 : 1));
             tags.splice(widthIndex, 1);
         }
     }

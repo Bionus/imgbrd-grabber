@@ -27,3 +27,9 @@ add_custom_command(
 
 add_custom_target(sites DEPENDS JavaScript_sites)
 add_dependencies(sites sites_modules)
+
+add_test(
+	NAME sites
+	COMMAND npm run test
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
