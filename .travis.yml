@@ -77,7 +77,9 @@ script:
   - ./scripts/build.sh
   - cd src
   - ../build/tests/tests
-  - cd ..
+  - cd sites
+  - npm run test
+  - cd ../..
 
 after_success:
   # Clean-up workspace

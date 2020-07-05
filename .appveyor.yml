@@ -115,7 +115,9 @@ build_script:
 test_script:
   - cd src
   - ..\build\tests\tests.exe -s
-  - cd ..
+  - cd sites
+  - npm run test
+  - cd ..\..
 
 artifacts:
   - path: scripts\windows-setup\Grabber_*.exe
