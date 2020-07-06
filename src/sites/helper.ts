@@ -157,6 +157,15 @@ addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
     return images;
 });
 
+addHelper("pick", (obj: any, keys: string[]): any => {
+    return keys.reduce((ret, key) => {
+        if (key in obj && obj[key] !== undefined) {
+            ret[key] = obj[key];
+        }
+        return ret;
+    }, {} as any);
+});
+
 addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
     const tags: ITag[] = [];
     const uniques: { [key: string]: boolean } = {};
@@ -169,7 +178,7 @@ addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
         if ("count" in match) {
             match["count"] = Grabber.countToInt(match["count"]);
         }
-        tags.push(match);
+        tags.push(Grabber.pick(match, ["id", "name", "count", "type", "typeId"]));
         uniques[match["name"]] = true;
     }
     return tags;
