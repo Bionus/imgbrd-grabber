@@ -54,8 +54,15 @@ function transformTag(query: string): string {
     }
 
     // Range search is not supported so should be split into two parts
-    if (parts.length === 2 && parts[1].indexOf("..") > 0) {
-        parts[1] = ">=" + parts[1].replace("..", " " + parts[0] + "<=");
+    if (parts.length === 2 && parts[1].indexOf("..") >= 0) {
+        const range = parts[1].split("..");
+        if (range[0] === "") {
+            parts[1] = "<=" + range[1];
+        } else if (range[1] === "") {
+            parts[1] = ">=" + range[0];
+        } else {
+            parts[1] = ">=" + range[0] + " " + parts[0] + ":<=" + range[1];
+        }
     }
 
     return parts.join(":");
@@ -228,7 +235,7 @@ export const source: ISource = {
                 parse: (src: string): boolean => {
                     return src.indexOf("Running Shimmie") !== -1
                         || src.indexOf("Shimmie version ") !== -1
-                        || src.search(/Running <a href=['"][^'"]+['"]>Shimmie<\/a>/) !== -1;
+                        || src.search(/Running <a href=['"][^'"]+['"]>Shimmie\d*<\/a>/) !== -1;
                 },
             },
         },
