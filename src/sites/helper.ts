@@ -149,6 +149,9 @@ addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
                 match[key] = json[key];
             }
         }
+        if (match.id) {
+            match.id = parseInt(match.id, 10);
+        }
         images.push(match);
     }
     return images;
