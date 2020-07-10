@@ -92,7 +92,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			const int interval = qFloor(monitor.interval() / 60.0);
 			const int days = interval / 1440;
 			const int mins = interval % 1440;
-			const QString timeFormat = mins > 60 ? (mins % 60 != 0 ? tr("h 'h' m 'm'") : tr("h 'h'")) : tr("m 'm'");
+			const QString timeFormat = mins >= 60 ? (mins % 60 != 0 ? tr("h 'h' m 'm'") : tr("h 'h'")) : tr("m 'm'");
 			QString sDate = days > 0 ? QString("%1 d ").arg(days) : "";
 			QString sTime = mins > 0 ? QTime(0, 0, 0).addSecs(mins * 60).toString(timeFormat) : "";
 			return sDate + sTime;
