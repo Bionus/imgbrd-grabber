@@ -154,7 +154,10 @@ bool operator==(const Monitor &lhs, const Monitor &rhs)
 		&& lhs.preciseCumulated() == rhs.preciseCumulated()
 		&& lhs.download() == rhs.download()
 		&& lhs.pathOverride() == rhs.pathOverride()
-		&& lhs.filenameOverride() == rhs.filenameOverride();
+		&& lhs.filenameOverride() == rhs.filenameOverride()
+		&& lhs.query() == rhs.query()
+		&& lhs.postFilters() == rhs.postFilters()
+		&& lhs.notify() == rhs.notify();
 }
 
 bool operator!=(const Monitor &lhs, const Monitor &rhs)
