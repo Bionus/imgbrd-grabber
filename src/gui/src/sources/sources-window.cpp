@@ -38,7 +38,7 @@ SourcesWindow::SourcesWindow(Profile *profile, QList<Site*> selected, QWidget *p
 	// Check if there is any reported problem for one of the sources
 	checkForSourceIssues();
 
-	ui->buttonOk->setFocus();
+	ui->buttonBox->setFocus();
 }
 SourcesWindow::~SourcesWindow()
 {

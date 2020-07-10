@@ -139,7 +139,7 @@
         <x>0</x>
         <y>0</y>
         <width>297</width>
-        <height>441</height>
+        <height>440</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -189,16 +189,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel">
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk">
-       <property name="text">
-        <string>Ok</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -208,45 +201,11 @@
  </widget>
  <tabstops>
   <tabstop>checkBox</tabstop>
-  <tabstop>buttonCancel</tabstop>
-  <tabstop>buttonOk</tabstop>
  </tabstops>
  <resources>
   <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>buttonCancel</sender>
-   <signal>clicked()</signal>
-   <receiver>SourcesWindow</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>223</x>
-     <y>546</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>375</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOk</sender>
-   <signal>clicked()</signal>
-   <receiver>SourcesWindow</receiver>
-   <slot>valid()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>304</x>
-     <y>546</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>217</x>
-     <y>373</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
@@ -340,6 +299,38 @@
     <hint type="destinationlabel">
      <x>288</x>
      <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>valid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>536</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SourcesWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>270</x>
+     <y>533</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>548</y>
     </hint>
    </hints>
   </connection>
