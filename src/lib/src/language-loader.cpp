@@ -48,7 +48,7 @@ bool LanguageLoader::uninstall(QCoreApplication *app)
 
 bool LanguageLoader::setLanguage(const QString &lang)
 {
-	log(QStringLiteral("Setting language to '%1'...").arg(lang), Logger::Info);
+	log(QStringLiteral("Setting language to '%1' (`%2`)...").arg(lang, m_path + lang + ".qm"), Logger::Info);
 
 	const bool general = m_translator.load(m_path + lang + ".qm");
 	const bool qt = m_qtTranslator.load(m_path + "qt/" + lang + ".qm");
