@@ -15,6 +15,11 @@ MonitorTableModel::MonitorTableModel(MonitorManager *monitorManager, QObject *pa
 {
 	connect(m_monitorManager, &MonitorManager::inserted, this, &MonitorTableModel::inserted);
 	connect(m_monitorManager, &MonitorManager::removed, this, &MonitorTableModel::removed);
+
+	connect(&m_refreshTimer, &QTimer::timeout, [=]() {
+		emit dataChanged(index(0, 6), index(rowCount() - 1, 7));
+	});
+	m_refreshTimer.start(60 * 1000);
 }
 
 
@@ -27,7 +32,7 @@ int MonitorTableModel::rowCount(const QModelIndex &parent) const
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 5;
+	return 8;
 }
 
 QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -41,12 +46,28 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 				case 2: return QString("Source");
 				case 3: return QString("Interval");
 				case 4: return QString("Action");
+				case 5: return QString("Post-filters");
+				case 6: return QString("Last check");
+				case 7: return QString("Next check");
 			}
 		} else {
 			return QString::number(section + 1);
 		}
 	}
 	return {};
+}
+
+QString timeToString(int secs)
+{
+	const int interval = qFloor(secs / 60.0);
+	const int days = interval / 1440;
+	const int mins = interval % 1440;
+
+	const QString timeFormat = mins >= 60 ? (mins % 60 != 0 ? QObject::tr("h 'h' m 'm'") : QObject::tr("h 'h'")) : QObject::tr("m 'm'");
+	QString sDate = days > 0 ? QString("%1 d ").arg(days) : "";
+	QString sTime = mins > 0 ? QTime(0, 0, 0).addSecs(mins * 60).toString(timeFormat) : "";
+
+	return sDate + sTime;
 }
 
 QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
@@ -88,15 +109,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 		}
 
 		case 3:
-		{
-			const int interval = qFloor(monitor.interval() / 60.0);
-			const int days = interval / 1440;
-			const int mins = interval % 1440;
-			const QString timeFormat = mins >= 60 ? (mins % 60 != 0 ? tr("h 'h' m 'm'") : tr("h 'h'")) : tr("m 'm'");
-			QString sDate = days > 0 ? QString("%1 d ").arg(days) : "";
-			QString sTime = mins > 0 ? QTime(0, 0, 0).addSecs(mins * 60).toString(timeFormat) : "";
-			return sDate + sTime;
-		}
+			return timeToString(monitor.interval());
 
 		case 4:
 		{
@@ -109,6 +122,15 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			}
 			return actions.join(", ");
 		}
+
+		case 5:
+			return monitor.postFilters().join(' ');
+
+		case 6:
+			return monitor.lastCheck().toString(Qt::DefaultLocaleShortDate);
+
+		case 7:
+			return timeToString(monitor.secsToNextCheck());
 	}
 
 	return {};
