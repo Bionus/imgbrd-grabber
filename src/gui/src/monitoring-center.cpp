@@ -78,10 +78,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 			// Filter out old images
 			for (const QSharedPointer<Image> &img : allImages) {
 				if (img->createdAt() > monitor.lastCheck() && (delay <= 0 || img->createdAt() <= limit)) {
-					QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
-					if (detected.isEmpty()) {
-						newImagesList.append(img);
-					}
+					newImagesList.append(img);
 					newImagesRun++;
 				}
 			}
@@ -119,6 +116,9 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 		for (const QSharedPointer<Image> &img : newImagesList) {
 			auto downloader = new ImageDownloader(m_profile, img, filename, path, 0, true, false, this);
+			if (!monitor.getBlacklisted()) {
+				downloader->setBlacklist(&m_profile->getBlacklist());
+			}
 			m_downloadQueue->add(DownloadQueue::Background, downloader);
 		}
 
