@@ -81,7 +81,7 @@ void OAuth2Login::login()
 	// Post request and wait for a reply
 	QString bodyStr;
 	for (const QStrP &pair : body) {
-		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second;
+		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + QUrl::toPercentEncoding(pair.second);
 	}
 	m_tokenReply = m_manager->post(request, bodyStr.toUtf8());
 	connect(m_tokenReply, &NetworkReply::finished, this, &OAuth2Login::loginFinished);
