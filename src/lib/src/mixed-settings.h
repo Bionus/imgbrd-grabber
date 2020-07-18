@@ -19,6 +19,7 @@ class MixedSettings : public QObject
 
 		QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 		void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = QVariant());
+		void remove(const QString &key);
 		QStringList childKeys() const;
 		void beginGroup(const QString &prefix);
 		void endGroup();

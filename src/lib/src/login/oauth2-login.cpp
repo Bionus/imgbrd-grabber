@@ -132,8 +132,17 @@ void OAuth2Login::refresh(bool login)
 
 void OAuth2Login::refreshLoginFinished()
 {
-	const auto result = readResponse(m_refreshReply) ? Result::Success : Result::Failure;
-	emit loggedIn(result);
+	const bool ok = readResponse(m_refreshReply);
+	if (!ok) {
+		log(QStringLiteral("[%1] Refresh failed, clearing tokens and re-trying login...").arg(m_site->url()), Logger::Warning);
+		m_accessToken.clear();
+		m_settings->remove("auth/accessToken");
+		m_refreshToken.clear();
+		m_settings->remove("auth/refreshToken");
+		login();
+	} else {
+		emit loggedIn(Result::Success);
+	}
 }
 void OAuth2Login::refreshFinished()
 {

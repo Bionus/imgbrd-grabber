@@ -59,6 +59,13 @@ void MixedSettings::setValue(const QString &key, const QVariant &value, const QV
 	m_settings[0]->setValue(key, value);
 }
 
+void MixedSettings::remove(const QString &key)
+{
+	for (QSettings *setting : qAsConst(m_settings)) {
+		setting->remove(key);
+	}
+}
+
 QStringList MixedSettings::childKeys() const
 {
 	QStringList keys;
