@@ -98,7 +98,10 @@ export const source: ISource = {
                         return { error: e.message };
                     }
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
+                    if (src.indexOf("Unable to search this deep") !== -1) {
+                        return { error: "Page too far" };
+                    }
                     const pageCountRaw = Grabber.regexMatch('<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>\\s*(?:<b>(?<last>\\d+)</b>\\s*)?(?:</div>|<br ?/>)', src);
                     const pageCount = pageCountRaw && (pageCountRaw["last"] || pageCountRaw["page"]);
                     return {
