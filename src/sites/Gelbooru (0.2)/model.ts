@@ -87,10 +87,10 @@ export const source: ISource = {
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
                         if (fav) {
-                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}", (p: number) => (p - 1) * 50);
+                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 50);
                             return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePart;
                         } else {
-                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}", (p: number) => (p - 1) * 42);
+                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 42);
                             return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                         }
                     } catch (e) {

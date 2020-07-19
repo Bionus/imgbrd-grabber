@@ -130,7 +130,8 @@ addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | 
 });
 
 addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string, pageTransformer?: (page: number) => number): string => {
-    if (page <= limit || limit < 0) {
+    const pageLimit = pageTransformer ? pageTransformer(limit) : limit;
+    if (pageLimit <= limit || limit < 0) {
         return Grabber.fixPageUrl(ifBelow, page, previous, pageTransformer);
     }
     if (previous && previous.page === page + 1) {
