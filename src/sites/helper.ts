@@ -115,8 +115,11 @@ addHelper("fileSizeToInt", (str: string): number => {
     return parseInt(str, 10);
 });
 
-addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined): string => {
-    url = url.replace("{page}", String(page));
+addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined, pageTransformer?: (page: number) => number): string => {
+    if (!pageTransformer) {
+        pageTransformer = (p: number) => p;
+    }
+    url = url.replace("{page}", String(pageTransformer(page)));
     if (previous) {
         url = url.replace("{min}", previous.minId);
         url = url.replace("{max}", previous.maxId);
@@ -126,15 +129,15 @@ addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | 
     return url;
 });
 
-addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
+addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string, pageTransformer?: (page: number) => number): string => {
     if (page <= limit || limit < 0) {
-        return Grabber.fixPageUrl(ifBelow, page, previous);
+        return Grabber.fixPageUrl(ifBelow, page, previous, pageTransformer);
     }
     if (previous && previous.page === page + 1) {
-        return Grabber.fixPageUrl(ifPrev, page, previous);
+        return Grabber.fixPageUrl(ifPrev, page, previous, pageTransformer);
     }
     if (previous && previous.page === page - 1) {
-        return Grabber.fixPageUrl(ifNext, page, previous);
+        return Grabber.fixPageUrl(ifNext, page, previous, pageTransformer);
     }
     throw new Error("You need valid previous page information to browse that far");
 });
