@@ -25,6 +25,9 @@ collections:
   docs:
     permalink: "/:collection/:path.html"
     output: true
+  sources:
+    permalink: "/docs/:collection/:path.html"
+    output: true
 
 gems:
   - jemoji
@@ -44,3 +47,8 @@ defaults:
       type: docs
     values:
       layout: docs
+  - scope:
+      path: _sources
+      type: sources
+    values:
+      layout: sources
