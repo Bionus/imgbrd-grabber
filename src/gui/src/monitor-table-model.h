@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <QList>
 #include <QMap>
+#include <QTimer>
 #include "monitoring-center.h"
 
 
@@ -39,6 +40,7 @@ class MonitorTableModel : public QAbstractTableModel
 		MonitorManager *m_monitorManager;
 		QMap<int, MonitoringCenter::MonitoringStatus> m_statuses;
 		bool m_freeze = false;
+		QTimer m_refreshTimer;
 };
 
 #endif // MONITOR_TABLE_MODEL_H

@@ -68,7 +68,8 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 		return {};
 	}
 
-	switch (index.column()) {
+	switch (index.column())
+	{
 		case 1: return download.query.toString();
 		case 2: return download.site->url();
 		case 3: return QString::number(download.page);

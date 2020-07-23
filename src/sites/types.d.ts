@@ -197,8 +197,10 @@ interface IPreviousSearch {
     page: number;
     minIdM1: string;
     minId: string;
+    minDate: string;
     maxId: string;
     maxIdP1: string;
+    maxDate: string;
 }
 
 interface IApi {

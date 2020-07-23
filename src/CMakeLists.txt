@@ -1,6 +1,8 @@
 project(Grabber)
 cmake_minimum_required(VERSION 3.2)
 
+enable_testing()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -27,7 +29,7 @@ endif()
 
 project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.3.0")
+	set(VERSION "7.3.1")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()

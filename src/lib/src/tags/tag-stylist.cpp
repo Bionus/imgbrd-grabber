@@ -26,8 +26,8 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 	}
 
 	// Generate style map
-	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "species" << "metas" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
-	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#ee6600" << "#ee6600" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
+	static const QStringList tlist { "artists", "circles", "copyrights", "characters", "species", "metas", "models", "generals", "favorites", "keptForLater", "blacklisteds", "ignoreds", "favorites" };
+	static const QStringList defaults { "#aa0000", "#55bbff", "#aa00aa", "#00aa00", "#ee6600", "#ee6600", "#0000ee", "#000000", "#ffc0cb", "#000000", "#000000", "#999999", "#ffcccc" };
 	QMap<QString, QString> styles;
 	for (const QString &key : tlist) {
 		const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();

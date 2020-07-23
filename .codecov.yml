@@ -13,9 +13,10 @@ coverage:
 
   ignore:
     - "build/**/*"
-    - "e2e/**/*"
-    - "lib/src/vendor/*"
-    - "tests/**/*"
+    - "src/e2e/**/*"
+    - "src/gui-qml/**/*"
+    - "src/lib/src/vendor/*"
+    - "src/tests/**/*"
 
 comment:
   layout: "header, diff"

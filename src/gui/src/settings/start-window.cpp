@@ -21,7 +21,7 @@ StartWindow::StartWindow(Profile *profile, QWidget *parent)
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{github}", PROJECT_GITHUB_URL));
 
 	// Language
-	LanguageLoader languageLoader(savePath("languages/", true));
+	LanguageLoader languageLoader(savePath("languages/", true, false));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
 	for (auto it = languages.constBegin(); it != languages.constEnd(); ++it) {
 		ui->comboLanguage->addItem(it.value(), it.key());

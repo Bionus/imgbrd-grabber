@@ -71,8 +71,7 @@ void MonitorManager::add(const Monitor &monitor, int index)
 int MonitorManager::remove(const Monitor &monitor)
 {
 	int index = m_monitors.indexOf(monitor);
-	if (index != -1)
-	{
+	if (index != -1) {
 		emit removed(index);
 		m_monitors.removeAt(index);
 		save();

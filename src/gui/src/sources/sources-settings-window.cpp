@@ -47,9 +47,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Refferers
 	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
-	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
-	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
-	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
+	const QStringList referers { "none", "host", "page", "image" };
+	const QStringList referers_preview { "", "none", "host", "page", "image" };
+	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
 	ui->comboReferer->setCurrentIndex(referers.indexOf(site->setting("referer", "none").toString()));
 	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "").toString()));
 	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "").toString()));
@@ -67,9 +67,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(site->setting("sources/usedefault", true).toBool());
-	static const QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
-	QStringList sources = QStringList() << "";
-	QStringList opts = QStringList() << "";
+	const QStringList defs { "xml", "json", "regex", "rss" };
+	QStringList sources { "" };
+	QStringList opts { "" };
 	for (Api *api : site->getSource()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);
@@ -265,9 +265,9 @@ void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 void SourcesSettingsWindow::saveSettings()
 {
 	m_site->setSetting("name", ui->lineSiteName->text(), m_site->url());
-	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
-	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
-	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
+	const QStringList referers { "none", "host", "page", "image" };
+	const QStringList referers_preview { "", "none", "host", "page", "image" };
+	const QStringList referers_image { "", "none", "host", "page", "details", "image" };
 	m_site->setSetting("referer", referers[ui->comboReferer->currentIndex()], "none");
 	m_site->setSetting("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()], "");
 	m_site->setSetting("referer_image", referers_image[ui->comboRefererImage->currentIndex()], "");
@@ -282,8 +282,8 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("download/throttle_retry", ui->spinThrottleRetry->value(), 0);
 	m_site->setSetting("download/throttle_thumbnail", ui->spinThrottleThumbnail->value(), 0);
 
-	QStringList defs = QStringList() << "xml" << "json" << "regex" << "rss";
-	QStringList sources = QStringList() << "";
+	const QStringList defs { "xml", "json", "regex", "rss" };
+	QStringList sources { "" };
 	for (Api *api : m_site->getSource()->getApis()) {
 		const QString name = api->getName().toLower();
 		sources.append(name == "html" ? "regex" : name);

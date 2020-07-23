@@ -45,9 +45,9 @@ void setTextEditRows(QPlainTextEdit *plainTextEdit, int nRows)
 	const QMargins margins = plainTextEdit->contentsMargins();
 
 	const int nHeight = fm.lineSpacing() * nRows
-			+ qRound((plainDoc->documentMargin() + plainTextEdit->frameWidth()) * 2)
-			+ margins.top()
-			+ margins.bottom();
+		+ qRound((plainDoc->documentMargin() + plainTextEdit->frameWidth()) * 2)
+		+ margins.top()
+		+ margins.bottom();
 	plainTextEdit->setFixedHeight(nHeight);
 }
 void AddUniqueWindow::toggleMultiLine(bool toggle, QPlainTextEdit *plainTextEdit, QLabel *label)
@@ -155,7 +155,7 @@ void AddUniqueWindow::loadNext()
 		m_image->loadDetails();
 	} else {
 		const QString query = (q.id.isEmpty() ? "md5:" + q.md5 : "id:" + q.id);
-		const QStringList search = QStringList() << query << "status:any";
+		const QStringList search { query, "status:any" };
 		m_page = new Page(m_profile, q.site, m_sites.values(), search, 1, 1);
 		connect(m_page, &Page::finishedLoading, this, &AddUniqueWindow::replyFinished);
 		m_page->load();

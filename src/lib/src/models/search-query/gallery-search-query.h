@@ -7,7 +7,7 @@
 
 class Image;
 
-class GallerySearchQuery //: public SearchQuery
+class GallerySearchQuery // : public SearchQuery
 {
 	public:
 		explicit GallerySearchQuery(QSharedPointer<Image> gallery);

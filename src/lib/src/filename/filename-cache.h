@@ -7,7 +7,6 @@
 
 
 class FilenameCache : public FlyweightCache<QString, AstFilename>
-{
-};
+{};
 
 #endif // FILENAME_CACHE_H

@@ -69,7 +69,7 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
-PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, Site *site) const
+PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
 {
 	PageUrl ret;
 
@@ -91,16 +91,18 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, int l
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
-	if (lastPage > 0) {
+	if (lastPage.page > 0) {
 		previous = m_source.engine()->newObject();
-		previous.setProperty("page", lastPage);
-		previous.setProperty("minIdM1", QString::number(lastPageMinId - 1));
-		previous.setProperty("minId", QString::number(lastPageMinId));
-		previous.setProperty("maxId", QString::number(lastPageMaxId));
-		previous.setProperty("maxIdP1", QString::number(lastPageMaxId + 1));
+		previous.setProperty("page", lastPage.page);
+		previous.setProperty("minIdM1", QString::number(lastPage.minId - 1));
+		previous.setProperty("minId", QString::number(lastPage.minId));
+		previous.setProperty("maxId", QString::number(lastPage.maxId));
+		previous.setProperty("maxIdP1", QString::number(lastPage.maxId + 1));
+		previous.setProperty("minDate", lastPage.minDate);
+		previous.setProperty("maxDate", lastPage.maxDate);
 	}
 
-	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts << previous);
+	const QJSValue result = urlFunction.call(QList<QJSValue> { query, opts, previous });
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -163,7 +165,7 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	Site *site = parentPage->site();
 	const QJSValue &api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property(type).property("parse");
-	const QJSValue &results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+	const QJSValue &results = parseFunction.call(QList<QJSValue> { source, statusCode });
 
 	// Script errors and exceptions
 	if (results.isError()) {
@@ -288,7 +290,7 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
-	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	const QJSValue result = urlFunction.call(QList<QJSValue> { query, opts });
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -353,7 +355,7 @@ ParsedTagTypes JavascriptApi::parseTagTypes(const QString &source, int statusCod
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("tagTypes").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+	QJSValue results = parseFunction.call(QList<QJSValue> { source, statusCode });
 
 	// Script errors and exceptions
 	if (results.isError()) {
@@ -412,7 +414,7 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, const QString &order, Site *
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
-	const QJSValue result = urlFunction.call(QList<QJSValue>() << query << opts);
+	const QJSValue result = urlFunction.call(QList<QJSValue> { query, opts });
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -430,7 +432,7 @@ ParsedTags JavascriptApi::parseTags(const QString &source, int statusCode, Site 
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("tags").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+	QJSValue results = parseFunction.call(QList<QJSValue> { source, statusCode });
 
 	// Script errors and exceptions
 	if (results.isError()) {
@@ -469,7 +471,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 		return ret;
 	}
 
-	const QJSValue result = urlFunction.call(QList<QJSValue>() << QString::number(id) << md5);
+	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5 });
 	fillUrlObject(result, site, ret);
 
 	return ret;
@@ -487,7 +489,7 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("details").property("parse");
-	QJSValue results = parseFunction.call(QList<QJSValue>() << source << statusCode);
+	QJSValue results = parseFunction.call(QList<QJSValue> { source, statusCode });
 
 	// Script errors and exceptions
 	if (results.isError()) {
@@ -568,7 +570,7 @@ ParsedCheck JavascriptApi::parseCheck(const QString &source, int statusCode) con
 	// QMutexLocker locker(m_engineMutex);
 	QJSValue api = m_source.property("apis").property(m_key);
 	QJSValue parseFunction = api.property("check").property("parse");
-	QJSValue result = parseFunction.call(QList<QJSValue>() << source << statusCode);
+	QJSValue result = parseFunction.call(QList<QJSValue> { source, statusCode });
 
 	// Script errors and exceptions
 	if (result.isError()) {

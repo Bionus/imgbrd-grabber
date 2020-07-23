@@ -58,7 +58,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	}
 
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
-	ui->splitter->setSizes(QList<int>() << splitterSizes[0].toInt() << splitterSizes[1].toInt());
+	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
 
 	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
 	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);

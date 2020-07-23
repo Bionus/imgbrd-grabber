@@ -1,11 +1,15 @@
 // https://shimmie.shishnet.org/ext_doc/index
 
+function isNum(char: string): boolean {
+    return char >= "0" && char <= "9";
+}
+
 function transformQuery(query: string): string {
-    let widthIndex: number = undefined;
-    let heightIndex: number = undefined;
+    let widthIndex: number | undefined;
+    let heightIndex: number | undefined;
 
     const tags = query.split(" ").map(transformTag);
-    for (var i = 0; i < tags.length; ++i) {
+    for (let i = 0; i < tags.length; ++i) {
         const tag = tags[i];
         if (tag.indexOf("width:") === 0) {
             widthIndex = i;
@@ -19,9 +23,11 @@ function transformQuery(query: string): string {
         const width = tags[widthIndex].substr(6);
         const height = tags[heightIndex].substr(7);
 
+        const bothNum = isNum(width[0]) && isNum(height[0]);
         const bothEq = width[1] === height[1] && width[1] === "=";
-        if (width[0] === height[0] && (bothEq || (width[1] !== "=" && height[1] !== "="))) { // Ensure they both use the same operator
-            tags[heightIndex] = "size:" + width + "x" + height.substr(bothEq ? 2 : 1);
+        const sameOp = width[0] === height[0] && (bothEq || (width[1] !== "=" && height[1] !== "=")); // Ensure they both use the same operator
+        if (bothNum || sameOp) {
+            tags[heightIndex] = "size:" + width + "x" + height.substr(bothNum ? 0 : (bothEq ? 2 : 1));
             tags.splice(widthIndex, 1);
         }
     }
@@ -48,8 +54,15 @@ function transformTag(query: string): string {
     }
 
     // Range search is not supported so should be split into two parts
-    if (parts.length == 2 && parts[1].indexOf("..") > 0) {
-        parts[1] = ">=" + parts[1].replace("..", " " + parts[0] + "<=");
+    if (parts.length === 2 && parts[1].indexOf("..") >= 0) {
+        const range = parts[1].split("..");
+        if (range[0] === "") {
+            parts[1] = "<=" + range[1];
+        } else if (range[1] === "") {
+            parts[1] = ">=" + range[0];
+        } else {
+            parts[1] = ">=" + range[0] + " " + parts[0] + ":<=" + range[1];
+        }
     }
 
     return parts.join(":");
@@ -174,7 +187,7 @@ export const source: ISource = {
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {
                     // 404 are not really "errors" as they just mean "no result"
-                    if (statusCode == 404) {
+                    if (statusCode === 404) {
                         return { images: [] };
                     }
 
@@ -198,7 +211,7 @@ export const source: ISource = {
                     return "/post/view/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    let tags: ITag[] | string[];
+                    let tags: ITag[] | string[] | undefined;
                     const leftTagBlock = src.match(/<section[^>]*><h3[^>]*>Tags<\/h3>([\s\S]+?)<\/section>/);
                     if (leftTagBlock) {
                         tags = Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', leftTagBlock[1]);
@@ -222,7 +235,7 @@ export const source: ISource = {
                 parse: (src: string): boolean => {
                     return src.indexOf("Running Shimmie") !== -1
                         || src.indexOf("Shimmie version ") !== -1
-                        || src.search(/Running <a href=['"][^'"]+['"]>Shimmie<\/a>/) !== -1;
+                        || src.search(/Running <a href=['"][^'"]+['"]>Shimmie\d*<\/a>/) !== -1;
                 },
             },
         },

@@ -84,11 +84,13 @@ vTransformToken ImageFactory::parseBool(const QString &key)
 void ImageFactory::parseCreatedAt(const QString &val, QVariantMap &data)
 {
 	data["date"] = qDateTimeFromString(val);
+	data["date_raw"] = val;
 }
 
 void ImageFactory::parseDate(const QString &val, QVariantMap &data)
 {
 	data["date"] = QDateTime::fromString(val, Qt::ISODate);
+	data["date_raw"] = val;
 }
 
 void ImageFactory::parseRating(const QString &val, QVariantMap &data)
@@ -131,8 +133,9 @@ void ImageFactory::parseTags(const QString &val, QVariantMap &data)
 	}
 	QList<Tag> tagList = data["tags"].value<QList<Tag>>();
 
-	if (!tagList.isEmpty())
+	if (!tagList.isEmpty()) {
 		return;
+	}
 
 	QString raw = val;
 	raw.replace(QRegularExpression("[\r\n\t]+"), " ");

@@ -84,7 +84,7 @@ addHelper("mapFields", (data: any, map: { [key: string]: string }): any => {
     return result;
 });
 
-addHelper("countToInt", (str: string): number => {
+addHelper("countToInt", (str: string): number | undefined => {
     if (!str) {
         return undefined;
     }
@@ -115,8 +115,11 @@ addHelper("fileSizeToInt", (str: string): number => {
     return parseInt(str, 10);
 });
 
-addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined): string => {
-    url = url.replace("{page}", String(page));
+addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | undefined, pageTransformer?: (page: number) => number): string => {
+    if (!pageTransformer) {
+        pageTransformer = (p: number) => p;
+    }
+    url = url.replace("{page}", String(pageTransformer(page)));
     if (previous) {
         url = url.replace("{min}", previous.minId);
         url = url.replace("{max}", previous.maxId);
@@ -126,15 +129,16 @@ addHelper("fixPageUrl", (url: string, page: number, previous: IPreviousSearch | 
     return url;
 });
 
-addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string): string => {
-    if (page <= limit || limit < 0) {
-        return Grabber.fixPageUrl(ifBelow, page, previous);
+addHelper("pageUrl", (page: number, previous: IPreviousSearch | undefined, limit: number, ifBelow: string, ifPrev: string, ifNext: string, pageTransformer?: (page: number) => number): string => {
+    const pageLimit = pageTransformer ? pageTransformer(page) : page;
+    if (pageLimit <= limit || limit < 0) {
+        return Grabber.fixPageUrl(ifBelow, page, previous, pageTransformer);
     }
     if (previous && previous.page === page + 1) {
-        return Grabber.fixPageUrl(ifPrev, page, previous);
+        return Grabber.fixPageUrl(ifPrev, page, previous, pageTransformer);
     }
     if (previous && previous.page === page - 1) {
-        return Grabber.fixPageUrl(ifNext, page, previous);
+        return Grabber.fixPageUrl(ifNext, page, previous, pageTransformer);
     }
     throw new Error("You need valid previous page information to browse that far");
 });
@@ -149,9 +153,21 @@ addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
                 match[key] = json[key];
             }
         }
+        if (match.id) {
+            match.id = parseInt(match.id, 10);
+        }
         images.push(match);
     }
     return images;
+});
+
+addHelper("pick", (obj: any, keys: string[]): any => {
+    return keys.reduce((ret, key) => {
+        if (key in obj && obj[key] !== undefined) {
+            ret[key] = obj[key];
+        }
+        return ret;
+    }, {} as any);
 });
 
 addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
@@ -166,7 +182,7 @@ addHelper("regexToTags", (regexp: string, src: string): ITag[] => {
         if ("count" in match) {
             match["count"] = Grabber.countToInt(match["count"]);
         }
-        tags.push(match);
+        tags.push(Grabber.pick(match, ["id", "name", "count", "type", "typeId"]));
         uniques[match["name"]] = true;
     }
     return tags;
@@ -181,7 +197,7 @@ addHelper("regexToPools", (regexp: string, src: string): IPool[] => {
     return pools;
 });
 
-addHelper("regexToConst", (key: string, regexp: string, src: string): string => {
+addHelper("regexToConst", (key: string, regexp: string, src: string): string | undefined => {
     const matches = Grabber.regexMatches(regexp, src);
     for (const match of matches) {
         return match[key];

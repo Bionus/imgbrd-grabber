@@ -23,7 +23,8 @@ int RenameExistingTableModel::columnCount(const QModelIndex &parent) const
 QVariant RenameExistingTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-		switch (section) {
+		switch (section)
+		{
 			case 0: return QString("Thumbnail");
 			case 1: return QString("Original");
 			case 2: return QString("Destination");

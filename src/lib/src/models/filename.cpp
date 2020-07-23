@@ -189,7 +189,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 					filter = filter.left(filter.length() - ext.length()) + "*";
 				}
 			}
-			QFileInfoList allFiles = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+			QFileInfoList allFiles = dir.entryInfoList({ filter }, QDir::Files, QDir::NoSort);
 
 			QFileInfoList files;
 			for (const auto &file : allFiles) {
@@ -202,17 +202,20 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				// Get last file
 				QCollator collator;
 				collator.setNumericMode(true);
-				const QFileInfo highest = noExt
-					? *std::max_element(
+				QFileInfo highest;
+				if (noExt) {
+					highest = *std::max_element(
 						files.begin(),
 						files.end(),
 						[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.completeBaseName(), b.completeBaseName()) < 0; }
-					)
-					: *std::max_element(
+					);
+				} else {
+					highest = *std::max_element(
 						files.begin(),
 						files.end(),
 						[&collator](const QFileInfo &a, const QFileInfo &b) { return collator.compare(a.fileName(), b.fileName()) < 0; }
 					);
+				}
 
 				const QString last = highest.fileName();
 				const int pos = cRight.indexOf(hasNum);
@@ -317,7 +320,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page" << "num" << "name" << "position" << "current_date";
+	QStringList tokens { "tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date" };
 	if (profile != nullptr) {
 		tokens.append(profile->getAdditionalTokens());
 		tokens.append(getCustoms(profile->getSettings()).keys());
@@ -406,7 +409,7 @@ int Filename::needExactTags(const QStringList &forcedTokens) const
 	}
 
 	// The filename contains one of the special tags
-	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "photo_set" << "species" << "meta" << "general";
+	const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
 	for (const QString &token : forbidden) {
 		if (toks.contains(token)) {
 			return 1;

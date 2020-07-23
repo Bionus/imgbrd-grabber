@@ -14,13 +14,13 @@ permalink: /docs/
 
 ## Arch Linux
 
-Grabber can be installed from the aur package [imgbrd-grabber-git](https://aur.archlinux.org/packages/imgbrd-grabber-git/), and otherwise installed by following the generic Linux instructions. After installation see [Linux Configuration](#linux-configuration)
+Grabber can be installed from the aur package [imgbrd-grabber-git](https://aur.archlinux.org/packages/imgbrd-grabber-git/), and otherwise installed by following the generic Linux instructions. After installation, see [Linux Configuration](#linux-configuration).
 
 ## Linux
-Compile Grabber by following the instructions on the [compilation](../Compilation#linux) page. Upon completion run `make install`.
+Compile Grabber by following the instructions on the [compilation](compilation.md#linux) page. Upon completion run `make install`.
 
 ### Linux Configuration
-After installation you will need to copy the example configuration files to your local Grabber directory. this is usually `~/.Grabber` the example files are located at `$INSTALLATIONPREFIX/Grabber/example/` Grabber will not run without these files.
+After installation you will need to copy the example configuration files from `$INSTALLATIONPREFIX/Grabber/example/` to your local Grabber directory, usually `~/.Grabber/`. Grabber will not run without these files.
 
 # Usage
 
@@ -35,7 +35,7 @@ There are four fields to fill:
 * Language: the interface language
 * Source: the source you want to try first, you can change it later, and even select more than one at a time
 * Folder: where you want to store your images
-* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename](Filename) wiki page for more details. The default value of `%md5%.%ext%` should be good at first.
+* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename](filename.md) wiki page for more details. The default value of `%md5%.%ext%` should be good at first.
 
 Once finished, you can press the "Ok" button.
 
@@ -48,7 +48,7 @@ You should now be seeing something like this:
 
 ## Searching
 
-The upper part of the window is "divided" into two parts:
+The upper part of the window is "divided" into two sections:
 
   * The search form: to make searches using tags. To insert a date, or access advanced features, you can click the "Plus" button. You can also browse other pages by changing the page value on the right.
   * Hidden form: you can show it by clicking the "+" button. Here, you have some fields to quickly change the settings (images per page and columns), the sources and "Post-filtering". Post-filtering allows you, for example, to bypass the two tags limitation of Danbooru by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit, so if you want to definitely change the number of images per page or columns for example, you have should change them directly in the options.
@@ -63,15 +63,15 @@ After searching for something, you should see something as:
 
 To download a lot of pictures at the same time, first search for the tag you want to download (or no tag if that's what you want). You should arrive on the search page. From here, just click "Get this page" to download all the images on the page you are currently seeing (usually around 20 images), or "Get all" to download all the results of your search, including further pages (can go from 1 images to thousands).
 
-Then, go to the "Downloads" tab to have a summary or what will be downloaded:
+Then, go to the "Downloads" tab to see a summary of what will be downloaded:
 
 ![downloads tab](img/downloadpage.png)
 
-Once you are satisfied with your download list, click the "Download" button to start the download. This window should then appear:
+Once you are satisfied with your download list, click the "Download" button to start the download. The Batch Download window should appear:
 
 ![batch download window](img/batchdownload.png)
 
-It lists all the images that will be or are already downloaded. Now, you just have to wait. When all images are downloaded, the program will tell you and show you a summary:
+It lists all the images that will be or have already been downloaded. Now, you just have to wait. When all images are downloaded, the program wil show you a summary:
 
 ![download finished window](img/downloadfinished.png)
 
@@ -109,11 +109,11 @@ Note that you can also merge all results to remove duplicates checking the "Merg
 
 Some sources (for example Danbooru or Gelbooru) require to login to enable full API access. Even though it is usually not mandatory thanks to the regex fallback, it is usually strongly advised to do so.
 
-To log in a source, just enter your credentials in the "Credentials" tab of the source settings window:
+To log into a source using an account, just enter your credentials in the "Credentials" tab of the Source Settings window:
 
 ![credentials form](img/sourcecredentials.png)
 
-When you're done, you can click the "Test" button to check if your credentials are correct. Note that not all source support login checking.
+When you're done, you can click the "Test" button to check if your credentials are correct. Note that not all sources support login checking.
 
 ![credentials test success](img/sourcecredentialssuccess.png)
 

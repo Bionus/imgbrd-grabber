@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
-	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist" , "Tags to remove from results.", "tags-blacklist");
+	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist", "Tags to remove from results.", "tags-blacklist");
 	const QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
@@ -152,16 +152,16 @@ int main(int argc, char *argv[])
 		}
 
 		const auto type = proxyUrl.scheme().startsWith("socks")
-		                  ? QNetworkProxy::Socks5Proxy
-		                  : QNetworkProxy::HttpProxy;
+			? QNetworkProxy::Socks5Proxy
+			: QNetworkProxy::HttpProxy;
 
 		const QNetworkProxy proxy(
-		        type,
-		        proxyUrl.host(),
-		        proxyUrl.port(),
-		        proxyUrl.userName(),
-		        proxyUrl.password()
-		    );
+			type,
+			proxyUrl.host(),
+			proxyUrl.port(),
+			proxyUrl.userName(),
+			proxyUrl.password()
+		);
 
 		QNetworkProxy::setApplicationProxy(proxy);
 		log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(proxyUrl.host()).arg(proxyUrl.port()), Logger::Info);

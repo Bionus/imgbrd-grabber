@@ -17,7 +17,7 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 	QSettings fullLanguages(m_path + "languages.ini", QSettings::IniFormat);
 	fullLanguages.setIniCodec("UTF-8");
 
-	QStringList languageFiles = QDir(m_path).entryList(QStringList() << QStringLiteral("*.qm"), QDir::Files);
+	QStringList languageFiles = QDir(m_path).entryList({ QStringLiteral("*.qm") }, QDir::Files);
 	QMap<QString, QString> languages;
 	for (const QString &languageFile : languageFiles) {
 		const QString lang = languageFile.left(languageFile.length() - 3);
@@ -48,7 +48,7 @@ bool LanguageLoader::uninstall(QCoreApplication *app)
 
 bool LanguageLoader::setLanguage(const QString &lang)
 {
-	log(QStringLiteral("Setting language to '%1'...").arg(lang), Logger::Info);
+	log(QStringLiteral("Setting language to '%1' (`%2`)...").arg(lang, m_path + lang + ".qm"), Logger::Info);
 
 	const bool general = m_translator.load(m_path + lang + ".qm");
 	const bool qt = m_qtTranslator.load(m_path + "qt/" + lang + ".qm");

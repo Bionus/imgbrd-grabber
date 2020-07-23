@@ -121,9 +121,12 @@ export const source: ISource = {
                 url: (query: ISearchQuery): string => {
                     return "/search.php?s_mode=s_tag&order=date_d&p=" + query.page + "&word=" + encodeURIComponent(query.search);
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
                     // Page data is stored in the data attributes of a hidden React container
                     const rawData = src.match(/<input type="hidden"\s*id="js-mount-point-search-result-list"\s*data-items="([^"]+)"\s*data-related-tags="([^"]+)"/i);
+                    if (!rawData) {
+                        return { error: "Parse error: could not find the hidden React container" };
+                    }
                     const rawItems = JSON.parse(Grabber.htmlDecode(rawData[1]));
                     const rawTags = JSON.parse(Grabber.htmlDecode(rawData[2]));
 

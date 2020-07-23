@@ -99,7 +99,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	m_name = details.contains("name") ? details["name"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
-	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList() << details["source"] : QStringList());
+	m_sources = details.contains("sources") ? details["sources"].split('\n') : (details.contains("source") ? QStringList { details["source"] } : QStringList());
 	m_galleryCount = details.contains("gallery_count") ? details["gallery_count"].toInt() : -1;
 	m_position = details.contains("position") ? details["position"].toInt() : 0;
 
@@ -224,8 +224,8 @@ void Image::init()
 	// Setup extension rotator
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 	const QStringList extensions = animated
-		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
-		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+		? QStringList { "webm", "mp4", "gif", "jpg", "png", "jpeg", "swf" }
+		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
 
@@ -609,7 +609,7 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 
 				// Replace some post-save tokens
 				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
-						.replace("%path%", QDir::toNativeSeparators(path));
+					.replace("%path%", QDir::toNativeSeparators(path));
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
@@ -632,15 +632,19 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 
 	// Commands
 	Commands &commands = m_profile->getCommands();
-	if (startCommands)
-	{ commands.before(); }
-		for (const Tag &tag : qAsConst(m_tags))
-		{ commands.tag(*this, tag, false); }
-		commands.image(*this, path);
-		for (const Tag &tag : qAsConst(m_tags))
-		{ commands.tag(*this, tag, true); }
-	if (startCommands)
-	{ commands.after(); }
+	if (startCommands) {
+		commands.before();
+	}
+	for (const Tag &tag : qAsConst(m_tags)) {
+		commands.tag(*this, tag, false);
+	}
+	commands.image(*this, path);
+	for (const Tag &tag : qAsConst(m_tags)) {
+		commands.tag(*this, tag, true);
+	}
+	if (startCommands) {
+		commands.after();
+	}
 
 	setSavePath(path, size);
 }
@@ -693,6 +697,7 @@ int Image::width() const { return size(Image::Size::Full).width(); }
 int Image::height() const { return size(Image::Size::Full).height(); }
 const QStringList &Image::search() const { return m_search; }
 QDateTime Image::createdAt() const { return token<QDateTime>("date"); }
+QString Image::dateRaw() const { return token<QString>("date_raw"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size(Size size) const { return m_sizes[size]->size; }
@@ -859,8 +864,7 @@ QList<QStrP> Image::detailsData() const
 	const QString &author = token<QString>("author");
 	int parentId = token<int>("parentid");
 
-	return
-	{
+	return {
 		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),

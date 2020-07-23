@@ -10,7 +10,7 @@ then
   sudo pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm"
 else
   sudo apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools"
-  sudo apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs"
+  sudo apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs" "npm"
 fi
 
 # Build the project in the build directory

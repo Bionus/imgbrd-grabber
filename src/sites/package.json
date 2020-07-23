@@ -8,10 +8,16 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "tsc -p tsconfig.json",
-        "check": "tslint -c tslint.json -p tsconfig.json"
+        "check": "tslint -c tslint.json -p tsconfig.json",
+        "test": "jest"
     },
     "devDependencies": {
-        "tslint": "6.1.0",
-        "typescript": "3.8.3"
+        "@types/jest": "26.0.3",
+        "@types/xml2js": "^0.4.5",
+        "jest": "26.1.0",
+        "ts-jest": "26.1.1",
+        "tslint": "6.1.2",
+        "typescript": "3.9.6",
+        "xml2js": "^0.4.23"
     }
 }

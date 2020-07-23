@@ -50,6 +50,7 @@ class Image : public QObject, public Downloadable
 		int height() const;
 		const QStringList &search() const;
 		QDateTime createdAt() const;
+		QString dateRaw() const;
 		const QUrl &pageUrl() const;
 		const QUrl &fileUrl() const;
 		QSize size(Size size = Size::Full) const;

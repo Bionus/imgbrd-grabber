@@ -1,0 +1,7 @@
+<ul>
+	{% for source in site.sources %}
+		<li><a href="{{ source.url | relative_url }}">{{ source.title }}</a></li>
+	{% endfor %}
+</ul>
+
+<i>Note: this list of source is not exhaustive and only contains the one that have been documented at the moment.</i>

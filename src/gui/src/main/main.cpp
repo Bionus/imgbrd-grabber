@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	#endif
 
 	// Copy settings files to writable directory
-	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+	const QStringList toCopy { "sites/", "themes/", "webservices/" };
 	for (const QString &tgt : toCopy) {
 		const QString from = savePath(tgt, true, false);
 		const QString to = savePath(tgt, true, true);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	const QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	const QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
-	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist" , "Tags to remove from results.", "tags-blacklist");
+	const QCommandLineOption tagsBlacklistOption(QStringList() << "tb" << "tags-blacklist", "Tags to remove from results.", "tags-blacklist");
 	const QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	const QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");

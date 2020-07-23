@@ -27,12 +27,7 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
-	// Restore headers' sizes
-	QStringList sizes = m_settings->value("Monitoring/tableHeaders", "100,100,100,100,100").toString().split(',');
-	int m = sizes.size() > m_monitorTableModel->columnCount() ? m_monitorTableModel->columnCount() : sizes.size();
-	for (int i = 0; i < m; i++) {
-		ui->tableMonitors->horizontalHeader()->resizeSection(i, sizes.at(i).toInt());
-	}
+	ui->tableMonitors->loadGeometry(m_settings, "Monitoring", QList<int> { 0, 1, 2, 3, 4 });
 }
 
 MonitorsTab::~MonitorsTab()
@@ -55,13 +50,7 @@ void MonitorsTab::changeEvent(QEvent *event)
 
 void MonitorsTab::closeEvent(QCloseEvent *event)
 {
-	// Save headers' sizes
-	QStringList sizes;
-	sizes.reserve(m_monitorTableModel->columnCount());
-	for (int i = 0; i < m_monitorTableModel->columnCount(); i++) {
-		sizes.append(QString::number(ui->tableMonitors->horizontalHeader()->sectionSize(i)));
-	}
-	m_settings->setValue("Monitoring/tableHeaders", sizes.join(","));
+	ui->tableMonitors->saveGeometry(m_settings, "Monitoring");
 
 	QWidget::closeEvent(event);
 }

@@ -52,9 +52,9 @@ void OAuth2Login::login()
 		const QByteArray base64BearerCredentials = bearerCredentials.toBase64();
 		request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
 	} else if (type == "client_credentials") {
-		body << QStrP("grant_type", "client_credentials")
-			 << QStrP("client_id", consumerKey)
-			 << QStrP("client_secret", consumerSecret);
+		body << QStrP("grant_type", "client_credentials");
+		body << QStrP("client_id", consumerKey);
+		body << QStrP("client_secret", consumerSecret);
 	} else if (type == "password") {
 		const QString pseudo = m_settings->value("auth/pseudo").toString();
 		const QString password = m_settings->value("auth/password").toString();
@@ -66,9 +66,9 @@ void OAuth2Login::login()
 		request.setRawHeader("X-Client-Time", time.toLatin1());
 		request.setRawHeader("X-Client-Hash", QCryptographicHash::hash(hash.toLatin1(), QCryptographicHash::Md5).toHex());
 
-		body << QStrP("grant_type", "password")
-			 << QStrP("username", pseudo)
-			 << QStrP("password", password);
+		body << QStrP("grant_type", "password");
+		body << QStrP("username", pseudo);
+		body << QStrP("password", password);
 
 		if (!consumerKey.isEmpty()) {
 			body << QStrP("client_id", consumerKey);
@@ -81,7 +81,7 @@ void OAuth2Login::login()
 	// Post request and wait for a reply
 	QString bodyStr;
 	for (const QStrP &pair : body) {
-		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second;
+		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + QUrl::toPercentEncoding(pair.second);
 	}
 	m_tokenReply = m_manager->post(request, bodyStr.toUtf8());
 	connect(m_tokenReply, &NetworkReply::finished, this, &OAuth2Login::loginFinished);
@@ -109,11 +109,12 @@ void OAuth2Login::refresh(bool login)
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 
-	QList<QStrP> body;
-	body << QStrP("grant_type", "refresh_token")
-		 << QStrP("client_id", consumerKey)
-		 << QStrP("client_secret", consumerSecret)
-		 << QStrP("refresh_token", m_refreshToken);
+	const QList<QStrP> body {
+		{ "grant_type", "refresh_token" },
+		{ "client_id", consumerKey },
+		{ "client_secret", consumerSecret },
+		{ "refresh_token", m_refreshToken }
+	};
 
 	// Post request and wait for a reply
 	QString bodyStr;
@@ -131,8 +132,17 @@ void OAuth2Login::refresh(bool login)
 
 void OAuth2Login::refreshLoginFinished()
 {
-	const auto result = readResponse(m_refreshReply) ? Result::Success : Result::Failure;
-	emit loggedIn(result);
+	const bool ok = readResponse(m_refreshReply);
+	if (!ok) {
+		log(QStringLiteral("[%1] Refresh failed, clearing tokens and re-trying login...").arg(m_site->url()), Logger::Warning);
+		m_accessToken.clear();
+		m_settings->remove("auth/accessToken");
+		m_refreshToken.clear();
+		m_settings->remove("auth/refreshToken");
+		login();
+	} else {
+		emit loggedIn(Result::Success);
+	}
 }
 void OAuth2Login::refreshFinished()
 {

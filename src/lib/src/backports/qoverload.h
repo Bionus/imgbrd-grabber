@@ -46,9 +46,9 @@ struct QOverload : QConstOverload<Args...>, QNonConstOverload<Args...>
 };
 
 #if defined(__cpp_variable_templates) && __cpp_variable_templates >= 201304 // C++14
-    template <typename... Args> Q_DECL_CONSTEXPR QOverload<Args...> qOverload Q_DECL_UNUSED = {};
-    template <typename... Args> Q_DECL_CONSTEXPR QConstOverload<Args...> qConstOverload Q_DECL_UNUSED = {};
-    template <typename... Args> Q_DECL_CONSTEXPR QNonConstOverload<Args...> qNonConstOverload Q_DECL_UNUSED = {};
+	template <typename... Args> Q_DECL_CONSTEXPR QOverload<Args...> qOverload Q_DECL_UNUSED = {};
+	template <typename... Args> Q_DECL_CONSTEXPR QConstOverload<Args...> qConstOverload Q_DECL_UNUSED = {};
+	template <typename... Args> Q_DECL_CONSTEXPR QNonConstOverload<Args...> qNonConstOverload Q_DECL_UNUSED = {};
 #endif
 
 #endif // BACKPORTS_QOVERLOAD_H

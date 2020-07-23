@@ -30,6 +30,7 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	ui->checkDownloadEnabled->setChecked(m_monitor.download());
 	ui->lineDownloadPathOverride->setText(m_monitor.pathOverride());
 	ui->lineDownloadFilenameOverride->setText(m_monitor.filenameOverride());
+	ui->checkGetBlacklisted->setChecked(m_monitor.getBlacklisted());
 
 	connect(this, &QDialog::accepted, this, &MonitorWindow::save);
 }
@@ -57,8 +58,9 @@ void MonitorWindow::save()
 	bool download = ui->checkDownloadEnabled->isChecked();
 	QString pathOverride = ui->lineDownloadPathOverride->text();
 	QString filenameOverride = ui->lineDownloadFilenameOverride->text();
+	bool getBlacklisted = ui->checkGetBlacklisted->isChecked();
 
-	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify, delay);
+	Monitor newMonitor(m_selectedSources, interval, m_monitor.lastCheck(), download, pathOverride, filenameOverride, m_monitor.cumulated(), m_monitor.preciseCumulated(), query, postFilters, notify, delay, getBlacklisted);
 	m_monitorManager->add(newMonitor, index);
 }
 

@@ -22,7 +22,7 @@ Tag::Tag(const QString &text, const TagType &type, int count, const QStringList 
 Tag::Tag(int id, const QString &text, TagType type, int count, QStringList related)
 	: m_id(id), m_type(std::move(type)), m_count(count), m_related(std::move(related))
 {
-	static QStringList weakTypes = QStringList() << QStringLiteral("origin");
+	static const QStringList weakTypes { QStringLiteral("origin") };
 
 	// Decode HTML entities in the tag text
 	m_text = decodeHtmlEntities(text).replace(' ', '_');
@@ -181,7 +181,7 @@ bool sortTagsByCount(const Tag &s1, const Tag &s2)
 bool operator==(const Tag &t1, const Tag &t2)
 {
 	return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) == 0
-		   && (t1.type() == t2.type() || t1.type().isUnknown() || t2.type().isUnknown());
+		&& (t1.type() == t2.type() || t1.type().isUnknown() || t2.type().isUnknown());
 }
 bool operator!=(const Tag &t1, const Tag &t2)
 { return !(t1 == t2); }

@@ -1,6 +1,7 @@
 #ifndef PAGE_API_H
 #define PAGE_API_H
 
+#include <QDateTime>
 #include <QList>
 #include <QMap>
 #include <QObject>
@@ -32,7 +33,7 @@ class PageApi : public QObject
 			Error
 		};
 
-		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page = 1, int limit = 25, PostFilter postFiltering = PostFilter(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
+		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page = 1, int limit = 25, PostFilter postFiltering = PostFilter(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0, QString lastPageMinDate = "", QString lastPageMaxDate = "");
 		void setLastPage(Page *page);
 		const QList<QSharedPointer<Image>> &images() const;
 		bool isImageCountSure() const;
@@ -53,6 +54,8 @@ class PageApi : public QObject
 		int pageImageCount() const;
 		qulonglong minId() const;
 		qulonglong maxId() const;
+		QString minDate() const;
+		QString maxDate() const;
 		const QUrl &nextPage() const;
 		const QUrl &prevPage() const;
 		bool isLoaded() const;
@@ -87,6 +90,7 @@ class PageApi : public QObject
 		PostFilter m_postFiltering;
 		int m_imagesPerPage, m_lastPage, m_page, m_pool;
 		qulonglong m_lastPageMinId, m_lastPageMaxId;
+		QString m_lastPageMinDate, m_lastPageMaxDate;
 		bool m_smart, m_isAltPage;
 		QString m_format, m_source, m_wiki, m_originalUrl;
 		QUrl m_url, m_urlNextPage, m_urlPrevPage;

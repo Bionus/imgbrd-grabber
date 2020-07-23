@@ -46,7 +46,8 @@ QVariant DownloadImageTableModel::data(const QModelIndex &index, int role) const
 		return {};
 	}
 
-	switch (index.column()) {
+	switch (index.column())
+	{
 		case 0: return QString::number(download.image->id());
 		case 1: return download.image->md5();
 		case 2: return download.image->token<QString>("rating");

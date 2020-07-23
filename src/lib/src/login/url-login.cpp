@@ -28,7 +28,7 @@ void UrlLogin::login()
 	}
 
 	const int maxPageAnonymous = m_auth->maxPage();
-	m_page = new Page(m_site->getSource()->getProfile(), m_site, QList<Site*>() << m_site, QStringList(), maxPageAnonymous);
+	m_page = new Page(m_site->getSource()->getProfile(), m_site, { m_site }, QStringList(), maxPageAnonymous);
 	connect(m_page, &Page::finishedLoading, this, &UrlLogin::loginFinished);
 	connect(m_page, &Page::failedLoading, this, &UrlLogin::loginFinished);
 	m_page->load();

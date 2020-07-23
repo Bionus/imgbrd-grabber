@@ -67,7 +67,7 @@
 
 
 MainWindow::MainWindow(Profile *profile)
-	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_languageLoader(savePath("languages/", true)), m_currentTab(nullptr)
+	: ui(new Ui::MainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_loaded(false), m_languageLoader(savePath("languages/", true, false)), m_currentTab(nullptr)
 {}
 void MainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
@@ -76,7 +76,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_settings = m_profile->getSettings();
 	auto sites = m_profile->getSites();
 
-	ThemeLoader themeLoader(savePath("themes/", true));
+	ThemeLoader themeLoader(savePath("themes/", true, false));
 	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
 	ui->setupUi(this);
 
@@ -421,7 +421,7 @@ void MainWindow::initialLoginsDone()
 		addTab();
 	}
 
-	if (m_forcedTab.type() == QMetaType::QString) {
+	if ((QMetaType::Type) m_forcedTab.type() == QMetaType::QString) {
 		QString name = m_forcedTab.toString();
 		if (name == "favorites") {
 			ui->tabWidget->setCurrentWidget(m_favoritesTab);

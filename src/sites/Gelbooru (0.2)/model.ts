@@ -1,5 +1,5 @@
 function completeImage(img: IImage): IImage {
-    if (!img.file_url || img.file_url.length < 5) {
+    if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
             .replace("/thumbnails/", "/images/")
             .replace("/thumbnail_", "/");
@@ -84,21 +84,23 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
-                        const page: number = (query.page - 1) * 42;
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
-                        const pagePart = Grabber.pageUrl(page, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
                         const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
                         if (fav) {
-                            const pageFav: number = (query.page - 1) * 50;
-                            const pagePartFav = Grabber.pageUrl(pageFav, previous, 20000, "&pid={page}", " id:<{min}&p=1", "&pid={page}");
-                            return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePartFav;
+                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 50);
+                            return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePart;
+                        } else {
+                            const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 42);
+                            return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                         }
-                        return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                     } catch (e) {
                         return { error: e.message };
                     }
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
+                    if (src.indexOf("Unable to search this deep") !== -1) {
+                        return { error: "Page too far" };
+                    }
                     const pageCountRaw = Grabber.regexMatch('<a href="[^"]+pid=(?<page>\\d+)[^"]*"[^>]*>[^<]+</a>\\s*(?:<b>(?<last>\\d+)</b>\\s*)?(?:</div>|<br ?/>)', src);
                     const pageCount = pageCountRaw && (pageCountRaw["last"] || pageCountRaw["page"]);
                     return {

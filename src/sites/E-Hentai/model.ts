@@ -13,6 +13,9 @@ function cssToObject(css: string): any {
 
 function sizeToInt(size: string): number {
     const match = size.match(/^(-?)(\d+)\w*$/);
+    if (!match) {
+        return 0;
+    }
     const val = parseInt(match[2], 10);
     if (match[1].length > 0) {
         return -val;
@@ -91,8 +94,11 @@ export const source: ISource = {
                     const s = parseSearch(query.search);
                     return "/?page=" + (query.page - 1) + "&f_cats=" + s.cats + "&f_search=" + encodeURIComponent(s.search);
                 },
-                parse: (src: string): IParsedSearch => {
+                parse: (src: string): IParsedSearch | IError => {
                     const rows = src.match(/<tr[^>]*>(.+?)<\/tr>/g);
+                    if (!rows) {
+                        return { error: "Parse error: no <tr> tag found" };
+                    }
                     const images = rows.map((row: any) => {
                         const match: any = {};
                         match["type"] = "gallery";
