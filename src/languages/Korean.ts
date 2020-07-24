@@ -350,7 +350,9 @@
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation>%n개의 이미지의 정보를 다운받으시겠습니까?</translation>
+      <translation>
+        <numerusform>%n개의 이미지의 정보를 다운받으시겠습니까?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -695,7 +697,9 @@
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="459"/>
       <source>Loading %n download(s)</source>
-      <translation>%n개의 파일을 불러오는 중입니다</translation>
+      <translation>
+        <numerusform>%n개의 파일을 불러오는 중입니다</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
@@ -771,37 +775,51 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1207"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation>%n 개의 파일을 성공적으로 다운로드했습니다.</translation>
+      <translation>
+        <numerusform>%n 개의 파일을 성공적으로 다운로드했습니다.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1208"/>
       <source>%n file(s) ignored.</source>
-      <translation>%n 개의 파일은 다운로드되지 않았습니다.</translation>
+      <translation>
+        <numerusform>%n 개의 파일은 다운로드되지 않았습니다.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1209"/>
       <source>%n file(s) already existing.</source>
-      <translation>%n 개의 파일은 이미 존재합니다.</translation>
+      <translation>
+        <numerusform>%n 개의 파일은 이미 존재합니다.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1210"/>
       <source>%n file(s) not found on the server.</source>
-      <translation>%n 개의 파일을 서버에서 못 찾았습니다</translation>
+      <translation>
+        <numerusform>%n 개의 파일을 서버에서 못 찾았습니다</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1211"/>
       <source>%n file(s) skipped.</source>
-      <translation>%n 개의 파일은 건너뛰었습니다.</translation>
+      <translation>
+        <numerusform>%n 개의 파일은 건너뛰었습니다.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation>이전 다운로드에서 %n 개의 파일을 건너뛰었습니다.</translation>
+      <translation>
+        <numerusform>이전 다운로드에서 %n 개의 파일을 건너뛰었습니다.</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
       <source>%n error(s).</source>
-      <translation>%n 개의 에러</translation>
+      <translation>
+        <numerusform>%n 개의 에러</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -865,7 +883,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation>%n 개의 폴더를 삭제할 예정입니다. 진짜 삭제하겠습니까?</translation>
+      <translation>
+        <numerusform>%n 개의 폴더를 삭제할 예정입니다. 진짜 삭제하겠습니까?</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1320,7 +1340,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="929"/>
       <source>Source(s)</source>
-      <translation>소스</translation>
+      <translation>
+        <numerusform>소스</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="930"/>
@@ -1772,7 +1794,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="85"/>
       <source>%n MD5(s) loaded</source>
-      <translation>%n 개의 MD5 준비됨</translation>
+      <translation>
+        <numerusform>%n 개의 MD5 준비됨</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1785,12 +1809,16 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="59"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation>태그 '%1'에 해당되는 %n 개의 새로운 이미지가 '%2'에서 발견되었습니다</translation>
+      <translation>
+        <numerusform>태그 '%1'에 해당되는 %n 개의 새로운 이미지가 '%2'에서 발견되었습니다</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="61"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation>태그 '%1'에 해당되는 새로운 이미지가 %n 개 넘게 '%2'에서 발견되었습니다</translation>
+      <translation>
+        <numerusform>태그 '%1'에 해당되는 새로운 이미지가 %n 개 넘게 '%2'에서 발견되었습니다</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="63"/>
