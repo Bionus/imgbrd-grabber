@@ -32,6 +32,34 @@
 #include "vendor/html-entities.h"
 
 
+int lastError() {
+	#ifdef Q_OS_WIN
+		return GetLastError();
+	#else
+		return errno;
+	#endif
+}
+
+QString lastErrorString() {
+	const int errorCode = lastError();
+	if (errorCode == 0) {
+		return QString();
+	}
+
+	#ifdef Q_OS_WIN
+		// https://stackoverflow.com/a/17387176/828828
+		LPWSTR messageBuffer = nullptr;
+		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+		auto message = QString::fromWCharArray(messageBuffer, size);
+		LocalFree(messageBuffer);
+		return message;
+	#else
+		return strerror(errorCode);
+	#endif
+}
+
+
 /**
  * Load custom tokens from settings.
  * @return	The map with token names as keys and token tags as values.
@@ -358,7 +386,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE) {
-			log(QStringLiteral("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to open file to set creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 
@@ -368,7 +396,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		pcreationtime.dwHighDateTime = ll >> 32;
 
 		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE) {
-			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 
@@ -378,7 +406,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		timebuffer.modtime = datetime.toTime_t();
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0) {
-			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 	#endif
