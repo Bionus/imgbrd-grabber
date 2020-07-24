@@ -64,7 +64,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="77"/>
       <source>Images limit</source>
-      <translation>이미지 제한</translation>
+      <translation>이미지 개수 제한</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
@@ -74,7 +74,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
       <source>Post-filtering</source>
-      <translation>후처리</translation>
+      <translation>필터링 후</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;한 줄당 한 개의 아이디를 입력하세요.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;한 줄에 하나의 아이디를 입력하세요.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
@@ -123,12 +123,12 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
       <source>&lt;i&gt;One MD5 per line.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;한 줄에 하나의 MD5를 입력하세요.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="59"/>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.cpp" line="80"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -146,32 +146,32 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="20"/>
       <source>Batch download</source>
-      <translation type="unfinished"/>
+      <translation>묶어서 다운로드</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="84"/>
       <source>Batch</source>
-      <translation type="unfinished"/>
+      <translation>묶기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="89"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
       <source>Filesize</source>
-      <translation type="unfinished"/>
+      <translation>파일 크기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="99"/>
       <source>Speed</source>
-      <translation type="unfinished"/>
+      <translation>속도</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="104"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>진행률</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
@@ -181,27 +181,27 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
       <source>Copy links to clipboard</source>
-      <translation type="unfinished"/>
+      <translation>복사한 링크 붙이기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="132"/>
       <source>When the download is finished</source>
-      <translation type="unfinished"/>
+      <translation>다운로드가 완료될 때</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="140"/>
       <source>Do nothing</source>
-      <translation type="unfinished"/>
+      <translation>아무것도 안하기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="145"/>
       <source>Close window</source>
-      <translation type="unfinished"/>
+      <translation>창 닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="150"/>
       <source>Open CD tray</source>
-      <translation type="unfinished"/>
+      <translation>CD 꺼내기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="155"/>
@@ -221,39 +221,39 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="173"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>제거하기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="185"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>속성</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="211"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="86"/>
       <source>Pause</source>
-      <translation type="unfinished"/>
+      <translation>일시정지</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="218"/>
       <source>Skip</source>
-      <translation type="unfinished"/>
+      <translation>건너뛰기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="225"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="126"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="85"/>
       <source>Paused</source>
-      <translation type="unfinished"/>
+      <translation>일시정지 됨</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="86"/>
       <source>Resume</source>
-      <translation type="unfinished"/>
+      <translation>다시 재생하기</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="386"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="420"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>닫기</translation>
     </message>
   </context>
   <context>
@@ -295,17 +295,17 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
       <source>Force md5 calculation</source>
-      <translation type="unfinished"/>
+      <translation>md5 연산 강제하기</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>파일이름으로 md5 생성하기</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="115"/>
       <source>Blacklist</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="61"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="74"/>
@@ -335,7 +335,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="103"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="52"/>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="59"/>
       <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>파일이름으로부터 MD5을 생성하고 싶으면 %md5% 토큰을 넣으세요</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="90"/>
       <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>%n개의 이미지의 정보를 다운받으시겠습니까?</translation>
     </message>
   </context>
   <context>
@@ -368,17 +368,17 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
       <source>Thumbnail</source>
-      <translation type="unfinished"/>
+      <translation>썸네일</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="57"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>이름</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="62"/>
       <source>Tag</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="72"/>
@@ -388,12 +388,12 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="92"/>
       <source>Ok</source>
-      <translation type="unfinished"/>
+      <translation>예</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="99"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
   </context>
   <context>
@@ -401,37 +401,37 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="17"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>커스텀 토큰 추가하기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="27"/>
       <source>&lt;i&gt;You can either use a token or tags as a condition.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;토큰이나 태그를 조건으로 설정할 수 있습니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="34"/>
       <source>Condition</source>
-      <translation type="unfinished"/>
+      <translation>조건</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="44"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>파일명</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="64"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="71"/>
       <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;비어두면 기본 폴더를 사용합니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>&lt;i&gt;Leave empty to use the default filename.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;비어두면 기본 파일 이름을 사용합니다.&lt;/i&gt;</translation>
     </message>
   </context>
   <context>
@@ -439,22 +439,22 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="17"/>
       <source>Add a custom token</source>
-      <translation type="unfinished"/>
+      <translation>커스텀 토큰 추가하기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="27"/>
       <source>&lt;i&gt;Separate tags by spaces or line breaks&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;태그를 스페이스(공백)이나 줄(Enter)로 구분하세요&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="34"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>이름</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="44"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
   </context>
   <context>
@@ -462,12 +462,12 @@
     <message>
       <location filename="../gui/src/viewer/details-window.ui" line="17"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>속성</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/details-window.ui" line="46"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>닫기</translation>
     </message>
   </context>
   <context>
@@ -475,7 +475,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 된 파일</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="52"/>
@@ -486,49 +486,49 @@
       <location filename="../gui/src/tabs/downloads-tab.ui" line="77"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="199"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="82"/>
       <source>Source</source>
-      <translation type="unfinished"/>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="87"/>
       <source>Page</source>
-      <translation type="unfinished"/>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="92"/>
       <source>Images per page</source>
-      <translation type="unfinished"/>
+      <translation>페이지당 있는 이미지 개수</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="97"/>
       <source>Images limit</source>
-      <translation type="unfinished"/>
+      <translation>이미지 제한</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="102"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="224"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>파일명</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="107"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="229"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="112"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>게시물 필터링</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="117"/>
       <source>Get blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트에 추가하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="122"/>
@@ -538,13 +538,13 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="127"/>
       <source>Progress</source>
-      <translation type="unfinished"/>
+      <translation>진행률</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="135"/>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="237"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>추가하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="155"/>
@@ -564,12 +564,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="194"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>순위</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="204"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="209"/>
@@ -579,32 +579,32 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="214"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="219"/>
       <source>Site</source>
-      <translation type="unfinished"/>
+      <translation>사이트</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="268"/>
       <source>Delete all</source>
-      <translation type="unfinished"/>
+      <translation>모두 삭제하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="275"/>
       <source>Delete selected</source>
-      <translation type="unfinished"/>
+      <translation>선택 삭제하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="282"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>다운로드하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="289"/>
       <source>Download selected</source>
-      <translation type="unfinished"/>
+      <translation>선택 다운로드하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="306"/>
@@ -614,12 +614,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="313"/>
       <source>Load</source>
-      <translation type="unfinished"/>
+      <translation>불러오기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="320"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>저장하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="327"/>
@@ -629,27 +629,27 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Confirmation</source>
-      <translation type="unfinished"/>
+      <translation>승인</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="133"/>
       <source>Are you sure you want to clear your download list?</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 목록을 지우시겠습니까?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="280"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>소스가 유효하지 않습니다</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="289"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="unfinished"/>
+      <translation>페이지 당 이미지는 1보다 크거나 같아야 합니다</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="298"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="unfinished"/>
+      <translation>이미지 제한은 0보다 크거가 같아야합니다</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="374"/>
@@ -661,7 +661,7 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
       <source>Save link list</source>
-      <translation type="unfinished"/>
+      <translation>링크 목록 저장하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="418"/>
@@ -672,134 +672,136 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="427"/>
       <source>Link list saved successfully!</source>
-      <translation type="unfinished"/>
+      <translation>링크 목록이 성공적으로 저장되었습니다!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="429"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Error opening file.</source>
-      <translation type="unfinished"/>
+      <translation>파일을 여는데 에러가 발생했습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="439"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="447"/>
       <source>Load link list</source>
-      <translation type="unfinished"/>
+      <translation>링크 목록 불러오기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="445"/>
       <source>Link list loaded successfully!</source>
-      <translation type="unfinished"/>
+      <translation>링크 목록을 성공적으로 불러왔습니다!</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="459"/>
       <source>Loading %n download(s)</source>
-      <translation type="unfinished"/>
+      <translation>%n개의 파일을 불러오는 중입니다</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="536"/>
       <source>You did not specify a save folder!</source>
-      <translation type="unfinished"/>
+      <translation>저장할 파일을 지정하세요!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="540"/>
       <source>You did not specify a filename!</source>
-      <translation type="unfinished"/>
+      <translation>파일 이름을 지정해주세요!</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="668"/>
       <source>You are going to download up to %1 images, which can take a long time and space on your computer. Are you sure you want to proceed?</source>
-      <translation type="unfinished"/>
+      <translation>당신은 지금 %1개의 이미지를 다운로드를 할 예정입니다. 많은 저장공간과 오랜 시간이 소요될 수도 있습니다. 실행하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="670"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>또 묻지마세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="707"/>
       <source>Logging in, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>로그인중, 잠시만 기다려주세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="792"/>
       <source>Downloading pages, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>페이지 다운로드중, 잠시만 기다려주세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="869"/>
       <source>Preparing images, please wait...</source>
-      <translation type="unfinished"/>
+      <translation>이미지 불러오는중, 잠시만 기다려주세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="883"/>
       <source>Downloading images...</source>
-      <translation type="unfinished"/>
+      <translation>이미지 다운로드중...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1079"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>저장공간이 부족합니다 "%1". 다운로드를 다시 시작하기 전에 저장공간을 확보하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1081"/>
       <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>이미지를 저장하는 도중 에러가 발생했습니다.
+%1
+다운로드를 다시 시작하기전에 문제를 해결해주세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1083"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>에러</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1176"/>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1205"/>
       <source>Getting images</source>
-      <translation type="unfinished"/>
+      <translation>이미지 불러오는 중</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1176"/>
       <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
-      <translation type="unfinished"/>
+      <translation>이미지를 다운로드하던 중 에러가 발생했습니다. 에러가 발생한 이미지를 다시 다운로드 받겠습니까? (%1/%2)</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1207"/>
       <source>%n file(s) downloaded successfully.</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 파일을 성공적으로 다운로드했습니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1208"/>
       <source>%n file(s) ignored.</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 파일은 다운로드되지 않았습니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1209"/>
       <source>%n file(s) already existing.</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 파일은 이미 존재합니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1210"/>
       <source>%n file(s) not found on the server.</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 파일을 서버에서 못 찾았습니다</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1211"/>
       <source>%n file(s) skipped.</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 파일은 건너뛰었습니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1212"/>
       <source>%n file(s) skipped from a previous download.</source>
-      <translation type="unfinished"/>
+      <translation>이전 다운로드에서 %n 개의 파일을 건너뛰었습니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1213"/>
       <source>%n error(s).</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 에러</translation>
     </message>
   </context>
   <context>
@@ -813,22 +815,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="24"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="49"/>
       <source>Continue</source>
-      <translation type="unfinished"/>
+      <translation>계속하기</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="56"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="30"/>
       <source>No empty folder found.</source>
-      <translation type="unfinished"/>
+      <translation>비어있는 폴더가 없습니다.</translation>
     </message>
   </context>
   <context>
@@ -843,27 +845,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="24"/>
       <source>Choose folders to delete in the list below.</source>
-      <translation type="unfinished"/>
+      <translation>삭제할 폴더를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="53"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>삭제하기</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="60"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
       <source>No folder selected.</source>
-      <translation type="unfinished"/>
+      <translation>폴더가 선택되지 않았습니다.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="47"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-      <translation type="unfinished"/>
+      <translation>%n 개의 폴더를 삭제할 예정입니다. 진짜 삭제하겠습니까?</translation>
     </message>
   </context>
   <context>
