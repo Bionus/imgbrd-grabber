@@ -204,7 +204,7 @@ void ImageDownloader::loadedSave()
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
 			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
 
-			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Linked) {
+			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Shortcut || res == Image::SaveResult::Linked) {
 				result = postSaving(res);
 			}
 
@@ -370,7 +370,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 
 	QString suffix;
 	#ifdef Q_OS_WIN
-		if (saveResult == Image::SaveResult::Linked) {
+		if (saveResult == Image::SaveResult::Shortcut) {
 			suffix = ".lnk";
 		}
 	#endif

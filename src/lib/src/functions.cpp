@@ -20,8 +20,10 @@
 #include <QVector>
 #ifdef Q_OS_WIN
 	#include <Windows.h>
+	#include <winbase.h>
 #else
 	#include <errno.h>
+	#include <unistd.h>
 	#include <utime.h>
 #endif
 #ifdef QT_DEBUG
@@ -374,15 +376,22 @@ int levenshtein(QString s1, QString s2)
 	return d[len1][len2];
 }
 
+#ifdef Q_OS_WIN
+wchar_t *toWCharT(const QString &str) {
+	auto *out = new wchar_t[str.length() + 1];
+	str.toWCharArray(out);
+	out[str.length()] = 0;
+	return out;
+}
+#endif
+
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
 	if (!datetime.isValid()) {
 		return false;
 	}
 	#ifdef Q_OS_WIN
-		auto *filename = new wchar_t[path.length() + 1];
-		path.toWCharArray(filename);
-		filename[path.length()] = 0;
+		wchar_t *filename = toWCharT(path);
 		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE) {
@@ -937,4 +946,66 @@ QStringList jsToStringList(const QJSValue &val)
 	}
 
 	return ret;
+}
+
+bool canCreateLinkType(const QString &type, const QString &dir)
+{
+	const QString basePath = dir + QDir::separator() + "link_test";
+	const QString linkFrom = basePath + "_from";
+	const QString linkTo = basePath + "_to";
+
+	// Create empty "source" file
+	QFile f(linkFrom);
+	f.open(QFile::WriteOnly | QFile::Truncate);
+	f.close();
+
+	const bool ok = createLink(linkFrom, linkTo, type);
+
+	// Clean-up
+	QFile::remove(linkFrom);
+	QFile::remove(linkTo);
+
+	return ok;
+}
+
+bool createLink(const QString &from, const QString &to, const QString &type)
+{
+	#ifdef Q_OS_WIN
+		if (type == "link") {
+			return QFile::link(from, to + ".lnk");
+		}/* else if (type == "symlink") {
+			wchar_t *wFrom = toWCharT(from);
+			wchar_t *wTo = toWCharT(to);
+			const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
+			delete[] wFrom;
+			delete[] wTo;
+			if (!res) {
+				log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+			}
+			return res;
+		}*/ else if (type == "hardlink") {
+			wchar_t *wFrom = toWCharT(from);
+			wchar_t *wTo = toWCharT(to);
+			const bool res = CreateHardLinkW(wTo, wFrom, NULL);
+			delete[] wFrom;
+			delete[] wTo;
+			if (!res) {
+				log(QStringLiteral("Unable to create hard link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+			}
+			return res;
+		}
+	#else
+		if (type == "link") {
+			return QFile::link(from, to);
+		} else if (type == "hardlink") {
+			const int res = link(from.toStdString().c_str(), to.toStdString().c_str());
+			if (res < 0) {
+				log(QStringLiteral("Unable to create hard link from `%1` to `%2` (%3 - %4)").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+				return false;
+			}
+			return true;
+		}
+	#endif
+	log(QStringLiteral("Invalid link type '%1'").arg(type), Logger::Error);
+	return false;
 }

@@ -27,6 +27,7 @@ class Downloadable
 			Blacklisted,
 			Moved,
 			Copied,
+			Shortcut,
 			Linked,
 			Saved,
 			Error,

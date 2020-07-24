@@ -790,11 +790,6 @@
           </item>
           <item>
            <property name="text">
-            <string>Link</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
             <string>Don't save</string>
            </property>
           </item>
@@ -840,11 +835,6 @@
           <item>
            <property name="text">
             <string>Copy</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Link</string>
            </property>
           </item>
          </widget>
@@ -902,11 +892,6 @@
           <item>
            <property name="text">
             <string>Move</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Link</string>
            </property>
           </item>
           <item>
@@ -1080,8 +1065,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>363</width>
-             <height>418</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">

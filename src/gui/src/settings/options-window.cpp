@@ -1,5 +1,6 @@
 #include "settings/options-window.h"
 #include <QColorDialog>
+#include <QComboBox>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
@@ -8,6 +9,8 @@
 #include <QRegularExpression>
 #include <QSignalMapper>
 #include <QSqlDatabase>
+#include <QStandardItem>
+#include <QStandardItemModel>
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
@@ -27,6 +30,15 @@
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
 
+
+void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
+	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
+	QStandardItem *item = model->item(index);
+	item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+	if (!toolTip.isEmpty()) {
+		item->setToolTip(toolTip);
+	}
+}
 
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::OptionsWindow), m_profile(profile)
@@ -154,6 +166,14 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
 	settings->beginGroup("Save");
+		#ifdef Q_OS_WIN
+			static const QStringList linkKeys { "link", /*"symlink",*/ "hardlink" };
+			static const QStringList linkValues { tr("Shortcut"), /*tr("Symbolic link"),*/ tr("Hard link") };
+		#else
+			static const QStringList linkKeys { "link", "hardlink" };
+			static const QStringList linkValues { tr("Symbolic link"), tr("Hard link") };
+		#endif
+
 		ui->spinAutomaticRetries->setValue(settings->value("automaticretries", 0).toInt());
 		ui->checkDownloadOriginals->setChecked(settings->value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings->value("samplefallback", true).toBool());
@@ -162,12 +182,27 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
-		const QStringList md5Duplicates { "save", "copy", "move", "link", "ignore" };
+		QStringList md5Duplicates { "save", "copy", "move", "ignore" };
+		md5Duplicates.append(linkKeys);
+		ui->comboMd5Duplicates->addItems(linkValues);
+		ui->comboMd5DuplicatesSameDir->addItems(linkValues);
 		ui->comboMd5Duplicates->setCurrentIndex(md5Duplicates.indexOf(settings->value("md5Duplicates", "save").toString()));
 		ui->comboMd5DuplicatesSameDir->setCurrentIndex(md5Duplicates.indexOf(settings->value("md5DuplicatesSameDir", "save").toString()));
 		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
-		const QStringList multipleFiles { "copy", "link" };
+		QStringList multipleFiles { "copy" };
+		multipleFiles.append(linkKeys);
+		ui->comboMultipleFiles->addItems(linkValues);
 		ui->comboMultipleFiles->setCurrentIndex(multipleFiles.indexOf(settings->value("multiple_files", "copy").toString()));
+
+		#ifdef Q_OS_WIN
+			// On Windows, you might need elevated privileges to create some types of links
+			if (!canCreateLinkType("hardlink", m_profile->tempPath())) {
+				const QString &toolTip("You need to run Grabber as administrator to create hard links");
+				disableItem(ui->comboMd5Duplicates, 5, toolTip);
+				disableItem(ui->comboMd5DuplicatesSameDir, 5, toolTip);
+				disableItem(ui->comboMultipleFiles, 2, toolTip);
+			}
+		#endif
 
 		ui->lineFilename->setText(settings->value("filename_real").toString());
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
@@ -929,7 +964,18 @@ void OptionsWindow::save()
 				pth.mkpath(folder);
 			}
 		}
-		const QStringList md5Duplicates { "save", "copy", "move", "link", "ignore" };
+
+		#ifdef Q_OS_WIN
+			static const QStringList linkKeys { "link", /*"symlink",*/ "hardlink" };
+			static const QStringList linkValues { tr("Shortcut"), /*tr("Symbolic link"),*/ tr("Hard link") };
+		#else
+			static const QStringList linkKeys { "link", "hardlink" };
+			static const QStringList linkValues { tr("Symbolic link"), tr("Hard link") };
+		#endif
+
+		QStringList md5Duplicates { "save", "copy", "move", "ignore" };
+		md5Duplicates.append(linkKeys);
+
 		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("md5DuplicatesSameDir", md5Duplicates.at(ui->comboMd5DuplicatesSameDir->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());

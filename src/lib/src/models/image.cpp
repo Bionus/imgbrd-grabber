@@ -553,16 +553,15 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 			m_profile->setMd5(md5(), path);
 
 			res = SaveResult::Moved;
-		} else if (whatToDo == "link") {
-			log(QStringLiteral("Creating link for `%1` in `%2`").arg(md5Duplicate, path));
-
-			#ifdef Q_OS_WIN
-				QFile::link(md5Duplicate, path + ".lnk");
-			#else
-				QFile::link(md5Duplicate, path);
-			#endif
-
+		} else if (whatToDo == "link" || whatToDo == "hardlink") {
+			log(QStringLiteral("Creating %1 for `%2` in `%3`").arg(whatToDo, md5Duplicate, path));
+			createLink(md5Duplicate, path, whatToDo);
 			res = SaveResult::Linked;
+			#ifdef Q_OS_WIN
+				if (whatToDo == "link") {
+					res = SaveResult::Shortcut;
+				}
+			#endif
 		} else if (!QFile::exists(md5Duplicate)) {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in non-existing file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsDeletedMd5;
