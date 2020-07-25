@@ -143,6 +143,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Tags
 	if (m_data.contains("tags")) {
 		m_tags = m_data["tags"].value<QList<Tag>>();
+		m_data.remove("tags");
 	}
 
 	// Complete missing tag type information
@@ -1025,8 +1026,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
+	const auto tags = filteredTags(remove);
 	QMap<QString, QStringList> details;
-	for (const Tag &tag : filteredTags(remove)) {
+	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
@@ -1069,7 +1071,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' ')));
-	tokens.insert("tags", Token(details["alls"]));
+	tokens.insert("tags", Token(QVariant::fromValue(tags)));
 	tokens.insert("all", Token(details["alls"]));
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
 
@@ -1087,7 +1089,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	// Extra tokens
-	static QVariantMap defaultValues
+	static const QVariantMap defaultValues
 	{
 		{ "rating", "unknown" },
 	};
