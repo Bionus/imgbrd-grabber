@@ -192,7 +192,7 @@ export const source: ISource = {
                 parse: (src: string): IParsedDetails => {
                     const data = JSON.parse(src)["response"][0];
                     return {
-                        imageUrl: data["image_urls"]["large"],
+                        imageUrl: data["is_manga"] ? undefined : data["image_urls"]["large"],
                         tags: data["tags"],
                         createdAt: data["created_time"],
                     };
