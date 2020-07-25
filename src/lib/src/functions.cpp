@@ -473,7 +473,9 @@ QString getExtension(const QUrl &url)
 
 	static const QStringList ignored { "php", "html" };
 	if (ext.isEmpty() || ignored.contains(ext)) {
-		return getExtension(url.toString());
+		const QString fullUrl = url.toString();
+		const int lastSlash = fullUrl.lastIndexOf('/');
+		return getExtension(fullUrl.mid(lastSlash + 1));
 	}
 
 	return ext;

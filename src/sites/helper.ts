@@ -100,6 +100,9 @@ addHelper("countToInt", (str: string): number | undefined => {
 });
 
 addHelper("fileSizeToInt", (str: string): number => {
+    if  (typeof str !== "string") {
+        return str as any;
+    }
     const res = str.match(/^(\d+(?:\.\d+))\s*(\w+)$/);
     if (res) {
         const val = parseFloat(res[1]);
