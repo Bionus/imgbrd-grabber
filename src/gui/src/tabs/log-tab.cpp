@@ -1,9 +1,12 @@
 #include "tabs/log-tab.h"
 #include <QDesktopServices>
+#include <QDir>
 #include <QFile>
 #include <QRegularExpression>
 #include <QScrollBar>
 #include <ui_log-tab.h>
+#include "functions.h"
+#include "helpers.h"
 #include "logger.h"
 
 
@@ -86,6 +89,14 @@ void LogTab::clear()
 void LogTab::open()
 {
 	QDesktopServices::openUrl("file:///" + Logger::getInstance().logFile());
+}
+
+void LogTab::openDir()
+{
+	QDir dir(savePath());
+	if (dir.exists()) {
+		showInGraphicalShell(dir.absolutePath());
+	}
 }
 
 void LogTab::changeEvent(QEvent *event)

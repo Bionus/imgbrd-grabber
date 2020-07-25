@@ -22,6 +22,7 @@ class LogTab : public QWidget
 		void write(const QString &msg);
 		void clear();
 		void open();
+		void openDir();
 
 	protected:
 		void changeEvent(QEvent *event) override;
