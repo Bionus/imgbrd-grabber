@@ -29,7 +29,7 @@
    <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
    <item>
     <widget class="ToggleColumnsTableView" name="tableMonitors">
      <property name="contextMenuPolicy">
@@ -45,6 +45,17 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutStatus" stretch="0">
+     <item>
+      <widget class="QPushButton" name="buttonToggle">
+       <property name="text">
+        <string>Stop</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -75,8 +86,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonToggle</sender>
+   <signal>clicked()</signal>
+   <receiver>MonitorsTab</receiver>
+   <slot>toggleMonitoring()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>767</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>495</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>monitorsTableContextMenu(QPoint)</slot>
+  <slot>toggleMonitoring()</slot>
  </slots>
 </ui>

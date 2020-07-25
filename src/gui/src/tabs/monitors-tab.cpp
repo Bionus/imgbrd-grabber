@@ -17,7 +17,7 @@
 
 
 MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, MonitoringCenter *monitoringCenter, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_settings(profile->getSettings()), m_monitorManager(monitorManager), m_parent(parent)
+	: QWidget(parent), ui(new Ui::MonitorsTab), m_profile(profile), m_settings(profile->getSettings()), m_monitorManager(monitorManager), m_monitoringCenter(monitoringCenter), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -25,7 +25,7 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	m_monitorTableModel = new QSortFilterProxyModel(this);
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
-	connect(monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
+	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
 
 	ui->tableMonitors->loadGeometry(m_settings, "Monitoring", QList<int> { 0, 1, 2, 3, 4 });
 }
@@ -69,4 +69,15 @@ void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
 	menu->addAction(QIcon(":/images/icons/edit.png"), tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
 	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this, monitor]() { m_monitorManager->remove(monitor); });
 	menu->exec(QCursor::pos());
+}
+
+void MonitorsTab::toggleMonitoring()
+{
+	bool running = m_monitoringCenter->isRunning();
+	if (running) {
+		m_monitoringCenter->stop();
+	} else {
+		m_monitoringCenter->start();
+	}
+	ui->buttonToggle->setText(running ? tr("Start") : tr("Stop"));
 }

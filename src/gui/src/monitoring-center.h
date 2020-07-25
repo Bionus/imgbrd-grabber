@@ -26,6 +26,7 @@ class MonitoringCenter : public QObject
 		};
 
 		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
+		bool isRunning() const;
 
 	public slots:
 		void start();

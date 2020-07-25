@@ -34,6 +34,9 @@ class MonitorsTab : public QWidget
 		void changeEvent(QEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
 
+	public slots:
+		void toggleMonitoring();
+
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);
 
@@ -41,6 +44,7 @@ class MonitorsTab : public QWidget
 		Profile *m_profile;
 		QSettings *m_settings;
 		MonitorManager *m_monitorManager;
+		MonitoringCenter *m_monitoringCenter;
 		MainWindow *m_parent;
 		QSortFilterProxyModel *m_monitorTableModel;
 };

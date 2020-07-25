@@ -217,3 +217,8 @@ void MonitoringCenter::stop()
 
 	log(QStringLiteral("Monitoring stopped"), Logger::Info);
 }
+
+bool MonitoringCenter::isRunning() const
+{
+	return !m_stop;
+}
