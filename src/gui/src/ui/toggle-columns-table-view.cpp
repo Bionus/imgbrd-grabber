@@ -14,37 +14,27 @@ ToggleColumnsTableView::ToggleColumnsTableView(QWidget *parent)
 
 void ToggleColumnsTableView::saveGeometry(QSettings *settings, const QString &group)
 {
-	QStringList sizes;
-	QStringList enabledColumns;
-
-	sizes.reserve(model()->columnCount());
-	for (int i = 0; i < model()->columnCount(); ++i) {
-		sizes.append(QString::number(horizontalHeader()->sectionSize(i)));
-		if  (!horizontalHeader()->isSectionHidden(i)) {
-			enabledColumns.append(QString::number(i));
-		}
-	}
-
 	settings->beginGroup(group);
-	settings->setValue("tableHeaders", sizes);
-	settings->setValue("tableHeadersEnabled", enabledColumns);
+	settings->setValue("headerState", horizontalHeader()->saveState());
 	settings->endGroup();
 }
 
 void ToggleColumnsTableView::loadGeometry(QSettings *settings, const QString &group, const QList<int> &defaultColumns)
 {
 	settings->beginGroup(group);
-	const QStringList sizes = settings->value("tableHeaders").toStringList();
-	const QStringList visibility = settings->value("tableHeadersEnabled").toStringList();
-	settings->endGroup();
 
-	for (int i = 0; i < model()->columnCount(); ++i) {
-		const int size = i < sizes.size() ? sizes[i].toInt() : 0;
-		const bool enabled = !visibility.isEmpty() ? visibility.contains(QString::number(i)) : defaultColumns.contains(i);
-
-		horizontalHeader()->resizeSection(i, size > 0 ? size : 100);
-		horizontalHeader()->setSectionHidden(i, !enabled);
+	const auto state = settings->value("headerState").toByteArray();
+	if (!state.isEmpty()) {
+		horizontalHeader()->restoreState(state);
+	} else {
+		for (int i = 0; i < model()->columnCount(); ++i) {
+			if (defaultColumns.isEmpty() || !defaultColumns.contains(i)) {
+				horizontalHeader()->setSectionHidden(i, true);
+			}
+		}
 	}
+
+	settings->endGroup();
 }
 
 
