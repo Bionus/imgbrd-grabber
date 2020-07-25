@@ -458,16 +458,25 @@ void openTray()
 	#endif
 }
 
+QString getExtension(const QString &url)
+{
+	const int lastDot = url.lastIndexOf('.');
+	if (lastDot != -1) {
+		return url.mid(lastDot + 1);
+	}
+	return QString();
+}
+
 QString getExtension(const QUrl &url)
 {
-	const QString filename = url.fileName();
-	const int lastDot = filename.lastIndexOf('.');
+	const QString ext = getExtension(url.fileName());
 
-	if (lastDot != -1) {
-		return filename.mid(lastDot + 1);
+	static const QStringList ignored { "php", "html" };
+	if (ext.isEmpty() || ignored.contains(ext)) {
+		return getExtension(url.toString());
 	}
 
-	return QString();
+	return ext;
 }
 
 QUrl setExtension(QUrl url, const QString &extension)
