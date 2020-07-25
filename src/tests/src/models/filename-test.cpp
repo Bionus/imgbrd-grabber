@@ -837,11 +837,11 @@ TEST_CASE("Filename")
 
 	SECTION("NeedExactTags")
 	{
-		REQUIRE(Filename("%md5%.%ext%").needExactTags(nullptr) == 0);
-		REQUIRE(Filename("%md5%.%ext%").needExactTags(site) == 0);
-		REQUIRE(Filename("javascript:md5 + '.' + ext").needExactTags(nullptr) == 2);
-		REQUIRE(Filename("%character% %md5%.%ext%").needExactTags(nullptr) == 1);
-		REQUIRE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(nullptr) == 1);
+		REQUIRE(Filename("%md5%.%ext%").needExactTags(nullptr, settings) == 0);
+		REQUIRE(Filename("%md5%.%ext%").needExactTags(site, settings) == 0);
+		REQUIRE(Filename("javascript:md5 + '.' + ext").needExactTags(nullptr, settings) == 2);
+		REQUIRE(Filename("%character% %md5%.%ext%").needExactTags(nullptr, settings) == 1);
+		REQUIRE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(nullptr, settings) == 1);
 
 		Filename filename("%filename%.%ext%");
 		REQUIRE(filename.needExactTags() == 0);

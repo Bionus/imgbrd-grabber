@@ -81,7 +81,7 @@ function searchToUrl(page: number, search: string, previous: IPreviousSearch | u
 export const source: ISource = {
     name: "Anime pictures",
     modifiers: ["width:", "height:", "ratio:", "order:", "filetype:"],
-    forcedTokens: [],
+    forcedTokens: ["tags"],
     tagFormat: {
         case: "lower",
         wordSeparator: " ",

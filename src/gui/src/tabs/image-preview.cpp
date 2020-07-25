@@ -218,7 +218,7 @@ QString getImageAlreadyExists(const QSharedPointer<Image> &img, Profile *profile
 	const QString path = settings->value("Save/path").toString().replace("\\", "/");
 	const QString fn = settings->value("Save/filename").toString();
 
-	if (Filename(fn).needExactTags(img->parentSite()) == 0) {
+	if (Filename(fn).needExactTags(img->parentSite(), settings) == 0) {
 		QStringList files = img->paths(fn, path, 0);
 		for (const QString &file : files) {
 			if (QFile(file).exists()) {

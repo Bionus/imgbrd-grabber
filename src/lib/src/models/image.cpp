@@ -962,7 +962,7 @@ QUrl Image::url(Size size) const
 
 void Image::preload(const Filename &filename)
 {
-	if (filename.needExactTags(m_parentSite) == 0) {
+	if (filename.needExactTags(m_parentSite, m_settings) == 0) {
 		return;
 	}
 

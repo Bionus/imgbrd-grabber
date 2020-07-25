@@ -375,11 +375,11 @@ bool Filename::needTemporaryFile(const QMap<QString, Token> &tokens) const
 	);
 }
 
-int Filename::needExactTags(Site *site, const QString &api) const
+int Filename::needExactTags(Site *site, QSettings *settings, const QString &api) const
 {
 	Q_UNUSED(api);
 
-	QStringList forcedTokens = site != nullptr
+	const QStringList forcedTokens = site != nullptr
 		? site->getApis().first()->forcedTokens()
 		: QStringList();
 
@@ -387,9 +387,11 @@ int Filename::needExactTags(Site *site, const QString &api) const
 		return 2;
 	}
 
-	return needExactTags(forcedTokens);
+	const QStringList customTokens = getCustoms(settings).keys();
+
+	return needExactTags(forcedTokens, customTokens);
 }
-int Filename::needExactTags(const QStringList &forcedTokens) const
+int Filename::needExactTags(const QStringList &forcedTokens, const QStringList &customTokens) const
 {
 	// Javascript filenames always need tags as we don't know what they might do
 	if (m_format.startsWith("javascript:")) {
@@ -408,8 +410,26 @@ int Filename::needExactTags(const QStringList &forcedTokens) const
 		return 2;
 	}
 
+	// Some sources require loading to get the tag list
+	if (forcedTokens.contains("tags")) {
+		// The filename use tags
+		static const QStringList forbidden { "tags", "all", "allo", "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
+		for (const QString &token : forbidden) {
+			if (toks.contains(token)) {
+				return 2;
+			}
+		}
+
+		// The filename use custom tokens
+		for (const QString &token : customTokens) {
+			if (toks.contains(token)) {
+				return 2;
+			}
+		}
+	}
+
 	// The filename contains one of the special tags
-	const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
+	static const QStringList forbidden { "artist", "copyright", "character", "model", "photo_set", "species", "meta", "general" };
 	for (const QString &token : forbidden) {
 		if (toks.contains(token)) {
 			return 1;

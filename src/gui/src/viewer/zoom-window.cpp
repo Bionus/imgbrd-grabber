@@ -651,7 +651,7 @@ void ZoomWindow::pendingUpdate()
 		const bool fav = m_pendingAction == PendingSaveFav;
 		Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
 
-		if (!m_loadedDetails && fn.needExactTags(m_site) != 0) {
+		if (!m_loadedDetails && fn.needExactTags(m_site, m_settings) != 0) {
 			return;
 		}
 	}

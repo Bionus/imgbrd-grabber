@@ -49,10 +49,10 @@ class Filename
 		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 		bool needTemporaryFile(const QMap<QString, Token> &tokens) const;
 
-		int needExactTags(Site *site, const QString &api = "") const;
-		int needExactTags(const QStringList &forcedTokens = QStringList()) const;
+		int needExactTags(Site *site, QSettings *settings, const QString &api = "") const;
 
 		QList<QMap<QString, Token>> expandTokens(QMap<QString, Token> tokens, QSettings *settings) const;
+		int needExactTags(const QStringList &forcedTokens = {}, const QStringList &customTokens = {}) const;
 
 	protected:
 		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
