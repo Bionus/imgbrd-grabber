@@ -65,7 +65,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableBatchGroups">
+        <widget class="ToggleColumnsTableView" name="tableBatchGroups">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>
@@ -130,7 +130,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableBatchUniques">
+        <widget class="ToggleColumnsTableView" name="tableBatchUniques">
          <property name="verticalScrollMode">
           <enum>QAbstractItemView::ScrollPerPixel</enum>
          </property>
@@ -226,6 +226,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ToggleColumnsTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/toggle-columns-table-view.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../resources/resources.qrc"/>
  </resources>
