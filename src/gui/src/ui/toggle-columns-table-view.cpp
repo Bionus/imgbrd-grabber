@@ -9,6 +9,8 @@ ToggleColumnsTableView::ToggleColumnsTableView(QWidget *parent)
 {
 	horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(horizontalHeader(), &QHeaderView::customContextMenuRequested, this, &ToggleColumnsTableView::headersContextMenu);
+
+	horizontalHeader()->setSectionsMovable(true);
 }
 
 
