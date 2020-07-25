@@ -171,7 +171,7 @@ void GalleryTab::getAll()
 
 void GalleryTab::monitor()
 {
-	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime(), true, QString(), QString(), 0, true, m_gallery, postFilter());
+	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, m_gallery, postFilter());
 	m_profile->monitorManager()->add(monitor);
 }
 
