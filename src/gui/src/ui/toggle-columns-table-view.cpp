@@ -30,7 +30,7 @@ void ToggleColumnsTableView::loadGeometry(QSettings *settings, const QString &gr
 		horizontalHeader()->restoreState(state);
 	} else {
 		for (int i = 0; i < model()->columnCount(); ++i) {
-			if (defaultColumns.isEmpty() || !defaultColumns.contains(i)) {
+			if (!defaultColumns.isEmpty() && !defaultColumns.contains(i)) {
 				horizontalHeader()->setSectionHidden(i, true);
 			}
 		}
