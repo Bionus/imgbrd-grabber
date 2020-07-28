@@ -67,7 +67,6 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkGlobalPostFilterExplicit->setChecked(settings->value("globalPostFilterExplicit", false).toBool());
 	const QStringList wl { "never", "image", "page" };
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
-	ui->lineIgnored->setText(settings->value("ignoredtags").toString());
 	const QStringList starts { "none", "loadfirst", "restore" };
 	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "none").toString()));
 	ui->spinHideFavorites->setValue(settings->value("hidefavorites", 20).toInt());
@@ -130,6 +129,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 
 	// Ignored tags
+	ui->textRemovedTags->setPlainText(settings->value("ignoredtags").toString());
 	ui->textIgnoredTags->setPlainText(profile->getIgnored().join('\n'));
 
 	// Monitoring
@@ -835,7 +835,6 @@ void OptionsWindow::save()
 	QSettings *settings = m_profile->getSettings();
 
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
-	settings->setValue("ignoredtags", ui->lineIgnored->text());
 	settings->setValue("add", ui->lineAdd->text());
 	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
 	settings->setValue("globalPostFilterExplicit", ui->checkGlobalPostFilterExplicit->isChecked());
@@ -905,6 +904,7 @@ void OptionsWindow::save()
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
+	settings->setValue("ignoredtags", ui->textRemovedTags->toPlainText());
 	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', QString::SkipEmptyParts));
 
 	// Monitoring

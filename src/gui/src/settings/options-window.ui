@@ -304,44 +304,34 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_49">
-          <property name="text">
-           <string>Ignored tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QLineEdit" name="lineIgnored"/>
-        </item>
-        <item row="7" column="0" colspan="2">
-         <widget class="QLabel" name="label_52">
-          <property name="text">
-           <string>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkDownloadBlacklisted">
           <property name="text">
            <string>Download images containing blacklisted tags</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_64">
           <property name="text">
            <string>Adds</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineAdd"/>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="8" column="0">
+         <widget class="QLabel" name="labelGlobalPostFilter">
+          <property name="text">
+           <string>Post-filters</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QLineEdit" name="lineGlobalPostFilter"/>
+        </item>
+        <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_65">
           <property name="text">
            <string>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</string>
@@ -351,34 +341,24 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkGlobalPostFilterExplicit">
+          <property name="text">
+           <string>Explicitely add global post-filter to tab post-filter field</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
            <string>Ask for confirmation before closing the window</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="labelGlobalPostFilter">
-          <property name="text">
-           <string>Post-filters</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QLineEdit" name="lineGlobalPostFilter"/>
-        </item>
-        <item row="14" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSendUsageData">
           <property name="text">
            <string>Send anonymous usage data</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkGlobalPostFilterExplicit">
-          <property name="text">
-           <string>Explicitely add global post-filter to tab post-filter field</string>
           </property>
          </widget>
         </item>
@@ -390,9 +370,6 @@
        <zorder>lineWhitelist</zorder>
        <zorder>comboWhitelist</zorder>
        <zorder>label_51</zorder>
-       <zorder>label_49</zorder>
-       <zorder>lineIgnored</zorder>
-       <zorder>label_52</zorder>
        <zorder>checkDownloadBlacklisted</zorder>
        <zorder>label_63</zorder>
        <zorder>comboStart</zorder>
@@ -1065,8 +1042,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>363</width>
+             <height>418</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -2442,6 +2419,26 @@
       <widget class="QWidget" name="pageIgnoredTags">
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Removed tags</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textRemovedTags"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>&lt;i&gt;These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="labelIgnoredTags">
           <property name="text">
            <string>Ignored tags</string>
@@ -2889,7 +2886,6 @@
   <tabstop>comboStart</tabstop>
   <tabstop>lineWhitelist</tabstop>
   <tabstop>comboWhitelist</tabstop>
-  <tabstop>lineIgnored</tabstop>
   <tabstop>checkDownloadBlacklisted</tabstop>
   <tabstop>lineAdd</tabstop>
   <tabstop>spinImagesPerPage</tabstop>
