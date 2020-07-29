@@ -6,37 +6,37 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="14"/>
       <source>Crash Reporter</source>
-      <translation>Laporan Masalah</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="28"/>
       <source>Sorry</source>
-      <translation>Maaf</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="44"/>
       <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation>Grabber telah mengalami kerusakan. Program akan mencoba pengembalian tab dan setelan ketika dimulai ulang.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="60"/>
       <source>To help us fix this crash, you can send us a bug report.</source>
-      <translation>Untuk membantu kami memperbaiki kesalahan, Anda dapat mengirim laporan kerusakan.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="70"/>
       <source>Send a bug report</source>
-      <translation>Kirim laporan bug</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="95"/>
       <source>Log</source>
-      <translation>Log</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="102"/>
       <source>Settings</source>
-      <translation>Pengaturan</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="109"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="155"/>
       <source>Restart</source>
-      <translation>Mulai Ulang</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="162"/>
       <source>Quit</source>
-      <translation>Keluar</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
 </TS>
