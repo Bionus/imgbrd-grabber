@@ -1,5 +1,5 @@
 files:
-  - source: /languages/YourLanguage.ts
-    translation: /languages/%language%.ts
-  - source: /crash-reporter/languages/YourLanguage.ts
-    translation: /crash-reporter/languages/%language%.ts
+  - source: /src/languages/YourLanguage.ts
+    translation: /src/languages/%language%.ts
+  - source: /src/crash-reporter/languages/YourLanguage.ts
+    translation: /src/crash-reporter/languages/%language%.ts
