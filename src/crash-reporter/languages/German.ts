@@ -6,52 +6,52 @@
     <message>
       <location filename="../crash-reporter-window.ui" line="14"/>
       <source>Crash Reporter</source>
-      <translation type="unfinished"/>
+      <translation>Absturz-Reporter</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="28"/>
       <source>Sorry</source>
-      <translation type="unfinished"/>
+      <translation>Entschuldigung</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="44"/>
       <source>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</source>
-      <translation type="unfinished"/>
+      <translation>Der Grabber ist auf ein Problem gestoßen und abgestürzt. Das Program wird versuchen, ihre Tabs und weiteren Einstellungen beim nächsten Neustart wieder herzustellen.</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="60"/>
       <source>To help us fix this crash, you can send us a bug report.</source>
-      <translation type="unfinished"/>
+      <translation>Hilf uns das Problem zu beheben, indem du uns einen Absturzbericht schickst.</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="70"/>
       <source>Send a bug report</source>
-      <translation type="unfinished"/>
+      <translation>Fehlerbericht senden</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="95"/>
       <source>Log</source>
-      <translation type="unfinished"/>
+      <translation>Verlauf</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="102"/>
       <source>Settings</source>
-      <translation type="unfinished"/>
+      <translation>Einstellungen</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="109"/>
       <source>Dump</source>
-      <translation type="unfinished"/>
+      <translation>Löschen</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="155"/>
       <source>Restart</source>
-      <translation type="unfinished"/>
+      <translation>Neustarten</translation>
     </message>
     <message>
       <location filename="../crash-reporter-window.ui" line="162"/>
       <source>Quit</source>
-      <translation type="unfinished"/>
+      <translation>Verlassen</translation>
     </message>
   </context>
 </TS>
