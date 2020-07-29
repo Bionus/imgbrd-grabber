@@ -212,18 +212,22 @@ void ImagePreview::toggledWithId(int id, bool toggle, bool range)
 }
 
 
-QString getImageAlreadyExists(const QSharedPointer<Image> &img, Profile *profile)
+QStringList getImageAlreadyExists(const QSharedPointer<Image> &img, Profile *profile)
 {
 	QSettings *settings = profile->getSettings();
 	const QString path = settings->value("Save/path").toString().replace("\\", "/");
 	const QString fn = settings->value("Save/filename").toString();
 
 	if (Filename(fn).needExactTags(img->parentSite(), settings) == 0) {
+		QStringList ret;
 		QStringList files = img->paths(fn, path, 0);
 		for (const QString &file : files) {
 			if (QFile(file).exists()) {
-				return file;
+				ret.append(file);
 			}
+		}
+		if (!ret.isEmpty()) {
+			return ret;
 		}
 	}
 
@@ -262,10 +266,12 @@ void ImagePreview::customContextMenuRequested()
 
 void ImagePreview::contextSaveImage()
 {
-	QString already = getImageAlreadyExists(m_image, m_profile);
+	QStringList already = getImageAlreadyExists(m_image, m_profile);
 	if (!already.isEmpty()) {
-		QFile(already).remove();
-		m_profile->removeMd5(m_image->md5());
+		for (const QString &path : already) {
+			QFile(path).remove();
+			m_profile->removeMd5(m_image->md5(), path);
+		}
 	} else {
 		QSettings *settings = m_profile->getSettings();
 		const QString fn = settings->value("Save/filename").toString();

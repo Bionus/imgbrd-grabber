@@ -72,6 +72,9 @@ void Md5Database::sync()
 
 		fileMD5.close();
 	}
+
+	m_pendingAdd.clear();
+	m_flushTimer.stop();
 }
 
 QPair<QString, QString> Md5Database::action(const QString &md5, const QString &target)
@@ -81,29 +84,64 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QString &t
 		return { "save", "" };
 	}
 
-	// Detect if the next file and the one in the MD5 list are from the same directory, and choose the setting accordingly
-	QString path = m_md5s[md5];
-	QString action = !target.isEmpty() && QFileInfo(target).dir() == QFileInfo(path).dir()
-		? m_settings->value("Save/md5DuplicatesSameDir", "save").toString()
-		: m_settings->value("Save/md5Duplicates", "save").toString();
+	// Get all existing paths for this MD5
+	const QStringList paths = m_md5s.values(md5);
 
-	// If the file already exists, return its path with the relevant action
+	// Split paths into "same dir" and "not same dir"
+	QStringList sameDirPaths, notSameDirPaths;
+	const QDir targetDir = QFileInfo(target).dir();
+	for (const QString &path : paths) {
+		if (!target.isEmpty() && targetDir == QFileInfo(path).dir()) {
+			sameDirPaths.append(path);
+		} else {
+			notSameDirPaths.append(path);
+		}
+	}
+
+	// Prioritize paths in the same directory for the action
+	if (!sameDirPaths.isEmpty()) {
+		const QString setting = m_settings->value("Save/md5DuplicatesSameDir", "save").toString();
+		const QPair<QString, QString> ret = action(md5, sameDirPaths, setting);
+		if (!ret.first.isEmpty()) {
+			return ret;
+		}
+	}
+
+	// Fallback to duplicates found in other places
+	if (!notSameDirPaths.isEmpty()) {
+		const QString setting = m_settings->value("Save/md5Duplicates", "save").toString();
+		const QPair<QString, QString> ret = action(md5, notSameDirPaths, setting);
+		if (!ret.first.isEmpty()) {
+			return ret;
+		}
+	}
+
+	// Just save by default
+	return { "save", "" };
+}
+
+QPair<QString, QString> Md5Database::action(const QString &md5, const QStringList &paths, QString action)
+{
+	// If one of the files already exists, return its path with the relevant action
 	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
-	if (QFile::exists(path)) {
-		return { action, path };
+	for (const QString &path : paths) {
+		if (QFile::exists(path)) {
+			return { action, path };
+		} else if (!keepDeleted) {
+			remove(md5, path);
+		}
 	}
 
 	// If we want to keep deleted files, we can't return a "move" action or similar, as there are no files to move
 	if (keepDeleted) {
+		QString path = paths.first(); // The actual path is irrelevant since none exist
 		if (action != "ignore") {
 			action = "save";
 		}
 		return { action, path };
 	}
 
-	// If we don't want to keep deleted files, clean-up the database and act as if we didn't find the MD5 in the first place
-	remove(md5);
-	return { "save", "" };
+	return { "", "" };
 }
 
 /**
@@ -111,19 +149,26 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QString &t
  * @param	md5		The md5 that needs to be checked.
  * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
  */
-QString Md5Database::exists(const QString &md5)
+QStringList Md5Database::exists(const QString &md5)
 {
+	QStringList ret;
+
 	if (md5.isEmpty() || !m_md5s.contains(md5)) {
-		return QString();
+		return ret;
 	}
 
 	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
-	if (QFile::exists(m_md5s[md5]) || keepDeleted) {
-		return m_md5s[md5];
+
+	const QStringList paths = m_md5s.values(md5);
+	for (const QString &path : paths) {
+		if (QFile::exists(path) || keepDeleted) {
+			ret.append(path);
+		} else {
+			remove(md5, path);
+		}
 	}
 
-	remove(md5);
-	return QString();
+	return ret;
 }
 
 /**
@@ -133,35 +178,32 @@ QString Md5Database::exists(const QString &md5)
  */
 void Md5Database::add(const QString &md5, const QString &path)
 {
-	if (!md5.isEmpty()) {
-		m_md5s.insert(md5, path);
-		log(QString("Added MD5: %1").arg(md5), Logger::Debug);
-
-		m_pendingAdd.insert(md5, path);
-		if (m_pendingAdd.count() >= 100) {
-			m_flushTimer.stop();
-			flush();
-		} else {
-			m_flushTimer.start();
-		}
+	if (md5.isEmpty() || m_md5s.contains(md5, path)) {
+		return;
 	}
-}
 
-/**
- * Set a md5 to the _md5 map changing the file it is pointing to.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void Md5Database::set(const QString &md5, const QString &path)
-{
-	m_md5s[md5] = path;
+	m_md5s.insert(md5, path);
+	log(QString("Added MD5: %1").arg(md5), Logger::Debug);
+
+	// Add MD5 to the "waiting to be saved" list
+	m_pendingAdd.insert(md5, path);
+	if (m_pendingAdd.count() >= 100) {
+		m_flushTimer.stop();
+		flush();
+	} else {
+		m_flushTimer.start();
+	}
 }
 
 /**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
  */
-void Md5Database::remove(const QString &md5)
+void Md5Database::remove(const QString &md5, const QString &path)
 {
-	m_md5s.remove(md5);
+	if (path.isEmpty()) {
+		m_md5s.remove(md5);
+	} else {
+		m_md5s.remove(md5, path);
+	}
 }

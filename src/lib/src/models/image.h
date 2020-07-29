@@ -95,7 +95,7 @@ class Image : public QObject, public Downloadable
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;
 		SaveResult preSave(const QString &path, Size size) override;
-		void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count) override;
+		void postSave(const QString &path, Size size, SaveResult result, bool addMd5, bool startCommands, int count, bool basic = false) override;
 
 		// Tokens
 		template <typename T>

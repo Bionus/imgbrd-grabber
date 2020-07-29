@@ -54,10 +54,9 @@ class Profile : public QObject
 
 		// MD5 management
 		QPair<QString, QString> md5Action(const QString &md5, const QString &target);
-		QString md5Exists(const QString &md5);
+		QStringList md5Exists(const QString &md5);
 		void addMd5(const QString &md5, const QString &path);
-		void setMd5(const QString &md5, const QString &path);
-		void removeMd5(const QString &md5);
+		void removeMd5(const QString &md5, const QString &path = {});
 
 		// Auto-completion
 		void addAutoComplete(const QString &tag);

@@ -1,7 +1,7 @@
 #ifndef MD5_DATABASE_H
 #define MD5_DATABASE_H
 
-#include <QHash>
+#include <QMultiHash>
 #include <QObject>
 #include <QPair>
 #include <QString>
@@ -20,13 +20,15 @@ class Md5Database : public QObject
 		void sync();
 
 		QPair<QString, QString> action(const QString &md5, const QString &target);
-		QString exists(const QString &md5);
+		QStringList exists(const QString &md5);
 		void add(const QString &md5, const QString &path);
-		void set(const QString &md5, const QString &path);
-		void remove(const QString &md5);
+		void remove(const QString &md5, const QString &path = {});
 
 	protected slots:
 		void flush();
+
+	protected:
+		QPair<QString, QString> action(const QString &md5, const QStringList &paths, QString action);
 
 	signals:
 		void flushed();
@@ -34,9 +36,9 @@ class Md5Database : public QObject
 	private:
 		QString m_path;
 		QSettings *m_settings;
-		QHash<QString, QString> m_md5s;
+		QMultiHash<QString, QString> m_md5s;
 		QTimer m_flushTimer;
-		QHash<QString, QString> m_pendingAdd;
+		QMultiHash<QString, QString> m_pendingAdd;
 };
 
 #endif // MD5_DATABASE_H
