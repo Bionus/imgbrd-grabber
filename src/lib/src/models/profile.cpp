@@ -101,6 +101,11 @@ Profile::Profile(QString path)
 		m_ignored = ign.split("\n", QString::SkipEmptyParts);
 	}
 
+	// Make a backup of MD5s in case the multi-location change broke everything
+	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
+		QFile::copy(m_path + "/md5s.txt", m_path + "/md5s.txt.bak");
+	}
+
 	// Load MD5s
 	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
 
