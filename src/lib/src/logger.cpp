@@ -2,6 +2,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QStringList>
+#include <stdexcept>
 #include "functions.h"
 
 #ifdef QT_DEBUG
