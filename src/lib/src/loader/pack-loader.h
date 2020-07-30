@@ -1,9 +1,9 @@
 #ifndef PACK_LOADER_H
 #define PACK_LOADER_H
 
-#include <QLinkedList>
 #include <QList>
 #include <QObject>
+#include <QQueue>
 #include <QSharedPointer>
 #include "downloader/download-query-group.h"
 
@@ -35,8 +35,8 @@ class PackLoader : public QObject
 		DownloadQueryGroup m_query;
 		int m_packSize;
 		int m_total = 0;
-		QLinkedList<Page*> m_pendingPages;
-		QLinkedList<Page*> m_pendingGalleries;
+		QQueue<Page*> m_pendingPages;
+		QQueue<Page*> m_pendingGalleries;
 		QList<QSharedPointer<Image>> m_overflow;
 		bool m_overflowGallery = false;
 		bool m_overflowHasNext = false;
