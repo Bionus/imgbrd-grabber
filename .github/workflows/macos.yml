@@ -19,9 +19,6 @@ jobs:
         echo ::set-env name=PLATFORM_NAME::x64
         echo ::set-env name=OPENSSL_ROOT_DIR::/usr/local/opt/openssl/
 
-    - name: Install packages
-      run: pip3 install opencv-python opencv-python-headless
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.7.2
       with:
