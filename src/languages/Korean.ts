@@ -3536,7 +3536,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="216"/>
       <source>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;몇몇 이미지(보드) 사이트는 회원 또는 유료회원이 아닌 경우 특정 개수 이상의 태그를 사용할 수 없는 것을 참고하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="244"/>
@@ -3979,12 +3979,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="383"/>
       <source>- No preset selected -</source>
-      <translation type="unfinished"/>
+      <translation>- 초기설정이 선택되지 않았습니다 -</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
       <source>Create a new preset</source>
-      <translation type="unfinished"/>
+      <translation>초기설정을 새로 만들기</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="395"/>
@@ -3995,7 +3995,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="422"/>
       <source>Edit preset</source>
-      <translation type="unfinished"/>
+      <translation>초기설정 수정하기</translation>
     </message>
   </context>
   <context>
@@ -4008,7 +4008,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="23"/>
       <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-      <translation type="unfinished"/>
+      <translation>시작하기 전에, 프로그램이 제대로 작동하기 위해 몇몇 정보가 필요합니다. 이 과정을 건너 뛸 수 있고, 나중에 이 정보들은 물어볼 것입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="41"/>
@@ -4159,7 +4159,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>주어진 소스를 통해서 컴퓨터 내에 태그 데이터 베이스를 생성합니다. 추가로, 소스의 API가 태그 종류의 정보를 제공하지 않아도 Grabber는 컴퓨터 내 태그 데이터 베이스를 통해 확인할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -4337,7 +4337,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="69"/>
       <source>If more than n tags</source>
-      <translation type="unfinished"/>
+      <translation>만약 n개의 태그 보다 많을 경우</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="86"/>
@@ -4347,12 +4347,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="93"/>
       <source>Keep n tags</source>
-      <translation type="unfinished"/>
+      <translation>n개의 태그 유지하기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="103"/>
       <source>Keep n tags, then add</source>
-      <translation type="unfinished"/>
+      <translation>n개의 태그 유지하고, 다음을 추가</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="124"/>
