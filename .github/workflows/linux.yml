@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   Linux:
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: ubuntu-18.04
 
     steps:
