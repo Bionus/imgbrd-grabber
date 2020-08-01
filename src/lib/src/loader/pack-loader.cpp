@@ -32,7 +32,7 @@ bool PackLoader::start()
 	}
 
 	// Add the first results page
-	m_pendingPages.append(new Page(m_profile, m_site, { m_site }, m_query.query, page, m_query.perpage, m_query.postFiltering, false, nullptr));
+	m_pendingPages.enqueue(new Page(m_profile, m_site, { m_site }, m_query.query, page, m_query.perpage, m_query.postFiltering, false, nullptr));
 
 	return true;
 }
@@ -80,26 +80,14 @@ QList<QSharedPointer<Image>> PackLoader::next()
 
 		// Load next page/gallery
 		QEventLoop loop;
-		Page *page = gallery ? m_pendingGalleries.takeFirst() : m_pendingPages.takeFirst();
+		Page *page = gallery ? m_pendingGalleries.dequeue() : m_pendingPages.dequeue();
 		QObject::connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
 		QObject::connect(page, &Page::failedLoading, &loop, &QEventLoop::quit);
 		page->load(false);
 		loop.exec();
 		emit finishedPage(page);
 
-		// Add next page to the pending queue
-		if (page->hasNext()) {
-			Page *next = new Page(m_profile, m_site, { m_site }, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
-			next->setLastPage(page);
-			if (gallery) {
-				m_pendingGalleries.prepend(next);
-			} else {
-				m_pendingPages.append(next);
-			}
-		}
-
 		// Add results to the data object
-		auto itGallery = m_pendingGalleries.begin();
 		for (const QSharedPointer<Image> &img : page->images()) {
 			// If this result is a gallery, add it to the beginning of the pending galleries
 			if (img->isGallery()) {
@@ -107,7 +95,7 @@ QList<QSharedPointer<Image>> PackLoader::next()
 				q.gallery = img;
 				q.tags = page->search();
 				Page *galleryPage = new Page(m_profile, m_site, { m_site }, q, 1, m_query.perpage, m_query.postFiltering, false, nullptr);
-				m_pendingGalleries.insert(itGallery, galleryPage);
+				m_pendingGalleries.enqueue(galleryPage);
 				continue;
 			}
 
@@ -127,6 +115,17 @@ QList<QSharedPointer<Image>> PackLoader::next()
 			// Early return if we reached the image limit
 			if (m_total == m_query.total) {
 				break;
+			}
+		}
+
+		// Add next page to the pending queue
+		if (page->hasNext()) {
+			Page *next = new Page(m_profile, m_site, { m_site }, page->query(), page->page() + 1, m_query.perpage, m_query.postFiltering, false, nullptr);
+			next->setLastPage(page);
+			if (gallery) {
+				m_pendingGalleries.enqueue(next);
+			} else {
+				m_pendingPages.enqueue(next);
 			}
 		}
 

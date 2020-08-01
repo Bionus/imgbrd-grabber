@@ -45,6 +45,10 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 		d["sample_url"] = d["preview_url"];
 	}
 
+	if (!tags.isEmpty()) {
+		data.insert("tags", QVariant::fromValue(tags));
+	}
+
 	QStringList errors;
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -60,9 +64,6 @@ QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d
 	// Generate image
 	auto img = ImageFactory::build(site, d, std::move(data), site->getSource()->getProfile(), parentPage);
 	img->moveToThread(this->thread());
-	if (!tags.isEmpty()) {
-		img->setTags(tags);
-	}
 
 	return img;
 }

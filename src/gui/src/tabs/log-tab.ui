@@ -79,6 +79,13 @@ QTextEdit {
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="buttonOpenDir">
+       <property name="text">
+        <string>Open settings directory</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -110,8 +117,8 @@ QTextEdit {
    <slot>open()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>532</x>
-     <y>510</y>
+     <x>526</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>576</x>
@@ -119,9 +126,26 @@ QTextEdit {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonOpenDir</sender>
+   <signal>clicked()</signal>
+   <receiver>LogTab</receiver>
+   <slot>openDir()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>744</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>513</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clear()</slot>
   <slot>open()</slot>
+  <slot>openDir()</slot>
  </slots>
 </ui>

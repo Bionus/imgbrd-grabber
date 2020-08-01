@@ -248,7 +248,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags.xml?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tags.xml?limit=" + opts.limit + "&search[order]=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -335,7 +335,7 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tags?limit=" + opts.limit + "&search[order]=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {
@@ -349,7 +349,8 @@ export const source: ISource = {
                 },
                 parse: (src: string): boolean => {
                     return src.indexOf("Running Danbooru v2") !== -1
-                        || src.search(/Running Danbooru <a[^>]*>v2/) !== -1;
+                        || src.search(/Running Danbooru <a[^>]*>v2/) !== -1
+                        || src.indexOf("https://github.com/danbooru/danbooru") !== -1;
                 },
             },
         },

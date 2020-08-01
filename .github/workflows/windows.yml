@@ -39,7 +39,7 @@ jobs:
       run: mkdir vendor
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.1.0
+      uses: jurplel/install-qt-action@v2.7.2
       with:
         version: 5.12.6
 

@@ -8,6 +8,7 @@
 #include <utility>
 #include "functions.h"
 #include "models/profile.h"
+#include "models/site.h"
 
 
 Favorite::Favorite(QString name)
@@ -113,6 +114,14 @@ void Favorite::toJson(QJsonObject &json) const
 		}
 		json["monitors"] = monitorsJson;
 	}
+
+	if (!m_sites.isEmpty()) {
+		QStringList sites;
+		for (auto site : m_sites) {
+			sites.append(site->url());
+		}
+		json["sites"] = QJsonArray::fromStringList(sites);
+	}
 }
 Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profile *profile)
 {
@@ -144,7 +153,18 @@ Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, Profil
 		}
 	}
 
-	return Favorite(tag, note, lastViewed, monitors, thumbPath, postFiltering);
+	// Sites
+	QList<Site*> sites;
+	if (json.contains("sites")) {
+		const QMap<QString, Site*> &siteMap = profile->getSites();
+		QJsonArray jsonSites = json["sites"].toArray();
+		sites.reserve(jsonSites.count());
+		for (auto site : jsonSites) {
+			sites.append(siteMap.value(site.toString()));
+		}
+	}
+
+	return Favorite(tag, note, lastViewed, monitors, thumbPath, postFiltering, sites);
 }
 
 bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)

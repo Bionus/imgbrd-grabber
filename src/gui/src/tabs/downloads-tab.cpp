@@ -51,11 +51,8 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	m_batchsModel = new DownloadImageTableModel(m_batchs, this);
 	ui->tableBatchUniques->setModel(m_batchsModel);
 
-	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
-	int m = sizes.size() > m_groupBatchsModel->columnCount() ? m_groupBatchsModel->columnCount() : sizes.size();
-	for (int i = 0; i < m; i++) {
-		ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt());
-	}
+	ui->tableBatchGroups->loadGeometry(m_settings, "Downloads/Groups");
+	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques");
 
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
 	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
@@ -96,13 +93,8 @@ void DownloadsTab::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 
-	// Columns
-	QStringList sizes;
-	sizes.reserve(m_groupBatchsModel->columnCount());
-	for (int i = 0; i < m_groupBatchsModel->columnCount(); i++) {
-		sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i)));
-	}
-	m_settings->setValue("batch", sizes.join(","));
+	ui->tableBatchGroups->saveGeometry(m_settings, "Downloads/Groups");
+	ui->tableBatchUniques->saveGeometry(m_settings, "Downloads/Uniques");
 
 	// Splitter
 	QList<int> splitterSizesOrig = ui->splitter->sizes();

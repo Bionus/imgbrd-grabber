@@ -651,7 +651,7 @@ void ZoomWindow::pendingUpdate()
 		const bool fav = m_pendingAction == PendingSaveFav;
 		Filename fn(m_settings->value("Save/path" + QString(fav ? "_favorites" : "")).toString());
 
-		if (!m_loadedDetails && fn.needExactTags(m_site) != 0) {
+		if (!m_loadedDetails && fn.needExactTags(m_site, m_settings) != 0) {
 			return;
 		}
 	}
@@ -890,13 +890,14 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageS
 				setButtonState(fav, SaveButtonState::Moved);
 				break;
 
+			case Image::SaveResult::Shortcut:
 			case Image::SaveResult::Linked:
 				setButtonState(fav, SaveButtonState::Linked);
 				break;
 
 			case Image::SaveResult::AlreadyExistsMd5:
 				setButtonState(fav, SaveButtonState::ExistsMd5);
-				m_source = m_profile->md5Exists(m_image->md5());
+				m_source = m_profile->md5Exists(m_image->md5()).first();
 				break;
 
 			case Image::SaveResult::AlreadyExistsDeletedMd5:

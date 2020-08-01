@@ -78,6 +78,14 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `url_page`: the URL of the details page of that file.
 * `count`: counts the current image downloaded during a batch download. Useful to have unique counters per batchs.
 * `num`: counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
+* `position`: the position of the image in the results list or gallery (starts at 1).
+
+## Gallery tokens
+
+Images can access information on the gallery by using the `gallery.` prefix. Many tokens are present in the gallery object, but the most common are:
+
+* `gallery.id`: the ID of the gallery.
+* `gallery.name`: the name/title of the gallery.
 
 
 # Options

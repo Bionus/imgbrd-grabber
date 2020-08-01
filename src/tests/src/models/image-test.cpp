@@ -17,6 +17,8 @@
 
 TEST_CASE("Image")
 {
+	QMetaType::registerComparators<QList<Tag>>();
+
 	setupSource("Danbooru (2.0)");
 	setupSite("Danbooru (2.0)", "danbooru.donmai.us");
 

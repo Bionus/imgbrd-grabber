@@ -3,8 +3,8 @@
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QLinkedList>
 #include <QMainWindow>
+#include <QStack>
 #include <QSystemTrayIcon>
 #include <QVariant>
 #include "language-loader.h"
@@ -121,7 +121,7 @@ class MainWindow : public QMainWindow
 		LogTab *m_logTab;
 		bool m_restore;
 		QList<Tag> m_currentTags;
-		QLinkedList<QJsonObject> m_closedTabs;
+		QStack<QJsonObject> m_closedTabs;
 		NetworkManager m_networkManager;
 		TabSelector *m_tabSelector;
 		DownloadQueue *m_downloadQueue;

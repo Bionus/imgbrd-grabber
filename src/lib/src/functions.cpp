@@ -20,8 +20,10 @@
 #include <QVector>
 #ifdef Q_OS_WIN
 	#include <Windows.h>
+	#include <winbase.h>
 #else
 	#include <errno.h>
+	#include <unistd.h>
 	#include <utime.h>
 #endif
 #ifdef QT_DEBUG
@@ -30,6 +32,34 @@
 #include "filename/conditional-filename.h"
 #include "logger.h"
 #include "vendor/html-entities.h"
+
+
+int lastError() {
+	#ifdef Q_OS_WIN
+		return GetLastError();
+	#else
+		return errno;
+	#endif
+}
+
+QString lastErrorString() {
+	const int errorCode = lastError();
+	if (errorCode == 0) {
+		return QString();
+	}
+
+	#ifdef Q_OS_WIN
+		// https://stackoverflow.com/a/17387176/828828
+		LPWSTR messageBuffer = nullptr;
+		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+		auto message = QString::fromWCharArray(messageBuffer, size);
+		LocalFree(messageBuffer);
+		return message;
+	#else
+		return strerror(errorCode);
+	#endif
+}
 
 
 /**
@@ -346,19 +376,26 @@ int levenshtein(QString s1, QString s2)
 	return d[len1][len2];
 }
 
+#ifdef Q_OS_WIN
+wchar_t *toWCharT(const QString &str) {
+	auto *out = new wchar_t[str.length() + 1];
+	str.toWCharArray(out);
+	out[str.length()] = 0;
+	return out;
+}
+#endif
+
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
 	if (!datetime.isValid()) {
 		return false;
 	}
 	#ifdef Q_OS_WIN
-		auto *filename = new wchar_t[path.length() + 1];
-		path.toWCharArray(filename);
-		filename[path.length()] = 0;
+		wchar_t *filename = toWCharT(path);
 		HANDLE hfile = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		delete[] filename;
 		if (hfile == INVALID_HANDLE_VALUE) {
-			log(QStringLiteral("Unable to open file to set creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to open file to set creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 
@@ -368,7 +405,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		pcreationtime.dwHighDateTime = ll >> 32;
 
 		if (SetFileTime(hfile, &pcreationtime, nullptr, &pcreationtime) == FALSE) {
-			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(GetLastError()).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 
@@ -378,7 +415,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 		timebuffer.modtime = datetime.toTime_t();
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0) {
-			log(QStringLiteral("Unable to change the file creation date (%1): %2").arg(errno).arg(path), Logger::Error);
+			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
 	#endif
@@ -421,16 +458,27 @@ void openTray()
 	#endif
 }
 
+QString getExtension(const QString &url)
+{
+	const int lastDot = url.lastIndexOf('.');
+	if (lastDot != -1) {
+		return url.mid(lastDot + 1);
+	}
+	return QString();
+}
+
 QString getExtension(const QUrl &url)
 {
-	const QString filename = url.fileName();
-	const int lastDot = filename.lastIndexOf('.');
+	const QString ext = getExtension(url.fileName());
 
-	if (lastDot != -1) {
-		return filename.mid(lastDot + 1);
+	static const QStringList ignored { "php", "html" };
+	if (ext.isEmpty() || ignored.contains(ext)) {
+		const QString fullUrl = url.toString();
+		const int lastSlash = fullUrl.lastIndexOf('/');
+		return getExtension(fullUrl.mid(lastSlash + 1));
 	}
 
-	return QString();
+	return ext;
 }
 
 QUrl setExtension(QUrl url, const QString &extension)
@@ -909,4 +957,66 @@ QStringList jsToStringList(const QJSValue &val)
 	}
 
 	return ret;
+}
+
+bool canCreateLinkType(const QString &type, const QString &dir)
+{
+	const QString basePath = dir + QDir::separator() + "link_test";
+	const QString linkFrom = basePath + "_from";
+	const QString linkTo = basePath + "_to";
+
+	// Create empty "source" file
+	QFile f(linkFrom);
+	f.open(QFile::WriteOnly | QFile::Truncate);
+	f.close();
+
+	const bool ok = createLink(linkFrom, linkTo, type);
+
+	// Clean-up
+	QFile::remove(linkFrom);
+	QFile::remove(linkTo);
+
+	return ok;
+}
+
+bool createLink(const QString &from, const QString &to, const QString &type)
+{
+	#ifdef Q_OS_WIN
+		if (type == "link") {
+			return QFile::link(from, to + ".lnk");
+		}/* else if (type == "symlink") {
+			wchar_t *wFrom = toWCharT(from);
+			wchar_t *wTo = toWCharT(to);
+			const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
+			delete[] wFrom;
+			delete[] wTo;
+			if (!res) {
+				log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+			}
+			return res;
+		}*/ else if (type == "hardlink") {
+			wchar_t *wFrom = toWCharT(from);
+			wchar_t *wTo = toWCharT(to);
+			const bool res = CreateHardLinkW(wTo, wFrom, NULL);
+			delete[] wFrom;
+			delete[] wTo;
+			if (!res) {
+				log(QStringLiteral("Unable to create hard link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+			}
+			return res;
+		}
+	#else
+		if (type == "link") {
+			return QFile::link(from, to);
+		} else if (type == "hardlink") {
+			const int res = link(from.toStdString().c_str(), to.toStdString().c_str());
+			if (res < 0) {
+				log(QStringLiteral("Unable to create hard link from `%1` to `%2` (%3 - %4)").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+				return false;
+			}
+			return true;
+		}
+	#endif
+	log(QStringLiteral("Invalid link type '%1'").arg(type), Logger::Error);
+	return false;
 }

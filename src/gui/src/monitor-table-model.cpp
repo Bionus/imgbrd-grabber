@@ -59,6 +59,10 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 
 QString timeToString(int secs)
 {
+	if (secs >= 0 && secs < 60) {
+		return QString("%1 s").arg(secs);
+	}
+
 	const int interval = qFloor(secs / 60.0);
 	const int days = interval / 1440;
 	const int mins = interval % 1440;

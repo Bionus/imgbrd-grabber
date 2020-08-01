@@ -1,0 +1,335 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<script>window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"fa197ca248","applicationID":"71204","transactionName":"egxdTUJYXFldQxpADUoXQBZDX19C","queueTime":16,"applicationTime":65,"agent":""}</script>
+<script>(window.NREUM||(NREUM={})).loader_config={licenseKey:"fa197ca248",applicationID:"71204"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1169.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+  <title>kokkoro (princess connect! and 1 more) drawn by hitotsuki_no_yagi | Danbooru</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+
+  <link rel="canonical" href="https://danbooru.donmai.us/posts/4018221">
+  <link rel="search" type="application/opensearchdescription+xml" href="https://danbooru.donmai.us/opensearch.xml?version=1" title="Search posts">
+
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="SNI7aLMdfui90eXISWCXh2ywwuBrf9dl7531TjDU+DgAjvdKACHFVsxEl4Nc3chfiQ1Q+dk2cqL1uEXNzDfHbA==" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="blacklisted-tags" content="spoilers,guro,scat,furry -rating:s">
+  <script src="/packs/js/application-f0379e3f38031fc1c114.js"></script>
+  <link rel="stylesheet" media="screen" href="/packs/css/application-838f9a1f.css" />
+
+
+  <meta name="description" content="View this 2150x3035 360 KB image">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Danbooru">
+  <meta property="og:title" content="kokkoro (princess connect! and 1 more) drawn by hitotsuki_no_yagi | Danbooru">
+  <meta property="og:description" content="View this 2150x3035 360 KB image">
+  <meta property="og:url" content="https://danbooru.donmai.us/posts/4018221">
+
+    <meta name="twitter:site" content="@danboorubot">
+
+  <meta name="twitter:title" content="kokkoro (princess connect! and 1 more) drawn by hitotsuki_no_yagi | Danbooru">
+  <meta name="twitter:description" content="View this 2150x3035 360 KB image">
+
+  <meta name="git-hash" content="afef9cc9ab523b77824d88b11c2d07f4a37c7539">
+  <meta name="theme-color" content="hsl(213, 100%, 50%)">
+
+  <link rel="alternate" type="application/atom+xml" title="Comments for post #4018221" href="https://danbooru.donmai.us/comments.atom?search%5Bpost_id%5D=4018221" />  <meta name="post-id" content="4018221">
+  <meta name="post-has-embedded-notes" content="false">
+
+    <meta property="og:image" content="https://danbooru.donmai.us/data/sample/sample-9b1bb70c1f123a07c8c1966a1ff76b79.jpg">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+
+      <meta name="twitter:image" content="https://danbooru.donmai.us/data/sample/sample-9b1bb70c1f123a07c8c1966a1ff76b79.jpg">
+
+
+  
+</head>
+<body lang="en" class="c-posts a-show" data-controller="posts" data-action="show" data-layout="sidebar" data-current-user-ip-addr="2a01:e34:ec16:f1d0:94bb:8a08:be19:35e0" data-current-user-id="null" data-current-user-name="Anonymous" data-current-user-level="0" data-current-user-level-string="Anonymous" data-current-user-theme="light" data-current-user-always-resize-images="true" data-current-user-can-upload-free="false" data-current-user-can-approve-posts="false" data-current-user-disable-categorized-saved-searches="false" data-current-user-disable-mobile-gestures="false" data-current-user-disable-post-tooltips="false" data-current-user-enable-auto-complete="true" data-current-user-enable-post-navigation="true" data-current-user-enable-safe-mode="false" data-current-user-hide-deleted-posts="false" data-current-user-show-deleted-children="false" data-current-user-style-usernames="false" data-current-user-default-image-size="large" data-current-user-is-anonymous="true" data-current-user-is-member="false" data-current-user-is-builder="false" data-current-user-is-gold="false" data-current-user-is-platinum="false" data-current-user-is-admin="false" data-current-user-is-moderator="false" data-current-user-is-banned="false" data-current-user-is-approver="false" data-post-id="4018221" data-post-uploader-id="430030" data-post-score="1" data-post-image-width="2150" data-post-image-height="3035" data-post-is-note-locked="false" data-post-fav-count="1" data-post-is-rating-locked="false" data-post-parent-id="null" data-post-has-children="false" data-post-approver-id="null" data-post-tag-count-general="37" data-post-tag-count-artist="1" data-post-tag-count-character="1" data-post-tag-count-copyright="2" data-post-file-size="368579" data-post-is-status-locked="false" data-post-up-score="1" data-post-down-score="0" data-post-is-pending="false" data-post-is-flagged="false" data-post-is-deleted="false" data-post-tag-count="45" data-post-is-banned="false" data-post-pixiv-id="83248873" data-post-has-active-children="false" data-post-bit-flags="2" data-post-tag-count-meta="4" data-post-has-large="true" data-post-current-image-size="large">
+  
+
+  <header id="top">
+    <h1 id="app-name-header"><a href="/">Danbooru</a></h1>
+    
+    <div id="maintoggle" class="mobile-only">
+      <a href="#"><i id="maintoggle-on" class="fas fa-bars"></i></a>
+      <a href="#"><i id="maintoggle-off" class="fas fa-times" style="display: none;"></i></a>
+    </div>
+    
+    <nav id="nav">
+      <menu id="main-menu" class="main">
+    <li id="nav-login"><a id="nav-login-link" href="/login">Login</a></li>
+  <li id="nav-posts" class=" current"><a id="nav-posts-link" href="/posts">Posts</a></li>
+  <li id="nav-comments"><a id="nav-comments-link" href="/comments?group_by=post">Comments</a></li>
+  <li id="nav-notes"><a id="nav-notes-link" href="/notes">Notes</a></li>
+  <li id="nav-artists"><a id="nav-artists-link" href="/artists">Artists</a></li>
+  <li id="nav-tags"><a id="nav-tags-link" href="/tags">Tags</a></li>
+  <li id="nav-pools"><a id="nav-pools-link" href="/pools/gallery">Pools</a></li>
+  <li id="nav-wiki"><a id="nav-wiki-link" href="/wiki_pages/help:home">Wiki</a></li>
+  <li id="nav-forum"><a id="nav-forum-link" href="/forum_topics">Forum</a></li>
+  <li id="nav-more"><a id="nav-more-link" href="/static/site_map">More »</a></li>
+</menu>
+
+        <menu id="subnav-menu">
+            <li id="subnav-listing"><a id="subnav-listing-link" href="/posts">Listing</a></li>
+  <li id="subnav-upload"><a id="subnav-upload-link" href="/uploads/new">Upload</a></li>
+  <li id="subnav-hot"><a id="subnav-hot-link" href="/posts?d=1&amp;tags=order%3Arank">Hot</a></li>
+  <li id="subnav-changes"><a id="subnav-changes-link" href="/post_versions">Changes</a></li>
+  <li id="subnav-help"><a id="subnav-help-link" href="/wiki_pages/help:posts">Help</a></li>
+
+        </menu>
+    </nav>
+  </header>
+
+  <div id="page">
+
+
+
+    <div class="notice notice-info" id="notice" style="display: none;">
+      <span class="prose">.</span>
+      <a href="#" id="close-notice-link">close</a>
+    </div>
+
+    
+
+
+
+
+
+
+
+<script type="text/javascript">
+  $(function() {
+    $.post("https://isshiki.donmai.us/post_views", {
+      msg: "IjQwMTgyMjEsZGU2YTBjOGMwY2RlZDYyYjllYzhjODkxYTQwOWY4OTgi--429632a0fab366c28f2a9ddf428fbc4de6f25cea16329512dbb4932df07b43dc"
+    });
+  });
+</script>
+
+
+  <div id="c-posts">
+    <div id="a-show">
+
+      <div class="sidebar-container">
+        <aside id="sidebar">
+            
+<section id="search-box">
+  <h1>Search</h1>
+  <form id="search-box-form" action="/posts" accept-charset="UTF-8" method="get">
+    <input type="text" name="tags" id="tags" data-shortcut="q" data-autocomplete="tag-query" />
+    <button id="search-box-submit" type="submit"><i class="fas fa-search"></i></button>
+</form></section>
+
+
+  <div id="blacklist-box" class="sidebar-blacklist">
+  <h1>Blacklisted (<a class="wiki-link" href="/wiki_pages/help:blacklists">help</a>)</h1>
+  <ul id="blacklist-list" class="list-bulleted"></ul>
+  <a id="disable-all-blacklists" style="display: none;" href="#">Disable all</a>
+  <a id="re-enable-all-blacklists" style="display: none;" href="#">Re-enable all</a>
+</div>
+
+
+  <section id="tag-list">
+    <h2 class="copyright-tag-list">Copyrights</h2><ul class="copyright-tag-list"><li class="tag-type-3" data-tag-name="princess_connect!"><a class="wiki-link" href="/wiki_pages/princess_connect%21">?</a> <a class="search-tag" href="/posts?tags=princess_connect%21">princess connect!</a> <span class="post-count" title="7694">7.7k</span></li><li class="tag-type-3" data-tag-name="princess_connect!_re:dive"><a class="wiki-link" href="/wiki_pages/princess_connect%21_re%3Adive">?</a> <a class="search-tag" href="/posts?tags=princess_connect%21_re%3Adive">princess connect! re:dive</a> <span class="post-count" title="7448">7.4k</span></li></ul><h2 class="character-tag-list">Characters</h2><ul class="character-tag-list"><li class="tag-type-4" data-tag-name="kokkoro_(princess_connect!)"><a class="wiki-link" href="/wiki_pages/kokkoro_%28princess_connect%21%29">?</a> <a class="search-tag" href="/posts?tags=kokkoro_%28princess_connect%21%29">kokkoro (princess connect!)</a> <span class="post-count" title="1573">1.6k</span></li></ul><h2 class="artist-tag-list">Artists</h2><ul class="artist-tag-list"><li class="tag-type-1" data-tag-name="hitotsuki_no_yagi"><a class="wiki-link" href="/artists/show_or_new?name=hitotsuki_no_yagi">?</a> <a class="search-tag" href="/posts?tags=hitotsuki_no_yagi">hitotsuki no yagi</a> <span class="post-count" title="81">81</span></li></ul><h1 class="general-tag-list">Tags</h1><ul class="general-tag-list"><li class="tag-type-0" data-tag-name="1girl"><a class="wiki-link" href="/wiki_pages/1girl">?</a> <a class="search-tag" href="/posts?tags=1girl">1girl</a> <span class="post-count" title="2826361">2826k</span></li><li class="tag-type-0" data-tag-name="antenna_hair"><a class="wiki-link" href="/wiki_pages/antenna_hair">?</a> <a class="search-tag" href="/posts?tags=antenna_hair">antenna hair</a> <span class="post-count" title="30809">30k</span></li><li class="tag-type-0" data-tag-name="bangs"><a class="wiki-link" href="/wiki_pages/bangs">?</a> <a class="search-tag" href="/posts?tags=bangs">bangs</a> <span class="post-count" title="645692">645k</span></li><li class="tag-type-0" data-tag-name="bare_shoulders"><a class="wiki-link" href="/wiki_pages/bare_shoulders">?</a> <a class="search-tag" href="/posts?tags=bare_shoulders">bare shoulders</a> <span class="post-count" title="382523">382k</span></li><li class="tag-type-0" data-tag-name="blush"><a class="wiki-link" href="/wiki_pages/blush">?</a> <a class="search-tag" href="/posts?tags=blush">blush</a> <span class="post-count" title="1323813">1323k</span></li><li class="tag-type-0" data-tag-name="breasts"><a class="wiki-link" href="/wiki_pages/breasts">?</a> <a class="search-tag" href="/posts?tags=breasts">breasts</a> <span class="post-count" title="1412556">1412k</span></li><li class="tag-type-0" data-tag-name="bridal_gauntlets"><a class="wiki-link" href="/wiki_pages/bridal_gauntlets">?</a> <a class="search-tag" href="/posts?tags=bridal_gauntlets">bridal gauntlets</a> <span class="post-count" title="19003">19k</span></li><li class="tag-type-0" data-tag-name="detached_sleeves"><a class="wiki-link" href="/wiki_pages/detached_sleeves">?</a> <a class="search-tag" href="/posts?tags=detached_sleeves">detached sleeves</a> <span class="post-count" title="194570">194k</span></li><li class="tag-type-0" data-tag-name="dress"><a class="wiki-link" href="/wiki_pages/dress">?</a> <a class="search-tag" href="/posts?tags=dress">dress</a> <span class="post-count" title="525817">525k</span></li><li class="tag-type-0" data-tag-name="eyebrows_visible_through_hair"><a class="wiki-link" href="/wiki_pages/eyebrows_visible_through_hair">?</a> <a class="search-tag" href="/posts?tags=eyebrows_visible_through_hair">eyebrows visible through hair</a> <span class="post-count" title="489302">489k</span></li><li class="tag-type-0" data-tag-name="flower"><a class="wiki-link" href="/wiki_pages/flower">?</a> <a class="search-tag" href="/posts?tags=flower">flower</a> <span class="post-count" title="255881">255k</span></li><li class="tag-type-0" data-tag-name="flying_sweatdrops"><a class="wiki-link" href="/wiki_pages/flying_sweatdrops">?</a> <a class="search-tag" href="/posts?tags=flying_sweatdrops">flying sweatdrops</a> <span class="post-count" title="36760">36k</span></li><li class="tag-type-0" data-tag-name="green_sleeves"><a class="wiki-link" href="/wiki_pages/green_sleeves">?</a> <a class="search-tag" href="/posts?tags=green_sleeves">green sleeves</a> <span class="post-count" title="400">400</span></li><li class="tag-type-0" data-tag-name="hair_between_eyes"><a class="wiki-link" href="/wiki_pages/hair_between_eyes">?</a> <a class="search-tag" href="/posts?tags=hair_between_eyes">hair between eyes</a> <span class="post-count" title="325646">325k</span></li><li class="tag-type-0" data-tag-name="hair_flower"><a class="wiki-link" href="/wiki_pages/hair_flower">?</a> <a class="search-tag" href="/posts?tags=hair_flower">hair flower</a> <span class="post-count" title="109558">109k</span></li><li class="tag-type-0" data-tag-name="hair_ornament"><a class="wiki-link" href="/wiki_pages/hair_ornament">?</a> <a class="search-tag" href="/posts?tags=hair_ornament">hair ornament</a> <span class="post-count" title="571955">571k</span></li><li class="tag-type-0" data-tag-name="hands_up"><a class="wiki-link" href="/wiki_pages/hands_up">?</a> <a class="search-tag" href="/posts?tags=hands_up">hands up</a> <span class="post-count" title="34648">34k</span></li><li class="tag-type-0" data-tag-name="long_sleeves"><a class="wiki-link" href="/wiki_pages/long_sleeves">?</a> <a class="search-tag" href="/posts?tags=long_sleeves">long sleeves</a> <span class="post-count" title="461969">461k</span></li><li class="tag-type-0" data-tag-name="looking_at_viewer"><a class="wiki-link" href="/wiki_pages/looking_at_viewer">?</a> <a class="search-tag" href="/posts?tags=looking_at_viewer">looking at viewer</a> <span class="post-count" title="1149931">1149k</span></li><li class="tag-type-0" data-tag-name="open_mouth"><a class="wiki-link" href="/wiki_pages/open_mouth">?</a> <a class="search-tag" href="/posts?tags=open_mouth">open mouth</a> <span class="post-count" title="993395">993k</span></li><li class="tag-type-0" data-tag-name="pointy_ears"><a class="wiki-link" href="/wiki_pages/pointy_ears">?</a> <a class="search-tag" href="/posts?tags=pointy_ears">pointy ears</a> <span class="post-count" title="134448">134k</span></li><li class="tag-type-0" data-tag-name="puffy_long_sleeves"><a class="wiki-link" href="/wiki_pages/puffy_long_sleeves">?</a> <a class="search-tag" href="/posts?tags=puffy_long_sleeves">puffy long sleeves</a> <span class="post-count" title="8490">8.5k</span></li><li class="tag-type-0" data-tag-name="puffy_sleeves"><a class="wiki-link" href="/wiki_pages/puffy_sleeves">?</a> <a class="search-tag" href="/posts?tags=puffy_sleeves">puffy sleeves</a> <span class="post-count" title="120059">120k</span></li><li class="tag-type-0" data-tag-name="see-through"><a class="wiki-link" href="/wiki_pages/see-through">?</a> <a class="search-tag" href="/posts?tags=see-through">see-through</a> <span class="post-count" title="58473">58k</span></li><li class="tag-type-0" data-tag-name="see-through_sleeves"><a class="wiki-link" href="/wiki_pages/see-through_sleeves">?</a> <a class="search-tag" href="/posts?tags=see-through_sleeves">see-through sleeves</a> <span class="post-count" title="1472">1.5k</span></li><li class="tag-type-0" data-tag-name="silver_hair"><a class="wiki-link" href="/wiki_pages/silver_hair">?</a> <a class="search-tag" href="/posts?tags=silver_hair">silver hair</a> <span class="post-count" title="264519">264k</span></li><li class="tag-type-0" data-tag-name="simple_background"><a class="wiki-link" href="/wiki_pages/simple_background">?</a> <a class="search-tag" href="/posts?tags=simple_background">simple background</a> <span class="post-count" title="588126">588k</span></li><li class="tag-type-0" data-tag-name="sleeveless"><a class="wiki-link" href="/wiki_pages/sleeveless">?</a> <a class="search-tag" href="/posts?tags=sleeveless">sleeveless</a> <span class="post-count" title="130940">130k</span></li><li class="tag-type-0" data-tag-name="sleeveless_dress"><a class="wiki-link" href="/wiki_pages/sleeveless_dress">?</a> <a class="search-tag" href="/posts?tags=sleeveless_dress">sleeveless dress</a> <span class="post-count" title="39887">39k</span></li><li class="tag-type-0" data-tag-name="small_breasts"><a class="wiki-link" href="/wiki_pages/small_breasts">?</a> <a class="search-tag" href="/posts?tags=small_breasts">small breasts</a> <span class="post-count" title="198841">198k</span></li><li class="tag-type-0" data-tag-name="solo"><a class="wiki-link" href="/wiki_pages/solo">?</a> <a class="search-tag" href="/posts?tags=solo">solo</a> <span class="post-count" title="2328928">2328k</span></li><li class="tag-type-0" data-tag-name="sweat"><a class="wiki-link" href="/wiki_pages/sweat">?</a> <a class="search-tag" href="/posts?tags=sweat">sweat</a> <span class="post-count" title="196297">196k</span></li><li class="tag-type-0" data-tag-name="upper_teeth"><a class="wiki-link" href="/wiki_pages/upper_teeth">?</a> <a class="search-tag" href="/posts?tags=upper_teeth">upper teeth</a> <span class="post-count" title="16899">16k</span></li><li class="tag-type-0" data-tag-name="wavy_mouth"><a class="wiki-link" href="/wiki_pages/wavy_mouth">?</a> <a class="search-tag" href="/posts?tags=wavy_mouth">wavy mouth</a> <span class="post-count" title="39227">39k</span></li><li class="tag-type-0" data-tag-name="white_background"><a class="wiki-link" href="/wiki_pages/white_background">?</a> <a class="search-tag" href="/posts?tags=white_background">white background</a> <span class="post-count" title="475676">475k</span></li><li class="tag-type-0" data-tag-name="white_dress"><a class="wiki-link" href="/wiki_pages/white_dress">?</a> <a class="search-tag" href="/posts?tags=white_dress">white dress</a> <span class="post-count" title="73541">73k</span></li><li class="tag-type-0" data-tag-name="white_flower"><a class="wiki-link" href="/wiki_pages/white_flower">?</a> <a class="search-tag" href="/posts?tags=white_flower">white flower</a> <span class="post-count" title="16353">16k</span></li></ul><h2 class="meta-tag-list">Meta</h2><ul class="meta-tag-list"><li class="tag-type-5" data-tag-name="absurdres"><a class="wiki-link" href="/wiki_pages/absurdres">?</a> <a class="search-tag" href="/posts?tags=absurdres">absurdres</a> <span class="post-count" title="388635">388k</span></li><li class="tag-type-5" data-tag-name="commentary_request"><a class="wiki-link" href="/wiki_pages/commentary_request">?</a> <a class="search-tag" href="/posts?tags=commentary_request">commentary request</a> <span class="post-count" title="461433">461k</span></li><li class="tag-type-5" data-tag-name="highres"><a class="wiki-link" href="/wiki_pages/highres">?</a> <a class="search-tag" href="/posts?tags=highres">highres</a> <span class="post-count" title="1661608">1661k</span></li><li class="tag-type-5" data-tag-name="translation_request"><a class="wiki-link" href="/wiki_pages/translation_request">?</a> <a class="search-tag" href="/posts?tags=translation_request">translation request</a> <span class="post-count" title="236612">236k</span></li></ul>
+  </section>
+
+  <section id="post-information">
+    <h1>Information</h1>
+    <ul>
+  <li id="post-info-id">ID: 4018221</li>
+  <li id="post-info-uploader">
+    Uploader: <a class="user user-builder user-post-approver user-post-uploader" data-user-id="430030" data-user-name="Unbreakable" data-user-level="32" href="/users/430030">Unbreakable</a>
+    <a href="/posts?tags=user%3AUnbreakable">»</a>
+  </li>
+  <li id="post-info-date">
+    Date: <a href="/posts?tags=date%3A2020-07-26"><time datetime="2020-07-26T10:38-04:00" title="2020-07-26 10:38:10 -0400" class="">1 minute ago</time></a>
+  </li>
+  <li id="post-info-size">
+    Size: <a href="https://danbooru.donmai.us/data/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__9b1bb70c1f123a07c8c1966a1ff76b79.jpg">360 KB .jpg</a>
+      (2150x3035)
+  </li>
+  <li id="post-info-source">Source: <a rel="external noreferrer nofollow" href="https://www.pixiv.net/artworks/83248873">pixiv.net/artworks/83248873</a>&nbsp;<a rel="external noreferrer nofollow" href="https://i.pximg.net/img-original/img/2020/07/26/22/36/28/83248873_p0.jpg">»</a></li>
+  <li id="post-info-rating">Rating: Safe</li>
+  <li id="post-info-score">Score: <span id="score-for-post-4018221">1</span>
+  </li>
+  <li id="post-info-favorites">Favorites: <span id="favcount-for-post-4018221">1</span>
+</li>
+  <li id="post-info-status">
+    Status:
+
+
+
+
+      Active
+  </li>
+</ul>
+
+  </section>
+
+  <section id="post-options">
+    <h1>Options</h1>
+    <ul>
+    <li id="post-option-resize-to-window">
+      <a class="image-resize-to-window-link" data-shortcut="z" href="#">Resize to window</a>
+    </li>
+    <li id="post-option-view-large">
+      <a class="image-view-large-link" href="https://danbooru.donmai.us/data/sample/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__sample-9b1bb70c1f123a07c8c1966a1ff76b79.jpg">View smaller</a>
+    </li>
+    <li id="post-option-view-original">
+      <a class="image-view-original-link" href="https://danbooru.donmai.us/data/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__9b1bb70c1f123a07c8c1966a1ff76b79.jpg">View original</a>
+    </li>
+  <li id="post-option-find-similar">
+    <a href="/iqdb_queries?post_id=4018221">Find similar</a>
+  </li>
+    <li id="post-option-download">
+      <a download="kokkoro (princess connect! and 1 more) drawn by hitotsuki_no_yagi - 9b1bb70c1f123a07c8c1966a1ff76b79.jpg" href="https://danbooru.donmai.us/data/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__9b1bb70c1f123a07c8c1966a1ff76b79.jpg?download=1">Download</a>
+    </li>
+
+
+
+
+</ul>
+
+  </section>
+
+  <section id="post-history">
+    <h1>History</h1>
+    <ul>
+      <li id="post-history-tags"><a href="/post_versions?search%5Bpost_id%5D=4018221">Tags</a></li>
+      <li id="post-history-pools"><a href="/pool_versions?search%5Bpost_id%5D=4018221">Pools</a></li>
+      <li id="post-history-notes"><a href="/note_versions?search%5Bpost_id%5D=4018221">Notes</a></li>
+      <li id="post-history-moderation"><a href="/posts/4018221/events">Moderation</a></li>
+      <li id="post-history-commentary"><a href="/artist_commentary_versions?search%5Bpost_id%5D=4018221">Commentary</a></li>
+      <li id="post-history-replacements"><a href="/post_replacements?search%5Bpost_id%5D=4018221">Replacements</a></li>
+    </ul>
+  </section>
+
+        </aside>
+
+        <section id="content">
+              
+
+  
+
+
+
+
+
+
+  <div class="notice notice-small post-notice post-notice-resized" id="image-resize-notice">
+    Resized to 39% of original (<a class="image-view-original-link" href="https://danbooru.donmai.us/data/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__9b1bb70c1f123a07c8c1966a1ff76b79.jpg">view original</a>)
+  </div>
+
+
+  <section class="image-container note-container" data-id="4018221" data-has-sound="false" data-tags="1girl absurdres antenna_hair bangs bare_shoulders blush breasts bridal_gauntlets commentary_request detached_sleeves dress eyebrows_visible_through_hair flower flying_sweatdrops green_sleeves hair_between_eyes hair_flower hair_ornament hands_up highres hitotsuki_no_yagi kokkoro_(princess_connect!) long_sleeves looking_at_viewer open_mouth pointy_ears princess_connect! princess_connect!_re:dive puffy_long_sleeves puffy_sleeves see-through see-through_sleeves silver_hair simple_background sleeveless sleeveless_dress small_breasts solo sweat translation_request upper_teeth wavy_mouth white_background white_dress white_flower" data-pools="" data-rating="s" data-width="2150" data-height="3035" data-flags="" data-has-children="false" data-score="1" data-fav-count="1" data-pixiv-id="83248873" data-file-ext="jpg" data-source="https://i.pximg.net/img-original/img/2020/07/26/22/36/28/83248873_p0.jpg" data-uploader-id="430030" data-normalized-source="https://www.pixiv.net/artworks/83248873" data-is-favorited="false" data-md5="9b1bb70c1f123a07c8c1966a1ff76b79" data-file-url="https://danbooru.donmai.us/data/9b1bb70c1f123a07c8c1966a1ff76b79.jpg" data-large-file-url="https://danbooru.donmai.us/data/sample/sample-9b1bb70c1f123a07c8c1966a1ff76b79.jpg" data-preview-file-url="https://cdn.donmai.us/preview/9b/1b/9b1bb70c1f123a07c8c1966a1ff76b79.jpg">        <img width="850" height="1199" id="image" class="fit-width" data-original-width="2150" data-original-height="3035" data-large-width="850" data-large-height="1199" data-tags="1girl absurdres antenna_hair bangs bare_shoulders blush breasts bridal_gauntlets commentary_request detached_sleeves dress eyebrows_visible_through_hair flower flying_sweatdrops green_sleeves hair_between_eyes hair_flower hair_ornament hands_up highres hitotsuki_no_yagi kokkoro_(princess_connect!) long_sleeves looking_at_viewer open_mouth pointy_ears princess_connect! princess_connect!_re:dive puffy_long_sleeves puffy_sleeves see-through see-through_sleeves silver_hair simple_background sleeveless sleeveless_dress small_breasts solo sweat translation_request upper_teeth wavy_mouth white_background white_dress white_flower" alt="kokkoro (princess connect! and 1 more) drawn by hitotsuki_no_yagi" data-uploader="Unbreakable" data-rating="s" data-flags="" data-has-children="false" data-has-active-children="false" data-score="1" data-fav-count="1" src="https://danbooru.donmai.us/data/sample/__kokkoro_princess_connect_and_1_more_drawn_by_hitotsuki_no_yagi__sample-9b1bb70c1f123a07c8c1966a1ff76b79.jpg" />
+
+    <div id="note-preview"></div>
+</section>
+
+  <section id="mark-as-translated-section" style="display: none;">
+    <form class="simple_form edit_post" id="edit_post_4018221" autocomplete="off" novalidate="novalidate" action="/posts/4018221/mark_as_translated" accept-charset="UTF-8" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="qWia3Tdz5DD31kQTAeDxJPmEsdM/gSyXTX4xXTEEG8LtcbVRMxkZ+tPkm4iMeCxZwURPwZ5PSADv9X9mXGusng==" />
+      <div class="input hidden post_tags_query"><input name="tags_query" class="hidden" type="hidden" /></div>
+      <div class="input hidden post_pool_id"><input name="pool_id" class="hidden" type="hidden" /></div>
+      <div class="input hidden post_favgroup_id"><input name="favgroup_id" class="hidden" type="hidden" /></div>
+
+      <fieldset class="inline-fieldset">
+        <div class="input boolean optional post_check_translation"><input name="post[check_translation]" type="hidden" value="0" /><input class="boolean optional" type="checkbox" value="1" name="post[check_translation]" id="post_check_translation" /><label class="boolean optional" for="post_check_translation">Check translation</label></div>
+        <div class="input boolean optional post_partially_translated"><input name="post[partially_translated]" type="hidden" value="0" /><input class="boolean optional" type="checkbox" value="1" name="post[partially_translated]" id="post_partially_translated" /><label class="boolean optional" for="post_partially_translated">Partially translated</label></div>
+      </fieldset>
+
+      <input type="submit" name="commit" value="Mark as translated" data-disable-with="Mark as translated" />
+</form>  </section>
+
+    <div id="artist-commentary">
+      <h2>Artist's commentary</h2>
+
+<menu id="commentary-sections">
+    <li><b>Original</b></li>
+</menu>
+
+  <section id="original-artist-commentary">
+    <h3><span class="prose ">コロ助</span></h3>
+    <div class="prose "><p>ママ…</p></div>
+</section>
+
+    </div>
+
+      <div id="nav-links" class="notice post-notice post-notice-search">
+      <div id="search-seq-nav">
+  <ul>
+    <li data-selected="true">
+      <a rel="prev" class="prev" href="/posts/4018221/show_seq?seq=prev">&lsaquo;&thinsp;prev</a>
+      <span class="search-name">Search: status:any</span>
+      <a rel="next" class="next" href="/posts/4018221/show_seq?seq=next">next&thinsp;&rsaquo;</a>
+    </li>
+  </ul>
+</div>
+
+
+
+  </div>
+
+
+  <menu id="post-sections">
+    <li class="active"><a href="#comments">Comments</a></li>
+
+
+  </menu>
+
+
+  <section id="comments">
+    <div class="comments-for-post" data-post-id="4018221">
+
+
+  <div class="list-of-comments list-of-messages">
+      <p>There are no comments.</p>
+  </div>
+
+</div>
+
+  </section>
+
+  <section id="notes" style="display: none;">
+  </section>
+
+
+        </section>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <script type="application/javascript">
+    if (typeof window.Danbooru !== "object") {
+      window.Danbooru = {};
+    }
+
+    window.Danbooru.notice = Danbooru.Utility.notice;
+    window.Danbooru.error = Danbooru.Utility.error;
+    window.$ = Danbooru.jQuery;
+    window.jQuery = Danbooru.jQuery;
+  </script>
+
+  <footer id="page-footer" class="text-small">
+  <span class="page-footer-app-name">Danbooru</span>
+  / <a href="/terms_of_service">Rules</a>
+  / <a href="/static/contact">Contact</a>
+  /
+  <span class="social-icons">
+      <a title="Running commit: afef9cc9a" class="social-icon" href="https://github.com/danbooru/danbooru">
+        <img src="/images/github-logo.png">
+</a>      <a class="social-icon" href="https://twitter.com/danboorubot">
+        <img src="/images/twitter-logo.png">
+</a>      <a class="social-icon" href="https://discord.gg/eSVKkUF">
+        <img src="/images/discord-logo.png">
+</a>  </span>
+</footer>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"5b8ede909d4668f4","version":"2020.6.0","si":10}'></script>
+</body></html>
+

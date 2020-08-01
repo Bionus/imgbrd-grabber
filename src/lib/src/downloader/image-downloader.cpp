@@ -84,7 +84,7 @@ void ImageDownloader::save()
 
 	// If we use direct saving or don't want to load tags, we directly save the image
 	const int globalNeedTags = needExactTags(m_profile->getSettings());
-	const int localNeedTags = m_filename.needExactTags(m_image->parentSite());
+	const int localNeedTags = m_filename.needExactTags(m_image->parentSite(), m_profile->getSettings());
 	const int needTags = qMax(globalNeedTags, localNeedTags);
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_blacklist != nullptr && m_image->tags().isEmpty();
@@ -103,7 +103,7 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 
 	const auto logFiles = getExternalLogFiles(settings);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
-		need = qMax(need, Filename(it.value().value("content").toString()).needExactTags());
+		need = qMax(need, Filename(it.value().value("content").toString()).needExactTags(nullptr, settings));
 		if (need == 2) {
 			return need;
 		}
@@ -124,7 +124,7 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 			continue;
 		}
 
-		need = qMax(need, Filename(value).needExactTags());
+		need = qMax(need, Filename(value).needExactTags(nullptr, settings));
 		if (need == 2) {
 			return need;
 		}
@@ -204,7 +204,7 @@ void ImageDownloader::loadedSave()
 		if (res != Image::SaveResult::NotLoaded && (res != Image::SaveResult::AlreadyExistsDeletedMd5 || !m_forceExisting)) {
 			QList<ImageSaveResult> result {{ m_temporaryPath, m_size, res }};
 
-			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Linked) {
+			if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved || res == Image::SaveResult::Shortcut || res == Image::SaveResult::Linked) {
 				result = postSaving(res);
 			}
 
@@ -370,7 +370,7 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 
 	QString suffix;
 	#ifdef Q_OS_WIN
-		if (saveResult == Image::SaveResult::Linked) {
+		if (saveResult == Image::SaveResult::Shortcut) {
 			suffix = ".lnk";
 		}
 	#endif

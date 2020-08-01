@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QStringList>
 #include <QUrl>
+#include <stdexcept>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "logger.h"

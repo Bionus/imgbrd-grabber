@@ -227,7 +227,7 @@ interface IApi {
         parseErrors?: boolean;
         url: () => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedTagTypes | IError;
-    } | false,
+    } | false;
     tags?: {
         parseErrors?: boolean;
         url: (query: ITagsQuery, opts: IUrlOptions) => IUrl | IError | string;

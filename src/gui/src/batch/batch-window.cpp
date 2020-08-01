@@ -349,6 +349,7 @@ void BatchWindow::loadedImage(const QUrl &url, Downloadable::SaveResult result)
 
 			case Downloadable::SaveResult::Moved:
 			case Downloadable::SaveResult::Copied:
+			case Downloadable::SaveResult::Shortcut:
 			case Downloadable::SaveResult::Linked:
 			case Downloadable::SaveResult::Saved:
 				ui->tableWidget->item(i, 0)->setIcon(okIcon);

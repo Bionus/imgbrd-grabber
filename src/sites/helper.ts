@@ -100,17 +100,20 @@ addHelper("countToInt", (str: string): number | undefined => {
 });
 
 addHelper("fileSizeToInt", (str: string): number => {
-    const res = str.match(/^(\d+)\s*(\w+)$/);
+    if  (typeof str !== "string") {
+        return str as any;
+    }
+    const res = str.match(/^(\d+(?:\.\d+))\s*(\w+)$/);
     if (res) {
-        const val = parseInt(res[1], 10);
+        const val = parseFloat(res[1]);
         const unit = res[2].toLowerCase();
         if (unit === "mb") {
-            return val * 1024 * 1024;
+            return Math.round(val * 1024 * 1024);
         }
         if (unit === "kb") {
-            return val * 1024;
+            return Math.round(val * 1024);
         }
-        return val;
+        return Math.round(val);
     }
     return parseInt(str, 10);
 });
@@ -155,6 +158,9 @@ addHelper("regexToImages", (regexp: string, src: string): IImage[] => {
         }
         if (match.id) {
             match.id = parseInt(match.id, 10);
+        }
+        if (match.file_size) {
+            match.file_size = Grabber.fileSizeToInt(match.file_size);
         }
         images.push(match);
     }

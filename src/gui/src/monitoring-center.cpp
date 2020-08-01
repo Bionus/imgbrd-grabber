@@ -131,9 +131,23 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
 	m_changed = true;
 
+	if (!m_waitingForQueue) {
+		sync();
+	}
+
 	emit statusChanged(monitor, MonitoringStatus::Waiting);
 
 	return newImages > 0;
+}
+
+void MonitoringCenter::sync()
+{
+	// Save only if there were changes to the monitors
+	if (m_changed) {
+		m_profile->syncFavorites();
+		m_profile->monitorManager()->save();
+		m_changed = false;
+	}
 }
 
 void MonitoringCenter::tick()
@@ -144,13 +158,6 @@ void MonitoringCenter::tick()
 
 	qint64 minNextMonitoring = -1;
 	log(QStringLiteral("Monitoring tick"), Logger::Info);
-
-	// Save if there were changes to the monitors since the last tick
-	if (m_changed) {
-		m_profile->syncFavorites();
-		m_profile->monitorManager()->save();
-		m_changed = false;
-	}
 
 	// Favorites
 	QList<Favorite> &favs = m_profile->getFavorites();
@@ -207,6 +214,7 @@ void MonitoringCenter::queueEmpty()
 {
 	if (m_waitingForQueue) {
 		m_waitingForQueue = false;
+		sync();
 		tick();
 	}
 }
@@ -216,4 +224,9 @@ void MonitoringCenter::stop()
 	m_stop = true;
 
 	log(QStringLiteral("Monitoring stopped"), Logger::Info);
+}
+
+bool MonitoringCenter::isRunning() const
+{
+	return !m_stop;
 }

@@ -185,3 +185,6 @@ bool operator==(const Tag &t1, const Tag &t2)
 }
 bool operator!=(const Tag &t1, const Tag &t2)
 { return !(t1 == t2); }
+
+bool operator<(const Tag &t1, const Tag &t2)
+{ return QString::compare(t1.text(), t2.text(), Qt::CaseInsensitive) < 0; }

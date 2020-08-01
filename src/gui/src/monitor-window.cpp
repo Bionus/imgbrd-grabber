@@ -33,6 +33,13 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	ui->checkGetBlacklisted->setChecked(m_monitor.getBlacklisted());
 
 	connect(this, &QDialog::accepted, this, &MonitorWindow::save);
+
+	// You can't use notifications without the system tray icon
+	const bool enableTray = m_profile->getSettings()->value("Monitoring/enableTray", false).toBool();
+	if (!enableTray) {
+		ui->checkNotificationEnabled->setEnabled(false);
+		ui->checkNotificationEnabled->setToolTip(tr("You need to enable the system tray icon to use notifications."));
+	}
 }
 
 MonitorWindow::~MonitorWindow()

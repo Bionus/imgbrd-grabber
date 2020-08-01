@@ -15,6 +15,13 @@ export function gallery(api: IApi, id: string) {
     );
 }
 
+export function tags(api: IApi, page: number) {
+    return api.tags!.url(
+        { page, order: "count" },
+        { limit: 10, loggedIn: false, baseUrl: "/" },
+    );
+}
+
 function GrabberRegexMatches(regex: string, txt: string): any[] {
     const rx = new RegExp(regex, "g");
     const ret = [];

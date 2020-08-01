@@ -26,6 +26,7 @@ class MonitoringCenter : public QObject
 		};
 
 		explicit MonitoringCenter(Profile *profile, DownloadQueue *downloadQueue, QSystemTrayIcon *trayIcon, QObject *parent = nullptr);
+		bool isRunning() const;
 
 	public slots:
 		void start();
@@ -38,6 +39,7 @@ class MonitoringCenter : public QObject
 	protected:
 		void checkMonitor(Monitor &monitor, const Favorite &favorite);
 		bool checkMonitor(Monitor &monitor, const SearchQuery &search, const QStringList &postFiltering);
+		void sync();
 
 	signals:
 		void statusChanged(const Monitor &monitor, MonitoringCenter::MonitoringStatus status);

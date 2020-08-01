@@ -101,7 +101,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 	// Check if filename requires details
 	m_filename.setFormat(ui->lineFilenameDestination->text());
-	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()));
+	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()), m_profile->getSettings());
 
 	const int response = QMessageBox::question(this, tr("Rename existing images"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (response == QMessageBox::Yes) {

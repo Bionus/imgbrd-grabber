@@ -101,6 +101,11 @@ Profile::Profile(QString path)
 		m_ignored = ign.split("\n", QString::SkipEmptyParts);
 	}
 
+	// Make a backup of MD5s in case the multi-location change broke everything
+	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
+		QFile::copy(m_path + "/md5s.txt", m_path + "/md5s.txt.bak");
+	}
+
 	// Load MD5s
 	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
 
@@ -371,7 +376,7 @@ QPair<QString, QString> Profile::md5Action(const QString &md5, const QString &ta
  * @param	md5		The md5 that needs to be checked.
  * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
  */
-QString Profile::md5Exists(const QString &md5)
+QStringList Profile::md5Exists(const QString &md5)
 {
 	return m_md5s->exists(md5);
 }
@@ -387,22 +392,12 @@ void Profile::addMd5(const QString &md5, const QString &path)
 }
 
 /**
- * Set a md5 to the _md5 map changing the file it is pointing to.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void Profile::setMd5(const QString &md5, const QString &path)
-{
-	m_md5s->set(md5, path);
-}
-
-/**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
  */
-void Profile::removeMd5(const QString &md5)
+void Profile::removeMd5(const QString &md5, const QString &path)
 {
-	m_md5s->remove(md5);
+	m_md5s->remove(md5, path);
 }
 
 

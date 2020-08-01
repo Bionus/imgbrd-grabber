@@ -1,3 +1,14 @@
+# Ensure shell scripts use Linux file endings
 *.sh eol=lf
-languages/* linguist-documentation
-tests/resources/** linguist-documentation
+
+# Ignore vendor files
+src/cmake/*
+scripts/windows-setup/scripts/*
+
+# Docs and translations should be ignored
+docs/* linguist-documentation
+src/languages/* linguist-documentation
+
+# Test resource files should be ignored
+src/sites/*/resources/* linguist-vendored
+src/tests/resources/* linguist-vendored

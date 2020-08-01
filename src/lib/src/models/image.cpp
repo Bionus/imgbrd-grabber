@@ -143,6 +143,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 	// Tags
 	if (m_data.contains("tags")) {
 		m_tags = m_data["tags"].value<QList<Tag>>();
+		m_data.remove("tags");
 	}
 
 	// Complete missing tag type information
@@ -515,7 +516,7 @@ int Image::value() const
 	return 1200 * 900;
 }
 
-Image::SaveResult Image::save(const QString &path, Size size, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSave)
+Image::SaveResult Image::save(const QString &path, Size size, bool force, bool basic, bool addMd5, bool startCommands, int count, bool postSav)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -550,19 +551,18 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 		} else if (whatToDo == "move") {
 			log(QStringLiteral("Moving from `%1` to `%2`").arg(md5Duplicate, path));
 			QFile::rename(md5Duplicate, path);
-			m_profile->setMd5(md5(), path);
+			m_profile->removeMd5(md5(), md5Duplicate);
 
 			res = SaveResult::Moved;
-		} else if (whatToDo == "link") {
-			log(QStringLiteral("Creating link for `%1` in `%2`").arg(md5Duplicate, path));
-
-			#ifdef Q_OS_WIN
-				QFile::link(md5Duplicate, path + ".lnk");
-			#else
-				QFile::link(md5Duplicate, path);
-			#endif
-
+		} else if (whatToDo == "link" || whatToDo == "hardlink") {
+			log(QStringLiteral("Creating %1 for `%2` in `%3`").arg(whatToDo, md5Duplicate, path));
+			createLink(md5Duplicate, path, whatToDo);
 			res = SaveResult::Linked;
+			#ifdef Q_OS_WIN
+				if (whatToDo == "link") {
+					res = SaveResult::Shortcut;
+				}
+			#endif
 		} else if (!QFile::exists(md5Duplicate)) {
 			log(QStringLiteral("MD5 \"%1\" of the image `%2` already found in non-existing file `%3`").arg(md5(), m_url.toString(), md5Duplicate));
 			return SaveResult::AlreadyExistsDeletedMd5;
@@ -571,8 +571,8 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 			return SaveResult::AlreadyExistsMd5;
 		}
 
-		if (postSave) {
-			postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count, basic);
+		if (postSav) {
+			postSave(path, size, res, addMd5, startCommands, count, basic);
 		}
 	} else {
 		res = SaveResult::AlreadyExistsDisk;
@@ -963,7 +963,7 @@ QUrl Image::url(Size size) const
 
 void Image::preload(const Filename &filename)
 {
-	if (filename.needExactTags(m_parentSite) == 0) {
+	if (filename.needExactTags(m_parentSite, m_settings) == 0) {
 		return;
 	}
 
@@ -1026,8 +1026,9 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
+	const auto tags = filteredTags(remove);
 	QMap<QString, QStringList> details;
-	for (const Tag &tag : filteredTags(remove)) {
+	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
@@ -1070,7 +1071,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("meta", Token(details["meta"], "keepAll", "none", "multiple"));
 	tokens.insert("allos", Token(details["allos"]));
 	tokens.insert("allo", Token(details["allos"].join(' ')));
-	tokens.insert("tags", Token(details["alls"]));
+	tokens.insert("tags", Token(QVariant::fromValue(tags)));
 	tokens.insert("all", Token(details["alls"]));
 	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
 
@@ -1088,7 +1089,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 
 	// Extra tokens
-	static QVariantMap defaultValues
+	static const QVariantMap defaultValues
 	{
 		{ "rating", "unknown" },
 	};
@@ -1104,7 +1105,8 @@ Image::SaveResult Image::preSave(const QString &path, Size size)
 	return save(path, size, false, false, false, false, 1, false);
 }
 
-void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count)
+void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5, bool startCommands, int count, bool basic)
 {
-	postSaving(path, size, addMd5 && res == SaveResult::Saved, startCommands, count);
+	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
+	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
 }

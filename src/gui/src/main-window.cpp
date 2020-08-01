@@ -607,7 +607,7 @@ void MainWindow::tabClosed(SearchTab *tab)
 	// Store closed tab information
 	QJsonObject obj;
 	tab->write(obj);
-	m_closedTabs.append(obj);
+	m_closedTabs.push(obj);
 	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX) {
 		m_closedTabs.removeFirst();
 	}
@@ -623,7 +623,7 @@ void MainWindow::restoreLastClosedTab()
 		return;
 	}
 
-	QJsonObject infos = m_closedTabs.takeLast();
+	QJsonObject infos = m_closedTabs.pop();
 	SearchTab *tab = TabsLoader::loadTab(infos, m_profile, m_downloadQueue, this, true);
 	addSearchTab(tab);
 
