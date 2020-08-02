@@ -1,4 +1,8 @@
 #include "url-downloader-manager.h"
+#include <QDir>
+#include <QFile>
+#include <QJSEngine>
+#include <QJSValue>
 #include "url-downloader.h"
 #include "js-helpers.h"
 #include "logger.h"

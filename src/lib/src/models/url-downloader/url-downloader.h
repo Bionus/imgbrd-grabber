@@ -1,6 +1,7 @@
 #ifndef URL_DOWNLOADER_H
 #define URL_DOWNLOADER_H
 
+#include <QJSValue>
 #include <QList>
 #include <QMap>
 #include <QObject>
@@ -33,7 +34,7 @@ struct UrlDownloaderResult
 };
 
 
-class QJSValue;
+class QUrl;
 
 class UrlDownloader : public QObject
 {

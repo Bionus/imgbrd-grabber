@@ -6,6 +6,7 @@
 #include <QString>
 
 
+class QJSEngine;
 class UrlDownloader;
 
 class UrlDownloaderManager : public QObject

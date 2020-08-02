@@ -1,5 +1,7 @@
 #include "url-downloader.h"
 #include <QJSValue>
+#include <QJSValueIterator>
+#include <QUrl>
 #include "js-helpers.h"
 #include "logger.h"
 
@@ -7,7 +9,7 @@
 UrlDownloader::UrlDownloader(QJSValue downloader, int index, QObject *parent)
 	: QObject(parent), m_downloader(std::move(downloader)), m_index(index)
 {
-	m_name = downloader.property("name").toString();
+	m_name = m_downloader.property("name").toString();
 
 	const QStringList regexes = jsToStringList(m_downloader.property("handlers").property(m_index).property("regexes"));
 	m_regexes.reserve(regexes.count());
