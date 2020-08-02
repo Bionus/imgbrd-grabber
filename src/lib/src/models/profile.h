@@ -17,6 +17,7 @@ class MonitorManager;
 class QSettings;
 class Site;
 class Source;
+class UrlDownloaderManager;
 
 class Profile : public QObject
 {
@@ -85,6 +86,7 @@ class Profile : public QObject
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 		MonitorManager *monitorManager() const;
 		DownloadQueryManager *downloadQueryManager() const;
+		UrlDownloaderManager *urlDownloaderManager() const;
 
 	signals:
 		void favoritesChanged();
@@ -110,6 +112,7 @@ class Profile : public QObject
 		QStringList m_additionalTokens;
 		MonitorManager *m_monitorManager;
 		DownloadQueryManager *m_downloadQueryManager;
+		UrlDownloaderManager *m_urlDownloaderManager;
 };
 
 #endif // PROFILE_H
