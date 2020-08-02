@@ -79,7 +79,6 @@ QFont qFontFromString(const QString &str);
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 QUrl removeCacheBuster(QUrl url);
-QStringList jsToStringList(const QJSValue &val);
 
 bool canCreateLinkType(const QString &type, const QString &dir);
 bool createLink(const QString &from, const QString &to, const QString &type);

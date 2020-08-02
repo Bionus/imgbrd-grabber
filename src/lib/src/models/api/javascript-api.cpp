@@ -4,6 +4,7 @@
 #include <QMap>
 // #include <QMutexLocker>
 #include "functions.h"
+#include "js-helpers.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/image.h"
