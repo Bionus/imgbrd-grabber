@@ -18,17 +18,17 @@ struct UrlDownloaderUrl
 
 struct UrlDownloaderFile
 {
-    QString url;
-    int width;
-    int height;
-    int filesize;
-    QString ext;
+	QString url;
+	int width;
+	int height;
+	int filesize;
+	QString ext;
 };
 
 struct UrlDownloaderResult
 {
 	QString error;
-    QMap<QString, QVariant> tokens;
+	QMap<QString, QVariant> tokens;
 	QList<UrlDownloaderFile> files;
 };
 

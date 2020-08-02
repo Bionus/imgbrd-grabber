@@ -15,20 +15,18 @@ Commands::Commands(Profile *profile)
 {
 	QSettings *settings = profile->getSettings();
 
-	settings->beginGroup("Exec");
-		m_commandTagBefore = settings->value("tag_before").toString();
-		m_commandImage = settings->value("image").toString();
-		m_commandTagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
-		settings->beginGroup("SQL");
-			m_mysqlSettings.before = settings->value("before").toString();
-			m_mysqlSettings.tagBefore = settings->value("tag_before").toString();
-			m_mysqlSettings.image = settings->value("image").toString();
-			m_mysqlSettings.tagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
-			m_mysqlSettings.after = settings->value("after").toString();
-		settings->endGroup();
-	settings->endGroup();
+	m_commandTagBefore = settings->value("Exec/tag_before").toString();
+	m_commandImage = settings->value("Exec/image").toString();
+	m_commandTagAfter = settings->value("Exec/tag_after", settings->value("tag").toString()).toString();
 
-	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
+	m_mysqlSettings.before = settings->value("Exec/SQL/before").toString();
+	m_mysqlSettings.tagBefore = settings->value("Exec/SQL/tag_before").toString();
+	m_mysqlSettings.image = settings->value("Exec/SQL/image").toString();
+	m_mysqlSettings.tagAfter = settings->value("Exec/SQL/tag_after", settings->value("tag").toString()).toString();
+	m_mysqlSettings.after = settings->value("Exec/SQL/after").toString();
+
+	m_sqlWorker = new SqlWorker(
+		settings->value("Exec/SQL/driver", "QMYSQL").toString(),
 		settings->value("Exec/SQL/host").toString(),
 		settings->value("Exec/SQL/user").toString(),
 		settings->value("Exec/SQL/password").toString(),

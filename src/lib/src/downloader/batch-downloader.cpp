@@ -63,7 +63,6 @@ void BatchDownloader::start()
 			return;
 		}
 	}
-
 	// Invalid step
 	else if (m_step != BatchDownloadStep::NotStarted) {
 		return;

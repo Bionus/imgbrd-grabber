@@ -60,7 +60,7 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionOp &node)
 
 	// No need to evaluate the right operand in all cases
 	if ((!m_result && node.op == FilenameNodeConditionOp::And)
-			|| (m_result && node.op == FilenameNodeConditionOp::Or)) {
+		|| (m_result && node.op == FilenameNodeConditionOp::Or)) {
 		return;
 	}
 

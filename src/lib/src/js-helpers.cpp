@@ -10,11 +10,11 @@
 
 QJSEngine *buildJsEngine(const QString &helperFile)
 {
-    auto *engine = new QJSEngine();
-    engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
-    engine->globalObject().setProperty("console", engine->newQObject(new JavascriptConsoleHelper("[JavaScript] ", engine)));
+	auto *engine = new QJSEngine();
+	engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
+	engine->globalObject().setProperty("console", engine->newQObject(new JavascriptConsoleHelper("[JavaScript] ", engine)));
 
-    // JavaScript helper file
+	// JavaScript helper file
 	QFile jsHelper(helperFile);
 	if (jsHelper.open(QFile::ReadOnly | QFile::Text)) {
 		QJSValue helperResult = engine->evaluate(jsHelper.readAll(), jsHelper.fileName());

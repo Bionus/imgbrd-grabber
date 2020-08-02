@@ -34,7 +34,8 @@
 #include "vendor/html-entities.h"
 
 
-int lastError() {
+int lastError()
+{
 	#ifdef Q_OS_WIN
 		return GetLastError();
 	#else
@@ -42,7 +43,8 @@ int lastError() {
 	#endif
 }
 
-QString lastErrorString() {
+QString lastErrorString()
+{
 	const int errorCode = lastError();
 	if (errorCode == 0) {
 		return QString();
@@ -51,8 +53,7 @@ QString lastErrorString() {
 	#ifdef Q_OS_WIN
 		// https://stackoverflow.com/a/17387176/828828
 		LPWSTR messageBuffer = nullptr;
-		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR) &messageBuffer, 0, NULL);
 		auto message = QString::fromWCharArray(messageBuffer, size);
 		LocalFree(messageBuffer);
 		return message;
@@ -377,12 +378,13 @@ int levenshtein(QString s1, QString s2)
 }
 
 #ifdef Q_OS_WIN
-wchar_t *toWCharT(const QString &str) {
-	auto *out = new wchar_t[str.length() + 1];
-	str.toWCharArray(out);
-	out[str.length()] = 0;
-	return out;
-}
+	wchar_t *toWCharT(const QString &str)
+	{
+		auto *out = new wchar_t[str.length() + 1];
+		str.toWCharArray(out);
+		out[str.length()] = 0;
+		return out;
+	}
 #endif
 
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
@@ -973,16 +975,17 @@ bool createLink(const QString &from, const QString &to, const QString &type)
 		if (type == "link") {
 			return QFile::link(from, to + ".lnk");
 		}/* else if (type == "symlink") {
-			wchar_t *wFrom = toWCharT(from);
-			wchar_t *wTo = toWCharT(to);
-			const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
-			delete[] wFrom;
-			delete[] wTo;
-			if (!res) {
-				log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
-			}
-			return res;
-		}*/ else if (type == "hardlink") {
+	        wchar_t *wFrom = toWCharT(from);
+	        wchar_t *wTo = toWCharT(to);
+	        const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
+	        delete[] wFrom;
+	        delete[] wTo;
+	        if (!res) {
+	        	log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+	        }
+	        return res;
+	    }*/
+		else if (type == "hardlink") {
 			wchar_t *wFrom = toWCharT(from);
 			wchar_t *wTo = toWCharT(to);
 			const bool res = CreateHardLinkW(wTo, wFrom, NULL);
