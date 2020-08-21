@@ -70,7 +70,7 @@ function parseTweetMedia(sc: any, original: any, media: any): any {
             }
         }
     } else {
-        d.file_url = media["media_url_https"] + ":large";
+        d.file_url = media["media_url_https"] + ":orig";
         d.ext = getExtension(media["media_url_https"]);
     }
 
