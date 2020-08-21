@@ -192,7 +192,8 @@ TEST_CASE("Functions")
 		REQUIRE(getExtension(QUrl("http://test.com/some.dir/file")) == QString(""));
 		REQUIRE(getExtension(QUrl("http://test.com/file.jpg")) == QString("jpg"));
 		REQUIRE(getExtension(QUrl("http://test.com/file.jpg?toto=1")) == QString("jpg"));
-		REQUIRE(getExtension(QUrl("http://test.com/file.jpg?toto=1")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("http://test.com/file.jpg:large")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("http://test.com/index.php?image=file.jpg")) == QString("jpg"));
 	}
 	SECTION("SetExtension")
 	{
@@ -200,6 +201,7 @@ TEST_CASE("Functions")
 		REQUIRE(setExtension(QUrl("http://test.com/file"), "png") == QUrl("http://test.com/file"));
 		REQUIRE(setExtension(QUrl("http://test.com/file.jpg"), "png") == QUrl("http://test.com/file.png"));
 		REQUIRE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png") == QUrl("http://test.com/file.png?toto=1"));
+		REQUIRE(setExtension(QUrl("http://test.com/file.jpg:large"), "png") == QUrl("http://test.com/file.png:large"));
 	}
 
 	SECTION("Levenshtein")

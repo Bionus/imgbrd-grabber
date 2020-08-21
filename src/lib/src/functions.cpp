@@ -464,7 +464,12 @@ QString getExtension(const QString &url)
 {
 	const int lastDot = url.lastIndexOf('.');
 	if (lastDot != -1) {
-		return url.mid(lastDot + 1);
+		const int doubleDot = url.midRef(lastDot + 1).indexOf(':');
+		if (doubleDot != -1) {
+			return url.mid(lastDot + 1, doubleDot);
+		} else {
+			return url.mid(lastDot + 1);
+		}
 	}
 	return QString();
 }
@@ -490,7 +495,8 @@ QUrl setExtension(QUrl url, const QString &extension)
 	const int lastSlash = path.lastIndexOf('/');
 	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
 	if (lastDot != -1) {
-		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension);
+		const int doubleDot = path.midRef(lastDot + 1).indexOf(':');
+		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension + (doubleDot != -1 ? path.mid(lastDot + doubleDot + 1) : ""));
 	}
 
 	return url;
