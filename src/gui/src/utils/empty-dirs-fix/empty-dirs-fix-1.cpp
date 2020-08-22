@@ -25,7 +25,7 @@ EmptyDirsFix1::~EmptyDirsFix1()
 
 void EmptyDirsFix1::next()
 {
-	QStringList dirs = mkList(QDir(ui->lineFolder->text()));
+	QStringList dirs = mkList(QDir(fixFilename("", ui->lineFolder->text())));
 
 	// We don't continue if there were no folders found
 	if (dirs.isEmpty()) {

@@ -1,5 +1,6 @@
 #include "condition-window.h"
 #include "ui_condition-window.h"
+#include "functions.h"
 
 
 ConditionWindow::ConditionWindow(QWidget *parent)
@@ -15,6 +16,7 @@ ConditionWindow::~ConditionWindow()
 
 void ConditionWindow::accept()
 {
-	emit validated(ui->lineCondition->text(), ui->lineFilename->text(), ui->lineFolder->text());
+	const QString dir = fixFilename("", ui->lineFolder->text())
+	emit validated(ui->lineCondition->text(), ui->lineFilename->text(), dir);
 	close();
 }

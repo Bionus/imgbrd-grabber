@@ -51,7 +51,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 	m_details.clear();
 
 	// Check that directory exists
-	QDir dir(ui->lineFolder->text());
+	QDir dir(fixFilename("", ui->lineFolder->text()));
 	if (!dir.exists()) {
 		error(this, tr("This folder does not exist."));
 		ui->buttonContinue->setEnabled(true);

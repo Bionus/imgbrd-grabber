@@ -6,6 +6,7 @@
 #include <QStringList>
 #include <ui_add-unique-window.h>
 #include "downloader/download-query-image.h"
+#include "functions.h"
 #include "helpers.h"
 #include "logger.h"
 #include "models/api/api.h"
@@ -182,7 +183,8 @@ void AddUniqueWindow::addLoadedImage()
 }
 void AddUniqueWindow::addImage(const QSharedPointer<Image> &img)
 {
-	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
+	const QString dir = fixFilename("", ui->lineFolder->text());
+	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), dir));
 	next();
 }
 
