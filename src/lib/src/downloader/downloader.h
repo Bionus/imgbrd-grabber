@@ -15,6 +15,7 @@
 
 
 struct ImageSaveResult;
+class Printer;
 class Profile;
 class Page;
 class Site;
@@ -26,7 +27,7 @@ class Downloader : public QObject
 	public:
 		Downloader() = default;
 		~Downloader() override;
-		Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous = nullptr);
+		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(const QList<QSharedPointer<Image>> &images);
 		void loadNext();
@@ -51,7 +52,6 @@ class Downloader : public QObject
 		void finishedImages(const QList<QSharedPointer<Image>> &);
 		void finishedImagesPage(Page *page);
 		void finishedImage(QSharedPointer<Image> image);
-		void finishedUrls(const QStringList &);
 		void finishedUrlsPage(Page *page);
 		void quit();
 
@@ -59,7 +59,7 @@ class Downloader : public QObject
 		void returnInt(int ret);
 		void returnString(const QString &ret);
 		void returnTagList(const QList<Tag> &tags);
-		void returnStringList(const QStringList &ret);
+		void returnImageList(const QList<QSharedPointer<Image>> &ret);
 		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(TagApiBase *api, TagApi::LoadResult status);
 		void finishedLoadingPageTags(Page *page);
@@ -70,13 +70,14 @@ class Downloader : public QObject
 
 	private:
 		Profile *m_profile;
+		Printer *m_printer;
 		Page *m_lastPage;
 		QStringList m_tags, m_postFiltering;
 		QList<Site*> m_sites;
 		int m_page, m_max, m_perPage, m_waiting, m_ignored, m_duplicates, m_tagsMin;
+		bool m_loadMoreDetails;
 		QString m_location, m_filename, m_user, m_password;
 		bool m_blacklist, m_noDuplicates;
-		QString m_tagsFormat;
 		Blacklist m_blacklistedTags;
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;

@@ -8,6 +8,8 @@
 #include <QUrl>
 #include <stdexcept>
 #include "downloader/downloader.h"
+#include "downloader/printers/json-printer.h"
+#include "downloader/printers/simple-printer.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/filtering/blacklist.h"
@@ -19,41 +21,6 @@
 	#include <vendor/qcommandlineparser.h>
 #endif
 
-void loadMoreDetails(const QList<QSharedPointer<Image>> &images);
-QJsonObject serializeImg(const Image *image, const QMap<QString, Token>& tokens);
-
-void returnJsonArray(const QJsonArray &array)
-{
-	QJsonDocument jsonDoc;
-	jsonDoc.setArray(array);
-
-	QByteArray jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
-	QTextStream(stdout) << qPrintable(jsonResult);
-
-	qApp->quit();
-}
-
-void serializeTags(const QList<Tag> &tags)
-{
-	QJsonArray jsonArray;
-	for (const Tag &tag : tags) {
-		QJsonObject jsonObj;
-		tag.write(jsonObj);
-		jsonArray.append(jsonObj);
-	}
-	returnJsonArray(jsonArray);
-}
-
-void serializeImages(Profile *profile, const QList<QSharedPointer<Image>> &images)
-{
-	QJsonArray jsonArray;
-	for (const auto &image : images) {
-		auto tokens = image->tokens(profile);
-		auto jsObject = serializeImg(image.data(), tokens);
-		jsonArray.append(jsObject);
-	}
-	returnJsonArray(jsonArray);
-}
 
 int main(int argc, char *argv[])
 {
@@ -121,7 +88,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
-	const QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
+	const QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images.");
 	const QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
 	parser.addOption(returnCountOption);
 	parser.addOption(returnTagsOption);
@@ -175,6 +142,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	Printer *printer = parser.isSet(jsonOption)
+		? (Printer*) new JsonPrinter(profile)
+		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
+
 	if (parser.isSet(getDetailsOption)) {
 		if (sites.length() != 1) {
 			throw std::runtime_error("number of provided sites must be 1");
@@ -193,14 +164,7 @@ int main(int argc, char *argv[])
 		QObject::connect(&image, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
 		loop.exec();
 
-		auto tokens = image.tokens(profile);
-		auto jsObject = serializeImg(&image, tokens);
-
-		QJsonDocument jsonDoc;
-		jsonDoc.setObject(jsObject);
-		auto jsonResult = jsonDoc.toJson(QJsonDocument::Indented);
-		QTextStream(stdout) << qPrintable(jsonResult);
-
+		printer->print(image);
 		exit(0);
 	}
 
@@ -210,7 +174,7 @@ int main(int argc, char *argv[])
 	}
 
 	QString blacklistOverride = parser.value(tagsBlacklistOption);
-	Downloader *downloader = new Downloader(profile,
+	Downloader *downloader = new Downloader(profile, printer,
 		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
 		sites,
@@ -225,22 +189,9 @@ int main(int argc, char *argv[])
 		blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
 		parser.isSet(noDuplicatesOption),
 		parser.value(tagsMinOption).toInt(),
-		parser.value(tagsFormatOption));
+		parser.isSet(loadDetailsOption));
 
 	downloader->setQuit(true);
-
-	// JSON output
-	if (parser.isSet(jsonOption)) {
-		downloader->setQuit(false);
-
-		QObject::connect(downloader, &Downloader::finishedTags, serializeTags);
-		QObject::connect(downloader, &Downloader::finishedImages, [&](const QList<QSharedPointer<Image>> &images) {
-			if (parser.isSet(loadDetailsOption)) {
-				loadMoreDetails(images);
-			}
-			serializeImages(profile, images);
-		});
-	}
 
 	// Load the correct data
 	if (parser.isSet(returnCountOption)) {
@@ -251,7 +202,7 @@ int main(int argc, char *argv[])
 		downloader->getTags();
 	} else if (parser.isSet(returnImagesOption)) {
 		downloader->getUrls();
-	} else if (parser.isSet(downloadOption) || parser.isSet(jsonOption)) {
+	} else if (parser.isSet(downloadOption)) {
 		downloader->getImages();
 	} else {
 		parser.showHelp();
@@ -260,76 +211,4 @@ int main(int argc, char *argv[])
 	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
 
 	return app.exec();
-}
-
-void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
-{
-	int work = images.length();
-	QEventLoop loop;
-	int requestsLimit = 5;  // simultan requests
-	int runningRequests = 0;
-	for (auto& image : images) {
-		while (runningRequests >= requestsLimit) {
-			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-		}
-		runningRequests++;
-		image->loadDetails();
-		QObject::connect(image.data(), &Image::finishedLoadingTags, [&](){
-			work--;
-			runningRequests--;
-			if (!work) {
-				loop.quit();
-			}
-		});
-	}
-	loop.exec();
-}
-
-QJsonObject serializeImg(const Image *image, const QMap<QString, Token> &tokens)
-{
-	static QStringList ignoreKeys = {"all", "allo", "allos", "all_namespaces", };
-	QJsonObject jsObject;
-
-	for (auto& key : tokens.keys()) {
-		typedef QVariant::Type Type;
-		if (ignoreKeys.contains(key)) {
-			continue;
-		}
-		if (key.contains("search_")) {
-			continue;
-		}
-
-		const QVariant& qvalue = tokens.value(key).value();
-		auto type = qvalue.type();
-
-		if (type == QVariant::Type::StringList) {
-			QStringList l = qvalue.toStringList();
-			if (l.isEmpty()) {
-				continue;
-			}
-			jsObject.insert(key, QJsonArray::fromStringList(l));
-		} else if (type == QVariant::Type::String) {
-			QString s = qvalue.toString();
-			if (s.isEmpty()) {
-				continue;
-			}
-			jsObject.insert(key, s);
-		} else if (type == Type::Url || type == Type::ULongLong || type == Type::LongLong) {
-			jsObject.insert(key, qvalue.toString());
-		} else if (type == Type::Int) {
-			jsObject.insert(key, qvalue.value<int>());
-		} else if (type == Type::Bool) {
-			jsObject.insert(key, qvalue.value<bool>());
-		} else if (type == Type::DateTime) {
-			jsObject.insert(key, static_cast<int>(qvalue.value<QDateTime>().toTime_t()));
-		} else {
-			qDebug() << qvalue;
-			log(QStringLiteral("using generic QVariant::toString for key: %1").arg(key), Logger::Warning);
-			jsObject.insert(key, qvalue.toString());
-		}
-	}
-	jsObject.insert("isVideo", image->isVideo());
-	jsObject.insert("isGallery", image->isGallery());
-	jsObject.insert("isAnimated", image->isAnimated());
-	return jsObject;
 }

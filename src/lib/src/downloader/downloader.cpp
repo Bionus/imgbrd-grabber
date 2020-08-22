@@ -1,8 +1,12 @@
 #include "downloader/downloader.h"
+#include <QCoreApplication>
+#include <QEventLoop>
+#include <QObject>
 #include <qmath.h>
 #include <iostream>
 #include <utility>
 #include "downloader/image-downloader.h"
+#include "downloader/printers/printer.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/api/api.h"
@@ -12,8 +16,32 @@
 #include "tags/tag-api.h"
 
 
-Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
-	: m_profile(profile), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(std::move(tagsFormat)), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
+void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
+{
+	int work = images.length();
+	QEventLoop loop;
+	int requestsLimit = 5;  // simultan requests
+	int runningRequests = 0;
+	for (auto& image : images) {
+		while (runningRequests >= requestsLimit) {
+			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+		}
+		runningRequests++;
+		image->loadDetails();
+		QObject::connect(image.data(), &Image::finishedLoadingTags, [&](){
+			work--;
+			runningRequests--;
+			if (!work) {
+				loop.quit();
+			}
+		});
+	}
+	loop.exec();
+}
+
+
+Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, Downloader *previous)
+	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
 {}
 
 Downloader::~Downloader()
@@ -360,11 +388,7 @@ void Downloader::finishedLoadingImages(Page *page)
 		}
 	}
 
-	if (m_quit) {
-		downloadImages(images);
-	} else {
-		emit finishedImages(images);
-	}
+	downloadImages(images);
 }
 
 void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
@@ -443,7 +467,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 	}
 
 	QSet<QString> md5s;
-	QVector<QSharedPointer<Image>> images;
+	QList<QSharedPointer<Image>> images;
 	for (Page *p : qAsConst(m_pages)) {
 		for (const QSharedPointer<Image> &img : p->images()) {
 			// Blacklisted tags
@@ -473,51 +497,35 @@ void Downloader::finishedLoadingUrls(Page *page)
 		}
 	}
 
-	QStringList urls;
-	int i = 0;
-	for (const QSharedPointer<Image> &img : images) {
-		if (m_max <= 0 || i++ < m_max) {
-			urls.append(img->url().toString());
-		}
+	if (m_loadMoreDetails) {
+		loadMoreDetails(images);
 	}
 
 	if (m_quit) {
-		returnStringList(urls);
+		returnImageList(images);
 	} else {
-		emit finishedUrls(urls);
+		emit finishedImages(images);
 	}
 }
 
 void Downloader::returnInt(int ret)
 {
-	std::cout << ret << std::endl;
+	m_printer->print(ret);
 	emit quit();
 }
 void Downloader::returnString(const QString &ret)
 {
-	std::cout << ret.toStdString() << std::endl;
+	m_printer->print(ret);
 	emit quit();
 }
 void Downloader::returnTagList(const QList<Tag> &tags)
 {
-	for (const Tag &tag : tags) {
-		QString ret = m_tagsFormat;
-		ret.replace("\\t", "\t");
-		ret.replace("\\n", "\n");
-		ret.replace("\\r", "\r");
-		ret.replace("%tag", tag.text());
-		ret.replace("%count", QString::number(tag.count()));
-		ret.replace("%type", tag.type().name());
-		ret.replace("%stype", QString::number(tag.type().number()));
-		std::cout << ret.toStdString() << std::endl;
-	}
+	m_printer->print(tags);
 	emit quit();
 }
-void Downloader::returnStringList(const QStringList &ret)
+void Downloader::returnImageList(const QList<QSharedPointer<Image>> &ret)
 {
-	for (const QString &str : ret) {
-		std::cout << str.toStdString() << std::endl;
-	}
+	m_printer->print(ret);
 	emit quit();
 }
 
