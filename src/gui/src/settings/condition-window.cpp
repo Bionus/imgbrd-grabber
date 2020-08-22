@@ -16,7 +16,7 @@ ConditionWindow::~ConditionWindow()
 
 void ConditionWindow::accept()
 {
-	const QString dir = fixFilename("", ui->lineFolder->text())
+	const QString dir = fixFilename("", ui->lineFolder->text());
 	emit validated(ui->lineCondition->text(), ui->lineFilename->text(), dir);
 	close();
 }

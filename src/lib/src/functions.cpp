@@ -546,10 +546,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 
 	// Fix directories
 	for (QString &part : parts) {
-		// A part cannot start or finish with a space
-		part = part.trimmed();
-
-		// Trim part
+		// Max length
 		if (part.length() > 255) {
 			part = part.left(255).trimmed();
 		}
@@ -597,7 +594,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	// Fix parameters
 	const QString sep = QStringLiteral("\\");
 	maxLength = maxLength == 0 ? MAX_PATH : maxLength;
-	QString filename = path + fn;
+	QString filename = (path + fn).trimmed();
 
 	// Drive
 	QString drive;
