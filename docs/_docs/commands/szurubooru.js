@@ -1,9 +1,49 @@
 // Usage:
-// node szurubooru.js "username" "token" "tag1 tag2" "safe" "http://source" "path/to/file.jpg"
+// node szurubooru.js "username" "token" "tagType1:tag1 tagType2:tag2" "safe" "http://source" "path/to/file.jpg"
 
 const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
+
+async function getTag(name) {
+    try {
+        const res = await axios.get(`/tag/${name}`);
+        return res.data;
+    } catch (e) {
+        if (e.response.status === 404) {
+            return null;
+        }
+        throw e;
+    }
+}
+async function createTag(name, category) {
+    try {
+        const data = { names: [name], category };
+        await axios.post("/tags", data);
+        console.log(`Tag "${name}" created`);
+    } catch (e) {
+        console.error("Error creating tag: " + e.message);
+        console.error(e.response.data);
+    }
+}
+async function updateTag(name, version, category) {
+    try {
+        const data = { version, category };
+        await axios.put(`/tag/${name}`, data);
+        console.log(`Tag "${name}" updated`);
+    } catch (e) {
+        console.error("Error updating tag: " + e.message);
+        console.error(e.response.data);
+    }
+}
+async function setTagCategory(name, category) {
+    const tag = await getTag(name);
+    if (tag === null) {
+        createTag(name, category);
+    } else if (tag.category !== category) {
+        updateTag(name, tag.version, category);
+    }
+}
 
 (async () => {
     // Szurubooru doesn't use the same ratings as most boorus so we need to map them
@@ -23,11 +63,21 @@ const FormData = require("form-data");
     axios.defaults.headers.common["Authorization"] = "Token " + Buffer.from(username + ":" + token).toString("base64");
     axios.defaults.headers.common["Accept"] = "application/json";
 
+    // Parse tags and update categories
+    const tags = argv[0].split(" ");
+    for (i = 0; i < tags.length; ++i) {
+        const parts = tags[i].split(":");
+        const category = parts.shift();
+        const name = parts.join(":");
+        setTagCategory(name, category);
+        tags[i] = name;
+    }
+
     // Actual data to send to the server
     const data = {
-        "tags": argv[0].split(" "),
-        "safety": ratingsMap[argv[1]],
-        "source": argv[2] || undefined,
+        tags,
+        safety: ratingsMap[argv[1]],
+        source: argv[2] || undefined,
     };
 
     // Create a multipart form data request
