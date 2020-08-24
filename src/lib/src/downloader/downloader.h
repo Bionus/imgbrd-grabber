@@ -27,7 +27,7 @@ class Downloader : public QObject
 	public:
 		Downloader() = default;
 		~Downloader() override;
-		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr);
+		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr, bool login = true);
 		void setQuit(bool quit);
 		void downloadImages(const QList<QSharedPointer<Image>> &images);
 		void loadNext();
@@ -50,9 +50,7 @@ class Downloader : public QObject
 		void finishedTags(const QList<Tag> &);
 		void finishedPageTags(const QList<Tag> &);
 		void finishedImages(const QList<QSharedPointer<Image>> &);
-		void finishedImagesPage(Page *page);
 		void finishedImage(QSharedPointer<Image> image);
-		void finishedUrlsPage(Page *page);
 		void quit();
 
 	public slots:
@@ -63,10 +61,11 @@ class Downloader : public QObject
 		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(TagApiBase *api, TagApi::LoadResult status);
 		void finishedLoadingPageTags(Page *page);
-		void finishedLoadingImages(Page *page);
-		void finishedLoadingUrls(Page *page);
 		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
+
+	protected:
+		QList<QSharedPointer<Image>> getAllImages();
 
 	private:
 		Profile *m_profile;
@@ -85,7 +84,7 @@ class Downloader : public QObject
 		QList<QPair<Site*, int>> m_pagesP, m_oPagesP;
 		QList<Tag> m_results;
 		QVariant m_data;
-		bool m_cancelled, m_quit;
+		bool m_cancelled, m_quit, m_login;
 		Downloader *m_previous;
 };
 

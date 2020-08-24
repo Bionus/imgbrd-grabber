@@ -5,12 +5,15 @@
 #include <qmath.h>
 #include <iostream>
 #include <utility>
+#include "downloader/download-query-group.h"
 #include "downloader/image-downloader.h"
 #include "downloader/printers/printer.h"
 #include "functions.h"
+#include "loader/pack-loader.h"
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/page.h"
+#include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag.h"
 #include "tags/tag-api.h"
@@ -40,8 +43,8 @@ void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
 }
 
 
-Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, Downloader *previous)
-	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_previous(previous)
+Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, Downloader *previous, bool login)
+	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_login(login), m_previous(previous)
 {}
 
 Downloader::~Downloader()
@@ -312,6 +315,37 @@ void Downloader::finishedLoadingTags(TagApiBase *a, TagApi::LoadResult status)
 	}
 }
 
+QList<QSharedPointer<Image>> Downloader::getAllImages()
+{
+	const bool usePacking = m_profile->getSettings()->value("packing_enable", true).toBool();
+	const int imagesPerPack = m_profile->getSettings()->value("packing_size", 1000).toInt();
+	const int packSize = usePacking ? imagesPerPack : -1;
+
+	QSet<QString> md5s;
+	QList<QSharedPointer<Image>> images;
+
+	for (auto *site : m_sites) {
+		DownloadQueryGroup query(m_tags, m_page, m_perPage, m_max, m_postFiltering, m_blacklist, site, m_filename, m_location);
+
+		PackLoader loader(m_profile, query, packSize, nullptr);
+		loader.start(m_login);
+		while (loader.hasNext()) {
+			const auto next = loader.next();
+			for (const auto &img : next) {
+				if (m_noDuplicates) {
+					if (md5s.contains(img->md5())) {
+						continue;
+					}
+					md5s.insert(img->md5());
+				}
+				images.append(img);
+			}
+		}
+	}
+
+	return images;
+}
+
 void Downloader::getImages()
 {
 	if (m_sites.empty()) {
@@ -319,75 +353,7 @@ void Downloader::getImages()
 		return;
 	}
 
-	m_waiting = 0;
-	m_cancelled = false;
-
-	for (Site *site : qAsConst(m_sites)) {
-		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
-		if (pages <= 0 || m_perPage <= 0 || m_max <= 0) {
-			pages = 1;
-		}
-		for (int p = 0; p < pages; ++p) {
-			Page *page = new Page(m_profile, site, m_sites, m_tags, m_page + p, m_perPage, m_postFiltering, true, this);
-			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingImages);
-
-			m_pages.append(page);
-			m_oPages.append(page);
-			m_waiting++;
-		}
-	}
-
-	if (m_previous != nullptr) {
-		m_lastPage = m_previous->lastPage();
-	}
-
-	loadNext();
-}
-void Downloader::finishedLoadingImages(Page *page)
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	log(QStringLiteral("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
-	emit finishedImagesPage(page);
-
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
-	}
-
-	QSet<QString> md5s;
-	QList<QSharedPointer<Image>> images;
-	for (Page *p : qAsConst(m_pages)) {
-		for (const QSharedPointer<Image> &img : p->images()) {
-			// Blacklisted tags
-			if (!m_blacklist) {
-				if (!m_blacklistedTags.match(img->tokens(m_profile)).empty()) {
-					++m_ignored;
-					continue;
-				}
-			}
-
-			// Skip duplicates
-			if (m_noDuplicates) {
-				if (md5s.contains(img->md5())) {
-					continue;
-				}
-				md5s.insert(img->md5());
-			}
-
-			images.append(img);
-			if (images.count() == m_max) {
-				break;
-			}
-		}
-
-		if (images.count() == m_max) {
-			break;
-		}
-	}
-
+	const auto images = getAllImages();
 	downloadImages(images);
 }
 
@@ -430,72 +396,7 @@ void Downloader::getUrls()
 		return;
 	}
 
-	m_waiting = 0;
-	m_ignored = 0;
-	m_duplicates = 0;
-	m_cancelled = false;
-
-	for (Site *site : qAsConst(m_sites)) {
-		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
-		if (pages <= 0 || m_perPage <= 0 || m_max <= 0) {
-			pages = 1;
-		}
-		for (int p = 0; p < pages; ++p) {
-			Page *page = new Page(m_profile, site, m_sites, m_tags, m_page + p, m_perPage, m_postFiltering, true, this);
-			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingUrls);
-
-			m_pages.append(page);
-			m_oPages.append(page);
-			m_waiting++;
-		}
-	}
-
-	loadNext();
-}
-void Downloader::finishedLoadingUrls(Page *page)
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	log(QStringLiteral("Received url page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
-	emit finishedUrlsPage(page);
-
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
-	}
-
-	QSet<QString> md5s;
-	QList<QSharedPointer<Image>> images;
-	for (Page *p : qAsConst(m_pages)) {
-		for (const QSharedPointer<Image> &img : p->images()) {
-			// Blacklisted tags
-			if (!m_blacklist) {
-				if (!m_blacklistedTags.match(img->tokens(m_profile)).empty()) {
-					++m_ignored;
-					continue;
-				}
-			}
-
-			// Skip duplicates
-			if (m_noDuplicates) {
-				if (md5s.contains(img->md5())) {
-					continue;
-				}
-				md5s.insert(img->md5());
-			}
-
-			images.append(img);
-			if (images.count() == m_max) {
-				break;
-			}
-		}
-
-		if (images.count() == m_max) {
-			break;
-		}
-	}
+	const auto images = getAllImages();
 
 	if (m_loadMoreDetails) {
 		loadMoreDetails(images);

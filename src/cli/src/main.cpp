@@ -189,7 +189,9 @@ int main(int argc, char *argv[])
 		blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
 		parser.isSet(noDuplicatesOption),
 		parser.value(tagsMinOption).toInt(),
-		parser.isSet(loadDetailsOption));
+		parser.isSet(loadDetailsOption),
+		nullptr,
+		!parser.isSet(noLoginOption));
 
 	downloader->setQuit(true);
 
