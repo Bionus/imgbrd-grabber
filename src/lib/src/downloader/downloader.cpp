@@ -194,19 +194,6 @@ void Downloader::loadNext()
 	if (m_cancelled) {
 		return;
 	}
-
-	if (!m_images.isEmpty()) {
-		const QSharedPointer<Image> image = m_images.takeFirst();
-		log(QString("Loading image '%1'").arg(image->url().toString()));
-		auto dwl = new ImageDownloader(m_profile, image, m_filename, m_location, 0, true, false, this);
-		if (!m_blacklist) {
-			dwl->setBlacklist(&m_blacklistedTags);
-		}
-		connect(dwl, &ImageDownloader::saved, this, &Downloader::finishedLoadingImage);
-		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
-		dwl->save();
-		return;
-	}
 }
 
 QList<QSharedPointer<Image>> Downloader::getAllImages()
@@ -248,34 +235,21 @@ void Downloader::getImages()
 	}
 
 	const auto images = getAllImages();
-	downloadImages(images);
-}
 
-void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
-{
-	m_images.clear();
-	m_images.append(images);
-	m_waiting = images.size();
+	for (const auto &image : images) {
+		ImageDownloader dwl(m_profile, image, m_filename, m_location, 0, true, false, this);
+		if (!m_blacklist) {
+			dwl.setBlacklist(&m_blacklistedTags);
+		}
 
-	loadNext();
-}
-void Downloader::finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result)
-{
-	Q_UNUSED(result);
+		QEventLoop loop;
+		QObject::connect(&dwl, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+		dwl.save();
+		loop.exec();
 
-	if (m_cancelled) {
-		return;
-	}
-
-	log(QStringLiteral("Received image '%1'").arg(image->url().toString()));
-
-	if (!m_quit) {
-		emit finishedImage(image);
-	}
-
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
+		if (!m_quit) {
+			emit finishedImage(image);
+		}
 	}
 
 	if (m_quit) {

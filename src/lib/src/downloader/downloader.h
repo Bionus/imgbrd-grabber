@@ -28,7 +28,6 @@ class Downloader : public QObject
 		Downloader() = default;
 		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr, bool login = true);
 		void setQuit(bool quit);
-		void downloadImages(const QList<QSharedPointer<Image>> &images);
 		void loadNext();
 		void setData(const QVariant &data);
 		void getPageCount();
@@ -57,7 +56,6 @@ class Downloader : public QObject
 		void returnString(const QString &ret);
 		void returnTagList(const QList<Tag> &tags);
 		void returnImageList(const QList<QSharedPointer<Image>> &ret);
-		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
 
 	protected:
