@@ -76,6 +76,7 @@ class Site : public QObject
 		Source *getSource() const;
 		Api *firstValidApi() const;
 		Api *detailsApi() const;
+		Api *tagsApi() const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);

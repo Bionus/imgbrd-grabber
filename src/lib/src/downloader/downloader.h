@@ -57,7 +57,6 @@ class Downloader : public QObject
 		void returnString(const QString &ret);
 		void returnTagList(const QList<Tag> &tags);
 		void returnImageList(const QList<QSharedPointer<Image>> &ret);
-		void finishedLoadingTags(TagApiBase *api, TagApi::LoadResult status);
 		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
 
@@ -78,8 +77,6 @@ class Downloader : public QObject
 		Blacklist m_blacklistedTags;
 
 		QList<QSharedPointer<Image>> m_images;
-		QList<QPair<Site*, int>> m_pagesP, m_oPagesP;
-		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit, m_login;
 		Downloader *m_previous;

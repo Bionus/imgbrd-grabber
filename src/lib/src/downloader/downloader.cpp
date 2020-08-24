@@ -146,49 +146,52 @@ void Downloader::getTags()
 	m_waiting = 0;
 	m_cancelled = false;
 
+	QList<Tag> results;
+
 	for (Site *site : qAsConst(m_sites)) {
-		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
-		if (pages <= 0 || m_perPage <= 0 || m_max <= 0) {
-			pages = 1;
-		}
-		for (int p = 0; p < pages; ++p) {
-			m_pagesP.append(QPair<Site*, int>(site, m_page + p));
-			m_oPagesP.append(QPair<Site*, int>(site, m_page + p));
-			m_waiting++;
-		}
-	}
-
-	loadNext();
-}
-Api *getTagApi(Site *site)
-{
-	for (Api *a : site->getApis()) {
-		if (a->canLoadTags()) {
-			return a;
-		}
-	}
-	return nullptr;
-}
-void Downloader::loadNext()
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	if (!m_oPagesP.isEmpty()) {
-		log(QStringLiteral("Loading tags"));
-		QPair<Site*, int> tag = m_oPagesP.takeFirst();
-		Site *site = tag.first;
-
-		Api *api = getTagApi(site);
+		Api *api = site->tagsApi();
 		if (api == nullptr) {
 			log(QStringLiteral("No valid API for loading tags for source: %1").arg(site->url()), Logger::Error);
 			return;
 		}
 
-		auto *tagApi = new TagApi(m_profile, site, api, tag.second, m_perPage, "count", this);
-		connect(tagApi, &TagApi::finishedLoading, this, &Downloader::finishedLoadingTags);
-		tagApi->load();
+		int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
+		if (pages <= 0 || m_perPage <= 0 || m_max <= 0) {
+			pages = 1;
+		}
+
+		for (int p = 0; p < pages; ++p) {
+			auto *tagApi = new TagApi(m_profile, site, api, m_page + p, m_perPage, "count", this);
+
+			QEventLoop loop;
+			QObject::connect(tagApi, &TagApi::finishedLoading, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+			tagApi->load();
+			loop.exec();
+
+			const QList<Tag> tags = tagApi->tags();
+			log(QStringLiteral("Received pure tags (%1)").arg(tags.count()));
+			tagApi->deleteLater();
+
+			results.append(tags);
+		}
+	}
+
+	QMutableListIterator<Tag> i(results);
+	while (i.hasNext()) {
+		if (i.next().count() < m_tagsMin) {
+			i.remove();
+		}
+	}
+
+	if (m_quit) {
+		returnTagList(results);
+	} else {
+		emit finishedTags(results);
+	}
+}
+void Downloader::loadNext()
+{
+	if (m_cancelled) {
 		return;
 	}
 
@@ -203,41 +206,6 @@ void Downloader::loadNext()
 		connect(dwl, &ImageDownloader::saved, dwl, &ImageDownloader::deleteLater);
 		dwl->save();
 		return;
-	}
-}
-void Downloader::finishedLoadingTags(TagApiBase *a, TagApi::LoadResult status)
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	if (status == TagApi::LoadResult::Error) {
-		log(QStringLiteral("Error loading pure tags"), Logger::Warning);
-		return;
-	}
-
-	const auto api = dynamic_cast<TagApi*>(a);
-	const QList<Tag> tags = api->tags();
-	log(QStringLiteral("Received pure tags (%1)").arg(tags.count()));
-	api->deleteLater();
-
-	m_results.append(tags);
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
-	}
-
-	QMutableListIterator<Tag> i(m_results);
-	while (i.hasNext()) {
-		if (i.next().count() < m_tagsMin) {
-			i.remove();
-		}
-	}
-
-	if (m_quit) {
-		returnTagList(m_results);
-	} else {
-		emit finishedTags(m_results);
 	}
 }
 
