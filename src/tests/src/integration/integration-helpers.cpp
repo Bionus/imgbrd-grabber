@@ -140,9 +140,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	// Wait for downloader
 	QSignalSpy spy(&downloader, SIGNAL(finishedTags(QList<Tag>)));
 	downloader.getPageTags();
-	if (!spy.wait()) {
-		return result;
-	}
+	REQUIRE(spy.count() == 1);
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();

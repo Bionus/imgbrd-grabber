@@ -26,7 +26,6 @@ class Downloader : public QObject
 
 	public:
 		Downloader() = default;
-		~Downloader() override;
 		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr, bool login = true);
 		void setQuit(bool quit);
 		void downloadImages(const QList<QSharedPointer<Image>> &images);
@@ -58,14 +57,13 @@ class Downloader : public QObject
 		void returnString(const QString &ret);
 		void returnTagList(const QList<Tag> &tags);
 		void returnImageList(const QList<QSharedPointer<Image>> &ret);
-		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(TagApiBase *api, TagApi::LoadResult status);
-		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImage(const QSharedPointer<Image> &image, const QList<ImageSaveResult> &result);
 		void cancel();
 
 	protected:
 		QList<QSharedPointer<Image>> getAllImages();
+		QList<Page*> getAllPagesTags();
 
 	private:
 		Profile *m_profile;
@@ -79,7 +77,6 @@ class Downloader : public QObject
 		bool m_blacklist, m_noDuplicates;
 		Blacklist m_blacklistedTags;
 
-		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images;
 		QList<QPair<Site*, int>> m_pagesP, m_oPagesP;
 		QList<Tag> m_results;

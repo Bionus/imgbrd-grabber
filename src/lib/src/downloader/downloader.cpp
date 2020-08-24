@@ -47,21 +47,28 @@ Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QSt
 	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_login(login), m_previous(previous)
 {}
 
-Downloader::~Downloader()
-{
-	qDeleteAll(m_pages);
-	qDeleteAll(m_pagesC);
-	qDeleteAll(m_pagesT);
-
-	qDeleteAll(m_oPages);
-	qDeleteAll(m_oPagesC);
-	qDeleteAll(m_oPagesT);
-}
-
 
 void Downloader::setQuit(bool quit)
 {
 	m_quit = quit;
+}
+
+QList<Page*> Downloader::getAllPagesTags()
+{
+	QList<Page*> pages;
+
+	for (auto *site : m_sites) {
+		auto *page = new Page(m_profile, site, m_sites, m_tags, m_page, m_perPage, m_postFiltering, true, this);
+
+		QEventLoop loop;
+		QObject::connect(page, &Page::finishedLoadingTags, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+		page->loadTags();
+		loop.exec();
+
+		pages.append(page);
+	}
+
+	return pages;
 }
 
 void Downloader::getPageCount()
@@ -71,39 +78,14 @@ void Downloader::getPageCount()
 		return;
 	}
 
-	m_waiting = 0;
-	m_ignored = 0;
-	m_duplicates = 0;
-	m_cancelled = false;
-
-	for (Site *site : qAsConst(m_sites)) {
-		Page *page = new Page(m_profile, site, m_sites, m_tags, m_page, m_perPage, m_postFiltering, true, this);
-		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageCount);
-
-		m_pagesC.append(page);
-		m_oPagesC.append(page);
-		m_waiting++;
-	}
-
-	loadNext();
-}
-void Downloader::finishedLoadingPageCount(Page *page)
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	log(QStringLiteral("Received page count '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
-
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
-	}
+	const auto pages = getAllPagesTags();
 
 	int total = 0;
-	for (Page *p : qAsConst(m_pagesC)) {
+	for (Page *p : pages) {
 		total += p->imagesCount();
 	}
+
+	qDeleteAll(pages);
 
 	if (m_quit) {
 		returnInt(total);
@@ -119,35 +101,10 @@ void Downloader::getPageTags()
 		return;
 	}
 
-	m_waiting = 0;
-	m_cancelled = false;
-
-	for (Site *site : qAsConst(m_sites)) {
-		Page *page = new Page(m_profile, site, m_sites, m_tags, m_page, m_perPage, m_postFiltering, true, this);
-		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageTags);
-
-		m_pagesT.append(page);
-		m_oPagesT.append(page);
-		m_waiting++;
-	}
-
-	loadNext();
-}
-void Downloader::finishedLoadingPageTags(Page *page)
-{
-	if (m_cancelled) {
-		return;
-	}
-
-	log(QStringLiteral("Received tags '%1' (%2)").arg(page->url().toString(), QString::number(page->tags().count())));
-
-	if (--m_waiting > 0) {
-		loadNext();
-		return;
-	}
+	const auto pages = getAllPagesTags();
 
 	QList<Tag> list;
-	for (auto p : qAsConst(m_pagesT)) {
+	for (auto p : pages) {
 		const QList<Tag> &pageTags = p->tags();
 		for (const Tag &tag : pageTags) {
 			bool found = false;
@@ -162,6 +119,8 @@ void Downloader::finishedLoadingPageTags(Page *page)
 			}
 		}
 	}
+
+	qDeleteAll(pages);
 
 	QMutableListIterator<Tag> i(list);
 	while (i.hasNext()) {
@@ -230,39 +189,6 @@ void Downloader::loadNext()
 		auto *tagApi = new TagApi(m_profile, site, api, tag.second, m_perPage, "count", this);
 		connect(tagApi, &TagApi::finishedLoading, this, &Downloader::finishedLoadingTags);
 		tagApi->load();
-		return;
-	}
-
-	if (!m_oPagesC.isEmpty()) {
-		Page *page = m_oPagesC.takeFirst();
-		if (m_lastPage != nullptr) {
-			page->setLastPage(m_lastPage);
-		}
-		m_lastPage = page;
-		log("Loading count '" + page->url().toString() + "'");
-		page->loadTags();
-		return;
-	}
-
-	if (!m_oPagesT.isEmpty()) {
-		Page *page = m_oPagesT.takeFirst();
-		if (m_lastPage != nullptr) {
-			page->setLastPage(m_lastPage);
-		}
-		m_lastPage = page;
-		log("Loading tags '" + page->url().toString() + "'");
-		page->loadTags();
-		return;
-	}
-
-	if (!m_oPages.isEmpty()) {
-		Page *page = m_oPages.takeFirst();
-		if (m_lastPage != nullptr) {
-			page->setLastPage(m_lastPage);
-		}
-		m_lastPage = page;
-		log("Loading images '" + page->url().toString() + "'");
-		page->load();
 		return;
 	}
 
