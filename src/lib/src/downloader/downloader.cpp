@@ -43,15 +43,15 @@ void loadMoreDetails(const QList<QSharedPointer<Image>> &images)
 }
 
 
-Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, Downloader *previous, bool login)
-	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_cancelled(false), m_quit(false), m_login(login), m_previous(previous)
+Downloader::Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails, bool login)
+	: m_profile(profile), m_printer(printer), m_lastPage(nullptr), m_tags(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_sites(std::move(sources)), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_loadMoreDetails(loadMoreDetails), m_location(std::move(location)), m_filename(std::move(filename)), m_user(std::move(user)), m_password(std::move(password)), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_blacklistedTags(std::move(blacklistedTags)), m_quit(false), m_login(login)
 {}
-
 
 void Downloader::setQuit(bool quit)
 {
 	m_quit = quit;
 }
+
 
 QList<Page*> Downloader::getAllPagesTags()
 {
@@ -88,7 +88,8 @@ void Downloader::getPageCount()
 	qDeleteAll(pages);
 
 	if (m_quit) {
-		returnInt(total);
+		m_printer->print(total);
+		emit quit();
 	} else {
 		emit finishedPageCount(total);
 	}
@@ -130,7 +131,8 @@ void Downloader::getPageTags()
 	}
 
 	if (m_quit) {
-		returnTagList(list);
+		m_printer->print(list);
+		emit quit();
 	} else {
 		emit finishedTags(list);
 	}
@@ -142,9 +144,6 @@ void Downloader::getTags()
 		std::cerr << "No valid source found" << std::endl;
 		return;
 	}
-
-	m_waiting = 0;
-	m_cancelled = false;
 
 	QList<Tag> results;
 
@@ -184,15 +183,10 @@ void Downloader::getTags()
 	}
 
 	if (m_quit) {
-		returnTagList(results);
+		m_printer->print(results);
+		emit quit();
 	} else {
 		emit finishedTags(results);
-	}
-}
-void Downloader::loadNext()
-{
-	if (m_cancelled) {
-		return;
 	}
 }
 
@@ -253,7 +247,8 @@ void Downloader::getImages()
 	}
 
 	if (m_quit) {
-		returnString(QStringLiteral("Downloaded images successfully."));
+		m_printer->print(QStringLiteral("Downloaded images successfully."));
+		emit quit();
 	}
 }
 
@@ -271,57 +266,9 @@ void Downloader::getUrls()
 	}
 
 	if (m_quit) {
-		returnImageList(images);
+		m_printer->print(images);
+		emit quit();
 	} else {
 		emit finishedImages(images);
 	}
 }
-
-void Downloader::returnInt(int ret)
-{
-	m_printer->print(ret);
-	emit quit();
-}
-void Downloader::returnString(const QString &ret)
-{
-	m_printer->print(ret);
-	emit quit();
-}
-void Downloader::returnTagList(const QList<Tag> &tags)
-{
-	m_printer->print(tags);
-	emit quit();
-}
-void Downloader::returnImageList(const QList<QSharedPointer<Image>> &ret)
-{
-	m_printer->print(ret);
-	emit quit();
-}
-
-void Downloader::setData(const QVariant &data)
-{ m_data = data; }
-const QVariant &Downloader::getData() const
-{ return m_data; }
-
-void Downloader::cancel()
-{ m_cancelled = true; }
-
-int Downloader::ignoredCount() const
-{ return m_ignored; }
-int Downloader::duplicatesCount() const
-{ return m_duplicates; }
-int Downloader::pagesCount() const
-{
-	int pages = qCeil(static_cast<qreal>(m_max) / m_perPage);
-	if (pages <= 0 || m_perPage <= 0 || m_max <= 0) {
-		pages = 1;
-	}
-	return pages * m_sites.size();
-}
-int Downloader::imagesMax() const
-{ return m_max; }
-Page *Downloader::lastPage() const
-{ return m_lastPage; }
-
-const QList<Site*> &Downloader::getSites() const
-{ return m_sites; }

@@ -64,7 +64,6 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 		false,
 		0,
 		false,
-		nullptr,
 		false);
 	downloader.setQuit(false);
 

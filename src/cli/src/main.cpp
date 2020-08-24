@@ -190,7 +190,6 @@ int main(int argc, char *argv[])
 		parser.isSet(noDuplicatesOption),
 		parser.value(tagsMinOption).toInt(),
 		parser.isSet(loadDetailsOption),
-		nullptr,
 		!parser.isSet(noLoginOption));
 
 	downloader->setQuit(true);

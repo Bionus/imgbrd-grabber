@@ -3,21 +3,18 @@
 
 #include <QList>
 #include <QObject>
-#include <QPair>
 #include <QSharedPointer>
 #include <QString>
 #include <QStringList>
-#include <QVariant>
 #include "models/filtering/blacklist.h"
 #include "models/image.h"
 #include "tags/tag.h"
-#include "tags/tag-api.h"
 
 
 struct ImageSaveResult;
+class Page;
 class Printer;
 class Profile;
-class Page;
 class Site;
 
 class Downloader : public QObject
@@ -26,37 +23,21 @@ class Downloader : public QObject
 
 	public:
 		Downloader() = default;
-		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, Downloader *previous = nullptr, bool login = true);
+		Downloader(Profile *profile, Printer *printer, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, Blacklist blacklistedTags, bool noDuplicates, int tagsMin, bool loadMoreDetails = false, bool login = true);
 		void setQuit(bool quit);
-		void loadNext();
-		void setData(const QVariant &data);
+
 		void getPageCount();
 		void getTags();
 		void getPageTags();
 		void getImages();
 		void getUrls();
-		const QVariant &getData() const;
-		const QList<Site*> &getSites() const;
-		int ignoredCount() const;
-		int duplicatesCount() const;
-		int pagesCount() const;
-		int imagesMax() const;
-		Page *lastPage() const;
 
 	signals:
 		void finishedPageCount(int);
 		void finishedTags(const QList<Tag> &);
-		void finishedPageTags(const QList<Tag> &);
 		void finishedImages(const QList<QSharedPointer<Image>> &);
 		void finishedImage(QSharedPointer<Image> image);
 		void quit();
-
-	public slots:
-		void returnInt(int ret);
-		void returnString(const QString &ret);
-		void returnTagList(const QList<Tag> &tags);
-		void returnImageList(const QList<QSharedPointer<Image>> &ret);
-		void cancel();
 
 	protected:
 		QList<QSharedPointer<Image>> getAllImages();
@@ -73,11 +54,7 @@ class Downloader : public QObject
 		QString m_location, m_filename, m_user, m_password;
 		bool m_blacklist, m_noDuplicates;
 		Blacklist m_blacklistedTags;
-
-		QList<QSharedPointer<Image>> m_images;
-		QVariant m_data;
-		bool m_cancelled, m_quit, m_login;
-		Downloader *m_previous;
+		bool m_quit, m_login;
 };
 
 #endif // DOWNLOADER_H
