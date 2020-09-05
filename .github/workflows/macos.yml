@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   MacOS:
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: macos-10.15
 
     steps:
