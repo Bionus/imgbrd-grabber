@@ -34,6 +34,7 @@ class Profile : public QObject
 		void syncFavorites() const;
 		void syncKeptForLater() const;
 		void syncIgnored() const;
+		void syncBlacklist() const;
 
 		// Temporary path
 		QString tempPath() const;

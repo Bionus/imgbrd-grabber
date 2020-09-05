@@ -198,6 +198,7 @@ void Profile::sync()
 	syncFavorites();
 	syncKeptForLater();
 	syncIgnored();
+	syncBlacklist();
 
 	// MD5s
 	m_md5s->sync();
@@ -214,14 +215,6 @@ void Profile::sync()
 	auto *newCommands = new Commands(this);
 	m_commands = newCommands;
 	delete oldCommands;
-
-	// Blacklisted tags
-	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileBlacklist.write(m_blacklist.toString().toUtf8());
-		fileBlacklist.close();
-	}
-	m_settings->remove("blacklistedtags");
 
 	// Sync settings
 	if (m_settings != nullptr) {
@@ -266,6 +259,15 @@ void Profile::syncIgnored() const
 		fileIgnored.write(m_ignored.join("\r\n").toUtf8());
 		fileIgnored.close();
 	}
+}
+void  Profile::syncBlacklist() const
+{
+	QFile fileBlacklist(m_path + "/blacklist.txt");
+	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+		fileBlacklist.write(m_blacklist.toString().toUtf8());
+		fileBlacklist.close();
+	}
+	m_settings->remove("blacklistedtags");
 }
 
 QString Profile::tempPath() const
@@ -429,18 +431,24 @@ void Profile::removeSite(Site *site)
 void Profile::setBlacklistedTags(const Blacklist &blacklist)
 {
 	m_blacklist = blacklist;
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
 	m_blacklist.add(tag);
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
 	m_blacklist.remove(tag);
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
