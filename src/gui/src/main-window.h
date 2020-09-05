@@ -75,6 +75,7 @@ class MainWindow : public QMainWindow
 		void focusSearch();
 		void tabNext();
 		void tabPrev();
+		void setCurrentTab(QWidget *widget);
 		// Tag list
 		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);
 		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);

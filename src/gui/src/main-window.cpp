@@ -437,13 +437,8 @@ void MainWindow::initialLoginsDone()
 	}
 	m_forcedTab.clear();
 
-	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
+	setCurrentTab(ui->tabWidget->currentWidget());
 	m_loaded = true;
-
-	// Can be null if not a SearchTab
-	if (m_currentTab != nullptr) {
-		emit tabChanged(m_currentTab);
-	}
 
 	m_monitoringCenter->start();
 }
@@ -635,8 +630,12 @@ void MainWindow::currentTabChanged(int tab)
 		return;
 	}
 
-	QWidget *widget = ui->tabWidget->currentWidget();
+	setCurrentTab(ui->tabWidget->currentWidget());
+}
 
+void MainWindow::setCurrentTab(QWidget *widget)
+{
+	// Check if it's a special kind of tabs for analytics
 	if (qobject_cast<DownloadsTab*>(widget) != nullptr) {
 		Analytics::getInstance().sendScreenView("Downloads");
 	} else if (qobject_cast<MonitorsTab*>(widget) != nullptr) {
@@ -645,18 +644,21 @@ void MainWindow::currentTabChanged(int tab)
 		Analytics::getInstance().sendScreenView("Log");
 	}
 
+	// Handle "normal" search tabs
 	auto searchTab = qobject_cast<SearchTab*>(widget);
 	if (searchTab != nullptr) {
-		if (tab < m_tabs.size()) {
-			SearchTab *tb = m_tabs[tab];
-			if (m_tabsWaitingForPreload.contains(tb)) {
-				tb->load();
-				m_tabsWaitingForPreload.removeAll(tb);
-			} else if (m_currentTab != searchTab) {
-				emit tabChanged(tb);
-			}
-			m_currentTab = searchTab;
+		// The opening of the window does not always load all tabs, leaving some unloaded
+		if (m_tabsWaitingForPreload.contains(searchTab)) {
+			searchTab->load();
+			m_tabsWaitingForPreload.removeAll(searchTab);
 		}
+
+		// Emit the event only if the tab actually changed
+		if (m_currentTab != searchTab) {
+			emit tabChanged(searchTab);
+		}
+		m_currentTab = searchTab;
+
 		Analytics::getInstance().sendScreenView(searchTab->screenName());
 	}
 }
