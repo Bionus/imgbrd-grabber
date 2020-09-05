@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QSettings>
+#include <QSslSocket>
 #include <QStringList>
 #include <QTextStream>
 #include "analytics.h"
@@ -100,6 +101,9 @@ int main(int argc, char *argv[])
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();
+
+	// Ensure SSL libraries are loaded
+	QSslSocket::supportsSsl();
 
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
