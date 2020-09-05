@@ -178,6 +178,7 @@ void DownloadsTab::batchClear()
 	m_groupBatchs.clear();
 	m_groupBatchsModel->cleared();
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::batchClearSel()
@@ -205,6 +206,7 @@ void DownloadsTab::batchRemoveGroups(QList<int> rows)
 		rem++;
 	}
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::batchRemoveUniques(QList<int> rows)
@@ -219,6 +221,7 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 		rem++;
 	}
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 
@@ -261,6 +264,8 @@ void DownloadsTab::batchMove(int diff)
 	auto *selectionModel = new QItemSelectionModel(m_groupBatchsModel, this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
+
+	saveLinkListLater();
 }
 void DownloadsTab::batchMoveToTop()
 {
