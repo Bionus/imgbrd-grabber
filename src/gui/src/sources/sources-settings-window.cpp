@@ -94,6 +94,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	static const QMap<QString, QString> fieldLabels
 	{
 		{ "pseudo", tr("Username") },
+		{ "userId", tr("User ID") },
 		{ "password", tr("Password") },
 		{ "salt", tr("Salt") },
 		{ "apiKey", tr("API key") }

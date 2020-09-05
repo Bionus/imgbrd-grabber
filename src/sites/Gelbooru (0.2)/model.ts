@@ -19,6 +19,19 @@ export const source: ISource = {
         and: " ",
     },
     auth: {
+        url:  {
+            type: "url",
+            fields: [
+                {
+                    id: "userId",
+                    key: "user_id",
+                },
+                {
+                    id: "apiKey",
+                    key: "api_key",
+                },
+            ],
+        },
         session: {
             type: "post",
             url: "/index.php?page=account&s=login&code=00",
