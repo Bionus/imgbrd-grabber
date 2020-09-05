@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QEventLoop>
 #include <QObject>
+#include <QSettings>
 #include <qmath.h>
 #include <iostream>
 #include <utility>

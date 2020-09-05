@@ -260,7 +260,7 @@ void Profile::syncIgnored() const
 		fileIgnored.close();
 	}
 }
-void  Profile::syncBlacklist() const
+void Profile::syncBlacklist() const
 {
 	QFile fileBlacklist(m_path + "/blacklist.txt");
 	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
