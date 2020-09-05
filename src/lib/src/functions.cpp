@@ -626,7 +626,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	// Fix directories
 	for (QString &part : parts) {
 		// A part cannot be one in the forbidden list
-		if (invalidChars && forbidden.contains(part)) {
+		if (invalidChars && forbidden.contains(part, Qt::CaseInsensitive)) {
 			part = part + "!";
 		}
 

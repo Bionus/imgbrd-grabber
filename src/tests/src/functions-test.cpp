@@ -98,6 +98,7 @@ TEST_CASE("Functions")
 			assertFixFilename(0, "folder\\image.jpg", "C:\\test\\", "folder\\image.jpg");
 			assertFixFilename(0, "folder...\\image.jpg", "C:\\test\\", "folder\\image.jpg");
 			assertFixFilename(0, "COM1\\image.jpg", "C:\\test\\", "COM1!\\image.jpg");
+			assertFixFilename(0, "com1\\image.jpg", "C:\\test\\", "com1!\\image.jpg");
 		}
 
 		SECTION("Linux")
