@@ -15,7 +15,8 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
-#include "models/md5-database.h"
+#include "models/md5-database/md5-database-sqlite.h"
+#include "models/md5-database/md5-database-text.h"
 #include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
@@ -108,7 +109,9 @@ Profile::Profile(QString path)
 	}
 
 	// Load MD5s
-	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
+	m_md5s = QFile::exists(m_path + "/md5s.sqlite")
+		? (Md5Database*) new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings)
+		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
 	QFile fileAutoComplete(m_path + "/words.txt");
