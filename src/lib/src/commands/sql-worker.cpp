@@ -23,7 +23,7 @@ bool SqlWorker::connect()
 		return true;
 	}
 
-	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
+	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver, "SQL worker - " + m_database);
 	db.setDatabaseName(m_database);
 	db.setUserName(m_user);
 	db.setPassword(m_password);

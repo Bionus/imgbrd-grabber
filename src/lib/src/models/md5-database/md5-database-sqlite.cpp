@@ -12,7 +12,7 @@ Md5DatabaseSqlite::Md5DatabaseSqlite(QString path, QSettings *settings)
 	: Md5Database(settings), m_path(std::move(path))
 {
 	// Use SQLite database for tests
-	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
+	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), "MD5 database - " + m_path);
 	m_database.setDatabaseName(m_path);
 	if (!m_database.open()) {
 		log(QStringLiteral("Could not open MD5 database: %1").arg(m_database.lastError().text()), Logger::Error);
