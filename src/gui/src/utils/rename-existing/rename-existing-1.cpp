@@ -2,12 +2,15 @@
 #include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QSettings>
 #include <ui_rename-existing-1.h>
 #include "functions.h"
 #include "helpers.h"
+#include "loader/token.h"
 #include "logger.h"
+#include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -142,8 +145,17 @@ void RenameExisting1::getTags()
 
 void RenameExisting1::setImageResult(Image *img)
 {
-	QStringList paths = img->paths(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0);
-	m_getAll[img->md5()].newPath = paths.first();
+	const QString &md5 = img->md5();
+	const QString &dir = ui->lineFolder->text();
+
+	QFileInfo fi(m_getAll[md5].path);
+	auto tokens = img->tokens(m_profile);
+	tokens.insert("directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
+	tokens.insert("filename", Token(fi.fileName()));
+
+	Filename fn(ui->lineFilenameDestination->text());
+	QStringList paths = fn.path(tokens, m_profile, dir, 0, Filename::Complex | Filename::Path);
+	m_getAll[md5].newPath = paths.first();
 
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
 	loadNext();
