@@ -979,7 +979,8 @@ void OptionsWindow::save()
 		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("md5DuplicatesSameDir", md5Duplicates.at(ui->comboMd5DuplicatesSameDir->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
-		const QStringList multipleFiles { "copy", "link" };
+		QStringList multipleFiles { "copy" };
+		multipleFiles.append(linkKeys);
 		settings->setValue("multiple_files", multipleFiles.at(ui->comboMultipleFiles->currentIndex()));
 
 		settings->setValue("filename", ui->lineFilename->text());
