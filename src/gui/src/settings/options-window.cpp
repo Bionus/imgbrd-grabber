@@ -68,7 +68,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	const QStringList wl { "never", "image", "page" };
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
 	const QStringList starts { "none", "loadfirst", "restore" };
-	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "none").toString()));
+	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "restore").toString()));
 	ui->spinHideFavorites->setValue(settings->value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings->value("autodownload", false).toBool());
 	ui->checkHideBlacklisted->setChecked(settings->value("hideblacklisted", false).toBool());

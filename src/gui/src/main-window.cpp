@@ -257,7 +257,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	// Crash restoration
-	m_restore = m_settings->value("start", "none").toString() == "restore";
+	m_restore = m_settings->value("start", "restore").toString() == "restore";
 	if (crashed) {
 		log(QStringLiteral("It seems that Imgbrd-Grabber hasn't shut down properly last time."), Logger::Warning);
 
@@ -391,7 +391,7 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 	// Other positional arguments are treated as tags
 	tags.append(args);
 	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
-	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage") {
+	if (!tags.isEmpty() || m_settings->value("start", "restore").toString() == "firstpage") {
 		loadTag(tags.join(' '), true, false, false);
 	}
 }
