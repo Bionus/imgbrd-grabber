@@ -126,6 +126,7 @@ See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.h
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/ccppoo"><img src="https://avatars0.githubusercontent.com/u/46418312?s=122?s=122" width="122px;" alt=""/><br /><sub><b>ccppoo</b></sub></a><br /><a href="#translation-ccppoo" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/yami-no-tusbas"><img src="https://avatars2.githubusercontent.com/u/3921598?v=4?s=122" width="122px;" alt=""/><br /><sub><b>YamiNoSho</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Ayami-no-tusbas" title="Bug reports">🐛</a> <a href="#question-yami-no-tusbas" title="Answering Questions">💬</a> <a href="#ideas-yami-no-tusbas" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
