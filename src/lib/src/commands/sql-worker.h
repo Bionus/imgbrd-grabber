@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QThread>
+#include <QtSql/QSqlDatabase>
 
 
 class QVariant;
@@ -26,6 +27,7 @@ class SqlWorker : public QThread
 		QString m_password;
 		QString m_database;
 
+		QSqlDatabase m_db;
 		bool m_enabled;
 		bool m_started;
 };
