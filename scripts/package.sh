@@ -8,7 +8,7 @@ mkdir -p $APP_DIR
 
 # Copy all required files to the release directory
 cp "build/gui/Grabber" $APP_DIR
-rsync -ar --exclude="node_modules" --exclude="CMakeLists.txt" --exclude="package*.json" --exclude="*.config.js" --exclude="tsconfig.json" --exclude="tslint.json" --exclude="**/*.ts" --exclude="**/resources" src/sites $APP_DIR
+rsync -ar --exclude="node_modules" --exclude="CMakeLists.txt" --exclude="package*.json" --exclude="*.config.js" --exclude="tsconfig.json" --exclude="tslint.json" --exclude="**/*.ts" --exclude="**/resources" --exclude="Sankaku" --exclude="Tumblr" src/sites $APP_DIR
 cp -r src/dist/common/* $APP_DIR
 cp build/languages/*.qm "$APP_DIR/languages/"
 touch "$APP_DIR/settings.ini"
