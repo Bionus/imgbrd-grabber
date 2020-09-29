@@ -39,7 +39,9 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 
 		// Remove modifiers from tags
 		for (const QString &mod : modifiers) {
-			tags.removeAll(mod);
+			if (tags.removeAll(mod) > 0) {
+				log(QStringLiteral("[%1] Unsupported modifier removed from search: %2").arg(m_site->url(), mod), Logger::Warning);
+			}
 		}
 		m_search = tags;
 
