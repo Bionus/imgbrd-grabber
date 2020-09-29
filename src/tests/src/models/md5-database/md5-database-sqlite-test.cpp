@@ -3,12 +3,14 @@
 #include <QSignalSpy>
 #include "models/md5-database/md5-database-sqlite.h"
 #include "catch.h"
+#include "raii-helpers.h"
 
 
 TEST_CASE("Md5DatabaseSqlite")
 {
-	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+	FileDeleter settingsDeleter("tests/resources/md5s.sqlite");
 
+	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 	{
 		Md5DatabaseSqlite init("tests/resources/md5s.sqlite", &settings);
 		init.add("5a105e8b9d40e1329780d62ea2265d8a", "tests/resources/image_1x1.png");
