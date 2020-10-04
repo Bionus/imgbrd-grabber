@@ -17,12 +17,12 @@ Commands::Commands(Profile *profile)
 
 	m_commandTagBefore = settings->value("Exec/tag_before").toString();
 	m_commandImage = settings->value("Exec/image").toString();
-	m_commandTagAfter = settings->value("Exec/tag_after", settings->value("tag").toString()).toString();
+	m_commandTagAfter = settings->value("Exec/tag_after", settings->value("Exec/tag").toString()).toString();
 
 	m_mysqlSettings.before = settings->value("Exec/SQL/before").toString();
 	m_mysqlSettings.tagBefore = settings->value("Exec/SQL/tag_before").toString();
 	m_mysqlSettings.image = settings->value("Exec/SQL/image").toString();
-	m_mysqlSettings.tagAfter = settings->value("Exec/SQL/tag_after", settings->value("tag").toString()).toString();
+	m_mysqlSettings.tagAfter = settings->value("Exec/SQL/tag_after", settings->value("Exec/SQL/tag").toString()).toString();
 	m_mysqlSettings.after = settings->value("Exec/SQL/after").toString();
 
 	m_sqlWorker = new SqlWorker(
