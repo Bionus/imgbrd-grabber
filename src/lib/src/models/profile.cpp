@@ -162,7 +162,7 @@ Profile::Profile(QString path)
 	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
 
 	// URL downloaders
-	m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
+	// m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
 
 	// Complete auto-complete
 	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
@@ -188,7 +188,7 @@ Profile::~Profile()
 	delete m_commands;
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
-	delete m_urlDownloaderManager;
+	// delete m_urlDownloaderManager;
 }
 
 
