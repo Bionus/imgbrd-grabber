@@ -197,6 +197,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		}
 	} else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif")) {
 		m_url = setExtension(m_url, QStringLiteral("gif"));
+	} else if (ext == QLatin1String("webm") && hasTag(QStringLiteral("mp4"))) {
+		m_url = setExtension(m_url, QStringLiteral("mp4"));
 	}
 
 	// Remove ? in urls
