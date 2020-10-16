@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSettings>
+#include <QSslSocket>
 #include <QStandardPaths>
 #include <QTime>
 #include <QtMath>
