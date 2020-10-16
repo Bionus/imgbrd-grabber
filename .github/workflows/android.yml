@@ -77,3 +77,13 @@ jobs:
         mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber-qml.apk
         mv build/gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk Grabber.apk
         ls -la *.apk
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly-github
+        allowUpdates: true
+        draft: true
+        prerelease: true
+        artifacts: Grabber.apk,Grabber-qml.apk

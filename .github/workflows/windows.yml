@@ -128,3 +128,13 @@ jobs:
       run: |
         copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
         iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" scripts\windows-setup\setup.iss
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly-github
+        allowUpdates: true
+        draft: true
+        prerelease: true
+        artifacts: scripts\windows-setup\Grabber_*.exe
