@@ -99,6 +99,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
 	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
 	log(QStringLiteral("Temporary path: `%1`").arg(m_profile->tempPath()), Logger::Info);
+	LOG(QStringLiteral("Sources found: %1").arg(m_profile->getSites().count()), Logger::Info);
 
 	if (!QSslSocket::supportsSsl()) {
 		log(QStringLiteral("Missing SSL libraries"), Logger::Error);
