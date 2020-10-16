@@ -94,6 +94,43 @@ void logSystemInformation(Profile *profile)
 	}
 }
 
+QStringList splitCommand(QStringView command)
+{
+	QStringList args;
+
+	QString tmp;
+	int quoteCount = 0;
+	bool inQuote = false;
+
+	for (int i = 0; i < command.size(); ++i) {
+		if (command.at(i) == QLatin1Char('"')) {
+			++quoteCount;
+			if (quoteCount == 3) {
+				quoteCount = 0;
+				tmp += command.at(i);
+			}
+			continue;
+		}
+		if (quoteCount) {
+			if (quoteCount == 1) {
+				inQuote = !inQuote;
+			}
+			quoteCount = 0;
+		}
+		if (!inQuote && command.at(i).isSpace()) {
+			args += tmp;
+			tmp.clear();
+		} else {
+			tmp += command.at(i);
+		}
+	}
+	if (!tmp.isEmpty()) {
+		args += tmp;
+	}
+
+	return args;
+}
+
 
 /**
  * Load custom tokens from settings.

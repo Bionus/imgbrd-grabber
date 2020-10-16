@@ -3,6 +3,7 @@
 #include <QProcess>
 #include <QSettings>
 #include "commands/sql-worker.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
 #include "models/profile.h"
@@ -64,12 +65,8 @@ bool Commands::image(const Image &img, const QString &path)
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QStringLiteral("Execution of \"%1\"").arg(exec));
-			Logger::getInstance().logCommand(exec);
-
-			const int code = QProcess::execute(exec);
-			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
+			if (!execute(exec)) {
+				return false;
 			}
 		}
 	}
@@ -109,12 +106,8 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 				.replace("%type%", tag.type().name())
 				.replace("%number%", QString::number(tag.type().number()));
 
-			log(QStringLiteral("Execution of \"%1\"").arg(exec));
-			Logger::getInstance().logCommand(exec);
-
-			const int code = QProcess::execute(exec);
-			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
+			if (!execute(exec)) {
+				return false;
 			}
 		}
 	}
@@ -145,6 +138,30 @@ bool Commands::after() const
 {
 	if (!m_mysqlSettings.after.isEmpty()) {
 		return sqlExec(m_mysqlSettings.after);
+	}
+
+	return true;
+}
+
+bool Commands::execute(const QString &command) const
+{
+	log(QStringLiteral("Execution of \"%1\"").arg(command));
+	Logger::getInstance().logCommand(command);
+
+	QStringList args = splitCommand(command);
+	QString program = args.takeFirst();
+
+	QProcess proc;
+	proc.start(program, args);
+
+	if (!proc.waitForFinished()) {
+		log(QStringLiteral("Command execution timeout"), Logger::Error);
+	}
+
+	const int code = proc.exitCode();
+	if (code != 0) {
+		log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+		return false;
 	}
 
 	return true;
