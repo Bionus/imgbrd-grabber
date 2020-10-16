@@ -1,5 +1,6 @@
 #include "main-screen.h"
 #include <QEventLoop>
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -10,7 +11,9 @@
 
 MainScreen::MainScreen(Profile *profile, QObject *parent)
 	: QObject(parent), m_profile(profile)
-{}
+{
+	connect(&Logger::getInstance(), &Logger::newLog, this, &MainScreen::newLog);
+}
 
 void MainScreen::search(const QString &query, int pageNumber)
 {
@@ -35,4 +38,10 @@ void MainScreen::search(const QString &query, int pageNumber)
 	}
 
 	emit thumbnailsChanged();
+}
+
+void MainScreen::newLog(const QString &message)
+{
+	m_log += message + "\n";
+	emit logChanged();
 }

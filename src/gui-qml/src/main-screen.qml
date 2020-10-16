@@ -15,8 +15,18 @@ ApplicationWindow {
         anchors.topMargin: 40
         anchors.fill: parent
 
+        Label {
+            id: label
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 100
+            text: backend.log
+        }
+
         GridView {
             id: results
+            y: 100
             width: parent.width
             cellWidth: 100
             cellHeight: 100
@@ -90,6 +100,6 @@ ApplicationWindow {
 
 /*##^##
 Designer {
-    D{i:4;anchors_x:0}D{i:6;anchors_width:300;anchors_x:0;anchors_y:0}D{i:8;anchors_y:0}
+    D{i:4}D{i:5}D{i:6}D{i:7}D{i:8}D{i:9}
 }
 ##^##*/
