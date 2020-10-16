@@ -83,7 +83,13 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
+        name: Nightly (Github)
         allowUpdates: true
         draft: false
         prerelease: true
         artifacts: Grabber_*.apk
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** ${{ env.GITHUB_SHA }}
