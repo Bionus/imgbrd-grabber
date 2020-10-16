@@ -37,7 +37,6 @@ class WikiDock : public Dock
 
 	private:
 		Ui::WikiDock *ui;
-		SearchTab *m_tab;
 		QMetaObject::Connection m_connection;
 
 };

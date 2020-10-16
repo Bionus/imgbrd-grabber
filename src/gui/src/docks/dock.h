@@ -15,6 +15,9 @@ class Dock : public QWidget
 
 	public slots:
 		virtual void tabChanged(SearchTab *tab);
+
+	protected:
+		SearchTab *m_currentTab;
 };
 
 #endif // DOCK_H

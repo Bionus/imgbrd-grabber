@@ -337,7 +337,7 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 	}
 
 	Page page(m_profile, m_site, { m_site }, QStringList { m_link });
-	auto *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
+	auto *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, { m_site }, true, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &ZoomWindow::openInNewTab);
 	connect(menu, &TagContextMenu::setFavoriteImage, this, &ZoomWindow::setfavorite);
 	menu->exec(QCursor::pos());

@@ -5,6 +5,7 @@
 #include <ui_keep-for-later-dock.h>
 #include "helpers.h"
 #include "models/profile.h"
+#include "tabs/search-tab.h"
 #include "tag-context-menu.h"
 #include "tags/tag.h"
 #include "ui/QAffiche.h"
@@ -78,7 +79,8 @@ void KeepForLaterDock::contextMenu(const QPoint &pos)
 		return;
 	}
 
-	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, false, this);
+	const QList<Site*> sites = m_currentTab->loadSites();
+	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &KeepForLaterDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }

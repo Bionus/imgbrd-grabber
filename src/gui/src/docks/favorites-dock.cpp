@@ -7,6 +7,7 @@
 #include "helpers.h"
 #include "models/favorite.h"
 #include "models/profile.h"
+#include "tabs/search-tab.h"
 #include "tag-context-menu.h"
 #include "tags/tag.h"
 #include "ui/QAffiche.h"
@@ -47,7 +48,8 @@ void FavoritesDock::contextMenu(const QPoint &pos)
 		return;
 	}
 
-	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, false, this);
+	const QList<Site*> sites = m_currentTab->loadSites();
+	TagContextMenu *menu = new TagContextMenu(m_hover, {}, {}, m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &FavoritesDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }

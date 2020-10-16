@@ -8,6 +8,7 @@
 
 
 class Profile;
+class Site;
 class Tag;
 
 class TagContextMenu : public QMenu
@@ -15,7 +16,7 @@ class TagContextMenu : public QMenu
 	Q_OBJECT
 
 	public:
-		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage = false, QWidget *parent = nullptr);
+		TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, QList<Site*> sites, bool setImage = false, QWidget *parent = nullptr);
 
 	protected slots:
 		void favorite();
@@ -42,6 +43,7 @@ class TagContextMenu : public QMenu
 		QList<Tag> m_allTags;
 		QUrl m_browserUrl;
 		Profile *m_profile;
+		QList<Site*> m_sites;
 };
 
 #endif // TAG_CONTEXT_MENU_H
