@@ -133,9 +133,7 @@ if(ANDROID)
 	# SSL
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
-		set(OPENSSL_ANDROID "D:/Programmation/C++/Qt/OpenSSH-android/openssl-1.0.2p")
-		message(STATUS "OpenSSL for Android dir: ${OPENSSL_ANDROID}")
-		list(APPEND APK_LIBS "${OPENSSL_ANDROID}/libcrypto.so" "${OPENSSL_ANDROID}/libssl.so")
+		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
 	endif()
 
 	# Generate static package directory
