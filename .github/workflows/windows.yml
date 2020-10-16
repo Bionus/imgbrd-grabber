@@ -135,7 +135,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
         allowUpdates: true
-        draft: true
+        draft: false
         prerelease: true
         artifacts: scripts\windows-setup\Grabber_*.exe
         body: |

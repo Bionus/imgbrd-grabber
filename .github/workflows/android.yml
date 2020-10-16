@@ -84,6 +84,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
         allowUpdates: true
-        draft: true
+        draft: false
         prerelease: true
         artifacts: Grabber_*.apk
