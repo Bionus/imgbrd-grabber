@@ -54,7 +54,9 @@ jobs:
         run: ../build/tests/tests
 
     - name: Generate package
-      run: ./scripts/package-linux.sh
+      run: |
+        ./scripts/package-linux.sh
+        mv Grabber.tar.gz Grabber_nightly.tar.gz
 
     - name: Nightly
       uses: ncipollo/release-action@v1
@@ -64,4 +66,4 @@ jobs:
         allowUpdates: true
         draft: true
         prerelease: true
-        artifacts: Grabber.tar.gz
+        artifacts: Grabber_*.tar.gz

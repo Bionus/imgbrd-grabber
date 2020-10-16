@@ -74,8 +74,8 @@ jobs:
 
     - name: Generate package
       run: |
-        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber-qml.apk
-        mv build/gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk Grabber.apk
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber_nightly_qml.apk
+        mv build/gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk Grabber_nightly.apk
         ls -la *.apk
 
     - name: Nightly
@@ -86,4 +86,4 @@ jobs:
         allowUpdates: true
         draft: true
         prerelease: true
-        artifacts: Grabber.apk,Grabber-qml.apk
+        artifacts: Grabber_*.apk

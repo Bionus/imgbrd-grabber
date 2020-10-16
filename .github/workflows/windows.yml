@@ -138,3 +138,8 @@ jobs:
         draft: true
         prerelease: true
         artifacts: scripts\windows-setup\Grabber_*.exe
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** %GITHUB_SHA%

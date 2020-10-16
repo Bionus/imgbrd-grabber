@@ -50,7 +50,9 @@ jobs:
       run: ../build/tests/tests
 
     - name: Generate package
-      run: ./scripts/package-mac.sh
+      run: |
+        ./scripts/package-mac.sh
+        mv Grabber.dmg Grabber_nightly.dmg
 
     - name: Nightly
       uses: ncipollo/release-action@v1
@@ -60,4 +62,4 @@ jobs:
         allowUpdates: true
         draft: true
         prerelease: true
-        artifacts: Grabber.dmg
+        artifacts: Grabber_*.dmg
