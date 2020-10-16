@@ -134,6 +134,7 @@ if(ANDROID)
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
 		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
+		message(STATUS "Android libs: ${ANDROID_EXTRA_LIBS}")
 	endif()
 
 	# Generate static package directory
@@ -155,7 +156,7 @@ if(ANDROID)
 	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml.in" "${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml" @ONLY)
 
 	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${APK_LIBS} PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES})
+	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${ANDROID_EXTRA_LIBS} PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES})
 	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets)
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
