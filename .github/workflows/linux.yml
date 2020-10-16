@@ -21,9 +21,17 @@ jobs:
     - name: Install packages
       run: sudo apt-get install libpulse-dev
 
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/linux.yml') }}
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.7.2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.12.6
 
     - name: Create build dir

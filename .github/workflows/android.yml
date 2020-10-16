@@ -2,7 +2,7 @@ name: Android
 on: push
 
 jobs:
-  Linux:
+  Android:
     runs-on: ubuntu-18.04
 
     steps:
@@ -20,9 +20,17 @@ jobs:
     - name: Install packages
       run: sudo apt-get install libpulse-dev
 
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/android.yml') }}
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.12.6
         target: android
         arch: android_armv7
@@ -65,16 +73,7 @@ jobs:
         cmake --build . --config Release --target gui_apk
 
     - name: Generate package
-      working-directory: build
       run: |
-        ls -la
-        ls -la gui
-        ls -la gui-qml
-        ls -la gui-qml/gui-qml-armeabi-v7a
-        ls -la gui-qml/gui-qml-armeabi-v7a/build
-        ls -la gui-qml/gui-qml-armeabi-v7a/build/outputs
-        ls -la gui-qml/gui-qml-armeabi-v7a/build/outputs/apk
-        ls -la gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug
-        mv gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk ../Grabber-qml.apk
-        mv gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk ../Grabber.apk
-        ls -la ../*.apk
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber-qml.apk
+        mv build/gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk Grabber.apk
+        ls -la *.apk

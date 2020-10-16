@@ -19,9 +19,17 @@ jobs:
         echo ::set-env name=PLATFORM_NAME::x64
         echo ::set-env name=OPENSSL_ROOT_DIR::/usr/local/opt/openssl/
 
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/macos.yml') }}
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.7.2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.12.6
 
     - name: Create build dir
