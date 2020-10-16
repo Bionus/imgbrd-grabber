@@ -2,6 +2,7 @@
 #include <QEventLoop>
 #include <QSettings>
 #include <QSslSocket>
+#include "functions.h"
 #include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
@@ -15,27 +16,7 @@ MainScreen::MainScreen(Profile *profile, QObject *parent)
 	: QObject(parent), m_profile(profile)
 {
 	connect(&Logger::getInstance(), &Logger::newLog, this, &MainScreen::newLog);
-
-	LOG(QStringLiteral("New session started."), Logger::Info);
-	LOG(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
-	#ifdef NIGHTLY
-		LOG(QStringLiteral("Nightly version: %1.").arg(QString(NIGHTLY_COMMIT)), Logger::Info);
-	#endif
-	LOG(QStringLiteral("Software CPU architecture: %1.").arg(VERSION_PLATFORM), Logger::Info);
-	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-		LOG(QStringLiteral("Computer CPU architecture: %1.").arg(QSysInfo::currentCpuArchitecture()), Logger::Info);
-		LOG(QStringLiteral("Qt CPU architecture: %1.").arg(QSysInfo::buildCpuArchitecture()), Logger::Info);
-		LOG(QStringLiteral("Computer platform: %1.").arg(QSysInfo::prettyProductName()), Logger::Info);
-	#endif
-	LOG(QStringLiteral("Loading preferences from `%1`").arg(m_profile->getSettings()->fileName()), Logger::Info);
-	LOG(QStringLiteral("Temporary path: `%1`").arg(m_profile->tempPath()), Logger::Info);
-	LOG(QStringLiteral("Sources found: %1").arg(m_profile->getSites().count()), Logger::Info);
-
-	if (!QSslSocket::supportsSsl()) {
-		LOG(QStringLiteral("Missing SSL libraries"), Logger::Error);
-	} else {
-		LOG(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info);
-	}
+	logSystemInformation(m_profile);
 }
 
 void MainScreen::search(const QString &query, int pageNumber)

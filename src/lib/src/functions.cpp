@@ -31,6 +31,7 @@
 #endif
 #include "filename/conditional-filename.h"
 #include "logger.h"
+#include "models/profile.h"
 #include "vendor/html-entities.h"
 
 
@@ -60,6 +61,37 @@ QString lastErrorString()
 	#else
 		return strerror(errorCode);
 	#endif
+}
+
+
+void logSystemInformation(Profile *profile)
+{
+	// Software
+	LOG(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
+	#ifdef NIGHTLY
+		LOG(QStringLiteral("Nightly version: %1.").arg(QString(NIGHTLY_COMMIT)), Logger::Info);
+	#endif
+
+	// Hardware
+	LOG(QStringLiteral("Software CPU architecture: %1.").arg(VERSION_PLATFORM), Logger::Info);
+	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+		LOG(QStringLiteral("Computer CPU architecture: %1.").arg(QSysInfo::currentCpuArchitecture()), Logger::Info);
+		LOG(QStringLiteral("Qt CPU architecture: %1.").arg(QSysInfo::buildCpuArchitecture()), Logger::Info);
+		LOG(QStringLiteral("Computer platform: %1.").arg(QSysInfo::prettyProductName()), Logger::Info);
+	#endif
+
+	// Paths
+	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
+	LOG(QStringLiteral("Loading preferences from `%1`").arg(profile->getSettings()->fileName()), Logger::Info);
+	LOG(QStringLiteral("Temporary path: `%1`").arg(profile->tempPath()), Logger::Info);
+	LOG(QStringLiteral("Sources found: %1").arg(profile->getSites().count()), Logger::Info);
+
+	// SSL
+	if (!QSslSocket::supportsSsl()) {
+		LOG(QStringLiteral("Missing SSL libraries"), Logger::Error);
+	} else {
+		LOG(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info);
+	}
 }
 
 

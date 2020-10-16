@@ -7,6 +7,7 @@
 
 
 class ConditionalFilename;
+class Profile;
 class QDateTime;
 class QDir;
 class QFont;
@@ -32,6 +33,8 @@ class QVariant;
 	#define FILESIZE_MULTIPLIER 1024
 #endif
 
+
+void logSystemInformation(Profile *profile);
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);

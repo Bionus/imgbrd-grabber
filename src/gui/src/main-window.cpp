@@ -85,27 +85,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		ui->tabWidget->addTab(m_logTab, m_logTab->windowTitle());
 	}
 
-	log(QStringLiteral("New session started."), Logger::Info);
-	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
-	#ifdef NIGHTLY
-		log(QStringLiteral("Nightly version: %1.").arg(QString(NIGHTLY_COMMIT)), Logger::Info);
-	#endif
-	log(QStringLiteral("Software CPU architecture: %1.").arg(VERSION_PLATFORM), Logger::Info);
-	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-		log(QStringLiteral("Computer CPU architecture: %1.").arg(QSysInfo::currentCpuArchitecture()), Logger::Info);
-		log(QStringLiteral("Qt CPU architecture: %1.").arg(QSysInfo::buildCpuArchitecture()), Logger::Info);
-		log(QStringLiteral("Computer platform: %1.").arg(QSysInfo::prettyProductName()), Logger::Info);
-	#endif
-	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
-	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
-	log(QStringLiteral("Temporary path: `%1`").arg(m_profile->tempPath()), Logger::Info);
-	LOG(QStringLiteral("Sources found: %1").arg(m_profile->getSites().count()), Logger::Info);
-
-	if (!QSslSocket::supportsSsl()) {
-		log(QStringLiteral("Missing SSL libraries"), Logger::Error);
-	} else {
-		log(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info);
-	}
+	logSystemInformation(m_profile);
 
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
