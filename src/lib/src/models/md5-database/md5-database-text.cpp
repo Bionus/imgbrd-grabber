@@ -124,3 +124,13 @@ QStringList Md5DatabaseText::paths(const QString &md5)
 {
 	return m_md5s.values(md5);
 }
+
+int Md5DatabaseText::count() const
+{
+	return m_md5s.count();
+}
+
+const QMultiHash<QString, QString> &Md5DatabaseText::getAll() const
+{
+	return m_md5s;
+}

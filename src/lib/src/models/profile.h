@@ -88,6 +88,7 @@ class Profile : public QObject
 		MonitorManager *monitorManager() const;
 		DownloadQueryManager *downloadQueryManager() const;
 		UrlDownloaderManager *urlDownloaderManager() const;
+		Md5Database *md5Database() const;
 
 	signals:
 		void favoritesChanged();

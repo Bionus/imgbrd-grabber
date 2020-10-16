@@ -18,7 +18,6 @@ TEST_CASE("Md5DatabaseSqlite")
 		init.add("ad0234829205b9033196ba818f7a872b", "tests/resources/image_1x1.png");
 	}
 
-
 	SECTION("The constructor should load all the MD5s in memory")
 	{
 		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
@@ -26,6 +25,12 @@ TEST_CASE("Md5DatabaseSqlite")
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").contains("tests/resources/image_1x1.png"));
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").contains("tests/resources/image_200x200.png"));
 		REQUIRE(md5s.exists("ad0234829205b9033196ba818f7a872b") == QStringList("tests/resources/image_1x1.png"));
+	}
+
+	SECTION("It can count the number of entries")
+	{
+		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+		REQUIRE(md5s.count() == 3);
 	}
 
 	SECTION("Can remove an MD5 using remove()")

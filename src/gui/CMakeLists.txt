@@ -84,6 +84,7 @@ file(GLOB SOURCES
 	"src/utils/rename-existing/*.cpp"
 	"src/utils/blacklist-fix/*.cpp"
 	"src/utils/empty-dirs-fix/*.cpp"
+	"src/utils/md5-database-converter/*.cpp"
 	"src/utils/md5-fix/*.cpp"
 	"src/utils/tag-loader/*.cpp"
 	"src/viewer/*.cpp"

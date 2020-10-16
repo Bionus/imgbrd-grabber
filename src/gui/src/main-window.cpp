@@ -61,6 +61,7 @@
 #include "ui/tab-selector.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
+#include "utils/md5-database-converter/md5-database-converter.h"
 #include "utils/md5-fix/md5-fix.h"
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/tag-loader/tag-loader.h"
@@ -858,6 +859,11 @@ void MainWindow::renameExisting()
 void MainWindow::utilTagLoader()
 {
 	auto *win = new TagLoader(m_profile);
+	win->show();
+}
+void MainWindow::utilMd5DatabaseConverter()
+{
+	auto *win = new Md5DatabaseConverter(m_profile);
 	win->show();
 }
 

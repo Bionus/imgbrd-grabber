@@ -25,6 +25,12 @@ TEST_CASE("Md5DatabaseText")
 		REQUIRE(md5s.exists("ad0234829205b9033196ba818f7a872b") == QStringList("tests/resources/image_1x1.png"));
 	}
 
+	SECTION("It can count the number of entries")
+	{
+		Md5DatabaseText md5s("tests/resources/md5s.txt", &settings);
+		REQUIRE(md5s.count() == 3);
+	}
+
 	SECTION("add() followed by sync() should correctly flush the data to the file")
 	{
 		Md5DatabaseText md5s("tests/resources/md5s.txt", &settings);

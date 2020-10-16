@@ -470,6 +470,7 @@ const QStringList &Profile::getAdditionalTokens() const { return m_additionalTok
 MonitorManager *Profile::monitorManager() const { return m_monitorManager; }
 DownloadQueryManager *Profile::downloadQueryManager() const { return m_downloadQueryManager; }
 UrlDownloaderManager *Profile::urlDownloaderManager() const { return m_urlDownloaderManager; }
+Md5Database *Profile::md5Database() const { return m_md5s; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {

@@ -21,6 +21,7 @@ class Md5Database : public QObject
 		virtual void sync() = 0;
 		virtual void add(const QString &md5, const QString &path) = 0;
 		virtual void remove(const QString &md5, const QString &path = {}) = 0;
+		virtual int count() const = 0;
 
 	protected:
 		QPair<QString, QString> action(const QString &md5, const QStringList &paths, QString action);

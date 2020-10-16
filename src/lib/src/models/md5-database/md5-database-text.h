@@ -21,6 +21,9 @@ class Md5DatabaseText : public Md5Database
 		void sync() override;
 		void add(const QString &md5, const QString &path) override;
 		void remove(const QString &md5, const QString &path = {}) override;
+		int count() const override;
+
+		const QMultiHash<QString, QString> &getAll() const;
 
 	protected:
 		QStringList paths(const QString &md5) override;
