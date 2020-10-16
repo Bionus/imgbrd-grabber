@@ -34,6 +34,9 @@ jobs:
     - name: Add bin to path
       run: echo "::add-path::$GITHUB_WORKSPACE/bin"
 
+    - name: Print uncrustify version
+      run: uncrustify -v
+
     - name: Run uncrustify
       run: ./scripts/uncrustify.sh
 
