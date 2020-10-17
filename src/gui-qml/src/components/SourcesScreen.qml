@@ -8,7 +8,12 @@ ColumnLayout {
     signal accepted(string source)
     signal rejected()
 
+    property string currentSource
     property var sources
+
+    ButtonGroup {
+        id: buttonGroup
+    }
 
     ListView {
         id: results
@@ -16,10 +21,11 @@ ColumnLayout {
         Layout.fillHeight: true
         model: sources
 
-        delegate: Text {
+        delegate: RadioDelegate {
             width: parent.width
-            height: 50
+            checked: modelData == currentSource
             text: modelData
+            ButtonGroup.group: buttonGroup
         }
     }
 
@@ -27,7 +33,7 @@ ColumnLayout {
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         Layout.fillWidth: true
 
-        onAccepted: root.accepted(sources[0]) // TODO: add ComboBox / CheckBox selection
+        onAccepted: root.accepted(buttonGroup.checkedButton.text)
         onRejected: root.rejected()
     }
 }

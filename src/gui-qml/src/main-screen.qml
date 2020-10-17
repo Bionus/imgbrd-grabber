@@ -30,6 +30,7 @@ ApplicationWindow {
             id: sourcesScreen
             visible: false
             sources: backend.sites
+            currentSource: site
 
             onAccepted: { site = source; mainStackView.pop() }
             onRejected: mainStackView.pop()
