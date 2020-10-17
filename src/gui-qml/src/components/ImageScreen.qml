@@ -9,10 +9,17 @@ ColumnLayout {
     property var fileUrl
 
     Image {
+        id: image
         Layout.fillWidth: true
         Layout.fillHeight: true
         source: fileUrl
         fillMode: Image.PreserveAspectFit
+    }
+
+    ProgressBar {
+        value: image.progress
+        visible: image.status != Image.Ready
+        Layout.fillWidth: true
     }
 
     DialogButtonBox {
