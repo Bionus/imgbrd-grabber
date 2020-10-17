@@ -14,19 +14,25 @@ ApplicationWindow {
 
     property string site: "danbooru.donmai.us"
 
-    MainScreen {
-        site: root.site
-
-        onOpenSources: sourcesScreen.visible = true
-    }
-
-    SourcesScreen {
-        id: sourcesScreen
-        visible: false
-        sources: backend.sites
+    StackView {
+        id: stackView
         anchors.fill: parent
+        initialItem: mainScreen
 
-        onAccepted: { site = source; sourcesScreen.visible = false }
-        onRejected: sourcesScreen.visible = false
+        MainScreen {
+            id: mainScreen
+            site: root.site
+
+            onOpenSources: stackView.push(sourcesScreen)
+        }
+
+        SourcesScreen {
+            id: sourcesScreen
+            visible: false
+            sources: backend.sites
+
+            onAccepted: { site = source; stackView.pop() }
+            onRejected: stackView.pop()
+        }
     }
 }

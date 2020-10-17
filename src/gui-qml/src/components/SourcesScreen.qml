@@ -10,8 +10,6 @@ ColumnLayout {
 
     property var sources
 
-    anchors.fill: parent
-
     ListView {
         id: results
         Layout.fillWidth: true

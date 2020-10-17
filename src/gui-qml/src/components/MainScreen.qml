@@ -8,8 +8,6 @@ Item {
     signal openSources()
     property string site
 
-    anchors.fill: parent
-
     TabBar {
         id: tabBar
         width: parent.width
@@ -23,10 +21,14 @@ Item {
         }
     }
 
-    StackLayout {
+    SwipeView {
         anchors.topMargin: tabBar.height
         anchors.fill: parent
+        clip: true
         currentIndex: tabBar.currentIndex
+        onCurrentIndexChanged: {
+            tabBar.currentIndex = currentIndex
+        }
 
         SearchTab {
             site: root.site
