@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main-screen.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>SourcesScreen.qml</file>
     </qresource>
 </RCC>

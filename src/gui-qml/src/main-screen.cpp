@@ -7,8 +7,8 @@
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "models/site.h"
 
-#define DEFAULT_SITE "danbooru.donmai.us"
 #define IMAGES_PER_PAGE 20
 
 
@@ -17,14 +17,19 @@ MainScreen::MainScreen(Profile *profile, QObject *parent)
 {
 	connect(&Logger::getInstance(), &Logger::newLog, this, &MainScreen::newLog);
 	logSystemInformation(m_profile);
+
+	for (Site *site : m_profile->getSites().values()) {
+		m_sites.append(site->url());
+	}
+	emit sitesChanged();
 }
 
-void MainScreen::search(const QString &query, int pageNumber)
+void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber)
 {
 	m_query = query;
 	emit queryChanged();
 
-	Site *site = m_profile->getSites().value(DEFAULT_SITE);
+	Site *site = m_profile->getSites().value(siteUrl);
 	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, {}, false, this);
 
 	QEventLoop loop;

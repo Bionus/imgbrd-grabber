@@ -9,7 +9,8 @@ ApplicationWindow {
     height: 500
     title: "Grabber"
 
-    property int page: 1;
+    property int page: 1
+    property string site: "danbooru.donmai.us"
 
     TabBar {
         id: tabBar
@@ -57,9 +58,10 @@ ApplicationWindow {
                 anchors.left: parent.left
                 anchors.bottom: parent.bottom
                 enabled: backend.query !== "" && page > 1
+
                 onClicked: {
                     page--
-                    backend.search(textFieldSearch.text, page)
+                    backend.search(site, textFieldSearch.text, page)
                 }
             }
 
@@ -70,9 +72,10 @@ ApplicationWindow {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 enabled: backend.query !== ""
+
                 onClicked: {
                     page++
-                    backend.search(textFieldSearch.text, page)
+                    backend.search(site, textFieldSearch.text, page)
                 }
             }
 
@@ -94,6 +97,8 @@ ApplicationWindow {
                 anchors.rightMargin: 40
                 anchors.left: parent.left
                 anchors.leftMargin: 40
+
+                onClicked: sourcesScreen.visible = true
             }
 
             Button {
@@ -102,7 +107,8 @@ ApplicationWindow {
                 text: "Go"
                 anchors.right: parent.right
                 anchors.top: parent.top
-                onClicked: backend.search(textFieldSearch.text, page)
+
+                onClicked: backend.search(site, textFieldSearch.text, page)
             }
         }
 
@@ -118,10 +124,14 @@ ApplicationWindow {
             }
         }
     }
-}
 
-/*##^##
-Designer {
-    D{i:4}D{i:5}D{i:6}D{i:7}D{i:8}D{i:9}
+    SourcesScreen {
+        id: sourcesScreen
+        visible: false
+        sources: backend.sites
+        anchors.fill: parent
+
+        onAccepted: { site = source; sourcesScreen.visible = false }
+        onRejected: sourcesScreen.visible = false
+    }
 }
-##^##*/
