@@ -13,7 +13,15 @@ Item {
     property int page: 1
     property string site
     property string query
-    property var thumbnails
+    property var results
+
+    Component {
+        id: imageScreen
+
+        ImageScreen {
+            onClosed: mainStackView.pop()
+        }
+    }
 
     ScrollView {
         anchors.bottomMargin: 40
@@ -21,16 +29,21 @@ Item {
         anchors.fill: parent
 
         ColumnFlow {
-            id: results
+            id: resultsLayout
             width: parent.width
             columns: 3
-            model: thumbnails
+            model: results
 
             delegate: Image {
                 source: modelData.previewUrl
                 fillMode: Image.PreserveAspectFit
 
                 onHeightChanged: resultsRefresher.restart()
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: mainStackView.push(imageScreen, { fileUrl: modelData.fileUrl })
+                }
             }
         }
 
@@ -40,7 +53,7 @@ Item {
             running: false
             repeat: false
 
-            onTriggered: results.reEvalColumns()
+            onTriggered: resultsLayout.reEvalColumns()
         }
     }
 

@@ -33,7 +33,7 @@ Item {
         SearchTab {
             site: root.site
             query: backend.query
-            thumbnails: backend.thumbnails
+            results: backend.results
 
             onOpenSources: root.openSources()
             onSearch: backend.search(site, query, page)

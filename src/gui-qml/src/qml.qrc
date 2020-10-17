@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main-screen.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>components/ImageScreen.qml</file>
         <file>components/LogTab.qml</file>
         <file>components/MainScreen.qml</file>
         <file>components/SearchTab.qml</file>

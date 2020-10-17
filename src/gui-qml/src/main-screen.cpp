@@ -40,13 +40,13 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 
 	QList<QSharedPointer<Image>> results = page->images();
 
-	m_thumbnails.clear();
-	m_thumbnails.reserve(results.count());
+	m_results.clear();
+	m_results.reserve(results.count());
 	for (const QSharedPointer<Image> &img : results) {
-		m_thumbnails.append(new ImagePreview(img->url(Image::Size::Thumbnail).toString(), this));
+		m_results.append(new ImagePreview(img->url(Image::Size::Thumbnail).toString(), img->url(Image::Size::Full).toString(), this));
 	}
 
-	emit thumbnailsChanged();
+	emit resultsChanged();
 }
 
 void MainScreen::newLog(const QString &message)

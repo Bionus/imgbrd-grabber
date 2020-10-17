@@ -15,7 +15,7 @@ ApplicationWindow {
     property string site: "danbooru.donmai.us"
 
     StackView {
-        id: stackView
+        id: mainStackView
         anchors.fill: parent
         initialItem: mainScreen
 
@@ -23,7 +23,7 @@ ApplicationWindow {
             id: mainScreen
             site: root.site
 
-            onOpenSources: stackView.push(sourcesScreen)
+            onOpenSources: mainStackView.push(sourcesScreen)
         }
 
         SourcesScreen {
@@ -31,8 +31,8 @@ ApplicationWindow {
             visible: false
             sources: backend.sites
 
-            onAccepted: { site = source; stackView.pop() }
-            onRejected: stackView.pop()
+            onAccepted: { site = source; mainStackView.pop() }
+            onRejected: mainStackView.pop()
         }
     }
 }
