@@ -1,5 +1,8 @@
+import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+
+import "../vendor"
 
 Item {
     id: root
@@ -17,19 +20,27 @@ Item {
         anchors.topMargin: 40
         anchors.fill: parent
 
-        GridView {
+        ColumnFlow {
             id: results
             width: parent.width
-            cellWidth: 100
-            cellHeight: 100
+            columns: 3
             model: thumbnails
 
             delegate: Image {
                 source: modelData.previewUrl
-                width: 100
-                height: 100
                 fillMode: Image.PreserveAspectFit
+
+                onHeightChanged: resultsRefresher.restart()
             }
+        }
+
+        Timer {
+            id: resultsRefresher
+            interval: 100
+            running: false
+            repeat: false
+
+            onTriggered: results.reEvalColumns()
         }
     }
 

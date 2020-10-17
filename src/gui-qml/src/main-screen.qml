@@ -14,36 +14,10 @@ ApplicationWindow {
 
     property string site: "danbooru.donmai.us"
 
-    TabBar {
-        id: tabBar
-        width: parent.width
+    MainScreen {
+        site: root.site
 
-        TabButton {
-            text: "Search"
-        }
-
-        TabButton {
-            text: "Log"
-        }
-    }
-
-    StackLayout {
-        anchors.topMargin: tabBar.height
-        anchors.fill: parent
-        currentIndex: tabBar.currentIndex
-
-        SearchTab {
-            site: root.site
-            query: backend.query
-            thumbnails: backend.thumbnails
-
-            onOpenSources: sourcesScreen.visible = true
-            onSearch: backend.search(site, query, page)
-        }
-
-        LogTab {
-            log: backend.log
-        }
+        onOpenSources: sourcesScreen.visible = true
     }
 
     SourcesScreen {
