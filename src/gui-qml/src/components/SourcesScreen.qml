@@ -7,6 +7,7 @@ ColumnLayout {
 
     signal accepted(string source)
     signal rejected()
+
     property var sources
 
     anchors.fill: parent
