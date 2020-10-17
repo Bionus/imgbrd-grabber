@@ -95,7 +95,7 @@ void logSystemInformation(Profile *profile)
 	}
 }
 
-QStringList splitCommand(QStringView command)
+QStringList splitCommand(const QString &command)
 {
 	QStringList args;
 

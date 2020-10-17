@@ -35,7 +35,7 @@ class QVariant;
 
 
 void logSystemInformation(Profile *profile);
-QStringList splitCommand(QStringView command);
+QStringList splitCommand(const QString &command);
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);
