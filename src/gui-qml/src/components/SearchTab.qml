@@ -5,7 +5,7 @@ import QtQuick.Controls 2.5
 import "../vendor"
 
 Item {
-    id: root
+    id: searchTab
 
     signal openSources()
     signal search(string site, string query, int page)
@@ -14,6 +14,13 @@ Item {
     property string site
     property string query
     property var results
+
+    function load(tag) {
+        if (tag) {
+            textFieldSearch.text = tag
+        }
+        searchTab.search(site, textFieldSearch.text, page)
+    }
 
     Component {
         id: imageScreen
@@ -71,7 +78,7 @@ Item {
 
         onClicked: {
             page--
-            root.search(site, textFieldSearch.text, page)
+            searchTab.load()
         }
     }
 
@@ -84,7 +91,7 @@ Item {
 
         onClicked: {
             page++
-            root.search(site, textFieldSearch.text, page)
+            searchTab.load()
         }
     }
 
@@ -106,7 +113,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 40
 
-        onClicked: root.openSources()
+        onClicked: searchTab.openSources()
     }
 
     Button {
@@ -115,6 +122,6 @@ Item {
         anchors.right: parent.right
         anchors.top: parent.top
 
-        onClicked: root.search(site, textFieldSearch.text, page)
+        onClicked: searchTab.load()
     }
 }

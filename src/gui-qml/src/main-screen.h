@@ -13,18 +13,18 @@ class ImagePreview : public QObject
 
 	Q_PROPERTY(QString previewUrl READ previewUrl CONSTANT)
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
-	Q_PROPERTY(QString tags READ tags CONSTANT)
+	Q_PROPERTY(QStringList tags READ tags CONSTANT)
 
 	public:
-		ImagePreview(QString previewUrl, QString fileUrl, QString tags, QObject *parent = nullptr) : QObject(parent), m_previewUrl(previewUrl), m_fileUrl(fileUrl), m_tags(tags) {}
+		ImagePreview(QString previewUrl, QString fileUrl, QStringList tags, QObject *parent = nullptr) : QObject(parent), m_previewUrl(previewUrl), m_fileUrl(fileUrl), m_tags(tags) {}
 		QString previewUrl() const { return m_previewUrl; }
 		QString fileUrl() const { return m_fileUrl; }
-		QString tags() const { return m_tags; }
+		QStringList tags() const { return m_tags; }
 
 	private:
 		QString m_previewUrl;
 		QString m_fileUrl;
-		QString m_tags;
+		QStringList m_tags;
 };
 
 class MainScreen : public QObject

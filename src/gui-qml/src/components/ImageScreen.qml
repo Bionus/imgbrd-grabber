@@ -49,8 +49,20 @@ ColumnLayout {
         ScrollView {
             clip: true
 
-            Text {
-                text: image.tags
+            ListView {
+                model: image.tags
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                delegate: Text {
+                    text: modelData
+                    textFormat: Text.RichText
+
+                    onLinkActivated: {
+                        root.closed()
+                        searchTab.load(link)
+                    }
+                }
             }
         }
     }

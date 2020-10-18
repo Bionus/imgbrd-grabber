@@ -8,6 +8,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "tags/tag-stylist.h"
 
 #define IMAGES_PER_PAGE 20
 
@@ -46,7 +47,7 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 		m_results.append(new ImagePreview(
 			img->url(Image::Size::Thumbnail).toString(),
 			img->url(Image::Size::Full).toString(),
-			img->tagsString().join("\n"),
+			TagStylist(m_profile).stylished(img->tags(), true, false, "type"),
 			this
 		));
 	}
