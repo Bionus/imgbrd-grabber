@@ -1,5 +1,6 @@
 #include "search-syntax-highlighter.h"
 #include <QColor>
+#include <QRegularExpression>
 
 
 SearchSyntaxHighlighter::SearchSyntaxHighlighter(QTextDocument *parent)

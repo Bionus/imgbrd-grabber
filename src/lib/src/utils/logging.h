@@ -1,8 +1,10 @@
 #ifndef UTILS_LOGGING_H
 #define UTILS_LOGGING_H
 
-class Profile;
+#include <QString>
 
+
+class Profile;
 
 void logSystemInformation(Profile *profile);
 QString logToHtml(const QString &msg);

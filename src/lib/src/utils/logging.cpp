@@ -1,5 +1,7 @@
 #include "logging.h"
 #include <QCoreApplication>
+#include <QMap>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QSslSocket>
 #include <QSysInfo>
