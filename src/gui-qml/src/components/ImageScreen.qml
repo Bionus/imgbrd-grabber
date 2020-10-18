@@ -8,12 +8,11 @@ ColumnLayout {
     signal closed()
     property var fileUrl
 
-    Image {
+    ZoomableImage {
         id: image
         Layout.fillWidth: true
         Layout.fillHeight: true
         source: fileUrl
-        fillMode: Image.PreserveAspectFit
     }
 
     ProgressBar {
