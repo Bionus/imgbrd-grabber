@@ -39,10 +39,11 @@ Item {
         anchors.bottomMargin: 40
         anchors.topMargin: 40
         anchors.fill: parent
+        contentHeight: resultsLayout.contentHeight
 
         ColumnFlow {
             id: resultsLayout
-            width: parent.width
+            anchors.fill: parent
             columns: 3
             model: results
 
