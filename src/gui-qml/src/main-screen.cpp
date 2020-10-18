@@ -43,7 +43,12 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	m_results.clear();
 	m_results.reserve(results.count());
 	for (const QSharedPointer<Image> &img : results) {
-		m_results.append(new ImagePreview(img->url(Image::Size::Thumbnail).toString(), img->url(Image::Size::Full).toString(), this));
+		m_results.append(new ImagePreview(
+			img->url(Image::Size::Thumbnail).toString(),
+			img->url(Image::Size::Full).toString(),
+			img->tagsString().join("\n"),
+			this
+		));
 	}
 
 	emit resultsChanged();

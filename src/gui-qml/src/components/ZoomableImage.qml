@@ -16,11 +16,6 @@ Flickable {
     contentWidth: imageContainer.width
     contentHeight: imageContainer.height
 
-    Text {
-        text: "zoom: " + currentZoom + " / step: " + currentZoomStep
-        height: 50
-    }
-
     Item {
         id: imageContainer
 
@@ -30,7 +25,6 @@ Flickable {
         Image {
             id: image
 
-            source: fileUrl
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
 

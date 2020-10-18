@@ -19,6 +19,11 @@ Item {
         id: imageScreen
 
         ImageScreen {
+            image: {
+                fileUrl: ""
+                tags: ""
+            }
+
             onClosed: mainStackView.pop()
         }
     }
@@ -42,7 +47,7 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: mainStackView.push(imageScreen, { fileUrl: modelData.fileUrl })
+                    onClicked: mainStackView.push(imageScreen, { image: modelData })
                 }
             }
         }

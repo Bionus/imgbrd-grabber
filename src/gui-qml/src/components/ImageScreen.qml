@@ -6,19 +6,53 @@ ColumnLayout {
     id: root
 
     signal closed()
-    property var fileUrl
+    property var image
 
-    ZoomableImage {
-        id: image
+    TabBar {
+        id: tabBar
         Layout.fillWidth: true
-        Layout.fillHeight: true
-        source: fileUrl
+
+        TabButton {
+            text: "Image"
+        }
+
+        TabButton {
+            text: "Details"
+        }
     }
 
-    ProgressBar {
-        value: image.progress
-        visible: image.status != Image.Ready
+    SwipeView {
         Layout.fillWidth: true
+        Layout.fillHeight: true
+        clip: true
+        currentIndex: tabBar.currentIndex
+        onCurrentIndexChanged: {
+            tabBar.currentIndex = currentIndex
+        }
+
+        ColumnLayout {
+            ZoomableImage {
+                id: img
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                source: image.fileUrl
+                clip: true
+            }
+
+            ProgressBar {
+                value: img.progress
+                visible: img.status != Image.Ready
+                Layout.fillWidth: true
+            }
+        }
+
+        ScrollView {
+            clip: true
+
+            Text {
+                text: image.tags
+            }
+        }
     }
 
     DialogButtonBox {
