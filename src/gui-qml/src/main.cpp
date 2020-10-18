@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "main-screen.h"
 #include "models/profile.h"
+#include "syntax-highlighter-helper.h"
 
 
 int main(int argc, char *argv[])
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 
 	// Copy settings files to writable directory
 	const QStringList toCopy { "sites/", "themes/", "webservices/" };

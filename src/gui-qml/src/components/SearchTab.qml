@@ -96,14 +96,11 @@ Item {
         }
     }
 
-    TextField {
+    SearchField {
         id: textFieldSearch
+
         text: "rating:safe wallpaper"
         placeholderText: "Search..."
-        anchors.right: parent.right
-        anchors.rightMargin: 40
-        anchors.left: parent.left
-        anchors.top: parent.top
     }
 
     Button {
@@ -118,6 +115,7 @@ Item {
     }
 
     Button {
+        id: searchButton
         width: 40
         text: "Go"
         anchors.right: parent.right
