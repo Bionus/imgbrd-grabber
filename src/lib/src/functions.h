@@ -34,7 +34,6 @@ class QVariant;
 #endif
 
 
-void logSystemInformation(Profile *profile);
 QStringList splitCommand(const QString &command);
 
 QDateTime qDateTimeFromString(const QString &str);

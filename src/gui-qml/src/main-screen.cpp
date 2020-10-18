@@ -9,6 +9,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag-stylist.h"
+#include "utils/logging.h"
 
 #define IMAGES_PER_PAGE 20
 
@@ -57,6 +58,10 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 
 void MainScreen::newLog(const QString &message)
 {
-	m_log += message + "\n";
+	if (!m_log.isEmpty()) {
+		m_log += "<br/>";
+	}
+	m_log += logToHtml(message);
+
 	emit logChanged();
 }

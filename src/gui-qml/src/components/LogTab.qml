@@ -1,3 +1,4 @@
+import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 ScrollView {
@@ -8,5 +9,6 @@ ScrollView {
     Label {
         anchors.fill: parent
         text: log
+        textFormat: Text.RichText
     }
 }
