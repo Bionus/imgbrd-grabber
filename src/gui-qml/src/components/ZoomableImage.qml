@@ -16,6 +16,17 @@ Flickable {
     contentWidth: imageContainer.width
     contentHeight: imageContainer.height
 
+    function recalculateSize() {
+        var scale = Math.min(flickable.width / image.width, flickable.height / image.height)
+        image.scale = scale * currentZoom
+        pinchArea.minScale = scale
+        pinchArea.maxScale = scale * zoomSteps[zoomSteps.length - 1]
+        flickable.returnToBounds()
+    }
+
+    onWidthChanged: recalculateSize()
+    onHeightChanged: recalculateSize()
+
     Item {
         id: imageContainer
 
@@ -28,14 +39,7 @@ Flickable {
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
 
-            onStatusChanged: {
-                if (status == Image.Ready) {
-                    scale = Math.min(flickable.width / width, flickable.height / height);
-                    pinchArea.minScale = scale
-                    pinchArea.maxScale = scale * zoomSteps[zoomSteps.length - 1]
-                    flickable.returnToBounds()
-                }
-            }
+            onStatusChanged: if (status == Image.Ready) recalculateSize()
         }
     }
 
