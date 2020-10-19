@@ -479,10 +479,12 @@ QString stripTags(QString str)
  */
 void shutDown(int timeout)
 {
-	#if defined(Q_OS_WIN)
-		QProcess::startDetached("shutdown -s -f -t " + QString::number(timeout));
-	#else
-		QProcess::startDetached("shutdown " + QString::number(timeout));
+	#if !defined(QT_NO_PROCESS)
+		#if defined(Q_OS_WIN)
+			QProcess::startDetached("shutdown -s -f -t " + QString::number(timeout));
+		#else
+			QProcess::startDetached("shutdown " + QString::number(timeout));
+		#endif
 	#endif
 }
 
@@ -491,10 +493,12 @@ void shutDown(int timeout)
  */
 void openTray()
 {
-	#if defined(Q_OS_WIN)
-		QProcess::startDetached(QStringLiteral("CDR.exe open"));
-	#else
-		QProcess::startDetached(QStringLiteral("eject cdrom"));
+	#if !defined(QT_NO_PROCESS)
+		#if defined(Q_OS_WIN)
+			QProcess::startDetached(QStringLiteral("CDR.exe open"));
+		#else
+			QProcess::startDetached(QStringLiteral("eject cdrom"));
+		#endif
 	#endif
 }
 

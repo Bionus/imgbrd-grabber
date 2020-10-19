@@ -145,26 +145,31 @@ bool Commands::after() const
 
 bool Commands::execute(const QString &command) const
 {
-	log(QStringLiteral("Execution of \"%1\"").arg(command));
-	Logger::getInstance().logCommand(command);
-
-	QStringList args = splitCommand(command);
-	QString program = args.takeFirst();
-
-	QProcess proc;
-	proc.start(program, args);
-
-	if (!proc.waitForFinished()) {
-		log(QStringLiteral("Command execution timeout"), Logger::Error);
-	}
-
-	const int code = proc.exitCode();
-	if (code != 0) {
-		log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+	#if defined(QT_NO_PROCESS)
+		log(QStringLiteral("Cannot run commands on this platform (no QProcess"), Logger::Error);
 		return false;
-	}
+	#else
+		log(QStringLiteral("Execution of \"%1\"").arg(command));
+		Logger::getInstance().logCommand(command);
 
-	return true;
+		QStringList args = splitCommand(command);
+		QString program = args.takeFirst();
+
+		QProcess proc;
+		proc.start(program, args);
+
+		if (!proc.waitForFinished()) {
+			log(QStringLiteral("Command execution timeout"), Logger::Error);
+		}
+
+		const int code = proc.exitCode();
+		if (code != 0) {
+			log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+			return false;
+		}
+
+		return true;
+	#endif
 }
 
 bool Commands::sqlExec(const QString &sql) const

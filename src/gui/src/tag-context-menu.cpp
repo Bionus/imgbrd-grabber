@@ -107,7 +107,9 @@ void TagContextMenu::openInNewTab()
 }
 void TagContextMenu::openInNewWindow()
 {
-	QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	#if !defined(QT_NO_PROCESS)
+		QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	#endif
 }
 void TagContextMenu::openInBrowser()
 {
