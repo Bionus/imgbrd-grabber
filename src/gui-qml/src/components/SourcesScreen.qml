@@ -26,6 +26,8 @@ ColumnLayout {
             checked: modelData == currentSource
             text: modelData
             ButtonGroup.group: buttonGroup
+
+            onCheckedChanged: if (checked) currentSource = modelData
         }
     }
 
