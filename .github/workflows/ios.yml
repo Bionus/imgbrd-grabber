@@ -1,0 +1,54 @@
+name: iOS
+on: push
+
+jobs:
+  iOS:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Set environment
+      run: |
+        echo ::set-env name=GRABBER_VERSION::nightly
+        echo ::set-env name=GRABBER_IS_NIGHTLY::1
+        echo ::set-env name=PLATFORM_NAME::x64
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/ios.yml') }}
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.12.6
+        target: ios
+
+    - name: Create build dir
+      run: mkdir build
+
+    - name: Configure
+      working-directory: build
+      run: |
+        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%" \
+          -DUSE_SSL=0 -DCONFIG+=iphoneos -DCMAKE_SYSTEM_NAME=iOS
+
+    - name: Compile
+      working-directory: build
+      run: |
+        cmake --build . --config Release --target sites
+        cmake --build . --config Release --target gui-qml
+#        cmake --build . --config Release --target gui
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: IOS
+        path: bin

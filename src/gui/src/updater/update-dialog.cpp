@@ -93,7 +93,9 @@ void UpdateDialog::downloadFinished(const QString &path)
 {
 	ui->progressDownload->setValue(ui->progressDownload->maximum());
 
-	QProcess::startDetached(path);
+	#ifndef QT_NO_PROCESS
+		QProcess::startDetached(path);
+	#endif
 
 	if (m_parent != nullptr) {
 		m_parent->close();
