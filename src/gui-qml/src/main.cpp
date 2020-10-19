@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
 	}, Qt::QueuedConnection);
 
 	Profile profile(savePath());
-	MainScreen mainScreen(&profile);
+	MainScreen mainScreen(&profile, &engine);
+	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
 	engine.rootContext()->setContextProperty("backend", &mainScreen);
 
 	engine.load(url);
