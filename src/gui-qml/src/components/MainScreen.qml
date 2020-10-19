@@ -8,6 +8,8 @@ Item {
     signal openSources()
     property string site
 
+    MainDrawer {}
+
     TabBar {
         id: tabBar
         width: parent.width

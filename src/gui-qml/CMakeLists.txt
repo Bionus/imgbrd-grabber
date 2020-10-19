@@ -9,7 +9,7 @@ find_package(Qt5Network REQUIRED)
 set(QT_LIBRARIES Qt5::Core Qt5::Quick Qt5::Network)
 
 # Input
-file(GLOB_RECURSE SOURCES "src/*")
+file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
 include_directories("src/" "../lib/src/" "..")
 
 if(ANDROID)

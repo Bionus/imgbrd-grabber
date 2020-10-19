@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 import "components"
 
 ApplicationWindow {
-    id: root
+    id: window
 
     visible: true
     width: 300
@@ -21,7 +21,7 @@ ApplicationWindow {
 
         MainScreen {
             id: mainScreen
-            site: root.site
+            site: window.site
 
             onOpenSources: mainStackView.push(sourcesScreen)
         }
