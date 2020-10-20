@@ -47,6 +47,7 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	for (const QSharedPointer<Image> &img : results) {
 		m_results.append(new ImagePreview(
 			img->url(Image::Size::Thumbnail).toString(),
+			img->url(Image::Size::Sample).toString(),
 			img->url(Image::Size::Full).toString(),
 			TagStylist(m_profile).stylished(img->tags(), true, false, "type"),
 			this

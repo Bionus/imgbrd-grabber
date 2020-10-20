@@ -2,40 +2,73 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
-ColumnLayout {
+
+Page {
     id: root
 
     signal closed()
     property var image
 
-    TabBar {
-        id: tabBar
-        Layout.fillWidth: true
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
 
-        TabButton {
-            text: "Image"
-        }
+            ToolButton {
+                icon.source: "/images/icons/back.png"
+                onClicked: root.closed()
+            }
 
-        TabButton {
-            text: "Details"
+            Label {
+                text: "Image" // TODO: add more info about the image
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                icon.source: stackLayout.currentIndex == 0
+                    ? "/images/icons/tags.png"
+                    : "/images/icons/image.png"
+                onClicked: stackLayout.currentIndex = (stackLayout.currentIndex + 1) % 2
+            }
+
+            ToolButton {
+                enabled: false
+                icon.source: "/images/icons/share.png"
+                // onClicked: TODO: share
+            }
+
+            ToolButton {
+                enabled: false
+                icon.source: "/images/icons/download.png"
+                // onClicked: save image
+            }
+
+            ToolButton {
+                visible: image.sampleUrl !== image.fileUrl
+                icon.source: String(img.source) === image.sampleUrl
+                    ? "/images/icons/hd.png"
+                    : "/images/icons/ld.png"
+                onClicked: img.source = String(img.source) === image.sampleUrl
+                    ? image.fileUrl
+                    : image.sampleUrl
+            }
         }
     }
 
-    SwipeView {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+    StackLayout {
+        id: stackLayout
+        anchors.fill: parent
         clip: true
-        currentIndex: tabBar.currentIndex
-        onCurrentIndexChanged: {
-            tabBar.currentIndex = currentIndex
-        }
+        currentIndex: 0
 
         ColumnLayout {
             ZoomableImage {
                 id: img
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                source: image.fileUrl
+                source: image.sampleUrl
                 clip: true
             }
 
@@ -51,8 +84,6 @@ ColumnLayout {
 
             ListView {
                 model: image.tags
-                Layout.fillWidth: true
-                Layout.fillHeight: true
 
                 delegate: Text {
                     text: modelData
@@ -65,12 +96,5 @@ ColumnLayout {
                 }
             }
         }
-    }
-
-    DialogButtonBox {
-        standardButtons: DialogButtonBox.Close
-        Layout.fillWidth: true
-
-        onRejected: root.closed()
     }
 }

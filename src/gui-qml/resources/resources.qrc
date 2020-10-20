@@ -5,5 +5,12 @@
         <file>images/icons/favorites.png</file>
         <file>images/icons/log.png</file>
         <file>images/icons/search.png</file>
+        <file>images/icons/back.png</file>
+        <file>images/icons/download.png</file>
+        <file>images/icons/hd.png</file>
+        <file>images/icons/share.png</file>
+        <file>images/icons/tags.png</file>
+        <file>images/icons/image.png</file>
+        <file>images/icons/ld.png</file>
     </qresource>
 </RCC>
