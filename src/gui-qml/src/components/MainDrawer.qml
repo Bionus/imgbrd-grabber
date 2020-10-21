@@ -4,6 +4,9 @@ import QtQuick.Controls 2.5
 Drawer {
     id: drawer
 
+    signal changePage(string page)
+    signal openSettings()
+
     width: Math.min(window.width, window.height) * 3 / 4
     height: window.height
     modal: true
@@ -42,16 +45,22 @@ Drawer {
 
         model: ListModel {
             ListElement {
+                page: "search"
                 name: qsTr("Search")
                 icon: "/images/icons/search.png"
+                enabled: true
             }
             ListElement {
+                page: "favorites"
                 name: qsTr("Favorites")
                 icon: "/images/icons/favorites.png"
+                enabled: false
             }
             ListElement {
+                page: "log"
                 name: qsTr("Log")
                 icon: "/images/icons/log.png"
+                enabled: true
             }
         }
         delegate: ItemDelegate {
@@ -59,10 +68,11 @@ Drawer {
 
             text: model.name
             icon.source: model.icon
+            enabled: model.enabled
 
             onClicked: {
                 listView.currentIndex = index
-                // TODO: switch page (stackView.push)
+                changePage(model.page)
                 drawer.close()
             }
         }
@@ -74,6 +84,11 @@ Drawer {
 
             text: qsTr("Settings")
             icon.source: "/images/icons/settings.png"
+
+            onClicked: {
+                openSettings()
+                drawer.close()
+            }
 
             MenuSeparator {
                 parent: footer
