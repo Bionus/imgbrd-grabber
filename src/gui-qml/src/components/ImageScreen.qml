@@ -39,9 +39,8 @@ Page {
             }
 
             ToolButton {
-                enabled: false
                 icon.source: "/images/icons/download.png"
-                // onClicked: save image
+                onClicked: backend.downloadImage(image.image)
             }
 
             ToolButton {

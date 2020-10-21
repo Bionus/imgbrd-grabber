@@ -1,7 +1,10 @@
 #include "main-screen.h"
+#include <QDir>
 #include <QEventLoop>
 #include <QSettings>
 #include <QSslSocket>
+#include <QStandardPaths>
+#include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/image.h"
@@ -50,6 +53,7 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 			img->url(Image::Size::Sample).toString(),
 			img->url(Image::Size::Full).toString(),
 			TagStylist(m_profile).stylished(img->tags(), true, false, "type"),
+			img,
 			this
 		));
 	}
@@ -65,4 +69,20 @@ void MainScreen::newLog(const QString &message)
 	m_log += logToHtml(message);
 
 	emit logChanged();
+}
+
+void MainScreen::downloadImage(const QSharedPointer<Image> &image)
+{
+	const QSettings *settings = m_profile->getSettings();
+	const QString filename = settings->value("Save/filename", "%md5%.%ext%").toString();
+	const QString path = QDir::toNativeSeparators(settings->value("Save/path", QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).toString());
+
+	if (filename.isEmpty() || path.isEmpty()) {
+		LOG("Empty save filename or directory", Logger::Error);
+		return;
+	}
+
+	auto downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
+	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+	downloader->save();
 }
