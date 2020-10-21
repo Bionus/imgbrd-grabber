@@ -8,9 +8,24 @@ find_package(Qt5Quick REQUIRED)
 find_package(Qt5Network REQUIRED)
 set(QT_LIBRARIES Qt5::Core Qt5::Quick Qt5::Network)
 
+# Android specials
+if(ANDROID)
+	find_package(Qt5AndroidExtras REQUIRED)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+endif()
+
 # Input
 file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
 include_directories("src/" "../lib/src/" "..")
+
+# Exclude platform-specific files from compilation
+include(ListFilterRegex)
+if(NOT ANDROID)
+	listFilterRegex(SOURCES "android/")
+endif()
+if(NOT IOS)
+	listFilterRegex(SOURCES "ios/")
+endif()
 
 if(ANDROID)
 	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${UTILS_SOURCES})

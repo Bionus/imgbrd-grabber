@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
@@ -7,6 +8,10 @@ Page {
 
     signal closed()
     property var image
+
+    ShareUtils {
+        id: shareUtils
+    }
 
     header: ToolBar {
         RowLayout {
@@ -33,9 +38,8 @@ Page {
             }
 
             ToolButton {
-                enabled: false
                 icon.source: "/images/icons/share.png"
-                // onClicked: TODO: share
+                onClicked: shareUtils.share("Image", image.fileUrl)
             }
 
             ToolButton {
