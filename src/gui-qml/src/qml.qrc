@@ -3,11 +3,10 @@
         <file>main-screen.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>components/ImageScreen.qml</file>
-        <file>components/LogTab.qml</file>
+        <file>components/LogScreen.qml</file>
         <file>components/MainDrawer.qml</file>
-        <file>components/MainScreen.qml</file>
         <file>components/SearchField.qml</file>
-        <file>components/SearchTab.qml</file>
+        <file>components/SearchScreen.qml</file>
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>

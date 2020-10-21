@@ -13,17 +13,38 @@ ApplicationWindow {
     title: "Grabber"
 
     property string site: "danbooru.donmai.us"
+    property string currentPage: "search"
+
+    MainDrawer {
+        id: drawer
+        onChangePage: currentPage = page
+    }
 
     StackView {
         id: mainStackView
         anchors.fill: parent
         initialItem: mainScreen
 
-        MainScreen {
+        Item {
             id: mainScreen
-            site: window.site
+            anchors.fill: parent
 
-            onOpenSources: mainStackView.push(sourcesScreen)
+            SearchScreen {
+                visible: currentPage == "search"
+                anchors.fill: parent
+                site: window.site
+                query: backend.query
+                results: backend.results
+
+                onOpenSources: mainStackView.push(sourcesScreen)
+            }
+
+            LogScreen {
+                id: logScreen
+                visible: currentPage == "log"
+                anchors.fill: parent
+                log: backend.log
+            }
         }
 
         SourcesScreen {

@@ -12,5 +12,6 @@
         <file>images/icons/tags.png</file>
         <file>images/icons/image.png</file>
         <file>images/icons/ld.png</file>
+        <file>images/icons/menu.png</file>
     </qresource>
 </RCC>

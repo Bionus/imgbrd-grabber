@@ -1,14 +1,14 @@
 import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
 
 import "../vendor"
 
-Item {
+Page {
     id: searchTab
 
     signal openSources()
-    signal search(string site, string query, int page)
 
     property int page: 1
     property string site
@@ -19,7 +19,26 @@ Item {
         if (tag) {
             textFieldSearch.text = tag
         }
-        searchTab.search(site, textFieldSearch.text, page)
+        backend.search(site, textFieldSearch.text, page)
+    }
+
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+
+            ToolButton {
+                icon.source: "/images/icons/menu.png"
+                onClicked: drawer.open()
+            }
+
+            Label {
+                text: "Search"
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+        }
     }
 
     Component {
