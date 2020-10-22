@@ -19,12 +19,12 @@ jobs:
     - name: Set environment
       shell: cmd
       run: |
-        echo "GRABBER_VERSION=nightly" >> %GITHUB_ENV%
-        echo "GRABBER_IS_NIGHTLY=1" >> %GITHUB_ENV%
-        echo "PLATFORM_NAME=x64" >> %GITHUB_ENV%
-        echo "OPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\vendor\OpenSSL" >> %GITHUB_ENV%
-        echo "MYSQL_DRIVER_DIR=%GITHUB_WORKSPACE%\vendor\MySQL_driver" >> %GITHUB_ENV%
-        echo "APNG_PLUGIN_DLL=%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll" >> %GITHUB_ENV%
+        echo GRABBER_VERSION=nightly >> %GITHUB_ENV%
+        echo GRABBER_IS_NIGHTLY=1 >> %GITHUB_ENV%
+        echo PLATFORM_NAME=x64 >> %GITHUB_ENV%
+        echo OPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\vendor\OpenSSL >> %GITHUB_ENV%
+        echo MYSQL_DRIVER_DIR=%GITHUB_WORKSPACE%\vendor\MySQL_driver >> %GITHUB_ENV%
+        echo APNG_PLUGIN_DLL=%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll >> %GITHUB_ENV%
 
     - name: Vendor cache
       uses: actions/cache@v1
