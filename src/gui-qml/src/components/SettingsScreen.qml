@@ -10,9 +10,6 @@ Page {
     property string currentSource
     property var sources
 
-    height: 500
-    width: 300
-
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
