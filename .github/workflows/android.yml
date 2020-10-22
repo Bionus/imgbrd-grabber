@@ -47,7 +47,7 @@ jobs:
       run: |
         export ANDROID_SDK_ROOT=$ANDROID_HOME
         export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk-bundle
-        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%" \
+        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
           -DANDROID_ABI:STRING=armeabi-v7a \
           -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
           -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
