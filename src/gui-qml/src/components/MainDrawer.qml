@@ -7,8 +7,9 @@ Drawer {
     signal changePage(string page)
     signal openSettings()
 
-    width: Math.min(window.width, window.height) * 3 / 4
-    height: window.height
+    implicitWidth: Math.min(280, Math.min(parent.width, parent.height) * 0.8)
+    implicitHeight: parent.height
+
     modal: true
     interactive: true
     position: 0
