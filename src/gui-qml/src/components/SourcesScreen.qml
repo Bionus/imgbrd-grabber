@@ -26,6 +26,13 @@ ColumnLayout {
             checked: modelData == currentSource
             text: modelData
             ButtonGroup.group: buttonGroup
+            height: 30 // from 40
+            padding: 8 // from 12
+
+            indicator: MiniRadioIndicator {
+                control: parent
+                size: 18 // from 28
+            }
 
             onCheckedChanged: if (checked) currentSource = modelData
         }

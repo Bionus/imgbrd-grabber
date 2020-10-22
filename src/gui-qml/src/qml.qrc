@@ -12,5 +12,6 @@
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>
+        <file>components/MiniRadioIndicator.qml</file>
     </qresource>
 </RCC>
