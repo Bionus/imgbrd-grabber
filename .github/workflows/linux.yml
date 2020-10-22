@@ -14,9 +14,9 @@ jobs:
 
     - name: Set environment
       run: |
-        echo ::set-env name=GRABBER_VERSION::nightly
-        echo ::set-env name=GRABBER_IS_NIGHTLY::1
-        echo ::set-env name=PLATFORM_NAME::x64
+        echo "GRABBER_VERSION=nightly" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=1" >> $GITHUB_ENV
+        echo "PLATFORM_NAME=x64" >> $GITHUB_ENV
 
     - name: Install packages
       run: sudo apt-get install libpulse-dev
