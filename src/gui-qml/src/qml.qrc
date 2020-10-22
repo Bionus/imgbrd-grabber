@@ -7,6 +7,8 @@
         <file>components/MainDrawer.qml</file>
         <file>components/SearchField.qml</file>
         <file>components/SearchScreen.qml</file>
+        <file>components/SettingItem.qml</file>
+        <file>components/SettingsScreen.qml</file>
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>

@@ -18,6 +18,7 @@ ApplicationWindow {
     MainDrawer {
         id: drawer
         onChangePage: currentPage = page
+        onOpenSettings: mainStackView.push(settingsScreen)
     }
 
     StackView {
@@ -25,7 +26,7 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: mainScreen
 
-        Item {
+        Item     {
             id: mainScreen
             anchors.fill: parent
 
@@ -55,6 +56,13 @@ ApplicationWindow {
 
             onAccepted: { site = source; mainStackView.pop() }
             onRejected: mainStackView.pop()
+        }
+
+        SettingsScreen {
+            id: settingsScreen
+            visible: false
+
+            onClosed: mainStackView.pop()
         }
     }
 }
