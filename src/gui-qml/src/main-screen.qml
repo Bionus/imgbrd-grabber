@@ -17,6 +17,11 @@ ApplicationWindow {
 
     MainDrawer {
         id: drawer
+
+        headerTitle: "Grabber"
+        headerSubtitle: "Version 0.0.1 Alpha"
+        headerIconSource: "/images/logo.png"
+
         onChangePage: currentPage = page
         onOpenSettings: mainStackView.push(settingsScreen)
     }
