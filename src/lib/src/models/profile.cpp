@@ -420,6 +420,22 @@ void Profile::addAutoComplete(const QString &tag)
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
+
+	// Update the source's sites.txt file
+	Source *src = site->getSource();
+	QFile f(src->getPath() + "/sites.txt");
+	f.open(QIODevice::ReadOnly);
+	QString sites = f.readAll();
+	f.close();
+	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
+	stes.append(site->url());
+	stes.removeDuplicates();
+	stes.sort();
+	f.open(QIODevice::WriteOnly);
+	f.write(stes.join("\r\n").toLatin1());
+	f.close();
+
 	emit sitesChanged();
 }
 

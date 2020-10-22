@@ -13,5 +13,6 @@
         <file>images/icons/image.png</file>
         <file>images/icons/ld.png</file>
         <file>images/icons/menu.png</file>
+        <file>images/icons/add.png</file>
     </qresource>
 </RCC>

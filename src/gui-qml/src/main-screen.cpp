@@ -11,6 +11,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "models/source.h"
 #include "tags/tag-stylist.h"
 #include "utils/logging.h"
 
@@ -23,10 +24,28 @@ MainScreen::MainScreen(Profile *profile, QObject *parent)
 	connect(&Logger::getInstance(), &Logger::newLog, this, &MainScreen::newLog);
 	logSystemInformation(m_profile);
 
+	refreshSites();
+	refreshSources();
+
+	connect(m_profile, &Profile::sitesChanged, this, &MainScreen::refreshSites);
+}
+
+void MainScreen::refreshSites()
+{
+	m_sites.clear();
 	for (Site *site : m_profile->getSites().values()) {
 		m_sites.append(site->url());
 	}
 	emit sitesChanged();
+}
+
+void MainScreen::refreshSources()
+{
+	m_sources.clear();
+	for (Source *source : m_profile->getSources().values()) {
+		m_sources.append(source->getName());
+	}
+	emit sourcesChanged();
 }
 
 void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber)
@@ -85,6 +104,46 @@ void MainScreen::downloadImage(const QSharedPointer<Image> &image)
 	auto downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
+}
+
+QString MainScreen::addSite(const QString &type, const QString &host, bool https)
+{
+	const auto sources = m_profile->getSources().values();
+
+	// Find the source
+	Source *source = nullptr;
+	for (Source *src : sources) {
+		if (src->getName() == type) {
+			source = src;
+			break;
+		}
+	}
+	if (source == nullptr) {
+		return "Invalid source";
+	}
+
+	// Remove unnecessary prefix
+	QString url = host;
+	if (url.startsWith("http://")) {
+		url = url.mid(7);
+	} else if (url.startsWith("https://")) {
+		url = url.mid(8);
+		https = true;
+	}
+	if (url.endsWith('/')) {
+		url = url.left(url.length() - 1);
+	}
+
+	// Add site
+	Site *site = new Site(host, source);
+	m_profile->addSite(site);
+
+	// Set HTTP setting
+	if (https) {
+		site->setSetting("ssl", true, false);
+	}
+
+	return QString();
 }
 
 QString MainScreen::settingsFileName() const

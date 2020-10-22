@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main-screen.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>components/AddSourceScreen.qml</file>
         <file>components/ImageScreen.qml</file>
         <file>components/LogScreen.qml</file>
         <file>components/MainDrawer.qml</file>

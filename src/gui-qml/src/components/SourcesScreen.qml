@@ -7,6 +7,7 @@ Page {
 
     signal accepted(string source)
     signal rejected()
+    signal addSource()
 
     property string currentSource
     property var sources
@@ -26,6 +27,11 @@ Page {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
+            }
+
+            ToolButton {
+                icon.source: "/images/icons/add.png"
+                onClicked: root.addSource()
             }
         }
     }

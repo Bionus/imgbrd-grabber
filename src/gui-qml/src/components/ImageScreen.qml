@@ -83,9 +83,11 @@ Page {
 
         ScrollView {
             clip: true
+            padding: 8
 
             ListView {
                 model: image.tags
+                spacing: 4
 
                 delegate: Text {
                     text: modelData

@@ -32,7 +32,7 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: mainScreen
 
-        Item     {
+        Item {
             id: mainScreen
             anchors.fill: parent
 
@@ -61,6 +61,15 @@ ApplicationWindow {
             currentSource: site
 
             onAccepted: { site = source; mainStackView.pop() }
+            onRejected: mainStackView.pop()
+            onAddSource: mainStackView.push(addSourceScreen)
+        }
+
+        AddSourceScreen {
+            id: addSourceScreen
+            visible: false
+
+            onAccepted: { /* backend.refreshSources(); */ mainStackView.pop() }
             onRejected: mainStackView.pop()
         }
 

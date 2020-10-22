@@ -44,6 +44,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QList<QObject*> results READ results NOTIFY resultsChanged)
 	Q_PROPERTY(QString log READ log NOTIFY logChanged)
 	Q_PROPERTY(QStringList sites READ sites NOTIFY sitesChanged)
+	Q_PROPERTY(QStringList sources READ sources NOTIFY sourcesChanged)
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 
 	public:
@@ -52,18 +53,25 @@ class MainScreen : public QObject
 		const QList<QObject*> &results() const { return m_results; }
 		const QString &log() const { return m_log; }
 		const QStringList &sites() const { return m_sites; }
+		const QStringList &sources() const { return m_sources; }
 		QString settingsFileName() const;
 
 	public slots:
 		void search(const QString &site, const QString &query, int page);
 		void newLog(const QString &message);
 		void downloadImage(const QSharedPointer<Image> &image);
+		QString addSite(const QString &type, const QString &host, bool https);
+
+	protected slots:
+		void refreshSites();
+		void refreshSources();
 
 	signals:
 		void queryChanged();
 		void resultsChanged();
 		void logChanged();
 		void sitesChanged();
+		void sourcesChanged();
 
 	private:
 		Profile *m_profile;
@@ -71,6 +79,7 @@ class MainScreen : public QObject
 		QList<QObject*> m_results;
 		QString m_log;
 		QStringList m_sites;
+		QStringList m_sources;
 };
 
 #endif // MAIN_SCREEN_H
