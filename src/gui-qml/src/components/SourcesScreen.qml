@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
-ColumnLayout {
+Page {
     id: root
 
     signal accepted(string source)
@@ -11,14 +11,32 @@ ColumnLayout {
     property string currentSource
     property var sources
 
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+
+            ToolButton {
+                icon.source: "/images/icons/back.png"
+                onClicked: root.accepted(buttonGroup.checkedButton.text)
+            }
+
+            Label {
+                text: "Sources selection"
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+        }
+    }
+
     ButtonGroup {
         id: buttonGroup
     }
 
     ListView {
         id: results
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        anchors.fill: parent
         model: sources
 
         delegate: RadioDelegate {
@@ -36,13 +54,5 @@ ColumnLayout {
 
             onCheckedChanged: if (checked) currentSource = modelData
         }
-    }
-
-    DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
-        Layout.fillWidth: true
-
-        onAccepted: root.accepted(buttonGroup.checkedButton.text)
-        onRejected: root.rejected()
     }
 }
