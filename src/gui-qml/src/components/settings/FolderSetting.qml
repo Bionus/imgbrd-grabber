@@ -3,19 +3,22 @@ import QtQuick.Controls 2.5
 import Qt.labs.platform 1.1
 
 Item {
-    id: setting
-
-    signal changed(string value)
+    id: root
 
     property string name
-    property string value
+    property alias settingKey: setting.settingKey
+    property alias settingDefault: setting.settingDefault
 
     implicitHeight: item.implicitHeight
+
+    Setting {
+        id: setting
+    }
 
     SettingItem {
         id: item
 
-        name: setting.name
+        name: root.name
         subtitle: setting.value
         anchors.fill: parent
 
@@ -25,9 +28,9 @@ Item {
             id: dialog
 
             acceptLabel: "Select"
-            folder: setting.value
+            folder: "file:///" + setting.value
 
-            onAccepted: setting.changed(folder)
+            onAccepted: setting.setValue(folder.toString().substring(0, 8) === "file:///" ? folder.toString().substring(8) : folder.toString())
         }
     }
 }

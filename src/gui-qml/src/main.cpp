@@ -6,6 +6,7 @@
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "settings.h"
 #include "share/share-utils.h"
 #include "syntax-highlighter-helper.h"
 
@@ -47,6 +48,9 @@ int main(int argc, char *argv[])
 	MainScreen mainScreen(&profile, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
 	engine.rootContext()->setContextProperty("backend", &mainScreen);
+
+	Settings settings(profile.getSettings());
+	engine.rootContext()->setContextProperty("settings", &settings);
 
 	engine.load(url);
 

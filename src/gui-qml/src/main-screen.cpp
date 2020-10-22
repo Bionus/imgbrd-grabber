@@ -86,3 +86,8 @@ void MainScreen::downloadImage(const QSharedPointer<Image> &image)
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
 }
+
+QString MainScreen::settingsFileName() const
+{
+	return m_profile->getSettings()->fileName();
+}

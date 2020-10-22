@@ -2,30 +2,33 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 Item {
-    id: setting
-
-    signal changed(bool value)
+    id: root
 
     property string name
     property string subtitle
-    property bool value: false
+    property alias settingKey: setting.settingKey
+    property alias settingDefault: setting.settingDefault
 
     implicitHeight: item.implicitHeight
+
+    Setting {
+        id: setting
+    }
 
     SettingItem {
         id: item
 
-        name: setting.name
-        subtitle: setting.subtitle
+        name: root.name
+        subtitle: root.subtitle
         anchors.fill: parent
 
         onClicked: checkBox.toggle()
 
         CheckBox {
             id: checkBox
-            checked: value
+            checked: setting.value
 
-            onCheckedChanged: setting.changed(checked)
+            onCheckedChanged: setting.setValue(checked, false)
         }
     }
 }

@@ -2,19 +2,22 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 Item {
-    id: setting
-
-    signal changed(string value)
+    id: root
 
     property string name
-    property string value
+    property alias settingKey: setting.settingKey
+    property alias settingDefault: setting.settingDefault
 
     implicitHeight: item.implicitHeight
+
+    Setting {
+        id: setting
+    }
 
     SettingItem {
         id: item
 
-        name: setting.name
+        name: root.name
         subtitle: setting.value
         anchors.fill: parent
 
@@ -28,12 +31,12 @@ Item {
             modal: true
             standardButtons: Dialog.Ok | Dialog.Cancel
 
-            onAccepted: setting.changed(textField.text)
-            onRejected: textField.text = value
+            onAccepted: setting.setValue(textField.text)
+            onRejected: textField.text = setting.value
 
             TextField {
                 id: textField
-                text: value
+                text: setting.value
             }
         }
     }

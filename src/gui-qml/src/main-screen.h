@@ -44,6 +44,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QList<QObject*> results READ results NOTIFY resultsChanged)
 	Q_PROPERTY(QString log READ log NOTIFY logChanged)
 	Q_PROPERTY(QStringList sites READ sites NOTIFY sitesChanged)
+	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 
 	public:
 		explicit MainScreen(Profile *profile, QObject *parent = nullptr);
@@ -51,6 +52,7 @@ class MainScreen : public QObject
 		const QList<QObject*> &results() const { return m_results; }
 		const QString &log() const { return m_log; }
 		const QStringList &sites() const { return m_sites; }
+		QString settingsFileName() const;
 
 	public slots:
 		void search(const QString &site, const QString &query, int page);

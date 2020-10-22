@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.12
 import Qt.labs.platform 1.1
+import Qt.labs.settings 1.0
 
 Page {
     id: root
@@ -44,25 +45,25 @@ Page {
             id: filenameSetting
 
             name: "Filename"
-            value: "%md5%.%ext%"
+            settingKey: "Save/filename"
+            settingDefault: "%md5%.%ext%"
             Layout.fillWidth: true
-
-            onChanged: filenameSetting.value = value
         }
 
         FolderSetting {
             id: folderSetting
 
             name: "Folder"
-            value: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+            settingKey: "Save/path"
+            settingDefault: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
             Layout.fillWidth: true
-
-            onChanged: folderSetting.value = value
         }
 
         CheckBoxSetting {
-            name: "Do something"
-            subtitle: "Check this to do something."
+            name: "Hide blacklisted"
+            subtitle: "Hide blacklisted images from the results."
+            settingKey: "hideblacklisted"
+            settingDefault: true
             Layout.fillWidth: true
         }
     }
