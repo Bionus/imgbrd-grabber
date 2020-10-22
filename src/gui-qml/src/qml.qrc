@@ -5,13 +5,16 @@
         <file>components/ImageScreen.qml</file>
         <file>components/LogScreen.qml</file>
         <file>components/MainDrawer.qml</file>
+        <file>components/MiniRadioIndicator.qml</file>
         <file>components/SearchField.qml</file>
         <file>components/SearchScreen.qml</file>
-        <file>components/SettingItem.qml</file>
-        <file>components/SettingsScreen.qml</file>
+        <file>components/settings/CheckBoxSetting.qml</file>
+        <file>components/settings/FolderSetting.qml</file>
+        <file>components/settings/SettingItem.qml</file>
+        <file>components/settings/SettingsScreen.qml</file>
+        <file>components/settings/TextFieldSetting.qml</file>
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>
-        <file>components/MiniRadioIndicator.qml</file>
     </qresource>
 </RCC>

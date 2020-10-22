@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
 import "components"
+import "components/settings"
 
 ApplicationWindow {
     id: window

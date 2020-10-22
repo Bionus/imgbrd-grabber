@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.12
+import Qt.labs.platform 1.1
 
 Page {
     id: root
@@ -38,31 +40,30 @@ Page {
             font.bold: true
         }
 
-        SettingItem {
-            Layout.fillWidth: true
+        TextFieldSetting {
+            id: filenameSetting
+
             name: "Filename"
-            subtitle: "%md5%.%ext%"
+            value: "%md5%.%ext%"
+            Layout.fillWidth: true
 
-            onClicked: subtitle = "edited!"
+            onChanged: filenameSetting.value = value
         }
 
-        SettingItem {
-            Layout.fillWidth: true
+        FolderSetting {
+            id: folderSetting
+
             name: "Folder"
-            subtitle: "/data"
+            value: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+            Layout.fillWidth: true
 
-            onClicked: subtitle = "edited!"
+            onChanged: folderSetting.value = value
         }
 
-        SettingItem {
-            Layout.fillWidth: true
+        CheckBoxSetting {
             name: "Do something"
             subtitle: "Check this to do something."
-
-            onClicked: checkSomething.toggle()
-            CheckBox {
-                id: checkSomething
-            }
+            Layout.fillWidth: true
         }
     }
 }
