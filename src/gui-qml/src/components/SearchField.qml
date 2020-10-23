@@ -4,6 +4,9 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 FocusScope {
+    id: root
+
+    signal enterPressed()
     property alias text: textInput.text
     property alias placeholderText: placeholder.text
 
@@ -38,6 +41,15 @@ FocusScope {
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: 13
             focus: true
+
+            Keys.onEnterPressed: {
+                root.enterPressed()
+                event.accepted = true
+            }
+            Keys.onReturnPressed: {
+                root.enterPressed()
+                event.accepted = true
+            }
 
             Text {
                 id: placeholder

@@ -120,6 +120,8 @@ Page {
 
         text: "rating:safe wallpaper"
         placeholderText: "Search..."
+
+        onEnterPressed: searchTab.load()
     }
 
     Button {
