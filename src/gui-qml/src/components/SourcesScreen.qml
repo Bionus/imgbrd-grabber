@@ -22,7 +22,7 @@ Page {
             }
 
             Label {
-                text: "Sources selection"
+                text: qsTr("Sources selection")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter

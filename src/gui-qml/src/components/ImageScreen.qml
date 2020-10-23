@@ -23,7 +23,7 @@ Page {
             }
 
             Label {
-                text: "Image" // TODO: add more info about the image
+                text: qsTr("Image") // TODO: add more info about the image
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter

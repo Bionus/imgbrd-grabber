@@ -21,7 +21,7 @@ Page {
             }
 
             Label {
-                text: "Add new source"
+                text: qsTr("Add new source")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -32,7 +32,7 @@ Page {
 
     MessageDialog {
         id: errorDialog
-        title: "Error"
+        title: qsTr("Error")
         icon: StandardIcon.Critical
     }
 
@@ -41,7 +41,7 @@ Page {
 
         Text {
             Layout.fillWidth: true
-            text: "Type"
+            text: qsTr("Type")
         }
         ComboBox {
             id: typeField
@@ -51,7 +51,7 @@ Page {
 
         Text {
             Layout.fillWidth: true
-            text: "URL"
+            text: qsTr("URL")
         }
         TextField {
             id: urlField
@@ -61,7 +61,7 @@ Page {
         CheckBox {
             id: httpsField
             Layout.fillWidth: true
-            text: "HTTPS"
+            text: qsTr("HTTPS")
             checked: true
         }
 
@@ -72,7 +72,7 @@ Page {
 
     footer: Button {
         Layout.fillWidth: true
-        text: "Add"
+        text: qsTr("Add")
 
         onClicked: {
             var result = backend.addSite(typeField.currentText, urlField.text, httpsField.checked)

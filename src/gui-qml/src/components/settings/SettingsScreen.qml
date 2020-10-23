@@ -23,7 +23,7 @@ Page {
             }
 
             Label {
-                text: "Settings"
+                text: qsTr("Settings")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -37,14 +37,14 @@ Page {
 
         Text {
             Layout.fillWidth: true
-            text: "Save"
+            text: qsTr("Save")
             font.bold: true
         }
 
         TextFieldSetting {
             id: filenameSetting
 
-            name: "Filename"
+            name: qsTr("Filename")
             settingKey: "Save/filename"
             settingDefault: "%md5%.%ext%"
             Layout.fillWidth: true
@@ -53,15 +53,15 @@ Page {
         FolderSetting {
             id: folderSetting
 
-            name: "Folder"
+            name: qsTr("Folder")
             settingKey: "Save/path"
             settingDefault: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
             Layout.fillWidth: true
         }
 
         CheckBoxSetting {
-            name: "Hide blacklisted"
-            subtitle: "Hide blacklisted images from the results."
+            name: qsTr("Hide blacklisted")
+            subtitle: qsTr("Hide blacklisted images from the results.")
             settingKey: "hideblacklisted"
             settingDefault: true
             Layout.fillWidth: true

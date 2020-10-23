@@ -15,7 +15,7 @@ Page {
             }
 
             Label {
-                text: "Log"
+                text: qsTr("Log")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter

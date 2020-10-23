@@ -32,7 +32,7 @@ Page {
             }
 
             Label {
-                text: "Search"
+                text: qsTr("Search")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -119,13 +119,13 @@ Page {
         id: textFieldSearch
 
         text: "rating:safe wallpaper"
-        placeholderText: "Search..."
+        placeholderText: qsTr("Search...")
 
         onEnterPressed: searchTab.load()
     }
 
     Button {
-        text: "Sources"
+        text: qsTr("Sources")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 40
@@ -138,7 +138,7 @@ Page {
     Button {
         id: searchButton
         width: 40
-        text: "Go"
+        text: qsTr("Go")
         anchors.right: parent.right
         anchors.top: parent.top
 

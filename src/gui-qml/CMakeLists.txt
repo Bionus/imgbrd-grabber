@@ -1,6 +1,7 @@
 # General
 project(gui-qml)
 add_definitions(-DGUI=1)
+add_subdirectory(languages)
 
 # Qt libraries
 find_package(Qt5Core REQUIRED)

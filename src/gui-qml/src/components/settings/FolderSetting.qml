@@ -28,7 +28,7 @@ Item {
             id: dialog
 
             // acceptLabel: "Select"
-            title: "Please choose a directory"
+            title: qsTr("Please choose a directory")
             folder: "file:///" + setting.value
             // selectExisting: true
             selectFolder: true
