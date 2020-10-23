@@ -24,9 +24,16 @@ Page {
         }
     }
 
-    Label {
+    ScrollView {
         anchors.fill: parent
-        text: log
-        textFormat: Text.RichText
+        clip: true
+
+        Label {
+            anchors.fill: parent
+            padding: 6
+            lineHeight: 1.1
+            text: log
+            textFormat: Text.RichText
+        }
     }
 }
