@@ -18,5 +18,6 @@
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>
+        <file>components/settings/ComboSetting.qml</file>
     </qresource>
 </RCC>

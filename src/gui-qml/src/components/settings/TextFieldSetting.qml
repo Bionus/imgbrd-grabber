@@ -26,7 +26,7 @@ Item {
         Dialog {
             id: dialog
 
-            title: name
+            title: root.name
             anchors.centerIn: Overlay.overlay
             modal: true
             standardButtons: Dialog.Ok | Dialog.Cancel

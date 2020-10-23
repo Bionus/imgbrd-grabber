@@ -2,7 +2,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSettings>
 #include "functions.h"
+#include "language-loader.h"
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -51,6 +53,13 @@ int main(int argc, char *argv[])
 
 	Settings settings(profile.getSettings());
 	engine.rootContext()->setContextProperty("settings", &settings);
+
+	// Load translations
+	LanguageLoader languageLoader(savePath("languages/", true, false));
+	languageLoader.install(qApp);
+	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString());
+	engine.rootContext()->setContextProperty("languageLoader", &languageLoader);
+	QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);
 
 	engine.load(url);
 

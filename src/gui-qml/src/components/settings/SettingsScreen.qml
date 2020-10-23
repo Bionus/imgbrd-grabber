@@ -37,6 +37,22 @@ Page {
 
         Text {
             Layout.fillWidth: true
+            text: qsTr("Interface")
+            font.bold: true
+        }
+
+        ComboSetting {
+            name: qsTr("Language")
+            options: ["English", "French"]
+            settingKey: "language"
+            settingDefault: "English"
+            Layout.fillWidth: true
+
+            onChanged: languageLoader.setLanguage(value)
+        }
+
+        Text {
+            Layout.fillWidth: true
             text: qsTr("Save")
             font.bold: true
         }
