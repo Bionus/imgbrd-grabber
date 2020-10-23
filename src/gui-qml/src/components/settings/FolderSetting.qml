@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import Qt.labs.platform 1.1
+import QtQuick.Dialogs 1.3
 
 Item {
     id: root
@@ -24,13 +24,17 @@ Item {
 
         onClicked: dialog.open()
 
-        FolderDialog {
+        FileDialog {
             id: dialog
 
-            acceptLabel: "Select"
+            // acceptLabel: "Select"
+            title: "Please choose a directory"
             folder: "file:///" + setting.value
+            // selectExisting: true
+            selectFolder: true
+            // selectMultiple: false
 
-            onAccepted: setting.setValue(folder.toString().substring(0, 8) === "file:///" ? folder.toString().substring(8) : folder.toString())
+            onAccepted: setting.setValue(dialog.fileUrl.toString().substring(0, 8) === "file:///" ? dialog.fileUrl.toString().substring(8) : dialog.fileUrl.toString())
         }
     }
 }
