@@ -46,6 +46,16 @@ int main(int argc, char *argv[])
 		}
 	}, Qt::QueuedConnection);
 
+	// Define a few globals
+	engine.rootContext()->setContextProperty("VERSION", QString(VERSION));
+	#ifdef NIGHTLY
+		engine.rootContext()->setContextProperty("NIGHTLY", true);
+		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString(NIGHTLY_COMMIT));
+	#else
+		engine.rootContext()->setContextProperty("NIGHTLY", false);
+		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
+	#endif
+
 	Profile profile(savePath());
 	MainScreen mainScreen(&profile, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);

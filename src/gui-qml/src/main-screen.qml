@@ -20,7 +20,9 @@ ApplicationWindow {
         id: drawer
 
         headerTitle: "Grabber"
-        headerSubtitle: "Version 0.0.1 Alpha"
+        headerSubtitle: NIGHTLY
+            ? "Nightly " + NIGHTLY_COMMIT.substring(0, 8)
+            : "Version " + VERSION
         headerIconSource: "/images/logo.png"
 
         onChangePage: currentPage = page
