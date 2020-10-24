@@ -153,12 +153,17 @@ if(ANDROID)
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/../languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
 
-	# Generate manifest file
-	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml.in" "${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml" @ONLY)
-
+	# Add target
 	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${ANDROID_EXTRA_LIBS} PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES})
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets)
+	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
+		NAME ${ANDROID_APP_NAME}
+		VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+		PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
+		PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
+		# KEYSTORE key.keystore alias
+		# KEYSTORE_PASSWORD *****
+		DEPENDS ${ANDROID_EXTRA_LIBS})
+	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

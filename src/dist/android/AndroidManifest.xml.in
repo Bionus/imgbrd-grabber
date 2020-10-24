@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<manifest android:versionName="@ANDROID_APP_VERSION_NAME@" package="@ANDROID_APP_PACKAGE_NAME@" android:installLocation="auto" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="@ANDROID_APP_VERSION_CODE@">
-	<application android:label="@ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon">
-		<activity android:label="@ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:screenOrientation="unspecified" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation">
+<manifest android:versionName="@QT_ANDROID_APP_VERSION@" package="@QT_ANDROID_APP_PACKAGE_NAME@" android:installLocation="auto" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="@QT_ANDROID_APP_VERSION_CODE@">
+	<application android:label="@QT_ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon">
+		<activity android:label="@QT_ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:screenOrientation="unspecified" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"> <!-- layoutDirection -->
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
@@ -15,22 +15,40 @@
 
 			<!-- Deploy Qt libs as part of package -->
 			<meta-data android:name="android.app.bundle_local_qt_libs" android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --"/>
-			<meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/>
-			<meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/>
+			<meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/> <!-- QT <= 5.13 -->
+			<meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/> <!-- QT <= 5.13 -->
 
 			<!-- Run with local libs -->
 			<meta-data android:name="android.app.use_local_qt_libs" android:value="-- %%USE_LOCAL_QT_LIBS%% --"/>
 			<meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
-			<meta-data android:name="android.app.load_local_libs" android:value="-- %%INSERT_LOCAL_LIBS%% --"/>
+			<meta-data android:name="android.app.load_local_libs" android:value="-- %%INSERT_LOCAL_LIBS%% --"/> <!-- QT <= 5.13 -->
+			<!--<meta-data android:name="android.app.load_local_libs_resource_id" android:resource="@array/load_local_libs"/>--> <!-- QT >= 5.14 -->
 			<meta-data android:name="android.app.load_local_jars" android:value="-- %%INSERT_LOCAL_JARS%% --"/>
 			<meta-data android:name="android.app.static_init_classes" android:value="-- %%INSERT_INIT_CLASSES%% --"/>
+
+			<!-- Messages maps -->
+			<meta-data android:value="@string/ministro_not_found_msg" android:name="android.app.ministro_not_found_msg"/>
+			<meta-data android:value="@string/ministro_needed_msg" android:name="android.app.ministro_needed_msg"/>
+			<meta-data android:value="@string/fatal_error_msg" android:name="android.app.fatal_error_msg"/>
+			<meta-data android:value="@string/unsupported_android_version" android:name="android.app.unsupported_android_version"/>
+
+			<!-- Background running -->
+			<meta-data android:name="android.app.background_running" android:value="false"/>
+
+			<!-- Auto screen scale factor -->
+			<meta-data android:name="android.app.auto_screen_scale_factor" android:value="false"/>
+
+			<!-- Extract android style -->
+			<meta-data android:name="android.app.extract_android_style" android:value="default"/>
 		</activity>
 	</application>
 
 	<supports-screens android:anyDensity="true" android:normalScreens="true" android:smallScreens="true" android:largeScreens="true"/>
-	<uses-sdk android:minSdkVersion="18" android:targetSdkVersion="29"/>
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
 
 	<!-- Permissions -->
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<!-- %%INSERT_PERMISSIONS -->
+
+	<!-- Features -->
+	<!-- %%INSERT_FEATURES -->
 </manifest>

@@ -1,6 +1,5 @@
 # Grabber
 *.qm
-src/dist/android/AndroidManifest.xml
 src/e2e/viewer/result.json
 src/sites/helper.js
 src/sites/*/model.js
