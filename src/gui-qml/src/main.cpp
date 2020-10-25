@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	qmlRegisterType<ShareUtils>("Grabber", 1, 0, "ShareUtils");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
+	qRegisterMetaType<Settings*>("Settings*");
 
 	// Copy settings files to writable directory
 	const QStringList toCopy { "sites/", "themes/", "webservices/" };

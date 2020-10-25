@@ -65,6 +65,7 @@ ApplicationWindow {
             onAccepted: { site = source; mainStackView.pop() }
             onRejected: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
+            onEditSource: mainStackView.push(editSourceScreen, { siteUrl: source, settings: settingsObject })
         }
 
         AddSourceScreen {
@@ -73,6 +74,14 @@ ApplicationWindow {
 
             onAccepted: { /* backend.refreshSources(); */ mainStackView.pop() }
             onRejected: mainStackView.pop()
+        }
+
+        Component {
+            id: editSourceScreen
+
+            SourceSettingsScreen {
+                onClosed: mainStackView.pop()
+            }
         }
 
         SettingsScreen {

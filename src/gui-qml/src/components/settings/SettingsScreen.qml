@@ -1,9 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.12
 import Qt.labs.platform 1.1
-import Qt.labs.settings 1.0
 
 Page {
     id: root
@@ -58,8 +56,6 @@ Page {
         }
 
         TextFieldSetting {
-            id: filenameSetting
-
             name: qsTr("Filename")
             settingKey: "Save/filename"
             settingDefault: "%md5%.%ext%"
@@ -67,8 +63,6 @@ Page {
         }
 
         FolderSetting {
-            id: folderSetting
-
             name: qsTr("Folder")
             settingKey: "Save/path"
             settingDefault: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]

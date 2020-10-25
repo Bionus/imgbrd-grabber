@@ -7,10 +7,12 @@ Item {
 
     property string settingKey
     property var settingDefault
-    property string value: settings.value(settingKey, settingDefault)
+    property var settingObject: settings
+
+    property string value: root.settingObject.value(settingKey, settingDefault)
 
     function setValue(val, refresh) {
-        settings.setValue(settingKey, val)
+        root.settingObject.setValue(settingKey, val, settingDefault)
         if (refresh !== false) {
             root.value = val
         }

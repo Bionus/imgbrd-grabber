@@ -5,6 +5,7 @@
 #include <QVariant>
 
 
+class MixedSettings;
 class QSettings;
 
 class Settings : public QObject
@@ -12,13 +13,14 @@ class Settings : public QObject
     Q_OBJECT
 
     public:
-        explicit Settings(QSettings *settings, QObject *parent = nullptr);
+		explicit Settings(QSettings *settings, QObject *parent = nullptr);
+		explicit Settings(MixedSettings *settings, QObject *parent = nullptr);
 
         Q_INVOKABLE QVariant value(const QString &key, const QVariant &defaultValue = {}) const;
-        Q_INVOKABLE void setValue(const QString &key, const QVariant &value);
+		Q_INVOKABLE void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = {});
 
     private:
-        QSettings *m_settings;
+		MixedSettings *m_settings;
 };
 
 #endif // SETTINGS_H

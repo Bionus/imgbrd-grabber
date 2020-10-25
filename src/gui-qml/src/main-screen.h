@@ -8,6 +8,7 @@
 
 class Image;
 class Profile;
+class Settings;
 
 class ImagePreview : public QObject
 {
@@ -61,6 +62,7 @@ class MainScreen : public QObject
 		void newLog(const QString &message);
 		void downloadImage(const QSharedPointer<Image> &image);
 		QString addSite(const QString &type, const QString &host, bool https);
+		Settings *getSiteSettings(const QString &url);
 
 	protected slots:
 		void refreshSites();

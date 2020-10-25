@@ -8,6 +8,7 @@ Page {
     signal accepted(string source)
     signal rejected()
     signal addSource()
+    signal editSource(string source, var settingsObject)
 
     property string currentSource
     property var sources
@@ -45,20 +46,33 @@ Page {
         anchors.fill: parent
         model: sources
 
-        delegate: RadioDelegate {
+        delegate: RowLayout {
             width: parent.width
-            checked: modelData == currentSource
-            text: modelData
-            ButtonGroup.group: buttonGroup
-            height: 30 // from 40
-            padding: 8 // from 12
 
-            indicator: MiniRadioIndicator {
-                control: parent
-                size: 18 // from 28
+            RadioButton {
+                width: parent.width
+                checked: modelData == currentSource
+                text: modelData
+                ButtonGroup.group: buttonGroup
+                height: 30 // from 40
+                padding: 8 // from 12
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                indicator: MiniRadioIndicator {
+                    control: parent
+                    size: 18 // from 28
+                }
+
+                onCheckedChanged: if (checked) currentSource = modelData
             }
 
-            onCheckedChanged: if (checked) currentSource = modelData
+            ToolButton {
+                icon.source: "/images/icons/edit.png"
+                Layout.fillHeight: true
+
+                onClicked: root.editSource(modelData, backend.getSiteSettings(modelData))
+            }
         }
     }
 }

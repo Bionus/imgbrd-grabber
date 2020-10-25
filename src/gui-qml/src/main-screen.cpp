@@ -12,6 +12,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "settings.h"
 #include "tags/tag-stylist.h"
 #include "utils/logging.h"
 
@@ -144,6 +145,11 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	return QString();
+}
+
+Settings *MainScreen::getSiteSettings(const QString &url)
+{
+	return new Settings(m_profile->getSites().value(url)->settings(), this);
 }
 
 QString MainScreen::settingsFileName() const

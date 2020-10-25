@@ -8,6 +8,7 @@ Item {
     property string name
     property alias settingKey: setting.settingKey
     property alias settingDefault: setting.settingDefault
+    property alias settingObject: setting.settingObject
 
     implicitHeight: item.implicitHeight
 
