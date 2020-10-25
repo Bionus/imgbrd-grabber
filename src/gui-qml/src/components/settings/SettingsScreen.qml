@@ -11,6 +11,8 @@ Page {
     property string currentSource
     property var sources
 
+    padding: 8
+
     header: ToolBar {
         RowLayout {
             anchors.fill: parent

@@ -15,7 +15,7 @@ Rectangle {
     implicitHeight: Math.max(placeholder.implicitHeight, colLayout.implicitHeight)
 
     SystemPalette { id: palette }
-    color: Color.blend(palette.button, palette.mid, mouseArea.pressed ? 0.5 : 0.0)
+    color: Color.blend("transparent", palette.mid, mouseArea.pressed ? 0.9 : 0.0)
 
     RowLayout {
         id: rowLayout
