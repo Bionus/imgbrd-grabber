@@ -28,6 +28,8 @@ Item {
         CheckBox {
             id: checkBox
             checked: setting.value
+            height: 30
+            width: 30
 
             onCheckedChanged: setting.setValue(checked, false)
         }

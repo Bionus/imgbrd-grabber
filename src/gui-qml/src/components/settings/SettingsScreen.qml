@@ -11,8 +11,6 @@ Page {
     property string currentSource
     property var sources
 
-    padding: 8
-
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -34,11 +32,11 @@ Page {
 
     ColumnLayout {
         width: parent.width
+        spacing: 0
 
-        Text {
+        SettingTitle {
             Layout.fillWidth: true
             text: qsTr("Interface")
-            font.bold: true
         }
 
         ComboSetting {
@@ -51,10 +49,9 @@ Page {
             onChanged: languageLoader.setLanguage(value)
         }
 
-        Text {
+        SettingTitle {
             Layout.fillWidth: true
             text: qsTr("Save")
-            font.bold: true
         }
 
         TextFieldSetting {

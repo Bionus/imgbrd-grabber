@@ -12,14 +12,16 @@ Rectangle {
     property string name
     property string subtitle
 
-    implicitHeight: Math.max(placeholder.implicitHeight, colLayout.implicitHeight)
-
-    SystemPalette { id: palette }
-    color: Color.blend("transparent", palette.mid, mouseArea.pressed ? 0.9 : 0.0)
+    implicitHeight: Math.max(placeholder.implicitHeight, colLayout.implicitHeight) + rowLayout.anchors.topMargin + rowLayout.anchors.bottomMargin
+    color: mouseArea.pressed ? Qt.rgba(0, 0, 0, 0.1) : "transparent"
 
     RowLayout {
         id: rowLayout
         anchors.fill: parent
+        anchors.topMargin: 6
+        anchors.bottomMargin: 6
+        anchors.leftMargin: 8
+        anchors.rightMargin: 8
 
         Item {
             Layout.fillWidth: true
@@ -27,8 +29,9 @@ Rectangle {
 
             ColumnLayout {
                 id: colLayout
-                anchors.fill: parent
-                spacing: 0
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                spacing: 2
 
                 Text {
                     text: name
@@ -36,6 +39,7 @@ Rectangle {
                 Text {
                     visible: !!subtitle
                     text: subtitle
+                    font.italic: true
                 }
             }
         }

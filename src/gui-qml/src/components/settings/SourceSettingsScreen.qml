@@ -32,11 +32,11 @@ Page {
 
     ColumnLayout {
         width: parent.width
+        spacing: 0
 
-        Text {
+        SettingTitle {
             Layout.fillWidth: true
             text: qsTr("General")
-            font.bold: true
         }
 
         TextFieldSetting {
