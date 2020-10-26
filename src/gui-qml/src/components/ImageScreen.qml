@@ -7,7 +7,13 @@ Page {
     id: root
 
     signal closed()
-    property var image
+
+    property var images
+    property int index
+    property var image: images[index]
+
+    property bool showHd: false
+    property bool showTags: false
 
     ShareUtils {
         id: shareUtils
@@ -31,10 +37,8 @@ Page {
             }
 
             ToolButton {
-                icon.source: stackLayout.currentIndex == 0
-                    ? "/images/icons/tags.png"
-                    : "/images/icons/image.png"
-                onClicked: stackLayout.currentIndex = (stackLayout.currentIndex + 1) % 2
+                icon.source: showTags ? "/images/icons/image.png" : "/images/icons/tags.png"
+                onClicked: showTags = !showTags
             }
 
             ToolButton {
@@ -49,53 +53,62 @@ Page {
 
             ToolButton {
                 visible: image.sampleUrl !== image.fileUrl
-                icon.source: String(img.source) === image.sampleUrl
-                    ? "/images/icons/hd.png"
-                    : "/images/icons/ld.png"
-                onClicked: img.source = String(img.source) === image.sampleUrl
-                    ? image.fileUrl
-                    : image.sampleUrl
+                icon.source: showHd ? "/images/icons/ld.png" : "/images/icons/hd.png"
+                onClicked: showHd = !showHd
             }
         }
     }
 
-    StackLayout {
-        id: stackLayout
+
+    SwipeView {
+        id: swipeView
+        currentIndex: root.index
         anchors.fill: parent
         clip: true
-        currentIndex: 0
+        onCurrentIndexChanged: { showHd = false; showTags = false }
 
-        ColumnLayout {
-            ZoomableImage {
-                id: img
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                source: image.sampleUrl
-                clip: true
-            }
+        Repeater {
+            model: root.images
 
-            ProgressBar {
-                value: img.progress
-                visible: img.status != Image.Ready
-                Layout.fillWidth: true
-            }
-        }
+            Loader {
+                active: SwipeView.isPreviousItem || SwipeView.isCurrentItem || SwipeView.isNextItem
 
-        ScrollView {
-            clip: true
-            padding: 8
+                sourceComponent: StackLayout {
+                    id: stackLayout
+                    //anchors.fill: parent
+                    clip: true
+                    currentIndex: showTags && index == swipeView.currentIndex ? 1 : 0
 
-            ListView {
-                model: image.tags
-                spacing: 4
+                    ColumnLayout {
+                        ZoomableImage {
+                            id: img
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                            clip: true
+                        }
 
-                delegate: Text {
-                    text: modelData
-                    textFormat: Text.RichText
+                        ProgressBar {
+                            value: img.progress
+                            visible: img.status != Image.Ready
+                            Layout.fillWidth: true
+                        }
+                    }
 
-                    onLinkActivated: {
-                        root.closed()
-                        searchTab.load(link)
+                    ScrollView {
+                        clip: true
+                        padding: 8
+
+                        Text {
+                            text: modelData.tags.join("<br/>")
+                            textFormat: Text.RichText
+                            lineHeight: 1.1
+
+                            onLinkActivated: {
+                                root.closed()
+                                searchTab.load(link)
+                            }
+                        }
                     }
                 }
             }

@@ -45,10 +45,8 @@ Page {
         id: imageScreen
 
         ImageScreen {
-            image: {
-                fileUrl: ""
-                tags: ""
-            }
+            images: results
+            index: 0
 
             onClosed: mainStackView.pop()
         }
@@ -74,7 +72,7 @@ Page {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: mainStackView.push(imageScreen, { image: modelData })
+                    onClicked: mainStackView.push(imageScreen, { index: index })
                 }
             }
         }
