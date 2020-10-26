@@ -70,7 +70,9 @@ int main(int argc, char *argv[])
 	languageLoader.install(qApp);
 	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString());
 	engine.rootContext()->setContextProperty("languageLoader", &languageLoader);
-	QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);
+	#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+		QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);
+	#endif
 
 	engine.load(url);
 
