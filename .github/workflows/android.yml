@@ -42,12 +42,15 @@ jobs:
       working-directory: src/cmake
       run: git clone https://github.com/KDAB/android_openssl.git
 
+    - name: Restore keystore file
+      run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
+
     - name: Configure
       working-directory: build
       run: |
         export ANDROID_SDK_ROOT=$ANDROID_HOME
         export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk-bundle
-        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" \
+        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DKEYSTORE_PASSWORD="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
           -DANDROID_ABI:STRING=armeabi-v7a \
           -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
           -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
@@ -74,8 +77,8 @@ jobs:
 
     - name: Generate package
       run: |
-        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber_nightly_qml.apk
-        mv build/gui/gui-armeabi-v7a/build/outputs/apk/debug/gui-armeabi-v7a-debug.apk Grabber_nightly.apk
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber_nightly_qml.apk
+        mv build/gui/gui-armeabi-v7a/build/outputs/apk/release/gui-armeabi-v7a-release-signed.apk Grabber_nightly.apk
         ls -la *.apk
 
     - name: Nightly
