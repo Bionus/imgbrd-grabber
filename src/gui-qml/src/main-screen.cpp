@@ -152,6 +152,12 @@ Settings *MainScreen::getSiteSettings(const QString &url)
 	return new Settings(m_profile->getSites().value(url)->settings(), this);
 }
 
+QString MainScreen::toLocalFile(const QString &url)
+{
+	QUrl u(url);
+	return u.isValid() ? u.toLocalFile() : url;
+}
+
 QString MainScreen::settingsFileName() const
 {
 	return m_profile->getSettings()->fileName();

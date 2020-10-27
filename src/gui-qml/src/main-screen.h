@@ -63,6 +63,7 @@ class MainScreen : public QObject
 		void downloadImage(const QSharedPointer<Image> &image);
 		QString addSite(const QString &type, const QString &host, bool https);
 		Settings *getSiteSettings(const QString &url);
+		QString toLocalFile(const QString &url);
 
 	protected slots:
 		void refreshSites();

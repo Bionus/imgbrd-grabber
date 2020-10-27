@@ -28,14 +28,11 @@ Item {
         FileDialog {
             id: dialog
 
-            // acceptLabel: "Select"
             title: qsTr("Please choose a directory")
-            folder: "file:///" + setting.value
-            // selectExisting: true
+            folder: "file:///" + backend.toLocalFile(setting.value)
             selectFolder: true
-            // selectMultiple: false
 
-            onAccepted: setting.setValue(dialog.fileUrl.toString().substring(0, 8) === "file:///" ? dialog.fileUrl.toString().substring(8) : dialog.fileUrl.toString())
+            onAccepted: setting.setValue(backend.toLocalFile(dialog.fileUrl.toString()))
         }
     }
 }
