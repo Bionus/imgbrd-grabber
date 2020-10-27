@@ -16,6 +16,10 @@ ApplicationWindow {
     property string site: "danbooru.donmai.us"
     property string currentPage: "search"
 
+    Settings {
+        id: gSettings
+    }
+
     MainDrawer {
         id: drawer
 

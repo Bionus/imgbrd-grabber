@@ -8,15 +8,9 @@ Item {
     property int min: 0
     property int max: 99
     property int step: 1
-    property alias settingKey: setting.settingKey
-    property alias settingDefault: setting.settingDefault
-    property alias settingObject: setting.settingObject
+    property Setting setting
 
     implicitHeight: item.implicitHeight
-
-    Setting {
-        id: setting
-    }
 
     SettingItem {
         id: item

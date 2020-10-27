@@ -5,15 +5,9 @@ Item {
     id: root
 
     property string name
-    property alias settingKey: setting.settingKey
-    property alias settingDefault: setting.settingDefault
-    property alias settingObject: setting.settingObject
+    property Setting setting
 
     implicitHeight: item.implicitHeight
-
-    Setting {
-        id: setting
-    }
 
     SettingItem {
         id: item

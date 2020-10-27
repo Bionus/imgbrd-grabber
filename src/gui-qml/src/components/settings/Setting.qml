@@ -5,14 +5,14 @@ Item {
 
     signal changed()
 
-    property string settingKey
-    property var settingDefault
-    property var settingObject: settings
+    property string key
+    property var def
+    property var obj: settings
 
-    property string value: root.settingObject.value(settingKey, settingDefault)
+    property string value: root.obj.value(root.key, root.def)
 
     function setValue(val, refresh) {
-        root.settingObject.setValue(settingKey, val, settingDefault)
+        root.obj.setValue(root.key, val, root.def)
         if (refresh !== false) {
             root.value = val
         }

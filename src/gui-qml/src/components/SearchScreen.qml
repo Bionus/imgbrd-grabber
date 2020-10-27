@@ -61,7 +61,7 @@ Page {
         ColumnFlow {
             id: resultsLayout
             anchors.fill: parent
-            columns: settings.value("resultsColumnCount", 3)
+            columns: gSettings.resultsColumnCount.value
             model: results
 
             delegate: Image {

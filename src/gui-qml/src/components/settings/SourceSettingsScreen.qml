@@ -41,18 +41,22 @@ Page {
 
         TextFieldSetting {
             name: qsTr("Name")
-            settingKey: "name"
-            settingDefault: root.siteUrl
-            settingObject: settings
+            setting: Setting {
+                key: "name"
+                def: root.siteUrl
+                obj: root.settings
+            }
             Layout.fillWidth: true
         }
 
         CheckBoxSetting {
             name: qsTr("HTTPS")
             subtitle: qsTr("Use a secure connection.")
-            settingKey: "ssl"
-            settingDefault: false
-            settingObject: settings
+            setting: Setting {
+                key: "ssl"
+                def: false
+                obj: root.settings
+            }
             Layout.fillWidth: true
         }
     }

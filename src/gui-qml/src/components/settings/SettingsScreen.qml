@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
-import Qt.labs.platform 1.1
 
 Page {
     id: root
@@ -75,8 +74,7 @@ Page {
             ComboSetting {
                 name: qsTr("Language")
                 options: ["English", "French"]
-                settingKey: "language"
-                settingDefault: "English"
+                setting: gSettings.language
                 Layout.fillWidth: true
 
                 onChanged: languageLoader.setLanguage(value)
@@ -91,8 +89,7 @@ Page {
                 name: qsTr("Columns")
                 min: 1
                 max: 10
-                settingKey: "resultsColumnCount"
-                settingDefault: 3
+                setting: gSettings.resultsColumnCount
                 Layout.fillWidth: true
             }
 
@@ -113,23 +110,20 @@ Page {
 
             TextFieldSetting {
                 name: qsTr("Filename")
-                settingKey: "Save/filename"
-                settingDefault: "%md5%.%ext%"
+                setting: gSettings.save_filename
                 Layout.fillWidth: true
             }
 
             FolderSetting {
                 name: qsTr("Folder")
-                settingKey: "Save/path"
-                settingDefault: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+                setting: gSettings.save_path
                 Layout.fillWidth: true
             }
 
             CheckBoxSetting {
                 name: qsTr("Hide blacklisted")
                 subtitle: qsTr("Hide blacklisted images from the results.")
-                settingKey: "hideblacklisted"
-                settingDefault: true
+                setting: gSettings.hideblacklisted
                 Layout.fillWidth: true
             }
 

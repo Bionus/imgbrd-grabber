@@ -23,5 +23,6 @@
         <file>components/settings/SettingTitle.qml</file>
         <file>components/settings/LinkSettingItem.qml</file>
         <file>components/settings/SpinBoxSetting.qml</file>
+        <file>components/settings/Settings.qml</file>
     </qresource>
 </RCC>

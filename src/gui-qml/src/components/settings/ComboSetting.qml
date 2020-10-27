@@ -10,15 +10,10 @@ Item {
 
     property string name
     property var options
-    property alias settingKey: setting.settingKey
-    property alias settingDefault: setting.settingDefault
+    property Setting setting
     property string currentValue: setting.value
 
     implicitHeight: item.implicitHeight
-
-    Setting {
-        id: setting
-    }
 
     SettingItem {
         id: item
