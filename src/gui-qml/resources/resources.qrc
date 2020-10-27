@@ -57,5 +57,9 @@
         <file>images/icons/edit@2x.png</file>
         <file>images/icons/edit@3x.png</file>
         <file>images/icons/edit@4x.png</file>
+        <file>images/icons/info.png</file>
+        <file>images/icons/info@2x.png</file>
+        <file>images/icons/info@3x.png</file>
+        <file>images/icons/info@4x.png</file>
     </qresource>
 </RCC>
