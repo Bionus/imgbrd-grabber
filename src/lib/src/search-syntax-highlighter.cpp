@@ -4,7 +4,7 @@
 
 
 SearchSyntaxHighlighter::SearchSyntaxHighlighter(QTextDocument *parent)
-    : QSyntaxHighlighter(parent)
+	: QSyntaxHighlighter(parent)
 {
 	favoritesFormat.setForeground(QColor("#ffc0cb"));
 	keptForLaterFormat.setForeground(QColor("#000000"));
@@ -44,7 +44,7 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(QTextDocument *parent)
 
 void SearchSyntaxHighlighter::highlightBlock(const QString &text)
 {
-	foreach (const HighlightingRule &rule, highlightingRules) {
+	foreach(const HighlightingRule &rule, highlightingRules) {
 		QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
 		while (matchIterator.hasNext()) {
 			QRegularExpressionMatch match = matchIterator.next();

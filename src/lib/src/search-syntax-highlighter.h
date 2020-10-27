@@ -12,21 +12,21 @@ class QTextDocument;
 
 class SearchSyntaxHighlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-        SearchSyntaxHighlighter(QTextDocument *parent = 0);
+	public:
+		SearchSyntaxHighlighter(QTextDocument *parent = 0);
 
 	protected:
 		void highlightBlock(const QString &text) override;
 
-    private:
-        struct HighlightingRule
-        {
-            QRegularExpression pattern;
-            QTextCharFormat format;
-        };
-        QVector<HighlightingRule> highlightingRules;
+	private:
+		struct HighlightingRule
+		{
+			QRegularExpression pattern;
+			QTextCharFormat format;
+		};
+		QVector<HighlightingRule> highlightingRules;
 
 		QTextCharFormat favoritesFormat;
 		QTextCharFormat keptForLaterFormat;
