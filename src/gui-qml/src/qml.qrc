@@ -22,5 +22,6 @@
         <file>components/settings/SourceSettingsScreen.qml</file>
         <file>components/settings/SettingTitle.qml</file>
         <file>components/settings/LinkSettingItem.qml</file>
+        <file>components/settings/SpinBoxSetting.qml</file>
     </qresource>
 </RCC>

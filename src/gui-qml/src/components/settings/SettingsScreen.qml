@@ -40,6 +40,10 @@ Page {
 
             model: ListModel {
                 ListElement {
+                    name: qsTr("Interface")
+                    icon: "/images/icons/interface.png"
+                }
+                ListElement {
                     name: qsTr("General")
                     icon: "/images/icons/settings.png"
                 }
@@ -59,7 +63,6 @@ Page {
         }
 
         ColumnLayout {
-            id: generalSettings
             width: parent.width
             spacing: 0
             visible: false
@@ -78,6 +81,30 @@ Page {
 
                 onChanged: languageLoader.setLanguage(value)
             }
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Search results")
+            }
+
+            SpinBoxSetting {
+                name: qsTr("Columns")
+                min: 1
+                max: 10
+                settingKey: "resultsColumnCount"
+                settingDefault: 3
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+
+        ColumnLayout {
+            width: parent.width
+            spacing: 0
+            visible: false
 
             SettingTitle {
                 Layout.fillWidth: true
@@ -112,7 +139,6 @@ Page {
         }
 
         ColumnLayout {
-            id: aboutSettings
             width: parent.width
             spacing: 0
             visible: false
