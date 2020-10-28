@@ -40,6 +40,7 @@ Rectangle {
                     visible: !!subtitle
                     text: subtitle
                     font.italic: true
+                    color: Qt.rgba(0, 0, 0, 0.8)
                 }
             }
         }
