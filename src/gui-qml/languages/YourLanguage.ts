@@ -94,15 +94,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Filename</source>
+        <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Folder</source>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -111,6 +123,113 @@
     </message>
     <message>
         <source>Hide blacklisted images from the results.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tags separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace spaces by underscores</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace JPEG by JPG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If a file already exists globally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If it&apos;s in the same directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep deleted files in the MD5 list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See project on Github</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report an issue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Github</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Patreon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paypal</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SourceSettingsScreen</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTPS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use a secure connection.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

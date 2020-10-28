@@ -133,7 +133,7 @@ Page {
             }
             CheckBoxSetting {
                 name: qsTr("Replace JPEG by JPG")
-                subtitle: qsTr(`If the image's extension is ".jpeg", it will be replaced by ".jpg".`)
+                subtitle: qsTr("If the image's extension is \".jpeg\", it will be replaced by \".jpg\".")
                 setting: gSettings.save_noJpeg
                 Layout.fillWidth: true
             }
