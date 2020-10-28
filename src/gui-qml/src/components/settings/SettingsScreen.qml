@@ -201,6 +201,26 @@ Page {
                 Layout.fillWidth: true
             }
 
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Donate")
+            }
+            LinkSettingItem {
+                name: qsTr("Patreon")
+                url: "https://www.patreon.com/bionus"
+                Layout.fillWidth: true
+            }
+            LinkSettingItem {
+                name: qsTr("Paypal")
+                url: "https://www.paypal.me/jvasti"
+                Layout.fillWidth: true
+            }
+            LinkSettingItem {
+                name: qsTr("Github")
+                url: "https://github.com/sponsors/Bionus"
+                Layout.fillWidth: true
+            }
+
             Item {
                 Layout.fillHeight: true
             }
