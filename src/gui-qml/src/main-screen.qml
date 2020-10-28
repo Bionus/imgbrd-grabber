@@ -40,7 +40,6 @@ ApplicationWindow {
 
         Item {
             id: mainScreen
-            anchors.fill: parent
 
             SearchScreen {
                 visible: currentPage == "search"
