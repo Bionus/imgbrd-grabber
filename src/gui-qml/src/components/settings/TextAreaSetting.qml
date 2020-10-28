@@ -5,10 +5,8 @@ Item {
     id: root
 
     property string name
-    property int min: 0
-    property int max: 99
-    property int step: 1
-    property Setting setting
+    property string subtitle
+    property var setting
 
     implicitHeight: item.implicitHeight
 
@@ -16,7 +14,7 @@ Item {
         id: item
 
         name: root.name
-        subtitle: setting.value
+        subtitle: root.subtitle
         anchors.fill: parent
 
         onClicked: dialog.open()
@@ -28,17 +26,18 @@ Item {
             anchors.centerIn: Overlay.overlay
             modal: true
             standardButtons: Dialog.Ok | Dialog.Cancel
+            height: 300
 
-            onAccepted: setting.setValue(spinBox.value)
-            onRejected: spinBox.value = setting.value
+            onAccepted: setting.setValue(textArea.text)
+            onRejected: textArea.text = setting.value
 
-            SpinBox {
-                id: spinBox
+            ScrollView {
                 anchors.fill: parent
-                value: setting.value
-                from: root.min
-                to: root.max
-                stepSize: root.step
+
+                TextArea {
+                    id: textArea
+                    text: setting.value
+                }
             }
         }
     }

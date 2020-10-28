@@ -3,8 +3,6 @@ import QtQuick 2.12
 Item {
     id: root
 
-    signal changed()
-
     property string key
     property var def
     property var obj: settings

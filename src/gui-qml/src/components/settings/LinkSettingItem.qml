@@ -13,8 +13,6 @@ Item {
     SettingItem {
         id: item
 
-        name: root.name
-        subtitle: setting.value
         anchors.fill: parent
 
         onClicked: Qt.openUrlExternally(url)

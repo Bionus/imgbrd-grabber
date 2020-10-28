@@ -56,9 +56,15 @@ Item {
         def: false
         obj: root.obj
     }
+    property SettingBlacklist blacklist: SettingBlacklist {}
     property Setting hideblacklisted: Setting {
         key: "hideblacklisted"
-        def: true
+        def: false
+        obj: root.obj
+    }
+    property Setting downloadblacklist: Setting {
+        key: "downloadblacklist"
+        def: false
         obj: root.obj
     }
 }

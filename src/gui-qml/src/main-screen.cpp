@@ -162,3 +162,17 @@ QString MainScreen::settingsFileName() const
 {
 	return m_profile->getSettings()->fileName();
 }
+
+QString MainScreen::getBlacklist()
+{
+	return m_profile->getBlacklist().toString();
+}
+
+void MainScreen::setBlacklist(const QString &text)
+{
+	Blacklist blacklist;
+	for (const QString &tags : text.split("\n", QString::SkipEmptyParts)) {
+		blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+	}
+	m_profile->setBlacklistedTags(blacklist);
+}

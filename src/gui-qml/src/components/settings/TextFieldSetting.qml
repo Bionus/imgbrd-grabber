@@ -31,6 +31,7 @@ Item {
 
             TextField {
                 id: textField
+                anchors.fill: parent
                 text: setting.value
             }
         }

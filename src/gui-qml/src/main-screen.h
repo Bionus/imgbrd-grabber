@@ -64,6 +64,8 @@ class MainScreen : public QObject
 		QString addSite(const QString &type, const QString &host, bool https);
 		Settings *getSiteSettings(const QString &url);
 		QString toLocalFile(const QString &url);
+		QString getBlacklist();
+		void setBlacklist(const QString &blacklist);
 
 	protected slots:
 		void refreshSites();

@@ -47,6 +47,10 @@ Page {
                     icon: "/images/icons/download.png"
                 }
                 ListElement {
+                    name: qsTr("Blacklist")
+                    icon: "/images/icons/block.png"
+                }
+                ListElement {
                     name: qsTr("About")
                     icon: "/images/icons/info.png"
                 }
@@ -88,12 +92,6 @@ Page {
                 min: 1
                 max: 10
                 setting: gSettings.resultsColumnCount
-                Layout.fillWidth: true
-            }
-            CheckBoxSetting {
-                name: qsTr("Hide blacklisted")
-                subtitle: qsTr("Hide blacklisted images from the results.")
-                setting: gSettings.hideblacklisted
                 Layout.fillWidth: true
             }
 
@@ -159,6 +157,39 @@ Page {
             CheckBoxSetting {
                 name: qsTr("Keep deleted files in the MD5 list")
                 setting: gSettings.save_keepDeletedMd5
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+
+        ColumnLayout {
+            width: parent.width
+            spacing: 0
+            visible: false
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Blacklist")
+            }
+            TextAreaSetting {
+                name: qsTr("Blacklist")
+                subtitle: qsTr("One line per blacklist. Multiple tags make an 'AND' condition.")
+                setting: gSettings.blacklist
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Hide blacklisted")
+                subtitle: qsTr("Hide blacklisted images from the results.")
+                setting: gSettings.hideblacklisted
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Download blacklisted")
+                subtitle: qsTr("Download blacklisted images during batch downloads.")
+                setting: gSettings.downloadblacklist
                 Layout.fillWidth: true
             }
 
