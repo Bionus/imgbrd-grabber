@@ -348,4 +348,16 @@ Page {
             }
         }
     }
+
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+            console.log("handled by settings screen")
+            if (stackView.depth > 1) {
+                stackView.pop()
+            } else {
+                root.closed()
+            }
+            event.accepted = true
+        }
+    }
 }

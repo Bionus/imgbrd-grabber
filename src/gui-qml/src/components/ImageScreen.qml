@@ -114,4 +114,16 @@ Page {
             }
         }
     }
+
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+            console.log("handled by image screen")
+            if (root.showTags) {
+                root.showTags = false
+            } else {
+                root.closed()
+            }
+            event.accepted = true
+        }
+    }
 }
