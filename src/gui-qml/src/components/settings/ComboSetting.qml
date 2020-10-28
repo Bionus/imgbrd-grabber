@@ -20,7 +20,7 @@ Item {
         id: item
 
         name: root.name
-        subtitle: options[values.indexOf(setting.value)]
+        subtitle: options[values.indexOf(setting.value)] || ""
         anchors.fill: parent
 
         onClicked: dialog.open()

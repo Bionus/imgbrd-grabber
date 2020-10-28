@@ -51,6 +51,10 @@ Page {
                     icon: "/images/icons/block.png"
                 }
                 ListElement {
+                    name: qsTr("Network")
+                    icon: "/images/icons/network.png"
+                }
+                ListElement {
                     name: qsTr("About")
                     icon: "/images/icons/info.png"
                 }
@@ -208,6 +212,66 @@ Page {
                 subtitle: qsTr("One per line. Their tag type will be reset to the default.")
                 setting: gSettings.ignoredTags
                 Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+
+        ColumnLayout {
+            width: parent.width
+            spacing: 0
+            visible: false
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Proxy")
+            }
+            CheckBoxSetting {
+                name: qsTr("Enable proxy")
+                setting: gSettings.proxy_use
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Use system-wide proxy settings")
+                setting: gSettings.proxy_useSystem
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value
+            }
+            ComboSetting {
+                name: qsTr("Type")
+                options: ["HTTP", "Socks v5"]
+                values: ["http", "socks5"]
+                setting: gSettings.proxy_type
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value && !gSettings.proxy_useSystem.value
+            }
+            TextFieldSetting {
+                name: qsTr("Host")
+                setting: gSettings.proxy_hostName
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value && !gSettings.proxy_useSystem.value
+            }
+            TextFieldSetting {
+                name: qsTr("Port")
+                inputMethodHints: Qt.ImhDigitsOnly
+                setting: gSettings.proxy_port
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value && !gSettings.proxy_useSystem.value
+            }
+            TextFieldSetting {
+                name: qsTr("Username")
+                setting: gSettings.proxy_user
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value && !gSettings.proxy_useSystem.value
+            }
+            TextFieldSetting {
+                name: qsTr("Password")
+                echoMode: TextInput.Password
+                setting: gSettings.proxy_password
+                Layout.fillWidth: true
+                visible: gSettings.proxy_use.value && !gSettings.proxy_useSystem.value
             }
 
             Item {

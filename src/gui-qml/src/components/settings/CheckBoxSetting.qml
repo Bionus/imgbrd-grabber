@@ -1,3 +1,4 @@
+import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 
@@ -21,11 +22,11 @@ Item {
 
         CheckBox {
             id: checkBox
-            checked: setting.value
             height: 30
             width: 30
 
-            onCheckedChanged: setting.setValue(checked, false)
+            onCheckedChanged: setting.setValue(checked)
+            Component.onCompleted: checked = setting.value
         }
     }
 }

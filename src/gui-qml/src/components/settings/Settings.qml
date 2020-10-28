@@ -83,4 +83,41 @@ Item {
             backend.setIgnored(val)
         }
     }
+
+    // Proxy
+    property Setting proxy_use: Setting {
+        key: "Proxy/use"
+        def: false
+        obj: root.obj
+    }
+    property Setting proxy_useSystem: Setting {
+        key: "Proxy/useSystem"
+        def: false
+        obj: root.obj
+    }
+    property Setting proxy_type: Setting {
+        key: "Proxy/type"
+        def: "http"
+        obj: root.obj
+    }
+    property Setting proxy_hostName: Setting {
+        key: "Proxy/hostName"
+        def: ""
+        obj: root.obj
+    }
+    property Setting proxy_port: Setting {
+        key: "Proxy/port"
+        def: ""
+        obj: root.obj
+    }
+    property Setting proxy_user: Setting {
+        key: "Proxy/user"
+        def: ""
+        obj: root.obj
+    }
+    property Setting proxy_password: Setting {
+        key: "Proxy/password"
+        def: ""
+        obj: root.obj
+    }
 }

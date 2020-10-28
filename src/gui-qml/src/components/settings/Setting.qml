@@ -7,12 +7,10 @@ Item {
     property var def
     property var obj: settings
 
-    property string value: root.obj ? root.obj.value(root.key, root.def) : undefined
+    property var value: root.obj ? root.obj.value(root.key, root.def) : null
 
-    function setValue(val, refresh) {
+    function setValue(val) {
         root.obj.setValue(root.key, val, root.def)
-        if (refresh !== false) {
-            root.value = val
-        }
+        root.value = val
     }
 }

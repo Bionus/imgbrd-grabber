@@ -69,5 +69,9 @@
         <file>images/icons/block@2x.png</file>
         <file>images/icons/block@3x.png</file>
         <file>images/icons/block@4x.png</file>
+        <file>images/icons/network.png</file>
+        <file>images/icons/network@2x.png</file>
+        <file>images/icons/network@3x.png</file>
+        <file>images/icons/network@4x.png</file>
     </qresource>
 </RCC>

@@ -6,6 +6,8 @@ Item {
 
     property string name
     property Setting setting
+    property alias echoMode: textField.echoMode
+    property alias inputMethodHints: textField.inputMethodHints
 
     implicitHeight: item.implicitHeight
 
