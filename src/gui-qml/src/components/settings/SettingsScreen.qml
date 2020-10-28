@@ -99,6 +99,24 @@ Page {
                 Layout.fillWidth: true
             }
 
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Confirm exit")
+            }
+            CheckBoxSetting {
+                name: qsTr("Confirm exit")
+                subtitle: qsTr("Show a confirmation dialog before exiting.")
+                setting: gSettings.mobile_confirmExit
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Double tap to exit")
+                subtitle: qsTr("Tap back button twice to exit.")
+                setting: gSettings.mobile_doubleBackExit
+                Layout.fillWidth: true
+                visible: !gSettings.mobile_confirmExit.value
+            }
+
             Item {
                 Layout.fillHeight: true
             }
@@ -351,7 +369,6 @@ Page {
 
     Keys.onReleased: {
         if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-            console.log("handled by settings screen")
             if (stackView.depth > 1) {
                 stackView.pop()
             } else {

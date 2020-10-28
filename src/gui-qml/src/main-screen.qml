@@ -57,6 +57,44 @@ ApplicationWindow {
                 anchors.fill: parent
                 log: backend.log
             }
+
+            Dialog {
+                id: confirmExitDialog
+
+                title: qsTr("Do you want to exit?")
+                anchors.centerIn: Overlay.overlay
+                modal: true
+                standardButtons: Dialog.Yes | Dialog.Cancel
+
+                onAccepted: {
+                    if (dontAskAgain.checked) {
+                        gSettings.mobile_confirmExit.setValue(false)
+                    }
+                    Qt.quit()
+                }
+
+                CheckBox {
+                    id: dontAskAgain
+                    text: qsTr("Don't ask again")
+                }
+            }
+
+            property int backPressed: 0
+            Keys.onReleased: {
+                if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+                    var now = new Date().getTime()
+                    if (mainStackView.depth > 1) {
+                        mainStackView.pop()
+                    } else if (gSettings.mobile_confirmExit.value) {
+                        confirmExitDialog.open()
+                    } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
+                        backPressed = now
+                    } else {
+                        Qt.quit()
+                    }
+                    event.accepted = true
+                }
+            }
         }
 
         SourcesScreen {

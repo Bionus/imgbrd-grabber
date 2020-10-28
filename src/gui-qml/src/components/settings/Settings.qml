@@ -120,4 +120,16 @@ Item {
         def: ""
         obj: root.obj
     }
+
+    // Mobile-specific settings
+    property Setting mobile_confirmExit: Setting {
+        key: "Mobile/confirmExit"
+        def: true
+        obj: root.obj
+    }
+    property Setting mobile_doubleBackExit: Setting {
+        key: "Mobile/doubleBackExit"
+        def: true
+        obj: root.obj
+    }
 }
