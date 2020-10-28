@@ -183,6 +183,16 @@ Page {
                     : "Version " + VERSION
                 Layout.fillWidth: true
             }
+            LinkSettingItem {
+                name: qsTr("See project on Github")
+                url: "https://github.com/Bionus/imgbrd-grabber"
+                Layout.fillWidth: true
+            }
+            LinkSettingItem {
+                name: qsTr("Report an issue")
+                url: "https://github.com/Bionus/imgbrd-grabber/issues/new/choose"
+                Layout.fillWidth: true
+            }
 
             SettingTitle {
                 Layout.fillWidth: true
