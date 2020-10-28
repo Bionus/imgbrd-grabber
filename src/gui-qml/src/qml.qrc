@@ -25,6 +25,5 @@
         <file>components/settings/SpinBoxSetting.qml</file>
         <file>components/settings/Settings.qml</file>
         <file>components/settings/TextAreaSetting.qml</file>
-        <file>components/settings/SettingBlacklist.qml</file>
     </qresource>
 </RCC>

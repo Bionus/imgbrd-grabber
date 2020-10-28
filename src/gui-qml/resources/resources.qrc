@@ -65,5 +65,9 @@
         <file>images/icons/interface@2x.png</file>
         <file>images/icons/interface@3x.png</file>
         <file>images/icons/interface@4x.png</file>
+        <file>images/icons/block.png</file>
+        <file>images/icons/block@2x.png</file>
+        <file>images/icons/block@3x.png</file>
+        <file>images/icons/block@4x.png</file>
     </qresource>
 </RCC>

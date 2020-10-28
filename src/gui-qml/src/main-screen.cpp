@@ -176,3 +176,13 @@ void MainScreen::setBlacklist(const QString &text)
 	}
 	m_profile->setBlacklistedTags(blacklist);
 }
+
+QString MainScreen::getIgnored()
+{
+	return m_profile->getIgnored().join('\n');
+}
+
+void MainScreen::setIgnored(const QString &ignored)
+{
+	m_profile->setIgnored(ignored.split('\n', QString::SkipEmptyParts));
+}

@@ -66,6 +66,8 @@ class MainScreen : public QObject
 		QString toLocalFile(const QString &url);
 		QString getBlacklist();
 		void setBlacklist(const QString &blacklist);
+		QString getIgnored();
+		void setIgnored(const QString &ignored);
 
 	protected slots:
 		void refreshSites();

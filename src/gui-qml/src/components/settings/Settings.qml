@@ -56,7 +56,12 @@ Item {
         def: false
         obj: root.obj
     }
-    property SettingBlacklist blacklist: SettingBlacklist {}
+    property var blacklist: Item {
+        property string value: backend.getBlacklist()
+        function setValue(val) {
+            backend.setBlacklist(val)
+        }
+    }
     property Setting hideblacklisted: Setting {
         key: "hideblacklisted"
         def: false
@@ -66,5 +71,16 @@ Item {
         key: "downloadblacklist"
         def: false
         obj: root.obj
+    }
+    property Setting removedTags: Setting {
+        key: "ignoredtags"
+        def: ""
+        obj: root.obj
+    }
+    property var ignoredTags: Item {
+        property string value: backend.getIgnored()
+        function setValue(val) {
+            backend.setIgnored(val)
+        }
     }
 }

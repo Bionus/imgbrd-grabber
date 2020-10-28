@@ -193,6 +193,23 @@ Page {
                 Layout.fillWidth: true
             }
 
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Tagging")
+            }
+            TextAreaSetting {
+                name: qsTr("Removed tags")
+                subtitle: qsTr("These won't be taken into account when saving the image.")
+                setting: gSettings.removedTags
+                Layout.fillWidth: true
+            }
+            TextAreaSetting {
+                name: qsTr("Ignored tags")
+                subtitle: qsTr("One per line. Their tag type will be reset to the default.")
+                setting: gSettings.ignoredTags
+                Layout.fillWidth: true
+            }
+
             Item {
                 Layout.fillHeight: true
             }
