@@ -43,8 +43,8 @@ Page {
                     icon: "/images/icons/interface.png"
                 }
                 ListElement {
-                    name: qsTr("General")
-                    icon: "/images/icons/settings.png"
+                    name: qsTr("Save")
+                    icon: "/images/icons/download.png"
                 }
                 ListElement {
                     name: qsTr("About")
@@ -70,7 +70,6 @@ Page {
                 Layout.fillWidth: true
                 text: qsTr("Interface")
             }
-
             ComboSetting {
                 name: qsTr("Language")
                 options: ["English", "French"]
@@ -84,7 +83,6 @@ Page {
                 Layout.fillWidth: true
                 text: qsTr("Search results")
             }
-
             SpinBoxSetting {
                 name: qsTr("Columns")
                 min: 1
@@ -92,34 +90,6 @@ Page {
                 setting: gSettings.resultsColumnCount
                 Layout.fillWidth: true
             }
-
-            Item {
-                Layout.fillHeight: true
-            }
-        }
-
-        ColumnLayout {
-            width: parent.width
-            spacing: 0
-            visible: false
-
-            SettingTitle {
-                Layout.fillWidth: true
-                text: qsTr("Save")
-            }
-
-            TextFieldSetting {
-                name: qsTr("Filename")
-                setting: gSettings.save_filename
-                Layout.fillWidth: true
-            }
-
-            FolderSetting {
-                name: qsTr("Folder")
-                setting: gSettings.save_path
-                Layout.fillWidth: true
-            }
-
             CheckBoxSetting {
                 name: qsTr("Hide blacklisted")
                 subtitle: qsTr("Hide blacklisted images from the results.")
@@ -139,9 +109,57 @@ Page {
 
             SettingTitle {
                 Layout.fillWidth: true
-                text: qsTr("About")
+                text: qsTr("Save")
+            }
+            TextFieldSetting {
+                name: qsTr("Filename")
+                setting: gSettings.save_filename
+                Layout.fillWidth: true
+            }
+            FolderSetting {
+                name: qsTr("Folder")
+                setting: gSettings.save_path
+                Layout.fillWidth: true
             }
 
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Duplicate management")
+            }
+            ComboSetting {
+                name: qsTr("If a file already exists globally")
+                options: [qsTr("Save"), qsTr("Copy"), qsTr("Move"), qsTr("Don't save")]
+                values: ["save", "copy", "move", "ignore"]
+                setting: gSettings.save_md5Duplicates
+                Layout.fillWidth: true
+            }
+            ComboSetting {
+                name: qsTr("If it's in the same directory")
+                options: [qsTr("Save"), qsTr("Copy"), qsTr("Move"), qsTr("Don't save")]
+                values: ["save", "copy", "move", "ignore"]
+                setting: gSettings.save_md5DuplicatesSameDir
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Keep deleted files in the MD5 list")
+                setting: gSettings.save_keepDeletedMd5
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+
+        ColumnLayout {
+            width: parent.width
+            spacing: 0
+            visible: false
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("About")
+            }
             SettingItem {
                 name: qsTr("Version")
                 subtitle: NIGHTLY
@@ -154,14 +172,12 @@ Page {
                 Layout.fillWidth: true
                 text: qsTr("Author")
             }
-
             LinkSettingItem {
                 name: qsTr("Email")
                 subtitle: "bio.nus@hotmail.fr"
                 url: "mailto:bio.nus@hotmail.fr"
                 Layout.fillWidth: true
             }
-
             LinkSettingItem {
                 name: qsTr("Github")
                 subtitle: "@Bionus"

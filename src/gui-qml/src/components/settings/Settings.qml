@@ -26,6 +26,21 @@ Item {
         def: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         obj: root.obj
     }
+    property Setting save_md5Duplicates: Setting {
+        key: "Save/md5Duplicates"
+        def: "save"
+        obj: root.obj
+    }
+    property Setting save_md5DuplicatesSameDir: Setting {
+        key: "Save/md5DuplicatesSameDir"
+        def: "save"
+        obj: root.obj
+    }
+    property Setting save_keepDeletedMd5: Setting {
+        key: "Save/keepDeletedMd5"
+        def: false
+        obj: root.obj
+    }
     property Setting hideblacklisted: Setting {
         key: "hideblacklisted"
         def: true
