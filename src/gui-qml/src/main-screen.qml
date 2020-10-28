@@ -9,8 +9,8 @@ ApplicationWindow {
     id: window
 
     visible: true
-    width: 300
-    height: 500
+    width: 400
+    height: 700
     title: "Grabber"
 
     property string site: "danbooru.donmai.us"
