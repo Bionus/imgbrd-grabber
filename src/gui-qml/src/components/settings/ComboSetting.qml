@@ -10,6 +10,7 @@ Item {
 
     property string name
     property var options
+    property var values: options
     property Setting setting
     property string currentValue: setting.value
 
@@ -19,7 +20,7 @@ Item {
         id: item
 
         name: root.name
-        subtitle: setting.value
+        subtitle: options[values.indexOf(setting.value)]
         anchors.fill: parent
 
         onClicked: dialog.open()
@@ -33,7 +34,7 @@ Item {
             standardButtons: Dialog.Ok | Dialog.Cancel
 
             onAccepted: {
-                var val = buttonGroup.checkedButton.text
+                var val = currentValue
                 setting.setValue(val)
                 root.changed(val)
             }
@@ -52,7 +53,7 @@ Item {
 
                 delegate: RadioDelegate {
                     width: parent.width
-                    checked: modelData == currentValue
+                    checked: values[index] === currentValue
                     text: modelData
                     ButtonGroup.group: buttonGroup
                     height: 30 // from 40
@@ -63,7 +64,7 @@ Item {
                         size: 18 // from 28
                     }
 
-                    onCheckedChanged: if (checked) currentValue = modelData
+                    onCheckedChanged: if (checked) currentValue = values[index]
                 }
             }
         }
