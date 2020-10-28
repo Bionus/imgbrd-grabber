@@ -111,14 +111,30 @@ Page {
                 Layout.fillWidth: true
                 text: qsTr("Save")
             }
+            FolderSetting {
+                name: qsTr("Folder")
+                setting: gSettings.save_path
+                Layout.fillWidth: true
+            }
             TextFieldSetting {
                 name: qsTr("Filename")
                 setting: gSettings.save_filename
                 Layout.fillWidth: true
             }
-            FolderSetting {
-                name: qsTr("Folder")
-                setting: gSettings.save_path
+            TextFieldSetting {
+                name: qsTr("Tags separator")
+                setting: gSettings.save_separator
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Replace spaces by underscores")
+                setting: gSettings.save_replaceblanks
+                Layout.fillWidth: true
+            }
+            CheckBoxSetting {
+                name: qsTr("Replace JPEG by JPG")
+                subtitle: qsTr(`If the image's extension is ".jpeg", it will be replaced by ".jpg".`)
+                setting: gSettings.save_noJpeg
                 Layout.fillWidth: true
             }
 

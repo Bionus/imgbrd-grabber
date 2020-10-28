@@ -26,6 +26,21 @@ Item {
         def: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         obj: root.obj
     }
+    property Setting save_separator: Setting {
+        key: "Save/separator"
+        def: " "
+        obj: root.obj
+    }
+    property Setting save_replaceblanks: Setting {
+        key: "Save/replaceblanks"
+        def: false
+        obj: root.obj
+    }
+    property Setting save_noJpeg: Setting {
+        key: "Save/noJpeg"
+        def: true
+        obj: root.obj
+    }
     property Setting save_md5Duplicates: Setting {
         key: "Save/md5Duplicates"
         def: "save"
