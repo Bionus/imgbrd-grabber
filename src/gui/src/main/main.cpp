@@ -202,6 +202,12 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 
+		auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts));
+		if (sites.isEmpty()) {
+			QTextStream(stderr) << "No valid source found";
+			exit(1);
+		}
+
 		Printer *printer = parser.isSet(jsonOption)
 			? (Printer*) new JsonPrinter(profile)
 			: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
@@ -210,7 +216,7 @@ int main(int argc, char *argv[])
 		Downloader *downloader = new Downloader(profile, printer,
 			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 			parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-			profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+			sites,
 			parser.value(pageOption).toInt(),
 			parser.value(limitOption).toInt(),
 			parser.value(perPageOption).toInt(),

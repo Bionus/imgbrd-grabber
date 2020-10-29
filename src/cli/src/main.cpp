@@ -172,6 +172,10 @@ int main(int argc, char *argv[])
 		QTextStream(stderr) << "You need a filename for downloading images";
 		exit(1);
 	}
+	if (sites.isEmpty()) {
+		QTextStream(stderr) << "No valid source found";
+		exit(1);
+	}
 
 	QString blacklistOverride = parser.value(tagsBlacklistOption);
 	Downloader *downloader = new Downloader(profile, printer,
