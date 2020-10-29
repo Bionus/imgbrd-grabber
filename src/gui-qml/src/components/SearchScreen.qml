@@ -64,6 +64,8 @@ Page {
             columns: gSettings.resultsColumnCount.value
             model: results
 
+            onColumnsChanged: resultsRefresher.restart()
+
             delegate: Image {
                 source: modelData.previewUrl
                 fillMode: Image.PreserveAspectFit

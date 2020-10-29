@@ -79,7 +79,7 @@ ApplicationWindow {
                 }
             }
 
-            property int backPressed: 0
+            property double backPressed: 0
             Keys.onReleased: {
                 if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                     var now = new Date().getTime()
