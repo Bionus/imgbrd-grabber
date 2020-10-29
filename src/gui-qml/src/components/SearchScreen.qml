@@ -118,7 +118,7 @@ Page {
     SearchField {
         id: textFieldSearch
 
-        text: "rating:safe wallpaper"
+        text: ""
         placeholderText: qsTr("Search...")
 
         onEnterPressed: searchTab.load()
