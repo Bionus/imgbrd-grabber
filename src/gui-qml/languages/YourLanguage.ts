@@ -213,6 +213,94 @@
         <source>Paypal</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Blacklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show a confirmation dialog before exiting.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Double tap to exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tap back button twice to exit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download blacklisted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download blacklisted images during batch downloads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tagging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removed tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These won&apos;t be taken into account when saving the image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignored tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One per line. Their tag type will be reset to the default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system-wide proxy settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SourceSettingsScreen</name>
@@ -237,6 +325,17 @@
     <name>SourcesScreen</name>
     <message>
         <source>Sources selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main-screen</name>
+    <message>
+        <source>Do you want to exit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t ask again</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
