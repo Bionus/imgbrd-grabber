@@ -8,6 +8,7 @@ Flickable {
     property alias status: image.status
     property alias progress: image.progress
 
+    property bool animated: false
     property int currentZoomStep: 0
     property real currentZoom: 1.0
     property var zoomSteps: [1.0, 1.75, 2.5]
@@ -33,7 +34,7 @@ Flickable {
         width: Math.max(image.width * image.scale, flickable.width)
         height: Math.max(image.height * image.scale, flickable.height)
 
-        Image {
+        AnimatedImage {
             id: image
 
             fillMode: Image.PreserveAspectFit

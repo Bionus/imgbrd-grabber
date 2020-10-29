@@ -25,5 +25,6 @@
         <file>components/settings/SpinBoxSetting.qml</file>
         <file>components/settings/Settings.qml</file>
         <file>components/settings/TextAreaSetting.qml</file>
+        <file>components/VideoPlayer.qml</file>
     </qresource>
 </RCC>

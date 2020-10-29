@@ -74,6 +74,8 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 			img->url(Image::Size::Full).toString(),
 			TagStylist(m_profile).stylished(img->tags(), true, false, "type"),
 			img,
+			!img->isAnimated().isEmpty(),
+			img->isVideo(),
 			this
 		));
 	}

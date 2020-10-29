@@ -1,4 +1,5 @@
 import Grabber 1.0
+import QtMultimedia 5.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
@@ -75,23 +76,42 @@ Page {
 
                 sourceComponent: StackLayout {
                     id: stackLayout
-                    //anchors.fill: parent
                     clip: true
                     currentIndex: showTags && index == swipeView.currentIndex ? 1 : 0
 
-                    ColumnLayout {
-                        ZoomableImage {
-                            id: img
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
-                            clip: true
+                    Item {
+                        Loader {
+                            active: !image.isVideo
+                            anchors.fill: parent
+
+                            sourceComponent: ColumnLayout {
+                                ZoomableImage {
+                                    id: img
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                    source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                                    animated: image.isAnimated
+                                    clip: true
+                                }
+
+                                ProgressBar {
+                                    value: img.progress
+                                    visible: img.status != Image.Ready
+                                    Layout.fillWidth: true
+                                }
+                            }
                         }
 
-                        ProgressBar {
-                            value: img.progress
-                            visible: img.status != Image.Ready
-                            Layout.fillWidth: true
+                        Loader {
+                            active: image.isVideo
+                            anchors.fill: parent
+
+                            sourceComponent: VideoPlayer {
+                                fillMode: VideoOutput.PreserveAspectFit
+                                source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                                clip: true
+                                autoPlay: index == swipeView.currentIndex
+                            }
                         }
                     }
 

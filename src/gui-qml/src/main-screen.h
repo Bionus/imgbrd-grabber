@@ -19,15 +19,19 @@ class ImagePreview : public QObject
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
 	Q_PROPERTY(QStringList tags READ tags CONSTANT)
 	Q_PROPERTY(QSharedPointer<Image> image READ image CONSTANT)
+	Q_PROPERTY(bool isAnimated READ isAnimated CONSTANT)
+	Q_PROPERTY(bool isVideo READ isVideo CONSTANT)
 
 	public:
-		ImagePreview(QString previewUrl, QString sampleUrl, QString fileUrl, QStringList tags, QSharedPointer<Image> image, QObject *parent = nullptr)
-			: QObject(parent), m_previewUrl(previewUrl), m_sampleUrl(sampleUrl), m_fileUrl(fileUrl), m_tags(tags), m_image(image) {}
+		ImagePreview(QString previewUrl, QString sampleUrl, QString fileUrl, QStringList tags, QSharedPointer<Image> image, bool isAnimated, bool isVideo, QObject *parent = nullptr)
+			: QObject(parent), m_previewUrl(previewUrl), m_sampleUrl(sampleUrl), m_fileUrl(fileUrl), m_tags(tags), m_image(image), m_isAnimated(isAnimated), m_isVideo(isVideo) {}
 		QString previewUrl() const { return m_previewUrl; }
 		QString sampleUrl() const { return m_sampleUrl; }
 		QString fileUrl() const { return m_fileUrl; }
 		QStringList tags() const { return m_tags; }
 		QSharedPointer<Image> image() const { return m_image; }
+		bool isAnimated() const { return m_isAnimated; }
+		bool isVideo() const { return m_isVideo; }
 
 	private:
 		QString m_previewUrl;
@@ -35,6 +39,8 @@ class ImagePreview : public QObject
 		QString m_fileUrl;
 		QStringList m_tags;
 		QSharedPointer<Image> m_image;
+		bool m_isAnimated;
+		bool m_isVideo;
 };
 
 class MainScreen : public QObject
