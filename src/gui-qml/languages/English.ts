@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Interface</source>
-      <translation type="unfinished"/>
+      <translation>Interface</translation>
     </message>
     <message>
       <source>Save</source>
@@ -103,19 +103,19 @@
     </message>
     <message>
       <source>About</source>
-      <translation type="unfinished"/>
+      <translation>About</translation>
     </message>
     <message>
       <source>Language</source>
-      <translation type="unfinished"/>
+      <translation>Language</translation>
     </message>
     <message>
       <source>Search results</source>
-      <translation type="unfinished"/>
+      <translation>Search results</translation>
     </message>
     <message>
       <source>Columns</source>
-      <translation type="unfinished"/>
+      <translation>Columns</translation>
     </message>
     <message>
       <source>Hide blacklisted</source>
@@ -135,190 +135,190 @@
     </message>
     <message>
       <source>Tags separator</source>
-      <translation type="unfinished"/>
+      <translation>Tags separator</translation>
     </message>
     <message>
       <source>Replace spaces by underscores</source>
-      <translation type="unfinished"/>
+      <translation>Replace spaces by underscores</translation>
     </message>
     <message>
       <source>Replace JPEG by JPG</source>
-      <translation type="unfinished"/>
+      <translation>Replace JPEG by JPG</translation>
     </message>
     <message>
       <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation type="unfinished"/>
+      <translation>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</translation>
     </message>
     <message>
       <source>Duplicate management</source>
-      <translation type="unfinished"/>
+      <translation>Duplicate management</translation>
     </message>
     <message>
       <source>If a file already exists globally</source>
-      <translation type="unfinished"/>
+      <translation>If a file already exists globally</translation>
     </message>
     <message>
       <source>Copy</source>
-      <translation type="unfinished"/>
+      <translation>Copy</translation>
     </message>
     <message>
       <source>Move</source>
-      <translation type="unfinished"/>
+      <translation>Move</translation>
     </message>
     <message>
       <source>Don&apos;t save</source>
-      <translation type="unfinished"/>
+      <translation>Don&apos;t save</translation>
     </message>
     <message>
       <source>If it&apos;s in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>If it&apos;s in the same directory</translation>
     </message>
     <message>
       <source>Keep deleted files in the MD5 list</source>
-      <translation type="unfinished"/>
+      <translation>Keep deleted files in the MD5 list</translation>
     </message>
     <message>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>Version</translation>
     </message>
     <message>
       <source>See project on Github</source>
-      <translation type="unfinished"/>
+      <translation>See project on Github</translation>
     </message>
     <message>
       <source>Report an issue</source>
-      <translation type="unfinished"/>
+      <translation>Report an issue</translation>
     </message>
     <message>
       <source>Author</source>
-      <translation type="unfinished"/>
+      <translation>Author</translation>
     </message>
     <message>
       <source>Email</source>
-      <translation type="unfinished"/>
+      <translation>Email</translation>
     </message>
     <message>
       <source>Github</source>
-      <translation type="unfinished"/>
+      <translation>Github</translation>
     </message>
     <message>
       <source>Donate</source>
-      <translation type="unfinished"/>
+      <translation>Donate</translation>
     </message>
     <message>
       <source>Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Patreon</translation>
     </message>
     <message>
       <source>Paypal</source>
-      <translation type="unfinished"/>
+      <translation>Paypal</translation>
     </message>
     <message>
       <source>Blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Blacklist</translation>
     </message>
     <message>
       <source>Network</source>
-      <translation type="unfinished"/>
+      <translation>Network</translation>
     </message>
     <message>
       <source>Confirm exit</source>
-      <translation type="unfinished"/>
+      <translation>Confirm exit</translation>
     </message>
     <message>
       <source>Show a confirmation dialog before exiting.</source>
-      <translation type="unfinished"/>
+      <translation>Show a confirmation dialog before exiting.</translation>
     </message>
     <message>
       <source>Double tap to exit</source>
-      <translation type="unfinished"/>
+      <translation>Double tap to exit</translation>
     </message>
     <message>
       <source>Tap back button twice to exit.</source>
-      <translation type="unfinished"/>
+      <translation>Tap back button twice to exit.</translation>
     </message>
     <message>
       <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation type="unfinished"/>
+      <translation>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</translation>
     </message>
     <message>
       <source>Download blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Download blacklisted</translation>
     </message>
     <message>
       <source>Download blacklisted images during batch downloads.</source>
-      <translation type="unfinished"/>
+      <translation>Download blacklisted images during batch downloads.</translation>
     </message>
     <message>
       <source>Tagging</source>
-      <translation type="unfinished"/>
+      <translation>Tagging</translation>
     </message>
     <message>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Removed tags</translation>
     </message>
     <message>
       <source>These won&apos;t be taken into account when saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>These won&apos;t be taken into account when saving the image.</translation>
     </message>
     <message>
       <source>Ignored tags</source>
-      <translation type="unfinished"/>
+      <translation>Ignored tags</translation>
     </message>
     <message>
       <source>One per line. Their tag type will be reset to the default.</source>
-      <translation type="unfinished"/>
+      <translation>One per line. Their tag type will be reset to the default.</translation>
     </message>
     <message>
       <source>Proxy</source>
-      <translation type="unfinished"/>
+      <translation>Proxy</translation>
     </message>
     <message>
       <source>Enable proxy</source>
-      <translation type="unfinished"/>
+      <translation>Enable proxy</translation>
     </message>
     <message>
       <source>Use system-wide proxy settings</source>
-      <translation type="unfinished"/>
+      <translation>Use system-wide proxy settings</translation>
     </message>
     <message>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>Type</translation>
     </message>
     <message>
       <source>Host</source>
-      <translation type="unfinished"/>
+      <translation>Host</translation>
     </message>
     <message>
       <source>Port</source>
-      <translation type="unfinished"/>
+      <translation>Port</translation>
     </message>
     <message>
       <source>Username</source>
-      <translation type="unfinished"/>
+      <translation>Username</translation>
     </message>
     <message>
       <source>Password</source>
-      <translation type="unfinished"/>
+      <translation>Password</translation>
     </message>
   </context>
   <context>
     <name>SourceSettingsScreen</name>
     <message>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>General</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Name</translation>
     </message>
     <message>
       <source>HTTPS</source>
-      <translation type="unfinished"/>
+      <translation>HTTPS</translation>
     </message>
     <message>
       <source>Use a secure connection.</source>
-      <translation type="unfinished"/>
+      <translation>Use a secure connection.</translation>
     </message>
   </context>
   <context>
@@ -332,11 +332,11 @@
     <name>main-screen</name>
     <message>
       <source>Do you want to exit?</source>
-      <translation type="unfinished"/>
+      <translation>Do you want to exit?</translation>
     </message>
     <message>
       <source>Don&apos;t ask again</source>
-      <translation type="unfinished"/>
+      <translation>Don&apos;t ask again</translation>
     </message>
   </context>
 </TS>
