@@ -37,6 +37,7 @@ ApplicationWindow {
         id: mainStackView
         anchors.fill: parent
         initialItem: mainScreen
+        focus: true
 
         Item {
             id: mainScreen
