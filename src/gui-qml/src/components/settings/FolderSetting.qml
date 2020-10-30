@@ -14,7 +14,7 @@ Item {
         id: item
 
         name: root.name
-        subtitle: setting.value
+        subtitle: backend.toLocalFile(setting.value)
         anchors.fill: parent
 
         onClicked: dialog.open()
@@ -23,10 +23,10 @@ Item {
             id: dialog
 
             title: qsTr("Please choose a directory")
-            folder: "file:///" + backend.toLocalFile(setting.value)
+            folder: setting.value
             selectFolder: true
 
-            onAccepted: setting.setValue(backend.toLocalFile(dialog.fileUrl.toString()))
+            onAccepted: setting.setValue(dialog.fileUrl.toString())
         }
     }
 }
