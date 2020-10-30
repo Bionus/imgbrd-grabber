@@ -47,7 +47,9 @@
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
 
 	<!-- Permissions -->
-	<!-- %%INSERT_PERMISSIONS -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 	<!-- Features -->
 	<!-- %%INSERT_FEATURES -->
