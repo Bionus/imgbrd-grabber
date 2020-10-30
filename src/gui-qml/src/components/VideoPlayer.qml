@@ -38,7 +38,7 @@ ColumnLayout {
             value: video.position
             Layout.fillWidth: true
 
-            onValueChanged: if (value !== video.position) video.seek(value)
+            onValueChanged: if (Math.abs(value - video.position) > 100) video.seek(value)
         }
     }
 }
