@@ -400,16 +400,30 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 				continue;
 			}
 
-			tmp.rename(path);
-			moved = true;
+			if (!tmp.rename(path)) {
+				log(QStringLiteral("Error renaming from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			} else {
+				moved = true;
+			}
 		} else if (multipleFiles == "link") {
 			#ifdef Q_OS_WIN
-				tmp.link(path + ".lnk");
+				bool ok = tmp.link(path + ".lnk");
 			#else
-				tmp.link(path);
+				bool ok = tmp.link(path);
 			#endif
+			if (!ok) {
+				log(QStringLiteral("Error creating link from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			}
 		} else {
-			tmp.copy(path);
+			if (!tmp.copy(path)) {
+				log(QStringLiteral("Error copying from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			}
 		}
 
 		result.append({ path, size, saveResult });
