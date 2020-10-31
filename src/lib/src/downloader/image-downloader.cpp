@@ -245,7 +245,6 @@ void ImageDownloader::loadImage()
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, m_temporaryPath)) {
-		log(QStringLiteral("Unable to open file"), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
