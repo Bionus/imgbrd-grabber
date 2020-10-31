@@ -88,6 +88,9 @@ if(USE_PCH)
 	include(cotire/CMake/cotire)
 endif()
 
+# Load Qt5Core here as it can only be included once (QTBUG-87863)
+find_package(Qt5Core REQUIRED)
+
 add_subdirectory(lib)
 add_subdirectory(gui)
 add_subdirectory(gui-qml)

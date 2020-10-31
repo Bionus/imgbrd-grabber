@@ -1,6 +1,5 @@
 project(CrashReporter)
 
-find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
