@@ -29,10 +29,10 @@ jobs:
         key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/linux.yml') }}
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.7.2
+      uses: jurplel/install-qt-action@v2.9.0
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
-        version: 5.12.6
+        version: 5.15.1
 
     - name: Create build dir
       run: mkdir build
