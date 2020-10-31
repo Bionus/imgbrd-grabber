@@ -156,8 +156,19 @@ Settings *MainScreen::getSiteSettings(const QString &url)
 
 QString MainScreen::toLocalFile(const QString &url)
 {
-	QUrl u(url);
-	return u.isValid() ? u.toLocalFile() : url;
+	if (url.startsWith("file:")) {
+		QUrl u(url);
+		if (u.isValid()) {
+			return u.toLocalFile();
+		}
+	} else if (url.startsWith("content://com.android.externalstorage.documents")) {
+		const QString part = QUrl::fromPercentEncoding(url.midRef(47).toLatin1());
+		const int index = part.indexOf(':');
+		if (index != -1) {
+			return "/storage/emulated/0/" + part.mid(index + 1);
+		}
+	}
+	return url;
 }
 
 QString MainScreen::settingsFileName() const

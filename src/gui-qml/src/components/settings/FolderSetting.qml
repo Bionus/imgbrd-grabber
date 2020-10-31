@@ -14,7 +14,7 @@ Item {
         id: item
 
         name: root.name
-        subtitle: backend.toLocalFile(setting.value)
+        subtitle: setting.value
         anchors.fill: parent
 
         onClicked: dialog.open()
@@ -26,7 +26,7 @@ Item {
             folder: setting.value
             selectFolder: true
 
-            onAccepted: setting.setValue(dialog.fileUrl.toString())
+            onAccepted: setting.setValue(backend.toLocalFile(dialog.fileUrl.toString()))
         }
     }
 }
