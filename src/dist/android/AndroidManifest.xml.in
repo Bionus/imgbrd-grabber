@@ -15,14 +15,11 @@
 
 			<!-- Deploy Qt libs as part of package -->
 			<meta-data android:name="android.app.bundle_local_qt_libs" android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --"/>
-			<meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/> <!-- QT <= 5.13 -->
-			<meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/> <!-- QT <= 5.13 -->
 
 			<!-- Run with local libs -->
 			<meta-data android:name="android.app.use_local_qt_libs" android:value="-- %%USE_LOCAL_QT_LIBS%% --"/>
 			<meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
-			<meta-data android:name="android.app.load_local_libs" android:value="-- %%INSERT_LOCAL_LIBS%% --"/> <!-- QT <= 5.13 -->
-			<!--<meta-data android:name="android.app.load_local_libs_resource_id" android:resource="@array/load_local_libs"/>--> <!-- QT >= 5.14 -->
+			<meta-data android:name="android.app.load_local_libs_resource_id" android:resource="@array/load_local_libs"/>
 			<meta-data android:name="android.app.load_local_jars" android:value="-- %%INSERT_LOCAL_JARS%% --"/>
 			<meta-data android:name="android.app.static_init_classes" android:value="-- %%INSERT_INIT_CLASSES%% --"/>
 
