@@ -41,7 +41,7 @@
 	</application>
 
 	<supports-screens android:anyDensity="true" android:normalScreens="true" android:smallScreens="true" android:largeScreens="true"/>
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/>
 
 	<!-- Permissions -->
 	<uses-permission android:name="android.permission.INTERNET" />
