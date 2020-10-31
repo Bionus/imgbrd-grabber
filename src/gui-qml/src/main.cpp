@@ -13,6 +13,23 @@
 #include "syntax-highlighter-helper.h"
 
 
+#if defined(Q_OS_ANDROID)
+	#include <QtAndroid>
+	#include "logger.h"
+
+	bool checkPermission(const QString &perm)
+	{
+		auto already = QtAndroid::checkPermission(perm);
+		if (already == QtAndroid::PermissionResult::Denied) {
+			auto results = QtAndroid::requestPermissionsSync(QStringList() << perm);
+			if (results[perm] == QtAndroid::PermissionResult::Denied) {
+				return false;
+			}
+		}
+		return true;
+	}
+#endif
+
 int main(int argc, char *argv[])
 {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -72,6 +89,12 @@ int main(int argc, char *argv[])
 	engine.rootContext()->setContextProperty("languageLoader", &languageLoader);
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
 		QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);
+	#endif
+
+	#if defined(Q_OS_ANDROID)
+		if (!checkPermission("android.permission.WRITE_EXTERNAL_STORAGE")) {
+			log(QStringLiteral("Android write permission not granted"), Logger::Error);
+		}
 	#endif
 
 	engine.load(url);
