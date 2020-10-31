@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest android:versionName="@QT_ANDROID_APP_VERSION@" package="@QT_ANDROID_APP_PACKAGE_NAME@" android:installLocation="auto" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="@QT_ANDROID_APP_VERSION_CODE@">
 	<application android:label="@QT_ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon">
-		<activity android:label="@QT_ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:screenOrientation="unspecified" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"> <!-- layoutDirection -->
+		<activity android:label="@QT_ANDROID_APP_NAME@" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:screenOrientation="unspecified" android:theme="@style/AppTheme" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"> <!-- layoutDirection -->
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
@@ -28,6 +28,10 @@
 			<meta-data android:value="@string/ministro_needed_msg" android:name="android.app.ministro_needed_msg"/>
 			<meta-data android:value="@string/fatal_error_msg" android:name="android.app.fatal_error_msg"/>
 			<meta-data android:value="@string/unsupported_android_version" android:name="android.app.unsupported_android_version"/>
+
+            <!-- Splash screen -->
+            <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash"/>
+            <meta-data android:name="android.app.splash_screen_sticky" android:value="true"/>
 
 			<!-- Background running -->
 			<meta-data android:name="android.app.background_running" android:value="false"/>

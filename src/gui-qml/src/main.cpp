@@ -104,5 +104,9 @@ int main(int argc, char *argv[])
 
 	engine.load(url);
 
+	#if defined(Q_OS_ANDROID)
+		QtAndroid::hideSplashScreen(250);
+	#endif
+
 	return app.exec();
 }
