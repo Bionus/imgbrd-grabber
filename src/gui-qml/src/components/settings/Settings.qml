@@ -23,7 +23,7 @@ Item {
     }
     property Setting save_path: Setting {
         key: "Save/path"
-        def: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        def: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0] + "/Grabber"
         obj: root.obj
     }
     property Setting save_separator: Setting {

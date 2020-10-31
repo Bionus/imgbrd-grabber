@@ -14,6 +14,7 @@
 
 
 #if defined(Q_OS_ANDROID)
+	#include <QStandardPaths>
 	#include <QtAndroid>
 	#include "logger.h"
 
@@ -94,6 +95,10 @@ int main(int argc, char *argv[])
 	#if defined(Q_OS_ANDROID)
 		if (!checkPermission("android.permission.WRITE_EXTERNAL_STORAGE")) {
 			log(QStringLiteral("Android write permission not granted"), Logger::Error);
+		}
+
+		if (settings.value("Save/path").toString().isEmpty()) {
+			settings.setValue("Save/path", QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first() + "/Grabber");
 		}
 	#endif
 
