@@ -86,6 +86,8 @@ ApplicationWindow {
                     var now = new Date().getTime()
                     if (mainStackView.depth > 1) {
                         mainStackView.pop()
+                    } else if (currentPage !== "search") {
+                        currentPage = "search";
                     } else if (gSettings.mobile_confirmExit.value) {
                         confirmExitDialog.open()
                     } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
