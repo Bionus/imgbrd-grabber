@@ -5,6 +5,9 @@
 #include "tags/tag-stylist.h"
 #include "catch.h"
 
+using Catch::Matchers::Matches;
+
+
 // Ignore those tests on MacOS because of font difference
 // TODO(Bionus): re-enable them and use matching or something to be more resistent
 #if !defined(Q_OS_MACOS)
@@ -28,13 +31,15 @@ void assertSort(QSettings *settings, const QString &sort, const QStringList &exp
 	TagStylist stylist(new Profile(settings, QList<Favorite>()));
 	QStringList actual = stylist.stylished(tags, false, false, sort);
 
-	QString format = "<a href=\"%1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">%1</a>";
+	REQUIRE(actual.count() == expectedOrder.count());
+
+	QString format = "<a href=\"%1\" style=\"color:#aa0000; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">%1</a>";
 	QStringList expected;
-	for (const QString &tag : expectedOrder) {
-		expected.append(format.arg(tag));
+	for (int i = 0; i < expectedOrder.count(); ++i) {
+		const QString &tag = expectedOrder[i];
+		REQUIRE_THAT(actual[i].toStdString(), Matches(format.arg(tag).toStdString()));
 	}
 
-	REQUIRE(actual == expected);
 }
 
 
@@ -54,8 +59,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(new Profile(&settings, favorites));
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("Ignored")
@@ -68,8 +73,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(&pro);
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("Blacklisted")
@@ -82,8 +87,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(&pro);
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("Favorite")
@@ -96,8 +101,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(new Profile(&settings, favorites));
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#ffc0cb; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#ffc0cb; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("KeptForLater")
@@ -111,8 +116,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(new Profile(&settings, QList<Favorite>(), keptForLater));
 		QString actual = stylist.stylished(QList<Tag>() << tag).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("WithCount")
@@ -124,8 +129,8 @@ TEST_CASE("TagStylist")
 
 		TagStylist stylist(new Profile(&settings, QList<Favorite>()));
 		QString actual = stylist.stylished(QList<Tag>() << tag, true).join("");
-		QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">(123)</span>";
-		REQUIRE(actual == expected);
+		std::string expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:'[^']*'; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">\\(123\\)</span>";
+		REQUIRE_THAT(actual.toStdString(), Matches(expected));
 	}
 
 	SECTION("Sort")
