@@ -56,6 +56,7 @@ jobs:
 
     - name: Nightly
       uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
