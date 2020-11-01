@@ -9,22 +9,28 @@
         <file>components/MiniRadioIndicator.qml</file>
         <file>components/SearchField.qml</file>
         <file>components/SearchScreen.qml</file>
-        <file>components/settings/CheckBoxSetting.qml</file>
-        <file>components/settings/FolderSetting.qml</file>
         <file>components/settings/Setting.qml</file>
-        <file>components/settings/SettingItem.qml</file>
         <file>components/settings/SettingsScreen.qml</file>
-        <file>components/settings/TextFieldSetting.qml</file>
         <file>components/SourcesScreen.qml</file>
         <file>components/ZoomableImage.qml</file>
         <file>vendor/ColumnFlow.qml</file>
-        <file>components/settings/ComboSetting.qml</file>
         <file>components/settings/SourceSettingsScreen.qml</file>
-        <file>components/settings/SettingTitle.qml</file>
-        <file>components/settings/LinkSettingItem.qml</file>
-        <file>components/settings/SpinBoxSetting.qml</file>
         <file>components/settings/Settings.qml</file>
-        <file>components/settings/TextAreaSetting.qml</file>
         <file>components/VideoPlayer.qml</file>
+        <file>components/settings/pages/AboutSettingsPage.qml</file>
+        <file>components/settings/pages/AppearanceSettingsPage.qml</file>
+        <file>components/settings/pages/BlacklistSettingsPage.qml</file>
+        <file>components/settings/pages/InterfaceSettingsPage.qml</file>
+        <file>components/settings/pages/NetworkSettingsPage.qml</file>
+        <file>components/settings/pages/SaveSettingsPage.qml</file>
+        <file>components/settings/items/CheckBoxSetting.qml</file>
+        <file>components/settings/items/ComboSetting.qml</file>
+        <file>components/settings/items/FolderSetting.qml</file>
+        <file>components/settings/items/LinkSettingItem.qml</file>
+        <file>components/settings/items/SettingItem.qml</file>
+        <file>components/settings/items/SettingTitle.qml</file>
+        <file>components/settings/items/SpinBoxSetting.qml</file>
+        <file>components/settings/items/TextAreaSetting.qml</file>
+        <file>components/settings/items/TextFieldSetting.qml</file>
     </qresource>
 </RCC>

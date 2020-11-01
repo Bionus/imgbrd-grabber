@@ -3,6 +3,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import Qt.labs.platform 1.1
 
+import "./items"
+
 Page {
     id: root
 
