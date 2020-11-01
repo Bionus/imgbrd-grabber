@@ -1,6 +1,6 @@
-import QtQuick 2.12
+import QtQuick.Controls 2.12
 
-Text {
+Label {
     font.bold: true
     padding: 8
     bottomPadding: 4

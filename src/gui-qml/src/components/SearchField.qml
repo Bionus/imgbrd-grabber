@@ -10,13 +10,7 @@ FocusScope {
     property alias text: textInput.text
     property alias placeholderText: placeholder.text
 
-    anchors.right: parent.right
-    anchors.rightMargin: 40
-    anchors.left: parent.left
-    anchors.top: parent.top
     activeFocusOnTab: true
-    implicitHeight: 40
-    implicitWidth: Math.round(parent.width)
 
     Rectangle {
         anchors.fill: editbg

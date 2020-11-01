@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 Page {
@@ -41,6 +42,10 @@ Page {
                 ListElement {
                     name: qsTr("Interface")
                     icon: "/images/icons/interface.png"
+                }
+                ListElement {
+                    name: qsTr("Appearance")
+                    icon: "/images/icons/palette.png"
                 }
                 ListElement {
                     name: qsTr("Save")
@@ -115,6 +120,42 @@ Page {
                 setting: gSettings.mobile_doubleBackExit
                 Layout.fillWidth: true
                 visible: !gSettings.mobile_confirmExit.value
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+
+        ColumnLayout {
+            width: parent.width
+            spacing: 0
+            visible: false
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Appearance")
+            }
+            ComboSetting {
+                name: qsTr("Theme")
+                options: globals.materialThemesStr
+                values: globals.materialThemes
+                setting: gSettings.appearance_materialTheme
+                Layout.fillWidth: true
+            }
+            ComboSetting {
+                name: qsTr("Primary color")
+                options: globals.materialColorsStr
+                values: globals.materialColors
+                setting: gSettings.appearance_materialPrimary
+                Layout.fillWidth: true
+            }
+            ComboSetting {
+                name: qsTr("Accent color")
+                options: globals.materialColorsStr
+                values: globals.materialColors
+                setting: gSettings.appearance_materialAccent
+                Layout.fillWidth: true
             }
 
             Item {

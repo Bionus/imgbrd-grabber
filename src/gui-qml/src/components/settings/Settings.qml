@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Controls.Material 2.12
 import Qt.labs.platform 1.1
 
 Item {
@@ -119,6 +120,26 @@ Item {
         key: "Proxy/password"
         def: ""
         obj: root.obj
+    }
+
+    // Appearance
+    property Setting appearance_materialTheme: Setting {
+        key: "Appearance/materialTheme"
+        def: Material.System
+        obj: root.obj
+        parser: (v) => globals.materialThemes[Number(v)]
+    }
+    property Setting appearance_materialPrimary: Setting {
+        key: "Appearance/materialPrimary"
+        def: Material.Blue
+        obj: root.obj
+        parser: (v) => globals.materialColors[Number(v)]
+    }
+    property Setting appearance_materialAccent: Setting {
+        key: "Appearance/materialAccent"
+        def: Material.Amber
+        obj: root.obj
+        parser: (v) => globals.materialColors[Number(v)]
     }
 
     // Mobile-specific settings

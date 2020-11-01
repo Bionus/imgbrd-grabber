@@ -119,10 +119,10 @@ Page {
                         clip: true
                         padding: 8
 
-                        Text {
+                        Label {
+                            anchors.fill: parent
                             text: modelData.tags.join("<br/>")
                             textFormat: Text.RichText
-                            lineHeight: 1.1
 
                             onLinkActivated: {
                                 root.closed()

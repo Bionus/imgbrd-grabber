@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
+import QtQuick.Controls.Material 2.12
 
 import "components"
 import "components/settings"
@@ -16,8 +17,22 @@ ApplicationWindow {
     property string site: "danbooru.donmai.us"
     property string currentPage: "search"
 
+    Material.theme: gSettings.appearance_materialTheme.value
+    Material.primary: gSettings.appearance_materialPrimary.value
+    Material.accent: gSettings.appearance_materialAccent.value
+
     Settings {
         id: gSettings
+    }
+
+    Item {
+        id: globals
+
+        property var materialThemes: [Material.Light, Material.Dark, Material.System]
+        property var materialThemesStr: ["Light", "Dark", "System"]
+
+        property var materialColors: [Material.Red, Material.Pink, Material.Purple, Material.DeepPurple, Material.Indigo, Material.Blue, Material.LightBlue, Material.Cyan, Material.Teal, Material.Green, Material.LightGreen, Material.Lime, Material.Yellow, Material.Amber, Material.Orange, Material.DeepOrange, Material.Brown, Material.Grey, Material.BlueGrey]
+        property var materialColorsStr: ["Red", "Pink", "Purple", "Deep purple", "Indigo", "Blue", "Light blue", "Cyan", "Teal", "Green", "Light green", "Lime", "Yellow", "Amber", "Orange", "Deep orange", "Brown", "Grey", "Blue grey"]
     }
 
     MainDrawer {

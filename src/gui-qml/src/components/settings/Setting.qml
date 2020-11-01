@@ -6,10 +6,12 @@ Item {
     property string key
     property var def
     property var obj: settings
+    property var parser: null
 
-    property var value: root.obj
+    property var value: parser !== null ? parser(rawValue) : rawValue
+    property var rawValue: root.obj
         ? root.obj.value(root.key, root.def)
-        : (typeof def === "boolean" ? false : (typeof def === "number" ? 0 : ""))
+        : root.def
 
     function setValue(val) {
         root.obj.setValue(root.key, val, root.def)

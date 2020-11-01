@@ -39,7 +39,7 @@ Page {
     ColumnLayout {
         anchors.fill: parent
 
-        Text {
+        Label {
             Layout.fillWidth: true
             text: qsTr("Type")
         }
@@ -49,7 +49,7 @@ Page {
             model: backend.sources
         }
 
-        Text {
+        Label {
             Layout.fillWidth: true
             text: qsTr("URL")
         }

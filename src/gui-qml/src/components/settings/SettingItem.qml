@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.impl 2.5
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 Rectangle {
@@ -33,14 +34,14 @@ Rectangle {
                 width: parent.width
                 spacing: 2
 
-                Text {
+                Label {
                     text: name
                 }
-                Text {
+                Label {
                     visible: !!subtitle
                     text: subtitle
                     font.italic: true
-                    color: Qt.rgba(0, 0, 0, 0.8)
+                    color: Material.secondaryTextColor
                 }
             }
         }

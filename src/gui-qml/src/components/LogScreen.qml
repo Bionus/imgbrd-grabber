@@ -27,11 +27,10 @@ Page {
     ScrollView {
         anchors.fill: parent
         clip: true
+        padding: 6
 
         Label {
             anchors.fill: parent
-            padding: 6
-            lineHeight: 1.1
             text: log
             textFormat: Text.RichText
         }

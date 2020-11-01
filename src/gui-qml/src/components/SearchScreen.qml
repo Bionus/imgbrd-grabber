@@ -1,6 +1,7 @@
 import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 import "../vendor"
@@ -52,96 +53,121 @@ Page {
         }
     }
 
-    ScrollView {
-        anchors.bottomMargin: 40
-        anchors.topMargin: 40
+    ColumnLayout {
+        spacing: 0
         anchors.fill: parent
-        contentHeight: resultsLayout.contentHeight
 
-        ColumnFlow {
-            id: resultsLayout
-            anchors.fill: parent
-            columns: gSettings.resultsColumnCount.value
-            model: results
+        RowLayout {
+            spacing: 0
+            Layout.fillWidth: true
+            Layout.fillHeight: false
 
-            onColumnsChanged: resultsRefresher.restart()
+            SearchField {
+                id: textFieldSearch
 
-            delegate: Image {
-                source: modelData.previewUrl
-                fillMode: Image.PreserveAspectFit
+                text: ""
+                placeholderText: qsTr("Search...")
+                Layout.fillHeight: true
+                Layout.fillWidth: true
 
-                onHeightChanged: resultsRefresher.restart()
+                onEnterPressed: searchTab.load()
+            }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: mainStackView.push(imageScreen, { index: index })
-                }
+            Button {
+                id: searchButton
+
+                width: 40
+                background.anchors.fill: searchButton
+                text: qsTr("Go")
+                Layout.fillHeight: true
+                Material.elevation: 0
+
+                onClicked: searchTab.load()
             }
         }
 
-        Timer {
-            id: resultsRefresher
-            interval: 100
-            running: false
-            repeat: false
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            contentHeight: resultsLayout.contentHeight
+            clip: true
 
-            onTriggered: resultsLayout.reEvalColumns()
+            ColumnFlow {
+                id: resultsLayout
+                anchors.fill: parent
+                columns: gSettings.resultsColumnCount.value
+                model: results
+
+                onColumnsChanged: resultsRefresher.restart()
+
+                delegate: Image {
+                    source: modelData.previewUrl
+                    fillMode: Image.PreserveAspectFit
+
+                    onHeightChanged: resultsRefresher.restart()
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: mainStackView.push(imageScreen, { index: index })
+                    }
+                }
+            }
+
+            Timer {
+                id: resultsRefresher
+                interval: 100
+                running: false
+                repeat: false
+
+                onTriggered: resultsLayout.reEvalColumns()
+            }
         }
-    }
 
-    Button {
-        width: 40
-        text: "<"
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        enabled: query !== "" && page > 1
+        RowLayout {
+            spacing: 0
+            Layout.fillWidth: true
+            Layout.fillHeight: false
 
-        onClicked: {
-            page--
-            searchTab.load()
+            Button {
+                id: prevButton
+                background.anchors.fill: prevButton
+                width: 40
+                text: "<"
+                enabled: query !== "" && page > 1
+                Layout.fillHeight: true
+                Material.elevation: 0
+
+                onClicked: {
+                    page--
+                    searchTab.load()
+                }
+            }
+
+            Button {
+                id: sourcesButton
+                background.anchors.fill: sourcesButton
+                text: qsTr("Sources")
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Material.elevation: 0
+
+                onClicked: searchTab.openSources()
+            }
+
+            Button {
+                id: nextButton
+                background.anchors.fill: nextButton
+                width: 40
+                text: ">"
+                enabled: query !== ""
+                Layout.fillHeight: true
+                Material.elevation: 0
+
+                onClicked: {
+                    page++
+                    searchTab.load()
+                }
+            }
         }
-    }
-
-    Button {
-        width: 40
-        text: ">"
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        enabled: query !== ""
-
-        onClicked: {
-            page++
-            searchTab.load()
-        }
-    }
-
-    SearchField {
-        id: textFieldSearch
-
-        text: ""
-        placeholderText: qsTr("Search...")
-
-        onEnterPressed: searchTab.load()
-    }
-
-    Button {
-        text: qsTr("Sources")
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.rightMargin: 40
-        anchors.left: parent.left
-        anchors.leftMargin: 40
-
-        onClicked: searchTab.openSources()
-    }
-
-    Button {
-        id: searchButton
-        width: 40
-        text: qsTr("Go")
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        onClicked: searchTab.load()
     }
 }
