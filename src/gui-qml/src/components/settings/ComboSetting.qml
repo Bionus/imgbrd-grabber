@@ -12,7 +12,7 @@ Item {
     property var options
     property var values: options
     property Setting setting
-    property string currentValue: setting.value
+    property var currentValue: setting.value
 
     implicitHeight: item.implicitHeight
 
