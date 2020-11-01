@@ -388,16 +388,19 @@ Page {
             }
             LinkSettingItem {
                 name: qsTr("Patreon")
+                subtitle: "@bionus"
                 url: "https://www.patreon.com/bionus"
                 Layout.fillWidth: true
             }
             LinkSettingItem {
                 name: qsTr("Paypal")
+                subtitle: "@jvasti"
                 url: "https://www.paypal.me/jvasti"
                 Layout.fillWidth: true
             }
             LinkSettingItem {
                 name: qsTr("Github")
+                subtitle: "@Bionus"
                 url: "https://github.com/sponsors/Bionus"
                 Layout.fillWidth: true
             }

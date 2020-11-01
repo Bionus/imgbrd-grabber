@@ -9,7 +9,7 @@ Page {
     signal accepted()
     signal rejected()
 
-    padding: 8
+    padding: 16
 
     header: ToolBar {
         RowLayout {

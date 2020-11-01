@@ -2,6 +2,6 @@ import QtQuick.Controls 2.12
 
 Label {
     font.bold: true
-    padding: 8
-    bottomPadding: 4
+    padding: 16
+    bottomPadding: 8
 }

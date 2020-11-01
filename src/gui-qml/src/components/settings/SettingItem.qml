@@ -13,7 +13,7 @@ Rectangle {
     property string name
     property string subtitle
 
-    implicitHeight: Math.max(placeholder.implicitHeight, colLayout.implicitHeight) + rowLayout.anchors.topMargin + rowLayout.anchors.bottomMargin
+    implicitHeight: Math.max(42, Math.max(placeholder.implicitHeight, colLayout.implicitHeight) + rowLayout.anchors.topMargin + rowLayout.anchors.bottomMargin)
     color: mouseArea.pressed ? Qt.rgba(0, 0, 0, 0.1) : "transparent"
 
     RowLayout {
@@ -21,8 +21,8 @@ Rectangle {
         anchors.fill: parent
         anchors.topMargin: 6
         anchors.bottomMargin: 6
-        anchors.leftMargin: 8
-        anchors.rightMargin: 8
+        anchors.leftMargin: 16
+        anchors.rightMargin: 16
 
         Item {
             Layout.fillWidth: true
