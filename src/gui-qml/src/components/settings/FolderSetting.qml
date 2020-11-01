@@ -14,7 +14,9 @@ Item {
         id: item
 
         name: root.name
-        subtitle: setting.value
+        subtitle: setting.value.startsWith("/storage/emulated/0/")
+            ? setting.value.substr(19)
+            : setting.value
         anchors.fill: parent
 
         onClicked: dialog.open()
