@@ -35,7 +35,6 @@ Page {
             Label {
                 text: qsTr("Search")
                 elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }

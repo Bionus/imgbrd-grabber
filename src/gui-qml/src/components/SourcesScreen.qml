@@ -25,7 +25,6 @@ Page {
             Label {
                 text: qsTr("Sources selection")
                 elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }

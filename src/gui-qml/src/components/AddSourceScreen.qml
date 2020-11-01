@@ -23,7 +23,6 @@ Page {
             Label {
                 text: qsTr("Add new source")
                 elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }

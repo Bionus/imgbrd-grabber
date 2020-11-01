@@ -17,7 +17,6 @@ Page {
             Label {
                 text: qsTr("Log")
                 elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
