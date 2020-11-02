@@ -27,9 +27,9 @@ Item {
         def: "flow"
         obj: root.obj
     }
-    property Setting resultsAddSpaceBetweenImages: Setting {
-        key: "resultsAddSpaceBetweenImages"
-        def: true
+    property Setting resultsSpaceBetweenImages: Setting {
+        key: "resultsSpaceBetweenImages"
+        def: "minimal"
         obj: root.obj
     }
     property Setting resultsHeightToWidthRatio: Setting {
@@ -44,7 +44,7 @@ Item {
     }
     property Setting resultsRoundImages: Setting {
         key: "resultsRoundImages"
-        def: true
+        def: false
         obj: root.obj
     }
     property Setting save_filename: Setting {

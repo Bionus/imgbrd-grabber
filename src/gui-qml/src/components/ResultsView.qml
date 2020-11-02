@@ -16,11 +16,14 @@ ScrollView {
     property double thumbnailHeightToWidthRatio: 0
     property int thumbnailSpacing: 0
     property int thumbnailRadius: 0
+    property bool thumbnailPadding: false
     property var thumbnailFillMode: Image.PreserveAspectFit
 
     contentHeight: resultsLayout.contentHeight
     clip: true
-    padding: root.thumbnailSpacing / 2
+    padding: thumbnailPadding
+        ? root.thumbnailSpacing / 2
+        : -root.thumbnailSpacing / 2
 
     ColumnFlow {
         id: resultsLayout

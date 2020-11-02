@@ -69,7 +69,8 @@ Page {
         ResultsView {
             results: searchTab.results
             thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
-            thumbnailSpacing: gSettings.resultsAddSpaceBetweenImages.value ? 8 : 0
+            thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
+            thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
             thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
             thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
             Layout.fillHeight: true

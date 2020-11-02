@@ -60,10 +60,11 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: gSettings.resultsLayoutType.value === "grid"
     }
-    CheckBoxSetting {
+    ComboSetting {
         name: qsTr("Spaced grid")
-        subtitle: qsTr("Add space between thumbnails.")
-        setting: gSettings.resultsAddSpaceBetweenImages
+        options: ["None", "Minimal", "Medium"]
+        values: ["none", "minimal", "medium"]
+        setting: gSettings.resultsSpaceBetweenImages
         Layout.fillWidth: true
     }
     CheckBoxSetting {
