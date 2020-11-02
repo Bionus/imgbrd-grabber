@@ -107,4 +107,5 @@ install(FILES "dist/linux/Grabber.desktop" DESTINATION share/applications)
 
 add_subdirectory(sites)
 add_dependencies(gui sites)
+add_dependencies(gui-qml sites)
 add_dependencies(cli sites)
