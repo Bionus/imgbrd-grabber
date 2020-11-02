@@ -41,14 +41,14 @@ ColumnLayout {
         Layout.fillWidth: true
         text: qsTr("Duplicate management")
     }
-    ComboSetting {
+    RadioSetting {
         name: qsTr("If a file already exists globally")
         options: [qsTr("Save"), qsTr("Copy"), qsTr("Move"), qsTr("Don't save")]
         values: ["save", "copy", "move", "ignore"]
         setting: gSettings.save_md5Duplicates
         Layout.fillWidth: true
     }
-    ComboSetting {
+    RadioSetting {
         name: qsTr("If it's in the same directory")
         options: [qsTr("Save"), qsTr("Copy"), qsTr("Move"), qsTr("Don't save")]
         values: ["save", "copy", "move", "ignore"]

@@ -10,7 +10,7 @@ ColumnLayout {
         Layout.fillWidth: true
         text: qsTr("Appearance")
     }
-    ComboSetting {
+    RadioSetting {
         name: qsTr("Theme")
         options: globals.materialThemesStr
         values: globals.materialThemes

@@ -21,7 +21,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: gSettings.proxy_use.value
     }
-    ComboSetting {
+    RadioSetting {
         name: qsTr("Type")
         options: ["HTTP", "Socks v5"]
         values: ["http", "socks5"]

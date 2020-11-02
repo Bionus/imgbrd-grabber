@@ -12,7 +12,6 @@ Item {
     property var options
     property var values: options
     property Setting setting
-    property var currentValue: setting.value
 
     implicitHeight: item.implicitHeight
 
@@ -33,38 +32,25 @@ Item {
             modal: true
             standardButtons: Dialog.Ok | Dialog.Cancel
 
-            onAccepted: {
-                var val = currentValue
-                setting.setValue(val)
-                root.changed(val)
-            }
-            onRejected: currentValue = setting.value
+            onAccepted: setting.setValue(values[comboBox.currentIndex])
+            onRejected: comboBox.currentIndex = values.indexOf(setting.value)
 
-            height: root.options.length * 30 + 130 // TODO: do this properly
-
-            ButtonGroup {
-                id: buttonGroup
-            }
-
-            ListView {
+            ComboBox {
+                id: comboBox
                 anchors.fill: parent
-                model: root.options
-                height: root.options.length * 30
 
-                delegate: RadioDelegate {
-                    width: parent.width
-                    checked: values[index] === currentValue
-                    text: modelData
-                    ButtonGroup.group: buttonGroup
-                    height: 30 // from 40
-                    padding: 8 // from 12
-
-                    indicator: MiniRadioIndicator {
-                        control: parent
-                        size: 18 // from 28
+                textRole: "text"
+                valueRole: "value"
+                model: ListModel {
+                    Component.onCompleted: {
+                        for (var i = 0; i < values.length; ++i) {
+                            append({ text: options[i], value: values[i] });
+                        }
                     }
+                }
 
-                    onCheckedChanged: if (checked) currentValue = values[index]
+                Component.onCompleted: {
+                    currentIndex = comboBox.currentIndex = values.indexOf(setting.value)
                 }
             }
         }

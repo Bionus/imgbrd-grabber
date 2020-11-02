@@ -32,5 +32,6 @@
         <file>components/settings/items/SpinBoxSetting.qml</file>
         <file>components/settings/items/TextAreaSetting.qml</file>
         <file>components/settings/items/TextFieldSetting.qml</file>
+        <file>components/settings/items/RadioSetting.qml</file>
     </qresource>
 </RCC>
