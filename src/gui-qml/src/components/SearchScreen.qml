@@ -131,7 +131,7 @@ Page {
                 id: prevButton
                 background.anchors.fill: prevButton
                 width: 40
-                text: "<"
+                icon.source: "/images/icons/previous.png"
                 enabled: query !== "" && page > 1
                 Layout.fillHeight: true
                 Material.elevation: 0
@@ -157,7 +157,7 @@ Page {
                 id: nextButton
                 background.anchors.fill: nextButton
                 width: 40
-                text: ">"
+                icon.source: "/images/icons/next.png"
                 enabled: query !== ""
                 Layout.fillHeight: true
                 Material.elevation: 0
