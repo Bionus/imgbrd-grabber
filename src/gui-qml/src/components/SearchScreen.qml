@@ -16,8 +16,6 @@ Page {
     property string site
     property string query
     property var results
-    property int thumbnailsSpacing: 0
-    property int thumbnailsRadius: 0
 
     function load(tag) {
         if (tag) {
@@ -68,60 +66,15 @@ Page {
         spacing: 0
         anchors.fill: parent
 
-        ScrollView {
+        ResultsView {
+            results: searchTab.results
+            thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
+            thumbnailSpacing: gSettings.resultsAddSpaceBetweenImages.value ? 8 : 0
+            thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
             Layout.fillHeight: true
             Layout.fillWidth: true
-            contentHeight: resultsLayout.contentHeight
-            clip: true
-            padding: thumbnailsSpacing / 2
 
-            ColumnFlow {
-                id: resultsLayout
-
-                anchors.fill: parent
-                columns: gSettings.resultsColumnCount.value
-                model: results
-
-                onColumnsChanged: resultsRefresher.restart()
-
-                delegate: Item {
-                    height: img.height + thumbnailsSpacing
-
-                    Image {
-                        id: img
-                        source: modelData.previewUrl
-                        fillMode: Image.PreserveAspectFit
-                        anchors.centerIn: parent
-                        width: Math.min(img.implicitWidth, parent.width) - thumbnailsSpacing
-
-                        onHeightChanged: resultsRefresher.restart()
-
-                        layer.enabled: thumbnailsRadius > 0
-                        layer.effect: OpacityMask {
-                            maskSource: Rectangle {
-                                anchors.centerIn: parent
-                                width: img.width
-                                height: img.height
-                                radius: thumbnailsRadius
-                            }
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: mainStackView.push(imageScreen, { index: index })
-                    }
-                }
-            }
-
-            Timer {
-                id: resultsRefresher
-                interval: 100
-                running: false
-                repeat: false
-
-                onTriggered: resultsLayout.reEvalColumns()
-            }
+            onOpenImage: mainStackView.push(imageScreen, { index: index })
         }
 
         RowLayout {

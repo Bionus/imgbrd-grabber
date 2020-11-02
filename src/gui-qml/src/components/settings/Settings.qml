@@ -17,9 +17,19 @@ Item {
         def: 3
         obj: root.obj
     }
+    property Setting resultsLayoutType: Setting {
+        key: "resultsLayoutType"
+        def: "flow"
+        obj: root.obj
+    }
     property Setting resultsAddSpaceBetweenImages: Setting {
         key: "resultsAddSpaceBetweenImages"
         def: true
+        obj: root.obj
+    }
+    property Setting resultsHeightToWidthRatio: Setting {
+        key: "resultsHeightToWidthRatio"
+        def: 1.0
         obj: root.obj
     }
     property Setting resultsRoundImages: Setting {

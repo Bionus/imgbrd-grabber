@@ -30,6 +30,21 @@ ColumnLayout {
         setting: gSettings.resultsColumnCount
         Layout.fillWidth: true
     }
+    RadioSetting {
+        name: qsTr("Layout type")
+        setting: gSettings.resultsLayoutType
+        options: ["Flow", "Grid"]
+        values: ["flow", "grid"]
+        Layout.fillWidth: true
+    }
+    RadioSetting {
+        name: qsTr("Grid ratio")
+        setting: gSettings.resultsHeightToWidthRatio
+        options: ["4:3", "1:1", "3:4"]
+        values: [0.75, 1, 1.333]
+        Layout.fillWidth: true
+        visible: gSettings.resultsLayoutType.value === "grid"
+    }
     CheckBoxSetting {
         name: qsTr("Spaced grid")
         subtitle: qsTr("Add space between thumbnails.")
