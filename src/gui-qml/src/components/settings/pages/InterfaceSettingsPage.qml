@@ -30,6 +30,18 @@ ColumnLayout {
         setting: gSettings.resultsColumnCount
         Layout.fillWidth: true
     }
+    CheckBoxSetting {
+        name: qsTr("Spaced grid")
+        subtitle: qsTr("Add space between thumbnails.")
+        setting: gSettings.resultsAddSpaceBetweenImages
+        Layout.fillWidth: true
+    }
+    CheckBoxSetting {
+        name: qsTr("Rounded grid")
+        subtitle: qsTr("Slightly round thumbnails.")
+        setting: gSettings.resultsRoundImages
+        Layout.fillWidth: true
+    }
 
     SettingTitle {
         Layout.fillWidth: true

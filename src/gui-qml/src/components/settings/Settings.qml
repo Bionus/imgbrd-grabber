@@ -17,6 +17,16 @@ Item {
         def: 3
         obj: root.obj
     }
+    property Setting resultsAddSpaceBetweenImages: Setting {
+        key: "resultsAddSpaceBetweenImages"
+        def: true
+        obj: root.obj
+    }
+    property Setting resultsRoundImages: Setting {
+        key: "resultsRoundImages"
+        def: true
+        obj: root.obj
+    }
     property Setting save_filename: Setting {
         key: "Save/filename"
         def: "%md5%.%ext%"

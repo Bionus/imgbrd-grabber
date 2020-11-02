@@ -63,6 +63,8 @@ ApplicationWindow {
                 site: window.site
                 query: backend.query
                 results: backend.results
+                thumbnailsSpacing: gSettings.resultsAddSpaceBetweenImages.value ? 8 : 0
+                thumbnailsRadius: gSettings.resultsRoundImages.value ? 10 : 0
 
                 onOpenSources: mainStackView.push(sourcesScreen)
             }

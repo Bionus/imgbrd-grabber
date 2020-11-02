@@ -1,5 +1,6 @@
 import QtQml 2.12
 import QtQuick 2.12
+import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
@@ -15,6 +16,8 @@ Page {
     property string site
     property string query
     property var results
+    property int thumbnailsSpacing: 0
+    property int thumbnailsRadius: 0
 
     function load(tag) {
         if (tag) {
@@ -70,20 +73,39 @@ Page {
             Layout.fillWidth: true
             contentHeight: resultsLayout.contentHeight
             clip: true
+            padding: thumbnailsSpacing / 2
 
             ColumnFlow {
                 id: resultsLayout
+
                 anchors.fill: parent
                 columns: gSettings.resultsColumnCount.value
                 model: results
 
                 onColumnsChanged: resultsRefresher.restart()
 
-                delegate: Image {
-                    source: modelData.previewUrl
-                    fillMode: Image.PreserveAspectFit
+                delegate: Item {
+                    height: img.height + thumbnailsSpacing
 
-                    onHeightChanged: resultsRefresher.restart()
+                    Image {
+                        id: img
+                        source: modelData.previewUrl
+                        fillMode: Image.PreserveAspectFit
+                        anchors.centerIn: parent
+                        width: Math.min(img.implicitWidth, parent.width) - thumbnailsSpacing
+
+                        onHeightChanged: resultsRefresher.restart()
+
+                        layer.enabled: thumbnailsRadius > 0
+                        layer.effect: OpacityMask {
+                            maskSource: Rectangle {
+                                anchors.centerIn: parent
+                                width: img.width
+                                height: img.height
+                                radius: thumbnailsRadius
+                            }
+                        }
+                    }
 
                     MouseArea {
                         anchors.fill: parent
