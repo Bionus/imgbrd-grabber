@@ -16,6 +16,7 @@ ScrollView {
     property double thumbnailHeightToWidthRatio: 0
     property int thumbnailSpacing: 0
     property int thumbnailRadius: 0
+    property var thumbnailFillMode: Image.PreserveAspectFit
 
     contentHeight: resultsLayout.contentHeight
     clip: true
@@ -36,7 +37,7 @@ ScrollView {
             Image {
                 id: img
                 source: modelData.previewUrl
-                fillMode: Image.PreserveAspectFit
+                fillMode: root.thumbnailFillMode
                 anchors.centerIn: parent
                 width: parent.width - root.thumbnailSpacing
                 height: root.thumbnailHeightToWidthRatio < 0.1

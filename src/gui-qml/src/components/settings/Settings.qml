@@ -29,7 +29,12 @@ Item {
     }
     property Setting resultsHeightToWidthRatio: Setting {
         key: "resultsHeightToWidthRatio"
-        def: 1.0
+        def: 1
+        obj: root.obj
+    }
+    property Setting resultsThumbnailFillMode: Setting {
+        key: "resultsThumbnailFillMode"
+        def: "crop"
         obj: root.obj
     }
     property Setting resultsRoundImages: Setting {

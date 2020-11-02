@@ -71,6 +71,7 @@ Page {
             thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
             thumbnailSpacing: gSettings.resultsAddSpaceBetweenImages.value ? 8 : 0
             thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
+            thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
             Layout.fillHeight: true
             Layout.fillWidth: true
 
