@@ -32,11 +32,20 @@ Page {
                 onClicked: drawer.open()
             }
 
-            Label {
-                text: qsTr("Search")
-                elide: Label.ElideRight
-                verticalAlignment: Qt.AlignVCenter
+            SearchField {
+                id: textFieldSearch
+
+                text: ""
+                placeholderText: qsTr("Search...")
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                onEnterPressed: searchTab.load()
+            }
+
+            ToolButton {
+                icon.source: "/images/icons/search.png"
+                onClicked: searchTab.load()
             }
         }
     }
@@ -55,35 +64,6 @@ Page {
     ColumnLayout {
         spacing: 0
         anchors.fill: parent
-
-        RowLayout {
-            spacing: 0
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-
-            SearchField {
-                id: textFieldSearch
-
-                text: ""
-                placeholderText: qsTr("Search...")
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                onEnterPressed: searchTab.load()
-            }
-
-            Button {
-                id: searchButton
-
-                width: 40
-                background.anchors.fill: searchButton
-                text: qsTr("Go")
-                Layout.fillHeight: true
-                Material.elevation: 0
-
-                onClicked: searchTab.load()
-            }
-        }
 
         ScrollView {
             Layout.fillHeight: true

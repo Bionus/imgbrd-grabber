@@ -13,27 +13,22 @@ FocusScope {
     activeFocusOnTab: true
 
     Rectangle {
-        anchors.fill: editbg
-        radius: editbg.radius
-        color: "#aaffffff"
-        anchors.bottomMargin: -1
-    }
-
-    Rectangle {
         id: editbg
         anchors.fill: parent
-        border.width: 1
-        border.color: "#ccc"
+        anchors.topMargin: 8
+        anchors.bottomMargin: 8
+        color: Qt.rgba(1, 1, 1, 0.6)
+        radius: 12
 
         TextEdit {
             id: textInput
 
             anchors.fill: parent
             clip: true
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 13
+            font.pixelSize: 14
             focus: true
 
             Keys.onEnterPressed: {
@@ -52,7 +47,7 @@ FocusScope {
                 verticalAlignment: Text.AlignVCenter
                 visible: !(parent.text.length || textInput.inputMethodComposing)
                 font: parent.font
-                color: "#aaa"
+                color: "#666"
             }
         }
 
