@@ -26,7 +26,9 @@ ScrollView {
         id: resultsLayout
 
         anchors.fill: parent
-        columns: gSettings.resultsColumnCount.value
+        columns: window.width > window.height
+            ? gSettings.resultsColumnCountLandscape.value
+            : gSettings.resultsColumnCountPortrait.value
         model: results
 
         onColumnsChanged: resultsRefresher.restart()

@@ -24,10 +24,17 @@ ColumnLayout {
         text: qsTr("Search results")
     }
     SpinBoxSetting {
-        name: qsTr("Columns")
+        name: qsTr("Columns (portrait)")
         min: 1
         max: 10
-        setting: gSettings.resultsColumnCount
+        setting: gSettings.resultsColumnCountPortrait
+        Layout.fillWidth: true
+    }
+    SpinBoxSetting {
+        name: qsTr("Columns (landscape)")
+        min: 1
+        max: 10
+        setting: gSettings.resultsColumnCountLandscape
         Layout.fillWidth: true
     }
     RadioSetting {

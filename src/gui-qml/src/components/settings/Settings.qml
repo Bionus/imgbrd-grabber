@@ -12,9 +12,14 @@ Item {
         def: "English"
         obj: root.obj
     }
-    property Setting resultsColumnCount: Setting {
-        key: "resultsColumnCount"
+    property Setting resultsColumnCountPortrait: Setting {
+        key: "resultsColumnCountPortrait"
         def: 3
+        obj: root.obj
+    }
+    property Setting resultsColumnCountLandscape: Setting {
+        key: "resultsColumnCountLandscape"
+        def: 5
         obj: root.obj
     }
     property Setting resultsLayoutType: Setting {
