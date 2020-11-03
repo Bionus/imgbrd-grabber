@@ -54,6 +54,10 @@ Page {
                     icon: "/images/icons/download.png"
                 }
                 ListElement {
+                    name: qsTr("Sources")
+                    icon: "/images/icons/cloud.png"
+                }
+                ListElement {
                     name: qsTr("Blacklist")
                     icon: "/images/icons/block.png"
                 }
@@ -85,6 +89,10 @@ Page {
             visible: false
         }
         SaveSettingsPage {
+            width: parent.width
+            visible: false
+        }
+        SourcesSettingsPage {
             width: parent.width
             visible: false
         }

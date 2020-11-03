@@ -93,5 +93,9 @@
         <file>images/icons/previous@2x.png</file>
         <file>images/icons/previous@3x.png</file>
         <file>images/icons/previous@4x.png</file>
+        <file>images/icons/cloud.png</file>
+        <file>images/icons/cloud@2x.png</file>
+        <file>images/icons/cloud@3x.png</file>
+        <file>images/icons/cloud@4x.png</file>
     </qresource>
 </RCC>

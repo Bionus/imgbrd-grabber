@@ -33,6 +33,9 @@ ApplicationWindow {
 
         property var materialColors: [Material.Red, Material.Pink, Material.Purple, Material.DeepPurple, Material.Indigo, Material.Blue, Material.LightBlue, Material.Cyan, Material.Teal, Material.Green, Material.LightGreen, Material.Lime, Material.Yellow, Material.Amber, Material.Orange, Material.DeepOrange, Material.Brown, Material.Grey, Material.BlueGrey]
         property var materialColorsStr: ["Red", "Pink", "Purple", "Deep purple", "Indigo", "Blue", "Light blue", "Cyan", "Teal", "Green", "Light green", "Lime", "Yellow", "Amber", "Orange", "Deep orange", "Brown", "Grey", "Blue grey"]
+
+        property var apiTypes: ["XML", "JSON", "Regex", "RSS"]
+        property var apiTypesKeys: ["xml", "json", "regex", "rss"]
     }
 
     MainDrawer {

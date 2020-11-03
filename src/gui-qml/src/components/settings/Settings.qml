@@ -117,6 +117,28 @@ Item {
         }
     }
 
+    // API order
+    property Setting source1: Setting {
+        key: "source_1"
+        def: "xml"
+        obj: root.obj
+    }
+    property Setting source2: Setting {
+        key: "source_2"
+        def: "json"
+        obj: root.obj
+    }
+    property Setting source3: Setting {
+        key: "source_3"
+        def: "regex"
+        obj: root.obj
+    }
+    property Setting source4: Setting {
+        key: "source_4"
+        def: "rss"
+        obj: root.obj
+    }
+
     // Proxy
     property Setting proxy_use: Setting {
         key: "Proxy/use"
