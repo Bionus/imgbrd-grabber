@@ -7,8 +7,6 @@ import "../.."
 Item {
     id: root
 
-    signal changed(string value)
-
     property string name
     property var options
     property var values: options
@@ -34,11 +32,7 @@ Item {
             modal: true
             standardButtons: Dialog.Ok | Dialog.Cancel
 
-            onAccepted: {
-                var val = currentValue
-                setting.setValue(val)
-                root.changed(val)
-            }
+            onAccepted: setting.setValue(currentValue)
             onRejected: currentValue = setting.value
 
             height: root.options.length * 30 + 130 // TODO: do this properly

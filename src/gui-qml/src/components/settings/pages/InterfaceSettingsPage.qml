@@ -15,8 +15,6 @@ ColumnLayout {
         options: ["English", "French"]
         setting: gSettings.language
         Layout.fillWidth: true
-
-        onChanged: languageLoader.setLanguage(value)
     }
 
     SettingTitle {

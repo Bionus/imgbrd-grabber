@@ -3,6 +3,8 @@ import QtQuick 2.12
 Item {
     id: root
 
+    signal changed(var value)
+
     property string key
     property var def
     property var obj: settings
@@ -16,5 +18,7 @@ Item {
     function setValue(val) {
         root.obj.setValue(root.key, val, root.def)
         root.value = val
+
+        root.changed(val)
     }
 }

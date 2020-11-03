@@ -6,8 +6,6 @@ import ".."
 Item {
     id: root
 
-    signal changed(string value)
-
     property string name
     property var options
     property var values: options

@@ -11,6 +11,8 @@ Item {
         key: "language"
         def: "English"
         obj: root.obj
+
+        onChanged: languageLoader.setLanguage(value)
     }
     property Setting resultsColumnCountPortrait: Setting {
         key: "resultsColumnCountPortrait"
