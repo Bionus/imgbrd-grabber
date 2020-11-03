@@ -16,3 +16,28 @@ QString OAuth2Auth::tokenUrl() const
 {
 	return m_tokenUrl;
 }
+
+QList<AuthSettingField> OAuth2Auth::settingFields() const
+{
+	AuthSettingField consumerKeyField;
+	consumerKeyField.id = "consumerKey";
+
+	AuthSettingField consumerSecretField;
+	consumerSecretField.id = "consumerSecret";
+
+	QList<AuthSettingField> fields { consumerKeyField, consumerSecretField };
+
+	if (m_authType == "password") {
+		AuthSettingField pseudoField;
+		pseudoField.id = "pseudo";
+
+		AuthSettingField passwordField;
+		passwordField.id = "password";
+		passwordField.isPassword = true;
+
+		fields.append(pseudoField);
+		fields.append(passwordField);
+	}
+
+	return fields;
+}

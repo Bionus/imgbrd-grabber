@@ -11,6 +11,7 @@ class OAuth2Auth : public Auth
 		OAuth2Auth(QString type, QString authType, QString tokenUrl);
 		QString authType() const;
 		QString tokenUrl() const;
+		QList<AuthSettingField> settingFields() const override;
 
 	private:
 		QString m_authType;

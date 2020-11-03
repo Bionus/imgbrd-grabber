@@ -120,51 +120,29 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		}
 
 		// Build credential fields
-		// TODO(Bionus): factorize field creation
 		QWidget *credentialsWidget = new QWidget(this);
 		QFormLayout *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
+
+		QList<AuthSettingField> fields = it().value()->settingFields();
+		for (const auto &field : fields) {
+			const QString id = field.id;
+			const QString val = m_site->settings()->value("auth/" + id).toString();
+
+			m_credentialFields[type][id] = createLineEdit(credentialsWidget, val.isEmpty() ? field.def : val, field.isPassword);
+			formLayout->addRow(fieldLabels.contains(id) ? fieldLabels[id] : id, m_credentialFields[type][id]);
+			fields.insert(id, m_credentialFields[type][id]);
+		}
+
+		// TODO(Bionus): factorize login testability creation
 		if (type == "oauth2") {
 			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
-			m_credentialFields[type]["consumerKey"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerKey").toString(), false);
-			m_credentialFields[type]["consumerSecret"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerSecret").toString(), false);
-			formLayout->addRow(tr("Consumer key"), m_credentialFields[type]["consumerKey"]);
-			formLayout->addRow(tr("Consumer secret"), m_credentialFields[type]["consumerSecret"]);
-			fields.insert("consumerKey", m_credentialFields[type]["consumerKey"]);
-			fields.insert("consumerSecret", m_credentialFields[type]["consumerSecret"]);
-			if (oauth->authType() == "password") {
-				m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
-				m_credentialFields[type]["password"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/password").toString(), true);
-				formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
-				formLayout->addRow(fieldLabels["password"], m_credentialFields[type]["password"]);
-				fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
-				fields.insert("password", m_credentialFields[type]["password"]);
-			}
 			canTestLogin = OAuth2Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
 		} else if (type == "http_basic") {
 			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
-			QString passwordType = basicAuth->passwordType();
-			m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
-			m_credentialFields[type][passwordType] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/" + passwordType).toString(), true);
-			formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
-			formLayout->addRow(fieldLabels[passwordType], m_credentialFields[type][passwordType]);
-			fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
-			fields.insert(passwordType, m_credentialFields[type][passwordType]);
 			canTestLogin = HttpBasicLogin(basicAuth, m_site, nullptr, m_site->settings()).isTestable();
 		} else {
 			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
-			if (fieldAuth) {
-				for (AuthField *field : fieldAuth->fields()) {
-					const QString fid = field->id();
-					if (fid.isEmpty()) {
-						continue;
-					}
-					m_credentialFields[type][fid] = createLineEdit(credentialsWidget, field->value(m_site->settings()), field->type() == AuthField::Password);
-					formLayout->addRow(fieldLabels.contains(fid) ? fieldLabels[fid] : fid, m_credentialFields[type][fid]);
-					fields.insert(fid, m_credentialFields[type][fid]);
-				}
-			}
-
 			if (type == "url") {
 				canTestLogin = UrlLogin(dynamic_cast<UrlAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
 			} else if (type == "post") {
