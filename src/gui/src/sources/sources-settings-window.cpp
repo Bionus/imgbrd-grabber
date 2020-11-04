@@ -124,8 +124,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		QFormLayout *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
 
-		QList<AuthSettingField> fields = it().value()->settingFields();
-		for (const auto &field : fields) {
+		QList<AuthSettingField> settingFields = it.value()->settingFields();
+		for (const auto &field : settingFields) {
 			const QString id = field.id;
 			const QString val = m_site->settings()->value("auth/" + id).toString();
 
