@@ -17,7 +17,9 @@ Item {
         id: item
 
         name: root.name
-        subtitle: setting.value
+        subtitle: textField.echoMode === TextField.Password
+            ? "*".repeat(setting.value.length)
+            : setting.value
         anchors.fill: parent
 
         onClicked: dialog.open()
