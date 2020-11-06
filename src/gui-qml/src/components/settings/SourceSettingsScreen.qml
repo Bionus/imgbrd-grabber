@@ -10,8 +10,7 @@ Page {
 
     signal closed()
 
-    property string siteUrl
-    property var settings
+    property var site
 
     header: ToolBar {
         RowLayout {
@@ -23,7 +22,7 @@ Page {
             }
 
             Label {
-                text: root.siteUrl
+                text: root.site.name || root.site.url
                 elide: Label.ElideRight
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
@@ -43,8 +42,8 @@ Page {
             name: qsTr("Name")
             setting: Setting {
                 key: "name"
-                def: root.siteUrl
-                obj: root.settings
+                def: root.site.url
+                obj: root.site.settings
             }
             Layout.fillWidth: true
         }
@@ -54,7 +53,7 @@ Page {
             setting: Setting {
                 key: "ssl"
                 def: false
-                obj: root.settings
+                obj: root.site.settings
             }
             Layout.fillWidth: true
         }
@@ -67,7 +66,7 @@ Page {
             id: useDefaultApiOrderSetting
             key: "sources/usedefault"
             def: true
-            obj: root.settings
+            obj: root.site.settings
         }
         CheckBoxSetting {
             name: qsTr("Use default API order")
@@ -81,7 +80,7 @@ Page {
             setting: Setting {
                 key: "sources/source_1"
                 def: gSettings.source1.value
-                obj: root.settings
+                obj: root.site.settings
             }
             Layout.fillWidth: true
             visible: !useDefaultApiOrderSetting.value
@@ -93,7 +92,7 @@ Page {
             setting: Setting {
                 key: "sources/source_2"
                 def: gSettings.source2.value
-                obj: root.settings
+                obj: root.site.settings
             }
             Layout.fillWidth: true
             visible: !useDefaultApiOrderSetting.value
@@ -105,7 +104,7 @@ Page {
             setting: Setting {
                 key: "sources/source_3"
                 def: gSettings.source3.value
-                obj: root.settings
+                obj: root.site.settings
             }
             Layout.fillWidth: true
             visible: !useDefaultApiOrderSetting.value
@@ -117,7 +116,7 @@ Page {
             setting: Setting {
                 key: "sources/source_4"
                 def: gSettings.source4.value
-                obj: root.settings
+                obj: root.site.settings
             }
             Layout.fillWidth: true
             visible: !useDefaultApiOrderSetting.value

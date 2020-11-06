@@ -8,6 +8,8 @@
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "models/qml-image.h"
+#include "models/qml-site.h"
 #include "settings.h"
 #include "share/share-utils.h"
 #include "syntax-highlighter-helper.h"
@@ -45,6 +47,10 @@ int main(int argc, char *argv[])
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
 	qRegisterMetaType<Settings*>("Settings*");
+	qRegisterMetaType<QmlImage*>("QmlImage*");
+	qRegisterMetaType<QList<QmlImage*>>("QList>QmlImage*>");
+	qRegisterMetaType<QmlSite*>("QmlSite*");
+	qRegisterMetaType<QList<QmlSite*>>("QList<QmlSite*>");
 
 	// Copy settings files to writable directory
 	const QStringList toCopy { "sites/", "themes/", "webservices/" };

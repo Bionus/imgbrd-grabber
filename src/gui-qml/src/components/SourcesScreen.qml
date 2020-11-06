@@ -8,7 +8,7 @@ Page {
     signal accepted(string source)
     signal rejected()
     signal addSource()
-    signal editSource(string source, var settingsObject)
+    signal editSource(var source)
 
     property string currentSource
     property var sources
@@ -19,7 +19,7 @@ Page {
 
             ToolButton {
                 icon.source: "/images/icons/back.png"
-                onClicked: root.accepted(buttonGroup.checkedButton.text)
+                onClicked: root.accepted(buttonGroup.checkedButton.url)
             }
 
             Label {
@@ -49,9 +49,11 @@ Page {
             width: parent.width
 
             RadioButton {
+                property string url: modelData.url
+
                 width: parent.width
-                checked: modelData == currentSource
-                text: modelData
+                checked: modelData.url === currentSource
+                text: modelData.name || modelData.url
                 ButtonGroup.group: buttonGroup
                 height: 30 // from 40
                 padding: 8 // from 12
@@ -63,14 +65,14 @@ Page {
                     size: 18 // from 28
                 }
 
-                onCheckedChanged: if (checked) currentSource = modelData
+                onCheckedChanged: if (checked) currentSource = modelData.url
             }
 
             ToolButton {
                 icon.source: "/images/icons/edit.png"
                 Layout.fillHeight: true
 
-                onClicked: root.editSource(modelData, backend.getSiteSettings(modelData))
+                onClicked: root.editSource(modelData)
             }
         }
     }

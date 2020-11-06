@@ -127,7 +127,7 @@ ApplicationWindow {
             onAccepted: { site = source; mainStackView.pop() }
             onRejected: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
-            onEditSource: mainStackView.push(editSourceScreen, { siteUrl: source, settings: settingsObject })
+            onEditSource: mainStackView.push(editSourceScreen, { site: source })
         }
 
         AddSourceScreen {

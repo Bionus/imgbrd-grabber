@@ -13,8 +13,9 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "settings.h"
-#include "tags/tag-stylist.h"
 #include "utils/logging.h"
+#include "models/qml-image.h"
+#include "models/qml-site.h"
 
 #define IMAGES_PER_PAGE 20
 
@@ -33,10 +34,13 @@ MainScreen::MainScreen(Profile *profile, QObject *parent)
 
 void MainScreen::refreshSites()
 {
+	qDeleteAll(m_sites);
 	m_sites.clear();
+
 	for (Site *site : m_profile->getSites().values()) {
-		m_sites.append(site->url());
+		m_sites.append(new QmlSite(site, this));
 	}
+
 	emit sitesChanged();
 }
 
@@ -68,16 +72,7 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	m_results.clear();
 	m_results.reserve(results.count());
 	for (const QSharedPointer<Image> &img : results) {
-		m_results.append(new ImagePreview(
-			img->url(Image::Size::Thumbnail).toString(),
-			img->url(Image::Size::Sample).toString(),
-			img->url(Image::Size::Full).toString(),
-			TagStylist(m_profile).stylished(img->tags(), true, false, "type"),
-			img,
-			!img->isAnimated().isEmpty(),
-			img->isVideo(),
-			this
-		));
+		m_results.append(new QmlImage(img, m_profile, this));
 	}
 
 	emit resultsChanged();
@@ -147,11 +142,6 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	return QString();
-}
-
-Settings *MainScreen::getSiteSettings(const QString &url)
-{
-	return new Settings(m_profile->getSites().value(url)->settings(), this);
 }
 
 QString MainScreen::toLocalFile(const QString &url)
