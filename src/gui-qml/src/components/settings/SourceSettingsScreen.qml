@@ -60,6 +60,55 @@ Page {
 
         SettingTitle {
             Layout.fillWidth: true
+            text: qsTr("Login")
+        }
+        Setting {
+            id: loginTypeSetting
+            key: "login/type"
+            def: "url"
+            obj: root.site.settings
+        }
+        ComboSetting {
+            name: qsTr("Type")
+            options: root.site.authFields.map(f => globals.authTypes[f.type] || f.type)
+            values: root.site.authFields.map(f => f.type)
+            setting: loginTypeSetting
+            Layout.fillWidth: true
+        }
+        Repeater {
+            model: root.site.authFields
+            Layout.fillWidth: true
+
+            delegate: Item {
+                height: 100
+                width: parent.width
+                visible: modelData.type === loginTypeSetting.value
+
+                Column {
+                    spacing: 0
+                    width: parent.width
+
+                    Repeater {
+                        model: modelData.fields
+                        width: parent.width
+
+                        delegate: TextFieldSetting {
+                            name: globals.authFieldLabels[modelData.id] || modelData.id
+                            setting: Setting {
+                                key: "auth/" + modelData.id
+                                def: modelData.def
+                                obj: root.site.settings
+                            }
+                            echoMode: modelData.isPassword ? TextInput.Password : TextInput.Normal
+                            width: parent.width
+                        }
+                    }
+                }
+            }
+        }
+
+        SettingTitle {
+            Layout.fillWidth: true
             text: qsTr("API order")
         }
         Setting {

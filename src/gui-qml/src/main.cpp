@@ -8,6 +8,8 @@
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "models/qml-auth.h"
+#include "models/qml-auth-setting-field.h"
 #include "models/qml-image.h"
 #include "models/qml-site.h"
 #include "settings.h"
@@ -51,6 +53,8 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<QList<QmlImage*>>("QList>QmlImage*>");
 	qRegisterMetaType<QmlSite*>("QmlSite*");
 	qRegisterMetaType<QList<QmlSite*>>("QList<QmlSite*>");
+	qRegisterMetaType<QList<QmlAuth*>>("QList<QmlAuth*>");
+	qRegisterMetaType<QList<QmlAuthSettingField*>>("QList<QmlAuthSettingField*>");
 
 	// Copy settings files to writable directory
 	const QStringList toCopy { "sites/", "themes/", "webservices/" };

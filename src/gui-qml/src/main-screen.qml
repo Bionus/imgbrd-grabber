@@ -36,6 +36,22 @@ ApplicationWindow {
 
         property var apiTypes: ["XML", "JSON", "Regex", "RSS"]
         property var apiTypesKeys: ["xml", "json", "regex", "rss"]
+
+        property var authTypes: {
+            "url": qsTr("Through URL"),
+            "http_basic": qsTr("HTTP Basic"),
+            "get": qsTr("GET"),
+            "post": qsTr("POST"),
+            "oauth1": qsTr("OAuth 1"),
+            "oauth2": qsTr("OAuth 2")
+        }
+        property var authFieldLabels: {
+            "pseudo": qsTr("Username"),
+            "userId": qsTr("User ID"),
+            "password": qsTr("Password"),
+            "salt": qsTr("Salt"),
+            "apiKey": qsTr("API key")
+        }
     }
 
     MainDrawer {
