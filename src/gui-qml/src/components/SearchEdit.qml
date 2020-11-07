@@ -12,10 +12,12 @@ TextEdit {
     font.pixelSize: 14
 
     Keys.onEnterPressed: {
+        Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true
     }
     Keys.onReturnPressed: {
+        Qt.inputMethod.hide()
         root.enterPressed()
         event.accepted = true
     }
