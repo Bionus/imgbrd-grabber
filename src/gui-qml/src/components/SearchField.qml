@@ -8,7 +8,8 @@ FocusScope {
 
     signal enterPressed()
     property alias text: textInput.text
-    property alias placeholderText: placeholder.text
+    property alias placeholderText: textInput.placeholderText
+    property bool isOpen: false
 
     activeFocusOnTab: true
 
@@ -20,39 +21,28 @@ FocusScope {
         color: Qt.rgba(1, 1, 1, 0.6)
         radius: 12
 
-        TextEdit {
+        SearchEdit {
             id: textInput
 
             anchors.fill: parent
             clip: true
             anchors.leftMargin: 12
             anchors.rightMargin: 12
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 14
             focus: true
 
-            Keys.onEnterPressed: {
-                root.enterPressed()
-                event.accepted = true
-            }
-            Keys.onReturnPressed: {
-                root.enterPressed()
-                event.accepted = true
-            }
-
-            Text {
-                id: placeholder
-
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                visible: !(parent.text.length || textInput.inputMethodComposing)
-                font: parent.font
-                color: "#666"
-            }
+            onEnterPressed: root.enterPressed()
         }
 
-        SyntaxHighlighterHelper {
-            quickDocument: textInput.textDocument
+        ToolButton {
+            icon.source: root.isOpen
+                ? "/images/icons/remove.png"
+                : "/images/icons/add.png"
+            onClicked: root.isOpen = !root.isOpen
+            flat: true
+            height: 34
+            width: 34
+            anchors.right: editbg.right
+            anchors.verticalCenter: editbg.verticalCenter
         }
     }
 }

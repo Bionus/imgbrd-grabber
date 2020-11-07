@@ -21,7 +21,7 @@ Page {
         if (tag) {
             textFieldSearch.text = tag
         }
-        backend.search(site, textFieldSearch.text, page)
+        backend.search(site, textFieldSearch.text, page, textFieldPostFiltering.text)
     }
 
     header: ToolBar {
@@ -65,6 +65,23 @@ Page {
     ColumnLayout {
         spacing: 0
         anchors.fill: parent
+
+        Rectangle {
+            Layout.fillWidth: true
+            border.width: 1
+            border.color: "#666"
+            height: 40
+            visible: textFieldSearch.isOpen
+
+            SearchEdit {
+                id: textFieldPostFiltering
+                placeholderText: "Post-filters"
+                anchors.fill: parent
+                anchors.margins: 8
+
+                onEnterPressed: searchTab.load()
+            }
+        }
 
         ResultsView {
             results: searchTab.results

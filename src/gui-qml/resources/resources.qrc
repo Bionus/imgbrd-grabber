@@ -97,5 +97,9 @@
         <file>images/icons/cloud@2x.png</file>
         <file>images/icons/cloud@3x.png</file>
         <file>images/icons/cloud@4x.png</file>
+        <file>images/icons/remove.png</file>
+        <file>images/icons/remove@2x.png</file>
+        <file>images/icons/remove@3x.png</file>
+        <file>images/icons/remove@4x.png</file>
     </qresource>
 </RCC>

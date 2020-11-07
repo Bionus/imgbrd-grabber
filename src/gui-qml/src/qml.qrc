@@ -35,5 +35,6 @@
         <file>components/settings/items/RadioSetting.qml</file>
         <file>components/ResultsView.qml</file>
         <file>components/settings/pages/SourcesSettingsPage.qml</file>
+        <file>components/SearchEdit.qml</file>
     </qresource>
 </RCC>

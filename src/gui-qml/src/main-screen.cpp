@@ -53,13 +53,13 @@ void MainScreen::refreshSources()
 	emit sourcesChanged();
 }
 
-void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber)
+void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber, const QString &postFilter)
 {
 	m_query = query;
 	emit queryChanged();
 
 	Site *site = m_profile->getSites().value(siteUrl);
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, {}, false, this);
+	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
 
 	QEventLoop loop;
 	QObject::connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);

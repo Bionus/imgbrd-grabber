@@ -33,7 +33,7 @@ class MainScreen : public QObject
 		QString settingsFileName() const;
 
 	public slots:
-		void search(const QString &site, const QString &query, int page);
+		void search(const QString &site, const QString &query, int page, const QString &postFilter);
 		void newLog(const QString &message);
 		void downloadImage(const QSharedPointer<Image> &image);
 		QString addSite(const QString &type, const QString &host, bool https);
