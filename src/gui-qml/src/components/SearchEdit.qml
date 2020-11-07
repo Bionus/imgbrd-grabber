@@ -10,6 +10,7 @@ TextEdit {
 
     verticalAlignment: Text.AlignVCenter
     font.pixelSize: 14
+    inputMethodHints: Qt.ImhPreferLowercase
 
     Keys.onEnterPressed: {
         Qt.inputMethod.hide()
