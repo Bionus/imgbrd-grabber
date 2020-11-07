@@ -66,20 +66,29 @@ Page {
         spacing: 0
         anchors.fill: parent
 
-        Rectangle {
+        Item {
             Layout.fillWidth: true
-            border.width: 1
-            border.color: "#666"
             height: 40
-            visible: textFieldSearch.isOpen
-
-            SearchEdit {
-                id: textFieldPostFiltering
-                placeholderText: "Post-filters"
+            Rectangle {
                 anchors.fill: parent
-                anchors.margins: 8
+                anchors.topMargin: -1
+                anchors.leftMargin: -1
+                anchors.rightMargin: -1
+                anchors.bottomMargin: 0
+                border.width: 1
+                border.color: Qt.rgba(0, 0, 0, 0.4)
+                color: Qt.rgba(1, 1, 1, 0.7)
+                clip: true
+                visible: textFieldSearch.isOpen
 
-                onEnterPressed: searchTab.load()
+                SearchEdit {
+                    id: textFieldPostFiltering
+                    placeholderText: "Post-filters"
+                    anchors.fill: parent
+                    anchors.margins: 8
+
+                    onEnterPressed: searchTab.load()
+                }
             }
         }
 
