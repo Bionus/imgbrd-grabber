@@ -25,6 +25,11 @@ ScrollView {
         ? root.thumbnailSpacing / 2
         : -root.thumbnailSpacing / 2
 
+    onThumbnailHeightToWidthRatioChanged: resultsRefresher.restart()
+    onThumbnailSpacingChanged: resultsRefresher.restart()
+    onThumbnailPaddingChanged: resultsRefresher.restart()
+    onThumbnailFillModeChanged: resultsRefresher.restart()
+
     ColumnFlow {
         id: resultsLayout
 
