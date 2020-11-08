@@ -7,6 +7,7 @@
 
 
 class Image;
+class Page;
 class Profile;
 class QmlImage;
 class QmlSite;
@@ -46,6 +47,7 @@ class MainScreen : public QObject
 	protected slots:
 		void refreshSites();
 		void refreshSources();
+		void searchFinished(Page *page);
 
 	signals:
 		void queryChanged();

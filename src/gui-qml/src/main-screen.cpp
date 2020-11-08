@@ -61,12 +61,13 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	Site *site = m_profile->getSites().value(siteUrl);
 	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
 
-	QEventLoop loop;
-	QObject::connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
-	QObject::connect(page, &Page::failedLoading, &loop, &QEventLoop::quit);
+	connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
+	connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
 	page->load(false);
-	loop.exec();
 
+}
+void MainScreen::searchFinished(Page *page)
+{
 	QList<QSharedPointer<Image>> results = page->images();
 
 	m_results.clear();
