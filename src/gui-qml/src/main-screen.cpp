@@ -7,6 +7,7 @@
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "logger.h"
+#include "models/favorite.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -28,8 +29,10 @@ MainScreen::MainScreen(Profile *profile, QObject *parent)
 
 	refreshSites();
 	refreshSources();
+	refreshFavorites();
 
 	connect(m_profile, &Profile::sitesChanged, this, &MainScreen::refreshSites);
+	connect(m_profile, &Profile::favoritesChanged, this, &MainScreen::refreshFavorites);
 }
 
 void MainScreen::refreshSites()
@@ -51,6 +54,15 @@ void MainScreen::refreshSources()
 		m_sources.append(source->getName());
 	}
 	emit sourcesChanged();
+}
+
+void MainScreen::refreshFavorites()
+{
+	m_favorites.clear();
+	for (const Favorite &fav : m_profile->getFavorites()) {
+		m_favorites.append(fav.getName(false));
+	}
+	emit favoritesChanged();
 }
 
 void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber, const QString &postFilter)
@@ -143,6 +155,17 @@ QString MainScreen::addSite(const QString &type, const QString &host, bool https
 	}
 
 	return QString();
+}
+
+void MainScreen::addFavorite(const QString &query, const QString &siteUrl)
+{
+	Favorite fav(query);
+	fav.setSites({ m_profile->getSites().value(siteUrl) });
+	m_profile->addFavorite(fav);
+}
+void MainScreen::removeFavorite(const QString &query)
+{
+	m_profile->removeFavorite(Favorite(query));
 }
 
 QString MainScreen::toLocalFile(const QString &url)

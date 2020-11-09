@@ -22,6 +22,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QString log READ log NOTIFY logChanged)
 	Q_PROPERTY(QList<QmlSite*> sites READ sites NOTIFY sitesChanged)
 	Q_PROPERTY(QStringList sources READ sources NOTIFY sourcesChanged)
+	Q_PROPERTY(QStringList favorites READ favorites NOTIFY favoritesChanged)
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 
 	public:
@@ -31,6 +32,7 @@ class MainScreen : public QObject
 		const QString &log() const { return m_log; }
 		const QList<QmlSite*> &sites() const { return m_sites; }
 		const QStringList &sources() const { return m_sources; }
+		const QStringList &favorites() const { return m_favorites; }
 		QString settingsFileName() const;
 
 	public slots:
@@ -43,10 +45,13 @@ class MainScreen : public QObject
 		void setBlacklist(const QString &blacklist);
 		QString getIgnored();
 		void setIgnored(const QString &ignored);
+		void addFavorite(const QString &query, const QString &siteUrl);
+		void removeFavorite(const QString &query);
 
 	protected slots:
 		void refreshSites();
 		void refreshSources();
+		void refreshFavorites();
 		void searchFinished(Page *page);
 
 	signals:
@@ -55,6 +60,7 @@ class MainScreen : public QObject
 		void logChanged();
 		void sitesChanged();
 		void sourcesChanged();
+		void favoritesChanged();
 
 	private:
 		Profile *m_profile;
@@ -63,6 +69,7 @@ class MainScreen : public QObject
 		QString m_log;
 		QList<QmlSite*> m_sites;
 		QStringList m_sources;
+		QStringList m_favorites;
 };
 
 #endif // MAIN_SCREEN_H

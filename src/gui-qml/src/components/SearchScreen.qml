@@ -66,28 +66,51 @@ Page {
         spacing: 0
         anchors.fill: parent
 
-        Item {
+        ColumnLayout {
+            spacing: 0
             Layout.fillWidth: true
-            height: 40
-            Rectangle {
-                anchors.fill: parent
-                anchors.topMargin: -1
-                anchors.leftMargin: -1
-                anchors.rightMargin: -1
-                anchors.bottomMargin: 0
-                border.width: 1
-                border.color: Qt.rgba(0, 0, 0, 0.4)
-                color: Qt.rgba(1, 1, 1, 0.7)
-                clip: true
-                visible: textFieldSearch.isOpen
+            visible: textFieldSearch.isOpen
 
-                SearchEdit {
-                    id: textFieldPostFiltering
-                    placeholderText: "Post-filters"
+            Item {
+                Layout.fillWidth: true
+                height: 40
+
+                Rectangle {
                     anchors.fill: parent
-                    anchors.margins: 8
+                    anchors.topMargin: -1
+                    anchors.leftMargin: -1
+                    anchors.rightMargin: -1
+                    anchors.bottomMargin: 0
+                    border.width: 1
+                    border.color: Qt.rgba(0, 0, 0, 0.4)
+                    color: Qt.rgba(1, 1, 1, 0.7)
+                    clip: true
 
-                    onEnterPressed: searchTab.load()
+                    SearchEdit {
+                        id: textFieldPostFiltering
+                        placeholderText: "Post-filters"
+                        anchors.fill: parent
+                        anchors.margins: 8
+
+                        onEnterPressed: searchTab.load()
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                height: 40
+
+                ToolButton {
+                    property var isFavorited: Array.prototype.indexOf.call(backend.favorites, backend.query) >= 0
+                    icon.source: "/images/icons/" + (isFavorited ? "favorites_filled" : "favorites") + ".png"
+                    icon.color: isFavorited ? "pink" : Material.foreground
+                    enabled: query !== ""
+                    onClicked: isFavorited ? backend.removeFavorite(backend.query) : backend.addFavorite(backend.query, searchTab.site)
+                }
+
+                Item {
+                    Layout.fillWidth: true
                 }
             }
         }
