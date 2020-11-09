@@ -168,6 +168,29 @@ void MainScreen::removeFavorite(const QString &query)
 	m_profile->removeFavorite(Favorite(query));
 }
 
+void MainScreen::loadSuggestions(const QString &prefix, int limit)
+{
+	m_autoComplete.clear();
+
+	// Ignore empty searches or completions right after a space
+	if (prefix.isEmpty()) {
+		emit autoCompleteChanged();
+		return;
+	}
+
+	// Get the first element for which the comparison "elt < prefix" is wrong
+	const auto &cmp = m_profile->getAutoComplete();
+	auto it = std::lower_bound(cmp.constBegin(), cmp.constEnd(), prefix);
+
+	// Get max $limit results starting with the prefix
+	while (it != cmp.constEnd() && it->startsWith(prefix) && m_autoComplete.count() < limit) {
+		m_autoComplete.append(*it);
+		++it;
+	}
+
+	emit autoCompleteChanged();
+}
+
 QString MainScreen::toLocalFile(const QString &url)
 {
 	if (url.startsWith("file:")) {

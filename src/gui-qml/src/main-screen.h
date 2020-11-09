@@ -23,6 +23,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QList<QmlSite*> sites READ sites NOTIFY sitesChanged)
 	Q_PROPERTY(QStringList sources READ sources NOTIFY sourcesChanged)
 	Q_PROPERTY(QStringList favorites READ favorites NOTIFY favoritesChanged)
+	Q_PROPERTY(QStringList autoComplete READ autoComplete NOTIFY autoCompleteChanged)
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 
 	public:
@@ -33,6 +34,7 @@ class MainScreen : public QObject
 		const QList<QmlSite*> &sites() const { return m_sites; }
 		const QStringList &sources() const { return m_sources; }
 		const QStringList &favorites() const { return m_favorites; }
+		const QStringList &autoComplete() const { return m_autoComplete; }
 		QString settingsFileName() const;
 
 	public slots:
@@ -47,6 +49,7 @@ class MainScreen : public QObject
 		void setIgnored(const QString &ignored);
 		void addFavorite(const QString &query, const QString &siteUrl);
 		void removeFavorite(const QString &query);
+		void loadSuggestions(const QString &prefix, int limit);
 
 	protected slots:
 		void refreshSites();
@@ -61,6 +64,7 @@ class MainScreen : public QObject
 		void sitesChanged();
 		void sourcesChanged();
 		void favoritesChanged();
+		void autoCompleteChanged();
 
 	private:
 		Profile *m_profile;
@@ -70,6 +74,8 @@ class MainScreen : public QObject
 		QList<QmlSite*> m_sites;
 		QStringList m_sources;
 		QStringList m_favorites;
+		QStringList m_fullAutoComplete;
+		QStringList m_autoComplete;
 };
 
 #endif // MAIN_SCREEN_H

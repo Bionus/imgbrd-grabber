@@ -7,7 +7,7 @@ FocusScope {
     id: root
 
     signal enterPressed()
-    property alias text: textInput.text
+    property alias text: textInput.input
     property alias placeholderText: textInput.placeholderText
     property bool isOpen: false
 
@@ -21,11 +21,10 @@ FocusScope {
         color: Qt.rgba(1, 1, 1, 0.6)
         radius: 12
 
-        SearchEdit {
+        AutoCompleteSearchEdit {
             id: textInput
 
             anchors.fill: parent
-            clip: true
             anchors.leftMargin: 12
             anchors.rightMargin: 12
             focus: true
