@@ -110,7 +110,7 @@ Drawer {
                     page: "favorites"
                     name: qsTr("Favorites")
                     icon: "/images/icons/favorites.png"
-                    enabled: false
+                    enabled: true
                 }
                 ListElement {
                     page: "log"

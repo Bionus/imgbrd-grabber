@@ -77,6 +77,7 @@ ApplicationWindow {
             id: mainScreen
 
             SearchScreen {
+                id: searchScreen
                 visible: currentPage == "search"
                 anchors.fill: parent
                 site: window.site
@@ -84,6 +85,18 @@ ApplicationWindow {
                 results: backend.results
 
                 onOpenSources: mainStackView.push(sourcesScreen)
+            }
+
+            FavoritesScreen {
+                id: favoritesScreen
+                visible: currentPage == "favorites"
+                anchors.fill: parent
+                favorites: backend.favorites
+
+                onOpenFavorite: {
+                    searchScreen.load(favorite)
+                    currentPage = "search"
+                }
             }
 
             LogScreen {

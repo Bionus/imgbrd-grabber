@@ -36,5 +36,6 @@
         <file>components/ResultsView.qml</file>
         <file>components/settings/pages/SourcesSettingsPage.qml</file>
         <file>components/SearchEdit.qml</file>
+        <file>components/FavoritesScreen.qml</file>
     </qresource>
 </RCC>
