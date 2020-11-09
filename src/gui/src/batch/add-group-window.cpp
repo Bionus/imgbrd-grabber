@@ -20,6 +20,7 @@ AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent
 
 	auto *completer = new QCompleter(profile->getAutoComplete(), this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 
 	m_lineTags = new TextEdit(profile, this);
 	m_lineTags->setCompleter(completer);
