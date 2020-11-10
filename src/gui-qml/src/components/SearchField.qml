@@ -7,7 +7,7 @@ FocusScope {
     id: root
 
     signal enterPressed()
-    property alias text: textInput.input
+    property alias text: textInput.text
     property alias placeholderText: textInput.placeholderText
     property bool isOpen: false
 

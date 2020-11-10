@@ -6,15 +6,10 @@ import QtQuick.Controls.Material 2.12
 SearchEdit {
     id: root
 
-    property string input
     property bool blockTextChange: true
 
     Component.onCompleted: blockTextChange = false
 
-    onInputChanged: {
-        blockTextChange = true
-        text = input
-    }
     onTextChanged: {
         if (blockTextChange) {
             blockTextChange = false
@@ -79,7 +74,8 @@ SearchEdit {
                         var newText = left + modelData + right
 
                         completions.currentIndex = index
-                        root.input = newText
+                        root.blockTextChange = true
+                        root.text = newText
                         root.cursorPosition = (left + modelData).length
                         completionsBox.visible = false
                     }
