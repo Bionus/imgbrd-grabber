@@ -66,6 +66,10 @@ Page {
                     icon: "/images/icons/network.png"
                 }
                 ListElement {
+                    name: qsTr("Advanced")
+                    icon: "/images/icons/settings.png"
+                }
+                ListElement {
                     name: qsTr("About")
                     icon: "/images/icons/info.png"
                 }
@@ -101,6 +105,10 @@ Page {
             visible: false
         }
         NetworkSettingsPage {
+            width: parent.width
+            visible: false
+        }
+        AdvancedSettingsPage {
             width: parent.width
             visible: false
         }

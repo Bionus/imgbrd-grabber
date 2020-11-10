@@ -191,6 +191,31 @@ void MainScreen::loadSuggestions(const QString &prefix, int limit)
 	emit autoCompleteChanged();
 }
 
+bool MainScreen::exportSettings(const QString &dest)
+{
+	return QFile::copy(m_profile->getSettings()->fileName(), dest);
+}
+
+bool MainScreen::importSettings(const QString &source)
+{
+	QSettings sourceSettings(source, QSettings::IniFormat);
+	if (sourceSettings.status() != QSettings::NoError) {
+		return false;
+	}
+
+	QSettings *settings = m_profile->getSettings();
+	settings->clear();
+
+	for (const QString &key : sourceSettings.allKeys()) {
+		settings->setValue(key, sourceSettings.value(key));
+	}
+
+	settings->sync();
+	emit settingsChanged();
+
+	return true;
+}
+
 QString MainScreen::toLocalFile(const QString &url)
 {
 	if (url.startsWith("file:")) {

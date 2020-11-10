@@ -38,5 +38,6 @@
         <file>components/SearchEdit.qml</file>
         <file>components/FavoritesScreen.qml</file>
         <file>components/AutoCompleteSearchEdit.qml</file>
+        <file>components/settings/pages/AdvancedSettingsPage.qml</file>
     </qresource>
 </RCC>

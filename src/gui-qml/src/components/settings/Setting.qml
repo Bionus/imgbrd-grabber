@@ -21,4 +21,12 @@ Item {
 
         root.changed(val)
     }
+
+    Connections {
+        target: backend
+        function onSettingsChanged() {
+            root.rawValue = root.obj.value(root.key, root.def);
+            root.value = root.parser !== null ? parser(root.rawValue) : root.rawValue
+        }
+    }
 }

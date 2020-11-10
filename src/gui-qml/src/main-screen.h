@@ -50,6 +50,8 @@ class MainScreen : public QObject
 		void addFavorite(const QString &query, const QString &siteUrl);
 		void removeFavorite(const QString &query);
 		void loadSuggestions(const QString &prefix, int limit);
+		bool exportSettings(const QString &dest);
+		bool importSettings(const QString &source);
 
 	protected slots:
 		void refreshSites();
@@ -65,6 +67,7 @@ class MainScreen : public QObject
 		void sourcesChanged();
 		void favoritesChanged();
 		void autoCompleteChanged();
+		void settingsChanged();
 
 	private:
 		Profile *m_profile;
