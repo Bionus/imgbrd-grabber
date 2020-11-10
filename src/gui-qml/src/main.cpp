@@ -65,6 +65,14 @@ int main(int argc, char *argv[])
 			copyRecursively(from, to);
 		}
 	}
+	const QStringList filesToCopy { "words.txt" };
+	for (const QString &tgt : filesToCopy) {
+		const QString from = savePath(tgt, true, false);
+		const QString to = savePath(tgt, true, true);
+		if (!QFile::exists(to) && QFile::exists(from)) {
+			QFile::copy(from, to);
+		}
+	}
 
 	const QUrl url(QStringLiteral("qrc:/main-screen.qml"));
 
