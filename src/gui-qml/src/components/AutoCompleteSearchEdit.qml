@@ -8,6 +8,7 @@ SearchEdit {
 
     property bool blockTextChange: true
 
+    inputMethodHints: Qt.ImhSensitiveData | Qt.ImhPreferLowercase
     Component.onCompleted: blockTextChange = false
 
     onTextChanged: {
