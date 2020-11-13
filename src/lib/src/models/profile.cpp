@@ -109,7 +109,7 @@ Profile::Profile(QString path)
 	}
 
 	// Load MD5s
-	m_md5s = QFile::exists(m_path + "/md5s.sqlite")
+	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt");
 		? (Md5Database*) new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings)
 		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
 
