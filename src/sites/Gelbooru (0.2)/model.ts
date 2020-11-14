@@ -1,7 +1,8 @@
 function completeImage(img: IImage): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url
-            .replace("/thumbnails/", "/images/")
+            .replace("thumbs", "img2")
+            .replace("gelbooru.com/", "gelbooru.com/images/")
             .replace("/thumbnail_", "/");
     }
 
