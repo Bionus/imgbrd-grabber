@@ -8,11 +8,11 @@
 
 TEST_CASE("Md5DatabaseSqlite")
 {
-	FileDeleter settingsDeleter("tests/resources/md5s.sqlite", true);
+	FileDeleter settingsDeleter("tests/resources/md5s-test.sqlite", true);
 
 	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 	{
-		Md5DatabaseSqlite init("tests/resources/md5s.sqlite", &settings);
+		Md5DatabaseSqlite init("tests/resources/md5s-test.sqlite", &settings);
 		init.add("5a105e8b9d40e1329780d62ea2265d8a", "tests/resources/image_1x1.png");
 		init.add("5a105e8b9d40e1329780d62ea2265d8a", "tests/resources/image_200x200.png");
 		init.add("ad0234829205b9033196ba818f7a872b", "tests/resources/image_1x1.png");
@@ -20,7 +20,7 @@ TEST_CASE("Md5DatabaseSqlite")
 
 	SECTION("The constructor should load all the MD5s in memory")
 	{
-		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+		Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").count() == 2);
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").contains("tests/resources/image_1x1.png"));
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").contains("tests/resources/image_200x200.png"));
@@ -29,20 +29,20 @@ TEST_CASE("Md5DatabaseSqlite")
 
 	SECTION("It can count the number of entries")
 	{
-		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+		Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 		REQUIRE(md5s.count() == 3);
 	}
 
 	SECTION("Can remove an MD5 using remove()")
 	{
-		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+		Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 		md5s.remove("5a105e8b9d40e1329780d62ea2265d8a");
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a").isEmpty());
 	}
 
 	SECTION("Can remove a single MD5 path using remove()")
 	{
-		Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+		Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 		md5s.remove("5a105e8b9d40e1329780d62ea2265d8a", "tests/resources/image_1x1.png");
 		REQUIRE(md5s.exists("5a105e8b9d40e1329780d62ea2265d8a") == QStringList("tests/resources/image_200x200.png"));
 	}
@@ -51,7 +51,7 @@ TEST_CASE("Md5DatabaseSqlite")
 	{
 		SECTION("when 'keep deleted' is set to false")
 		{
-			Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+			Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 			settings.setValue("Save/md5Duplicates", "move");
 			settings.setValue("Save/keepDeletedMd5", false);
 
@@ -79,7 +79,7 @@ TEST_CASE("Md5DatabaseSqlite")
 
 		SECTION("when 'keep deleted' is set to true")
 		{
-			Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+			Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 			settings.setValue("Save/md5Duplicates", "move");
 			settings.setValue("Save/keepDeletedMd5", true);
 
@@ -103,7 +103,7 @@ TEST_CASE("Md5DatabaseSqlite")
 
 		SECTION("for files in the same directory")
 		{
-			Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+			Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 			md5s.add("new", "tests/resources/image_1x1.png");
 
 			settings.setValue("Save/md5Duplicates", "save");
@@ -128,7 +128,7 @@ TEST_CASE("Md5DatabaseSqlite")
 
 		SECTION("prioritize actions for files in the same directory")
 		{
-			Md5DatabaseSqlite md5s("tests/resources/md5s.sqlite", &settings);
+			Md5DatabaseSqlite md5s("tests/resources/md5s-test.sqlite", &settings);
 			md5s.add("new", "same_dir/image.png"); // Doesn't exist
 			md5s.add("new", "tests/resources/image_1x1.png"); // Exists
 
