@@ -8,6 +8,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
@@ -16,6 +18,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QUrl>
+#include <QVideoWidget>
 #include <QWheelEvent>
 #include <ui_zoom-window.h>
 #include "downloader/image-downloader.h"
@@ -101,6 +104,14 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
+
+	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
+		m_videoWidget = new QVideoWidget(this);
+		m_stackedWidget->addWidget(m_videoWidget);
+
+		m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
+		m_mediaPlayer->setVideoOutput(m_videoWidget);
+	}
 
 	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
 	connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
@@ -676,7 +687,7 @@ void ZoomWindow::pendingUpdate()
 void ZoomWindow::draw()
 {
 	// Videos don't get drawn
-	if (m_image->isVideo()) {
+	if (m_image->isVideo() && !m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
 		return;
 	}
 
@@ -697,6 +708,18 @@ void ZoomWindow::draw()
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
 			m_fullScreen->setMovie(m_displayMovie);
 		}
+	}
+	// Videos (using a media player)
+	else if (m_image->isVideo()) {
+		QMediaPlaylist *playlist = new QMediaPlaylist(this);
+		playlist->addMedia(QUrl::fromLocalFile(m_imagePath));
+		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+
+		m_mediaPlayer->setPlaylist(playlist);
+		m_stackedWidget->setCurrentWidget(m_videoWidget);
+		m_mediaPlayer->play();
+
+		m_displayImage = QPixmap();
 	}
 	// Images
 	else {
@@ -959,19 +982,25 @@ void ZoomWindow::fullScreen()
 		return;
 	}
 
-	m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
-	m_fullScreen->setStyleSheet("background-color: black");
-	m_fullScreen->setAlignment(Qt::AlignCenter);
-	if (!m_isAnimated.isEmpty()) {
-		m_fullScreen->setMovie(m_displayMovie);
+	QWidget *widget;
+	if (m_image->isVideo()) {
+		m_videoWidget->setFullScreen(true);
+		widget = m_videoWidget;
 	} else {
-		m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-	}
-	m_fullScreen->setWindowFlags(Qt::Window);
-	m_fullScreen->showFullScreen();
+		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
+		m_fullScreen->setStyleSheet("background-color: black");
+		m_fullScreen->setAlignment(Qt::AlignCenter);
+		if (!m_isAnimated.isEmpty()) {
+			m_fullScreen->setMovie(m_displayMovie);
+		} else {
+			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		}
+		m_fullScreen->setWindowFlags(Qt::Window);
+		m_fullScreen->showFullScreen();
 
-	connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
-	QWidget *widget = m_fullScreen;
+		connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
+		widget = m_fullScreen;
+	}
 
 	m_isFullscreen = true;
 	prepareNextSlide();
@@ -994,9 +1023,13 @@ void ZoomWindow::unfullScreen()
 {
 	m_slideshow.stop();
 
-	m_fullScreen->close();
-	m_fullScreen->deleteLater();
-	m_fullScreen = nullptr;
+	if (m_image->isVideo()) {
+		m_videoWidget->setFullScreen(false);
+	} else if (m_fullScreen != nullptr) {
+		m_fullScreen->close();
+		m_fullScreen->deleteLater();
+		m_fullScreen = nullptr;
+	}
 
 	m_isFullscreen = false;
 }
@@ -1017,7 +1050,7 @@ void ZoomWindow::prepareNextSlide()
 	// We make sure to wait to see the whole displayed item
 	const qint64 additionalInterval = !m_isAnimated.isEmpty()
 		? m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount()
-		: 0;
+		: (m_image->isVideo() ? m_mediaPlayer->duration() : 0);
 
 	const qint64 totalInterval = interval * 1000 + additionalInterval;
 	m_slideshow.start(totalInterval);
@@ -1080,7 +1113,7 @@ void ZoomWindow::showThumbnail()
 	}
 
 	// Videos get a static resizable overlay
-	if (m_image->isVideo()) {
+	if (m_image->isVideo() && !m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
 		// A video thumbnail should not be upscaled to more than three times its size
 		QSize maxSize = QSize(500, 500) * m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		if (size.width() > maxSize.width() || size.height() > maxSize.height()) {
@@ -1100,7 +1133,7 @@ void ZoomWindow::showThumbnail()
 		update(false, true);
 	}
 	// Gifs get non-resizable thumbnails
-	else if (!m_isAnimated.isEmpty()) {
+	else if (!m_isAnimated.isEmpty() || m_image->isVideo()) {
 		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 	}
 	// Other images get a resizable thumbnail
