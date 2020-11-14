@@ -9,9 +9,13 @@
 class FileDeleter
 {
 	public:
-		explicit FileDeleter(QString path)
+		explicit FileDeleter(QString path, bool del = false)
 			: m_path(std::move(path))
-		{}
+		{
+			if (del && QFile::exists(m_path)) {
+				QFile::remove(m_path);
+			}
+		}
 
 		~FileDeleter()
 		{

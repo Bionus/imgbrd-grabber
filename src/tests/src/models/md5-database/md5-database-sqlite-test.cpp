@@ -8,7 +8,7 @@
 
 TEST_CASE("Md5DatabaseSqlite")
 {
-	FileDeleter settingsDeleter("tests/resources/md5s.sqlite");
+	FileDeleter settingsDeleter("tests/resources/md5s.sqlite", true);
 
 	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
 	{
