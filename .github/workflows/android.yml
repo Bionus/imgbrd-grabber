@@ -72,12 +72,10 @@ jobs:
       run: |
         cmake --build . --config Release --target sites
         cmake --build . --config Release --target gui-qml_apk
-        cmake --build . --config Release --target gui_apk
 
     - name: Generate package
       run: |
-        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber_nightly_qml.apk
-        mv build/gui/gui-armeabi-v7a/build/outputs/apk/release/gui-armeabi-v7a-release-signed.apk Grabber_nightly.apk
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber_nightly.apk
         ls -la *.apk
 
     - name: Get date for Nightly body
