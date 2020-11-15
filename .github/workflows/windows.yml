@@ -6,6 +6,10 @@ jobs:
     timeout-minutes: 15
     runs-on: windows-2019
 
+    strategy:
+      matrix:
+        platform: [x86, x64]
+
     env:
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5198020/qsqlmysql.dll_Qt_SQL_driver_5.15.1_MSVC2019_64-Bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
@@ -26,7 +30,7 @@ jobs:
       id: vendor-cache
       with:
         path: vendor
-        key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
+        key: ${{ runner.os }}-${{ matrix.platform }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
 
     - name: Create vendor dirs
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -38,13 +42,21 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/windows.yml') }}
+        key: ${{ runner.os }}-${{ matrix.platform }}-QtCache-${{ hashFiles('.github/workflows/windows.yml') }}
+
+    - name: Get arch for Qt install
+      id: qt_arch
+      shell: cmd
+      run: |
+        if "${{ matrix.platform }}"=="x86" (set "QT_ARCH=win32_msvc2019") else (set "QT_ARCH=win64_msvc2019_64")
+        echo ::set-output name=qt_arch::%QT_ARCH%
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.9.0
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.15.1
+        arch: ${{ steps.qt_arch.outputs.qt_arch }}
 
     - name: Build QScintilla
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -55,7 +67,7 @@ jobs:
         7z x "%QSCINTILLA_VERSION%.zip" -y
         rm "%QSCINTILLA_VERSION%.zip"
         cd "%QSCINTILLA_VERSION%\Qt4Qt5"
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
         qmake qscintilla.pro
         nmake
 
@@ -64,7 +76,7 @@ jobs:
       shell: cmd
       run: |
         cd "%QSCINTILLA_VERSION%\Qt4Qt5"
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
         nmake install
 
     - name: Install OpenSSL
@@ -72,7 +84,8 @@ jobs:
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1h.exe
+        if "${{ matrix.platform }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
+        curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1h.exe"
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
         rm OpenSSL.exe
 
@@ -93,7 +106,7 @@ jobs:
         git clone https://github.com/Skycoder42/QtApng APNG
         cd APNG
         git checkout $(git tag | tail -1)
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
         qmake "CONFIG += libpng_static"
         nmake
 
@@ -104,7 +117,14 @@ jobs:
     - name: Configure
       working-directory: build
       shell: cmd
-      run: cmake ..\src -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+      run: |
+        if "${{ matrix.platform }}"=="x86" (set "CMAKE_PLATFORM=Win32") else (set "CMAKE_PLATFORM=x64")
+        cmake ..\src -G "Visual Studio 16 2019" -A "%CMAKE_PLATFORM%" ^
+          -DCMAKE_BUILD_TYPE=Release ^
+          -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
+          -DCOMMIT="%GITHUB_SHA%" ^
+          -DVERSION="%GRABBER_VERSION%" ^
+          -DVERSION_PLATFORM="${{ matrix.platform }}"
 
     - name: Compile
       working-directory: build
@@ -125,7 +145,19 @@ jobs:
       shell: cmd
       run: |
         copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
-        iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" scripts\windows-setup\setup.iss
+        iscc /Q ^
+          /DMyAppVersion="%GRABBER_VERSION%" ^
+          /DPlatformName="${{ matrix.platform }}" ^
+          /DQtDir="%Qt5_Dir%\bin" ^
+          /DOpenSSLDir="%OPENSSL_ROOT_DIR%" ^
+          /DMySQLDir="%MYSQL_DRIVER_DIR%" ^
+          /DQtApngDll="%APNG_PLUGIN_DLL%" ^
+          scripts\windows-setup\setup.iss
+
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
 
     - name: Nightly
       uses: ncipollo/release-action@v1
