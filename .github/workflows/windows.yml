@@ -142,4 +142,5 @@ jobs:
           Nightly automated builds from the develop branch.
           Automatically uploaded by Github actions, **use at your own risk**!
 
-          **Head:** ${{ env.GITHUB_SHA }}
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}

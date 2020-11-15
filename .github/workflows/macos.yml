@@ -53,6 +53,11 @@ jobs:
         ./scripts/package-mac.sh
         mv Grabber.dmg Grabber_nightly.dmg
 
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
     - name: Nightly
       uses: ncipollo/release-action@v1
       if: ${{ github.event_name != 'pull_request' }}
@@ -68,4 +73,5 @@ jobs:
           Nightly automated builds from the develop branch.
           Automatically uploaded by Github actions, **use at your own risk**!
 
-          **Head:** ${{ env.GITHUB_SHA }}
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}
