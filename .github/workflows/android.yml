@@ -5,17 +5,16 @@ jobs:
   Android:
     runs-on: ubuntu-18.04
 
+    env:
+      GRABBER_VERSION: nightly
+      GRABBER_IS_NIGHTLY: 1
+      PLATFORM_NAME: x64
+
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
-
-    - name: Set environment
-      run: |
-        echo "GRABBER_VERSION=nightly" >> $GITHUB_ENV
-        echo "GRABBER_IS_NIGHTLY=1" >> $GITHUB_ENV
-        echo "PLATFORM_NAME=x64" >> $GITHUB_ENV
 
     - name: Install packages
       run: sudo apt-get install libpulse-dev

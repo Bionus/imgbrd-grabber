@@ -6,18 +6,17 @@ jobs:
     timeout-minutes: 20
     runs-on: macos-10.15
 
+    env:
+      GRABBER_VERSION: nightly
+      GRABBER_IS_NIGHTLY: 1
+      PLATFORM_NAME: x64
+      OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
-
-    - name: Set environment
-      run: |
-        echo "GRABBER_VERSION=nightly" >> $GITHUB_ENV
-        echo "GRABBER_IS_NIGHTLY=1" >> $GITHUB_ENV
-        echo "PLATFORM_NAME=x64" >> $GITHUB_ENV
-        echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl/" >> $GITHUB_ENV
 
     - name: Cache Qt
       id: cache-qt

@@ -9,22 +9,17 @@ jobs:
     env:
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5198020/qsqlmysql.dll_Qt_SQL_driver_5.15.1_MSVC2019_64-Bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
+      GRABBER_VERSION: nightly
+      GRABBER_IS_NIGHTLY: 1
+      OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
+      MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
+      APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
 
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
-
-    - name: Set environment
-      shell: cmd
-      run: |
-        echo GRABBER_VERSION=nightly>> %GITHUB_ENV%
-        echo GRABBER_IS_NIGHTLY=1>> %GITHUB_ENV%
-        echo PLATFORM_NAME=x64>> %GITHUB_ENV%
-        echo OPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\vendor\OpenSSL>> %GITHUB_ENV%
-        echo MYSQL_DRIVER_DIR=%GITHUB_WORKSPACE%\vendor\MySQL_driver>> %GITHUB_ENV%
-        echo APNG_PLUGIN_DLL=%GITHUB_WORKSPACE%\vendor\APNG\plugins\imageformats\qapng.dll>> %GITHUB_ENV%
 
     - name: Vendor cache
       uses: actions/cache@v1
