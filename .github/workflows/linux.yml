@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   Linux:
     timeout-minutes: 20
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
 
     env:
       GRABBER_VERSION: nightly
@@ -18,7 +18,7 @@ jobs:
         submodules: recursive
 
     - name: Install packages
-      run: sudo apt-get install libpulse-dev
+      run: sudo apt-get install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0
 
     - name: Cache Qt
       id: cache-qt
@@ -33,12 +33,23 @@ jobs:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.15.1
 
+    - name: Vendor cache
+      uses: actions/cache@v1
+      id: vendor-cache
+      with:
+        path: vendor
+        key: ${{ runner.os }}-bin-${{ hashFiles('.github/workflows/linux.yml') }}
+
+    - name: Create vendor dir
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      run: mkdir vendor
+
     - name: Create build dir
       run: mkdir build
 
     - name: Configure
       working-directory: build
-      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
+      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
 
     - name: Compile
       working-directory: build
@@ -52,10 +63,15 @@ jobs:
         working-directory: src
         run: ../build/tests/tests
 
-    - name: Generate package
+    - name: Download linuxdeployqt
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
       run: |
-        ./scripts/package-linux.sh
-        mv Grabber.tar.gz Grabber_nightly.tar.gz
+        curl -Lo "linuxdeployqt.AppImage" "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
+        chmod a+x linuxdeployqt.AppImage
+
+    - name: Generate package
+      run: ./scripts/package-appimage.sh
 
     - name: Get date for Nightly body
       id: date
@@ -72,7 +88,7 @@ jobs:
         allowUpdates: true
         draft: false
         prerelease: true
-        artifacts: Grabber_*.tar.gz
+        artifacts: Grabber_*.AppImage
         body: |
           Nightly automated builds from the develop branch.
           Automatically uploaded by Github actions, **use at your own risk**!
