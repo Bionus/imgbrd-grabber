@@ -11,6 +11,66 @@ Grabber works on Windows, Mac, and Linux.
 
 
 
+# Downloads
+
+<div class="downloads" markdown="1">
+
+<div class="download" markdown="1">
+![Windows](assets/img/downloads/windows.png)
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '_x64.exe' %}
+[Windows (x64)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '_x86.exe' %}
+[Windows (x86)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="download" markdown="1">
+![Linux](assets/img/downloads/linux.png)
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '.AppImage' %}
+[Linux (AppImage)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '.tar.gz' %}
+[Linux (tar.gz)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="download" markdown="1">
+![MacOS](assets/img/downloads/macos.png)
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '.dmg' %}
+[MacOS (dmg)]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+</div>
+
+<div class="download" markdown="1">
+![MacOS](assets/img/downloads/android.png)
+
+{% for asset in site.github.latest_release.assets %}
+{% if asset.name contains '.apk' %}
+[Android]({{ asset.browser_download_url }})
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
+
+
+
 # Sources
 
 <div class="sources" markdown="1">

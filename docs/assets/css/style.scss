@@ -160,6 +160,24 @@ section {
 	}
 }
 
+section .downloads .download {
+	float: left;
+	width: 25%;
+	text-align: center;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+section .downloads .download:last-child {
+	float: none;
+}
+
+section .downloads .download p {
+	margin-bottom: 0;
+}
+section .downloads .download img {
+	margin-bottom: 10px;
+}
+
 section .sources > p {
 	margin-bottom: 25px;
 	text-align: center;
