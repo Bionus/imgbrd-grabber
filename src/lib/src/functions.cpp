@@ -328,6 +328,9 @@ QString savePath(const QString &file, bool exists, bool writable)
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
 		}
+		if (validSavePath(qApp->applicationDirPath() + "/../share/Grabber/" + check, writable)) {
+			return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../share/Grabber/" + file);
+		}
 		if (validSavePath(QString(PREFIX) + "/share/Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QString(PREFIX) + "/share/Grabber/" + file);
 		}
