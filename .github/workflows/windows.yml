@@ -124,8 +124,9 @@ jobs:
       shell: cmd
       run: |
         if "${{ matrix.platform }}"=="x86" (set "CMAKE_PLATFORM=Win32") else (set "CMAKE_PLATFORM=x64")
+        if %GRABBER_IS_NIGHTLY%==1 (set "BUILD_TYPE=Release") else (set "BUILD_TYPE=RelWithDebInfo")
         cmake ..\src -G "Visual Studio 16 2019" -A "%CMAKE_PLATFORM%" ^
-          -DCMAKE_BUILD_TYPE=Release ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
           -DCOMMIT="%GITHUB_SHA%" ^
           -DVERSION="%GRABBER_VERSION%" ^
@@ -135,8 +136,8 @@ jobs:
       working-directory: build
       shell: cmd
       run: |
-        cmake --build . --config Release --target sites
-        cmake --build . --config Release
+        cmake --build . --target sites
+        cmake --build .
 
     - name: Test
       shell: cmd
@@ -182,6 +183,10 @@ jobs:
           **Head:** ${{ github.sha }}
           **Date:** ${{ steps.date.outputs.date }}
 
+    - name: Package symbol files
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      run: 7z a "scripts\windows-setup\Grabber_%GRABBER_VERSION%_%PLATFORM_NAME%_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
+
     - name: Release
       uses: ncipollo/release-action@v1
       if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
@@ -189,4 +194,4 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         draft: true
-        artifacts: scripts\windows-setup\Grabber_*.exe
+        artifacts: scripts\windows-setup\Grabber_*.exe,scripts\windows-setup\Grabber_*_symbols.zip
