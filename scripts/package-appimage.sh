@@ -9,15 +9,19 @@ mkdir -p $APP_DIR
 
 # Application binary
 mkdir -p $APP_DIR/usr/bin
-cp "build/gui/Grabber" $APP_DIR/usr/bin
+cp "build/gui/Grabber" $APP_DIR/usr/bin/grabber
 
 # Desktop file
 mkdir -p $APP_DIR/usr/share/applications
-cp "src/dist/linux/Grabber.desktop" $APP_DIR/usr/share/applications
+cp "src/dist/linux/grabber.desktop" $APP_DIR/usr/share/applications
+
+# AppData file
+mkdir -p $APP_DIR/usr/share/metainfo
+cp "src/dist/linux/grabber.appdata.xml" $APP_DIR/usr/share/metainfo
 
 # Icon
 mkdir -p $APP_DIR/usr/share/icons/hicolor
-cp "src/gui/resources/images/icon.png" $APP_DIR/usr/share/icons/hicolor/Grabber.png
+cp "src/dist/linux/grabber.png" $APP_DIR/usr/share/icons/hicolor
 
 # Copy other files in $PREFIX/share/Grabber where they can be found
 mkdir -p $APP_DIR/usr/share/Grabber
@@ -27,7 +31,7 @@ touch "$APP_DIR/usr/share/Grabber/settings.ini"
 
 # See https://github.com/probonopd/linuxdeployqt
 export VERSION=$GRABBER_VERSION
-./vendor/linuxdeployqt.AppImage "$APP_DIR/usr/share/applications/Grabber.desktop" -appimage
+./vendor/linuxdeployqt.AppImage "$APP_DIR/usr/share/applications/grabber.desktop" -appimage
 mv "Grabber-$VERSION-x86_64.AppImage" "Grabber_$VERSION-x86_64.AppImage"
 
 # Cleanup
