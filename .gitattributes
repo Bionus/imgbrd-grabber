@@ -1,5 +1,6 @@
-# Ensure shell scripts use Linux file endings
+# Ensure shell scripts and desktop files use Linux file endings
 *.sh eol=lf
+*.desktop text eol=lf
 
 # Ignore vendor files
 src/cmake/* linguist-vendored
