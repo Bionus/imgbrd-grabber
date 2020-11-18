@@ -24,6 +24,7 @@ jobs:
       run: |
         echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
         echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+        echo "BUILD_TYPE=$([ "$IS_RELEASE" = "true" ] && echo "RelWithDebInfo" || echo "Release")" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v1
@@ -124,7 +125,6 @@ jobs:
       shell: cmd
       run: |
         if "${{ matrix.platform }}"=="x86" (set "CMAKE_PLATFORM=Win32") else (set "CMAKE_PLATFORM=x64")
-        if %GRABBER_IS_NIGHTLY%==1 (set "BUILD_TYPE=Release") else (set "BUILD_TYPE=RelWithDebInfo")
         cmake ..\src -G "Visual Studio 16 2019" -A "%CMAKE_PLATFORM%" ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
@@ -136,13 +136,13 @@ jobs:
       working-directory: build
       shell: cmd
       run: |
-        cmake --build . --target sites
-        cmake --build .
+        cmake --build . --config %BUILD_TYPE% --target sites
+        cmake --build . --config %BUILD_TYPE%
 
     - name: Test
       shell: cmd
       working-directory: src
-      run: ..\build\tests\Release\tests.exe
+      run: ..\build\tests\%BUILD_TYPE%\tests.exe
       env:
         QTDIR: ${{ env.Qt5_Dir }}
         QT_PLUGIN_PATH: ${{ env.Qt5_Dir }}\plugins
