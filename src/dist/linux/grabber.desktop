@@ -2,6 +2,6 @@
 Type=Application
 Name=Grabber
 Comment=Very customizable imageboard/booru downloader with powerful filenaming features
-Exec=grabber
+Exec=Grabber
 Icon=grabber
 Categories=Network;

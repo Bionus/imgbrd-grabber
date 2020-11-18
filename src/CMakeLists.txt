@@ -101,11 +101,21 @@ add_subdirectory(crash-reporter)
 
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
-install(DIRECTORY "dist/common" DESTINATION share/Grabber)
-install(DIRECTORY "sites" DESTINATION share/Grabber/sites)
-install(FILES "dist/linux/grabber.desktop" DESTINATION share/applications)
-install(FILES "dist/linux/grabber.png" DESTINATION share/icons/hicolor)
-install(FILES "dist/linux/grabber.appdata.xml" DESTINATION share/metainfo)
+install(DIRECTORY "dist/common/" DESTINATION "share/Grabber")
+install(DIRECTORY "sites" DESTINATION "share/Grabber"
+	PATTERN "node_modules" EXCLUDE
+	PATTERN "CMakeLists.txt" EXCLUDE
+	PATTERN "package*.json" EXCLUDE
+	PATTERN "*.config.js" EXCLUDE
+	PATTERN "tsconfig.json" EXCLUDE
+	PATTERN "tslint.json" EXCLUDE
+	PATTERN "*.ts" EXCLUDE
+	PATTERN "resources" EXCLUDE
+	PATTERN "Sankaku" EXCLUDE
+	PATTERN "Tumblr" EXCLUDE)
+install(FILES "dist/linux/grabber.desktop" DESTINATION "share/applications")
+install(FILES "dist/linux/grabber.png" DESTINATION "share/icons/hicolor")
+install(FILES "dist/linux/grabber.appdata.xml" DESTINATION "share/metainfo")
 
 add_subdirectory(sites)
 add_dependencies(gui sites)
