@@ -149,4 +149,4 @@ deploy:
       repo: Bionus/imgbrd-grabber
       branch: master
       tags: true
-      condition: $PACKAGE == 1
+      condition: $NEVER_TRUE == 1

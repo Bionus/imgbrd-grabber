@@ -11,15 +11,20 @@ jobs:
         platform: [x86, x64]
 
     env:
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5198020/qsqlmysql.dll_Qt_SQL_driver_5.15.1_MSVC2019_64-Bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
-      GRABBER_VERSION: nightly
-      GRABBER_IS_NIGHTLY: 1
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
 
     steps:
+    - name: Set environment
+      shell: bash
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
@@ -156,12 +161,12 @@ jobs:
 
     - name: Get date for Nightly body
       id: date
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
       run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
 
     - name: Nightly
       uses: ncipollo/release-action@v1
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
@@ -176,3 +181,12 @@ jobs:
 
           **Head:** ${{ github.sha }}
           **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: scripts\windows-setup\Grabber_*.exe

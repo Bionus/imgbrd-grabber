@@ -7,11 +7,15 @@ jobs:
     runs-on: ubuntu-16.04
 
     env:
-      GRABBER_VERSION: nightly
-      GRABBER_IS_NIGHTLY: 1
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
       PLATFORM_NAME: x64
 
     steps:
+    - name: Set environment
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
@@ -75,12 +79,12 @@ jobs:
 
     - name: Get date for Nightly body
       id: date
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
       run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
 
     - name: Nightly
       uses: ncipollo/release-action@v1
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: nightly-github
@@ -95,3 +99,12 @@ jobs:
 
           **Head:** ${{ github.sha }}
           **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: Grabber_*.AppImage

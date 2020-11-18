@@ -159,4 +159,4 @@ deploy:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
       APPVEYOR_REPO_TAG: true
-      DEPLOY: 1
+      NEVER_TRUE: 1
