@@ -35,7 +35,7 @@ jobs:
         cd ..
 
     - name: Add bin to path
-      run: echo "::add-path::$GITHUB_WORKSPACE/bin"
+      run: echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
     - name: Print uncrustify version
       run: uncrustify -v
