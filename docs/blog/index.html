@@ -16,7 +16,7 @@ title: Blog
 	{% include post_preview.html %}
 {%- endfor -%}
 
-{% if site.paginate && paginator.total_pages > 1 %}
+{% if site.paginate and paginator.total_pages > 1 %}
 <nav aria-label="Blog pagination" class="text-center">
 	<ul class="pagination">
 		{% if paginator.previous_page %}
