@@ -353,7 +353,8 @@ aside.menu {
 		padding-left: 0;
 
 		li {
-			span {
+			span,
+			&.has-children > a {
 				font-size: 1.4em;
 				border-bottom: 1px dotted darkorange;
 				display: block;
@@ -375,7 +376,8 @@ aside.menu {
 
 /* Documentation text */
 
-.docs .content {
+.docs .content,
+.blog .content {
 	> *:first-child {
 		margin-top: 0 !important;
 	}
