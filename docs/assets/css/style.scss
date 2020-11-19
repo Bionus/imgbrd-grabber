@@ -382,3 +382,16 @@ aside.menu {
 		margin-top: 0 !important;
 	}
 }
+
+.blog .post-meta {
+	margin-bottom: 10px;
+	margin-top: -5px;
+	font-style: italic;
+	font-size: 13px;
+}
+.blog span.post-meta {
+	display: block;
+}
+.blog p.post-meta {
+	margin-bottom: 20px;
+}
