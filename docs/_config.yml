@@ -9,6 +9,8 @@ lang: en_US
 relative_permalinks: false
 baseurl: /imgbrd-grabber
 excerpt_separator: <!--more-->
+paginate: 5
+paginate_path: "/blog/page:num/"
 
 exclude:
 - vendor/
@@ -39,6 +41,7 @@ collections:
 gems:
   - jemoji
   - jekyll-feed
+  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-seo-tag
 
