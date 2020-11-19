@@ -1,5 +1,10 @@
 name: Android
-on: push
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
 
 jobs:
   Android:
