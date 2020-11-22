@@ -179,8 +179,8 @@ jobs:
       if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: nightly-github
-        name: Nightly (Github)
+        tag: nightly
+        name: Nightly
         allowUpdates: true
         draft: false
         prerelease: true
