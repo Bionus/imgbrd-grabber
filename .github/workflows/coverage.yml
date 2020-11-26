@@ -25,7 +25,9 @@ jobs:
         submodules: recursive
 
     - name: Install packages
-      run: sudo apt-get install libpulse-dev lcov
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpulse-dev lcov
 
     - name: Cache Qt
       id: cache-qt
