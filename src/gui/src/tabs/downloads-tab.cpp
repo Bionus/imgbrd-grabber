@@ -777,7 +777,7 @@ void DownloadsTab::getAllImages()
 
 	// We start the simultaneous downloads
 	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
-	m_getAllCurrentlyProcessing.store(count);
+	m_getAllCurrentlyProcessing.storeRelaxed(count);
 	for (int i = 0; i < count; i++) {
 		_getAll();
 	}
@@ -1021,7 +1021,7 @@ void DownloadsTab::getAllSkip()
 
 	m_getAllSkipped += count;
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed);
-	m_getAllCurrentlyProcessing.store(count);
+	m_getAllCurrentlyProcessing.storeRelaxed(count);
 	for (int i = 0; i < count; ++i) {
 		_getAll();
 	}
