@@ -246,8 +246,8 @@ QString MainScreen::getBlacklist()
 void MainScreen::setBlacklist(const QString &text)
 {
 	Blacklist blacklist;
-	for (const QString &tags : text.split("\n", QString::SkipEmptyParts)) {
-		blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+	for (const QString &tags : text.split("\n", Qt::SkipEmptyParts)) {
+		blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 	}
 	m_profile->setBlacklistedTags(blacklist);
 }
@@ -259,5 +259,5 @@ QString MainScreen::getIgnored()
 
 void MainScreen::setIgnored(const QString &ignored)
 {
-	m_profile->setIgnored(ignored.split('\n', QString::SkipEmptyParts));
+	m_profile->setIgnored(ignored.split('\n', Qt::SkipEmptyParts));
 }

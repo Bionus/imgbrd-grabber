@@ -41,7 +41,7 @@ TEST_CASE("Md5DatabaseText")
 
 		QFile f("tests/resources/md5s.txt");
 		f.open(QFile::ReadOnly | QFile::Text);
-		QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+		QStringList lines = QString(f.readAll()).split("\n", Qt::SkipEmptyParts);
 		f.close();
 
 		REQUIRE(lines.count() == 4);
@@ -63,7 +63,7 @@ TEST_CASE("Md5DatabaseText")
 
 		QFile f("tests/resources/md5s.txt");
 		f.open(QFile::ReadOnly | QFile::Text);
-		QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+		QStringList lines = QString(f.readAll()).split("\n", Qt::SkipEmptyParts);
 		f.close();
 
 		REQUIRE(lines.count() == 4);
@@ -101,7 +101,7 @@ TEST_CASE("Md5DatabaseText")
 
 		QFile f("tests/resources/md5s.txt");
 		f.open(QFile::ReadOnly | QFile::Text);
-		QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+		QStringList lines = QString(f.readAll()).split("\n", Qt::SkipEmptyParts);
 		f.close();
 
 		REQUIRE(lines.count() == 1);
@@ -118,7 +118,7 @@ TEST_CASE("Md5DatabaseText")
 
 		QFile f("tests/resources/md5s.txt");
 		f.open(QFile::ReadOnly | QFile::Text);
-		QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+		QStringList lines = QString(f.readAll()).split("\n", Qt::SkipEmptyParts);
 		f.close();
 
 		REQUIRE(lines.count() == 2);

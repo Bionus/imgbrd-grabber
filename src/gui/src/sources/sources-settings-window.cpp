@@ -214,7 +214,7 @@ void SourcesSettingsWindow::deleteSite()
 		QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
+		QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
 		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
 		f.write(stes.join("\r\n").toLatin1());

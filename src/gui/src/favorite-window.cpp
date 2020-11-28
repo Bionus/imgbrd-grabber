@@ -113,7 +113,7 @@ void FavoriteWindow::save()
 		ui->lastViewedDateTimeEdit->dateTime(),
 		monitors,
 		savePath("thumbs/" + m_favorite.getName(true) + ".png"),
-		ui->postFilteringLineEdit->text().split(' ', QString::SkipEmptyParts),
+		ui->postFilteringLineEdit->text().split(' ', Qt::SkipEmptyParts),
 		m_selectedSources
 	);
 

@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 		log(QStringLiteral("Enabling application proxy on host \"%1\" and port %2.").arg(proxyUrl.host()).arg(proxyUrl.port()), Logger::Info);
 	}
 
-	auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts));
+	auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", Qt::SkipEmptyParts));
 	if (parser.isSet(noLoginOption)) {
 		for (auto& site : sites) {
 			site->setAutoLogin(false);
@@ -179,8 +179,8 @@ int main(int argc, char *argv[])
 
 	QString blacklistOverride = parser.value(tagsBlacklistOption);
 	Downloader *downloader = new Downloader(profile, printer,
-		parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-		parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
+		parser.value(tagsOption).split(" ", Qt::SkipEmptyParts),
+		parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts),
 		sites,
 		parser.value(pageOption).toInt(),
 		parser.value(limitOption).toInt(),

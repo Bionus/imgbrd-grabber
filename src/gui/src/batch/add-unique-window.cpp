@@ -104,7 +104,7 @@ void AddUniqueWindow::ok(bool close)
 	m_close = close;
 	Api *api = site->detailsApi();
 
-	const QStringList ids = ui->lineId->toPlainText().split('\n', QString::SkipEmptyParts);
+	const QStringList ids = ui->lineId->toPlainText().split('\n', Qt::SkipEmptyParts);
 	for (const QString &id : ids) {
 		UniqueQuery q;
 		q.site = site;
@@ -113,7 +113,7 @@ void AddUniqueWindow::ok(bool close)
 		m_queue.enqueue(q);
 	}
 
-	const QStringList md5s = ui->lineMd5->toPlainText().split('\n', QString::SkipEmptyParts);
+	const QStringList md5s = ui->lineMd5->toPlainText().split('\n', Qt::SkipEmptyParts);
 	for (const QString &md5 : md5s) {
 		UniqueQuery q;
 		q.site = site;

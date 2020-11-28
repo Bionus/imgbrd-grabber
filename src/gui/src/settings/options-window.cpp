@@ -898,15 +898,15 @@ void OptionsWindow::save()
 
 	// Blacklist
 	Blacklist blacklist;
-	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts)) {
-		blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", Qt::SkipEmptyParts)) {
+		blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 	}
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
 	settings->setValue("ignoredtags", ui->textRemovedTags->toPlainText());
-	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', QString::SkipEmptyParts));
+	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', Qt::SkipEmptyParts));
 
 	// Monitoring
 	settings->beginGroup("Monitoring");

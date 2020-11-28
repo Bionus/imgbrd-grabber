@@ -158,7 +158,7 @@ void ZoomWindow::go()
 	ui->labelPools->hide();
 	bool whitelisted = false;
 	if (!m_settings->value("whitelistedtags").toString().isEmpty()) {
-		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts);
+		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ", Qt::SkipEmptyParts);
 		for (const Tag &t : m_image->tags()) {
 			if (whitelist.contains(t.text())) {
 				whitelisted = true;
