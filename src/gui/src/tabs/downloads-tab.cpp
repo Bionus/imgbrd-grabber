@@ -188,11 +188,11 @@ void DownloadsTab::batchClearSel()
 }
 void DownloadsTab::batchClearSelGroups()
 {
-	batchRemoveGroups(selectedRows(ui->tableBatchGroups).toList());
+	batchRemoveGroups(selectedRows(ui->tableBatchGroups).values());
 }
 void DownloadsTab::batchClearSelUniques()
 {
-	batchRemoveUniques(selectedRows(ui->tableBatchUniques).toList());
+	batchRemoveUniques(selectedRows(ui->tableBatchUniques).values());
 }
 void DownloadsTab::batchRemoveGroups(QList<int> rows)
 {
@@ -227,7 +227,7 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 
 void DownloadsTab::batchMove(int diff)
 {
-	QList<int> rows = selectedRows(ui->tableBatchGroups).toList();
+	QList<int> rows = selectedRows(ui->tableBatchGroups).values();
 	if (rows.isEmpty()) {
 		return;
 	}
@@ -1122,8 +1122,8 @@ void DownloadsTab::getAllFinished()
 
 	// Remove after download and retries are finished
 	if (m_progressDialog->endRemove()) {
-		batchRemoveGroups(m_batchDownloading.toList());
-		batchRemoveUniques(m_batchUniqueDownloading.toList());
+		batchRemoveGroups(m_batchDownloading.values());
+		batchRemoveUniques(m_batchUniqueDownloading.values());
 	}
 
 	// End of batch download
