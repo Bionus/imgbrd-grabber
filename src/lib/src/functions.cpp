@@ -484,9 +484,9 @@ void shutDown(int timeout)
 {
 	#if !defined(QT_NO_PROCESS)
 		#if defined(Q_OS_WIN)
-			QProcess::startDetached("shutdown -s -f -t " + QString::number(timeout));
+			QProcess::startDetached(QString("shutdown"), QStringList({"-s", "-f", "-t", QString::number(timeout)}));
 		#else
-			QProcess::startDetached("shutdown " + QString::number(timeout));
+			QProcess::startDetached(QString("shutdown"), QStringList({QString::number(timeout)}));
 		#endif
 	#endif
 }
@@ -498,9 +498,9 @@ void openTray()
 {
 	#if !defined(QT_NO_PROCESS)
 		#if defined(Q_OS_WIN)
-			QProcess::startDetached(QStringLiteral("CDR.exe open"));
+			QProcess::startDetached(QString("CDR.exe"), QStringList({"open"}));
 		#else
-			QProcess::startDetached(QStringLiteral("eject cdrom"));
+			QProcess::startDetached(QString("eject"), QStringList({"cdrom"}));
 		#endif
 	#endif
 }
