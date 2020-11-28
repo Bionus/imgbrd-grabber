@@ -15,6 +15,7 @@
 #include <QMouseEvent>
 #include <QMovie>
 #include <QPainter>
+#include <QScreen>
 #include <QScrollBar>
 #include <QShortcut>
 #include <QUrl>
@@ -432,7 +433,7 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 		updateWindowTitle();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().width(), QGuiApplication::primaryScreen()->geometry().height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -730,7 +731,7 @@ void ZoomWindow::draw()
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().width(), QGuiApplication::primaryScreen()->geometry().height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -993,7 +994,7 @@ void ZoomWindow::fullScreen()
 		if (!m_isAnimated.isEmpty()) {
 			m_fullScreen->setMovie(m_displayMovie);
 		} else {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().width(), QGuiApplication::primaryScreen()->geometry().height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 		m_fullScreen->setWindowFlags(Qt::Window);
 		m_fullScreen->showFullScreen();
