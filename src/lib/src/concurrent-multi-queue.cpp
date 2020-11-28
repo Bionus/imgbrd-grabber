@@ -26,7 +26,7 @@ void ConcurrentMultiQueue::append(int queue, QVariant item)
 
 	m_queues[queue].append(item);
 
-	if (m_activeWorkers.load() < m_globalConcurrency) {
+	if (m_activeWorkers.loadRelaxed() < m_globalConcurrency) {
 		m_activeWorkers.fetchAndAddRelaxed(1);
 		next();
 	}
