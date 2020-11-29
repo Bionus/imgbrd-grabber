@@ -2,7 +2,7 @@
 
 <h1 align="center">Grabber</h1>
 
-[![Gitter chat](https://badges.gitter.im/imgbrd-grabber/gitter.png)](https://gitter.im/imgbrd-grabber/Lobby)
+[![Discord chat](https://img.shields.io/discord/780466420877361156?logo=discord&logoColor=white)](https://discord.gg/pWnY5eW3rz)
 [![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/latest/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases)
