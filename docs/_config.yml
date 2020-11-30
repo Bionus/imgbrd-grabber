@@ -4,6 +4,7 @@ description: Very customizable imageboard/booru browser and mass downloader, wit
 logo: assets/img/icon.png
 show_download: true
 google_analytics: UA-22768717-4
+discord_url: https://discord.gg/pWnY5eW3rz
 theme:
 lang: en_US
 relative_permalinks: false

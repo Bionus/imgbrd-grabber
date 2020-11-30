@@ -7,6 +7,9 @@
 				<li><a href="{{ '/docs/' | relative_url }}">Documentation</a></li>
 				<li><a href="{{ site.github.repository_url }}/blob/master/LICENSE">License</a></li>
 				<li><a href="{{ site.github.repository_url }}/issues">Issue tracker</a></li>
+				{% if site.discord_url %}
+					<li><a href="{{ site.discord_url }}">Discord</a></li>
+				{% endif %}
 			</ul>
 
 			{{ header }}
