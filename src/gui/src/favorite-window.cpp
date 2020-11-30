@@ -72,6 +72,14 @@ void FavoriteWindow::on_openButton_clicked()
 	}
 }
 
+void FavoriteWindow::choosePathOverride()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->linePathOverride->text());
+	if (!folder.isEmpty()) {
+		ui->linePathOverride->setText(folder);
+	}
+}
+
 void FavoriteWindow::openSourcesWindow()
 {
 	auto w = new SourcesWindow(m_profile, m_selectedSources, this);

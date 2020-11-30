@@ -27,6 +27,7 @@ class FavoriteWindow : public QDialog
 		void save();
 		void on_openButton_clicked();
 		void on_buttonRemove_clicked();
+		void choosePathOverride();
 		void openSourcesWindow();
 		void setSources(const QList<Site*> &sources);
 
