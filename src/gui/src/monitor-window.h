@@ -26,6 +26,7 @@ class MonitorWindow : public QDialog
 	public slots:
 		void save();
 		void remove();
+		void chooseDownloadPathOverride();
 		void openSourcesWindow();
 		void setSources(const QList<Site*> &sources);
 

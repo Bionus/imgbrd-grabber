@@ -1,4 +1,5 @@
 #include "monitor-window.h"
+#include <QFileDialog>
 #include <QtMath>
 #include <ui_monitor-window.h>
 #include "models/monitor-manager.h"
@@ -45,6 +46,14 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 MonitorWindow::~MonitorWindow()
 {
 	delete ui;
+}
+
+void MonitorWindow::chooseDownloadPathOverride()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineDownloadPathOverride->text());
+	if (!folder.isEmpty()) {
+		ui->lineDownloadPathOverride->setText(folder);
+	}
 }
 
 void MonitorWindow::remove()
