@@ -362,16 +362,12 @@ void ZoomWindow::openInNewTab()
 }
 void ZoomWindow::setfavorite()
 {
-	if (!m_loadedImage) {
-		return;
-	}
-
 	Favorite fav(m_link);
 	const int pos = m_favorites.indexOf(fav);
 	if (pos >= 0) {
-		m_favorites[pos].setImage(m_displayImage);
+		m_favorites[pos].setImage(m_loadedImage ? m_displayImage : m_image->previewImage());
 	} else {
-		fav.setImage(m_displayImage);
+		fav.setImage(m_loadedImage ? m_displayImage : m_image->previewImage());
 		m_favorites.append(fav);
 	}
 
