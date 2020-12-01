@@ -141,6 +141,7 @@ export const source: ISource = {
                         const search = parseSearch(query.search.split(" "));
                         const pageUrl = Grabber.pageUrl(query.page, previous, 1, "", "&since_id={max}", "&max_id={min-1}");
                         const params = [
+                            "count=" + opts.limit,
                             "include_rts=" + (search.retweets ? "true" : "false"),
                             "exclude_replies=" + (!search.replies ? "true" : "false"),
                             "tweet_mode=extended",
