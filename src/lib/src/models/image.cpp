@@ -1112,3 +1112,9 @@ void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5
 	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
 	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
 }
+
+bool Image::isValid() const
+{
+	return !url(Image::Size::Thumbnail).isEmpty()
+		|| !m_name.isEmpty();
+}

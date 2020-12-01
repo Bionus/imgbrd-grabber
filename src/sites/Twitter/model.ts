@@ -33,12 +33,12 @@ function parseSearch(search: string[]): ISearch {
     };
 }
 
-function parseTweetMedia(sc: any, original: any, media: any): any {
+function parseTweetMedia(sc: any, original: any, media: any): IImage {
     const d: IImage = {} as any;
     const sizes = media["sizes"];
 
     // Meta-data
-    d.id = media["id_str"];
+    d.id = original["id_str"];
     d.author = sc["user"]["screen_name"];
     d.author_id = sc["user"]["id_str"];
     d.created_at = sc["created_at"];
@@ -85,23 +85,23 @@ function parseTweetMedia(sc: any, original: any, media: any): any {
     return d;
 }
 
-function parseTweet(sc: any, gallery: boolean): IImage[] | IImage | boolean {
+function parseTweet(sc: any, gallery: boolean): IImage {
     const original = sc;
     if ("retweeted_status" in sc) {
         sc = sc["retweeted_status"];
     }
     if (!("extended_entities" in sc)) {
-        return false;
+        return { id: original["id_str"] };
     }
 
     const entities = sc["extended_entities"];
     if (!("media" in entities)) {
-        return false;
+        return { id: original["id_str"] };
     }
 
     const medias = entities["media"];
     if (!medias || medias.length === 0) {
-        return false;
+        return { id: original["id_str"] };
     }
 
     if (medias.length > 1) {

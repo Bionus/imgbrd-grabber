@@ -870,6 +870,11 @@ QList<QSharedPointer<Page>> SearchTab::getPagesToDownload()
 
 void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge)
 {
+	// Skip invalid images (placeholders and similar)
+	if (!img->isValid()) {
+		return;
+	}
+
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey)) {
