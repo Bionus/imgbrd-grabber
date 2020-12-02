@@ -67,7 +67,7 @@ jobs:
         echo ::set-output name=qt_arch::%QT_ARCH%
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.9.0
+      uses: jurplel/install-qt-action@v2
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.15.1

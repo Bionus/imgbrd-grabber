@@ -38,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/android.yml') }}
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.9.0
+      uses: jurplel/install-qt-action@v2
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: 5.15.1
