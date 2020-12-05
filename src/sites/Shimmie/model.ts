@@ -4,6 +4,23 @@ function isNum(char: string): boolean {
     return char >= "0" && char <= "9";
 }
 
+// See Shimmie2 Tag::caret function
+function escapeWithCaret(input: string): string {
+    const toCaret: Record<string, string> = {
+        "^": "^",
+        "/": "s",
+        "\\": "b",
+        "?": "q",
+        "&": "a",
+        ".": "d",
+    };
+    for (const from in toCaret) {
+        const to = toCaret[from];
+        input = input.replace(new RegExp("\\" + from, "g"), '^' + to);
+    }
+    return input;
+}
+
 function transformQuery(query: string): string {
     let widthIndex: number | undefined;
     let heightIndex: number | undefined;
@@ -39,7 +56,7 @@ function transformTag(query: string): string {
     // Ignore basic tag searches
     const parts = query.split(":");
     if (parts.length <= 1) {
-        return query;
+        return escapeWithCaret(query);
     }
 
     // Some meta-tokens have different names than usual
