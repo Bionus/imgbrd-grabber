@@ -118,7 +118,9 @@ install(DIRECTORY "sites" DESTINATION "share/Grabber"
 	PATTERN "Sankaku" EXCLUDE
 	PATTERN "Tumblr" EXCLUDE)
 install(FILES "dist/linux/grabber.desktop" DESTINATION "share/applications")
-install(FILES "dist/linux/grabber.png" DESTINATION "share/icons/hicolor")
+install(FILES "dist/linux/hicolor/48x48/grabber.png" DESTINATION "share/icons/hicolor/48x48/apps")
+install(FILES "dist/linux/hicolor/96x96/grabber.png" DESTINATION "share/icons/hicolor/96x96/apps")
+install(FILES "dist/linux/hicolor/128x128/grabber.png" DESTINATION "share/icons/hicolor/128x128/apps")
 install(FILES "dist/linux/grabber.appdata.xml" DESTINATION "share/metainfo")
 
 add_subdirectory(sites)
