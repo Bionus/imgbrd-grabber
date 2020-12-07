@@ -15,7 +15,6 @@ ApplicationWindow {
     height: 700
     title: "Grabber"
 
-    property string site: "danbooru.donmai.us"
     property string currentPage: "search"
 
     Material.theme: gSettings.appearance_materialTheme.value
@@ -87,7 +86,7 @@ ApplicationWindow {
                 id: searchScreen
                 visible: currentPage == "search"
                 anchors.fill: parent
-                site: window.site
+                site: gSettings.activeSource.value
                 query: backend.query
                 results: backend.results
 
@@ -139,9 +138,9 @@ ApplicationWindow {
             id: sourcesScreen
             visible: false
             sources: backend.sites
-            currentSource: site
+            currentSource: gSettings.activeSource.value
 
-            onAccepted: { site = source; mainStackView.pop() }
+            onAccepted: { gSettings.activeSource.setValue(source); mainStackView.pop() }
             onRejected: mainStackView.pop()
             onAddSource: mainStackView.push(addSourceScreen)
             onEditSource: mainStackView.push(editSourceScreen, { site: source })

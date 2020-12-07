@@ -117,9 +117,15 @@ Item {
         }
     }
 
+    // QML-only settings
     property Setting zoom_buttonsAtBottom: Setting {
         key: "Zoom/buttonsAtBottom"
         def: false
+        obj: root.obj
+    }
+    property Setting activeSource: Setting {
+        key: "activeSource"
+        def: "danbooru.donmai.us"
         obj: root.obj
     }
 
