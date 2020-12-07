@@ -988,7 +988,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
-	const QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList remove = settings->value("ignoredtags").toString().split(' ', Qt::SkipEmptyParts);
 
 	QMap<QString, Token> tokens;
 

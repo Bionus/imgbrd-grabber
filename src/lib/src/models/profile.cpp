@@ -73,7 +73,7 @@ Profile::Profile(QString path)
 			QString favs = fileFavorites.readAll();
 			fileFavorites.close();
 
-			QStringList words = favs.split("\n", QString::SkipEmptyParts);
+			QStringList words = favs.split("\n", Qt::SkipEmptyParts);
 			m_favorites.reserve(words.count());
 			for (const QString &word : words) {
 				Favorite fav = Favorite::fromString(m_path, word);
@@ -91,7 +91,7 @@ Profile::Profile(QString path)
 		QString vil = fileKfl.readAll();
 		fileKfl.close();
 
-		m_keptForLater = vil.split("\n", QString::SkipEmptyParts);
+		m_keptForLater = vil.split("\n", Qt::SkipEmptyParts);
 	}
 
 	// Load ignored
@@ -100,7 +100,7 @@ Profile::Profile(QString path)
 		QString ign = fileIgnored.readAll();
 		fileIgnored.close();
 
-		m_ignored = ign.split("\n", QString::SkipEmptyParts);
+		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
 
 	// Make a backup of MD5s in case the multi-location change broke everything
@@ -118,7 +118,7 @@ Profile::Profile(QString path)
 	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
-			m_autoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
 		}
 
 		fileAutoComplete.close();
@@ -129,7 +129,7 @@ Profile::Profile(QString path)
 	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileCustomAutoComplete.readLine()).isEmpty()) {
-			m_customAutoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_customAutoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
 		}
 
 		fileCustomAutoComplete.close();
@@ -138,7 +138,7 @@ Profile::Profile(QString path)
 	m_commands = new Commands(this);
 
 	// Blacklisted tags
-	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
 	for (const QString &bl : blacklist) {
 		m_blacklist.add(bl);
 	}
@@ -148,7 +148,7 @@ Profile::Profile(QString path)
 		while (!(line = fileBlacklist.readLine()).isEmpty()) {
 			line = line.trimmed();
 			if (!line.startsWith('#')) {
-				m_blacklist.add(line.split(" ", QString::SkipEmptyParts));
+				m_blacklist.add(line.split(" ", Qt::SkipEmptyParts));
 			}
 		}
 
@@ -428,7 +428,7 @@ void Profile::addSite(Site *site)
 	QString sites = f.readAll();
 	f.close();
 	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
+	QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
 	stes.append(site->url());
 	stes.removeDuplicates();
 	stes.sort();

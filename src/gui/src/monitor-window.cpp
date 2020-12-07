@@ -66,8 +66,8 @@ void MonitorWindow::save()
 {
 	int index = m_monitorManager->remove(m_monitor);
 
-	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', QString::SkipEmptyParts);
-	QStringList postFilters = ui->linePostFilters->text().split(' ', QString::SkipEmptyParts);
+	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', Qt::SkipEmptyParts);
+	QStringList postFilters = ui->linePostFilters->text().split(' ', Qt::SkipEmptyParts);
 	int interval = ui->spinInterval->value() * 60;
 	int delay = ui->spinDelay->value() * 60;
 	bool notify = ui->checkNotificationEnabled->isChecked();

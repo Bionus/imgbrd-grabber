@@ -15,6 +15,7 @@
 #include <QMouseEvent>
 #include <QMovie>
 #include <QPainter>
+#include <QScreen>
 #include <QScrollBar>
 #include <QShortcut>
 #include <QUrl>
@@ -158,7 +159,7 @@ void ZoomWindow::go()
 	ui->labelPools->hide();
 	bool whitelisted = false;
 	if (!m_settings->value("whitelistedtags").toString().isEmpty()) {
-		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts);
+		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ", Qt::SkipEmptyParts);
 		for (const Tag &t : m_image->tags()) {
 			if (whitelist.contains(t.text())) {
 				whitelisted = true;
@@ -428,7 +429,7 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 		updateWindowTitle();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -726,7 +727,7 @@ void ZoomWindow::draw()
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -989,7 +990,7 @@ void ZoomWindow::fullScreen()
 		if (!m_isAnimated.isEmpty()) {
 			m_fullScreen->setMovie(m_displayMovie);
 		} else {
-			m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 		m_fullScreen->setWindowFlags(Qt::Window);
 		m_fullScreen->showFullScreen();

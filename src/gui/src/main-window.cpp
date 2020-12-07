@@ -373,7 +373,7 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 
 	// Other positional arguments are treated as tags
 	tags.append(args);
-	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
+	tags.append(params.value("tags").split(' ', Qt::SkipEmptyParts));
 	if (!tags.isEmpty() || m_settings->value("start", "restore").toString() == "firstpage") {
 		loadTag(tags.join(' '), true, false, false);
 	}

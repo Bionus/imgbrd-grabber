@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 
-		auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts));
+		auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", Qt::SkipEmptyParts));
 		if (sites.isEmpty()) {
 			QTextStream(stderr) << "No valid source found";
 			exit(1);
@@ -214,8 +214,8 @@ int main(int argc, char *argv[])
 
 		QString blacklistOverride = parser.value(tagsBlacklistOption);
 		Downloader *downloader = new Downloader(profile, printer,
-			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-			parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
+			parser.value(tagsOption).split(" ", Qt::SkipEmptyParts),
+			parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts),
 			sites,
 			parser.value(pageOption).toInt(),
 			parser.value(limitOption).toInt(),

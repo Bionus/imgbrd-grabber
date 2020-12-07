@@ -99,14 +99,14 @@ void TagTab::load()
 		}
 	}
 
-	const QStringList tags = search.split(" ", QString::SkipEmptyParts);
+	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
 	loadTags(tags);
 }
 
 void TagTab::write(QJsonObject &json) const
 {
 	json["type"] = QStringLiteral("tag");
-	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', Qt::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
@@ -244,7 +244,7 @@ void TagTab::getAll()
 }
 void TagTab::monitor()
 {
-	const QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
+	const QStringList tags = m_search->toPlainText().trimmed().split(" ", Qt::SkipEmptyParts);
 	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
 	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, tags, postFilter(), notify);
 	m_profile->monitorManager()->add(monitor);

@@ -122,8 +122,8 @@ void BlacklistFix1::getAll(Page *p)
 		page->load();
 	} else {
 		Blacklist blacklist;
-		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts)) {
-			blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+		for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", Qt::SkipEmptyParts)) {
+			blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 		}
 
 		BlacklistFix2 *bf2 = new BlacklistFix2(m_getAll.values(), blacklist);

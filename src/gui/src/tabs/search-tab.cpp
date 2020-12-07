@@ -546,7 +546,7 @@ void SearchTab::finishedLoadingPreview()
 
 	// Download whitelist images on thumbnail view
 	Blacklist whitelistedTags;
-	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts)) {
+	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" ", Qt::SkipEmptyParts)) {
 		whitelistedTags.add(tag);
 	}
 	QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
@@ -779,8 +779,8 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool()) {
-		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
-		uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", Qt::SkipEmptyParts);
+		uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", Qt::SkipEmptyParts));
 		for (int i = 0; i < page->search().size(); i++) {
 			if (uncommon.contains(page->search().at(i))) {
 				uncommon.removeAll(page->search().at(i));
@@ -1198,7 +1198,7 @@ void SearchTab::loadTags(SearchQuery query)
 
 	// Append "additional tags" setting
 	if (query.gallery.isNull()) {
-		query.tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+		query.tags.append(m_settings->value("add").toString().trimmed().split(" ", Qt::SkipEmptyParts));
 	}
 
 	// Save previous pages
@@ -1459,7 +1459,7 @@ QStringList SearchTab::postFilter(bool includeGlobal) const
 			ret += " " + globalPostFilter;
 		}
 	}
-	return ret.split(' ', QString::SkipEmptyParts);
+	return ret.split(' ', Qt::SkipEmptyParts);
 }
 
 const QString &SearchTab::screenName() const

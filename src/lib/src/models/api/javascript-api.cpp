@@ -147,7 +147,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			if (tag.property("related").isArray()) {
 				related = jsToStringList(tag.property("related"));
 			} else {
-				related = tag.property("related").toString().split(' ', QString::SkipEmptyParts);
+				related = tag.property("related").toString().split(' ', Qt::SkipEmptyParts);
 			}
 		}
 

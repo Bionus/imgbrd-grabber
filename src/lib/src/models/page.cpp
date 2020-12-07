@@ -25,7 +25,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
 			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-		QStringList tags = text.split(" ", QString::SkipEmptyParts);
+		QStringList tags = text.split(" ", Qt::SkipEmptyParts);
 
 		// Get the list of all enabled modifiers
 		QStringList modifiers = QStringList();
