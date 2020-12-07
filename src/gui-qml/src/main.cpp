@@ -14,6 +14,7 @@
 #include "models/qml-site.h"
 #include "settings.h"
 #include "share/share-utils.h"
+#include "statusbar.h"
 #include "syntax-highlighter-helper.h"
 
 
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
+	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<ShareUtils>("Grabber", 1, 0, "ShareUtils");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");

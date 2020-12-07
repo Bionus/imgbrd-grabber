@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls.Material 2.12
+import StatusBar 0.1 as SB
 
 import "components"
 import "components/settings"
@@ -20,6 +21,12 @@ ApplicationWindow {
     Material.theme: gSettings.appearance_materialTheme.value
     Material.primary: gSettings.appearance_materialPrimary.value
     Material.accent: gSettings.appearance_materialAccent.value
+
+    SB.StatusBar {
+        theme: gSettings.appearance_materialTheme.value
+        color: Material.color(gSettings.appearance_materialPrimary.value, Material.Shade700)
+        navigationColor: window.color
+    }
 
     Settings {
         id: gSettings

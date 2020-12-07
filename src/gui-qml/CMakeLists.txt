@@ -18,6 +18,16 @@ endif()
 file(GLOB_RECURSE SOURCES "src/*" "resources/*.qrc")
 include_directories("src/" "../lib/src/" "..")
 
+# StatusBar
+set(STATUSBAR_ROOT "${CMAKE_CURRENT_LIST_DIR}/vendor/qtstatusbar/src")
+set(STATUSBAR_SOURCES "${STATUSBAR_ROOT}/statusbar.h" "${STATUSBAR_ROOT}/statusbar.cpp")
+include_directories(${STATUSBAR_ROOT})
+if (ANDROID)
+	set(STATUSBAR_SOURCES ${STATUSBAR_SOURCES} "${STATUSBAR_ROOT}/statusbar_android.cpp")
+else()
+	set(STATUSBAR_SOURCES ${STATUSBAR_SOURCES} "${STATUSBAR_ROOT}/statusbar_dummy.cpp")
+endif()
+
 # Exclude platform-specific files from compilation
 include(ListFilterRegex)
 if(NOT ANDROID)
@@ -28,9 +38,9 @@ if(NOT IOS)
 endif()
 
 if(ANDROID)
-	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${UTILS_SOURCES})
+	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
 else()
-    add_executable(${PROJECT_NAME} ${SOURCES} ${UTILS_SOURCES})
+    add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
