@@ -76,11 +76,4 @@ Page {
             }
         }
     }
-
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-            root.rejected()
-            event.accepted = true
-        }
-    }
 }

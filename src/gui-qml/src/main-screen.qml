@@ -133,25 +133,6 @@ ApplicationWindow {
                     text: qsTr("Don't ask again")
                 }
             }
-
-            property double backPressed: 0
-            Keys.onReleased: {
-                if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-                    var now = new Date().getTime()
-                    if (mainStackView.depth > 1) {
-                        mainStackView.pop()
-                    } else if (currentPage !== "search") {
-                        currentPage = "search";
-                    } else if (gSettings.mobile_confirmExit.value) {
-                        confirmExitDialog.open()
-                    } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
-                        backPressed = now
-                    } else {
-                        Qt.quit()
-                    }
-                    event.accepted = true
-                }
-            }
         }
 
         SourcesScreen {
@@ -187,6 +168,25 @@ ApplicationWindow {
             visible: false
 
             onClosed: mainStackView.pop()
+        }
+
+        property double backPressed: 0
+        Keys.onReleased: {
+            if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
+                var now = new Date().getTime()
+                if (mainStackView.depth > 1) {
+                    mainStackView.pop()
+                } else if (currentPage !== "search") {
+                    currentPage = "search";
+                } else if (gSettings.mobile_confirmExit.value) {
+                    confirmExitDialog.open()
+                } else if (gSettings.mobile_doubleBackExit.value && now - backPressed > 200) {
+                    backPressed = now
+                } else {
+                    Qt.quit()
+                }
+                event.accepted = true
+            }
         }
     }
 }
