@@ -117,6 +117,12 @@ Item {
         }
     }
 
+    property Setting zoom_buttonsAtBottom: Setting {
+        key: "Zoom/buttonsAtBottom"
+        def: false
+        obj: root.obj
+    }
+
     // API order
     property Setting source1: Setting {
         key: "source_1"

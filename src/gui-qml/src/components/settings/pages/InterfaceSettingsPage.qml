@@ -74,6 +74,17 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("Image viewer")
+    }
+    CheckBoxSetting {
+        name: qsTr("Buttons at the bottom")
+        subtitle: qsTr("Move the action buttons to the bottom of the screen.")
+        setting: gSettings.zoom_buttonsAtBottom
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("Confirm exit")
     }
     CheckBoxSetting {

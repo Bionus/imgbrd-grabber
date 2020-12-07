@@ -20,22 +20,10 @@ Page {
         id: shareUtils
     }
 
-    header: ToolBar {
+    Component {
+        id: actionButtons
+
         RowLayout {
-            anchors.fill: parent
-
-            ToolButton {
-                icon.source: "/images/icons/back.png"
-                onClicked: root.closed()
-            }
-
-            Label {
-                text: qsTr("Image") // TODO: add more info about the image
-                elide: Label.ElideRight
-                verticalAlignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-            }
-
             ToolButton {
                 icon.source: showTags ? "/images/icons/image.png" : "/images/icons/tags.png"
                 onClicked: showTags = !showTags
@@ -59,6 +47,43 @@ Page {
         }
     }
 
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+
+            ToolButton {
+                icon.source: "/images/icons/back.png"
+                onClicked: root.closed()
+            }
+
+            Label {
+                text: qsTr("Image") // TODO: add more info about the image
+                elide: Label.ElideRight
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+
+            Loader {
+                active: !gSettings.zoom_buttonsAtBottom.value
+                sourceComponent: actionButtons
+            }
+        }
+    }
+
+    footer: Loader {
+        active: gSettings.zoom_buttonsAtBottom.value
+        sourceComponent: Component {
+            RowLayout {
+                Label {
+                    Layout.fillWidth: true
+                }
+
+                Loader {
+                    sourceComponent: actionButtons
+                }
+            }
+        }
+    }
 
     SwipeView {
         id: swipeView
