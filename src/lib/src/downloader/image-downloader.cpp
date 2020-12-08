@@ -392,14 +392,14 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 			continue;
 		}
 
-		if (!moved) {
-			const QString dir = path.section(QDir::separator(), 0, -2);
-			if (!QDir(dir).exists() && !QDir().mkpath(dir)) {
-				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
-				result.append({ path, size, Image::SaveResult::Error });
-				continue;
-			}
+		const QString dir = path.section(QDir::separator(), 0, -2);
+		if (!QDir(dir).exists() && !QDir().mkpath(dir)) {
+			log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+			result.append({ path, size, Image::SaveResult::Error });
+			continue;
+		}
 
+		if (!moved) {
 			tmp.rename(path);
 			moved = true;
 		} else if (multipleFiles == "link") {
