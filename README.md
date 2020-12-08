@@ -132,7 +132,6 @@ See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.h
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.
