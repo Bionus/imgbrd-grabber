@@ -7,5 +7,5 @@ Dock::Dock(QWidget *parent)
 
 void Dock::tabChanged(SearchTab *tab)
 {
-	Q_UNUSED(tab);
+	m_currentTab = tab;
 }

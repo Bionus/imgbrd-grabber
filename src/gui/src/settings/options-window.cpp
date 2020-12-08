@@ -68,7 +68,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	const QStringList wl { "never", "image", "page" };
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings->value("whitelist_download", "image").toString()));
 	const QStringList starts { "none", "loadfirst", "restore" };
-	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "none").toString()));
+	ui->comboStart->setCurrentIndex(starts.indexOf(settings->value("start", "restore").toString()));
 	ui->spinHideFavorites->setValue(settings->value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings->value("autodownload", false).toBool());
 	ui->checkHideBlacklisted->setChecked(settings->value("hideblacklisted", false).toBool());
@@ -267,6 +267,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
 	ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	ui->checkImageScaleUp->setChecked(settings->value("Zoom/scaleUp", false).toBool());
+	ui->checkImageUseVideoPlayer->setChecked(settings->value("Zoom/useVideoPlayer", true).toBool());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	const QStringList positionsV { "top", "center", "bottom" };
@@ -897,15 +898,15 @@ void OptionsWindow::save()
 
 	// Blacklist
 	Blacklist blacklist;
-	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", QString::SkipEmptyParts)) {
-		blacklist.add(tags.trimmed().split(' ', QString::SkipEmptyParts));
+	for (const QString &tags : ui->textBlacklist->toPlainText().split("\n", Qt::SkipEmptyParts)) {
+		blacklist.add(tags.trimmed().split(' ', Qt::SkipEmptyParts));
 	}
 	m_profile->setBlacklistedTags(blacklist);
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
 	settings->setValue("ignoredtags", ui->textRemovedTags->toPlainText());
-	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', QString::SkipEmptyParts));
+	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', Qt::SkipEmptyParts));
 
 	// Monitoring
 	settings->beginGroup("Monitoring");
@@ -979,7 +980,8 @@ void OptionsWindow::save()
 		settings->setValue("md5Duplicates", md5Duplicates.at(ui->comboMd5Duplicates->currentIndex()));
 		settings->setValue("md5DuplicatesSameDir", md5Duplicates.at(ui->comboMd5DuplicatesSameDir->currentIndex()));
 		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
-		const QStringList multipleFiles { "copy", "link" };
+		QStringList multipleFiles { "copy" };
+		multipleFiles.append(linkKeys);
 		settings->setValue("multiple_files", multipleFiles.at(ui->comboMultipleFiles->currentIndex()));
 
 		settings->setValue("filename", ui->lineFilename->text());
@@ -1038,6 +1040,7 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
 	settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	settings->setValue("Zoom/scaleUp", ui->checkImageScaleUp->isChecked());
+	settings->setValue("Zoom/useVideoPlayer", ui->checkImageUseVideoPlayer->isChecked());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	const QStringList positionsV { "top", "center", "bottom" };

@@ -25,7 +25,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
 			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-		QStringList tags = text.split(" ", QString::SkipEmptyParts);
+		QStringList tags = text.split(" ", Qt::SkipEmptyParts);
 
 		// Get the list of all enabled modifiers
 		QStringList modifiers = QStringList();
@@ -39,7 +39,9 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery 
 
 		// Remove modifiers from tags
 		for (const QString &mod : modifiers) {
-			tags.removeAll(mod);
+			if (tags.removeAll(mod) > 0) {
+				log(QStringLiteral("[%1] Unsupported modifier removed from search: %2").arg(m_site->url(), mod), Logger::Warning);
+			}
 		}
 		m_search = tags;
 

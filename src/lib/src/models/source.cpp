@@ -17,9 +17,8 @@
 #include "logger.h"
 #include "models/api/api.h"
 #include "models/api/javascript-api.h"
-#include "models/api/javascript-console-helper.h"
-#include "models/api/javascript-grabber-helper.h"
 #include "models/site.h"
+#include "js-helpers.h"
 
 
 QString getUpdaterBaseUrl()
@@ -36,22 +35,7 @@ QJSEngine *Source::jsEngine()
 	static QJSEngine *engine = nullptr;
 
 	if (engine == nullptr) {
-		engine = new QJSEngine();
-		engine->globalObject().setProperty("Grabber", engine->newQObject(new JavascriptGrabberHelper(*engine)));
-		engine->globalObject().setProperty("console", engine->newQObject(new JavascriptConsoleHelper("[JavaScript] ", engine)));
-
-		// JavaScript helper file
-		QFile jsHelper(m_dir + "/../helper.js");
-		if (jsHelper.open(QFile::ReadOnly | QFile::Text)) {
-			QJSValue helperResult = engine->evaluate(jsHelper.readAll(), jsHelper.fileName());
-			jsHelper.close();
-
-			if (helperResult.isError()) {
-				log(QStringLiteral("Uncaught exception at line %1: %2").arg(helperResult.property("lineNumber").toInt()).arg(helperResult.toString()), Logger::Error);
-			}
-		} else {
-			log(QStringLiteral("JavaScript helper file could not be opened"), Logger::Error);
-		}
+		engine = buildJsEngine(m_dir + "/../helper.js");
 	}
 
 	return engine;

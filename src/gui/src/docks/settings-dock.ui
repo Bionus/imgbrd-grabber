@@ -191,7 +191,7 @@
    <sender>lineFolder</sender>
    <signal>textEdited(QString)</signal>
    <receiver>SettingsDock</receiver>
-   <slot>save()</slot>
+   <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>120</x>
@@ -209,5 +209,6 @@
   <slot>save()</slot>
   <slot>chooseFolder()</slot>
   <slot>updateCompleters()</slot>
+  <slot>saveSettings()</slot>
  </slots>
 </ui>

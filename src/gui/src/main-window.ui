@@ -87,6 +87,7 @@
     </property>
     <addaction name="actionBlacklistFix"/>
     <addaction name="actionEmptyDirsFix"/>
+    <addaction name="actionMd5DatabaseConverter"/>
     <addaction name="actionMd5Fix"/>
     <addaction name="actionRenameExistingImages"/>
     <addaction name="actionTagLoader"/>
@@ -448,6 +449,11 @@
     <string>Load downloads list</string>
    </property>
   </action>
+  <action name="actionMd5DatabaseConverter">
+   <property name="text">
+    <string>MD5 database converter</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -736,6 +742,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMd5DatabaseConverter</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>utilMd5DatabaseConverter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -783,5 +805,6 @@
   <slot>aboutGithub()</slot>
   <slot>restoreLastClosedTab()</slot>
   <slot>utilTagLoader()</slot>
+  <slot>utilMd5DatabaseConverter()</slot>
  </slots>
 </ui>

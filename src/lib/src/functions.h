@@ -7,6 +7,7 @@
 
 
 class ConditionalFilename;
+class Profile;
 class QDateTime;
 class QDir;
 class QFont;
@@ -32,6 +33,8 @@ class QVariant;
 	#define FILESIZE_MULTIPLIER 1024
 #endif
 
+
+QStringList splitCommand(const QString &command);
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);
@@ -79,7 +82,6 @@ QFont qFontFromString(const QString &str);
 QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 QUrl removeCacheBuster(QUrl url);
-QStringList jsToStringList(const QJSValue &val);
 
 bool canCreateLinkType(const QString &type, const QString &dir);
 bool createLink(const QString &from, const QString &to, const QString &type);

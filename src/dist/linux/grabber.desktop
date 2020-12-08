@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Grabber
+Comment=Very customizable imageboard/booru downloader with powerful filenaming features
+Exec=Grabber
+Icon=grabber
+Categories=Network;

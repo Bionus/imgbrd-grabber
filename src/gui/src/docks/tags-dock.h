@@ -43,7 +43,6 @@ class TagsDock : public Dock
 	private:
 		Ui::TagsDock *ui;
 		Profile *m_profile;
-		SearchTab *m_tab;
 		QMetaObject::Connection m_connection;
 		QString m_link;
 

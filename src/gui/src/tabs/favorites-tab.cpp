@@ -201,7 +201,7 @@ void FavoritesTab::load()
 {
 	updateTitle();
 
-	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
+	loadTags(m_currentTags.trimmed().split(' ', Qt::SkipEmptyParts));
 }
 
 bool FavoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
@@ -249,7 +249,7 @@ void FavoritesTab::getPage()
 
 	QList<QSharedPointer<Page>> pages = this->getPagesToDownload();
 	for (const QSharedPointer<Page> &page : pages) {
-		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
+		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', Qt::SkipEmptyParts);
 		const int perpage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
 		const QStringList postFiltering = postFilter(true);
 
@@ -269,7 +269,7 @@ void FavoritesTab::getAll()
 			continue;
 		}
 
-		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', QString::SkipEmptyParts);
+		const QStringList search = (m_currentTags + " " + m_settings->value("add").toString().toLower().trimmed()).split(' ', Qt::SkipEmptyParts);
 		const QStringList postFiltering = postFilter(true);
 
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, page->site()));

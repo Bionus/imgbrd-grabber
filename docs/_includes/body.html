@@ -3,9 +3,13 @@
 		<div class="container">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{{ '/' | relative_url }}">Home</a></li>
+				<li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
 				<li><a href="{{ '/docs/' | relative_url }}">Documentation</a></li>
 				<li><a href="{{ site.github.repository_url }}/blob/master/LICENSE">License</a></li>
 				<li><a href="{{ site.github.repository_url }}/issues">Issue tracker</a></li>
+				{% if site.discord_url %}
+					<li><a href="{{ site.discord_url }}">Discord</a></li>
+				{% endif %}
 			</ul>
 
 			{{ header }}

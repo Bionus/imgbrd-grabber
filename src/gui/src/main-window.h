@@ -58,6 +58,7 @@ class MainWindow : public QMainWindow
 		void md5FixOpen();
 		void renameExisting();
 		void utilTagLoader();
+		void utilMd5DatabaseConverter();
 		void changeEvent(QEvent *event) override;
 		// Tabs
 		void addTab(const QString &tag = "", bool background = false, bool save = true, SearchTab *source = nullptr);
@@ -75,6 +76,7 @@ class MainWindow : public QMainWindow
 		void focusSearch();
 		void tabNext();
 		void tabPrev();
+		void setCurrentTab(QWidget *widget);
 		// Tag list
 		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);
 		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true, SearchTab *source = nullptr);

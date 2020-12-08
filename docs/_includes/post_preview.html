@@ -1,0 +1,12 @@
+<h3>
+	<a href="{{ post.url | relative_url }}">
+		{{ post.title | escape }}
+	</a>
+</h3>
+<span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+<p>{{ post.excerpt | replace: '<p>', ' ' | replace: '</p>', ' ' | strip }}</p>
+
+<a href="{{ post.url | relative_url }}" class="btn btn-primary">
+	Read more
+</a>

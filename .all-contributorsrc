@@ -129,6 +129,18 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "yami-no-tusbas",
+      "name": "YamiNoSho",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3921598?v=4",
+      "profile": "https://github.com/yami-no-tusbas",
+      "contributions": [
+        "bug",
+        "question",
+        "ideas"
+      ]
     }
-  ]
+  ],
+  "commitConvention": "none"
 }

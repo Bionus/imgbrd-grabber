@@ -27,10 +27,13 @@
 #include <QApplication>
 #include <QDir>
 #include <QSettings>
+#include <QSslSocket>
 #include <QStringList>
 #include <QTextStream>
 #include "analytics.h"
 #include "downloader/downloader.h"
+#include "downloader/printers/json-printer.h"
+#include "downloader/printers/simple-printer.h"
 #include "functions.h"
 #include "logger.h"
 #include "main-window.h"
@@ -99,6 +102,9 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
+	// Ensure SSL libraries are loaded
+	QSslSocket::supportsSsl();
+
 	Profile *profile = new Profile(savePath());
 	profile->purgeTemp(24 * 60 * 60);
 	QSettings *settings = profile->getSettings();
@@ -126,6 +132,8 @@ int main(int argc, char *argv[])
 	const QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
 	const QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
 	const QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
+	const QCommandLineOption jsonOption(QStringList() << "j" << "json", "output results as json.");
+	const QCommandLineOption loadDetailsOption(QStringList() << "load-details", "request (more) details on found items.");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -142,6 +150,8 @@ int main(int argc, char *argv[])
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
+	parser.addOption(jsonOption);
+	parser.addOption(loadDetailsOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -192,11 +202,21 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 
+		auto sites = profile->getFilteredSites(parser.value(sourceOption).split(" ", Qt::SkipEmptyParts));
+		if (sites.isEmpty()) {
+			QTextStream(stderr) << "No valid source found";
+			exit(1);
+		}
+
+		Printer *printer = parser.isSet(jsonOption)
+			? (Printer*) new JsonPrinter(profile)
+			: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
+
 		QString blacklistOverride = parser.value(tagsBlacklistOption);
-		Downloader *downloader = new Downloader(profile,
-			parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-			parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
-			profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+		Downloader *downloader = new Downloader(profile, printer,
+			parser.value(tagsOption).split(" ", Qt::SkipEmptyParts),
+			parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts),
+			sites,
 			parser.value(pageOption).toInt(),
 			parser.value(limitOption).toInt(),
 			parser.value(perPageOption).toInt(),
@@ -208,7 +228,7 @@ int main(int argc, char *argv[])
 			blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
 			parser.isSet(noDuplicatesOption),
 			parser.value(tagsMinOption).toInt(),
-			parser.value(tagsFormatOption));
+			parser.isSet(loadDetailsOption));
 
 		if (parser.isSet(returnCountOption)) {
 			downloader->getPageCount();

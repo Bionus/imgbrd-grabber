@@ -15,13 +15,15 @@ PackLoader::PackLoader(Profile *profile, DownloadQueryGroup query, int packSize,
 const DownloadQueryGroup &PackLoader::query() const { return m_query; }
 int PackLoader::nextPackSize() const { return qMin(m_packSize, m_query.total - m_total); }
 
-bool PackLoader::start()
+bool PackLoader::start(bool login)
 {
 	// Login to the site
-	QEventLoop loop;
-	QObject::connect(m_site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
-	m_site->login();
-	loop.exec();
+	if (login) {
+		QEventLoop loop;
+		QObject::connect(m_site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+		m_site->login();
+		loop.exec();
+	}
 
 	// Resume stopped downloads
 	int page = m_query.page;

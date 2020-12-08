@@ -34,7 +34,8 @@
 #include "vendor/html-entities.h"
 
 
-int lastError() {
+int lastError()
+{
 	#ifdef Q_OS_WIN
 		return GetLastError();
 	#else
@@ -42,7 +43,8 @@ int lastError() {
 	#endif
 }
 
-QString lastErrorString() {
+QString lastErrorString()
+{
 	const int errorCode = lastError();
 	if (errorCode == 0) {
 		return QString();
@@ -51,14 +53,51 @@ QString lastErrorString() {
 	#ifdef Q_OS_WIN
 		// https://stackoverflow.com/a/17387176/828828
 		LPWSTR messageBuffer = nullptr;
-		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+		size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR) &messageBuffer, 0, NULL);
 		auto message = QString::fromWCharArray(messageBuffer, size);
 		LocalFree(messageBuffer);
 		return message;
 	#else
 		return strerror(errorCode);
 	#endif
+}
+
+
+QStringList splitCommand(const QString &command)
+{
+	QStringList args;
+
+	QString tmp;
+	int quoteCount = 0;
+	bool inQuote = false;
+
+	for (int i = 0; i < command.size(); ++i) {
+		if (command.at(i) == QLatin1Char('"')) {
+			++quoteCount;
+			if (quoteCount == 3) {
+				quoteCount = 0;
+				tmp += command.at(i);
+			}
+			continue;
+		}
+		if (quoteCount) {
+			if (quoteCount == 1) {
+				inQuote = !inQuote;
+			}
+			quoteCount = 0;
+		}
+		if (!inQuote && command.at(i).isSpace()) {
+			args += tmp;
+			tmp.clear();
+		} else {
+			tmp += command.at(i);
+		}
+	}
+	if (!tmp.isEmpty()) {
+		args += tmp;
+	}
+
+	return args;
 }
 
 
@@ -289,6 +328,9 @@ QString savePath(const QString &file, bool exists, bool writable)
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
 		}
+		if (validSavePath(qApp->applicationDirPath() + "/../share/Grabber/" + check, writable)) {
+			return QDir::toNativeSeparators(qApp->applicationDirPath() + "/../share/Grabber/" + file);
+		}
 		if (validSavePath(QString(PREFIX) + "/share/Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QString(PREFIX) + "/share/Grabber/" + file);
 		}
@@ -377,12 +419,13 @@ int levenshtein(QString s1, QString s2)
 }
 
 #ifdef Q_OS_WIN
-wchar_t *toWCharT(const QString &str) {
-	auto *out = new wchar_t[str.length() + 1];
-	str.toWCharArray(out);
-	out[str.length()] = 0;
-	return out;
-}
+	wchar_t *toWCharT(const QString &str)
+	{
+		auto *out = new wchar_t[str.length() + 1];
+		str.toWCharArray(out);
+		out[str.length()] = 0;
+		return out;
+	}
 #endif
 
 bool setFileCreationDate(const QString &path, const QDateTime &datetime)
@@ -439,10 +482,12 @@ QString stripTags(QString str)
  */
 void shutDown(int timeout)
 {
-	#if defined(Q_OS_WIN)
-		QProcess::startDetached("shutdown -s -f -t " + QString::number(timeout));
-	#else
-		QProcess::startDetached("shutdown " + QString::number(timeout));
+	#if !defined(QT_NO_PROCESS)
+		#if defined(Q_OS_WIN)
+			QProcess::startDetached(QString("shutdown"), QStringList({"-s", "-f", "-t", QString::number(timeout)}));
+		#else
+			QProcess::startDetached(QString("shutdown"), QStringList({QString::number(timeout)}));
+		#endif
 	#endif
 }
 
@@ -451,10 +496,12 @@ void shutDown(int timeout)
  */
 void openTray()
 {
-	#if defined(Q_OS_WIN)
-		QProcess::startDetached(QStringLiteral("CDR.exe open"));
-	#else
-		QProcess::startDetached(QStringLiteral("eject cdrom"));
+	#if !defined(QT_NO_PROCESS)
+		#if defined(Q_OS_WIN)
+			QProcess::startDetached(QString("CDR.exe"), QStringList({"open"}));
+		#else
+			QProcess::startDetached(QString("eject"), QStringList({"cdrom"}));
+		#endif
 	#endif
 }
 
@@ -462,7 +509,12 @@ QString getExtension(const QString &url)
 {
 	const int lastDot = url.lastIndexOf('.');
 	if (lastDot != -1) {
-		return url.mid(lastDot + 1);
+		const int doubleDot = url.midRef(lastDot + 1).indexOf(':');
+		if (doubleDot != -1) {
+			return url.mid(lastDot + 1, doubleDot);
+		} else {
+			return url.mid(lastDot + 1);
+		}
 	}
 	return QString();
 }
@@ -488,7 +540,8 @@ QUrl setExtension(QUrl url, const QString &extension)
 	const int lastSlash = path.lastIndexOf('/');
 	const int lastDot = path.midRef(lastSlash + 1).lastIndexOf('.');
 	if (lastDot != -1) {
-		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension);
+		const int doubleDot = path.midRef(lastDot + 1).indexOf(':');
+		url.setPath(path.left(lastDot + lastSlash + 1) + "." + extension + (doubleDot != -1 ? path.mid(lastDot + doubleDot + 1) : ""));
 	}
 
 	return url;
@@ -538,10 +591,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 
 	// Fix directories
 	for (QString &part : parts) {
-		// A part cannot start or finish with a space
-		part = part.trimmed();
-
-		// Trim part
+		// Max length
 		if (part.length() > 255) {
 			part = part.left(255).trimmed();
 		}
@@ -589,7 +639,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	// Fix parameters
 	const QString sep = QStringLiteral("\\");
 	maxLength = maxLength == 0 ? MAX_PATH : maxLength;
-	QString filename = path + fn;
+	QString filename = (path + fn).trimmed();
 
 	// Drive
 	QString drive;
@@ -621,7 +671,7 @@ QString fixFilenameWindows(const QString &fn, const QString &path, int maxLength
 	// Fix directories
 	for (QString &part : parts) {
 		// A part cannot be one in the forbidden list
-		if (invalidChars && forbidden.contains(part)) {
+		if (invalidChars && forbidden.contains(part, Qt::CaseInsensitive)) {
 			part = part + "!";
 		}
 
@@ -947,18 +997,6 @@ QString decodeHtmlEntities(const QString &html)
 	return QString::fromUtf8(dest);
 }
 
-QStringList jsToStringList(const QJSValue &val)
-{
-	QStringList ret;
-
-	const quint32 length = val.property("length").toUInt();
-	for (quint32 i = 0; i < length; ++i) {
-		ret.append(val.property(i).toString());
-	}
-
-	return ret;
-}
-
 bool canCreateLinkType(const QString &type, const QString &dir)
 {
 	const QString basePath = dir + QDir::separator() + "link_test";
@@ -985,16 +1023,17 @@ bool createLink(const QString &from, const QString &to, const QString &type)
 		if (type == "link") {
 			return QFile::link(from, to + ".lnk");
 		}/* else if (type == "symlink") {
-			wchar_t *wFrom = toWCharT(from);
-			wchar_t *wTo = toWCharT(to);
-			const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
-			delete[] wFrom;
-			delete[] wTo;
-			if (!res) {
-				log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
-			}
-			return res;
-		}*/ else if (type == "hardlink") {
+	        wchar_t *wFrom = toWCharT(from);
+	        wchar_t *wTo = toWCharT(to);
+	        const bool res = CreateSymbolicLinkW(wTo, wFrom, 0x2);
+	        delete[] wFrom;
+	        delete[] wTo;
+	        if (!res) {
+	        	log(QStringLiteral("Unable to create symbolic link from `%1` to `%2`: %3 - %4").arg(from, to).arg(lastError()).arg(lastErrorString()), Logger::Error);
+	        }
+	        return res;
+	    }*/
+		else if (type == "hardlink") {
 			wchar_t *wFrom = toWCharT(from);
 			wchar_t *wTo = toWCharT(to);
 			const bool res = CreateHardLinkW(wTo, wFrom, NULL);

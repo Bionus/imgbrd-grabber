@@ -22,6 +22,8 @@ bool FileDownloader::start(NetworkReply *reply, const QString &path)
 	if (ok) {
 		connect(reply, &NetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
 		connect(reply, &NetworkReply::finished, this, &FileDownloader::replyFinished);
+	} else {
+		log(QStringLiteral("Unable to open file '%1': %2 (%3)").arg(path, m_file.errorString(), QString::number(m_file.error())), Logger::Error);
 	}
 
 	return ok;

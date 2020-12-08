@@ -85,8 +85,15 @@ else()
 	set(USE_PCH 0)
 endif()
 if(USE_PCH)
-	include(cotire/CMake/cotire)
+	include(cotire/CMake/cotire OPTIONAL RESULT_VARIABLE COTIRE_FILE_PATH)
+	if(NOT COTIRE_FILE_PATH)
+		message(WARNING "Cotire file not found, disabling PCH")
+		set(USE_PCH 0)
+	endif()
 endif()
+
+# Load Qt5Core here as it can only be included once (QTBUG-87863)
+find_package(Qt5Core REQUIRED)
 
 add_subdirectory(lib)
 add_subdirectory(gui)
@@ -98,10 +105,25 @@ add_subdirectory(crash-reporter)
 
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
-install(DIRECTORY "dist/common" DESTINATION share/Grabber)
-install(DIRECTORY "sites" DESTINATION share/Grabber/sites)
-install(FILES "dist/linux/Grabber.desktop" DESTINATION share/applications)
+install(DIRECTORY "dist/common/" DESTINATION "share/Grabber")
+install(DIRECTORY "sites" DESTINATION "share/Grabber"
+	PATTERN "node_modules" EXCLUDE
+	PATTERN "CMakeLists.txt" EXCLUDE
+	PATTERN "package*.json" EXCLUDE
+	PATTERN "*.config.js" EXCLUDE
+	PATTERN "tsconfig.json" EXCLUDE
+	PATTERN "tslint.json" EXCLUDE
+	PATTERN "*.ts" EXCLUDE
+	PATTERN "resources" EXCLUDE
+	PATTERN "Sankaku" EXCLUDE
+	PATTERN "Tumblr" EXCLUDE)
+install(FILES "dist/linux/grabber.desktop" DESTINATION "share/applications")
+install(FILES "dist/linux/hicolor/48x48/grabber.png" DESTINATION "share/icons/hicolor/48x48/apps")
+install(FILES "dist/linux/hicolor/96x96/grabber.png" DESTINATION "share/icons/hicolor/96x96/apps")
+install(FILES "dist/linux/hicolor/128x128/grabber.png" DESTINATION "share/icons/hicolor/128x128/apps")
+install(FILES "dist/linux/grabber.appdata.xml" DESTINATION "share/metainfo")
 
 add_subdirectory(sites)
 add_dependencies(gui sites)
+add_dependencies(gui-qml sites)
 add_dependencies(cli sites)

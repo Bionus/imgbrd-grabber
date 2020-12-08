@@ -3,6 +3,7 @@
 #include <QProcess>
 #include <QSettings>
 #include "commands/sql-worker.h"
+#include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
 #include "models/profile.h"
@@ -15,20 +16,18 @@ Commands::Commands(Profile *profile)
 {
 	QSettings *settings = profile->getSettings();
 
-	settings->beginGroup("Exec");
-		m_commandTagBefore = settings->value("tag_before").toString();
-		m_commandImage = settings->value("image").toString();
-		m_commandTagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
-		settings->beginGroup("SQL");
-			m_mysqlSettings.before = settings->value("before").toString();
-			m_mysqlSettings.tagBefore = settings->value("tag_before").toString();
-			m_mysqlSettings.image = settings->value("image").toString();
-			m_mysqlSettings.tagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
-			m_mysqlSettings.after = settings->value("after").toString();
-		settings->endGroup();
-	settings->endGroup();
+	m_commandTagBefore = settings->value("Exec/tag_before").toString();
+	m_commandImage = settings->value("Exec/image").toString();
+	m_commandTagAfter = settings->value("Exec/tag_after", settings->value("Exec/tag").toString()).toString();
 
-	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
+	m_mysqlSettings.before = settings->value("Exec/SQL/before").toString();
+	m_mysqlSettings.tagBefore = settings->value("Exec/SQL/tag_before").toString();
+	m_mysqlSettings.image = settings->value("Exec/SQL/image").toString();
+	m_mysqlSettings.tagAfter = settings->value("Exec/SQL/tag_after", settings->value("Exec/SQL/tag").toString()).toString();
+	m_mysqlSettings.after = settings->value("Exec/SQL/after").toString();
+
+	m_sqlWorker = new SqlWorker(
+		settings->value("Exec/SQL/driver", "QMYSQL").toString(),
 		settings->value("Exec/SQL/host").toString(),
 		settings->value("Exec/SQL/user").toString(),
 		settings->value("Exec/SQL/password").toString(),
@@ -66,12 +65,8 @@ bool Commands::image(const Image &img, const QString &path)
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QStringLiteral("Execution of \"%1\"").arg(exec));
-			Logger::getInstance().logCommand(exec);
-
-			const int code = QProcess::execute(exec);
-			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
+			if (!execute(exec)) {
+				return false;
 			}
 		}
 	}
@@ -111,12 +106,8 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 				.replace("%type%", tag.type().name())
 				.replace("%number%", QString::number(tag.type().number()));
 
-			log(QStringLiteral("Execution of \"%1\"").arg(exec));
-			Logger::getInstance().logCommand(exec);
-
-			const int code = QProcess::execute(exec);
-			if (code != 0) {
-				log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
+			if (!execute(exec)) {
+				return false;
 			}
 		}
 	}
@@ -150,6 +141,35 @@ bool Commands::after() const
 	}
 
 	return true;
+}
+
+bool Commands::execute(const QString &command) const
+{
+	#if defined(QT_NO_PROCESS)
+		log(QStringLiteral("Cannot run commands on this platform (no QProcess"), Logger::Error);
+		return false;
+	#else
+		log(QStringLiteral("Execution of \"%1\"").arg(command));
+		Logger::getInstance().logCommand(command);
+
+		QStringList args = splitCommand(command);
+		QString program = args.takeFirst();
+
+		QProcess proc;
+		proc.start(program, args);
+
+		if (!proc.waitForFinished()) {
+			log(QStringLiteral("Command execution timeout"), Logger::Error);
+		}
+
+		const int code = proc.exitCode();
+		if (code != 0) {
+			log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+			return false;
+		}
+
+		return true;
+	#endif
 }
 
 bool Commands::sqlExec(const QString &sql) const

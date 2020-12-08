@@ -1,47 +1,77 @@
 name: Windows
-on: [push]
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
 
 jobs:
   Windows:
     timeout-minutes: 15
     runs-on: windows-2019
 
+    strategy:
+      matrix:
+        platform: [x86, x64]
+
     env:
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/4114066/qsqlmysql.dll_Qt_SQL_driver_5.12.6_MSVC2017_64-Bit.zip
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5198020/qsqlmysql.dll_Qt_SQL_driver_5.15.1_MSVC2019_64-Bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
+      OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
+      MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
+      APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
 
     steps:
+    - name: Set environment
+      shell: bash
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+        echo "BUILD_TYPE=$([ "$IS_RELEASE" = "true" ] && echo "RelWithDebInfo" || echo "Release")" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
-
-    - name: Set environment
-      shell: cmd
-      run: |
-        echo ::set-env name=GRABBER_VERSION::nightly
-        echo ::set-env name=GRABBER_IS_NIGHTLY::1
-        echo ::set-env name=PLATFORM_NAME::x64
-        echo ::set-env name=OPENSSL_ROOT_DIR::%GITHUB_WORKSPACE%\vendor\OpenSSL
-        echo ::set-env name=MYSQL_DRIVER_DIR::%GITHUB_WORKSPACE%\vendor\MySQL_driver
-        echo ::set-env name=APNG_PLUGIN_DLL::%GITHUB_WORKSPACE%\vendor\APNG\5.12.6\msvc2017\plugins\imageformats\qapng.dll
 
     - name: Vendor cache
       uses: actions/cache@v1
       id: vendor-cache
       with:
         path: vendor
-        key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
+        key: ${{ runner.os }}-${{ matrix.platform }}-vendor-${{ hashFiles('.github/workflows/windows.yml') }}
 
     - name: Create vendor dirs
       if: steps.vendor-cache.outputs.cache-hit != 'true'
       shell: cmd
       run: mkdir vendor
 
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.7.2
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
       with:
-        version: 5.12.6
+        path: ../Qt
+        key: ${{ runner.os }}-${{ matrix.platform }}-QtCache-${{ hashFiles('.github/workflows/windows.yml') }}
+
+    - name: Get arch for Qt install
+      id: qt_arch
+      shell: cmd
+      run: |
+        if "${{ matrix.platform }}"=="x86" (set "QT_ARCH=win32_msvc2019") else (set "QT_ARCH=win64_msvc2019_64")
+        echo ::set-output name=qt_arch::%QT_ARCH%
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.15.1
+        arch: ${{ steps.qt_arch.outputs.qt_arch }}
 
     - name: Build QScintilla
       if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -52,7 +82,7 @@ jobs:
         7z x "%QSCINTILLA_VERSION%.zip" -y
         rm "%QSCINTILLA_VERSION%.zip"
         cd "%QSCINTILLA_VERSION%\Qt4Qt5"
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
         qmake qscintilla.pro
         nmake
 
@@ -61,7 +91,7 @@ jobs:
       shell: cmd
       run: |
         cd "%QSCINTILLA_VERSION%\Qt4Qt5"
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
         nmake install
 
     - name: Install OpenSSL
@@ -69,7 +99,8 @@ jobs:
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo OpenSSL.exe https://slproweb.com/download/Win64OpenSSL-1_1_1g.exe
+        if "${{ matrix.platform }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
+        curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1h.exe"
         OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
         rm OpenSSL.exe
 
@@ -82,14 +113,17 @@ jobs:
         7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
         rm "mysql_driver.zip"
 
-    - name: Download APNG plugin
+    - name: Build APNG plugin
       if: steps.vendor-cache.outputs.cache-hit != 'true'
       working-directory: vendor
       shell: cmd
       run: |
-        curl -Lo APNG.7z https://install.skycoder42.de/qtmodules/windows_x86/qt5126/qt.qt5.5126.skycoder42.apng.win32_msvc2017/1.1.2-65.12.6.7z
-        7z x APNG.7z -y -oAPNG
-        rm APNG.7z
+        git clone https://github.com/Skycoder42/QtApng APNG
+        cd APNG
+        git checkout $(git tag | tail -1)
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.platform }}
+        qmake "CONFIG += libpng_static"
+        nmake
 
     - name: Create build dir
       shell: cmd
@@ -98,19 +132,26 @@ jobs:
     - name: Configure
       working-directory: build
       shell: cmd
-      run: cmake ..\src -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+      run: |
+        if "${{ matrix.platform }}"=="x86" (set "CMAKE_PLATFORM=Win32") else (set "CMAKE_PLATFORM=x64")
+        cmake ..\src -G "Visual Studio 16 2019" -A "%CMAKE_PLATFORM%" ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
+          -DCOMMIT="%GITHUB_SHA%" ^
+          -DVERSION="%GRABBER_VERSION%" ^
+          -DVERSION_PLATFORM="${{ matrix.platform }}"
 
     - name: Compile
       working-directory: build
       shell: cmd
       run: |
-        cmake --build . --config Release --target sites
-        cmake --build . --config Release
+        cmake --build . --config %BUILD_TYPE% --target sites
+        cmake --build . --config %BUILD_TYPE%
 
     - name: Test
       shell: cmd
       working-directory: src
-      run: ..\build\tests\Release\tests.exe
+      run: ..\build\tests\%BUILD_TYPE%\tests.exe
       env:
         QTDIR: ${{ env.Qt5_Dir }}
         QT_PLUGIN_PATH: ${{ env.Qt5_Dir }}\plugins
@@ -119,4 +160,48 @@ jobs:
       shell: cmd
       run: |
         copy /Y "%MYSQL_DRIVER_DIR%\sqldrivers\*.dll" "%Qt5_Dir%\plugins\sqldrivers"
-        iscc /Q /DMyAppVersion="%GRABBER_VERSION%" /DPlatformName="%PLATFORM_NAME%" /DQtDir="%Qt5_Dir%\bin" /DOpenSSLDir="%OPENSSL_ROOT_DIR%" /DMySQLDir="%MYSQL_DRIVER_DIR%" /DQtApngDll="%APNG_PLUGIN_DLL%" scripts\windows-setup\setup.iss
+        iscc /Q ^
+          /DMyAppVersion="%GRABBER_VERSION%" ^
+          /DPlatformName="${{ matrix.platform }}" ^
+          /DQtDir="%Qt5_Dir%\bin" ^
+          /DOpenSSLDir="%OPENSSL_ROOT_DIR%" ^
+          /DMySQLDir="%MYSQL_DRIVER_DIR%" ^
+          /DQtApngDll="%APNG_PLUGIN_DLL%" ^
+          scripts\windows-setup\setup.iss
+
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly
+        name: Nightly
+        allowUpdates: true
+        draft: false
+        prerelease: true
+        artifacts: scripts\windows-setup\Grabber_*.exe
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Package symbol files
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      shell: cmd
+      run: 7z a "scripts\windows-setup\Grabber_%GRABBER_VERSION%_${{ matrix.platform }}_symbols.zip" ".\build\gui\Grabber.pdb" ".\build\cli\Grabber-cli.pdb"
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: scripts\windows-setup\Grabber_*.exe,scripts\windows-setup\Grabber_*_symbols.zip

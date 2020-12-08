@@ -36,14 +36,14 @@ endif()
 
 # Qt libraries
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5MultimediaWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Xml REQUIRED)
-set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
+set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::MultimediaWidgets Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
 
 # Windows specials
 if(WIN32)
@@ -84,6 +84,7 @@ file(GLOB SOURCES
 	"src/utils/rename-existing/*.cpp"
 	"src/utils/blacklist-fix/*.cpp"
 	"src/utils/empty-dirs-fix/*.cpp"
+	"src/utils/md5-database-converter/*.cpp"
 	"src/utils/md5-fix/*.cpp"
 	"src/utils/tag-loader/*.cpp"
 	"src/viewer/*.cpp"
@@ -133,9 +134,8 @@ if(ANDROID)
 	# SSL
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
-		set(OPENSSL_ANDROID "D:/Programmation/C++/Qt/OpenSSH-android/openssl-1.0.2p")
-		message(STATUS "OpenSSL for Android dir: ${OPENSSL_ANDROID}")
-		list(APPEND APK_LIBS "${OPENSSL_ANDROID}/libcrypto.so" "${OPENSSL_ANDROID}/libssl.so")
+		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
+		message(STATUS "Android libs: ${ANDROID_EXTRA_LIBS}")
 	endif()
 
 	# Generate static package directory
@@ -153,12 +153,17 @@ if(ANDROID)
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/../languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
 
-	# Generate manifest file
-	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml.in" "${CMAKE_CURRENT_LIST_DIR}/../dist/android/AndroidManifest.xml" @ONLY)
-
+	# Add target
 	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME} BUILDTOOLS_REVISION "28.0.3" DEPENDS ${APK_LIBS} PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES})
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets)
+	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
+		NAME ${ANDROID_APP_NAME}
+		VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+		PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
+		PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
+		KEYSTORE "${CMAKE_CURRENT_LIST_DIR}/../../release.jks" release
+		KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+		DEPENDS ${ANDROID_EXTRA_LIBS})
+	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

@@ -37,7 +37,7 @@ void MonitoringCenter::start()
 
 void MonitoringCenter::checkMonitor(Monitor &monitor, const Favorite &favorite)
 {
-	bool newImages = checkMonitor(monitor, favorite.getName().split(' ', QString::SkipEmptyParts), favorite.getPostFiltering());
+	bool newImages = checkMonitor(monitor, favorite.getName().split(' ', Qt::SkipEmptyParts), favorite.getPostFiltering());
 	if (newImages) {
 		emit m_profile->favoritesChanged();
 	}

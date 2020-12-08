@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QMovie>
+#include <QRandomGenerator>
 #include <QSettings>
 #include <QtMath>
 #include <QUrl>
@@ -292,7 +293,7 @@ void ImagePreview::contextSaveImageAs()
 
 	// If the MD5 is required for the filename, we first download the image
 	if (format.needTemporaryFile(m_image->tokens(m_profile))) {
-		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(qrand(), 16));
+		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(QRandomGenerator::global()->generate(), 16));
 
 		QEventLoop loop;
 		ImageDownloader downloader(m_profile, m_image, { tmpPath }, 1, true, true, this);

@@ -70,7 +70,8 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 			thenAdd.replace("%count%", QString::number(value.size() - keepN));
 			QStringList keptValues = value.mid(0, qMax(1, keepN));
 			if (value.size() > keepN) {
-				ret.append(Token(keptValues.join(' ') + thenAdd));
+				const QString separator = settings->value(key + "_sep", settings->value("separator", " ").toString()).toString();
+				ret.append(Token(keptValues.join(separator) + thenAdd));
 			} else {
 				ret.append(Token(keptValues));
 			}

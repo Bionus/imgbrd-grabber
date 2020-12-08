@@ -37,6 +37,7 @@ debug/
 {gui,cli}/release/
 cache/
 release/
+release.jks
 
 
 # NPM

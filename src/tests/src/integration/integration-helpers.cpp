@@ -48,7 +48,7 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	sites.append(ste);
 
 	QList<QSharedPointer<Image>> result;
-	const QScopedPointer<Downloader> downloader(new Downloader(profile,
+	Downloader downloader(profile, nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -63,15 +63,14 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 		Blacklist(),
 		false,
 		0,
-		"%tag %count %type"));
-	downloader->setQuit(false);
+		false,
+		false);
+	downloader.setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(downloader.data(), SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
-	downloader->getImages();
-	if (!spy.wait()) {
-		return result;
-	}
+	QSignalSpy spy(&downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
+	downloader.getUrls();
+	REQUIRE(spy.count() == 1);
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();
@@ -120,7 +119,7 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	sites.append(ste);
 
 	QList<Tag> result;
-	const QScopedPointer<Downloader> downloader(new Downloader(profile,
+	Downloader downloader(profile, nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -134,16 +133,13 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 		false,
 		Blacklist(),
 		false,
-		0,
-		"%tag %count %type"));
-	downloader->setQuit(false);
+		0);
+	downloader.setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(downloader.data(), SIGNAL(finishedTags(QList<Tag>)));
-	downloader->getPageTags();
-	if (!spy.wait()) {
-		return result;
-	}
+	QSignalSpy spy(&downloader, SIGNAL(finishedTags(QList<Tag>)));
+	downloader.getPageTags();
+	REQUIRE(spy.count() == 1);
 
 	// Get results
 	QList<QVariant> arguments = spy.takeFirst();

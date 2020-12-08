@@ -1,0 +1,14 @@
+---
+layout: default
+class: blog
+---
+
+{% capture content %}
+    <h2>Posts from the "{{ page.tag }}" category</h2>
+
+    {% for post in site.categories[page.tag] %}
+        {% include post_preview.html %}
+    {% endfor %}
+{% endcapture %}
+
+{% include blog.html %}

@@ -78,9 +78,10 @@ void StartWindow::save()
 	settings->setValue("filename_real", ui->lineFilename->text());
 
 	// Folder
-	settings->setValue("path", ui->lineFolder->text());
-	settings->setValue("path_real", ui->lineFolder->text());
-	QDir pth = QDir(ui->lineFolder->text());
+	const QString dir = fixFilename("", ui->lineFolder->text());
+	settings->setValue("path", dir);
+	settings->setValue("path_real", dir);
+	QDir pth(dir);
 	if (!pth.exists()) {
 		QString op;
 		while (!pth.exists() && pth.path() != op) {
@@ -90,7 +91,7 @@ void StartWindow::save()
 		if (pth.path() == op) {
 			error(this, tr("An error occurred creating the save folder."));
 		} else {
-			pth.mkpath(ui->lineFolder->text());
+			pth.mkpath(dir);
 		}
 	}
 	settings->endGroup();

@@ -245,7 +245,6 @@ void ImageDownloader::loadImage()
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, m_temporaryPath)) {
-		log(QStringLiteral("Unable to open file"), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -400,16 +399,30 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 		}
 
 		if (!moved) {
-			tmp.rename(path);
-			moved = true;
+			if (!tmp.rename(path)) {
+				log(QStringLiteral("Error renaming from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			} else {
+				moved = true;
+			}
 		} else if (multipleFiles == "link") {
 			#ifdef Q_OS_WIN
-				tmp.link(path + ".lnk");
+				bool ok = tmp.link(path + ".lnk");
 			#else
-				tmp.link(path);
+				bool ok = tmp.link(path);
 			#endif
+			if (!ok) {
+				log(QStringLiteral("Error creating link from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			}
 		} else {
-			tmp.copy(path);
+			if (!tmp.copy(path)) {
+				log(QStringLiteral("Error copying from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			}
 		}
 
 		result.append({ path, size, saveResult });

@@ -1,0 +1,45 @@
+---
+layout: blog
+title: Blog
+---
+
+
+<h2>Blog posts</h2>
+
+{% if site.paginate %}
+	{% assign posts = paginator.posts %}
+{% else %}
+	{% assign posts = site.posts %}
+{% endif %}
+
+{%- for post in posts -%}
+	{% include post_preview.html %}
+{%- endfor -%}
+
+{% if site.paginate and paginator.total_pages > 1 %}
+<nav aria-label="Blog pagination" class="text-center">
+	<ul class="pagination">
+		{% if paginator.previous_page %}
+			<li><a href="{{ paginator.previous_page_path | relative_url }}">&laquo;</a></li>
+		{% else %}
+			<li class="disabled"><span>&laquo;</span></li>
+		{% endif %}
+
+		{% for page in (1..paginator.total_pages) %}
+			{% if page == paginator.page %}
+				<li class="active"><span>{{ page }}</span></li>
+			{% elsif page == 1 %}
+				<li><a href="{{ '/blog/' | relative_url }}">{{ page }}</a></li>
+			{% else %}
+				<li><a href="{{ site.paginate_path | relative_url | replace: ':num', page }}">{{ page }}</a></li>
+			{% endif %}
+		{% endfor %}
+
+		{% if paginator.next_page %}
+			<li><a href="{{ paginator.next_page_path | relative_url }}">&raquo;</a></li>
+		{% else %}
+			<li class="disabled"><span>&raquo;</a></li>
+		{% endif %}
+	</ul>
+</nav>
+{% endif %}

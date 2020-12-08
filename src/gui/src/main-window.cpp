@@ -61,6 +61,8 @@
 #include "ui/tab-selector.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
+#include "utils/logging.h"
+#include "utils/md5-database-converter/md5-database-converter.h"
 #include "utils/md5-fix/md5-fix.h"
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/tag-loader/tag-loader.h"
@@ -85,26 +87,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		ui->tabWidget->addTab(m_logTab, m_logTab->windowTitle());
 	}
 
-	log(QStringLiteral("New session started."), Logger::Info);
-	log(QStringLiteral("Software version: %1.").arg(VERSION), Logger::Info);
-	#ifdef NIGHTLY
-		log(QStringLiteral("Nightly version: %1.").arg(QString(NIGHTLY_COMMIT)), Logger::Info);
-	#endif
-	log(QStringLiteral("Software CPU architecture: %1.").arg(VERSION_PLATFORM), Logger::Info);
-	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-		log(QStringLiteral("Computer CPU architecture: %1.").arg(QSysInfo::currentCpuArchitecture()), Logger::Info);
-		log(QStringLiteral("Qt CPU architecture: %1.").arg(QSysInfo::buildCpuArchitecture()), Logger::Info);
-		log(QStringLiteral("Computer platform: %1.").arg(QSysInfo::prettyProductName()), Logger::Info);
-	#endif
-	log(QStringLiteral("Path: `%1`").arg(qApp->applicationDirPath()), Logger::Info);
-	log(QStringLiteral("Loading preferences from `%1`").arg(m_settings->fileName()), Logger::Info);
-	log(QStringLiteral("Temporary path: `%1`").arg(m_profile->tempPath()), Logger::Info);
-
-	if (!QSslSocket::supportsSsl()) {
-		log(QStringLiteral("Missing SSL libraries"), Logger::Error);
-	} else {
-		log(QStringLiteral("SSL libraries: %1").arg(QSslSocket::sslLibraryVersionString()), Logger::Info);
-	}
+	logSystemInformation(m_profile);
 
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
@@ -257,7 +240,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	// Crash restoration
-	m_restore = m_settings->value("start", "none").toString() == "restore";
+	m_restore = m_settings->value("start", "restore").toString() == "restore";
 	if (crashed) {
 		log(QStringLiteral("It seems that Imgbrd-Grabber hasn't shut down properly last time."), Logger::Warning);
 
@@ -390,8 +373,8 @@ void MainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 
 	// Other positional arguments are treated as tags
 	tags.append(args);
-	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
-	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage") {
+	tags.append(params.value("tags").split(' ', Qt::SkipEmptyParts));
+	if (!tags.isEmpty() || m_settings->value("start", "restore").toString() == "firstpage") {
 		loadTag(tags.join(' '), true, false, false);
 	}
 }
@@ -437,13 +420,8 @@ void MainWindow::initialLoginsDone()
 	}
 	m_forcedTab.clear();
 
-	m_currentTab = qobject_cast<SearchTab*>(ui->tabWidget->currentWidget());
+	setCurrentTab(ui->tabWidget->currentWidget());
 	m_loaded = true;
-
-	// Can be null if not a SearchTab
-	if (m_currentTab != nullptr) {
-		emit tabChanged(m_currentTab);
-	}
 
 	m_monitoringCenter->start();
 }
@@ -635,8 +613,12 @@ void MainWindow::currentTabChanged(int tab)
 		return;
 	}
 
-	QWidget *widget = ui->tabWidget->currentWidget();
+	setCurrentTab(ui->tabWidget->currentWidget());
+}
 
+void MainWindow::setCurrentTab(QWidget *widget)
+{
+	// Check if it's a special kind of tabs for analytics
 	if (qobject_cast<DownloadsTab*>(widget) != nullptr) {
 		Analytics::getInstance().sendScreenView("Downloads");
 	} else if (qobject_cast<MonitorsTab*>(widget) != nullptr) {
@@ -645,18 +627,21 @@ void MainWindow::currentTabChanged(int tab)
 		Analytics::getInstance().sendScreenView("Log");
 	}
 
+	// Handle "normal" search tabs
 	auto searchTab = qobject_cast<SearchTab*>(widget);
 	if (searchTab != nullptr) {
-		if (tab < m_tabs.size()) {
-			SearchTab *tb = m_tabs[tab];
-			if (m_tabsWaitingForPreload.contains(tb)) {
-				tb->load();
-				m_tabsWaitingForPreload.removeAll(tb);
-			} else if (m_currentTab != searchTab) {
-				emit tabChanged(tb);
-			}
-			m_currentTab = searchTab;
+		// The opening of the window does not always load all tabs, leaving some unloaded
+		if (m_tabsWaitingForPreload.contains(searchTab)) {
+			searchTab->load();
+			m_tabsWaitingForPreload.removeAll(searchTab);
 		}
+
+		// Emit the event only if the tab actually changed
+		if (m_currentTab != searchTab) {
+			emit tabChanged(searchTab);
+		}
+		m_currentTab = searchTab;
+
 		Analytics::getInstance().sendScreenView(searchTab->screenName());
 	}
 }
@@ -875,6 +860,11 @@ void MainWindow::renameExisting()
 void MainWindow::utilTagLoader()
 {
 	auto *win = new TagLoader(m_profile);
+	win->show();
+}
+void MainWindow::utilMd5DatabaseConverter()
+{
+	auto *win = new Md5DatabaseConverter(m_profile);
 	win->show();
 }
 

@@ -197,6 +197,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		}
 	} else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif")) {
 		m_url = setExtension(m_url, QStringLiteral("gif"));
+	} else if (ext == QLatin1String("webm") && hasTag(QStringLiteral("mp4"))) {
+		m_url = setExtension(m_url, QStringLiteral("mp4"));
 	}
 
 	// Remove ? in urls
@@ -986,7 +988,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
-	const QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList remove = settings->value("ignoredtags").toString().split(' ', Qt::SkipEmptyParts);
 
 	QMap<QString, Token> tokens;
 
@@ -1109,4 +1111,10 @@ void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5
 {
 	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
 	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
+}
+
+bool Image::isValid() const
+{
+	return !url(Image::Size::Thumbnail).isEmpty()
+		|| !m_name.isEmpty();
 }

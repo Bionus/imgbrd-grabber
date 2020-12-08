@@ -29,7 +29,7 @@ void WikiDock::changeEvent(QEvent *event)
 
 void WikiDock::tabChanged(SearchTab *tab)
 {
-	m_tab = tab;
+	Dock::tabChanged(tab);
 
 	// Only keep the last active tab connected
 	if (m_connection) {
@@ -43,5 +43,5 @@ void WikiDock::tabChanged(SearchTab *tab)
 void WikiDock::refresh()
 {
 	static const QString style = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>";
-	ui->labelWiki->setText(style + m_tab->wiki());
+	ui->labelWiki->setText(style + m_currentTab->wiki());
 }

@@ -1,0 +1,65 @@
+name: Code coverage
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+
+jobs:
+  Linux:
+    timeout-minutes: 20
+    runs-on: ubuntu-18.04
+
+    env:
+      COVERAGE: 1
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Install packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpulse-dev lcov
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/coverage.yml') }}
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.15.1
+
+    - name: Create build dir
+      run: mkdir build
+
+    - name: Configure
+      working-directory: build
+      run: cmake ../src -DCMAKE_BUILD_TYPE=Debug -DNIGHTLY=0 -DCOMMIT="$GITHUB_SHA" -DVERSION="9.9.9"
+
+    - name: Compile
+      working-directory: build
+      run: |
+        cmake --build . --config Debug --target sites
+        cmake --build . --config Debug
+
+    - name: Test
+      uses: GabrielBB/xvfb-action@v1.2
+      with:
+        working-directory: src
+        run: ../build/tests/tests
+
+    - name: Upload coverage results
+      uses: codecov/codecov-action@v1

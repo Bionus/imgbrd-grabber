@@ -1,7 +1,6 @@
 project(lib)
 
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED) # For some classes such as QPixmap
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Qml REQUIRED)

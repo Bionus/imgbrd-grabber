@@ -175,8 +175,11 @@ QUrlQuery GAnalytics::Private::buildStandardPostQuery(const QString &type)
 QString GAnalytics::Private::getScreenResolution()
 {
     QScreen *screen = QGuiApplication::primaryScreen();
-    QSize size = screen->size();
+	if (screen == nullptr) {
+		return QString();
+	}
 
+    QSize size = screen->size();
     return QString("%1x%2").arg(size.width()).arg(size.height());
 }
 #endif // QT_GUI_LIB

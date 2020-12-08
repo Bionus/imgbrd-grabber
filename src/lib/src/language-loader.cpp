@@ -55,6 +55,8 @@ bool LanguageLoader::setLanguage(const QString &lang)
 
 	QLocale::setDefault(localeFromString(lang));
 
+	emit languageChanged();
+
 	return general && qt;
 }
 

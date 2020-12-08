@@ -4,10 +4,14 @@ description: Very customizable imageboard/booru browser and mass downloader, wit
 logo: assets/img/icon.png
 show_download: true
 google_analytics: UA-22768717-4
+discord_url: https://discord.gg/pWnY5eW3rz
 theme:
 lang: en_US
 relative_permalinks: false
 baseurl: /imgbrd-grabber
+excerpt_separator: <!--more-->
+paginate: 5
+paginate_path: "/blog/page:num/"
 
 exclude:
 - vendor/
@@ -28,9 +32,17 @@ collections:
   sources:
     permalink: "/docs/:collection/:path.html"
     output: true
+  posts:
+    permalink: "/blog/:year/:month/:day/:title.html"
+    output: true
+  category:
+    permalink: "/blog/:collection/:path.html"
+    output: true
 
 gems:
   - jemoji
+  - jekyll-feed
+  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-seo-tag
 
@@ -52,3 +64,13 @@ defaults:
       type: sources
     values:
       layout: sources
+  - scope:
+      path: _posts
+      type: post
+    values:
+      layout: blog_post
+  - scope:
+      path: _category
+      type: category
+    values:
+      layout: blog_category

@@ -16,3 +16,15 @@ QString HttpBasicAuth::passwordType() const
 {
 	return m_passwordType;
 }
+
+QList<AuthSettingField> HttpBasicAuth::settingFields() const
+{
+	AuthSettingField pseudoField;
+	pseudoField.id = "pseudo";
+
+	AuthSettingField passwordField;
+	passwordField.id = m_passwordType;
+	passwordField.isPassword = true;
+
+	return { pseudoField, passwordField };
+}

@@ -23,21 +23,21 @@ bool SqlWorker::connect()
 		return true;
 	}
 
-	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
-	db.setDatabaseName(m_database);
-	db.setUserName(m_user);
-	db.setPassword(m_password);
+	m_db = QSqlDatabase::addDatabase(m_driver, "SQL worker - " + m_database);
+	m_db.setDatabaseName(m_database);
+	m_db.setUserName(m_user);
+	m_db.setPassword(m_password);
 
 	const int portSeparator = m_host.lastIndexOf(':');
 	if (portSeparator > 0) {
-		db.setHostName(m_host.left(portSeparator));
-		db.setPort(m_host.midRef(portSeparator + 1).toInt());
+		m_db.setHostName(m_host.left(portSeparator));
+		m_db.setPort(m_host.midRef(portSeparator + 1).toInt());
 	} else {
-		db.setHostName(m_host);
+		m_db.setHostName(m_host);
 	}
 
-	if (!db.open()) {
-		log(QStringLiteral("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
+	if (!m_db.open()) {
+		log(QStringLiteral("Error initializing commands: %1").arg(m_db.lastError().text()), Logger::Error);
 		return false;
 	}
 
@@ -68,6 +68,6 @@ bool SqlWorker::execute(const QString &sql)
 	log(QStringLiteral("SQL execution of \"%1\"").arg(sql));
 	Logger::getInstance().logCommandSql(sql);
 
-	QSqlQuery query;
+	QSqlQuery query(m_db);
 	return query.exec(sql);
 }

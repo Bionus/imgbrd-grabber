@@ -1,37 +1,70 @@
 name: Linux
-on: [push]
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
 
 jobs:
   Linux:
     timeout-minutes: 20
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
+
+    env:
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      PLATFORM_NAME: x64
 
     steps:
+    - name: Set environment
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
 
-    - name: Set environment
-      run: |
-        echo ::set-env name=GRABBER_VERSION::nightly
-        echo ::set-env name=GRABBER_IS_NIGHTLY::1
-        echo ::set-env name=PLATFORM_NAME::x64
-
     - name: Install packages
-      run: sudo apt-get install libpulse-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpulse-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libgstreamer-plugins-base1.0-0
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/linux.yml') }}
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.7.2
+      uses: jurplel/install-qt-action@v2
       with:
-        version: 5.12.6
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.15.1
+
+    - name: Vendor cache
+      uses: actions/cache@v1
+      id: vendor-cache
+      with:
+        path: vendor
+        key: ${{ runner.os }}-bin-${{ hashFiles('.github/workflows/linux.yml') }}
+
+    - name: Create vendor dir
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      run: mkdir vendor
 
     - name: Create build dir
       run: mkdir build
 
     - name: Configure
       working-directory: build
-      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
 
     - name: Compile
       working-directory: build
@@ -45,5 +78,44 @@ jobs:
         working-directory: src
         run: ../build/tests/tests
 
+    - name: Download linuxdeployqt
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
+      working-directory: vendor
+      run: |
+        curl -Lo "linuxdeployqt.AppImage" "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
+        chmod a+x linuxdeployqt.AppImage
+
     - name: Generate package
-      run: ./scripts/package-linux.sh
+      run: ./scripts/package-appimage.sh
+
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly
+        name: Nightly
+        allowUpdates: true
+        draft: false
+        prerelease: true
+        artifacts: Grabber_*.AppImage
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: Grabber_*.AppImage

@@ -3,3 +3,5 @@ files:
     translation: /src/languages/%language%.ts
   - source: /src/crash-reporter/languages/YourLanguage.ts
     translation: /src/crash-reporter/languages/%language%.ts
+  - source: /src/gui-qml/languages/YourLanguage.ts
+    translation: /src/gui-qml/languages/%language%.ts
