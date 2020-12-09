@@ -456,8 +456,7 @@ bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 	#else
 		struct utimbuf timebuffer;
 		timebuffer.modtime = datetime.toTime_t();
-		const char *filename = path.toStdString().c_str();
-		if ((utime(filename, &timebuffer)) < 0) {
+		if ((utime(path.toStdString().c_str(), &timebuffer)) < 0) {
 			log(QStringLiteral("Unable to change the file creation date (%1 - %2): %3").arg(lastError()).arg(lastErrorString(), path), Logger::Error);
 			return false;
 		}
