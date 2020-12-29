@@ -7,7 +7,7 @@ FocusScope {
     id: root
 
     signal enterPressed()
-    property alias text: textInput.text
+    property alias text: textInput.fakeText
     property alias placeholderText: textInput.placeholderText
     property bool isOpen: false
 
@@ -28,6 +28,9 @@ FocusScope {
             anchors.leftMargin: 12
             anchors.rightMargin: 12
             focus: true
+
+            property string fakeText
+            onFakeTextChanged: textInput.setText(fakeText)
 
             onEnterPressed: root.enterPressed()
         }

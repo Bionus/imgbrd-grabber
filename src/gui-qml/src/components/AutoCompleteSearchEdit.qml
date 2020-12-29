@@ -29,6 +29,10 @@ SearchEdit {
         }
     }
 
+    function setText(newText) {
+        root.blockTextChange = true
+        root.text = newText
+    }
     function getCurrentWord() {
         var begin = root.text.lastIndexOf(" ", root.cursorPosition - 1) + 1
         var end = root.text.indexOf(" ", begin);
