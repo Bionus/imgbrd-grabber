@@ -19,7 +19,9 @@ Item {
         name: root.name
         subtitle: textField.echoMode === TextField.Password
             ? "*".repeat(setting.value.length)
-            : setting.value
+            : (setting.value.length > 0 && setting.value.trim().length === 0
+                ? '"' + setting.value + '"'
+                : setting.value)
         anchors.fill: parent
 
         onClicked: dialog.open()
