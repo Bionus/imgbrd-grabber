@@ -105,7 +105,7 @@ Page {
 
                     Item {
                         Loader {
-                            active: !image.isVideo
+                            active: !modelData.isVideo
                             anchors.fill: parent
 
                             sourceComponent: ColumnLayout {
@@ -114,7 +114,7 @@ Page {
                                     Layout.fillWidth: true
                                     Layout.fillHeight: true
                                     source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
-                                    animated: image.isAnimated
+                                    animated: modelData.isAnimated
                                     clip: true
                                 }
 
@@ -127,7 +127,7 @@ Page {
                         }
 
                         Loader {
-                            active: image.isVideo
+                            active: modelData.isVideo
                             anchors.fill: parent
 
                             sourceComponent: VideoPlayer {
