@@ -44,34 +44,42 @@ Page {
                 ListElement {
                     name: qsTr("Interface")
                     icon: "/images/icons/interface.png"
+                    component: "InterfaceSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Appearance")
                     icon: "/images/icons/palette.png"
+                    component: "AppearanceSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Save")
                     icon: "/images/icons/download.png"
+                    component: "SaveSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Sources")
                     icon: "/images/icons/cloud.png"
+                    component: "SourcesSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Blacklist")
                     icon: "/images/icons/block.png"
+                    component: "BlacklistSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Network")
                     icon: "/images/icons/network.png"
+                    component: "NetworkSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("Advanced")
                     icon: "/images/icons/settings.png"
+                    component: "AdvancedSettingsPage.qml"
                 }
                 ListElement {
                     name: qsTr("About")
                     icon: "/images/icons/info.png"
+                    component: "AboutSettingsPage.qml"
                 }
             }
             delegate: ItemDelegate {
@@ -80,41 +88,25 @@ Page {
                 text: model.name
                 icon.source: model.icon
 
-                onClicked: stackView.push(stackView.children[index + 1])
+                onClicked: stackView.push(settingsPage, { path: model.component })
             }
         }
+    }
 
-        InterfaceSettingsPage {
+    Component {
+        id: settingsPage
+
+        ScrollView {
+            property string path
+
             width: parent.width
-            visible: false
-        }
-        AppearanceSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        SaveSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        SourcesSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        BlacklistSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        NetworkSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        AdvancedSettingsPage {
-            width: parent.width
-            visible: false
-        }
-        AboutSettingsPage {
-            width: parent.width
-            visible: false
+            contentWidth: width
+
+            Loader {
+                anchors.fill: parent
+
+                source: "pages/" + path
+            }
         }
     }
 
