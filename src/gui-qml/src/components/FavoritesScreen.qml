@@ -32,7 +32,7 @@ Page {
         model: favorites
 
         delegate: ItemDelegate {
-            width: parent.width
+            width: root.width
             text: modelData
 
             onClicked: root.openFavorite(modelData)
