@@ -30,7 +30,18 @@ FocusScope {
             focus: true
 
             property string fakeText
-            onFakeTextChanged: textInput.setText(fakeText)
+            property bool blockTextChanges: false
+            onFakeTextChanged: {
+                if (blockTextChanges) {
+                    blockTextChanges = false
+                    return
+                }
+                textInput.setText(fakeText)
+            }
+            onTextChanged: {
+                blockTextChanges = true
+                fakeText = text
+            }
 
             onEnterPressed: root.enterPressed()
         }
