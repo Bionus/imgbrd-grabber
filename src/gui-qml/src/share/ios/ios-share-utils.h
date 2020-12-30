@@ -6,11 +6,13 @@
 
 class IosShareUtils : public BaseShareUtils
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-        explicit IosShareUtils(QQuickItem *parent = 0);
-        void share(const QString &text, const QUrl &url);
+	public:
+		explicit IosShareUtils(QQuickItem *parent = 0);
+
+		void share(const QString &text);
+		bool sendFile(const QString &path, const QString &mimeType, const QString &title) override;
 };
 
 #endif // IOS_SHARE_UTILS_H

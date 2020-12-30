@@ -10,7 +10,9 @@ class AndroidShareUtils : public BaseShareUtils
 
 	public:
 		AndroidShareUtils(QQuickItem* parent = 0);
-		bool share(const QString &text, const QUrl &url) override;
+
+		bool share(const QString &text) override;
+		bool sendFile(const QString &path, const QString &mimeType, const QString &title) override;
 };
 
 #endif // ANDROID_SHARE_UTILS_H
