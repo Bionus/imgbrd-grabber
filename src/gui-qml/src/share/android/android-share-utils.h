@@ -6,11 +6,11 @@
 
 class AndroidShareUtils : public BaseShareUtils
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-        AndroidShareUtils(QQuickItem* parent = 0);
-        void share(const QString &text, const QUrl &url) override;
+	public:
+		AndroidShareUtils(QQuickItem* parent = 0);
+		bool share(const QString &text, const QUrl &url) override;
 };
 
 #endif // ANDROID_SHARE_UTILS_H

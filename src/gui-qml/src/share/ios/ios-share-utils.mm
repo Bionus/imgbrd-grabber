@@ -8,7 +8,7 @@ IosShareUtils::IosShareUtils(QQuickItem *parent)
     : BaseShareUtils(parent)
 {}
 
-void IosShareUtils::share(const QString &text, const QUrl &url)
+bool IosShareUtils::share(const QString &text, const QUrl &url)
 {
     NSMutableArray *sharingItems = [NSMutableArray new];
     if (!text.isEmpty()) {
@@ -25,4 +25,6 @@ void IosShareUtils::share(const QString &text, const QUrl &url)
         activityController.popoverPresentationController.sourceView = qtController.view;
     }
     [qtController presentViewController:activityController animated:YES completion:nil];
+
+	return true;
 }

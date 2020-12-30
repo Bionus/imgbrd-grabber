@@ -9,10 +9,10 @@
 
 class BaseShareUtils : public QQuickItem
 {
-    public:
-        BaseShareUtils(QQuickItem *parent = 0) : QQuickItem(parent){}
-        virtual ~BaseShareUtils() {}
-        virtual void share(const QString &text, const QUrl &url) { qDebug() << text << url; }
+	public:
+		BaseShareUtils(QQuickItem *parent = 0) : QQuickItem(parent){}
+		virtual ~BaseShareUtils() {}
+		virtual bool share(const QString &text, const QUrl &url) { return true; }
 };
 
 #endif //BASE_SHARE_UTILS_H

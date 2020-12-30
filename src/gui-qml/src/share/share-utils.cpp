@@ -6,6 +6,7 @@
 #else
     #include "base-share-utils.h"
 #endif
+#include "logger.h"
 
 
 ShareUtils::ShareUtils(QQuickItem *parent)
@@ -22,5 +23,9 @@ ShareUtils::ShareUtils(QQuickItem *parent)
 
 void ShareUtils::share(const QString &text, const QUrl &url)
 {
-    m_shareUtils->share(text, url);
+	log(QString("Shared text '%1' with url '%2'").arg(text, url.toString()), Logger::Info);
+	bool ok = m_shareUtils->share(text, url);
+	if (!ok) {
+		log("Error during sharing", Logger::Error);
+	}
 }
