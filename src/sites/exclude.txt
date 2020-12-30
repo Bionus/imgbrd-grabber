@@ -1,0 +1,18 @@
+# Meta
+exclude.txt
+CMakeLists.txt
+
+# Build config files
+package*.json
+*.config.js
+tsconfig.json
+tslint.json
+
+# Source and test files
+**/*.ts
+**/resources
+node_modules
+
+# Disabled sites
+Sankaku
+Tumblr
