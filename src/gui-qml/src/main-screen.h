@@ -12,6 +12,7 @@ class Profile;
 class QmlImage;
 class QmlSite;
 class Settings;
+class ShareUtils;
 
 class MainScreen : public QObject
 {
@@ -27,7 +28,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
 
 	public:
-		explicit MainScreen(Profile *profile, QObject *parent = nullptr);
+		explicit MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent = nullptr);
 		const QString &query() const { return m_query; }
 		const QList<QmlImage*> &results() const { return m_results; }
 		const QString &log() const { return m_log; }
@@ -41,6 +42,7 @@ class MainScreen : public QObject
 		void search(const QString &site, const QString &query, int page, const QString &postFilter);
 		void newLog(const QString &message);
 		void downloadImage(const QSharedPointer<Image> &image);
+		void shareImage(const QSharedPointer<Image> &image);
 		QString addSite(const QString &type, const QString &host, bool https);
 		QString toLocalFile(const QString &url);
 		QString getBlacklist();
@@ -71,6 +73,7 @@ class MainScreen : public QObject
 
 	private:
 		Profile *m_profile;
+		ShareUtils *m_shareUtils;
 		QString m_query;
 		QList<QmlImage*> m_results;
 		QString m_log;

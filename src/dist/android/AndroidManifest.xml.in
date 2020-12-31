@@ -42,6 +42,10 @@
 			<!-- Extract android style -->
 			<meta-data android:name="android.app.extract_android_style" android:value="default"/>
 		</activity>
+
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.bionus.grabber.fileprovider" android:grantUriPermissions="true" android:exported="false">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths"/>
+		</provider>
 	</application>
 
 	<supports-screens android:anyDensity="true" android:normalScreens="true" android:smallScreens="true" android:largeScreens="true"/>

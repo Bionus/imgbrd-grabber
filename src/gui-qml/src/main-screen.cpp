@@ -1,6 +1,7 @@
 #include "main-screen.h"
 #include <QDir>
 #include <QEventLoop>
+#include <QMimeDatabase>
 #include <QSettings>
 #include <QSslSocket>
 #include <QStandardPaths>
@@ -14,6 +15,7 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "settings.h"
+#include "share/share-utils.h"
 #include "utils/logging.h"
 #include "models/qml-image.h"
 #include "models/qml-site.h"
@@ -21,8 +23,8 @@
 #define IMAGES_PER_PAGE 20
 
 
-MainScreen::MainScreen(Profile *profile, QObject *parent)
-	: QObject(parent), m_profile(profile)
+MainScreen::MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent)
+	: QObject(parent), m_profile(profile), m_shareUtils(shareUtils)
 {
 	connect(&Logger::getInstance(), &Logger::newLog, this, &MainScreen::newLog);
 	logSystemInformation(m_profile);
@@ -115,6 +117,23 @@ void MainScreen::downloadImage(const QSharedPointer<Image> &image)
 	auto downloader = new ImageDownloader(m_profile, image, filename, path, 1, true, true, this, false);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
+}
+
+void MainScreen::shareImage(const QSharedPointer<Image> &image)
+{
+	const QString filename = "image_to_share.%ext%";
+	const QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
+	ImageDownloader downloader(m_profile, image, filename, path, 0, false, false, this);
+
+	QEventLoop loop;
+	QObject::connect(&downloader, &ImageDownloader::saved, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+	downloader.save();
+	loop.exec();
+
+	const QString savePath = image->savePath();
+	const QString mimeType = QMimeDatabase().mimeTypeForFile(savePath).name();
+	m_shareUtils->sendFile(savePath, mimeType, "Share image");
 }
 
 QString MainScreen::addSite(const QString &type, const QString &host, bool https)

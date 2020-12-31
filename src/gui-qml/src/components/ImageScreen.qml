@@ -1,4 +1,3 @@
-import Grabber 1.0
 import QtMultimedia 5.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
@@ -16,10 +15,6 @@ Page {
     property bool showHd: false
     property bool showTags: false
 
-    ShareUtils {
-        id: shareUtils
-    }
-
     Component {
         id: actionButtons
 
@@ -31,7 +26,7 @@ Page {
 
             ToolButton {
                 icon.source: "/images/icons/share.png"
-                onClicked: shareUtils.share("Image", image.fileUrl)
+                onClicked: backend.shareImage(image.image)
             }
 
             ToolButton {

@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
 	app.setOrganizationDomain("bionus.fr.cr");
 
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
-	qmlRegisterType<ShareUtils>("Grabber", 1, 0, "ShareUtils");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
 	qRegisterMetaType<Settings*>("Settings*");
@@ -95,8 +94,11 @@ int main(int argc, char *argv[])
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
 	#endif
 
+	ShareUtils shareUtils(nullptr);
+	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);
+
 	Profile profile(savePath());
-	MainScreen mainScreen(&profile, &engine);
+	MainScreen mainScreen(&profile, &shareUtils, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
 	engine.rootContext()->setContextProperty("backend", &mainScreen);
 

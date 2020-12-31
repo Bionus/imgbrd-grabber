@@ -79,4 +79,7 @@ if(ANDROID)
 		KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
 		DEPENDS ${ANDROID_EXTRA_LIBS})
 	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
+
+	# Override build.gradle
+	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/build.gradle.in" "${QT_ANDROID_APP_BINARY_DIR}/build.gradle" @ONLY)
 endif()
