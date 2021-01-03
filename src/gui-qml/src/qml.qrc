@@ -39,5 +39,7 @@
         <file>components/FavoritesScreen.qml</file>
         <file>components/AutoCompleteSearchEdit.qml</file>
         <file>components/settings/pages/AdvancedSettingsPage.qml</file>
+        <file>components/settings/items/ColorSetting.qml</file>
+        <file>components/settings/items/MaterialColorSetting.qml</file>
     </qresource>
 </RCC>

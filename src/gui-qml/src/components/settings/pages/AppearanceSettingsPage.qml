@@ -17,17 +17,13 @@ ColumnLayout {
         setting: gSettings.appearance_materialTheme
         Layout.fillWidth: true
     }
-    ComboSetting {
+    MaterialColorSetting {
         name: qsTr("Primary color")
-        options: globals.materialColorsStr
-        values: globals.materialColors
         setting: gSettings.appearance_materialPrimary
         Layout.fillWidth: true
     }
-    ComboSetting {
+    MaterialColorSetting {
         name: qsTr("Accent color")
-        options: globals.materialColorsStr
-        values: globals.materialColors
         setting: gSettings.appearance_materialAccent
         Layout.fillWidth: true
     }
