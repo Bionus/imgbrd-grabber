@@ -291,6 +291,15 @@ void ImagePreview::contextSaveImageAs()
 	Filename format(settings->value("Save/filename").toString());
 	QString tmpPath;
 
+	// If we need detailed tags for the filename, we first load them
+	const int needTags = format.needExactTags(m_image->parentSite(), settings);
+	if (needTags == 2 || (needTags == 1 && m_image->hasUnknownTag())) {
+		QEventLoop loop;
+		m_image->loadDetails();
+		connect(m_image.data(), &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
+		loop.exec();
+	}
+
 	// If the MD5 is required for the filename, we first download the image
 	if (format.needTemporaryFile(m_image->tokens(m_profile))) {
 		tmpPath = QDir::temp().absoluteFilePath("grabber-saveAs-" + QString::number(QRandomGenerator::global()->generate(), 16));
