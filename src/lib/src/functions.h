@@ -35,6 +35,7 @@ class QVariant;
 
 
 QStringList splitCommand(const QString &command);
+QStringList splitStringMulti(const QList<QChar> &seps, const QString &str, bool skipEmpty = false);
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);

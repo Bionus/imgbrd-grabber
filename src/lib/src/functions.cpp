@@ -100,6 +100,25 @@ QStringList splitCommand(const QString &command)
 	return args;
 }
 
+QStringList splitStringMulti(const QList<QChar> &seps, const QString &str, bool skipEmpty)
+{
+	QStringList ret;
+
+	int begin = 0;
+	for (int i = 0; i < str.length(); ++i) {
+		if (seps.indexOf(str[i]) != -1) {
+			if (i - begin > 0 || !skipEmpty) {
+				ret.append(str.mid(begin, i - begin));
+			}
+			begin = i + 1;
+		}
+	}
+	if (begin < str.count() || !skipEmpty) {
+		ret.append(str.mid(begin));
+	}
+	return ret;
+}
+
 
 /**
  * Load custom tokens from settings.

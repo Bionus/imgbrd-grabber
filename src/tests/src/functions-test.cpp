@@ -405,4 +405,25 @@ TEST_CASE("Functions")
 		REQUIRE(removeCacheBuster(QUrl("https://test.com/path?string")) == QUrl("https://test.com/path?string"));
 		REQUIRE(removeCacheBuster(QUrl("https://test.com/path?1234")) == QUrl("https://test.com/path"));
 	}
+
+	SECTION("splitStringMulti")
+	{
+		SECTION("Basic usage")
+		{
+			REQUIRE(splitStringMulti({}, "a,b;c,d") == QStringList { "a,b;c,d" });
+			REQUIRE(splitStringMulti({ ';' }, "a,b;c,d") == QStringList { "a,b", "c,d" });
+			REQUIRE(splitStringMulti({ ',' }, "a,b;c,d") == QStringList { "a", "b;c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d") == QStringList { "a", "b", "c", "d" });
+		}
+
+		SECTION("Skip empty parts")
+		{
+			REQUIRE(splitStringMulti({ ',', ';' }, ",;,a,b;c,d", false) == QStringList { "", "", "", "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, ",;,a,b;c,d", true) == QStringList { "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,,b;;c,d", false) == QStringList { "a", "", "b", "", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,,b;;c,d", true) == QStringList { "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", false) == QStringList { "a", "b", "c", "d", "", "", "" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", true) == QStringList { "a", "b", "c", "d" });
+		}
+	}
 }
