@@ -312,6 +312,36 @@ Example:
 2001-05-21
 ```
 
+### Time zone
+You can override the date's timezone using the "timezone" option.
+
+Allowed values:
+* `server`: the server's time zone (default)
+* `local`: the current computer's local time zone
+* Any time zone from the IANA database (ex: "UTC", "Europe/Paris"...)
+
+You can find the list of available time zones on:
+* [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+* [The IANA website](https://www.iana.org/time-zones)
+
+Example:
+```
+%date%
+05-18-2021 17.32
+
+%date:timezone=server%
+05-18-2021 17.32
+
+%date:timezone=local%
+05-18-2021 23.32
+
+%date:timezone=UTC%
+05-18-2021 22.32
+
+%date:timezone=Europe/Paris%
+05-18-2021 23.32
+```
+
 # Custom tokens
 You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
 

@@ -174,9 +174,23 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	m_result += res;
 }
 
-QString FilenameExecutionVisitor::variableToString(const QString &name, const QDateTime &val, const QMap<QString, QString> &options)
+QString FilenameExecutionVisitor::variableToString(const QString &name, QDateTime val, const QMap<QString, QString> &options)
 {
 	Q_UNUSED(name);
+
+	const QString timeZone = options.value("timezone", "");
+	if (!timeZone.isEmpty() && timeZone != QLatin1String("server")) {
+		if (timeZone == QLatin1String("local")) {
+			val = val.toLocalTime();
+		} else {
+			QTimeZone tz(timeZone.toLatin1());
+			if (tz.isValid()) {
+				val = val.toTimeZone(tz);
+			} else {
+				log(QString("Unknown timeZone '%1'").arg(timeZone), Logger::Error);
+			}
+		}
+	}
 
 	const QString format = options.value("format", "MM-dd-yyyy HH.mm");
 	return val.toString(format);

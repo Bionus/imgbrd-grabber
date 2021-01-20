@@ -425,6 +425,12 @@ TEST_CASE("Filename")
 	{
 		assertPath(profile, img, "%date:format=yyyy-MM-dd%.%ext%", "2016-08-18.jpg");
 	}
+	SECTION("PathOptionDateTimezone")
+	{
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm%.%ext%", "2016-08-18 09-52.jpg");
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm,timezone=UTC%.%ext%", "2016-08-18 09-52.jpg");
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm,timezone=Europe/Paris%.%ext%", "2016-08-18 10-52.jpg");
+	}
 	SECTION("PathOptionTagNamespace")
 	{
 		settings->setValue("Save/character_multiple", "keepAll");
