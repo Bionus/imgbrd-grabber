@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QSharedPointer>
 #include <QStringList>
+#include <QTimeZone>
 #include <QVariant>
 #include <algorithm>
 #include "filename/ast/filename-node-condition-ignore.h"
