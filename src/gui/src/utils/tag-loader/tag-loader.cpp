@@ -72,8 +72,8 @@ void TagLoader::start()
 
 	// Start loader
 	m_loader = new TagListLoader(m_profile, site, MIN_TAG_COUNT, this);
-	connect(m_loader, TagListLoader::progress, ui->labelProgress, &QLabel::setText);
-	connect(m_loader, TagListLoader::finished, this, &TagLoader::finishedLoading);
+	connect(m_loader, &TagListLoader::progress, ui->labelProgress, &QLabel::setText);
+	connect(m_loader, &TagListLoader::finished, this, &TagLoader::finishedLoading);
 	m_loader->start();
 }
 
