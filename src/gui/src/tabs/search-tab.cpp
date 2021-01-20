@@ -836,10 +836,11 @@ void SearchTab::contextSaveSelected()
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
 		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
 		if (m_boutons.contains(img.data())) {
-			ImagePreview *preview = m_boutons[img.data()];
-			connect(downloader, &ImageDownloader::downloadProgress, [preview](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
-				Q_UNUSED(img);
-				preview->setDownloadProgress(v1, v2);
+			connect(downloader, &ImageDownloader::downloadProgress, [this](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
+				ImagePreview *preview = m_boutons.value(img.data(), nullptr);
+				if (preview != nullptr) {
+					preview->setDownloadProgress(v1, v2);
+				}
 			});
 		}
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
