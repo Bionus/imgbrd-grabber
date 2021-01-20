@@ -144,7 +144,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags('<tr>\\s*<td>(?<count>\\d+)</td>\\s*<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<name>.+?)</a></span></td>', src),
+                        tags: Grabber.regexToTags('<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<name>.+?)</a></span>\\s*<span class="tag-count">(?<count>\\d+)</span></td>', src),
                     };
                 },
             },
