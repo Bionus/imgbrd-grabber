@@ -54,6 +54,9 @@ class Profile : public QObject
 		void addIgnored(const QString &tag);
 		void removeIgnored(const QString &tag);
 
+		// Removed tags managementc
+		void setRemovedTags(const QString &raw);
+
 		// MD5 management
 		QPair<QString, QString> md5Action(const QString &md5, const QString &target);
 		QStringList md5Exists(const QString &md5);
@@ -78,6 +81,7 @@ class Profile : public QObject
 		QList<Favorite> &getFavorites();
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
+		QStringList &getRemovedTags();
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
@@ -104,6 +108,7 @@ class Profile : public QObject
 		QList<Favorite> m_favorites;
 		QStringList m_keptForLater;
 		QStringList m_ignored;
+		QStringList m_removedTags;
 		Commands *m_commands;
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;

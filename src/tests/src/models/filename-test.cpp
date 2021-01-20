@@ -106,7 +106,7 @@ TEST_CASE("Filename")
 	auto profile = pProfile.data();
 
 	auto settings = profile->getSettings();
-	settings->setValue("ignoredtags", "");
+	profile->setRemovedTags("");
 	settings->setValue("Save/separator", " ");
 	settings->setValue("Save/character_value", "group");
 	settings->setValue("Save/character_multiple", "replaceAll");
@@ -199,13 +199,13 @@ TEST_CASE("Filename")
 	}
 	SECTION("PathIgnoredTags")
 	{
-		settings->setValue("ignoredtags", "character1");
+		profile->setRemovedTags("character1");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",
 				"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		settings->setValue("ignoredtags", "character*");
+		profile->setRemovedTags("character*");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
 				"%artist%/%copyright%/%character%/%md5%.%ext%",

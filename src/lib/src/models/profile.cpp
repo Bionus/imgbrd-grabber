@@ -103,6 +103,9 @@ Profile::Profile(QString path)
 		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
 
+	// Load removed
+	m_removedTags = splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true);
+
 	// Make a backup of MD5s in case the multi-location change broke everything
 	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
 		QFile::copy(m_path + "/md5s.txt", m_path + "/md5s.txt.bak");
@@ -376,6 +379,12 @@ void Profile::removeIgnored(const QString &tag)
 	emit ignoredChanged();
 }
 
+void Profile::setRemovedTags(const QString &raw)
+{
+	m_removedTags = splitStringMulti({ ' ', '\n' }, raw, true);
+	m_settings->setValue("ignoredtags", raw);
+}
+
 QPair<QString, QString> Profile::md5Action(const QString &md5, const QString &target)
 {
 	return m_md5s->action(md5, target);
@@ -477,6 +486,7 @@ QSettings *Profile::getSettings() const { return m_settings; }
 QList<Favorite> &Profile::getFavorites() { return m_favorites; }
 QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
+QStringList &Profile::getRemovedTags() { return m_removedTags; }
 Commands &Profile::getCommands() { return *m_commands; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }

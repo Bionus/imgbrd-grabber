@@ -905,7 +905,7 @@ void OptionsWindow::save()
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
 	// Ignored tags
-	settings->setValue("ignoredtags", ui->textRemovedTags->toPlainText());
+	m_profile->setRemovedTags(ui->textRemovedTags->toPlainText());
 	m_profile->setIgnored(ui->textIgnoredTags->toPlainText().split('\n', Qt::SkipEmptyParts));
 
 	// Monitoring

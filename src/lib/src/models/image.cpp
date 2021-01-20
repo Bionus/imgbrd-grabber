@@ -986,9 +986,9 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
-	QSettings *settings = profile->getSettings();
-	QStringList ignore = profile->getIgnored();
-	const QStringList remove = settings->value("ignoredtags").toString().split(QRegularExpression(" |\n"), Qt::SkipEmptyParts);
+	const QSettings *settings = profile->getSettings();
+	const QStringList &ignore = profile->getIgnored();
+	const QStringList &remove = profile->getRemovedTags();
 
 	QMap<QString, Token> tokens;
 
