@@ -2,13 +2,10 @@
 #include <QMessageBox>
 #include <ui_tag-loader.h>
 #include "helpers.h"
-#include "models/api/api.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "tags/tag.h"
-#include "tags/tag-api.h"
 #include "tags/tag-database.h"
-#include "tags/tag-type-api.h"
+#include "tools/tag-list-loader.h"
 
 #define MIN_TAG_COUNT 20
 
@@ -18,19 +15,7 @@ TagLoader::TagLoader(Profile *profile, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	QStringList keys;
-	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
-		Site *site = it.value();
-		bool needTagTypes = site->tagDatabase()->tagTypes().isEmpty();
-		bool hasApiForTagTypes = !getApisToLoadTagTypes(site).isEmpty();
-		bool hasApiForTags = !getApisToLoadTags(site, needTagTypes && !hasApiForTagTypes).isEmpty();
-		if (hasApiForTags) {
-			m_options.append(it.key());
-			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
-		}
-	}
-
-	ui->comboSource->addItems(keys);
+	resetOptions();
 	ui->widgetProgress->hide();
 
 	resize(size().width(), 0);
@@ -41,32 +26,33 @@ TagLoader::~TagLoader()
 	delete ui;
 }
 
-QList<Api*> TagLoader::getApisToLoadTagTypes(Site *site) const
+void TagLoader::resetOptions()
 {
-	QList<Api*> apis;
-	for (Api *a : site->getApis()) {
-		if (a->canLoadTagTypes()) {
-			apis.append(a);
+	m_options.clear();
+
+	QStringList keys;
+	for (auto it = m_sites.constBegin(); it != m_sites.constEnd(); ++it) {
+		Site *site = it.value();
+		if (TagListLoader::canLoadTags(site)) {
+			m_options.append(it.key());
+			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
 		}
 	}
 
-	return apis;
-}
-
-QList<Api*> TagLoader::getApisToLoadTags(Site *site, bool needTagTypes) const
-{
-	QList<Api*> apis;
-	for (Api *a : site->getApis()) {
-		if (a->canLoadTags() && (!needTagTypes || !a->mustLoadTagTypes())) {
-			apis.append(a);
-		}
+	int index = ui->comboSource->currentIndex();
+	ui->comboSource->clear();
+	ui->comboSource->addItems(keys);
+	if (index >= 0) {
+		ui->comboSource->setCurrentIndex(index);
 	}
-
-	return apis;
 }
 
 void TagLoader::cancel()
 {
+	if (m_loader != nullptr) {
+		m_loader->cancel();
+	}
+
 	emit rejected();
 	close();
 	deleteLater();
@@ -76,79 +62,38 @@ void TagLoader::start()
 {
 	Site *site = m_sites.value(m_options[ui->comboSource->currentIndex()]);
 
-	// Load tag types first if necessary
-	bool needTagTypes = site->tagDatabase()->tagTypes().isEmpty();
-	QList<Api*> apisTypes = getApisToLoadTagTypes(site);
-	if (needTagTypes && !apisTypes.isEmpty()) {
-		ui->labelProgress->setText(tr("Loading tag types..."));
-
-		Api *apiTypes = apisTypes.first();
-
-		// Load tag types
-		QEventLoop loop;
-		auto *tagTypeApi = new TagTypeApi(m_profile, site, apiTypes, this);
-		connect(tagTypeApi, &TagTypeApi::finishedLoading, &loop, &QEventLoop::quit);
-		tagTypeApi->load();
-		loop.exec();
-
-		auto tagTypes = tagTypeApi->tagTypes();
-		if (tagTypes.isEmpty()) {
-			error(this, tr("Error loading tag types."));
-			return;
-		}
-
-		site->tagDatabase()->setTagTypes(tagTypes);
-		needTagTypes = false;
-	}
-
-	// Get tag loading API
-	QList<Api*> apis = getApisToLoadTags(site, needTagTypes);
-	Api *api = apis.first();
-	site->tagDatabase()->load();
-
-	ui->buttonStart->setEnabled(false);
-
 	// Show progress bar
+	ui->buttonStart->setEnabled(false);
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setMaximum(0);
-	ui->labelProgress->setText("0");
+	ui->labelProgress->setText("");
 	ui->widgetProgress->show();
 
-	// Load all tags
-	QList<Tag> allTags;
-	int oldCount = -1;
-	int page = 1;
-	while (oldCount != allTags.count()) {
-		// Load tags for the current page
-		QEventLoop loop;
-		auto *tagApi = new TagApi(m_profile, site, api, page, 500, "count", this);
-		connect(tagApi, &TagApi::finishedLoading, &loop, &QEventLoop::quit);
-		tagApi->load();
-		loop.exec();
+	// Start loader
+	m_loader = new TagListLoader(m_profile, site, MIN_TAG_COUNT, this);
+	connect(m_loader, TagListLoader::progress, ui->labelProgress, &QLabel::setText);
+	connect(m_loader, TagListLoader::finished, this, &TagLoader::finishedLoading);
+	m_loader->start();
+}
 
-		oldCount = allTags.count();
-		QList<Tag> tags = tagApi->tags();
-		for (const auto &tag : tags) {
-			if (tag.count() == 0 || tag.count() >= MIN_TAG_COUNT) {
-				allTags.append(tag);
-			}
-		}
-		tagApi->deleteLater();
-
-		ui->progressBar->setValue(page);
-		ui->labelProgress->setText(QString("%1 - %2").arg(page).arg(allTags.count()));
-		page++;
-	}
-
-	// Update tag database
-	site->tagDatabase()->setTags(allTags, !api->mustLoadTagTypes());
-	site->tagDatabase()->save();
-
+void TagLoader::finishedLoading()
+{
 	// Hide progress bar
 	ui->buttonStart->setEnabled(true);
 	ui->widgetProgress->hide();
 	resize(size().width(), 0);
 
-	QMessageBox::information(this, tr("Finished"), tr("%n tag(s) loaded", "", allTags.count()));
+	// Handle errors
+	if (!m_loader->error().isEmpty()) {
+		error(this, m_loader->error());
+	} else {
+		QMessageBox::information(this, tr("Finished"), tr("%n tag(s) loaded", "", m_loader->results().count()));
+	}
+
+	// Clean-up
+	m_loader->deleteLater();
+	m_loader = nullptr;
+
+	resetOptions();
 }
