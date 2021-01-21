@@ -10,6 +10,8 @@ Hey everyone!
 
 Multiple people asked for it, and since very few people were using the Gitter server, I've decided to move the chat/discussion server to Discord. I'll still be on Gitter for a while, but it will eventually be closed to avoid having two places for the same thing.
 
+<!--more-->
+
 Here is the invite link:  
 <https://discord.gg/pWnY5eW3rz>
 
