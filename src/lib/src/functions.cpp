@@ -230,7 +230,7 @@ QDateTime qDateTimeFromString(const QString &str)
 
 	const uint toInt = str.toUInt();
 	if (toInt != 0) {
-		date.setTime_t(toInt);
+		date = QDateTime::fromSecsSinceEpoch(toInt, Qt::UTC);
 	} else if (str.length() == 19) {
 		date = QDateTime::fromString(str, QStringLiteral("yyyy/MM/dd HH:mm:ss"));
 		if (!date.isValid()) {
