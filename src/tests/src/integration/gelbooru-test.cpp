@@ -64,8 +64,8 @@ TEST_CASE("Gelbooru")
 
 		REQUIRE(tags.count() == 50);
 
-		REQUIRE(tags[3].text() == QString("nami_(one_piece)"));
-		REQUIRE(tags[3].count() == 5594);
-		REQUIRE(tags[3].type().name() == QString("character"));
+		REQUIRE(tags[3].text() == QString("highres"));
+		REQUIRE(tags[3].count() == 2357638);
+		REQUIRE(tags[3].type().name() == QString("metadata"));
 	}
 }

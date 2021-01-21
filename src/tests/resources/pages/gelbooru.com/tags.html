@@ -1,91 +1,175 @@
-<!DOCTYPE html><html>
-  <head>
-    <meta charset="UTF-8">
-    <title> | Gelbooru</title><link rel="stylesheet" type="text/css" media="screen" href="default.css?49" title="default" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" title="default" />
-    
-    <link rel="SHORTCUT ICON" href="favicon.png" />
-    <meta name="keywords" content="anime, doujinshi, hentai, porn, sex, japanese hentai, anime hentai, imageboard" />
-    <meta name="description" content="Gelbooru is one of the largest hentai and safe image resource available! Over a million images for you to search and view, and it is all free!" />
-    <meta name="rating" content="mature" />
-    <link rel="search" type="application/opensearchdescription+xml" title="Gelbooru.com: Coded by Geltas" href="gelbooru.xml" />
-    
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//gelbooru.com/script/application.js?55"></script>
-  </head>
-  <body>
-    <script type="text/javascript" src="https://ads.exoclick.com/ad_track.js"></script>
-    <div class="header">
-      <div class="center">
-        <h2 class="siteName"><a href="//gelbooru.com/">Gelbooru</a></h2>
-        <ul class="flat-list">
-          <li><a href="index.php?page=account&amp;s=home">My Account</a></li>
-          <li><a href="index.php?page=post&amp;s=list&amp;tags=all">Posts</a></li>
-          <li><a href="index.php?page=comment&amp;s=list">Comments</a></li>
-          <li><a href="index.php?page=wiki&amp;s=list">Wiki</a></li>
-          <li class="current-page"><a href="index.php?page=tags&amp;s=list">Tags</a></li>
-          <li><a href="index.php?page=pool&amp;s=list">Pools</a></li>
-          <li><a href="index.php?page=forum&amp;s=list">Forum</a></li>
-          <li><a href="index.php?page=tracker&amp;s=list">Trac</a></li>
-          <li><a href="http://thedoujin.com/" target="_BLANK" style="color: #fff000;"><b>Doujin</b></a></li>
-          <li><a href="index.php?page=help" style="color: #00ff00;"><b>Help</b></a></li>
-        </ul>
-      </div>
-    </div><div class="submenu">
-      <div class="center"><ul class="flat-list2" id="subnavbar"><li><a href="index.php?page=alias&amp;s=list">Aliases</a></li><li><a href="index.php?page=tags&amp;s=list">List</a></li><li><a href="index.php?page=tags&amp;s=edit">Edit</a></li></ul></div></div>
-    <div class="noticeError" style="">
-      <div class="center">
-        <i><b>Notice</b></i>: Visit your account options to access your <a href="https://patreon.com/gelbooru" target="_blank" style="color: #ffff00;">Patreon rewards</a> for June. Do you have an artist tag on Gelbooru? <a href="https://discord.gg/PQ3UMur" target="_blank" rel="nofollow" style="color: #ffff00;">Let us know so we can properly credit you!</a>
-      </div>
-    </div>
-  <div id="long-notice"></div><div id="notice" style="display: none;"></div>
-  <div class="success-notice"  style="display: none;"><a href="index.php?page=gmail">You have mail</a></div><br />  <div id="content">
+<!DOCTYPE html><html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Tag Listing | Gelbooru - Free Anime and Hentai Gallery</title>
+		<meta charset="UTF-8">
+		<link rel="alternate" hreflang="ja" href="https://ja.gelbooru.com/index.php?page=tags&amp;s=list&amp;sort=desc&amp;order_by=index_count" />
+<link rel="alternate" hreflang="en" href="https://gelbooru.com/index.php?page=tags&amp;s=list&amp;sort=desc&amp;order_by=index_count" />
 
-    <div>
-  <form action="index.php?page=tags&s=list" method="get">
-    <table class="form">
-      <tfoot>
-  <input type="hidden" name="page" value="tags">
-  <input type="hidden" name="s" value="list">
-        <tr>
-          <td><input type="submit" value="Search"></td>
-          <td></td>
-        </tr>
-      </tfoot>
-      <tbody>
-        <tr>
-          <th width="15%">
-            <label for="name">Name</label>
+		<meta name="keywords" content=", anime, doujinshi, hentai, porn, sex, japanese hentai, anime hentai, rule34, rule 34, imageboard" />
+		<meta name="description" content="Gelbooru has millions of free hentai and rule34, anime videos, images, wallpapers, and more! No account needed, updated constantly! " />
+		<meta name="rating" content="adult" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="gridStyle.css?12w">
+		
+		<link rel="SHORTCUT ICON" href="favicon.png" />
+		<link rel="search" type="application/opensearchdescription+xml" title="Gelbooru.com: Coded by Geltas" href="gelbooru.xml" />
+		
+		
+	</head>
+	<body>
+	<style>
+	 .mn-container-adsby_position_bottom-right {
+		 display: none;
+	 }
+	</style>
+		<div id="container">
+		<div id="long-notice"></div><div id="notice" style="display: none;"></div>
+		  <header>
+			<div class="topnav" id="myTopnav">
+				<a href="https://gelbooru.com/index.php?page=post&s=list&tags=all" class="homeIcon">
+					<img src="https://gelbooru.com/layout/gelbooru-logo.svg" style="height: 46px; width: 46px; margin: 0px; padding-bottom: 2px;">
+				</a>
+				<a href="index.php?page=account&s=home">Settings</a>
+				<a href="index.php?page=post&s=list&tags=all">Posts</a>
+				<a href="index.php?page=comment&s=list">Comments</a>
+				<a href="index.php?page=wiki&s=list">Wiki</a>
+				<a href="index.php?page=tags&s=list" class="active">Tags</a>
+				<a href="index.php?page=pool&s=list">Pools</a>
+				<a href="index.php?page=forum&s=list">Forum</a>
+				<a href="index.php?page=tracker&s=list">Trac</a>
+				<a href="https://thedoujin.com/" style="color: #ffff00;"><b>Doujin</b></a>
+				<a href="https://buymyshit.moneygrubbingwhore.com/" class="active">Store</a>
+								  
+				<a href="javascript:void(0);" class="icon" onclick="responsiveViewToggle();">
+					<img src="layout/list.svg" style="filter: invert(100); height: 16px;">
+				  </a>
+			</div>
+		  </header><div class="navSubmenu"><a href="index.php?page=tags&amp;s=list">List</a>
+<a href="index.php?page=alias&amp;s=list">Aliases</a>
+<a href="index.php?page=tags&amp;s=implications">Implications</a>
+<a href="index.php?page=tags&amp;s=saved_search">Saved Searches</a></div>			
+		  
+		  <div class="searchArea">
+			<div>
+				<form action="index.php?page=search" method="post">
+					<a href="javascript:;" onclick="saveTagSearch() ;return false;"><img class="" src="layout/heart-fill.svg" style="vertical-align: top; margin: 4px 10px 0px 10px; height: 24px; width: 24px; border: 0px !important; opacity: .6;" title="Save this search. Check your account page."></a>
+					<input id="tags-search" name="tags" autocomplete="on" style="padding: 7px; width: calc(100% - 180px); border: 1px solid #e0e0e0;"  data-autocomplete="tag-query" type="text" value="" placeholder="Search Example: video black_hair"/>
+					<input name="commit" type="submit" value="Search" class="searchList"/>
+			</form>
+			</div>
+		  </div>		<section class="aside"></section>
+		<main>
+			<div class="mainBodyPadding">
+				<h2>Tag Listing</h2>
+<br />
+			  <form action="index.php?page=tags&s=list" method="get">
+			  	<input type="hidden" name="page" value="tags">
+				<input type="hidden" name="s" value="list">
+				
+				<table class="form" width="100%">
+				  <tbody>
+					<tr>
+					  <th width="15%">
+						<label for="name">Name</label>
 
-            <p>Use * as a wildcard.</p>
-          </th>
-          <td width="85%"><input id="name" name="tags" size="40" type="text" value=""></td>
-        </tr>
-        <tr>
-          <th><label for="type">Order</label></th>
-          <td><select id="type" name="sort"><option value="asc" selected="selected">Ascending</option>
+						<p>Use * as a wildcard.</p>
+					  </th>
+					  <td width="85%"><input id="name" name="tags" size="40" type="text" data-autocomplete="tag-query" class="tag-list-search" value=""></td>
+					</tr>
+					<tr>
+					  <th><label for="type">Order</label></th>
+					  <td><select id="type" name="sort"><option value="asc" selected="selected">Ascending</option>
 
-<option value="desc">Descending</option>
-</select></td>
-        </tr>
-        <tr>
-          <th><label for="order">Sort</label></th>
-          <td><select id="order" name="order_by">
-      <option value="tag">Name</option>
-      <option value="updated" selected="selected">Updated</option>
-      <option value="type">Type</option>
-        <option value="index_count">Total Count</option>
-      </select></td>
-        </tr>
-      </tbody>
+			<option value="desc">Descending</option>
+			</select></td>
+				</tr>
+				<tr>
+				  <th><label for="order">Sort</label></th>
+				  <td><select id="order" name="order_by">
+				  <option value="tag">Name</option>
+				  <option value="updated" selected="selected">Updated</option>
+				  <option value="type">Type</option>
+				  <option value="index_count">Total Count</option>
+				  </select></td>
+				</tr>
+			  </tbody>
 
-    </table>
-  </form>
-</div>
+					<tr>
+					  <td></td>
+					  <td><input type="submit" value="Search" class="searchList"></td>
+					</tr>
+			</table>
+		  </form>
+	<br /><br />
+		<table class="highlightable" width="100%"><tr>
+		<th width="45%">Name</th><th width="47%">Type</th>
+<tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=1girl">1girl</a></span> <span class="tag-count">3744626</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=1girl">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=solo">solo</a></span> <span class="tag-count">2750621</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=solo">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=long_hair">long hair</a></span> <span class="tag-count">2469534</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=long_hair">edit</a>)</td></tr><tr><td><span class="tag-type-metadata"><a href="index.php?page=post&amp;s=list&amp;tags=highres">highres</a></span> <span class="tag-count">2357638</span></td><td>metadata (<a href="index.php?page=tags&amp;s=edit&amp;tag=highres">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=breasts">breasts</a></span> <span class="tag-count">2334023</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=breasts">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=blush">blush</a></span> <span class="tag-count">1993394</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=blush">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=smile">smile</a></span> <span class="tag-count">1527989</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=smile">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=looking_at_viewer">looking at viewer</a></span> <span class="tag-count">1498208</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=looking_at_viewer">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=short_hair">short hair</a></span> <span class="tag-count">1385885</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=short_hair">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=open_mouth">open mouth</a></span> <span class="tag-count">1346076</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=open_mouth">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=blue_eyes">blue eyes</a></span> <span class="tag-count">1105811</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=blue_eyes">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=blonde_hair">blonde hair</a></span> <span class="tag-count">1058447</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=blonde_hair">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=large_breasts">large breasts</a></span> <span class="tag-count">1003301</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=large_breasts">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=brown_hair">brown hair</a></span> <span class="tag-count">1003156</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=brown_hair">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=multiple_girls">multiple girls</a></span> <span class="tag-count">965549</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=multiple_girls">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=black_hair">black hair</a></span> <span class="tag-count">879870</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=black_hair">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=skirt">skirt</a></span> <span class="tag-count">878688</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=skirt">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=10s">10s</a></span> <span class="tag-count">842523</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=10s">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=nipples">nipples</a></span> <span class="tag-count">820216</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=nipples">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=simple_background">simple background</a></span> <span class="tag-count">811714</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=simple_background">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=thighhighs">thighhighs</a></span> <span class="tag-count">811053</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=thighhighs">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=1boy">1boy</a></span> <span class="tag-count">788836</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=1boy">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bangs">bangs</a></span> <span class="tag-count">777037</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bangs">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=red_eyes">red eyes</a></span> <span class="tag-count">748146</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=red_eyes">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=hat">hat</a></span> <span class="tag-count">712005</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=hat">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=hair_ornament">hair ornament</a></span> <span class="tag-count">690589</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=hair_ornament">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=gloves">gloves</a></span> <span class="tag-count">685316</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=gloves">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=navel">navel</a></span> <span class="tag-count">683574</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=navel">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=white_background">white background</a></span> <span class="tag-count">658890</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=white_background">edit</a>)</td></tr><tr><td><span class="tag-type-copyright"><a href="index.php?page=post&amp;s=list&amp;tags=original">original</a></span> <span class="tag-count">654987</span></td><td>copyright, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=original">edit</a>)</td></tr><tr><td><span class="tag-type-copyright"><a href="index.php?page=post&amp;s=list&amp;tags=touhou">touhou</a></span> <span class="tag-count">646182</span></td><td>copyright, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=touhou">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=underwear">underwear</a></span> <span class="tag-count">646103</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=underwear">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=dress">dress</a></span> <span class="tag-count">637659</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=dress">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=female_focus">female focus</a></span> <span class="tag-count">635351</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=female_focus">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=2girls">2girls</a></span> <span class="tag-count">632393</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=2girls">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=ribbon">ribbon</a></span> <span class="tag-count">631376</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=ribbon">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=eyebrows_visible_through_hair">eyebrows visible through hair</a></span> <span class="tag-count">622547</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=eyebrows_visible_through_hair">edit</a>)</td></tr><tr><td><span class="tag-type-metadata"><a href="index.php?page=post&amp;s=list&amp;tags=bad_id">bad id</a></span> <span class="tag-count">606455</span></td><td>metadata (<a href="index.php?page=tags&amp;s=edit&amp;tag=bad_id">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=brown_eyes">brown eyes</a></span> <span class="tag-count">599249</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=brown_eyes">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=cleavage">cleavage</a></span> <span class="tag-count">590993</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=cleavage">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=shirt">shirt</a></span> <span class="tag-count">588779</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=shirt">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=twintails">twintails</a></span> <span class="tag-count">585780</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=twintails">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bow">bow</a></span> <span class="tag-count">572425</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bow">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=ass">ass</a></span> <span class="tag-count">566142</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=ass">edit</a>)</td></tr><tr><td><span class="tag-type-metadata"><a href="index.php?page=post&amp;s=list&amp;tags=censored">censored</a></span> <span class="tag-count">561108</span></td><td>metadata (<a href="index.php?page=tags&amp;s=edit&amp;tag=censored">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=nude">nude</a></span> <span class="tag-count">551724</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=nude">edit</a>)</td></tr><tr><td><span class="tag-type-metadata"><a href="index.php?page=post&amp;s=list&amp;tags=absurdres">absurdres</a></span> <span class="tag-count">551053</span></td><td>metadata (<a href="index.php?page=tags&amp;s=edit&amp;tag=absurdres">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=panties">panties</a></span> <span class="tag-count">543090</span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=panties">edit</a>)</td></tr><tr><td><span class="tag-type-metadata"><a href="index.php?page=post&amp;s=list&amp;tags=bad_pixiv_id">bad pixiv id</a></span> <span class="tag-count">538841</span></td><td>metadata (<a href="index.php?page=tags&amp;s=edit&amp;tag=bad_pixiv_id">edit</a>)</td></tr><tr><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=sitting">sitting</a></span> <span class="tag-count">530366</span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=sitting">edit</a>)</td></tr></table>
 
-<table class="highlightable" width="100%"><tr style="background: #006ffa;">
-<th width="8%">Posts</th><th width="45%">Name</th><th width="47%">Type</th>
-<tr><td>684608</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=multiple_girls">multiple_girls</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=multiple_girls">edit</a>)</td></tr><tr><td>328</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=holding_glass">holding_glass</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=holding_glass">edit</a>)</td></tr><tr><td>44</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=together">together</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=together">edit</a>)</td></tr><tr><td>5594</td><td><span class="tag-type-character"><a href="index.php?page=post&amp;s=list&amp;tags=nami_%28one_piece%29">nami_(one_piece)</a></span></td><td>character (<a href="index.php?page=tags&amp;s=edit&amp;tag=nami_%28one_piece%29">edit</a>)</td></tr><tr><td>605707</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=large_breasts">large_breasts</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=large_breasts">edit</a>)</td></tr><tr><td>382</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=champagne">champagne</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=champagne">edit</a>)</td></tr><tr><td>469950</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=2girls">2girls</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=2girls">edit</a>)</td></tr><tr><td>44100</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=orange_eyes">orange_eyes</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=orange_eyes">edit</a>)</td></tr><tr><td>7578</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=drink">drink</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=drink">edit</a>)</td></tr><tr><td>661</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=earring">earring</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=earring">edit</a>)</td></tr><tr><td>4234</td><td><span class="tag-type-character"><a href="index.php?page=post&amp;s=list&amp;tags=nico_robin">nico_robin</a></span></td><td>character (<a href="index.php?page=tags&amp;s=edit&amp;tag=nico_robin">edit</a>)</td></tr><tr><td>72192</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=necklace">necklace</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=necklace">edit</a>)</td></tr><tr><td>92034</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=orange_hair">orange_hair</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=orange_hair">edit</a>)</td></tr><tr><td>40688</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=tattoo">tattoo</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=tattoo">edit</a>)</td></tr><tr><td>344924</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=cleavage">cleavage</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=cleavage">edit</a>)</td></tr><tr><td>1677992</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=long_hair">long_hair</a></span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=long_hair">edit</a>)</td></tr><tr><td>24015</td><td><span class="tag-type-copyright"><a href="index.php?page=post&amp;s=list&amp;tags=one_piece">one_piece</a></span></td><td>copyright (<a href="index.php?page=tags&amp;s=edit&amp;tag=one_piece">edit</a>)</td></tr><tr><td>409240</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=dress">dress</a></span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=dress">edit</a>)</td></tr><tr><td>798967</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=blue_eyes">blue_eyes</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=blue_eyes">edit</a>)</td></tr><tr><td>612037</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=black_hair">black_hair</a></span></td><td>general, ambiguous (<a href="index.php?page=tags&amp;s=edit&amp;tag=black_hair">edit</a>)</td></tr><tr><td>1460561</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=breasts">breasts</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=breasts">edit</a>)</td></tr><tr><td>23577</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=grey_background">grey_background</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=grey_background">edit</a>)</td></tr><tr><td>377</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=heels">heels</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=heels">edit</a>)</td></tr><tr><td>2698</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=lightning">lightning</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=lightning">edit</a>)</td></tr><tr><td>57662</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bracelet">bracelet</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bracelet">edit</a>)</td></tr><tr><td>10433</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=jeans">jeans</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=jeans">edit</a>)</td></tr><tr><td>38173</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=back">back</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=back">edit</a>)</td></tr><tr><td>263596</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bare_shoulders">bare_shoulders</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bare_shoulders">edit</a>)</td></tr><tr><td>93131</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=belt">belt</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=belt">edit</a>)</td></tr><tr><td>812418</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=open_mouth">open_mouth</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=open_mouth">edit</a>)</td></tr><tr><td>65543</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=high_heels">high_heels</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=high_heels">edit</a>)</td></tr><tr><td>167</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=side_boob">side_boob</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=side_boob">edit</a>)</td></tr><tr><td>367179</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=ass">ass</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=ass">edit</a>)</td></tr><tr><td>171428</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bikini">bikini</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bikini">edit</a>)</td></tr><tr><td>2302802</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=1girl">1girl</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=1girl">edit</a>)</td></tr><tr><td>1824461</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=solo">solo</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=solo">edit</a>)</td></tr><tr><td>159</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=alone">alone</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=alone">edit</a>)</td></tr><tr><td>538606</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=female">female</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=female">edit</a>)</td></tr><tr><td>24773</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=staff">staff</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=staff">edit</a>)</td></tr><tr><td>73543</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=text">text</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=text">edit</a>)</td></tr><tr><td>7491</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=japanese">japanese</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=japanese">edit</a>)</td></tr><tr><td>215</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=large_ass">large_ass</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=large_ass">edit</a>)</td></tr><tr><td>2858</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=fringe">fringe</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=fringe">edit</a>)</td></tr><tr><td>687858</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=looking_at_viewer">looking_at_viewer</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=looking_at_viewer">edit</a>)</td></tr><tr><td>145935</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=looking_back">looking_back</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=looking_back">edit</a>)</td></tr><tr><td>1723</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=western">western</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=western">edit</a>)</td></tr><tr><td>197203</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=bangs">bangs</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=bangs">edit</a>)</td></tr><tr><td>23386</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=ass_grab">ass_grab</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=ass_grab">edit</a>)</td></tr><tr><td>4</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=visible_nipples">visible_nipples</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=visible_nipples">edit</a>)</td></tr><tr><td>3396</td><td><span class="tag-type-general"><a href="index.php?page=post&amp;s=list&amp;tags=cowboy_hat">cowboy_hat</a></span></td><td>general (<a href="index.php?page=tags&amp;s=edit&amp;tag=cowboy_hat">edit</a>)</td></tr></table><div id="paginator"><div class="pagination"> <b>1</b> <a href="?page=tags&amp;s=list&amp;pid=50">2</a><a href="?page=tags&amp;s=list&amp;pid=100">3</a><a href="?page=tags&amp;s=list&amp;pid=150">4</a><a href="?page=tags&amp;s=list&amp;pid=200">5</a><a href="?page=tags&amp;s=list&amp;pid=250">6</a><a href="?page=tags&amp;s=list&amp;pid=300">7</a><a href="?page=tags&amp;s=list&amp;pid=350">8</a><a href="?page=tags&amp;s=list&amp;pid=400">9</a><a href="?page=tags&amp;s=list&amp;pid=450">10</a><a href="?page=tags&amp;s=list&amp;pid=500">11</a><a href="?page=tags&amp;s=list&amp;pid=50" alt="next">&rsaquo;</a><a href="?page=tags&amp;s=list&amp;pid=460550" alt="last page">&raquo;</a></div></div></div>
-</body>
+	<div id="paginator"><div class="pagination"> <b>1</b> <a href="?page=tags&amp;s=list&amp;pid=50&sort=desc&order_by=index_count">2</a><a href="?page=tags&amp;s=list&amp;pid=100&sort=desc&order_by=index_count">3</a><a href="?page=tags&amp;s=list&amp;pid=150&sort=desc&order_by=index_count">4</a><a href="?page=tags&amp;s=list&amp;pid=200&sort=desc&order_by=index_count">5</a><a href="?page=tags&amp;s=list&amp;pid=250&sort=desc&order_by=index_count">6</a><a href="?page=tags&amp;s=list&amp;pid=300&sort=desc&order_by=index_count">7</a><a href="?page=tags&amp;s=list&amp;pid=350&sort=desc&order_by=index_count">8</a><a href="?page=tags&amp;s=list&amp;pid=400&sort=desc&order_by=index_count">9</a><a href="?page=tags&amp;s=list&amp;pid=50&sort=desc&order_by=index_count" alt="next">&rsaquo;</a><a href="?page=tags&amp;s=list&amp;pid=597750&sort=desc&order_by=index_count" alt="last page">&raquo;</a></div></main>		  
+		  <footer>
+		  		<a href="index.php?page=dmca&amp;s=index"><h2 style="display: inline-block;">DMCA</h2></a><a href="tos.php"><h2 style="display: inline-block;">TOS</h2></a>
+				<br /><br />
+				<h2><a href="javascript:;" onclick="darkModeToggle(); return false;">Dark Mode Toggle</a></h2>
+				<br /><br />
+				<a href="index.php?page=wiki&amp;s=list&amp;search=howto"><b>Help</b></a>
+				<a href="https://twitter.com/gelbooru" target="_blank">Twitter</a>
+				<a href="https://discord.gg/Zxs9tPE"><b>Discord</b></a>
+				<a href="index.php?page=extras&amp;s=patreon">Project Supporters</a>
+				<br /><br /><br /><br /><br />
+			</footer>
+					</div>
+
+	<script>
+	function responsiveViewToggle() {
+		var x = document.getElementById("myTopnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+		} else {
+			x.className = "topnav";
+		}
+	}
+	</script>
+
+	<link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css?2" title="default" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+	<script src="https://gelbooru.com//script/jquery.cookie.js"></script>
+	<script src="https://gelbooru.com//script/application.grid.js"></script>
+	<script src="https://gelbooru.com//script/jquery-hotkeys.js?1"></script>
+	<script src="https://gelbooru.com//script/autocomplete3.js?2"></script>
+		
+	<script type="text/javascript">
+		function tagPM(tagInput){
+			$('#tags-search').val($('#tags-search').val() + ' ' + tagInput);
+		}
+			
+		function saveTagSearch() {
+			$.post("index.php?page=tags&s=saved_search&csrf-token=", { save_tag_search: $('#tags-search').val()} )
+			  .done(function( data ) {
+				if(data)
+				{
+					notice("Saved this search successfully! You can access these via the Tags link in the header.");
+				}
+				else
+				{
+					notice("There was an error saving this search. Perhaps it already existed or you are not logged in?");
+				}
+			  });;
+		}
+		
+		function darkModeToggle()
+		{
+			if ($.cookie('dark_mode') == 1 )
+			{
+				$.removeCookie("dark_mode");
+			}
+			else
+			{
+				$.cookie("dark_mode", 1, { expires : 365 });
+			}
+			location.reload();
+		}
+	</script>
+	</body>
 </html>
