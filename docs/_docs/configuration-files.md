@@ -17,8 +17,8 @@ C:/Users/%USERNAME%/AppData/Local/Bionus/Grabber
 _The list below is **not** sorted by "priority" but alphabetically. All might not exist depending on your specific configuration._
 
 * `cache/`: temporary files for caching things such as HTTP requests
-* `sites/`: list of sources and sites (see [Sources](sources.md))
-* `themes/`: the installed themes (see [Themes](plugins/theme.md))
+* `sites/`: list of sources and sites (see [Sources]({{ site.baseurl }}{% link _docs/sources.md %}))
+* `themes/`: the installed themes (see [Themes]({{ site.baseurl }}{% link _docs/plugins/theme.md %}))
 * `thumbs/`: the thumbnails for favorite tags
 * `webservices/`: the icons for webservices
 * `blacklist.txt`: the ignored and blacklisted tags
