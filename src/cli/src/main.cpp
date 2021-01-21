@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QUrl>
 #include <stdexcept>
+#include "cli/load-tag-database-cli-command.h"
 #include "downloader/downloader.h"
 #include "downloader/printers/json-printer.h"
 #include "downloader/printers/simple-printer.h"
@@ -63,6 +64,7 @@ int main(int argc, char *argv[])
 	const QCommandLineOption jsonOption(QStringList() << "j" << "json", "output results as json.");
 	const QCommandLineOption loadDetailsOption(QStringList() << "load-details", "request (more) details on found items.");
 	const QCommandLineOption getDetailsOption(QStringList() << "get-details", "parse details from given link.", "url-page");
+	const QCommandLineOption loadTagDatabaseOption(QStringList() << "load-tag-database", "load the tag database of the given sources.");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -85,6 +87,7 @@ int main(int argc, char *argv[])
 	parser.addOption(jsonOption);
 	parser.addOption(loadDetailsOption);
 	parser.addOption(getDetailsOption);
+	parser.addOption(loadTagDatabaseOption);
 	const QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	const QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
 	const QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
@@ -145,6 +148,24 @@ int main(int argc, char *argv[])
 	Printer *printer = parser.isSet(jsonOption)
 		? (Printer*) new JsonPrinter(profile)
 		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
+
+	if (parser.isSet(loadTagDatabaseOption)) {
+		int minTagCount = parser.value(tagsMinOption).toInt();
+		minTagCount = minTagCount == 0 ? 10000 : minTagCount;
+
+		LoadTagDatabaseCliCommand cmd(profile, sites, minTagCount);
+
+		if (!cmd.validate()) {
+			exit(1);
+		}
+
+		QEventLoop loop;
+		cmd.run();
+		QObject::connect(&cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
+		loop.exec();
+
+		exit(0);
+	}
 
 	if (parser.isSet(getDetailsOption)) {
 		if (sites.length() != 1) {
