@@ -25,7 +25,7 @@ bool TagDatabaseSqlite::open()
 	m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), "Tag database - " + m_tagFile);
 	m_database.setDatabaseName(m_tagFile);
 	if (!m_database.open()) {
-		log(QStringLiteral("Could not open tag database: %1").arg(m_database.lastError().text()), Logger::Error);
+		log(QStringLiteral("Could not open tag database '%1': %2").arg(m_tagFile, m_database.lastError().text()), Logger::Error);
 		return false;
 	}
 
