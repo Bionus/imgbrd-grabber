@@ -73,7 +73,7 @@ jobs:
         cmake --build . --config Release
 
     - name: Test
-      uses: GabrielBB/xvfb-action@v1.2
+      uses: GabrielBB/xvfb-action@v1
       with:
         working-directory: src
         run: ../build/tests/tests
