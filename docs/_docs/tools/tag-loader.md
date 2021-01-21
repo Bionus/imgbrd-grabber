@@ -12,3 +12,17 @@ Most sources do not provide detailed tags information when listing results. So a
 By default, if there is missing tag type information, the program will have to load the image's information page before starting to download the image. From there, it will parse the tags again, hopefully this time with their type, in order to be able to generate the correct filename. That means that for each image, 2 network calls will be done to the server: first to load the image's details, then to download the actual file.
 
 The goal of the tag loader is to generate a local database to store all tags from a given source, along with their type. This way, even with incomplete tag type information, as long as the program knows the name of the tag, it can match it to its type in the tag database. This way, Grabber will be able to make less requests to the server, saving both download times and reducing the load on the servers.
+
+
+## Pre-generated databases
+
+You can find some already generated databases directly on Github:  
+<https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>
+
+Note that they are only generated for a handful of sources and might not be totally up to date. However, they can be useful to get started quickly without having to generate one yourselves.
+
+
+## Command-line interface
+
+Tag databases can also be loaded by CLI, using the `--load-tag-database` switch.  
+See [Command-line interface]({{ site.baseurl }}{% link _docs/cli.md %}) for more details.
