@@ -13,6 +13,9 @@ title: Blog
 {% endif %}
 
 {%- for post in posts -%}
+	{% if forloop.index != 1 %}
+		<hr/>
+	{% endif %}
 	{% include post_preview.html %}
 {%- endfor -%}
 
