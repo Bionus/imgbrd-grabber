@@ -18,7 +18,7 @@ You can find more info about the _AppImage_ format on [appimage.org](https://app
 This change is quite new and as such is still only available for Github nightlies, and there might be a few issues here and there. If that's the case, please do ping me by mail or on Github!
 
 You can find the download here:  
-<https://github.com/Bionus/imgbrd-grabber/releases/nightly-github>
+<https://github.com/Bionus/imgbrd-grabber/releases/nightly>
 
 The next official release should also have an AppImage file available if nightlies are not your thing.
 

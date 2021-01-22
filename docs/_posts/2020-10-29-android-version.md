@@ -19,7 +19,7 @@ You can find more details here, such as screenshots, status, roadmap, etc:
 [Bionus/imgbrd-grabber#2147](https://github.com/Bionus/imgbrd-grabber/issues/2147)
 
 Or if you just want to download it, here's the link!  
-[Grabber_nightly_qml.apk](https://github.com/Bionus/imgbrd-grabber/releases/download/nightly-github/Grabber_nightly_qml.apk)
+[Grabber_nightly.apk](https://github.com/Bionus/imgbrd-grabber/releases/download/nightly/Grabber_nightly.apk)
 
 It's still rough around the edges, but the basics are there! Feel free to comment here or on Github if you have any feedback, suggestions, requests, etc!
 

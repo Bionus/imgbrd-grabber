@@ -16,7 +16,7 @@ However, they are very useful, and as such there is ongoing work to make them mo
 Part of this work is a way to provide already generated tag databases so that users don't need to spend a lot of time and overload servers' tag APIs. The more people use tag databases, the less requests are done on servers, saving both users and servers bandwidth, since the additional request to get tag information is not necessary anymore.
 
 The already generated tag databases can now be found here:  
-<https://github.com/Bionus/imgbrd-grabber/releases/tag/tag-databases>
+<https://github.com/Bionus/imgbrd-grabber/releases/tag-databases>
 
 Currently, only one source has been added, selected because to a recent issue where a tag database would have been very useful. But I am open to suggestions for sources where providing such a database would be useful! Feel free to suggest those [on Github](https://github.com/Bionus/imgbrd-grabber/issues) as usual, with a rationale.
 

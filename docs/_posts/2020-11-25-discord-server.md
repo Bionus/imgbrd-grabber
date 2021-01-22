@@ -15,7 +15,7 @@ Multiple people asked for it, and since very few people were using the Gitter se
 Here is the invite link:  
 <https://discord.gg/pWnY5eW3rz>
 
-Try not to use it for reporting things you believe to be bugs or huge suggestions, unless you want them to be lost or forgotten within the discussion flow. The main goal is discussion about Grabber and quick questions that might not warrant a Github issue.
+Try not to use it for reporting things you believe to be bugs or huge suggestions, unless you want them to be lost or forgotten within the discussion flow (for this, you should keep using [Github issues](https://github.com/Bionus/imgbrd-grabber/issues) as usual). The main goal is discussion about Grabber and quick questions that might not warrant a big ticket.
 
 &nbsp;
 
