@@ -13,6 +13,7 @@
 #include "filename/conditional-filename.h"
 #include "filename/filename-cache.h"
 #include "filename/filename-execution-visitor.h"
+#include "filename/filename-text-extraction-visitor.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "models/api/api.h"
@@ -344,8 +345,9 @@ bool Filename::isValid(Profile *profile, QString *error) const
 
 	// Check for invalid windows characters
 	#ifdef Q_OS_WIN
-		QString txt = QString(m_format).remove(rx);
-		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|')) {
+		FilenameTextExtractionVisitor textExtractionVisitor;
+		QString txt = textExtractionVisitor.run(*m_ast->ast()).join("");
+		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || txt.contains('"') || txt.contains('<') || txt.contains('>') || txt.contains('|')) {
 			return returnError(red.arg(QObject::tr("Your format contains characters forbidden on Windows! Forbidden characters: * ? \" : < > |")), error);
 		}
 	#endif
