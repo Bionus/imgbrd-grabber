@@ -150,38 +150,30 @@ int main(int argc, char *argv[])
 		? (Printer*) new JsonPrinter(profile)
 		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
 
-	if (parser.isSet(loadTagDatabaseOption)) {
-		int minTagCount = parser.value(tagsMinOption).toInt();
-		minTagCount = minTagCount == 0 ? 10000 : minTagCount;
+	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption)) {
+		CliCommand *cmd = nullptr;
 
-		LoadTagDatabaseCliCommand cmd(profile, sites, minTagCount);
+		if (parser.isSet(loadTagDatabaseOption)) {
+			int minTagCount = parser.value(tagsMinOption).toInt();
+			minTagCount = minTagCount == 0 ? 10000 : minTagCount;
 
-		if (!cmd.validate()) {
+			cmd = new LoadTagDatabaseCliCommand(profile, sites, minTagCount);
+		} else if (parser.isSet(getDetailsOption)) {
+			QString detailsUrl = parser.value(getDetailsOption);
+
+			cmd = new GetDetailsCliCommand(profile, printer, sites, detailsUrl);
+		}
+
+		if (cmd == nullptr || !cmd->validate()) {
 			exit(1);
 		}
 
 		QEventLoop loop;
-		cmd.run();
-		QObject::connect(&cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
+		cmd->run();
+		QObject::connect(cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
 		loop.exec();
 
-		exit(0);
-	}
-
-	if (parser.isSet(getDetailsOption)) {
-		QString detailsUrl = parser.value(getDetailsOption);
-
-		GetDetailsCliCommand cmd(profile, printer, sites, detailsUrl);
-
-		if (!cmd.validate()) {
-			exit(1);
-		}
-
-		QEventLoop loop;
-		cmd.run();
-		QObject::connect(&cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
-		loop.exec();
-
+		cmd->deleteLater();
 		exit(0);
 	}
 
