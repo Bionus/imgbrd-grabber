@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QUrl>
 #include <stdexcept>
+#include "cli/download-images-cli-command.h"
 #include "cli/get-details-cli-command.h"
 #include "cli/get-images-cli-command.h"
 #include "cli/get-page-count-cli-command.h"
@@ -155,107 +156,81 @@ int main(int argc, char *argv[])
 		? (Printer*) new JsonPrinter(profile)
 		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
 
-	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption) || parser.isSet(returnCountOption) || parser.isSet(returnTagsOption) || parser.isSet(returnPureTagsOption) || parser.isSet(returnImagesOption)) {
-		CliCommand *cmd = nullptr;
+	CliCommand *cmd = nullptr;
 
-		if (parser.isSet(loadTagDatabaseOption)) {
-			int minTagCount = parser.value(tagsMinOption).toInt();
-			minTagCount = minTagCount == 0 ? 10000 : minTagCount;
+	if (parser.isSet(loadTagDatabaseOption)) {
+		int minTagCount = parser.value(tagsMinOption).toInt();
+		minTagCount = minTagCount == 0 ? 10000 : minTagCount;
 
-			cmd = new LoadTagDatabaseCliCommand(profile, sites, minTagCount);
-		} else if (parser.isSet(getDetailsOption)) {
-			const QString detailsUrl = parser.value(getDetailsOption);
+		cmd = new LoadTagDatabaseCliCommand(profile, sites, minTagCount);
+	} else if (parser.isSet(getDetailsOption)) {
+		const QString detailsUrl = parser.value(getDetailsOption);
 
-			cmd = new GetDetailsCliCommand(profile, printer, sites, detailsUrl);
-		} else if (parser.isSet(returnCountOption)) {
-			const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
-			const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
-			const int page = parser.value(pageOption).toInt();
-			const int perPage = parser.value(perPageOption).toInt();
+		cmd = new GetDetailsCliCommand(profile, printer, sites, detailsUrl);
+	} else if (parser.isSet(returnCountOption)) {
+		const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+		const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+		const int page = parser.value(pageOption).toInt();
+		const int perPage = parser.value(perPageOption).toInt();
 
-			cmd = new GetPageCountCliCommand(profile, printer, tags, postFiltering, sites, page, perPage);
-		} else if (parser.isSet(returnTagsOption)) {
-			const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
-			const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
-			const int page = parser.value(pageOption).toInt();
-			const int perPage = parser.value(perPageOption).toInt();
-			const int tagsMin = parser.value(tagsMinOption).toInt();
+		cmd = new GetPageCountCliCommand(profile, printer, tags, postFiltering, sites, page, perPage);
+	} else if (parser.isSet(returnTagsOption)) {
+		const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+		const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+		const int page = parser.value(pageOption).toInt();
+		const int perPage = parser.value(perPageOption).toInt();
+		const int tagsMin = parser.value(tagsMinOption).toInt();
 
-			cmd = new GetPageTagsCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, tagsMin);
-		} else if (parser.isSet(returnPureTagsOption)) {
-			const int page = parser.value(pageOption).toInt();
-			const int perPage = parser.value(perPageOption).toInt();
-			const int max = parser.value(limitOption).toInt();
-			const int tagsMin = parser.value(tagsMinOption).toInt();
+		cmd = new GetPageTagsCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, tagsMin);
+	} else if (parser.isSet(returnPureTagsOption)) {
+		const int page = parser.value(pageOption).toInt();
+		const int perPage = parser.value(perPageOption).toInt();
+		const int max = parser.value(limitOption).toInt();
+		const int tagsMin = parser.value(tagsMinOption).toInt();
 
-			cmd = new GetTagsCliCommand(profile, printer, sites, page, perPage, max, tagsMin);
-		} else if (parser.isSet(returnImagesOption)) {
-			const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
-			const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
-			const int page = parser.value(pageOption).toInt();
-			const int perPage = parser.value(perPageOption).toInt();
-			const QString filename = parser.value(filenameOption);
-			const QString folder = parser.value(pathOption);
-			const int max = parser.value(limitOption).toInt();
-			const bool login = !parser.isSet(noLoginOption);
-			const bool noDuplicates = parser.isSet(noDuplicatesOption);
-			const bool getBlacklisted = parser.isSet(blacklistOption);
-			const bool loadMoreDetails = parser.isSet(loadDetailsOption);
+		cmd = new GetTagsCliCommand(profile, printer, sites, page, perPage, max, tagsMin);
+	} else if (parser.isSet(returnImagesOption)) {
+		const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+		const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+		const int page = parser.value(pageOption).toInt();
+		const int perPage = parser.value(perPageOption).toInt();
+		const QString filename = parser.value(filenameOption);
+		const QString folder = parser.value(pathOption);
+		const int max = parser.value(limitOption).toInt();
+		const bool login = !parser.isSet(noLoginOption);
+		const bool noDuplicates = parser.isSet(noDuplicatesOption);
+		const bool getBlacklisted = parser.isSet(blacklistOption);
+		const bool loadMoreDetails = parser.isSet(loadDetailsOption);
 
-			cmd = new GetImagesCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, filename, folder, max, login, noDuplicates, getBlacklisted, loadMoreDetails);
-		}
+		cmd = new GetImagesCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, filename, folder, max, login, noDuplicates, getBlacklisted, loadMoreDetails);
+	} else if (parser.isSet(downloadOption)) {
+		const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+		const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+		const int page = parser.value(pageOption).toInt();
+		const int perPage = parser.value(perPageOption).toInt();
+		const QString filename = parser.value(filenameOption);
+		const QString folder = parser.value(pathOption);
+		const int max = parser.value(limitOption).toInt();
+		const bool login = !parser.isSet(noLoginOption);
+		const bool noDuplicates = parser.isSet(noDuplicatesOption);
+		const bool getBlacklisted = parser.isSet(blacklistOption);
 
-		if (cmd == nullptr || !cmd->validate()) {
-			return 1;
-		}
+		const QString blacklistOverride = parser.value(tagsBlacklistOption);
+		const Blacklist blacklist = blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' '));
 
-		QEventLoop loop;
-		QObject::connect(cmd, &CliCommand::finished, &loop, &QEventLoop::quit);
-		QTimer::singleShot(0, [cmd]() { cmd->run(); });
-		loop.exec();
-
-		cmd->deleteLater();
-		return 0;
+		cmd = new DownloadImagesCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, filename, folder, max, login, noDuplicates, getBlacklisted, blacklist);
 	}
 
-	if (parser.value(filenameOption).isEmpty() && parser.isSet(downloadOption)) {
-		QTextStream(stderr) << "You need a filename for downloading images";
-		exit(1);
-	}
-	if (sites.isEmpty()) {
-		QTextStream(stderr) << "No valid source found";
-		exit(1);
-	}
-
-	QString blacklistOverride = parser.value(tagsBlacklistOption);
-	Downloader *downloader = new Downloader(profile, printer,
-		parser.value(tagsOption).split(" ", Qt::SkipEmptyParts),
-		parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts),
-		sites,
-		parser.value(pageOption).toInt(),
-		parser.value(limitOption).toInt(),
-		parser.value(perPageOption).toInt(),
-		parser.value(pathOption),
-		parser.value(filenameOption),
-		parser.value(userOption),
-		parser.value(passwordOption),
-		parser.isSet(blacklistOption),
-		blacklistOverride.isEmpty() ? profile->getBlacklist() : Blacklist(blacklistOverride.split(' ')),
-		parser.isSet(noDuplicatesOption),
-		parser.value(tagsMinOption).toInt(),
-		parser.isSet(loadDetailsOption),
-		!parser.isSet(noLoginOption));
-
-	downloader->setQuit(true);
-
-	// Load the correct data
-	if (parser.isSet(downloadOption)) {
-		downloader->getImages();
-	} else {
+	if (cmd == nullptr || !cmd->validate()) {
 		parser.showHelp();
+		return 1;
 	}
 
-	QObject::connect(downloader, &Downloader::quit, qApp, &QCoreApplication::quit);
+	QEventLoop loop;
+	QObject::connect(cmd, &CliCommand::finished, &loop, &QEventLoop::quit);
+	QTimer::singleShot(0, [cmd]() { cmd->run(); });
+	loop.exec();
 
-	return app.exec();
+	cmd->deleteLater();
+	return 0;
 }
