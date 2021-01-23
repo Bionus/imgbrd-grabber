@@ -8,6 +8,7 @@
 #include <QUrl>
 #include <stdexcept>
 #include "cli/get-details-cli-command.h"
+#include "cli/get-page-count-cli-command.h"
 #include "cli/load-tag-database-cli-command.h"
 #include "downloader/downloader.h"
 #include "downloader/printers/json-printer.h"
@@ -150,7 +151,7 @@ int main(int argc, char *argv[])
 		? (Printer*) new JsonPrinter(profile)
 		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
 
-	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption)) {
+	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption) || parser.isSet(returnCountOption)) {
 		CliCommand *cmd = nullptr;
 
 		if (parser.isSet(loadTagDatabaseOption)) {
@@ -159,9 +160,16 @@ int main(int argc, char *argv[])
 
 			cmd = new LoadTagDatabaseCliCommand(profile, sites, minTagCount);
 		} else if (parser.isSet(getDetailsOption)) {
-			QString detailsUrl = parser.value(getDetailsOption);
+			const QString detailsUrl = parser.value(getDetailsOption);
 
 			cmd = new GetDetailsCliCommand(profile, printer, sites, detailsUrl);
+		} else if (parser.isSet(returnCountOption)) {
+			const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+			const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+			const int page = parser.value(pageOption).toInt();
+			const int perPage = parser.value(perPageOption).toInt();
+
+			cmd = new GetPageCountCliCommand(profile, printer, tags, postFiltering, sites, page, perPage);
 		}
 
 		if (cmd == nullptr || !cmd->validate()) {
@@ -208,9 +216,7 @@ int main(int argc, char *argv[])
 	downloader->setQuit(true);
 
 	// Load the correct data
-	if (parser.isSet(returnCountOption)) {
-		downloader->getPageCount();
-	} else if (parser.isSet(returnTagsOption)) {
+	if (parser.isSet(returnTagsOption)) {
 		downloader->getPageTags();
 	} else if (parser.isSet(returnPureTagsOption)) {
 		downloader->getTags();
