@@ -5,6 +5,7 @@
 #include <QNetworkProxy>
 #include <QSettings>
 #include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <stdexcept>
 #include "cli/get-details-cli-command.h"
@@ -182,16 +183,16 @@ int main(int argc, char *argv[])
 		}
 
 		if (cmd == nullptr || !cmd->validate()) {
-			exit(1);
+			return 1;
 		}
 
 		QEventLoop loop;
-		cmd->run();
-		QObject::connect(cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
+		QObject::connect(cmd, &CliCommand::finished, &loop, &QEventLoop::quit);
+		QTimer::singleShot(0, [cmd]() { cmd->run(); });
 		loop.exec();
 
 		cmd->deleteLater();
-		exit(0);
+		return 0;
 	}
 
 	if (parser.value(filenameOption).isEmpty() && parser.isSet(downloadOption)) {
