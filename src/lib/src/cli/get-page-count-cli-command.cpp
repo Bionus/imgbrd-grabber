@@ -22,7 +22,7 @@ bool GetPageCountCliCommand::validate()
 
 void GetPageCountCliCommand::run()
 {
-	QList<Page*> pages = getTagsForAllPages();
+	const QList<Page*> pages = getTagsForAllPages();
 
 	int total = 0;
 	for (Page *p : pages) {
