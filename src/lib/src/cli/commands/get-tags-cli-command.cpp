@@ -1,5 +1,7 @@
 #include "get-tags-cli-command.h"
+#include <QEventLoop>
 #include <QList>
+#include <QtMath>
 #include "cli-command.h"
 #include "downloader/printers/printer.h"
 #include "logger.h"
