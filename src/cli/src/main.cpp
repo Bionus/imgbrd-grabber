@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QUrl>
 #include <stdexcept>
+#include "cli/get-details-cli-command.h"
 #include "cli/load-tag-database-cli-command.h"
 #include "downloader/downloader.h"
 #include "downloader/printers/json-printer.h"
@@ -168,24 +169,19 @@ int main(int argc, char *argv[])
 	}
 
 	if (parser.isSet(getDetailsOption)) {
-		if (sites.length() != 1) {
-			throw std::runtime_error("number of provided sites must be 1");
-		}
-		if (!parser.isSet(verboseOption)) {
-			Logger::getInstance().setLogLevel(Logger::Error);
-		}
-
 		QString detailsUrl = parser.value(getDetailsOption);
-		QMap<QString, QString> details = {{"page_url", detailsUrl}};
-		Image image(sites[0], details, profile);
-		image.setPromoteDetailParsWarn(true);
+
+		GetDetailsCliCommand cmd(profile, printer, sites, detailsUrl);
+
+		if (!cmd.validate()) {
+			exit(1);
+		}
 
 		QEventLoop loop;
-		image.loadDetails();
-		QObject::connect(&image, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
+		cmd.run();
+		QObject::connect(&cmd, &LoadTagDatabaseCliCommand::finished, &loop, &QEventLoop::quit);
 		loop.exec();
 
-		printer->print(image);
 		exit(0);
 	}
 

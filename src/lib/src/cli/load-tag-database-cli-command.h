@@ -24,9 +24,6 @@ class LoadTagDatabaseCliCommand : public CliCommand
 		void loadNext();
 		void finishedLoading();
 
-	signals:
-		void finished(int code);
-
 	private:
 		Profile *m_profile;
 		QList<Site*> m_sites;
