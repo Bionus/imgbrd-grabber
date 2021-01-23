@@ -2,10 +2,12 @@
 #define SEARCH_CLI_COMMAND_H
 
 #include <QList>
+#include <QSharedPointer>
 #include <QStringList>
 #include "cli-command.h"
 
 
+class Image;
 class Page;
 class Profile;
 class QObject;

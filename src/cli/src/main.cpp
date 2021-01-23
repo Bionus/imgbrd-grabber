@@ -9,6 +9,7 @@
 #include <QUrl>
 #include <stdexcept>
 #include "cli/get-details-cli-command.h"
+#include "cli/get-images-cli-command.h"
 #include "cli/get-page-count-cli-command.h"
 #include "cli/get-page-tags-cli-command.h"
 #include "cli/get-tags-cli-command.h"
@@ -154,7 +155,7 @@ int main(int argc, char *argv[])
 		? (Printer*) new JsonPrinter(profile)
 		: (Printer*) new SimplePrinter(parser.value(tagsFormatOption));
 
-	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption) || parser.isSet(returnCountOption) || parser.isSet(returnTagsOption) || parser.isSet(returnPureTagsOption)) {
+	if (parser.isSet(loadTagDatabaseOption) || parser.isSet(getDetailsOption) || parser.isSet(returnCountOption) || parser.isSet(returnTagsOption) || parser.isSet(returnPureTagsOption) || parser.isSet(returnImagesOption)) {
 		CliCommand *cmd = nullptr;
 
 		if (parser.isSet(loadTagDatabaseOption)) {
@@ -188,6 +189,20 @@ int main(int argc, char *argv[])
 			const int tagsMin = parser.value(tagsMinOption).toInt();
 
 			cmd = new GetTagsCliCommand(profile, printer, sites, page, perPage, max, tagsMin);
+		} else if (parser.isSet(returnImagesOption)) {
+			const QStringList tags = parser.value(tagsOption).split(" ", Qt::SkipEmptyParts);
+			const QStringList postFiltering = parser.value(postFilteringOption).split(" ", Qt::SkipEmptyParts);
+			const int page = parser.value(pageOption).toInt();
+			const int perPage = parser.value(perPageOption).toInt();
+			const QString filename = parser.value(filenameOption);
+			const QString folder = parser.value(pathOption);
+			const int max = parser.value(limitOption).toInt();
+			const bool login = !parser.isSet(noLoginOption);
+			const bool noDuplicates = parser.isSet(noDuplicatesOption);
+			const bool getBlacklisted = parser.isSet(blacklistOption);
+			const bool loadMoreDetails = parser.isSet(loadDetailsOption);
+
+			cmd = new GetImagesCliCommand(profile, printer, tags, postFiltering, sites, page, perPage, filename, folder, max, login, noDuplicates, getBlacklisted, loadMoreDetails);
 		}
 
 		if (cmd == nullptr || !cmd->validate()) {
@@ -234,9 +249,7 @@ int main(int argc, char *argv[])
 	downloader->setQuit(true);
 
 	// Load the correct data
-	if (parser.isSet(returnImagesOption)) {
-		downloader->getUrls();
-	} else if (parser.isSet(downloadOption)) {
+	if (parser.isSet(downloadOption)) {
 		downloader->getImages();
 	} else {
 		parser.showHelp();
