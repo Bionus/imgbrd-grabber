@@ -7,7 +7,7 @@
 
 
 GetDetailsCliCommand::GetDetailsCliCommand(Profile *profile, Printer *printer, const QList<Site*> &sites, const QString &pageUrl, QObject *parent)
-	: CliCommand(parent), m_profile(profile), m_sites(sites), m_pageUrl(pageUrl)
+	: CliCommand(parent), m_profile(profile), m_printer(printer), m_sites(sites), m_pageUrl(pageUrl)
 {}
 
 bool GetDetailsCliCommand::validate()
