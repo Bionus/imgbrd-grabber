@@ -388,6 +388,8 @@ void Image::loadDetails(bool rateLimit)
 		m_loadDetails->deleteLater();
 	}
 
+	log(QStringLiteral("Loading image details from `%1`").arg(m_pageUrl.toString()), Logger::Info);
+
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
 	m_loadDetails = m_parentSite->get(m_pageUrl, type);
 	m_loadDetails->setParent(this);
