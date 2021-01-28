@@ -15,20 +15,24 @@ QString savePath(const QString &file, bool exists = false)
 {
 	#ifdef TEST
 		Q_UNUSED(exists);
-		return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
+		return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file);
 	#else
 		const QString &check = exists ? file : "settings.ini";
-		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
-		{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-		if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
-		{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
-		{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + check)).exists()) {
+			return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
+		}
+		if (QFile(QDir::toNativeSeparators(QDir::currentPath() + "/" + check)).exists()) {
+			return QDir::toNativeSeparators(QDir::currentPath() + "/" + file);
+		}
+		if (QFile(QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + check)).exists()) {
+			return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file);
+		}
 		#ifdef __linux__
-			if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
-			{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+			if (QFile(QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + check)).exists()) {
+				return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
+			}
 		#endif
-		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
+		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + file);
 	#endif
 }
 
@@ -41,8 +45,7 @@ CrashReporterWindow::CrashReporterWindow(QWidget *parent) : QMainWindow(parent),
 	const QLocale locale = QLocale(lang);
 	QLocale::setDefault(locale);
 	auto *translator = new QTranslator(this);
-	if (translator->load("crashreporter/"+lang))
-	{
+	if (translator->load("crashreporter/" + lang)) {
 		qApp->installTranslator(translator);
 	}
 
@@ -51,10 +54,8 @@ CrashReporterWindow::CrashReporterWindow(QWidget *parent) : QMainWindow(parent),
 	ui->lineSettings->setText(savePath("settings.ini"));
 	ui->lineLog->setText(savePath("main.log"));
 	QFile f(savePath("lastdump"));
-	if (f.exists())
-	{
-		if (f.open(QFile::ReadOnly))
-		{
+	if (f.exists()) {
+		if (f.open(QFile::ReadOnly)) {
 			ui->lineDump->setText(f.readAll());
 			f.close();
 		}
@@ -74,8 +75,7 @@ void CrashReporterWindow::restart()
 
 void CrashReporterWindow::sendCrashReport()
 {
-	if (ui->checkSend->isChecked())
-	{
+	if (ui->checkSend->isChecked()) {
 		QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new?labels[]=crash"));
 	}
 
@@ -84,8 +84,7 @@ void CrashReporterWindow::sendCrashReport()
 
 void CrashReporterWindow::finished()
 {
-	if (m_restart && QFile::exists("Grabber.exe"))
-	{
+	if (m_restart && QFile::exists("Grabber.exe")) {
 		QProcess::startDetached("\"Grabber.exe\"");
 	}
 

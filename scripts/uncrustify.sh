@@ -2,9 +2,10 @@
 
 set -e
 
-# "src/gui/src/"
-find "src/lib/src/" "src/cli/src/" "src/e2e/src/" "src/tests/src/" -name '*.cpp' -o -name '*.h' \
+find "src/" -name '*.cpp' -o -name '*.h' \
 | grep -v "vendor" \
 | grep -v "crashhandler" \
 | grep -v "backports" \
+| grep -v "cmake" \
+| grep -v "gui" \
 | uncrustify -c "uncrustify.cfg" --replace --no-backup -F -
