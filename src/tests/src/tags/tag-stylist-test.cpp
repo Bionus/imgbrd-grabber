@@ -42,7 +42,7 @@ void assertSort(QSettings *settings, const QString &sort, const QStringList &exp
 TEST_CASE("TagStylist")
 {
 	QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
-	
+
 	SECTION("Basic")
 	{
 		settings.setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
