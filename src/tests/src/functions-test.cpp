@@ -313,7 +313,6 @@ TEST_CASE("Functions")
 		REQUIRE(parseMarkdown("issue 123") == QString("issue 123"));
 	}
 
-#ifdef Q_OS_WIN
 	SECTION("SetFileCreationDate")
 	{
 		QString path = "tests/resources/pages/behoimi.org/results.json";
@@ -334,7 +333,6 @@ TEST_CASE("Functions")
 		QDateTime created = fileCreationDate(path);
 		REQUIRE(created.toTime_t() == date.toTime_t());
 	}
-#endif
 
 	SECTION("GetExternalLogFilesSuffixes")
 	{
