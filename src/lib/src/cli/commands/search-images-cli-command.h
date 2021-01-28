@@ -18,6 +18,7 @@ class SearchImagesCliCommand : public SearchCliCommand
 
 	public:
 		explicit SearchImagesCliCommand(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sites, int page, int perPage, QString filename, QString folder, int max, bool login, bool noDuplicates, bool getBlacklisted, QObject *parent = nullptr);
+		bool validate() override;
 
 	protected:
 		QList<QSharedPointer<Image>> getAllImages();

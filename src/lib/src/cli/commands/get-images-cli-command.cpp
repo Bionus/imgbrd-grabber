@@ -12,8 +12,7 @@ GetImagesCliCommand::GetImagesCliCommand(Profile *profile, Printer *printer, QSt
 
 bool GetImagesCliCommand::validate()
 {
-	if (m_sites.isEmpty()) {
-		log("You must provide at least one source to load the images from", Logger::Error);
+	if (!SearchImagesCliCommand::validate()) {
 		return false;
 	}
 

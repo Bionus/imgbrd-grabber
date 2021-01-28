@@ -6,6 +6,7 @@
 #include <utility>
 #include "downloader/download-query-group.h"
 #include "loader/pack-loader.h"
+#include "logger.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
@@ -14,6 +15,26 @@
 SearchImagesCliCommand::SearchImagesCliCommand(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sites, int page, int perPage, QString filename, QString folder, int max, bool login, bool noDuplicates, bool getBlacklisted, QObject *parent)
 	: SearchCliCommand(profile, std::move(tags), std::move(postFiltering), std::move(sites), page, perPage, parent), m_filename(filename), m_folder(folder), m_max(max), m_login(login), m_noDuplicates(noDuplicates), m_getBlacklisted(getBlacklisted)
 {}
+
+bool SearchImagesCliCommand::validate()
+{
+	if (m_sites.isEmpty()) {
+		log("You must provide at least one source to load the images from", Logger::Error);
+		return false;
+	}
+
+	if (m_perPage <= 0) {
+		log("The number of images per page must be more than 0", Logger::Error);
+		return false;
+	}
+
+	if (m_max <= 0) {
+		log("The image limit must be more than 0", Logger::Error);
+		return false;
+	}
+
+	return true;
+}
 
 QList<QSharedPointer<Image>> SearchImagesCliCommand::getAllImages()
 {
