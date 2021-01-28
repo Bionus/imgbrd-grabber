@@ -8,10 +8,6 @@
 using Catch::Matchers::Matches;
 
 
-// Ignore those tests on MacOS because of font difference
-// TODO(Bionus): re-enable them and use matching or something to be more resistent
-#if !defined(Q_OS_MACOS)
-
 void assertSort(QSettings *settings, const QString &sort, const QStringList &expectedOrder)
 {
 	settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
@@ -151,5 +147,3 @@ TEST_CASE("TagStylist")
 		}
 	}
 }
-
-#endif
