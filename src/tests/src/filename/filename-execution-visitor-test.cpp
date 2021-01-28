@@ -92,9 +92,9 @@ TEST_CASE("FilenameExecutionVisitor")
 		{
 			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
 			QMap<QString, Token> tokens {
-					{ "gallery", Token(QVariant::fromValue(gallery)) },
-					{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
-					{ "ext", Token("jpg") }
+				{ "gallery", Token(QVariant::fromValue(gallery)) },
+				{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+				{ "ext", Token("jpg") }
 			};
 
 			FilenameParser parser("<galleries/%gallery.name%/>%md5%.%ext%");
@@ -114,9 +114,9 @@ TEST_CASE("FilenameExecutionVisitor")
 		{
 			QMap<QString, Token> gallery {{ "name", Token("some gallery") }};
 			QMap<QString, Token> tokens {
-					{ "gallery", Token(QVariant::fromValue(gallery)) },
-					{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
-					{ "ext", Token("jpg") }
+				{ "gallery", Token(QVariant::fromValue(gallery)) },
+				{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+				{ "ext", Token("jpg") }
 			};
 
 			FilenameParser parser("<galleries/%gallery.id%/>%md5%.%ext%");

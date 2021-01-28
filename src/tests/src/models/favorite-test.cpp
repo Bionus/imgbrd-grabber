@@ -133,79 +133,84 @@ TEST_CASE("Favorite")
 	}
 
 	#ifndef HEADLESS
-	SECTION("SetImageFirst")
-	{
-		QFile file(savePath("thumbs/tag1.png"));
-		if (file.exists())
-			file.remove();
+		SECTION("SetImageFirst")
+		{
+			QFile file(savePath("thumbs/tag1.png"));
+			if (file.exists()) {
+				file.remove();
+			}
 
-		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("tag1", 50, date);
+			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+			Favorite fav("tag1", 50, date);
 
-		QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
-		fav.setImage(img);
+			QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
+			fav.setImage(img);
 
-		REQUIRE(file.exists() == true);
-	}
-	SECTION("GetImageNotExists")
-	{
-		QFile file(savePath("thumbs/tag1.png"));
-		if (file.exists())
-			file.remove();
+			REQUIRE(file.exists() == true);
+		}
+		SECTION("GetImageNotExists")
+		{
+			QFile file(savePath("thumbs/tag1.png"));
+			if (file.exists()) {
+				file.remove();
+			}
 
-		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("tag1", 50, date);
+			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+			Favorite fav("tag1", 50, date);
 
-		QPixmap img = fav.getImage();
+			QPixmap img = fav.getImage();
 
-		REQUIRE(img.isNull() == true);
-	}
-	SECTION("GetImageBig")
-	{
-		QFile file(savePath("thumbs/tag1.png"));
-		if (file.exists())
-			file.remove();
+			REQUIRE(img.isNull() == true);
+		}
+		SECTION("GetImageBig")
+		{
+			QFile file(savePath("thumbs/tag1.png"));
+			if (file.exists()) {
+				file.remove();
+			}
 
-		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("tag1", 50, date);
+			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+			Favorite fav("tag1", 50, date);
 
-		QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
-		fav.setImage(img);
-		QPixmap actual = fav.getImage();
+			QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
+			fav.setImage(img);
+			QPixmap actual = fav.getImage();
 
-		REQUIRE(actual.isNull() == false);
-		REQUIRE(actual.size() == QSize(150, 150));
-	}
-	SECTION("GetImageSmall")
-	{
-		QFile file(savePath("thumbs/tag1.png"));
-		if (file.exists())
-			file.remove();
+			REQUIRE(actual.isNull() == false);
+			REQUIRE(actual.size() == QSize(150, 150));
+		}
+		SECTION("GetImageSmall")
+		{
+			QFile file(savePath("thumbs/tag1.png"));
+			if (file.exists()) {
+				file.remove();
+			}
 
-		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("tag1", 50, date);
+			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+			Favorite fav("tag1", 50, date);
 
-		QPixmap img(QDir::currentPath() + "/tests/resources/image_1x1.png");
-		fav.setImage(img);
-		QPixmap actual = fav.getImage();
+			QPixmap img(QDir::currentPath() + "/tests/resources/image_1x1.png");
+			fav.setImage(img);
+			QPixmap actual = fav.getImage();
 
-		REQUIRE(actual.isNull() == false);
-		REQUIRE(actual.size() == QSize(150, 150));
-	}
-	SECTION("GetImageResize")
-	{
-		QFile file(savePath("thumbs/tag1.png"));
-		if (file.exists())
-			file.remove();
+			REQUIRE(actual.isNull() == false);
+			REQUIRE(actual.size() == QSize(150, 150));
+		}
+		SECTION("GetImageResize")
+		{
+			QFile file(savePath("thumbs/tag1.png"));
+			if (file.exists()) {
+				file.remove();
+			}
 
-		QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-		Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
-		QPixmap actual = fav.getImage();
+			QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+			Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
+			QPixmap actual = fav.getImage();
 
-		REQUIRE(file.exists() == true);
-		REQUIRE(actual.isNull() == false);
-		REQUIRE(actual.size() == QSize(150, 150));
-	}
+			REQUIRE(file.exists() == true);
+			REQUIRE(actual.isNull() == false);
+			REQUIRE(actual.size() == QSize(150, 150));
+		}
 	#endif
 
 	SECTION("ToString")

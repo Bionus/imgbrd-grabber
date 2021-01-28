@@ -48,7 +48,9 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 	sites.append(ste);
 
 	QList<QSharedPointer<Image>> result;
-	Downloader downloader(profile, nullptr,
+	Downloader downloader(
+		profile,
+		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -64,7 +66,8 @@ QList<QSharedPointer<Image>> getImages(const QString &source, const QString &sit
 		false,
 		0,
 		false,
-		false);
+		false
+	);
 	downloader.setQuit(false);
 
 	// Wait for downloader
@@ -119,7 +122,9 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 	sites.append(ste);
 
 	QList<Tag> result;
-	Downloader downloader(profile, nullptr,
+	Downloader downloader(
+		profile,
+		nullptr,
 		tags.split(' '),
 		QStringList(),
 		sites,
@@ -133,7 +138,8 @@ QList<Tag> getPageTags(const QString &source, const QString &site, const QString
 		false,
 		Blacklist(),
 		false,
-		0);
+		0
+	);
 	downloader.setQuit(false);
 
 	// Wait for downloader

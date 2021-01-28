@@ -65,8 +65,9 @@ TEST_CASE("BatchDownloader")
 		SECTION("Image not found")
 		{
 			// More than once because of the extension rotator
-			for (int i = 0; i < 7; ++i)
+			for (int i = 0; i < 7; ++i) {
 				CustomNetworkAccessManager::NextFiles.append("404");
+			}
 
 			BatchDownloader downloader(&query, profile);
 			waitForFinished(&downloader);

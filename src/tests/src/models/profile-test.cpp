@@ -96,19 +96,19 @@ TEST_CASE("Profile")
 	}
 
 	#ifndef Q_OS_WIN
-	SECTION("RemoveFavoriteThumb")
-	{
-		Favorite fav("tag_1", 20, dates[0]);
+		SECTION("RemoveFavoriteThumb")
+		{
+			Favorite fav("tag_1", 20, dates[0]);
 
-		QDir(profile->getPath()).mkdir("thumb");
-		QFile thumb(profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
-		thumb.open(QFile::WriteOnly | QFile::Truncate);
-		thumb.write(QString("test").toUtf8());
-		thumb.close();
+			QDir(profile->getPath()).mkdir("thumb");
+			QFile thumb(profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
+			thumb.open(QFile::WriteOnly | QFile::Truncate);
+			thumb.write(QString("test").toUtf8());
+			thumb.close();
 
-		REQUIRE(thumb.exists());
-		profile->removeFavorite(fav);
-		REQUIRE(!thumb.exists());
-	}
+			REQUIRE(thumb.exists());
+			profile->removeFavorite(fav);
+			REQUIRE(!thumb.exists());
+		}
 	#endif
 }

@@ -32,7 +32,7 @@ TEST_CASE("PackLoader")
 {
 	const QScopedPointer<Profile> pProfile(makeProfile());
 	auto profile = pProfile.data();
-	
+
 	SECTION("GetQuery")
 	{
 		DownloadQueryGroup query(QStringList() << "search", 1, 10, 20, QStringList(), false, nullptr, "%md5%.%ext%", "");
