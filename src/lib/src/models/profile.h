@@ -8,6 +8,7 @@
 #include <QStringList>
 #include "models/favorite.h"
 #include "models/filtering/blacklist.h"
+#include "models/filtering/tag-filter-list.h"
 
 
 class Commands;
@@ -81,7 +82,7 @@ class Profile : public QObject
 		QList<Favorite> &getFavorites();
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
-		QStringList &getRemovedTags();
+		TagFilterList &getRemovedTags();
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
@@ -108,7 +109,7 @@ class Profile : public QObject
 		QList<Favorite> m_favorites;
 		QStringList m_keptForLater;
 		QStringList m_ignored;
-		QStringList m_removedTags;
+		TagFilterList m_removedTags;
 		Commands *m_commands;
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;

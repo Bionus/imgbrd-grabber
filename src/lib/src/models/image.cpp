@@ -12,6 +12,7 @@
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
 #include "favorite.h"
+#include "filtering/tag-filter-list.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "logger.h"
@@ -666,31 +667,6 @@ QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QStr
 	return save(paths, addMd5, startCommands, count, false, size);
 }
 
-QList<Tag> Image::filteredTags(const QStringList &remove) const
-{
-	QList<Tag> tags;
-
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (const Tag &tag : m_tags) {
-		bool removed = false;
-		for (const QString &rem : remove) {
-			reg.setPattern(rem);
-			if (reg.exactMatch(tag.text())) {
-				removed = true;
-				break;
-			}
-		}
-
-		if (!removed) {
-			tags.append(tag);
-		}
-	}
-
-	return tags;
-}
-
 
 Site *Image::parentSite() const { return m_parentSite; }
 const QList<Tag> &Image::tags() const { return m_tags; }
@@ -990,7 +966,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	const QSettings *settings = profile->getSettings();
 	const QStringList &ignore = profile->getIgnored();
-	const QStringList &remove = profile->getRemovedTags();
+	const TagFilterList &remove = profile->getRemovedTags();
 
 	QMap<QString, Token> tokens;
 
@@ -1030,7 +1006,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
-	const auto tags = filteredTags(remove);
+	const auto tags = remove.filterTags(m_tags);
 	QMap<QString, QStringList> details;
 	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
