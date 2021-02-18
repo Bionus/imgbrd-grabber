@@ -206,18 +206,21 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// "Settings" dock
 	m_settingsDock = new SettingsDock(m_profile, this);
+	connect(this, &MainWindow::tabChanged, m_settingsDock, &SettingsDock::tabChanged);
 	ui->dockSettingsLayout->addWidget(m_settingsDock);
 
 	// "Favorites" dock
 	auto *favoritesDock = new FavoritesDock(m_profile, this);
 	connect(favoritesDock, &FavoritesDock::open, this, &MainWindow::loadTagNoTab);
 	connect(favoritesDock, &FavoritesDock::openInNewTab, this, &MainWindow::loadTagTab);
+	connect(this, &MainWindow::tabChanged, favoritesDock, &FavoritesDock::tabChanged);
 	ui->dockFavoritesLayout->addWidget(favoritesDock);
 
 	// "Keep for later" dock
 	auto *kflDock = new KeepForLaterDock(m_profile, this);
 	connect(kflDock, &KeepForLaterDock::open, this, &MainWindow::loadTagNoTab);
 	connect(kflDock, &KeepForLaterDock::openInNewTab, this, &MainWindow::loadTagTab);
+	connect(this, &MainWindow::tabChanged, kflDock, &KeepForLaterDock::tabChanged);
 	ui->dockKflLayout->addWidget(kflDock);
 
 	// "Wiki" dock
