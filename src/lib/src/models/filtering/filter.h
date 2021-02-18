@@ -15,7 +15,7 @@ class Filter
 	public:
 		virtual ~Filter() = default;
 		virtual QString match(const QMap<QString, Token> &tokens, bool invert = false) const = 0;
-		virtual QString toString() const = 0;
+		virtual QString toString(bool escape = true) const = 0;
 
 		bool operator==(const Filter &rhs) const;
 		bool operator!=(const Filter &rhs) const;

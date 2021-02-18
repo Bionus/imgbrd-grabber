@@ -16,7 +16,7 @@ int Blacklist::indexOf(const QString &tag) const
 {
 	for (int i = 0; i < m_filters.count(); ++i) {
 		const auto &filters = m_filters[i];
-		if (filters.count() == 1 && QString::compare(filters[0]->toString(), tag, Qt::CaseInsensitive) == 0) {
+		if (filters.count() == 1 && QString::compare(filters[0]->toString(false), tag, Qt::CaseInsensitive) == 0) {
 			return i;
 		}
 	}
@@ -90,7 +90,7 @@ QStringList Blacklist::match(const QMap<QString, Token> &tokens, bool invert) co
 				allDetected = false;
 				break;
 			}
-			res.append(filter->toString());
+			res.append(filter->toString(false));
 		}
 		if (allDetected) {
 			detected.append(res.join(' '));

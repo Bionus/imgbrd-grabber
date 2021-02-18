@@ -53,4 +53,20 @@ TEST_CASE("Blacklist")
 		REQUIRE(Blacklist(QStringList() << "tag1" << "tag7").match(tokens, false) == QStringList() << "tag7");
 		REQUIRE(Blacklist(QStringList() << "character1" << "artist1").match(tokens, false) == QStringList());
 	}
+
+	SECTION("Escaping colon in tags")
+	{
+		Blacklist blacklist(QStringList() << "re::zero");
+
+		REQUIRE(blacklist.contains("re:zero") == true);
+		REQUIRE(blacklist.contains("re::zero") == false);
+
+		QMap<QString, Token> tokensWith;
+		tokensWith.insert("allos", Token(QStringList() << "tag1" << "re:zero"));
+		QMap<QString, Token> tokensWithout;
+		tokensWithout.insert("allos", Token(QStringList() << "tag1" << "tag2"));
+
+		REQUIRE(blacklist.match(tokensWith) == QStringList("re:zero"));
+		REQUIRE(blacklist.match(tokensWithout) == QStringList());
+	}
 }

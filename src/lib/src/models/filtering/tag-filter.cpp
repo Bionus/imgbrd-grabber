@@ -13,9 +13,9 @@ TagFilter::TagFilter(QString tag, bool invert)
 	}
 }
 
-QString TagFilter::toString() const
+QString TagFilter::toString(bool escape) const
 {
-	return QString(m_invert ? "-" : "") % m_tag;
+	return QString(m_invert ? "-" : "") % (escape ? QString(m_tag).replace(":", "::") : m_tag);
 }
 
 bool TagFilter::compare(const Filter& rhs) const

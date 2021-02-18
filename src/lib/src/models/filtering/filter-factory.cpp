@@ -22,11 +22,17 @@ Filter *FilterFactory::build(QString filter)
 	}
 
 	// Meta-tags
-	if (filter.contains(":")) {
-		const QString type = filter.section(':', 0, 0).toLower();
-		const QString val = filter.section(':', 1).toLower();
+	int ddot = filter.indexOf(':');
+	if (ddot != -1) {
+		if (ddot > 0 && ddot < filter.length() - 1 && filter[ddot + 1] != ':') {
+			const QString type = filter.mid(0, ddot).toLower();
+			const QString val = filter.mid(ddot + 1).toLower();
 
-		return new MetaFilter(type, val, invert);
+			return new MetaFilter(type, val, invert);
+		}
+
+		// Un-escape '::'
+		filter = filter.replace("::", ":");
 	}
 
 	// Tags
