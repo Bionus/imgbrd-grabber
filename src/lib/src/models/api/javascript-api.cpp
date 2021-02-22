@@ -151,7 +151,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			}
 		}
 
-		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
+		const TagType tagType = !type.isEmpty() ? TagType(Tag::GetType(type)) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.append(Tag(id, text, tagType, count, related));
 	}
 
