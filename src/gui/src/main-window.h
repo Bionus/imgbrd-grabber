@@ -51,6 +51,8 @@ class MainWindow : public QMainWindow
 		void aboutWebsite();
 		void aboutGithub();
 		void aboutReportBug();
+		void aboutDonatePaypal();
+		void aboutDonatePatreon();
 		void saveFolder();
 		void openSettingsFolder();
 		void blacklistFix();

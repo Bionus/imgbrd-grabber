@@ -833,6 +833,14 @@ void MainWindow::aboutReportBug()
 {
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new"));
 }
+void MainWindow::aboutDonatePaypal()
+{
+	QDesktopServices::openUrl(QUrl(PROJECT_DONATE_PAYPAL_URL));
+}
+void MainWindow::aboutDonatePatreon()
+{
+	QDesktopServices::openUrl(QUrl(PROJECT_DONATE_PATREON_URL));
+}
 
 void MainWindow::aboutAuthor()
 {
