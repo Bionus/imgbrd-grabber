@@ -664,6 +664,11 @@ bool GAnalytics::isSending() const
     return d->isSending;
 }
 
+void GAnalytics::stopSending()
+{
+	d->setIsSending(true);
+}
+
 void GAnalytics::setNetworkAccessManager(QNetworkAccessManager *networkAccessManager)
 {
     if (d->networkManager != networkAccessManager)

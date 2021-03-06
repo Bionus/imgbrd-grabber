@@ -12,21 +12,36 @@ void Analytics::setTrackingID(const QString& trackingId)
 void Analytics::setEnabled(bool enabled)
 {
 	m_enabled = enabled;
+	if (!enabled) {
+		m_googleAnalytics.stopSending();
+	}
 }
 
 
 void Analytics::startSending()
 {
+	if (!m_enabled) {
+		return;
+	}
+
 	m_googleAnalytics.startSending();
 }
 
 void Analytics::startSession()
 {
+	if (!m_enabled) {
+		return;
+	}
+
 	m_googleAnalytics.startSession();
 }
 
 void Analytics::endSession()
 {
+	if (!m_enabled) {
+		return;
+	}
+
 	m_googleAnalytics.endSession();
 }
 
