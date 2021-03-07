@@ -238,20 +238,20 @@ void DownloadsTab::batchMove(int diff)
 		std::sort(rows.begin(), rows.end());
 	}
 
-	for (int sourceRow : rows) {
-		int destRow = qMin(qMax(0, sourceRow + diff), m_groupBatchsModel->rowCount() - 1);
+	for (int i = 0; i < rows.count(); ++i) {
+		const int sourceRow = rows[i];
+
+		int destRow = qMin(qMax(i, sourceRow + diff), m_groupBatchsModel->rowCount() - i - 1);
 		if (destRow == sourceRow) {
 			return;
 		}
 
-		// Swap batch items
-		auto sourceBatch = m_groupBatchs[sourceRow];
-		auto destBatch = m_groupBatchs[destRow];
-		m_groupBatchs[sourceRow] = destBatch;
-		m_groupBatchs[destRow] = sourceBatch;
+		auto sourceBatch = m_groupBatchs.takeAt(sourceRow);
+		m_groupBatchs.insert(destRow, sourceBatch);
 
-		m_groupBatchsModel->changed(sourceRow);
-		m_groupBatchsModel->changed(destRow);
+		for (int j = sourceRow; j != destRow; (diff < 0 ? --j : ++j)) {
+			m_groupBatchsModel->changed(j);
+		}
 	}
 
 	QItemSelection selection;
