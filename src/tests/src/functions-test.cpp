@@ -110,6 +110,28 @@ TEST_CASE("Functions")
 			assertFixFilename(1, "image.jpg", "/home/test/", "image.jpg");
 			assertFixFilename(1, "image", "/home/test/", "image");
 			assertFixFilename(1, "folder/image.jpg", "/home/test/", "folder/image.jpg");
+
+			SECTION("UTF-8")
+			{
+				const QString utf8Part = "é";
+				QString utf8Long;
+
+				// 100 UTF-8 chars / 200 bytes is under the 255 limit
+				for (int i = 0; i < 100; ++i) {
+					utf8Long += utf8Part;
+				}
+				REQUIRE(fixFilenameLinux(utf8Long +  "/image.jpg", "/home/test/") == QString(utf8Long + "/image.jpg"));
+
+
+				// 200 UTF-8 chars / 400 bytes is above the limit so should be cut
+				for (int i = 0; i < 100; ++i) {
+					utf8Long += utf8Part;
+				}
+				const QString actual = fixFilenameLinux(utf8Long +  "/image.jpg", "/home/test/");
+				REQUIRE(actual != QString(utf8Long + "/image.jpg"));
+				REQUIRE(actual.length() == 127 + 10);
+				REQUIRE(actual.toUtf8().size() == 254 + 10);
+			}
 		}
 	}
 

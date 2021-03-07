@@ -588,6 +588,25 @@ QString fixFilename(QString filename, QString path, int maxLength, bool invalidC
 	#endif
 }
 
+// https://stackoverflow.com/questions/26629382/how-to-shorten-qstring-in-a-way-that-when-converted-to-utf-8-it-is-shorter-than
+bool cutStringToUtf8Bytes(QString &str, int limit)
+{
+	QByteArray output = str.toUtf8();
+	if (output.size() > limit) {
+		int truncateAt = 0;
+		for (int i = limit; i > 0; i--) {
+			if ((output[i] & 0xC0) != 0x80) {
+				truncateAt = i;
+				break;
+			}
+		}
+		output.truncate(truncateAt);
+		str = QString::fromUtf8(output);
+		return true;
+	}
+	return false;
+}
+
 QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, bool invalidChars)
 {
 	Q_UNUSED(invalidChars);
@@ -608,26 +627,19 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 		}
 	}
 
-	// Fix directories
+	// Fix directories (each part cannot be more than 255 bytes)
 	for (QString &part : parts) {
-		// Max length
-		if (part.length() > 255) {
-			part = part.left(255).trimmed();
-		}
+		cutStringToUtf8Bytes(part, 255);
 	}
 
 	// Join parts back
 	QString dirpart = parts.join(sep);
 	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
-	// A filename cannot exceed a certain length
+	// A filename cannot exceed 255 bytes
 	const int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
-	if (file.length() > maxLength - extlen) {
-		file = file.left(maxLength - extlen).trimmed();
-	}
-	if (file.length() > 255 - extlen) {
-		file = file.left(255 - extlen).trimmed();
-	}
+	cutStringToUtf8Bytes(file, maxLength - extlen);
+	cutStringToUtf8Bytes(file, 255 - extlen);
 
 	// Get separation between filename and path
 	int index = -1;
