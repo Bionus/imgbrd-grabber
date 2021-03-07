@@ -23,7 +23,7 @@ SettingsDock::SettingsDock(Profile *profile, QWidget *parent)
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer, ui->lineFolder));
 	// m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	// ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
-	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
+	ui->comboFilename->completer()->setCaseSensitivity(Qt::CaseSensitive);
 }
 
 SettingsDock::~SettingsDock()

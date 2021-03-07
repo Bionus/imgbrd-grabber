@@ -69,9 +69,9 @@ sudo apt-get install nodejs
 
 Download the [szurubooru.js](szurubooru.js) file into Grabber's installation folder.
 
-Note that this script uses the NodeJS "form-data" plugin, so install it with:
+Note that this script uses the NodeJS "axios" and "form-data" plugins, so install them with:
 ```
-npm install -g form-data
+npm install -g axios form-data
 ```
 
 Make sure the NODE_PATH environment variable is properly set to point to your global node_modules folder. On Windows, it's usually:
@@ -89,7 +89,7 @@ npm root -g
 
 Open Grabber, then go to "Options > Commands", and set the "Image" field to:
 ```
-node szurubooru.js "YOUR_USERNAME" "YOUR_TOKEN" "%all%" "%rating%" "%source%" "%path%"
+node szurubooru.js "YOUR_USERNAME" "YOUR_TOKEN" "%all:includenamespace,unsafe%" "%rating%" "%source:unsafe%" "%path%"
 ```
 
 Make sure to replace `YOUR_USERNAME` by your Szurubooru username, and `YOUR_TOKEN` by the token created earlier (in the `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` format or similar).

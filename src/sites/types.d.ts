@@ -250,4 +250,27 @@ interface ISource {
     apis: { [id: string]: IApi };
 }
 
+interface IFile {
+    url: string;
+    width?: number;
+    height?: number;
+    filesize?: number;
+    ext?: string;
+}
+interface IDownloadable {
+    tokens?: {
+        [key: string]: any;
+    };
+    files: IFile[];
+}
+
+interface IDownloader {
+    name: string;
+    handlers: Array<{
+        regexes: string[];
+        url: (url: string) => IUrl | IError | string;
+        parse: (src: string, statusCode: number) => IDownloadable | IError;
+    }>;
+}
+
 declare const Grabber: any;

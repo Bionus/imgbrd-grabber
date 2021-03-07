@@ -15,17 +15,19 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
-#include "models/md5-database.h"
+#include "models/md5-database/md5-database-sqlite.h"
+#include "models/md5-database/md5-database-text.h"
 #include "models/monitor-manager.h"
 #include "models/site.h"
 #include "models/source.h"
+#include "models/url-downloader/url-downloader-manager.h"
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr)
+	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(std::move(path))
@@ -71,7 +73,7 @@ Profile::Profile(QString path)
 			QString favs = fileFavorites.readAll();
 			fileFavorites.close();
 
-			QStringList words = favs.split("\n", QString::SkipEmptyParts);
+			QStringList words = favs.split("\n", Qt::SkipEmptyParts);
 			m_favorites.reserve(words.count());
 			for (const QString &word : words) {
 				Favorite fav = Favorite::fromString(m_path, word);
@@ -89,7 +91,7 @@ Profile::Profile(QString path)
 		QString vil = fileKfl.readAll();
 		fileKfl.close();
 
-		m_keptForLater = vil.split("\n", QString::SkipEmptyParts);
+		m_keptForLater = vil.split("\n", Qt::SkipEmptyParts);
 	}
 
 	// Load ignored
@@ -98,8 +100,11 @@ Profile::Profile(QString path)
 		QString ign = fileIgnored.readAll();
 		fileIgnored.close();
 
-		m_ignored = ign.split("\n", QString::SkipEmptyParts);
+		m_ignored = ign.split("\n", Qt::SkipEmptyParts);
 	}
+
+	// Load removed
+	m_removedTags.add(splitStringMulti({ ' ', '\n' }, m_settings->value("ignoredtags").toString(), true));
 
 	// Make a backup of MD5s in case the multi-location change broke everything
 	if (QFile::exists(m_path + "/md5s.txt") && !QFile::exists(m_path + "/md5s.txt.bak")) {
@@ -107,14 +112,16 @@ Profile::Profile(QString path)
 	}
 
 	// Load MD5s
-	m_md5s = new Md5Database(m_path + "/md5s.txt", m_settings);
+	m_md5s = QFile::exists(m_path + "/md5s.sqlite") || !QFile::exists(m_path + "/md5s.txt")
+		? (Md5Database*) new Md5DatabaseSqlite(m_path + "/md5s.sqlite", m_settings)
+		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
 	QFile fileAutoComplete(m_path + "/words.txt");
 	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
-			m_autoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_autoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
 		}
 
 		fileAutoComplete.close();
@@ -125,7 +132,7 @@ Profile::Profile(QString path)
 	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileCustomAutoComplete.readLine()).isEmpty()) {
-			m_customAutoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+			m_customAutoComplete.append(line.trimmed().split(" ", Qt::SkipEmptyParts));
 		}
 
 		fileCustomAutoComplete.close();
@@ -134,7 +141,7 @@ Profile::Profile(QString path)
 	m_commands = new Commands(this);
 
 	// Blacklisted tags
-	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
+	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
 	for (const QString &bl : blacklist) {
 		m_blacklist.add(bl);
 	}
@@ -144,7 +151,7 @@ Profile::Profile(QString path)
 		while (!(line = fileBlacklist.readLine()).isEmpty()) {
 			line = line.trimmed();
 			if (!line.startsWith('#')) {
-				m_blacklist.add(line.split(" ", QString::SkipEmptyParts));
+				m_blacklist.add(line.split(" ", Qt::SkipEmptyParts));
 			}
 		}
 
@@ -156,6 +163,9 @@ Profile::Profile(QString path)
 
 	// Downloads
 	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
+
+	// URL downloaders
+	// m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
 
 	// Complete auto-complete
 	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
@@ -181,6 +191,7 @@ Profile::~Profile()
 	delete m_commands;
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
+	// delete m_urlDownloaderManager;
 }
 
 
@@ -193,6 +204,7 @@ void Profile::sync()
 	syncFavorites();
 	syncKeptForLater();
 	syncIgnored();
+	syncBlacklist();
 
 	// MD5s
 	m_md5s->sync();
@@ -209,14 +221,6 @@ void Profile::sync()
 	auto *newCommands = new Commands(this);
 	m_commands = newCommands;
 	delete oldCommands;
-
-	// Blacklisted tags
-	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileBlacklist.write(m_blacklist.toString().toUtf8());
-		fileBlacklist.close();
-	}
-	m_settings->remove("blacklistedtags");
 
 	// Sync settings
 	if (m_settings != nullptr) {
@@ -261,6 +265,15 @@ void Profile::syncIgnored() const
 		fileIgnored.write(m_ignored.join("\r\n").toUtf8());
 		fileIgnored.close();
 	}
+}
+void Profile::syncBlacklist() const
+{
+	QFile fileBlacklist(m_path + "/blacklist.txt");
+	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+		fileBlacklist.write(m_blacklist.toString().toUtf8());
+		fileBlacklist.close();
+	}
+	m_settings->remove("blacklistedtags");
 }
 
 QString Profile::tempPath() const
@@ -366,6 +379,14 @@ void Profile::removeIgnored(const QString &tag)
 	emit ignoredChanged();
 }
 
+void Profile::setRemovedTags(const QString &raw)
+{
+	m_removedTags.clear();
+	m_removedTags.add(splitStringMulti({ ' ', '\n' }, raw, true));
+
+	m_settings->setValue("ignoredtags", raw);
+}
+
 QPair<QString, QString> Profile::md5Action(const QString &md5, const QString &target)
 {
 	return m_md5s->action(md5, target);
@@ -410,6 +431,22 @@ void Profile::addAutoComplete(const QString &tag)
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
+
+	// Update the source's sites.txt file
+	Source *src = site->getSource();
+	QFile f(src->getPath() + "/sites.txt");
+	f.open(QIODevice::ReadOnly);
+	QString sites = f.readAll();
+	f.close();
+	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
+	stes.append(site->url());
+	stes.removeDuplicates();
+	stes.sort();
+	f.open(QIODevice::WriteOnly);
+	f.write(stes.join("\r\n").toLatin1());
+	f.close();
+
 	emit sitesChanged();
 }
 
@@ -424,18 +461,24 @@ void Profile::removeSite(Site *site)
 void Profile::setBlacklistedTags(const Blacklist &blacklist)
 {
 	m_blacklist = blacklist;
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
 	m_blacklist.add(tag);
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
 void Profile::removeBlacklistedTag(const QString &tag)
 {
 	m_blacklist.remove(tag);
+
+	syncBlacklist();
 	emit blacklistChanged();
 }
 
@@ -445,6 +488,7 @@ QSettings *Profile::getSettings() const { return m_settings; }
 QList<Favorite> &Profile::getFavorites() { return m_favorites; }
 QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
+TagFilterList &Profile::getRemovedTags() { return m_removedTags; }
 Commands &Profile::getCommands() { return *m_commands; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
@@ -453,6 +497,8 @@ const QMap<QString, Site*> &Profile::getSites() const { return m_sites; }
 const QStringList &Profile::getAdditionalTokens() const { return m_additionalTokens; }
 MonitorManager *Profile::monitorManager() const { return m_monitorManager; }
 DownloadQueryManager *Profile::downloadQueryManager() const { return m_downloadQueryManager; }
+UrlDownloaderManager *Profile::urlDownloaderManager() const { return m_urlDownloaderManager; }
+Md5Database *Profile::md5Database() const { return m_md5s; }
 
 QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {

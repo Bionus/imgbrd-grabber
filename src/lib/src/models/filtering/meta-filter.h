@@ -13,7 +13,7 @@ class MetaFilter : public Filter
 	public:
 		MetaFilter(QString type, QString val, bool invert = false);
 		QString match(const QMap<QString, Token> &tokens, bool invert = false) const override;
-		QString toString() const override;
+		QString toString(bool escape = true) const override;
 		bool compare(const Filter &rhs) const override;
 
 	private:

@@ -79,6 +79,9 @@
     <addaction name="actionAboutGithub"/>
     <addaction name="actionAboutReportBug"/>
     <addaction name="separator"/>
+    <addaction name="actionDonatePaypal"/>
+    <addaction name="actionDonatePatreon"/>
+    <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuOutils">
@@ -87,6 +90,7 @@
     </property>
     <addaction name="actionBlacklistFix"/>
     <addaction name="actionEmptyDirsFix"/>
+    <addaction name="actionMd5DatabaseConverter"/>
     <addaction name="actionMd5Fix"/>
     <addaction name="actionRenameExistingImages"/>
     <addaction name="actionTagLoader"/>
@@ -448,6 +452,29 @@
     <string>Load downloads list</string>
    </property>
   </action>
+  <action name="actionMd5DatabaseConverter">
+   <property name="text">
+    <string>MD5 database converter</string>
+   </property>
+  </action>
+  <action name="actionDonatePaypal">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/paypal.png</normaloff>:/images/icons/paypal.png</iconset>
+   </property>
+   <property name="text">
+    <string>Donate with PayPal</string>
+   </property>
+  </action>
+  <action name="actionDonatePatreon">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/patreon.png</normaloff>:/images/icons/patreon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Donate with Patreon</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -736,6 +763,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMd5DatabaseConverter</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>utilMd5DatabaseConverter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDonatePaypal</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutDonatePaypal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDonatePatreon</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutDonatePatreon()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -783,5 +858,8 @@
   <slot>aboutGithub()</slot>
   <slot>restoreLastClosedTab()</slot>
   <slot>utilTagLoader()</slot>
+  <slot>utilMd5DatabaseConverter()</slot>
+  <slot>aboutDonatePaypal()</slot>
+  <slot>aboutDonatePatreon()</slot>
  </slots>
 </ui>

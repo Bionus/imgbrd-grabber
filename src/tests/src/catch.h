@@ -9,7 +9,7 @@
 
 namespace Catch
 {
-	template<>
+	template <>
 	struct StringMaker<QLatin1String>
 	{
 		static std::string convert(QLatin1String const& value)
@@ -18,7 +18,7 @@ namespace Catch
 		}
 	};
 
-	template<>
+	template <>
 	struct StringMaker<QString>
 	{
 		static std::string convert(QString const& value)
@@ -27,7 +27,7 @@ namespace Catch
 		}
 	};
 
-	template<>
+	template <>
 	struct StringMaker<QChar>
 	{
 		static std::string convert(QChar const& value)
@@ -36,7 +36,7 @@ namespace Catch
 		}
 	};
 
-	template<>
+	template <>
 	struct StringMaker<QUrl>
 	{
 		static std::string convert(QUrl const &value)
@@ -45,24 +45,26 @@ namespace Catch
 		}
 	};
 
-	template<>
+	template <>
 	struct StringMaker<QSize>
 	{
 		static std::string convert(QSize const &value)
 		{
-			if (!value.isValid())
+			if (!value.isValid()) {
 				return "{invalid size}";
+			}
 			return QString("(%1 x %2)").arg(value.width()).arg(value.height()).toStdString();
 		}
 	};
 
-	template<>
+	template <>
 	struct StringMaker<QDateTime>
 	{
 		static std::string convert(QDateTime const &value)
 		{
-			if (!value.isValid())
+			if (!value.isValid()) {
 				return "{invalid date}";
+			}
 			return value.toString(Qt::ISODate).toStdString();
 		}
 	};

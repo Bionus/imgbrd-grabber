@@ -12,6 +12,7 @@
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
 #include "favorite.h"
+#include "filtering/tag-filter-list.h"
 #include "functions.h"
 #include "loader/token.h"
 #include "logger.h"
@@ -197,6 +198,8 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 		}
 	} else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && ext != QLatin1String("gif")) {
 		m_url = setExtension(m_url, QStringLiteral("gif"));
+	} else if (ext == QLatin1String("webm") && hasTag(QStringLiteral("mp4"))) {
+		m_url = setExtension(m_url, QStringLiteral("mp4"));
 	}
 
 	// Remove ? in urls
@@ -385,6 +388,8 @@ void Image::loadDetails(bool rateLimit)
 
 		m_loadDetails->deleteLater();
 	}
+
+	log(QStringLiteral("Loading image details from `%1`").arg(m_pageUrl.toString()), Logger::Info);
 
 	Site::QueryType type = rateLimit ? Site::QueryType::Retry : Site::QueryType::List;
 	m_loadDetails = m_parentSite->get(m_pageUrl, type);
@@ -660,31 +665,6 @@ QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QStr
 {
 	const QStringList paths = this->paths(filename, path, count);
 	return save(paths, addMd5, startCommands, count, false, size);
-}
-
-QList<Tag> Image::filteredTags(const QStringList &remove) const
-{
-	QList<Tag> tags;
-
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (const Tag &tag : m_tags) {
-		bool removed = false;
-		for (const QString &rem : remove) {
-			reg.setPattern(rem);
-			if (reg.exactMatch(tag.text())) {
-				removed = true;
-				break;
-			}
-		}
-
-		if (!removed) {
-			tags.append(tag);
-		}
-	}
-
-	return tags;
 }
 
 
@@ -984,9 +964,9 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 
 QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
-	QSettings *settings = profile->getSettings();
-	QStringList ignore = profile->getIgnored();
-	const QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	const QSettings *settings = profile->getSettings();
+	const QStringList &ignore = profile->getIgnored();
+	const TagFilterList &remove = profile->getRemovedTags();
 
 	QMap<QString, Token> tokens;
 
@@ -1026,7 +1006,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("search", Token(m_search.join(' ')));
 
 	// Tags
-	const auto tags = filteredTags(remove);
+	const auto tags = remove.filterTags(m_tags);
 	QMap<QString, QStringList> details;
 	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
@@ -1109,4 +1089,10 @@ void Image::postSave(const QString &path, Size size, SaveResult res, bool addMd5
 {
 	static const QList<SaveResult> md5Results { SaveResult::Moved, SaveResult::Copied, SaveResult::Shortcut, SaveResult::Linked, SaveResult::Saved };
 	postSaving(path, size, addMd5 && md5Results.contains(res), startCommands, count, basic);
+}
+
+bool Image::isValid() const
+{
+	return !url(Image::Size::Thumbnail).isEmpty()
+		|| !m_name.isEmpty();
 }

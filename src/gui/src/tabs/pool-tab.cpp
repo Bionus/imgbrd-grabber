@@ -83,7 +83,7 @@ void PoolTab::load()
 
 	// Get the search values
 	QString search = m_search->toPlainText();
-	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
+	QStringList tags = search.trimmed().split(" ", Qt::SkipEmptyParts);
 	tags.prepend("pool:" + QString::number(ui->spinPool->value()));
 
 	loadTags(tags);
@@ -101,7 +101,7 @@ void PoolTab::write(QJsonObject &json) const
 	json["type"] = QStringLiteral("pool");
 	json["pool"] = ui->spinPool->value();
 	json["site"] = ui->comboSites->currentText();
-	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', Qt::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
@@ -149,7 +149,7 @@ void PoolTab::getPage()
 	}
 
 	const int perPage = unloaded ? ui->spinImagesPerPage->value() : page->pageImageCount();
-	const QStringList tags = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
+	const QStringList tags = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', Qt::SkipEmptyParts);
 	const QStringList postFiltering = postFilter(true);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 
@@ -174,7 +174,7 @@ void PoolTab::getAll()
 		return;
 	}
 
-	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', QString::SkipEmptyParts);
+	const QStringList search = ("pool:" + QString::number(ui->spinPool->value()) + " " + m_search->toPlainText() + " " + m_settings->value("add").toString().trimmed()).split(' ', Qt::SkipEmptyParts);
 	const QStringList postFiltering = postFilter(true);
 	Site *site = m_sites.value(ui->comboSites->currentText());
 

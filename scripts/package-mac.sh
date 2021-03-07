@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Package everything into a "Grabber.dmg" file at the root of the git repository
 
+set -e
+
 # Create the application directory
 APP_ROOT="Grabber.app"
 APP_DIR="$APP_ROOT/Contents/MacOS"

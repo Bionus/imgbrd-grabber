@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.3.2"
+# define MyAppVersion "7.4.0"
 #endif
 
 #ifndef QtApngDll
@@ -127,6 +127,7 @@ Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Multimedia.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt5MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Network.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
@@ -192,6 +193,10 @@ Source: "{#SrcDir}\sites\Danbooru (2.0)\model.js";     DestDir: "{localappdata}\
 Source: "{#SrcDir}\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
 Source: "{#SrcDir}\sites\Danbooru (2.0)\danbooru.donmai.us\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru (2.0)\danbooru.donmai.us\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\DeviantArt\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\DeviantArt"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\DeviantArt\model.js";           DestDir: "{localappdata}\Bionus\Grabber\sites\DeviantArt"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\DeviantArt\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\DeviantArt"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\DeviantArt\www.deviantart.com\defaults.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\DeviantArt\www.deviantart.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E621\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E621\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E621\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E621"; Flags: onlyifdoesntexist

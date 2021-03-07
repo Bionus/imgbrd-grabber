@@ -5,7 +5,7 @@
 TEST_CASE("Updater")
 {
 	ProgramUpdater updater;
-	
+
 	SECTION("CompareEqual")
 	{
 		REQUIRE(updater.compareVersions("1.0.0", "1.0.0") == 0);

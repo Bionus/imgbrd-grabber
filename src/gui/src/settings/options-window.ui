@@ -1848,6 +1848,16 @@
           </property>
          </widget>
         </item>
+        <item row="14" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageUseVideoPlayer">
+          <property name="text">
+           <string>Use built-in video player</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceColoring">

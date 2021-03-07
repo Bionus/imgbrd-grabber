@@ -31,6 +31,7 @@ class SourcesSettingsWindow : public QDialog
 		void addCookie();
 		void addHeader();
 		void save();
+		void setLoginType(int index);
 		void testLogin();
 		void loginTested(Site *site, Site::LoginResult result);
 
@@ -46,6 +47,7 @@ class SourcesSettingsWindow : public QDialog
 		Site *m_site;
 		QSettings *m_globalSettings;
 		QMap<QString, QMap<QString, QLineEdit*>> m_credentialFields;
+		QList<bool> m_canTestLogin;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

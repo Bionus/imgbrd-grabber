@@ -10,9 +10,16 @@
 #include "auth/auth-field.h"
 #include "auth/auth-hash-field.h"
 #include "auth/field-auth.h"
+#include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
 #include "auth/oauth2-auth.h"
+#include "auth/url-auth.h"
 #include "functions.h"
+#include "login/http-basic-login.h"
+#include "login/http-get-login.h"
+#include "login/http-post-login.h"
+#include "login/oauth2-login.h"
+#include "login/url-login.h"
 #include "mixed-settings.h"
 #include "models/api/api.h"
 #include "models/profile.h"
@@ -94,6 +101,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	static const QMap<QString, QString> fieldLabels
 	{
 		{ "pseudo", tr("Username") },
+		{ "userId", tr("User ID") },
 		{ "password", tr("Password") },
 		{ "salt", tr("Salt") },
 		{ "apiKey", tr("API key") }
@@ -101,59 +109,52 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	QStringList types;
 	QMultiMap<QString, QLineEdit*> fields;
 	auto auths = m_site->getSource()->getAuths();
+	int activeLoginIndex = 0;
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
+		bool canTestLogin = false;
+
 		const QString type = it.value()->type();
 		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, type);
 		if (type == loginType) {
-			ui->comboLoginType->setCurrentIndex(ui->comboLoginType->count() - 1);
+			activeLoginIndex = ui->comboLoginType->count() - 1;
 		}
 
 		// Build credential fields
-		// TODO(Bionus): factorize field creation
 		QWidget *credentialsWidget = new QWidget(this);
 		QFormLayout *formLayout = new QFormLayout;
 		formLayout->setContentsMargins(0, 0, 0, 0);
+
+		QList<AuthSettingField> settingFields = it.value()->settingFields();
+		for (const auto &field : settingFields) {
+			const QString id = field.id;
+			const QString val = m_site->settings()->value("auth/" + id).toString();
+
+			m_credentialFields[type][id] = createLineEdit(credentialsWidget, val.isEmpty() ? field.def : val, field.isPassword);
+			formLayout->addRow(fieldLabels.contains(id) ? fieldLabels[id] : id, m_credentialFields[type][id]);
+			fields.insert(id, m_credentialFields[type][id]);
+		}
+
+		// TODO(Bionus): factorize login testability creation
 		if (type == "oauth2") {
 			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
-			m_credentialFields[type]["consumerKey"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerKey").toString(), false);
-			m_credentialFields[type]["consumerSecret"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/consumerSecret").toString(), false);
-			formLayout->addRow(tr("Consumer key"), m_credentialFields[type]["consumerKey"]);
-			formLayout->addRow(tr("Consumer secret"), m_credentialFields[type]["consumerSecret"]);
-			fields.insert("consumerKey", m_credentialFields[type]["consumerKey"]);
-			fields.insert("consumerSecret", m_credentialFields[type]["consumerSecret"]);
-			if (oauth->authType() == "password") {
-				m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
-				m_credentialFields[type]["password"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/password").toString(), true);
-				formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
-				formLayout->addRow(fieldLabels["password"], m_credentialFields[type]["password"]);
-				fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
-				fields.insert("password", m_credentialFields[type]["password"]);
-			}
+			canTestLogin = OAuth2Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
 		} else if (type == "http_basic") {
 			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
-			QString passwordType = basicAuth->passwordType();
-			m_credentialFields[type]["pseudo"] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/pseudo").toString(), false);
-			m_credentialFields[type][passwordType] = createLineEdit(credentialsWidget, m_site->settings()->value("auth/" + passwordType).toString(), true);
-			formLayout->addRow(fieldLabels["pseudo"], m_credentialFields[type]["pseudo"]);
-			formLayout->addRow(fieldLabels[passwordType], m_credentialFields[type][passwordType]);
-			fields.insert("pseudo", m_credentialFields[type]["pseudo"]);
-			fields.insert(passwordType, m_credentialFields[type][passwordType]);
+			canTestLogin = HttpBasicLogin(basicAuth, m_site, nullptr, m_site->settings()).isTestable();
 		} else {
 			auto fieldAuth = dynamic_cast<FieldAuth*>(it.value());
-			if (fieldAuth) {
-				for (AuthField *field : fieldAuth->fields()) {
-					const QString fid = field->id();
-					if (fid.isEmpty()) {
-						continue;
-					}
-					m_credentialFields[type][fid] = createLineEdit(credentialsWidget, field->value(m_site->settings()), field->type() == AuthField::Password);
-					formLayout->addRow(fieldLabels.contains(fid) ? fieldLabels[fid] : fid, m_credentialFields[type][fid]);
-					fields.insert(fid, m_credentialFields[type][fid]);
-				}
+			if (type == "url") {
+				canTestLogin = UrlLogin(dynamic_cast<UrlAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
+			} else if (type == "post") {
+				canTestLogin = HttpPostLogin(dynamic_cast<HttpAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
+			} else if (type == "get") {
+				canTestLogin = HttpGetLogin(dynamic_cast<HttpAuth*>(fieldAuth), m_site, nullptr, m_site->settings()).isTestable();
 			}
 		}
+
 		credentialsWidget->setLayout(formLayout);
 		ui->stackedCredentials->addWidget(credentialsWidget);
+		m_canTestLogin.append(canTestLogin);
 	}
 	for (const QString key : fields.keys()) {
 		const QList<QLineEdit*> l = fields.values(key);
@@ -187,10 +188,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		headerRow++;
 	}
 
-	// Hide login testing buttons if we can't tests this site's login
-	if (!m_site->canTestLogin()) {
-		ui->widgetTestLogin->hide();
-	}
+	ui->comboLoginType->setCurrentIndex(activeLoginIndex);
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
@@ -216,13 +214,22 @@ void SourcesSettingsWindow::deleteSite()
 		QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
+		QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
 		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
 		f.write(stes.join("\r\n").toLatin1());
 		f.close();
 		close();
 		emit siteDeleted(m_site->url());
+	}
+}
+
+void SourcesSettingsWindow::setLoginType(int index)
+{
+	ui->stackedCredentials->setCurrentIndex(index);
+
+	if (index < m_canTestLogin.count()) {
+		ui->widgetTestLogin->setVisible(m_canTestLogin[index]);
 	}
 }
 

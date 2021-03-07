@@ -312,6 +312,36 @@ Example:
 2001-05-21
 ```
 
+### Time zone
+You can override the date's timezone using the "timezone" option.
+
+Allowed values:
+* `server`: the server's time zone (default)
+* `local`: the current computer's local time zone
+* Any time zone from the IANA database (ex: "UTC", "Europe/Paris"...)
+
+You can find the list of available time zones on:
+* [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+* [The IANA website](https://www.iana.org/time-zones)
+
+Example:
+```
+%date%
+05-18-2021 17.32
+
+%date:timezone=server%
+05-18-2021 17.32
+
+%date:timezone=local%
+05-18-2021 23.32
+
+%date:timezone=UTC%
+05-18-2021 22.32
+
+%date:timezone=Europe/Paris%
+05-18-2021 23.32
+```
+
 # Custom tokens
 You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
 
@@ -323,8 +353,8 @@ You can use conditionals in your filename, using strict inequality signs (< and 
 
 *Note: there is currently issues with conditionals inside other conditionals, so it is advised to not imbricate conditionals in your filename.*
 
-## Simple conditionals ##
-### Token conditionals ###
+## Simple conditionals
+### Token conditionals
 If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
 Since an example is worth a thousand words:
 ```
@@ -339,7 +369,7 @@ If the image doesn't have any artist, it will be:
 image -  %md5%.%ext%
 ```
 
-### Tag conditionals ###
+### Tag conditionals
 You can also test directly the presence of a tag surrounding him with quotes. For example:
 ```
 image - <image contains the tag "solo"><"group" is one of the image tags> %md5%.%ext%
@@ -372,6 +402,28 @@ As well as tags:
 ```
 <image does not contain the tag !"tag1"> %md5%.%ext%
 ```
+
+## Complex conditions
+Sometimes, it can be easier to have explicit "if then else" conditions.
+
+To do so, you should use the `<if?then:else>` syntax:
+```
+<"tag"?yes:no>
+```
+If the tag is present in the image, the condition will be replaced by "yes". Otherwise, it will be "no".
+
+If you do not need an "else" part, you can omit it and use the simpler `<if?then>` syntax:
+```
+<"tag"?yes>
+```
+If the tag is present in the image, the condition will be replaced by "yes". Otherwise, it will simply be skipped.
+
+The condition part can use either tags or tokens, same as simple conditionals, combined with `&` (for "and"), `|` (for "or"), and `!` (for inversion). Complex conditions can also use parentheses (`(` and `)`).
+```
+<"tag" | !%artist%?tag or no artist:otherwise>
+```
+
+You can escape special characters (`?`, `!`...) by prefixing them with `^`. For `<` and `>`, you can also double them (`<<` and `>>`).
 
 # JavaScript
 You can also use JavaScript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.

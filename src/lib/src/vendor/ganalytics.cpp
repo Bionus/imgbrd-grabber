@@ -175,8 +175,11 @@ QUrlQuery GAnalytics::Private::buildStandardPostQuery(const QString &type)
 QString GAnalytics::Private::getScreenResolution()
 {
     QScreen *screen = QGuiApplication::primaryScreen();
-    QSize size = screen->size();
+	if (screen == nullptr) {
+		return QString();
+	}
 
+    QSize size = screen->size();
     return QString("%1x%2").arg(size.width()).arg(size.height());
 }
 #endif // QT_GUI_LIB
@@ -659,6 +662,11 @@ void GAnalytics::startSending()
 bool GAnalytics::isSending() const
 {
     return d->isSending;
+}
+
+void GAnalytics::stopSending()
+{
+	d->setIsSending(true);
 }
 
 void GAnalytics::setNetworkAccessManager(QNetworkAccessManager *networkAccessManager)

@@ -8,8 +8,8 @@
 #include "tags/tag.h"
 
 
-TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)
-	: QMenu(parent), m_tag(std::move(tag)), m_allTags(std::move(allTags)), m_browserUrl(std::move(browserUrl)), m_profile(profile)
+TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, QList<Site *> sites, bool setImage, QWidget *parent)
+	: QMenu(parent), m_tag(std::move(tag)), m_allTags(std::move(allTags)), m_browserUrl(std::move(browserUrl)), m_profile(profile), m_sites(std::move(sites))
 {
 	// Favorites
 	if (profile->getFavorites().contains(Favorite(m_tag))) {
@@ -61,6 +61,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 void TagContextMenu::favorite()
 {
 	Favorite fav(m_tag);
+	fav.setSites(m_sites);
 	m_profile->addFavorite(fav);
 	emit setFavoriteImage();
 }
@@ -106,7 +107,9 @@ void TagContextMenu::openInNewTab()
 }
 void TagContextMenu::openInNewWindow()
 {
-	QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	#if !defined(QT_NO_PROCESS)
+		QProcess::startDetached(qApp->arguments().at(0), QStringList(m_tag));
+	#endif
 }
 void TagContextMenu::openInBrowser()
 {

@@ -6,7 +6,6 @@ if(DEFINED HEADLESS)
 	add_definitions(-DHEADLESS=1)
 endif()
 
-find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Test REQUIRED)
 find_package(Qt5Widgets REQUIRED)

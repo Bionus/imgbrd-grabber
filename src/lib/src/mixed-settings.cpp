@@ -50,7 +50,7 @@ void MixedSettings::setValue(const QString &key, const QVariant &value, const QV
 	}
 
 	// No valid parent value found
-	if (value == defaultValue) {
+	if (defaultValue.isValid() && value == defaultValue) {
 		m_settings.first()->remove(key);
 		return;
 	}

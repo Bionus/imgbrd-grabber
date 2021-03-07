@@ -30,8 +30,9 @@ void SourceUpdater::checkForUpdatesDone()
 	bool isNew = false;
 
 	// TODO(Bionus): source check for updates is broken since switch to JS model files
-	/*QString source = reply->readAll();
-	if (source.startsWith("<?xml")) {
+	const QString source = reply->readAll();
+	isNew = source.contains("Not the same");
+	/*if (source.startsWith("<?xml")) {
 		QFile current(m_directory + "/model.xml");
 		if (current.open(QFile::ReadOnly)) {
 			QString compare = current.readAll();

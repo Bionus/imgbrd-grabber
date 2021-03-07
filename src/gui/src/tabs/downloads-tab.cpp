@@ -178,6 +178,7 @@ void DownloadsTab::batchClear()
 	m_groupBatchs.clear();
 	m_groupBatchsModel->cleared();
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::batchClearSel()
@@ -187,11 +188,11 @@ void DownloadsTab::batchClearSel()
 }
 void DownloadsTab::batchClearSelGroups()
 {
-	batchRemoveGroups(selectedRows(ui->tableBatchGroups).toList());
+	batchRemoveGroups(selectedRows(ui->tableBatchGroups).values());
 }
 void DownloadsTab::batchClearSelUniques()
 {
-	batchRemoveUniques(selectedRows(ui->tableBatchUniques).toList());
+	batchRemoveUniques(selectedRows(ui->tableBatchUniques).values());
 }
 void DownloadsTab::batchRemoveGroups(QList<int> rows)
 {
@@ -205,6 +206,7 @@ void DownloadsTab::batchRemoveGroups(QList<int> rows)
 		rem++;
 	}
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 void DownloadsTab::batchRemoveUniques(QList<int> rows)
@@ -219,12 +221,13 @@ void DownloadsTab::batchRemoveUniques(QList<int> rows)
 		rem++;
 	}
 
+	saveLinkListLater();
 	updateGroupCount();
 }
 
 void DownloadsTab::batchMove(int diff)
 {
-	QList<int> rows = selectedRows(ui->tableBatchGroups).toList();
+	QList<int> rows = selectedRows(ui->tableBatchGroups).values();
 	if (rows.isEmpty()) {
 		return;
 	}
@@ -235,20 +238,20 @@ void DownloadsTab::batchMove(int diff)
 		std::sort(rows.begin(), rows.end());
 	}
 
-	for (int sourceRow : rows) {
-		int destRow = qMin(qMax(0, sourceRow + diff), m_groupBatchsModel->rowCount() - 1);
+	for (int i = 0; i < rows.count(); ++i) {
+		const int sourceRow = rows[i];
+
+		int destRow = qMin(qMax(i, sourceRow + diff), m_groupBatchsModel->rowCount() - i - 1);
 		if (destRow == sourceRow) {
 			return;
 		}
 
-		// Swap batch items
-		auto sourceBatch = m_groupBatchs[sourceRow];
-		auto destBatch = m_groupBatchs[destRow];
-		m_groupBatchs[sourceRow] = destBatch;
-		m_groupBatchs[destRow] = sourceBatch;
+		auto sourceBatch = m_groupBatchs.takeAt(sourceRow);
+		m_groupBatchs.insert(destRow, sourceBatch);
 
-		m_groupBatchsModel->changed(sourceRow);
-		m_groupBatchsModel->changed(destRow);
+		for (int j = sourceRow; j != destRow; (diff < 0 ? --j : ++j)) {
+			m_groupBatchsModel->changed(j);
+		}
 	}
 
 	QItemSelection selection;
@@ -261,6 +264,8 @@ void DownloadsTab::batchMove(int diff)
 	auto *selectionModel = new QItemSelectionModel(m_groupBatchsModel, this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
+
+	saveLinkListLater();
 }
 void DownloadsTab::batchMoveToTop()
 {
@@ -352,7 +357,7 @@ void DownloadsTab::saveFile()
 	save = QDir::toNativeSeparators(save);
 	m_settings->setValue("linksLastDir", save.section(QDir::separator(), 0, -2));
 
-	if (saveLinkList(save)) {
+	if (saveLinkList(save, false)) {
 		QMessageBox::information(this, tr("Save link list"), tr("Link list saved successfully!"));
 	} else {
 		QMessageBox::critical(this, tr("Save link list"), tr("Error opening file."));
@@ -366,9 +371,9 @@ bool DownloadsTab::saveLinkListDefault()
 {
 	return saveLinkList(m_profile->getPath() + "/restore.igl");
 }
-bool DownloadsTab::saveLinkList(const QString &filename)
+bool DownloadsTab::saveLinkList(const QString &filename, bool saveProgress)
 {
-	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
+	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs, saveProgress);
 }
 
 void DownloadsTab::loadFile()
@@ -772,7 +777,7 @@ void DownloadsTab::getAllImages()
 
 	// We start the simultaneous downloads
 	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
-	m_getAllCurrentlyProcessing.store(count);
+	m_getAllCurrentlyProcessing.storeRelaxed(count);
 	for (int i = 0; i < count; i++) {
 		_getAll();
 	}
@@ -1016,7 +1021,7 @@ void DownloadsTab::getAllSkip()
 
 	m_getAllSkipped += count;
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + m_getAllResumed);
-	m_getAllCurrentlyProcessing.store(count);
+	m_getAllCurrentlyProcessing.storeRelaxed(count);
 	for (int i = 0; i < count; ++i) {
 		_getAll();
 	}
@@ -1117,8 +1122,8 @@ void DownloadsTab::getAllFinished()
 
 	// Remove after download and retries are finished
 	if (m_progressDialog->endRemove()) {
-		batchRemoveGroups(m_batchDownloading.toList());
-		batchRemoveUniques(m_batchUniqueDownloading.toList());
+		batchRemoveGroups(m_batchDownloading.values());
+		batchRemoveUniques(m_batchUniqueDownloading.values());
 	}
 
 	// End of batch download

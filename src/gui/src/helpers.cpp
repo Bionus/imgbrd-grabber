@@ -50,7 +50,7 @@ void showInGraphicalShell(const QString &pathIn)
 			QString msg = QString::fromLatin1(errMsg);
 			log(QString("Error parsing path display name for '%1': %2").arg(pathIn, msg), Logger::Error);
 		}
-	#elif defined(Q_OS_MAC)
+	#elif defined(Q_OS_MAC) && !defined(QT_NO_PROCESS)
 		QStringList scriptArgs;
 		scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(pathIn);
 		QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);

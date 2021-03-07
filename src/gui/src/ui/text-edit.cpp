@@ -29,7 +29,7 @@ QSize TextEdit::sizeHint() const
 {
 	QFontMetrics fm(font());
 	const int h = qMax(fm.height(), 14) + 4;
-	const int w = fm.width(QLatin1Char('x')) * 17 + 4;
+	const int w = fm.horizontalAdvance(QLatin1Char('x')) * 17 + 4;
 	QStyleOptionFrame opt;
 	opt.initFrom(this);
 	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));

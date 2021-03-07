@@ -69,5 +69,7 @@
         <file>images/icons/arrow-bottom.png</file>
         <file>images/icons/arrow-top.png</file>
         <file>images/icons/eye.png</file>
+        <file>images/icons/patreon.png</file>
+        <file>images/icons/paypal.png</file>
     </qresource>
 </RCC>

@@ -23,6 +23,9 @@ class LanguageLoader : public QObject
 	public slots:
 		bool setLanguage(const QString &lang);
 
+	signals:
+		void languageChanged();
+
 	protected:
 		QLocale localeFromString(const QString &lang);
 

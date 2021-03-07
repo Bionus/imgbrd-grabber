@@ -1,4 +1,5 @@
 #include "monitor-window.h"
+#include <QFileDialog>
 #include <QtMath>
 #include <ui_monitor-window.h>
 #include "models/monitor-manager.h"
@@ -47,6 +48,14 @@ MonitorWindow::~MonitorWindow()
 	delete ui;
 }
 
+void MonitorWindow::chooseDownloadPathOverride()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineDownloadPathOverride->text());
+	if (!folder.isEmpty()) {
+		ui->lineDownloadPathOverride->setText(folder);
+	}
+}
+
 void MonitorWindow::remove()
 {
 	m_monitorManager->remove(m_monitor);
@@ -57,8 +66,8 @@ void MonitorWindow::save()
 {
 	int index = m_monitorManager->remove(m_monitor);
 
-	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', QString::SkipEmptyParts);
-	QStringList postFilters = ui->linePostFilters->text().split(' ', QString::SkipEmptyParts);
+	SearchQuery query = !m_monitor.query().gallery.isNull() ? m_monitor.query() : ui->lineSearch->text().split(' ', Qt::SkipEmptyParts);
+	QStringList postFilters = ui->linePostFilters->text().split(' ', Qt::SkipEmptyParts);
 	int interval = ui->spinInterval->value() * 60;
 	int delay = ui->spinDelay->value() * 60;
 	bool notify = ui->checkNotificationEnabled->isChecked();

@@ -6,7 +6,7 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
-function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number } {
+function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, startDate?: string, endDate?: string } {
     const modes = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
@@ -17,6 +17,8 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
     let bookmarks = undefined;
     let user = undefined;
     const tags = [];
+    let startDate = undefined;
+    let endDate = undefined;
 
     const parts = search.split(" ");
     for (const tag of parts) {
@@ -37,10 +39,28 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
         if (part.indexOf("user:") === 0) {
             user = parseInt(part.substr(5), 10);
         }
+
+        if (part.indexOf("date:") === 0) {
+            const datePart = part.substr(5);
+            if (datePart.indexOf("..") !== -1) {
+                const split = datePart.split("..");
+                startDate = split[0];
+                endDate = split[1];
+            } else if (datePart.substr(0, 2) === ">=") {
+                startDate = datePart.substr(2);
+            } else if (datePart.substr(0, 2) === "<=") {
+                endDate = datePart.substr(2);
+            } else {
+                startDate = datePart;
+                endDate = datePart;
+            }
+            continue;
+        }
+
         tags.push(part);
     }
 
-    return { mode, tags, bookmarks, user };
+    return { mode, tags, bookmarks, user, startDate, endDate };
 }
 
 function parseImage(image: any, fromGallery: boolean): IImage {
@@ -90,7 +110,7 @@ function parseImage(image: any, fromGallery: boolean): IImage {
 
 export const source: ISource = {
     name: "Pixiv",
-    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:"],
+    modifiers: ["mode:partial", "mode:full", "mode:tc", "bookmarks:", "user:", "date:"],
     forcedTokens: [],
     searchFormat: {
         and: " ",
@@ -119,6 +139,14 @@ export const source: ISource = {
                         "filter=for_ios",
                         "image_sizes=small,medium,large",
                     ];
+
+                    // Date option
+                    if (search.startDate) {
+                        illustParams.push("start_date=" + search.startDate);
+                    }
+                    if (search.endDate) {
+                        illustParams.push("end_date=" + search.endDate);
+                    }
 
                     // User's bookmarks
                     if (search.bookmarks !== undefined && search.bookmarks > 0) {

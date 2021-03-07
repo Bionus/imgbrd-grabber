@@ -106,7 +106,7 @@ TEST_CASE("Filename")
 	auto profile = pProfile.data();
 
 	auto settings = profile->getSettings();
-	settings->setValue("ignoredtags", "");
+	profile->setRemovedTags("");
 	settings->setValue("Save/separator", " ");
 	settings->setValue("Save/character_value", "group");
 	settings->setValue("Save/character_multiple", "replaceAll");
@@ -154,16 +154,16 @@ TEST_CASE("Filename")
 	SECTION("PathComplex")
 	{
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathKeepAll")
 	{
 		settings->setValue("Save/character_multiple", "keepAll");
 
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathKeepN")
 	{
@@ -171,8 +171,8 @@ TEST_CASE("Filename")
 		settings->setValue("Save/character_multiple_keepN", 1);
 
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/character1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/character1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathSort")
 	{
@@ -189,75 +189,75 @@ TEST_CASE("Filename")
 		settings->setValue("Save/character_multiple_keepNThenAdd_keep", 1);
 		settings->setValue("Save/character_multiple_keepNThenAdd_add", " (and %count% of %total%)");
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/character1 (and 1 of 2)/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/character1 (and 1 of 2)/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
 		settings->setValue("Save/character_multiple_keepNThenAdd_keep", 2);
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathIgnoredTags")
 	{
-		settings->setValue("ignoredtags", "character1");
+		profile->setRemovedTags("character1");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
-		settings->setValue("ignoredtags", "character*");
+		profile->setRemovedTags("character*");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
 		settings->setValue("Save/character_empty", "");
 		img = ImageFactory::build(site, details, profile);
 		assertPath(profile, img,
-				"%artist%/%copyright%/%character%/%md5%.%ext%",
-				"artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%copyright%/%character%/%md5%.%ext%",
+			"artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathEmptyDirs")
 	{
 		assertPath(profile, img,
-				"%artist%/%test%/%md5%.%ext%",
-				"artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%test%/%md5%.%ext%",
+			"artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathEmptyDirsNetworkDrive")
 	{
 		assertPath(profile, img,
-				"%md5%.%ext%",
-				"//NetworkDrive/Grabber/1bc29b36f623ba82aaf6724fd3b16718.jpg",
-				"//NetworkDrive/Grabber", true, true);
+			"%md5%.%ext%",
+			"//NetworkDrive/Grabber/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			"//NetworkDrive/Grabber", true, true);
 	}
 	SECTION("PathKeptTokens")
 	{
 		assertPath(profile, img,
-				"%artist%/%path%/%md5%.%ext%",
-				"artist1/%path%/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"%artist%/%path%/%md5%.%ext%",
+			"artist1/%path%/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("PathFull")
 	{
 		assertPath(profile, img,
-				"%md5%.%ext%",
-				"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
-				"tests/directory/",
-				true, true);
+			"%md5%.%ext%",
+			"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			"tests/directory/",
+			true, true);
 		assertPath(profile, img,
-				"%md5%.%ext%",
-				"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
-				"tests/directory",
-				true, true);
+			"%md5%.%ext%",
+			"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			"tests/directory",
+			true, true);
 		assertPath(profile, img,
-				"/%md5%.%ext%",
-				"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
-				"tests/directory/",
-				true, true);
+			"/%md5%.%ext%",
+			"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			"tests/directory/",
+			true, true);
 		assertPath(profile, img,
-				"/%md5%.%ext%",
-				"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
-				"tests/directory",
-				true, true);
+			"/%md5%.%ext%",
+			"tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			"tests/directory",
+			true, true);
 	}
 
 	SECTION("PathSimpleJavascript")
@@ -291,17 +291,17 @@ TEST_CASE("Filename")
 	SECTION("ExpandTagSimple")
 	{
 		assertPath(profile, img,
-				"<image contains the tag \"tag1\"><\"unknown\" is one of the image tags> %md5%.%ext%",
-				"image contains the tag tag1 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image contains the tag \"tag1\"><\"unknown\" is one of the image tags> %md5%.%ext%",
+			"image contains the tag tag1 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		assertPath(profile, img,
-				"<image contains the tag \"unknown\"><\"tag2\" is one of the image tags> %md5%.%ext%",
-				"tag2 is one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image contains the tag \"unknown\"><\"tag2\" is one of the image tags> %md5%.%ext%",
+			"tag2 is one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		assertPath(profile, img,
-				"<image contains the tag \"tag1\"><\"tag2\" is one of the image tags> %md5%.%ext%",
-				"image contains the tag tag1tag2 is one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image contains the tag \"tag1\"><\"tag2\" is one of the image tags> %md5%.%ext%",
+			"image contains the tag tag1tag2 is one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		assertPath(profile, img,
-				"<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
-				"1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
+			"1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("ExpandTagWithInvalidCharacter")
 	{
@@ -315,11 +315,11 @@ TEST_CASE("Filename")
 	SECTION("ExpandTagInvert")
 	{
 		assertPath(profile, img,
-				"<image does not contain the tag !\"tag1\"><!\"unknown\" is not one of the image tags> %md5%.%ext%",
-				"unknown is not one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image does not contain the tag !\"tag1\"><!\"unknown\" is not one of the image tags> %md5%.%ext%",
+			"unknown is not one of the image tags 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 		assertPath(profile, img,
-				"<image does not contain the tag !\"unknown\"><!\"tag2\" is not one of the image tags> %md5%.%ext%",
-				"image does not contain the tag unknown 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"<image does not contain the tag !\"unknown\"><!\"tag2\" is not one of the image tags> %md5%.%ext%",
+			"image does not contain the tag unknown 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("ExpandTagMultiple")
 	{
@@ -345,14 +345,14 @@ TEST_CASE("Filename")
 	SECTION("ExpandTokenSimple")
 	{
 		assertPath(profile, img,
-				"image - <%artist% some text><text %nothing%> %md5%.%ext%",
-				"image - artist1 some text 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"image - <%artist% some text><text %nothing%> %md5%.%ext%",
+			"image - artist1 some text 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("ExpandTokenInvert")
 	{
 		assertPath(profile, img,
-				"image - <!%artist% some text><text !%nothing%> %md5%.%ext%",
-				"image - text  1bc29b36f623ba82aaf6724fd3b16718.jpg");
+			"image - <!%artist% some text><text !%nothing%> %md5%.%ext%",
+			"image - text  1bc29b36f623ba82aaf6724fd3b16718.jpg");
 	}
 	SECTION("ExpandTokenComplex")
 	{
@@ -425,6 +425,12 @@ TEST_CASE("Filename")
 	{
 		assertPath(profile, img, "%date:format=yyyy-MM-dd%.%ext%", "2016-08-18.jpg");
 	}
+	SECTION("PathOptionDateTimezone")
+	{
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm%.%ext%", "2016-08-18 09-52.jpg");
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm,timezone=UTC%.%ext%", "2016-08-18 09-52.jpg");
+		assertPath(profile, img, "%date:format=yyyy-MM-dd HH-mm,timezone=UTC+01:00%.%ext%", "2016-08-18 10-52.jpg");
+	}
 	SECTION("PathOptionTagNamespace")
 	{
 		settings->setValue("Save/character_multiple", "keepAll");
@@ -446,9 +452,9 @@ TEST_CASE("Filename")
 		settings->setValue("Save/replaceblanks", true);
 
 		assertPath(profile, img,
-				"%all:ignorenamespace=general,includenamespace,unsafe,separator=\n%\n\n%general%",
-				"artist:artist1\ncharacter:character1\ncharacter:character2\ncopyright:copyright1\ncopyright:copyright2\n\ntag1 tag2 tag3 test_tag1 test_tag2 test_tag3",
-				"", false);
+			"%all:ignorenamespace=general,includenamespace,unsafe,separator=\n%\n\n%general%",
+			"artist:artist1\ncharacter:character1\ncharacter:character2\ncopyright:copyright1\ncopyright:copyright2\n\ntag1 tag2 tag3 test_tag1 test_tag2 test_tag3",
+			"", false);
 	}
 	SECTION("PathOptionTagExcludeNamespace")
 	{
@@ -458,8 +464,8 @@ TEST_CASE("Filename")
 		settings->setValue("Save/replaceblanks", true);
 
 		assertPath(profile, img,
-				"%all:includenamespace,excludenamespace=general character,unsafe%",
-				"tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist:artist1 character1 character2 copyright:copyright1 copyright:copyright2", "", false);
+			"%all:includenamespace,excludenamespace=general character,unsafe%",
+			"tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist:artist1 character1 character2 copyright:copyright1 copyright:copyright2", "", false);
 	}
 	SECTION("PathOptionTagSeparator")
 	{
@@ -477,16 +483,16 @@ TEST_CASE("Filename")
 	SECTION("PathOptionNumSingle")
 	{
 		assertPath(profile, img,
-				"%id% (%num%).%ext%",
-				"7331 (1).jpg",
-				"tests/resources/tmp/");
+			"%id% (%num%).%ext%",
+			"7331 (1).jpg",
+			"tests/resources/tmp/");
 	}
 	SECTION("PathOptionNumSingleLength")
 	{
 		assertPath(profile, img,
-				"%id% (%num:length=3%).%ext%",
-				"7331 (001).jpg",
-				"tests/resources/tmp/");
+			"%id% (%num:length=3%).%ext%",
+			"7331 (001).jpg",
+			"tests/resources/tmp/");
 	}
 	SECTION("PathOptionNumMultiple")
 	{
@@ -494,9 +500,9 @@ TEST_CASE("Filename")
 		QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (2).jpg");
 
 		assertPath(profile, img,
-				"%id% (%num%).%ext%",
-				"7331 (3).jpg",
-				"tests/resources/tmp/");
+			"%id% (%num%).%ext%",
+			"7331 (3).jpg",
+			"tests/resources/tmp/");
 
 		QFile::remove("tests/resources/tmp/7331 (1).jpg");
 		QFile::remove("tests/resources/tmp/7331 (2).jpg");
@@ -508,35 +514,35 @@ TEST_CASE("Filename")
 		QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (3).png");
 
 		assertPath(profile, img,
-				"%id% (%num%).%ext%",
-				"7331 (2).jpg",
-				"tests/resources/tmp/");
+			"%id% (%num%).%ext%",
+			"7331 (2).jpg",
+			"tests/resources/tmp/");
 
 		assertPath(profile, img,
-				"%id% (%num:noext%).%ext%",
-				"7331 (4).jpg",
-				"tests/resources/tmp/");
+			"%id% (%num:noext%).%ext%",
+			"7331 (4).jpg",
+			"tests/resources/tmp/");
 
 		QFile::remove("tests/resources/tmp/7331 (1).png");
 		QFile::remove("tests/resources/tmp/7331 (2).png");
 	}
 	SECTION("PathOptionNumAboveTen")
 	{
-	#if false
-		int count = 15;
-		for (int i = 1; i < count; ++i) {
-			QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
-		}
+		#if false
+			int count = 15;
+			for (int i = 1; i < count; ++i) {
+				QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+			}
 
-		assertPath(profile, img,
-				"%id% (%num%).%ext%",
-				"7331 (" + QString::number(count) + ").jpg",
-				"tests/resources/tmp/");
+			assertPath(profile, img,
+			"%id% (%num%).%ext%",
+			"7331 (" + QString::number(count) + ").jpg",
+			"tests/resources/tmp/");
 
-		for (int i = 1; i < count; ++i) {
-			QFile::remove("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
-		}
-	#endif
+			for (int i = 1; i < count; ++i) {
+				QFile::remove("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+			}
+		#endif
 	}
 
 	SECTION("PathOptionSort")

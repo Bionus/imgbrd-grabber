@@ -90,7 +90,7 @@ void Md5Fix::start()
 	ui->buttonStart->setEnabled(false);
 
 	// Check that directory exists
-	QString dir = ui->lineFolder->text();
+	QString dir = fixFilename("", ui->lineFolder->text());
 	if (!QDir(dir).exists()) {
 		error(this, tr("This folder does not exist."));
 		ui->buttonStart->setEnabled(true);

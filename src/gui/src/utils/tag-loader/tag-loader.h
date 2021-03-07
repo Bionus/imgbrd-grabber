@@ -12,9 +12,10 @@ namespace Ui
 }
 
 
+class Api;
 class Profile;
 class Site;
-class Api;
+class TagListLoader;
 
 class TagLoader : public QDialog
 {
@@ -24,19 +25,18 @@ class TagLoader : public QDialog
 		explicit TagLoader(Profile *profile, QWidget *parent = nullptr);
 		~TagLoader() override;
 
-	protected:
-		QList<Api*> getApisToLoadTagTypes(Site *site) const;
-		QList<Api*> getApisToLoadTags(Site *site, bool needTagTypes) const;
-
 	private slots:
 		void start();
 		void cancel();
+		void finishedLoading();
+		void resetOptions();
 
 	private:
 		Ui::TagLoader *ui;
 		Profile *m_profile;
 		QMap<QString, Site*> m_sites;
 		QStringList m_options;
+		TagListLoader *m_loader = nullptr;
 };
 
 #endif // TAG_LOADER_H

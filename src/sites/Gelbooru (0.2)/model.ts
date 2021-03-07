@@ -19,6 +19,19 @@ export const source: ISource = {
         and: " ",
     },
     auth: {
+        url:  {
+            type: "url",
+            fields: [
+                {
+                    id: "userId",
+                    key: "user_id",
+                },
+                {
+                    id: "apiKey",
+                    key: "api_key",
+                },
+            ],
+        },
         session: {
             type: "post",
             url: "/index.php?page=account&s=login&code=00",
@@ -116,7 +129,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
-                        tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
+                        tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
                     };
                 },
@@ -131,7 +144,7 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags('<tr>\\s*<td>(?<count>\\d+)</td>\\s*<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<name>.+?)</a></span></td>', src),
+                        tags: Grabber.regexToTags('<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<name>.+?)</a></span>\\s*<span class="tag-count">(?<count>\\d+)</span></td>', src),
                     };
                 },
             },

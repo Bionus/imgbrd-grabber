@@ -34,7 +34,7 @@ void TagsDock::changeEvent(QEvent *event)
 
 void TagsDock::tabChanged(SearchTab *tab)
 {
-	m_tab = tab;
+	Dock::tabChanged(tab);
 
 	// Only keep the last active tab connected
 	if (m_connection) {
@@ -50,7 +50,7 @@ void TagsDock::refresh()
 	clearLayout(ui->layoutTags);
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
-	taglabel->setText(TagStylist(m_profile).stylished(m_tab->results(), true, true).join("<br/>"));
+	taglabel->setText(TagStylist(m_profile).stylished(m_currentTab->results(), true, true).join("<br/>"));
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
 	connect(taglabel, SIGNAL(middleClicked(QString)), this, SIGNAL(open(QString)));
@@ -75,7 +75,8 @@ void TagsDock::contextMenu()
 		return;
 	}
 
-	TagContextMenu *menu = new TagContextMenu(m_link, m_tab->results(), QUrl(), m_profile, false, this);
+	const QList<Site*> sites = m_currentTab->loadSites();
+	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTab->results(), QUrl(), m_profile, sites, false, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &TagsDock::emitOpenInNewTab);
 	menu->exec(QCursor::pos());
 }

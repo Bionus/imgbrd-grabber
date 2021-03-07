@@ -4,6 +4,7 @@
 #include <QMap>
 // #include <QMutexLocker>
 #include "functions.h"
+#include "js-helpers.h"
 #include "logger.h"
 #include "mixed-settings.h"
 #include "models/image.h"
@@ -146,11 +147,11 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			if (tag.property("related").isArray()) {
 				related = jsToStringList(tag.property("related"));
 			} else {
-				related = tag.property("related").toString().split(' ', QString::SkipEmptyParts);
+				related = tag.property("related").toString().split(' ', Qt::SkipEmptyParts);
 			}
 		}
 
-		const TagType tagType = !type.isEmpty() ? TagType(type) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
+		const TagType tagType = !type.isEmpty() ? TagType(Tag::GetType(type)) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType());
 		ret.append(Tag(id, text, tagType, count, related));
 	}
 

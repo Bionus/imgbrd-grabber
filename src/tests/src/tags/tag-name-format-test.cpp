@@ -47,7 +47,7 @@ TEST_CASE("TagNameFormat")
 
 	SECTION("Unknown")
 	{
-		TagNameFormat format((TagNameFormat::CaseFormat)123, " ");
+		TagNameFormat format((TagNameFormat::CaseFormat) 123, " ");
 
 		REQUIRE(format.formatted(QStringList()) == QString(""));
 		REQUIRE(format.formatted(QStringList() << "test") == QString("test"));

@@ -63,6 +63,7 @@ public:
 
     void startSending();
     bool isSending() const;
+	void stopSending();
 
     /// Get or set the network access manager. If none is set, the class creates its own on the first request
     void setNetworkAccessManager(QNetworkAccessManager *networkAccessManager);

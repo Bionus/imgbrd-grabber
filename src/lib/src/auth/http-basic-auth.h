@@ -11,6 +11,7 @@ class HttpBasicAuth : public Auth
 		HttpBasicAuth(QString type, int maxPage, QString passwordType);
 		int maxPage() const;
 		QString passwordType() const;
+		QList<AuthSettingField> settingFields() const override;
 
 	private:
 		int m_maxPage;

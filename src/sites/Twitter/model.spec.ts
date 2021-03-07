@@ -8,19 +8,20 @@ describe("Twitter", () => {
     describe("JSON API", () => {
         describe("Search", () => {
             it("works for basic listing", () => {
-                expect(search(source.apis.json, "Twitter")).toEqual("/1.1/statuses/user_timeline.json?include_rts=true&exclude_replies=false&tweet_mode=extended&screen_name=Twitter")
+                expect(search(source.apis.json, "Twitter")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=true&exclude_replies=false&tweet_mode=extended&screen_name=Twitter")
             });
 
             it("correctly detect flags", () => {
-                expect(search(source.apis.json, "Twitter retweets:no replies:no")).toEqual("/1.1/statuses/user_timeline.json?include_rts=false&exclude_replies=true&tweet_mode=extended&screen_name=Twitter")
+                expect(search(source.apis.json, "Twitter retweets:no replies:no")).toEqual("/1.1/statuses/user_timeline.json?count=10&include_rts=false&exclude_replies=true&tweet_mode=extended&screen_name=Twitter")
             });
 
             it("parses the response correctly", () => {
                 const src = readFileSync(__dirname + "/resources/search.json", "utf8");
                 const res = source.apis.json.search.parse(src, 200) as IParsedSearch;
 
-                expect(res.images.length).toEqual(11);
-                expect(res.images.map(i => i.id).slice(0, 3)).toEqual(["1274087263073255425", "1274086977952833536", "1274086862907305984"]);
+                const images = res.images.filter(i => !!i.file_url);
+                expect(images.length).toEqual(11);
+                expect(images.map(i => i.id).slice(0, 3)).toEqual(["1274087695145332736", "1274087694105075714", "1274087692003770368"]);
             });
         });
 
@@ -33,7 +34,7 @@ describe("Twitter", () => {
                 const src = readFileSync(__dirname + "/resources/gallery.json", "utf8");
                 const res = source.apis.json.gallery!.parse(src, 200) as IParsedGallery;
 
-                expect(res.images.map(i => i.id)).toEqual(["1278159248287920129", "1278159269003554817", "1278159278763696128"]);
+                expect(res.images.length).toEqual(3);
                 expect(res.imageCount).toEqual(3);
                 expect(res.pageCount).toEqual(1);
             });

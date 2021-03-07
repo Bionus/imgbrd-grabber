@@ -33,6 +33,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		auto *completer = new QCompleter(profile->getAutoComplete(), m_tags);
 			completer->setCaseSensitivity(Qt::CaseInsensitive);
+			completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 			m_tags->setCompleter(completer);
 		connect(m_tags, &TextEdit::returnPressed, this, &SearchWindow::accept);
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);

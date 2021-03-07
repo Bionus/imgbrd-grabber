@@ -160,6 +160,24 @@ section {
 	}
 }
 
+section .downloads .download {
+	float: left;
+	width: 25%;
+	text-align: center;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+section .downloads .download:last-child {
+	float: none;
+}
+
+section .downloads .download p {
+	margin-bottom: 0;
+}
+section .downloads .download img {
+	margin-bottom: 10px;
+}
+
 section .sources > p {
 	margin-bottom: 25px;
 	text-align: center;
@@ -335,7 +353,8 @@ aside.menu {
 		padding-left: 0;
 
 		li {
-			span {
+			span,
+			&.has-children > a {
 				font-size: 1.4em;
 				border-bottom: 1px dotted darkorange;
 				display: block;
@@ -357,8 +376,22 @@ aside.menu {
 
 /* Documentation text */
 
-.docs .content {
+.docs .content,
+.blog .content {
 	> *:first-child {
 		margin-top: 0 !important;
 	}
+}
+
+.blog .post-meta {
+	margin-bottom: 10px;
+	margin-top: -5px;
+	font-style: italic;
+	font-size: 13px;
+}
+.blog span.post-meta {
+	display: block;
+}
+.blog p.post-meta {
+	margin-bottom: 20px;
 }

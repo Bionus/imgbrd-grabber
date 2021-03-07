@@ -123,7 +123,7 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 	{
 		case 1:
 			if (download.query.gallery.isNull()) {
-				download.query.tags = val.split(' ', QString::SkipEmptyParts);
+				download.query.tags = val.split(' ', Qt::SkipEmptyParts);
 			}
 			break;
 
@@ -164,7 +164,7 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 8:
-			download.postFiltering = val.split(' ', QString::SkipEmptyParts);
+			download.postFiltering = val.split(' ', Qt::SkipEmptyParts);
 			break;
 
 		case 9:

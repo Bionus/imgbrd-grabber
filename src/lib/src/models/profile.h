@@ -8,6 +8,7 @@
 #include <QStringList>
 #include "models/favorite.h"
 #include "models/filtering/blacklist.h"
+#include "models/filtering/tag-filter-list.h"
 
 
 class Commands;
@@ -17,6 +18,7 @@ class MonitorManager;
 class QSettings;
 class Site;
 class Source;
+class UrlDownloaderManager;
 
 class Profile : public QObject
 {
@@ -33,6 +35,7 @@ class Profile : public QObject
 		void syncFavorites() const;
 		void syncKeptForLater() const;
 		void syncIgnored() const;
+		void syncBlacklist() const;
 
 		// Temporary path
 		QString tempPath() const;
@@ -51,6 +54,9 @@ class Profile : public QObject
 		void setIgnored(const QStringList &tags);
 		void addIgnored(const QString &tag);
 		void removeIgnored(const QString &tag);
+
+		// Removed tags managementc
+		void setRemovedTags(const QString &raw);
 
 		// MD5 management
 		QPair<QString, QString> md5Action(const QString &md5, const QString &target);
@@ -76,6 +82,7 @@ class Profile : public QObject
 		QList<Favorite> &getFavorites();
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
+		TagFilterList &getRemovedTags();
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
@@ -85,6 +92,8 @@ class Profile : public QObject
 		QList<Site*> getFilteredSites(const QStringList &urls) const;
 		MonitorManager *monitorManager() const;
 		DownloadQueryManager *downloadQueryManager() const;
+		UrlDownloaderManager *urlDownloaderManager() const;
+		Md5Database *md5Database() const;
 
 	signals:
 		void favoritesChanged();
@@ -100,6 +109,7 @@ class Profile : public QObject
 		QList<Favorite> m_favorites;
 		QStringList m_keptForLater;
 		QStringList m_ignored;
+		TagFilterList m_removedTags;
 		Commands *m_commands;
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
@@ -110,6 +120,7 @@ class Profile : public QObject
 		QStringList m_additionalTokens;
 		MonitorManager *m_monitorManager;
 		DownloadQueryManager *m_downloadQueryManager;
+		UrlDownloaderManager *m_urlDownloaderManager;
 };
 
 #endif // PROFILE_H

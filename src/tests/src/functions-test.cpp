@@ -90,18 +90,48 @@ TEST_CASE("Functions")
 		SECTION("Windows")
 		{
 			assertFixFilename(0, "", "C:\\test\\image.jpg", "C:\\test\\image.jpg");
+			assertFixFilename(0, "", "C:\\test", "C:\\test");
+			assertFixFilename(0, "", "C:\\test\\", "C:\\test\\");
+			assertFixFilename(0, "", " C:\\test\\ ", "C:\\test\\");
 			assertFixFilename(0, "image.jpg", "C:\\test\\", "image.jpg");
 			assertFixFilename(0, "image", "C:\\test\\", "image");
 			assertFixFilename(0, "folder\\image.jpg", "C:\\test\\", "folder\\image.jpg");
 			assertFixFilename(0, "folder...\\image.jpg", "C:\\test\\", "folder\\image.jpg");
+			assertFixFilename(0, "COM1\\image.jpg", "C:\\test\\", "COM1!\\image.jpg");
+			assertFixFilename(0, "com1\\image.jpg", "C:\\test\\", "com1!\\image.jpg");
 		}
 
 		SECTION("Linux")
 		{
 			assertFixFilename(1, "", "/home/test/image.jpg", "/home/test/image.jpg");
+			assertFixFilename(1, "", "/home/test", "/home/test");
+			assertFixFilename(1, "", "/home/test/", "/home/test/");
+			assertFixFilename(1, "", "/home/test/ ", "/home/test/ ");
 			assertFixFilename(1, "image.jpg", "/home/test/", "image.jpg");
 			assertFixFilename(1, "image", "/home/test/", "image");
 			assertFixFilename(1, "folder/image.jpg", "/home/test/", "folder/image.jpg");
+
+			SECTION("UTF-8")
+			{
+				const QString utf8Part = "é";
+				QString utf8Long;
+
+				// 100 UTF-8 chars / 200 bytes is under the 255 limit
+				for (int i = 0; i < 100; ++i) {
+					utf8Long += utf8Part;
+				}
+				REQUIRE(fixFilenameLinux(utf8Long + "/image.jpg", "/home/test/") == QString(utf8Long + "/image.jpg"));
+
+
+				// 200 UTF-8 chars / 400 bytes is above the limit so should be cut
+				for (int i = 0; i < 100; ++i) {
+					utf8Long += utf8Part;
+				}
+				const QString actual = fixFilenameLinux(utf8Long + "/image.jpg", "/home/test/");
+				REQUIRE(actual != QString(utf8Long + "/image.jpg"));
+				REQUIRE(actual.length() == 127 + 10);
+				REQUIRE(actual.toUtf8().size() == 254 + 10);
+			}
 		}
 	}
 
@@ -192,7 +222,8 @@ TEST_CASE("Functions")
 		REQUIRE(getExtension(QUrl("http://test.com/some.dir/file")) == QString(""));
 		REQUIRE(getExtension(QUrl("http://test.com/file.jpg")) == QString("jpg"));
 		REQUIRE(getExtension(QUrl("http://test.com/file.jpg?toto=1")) == QString("jpg"));
-		REQUIRE(getExtension(QUrl("http://test.com/file.jpg?toto=1")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("http://test.com/file.jpg:large")) == QString("jpg"));
+		REQUIRE(getExtension(QUrl("http://test.com/index.php?image=file.jpg")) == QString("jpg"));
 	}
 	SECTION("SetExtension")
 	{
@@ -200,6 +231,7 @@ TEST_CASE("Functions")
 		REQUIRE(setExtension(QUrl("http://test.com/file"), "png") == QUrl("http://test.com/file"));
 		REQUIRE(setExtension(QUrl("http://test.com/file.jpg"), "png") == QUrl("http://test.com/file.png"));
 		REQUIRE(setExtension(QUrl("http://test.com/file.jpg?toto=1"), "png") == QUrl("http://test.com/file.png?toto=1"));
+		REQUIRE(setExtension(QUrl("http://test.com/file.jpg:large"), "png") == QUrl("http://test.com/file.png:large"));
 	}
 
 	SECTION("Levenshtein")
@@ -303,7 +335,6 @@ TEST_CASE("Functions")
 		REQUIRE(parseMarkdown("issue 123") == QString("issue 123"));
 	}
 
-#ifdef Q_OS_WIN
 	SECTION("SetFileCreationDate")
 	{
 		QString path = "tests/resources/pages/behoimi.org/results.json";
@@ -324,7 +355,6 @@ TEST_CASE("Functions")
 		QDateTime created = fileCreationDate(path);
 		REQUIRE(created.toTime_t() == date.toTime_t());
 	}
-#endif
 
 	SECTION("GetExternalLogFilesSuffixes")
 	{
@@ -394,5 +424,26 @@ TEST_CASE("Functions")
 		REQUIRE(removeCacheBuster(QUrl("https://test.com/path")) == QUrl("https://test.com/path"));
 		REQUIRE(removeCacheBuster(QUrl("https://test.com/path?string")) == QUrl("https://test.com/path?string"));
 		REQUIRE(removeCacheBuster(QUrl("https://test.com/path?1234")) == QUrl("https://test.com/path"));
+	}
+
+	SECTION("splitStringMulti")
+	{
+		SECTION("Basic usage")
+		{
+			REQUIRE(splitStringMulti({}, "a,b;c,d") == QStringList { "a,b;c,d" });
+			REQUIRE(splitStringMulti({ ';' }, "a,b;c,d") == QStringList { "a,b", "c,d" });
+			REQUIRE(splitStringMulti({ ',' }, "a,b;c,d") == QStringList { "a", "b;c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d") == QStringList { "a", "b", "c", "d" });
+		}
+
+		SECTION("Skip empty parts")
+		{
+			REQUIRE(splitStringMulti({ ',', ';' }, ",;,a,b;c,d", false) == QStringList { "", "", "", "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, ",;,a,b;c,d", true) == QStringList { "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,,b;;c,d", false) == QStringList { "a", "", "b", "", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,,b;;c,d", true) == QStringList { "a", "b", "c", "d" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", false) == QStringList { "a", "b", "c", "d", "", "", "" });
+			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", true) == QStringList { "a", "b", "c", "d" });
+		}
 	}
 }

@@ -4,6 +4,23 @@ function isNum(char: string): boolean {
     return char >= "0" && char <= "9";
 }
 
+// See Shimmie2 Tag::caret function
+function escapeWithCaret(input: string): string {
+    const toCaret: Record<string, string> = {
+        "^": "^",
+        "/": "s",
+        "\\": "b",
+        "?": "q",
+        "&": "a",
+        ".": "d",
+    };
+    for (const from in toCaret) {
+        const to = toCaret[from];
+        input = input.replace(new RegExp("\\" + from, "g"), '^' + to);
+    }
+    return input;
+}
+
 function transformQuery(query: string): string {
     let widthIndex: number | undefined;
     let heightIndex: number | undefined;
@@ -39,7 +56,7 @@ function transformTag(query: string): string {
     // Ignore basic tag searches
     const parts = query.split(":");
     if (parts.length <= 1) {
-        return query;
+        return escapeWithCaret(query);
     }
 
     // Some meta-tokens have different names than usual
@@ -76,18 +93,40 @@ function completeImage(img: IImage): IImage {
     const hasMd5 = img.md5 && img.md5.length > 0;
 
     if (!img.file_url || img.file_url.length < 5) {
-        img.file_url = hasMd5
-            ? `/_images/${img.md5}.${img.ext || "jpg"}`
-            : `/_images/${img.id}.${img.ext || "jpg"}`;
+        img.file_url = !hasMd5 && !img.id && img.preview_url && img.preview_url.length >= 5
+            ? img.preview_url.replace("/_thumbs/", "/_images/")
+            : (hasMd5
+                ? `/_images/${img.md5}.${img.ext || "jpg"}`
+                : `/_images/${img.id}.${img.ext || "jpg"}`);
     }
 
     if (!img.preview_url || img.preview_url.length < 5) {
-        img.preview_url = hasMd5
-            ? `/_thumbs/${img.md5}.jpg`
-            : `/_thumbs/${img.id}.jpg`;
+        img.preview_url = !hasMd5 && !img.id && img.file_url && img.file_url.length >= 5
+            ? img.file_url.replace("/_images/", "/_thumbs/")
+            : (hasMd5
+                ? `/_thumbs/${img.md5}.jpg`
+                : `/_thumbs/${img.id}.jpg`);
     }
 
     return img;
+}
+
+function parseDetails(src: string): IParsedDetails {
+    let tags: ITag[] | string[] | undefined;
+    const leftTagBlock = src.match(/<section[^>]*><h3[^>]*>Tags<\/h3>([\s\S]+?)<\/section>/);
+    if (leftTagBlock) {
+        tags = Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', leftTagBlock[1]);
+    } else {
+        const bottomTagsBlock = src.match(/<tr>\s*<th[^>]*>Tags<\/th>\s*<td>([\s\S]*?)<\/td>\s*<\/tr>/);
+        if (bottomTagsBlock) {
+            tags = Grabber.regexToTags("<a[^>]*>(?<name>[^<]+)</a>", bottomTagsBlock[1]);
+        }
+    }
+    return {
+        tags,
+        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^']+)['\"][^>]*>", src),
+        createdAt: Grabber.regexToConst("date", "<time datetime=['\"](?<date>[^'\"]+)['\"]>", src),
+    };
 }
 
 export const source: ISource = {
@@ -196,12 +235,28 @@ export const source: ISource = {
                         return { error: "Loading error: HTTP " + statusCode };
                     }
 
+                    // Redirected to an image (md5:XXX)
+                    if (src.indexOf("main_image") !== -1) {
+                        const details = parseDetails(src);
+                        return {
+                            tags: details.tags,
+                            images: [completeImage({
+                                id: Grabber.regexToConst("id", `<input[^>]+name=['"]image_id['"][^>]+value=['"](?<id>\\d+)['"][^>]*>`, src),
+                                date: details.createdAt,
+                                file_url: details.imageUrl,
+                                preview_url: details.imageUrl?.replace("/_images/", "/_thumbs/"),
+                            })],
+                            imageCount: 1,
+                            pageCount: 1,
+                        };
+                    }
+
                     const pageCount = /\| Next \| Last<br>/.test(src)
                         ? Grabber.regexToConst("page", "<a href=['\"]/post/list(?:/[^/]+)?/(?<page>\\d+)['\"]>[^<]+<\/a>(?:<\/b>)? &gt;&gt;", src)
                         : Grabber.regexToConst("page", "<a href=['\"]/post/list(?:/[^/]+)?/(?<page>\\d*)['\"]>Last</a>", src);
                     return {
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', src),
-                        images: Grabber.regexToImages("<a(?: class=['\"][^'\"]*['\"])? href=['\"][^'\">]*/post/view/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?<image><img(?: id=['\"](?:[^'\"]*)['\"])? title=['\"](?<tags>[^'\"/]*)(?: // (?<width>[^'\"/]+?)x(?<height>[^'\"/]+?) // (?<file_size>[^'\"/]*?)(?: // (?<ext>[^'\"/]*?))?)?['\"] alt=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])? width=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])?[^>]*(?:src|data-original)=['\"][^'\"]*(?<preview_url>/_thumbs/(?<md5>[^/]*)/[^'\"]*\\.jpg|/thumb/(?<md5_2>[^'\"]*)\\.jpg|questionable\\.jpg)['\"][^>]*>).*?</a>|<a href=['\"][^'\">]*/i(?<id_2>[^'\"]+)['\"](?: class=['\"][^'\"]*['\"])?[^>]*>[^<]*(?<image_2><img(?: id=['\"](?:[^'\"]*)['\"])? src=['\"][^'\"]*(?<preview_url_2>/_thumbs/(?<md5_3>[^'\"]*)(?:_th)?\\.jpg|/thumb/(?<md5_4>[^'\"]*)\\.jpg|questionable\\.jpg)['\"] title=['\"](?<tags_2>[^'\"/]+) // (?<width_2>[^'\"]+)x(?<height_2>[^'\"]+) // (?<file_size_2>[^'\"]*)(?: // (?<ext_2>[^'\"]*))?['\"] alt=['\"][^'\"]*['\"] ?/?>)[^<]*</a>", src).map(completeImage),
+                        images: Grabber.regexToImages("<a(?: class=['\"][^'\"]*['\"])? href=['\"][^'\">]*/post/view/(?<id>[^'\"]+)['\"][^>]*>[^<]*(?<image><img(?: id=['\"](?:[^'\"]*)['\"])? title=['\"](?<tags>[^'\"/]*)(?: // )?(?:(?<width>[^'\"/]+?)x(?<height>[^'\"/]+?) // (?<file_size>[^'\"/]*?)(?: // (?<ext>[^'\"/]*?))?)?(?:\\s+[^'\"/]*)?['\"] alt=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])? width=['\"][^'\"]*['\"](?: height=['\"][^'\"]*['\"])?[^>]*(?:src|data-original)=['\"][^'\"]*(?<preview_url>/_thumbs/(?<md5>[^/]*)/[^'\"]*\\.jpg|/thumb/(?<md5_2>[^'\"]*)\\.jpg|questionable\\.jpg)['\"][^>]*>).*?</a>|<a href=['\"][^'\">]*/i(?<id_2>[^'\"]+)['\"](?: class=['\"][^'\"]*['\"])?[^>]*>[^<]*(?<image_2><img(?: id=['\"](?:[^'\"]*)['\"])? src=['\"][^'\"]*(?<preview_url_2>/_thumbs/(?<md5_3>[^'\"]*)(?:_th)?\\.jpg|/thumb/(?<md5_4>[^'\"]*)\\.jpg|questionable\\.jpg)['\"] title=['\"](?<tags_2>[^'\"/]+) // (?<width_2>[^'\"]+)x(?<height_2>[^'\"]+) // (?<file_size_2>[^'\"]*)(?: // (?<ext_2>[^'\"]*))?['\"] alt=['\"][^'\"]*['\"] ?/?>)[^<]*</a>", src).map(completeImage),
                         pageCount,
                     };
                 },
@@ -210,23 +265,7 @@ export const source: ISource = {
                 url: (id: string, md5: string): string => {
                     return "/post/view/" + id;
                 },
-                parse: (src: string): IParsedDetails => {
-                    let tags: ITag[] | string[] | undefined;
-                    const leftTagBlock = src.match(/<section[^>]*><h3[^>]*>Tags<\/h3>([\s\S]+?)<\/section>/);
-                    if (leftTagBlock) {
-                        tags = Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<name>[^<]+)</a>[^<]*</li>|<a class=[\'"]tag_name[\'"] href=[\'"]([^\'"]+)(?:/1)?[\'"]>(?<name_2>[^<]+)</a>(?:</td><td class=[\'"]tag_count_cell[\'"]>[^<]*<span class=[\'"]tag_count[\'"]>(?<count>\\d+)</span>)?', leftTagBlock[1]);
-                    } else {
-                        const bottomTagsBlock = src.match(/<tr>\s*<th[^>]*>Tags<\/th>\s*<td>([\s\S]*?)<\/td>\s*<\/tr>/);
-                        if (bottomTagsBlock) {
-                            tags = Grabber.regexToTags("<a[^>]*>(?<name>[^<]+)</a>", bottomTagsBlock[1]);
-                        }
-                    }
-                    return {
-                        tags,
-                        imageUrl: Grabber.regexToConst("url", "<img.+?id=['\"]main_image['\"] src=['\"](?<url>[^']+)['\"][^>]*>", src),
-                        createdAt: Grabber.regexToConst("date", "<time datetime=['\"](?<date>[^'\"]+)['\"]>", src),
-                    };
-                },
+                parse: parseDetails,
             },
             check: {
                 url: (): string => {

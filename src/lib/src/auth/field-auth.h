@@ -13,6 +13,7 @@ class FieldAuth : public Auth
 	public:
 		FieldAuth(QString type, QList<AuthField*> fields);
 		QList<AuthField*> fields() const;
+		QList<AuthSettingField> settingFields() const override;
 
 	private:
 		QList<AuthField*> m_fields;

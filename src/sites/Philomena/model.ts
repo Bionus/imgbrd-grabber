@@ -61,9 +61,18 @@ function searchToArg(search: string): string {
     return ret;
 }
 
+// Build all "order:XXX" possible modifiers
+const sorts = ["id", "updated_at", "first_seen_at", "aspect_ratio", "faves", "upvotes", "downvotes", "score", "wilson_score", "_score", "width", "height", "comment_count", "tag_count", "pixels", "size", "duration"];
+const sortModifiers = [];
+for (const sort of sorts) {
+    sortModifiers.push("order:" + sort);
+    sortModifiers.push("order:" + sort + "_asc");
+    sortModifiers.push("order:" + sort + "_desc");
+}
+
 export const source: ISource = {
     name: "Philomena",
-    modifiers: ["faved_by:", "width:", "height:", "uploader:", "source_url:", "description:", "sha512_hash:", "aspect_ratio:"],
+    modifiers: ["faved_by:", "width:", "height:", "uploader:", "source_url:", "description:", "sha512_hash:", "aspect_ratio:", ...sortModifiers],
     forcedTokens: [],
     tagFormat: {
         case: "lower",

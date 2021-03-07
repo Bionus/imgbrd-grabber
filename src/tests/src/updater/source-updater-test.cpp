@@ -4,7 +4,6 @@
 #include "catch.h"
 
 
-#if defined(Q_OS_WIN) && 0
 TEST_CASE("SourceUpdater")
 {
 	SECTION("No update")
@@ -39,4 +38,3 @@ TEST_CASE("SourceUpdater")
 		REQUIRE(isNew);
 	}
 }
-#endif

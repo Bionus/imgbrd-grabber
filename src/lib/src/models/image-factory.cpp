@@ -116,7 +116,7 @@ vTransformToken ImageFactory::parseTypedTags(const QString &type)
 		QList<Tag> tagList = data["tags"].value<QList<Tag>>();
 
 		const TagType tagType(type);
-		QStringList tags = val.split(' ', QString::SkipEmptyParts);
+		QStringList tags = val.split(' ', Qt::SkipEmptyParts);
 		for (QString tag : tags) {
 			tag.replace("&amp;", "&");
 			tagList.append(Tag(tag, tagType));
@@ -144,8 +144,8 @@ void ImageFactory::parseTags(const QString &val, QVariantMap &data)
 	const int commas = raw.count(", ");
 	const int spaces = raw.count(" ");
 	const QStringList &tags = commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2)
-		? raw.split(", ", QString::SkipEmptyParts)
-		: raw.split(" ", QString::SkipEmptyParts);
+		? raw.split(", ", Qt::SkipEmptyParts)
+		: raw.split(" ", Qt::SkipEmptyParts);
 
 	for (QString tg : tags) {
 		tg.replace("&amp;", "&");

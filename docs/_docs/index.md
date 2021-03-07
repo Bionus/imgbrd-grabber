@@ -17,7 +17,7 @@ permalink: /docs/
 Grabber can be installed from the aur package [imgbrd-grabber-git](https://aur.archlinux.org/packages/imgbrd-grabber-git/), and otherwise installed by following the generic Linux instructions. After installation, see [Linux Configuration](#linux-configuration).
 
 ## Linux
-Compile Grabber by following the instructions on the [compilation](compilation.md#linux) page. Upon completion run `make install`.
+Compile Grabber by following the instructions on the [Compilation]({{ site.baseurl }}{% link _docs/compilation.md %}#linux) page. Upon completion run `make install`.
 
 ### Linux Configuration
 After installation you will need to copy the example configuration files from `$INSTALLATIONPREFIX/Grabber/example/` to your local Grabber directory, usually `~/.Grabber/`. Grabber will not run without these files.
@@ -35,7 +35,7 @@ There are four fields to fill:
 * Language: the interface language
 * Source: the source you want to try first, you can change it later, and even select more than one at a time
 * Folder: where you want to store your images
-* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename](filename.md) wiki page for more details. The default value of `%md5%.%ext%` should be good at first.
+* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename]({{ site.baseurl }}{% link _docs/filename.md %}) wiki page for more details. The default value of `%md5%.%ext%` should be good at first.
 
 Once finished, you can press the "Ok" button.
 

@@ -1,6 +1,5 @@
 project(e2e)
 
-find_package(Qt5Core REQUIRED)
 set(QT_LIBRARIES Qt5::Core)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")

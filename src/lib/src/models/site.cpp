@@ -351,6 +351,15 @@ Api *Site::detailsApi() const
 	}
 	return nullptr;
 }
+Api *Site::tagsApi() const
+{
+	for (Api *api : m_apis) {
+		if (api->canLoadTags()) {
+			return api;
+		}
+	}
+	return nullptr;
+}
 
 bool Site::autoLogin() const { return m_autoLogin; }
 void Site::setAutoLogin(bool autoLogin) { m_autoLogin = autoLogin; }

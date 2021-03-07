@@ -546,7 +546,7 @@ void SearchTab::finishedLoadingPreview()
 
 	// Download whitelist images on thumbnail view
 	Blacklist whitelistedTags;
-	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" ", QString::SkipEmptyParts)) {
+	for (const QString &tag : m_settings->value("whitelistedtags").toString().split(" ", Qt::SkipEmptyParts)) {
 		whitelistedTags.add(tag);
 	}
 	QStringList detected = m_profile->getBlacklist().match(img->tokens(m_profile));
@@ -779,8 +779,8 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool()) {
-		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
-		uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", Qt::SkipEmptyParts);
+		uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", Qt::SkipEmptyParts));
 		for (int i = 0; i < page->search().size(); i++) {
 			if (uncommon.contains(page->search().at(i))) {
 				uncommon.removeAll(page->search().at(i));
@@ -836,10 +836,11 @@ void SearchTab::contextSaveSelected()
 	for (const QSharedPointer<Image> &img : qAsConst(m_selectedImagesPtrs)) {
 		auto downloader = new ImageDownloader(m_profile, img, fn, path, 1, true, true, this);
 		if (m_boutons.contains(img.data())) {
-			ImagePreview *preview = m_boutons[img.data()];
-			connect(downloader, &ImageDownloader::downloadProgress, [preview](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
-				Q_UNUSED(img);
-				preview->setDownloadProgress(v1, v2);
+			connect(downloader, &ImageDownloader::downloadProgress, [this](QSharedPointer<Image> img, qint64 v1, qint64 v2) {
+				ImagePreview *preview = m_boutons.value(img.data(), nullptr);
+				if (preview != nullptr) {
+					preview->setDownloadProgress(v1, v2);
+				}
 			});
 		}
 		m_downloadQueue->add(DownloadQueue::Manual, downloader);
@@ -870,6 +871,11 @@ QList<QSharedPointer<Page>> SearchTab::getPagesToDownload()
 
 void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bool merge)
 {
+	// Skip invalid images (placeholders and similar)
+	if (!img->isValid()) {
+		return;
+	}
+
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : page;
 	if (!m_layouts.contains(layoutKey)) {
@@ -1193,7 +1199,7 @@ void SearchTab::loadTags(SearchQuery query)
 
 	// Append "additional tags" setting
 	if (query.gallery.isNull()) {
-		query.tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+		query.tags.append(m_settings->value("add").toString().trimmed().split(" ", Qt::SkipEmptyParts));
 	}
 
 	// Save previous pages
@@ -1454,7 +1460,7 @@ QStringList SearchTab::postFilter(bool includeGlobal) const
 			ret += " " + globalPostFilter;
 		}
 	}
-	return ret.split(' ', QString::SkipEmptyParts);
+	return ret.split(' ', Qt::SkipEmptyParts);
 }
 
 const QString &SearchTab::screenName() const

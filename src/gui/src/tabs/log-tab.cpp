@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "helpers.h"
 #include "logger.h"
+#include "utils/logging.h"
 
 
 LogTab::LogTab(QWidget *parent)
@@ -35,43 +36,7 @@ LogTab::~LogTab()
 
 void LogTab::write(const QString &msg)
 {
-	// Find meta stop characters
-	QString htmlMsg = msg;
-	int timeEnd = msg.indexOf(']');
-	int levelEnd = msg.indexOf(']', timeEnd + 1);
-	QString level = msg.mid(timeEnd + 2, levelEnd - timeEnd - 2);
-
-	// Level color
-	static const QMap<QString, QString> colors
-	{
-		{ "Debug", "#999" },
-		{ "Info", "" },
-		{ "Warning", "orange" },
-		{ "Error", "red" },
-	};
-	QString levelColor = colors[level];
-	if (!levelColor.isEmpty()) {
-		htmlMsg.insert(msg.size(), "</span>");
-		htmlMsg.insert(timeEnd + 1, QString("<span style='color:%1'>").arg(colors[level]));
-	}
-
-	// Time color
-	htmlMsg.insert(timeEnd + 1, "</span>");
-	htmlMsg.insert(0, "<span style='color:darkgreen'>");
-
-	// Links color
-	static const QRegularExpression rxLinks("`(http[^`]+)`");
-	htmlMsg.replace(rxLinks, R"(<a href="\1">\1</a>)");
-
-	// File paths color
-	#ifdef Q_OS_WIN
-		static const QRegularExpression rxPaths(R"(`(\w:[\\/][^`]+)`)");
-	#else
-		static const QRegularExpression rxPaths("`(/[^`]+)`");
-	#endif
-	htmlMsg.replace(rxPaths, R"(<a href="file:///\1">\1</a>)");
-
-	ui->labelLog->appendHtml(htmlMsg);
+	ui->labelLog->appendHtml(logToHtml(msg));
 	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
 

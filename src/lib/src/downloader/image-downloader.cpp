@@ -245,7 +245,6 @@ void ImageDownloader::loadImage()
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, m_temporaryPath)) {
-		log(QStringLiteral("Unable to open file"), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
 		return;
 	}
@@ -392,24 +391,38 @@ QList<ImageSaveResult> ImageDownloader::postSaving(Image::SaveResult saveResult)
 			continue;
 		}
 
+		const QString dir = path.section(QDir::separator(), 0, -2);
+		if (!QDir(dir).exists() && !QDir().mkpath(dir)) {
+			log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+			result.append({ path, size, Image::SaveResult::Error });
+			continue;
+		}
+
 		if (!moved) {
-			const QString dir = path.section(QDir::separator(), 0, -2);
-			if (!QDir(dir).exists() && !QDir().mkpath(dir)) {
-				log(QStringLiteral("Impossible to create the destination folder: %1.").arg(dir), Logger::Error);
+			if (!tmp.rename(path)) {
+				log(QStringLiteral("Error renaming from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			} else {
+				moved = true;
+			}
+		} else if (multipleFiles == "link") {
+			#ifdef Q_OS_WIN
+				bool ok = tmp.link(path + ".lnk");
+			#else
+				bool ok = tmp.link(path);
+			#endif
+			if (!ok) {
+				log(QStringLiteral("Error creating link from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
 				result.append({ path, size, Image::SaveResult::Error });
 				continue;
 			}
-
-			tmp.rename(path);
-			moved = true;
-		} else if (multipleFiles == "link") {
-			#ifdef Q_OS_WIN
-				tmp.link(path + ".lnk");
-			#else
-				tmp.link(path);
-			#endif
 		} else {
-			tmp.copy(path);
+			if (!tmp.copy(path)) {
+				log(QStringLiteral("Error copying from `%1` to `%2`").arg(tmp.fileName(), path), Logger::Error);
+				result.append({ path, size, Image::SaveResult::Error });
+				continue;
+			}
 		}
 
 		result.append({ path, size, saveResult });

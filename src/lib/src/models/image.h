@@ -76,6 +76,7 @@ class Image : public QObject, public Downloadable
 		QString extension() const;
 		void setParentGallery(const QSharedPointer<Image> &parentGallery);
 		void setPromoteDetailParsWarn(bool);
+		bool isValid() const;
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -110,7 +111,6 @@ class Image : public QObject, public Downloadable
 
 	protected:
 		void init();
-		QList<Tag> filteredTags(const QStringList &remove) const;
 		QString md5forced() const;
 
 		// Saving

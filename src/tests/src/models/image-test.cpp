@@ -227,16 +227,16 @@ TEST_CASE("Image")
 		file.remove();
 	}
 	#ifdef Q_OS_WIN
-	SECTION("SaveError")
-	{
-		QString path = "Z:/../tests/resources/tmp/";
+		SECTION("SaveError")
+		{
+			QString path = "Z:/../tests/resources/tmp/";
 
-		img->setSavePath("tests/resources/image_1x1.png");
-		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), path);
+			img->setSavePath("tests/resources/image_1x1.png");
+			QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), path);
 
-		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::Error);
-	}
+			REQUIRE(res.count() == 1);
+			REQUIRE(res.first() == Image::Error);
+		}
 	#endif
 	SECTION("SaveAlreadyExists")
 	{

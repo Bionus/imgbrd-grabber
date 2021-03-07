@@ -26,7 +26,6 @@ class SettingsDock : public Dock
 
 	protected:
 		void changeEvent(QEvent *event) override;
-		void saveSettings();
 
 	public slots:
 		void reset();
@@ -34,6 +33,7 @@ class SettingsDock : public Dock
 	protected slots:
 		void chooseFolder();
 		void save();
+		void saveSettings();
 		void updateCompleters();
 
 	private:

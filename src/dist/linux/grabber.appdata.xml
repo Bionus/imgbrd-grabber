@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 Bionus <bio.nus@hotmail.fr> -->
+<component type="desktop-application">
+	<id>grabber</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>Apache-2.0</project_license>
+	<name>Grabber</name>
+	<summary>Very customizable imageboard/booru downloader with powerful filenaming features</summary>
+
+	<description>
+		<p>Very customizable imageboard/booru downloader with powerful filenaming features.</p>
+	</description>
+
+	<launchable type="desktop-id">grabber.desktop</launchable>
+
+	<screenshots>
+		<screenshot type="default">
+			<caption>Search results</caption>
+			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/search-basic.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Batch download window</caption>
+			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/download.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Source settings</caption>
+			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/sources.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Filename settings</caption>
+			<image>https://bionus.github.io/imgbrd-grabber/assets/img/screenshots/filename.png</image>
+		</screenshot>
+	</screenshots>
+
+	<url type="homepage">https://bionus.github.io/imgbrd-grabber/</url>
+	<url type="bugtracker">https://github.com/Bionus/imgbrd-grabber/issues</url>
+	<url type="faq">https://bionus.github.io/imgbrd-grabber/docs/faq.html</url>
+	<url type="help">https://bionus.github.io/imgbrd-grabber/docs/</url>
+	<url type="translate">https://crowdin.com/project/imgbrd-grabber</url>
+
+	<provides>
+		<id>grabber.desktop</id>
+	</provides>
+
+	<categories>
+		<category>Network</category>
+	</categories>
+
+	<developer_name>Bionus</developer_name>
+	<update_contact>bio.nus@hotmail.fr</update_contact>
+
+	<content_rating type="oars-1.0">
+		<content_attribute id="sex-nudity">intense</content_attribute>
+		<content_attribute id="sex-themes">intense</content_attribute>
+	</content_rating>
+</component>

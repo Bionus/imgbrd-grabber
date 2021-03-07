@@ -33,6 +33,10 @@ describe("Shimmie", () => {
                 expect(search(source.apis.html, "tag", 2)).toEqual("/post/list/tag/2")
             });
 
+            it("correctly escapes special characters", () => {
+                expect(search(source.apis.html, "Fate/Requiem", 2)).toEqual("/post/list/Fate^sRequiem/2")
+            });
+
             it("correctly transforms width: and height: into size: for equality", () => {
                 expect(search(source.apis.html, "width:800 height:600", 2)).toEqual("/post/list/size:800x600/2")
             });

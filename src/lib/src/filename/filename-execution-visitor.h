@@ -29,7 +29,7 @@ class FilenameExecutionVisitor : public FilenameVisitorJavaScript
 		void visit(const FilenameNodeText &node) override;
 		void visit(const FilenameNodeVariable &node) override;
 
-		QString variableToString(const QString &name, const QDateTime &val, const QMap<QString, QString> &options);
+		QString variableToString(const QString &name, QDateTime val, const QMap<QString, QString> &options);
 		QString variableToString(const QString &name, int val, const QMap<QString, QString> &options);
 		QString variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options);
 

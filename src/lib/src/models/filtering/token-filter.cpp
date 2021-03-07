@@ -9,7 +9,7 @@ TokenFilter::TokenFilter(QString token, bool invert)
 	: Filter(invert), m_token(std::move(token))
 {}
 
-QString TokenFilter::toString() const
+QString TokenFilter::toString(bool escape) const
 {
 	return QString(m_invert ? "-" : "") % "%" % m_token % "%";
 }

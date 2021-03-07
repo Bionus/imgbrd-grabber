@@ -1,0 +1,122 @@
+name: Android
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+
+jobs:
+  Android:
+    runs-on: ubuntu-18.04
+
+    env:
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      PLATFORM_NAME: x64
+
+    steps:
+    - name: Set environment
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Install packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpulse-dev
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/android.yml') }}
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.15.1
+        target: android
+        arch: android
+
+    - name: Create build dir
+      run: mkdir build
+
+    - name: Download Android OpenSSL libraries
+      working-directory: src/cmake
+      run: git clone https://github.com/KDAB/android_openssl.git
+
+    - name: Restore keystore file
+      run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
+
+    - name: Configure
+      working-directory: build
+      run: |
+        export ANDROID_SDK_ROOT=$ANDROID_HOME
+        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk-bundle
+        cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION" -DKEYSTORE_PASSWORD="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          -DANDROID_ABI:STRING=armeabi-v7a \
+          -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
+          -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
+          -DANDROID_BUILD_ABI_x86:BOOL=OFF \
+          -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
+          -DANDROID_NATIVE_API_LEVEL:STRING=21 \
+          -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk-bundle \
+          -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
+          -DANDROID_STL:STRING=c++_shared \
+          -DCMAKE_BUILD_TYPE:STRING=Debug \
+          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
+          -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
+          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR \
+          -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR \
+          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk-bundle/build/cmake/android.toolchain.cmake \
+          -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR/bin/qmake
+
+    - name: Compile
+      working-directory: build
+      run: |
+        cmake --build . --config Release --target sites
+        cmake --build . --config Release --target gui-qml_apk
+
+    - name: Generate package
+      run: |
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber_${GRABBER_VERSION}.apk
+        ls -la *.apk
+
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly
+        name: Nightly
+        allowUpdates: true
+        draft: false
+        prerelease: true
+        artifacts: Grabber_*.apk
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: Grabber_*.apk

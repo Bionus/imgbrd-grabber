@@ -1,35 +1,55 @@
 name: MacOS
-on: [push]
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
 
 jobs:
   MacOS:
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: macos-10.15
 
+    env:
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      PLATFORM_NAME: x64
+      OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+
     steps:
+    - name: Set environment
+      run: |
+        echo "GRABBER_VERSION=$([ "$IS_RELEASE" = "true" ] && echo "${GITHUB_REF##*/}" || echo "nightly")" >> $GITHUB_ENV
+        echo "GRABBER_IS_NIGHTLY=$([ "$IS_RELEASE" = "true" ] && echo "0" || echo "1")" >> $GITHUB_ENV
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
         submodules: recursive
 
-    - name: Set environment
-      run: |
-        echo ::set-env name=GRABBER_VERSION::nightly
-        echo ::set-env name=GRABBER_IS_NIGHTLY::1
-        echo ::set-env name=PLATFORM_NAME::x64
-        echo ::set-env name=OPENSSL_ROOT_DIR::/usr/local/opt/openssl/
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache-${{ hashFiles('.github/workflows/macos.yml') }}
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.7.2
+      uses: jurplel/install-qt-action@v2
       with:
-        version: 5.12.6
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: 5.15.1
 
     - name: Create build dir
       run: mkdir build
 
     - name: Configure
       working-directory: build
-      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=%GRABBER_IS_NIGHTLY% -DCOMMIT="%GITHUB_SHA%" -DVERSION="%GRABBER_VERSION%"
+      run: cmake ../src -DCMAKE_BUILD_TYPE=Release -DNIGHTLY=$GRABBER_IS_NIGHTLY -DCOMMIT="$GITHUB_SHA" -DVERSION="$GRABBER_VERSION"
 
     - name: Compile
       working-directory: build
@@ -42,4 +62,38 @@ jobs:
       run: ../build/tests/tests
 
     - name: Generate package
-      run: ./scripts/package-mac.sh
+      run: |
+        ./scripts/package-mac.sh
+        mv Grabber.dmg Grabber_${GRABBER_VERSION}.dmg
+
+    - name: Get date for Nightly body
+      id: date
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
+    - name: Nightly
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: nightly
+        name: Nightly
+        allowUpdates: true
+        draft: false
+        prerelease: true
+        artifacts: Grabber_*.dmg
+        body: |
+          Nightly automated builds from the develop branch.
+          Automatically uploaded by Github actions, **use at your own risk**!
+
+          **Head:** ${{ github.sha }}
+          **Date:** ${{ steps.date.outputs.date }}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: ${{ github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v') }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        draft: true
+        artifacts: Grabber_*.dmg

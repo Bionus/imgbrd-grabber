@@ -5,7 +5,7 @@ module.exports = {
     globals: {
         'ts-jest': {
             tsConfig: {
-                types: ["jest"],
+                types: ["jest", "node"],
             },
             diagnostics: {
                 ignoreCodes: [151001],

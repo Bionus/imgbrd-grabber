@@ -29,6 +29,7 @@ class Commands
 		bool image(const Image &img, const QString &path);
 		bool tag(const Image &img, const Tag &tag, bool after);
 		bool after() const;
+		bool execute(const QString &command) const;
 		bool sqlExec(const QString &sql) const;
 
 	private:

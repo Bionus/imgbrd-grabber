@@ -48,7 +48,7 @@ QVariant RenameExistingTableModel::data(const QModelIndex &index, int role) cons
 	}
 
 	// New path in the third column
-	if (index.column() == 3) {
+	if (index.column() == 2) {
 		// "no change" in red if there isn't
 		if (image.path == image.newPath) {
 			if (role == Qt::ForegroundRole) {
@@ -59,7 +59,7 @@ QVariant RenameExistingTableModel::data(const QModelIndex &index, int role) cons
 			}
 		}
 
-		if (Qt::DisplayRole) {
+		if (role == Qt::DisplayRole) {
 			return image.newPath.right(image.newPath.length() - m_folder.length() - 1);
 		}
 	}

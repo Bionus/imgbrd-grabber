@@ -62,7 +62,7 @@ TEST_CASE("SqlWorkerTest")
 		REQUIRE(worker.execute("CREATE TABLE IF NOT EXISTS test_table (some_value INT);"));
 		REQUIRE(worker.execute("INSERT INTO test_table (some_value) VALUES (1), (3), (21);"));
 
-		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "SQL worker test database");
 		db.setDatabaseName("test_sql_worker.db");
 		REQUIRE(db.open());
 

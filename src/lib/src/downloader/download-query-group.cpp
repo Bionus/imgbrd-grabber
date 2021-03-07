@@ -23,6 +23,10 @@ DownloadQueryGroup::DownloadQueryGroup(SearchQuery query, int page, int perPage,
 
 void DownloadQueryGroup::write(QJsonObject &json) const
 {
+	write(json, true); // Necessary for override
+}
+void DownloadQueryGroup::write(QJsonObject &json, bool saveProgress) const
+{
 	QJsonObject jsonQuery;
 	query.write(jsonQuery);
 	json["query"] = jsonQuery;
@@ -38,8 +42,10 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["filename"] = QString(filename).replace("\\n", "\\\\n").replace("\n", "\\n");
 	json["path"] = path;
 
-	json["progressVal"] = progressVal;
-	json["progressFinished"] = progressFinished;
+	if (saveProgress) {
+		json["progressVal"] = progressVal;
+		json["progressFinished"] = progressFinished;
+	}
 }
 
 bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)

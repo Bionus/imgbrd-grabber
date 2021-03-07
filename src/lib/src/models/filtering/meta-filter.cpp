@@ -12,7 +12,7 @@ MetaFilter::MetaFilter(QString type, QString val, bool invert)
 	: Filter(invert), m_type(std::move(type)), m_val(std::move(val))
 {}
 
-QString MetaFilter::toString() const
+QString MetaFilter::toString(bool escape) const
 {
 	return QString(m_invert ? "-" : "") % m_type % ":" % m_val;
 }
