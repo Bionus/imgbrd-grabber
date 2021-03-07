@@ -60,7 +60,7 @@ bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &u
 	}
 }
 
-bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
+bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups, bool saveProgress)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly)) {
@@ -71,7 +71,7 @@ bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryIma
 	QJsonArray groupsJson;
 	for (const auto &b : groups) {
 		QJsonObject batch;
-		b.write(batch);
+		b.write(batch, saveProgress);
 		groupsJson.append(batch);
 	}
 

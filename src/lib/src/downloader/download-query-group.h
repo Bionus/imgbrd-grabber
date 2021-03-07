@@ -23,6 +23,7 @@ class DownloadQueryGroup : public DownloadQuery
 
 		// Serialization
 		void write(QJsonObject &json) const override;
+		void write(QJsonObject &json, bool saveProgress) const;
 		bool read(const QJsonObject &json, Profile *profile) override;
 
 		// Public members

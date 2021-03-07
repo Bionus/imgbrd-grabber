@@ -357,7 +357,7 @@ void DownloadsTab::saveFile()
 	save = QDir::toNativeSeparators(save);
 	m_settings->setValue("linksLastDir", save.section(QDir::separator(), 0, -2));
 
-	if (saveLinkList(save)) {
+	if (saveLinkList(save, false)) {
 		QMessageBox::information(this, tr("Save link list"), tr("Link list saved successfully!"));
 	} else {
 		QMessageBox::critical(this, tr("Save link list"), tr("Error opening file."));
@@ -371,9 +371,9 @@ bool DownloadsTab::saveLinkListDefault()
 {
 	return saveLinkList(m_profile->getPath() + "/restore.igl");
 }
-bool DownloadsTab::saveLinkList(const QString &filename)
+bool DownloadsTab::saveLinkList(const QString &filename, bool saveProgress)
 {
-	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
+	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs, saveProgress);
 }
 
 void DownloadsTab::loadFile()

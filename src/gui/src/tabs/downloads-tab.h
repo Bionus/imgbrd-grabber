@@ -72,7 +72,7 @@ class DownloadsTab : public QWidget
 		void loadFile();
 		void saveLinkListLater();
 		bool saveLinkListDefault();
-		bool saveLinkList(const QString &filename);
+		bool saveLinkList(const QString &filename, bool saveProgress = true);
 		bool loadLinkList(const QString &filename);
 
 		// Download
