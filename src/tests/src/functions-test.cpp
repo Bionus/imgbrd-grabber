@@ -120,14 +120,14 @@ TEST_CASE("Functions")
 				for (int i = 0; i < 100; ++i) {
 					utf8Long += utf8Part;
 				}
-				REQUIRE(fixFilenameLinux(utf8Long +  "/image.jpg", "/home/test/") == QString(utf8Long + "/image.jpg"));
+				REQUIRE(fixFilenameLinux(utf8Long + "/image.jpg", "/home/test/") == QString(utf8Long + "/image.jpg"));
 
 
 				// 200 UTF-8 chars / 400 bytes is above the limit so should be cut
 				for (int i = 0; i < 100; ++i) {
 					utf8Long += utf8Part;
 				}
-				const QString actual = fixFilenameLinux(utf8Long +  "/image.jpg", "/home/test/");
+				const QString actual = fixFilenameLinux(utf8Long + "/image.jpg", "/home/test/");
 				REQUIRE(actual != QString(utf8Long + "/image.jpg"));
 				REQUIRE(actual.length() == 127 + 10);
 				REQUIRE(actual.toUtf8().size() == 254 + 10);
