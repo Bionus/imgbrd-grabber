@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+if [[ $USER == 'root' ]]; then permission=
+else
+	if type sudo > /dev/null 2>&1 ; then permission='sudo '
+	else
+		echo 'Run as root or install sudo.'
+		exit 1
+	fi
+fi
+
 # Restore submodules in case the repo was clone without --recursive
 git submodule update --init --recursive
 
@@ -10,16 +19,16 @@ for pm in pacman apt-get emerge; do
 		no_pm=0
 		case "$pm" in
 			pacman)
-				sudo pacman -Sy
-				sudo pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm" && installed=1
+				$permission pacman -Sy
+				$permission pacman -S "qt" "gcc" "cmake" "libpulse" "nodejs" "npm" && installed=1
 				;;
 			apt-get)
-				sudo apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools" || continue
-				sudo apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs" "npm" && installed=1
+				$permission apt-get install -qq "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools" || continue
+				$permission apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs" "npm" && installed=1
 				;;
 			emerge)
 				## Assumes default USE flags are enabled.
-				sudo emerge --noreplace --ask --verbose \
+				$permission emerge --noreplace --ask --verbose \
 					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
 					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
 				&& installed=1
