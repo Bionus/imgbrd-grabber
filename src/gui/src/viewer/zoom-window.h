@@ -172,8 +172,8 @@ class ZoomWindow : public QWidget
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
 		bool m_labelImageScaled;
-		QVideoWidget *m_videoWidget;
-		QMediaPlayer *m_mediaPlayer;
+		QVideoWidget *m_videoWidget = nullptr;
+		QMediaPlayer *m_mediaPlayer = nullptr;
 
 		// Threads
 		QThread m_imageLoaderThread;
