@@ -31,12 +31,12 @@ for pm in pacman apt-get emerge; do
 done
 if [ "$no_pm" -eq 1 ]; then
 	echo "Failed to detect your distribution's package manager."
-	exit 1
+	exit 11
 fi
-if [ "$install_failed" -eq 1 ]; then exit 2; fi
+if [ "$install_failed" -eq 1 ]; then exit 12; fi
 
 # Build the project in the build directory
-./scripts/build.sh ${1:-gui translations}
+./scripts/build.sh ${1:-gui translations} || exit 21
 
 # Move the built binary to the release folder with its config
 ./scripts/package.sh "release"
