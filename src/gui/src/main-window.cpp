@@ -78,8 +78,8 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	m_settings = m_profile->getSettings();
 	auto sites = m_profile->getSites();
 
-	ThemeLoader themeLoader(savePath("themes/", true, false));
-	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
+	m_themeLoader = new ThemeLoader(savePath("themes/", true, false), this);
+	m_themeLoader->setTheme(m_settings->value("theme", "Default").toString());
 	ui->setupUi(this);
 
 	if (m_settings->value("Log/show", true).toBool()) {
@@ -448,7 +448,7 @@ void MainWindow::focusSearch()
 void MainWindow::onFirstLoad()
 {
 	// Save all default settings
-	auto *ow = new OptionsWindow(m_profile, this);
+	auto *ow = new OptionsWindow(m_profile, m_themeLoader, this);
 	ow->save();
 	ow->deleteLater();
 
@@ -788,7 +788,7 @@ void MainWindow::options()
 {
 	log(QStringLiteral("Opening options window..."), Logger::Debug);
 
-	auto *options = new OptionsWindow(m_profile, this);
+	auto *options = new OptionsWindow(m_profile, m_themeLoader, this);
 	connect(options, &OptionsWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
 	connect(options, &OptionsWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
 	connect(options, &QDialog::accepted, this, &MainWindow::optionsClosed);

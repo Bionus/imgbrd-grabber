@@ -32,6 +32,7 @@ class SettingsDock;
 class Site;
 class TabSelector;
 class Tag;
+class ThemeLoader;
 
 class MainWindow : public QMainWindow
 {
@@ -130,6 +131,7 @@ class MainWindow : public QMainWindow
 		TabSelector *m_tabSelector;
 		DownloadQueue *m_downloadQueue;
 		SettingsDock *m_settingsDock;
+		ThemeLoader *m_themeLoader;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;
