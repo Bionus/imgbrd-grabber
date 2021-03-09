@@ -18,9 +18,9 @@ for pm in pacman apt-get emerge; do
 				sudo apt-get install -qq "g++" "cmake" "libssl-dev" "nodejs" "npm" && installed=1
 				;;
 			emerge)
-				## Dependencies untested!
-				sudo emerge --no-replace --ask --verbose \
-					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" \
+				## Assumes default USE flags are enabled.
+				sudo emerge --noreplace --ask --verbose \
+					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
 					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
 				&& installed=1
 				;;
