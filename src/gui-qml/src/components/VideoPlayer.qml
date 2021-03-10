@@ -11,6 +11,8 @@ ColumnLayout {
     onAutoPlayChanged: {
         if (autoPlay && video.playbackState != MediaPlayer.PlayingState) {
             video.play()
+        } else if (!autoPlay && video.playbackState == MediaPlayer.PlayingState) {
+            video.stop()
         }
     }
 

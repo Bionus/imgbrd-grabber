@@ -24,11 +24,16 @@ QString ImageSize::save(const QString &path)
 	// If we have a temporary path for this image, we move it to the destination
 	if (!m_temporaryPath.isEmpty() && QFile::exists(m_temporaryPath)) {
 		QString temp = m_temporaryPath;
-		QFile(m_temporaryPath).rename(path);
+		QFile file(m_temporaryPath);
 
-		m_temporaryPath.clear();
+		// Try to rename, otherwise fallback to a copy
+		if (!file.rename(path)) {
+			file.copy(path);
+		} else {
+			m_temporaryPath.clear();
+		}
+
 		m_savePath = path;
-
 		return temp;
 	}
 

@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.4.0"
+# define MyAppVersion "7.4.1"
 #endif
 
 #ifndef QtApngDll
@@ -165,6 +165,7 @@ Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\langua
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_ru.qm";   DestDir: "{app}\languages\qt"; DestName: "Russian.qm"; Flags: ignoreversion
+Source: "{#QtPlugins}\mediaservice\dsengine.dll";  DestDir: "{app}\mediaservice"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion

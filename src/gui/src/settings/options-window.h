@@ -14,6 +14,7 @@ namespace Ui
 
 
 class Profile;
+class ThemeLoader;
 class TokenSettingsWidget;
 
 class OptionsWindow : public QDialog
@@ -22,7 +23,9 @@ class OptionsWindow : public QDialog
 
 	public:
 		explicit OptionsWindow(Profile *profile, QWidget *parent = nullptr);
+		explicit OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget *parent = nullptr);
 		~OptionsWindow() override;
+
 		void setColor(QLineEdit *lineEdit, bool button = false);
 		void setFont(QLineEdit *lineEdit);
 
@@ -105,6 +108,7 @@ class OptionsWindow : public QDialog
 	private:
 		Ui::OptionsWindow *ui;
 		Profile *m_profile;
+		ThemeLoader *m_themeLoader;
 		QList<ReverseSearchEngine> m_webServices;
 		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
