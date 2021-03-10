@@ -9,8 +9,9 @@ Item {
     property var def
     property var obj: settings
     property var parser: null
+    property var _parser: parser !== null ? parser : (typeof def === "boolean" ? ((v) => v === true || v === "true") : null)
 
-    property var value: parser !== null ? parser(rawValue) : rawValue
+    property var value: _parser !== null ? _parser(rawValue) : rawValue
     property var rawValue: root.obj
         ? root.obj.value(root.key, root.def)
         : root.def
@@ -26,7 +27,7 @@ Item {
         target: backend
         function onSettingsChanged() {
             root.rawValue = root.obj.value(root.key, root.def);
-            root.value = root.parser !== null ? parser(root.rawValue) : root.rawValue
+            root.value = _parser !== null ? _parser(root.rawValue) : root.rawValue
         }
     }
 }
