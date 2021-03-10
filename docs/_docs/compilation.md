@@ -63,7 +63,7 @@ If you want to use it, I won't explain here how to configure it to work with Qt.
 
 # Linux
 
-Shortcut: just run `./build.sh` at the root of the repository, and it will build everything for you.
+Shortcut: just run `./install.sh` at the root of the repository, and it will build everything for you.
 
 ## Dependencies
 
@@ -183,7 +183,7 @@ git clone https://github.com/Bionus/imgbrd-grabber.git --single-branch -b develo
 ## Compilation
 ```bash
 cd imgbrd-grabber
-./build.sh
+./install.sh
 ```
 
 You can now run your program from `/home/pi/imgbrd-grabber/release`.
