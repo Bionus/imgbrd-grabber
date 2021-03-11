@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>516</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,7 +178,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>11</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -1039,8 +1039,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>363</width>
-             <height>426</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1988,6 +1988,13 @@
             <string>None</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="16" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkRememberDrawer">
+          <property name="text">
+           <string>Remember button drawer state</string>
+          </property>
          </widget>
         </item>
        </layout>

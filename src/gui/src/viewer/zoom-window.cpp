@@ -58,7 +58,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_pendingClose = false;
 
 	restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
-	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool());
+	
+	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("rememberDrawer", true).toBool());
 	ui->progressBarDownload->hide();
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);

@@ -338,6 +338,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboActionButtons->addItem("NonFavorites", ZoomWindow::ButtonVisibility::NonFavorites);
 	ui->comboActionButtons->setCurrentIndex(settings->value("actionButtons", "All").toInt());
 
+	ui->checkRememberDrawer->setChecked(settings->value("rememberDrawer", true).toBool());
+
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -1159,6 +1161,7 @@ void OptionsWindow::save()
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
 	settings->setValue("actionButtons", ui->comboActionButtons->currentIndex());
+	settings->setValue("rememberDrawer", ui->checkRememberDrawer->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
