@@ -76,6 +76,37 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, this);
 		connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 
+	/*switch (ui->actionButtons) {
+		case Ui::viewerActionButtons::Favorites :
+			break;
+		case Ui::viewerActionButtons::Nonfavorites :
+			break;
+		case Ui::viewerActionButtons::None :
+			break;
+	}*/
+	std::string test = m_settings->value("actionButtons").toString().toStdString();
+	if (test == "Favorites") {
+		ui->buttonPlus->setChecked(true);	// Not sure why this is necessary. Causes misalignment.
+		ui->buttonSaveFav->setVisible(false);
+		ui->buttonSaveNQuitFav->setVisible(false);
+		ui->buttonOpenFav->setVisible(false);
+		ui->buttonPlus->setVisible(false);
+	} else if (test == "Nonfavorites") {
+		ui->buttonSaveFav->setVisible(false);
+		ui->buttonSaveNQuitFav->setVisible(false);
+		ui->buttonOpenFav->setVisible(false);
+		ui->buttonPlus->setVisible(false);
+	} else if (test == "None") {
+		ui->buttonSave->setVisible(false);
+		ui->buttonSaveNQuit->setVisible(false);
+		ui->buttonOpen->setVisible(false);
+		ui->buttonSaveFav->setVisible(false);
+		ui->buttonSaveNQuitFav->setVisible(false);
+		ui->buttonOpenFav->setVisible(false);
+		ui->buttonPlus->setVisible(false);
+	}
+
+
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_labelTagsLeft->setTextInteractionFlags(Qt::TextBrowserInteraction);

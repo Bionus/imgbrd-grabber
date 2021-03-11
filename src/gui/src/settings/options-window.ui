@@ -1959,6 +1959,37 @@
           </property>
          </widget>
         </item>
+        <item row="15" column="0">
+         <widget class="QLabel" name="labelActionButtons">
+          <property name="text">
+           <string>Action buttons</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QComboBox" name="comboActionButtons">
+          <item>
+           <property name="text">
+            <string>All</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Favorites</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Non-favorites</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceColoring">

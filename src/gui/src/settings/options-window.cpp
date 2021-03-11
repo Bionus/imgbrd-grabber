@@ -326,6 +326,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
+	const QStringList viewerActionButtons { "All", "Favorites", "Nonfavorites", "None" };
+	ui->comboActionButtons->setCurrentIndex(viewerActionButtons.indexOf(settings->value("actionButtons", "All").toString()));
+
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -1145,6 +1148,8 @@ void OptionsWindow::save()
 	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
+	const QStringList viewerActionButtons { "All", "Favorites", "Nonfavorites", "None" };
+	settings->setValue("actionButtons", viewerActionButtons.at(ui->comboActionButtons->currentIndex()));
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
