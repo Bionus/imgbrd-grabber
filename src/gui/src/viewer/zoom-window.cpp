@@ -83,23 +83,19 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		case ButtonVisibility::All :
 			break;
 		case ButtonVisibility::None :
-			ui->buttonSave->setVisible(false);
-			ui->buttonSaveNQuit->setVisible(false);
-			ui->buttonOpen->setVisible(false);
-			ui->buttonSaveFav->setVisible(false);
-			ui->buttonSaveNQuitFav->setVisible(false);
-			ui->buttonOpenFav->setVisible(false);
 			ui->buttonPlus->setVisible(false);
+			ui->actionButtons->setVisible(false);
 			break;
 		case ButtonVisibility::Favorites :
-			ui->buttonPlus->setChecked(true);	// Not sure why this is necessary. Causes misalignment.
+			ui->buttonPlus->setChecked(true);
+			ui->buttonPlus->setVisible(false);
+			// Not in drawer:
 			ui->buttonSave->setVisible(false);
 			ui->buttonSaveNQuit->setVisible(false);
 			ui->buttonOpen->setVisible(false);
-			ui->buttonPlus->setVisible(false);
 			break;
 		case ButtonVisibility::NonFavorites :
-			ui->buttonPlus->setChecked(false);	// This shouldn't be necessary either.
+			ui->buttonPlus->setChecked(false);
 			ui->buttonPlus->setVisible(false);
 			break;
 		/*default :
