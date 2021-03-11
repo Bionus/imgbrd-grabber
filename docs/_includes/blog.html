@@ -16,9 +16,11 @@
 					<li class="has-children">
 						<span>Latest posts</span>
 						<ul>
-							<li><a href="">Test 3</a></li>
-							<li><a href="">Test 2</a></li>
-							<li><a href="">Test 1</a></li>
+							{% for post in site.posts limit:3 %}
+								<li>
+									<a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+								</li>
+							{% endfor %}
 						</ul>
 					</li>
 					<li class="has-children">

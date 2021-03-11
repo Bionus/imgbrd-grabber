@@ -41,7 +41,11 @@ void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 }
 
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::OptionsWindow), m_profile(profile)
+	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), this), parent)
+{}
+
+OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget *parent)
+	: QDialog(parent), ui(new Ui::OptionsWindow), m_profile(profile), m_themeLoader(themeLoader)
 {
 	Analytics::getInstance().sendScreenView("Settings");
 
@@ -248,8 +252,7 @@ OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
 	}
 
 	// Themes
-	ThemeLoader themeLoader(savePath("themes/", true));
-	QStringList themes = themeLoader.getAllThemes();
+	QStringList themes = m_themeLoader->getAllThemes();
 	for (const QString &theme : themes) {
 		ui->comboTheme->addItem(theme, theme);
 	}
@@ -1023,8 +1026,7 @@ void OptionsWindow::save()
 
 	// Themes
 	const QString theme = ui->comboTheme->currentText();
-	ThemeLoader themeLoader(savePath("themes/", true));
-	if (themeLoader.setTheme(theme)) {
+	if (m_themeLoader->setTheme(theme)) {
 		settings->setValue("theme", theme);
 	}
 

@@ -224,9 +224,11 @@ ZoomWindow::~ZoomWindow()
 	m_detailsWindow->deleteLater();
 
 	// Fix for weird Linux crash (issue #2190)
-	m_stackedWidget->removeWidget(m_videoWidget);
-	m_videoWidget->setParent(nullptr);
-	m_videoWidget->deleteLater();
+	if (m_videoWidget != nullptr) {
+		m_stackedWidget->removeWidget(m_videoWidget);
+		m_videoWidget->setParent(nullptr);
+		m_videoWidget->deleteLater();
+	}
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();

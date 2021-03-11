@@ -414,6 +414,10 @@ TEST_CASE("Functions")
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6", "%md5%") == QString("098f6bcd4621d373cade4e832627b4f6"));
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
 		REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%/%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
+
+		#ifdef Q_OS_WIN
+			REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%\\%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
+		#endif
 	}
 
 	SECTION("RemoveCacheBuster")

@@ -4,7 +4,7 @@ module.exports = {
     moduleFileExtensions: ["ts", "js"],
     globals: {
         'ts-jest': {
-            tsConfig: {
+            tsconfig: {
                 types: ["jest", "node"],
             },
             diagnostics: {
