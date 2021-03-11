@@ -52,6 +52,13 @@ class ZoomWindow : public QWidget
 			PendingSaveAs,
 			PendingOpen,
 		};
+		enum ButtonVisibility
+		{
+			All,
+			None,
+			Favorites,
+			NonFavorites
+		};
 
 		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
 		~ZoomWindow() override;
@@ -173,6 +180,7 @@ class ZoomWindow : public QWidget
 		bool m_labelImageScaled;
 		GifPlayer *m_gifPlayer = nullptr;
 		VideoPlayer *m_videoPlayer = nullptr;
+		//ButtonVisibility actionButtons = All;
 
 		// Threads
 		QThread m_imageLoaderThread;

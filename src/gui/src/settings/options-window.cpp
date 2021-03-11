@@ -34,6 +34,10 @@
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
 
+#include "viewer/zoom-window.h"
+/*namespace Ui {
+	class ZoomWindow;
+}*/
 
 void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
@@ -326,8 +330,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
-	const QStringList viewerActionButtons { "All", "Favorites", "Nonfavorites", "None" };
-	ui->comboActionButtons->setCurrentIndex(viewerActionButtons.indexOf(settings->value("actionButtons", "All").toString()));
+
+	ui->comboActionButtons->clear();
+	ui->comboActionButtons->addItem("All", ZoomWindow::ButtonVisibility::All);
+	ui->comboActionButtons->addItem("None", ZoomWindow::ButtonVisibility::None);
+	ui->comboActionButtons->addItem("Favorites", ZoomWindow::ButtonVisibility::Favorites);
+	ui->comboActionButtons->addItem("NonFavorites", ZoomWindow::ButtonVisibility::NonFavorites);
+	ui->comboActionButtons->setCurrentIndex(settings->value("actionButtons", "All").toInt());
 
 
 	settings->beginGroup("Coloring");
@@ -1148,8 +1157,8 @@ void OptionsWindow::save()
 	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
-	const QStringList viewerActionButtons { "All", "Favorites", "Nonfavorites", "None" };
-	settings->setValue("actionButtons", viewerActionButtons.at(ui->comboActionButtons->currentIndex()));
+
+	settings->setValue("actionButtons", ui->comboActionButtons->currentIndex());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");

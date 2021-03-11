@@ -76,32 +76,34 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, this);
 		connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 
-	/*switch (ui->actionButtons) {
-		case Ui::viewerActionButtons::Favorites :
+	
+	switch (m_settings->value("actionButtons").toInt()) {
+	/*actionButtons = m_settings->value("actionButtons").toInt();
+	switch (actionButtons) {*/
+		case ButtonVisibility::All :
 			break;
-		case Ui::viewerActionButtons::Nonfavorites :
+		case ButtonVisibility::None :
+			ui->buttonSave->setVisible(false);
+			ui->buttonSaveNQuit->setVisible(false);
+			ui->buttonOpen->setVisible(false);
+			ui->buttonSaveFav->setVisible(false);
+			ui->buttonSaveNQuitFav->setVisible(false);
+			ui->buttonOpenFav->setVisible(false);
+			ui->buttonPlus->setVisible(false);
 			break;
-		case Ui::viewerActionButtons::None :
+		case ButtonVisibility::Favorites :
+			ui->buttonPlus->setChecked(true);	// Not sure why this is necessary. Causes misalignment.
+			ui->buttonSave->setVisible(false);
+			ui->buttonSaveNQuit->setVisible(false);
+			ui->buttonOpen->setVisible(false);
+			ui->buttonPlus->setVisible(false);
 			break;
-	}*/
-	std::string test = m_settings->value("actionButtons").toString().toStdString();
-	if (test == "Favorites") {
-		ui->buttonPlus->setChecked(true);	// Not sure why this is necessary. Causes misalignment.
-		ui->buttonSave->setVisible(false);
-		ui->buttonSaveNQuit->setVisible(false);
-		ui->buttonOpen->setVisible(false);
-		ui->buttonPlus->setVisible(false);
-	} else if (test == "Nonfavorites") {
-		ui->buttonPlus->setChecked(false);	// This shouldn't be necessary either.
-		ui->buttonPlus->setVisible(false);
-	} else if (test == "None") {
-		ui->buttonSave->setVisible(false);
-		ui->buttonSaveNQuit->setVisible(false);
-		ui->buttonOpen->setVisible(false);
-		ui->buttonSaveFav->setVisible(false);
-		ui->buttonSaveNQuitFav->setVisible(false);
-		ui->buttonOpenFav->setVisible(false);
-		ui->buttonPlus->setVisible(false);
+		case ButtonVisibility::NonFavorites :
+			ui->buttonPlus->setChecked(false);	// This shouldn't be necessary either.
+			ui->buttonPlus->setVisible(false);
+			break;
+		/*default :
+			log(m_settings->value("actionButtons").toString());*/
 	}
 
 
