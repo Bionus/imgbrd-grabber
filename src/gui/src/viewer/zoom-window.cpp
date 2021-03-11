@@ -87,14 +87,12 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	std::string test = m_settings->value("actionButtons").toString().toStdString();
 	if (test == "Favorites") {
 		ui->buttonPlus->setChecked(true);	// Not sure why this is necessary. Causes misalignment.
-		ui->buttonSaveFav->setVisible(false);
-		ui->buttonSaveNQuitFav->setVisible(false);
-		ui->buttonOpenFav->setVisible(false);
+		ui->buttonSave->setVisible(false);
+		ui->buttonSaveNQuit->setVisible(false);
+		ui->buttonOpen->setVisible(false);
 		ui->buttonPlus->setVisible(false);
 	} else if (test == "Nonfavorites") {
-		ui->buttonSaveFav->setVisible(false);
-		ui->buttonSaveNQuitFav->setVisible(false);
-		ui->buttonOpenFav->setVisible(false);
+		ui->buttonPlus->setChecked(false);	// This shouldn't be necessary either.
 		ui->buttonPlus->setVisible(false);
 	} else if (test == "None") {
 		ui->buttonSave->setVisible(false);
