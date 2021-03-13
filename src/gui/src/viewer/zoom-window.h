@@ -118,6 +118,7 @@ class ZoomWindow : public QWidget
 	protected:
 		void closeEvent(QCloseEvent *) override;
 		void resizeEvent(QResizeEvent *) override;
+		void resizeButtons();
 		void showEvent(QShowEvent *) override;
 		void mouseReleaseEvent(QMouseEvent *) override;
 		void wheelEvent(QWheelEvent *) override;
@@ -170,7 +171,7 @@ class ZoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		SaveButtonState m_saveButonState, m_saveButonStateFav;
+		SaveButtonState m_saveButonState, m_saveButonStateFav;	// Reconcile with setting to remember?
 
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 

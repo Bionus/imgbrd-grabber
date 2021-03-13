@@ -78,10 +78,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 
 	
-	switch (m_settings->value("actionButtons").toInt()) {
-	/*actionButtons = m_settings->value("actionButtons").toInt();
-	switch (actionButtons) {*/
-		case ButtonVisibility::All :
+	switch (m_settings->value("actionButtons").toInt()) {	// Consider adding this as class variable.
+		case ButtonVisibility::All :	// Handled later by resizeButtons.
 			break;
 		case ButtonVisibility::None :
 			ui->buttonPlus->setVisible(false);
@@ -90,17 +88,30 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		case ButtonVisibility::Favorites :
 			ui->buttonPlus->setChecked(true);
 			ui->buttonPlus->setVisible(false);
-			// Not in drawer:
-			ui->buttonSave->setVisible(false);
-			ui->buttonSaveNQuit->setVisible(false);
-			ui->buttonOpen->setVisible(false);
+			ui->drawer_0->setVisible(false);
+
+			ui->drawer_0->setFixedSize(0, 0);	// Occupy zero width so navigation buttons can converge.
+
+			// Margin may have been set dynamically.
+			//ui->drawer_1->setContentsMargins(0, 0, 0, 0);	// This method does not seem to work:
+			//	log(std::to_string(ui->drawer_1->contentsMargins().left()).c_str());
+			//
+			{
+				QMargins desire = ui->drawer_1->layout()->contentsMargins();
+				desire.setLeft(0);
+				desire.setRight(0);
+				ui->drawer_1->layout()->setContentsMargins(desire);	// Not sure if necessary.
+			}
+
+			// Reflow navigation buttons to be contiguous:
+			ui->buttonsLayout->setAlignment(ui->buttonPrev, Qt::AlignRight);
+			ui->buttonsLayout->setAlignment(ui->buttonNext, Qt::AlignLeft);
+
 			break;
 		case ButtonVisibility::NonFavorites :
 			ui->buttonPlus->setChecked(false);
 			ui->buttonPlus->setVisible(false);
 			break;
-		/*default :
-			log(m_settings->value("actionButtons").toString());*/
 	}
 
 
@@ -1049,7 +1060,50 @@ void ZoomWindow::toggleSlideshow()
 	}
 }
 
+void ZoomWindow::resizeButtons()
+{
+	unsigned short countDif = ui->drawer_0->children().count() - ui->drawer_1->children().count();	// Consider storing this as a class value.
+	//unsigned short sampleWidth = ui->buttonDetails->width();
+	unsigned short sampleWidth = countDif ? ui->drawer_0->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly)->width() : 0;
 
+	QLayout *bot = ui->drawer_0->layout(), *top = ui->drawer_1->layout();
+
+	/*// Shouldn't be necessary:
+	unsigned short spaceDif = bot->spacing() - top->spacing();
+	unsigned short marDif = bot->contentsMargins().left() - top->contentsMargins().left();
+	unsigned short marDifBL = ui->buttonsLayout->contentsMargins().left() - top->contentsMargins().left();
+	unsigned short marDifAB = ui->actionButtons->contentsMargins().left() - top->contentsMargins().left();*/
+
+	unsigned short xMar = countDif * ( sampleWidth + bot->spacing() ) / 2;
+
+	/*int tMar = ui->drawer_1->contentsMargins().top();
+	int bMar = ui->drawer_1->contentsMargins().bottom();*/
+	//QMargins marRef = ui->drawer_1->contentsMargins();
+	//int tMar = marRef.top(), bMar = marRef.bottom();
+	//ui->drawer_1->setContentsMargins(xMar, tMar, xMar, bMar);	// Triggers resizeEvent()?
+	QMargins desire = top->contentsMargins();
+	desire.setLeft(xMar);
+	desire.setRight(xMar);
+	top->setContentsMargins(desire);	// Not sure if necessary.
+
+	/*log("---BEGIN---");
+	log((std::to_string(countDif)).c_str());
+	log((std::to_string(sampleWidth)).c_str());
+	log((std::to_string(spaceDif)).c_str());
+	log((std::to_string(marDif)).c_str());
+	log((std::to_string(marDifBL)).c_str());
+	log((std::to_string(marDifAB)).c_str());
+	//log((std::to_string(ui->drawer_0->layout()->spacing())).c_str());
+	//log((std::to_string((countDif * (sampleWidth + ui->drawer_0->layout()->spacing()) ) / countDif)).c_str());	// Should now be.
+	log("---LEFT & RIGHT SHOULD BE---");
+	log(std::to_string(xMar).c_str());	// Should now be.
+	//log(std::to_string(desire.left()).c_str());
+	//log(std::to_string(desire.right()).c_str());
+	log("---LEFT & RIGHT ARE NOW---");
+	log((std::to_string(ui->drawer_1->contentsMargins().left() )).c_str());		// Now is.
+	log((std::to_string(ui->drawer_1->contentsMargins().right() )).c_str());	// Now is.
+	log("----END----");*/
+}
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)
 {
@@ -1060,6 +1114,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 	m_resizeTimer->start(m_timeout);
 	update(true);
 
+	if (m_settings->value("actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
 	QWidget::resizeEvent(e);
 }
 
@@ -1083,6 +1138,7 @@ void ZoomWindow::showEvent(QShowEvent *e)
 {
 	Q_UNUSED(e)
 
+	if (m_settings->value("actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
 	showThumbnail();
 }
 
