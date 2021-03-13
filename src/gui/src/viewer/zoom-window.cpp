@@ -86,8 +86,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			ui->actionButtons->setVisible(false);
 			break;
 		case ButtonVisibility::Favorites :
-			ui->drawer_1->setVisible(true);
 			ui->buttonPlus->setVisible(false);
+			ui->drawer_1->setVisible(true);
 			ui->drawer_0->setVisible(false);
 
 			ui->drawer_0->setFixedSize(0, 0);	// Occupy zero width so navigation buttons can converge.
@@ -109,8 +109,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 			break;
 		case ButtonVisibility::NonFavorites :
-			ui->drawer_1->setVisible(false);
 			ui->buttonPlus->setVisible(false);
+			ui->drawer_1->setVisible(false);
 			break;
 	}
 
@@ -1062,47 +1062,28 @@ void ZoomWindow::toggleSlideshow()
 
 void ZoomWindow::resizeButtons()
 {
-	unsigned short countDif = ui->drawer_0->children().count() - ui->drawer_1->children().count();	// Consider storing this as a class value.
-	//unsigned short sampleWidth = ui->buttonDetails->width();
-	unsigned short sampleWidth = countDif ? ui->drawer_0->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly)->width() : 0;
+	QWidget *sample = ui->drawer_0->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
 
-	QLayout *bot = ui->drawer_0->layout(), *top = ui->drawer_1->layout();
+	//if (ui->drawer_1->isVisible()) {	// It would be nice to avoid this block when it is not needed, but separate functions seems like overkill.
+		unsigned short countDif = ui->drawer_0->children().count() - ui->drawer_1->children().count();	// Consider storing this as a class value.
+		QLayout *bot = ui->drawer_0->layout(), *top = ui->drawer_1->layout();
 
-	/*// Shouldn't be necessary:
-	unsigned short spaceDif = bot->spacing() - top->spacing();
-	unsigned short marDif = bot->contentsMargins().left() - top->contentsMargins().left();
-	unsigned short marDifBL = ui->buttonsLayout->contentsMargins().left() - top->contentsMargins().left();
-	unsigned short marDifAB = ui->actionButtons->contentsMargins().left() - top->contentsMargins().left();*/
+		unsigned short xMar = countDif * ( sample->width() + bot->spacing() ) / 2;
 
-	unsigned short xMar = countDif * ( sampleWidth + bot->spacing() ) / 2;
+		QMargins desire = top->contentsMargins();
+		desire.setLeft(xMar);
+		desire.setRight(xMar);
+		top->setContentsMargins(desire);	// Not sure if necessary.
+	//}
 
-	/*int tMar = ui->drawer_1->contentsMargins().top();
-	int bMar = ui->drawer_1->contentsMargins().bottom();*/
-	//QMargins marRef = ui->drawer_1->contentsMargins();
-	//int tMar = marRef.top(), bMar = marRef.bottom();
-	//ui->drawer_1->setContentsMargins(xMar, tMar, xMar, bMar);	// Triggers resizeEvent()?
-	QMargins desire = top->contentsMargins();
-	desire.setLeft(xMar);
-	desire.setRight(xMar);
-	top->setContentsMargins(desire);	// Not sure if necessary.
+	if (ui->buttonPlus->isVisible()) {
+		//ui->buttonPlus->resize( static_cast<int>(0.42857 * sample->width()), ui->buttonPlus->height() );	// This gets over-written.
+		ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * sample->width()), ui->buttonPlus->height() );
+			/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
+			   I'm not sure how to query those values here or export from here to there dynamically. */
 
-	/*log("---BEGIN---");
-	log((std::to_string(countDif)).c_str());
-	log((std::to_string(sampleWidth)).c_str());
-	log((std::to_string(spaceDif)).c_str());
-	log((std::to_string(marDif)).c_str());
-	log((std::to_string(marDifBL)).c_str());
-	log((std::to_string(marDifAB)).c_str());
-	//log((std::to_string(ui->drawer_0->layout()->spacing())).c_str());
-	//log((std::to_string((countDif * (sampleWidth + ui->drawer_0->layout()->spacing()) ) / countDif)).c_str());	// Should now be.
-	log("---LEFT & RIGHT SHOULD BE---");
-	log(std::to_string(xMar).c_str());	// Should now be.
-	//log(std::to_string(desire.left()).c_str());
-	//log(std::to_string(desire.right()).c_str());
-	log("---LEFT & RIGHT ARE NOW---");
-	log((std::to_string(ui->drawer_1->contentsMargins().left() )).c_str());		// Now is.
-	log((std::to_string(ui->drawer_1->contentsMargins().right() )).c_str());	// Now is.
-	log("----END----");*/
+		//ui->actionButtons->layout()->setAlignment(ui->buttonPlus, Qt::AlignHCenter);
+	}
 }
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)
@@ -1115,13 +1096,13 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 	update(true);
 
 	if (m_settings->value("actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
+	// Does the order of these two lines matter?
 	QWidget::resizeEvent(e);
 }
 
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
-	//if (m_settings->value("actionButtons") == ButtonVisibility::All)
 	m_settings->setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	m_settings->sync();
 
@@ -1310,7 +1291,6 @@ void ZoomWindow::previous()
 
 void ZoomWindow::updateButtonPlus()
 {
-	//if (m_settings->value("actionButtons") != ButtonVisibility::All) return;
 	ui->buttonPlus->setText(QChar(ui->buttonPlus->isChecked() ? '-' : '+'));
 }
 
