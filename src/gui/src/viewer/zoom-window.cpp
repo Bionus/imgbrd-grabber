@@ -720,11 +720,6 @@ void ZoomWindow::draw()
 		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
 		m_mediaPlayer->setPlaylist(playlist);
-		if (!m_mediaPlayer->isVideoAvailable()) {
-			showLoadingError("Error playing video. Make sure the proper codecs are installed.");
-			return;
-		}
-
 		m_stackedWidget->setCurrentWidget(m_videoWidget);
 		m_mediaPlayer->play();
 
