@@ -8,7 +8,7 @@
 #define SrcDir RootDir + "\src"
 
 #ifndef QtDir
-# define QtDir "C:\Qt\Qt5.10.1\5.10.1\msvc2015\bin"
+# define QtDir "C:\Qt\Qt5.15.1\5.15.1\msvc2019_64\bin"
 #endif
 #define QtPlugins QtDir + "\..\plugins"
 #define QtLib QtDir + "\..\lib"
@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.4.1"
+# define MyAppVersion "7.4.3"
 #endif
 
 #ifndef QtApngDll
@@ -165,7 +165,8 @@ Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\langua
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_ru.qm";   DestDir: "{app}\languages\qt"; DestName: "Russian.qm"; Flags: ignoreversion
-Source: "{#QtPlugins}\mediaservice\dsengine.dll";  DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtPlugins}\mediaservice\dsengine.dll";  DestDir: "{app}\mediaservice"; Flags: ignoreversion; OnlyBelowVersion: 6.0.6
+Source: "{#QtPlugins}\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion; MinVersion: 6.0.6
 Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
