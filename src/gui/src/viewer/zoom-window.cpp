@@ -86,7 +86,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			ui->actionButtons->setVisible(false);
 			break;
 		case ButtonVisibility::Favorites :
-			ui->buttonPlus->setChecked(true);
+			ui->drawer_1->setVisible(true);
 			ui->buttonPlus->setVisible(false);
 			ui->drawer_0->setVisible(false);
 
@@ -109,7 +109,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 			break;
 		case ButtonVisibility::NonFavorites :
-			ui->buttonPlus->setChecked(false);
+			ui->drawer_1->setVisible(false);
 			ui->buttonPlus->setVisible(false);
 			break;
 	}
@@ -1121,6 +1121,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
+	//if (m_settings->value("actionButtons") == ButtonVisibility::All)
 	m_settings->setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	m_settings->sync();
 
@@ -1309,6 +1310,7 @@ void ZoomWindow::previous()
 
 void ZoomWindow::updateButtonPlus()
 {
+	//if (m_settings->value("actionButtons") != ButtonVisibility::All) return;
 	ui->buttonPlus->setText(QChar(ui->buttonPlus->isChecked() ? '-' : '+'));
 }
 
