@@ -43,6 +43,7 @@
 #include "threads/image-loader-queue.h"
 #include "ui/QAffiche.h"
 #include "viewer/details-window.h"
+#include "viewer/players/video-player.h"
 
 
 ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
@@ -107,11 +108,8 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_stackedWidget->addWidget(m_labelImage);
 
 	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
-		m_videoWidget = new QVideoWidget(this);
-		m_stackedWidget->addWidget(m_videoWidget);
-
-		m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-		m_mediaPlayer->setVideoOutput(m_videoWidget);
+		m_videoPlayer = new VideoPlayer(this);
+		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 
 	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
@@ -222,13 +220,6 @@ ZoomWindow::~ZoomWindow()
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
-
-	// Fix for weird Linux crash (issue #2190)
-	if (m_videoWidget != nullptr) {
-		m_stackedWidget->removeWidget(m_videoWidget);
-		m_videoWidget->setParent(nullptr);
-		m_videoWidget->deleteLater();
-	}
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
@@ -715,13 +706,8 @@ void ZoomWindow::draw()
 	}
 	// Videos (using a media player)
 	else if (m_image->isVideo()) {
-		QMediaPlaylist *playlist = new QMediaPlaylist(this);
-		playlist->addMedia(QUrl::fromLocalFile(m_imagePath));
-		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-
-		m_mediaPlayer->setPlaylist(playlist);
-		m_stackedWidget->setCurrentWidget(m_videoWidget);
-		m_mediaPlayer->play();
+		m_videoPlayer->load(m_imagePath);
+		m_stackedWidget->setCurrentWidget(m_videoPlayer);
 
 		m_displayImage = QPixmap();
 	}
@@ -988,8 +974,8 @@ void ZoomWindow::fullScreen()
 
 	QWidget *widget;
 	if (m_image->isVideo()) {
-		m_videoWidget->setFullScreen(true);
-		widget = m_videoWidget;
+		m_videoPlayer->showFullScreen();
+		widget = m_videoPlayer;
 	} else {
 		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 		m_fullScreen->setStyleSheet("background-color: black");
@@ -1028,7 +1014,7 @@ void ZoomWindow::unfullScreen()
 	m_slideshow.stop();
 
 	if (m_image->isVideo()) {
-		m_videoWidget->setFullScreen(false);
+		m_videoPlayer->showNormal();
 	} else if (m_fullScreen != nullptr) {
 		m_fullScreen->close();
 		m_fullScreen->deleteLater();
@@ -1054,7 +1040,7 @@ void ZoomWindow::prepareNextSlide()
 	// We make sure to wait to see the whole displayed item
 	const qint64 additionalInterval = !m_isAnimated.isEmpty()
 		? m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount()
-		: (m_image->isVideo() ? m_mediaPlayer->duration() : 0);
+		: (m_image->isVideo() ? m_videoPlayer->duration() : 0);
 
 	const qint64 totalInterval = interval * 1000 + additionalInterval;
 	m_slideshow.start(totalInterval);

@@ -17,8 +17,6 @@ namespace Ui
 
 
 class QAffiche;
-class QMediaPlayer;
-class QVideoWidget;
 class Profile;
 class MainWindow;
 class DetailsWindow;
@@ -26,6 +24,7 @@ class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
 class SearchTab;
+class VideoPlayer;
 
 class ZoomWindow : public QWidget
 {
@@ -172,8 +171,7 @@ class ZoomWindow : public QWidget
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
 		bool m_labelImageScaled;
-		QVideoWidget *m_videoWidget = nullptr;
-		QMediaPlayer *m_mediaPlayer = nullptr;
+		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Threads
 		QThread m_imageLoaderThread;
