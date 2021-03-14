@@ -74,7 +74,7 @@ QVariant DownloadGroupTableModel::data(const QModelIndex &index, int role) const
 		case 2: return download.site->url();
 		case 3: return QString::number(download.page);
 		case 4: return QString::number(download.perpage);
-		case 5: return QString::number(download.total);
+		case 5: return download.total == -1 ? "all" : QString::number(download.total);
 		case 6: return download.filename;
 		case 7: return download.path;
 		case 8: return download.postFiltering.join(' ');
@@ -148,11 +148,14 @@ bool DownloadGroupTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 5:
-			if (toInt < 0 || !isInt) {
+			if (val.toLower() == "all" || toInt < 0) {
+				download.total = -1;
+			} else if (!isInt) {
 				error(qobject_cast<QWidget*>(parent()), tr("The image limit must be greater or equal to 0."));
 				return false;
+			} else {
+				download.total = toInt;
 			}
-			download.total = toInt;
 			break;
 
 		case 6:
