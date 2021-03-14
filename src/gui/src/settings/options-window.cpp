@@ -334,6 +334,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboActionButtons->clear();
 	ui->comboActionButtons->addItem(tr("All"), ZoomWindow::ButtonVisibility::All);
 	ui->comboActionButtons->addItem(tr("None"), ZoomWindow::ButtonVisibility::None);
+	ui->comboActionButtons->addItem(tr("Navigation"), ZoomWindow::ButtonVisibility::Navigation);
 	ui->comboActionButtons->addItem(tr("Favorites"), ZoomWindow::ButtonVisibility::Favorites);
 	ui->comboActionButtons->addItem(tr("NonFavorites"), ZoomWindow::ButtonVisibility::NonFavorites);
 	ui->comboActionButtons->setCurrentIndex(settings->value("Zoom/actionButtons", ZoomWindow::ButtonVisibility::All).toInt());

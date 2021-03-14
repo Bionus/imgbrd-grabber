@@ -56,6 +56,7 @@ class ZoomWindow : public QWidget
 		{
 			All,
 			None,
+			Navigation,
 			Favorites,
 			NonFavorites
 		};

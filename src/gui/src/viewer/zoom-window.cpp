@@ -82,7 +82,11 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		case ButtonVisibility::All :	// Handled later by resizeButtons.
 			break;
 		case ButtonVisibility::None :
-			ui->buttonPlus->setVisible(false);
+			ui->actionButtons->setVisible(false);
+			ui->buttonPrev->setVisible(false);
+			ui->buttonNext->setVisible(false);
+			break;
+		case ButtonVisibility::Navigation :
 			ui->actionButtons->setVisible(false);
 			break;
 		case ButtonVisibility::Favorites :
