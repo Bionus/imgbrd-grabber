@@ -57,7 +57,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_pendingAction = PendingNothing;
 	m_pendingClose = false;
 
-	restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
+	if (m_settings->value("Zoom/rememberGeometry", true).toBool()) restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
 	
 	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->progressBarDownload->hide();

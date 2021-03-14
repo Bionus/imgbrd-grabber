@@ -339,6 +339,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboActionButtons->setCurrentIndex(settings->value("Zoom/actionButtons", ZoomWindow::ButtonVisibility::All).toInt());
 
 	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
+	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
 
 	settings->beginGroup("Coloring");
@@ -1162,6 +1163,7 @@ void OptionsWindow::save()
 
 	settings->setValue("Zoom/actionButtons", ui->comboActionButtons->currentData());
 	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
+	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
