@@ -175,7 +175,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="drawer_1" native="true">
+         <widget class="QWidget" name="buttonDrawer" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -223,7 +223,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="drawer_0" native="true">
+         <widget class="QWidget" name="buttonShelf" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -440,7 +440,7 @@
   <connection>
    <sender>buttonPlus</sender>
    <signal>toggled(bool)</signal>
-   <receiver>drawer_1</receiver>
+   <receiver>buttonDrawer</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">

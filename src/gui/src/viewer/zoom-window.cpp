@@ -86,21 +86,22 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			ui->actionButtons->setVisible(false);
 			break;
 		case ButtonVisibility::Favorites :
+			// Could uncheck buttonPlus here to prevent drawer being left open when users switch their setting again.
 			ui->buttonPlus->setVisible(false);
-			ui->drawer_1->setVisible(true);
-			ui->drawer_0->setVisible(false);
+			ui->buttonDrawer->setVisible(true);
+			ui->buttonShelf->setVisible(false);
 
-			ui->drawer_0->setFixedSize(0, 0);	// Occupy zero width so navigation buttons can converge.
+			ui->buttonShelf->setFixedSize(0, 0);	// Occupy zero width so navigation buttons can converge.
 
 			// Margin may have been set dynamically.
-			//ui->drawer_1->setContentsMargins(0, 0, 0, 0);	// This method does not seem to work:
-			//	log(std::to_string(ui->drawer_1->contentsMargins().left()).c_str());
+			//ui->buttonDrawer->setContentsMargins(0, 0, 0, 0);	// This method does not seem to work:
+			//	log(std::to_string(ui->buttonDrawer->contentsMargins().left()).c_str());
 			//
 			{
-				QMargins desire = ui->drawer_1->layout()->contentsMargins();
+				QMargins desire = ui->buttonDrawer->layout()->contentsMargins();
 				desire.setLeft(0);
 				desire.setRight(0);
-				ui->drawer_1->layout()->setContentsMargins(desire);	// Not sure if necessary.
+				ui->buttonDrawer->layout()->setContentsMargins(desire);	// Not sure if necessary.
 			}
 
 			// Reflow navigation buttons to be contiguous:
@@ -110,7 +111,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			break;
 		case ButtonVisibility::NonFavorites :
 			ui->buttonPlus->setVisible(false);
-			ui->drawer_1->setVisible(false);
+			ui->buttonDrawer->setVisible(false);
 			break;
 	}
 
@@ -1062,11 +1063,11 @@ void ZoomWindow::toggleSlideshow()
 
 void ZoomWindow::resizeButtons()
 {
-	QWidget *sample = ui->drawer_0->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
+	QWidget *sample = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
 
-	//if (ui->drawer_1->isVisible()) {	// It would be nice to avoid this block when it is not needed, but separate functions seems like overkill.
-		unsigned short countDif = ui->drawer_0->children().count() - ui->drawer_1->children().count();	// Consider storing this as a class value.
-		QLayout *bot = ui->drawer_0->layout(), *top = ui->drawer_1->layout();
+	//if (ui->buttonDrawer->isVisible()) {	// It would be nice to avoid this block when it is not needed, but separate functions seems like overkill.
+		unsigned short countDif = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();	// Consider storing this as a class value.
+		QLayout *bot = ui->buttonShelf->layout(), *top = ui->buttonDrawer->layout();
 
 		unsigned short xMar = countDif * ( sample->width() + bot->spacing() ) / 2;
 
