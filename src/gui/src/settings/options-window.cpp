@@ -338,7 +338,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboActionButtons->addItem(tr("NonFavorites"), ZoomWindow::ButtonVisibility::NonFavorites);
 	ui->comboActionButtons->setCurrentIndex(settings->value("Zoom/actionButtons", ZoomWindow::ButtonVisibility::All).toInt());
 
-	ui->checkRememberDrawer->setChecked(settings->value("rememberDrawer", true).toBool());
+	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
 
 
 	settings->beginGroup("Coloring");
@@ -1161,7 +1161,7 @@ void OptionsWindow::save()
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
 	settings->setValue("Zoom/actionButtons", ui->comboActionButtons->currentData());
-	settings->setValue("rememberDrawer", ui->checkRememberDrawer->isChecked());
+	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
