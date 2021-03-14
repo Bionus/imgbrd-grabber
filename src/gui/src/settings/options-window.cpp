@@ -332,11 +332,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
 
 	ui->comboActionButtons->clear();
-	ui->comboActionButtons->addItem("All", ZoomWindow::ButtonVisibility::All);
-	ui->comboActionButtons->addItem("None", ZoomWindow::ButtonVisibility::None);
-	ui->comboActionButtons->addItem("Favorites", ZoomWindow::ButtonVisibility::Favorites);
-	ui->comboActionButtons->addItem("NonFavorites", ZoomWindow::ButtonVisibility::NonFavorites);
-	ui->comboActionButtons->setCurrentIndex(settings->value("actionButtons", "All").toInt());
+	ui->comboActionButtons->addItem(tr("All"), ZoomWindow::ButtonVisibility::All);
+	ui->comboActionButtons->addItem(tr("None"), ZoomWindow::ButtonVisibility::None);
+	ui->comboActionButtons->addItem(tr("Favorites"), ZoomWindow::ButtonVisibility::Favorites);
+	ui->comboActionButtons->addItem(tr("NonFavorites"), ZoomWindow::ButtonVisibility::NonFavorites);
+	ui->comboActionButtons->setCurrentIndex(settings->value("Zoom/actionButtons", ZoomWindow::ButtonVisibility::All).toInt());
 
 	ui->checkRememberDrawer->setChecked(settings->value("rememberDrawer", true).toBool());
 
@@ -1160,7 +1160,7 @@ void OptionsWindow::save()
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
-	settings->setValue("actionButtons", ui->comboActionButtons->currentIndex());
+	settings->setValue("Zoom/actionButtons", ui->comboActionButtons->currentData());
 	settings->setValue("rememberDrawer", ui->checkRememberDrawer->isChecked());
 
 	settings->beginGroup("Coloring");

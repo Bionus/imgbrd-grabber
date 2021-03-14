@@ -78,7 +78,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 
 	
-	switch (m_settings->value("actionButtons").toInt()) {	// Consider adding this as class variable.
+	switch (m_settings->value("Zoom/actionButtons").toInt()) {	// Consider adding this as class variable.
 		case ButtonVisibility::All :	// Handled later by resizeButtons.
 			break;
 		case ButtonVisibility::None :
@@ -1095,7 +1095,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 	m_resizeTimer->start(m_timeout);
 	update(true);
 
-	if (m_settings->value("actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
+	if (m_settings->value("Zoom/actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
 	// Does the order of these two lines matter?
 	QWidget::resizeEvent(e);
 }
@@ -1120,7 +1120,7 @@ void ZoomWindow::showEvent(QShowEvent *e)
 {
 	Q_UNUSED(e)
 
-	if (m_settings->value("actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
+	if (m_settings->value("Zoom/actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
 	showThumbnail();
 }
 
