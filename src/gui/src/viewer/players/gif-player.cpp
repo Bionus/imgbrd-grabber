@@ -5,7 +5,7 @@
 #include "ui_gif-player.h"
 
 
-GifPlayer::GifPlayer(bool showControls, QWidget *parent)
+GifPlayer::GifPlayer(bool showControls, Qt::Alignment alignment, QWidget *parent)
 	: Player(parent), ui(new Ui::GifPlayer)
 {
 	ui->setupUi(this);
@@ -14,6 +14,8 @@ GifPlayer::GifPlayer(bool showControls, QWidget *parent)
 	for (const QByteArray &format : formats) {
 		m_supportedFormats.append(QString(format).toLower());
 	}
+
+	ui->label->setAlignment(alignment);
 
 	if (showControls) {
 		ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));

@@ -19,7 +19,7 @@ class GifPlayer : public Player
 	Q_OBJECT
 
 	public:
-		explicit GifPlayer(bool showControls, QWidget *parent = nullptr);
+		explicit GifPlayer(bool showControls, Qt::Alignment alignment, QWidget *parent = nullptr);
 		~GifPlayer();
 
 		bool supports(const QString &file) override;

@@ -155,7 +155,7 @@ class ZoomWindow : public QWidget
 		QTime m_lastWheelEvent;
 		QString m_saveAsPending;
 
-		QAffiche *m_fullScreen;
+		QWidget *m_fullScreen = nullptr;
 		QTimer m_slideshow;
 		bool m_isFullscreen;
 		bool m_isSlideshowRunning;
