@@ -4,7 +4,7 @@
 #define MyAppExeName "Grabber.exe"
 
 #define RootDir "..\.."
-#define BuildDir RootDir + "\build-src-Qt_5_15_1_Desktop_msvc2019_x64-Release"
+#define BuildDir RootDir + "\build"
 #define SrcDir RootDir + "\src"
 
 #ifndef QtDir
