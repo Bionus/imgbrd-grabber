@@ -16,6 +16,7 @@ namespace Ui
 }
 
 
+class GifPlayer;
 class QAffiche;
 class Profile;
 class MainWindow;
@@ -169,8 +170,8 @@ class ZoomWindow : public QWidget
 		// Display
 		QString m_isAnimated;
 		QPixmap m_displayImage;
-		QMovie *m_displayMovie;
 		bool m_labelImageScaled;
+		GifPlayer *m_gifPlayer = nullptr;
 		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Threads

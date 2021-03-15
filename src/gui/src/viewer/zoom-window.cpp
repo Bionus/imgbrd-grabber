@@ -43,11 +43,12 @@
 #include "threads/image-loader-queue.h"
 #include "ui/QAffiche.h"
 #include "viewer/details-window.h"
+#include "viewer/players/gif-player.h"
 #include "viewer/players/video-player.h"
 
 
 ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
-	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
+	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	connect(parent, &MainWindow::destroyed, this, &QWidget::deleteLater);
@@ -106,6 +107,9 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
+
+	m_gifPlayer = new GifPlayer(m_settings->value("Zoom/showGifPlayerControls", true).toBool(), this);
+	m_stackedWidget->addWidget(m_gifPlayer);
 
 	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
 		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
@@ -213,13 +217,12 @@ void ZoomWindow::go()
  */
 ZoomWindow::~ZoomWindow()
 {
-	if (m_displayMovie != nullptr) {
-		m_displayMovie->deleteLater();
-	}
-
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
+
+	m_gifPlayer->deleteLater();
+	m_videoPlayer->deleteLater();
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
@@ -688,21 +691,10 @@ void ZoomWindow::draw()
 
 	// GIF (using QLabel support for QMovie)
 	if (!m_isAnimated.isEmpty()) {
-		m_displayMovie = new QMovie(m_imagePath, m_isAnimated.toLatin1(), this);
-		m_displayMovie->start();
-		const QSize &movieSize = m_displayMovie->currentPixmap().size();
-		const QSize &imageSize = m_labelImage->size();
-		if (imageSize.width() < movieSize.width() || imageSize.height() < movieSize.height()) {
-			m_displayMovie->setScaledSize(movieSize.scaled(imageSize, Qt::KeepAspectRatio));
-		}
-		m_labelImage->setMovie(m_displayMovie);
-		m_stackedWidget->setCurrentWidget(m_labelImage);
+		m_gifPlayer->load(m_imagePath);
+		m_stackedWidget->setCurrentWidget(m_gifPlayer);
 
 		m_displayImage = QPixmap();
-
-		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setMovie(m_displayMovie);
-		}
 	}
 	// Videos (using a media player)
 	else if (m_image->isVideo()) {
@@ -968,7 +960,7 @@ void ZoomWindow::toggleFullScreen()
 
 void ZoomWindow::fullScreen()
 {
-	if (!m_loadedImage && m_displayMovie == nullptr) {
+	if (!m_loadedImage) {
 		return;
 	}
 
@@ -980,11 +972,7 @@ void ZoomWindow::fullScreen()
 		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 		m_fullScreen->setStyleSheet("background-color: black");
 		m_fullScreen->setAlignment(Qt::AlignCenter);
-		if (!m_isAnimated.isEmpty()) {
-			m_fullScreen->setMovie(m_displayMovie);
-		} else {
-			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		}
+		m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		m_fullScreen->setWindowFlags(Qt::Window);
 		m_fullScreen->showFullScreen();
 
@@ -1039,7 +1027,7 @@ void ZoomWindow::prepareNextSlide()
 
 	// We make sure to wait to see the whole displayed item
 	const qint64 additionalInterval = !m_isAnimated.isEmpty()
-		? m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount()
+		? m_gifPlayer->duration()
 		: (m_image->isVideo() ? m_videoPlayer->duration() : 0);
 
 	const qint64 totalInterval = interval * 1000 + additionalInterval;
