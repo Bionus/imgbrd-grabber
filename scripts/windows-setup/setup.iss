@@ -4,7 +4,7 @@
 #define MyAppExeName "Grabber.exe"
 
 #define RootDir "..\.."
-#define BuildDir RootDir + "\build"
+#define BuildDir RootDir + "\build-src-Qt_5_15_1_Desktop_msvc2019_x64-Release"
 #define SrcDir RootDir + "\src"
 
 #ifndef QtDir
@@ -65,44 +65,28 @@ PrivilegesRequired=admin
 ArchitecturesAllowed=x86 x64 ia64
 ArchitecturesInstallIn64BitMode=x64 ia64
 
-; downloading and installing dependencies will only work if the memo/ready page is enabled (default and current behaviour)
-DisableReadyPage=no
-DisableReadyMemo=no
+; Dependencies
+#define UseMsiProductCheck
+#define UseVC2015To2019
+#include "scripts\dependencies.iss"
 
+[Languages]
+Name: en; MessagesFile: "compiler:Default.isl"  
+Name: nl; MessagesFile: "compiler:Languages\Dutch.isl" 
+Name: fr; MessagesFile: "compiler:Languages\French.isl"    
+Name: de; MessagesFile: "compiler:Languages\German.isl"   
+Name: ru; MessagesFile: "compiler:Languages\Russian.isl"   
+Name: es; MessagesFile: "compiler:Languages\Spanish.isl" 
 
 [CustomMessages]
 en.IGL=Imageboard-Grabber Links
 fr.IGL=Liens Imageboard-Grabber
-DependenciesDir=MyProgramDependencies
-WindowsServicePack=Windows %1 Service Pack %2
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "Imageboard-Grabber"; ValueType: string; ValueName: ""; ValueData: "{cm:IGL}"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "Imageboard-Grabber\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
 Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
-
-; Languages
-#include "scripts\lang\english.iss"
-#include "scripts\lang\german.iss"
-#include "scripts\lang\french.iss"
-#include "scripts\lang\italian.iss"
-#include "scripts\lang\dutch.iss"
-
-#ifdef UNICODE
-#include "scripts\lang\chinese.iss"
-#include "scripts\lang\polish.iss"
-#include "scripts\lang\russian.iss"
-#include "scripts\lang\japanese.iss"
-#endif
-
-#include "scripts\products.iss"
-#include "scripts\products\stringversion.iss"
-#include "scripts\products\winversion.iss"
-#include "scripts\products\fileversion.iss"
-#include "scripts\products\msiproduct.iss"
-#include "scripts\products\vcredist2015.iss"
-#include "scripts\products\vcredist2017.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -111,8 +95,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "resources\images\icon.ico";            DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\windows\CDR.exe";       DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
+; Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "{#SrcDir}\dist\common\words.txt";      DestDir: "{app}";
 Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
@@ -122,7 +106,7 @@ Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\libEGL.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\libGLESv2.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\libmysql.dll";             DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
+; Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
@@ -136,14 +120,14 @@ Source: "{#QtDir}\Qt5Sql.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\German.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
-Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\German.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
+;Source: "{#QtApngDll}";                         DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qdds.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtPlugins}\imageformats\qgif.dll";   DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qicns.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -154,13 +138,13 @@ Source: "{#QtPlugins}\imageformats\qtga.dll";   DestDir: "{app}\imageformats"; F
 Source: "{#QtPlugins}\imageformats\qtiff.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwbmp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwebp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\German.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\German.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
+;Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
@@ -171,7 +155,7 @@ Source: "{#QtPlugins}\platforms\qminimal.dll";     DestDir: "{app}\platforms"; F
 Source: "{#QtPlugins}\platforms\qoffscreen.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; Flags: ignoreversion
-Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
+;Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlodbc.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlpsql.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\styles\qwindowsvistastyle.dll";  DestDir: "{app}\styles"; Flags: ignoreversion
@@ -284,16 +268,6 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, "&", "&&")}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-function InitializeSetup(): Boolean;
-begin
-  initwinversion();
-
-  vcredist2015('14');
-  vcredist2017('14');
-
-  Result := true;
-end;
-
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
