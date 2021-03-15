@@ -271,6 +271,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	ui->checkImageScaleUp->setChecked(settings->value("Zoom/scaleUp", false).toBool());
 	ui->checkImageUseVideoPlayer->setChecked(settings->value("Zoom/useVideoPlayer", true).toBool());
+	ui->checkImageVideoControls->setChecked(settings->value("Zoom/showVideoPlayerControls", true).toBool());
+	ui->checkImageGifControls->setChecked(settings->value("Zoom/showGifPlayerControls", true).toBool());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	const QStringList positionsV { "top", "center", "bottom" };
@@ -1043,6 +1045,8 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	settings->setValue("Zoom/scaleUp", ui->checkImageScaleUp->isChecked());
 	settings->setValue("Zoom/useVideoPlayer", ui->checkImageUseVideoPlayer->isChecked());
+	settings->setValue("Zoom/showVideoPlayerControls", ui->checkImageVideoControls->isChecked());
+	settings->setValue("Zoom/showGifPlayerControls", ui->checkImageGifControls->isChecked());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	const QStringList positionsV { "top", "center", "bottom" };

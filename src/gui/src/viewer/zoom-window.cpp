@@ -108,7 +108,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_stackedWidget->addWidget(m_labelImage);
 
 	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
-		m_videoPlayer = new VideoPlayer(this);
+		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 

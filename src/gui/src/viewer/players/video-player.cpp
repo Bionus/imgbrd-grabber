@@ -8,7 +8,7 @@
 #include "ui_video-player.h"
 
 
-VideoPlayer::VideoPlayer(QWidget *parent)
+VideoPlayer::VideoPlayer(bool showControls, QWidget *parent)
 	: Player(parent), ui(new Ui::VideoPlayer)
 {
 	ui->setupUi(this);
@@ -17,17 +17,23 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
 	m_videoWidget = new QVideoWidget(this);
 	ui->verticalLayout->insertWidget(0, m_videoWidget);
+	ui->verticalLayout->setStretch(0, 1);
 	m_mediaPlaylist = new QMediaPlaylist(this);
 	m_mediaPlaylist->setPlaybackMode(QMediaPlaylist::Loop);
 	m_mediaPlayer = new QMediaPlayer(this);
 	m_mediaPlayer->setVideoOutput(m_videoWidget);
 	m_mediaPlayer->setPlaylist(m_mediaPlaylist);
-	m_mediaPlayer->setNotifyInterval(50);
 
-	ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-	connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
-	connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
-	connect(ui->sliderVolume, &QSlider::valueChanged, m_mediaPlayer, &QMediaPlayer::setVolume);
+	if (showControls) {
+		m_mediaPlayer->setNotifyInterval(50);
+
+		ui->buttonPlayPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+		connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
+		connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
+		connect(ui->sliderVolume, &QSlider::valueChanged, m_mediaPlayer, &QMediaPlayer::setVolume);
+	} else {
+		ui->controls->hide();
+	}
 }
 
 VideoPlayer::~VideoPlayer()

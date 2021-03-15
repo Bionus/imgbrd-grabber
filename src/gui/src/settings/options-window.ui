@@ -1858,6 +1858,26 @@
           </property>
          </widget>
         </item>
+        <item row="15" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageVideoControls">
+          <property name="text">
+           <string>Show video player controls</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageGifControls">
+          <property name="text">
+           <string>Show GIF player controls</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceColoring">
@@ -2938,8 +2958,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>329</x>
-     <y>461</y>
+     <x>338</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -2954,8 +2974,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>461</y>
+     <x>406</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2986,12 +3006,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>67</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>350</x>
-     <y>113</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>
@@ -3002,12 +3022,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>41</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>64</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>
@@ -3019,7 +3039,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>647</x>
-     <y>80</y>
+     <y>78</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -3038,8 +3058,8 @@
      <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>43</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>
@@ -3050,12 +3070,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>67</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>350</x>
-     <y>90</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>
@@ -3072,6 +3092,22 @@
     <hint type="destinationlabel">
      <x>661</x>
      <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkImageUseVideoPlayer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkImageVideoControls</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>443</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>427</y>
     </hint>
    </hints>
   </connection>
