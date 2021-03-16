@@ -548,37 +548,30 @@ void ZoomWindow::replyFinishedDetails()
 	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty()) {
 		imagePath = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 
-		// Update save button state
-		const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
-		setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
-		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
-
 		// Fix extension when it should be guessed
 		const QString fext = imagePath.section('.', -1);
 		m_image->setFileExtension(fext);
 
 		// Ensure the file actually exists before trying to set it as the source
 		if (QFile::exists(imagePath)) {
+			m_imagePath = imagePath;	// Moved before setButtonState so tool tips can reference it.
+
+			// Update save button state
+			const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
+			setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+			setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+
 			m_source = imagePath;
 			m_image->setSavePath(m_source);
+
+			log(QStringLiteral("Image loaded from the file `%1`").arg(imagePath));
+			m_finished = true;
+			m_loadedImage = true;
+			pendingUpdate();
+
+			draw();
 		}
-	}
-
-	// If a file to load the image from was found
-	if (!imagePath.isEmpty() && QFile::exists(imagePath)) {
-		m_imagePath = imagePath;
-		log(QStringLiteral("Image loaded from the file `%1`").arg(imagePath));
-
-		m_finished = true;
-		m_loadedImage = true;
-		pendingUpdate();
-
-		draw();
-	}
-	// If the file does not exist, we have to load it
-	else {
-		load();
-	}
+	} else load();	// If the file does not exist, we have to load it
 
 	updateWindowTitle();
 }
@@ -613,14 +606,17 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		switch (state)
 		{
 			case SaveButtonState::Save:
+				// Uses default tool tip.
 				button->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
 				break;
 
 			case SaveButtonState::Saving:
+				button->setToolTip(QString());
 				button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
 				break;
 
 			default:
+				button->setToolTip(tr("Close this window"));	// If this is actually what it does, why are there two of them?
 				button->setText(fav ? tr("Close (fav)") : tr("Close"));
 				break;
 		}
@@ -633,30 +629,35 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	else if (! fav && buttonSave != nullptr) button = buttonSave;
 	else return;
 
-	button->setToolTip(QString());
 	switch (state)
 	{
 		case SaveButtonState::Save:
+			// Uses default tool tip.
 			button->setText(fav ? tr("Save (fav)") : tr("Save"));
 			break;
 
 		case SaveButtonState::Saving:
+			button->setToolTip(QString());
 			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
 			break;
 
 		case SaveButtonState::Saved:
+			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
 			break;
 
 		case SaveButtonState::Copied:
+			button->setToolTip(QString());
 			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
 			break;
 
 		case SaveButtonState::Moved:
+			button->setToolTip(QString());
 			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
 			break;
 
 		case SaveButtonState::Linked:
+			button->setToolTip(QString());
 			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
 			break;
 
@@ -666,11 +667,12 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 			break;
 
 		case SaveButtonState::ExistsDisk:
-			button->setToolTip(m_imagePath);
-			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
+			button->setToolTip(m_imagePath); // No tool tip appears for me. This function was called before m_imagePath assignment in replyFinishedDetails.
+			button->setText(fav ? tr("Already saved (fav)") : tr("Already saved"));
 			break;
 
 		case SaveButtonState::Delete:
+			button->setToolTip(QString());
 			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
 			break;
 	}
