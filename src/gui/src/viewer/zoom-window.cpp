@@ -594,15 +594,15 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		{
 			case SaveButtonState::Save:
 				button->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
-				return;
+				break;
 
 			case SaveButtonState::Saving:
 				button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-				return;
+				break;
 
 			default:
 				button->setText(fav ? tr("Close (fav)") : tr("Close"));
-				return;
+				break;
 		}
 	}
 
@@ -618,41 +618,41 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	{
 		case SaveButtonState::Save:
 			button->setText(fav ? tr("Save (fav)") : tr("Save"));
-			return;
+			break;
 
 		case SaveButtonState::Saving:
 			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			return;
+			break;
 
 		case SaveButtonState::Saved:
 			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
-			return;
+			break;
 
 		case SaveButtonState::Copied:
 			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
-			return;
+			break;
 
 		case SaveButtonState::Moved:
 			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
-			return;
+			break;
 
 		case SaveButtonState::Linked:
 			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
-			return;
+			break;
 
 		case SaveButtonState::ExistsMd5:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
-			return;
+			break;
 
 		case SaveButtonState::ExistsDisk:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
-			return;
+			break;
 
 		case SaveButtonState::Delete:
 			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
-			return;
+			break;
 	}
 }
 
