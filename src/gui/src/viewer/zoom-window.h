@@ -172,7 +172,7 @@ class ZoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		SaveButtonState m_saveButonState, m_saveButonStateFav;	// Reconcile with setting to remember?
+		SaveButtonState m_saveButonState, m_saveButonStateFav;
 
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
@@ -182,7 +182,23 @@ class ZoomWindow : public QWidget
 		bool m_labelImageScaled;
 		GifPlayer *m_gifPlayer = nullptr;
 		VideoPlayer *m_videoPlayer = nullptr;
-		//ButtonVisibility actionButtons = All;
+
+		// Buttons
+		ButtonVisibility actionButtons = All;
+		QPushButton
+			*buttonPlus = nullptr,
+			*buttonPrev = nullptr,
+			*buttonNext = nullptr,
+
+			*buttonSaveAs = nullptr,
+			*buttonDetails = nullptr,
+
+			*buttonSave = nullptr,
+			*buttonSaveFav = nullptr,
+			*buttonSaveNQuit = nullptr,
+			*buttonSaveNQuitFav = nullptr,
+			*buttonOpen = nullptr,
+			*buttonOpenFav = nullptr;
 
 		// Threads
 		QThread m_imageLoaderThread;

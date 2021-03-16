@@ -136,7 +136,7 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="actionButtonsLayout">
         <property name="spacing">
          <number>3</number>
         </property>
@@ -163,6 +163,9 @@
             <height>12</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Expand button drawer</string>
+          </property>
           <property name="text">
            <string notr="true">+</string>
           </property>
@@ -182,7 +185,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="buttonDrawerLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
@@ -200,6 +203,9 @@
            </property>
            <item>
             <widget class="QPushButton" name="buttonSaveFav">
+             <property name="toolTip">
+              <string>Save (fav)</string>
+             </property>
              <property name="text">
               <string>Save (fav)</string>
              </property>
@@ -207,6 +213,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonSaveNQuitFav">
+             <property name="toolTip">
+              <string>Save and close (fav)</string>
+             </property>
              <property name="text">
               <string>Save and close (fav)</string>
              </property>
@@ -214,6 +223,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonOpenFav">
+             <property name="toolTip">
+              <string>Destination folder (fav)</string>
+             </property>
              <property name="text">
               <string>Destination folder (fav)</string>
              </property>
@@ -230,7 +242,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="buttonShelfLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
@@ -248,6 +260,9 @@
            </property>
            <item>
             <widget class="QPushButton" name="buttonDetails">
+             <property name="toolTip">
+              <string>Media details</string>
+             </property>
              <property name="text">
               <string>More details</string>
              </property>
@@ -255,6 +270,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonSave">
+             <property name="toolTip">
+              <string>Save to usual path</string>
+             </property>
              <property name="text">
               <string>Save</string>
              </property>
@@ -262,6 +280,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonSaveNQuit">
+             <property name="toolTip">
+              <string>Save to usual path and close window</string>
+             </property>
              <property name="text">
               <string>Save and close</string>
              </property>
@@ -269,6 +290,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonOpen">
+             <property name="toolTip">
+              <string>Open usual save path in new window</string>
+             </property>
              <property name="text">
               <string>Destination folder</string>
              </property>
@@ -276,6 +300,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonSaveAs">
+             <property name="toolTip">
+              <string>Choose save path</string>
+             </property>
              <property name="text">
               <string>Save as...</string>
              </property>
@@ -295,6 +322,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Previous search result</string>
+       </property>
        <property name="text">
         <string notr="true">&lt;</string>
        </property>
@@ -307,6 +337,9 @@
          <width>24</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Next search result</string>
        </property>
        <property name="text">
         <string notr="true">&gt;</string>

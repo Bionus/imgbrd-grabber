@@ -59,7 +59,6 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 	if (m_settings->value("Zoom/rememberGeometry", true).toBool()) restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
 	
-	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->progressBarDownload->hide();
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -77,47 +76,54 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, this);
 		connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 
-	
-	switch (m_settings->value("Zoom/actionButtons").toInt()) {	// Consider adding this as class variable.
-		case ButtonVisibility::All :	// Handled later by resizeButtons.
+
+	actionButtons = static_cast<ZoomWindow::ButtonVisibility>(m_settings->value("Zoom/actionButtons").toInt());
+	switch (actionButtons) {
+		case ButtonVisibility::All :
+			buttonPlus = ui->buttonPlus;
+			buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
+			connect(buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 			break;
 		case ButtonVisibility::None :
-			ui->actionButtons->setVisible(false);
-			ui->buttonPrev->setVisible(false);
-			ui->buttonNext->setVisible(false);
+			ui->buttonsLayout->removeWidget(ui->actionButtons);
+			ui->buttonsLayout->removeWidget(ui->buttonPrev);
+			ui->buttonsLayout->removeWidget(ui->buttonNext);
 			break;
 		case ButtonVisibility::Navigation :
-			ui->actionButtons->setVisible(false);
+			ui->buttonsLayout->removeWidget(ui->actionButtons);
 			break;
 		case ButtonVisibility::Favorites :
-			// Could uncheck buttonPlus here to prevent drawer being left open when users switch their setting again.
-			ui->buttonPlus->setVisible(false);
-			ui->buttonDrawer->setVisible(true);
-			ui->buttonShelf->setVisible(false);
+			buttonSaveFav = ui->buttonSaveFav;
+			buttonSaveNQuitFav = ui->buttonSaveNQuitFav;	// This name does not match the button text.
+			buttonOpenFav = ui->buttonOpenFav;
 
-			ui->buttonShelf->setFixedSize(0, 0);	// Occupy zero width so navigation buttons can converge.
+			buttonPrev = ui->buttonPrev;
+			buttonNext = ui->buttonNext;
 
-			// Margin may have been set dynamically.
-			//ui->buttonDrawer->setContentsMargins(0, 0, 0, 0);	// This method does not seem to work:
-			//	log(std::to_string(ui->buttonDrawer->contentsMargins().left()).c_str());
-			//
 			{
-				QMargins desire = ui->buttonDrawer->layout()->contentsMargins();
-				desire.setLeft(0);
-				desire.setRight(0);
-				ui->buttonDrawer->layout()->setContentsMargins(desire);	// Not sure if necessary.
+				QLayout *tmp = ui->buttonShelf->layout();
+				// Could delete the returns of these to assist with detection of unexpected errors:
+				tmp->replaceWidget(ui->buttonSave, buttonSaveFav, Qt::FindDirectChildrenOnly);
+				tmp->replaceWidget(ui->buttonSaveNQuit, buttonSaveNQuitFav, Qt::FindDirectChildrenOnly);
+				tmp->replaceWidget(ui->buttonOpen, buttonOpenFav, Qt::FindDirectChildrenOnly);
 			}
 
+			delete ui->buttonPlus;
+			delete ui->buttonDrawer;
+			delete ui->buttonDetails;
+			delete ui->buttonSaveAs;
+
 			// Reflow navigation buttons to be contiguous:
-			ui->buttonsLayout->setAlignment(ui->buttonPrev, Qt::AlignRight);
-			ui->buttonsLayout->setAlignment(ui->buttonNext, Qt::AlignLeft);
+			ui->buttonsLayout->setAlignment(buttonPrev, Qt::AlignRight);
+			ui->buttonsLayout->setAlignment(buttonNext, Qt::AlignLeft);
 
 			break;
 		case ButtonVisibility::NonFavorites :
-			ui->buttonPlus->setVisible(false);
-			ui->buttonDrawer->setVisible(false);
+			delete ui->buttonPlus;
+			delete ui->buttonDrawer;
 			break;
 	}
+	if (buttonDetails != nullptr) connect(buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
 
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
@@ -161,9 +167,6 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
-
-	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
-	connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 
 	m_labelImage->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_labelImage, &QAffiche::customContextMenuRequested, this, &ZoomWindow::imageContextMenu);
@@ -575,72 +578,81 @@ void ZoomWindow::colore()
 }
 void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 {
-	// Update state
+	QPushButton *button = nullptr;
+
 	if (fav) {
 		m_saveButonStateFav = state;
+		if (buttonSaveNQuitFav != nullptr) button = buttonSaveNQuitFav;	// These would ideally be in the comment category below.
 	} else {
 		m_saveButonState = state;
+		if (! fav && buttonSaveNQuit != nullptr) button = buttonSaveNQuit;	// These would ideally be in the comment category below.
 	}
 
-	// Update actual button label
-	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
+	// Update "Save and close" button label:
+	if (button != nullptr) {
+		switch (state)
+		{
+			case SaveButtonState::Save:
+				button->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
+				return;
+
+			case SaveButtonState::Saving:
+				button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
+				return;
+
+			default:
+				button->setText(fav ? tr("Close (fav)") : tr("Close"));
+				return;
+		}
+	}
+
+
+	// Update "Save" button label:
+	button = nullptr;
+	if (fav && buttonSaveFav != nullptr) button = buttonSaveFav;
+	else if (! fav && buttonSave != nullptr) button = buttonSave;
+	else return;
+
 	button->setToolTip(QString());
 	switch (state)
 	{
 		case SaveButtonState::Save:
 			button->setText(fav ? tr("Save (fav)") : tr("Save"));
-			break;
+			return;
 
 		case SaveButtonState::Saving:
 			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			break;
+			return;
 
 		case SaveButtonState::Saved:
 			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
-			break;
+			return;
 
 		case SaveButtonState::Copied:
 			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
-			break;
+			return;
 
 		case SaveButtonState::Moved:
 			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
-			break;
+			return;
 
 		case SaveButtonState::Linked:
 			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
-			break;
+			return;
 
 		case SaveButtonState::ExistsMd5:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
-			break;
+			return;
 
 		case SaveButtonState::ExistsDisk:
 			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
-			break;
+			return;
 
 		case SaveButtonState::Delete:
 			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
-			break;
-	}
-
-	// Update "Save a close" button label
-	QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
-	switch (state)
-	{
-		case SaveButtonState::Save:
-			saveQuit->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
-			break;
-
-		case SaveButtonState::Saving:
-			saveQuit->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			break;
-
-		default:
-			saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
-			break;
+			return;
 	}
 }
 
@@ -1100,7 +1112,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 	m_resizeTimer->start(m_timeout);
 	update(true);
 
-	if (m_settings->value("Zoom/actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
+	if (actionButtons == ButtonVisibility::All) resizeButtons();
 	// Does the order of these two lines matter?
 	QWidget::resizeEvent(e);
 }
@@ -1108,7 +1120,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
-	m_settings->setValue("Zoom/plus", ui->buttonPlus->isChecked());
+	m_settings->setValue("Zoom/plus", buttonPlus != nullptr ? buttonPlus->isChecked() : false);
 	m_settings->sync();
 
 	m_image->abortTags();
@@ -1125,7 +1137,7 @@ void ZoomWindow::showEvent(QShowEvent *e)
 {
 	Q_UNUSED(e)
 
-	if (m_settings->value("Zoom/actionButtons").toInt() == ButtonVisibility::All) resizeButtons();
+	if (actionButtons == ButtonVisibility::All) resizeButtons();
 	showThumbnail();
 }
 
