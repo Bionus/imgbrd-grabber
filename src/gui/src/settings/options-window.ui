@@ -3014,57 +3014,134 @@
  </widget>
  <tabstops>
   <tabstop>treeWidget</tabstop>
-  <tabstop>lineFolder</tabstop>
-  <tabstop>buttonFolder</tabstop>
-  <tabstop>comboSourcesLetters</tabstop>
-  <tabstop>spinSourcesLetters</tabstop>
-  <tabstop>lineColoringArtists</tabstop>
-  <tabstop>buttonColoringArtistsColor</tabstop>
-  <tabstop>buttonColoringArtistsFont</tabstop>
-  <tabstop>lineColoringCopyrights</tabstop>
-  <tabstop>buttonColoringCopyrightsColor</tabstop>
-  <tabstop>buttonColoringCopyrightsFont</tabstop>
-  <tabstop>lineColoringCharacters</tabstop>
-  <tabstop>buttonColoringCharactersColor</tabstop>
-  <tabstop>buttonColoringCharactersFont</tabstop>
-  <tabstop>lineColoringModels</tabstop>
-  <tabstop>buttonColoringModelsColor</tabstop>
-  <tabstop>buttonColoringModelsFont</tabstop>
-  <tabstop>lineColoringGenerals</tabstop>
-  <tabstop>buttonColoringGeneralsColor</tabstop>
-  <tabstop>buttonColoringGeneralsFont</tabstop>
-  <tabstop>lineColoringFavorites</tabstop>
-  <tabstop>buttonColoringFavoritesColor</tabstop>
-  <tabstop>buttonColoringFavoritesFont</tabstop>
-  <tabstop>lineColoringBlacklisteds</tabstop>
-  <tabstop>buttonColoringBlacklistedsColor</tabstop>
-  <tabstop>buttonColoringBlacklistedsFont</tabstop>
-  <tabstop>lineColoringIgnoreds</tabstop>
-  <tabstop>buttonColoringIgnoredsColor</tabstop>
-  <tabstop>buttonColoringIgnoredsFont</tabstop>
-  <tabstop>buttonBox</tabstop>
   <tabstop>comboLanguages</tabstop>
   <tabstop>comboStart</tabstop>
+  <tabstop>comboCheckForUpdates</tabstop>
   <tabstop>lineWhitelist</tabstop>
   <tabstop>comboWhitelist</tabstop>
   <tabstop>lineAdd</tabstop>
+  <tabstop>lineGlobalPostFilter</tabstop>
+  <tabstop>checkGlobalPostFilterExplicit</tabstop>
+  <tabstop>checkConfirmClose</tabstop>
+  <tabstop>checkSendUsageData</tabstop>
   <tabstop>spinImagesPerPage</tabstop>
   <tabstop>spinColumns</tabstop>
-  <tabstop>checkUseregexfortags</tabstop>
   <tabstop>comboSource1</tabstop>
   <tabstop>comboSource2</tabstop>
   <tabstop>comboSource3</tabstop>
   <tabstop>comboSource4</tabstop>
-  <tabstop>checkShowLog</tabstop>
+  <tabstop>spinAutoTagAdd</tabstop>
+  <tabstop>checkUseregexfortags</tabstop>
   <tabstop>checkDownloadOriginals</tabstop>
+  <tabstop>checkSampleFallback</tabstop>
   <tabstop>checkAutodownload</tabstop>
+  <tabstop>checkKeepDate</tabstop>
+  <tabstop>checkSaveHeaderDetection</tabstop>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>buttonFolder</tabstop>
   <tabstop>lineFolderFavorites</tabstop>
   <tabstop>buttonFolderFavorites</tabstop>
   <tabstop>spinSimultaneous</tabstop>
+  <tabstop>comboBatchEnd</tabstop>
+  <tabstop>spinAutomaticRetries</tabstop>
+  <tabstop>comboMd5Duplicates</tabstop>
+  <tabstop>comboMd5DuplicatesSameDir</tabstop>
+  <tabstop>checkKeepDeletedMd5</tabstop>
+  <tabstop>comboMultipleFiles</tabstop>
+  <tabstop>lineTempPathOverride</tabstop>
+  <tabstop>buttonTempPathOverride</tabstop>
   <tabstop>lineFilename</tabstop>
   <tabstop>buttonFilenamePlus</tabstop>
   <tabstop>lineFavorites</tabstop>
   <tabstop>buttonFavoritesPlus</tabstop>
+  <tabstop>lineSeparator</tabstop>
+  <tabstop>checkReplaceBlanks</tabstop>
+  <tabstop>checkNoJpeg</tabstop>
+  <tabstop>spinLimit</tabstop>
+  <tabstop>buttonFilenames</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>buttonAddLogFile</tabstop>
+  <tabstop>buttonCustom</tabstop>
+  <tabstop>checkResizeMaxWidth</tabstop>
+  <tabstop>spinResizeMaxWidth</tabstop>
+  <tabstop>checkResizeMaxHeight</tabstop>
+  <tabstop>spinResizeMaxHeight</tabstop>
+  <tabstop>comboTheme</tabstop>
+  <tabstop>spinThumbnailUpscale</tabstop>
+  <tabstop>comboFavoritesDisplay</tabstop>
+  <tabstop>spinHideFavorites</tabstop>
+  <tabstop>comboSources</tabstop>
+  <tabstop>comboSourcesLetters</tabstop>
+  <tabstop>spinSourcesLetters</tabstop>
+  <tabstop>checkPreloadAllTabs</tabstop>
+  <tabstop>checkResultsScrollArea</tabstop>
+  <tabstop>checkResultsFixedWidthLayout</tabstop>
+  <tabstop>comboInfiniteScroll</tabstop>
+  <tabstop>checkInfiniteScrollRememberPage</tabstop>
+  <tabstop>checkResizeInsteadOfCropping</tabstop>
+  <tabstop>checkAutocompletion</tabstop>
+  <tabstop>checkShowTagWarning</tabstop>
+  <tabstop>checkShowWarnings</tabstop>
+  <tabstop>checkGetUnloadedPages</tabstop>
+  <tabstop>checkInvertToggle</tabstop>
+  <tabstop>checkSingleDetailsWindow</tabstop>
+  <tabstop>comboTagsPosition</tabstop>
+  <tabstop>spinPreload</tabstop>
+  <tabstop>spinSlideshow</tabstop>
+  <tabstop>checkImageCloseMiddleClick</tabstop>
+  <tabstop>checkImageNavigateScroll</tabstop>
+  <tabstop>checkZoomViewSamples</tabstop>
+  <tabstop>checkZoomShowTagCount</tabstop>
+  <tabstop>comboImageTagOrder</tabstop>
+  <tabstop>comboImagePositionImageV</tabstop>
+  <tabstop>comboImagePositionImageH</tabstop>
+  <tabstop>comboImagePositionAnimationV</tabstop>
+  <tabstop>comboImagePositionAnimationH</tabstop>
+  <tabstop>comboImagePositionVideoV</tabstop>
+  <tabstop>comboImagePositionVideoH</tabstop>
+  <tabstop>lineImageBackgroundColor</tabstop>
+  <tabstop>buttonImageBackgroundColor</tabstop>
+  <tabstop>checkImageScaleUp</tabstop>
+  <tabstop>checkImageUseVideoPlayer</tabstop>
+  <tabstop>comboActionButtons</tabstop>
+  <tabstop>checkRememberDrawer</tabstop>
+  <tabstop>checkRememberGeometry</tabstop>
+  <tabstop>lineColoringArtists</tabstop>
+  <tabstop>lineColoringCircles</tabstop>
+  <tabstop>lineColoringCopyrights</tabstop>
+  <tabstop>lineColoringCharacters</tabstop>
+  <tabstop>lineColoringSpecies</tabstop>
+  <tabstop>lineColoringMetas</tabstop>
+  <tabstop>lineColoringModels</tabstop>
+  <tabstop>lineColoringGenerals</tabstop>
+  <tabstop>lineColoringFavorites</tabstop>
+  <tabstop>lineColoringKeptForLater</tabstop>
+  <tabstop>lineColoringBlacklisteds</tabstop>
+  <tabstop>lineColoringIgnoreds</tabstop>
+  <tabstop>buttonColoringArtistsColor</tabstop>
+  <tabstop>buttonColoringCirclesColor</tabstop>
+  <tabstop>buttonColoringCopyrightsColor</tabstop>
+  <tabstop>buttonColoringCharactersColor</tabstop>
+  <tabstop>buttonColoringSpeciesColor</tabstop>
+  <tabstop>buttonColoringMetasColor</tabstop>
+  <tabstop>buttonColoringModelsColor</tabstop>
+  <tabstop>buttonColoringGeneralsColor</tabstop>
+  <tabstop>buttonColoringFavoritesColor</tabstop>
+  <tabstop>buttonColoringKeptForLaterColor</tabstop>
+  <tabstop>buttonColoringBlacklistedsColor</tabstop>
+  <tabstop>buttonColoringIgnoredsColor</tabstop>
+  <tabstop>buttonColoringArtistsFont</tabstop>
+  <tabstop>buttonColoringCirclesFont</tabstop>
+  <tabstop>buttonColoringCopyrightsFont</tabstop>
+  <tabstop>buttonColoringCharactersFont</tabstop>
+  <tabstop>buttonColoringSpeciesFont</tabstop>
+  <tabstop>buttonColoringMetasFont</tabstop>
+  <tabstop>buttonColoringModelsFont</tabstop>
+  <tabstop>buttonColoringGeneralsFont</tabstop>
+  <tabstop>buttonColoringFavoritesFont</tabstop>
+  <tabstop>buttonColoringKeptForLaterFont</tabstop>
+  <tabstop>buttonColoringBlacklistedsFont</tabstop>
+  <tabstop>buttonColoringIgnoredsFont</tabstop>
   <tabstop>spinMainMargins</tabstop>
   <tabstop>spinServerBorders</tabstop>
   <tabstop>lineBorderColor</tabstop>
@@ -3072,12 +3149,37 @@
   <tabstop>spinHorizontalMargins</tabstop>
   <tabstop>spinVerticalMargins</tabstop>
   <tabstop>spinBorders</tabstop>
+  <tabstop>checkShowLog</tabstop>
+  <tabstop>textBlacklist</tabstop>
+  <tabstop>checkHideBlacklisted</tabstop>
+  <tabstop>checkDownloadBlacklisted</tabstop>
+  <tabstop>textRemovedTags</tabstop>
+  <tabstop>textIgnoredTags</tabstop>
+  <tabstop>spinMonitoringStartupDelay</tabstop>
+  <tabstop>checkMonitoringEnableTray</tabstop>
+  <tabstop>checkMonitoringMinimizeToTray</tabstop>
+  <tabstop>checkMonitoringCloseToTray</tabstop>
   <tabstop>checkProxyUse</tabstop>
+  <tabstop>checkProxyUseSystem</tabstop>
+  <tabstop>comboProxyType</tabstop>
+  <tabstop>lineProxyHostName</tabstop>
+  <tabstop>spinProxyPort</tabstop>
+  <tabstop>lineProxyUser</tabstop>
+  <tabstop>lineProxyPassword</tabstop>
+  <tabstop>buttonAddWebService</tabstop>
+  <tabstop>lineCommandsTagBefore</tabstop>
   <tabstop>lineCommandsImage</tabstop>
   <tabstop>lineCommandsTagAfter</tabstop>
-  <tabstop>buttonCustom</tabstop>
-  <tabstop>spinHideFavorites</tabstop>
-  <tabstop>comboSources</tabstop>
+  <tabstop>comboCommandsSqlDriver</tabstop>
+  <tabstop>lineCommandsSqlHost</tabstop>
+  <tabstop>lineCommandsSqlUser</tabstop>
+  <tabstop>lineCommandsSqlPassword</tabstop>
+  <tabstop>lineCommandsSqlDatabase</tabstop>
+  <tabstop>lineCommandsSqlBefore</tabstop>
+  <tabstop>lineCommandsSqlTagBefore</tabstop>
+  <tabstop>lineCommandsSqlImage</tabstop>
+  <tabstop>lineCommandsSqlTagAfter</tabstop>
+  <tabstop>lineCommandsSqlAfter</tabstop>
  </tabstops>
  <resources>
   <include location="../../resources/resources.qrc"/>
