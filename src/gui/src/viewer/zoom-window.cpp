@@ -81,24 +81,37 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	switch (actionButtons) {
 		case ButtonVisibility::All :
 			buttonPlus = ui->buttonPlus;
+			buttonSave = ui->buttonSave;
+			buttonSaveNQuit = ui->buttonSaveNQuit;	// This name does not match the button text.
+			buttonOpen = ui->buttonOpen;
+			buttonSaveFav = ui->buttonSaveFav;
+			buttonSaveNQuitFav = ui->buttonSaveNQuitFav;	// This name does not match the button text.
+			buttonOpenFav = ui->buttonOpenFav;
+			/*// These aren't necessary yet:
+			buttonPrev = ui->buttonPrev;
+			buttonNext = ui->buttonNext;*/
+
 			buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 			connect(buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 			break;
 		case ButtonVisibility::None :
-			ui->buttonsLayout->removeWidget(ui->actionButtons);
-			ui->buttonsLayout->removeWidget(ui->buttonPrev);
-			ui->buttonsLayout->removeWidget(ui->buttonNext);
+			delete ui->actionButtons;
+			delete ui->buttonPrev;
+			delete ui->buttonNext;
 			break;
 		case ButtonVisibility::Navigation :
-			ui->buttonsLayout->removeWidget(ui->actionButtons);
+			/*// These aren't necessary yet:
+			buttonPrev = ui->buttonPrev;
+			buttonNext = ui->buttonNext;*/
+			delete ui->actionButtons;
 			break;
 		case ButtonVisibility::Favorites :
 			buttonSaveFav = ui->buttonSaveFav;
 			buttonSaveNQuitFav = ui->buttonSaveNQuitFav;	// This name does not match the button text.
 			buttonOpenFav = ui->buttonOpenFav;
-
+			/*// These aren't necessary yet:
 			buttonPrev = ui->buttonPrev;
-			buttonNext = ui->buttonNext;
+			buttonNext = ui->buttonNext;*/
 
 			{
 				QLayout *tmp = ui->buttonShelf->layout();
@@ -119,6 +132,13 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 			break;
 		case ButtonVisibility::NonFavorites :
+			buttonSave = ui->buttonSave;
+			buttonSaveNQuit = ui->buttonSaveNQuit;	// This name does not match the button text.
+			buttonOpen = ui->buttonOpen;
+			/*// These aren't necessary yet:
+			buttonPrev = ui->buttonPrev;
+			buttonNext = ui->buttonNext;*/
+
 			delete ui->buttonPlus;
 			delete ui->buttonDrawer;
 			break;
@@ -585,7 +605,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		if (buttonSaveNQuitFav != nullptr) button = buttonSaveNQuitFav;	// These would ideally be in the comment category below.
 	} else {
 		m_saveButtonState = state;
-		if (! fav && buttonSaveNQuit != nullptr) button = buttonSaveNQuit;	// These would ideally be in the comment category below.
+		if (buttonSaveNQuit != nullptr) button = buttonSaveNQuit;	// These would ideally be in the comment category below.
 	}
 
 	// Update "Save and close" button label:
