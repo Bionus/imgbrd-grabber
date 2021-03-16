@@ -113,13 +113,15 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			buttonPrev = ui->buttonPrev;
 			buttonNext = ui->buttonNext;*/
 
-			{
+			{	// Might be faster to just insert them...
 				QLayout *tmp = ui->buttonShelf->layout();
-				// Could delete the returns of these to assist with detection of unexpected errors:
 				tmp->replaceWidget(ui->buttonSave, buttonSaveFav, Qt::FindDirectChildrenOnly);
 				tmp->replaceWidget(ui->buttonSaveNQuit, buttonSaveNQuitFav, Qt::FindDirectChildrenOnly);
 				tmp->replaceWidget(ui->buttonOpen, buttonOpenFav, Qt::FindDirectChildrenOnly);
 			}
+			delete ui->buttonSave;
+			delete ui->buttonSaveNQuit;
+			delete ui->buttonOpen;
 
 			delete ui->buttonPlus;
 			delete ui->buttonDrawer;
