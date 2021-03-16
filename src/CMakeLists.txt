@@ -94,6 +94,13 @@ if(USE_PCH)
 	endif()
 endif()
 
+# Windows file properties
+set(WIN_FILE_PROPS 0)
+if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
+	set(WIN_FILE_PROPS 1)
+	add_definitions(-DWIN_FILE_PROPS=1)
+endif()
+
 # Load Qt5Core here as it can only be included once (QTBUG-87863)
 find_package(Qt5Core REQUIRED)
 

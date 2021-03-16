@@ -17,6 +17,13 @@ endif()
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 include_directories("src/")
 
+if(WIN_FILE_PROPS)
+	set(LIBS ${LIBS} propsys)
+else()
+	include(ListFilterRegex)
+	listFilterRegex(SOURCES "windows-file-property.*")
+endif()
+
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS})
 
