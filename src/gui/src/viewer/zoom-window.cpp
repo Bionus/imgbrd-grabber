@@ -581,10 +581,10 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	QPushButton *button = nullptr;
 
 	if (fav) {
-		m_saveButonStateFav = state;
+		m_saveButtonStateFav = state;
 		if (buttonSaveNQuitFav != nullptr) button = buttonSaveNQuitFav;	// These would ideally be in the comment category below.
 	} else {
-		m_saveButonState = state;
+		m_saveButtonState = state;
 		if (! fav && buttonSaveNQuit != nullptr) button = buttonSaveNQuit;	// These would ideally be in the comment category below.
 	}
 
@@ -834,7 +834,7 @@ void ZoomWindow::saveNQuitFav()
 
 void ZoomWindow::saveImage(bool fav)
 {
-	const SaveButtonState state = fav ? m_saveButonStateFav : m_saveButonState;
+	const SaveButtonState state = fav ? m_saveButtonStateFav : m_saveButtonState;
 	switch (state)
 	{
 		case SaveButtonState::Save:

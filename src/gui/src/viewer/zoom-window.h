@@ -172,7 +172,7 @@ class ZoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		SaveButtonState m_saveButonState, m_saveButonStateFav;
+		SaveButtonState m_saveButtonState, m_saveButtonStateFav;
 
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
