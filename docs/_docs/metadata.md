@@ -20,4 +20,9 @@ Example of commonly used property names (non-exhaustive):
 * System.Keywords
 * System.Comment
 
+The full list can be found here:  
+https://docs.microsoft.com/en-us/windows/win32/properties/props
+
+Here's a basic example of what is possible to do:
+
 ![metadata](img/metadata.png)
