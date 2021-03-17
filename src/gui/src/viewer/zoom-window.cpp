@@ -350,25 +350,21 @@ void ZoomWindow::configureButtons()
 	}
 
 
-	bool hasButtons = false;
-
 	if (hasDrawer) {
 		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-		hasButtons = true;
+		scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
 	} else {
 		delete ui->buttonPlus;
 		delete ui->buttonDrawer;
 	}
 
-	if (hasShelf) hasButtons = true;
-	else delete ui->buttonShelf;
+	if (hasShelf) {
+		if (scaleRef != nullptr) scaleRef = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
+	} else delete ui->buttonShelf;
 
-	if (! hasButtons) delete ui->actionButtons;
-
-	/*// Reflow navigation buttons to be contiguous:
-	ui->buttonsLayout->setAlignment(buttonPrev, Qt::AlignRight);
-	ui->buttonsLayout->setAlignment(buttonNext, Qt::AlignLeft);*/
+	if (hasShelf || hasDrawer) return;
+	delete ui->actionButtons;
 }
 
 void ZoomWindow::imageContextMenu()
@@ -1175,27 +1171,19 @@ void ZoomWindow::toggleSlideshow()
 void ZoomWindow::resizeButtons()
 {
 	if (! hasDrawer) return;	// Also used to infer existance of buttonPlus.
-	QWidget *sample;
 
-	if (hasShelf) {
-		sample = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
-		ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * sample->width()), ui->buttonPlus->height() );
-			// Normal resize gets over-written.
-			/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
-			   I'm not sure how to query those values here or export from here to there dynamically. */
-	} else {
-		sample = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
-		ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * sample->width()), ui->buttonPlus->height() );
-		return;
-	}
 
-	//ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * sample->width()), ui->buttonPlus->height() );
-	//if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
+	// Normal resize gets over-written.
+	/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
+	   I'm not sure how to query those values here or export from here to there dynamically. */
+	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );
 
-	unsigned short countDif = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();	// Consider storing this as a class value.
+	if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
+
+	short countDif = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();	// Consider storing this as a class value.
 	QLayout *bot = ui->buttonShelf->layout(), *top = ui->buttonDrawer->layout();
 
-	unsigned short xMar = countDif * ( sample->width() + bot->spacing() ) / 2;
+	short xMar = countDif * ( scaleRef->width() + bot->spacing() ) / 2;
 
 	QMargins desire = top->contentsMargins();
 	desire.setLeft(xMar);
