@@ -22,35 +22,31 @@ wchar_t *toWCharT2(const QString &str)
 
 HRESULT GetPropertyStore(PCWSTR pszFilename, GETPROPERTYSTOREFLAGS gpsFlags, IPropertyStore** ppps)
 {
-    WCHAR szExpanded[MAX_PATH];
+	WCHAR szExpanded[MAX_PATH];
 	HRESULT hr = ExpandEnvironmentStringsW(pszFilename, szExpanded, ARRAYSIZE(szExpanded)) ? S_OK : HRESULT_FROM_WIN32(GetLastError());
-    if (SUCCEEDED(hr))
-    {
-        WCHAR szAbsPath[MAX_PATH];
-        hr = _wfullpath(szAbsPath, szExpanded, ARRAYSIZE(szAbsPath)) ? S_OK : E_FAIL;
-        if (SUCCEEDED(hr))
-        {
-            hr = SHGetPropertyStoreFromParsingName(szAbsPath, NULL, gpsFlags, IID_PPV_ARGS(ppps));
-        }
-    }
-    return hr;
+	if (SUCCEEDED(hr)) {
+		WCHAR szAbsPath[MAX_PATH];
+		hr = _wfullpath(szAbsPath, szExpanded, ARRAYSIZE(szAbsPath)) ? S_OK : E_FAIL;
+		if (SUCCEEDED(hr)) {
+			hr = SHGetPropertyStoreFromParsingName(szAbsPath, NULL, gpsFlags, IID_PPV_ARGS(ppps));
+		}
+	}
+	return hr;
 }
 
 bool GetProperty(IPropertyStore *pps, REFPROPERTYKEY key, QString &out)
 {
 	PROPVARIANT propvarValue = {0};
-    HRESULT hr = pps->GetValue(key, &propvarValue);
-    if (SUCCEEDED(hr))
-    {
-        PWSTR pszDisplayValue = NULL;
-        hr = PSFormatForDisplayAlloc(key, propvarValue, PDFF_DEFAULT, &pszDisplayValue);
-        if (SUCCEEDED(hr))
-		{
+	HRESULT hr = pps->GetValue(key, &propvarValue);
+	if (SUCCEEDED(hr)) {
+		PWSTR pszDisplayValue = NULL;
+		hr = PSFormatForDisplayAlloc(key, propvarValue, PDFF_DEFAULT, &pszDisplayValue);
+		if (SUCCEEDED(hr)) {
 			out = QString::fromWCharArray(pszDisplayValue);
-            CoTaskMemFree(pszDisplayValue);
-        }
+			CoTaskMemFree(pszDisplayValue);
+		}
 		PropVariantClear(&propvarValue);
-    }
+	}
 	return SUCCEEDED(hr);
 }
 
@@ -68,32 +64,27 @@ void uninitializeWindowsProperties()
 bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &out)
 {
 	PCWSTR pszFilename = toWCharT2(filename);
-    IPropertyStore* pps = NULL;
+	IPropertyStore* pps = NULL;
 
-    // Call the helper to get the property store for the initialized item
-    // Note that as long as you have the property store, you are keeping the file open
-    // So always release it once you are done.
+	// Call the helper to get the property store for the initialized item
+	// Note that as long as you have the property store, you are keeping the file open
+	// So always release it once you are done.
 
-    HRESULT hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
-    if (SUCCEEDED(hr))
-    {
-        // Retrieve the number of properties stored in the item.
-        DWORD cProperties = 0;
-        hr = pps->GetCount(&cProperties);
-        if (SUCCEEDED(hr))
-        {
-            for (DWORD i = 0; i < cProperties; i++)
-            {
-                // Get the property key at a given index.
-                PROPERTYKEY key;
-                hr = pps->GetAt(i, &key);
-                if (SUCCEEDED(hr))
-                {
-                    // Get the canonical name of the property
+	HRESULT hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
+	if (SUCCEEDED(hr)) {
+		// Retrieve the number of properties stored in the item.
+		DWORD cProperties = 0;
+		hr = pps->GetCount(&cProperties);
+		if (SUCCEEDED(hr)) {
+			for (DWORD i = 0; i < cProperties; i++) {
+				// Get the property key at a given index.
+				PROPERTYKEY key;
+				hr = pps->GetAt(i, &key);
+				if (SUCCEEDED(hr)) {
+					// Get the canonical name of the property
 					PWSTR pszCanonicalName = NULL;
-                    hr = PSGetNameFromPropertyKey(key, &pszCanonicalName);
-                    if (SUCCEEDED(hr))
-                    {
+					hr = PSGetNameFromPropertyKey(key, &pszCanonicalName);
+					if (SUCCEEDED(hr)) {
 						QString name = QString::fromWCharArray(pszCanonicalName);
 						CoTaskMemFree(pszCanonicalName);
 
@@ -102,15 +93,13 @@ bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &ou
 							out.insert(name, val);
 						}
 					}
-                }
-            }
-        }
-        pps->Release();
-    }
-    else
-    {
-        wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
-    }
+				}
+			}
+		}
+		pps->Release();
+	} else {
+		wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
+	}
 
 	delete pszFilename;
 
@@ -122,28 +111,22 @@ bool getWindowsProperty(const QString &filename, const QString &property, QStrin
 	PCWSTR pszFilename = toWCharT2(filename);
 	PCWSTR pszCanonicalName = toWCharT2(property);
 
-    // Convert the Canonical name of the property to PROPERTYKEY
-    PROPERTYKEY key;
-    HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
-    if (SUCCEEDED(hr))
-    {
-        IPropertyStore* pps = NULL;
+	// Convert the Canonical name of the property to PROPERTYKEY
+	PROPERTYKEY key;
+	HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
+	if (SUCCEEDED(hr)) {
+		IPropertyStore* pps = NULL;
 
-        // Call the helper to get the property store for the initialized item
-        hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
-        if (SUCCEEDED(hr))
-        {
+		// Call the helper to get the property store for the initialized item
+		hr = GetPropertyStore(pszFilename, GPS_DEFAULT, &pps);
+		if (SUCCEEDED(hr)) {
 			GetProperty(pps, key, out);
-            pps->Release();
-        }
-        else
-        {
-            wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
-        }
-    }
-    else
-    {
-        wprintf(L"Invalid property specified: %s\n", pszCanonicalName);
+			pps->Release();
+		} else {
+			wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
+		}
+	} else {
+		wprintf(L"Invalid property specified: %s\n", pszCanonicalName);
 	}
 
 	delete pszFilename;
@@ -158,42 +141,42 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 	PCWSTR pszCanonicalName = toWCharT2(property);
 	PCWSTR pszValue = toWCharT2(value);
 
-    // Convert the Canonical name of the property to PROPERTYKEY
-    PROPERTYKEY key;
-    HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
+	// Convert the Canonical name of the property to PROPERTYKEY
+	PROPERTYKEY key;
+	HRESULT hr = PSGetPropertyKeyFromName(pszCanonicalName, &key);
 	if (SUCCEEDED(hr)) {
-        IPropertyStore* pps = NULL;
+		IPropertyStore* pps = NULL;
 
-        // Call the helper to get the property store for the
-        // initialized item
-        hr = GetPropertyStore(pszFilename, GPS_READWRITE, &pps);
+		// Call the helper to get the property store for the
+		// initialized item
+		hr = GetPropertyStore(pszFilename, GPS_READWRITE, &pps);
 		if (SUCCEEDED(hr)) {
-            PROPVARIANT propvarValue = {0};
-            hr = InitPropVariantFromString(pszValue, &propvarValue);
+			PROPVARIANT propvarValue = {0};
+			hr = InitPropVariantFromString(pszValue, &propvarValue);
 			if (SUCCEEDED(hr)) {
-                hr = PSCoerceToCanonicalValue(key, &propvarValue);
+				hr = PSCoerceToCanonicalValue(key, &propvarValue);
 				if (SUCCEEDED(hr)) {
-                    // Set the value to the property store of the item.
-                    hr = pps->SetValue(key, propvarValue);
+					// Set the value to the property store of the item.
+					hr = pps->SetValue(key, propvarValue);
 					if (SUCCEEDED(hr)) {
-                        // Commit does the actual writing back to the file stream.
-                        hr = pps->Commit();
+						// Commit does the actual writing back to the file stream.
+						hr = pps->Commit();
 						if (!SUCCEEDED(hr)) {
 							log(QString("Error %1: commit to the propertystore failed").arg(hr), Logger::Error);
-                        }
+						}
 					} else {
 						log(QString("Error %1: set value to the propertystore failed").arg(hr), Logger::Error);
-                    }
-                }
-                PropVariantClear(&propvarValue);
-            }
-            pps->Release();
+					}
+				}
+				PropVariantClear(&propvarValue);
+			}
+			pps->Release();
 		} else {
 			log(QString("Error %1: getting the propertystore for the item").arg(hr), Logger::Error);
-        }
+		}
 	} else {
 		log(QString("Invalid property specified: %1").arg(property), Logger::Error);
-    }
+	}
 
 	delete pszFilename;
 	delete pszCanonicalName;
