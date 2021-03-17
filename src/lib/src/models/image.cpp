@@ -28,6 +28,9 @@
 #include "tags/tag-database.h"
 #include "tags/tag-stylist.h"
 #include "tags/tag-type.h"
+#ifdef WIN_FILE_PROPS
+	#include "windows-file-property.h"
+#endif
 
 #define MAX_LOAD_FILESIZE (1024 * 1024 * 50)
 
@@ -650,6 +653,17 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 	if (startCommands) {
 		commands.after();
 	}
+
+	// Metadata
+	#ifdef WIN_FILE_PROPS
+		const auto metadataPropsys = getMetadataPropsys(m_settings);
+		for (const auto &pair : metadataPropsys) {
+			const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+			if (!values.isEmpty()) {
+				setWindowsProperty(path, pair.first, values.first());
+			}
+		}
+	#endif
 
 	setSavePath(path, size);
 }

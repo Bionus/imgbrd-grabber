@@ -55,13 +55,17 @@ bool GetProperty(IPropertyStore *pps, REFPROPERTYKEY key, QString &out)
 }
 
 
-bool initialize()
+void initializeWindowsProperties()
 {
-	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-	return SUCCEEDED(hr);
+	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 }
 
-bool getAllProperties(const QString &filename, QMap<QString, QString> &out)
+void uninitializeWindowsProperties()
+{
+	CoUninitialize();
+}
+
+bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &out)
 {
 	PCWSTR pszFilename = toWCharT2(filename);
     IPropertyStore* pps = NULL;
@@ -113,7 +117,7 @@ bool getAllProperties(const QString &filename, QMap<QString, QString> &out)
 	return SUCCEEDED(hr);
 }
 
-bool getProperty(const QString &filename, const QString &property, QString &out)
+bool getWindowsProperty(const QString &filename, const QString &property, QString &out)
 {
 	PCWSTR pszFilename = toWCharT2(filename);
 	PCWSTR pszCanonicalName = toWCharT2(property);
@@ -148,7 +152,7 @@ bool getProperty(const QString &filename, const QString &property, QString &out)
 	return SUCCEEDED(hr);
 }
 
-bool setProperty(const QString &filename, const QString &property, const QString &value)
+bool setWindowsProperty(const QString &filename, const QString &property, const QString &value)
 {
 	PCWSTR pszFilename = toWCharT2(filename);
 	PCWSTR pszCanonicalName = toWCharT2(property);

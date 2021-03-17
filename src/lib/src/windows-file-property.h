@@ -6,9 +6,11 @@
 #include <QString>
 
 
-bool initialize();
-bool getAllProperties(const QString &filename, QMap<QString, QString> &out);
-bool getProperty(const QString &filename, const QString &property, QString &out);
-bool setProperty(const QString &filename, const QString &property, const QString &value);
+void initializeWindowsProperties();
+void uninitializeWindowsProperties();
+
+bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &out);
+bool getWindowsProperty(const QString &filename, const QString &property, QString &out);
+bool setWindowsProperty(const QString &filename, const QString &property, const QString &value);
 
 #endif // WINDOWS_FILE_PROPERTY_H

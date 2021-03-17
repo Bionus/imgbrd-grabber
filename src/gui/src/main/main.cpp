@@ -47,9 +47,17 @@
 	#include "android.h"
 #endif
 
+#ifdef WIN_FILE_PROPS
+	#include "windows-file-property.h"
+#endif
+
 
 int main(int argc, char *argv[])
 {
+	#ifdef WIN_FILE_PROPS
+		initializeWindowsProperties();
+	#endif
+
 	QApplication app(argc, argv);
 	app.setApplicationName("Grabber");
 	app.setApplicationVersion(VERSION);

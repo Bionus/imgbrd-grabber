@@ -194,6 +194,22 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	return suffixes;
 }
 
+QList<QPair<QString, QString>> getMetadataPropsys(QSettings *settings)
+{
+	QList<QPair<QString, QString>> ret;
+
+	const int size = settings->beginReadArray("Save/MetadataPropsys");
+	for (int i = 0; i < size; ++i) {
+		settings->setArrayIndex(i);
+		const QString key = settings->value("key").toString();
+		const QString value = settings->value("value").toString();
+		ret.append(QPair<QString, QString> { key, value });
+	}
+	settings->endArray();
+
+	return ret;
+}
+
 QStringList removeWildards(const QStringList &elements, const QStringList &remove)
 {
 	QStringList tags;

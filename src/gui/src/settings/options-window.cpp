@@ -123,6 +123,19 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
+	// Metadata using Windows Property System
+	#ifndef WIN_FILE_PROPS
+		ui->groupMetadataPropsys->setEnabled(false);
+	#else
+		const QList<QPair<QString, QString>> metadataPropsys = getMetadataPropsys(settings);
+		for (const auto &pair : metadataPropsys) {
+			auto *leKey = new QLineEdit(pair.first, this);
+			auto *leValue = new QLineEdit(pair.second, this);
+			ui->layoutMetadataPropsys->addRow(leKey, leValue);
+			m_metadataPropsys.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+		}
+	#endif
+
 	// Log
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
@@ -215,7 +228,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(4);
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
@@ -231,7 +244,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", this));
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
-			ui->stackedWidget->insertWidget(i + 8, m_tokenSettings[i]);
+			ui->stackedWidget->insertWidget(i + 9, m_tokenSettings[i]);
 		}
 
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
@@ -437,6 +450,15 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
 	ui->layoutConditionals->addLayout(layout);
+}
+
+
+void OptionsWindow::on_buttonMetadataPropsysAdd_clicked()
+{
+	auto *leKey = new QLineEdit(this);
+	auto *leValue = new QLineEdit(this);
+	ui->layoutMetadataPropsys->addRow(leKey, leValue);
+	m_metadataPropsys.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
 }
 
 
@@ -996,6 +1018,19 @@ void OptionsWindow::save()
 		for (TokenSettingsWidget *tokenSettings : m_tokenSettings) {
 			tokenSettings->save();
 		}
+
+		settings->beginWriteArray("MetadataPropsys");
+		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
+			const QString &key = m_metadataPropsys[i].first->text();
+			const QString &value = m_metadataPropsys[i].second->text();
+			if (!key.isEmpty() && !value.isEmpty()) {
+				settings->setArrayIndex(j);
+				settings->setValue("key", key);
+				settings->setValue("value", value);
+				++j;
+			}
+		}
+		settings->endArray();
 
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
