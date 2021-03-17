@@ -52,14 +52,6 @@ class ZoomWindow : public QWidget
 			PendingSaveAs,
 			PendingOpen,
 		};
-		enum ButtonVisibility
-		{
-			All,
-			None,
-			Navigation,
-			Favorites,
-			NonFavorites
-		};
 
 		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
 		~ZoomWindow() override;
@@ -126,6 +118,7 @@ class ZoomWindow : public QWidget
 		void draw();
 
 	private:
+		void configureButtons();
 		void showThumbnail();
 		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(const QString &type);
@@ -184,21 +177,8 @@ class ZoomWindow : public QWidget
 		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Buttons
-		ButtonVisibility actionButtons = All;
-		QPushButton
-			*buttonPlus = nullptr,
-			*buttonPrev = nullptr,
-			*buttonNext = nullptr,
-
-			*buttonSaveAs = nullptr,
-			*buttonDetails = nullptr,
-
-			*buttonSave = nullptr,
-			*buttonSaveFav = nullptr,
-			*buttonSaveNQuit = nullptr,
-			*buttonSaveNQuitFav = nullptr,
-			*buttonOpen = nullptr,
-			*buttonOpenFav = nullptr;
+		bool hasShelf = false;
+		bool hasDrawer = false;
 
 		// Threads
 		QThread m_imageLoaderThread;

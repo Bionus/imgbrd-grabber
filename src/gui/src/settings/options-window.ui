@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>556</height>
+    <width>1470</width>
+    <height>925</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -117,6 +117,11 @@
         <property name="text">
          <string>Image window</string>
         </property>
+        <item>
+         <property name="text">
+          <string>Buttons</string>
+         </property>
+        </item>
        </item>
        <item>
         <property name="text">
@@ -1039,8 +1044,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>1068</width>
+             <height>835</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1939,6 +1944,26 @@
           </property>
          </widget>
         </item>
+        <item row="17" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkRememberDrawer">
+          <property name="text">
+           <string>Remember button drawer state</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkRememberGeometry">
+          <property name="text">
+           <string>Remember window geometry</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item row="15" column="0" colspan="2">
          <widget class="QCheckBox" name="checkImageVideoControls">
           <property name="text">
@@ -1959,53 +1984,165 @@
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
-         <widget class="QLabel" name="labelActionButtons">
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageInterfaceImageWindowButtons">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_18">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
-           <string>Action buttons</string>
+           <string>&lt;html&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;h3 style=&quot;text-align: center; font-size:12pt;&quot;&gt;These are tri-state checkboxes that control which buttons appear in the media viewer window.&lt;/h3&gt;
+    &lt;div style=&quot;text-align: center;&quot;&gt;
+      &lt;ul style=&quot;display: inline-block; text-align: left; font-size:11pt;&quot;&gt;
+        &lt;li&gt;Buttons corresponding with checked boxes will appear&lt;/li&gt;
+        &lt;li&gt;Buttons corresponding with boxes that are not checked will not appear.&lt;/li&gt;
+        &lt;li&gt;Buttons corresponding with boxes that are half checked will appear in a drawer that you can open and close.&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;p style=&quot;text-align: center;&quot;&gt;&lt;i&gt;See tooltips for a brief description of each button's function.&lt;/i&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="1">
-         <widget class="QComboBox" name="comboActionButtons">
-          <item>
-           <property name="text">
-            <string>All</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Favorites</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Non-favorites</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="16" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkRememberDrawer">
-          <property name="text">
-           <string>Remember button drawer state</string>
+        <item>
+         <widget class="QCheckBox" name="checkButtonPrev">
+          <property name="toolTip">
+           <string>Previous media entry</string>
           </property>
-          <property name="checked">
+          <property name="text">
+           <string>Prev</string>
+          </property>
+          <property name="tristate">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="17" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkRememberGeometry">
+        <item>
+         <widget class="QCheckBox" name="checkButtonNext">
+          <property name="toolTip">
+           <string>Next media entry</string>
+          </property>
           <property name="text">
-           <string>Remember window geometry</string>
+           <string>Next</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonDetails">
+          <property name="toolTip">
+           <string>View media details</string>
+          </property>
+          <property name="text">
+           <string>Details</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonSaveAs">
+          <property name="toolTip">
+           <string>Save file with specified path</string>
+          </property>
+          <property name="text">
+           <string>Save As...</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonSave">
+          <property name="toolTip">
+           <string>Save file to usual path</string>
+          </property>
+          <property name="text">
+           <string>Save</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonSaveNQuit">
+          <property name="toolTip">
+           <string>Save file to usual path and close the viewer window</string>
+          </property>
+          <property name="text">
+           <string>Save and close</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonOpen">
+          <property name="toolTip">
+           <string>Open usual save path in file browser</string>
+          </property>
+          <property name="text">
+           <string>Open</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonSaveFav">
+          <property name="toolTip">
+           <string>Save file to favourite path</string>
+          </property>
+          <property name="text">
+           <string>Save (fav)</string>
           </property>
           <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonSaveNQuitFav">
+          <property name="toolTip">
+           <string>Save file to favourite path and close the viewer window</string>
+          </property>
+          <property name="text">
+           <string>Save and close (fav)</string>
+          </property>
+          <property name="tristate">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkButtonOpenFav">
+          <property name="toolTip">
+           <string>Open favourite save path in file browser</string>
+          </property>
+          <property name="text">
+           <string>Open (fav)</string>
+          </property>
+          <property name="tristate">
            <bool>true</bool>
           </property>
          </widget>
@@ -3103,9 +3240,18 @@
   <tabstop>buttonImageBackgroundColor</tabstop>
   <tabstop>checkImageScaleUp</tabstop>
   <tabstop>checkImageUseVideoPlayer</tabstop>
-  <tabstop>comboActionButtons</tabstop>
   <tabstop>checkRememberDrawer</tabstop>
   <tabstop>checkRememberGeometry</tabstop>
+  <tabstop>checkButtonPrev</tabstop>
+  <tabstop>checkButtonNext</tabstop>
+  <tabstop>checkButtonDetails</tabstop>
+  <tabstop>checkButtonSaveAs</tabstop>
+  <tabstop>checkButtonSave</tabstop>
+  <tabstop>checkButtonSaveNQuit</tabstop>
+  <tabstop>checkButtonOpen</tabstop>
+  <tabstop>checkButtonSaveFav</tabstop>
+  <tabstop>checkButtonSaveNQuitFav</tabstop>
+  <tabstop>checkButtonOpenFav</tabstop>
   <tabstop>lineColoringArtists</tabstop>
   <tabstop>lineColoringCircles</tabstop>
   <tabstop>lineColoringCopyrights</tabstop>
@@ -3192,8 +3338,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>498</y>
+     <x>347</x>
+     <y>915</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -3208,8 +3354,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>406</x>
-     <y>498</y>
+     <x>415</x>
+     <y>915</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -3266,30 +3412,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkImageUseVideoPlayer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkImageVideoControls</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>443</x>
-     <y>401</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>452</x>
-     <y>427</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonAddWebService</sender>
    <signal>clicked()</signal>
    <receiver>OptionsWindow</receiver>
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>26</y>
+     <x>474</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
@@ -3304,8 +3434,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>20</y>
+     <x>474</x>
+     <y>29</y>
     </hint>
     <hint type="destinationlabel">
      <x>375</x>
@@ -3320,8 +3450,8 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>78</y>
+     <x>474</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -3342,6 +3472,22 @@
     <hint type="destinationlabel">
      <x>375</x>
      <y>38</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkImageUseVideoPlayer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkImageVideoControls</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>818</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>427</y>
     </hint>
    </hints>
   </connection>

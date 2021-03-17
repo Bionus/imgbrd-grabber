@@ -331,16 +331,19 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
 
-	ui->comboActionButtons->clear();
-	ui->comboActionButtons->addItem(tr("All"), ZoomWindow::ButtonVisibility::All);
-	ui->comboActionButtons->addItem(tr("None"), ZoomWindow::ButtonVisibility::None);
-	ui->comboActionButtons->addItem(tr("Navigation"), ZoomWindow::ButtonVisibility::Navigation);
-	ui->comboActionButtons->addItem(tr("Favorites"), ZoomWindow::ButtonVisibility::Favorites);
-	ui->comboActionButtons->addItem(tr("NonFavorites"), ZoomWindow::ButtonVisibility::NonFavorites);
-	ui->comboActionButtons->setCurrentIndex(settings->value("Zoom/actionButtons", ZoomWindow::ButtonVisibility::All).toInt());
-
 	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
+
+	ui->checkButtonPrev->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonPrev", Qt::Checked).toInt()));
+	ui->checkButtonNext->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonNext", Qt::Checked).toInt()));
+	ui->checkButtonDetails->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonDetails", Qt::Checked).toInt()));
+	ui->checkButtonSaveAs->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonSaveAs", Qt::Checked).toInt()));
+	ui->checkButtonSave->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonSave", Qt::Checked).toInt()));
+	ui->checkButtonSaveNQuit->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonSaveNQuit", Qt::Checked).toInt()));
+	ui->checkButtonOpen->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonOpen", Qt::Checked).toInt()));
+	ui->checkButtonSaveFav->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonSaveFav", Qt::PartiallyChecked).toInt()));
+	ui->checkButtonSaveNQuitFav->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonSaveNQuitFav", Qt::PartiallyChecked).toInt()));
+	ui->checkButtonOpenFav->setCheckState(static_cast<Qt::CheckState>(settings->value("Zoom/checkButtonOpenFav", Qt::PartiallyChecked).toInt()));
 
 
 	settings->beginGroup("Coloring");
@@ -1162,9 +1165,19 @@ void OptionsWindow::save()
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
-	settings->setValue("Zoom/actionButtons", ui->comboActionButtons->currentData());
 	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
+
+	settings->setValue("Zoom/checkButtonPrev", ui->checkButtonPrev->checkState());
+	settings->setValue("Zoom/checkButtonNext", ui->checkButtonNext->checkState());
+	settings->setValue("Zoom/checkButtonDetails", ui->checkButtonDetails->checkState());
+	settings->setValue("Zoom/checkButtonSaveAs", ui->checkButtonSaveAs->checkState());
+	settings->setValue("Zoom/checkButtonSave", ui->checkButtonSave->checkState());
+	settings->setValue("Zoom/checkButtonSaveNQuit", ui->checkButtonSaveNQuit->checkState());
+	settings->setValue("Zoom/checkButtonOpen", ui->checkButtonOpen->checkState());
+	settings->setValue("Zoom/checkButtonSaveFav", ui->checkButtonSaveFav->checkState());
+	settings->setValue("Zoom/checkButtonSaveNQuitFav", ui->checkButtonSaveNQuitFav->checkState());
+	settings->setValue("Zoom/checkButtonOpenFav", ui->checkButtonOpenFav->checkState());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
