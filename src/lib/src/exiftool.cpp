@@ -1,6 +1,6 @@
 #include "exiftool.h"
 #include <QProcess>
-#include"logger.h"
+#include "logger.h"
 
 
 Exiftool::Exiftool(QObject *parent)
