@@ -127,6 +127,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	#ifndef WIN_FILE_PROPS
 		ui->groupMetadataPropsys->setEnabled(false);
 	#else
+		ui->lineMetadataPropsysExtensions->setText(settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString());
 		const QList<QPair<QString, QString>> metadataPropsys = getMetadataPropsys(settings);
 		for (const auto &pair : metadataPropsys) {
 			auto *leKey = new QLineEdit(pair.first, this);
@@ -1019,6 +1020,7 @@ void OptionsWindow::save()
 			tokenSettings->save();
 		}
 
+		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
 		settings->beginWriteArray("MetadataPropsys");
 		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
 			const QString &key = m_metadataPropsys[i].first->text();

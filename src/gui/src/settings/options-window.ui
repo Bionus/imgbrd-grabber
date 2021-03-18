@@ -1126,15 +1126,25 @@
            <string>Windows Property System</string>
           </property>
           <layout class="QFormLayout" name="formLayout_15">
-           <item row="0" column="0" colspan="2">
+           <item row="1" column="0" colspan="2">
             <layout class="QFormLayout" name="layoutMetadataPropsys"/>
            </item>
-           <item row="1" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <widget class="QPushButton" name="buttonMetadataPropsysAdd">
              <property name="text">
               <string>Add new property</string>
              </property>
             </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelMetadataPropsysExtensions">
+             <property name="text">
+              <string>Extensions</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineMetadataPropsysExtensions"/>
            </item>
           </layout>
          </widget>
@@ -3030,6 +3040,22 @@
   <connection>
    <sender>checkMonitoringEnableTray</sender>
    <signal>toggled(bool)</signal>
+   <receiver>checkMonitoringMinimizeToTray</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>375</x>
+     <y>38</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>38</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMonitoringEnableTray</sender>
+   <signal>toggled(bool)</signal>
    <receiver>checkMonitoringCloseToTray</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -3044,14 +3070,46 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkProxyUseSystem</sender>
+   <sender>checkImageUseVideoPlayer</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widgetCustomProxy</receiver>
-   <slot>setDisabled(bool)</slot>
+   <receiver>checkImageVideoControls</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>375</x>
-     <y>38</y>
+     <x>443</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>427</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddWebService</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>addWebService()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>661</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUse</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetProxy</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
      <x>375</x>
@@ -3076,26 +3134,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkProxyUse</sender>
+   <sender>checkProxyUseSystem</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widgetProxy</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>375</x>
-     <y>38</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkMonitoringEnableTray</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkMonitoringMinimizeToTray</receiver>
-   <slot>setEnabled(bool)</slot>
+   <receiver>widgetCustomProxy</receiver>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>375</x>
@@ -3104,38 +3146,6 @@
     <hint type="destinationlabel">
      <x>375</x>
      <y>38</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAddWebService</sender>
-   <signal>clicked()</signal>
-   <receiver>OptionsWindow</receiver>
-   <slot>addWebService()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>26</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>661</x>
-     <y>119</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkImageUseVideoPlayer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkImageVideoControls</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>443</x>
-     <y>401</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>452</x>
-     <y>427</y>
     </hint>
    </hints>
   </connection>

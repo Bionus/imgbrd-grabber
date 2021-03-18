@@ -98,7 +98,7 @@ bool getAllWindowsProperties(const QString &filename, QMap<QString, QString> &ou
 		}
 		pps->Release();
 	} else {
-		wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
+		log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 	}
 
 	delete pszFilename;
@@ -123,10 +123,10 @@ bool getWindowsProperty(const QString &filename, const QString &property, QStrin
 			GetProperty(pps, key, out);
 			pps->Release();
 		} else {
-			wprintf(L"Error %x: getting the propertystore for the item.\n", hr);
+			log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 		}
 	} else {
-		wprintf(L"Invalid property specified: %s\n", pszCanonicalName);
+		log(QString("Invalid property specified: %1").arg(property), Logger::Error);
 	}
 
 	delete pszFilename;
@@ -162,17 +162,17 @@ bool setWindowsProperty(const QString &filename, const QString &property, const 
 						// Commit does the actual writing back to the file stream.
 						hr = pps->Commit();
 						if (!SUCCEEDED(hr)) {
-							log(QString("Error %1: commit to the propertystore failed").arg(hr), Logger::Error);
+							log(QString("Error %1 committing to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 						}
 					} else {
-						log(QString("Error %1: set value to the propertystore failed").arg(hr), Logger::Error);
+						log(QString("Error %1 setting value to the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 					}
 				}
 				PropVariantClear(&propvarValue);
 			}
 			pps->Release();
 		} else {
-			log(QString("Error %1: getting the propertystore for the item").arg(hr), Logger::Error);
+			log(QString("Error %1 getting the propertystore for `%2`").arg(hr).arg(filename), Logger::Error);
 		}
 	} else {
 		log(QString("Invalid property specified: %1").arg(property), Logger::Error);

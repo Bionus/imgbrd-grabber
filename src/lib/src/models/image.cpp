@@ -656,11 +656,14 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 
 	// Metadata
 	#ifdef WIN_FILE_PROPS
-		const auto metadataPropsys = getMetadataPropsys(m_settings);
-		for (const auto &pair : metadataPropsys) {
-			const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
-			if (!values.isEmpty()) {
-				setWindowsProperty(path, pair.first, values.first());
+		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
+		if (exts.isEmpty() || exts.contains(extension())) {
+			const auto metadataPropsys = getMetadataPropsys(m_settings);
+			for (const auto &pair : metadataPropsys) {
+				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+				if (!values.isEmpty()) {
+					setWindowsProperty(path, pair.first, values.first());
+				}
 			}
 		}
 	#endif
