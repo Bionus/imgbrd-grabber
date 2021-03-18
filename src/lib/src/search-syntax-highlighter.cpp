@@ -29,9 +29,7 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 		rule.pattern = QRegularExpression("(?: |^)([^:]+):([^: ][^ ]*)?(?: |$)");
 		rule.format = metaOtherFormat;
 		highlightingRules.append(rule);
-	}
-
-	else {
+	} else {
 		// MD5 format "qdrg15sdfgs1d2f1gs3dfg"
 		md5Format.setForeground(QColor("#800080"));
 		rule.pattern = QRegularExpression("(?: |^)([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption);
