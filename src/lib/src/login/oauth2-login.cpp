@@ -76,6 +76,9 @@ void OAuth2Login::login()
 				body << QStrP("client_secret", consumerSecret);
 			}
 		}
+	} else if (type == "refresh_token") {
+		refresh(true);
+		return;
 	}
 
 	// Post request and wait for a reply

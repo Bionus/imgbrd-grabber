@@ -118,7 +118,7 @@ export const source: ISource = {
     auth: {
         oauth2: {
             type: "oauth2",
-            authType: "password",
+            authType: "refresh_token",
             tokenUrl: "https://oauth.secure.pixiv.net/auth/token",
         },
     },

@@ -39,5 +39,16 @@ QList<AuthSettingField> OAuth2Auth::settingFields() const
 		fields.append(passwordField);
 	}
 
+	if (m_authType == "refresh_token") {
+		AuthSettingField accessTokenField;
+		accessTokenField.id = "accessToken";
+
+		AuthSettingField refreshTokenField;
+		refreshTokenField.id = "refreshToken";
+
+		fields.append(accessTokenField);
+		fields.append(refreshTokenField);
+	}
+
 	return fields;
 }
