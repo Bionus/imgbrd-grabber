@@ -12,6 +12,7 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/download-query-manager.h"
+#include "exiftool.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
@@ -139,6 +140,7 @@ Profile::Profile(QString path)
 	}
 
 	m_commands = new Commands(this);
+	m_exiftool = new Exiftool(this);
 
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
@@ -490,6 +492,7 @@ QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
 TagFilterList &Profile::getRemovedTags() { return m_removedTags; }
 Commands &Profile::getCommands() { return *m_commands; }
+Exiftool &Profile::getExiftool() { return *m_exiftool; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }

@@ -137,6 +137,16 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		}
 	#endif
 
+	// Metadata using Exiftool
+	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
+	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
+	for (const auto &pair : metadataExiftool) {
+		auto *leKey = new QLineEdit(pair.first, this);
+		auto *leValue = new QLineEdit(pair.second, this);
+		ui->layoutMetadataExiftool->addRow(leKey, leValue);
+		m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+	}
+
 	// Log
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
@@ -460,6 +470,14 @@ void OptionsWindow::on_buttonMetadataPropsysAdd_clicked()
 	auto *leValue = new QLineEdit(this);
 	ui->layoutMetadataPropsys->addRow(leKey, leValue);
 	m_metadataPropsys.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+}
+
+void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
+{
+	auto *leKey = new QLineEdit(this);
+	auto *leValue = new QLineEdit(this);
+	ui->layoutMetadataExiftool->addRow(leKey, leValue);
+	m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
 }
 
 
@@ -1025,6 +1043,20 @@ void OptionsWindow::save()
 		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
 			const QString &key = m_metadataPropsys[i].first->text();
 			const QString &value = m_metadataPropsys[i].second->text();
+			if (!key.isEmpty() && !value.isEmpty()) {
+				settings->setArrayIndex(j);
+				settings->setValue("key", key);
+				settings->setValue("value", value);
+				++j;
+			}
+		}
+		settings->endArray();
+
+		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
+		settings->beginWriteArray("MetadataExiftool");
+		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
+			const QString &key = m_metadataExiftool[i].first->text();
+			const QString &value = m_metadataExiftool[i].second->text();
 			if (!key.isEmpty() && !value.isEmpty()) {
 				settings->setArrayIndex(j);
 				settings->setValue("key", key);

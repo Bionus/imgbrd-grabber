@@ -1149,6 +1149,35 @@
           </layout>
          </widget>
         </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupMetadataExiftool">
+          <property name="title">
+           <string>Exiftool</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_23">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolExtensions">
+             <property name="text">
+              <string>Extensions</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
+             <property name="text">
+              <string>Add new property</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSaveCustomSymbols">

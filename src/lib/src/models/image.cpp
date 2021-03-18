@@ -11,6 +11,7 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/extension-rotator.h"
+#include "exiftool.h"
 #include "favorite.h"
 #include "filtering/tag-filter-list.h"
 #include "functions.h"
@@ -655,9 +656,10 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 	}
 
 	// Metadata
+	const QString &ext = extension();
 	#ifdef WIN_FILE_PROPS
 		const QStringList exts = m_settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString().split(' ', Qt::SkipEmptyParts);
-		if (exts.isEmpty() || exts.contains(extension())) {
+		if (exts.isEmpty() || exts.contains(ext)) {
 			const auto metadataPropsys = getMetadataPropsys(m_settings);
 			for (const auto &pair : metadataPropsys) {
 				const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
@@ -667,6 +669,23 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 			}
 		}
 	#endif
+	const QStringList exiftoolExts = m_settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString().split(' ', Qt::SkipEmptyParts);
+	if (exiftoolExts.isEmpty() || exiftoolExts.contains(ext)) {
+		QMap<QString, QString> metadata;
+		const auto metadataExiftool = getMetadataExiftool(m_settings);
+		for (const auto &pair : metadataExiftool) {
+			const QStringList values = Filename(pair.second).path(*this, m_profile, "", 0, Filename::Complex);
+			if (!values.isEmpty()) {
+				metadata.insert(pair.first, values.first());
+			}
+		}
+
+		if (!metadata.isEmpty()) {
+			Exiftool &exiftool = m_profile->getExiftool();
+			exiftool.start();
+			exiftool.setMetadata(path, metadata);
+		}
+	}
 
 	setSavePath(path, size);
 }

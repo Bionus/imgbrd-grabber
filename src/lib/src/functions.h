@@ -61,7 +61,9 @@ QMap<QString, QStringList> getCustoms(QSettings *settings);
 QList<ConditionalFilename> getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings);
 QStringList getExternalLogFilesSuffixes(QSettings *settings);
+
 QList<QPair<QString, QString>> getMetadataPropsys(QSettings *settings);
+QList<QPair<QString, QString>> getMetadataExiftool(QSettings *settings);
 
 QStringList removeWildards(const QStringList &elements, const QStringList &remove);
 QString getExtensionFromHeader(const QByteArray &data12);
