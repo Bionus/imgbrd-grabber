@@ -104,7 +104,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "userId", tr("User ID") },
 		{ "password", tr("Password") },
 		{ "salt", tr("Salt") },
-		{ "apiKey", tr("API key") }
+		{ "apiKey", tr("API key") },
+		{ "consumerKey", tr("Consumer key") },
+		{ "consumerSecret", tr("Consumer secret") },
+		{ "accessToken", tr("Access token") },
+		{ "refreshToken", tr("Refresh token") }
 	};
 	QStringList types;
 	QMultiMap<QString, QLineEdit*> fields;
