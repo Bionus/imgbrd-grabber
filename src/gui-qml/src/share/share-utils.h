@@ -21,4 +21,4 @@ class ShareUtils : public QQuickItem
 		BaseShareUtils *m_shareUtils;
 };
 
-#endif //SHARE_UTILS_H
+#endif // SHARE_UTILS_H

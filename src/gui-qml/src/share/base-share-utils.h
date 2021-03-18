@@ -15,4 +15,4 @@ class BaseShareUtils : public QQuickItem
 		virtual bool sendFile(const QString &path, const QString &mimeType, const QString &title) { return true; }
 };
 
-#endif //BASE_SHARE_UTILS_H
+#endif // BASE_SHARE_UTILS_H

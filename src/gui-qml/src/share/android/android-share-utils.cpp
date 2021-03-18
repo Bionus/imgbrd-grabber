@@ -4,7 +4,7 @@
 
 
 AndroidShareUtils::AndroidShareUtils(QQuickItem* parent)
-    : BaseShareUtils(parent)
+	: BaseShareUtils(parent)
 {}
 
 bool AndroidShareUtils::share(const QString &text)
