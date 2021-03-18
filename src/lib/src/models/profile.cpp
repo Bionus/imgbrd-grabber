@@ -470,7 +470,7 @@ void Profile::setBlacklistedTags(const Blacklist &blacklist)
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
-	m_blacklist.add(tag);
+	m_blacklist.add(QString(tag).replace(":", "::"));
 
 	syncBlacklist();
 	emit blacklistChanged();
