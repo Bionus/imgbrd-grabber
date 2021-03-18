@@ -22,6 +22,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "reverse-search/reverse-search-loader.h"
+#include "search-syntax-highlighter.h"
 #include "settings/condition-window.h"
 #include "settings/custom-window.h"
 #include "settings/filename-window.h"
@@ -155,6 +156,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Blacklist
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
+	new SearchSyntaxHighlighter(false, ui->textBlacklist->document());
 
 	// Ignored tags
 	ui->textRemovedTags->setPlainText(settings->value("ignoredtags").toString());

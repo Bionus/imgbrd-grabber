@@ -15,7 +15,7 @@ class SearchSyntaxHighlighter : public QSyntaxHighlighter
 	Q_OBJECT
 
 	public:
-		SearchSyntaxHighlighter(QTextDocument *parent = 0);
+		explicit SearchSyntaxHighlighter(bool full, QTextDocument *parent = nullptr);
 
 	protected:
 		void highlightBlock(const QString &text) override;
@@ -33,6 +33,7 @@ class SearchSyntaxHighlighter : public QSyntaxHighlighter
 		QTextCharFormat orFormat;
 		QTextCharFormat excludeFormat;
 		QTextCharFormat metaFormat;
+		QTextCharFormat metaOtherFormat;
 		QTextCharFormat md5Format;
 		QTextCharFormat urlFormat;
 };

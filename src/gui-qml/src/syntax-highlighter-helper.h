@@ -17,8 +17,9 @@ class SyntaxHighlighterHelper : public QObject
 		QQuickTextDocument *quickDocument() const { return m_quickDocument; }
 		void setQuickDocument(QQuickTextDocument *quickDocument)
 		{
-			m_quickDocument = quickDocument; if (m_quickDocument) {
-				new SearchSyntaxHighlighter(m_quickDocument->textDocument());
+			m_quickDocument = quickDocument;
+			if (m_quickDocument) {
+				new SearchSyntaxHighlighter(true, m_quickDocument->textDocument());
 			}
 		}
 
