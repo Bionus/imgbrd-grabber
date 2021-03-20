@@ -212,7 +212,6 @@ class ZoomWindow : public QWidget
 		bool hasDrawer = false;
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
 		short shelfDrawerDiff = 0;	// For resizeButtons().
-		//short smallButtons = 0;
 
 		// Threads
 		QThread m_imageLoaderThread;

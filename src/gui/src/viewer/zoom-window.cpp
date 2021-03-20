@@ -337,7 +337,9 @@ void ZoomWindow::configureButtons()
 			if (! hasShelf) {
 				delete ui->buttonShelf;
 				scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-			} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
+			//} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
+			}
+			shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 
 			ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 			connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
@@ -349,7 +351,7 @@ void ZoomWindow::configureButtons()
 		return;
 	}
 
-	delete ui->actionButtons;
+	delete ui->buttonsLayout;
 }
 
 void ZoomWindow::imageContextMenu()
@@ -1162,20 +1164,38 @@ void ZoomWindow::resizeButtons()
 	   I'm not sure how to query those values here or export from here to there dynamically. */
 	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );
 
-	/*if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
+	if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
-	//QLayout *bot = ui->buttonShelf->layout(), *top = ui->buttonDrawer->layout();
-	QLayout *shelf = ui->buttonDrawer->layout();
+	QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
 
-	log(std::to_string(shelfDrawerDiff).c_str());
-	log(std::to_string(scaleRef->width()).c_str());
-	log(std::to_string(ui->buttonDrawer->layout()->spacing()).c_str());
-	short xMar = shelfDrawerDiff * ( scaleRef->width() + ui->buttonDrawer->layout()->spacing() ) / 2;
+	unsigned short max;
+	if (shelfDrawerDiff < 0) {
+		log("shelfDrawerDiff < 0");
+		max = drawer->parentWidget()->width();
+		shelf->setMaximumWidth(max);
+	} else {
+		log("shelfDrawerDiff > 0");
+		max = shelf->width();
+		if (shelfDrawerDiff > 4) {
+			unsigned short max2 = (scaleRef->width() + 6) * 3;	// Indent drawer inward.
+			max = max > max2 ? max2 : max;
+		}
+	}
+	log((std::string("maximumWidth = ") + std::to_string(max)).c_str());
+	drawer->setMaximumWidth(max);
 
-	QMargins desire = shelf->contentsMargins();
-	desire.setLeft(xMar);
-	desire.setRight(xMar);
-	shelf->setContentsMargins(desire);	// Not sure if necessary.*/
+	/*QMargins desire = ui->buttonsLayout->contentsMargins();
+	//short xMar = ( ui->buttonsLayout->parentWidget()->width() - drawer->width() > shelf->width() ? drawer->width() : shelf->width() ) / 2;
+	//xMar *= 0.94;
+	//desire.setLeft(xMar + desire.left());
+	//desire.setRight(xMar + desire.right());
+	//desire.setLeft(xMar);
+	//desire.setRight(xMar);
+
+	short xFact = ( ui->buttonsLayout->parentWidget()->width() * 0.95 ) / 2;
+	desire.setLeft(xFact);
+	desire.setRight(xFact);
+	ui->buttonsLayout->setContentsMargins(desire);*/
 }
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)

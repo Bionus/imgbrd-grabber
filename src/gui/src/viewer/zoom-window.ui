@@ -69,7 +69,7 @@
                <x>0</x>
                <y>0</y>
                <width>68</width>
-               <height>388</height>
+               <height>389</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -124,24 +124,45 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="buttonsLayout" columnstretch="1,0,0,0,0,0,0,1">
+    <layout class="QGridLayout" name="buttonsLayout" columnstretch="0,0,0">
+     <property name="topMargin">
+      <number>15</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
      <property name="verticalSpacing">
       <number>0</number>
      </property>
-     <item row="0" column="3" rowspan="3" colspan="3">
-      <widget class="QWidget" name="actionButtons" native="true">
+     <item row="1" column="1" alignment="Qt::AlignHCenter">
+      <widget class="QWidget" name="buttonDrawer" native="true">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>1</horstretch>
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="actionButtonsLayout">
-        <property name="spacing">
-         <number>3</number>
+       <property name="minimumSize">
+        <size>
+         <width>429</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="buttonDrawerLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <property name="leftMargin">
          <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
         </property>
         <property name="rightMargin">
          <number>0</number>
@@ -149,172 +170,193 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QPushButton" name="buttonPlus">
+        <item>
+         <widget class="QPushButton" name="buttonSaveFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>12</height>
-           </size>
           </property>
           <property name="toolTip">
-           <string>Expand button drawer</string>
+           <string>Save (fav)</string>
           </property>
           <property name="text">
-           <string notr="true">+</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Save (fav)</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="buttonDrawer" native="true">
+         <widget class="QPushButton" name="buttonSaveNQuitFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="buttonDrawerLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetDefaultConstraint</enum>
-           </property>
-           <property name="leftMargin">
-            <number>145</number>
-           </property>
-           <property name="topMargin">
-            <number>2</number>
-           </property>
-           <property name="rightMargin">
-            <number>145</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="buttonSaveFav">
-             <property name="toolTip">
-              <string>Save (fav)</string>
-             </property>
-             <property name="text">
-              <string>Save (fav)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSaveNQuitFav">
-             <property name="toolTip">
-              <string>Save and close (fav)</string>
-             </property>
-             <property name="text">
-              <string>Save and close (fav)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonOpenFav">
-             <property name="toolTip">
-              <string>Destination folder (fav)</string>
-             </property>
-             <property name="text">
-              <string>Destination folder (fav)</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <property name="toolTip">
+           <string>Save and close (fav)</string>
+          </property>
+          <property name="text">
+           <string>Save and close (fav)</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="buttonShelf" native="true">
+         <widget class="QPushButton" name="buttonOpenFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="buttonShelfLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetDefaultConstraint</enum>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>2</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="buttonDetails">
-             <property name="toolTip">
-              <string>Media details</string>
-             </property>
-             <property name="text">
-              <string>More details</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSave">
-             <property name="toolTip">
-              <string>Save to usual path</string>
-             </property>
-             <property name="text">
-              <string>Save</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSaveNQuit">
-             <property name="toolTip">
-              <string>Save to usual path and close window</string>
-             </property>
-             <property name="text">
-              <string>Save and close</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonOpen">
-             <property name="toolTip">
-              <string>Open usual save path in new window</string>
-             </property>
-             <property name="text">
-              <string>Destination folder</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSaveAs">
-             <property name="toolTip">
-              <string>Choose save path</string>
-             </property>
-             <property name="text">
-              <string>Save as...</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <property name="toolTip">
+           <string>Destination folder (fav)</string>
+          </property>
+          <property name="text">
+           <string>Destination folder (fav)</string>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="2" column="1">
+      <widget class="QWidget" name="buttonShelf" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="buttonShelfLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="buttonDetails">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Media details</string>
+          </property>
+          <property name="text">
+           <string>More details</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonSave">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Save to usual path</string>
+          </property>
+          <property name="text">
+           <string>Save</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonSaveNQuit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Save to usual path and close window</string>
+          </property>
+          <property name="text">
+           <string>Save and close</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonOpen">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Open usual save path in new window</string>
+          </property>
+          <property name="text">
+           <string>Destination folder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonSaveAs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Choose save path</string>
+          </property>
+          <property name="text">
+           <string>Save as...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1" alignment="Qt::AlignHCenter">
+      <widget class="QPushButton" name="buttonPlus">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>140</width>
+         <height>12</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Expand button drawer</string>
+       </property>
+       <property name="text">
+        <string notr="true">+</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" alignment="Qt::AlignRight">
       <widget class="QPushButton" name="buttonPrev">
        <property name="maximumSize">
         <size>
@@ -330,7 +372,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="7">
+     <item row="2" column="2" alignment="Qt::AlignLeft">
       <widget class="QPushButton" name="buttonNext">
        <property name="maximumSize">
         <size>
@@ -391,22 +433,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonSaveAs</sender>
-   <signal>clicked()</signal>
-   <receiver>ZoomWindow</receiver>
-   <slot>saveImageAs()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>759</x>
-     <y>576</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>476</x>
-     <y>468</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>labelPools</sender>
    <signal>linkActivated(QString)</signal>
    <receiver>ZoomWindow</receiver>
@@ -451,22 +477,6 @@
     <hint type="destinationlabel">
      <x>421</x>
      <y>596</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOpenFav</sender>
-   <signal>clicked()</signal>
-   <receiver>ZoomWindow</receiver>
-   <slot>openSaveDirFav()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>590</x>
-     <y>589</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>572</x>
-     <y>591</y>
     </hint>
    </hints>
   </connection>
@@ -531,6 +541,38 @@
     <hint type="destinationlabel">
      <x>290</x>
      <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpenFav</sender>
+   <signal>clicked()</signal>
+   <receiver>ZoomWindow</receiver>
+   <slot>openSaveDirFav()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>590</x>
+     <y>589</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveAs</sender>
+   <signal>clicked()</signal>
+   <receiver>ZoomWindow</receiver>
+   <slot>saveImageAs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>759</x>
+     <y>576</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>468</y>
     </hint>
    </hints>
   </connection>
