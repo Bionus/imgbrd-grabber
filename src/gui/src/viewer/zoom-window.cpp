@@ -233,137 +233,122 @@ ZoomWindow::~ZoomWindow()
 
 void ZoomWindow::configureButtons()
 {
-	switch (m_settings->value("Zoom/checkButtonPrev", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonPrev);
-			ui->buttonDrawerLayout->insertWidget(0, ui->buttonPrev);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonPrev;
+	log("+++configureButtons+++");
+	int size = m_settings->beginReadArray("Zoom/buttons");
+	for (int i = 0; i < size; ++i) {
+		m_settings->setArrayIndex(i);
+		QPushButton *button = nullptr;
+		unsigned int buttonMask = m_settings->value("mask").toUInt();
+		switch (buttonMask & Ui::Type) {
+			//case 0 : continue;	// Omitted to remove preconfigured buttons in .ui file.
+			case Ui::IsButtonPrev :
+				log("Prev");
+				button = ui->buttonPrev;
+				//if (buttonMask & Ui::IsOnShelf) smallButtons++;
+				break;
+			case Ui::IsButtonNext :
+				log("Next");
+				button = ui->buttonNext;
+				//if (buttonMask & Ui::IsOnShelf) smallButtons++;
+				break;
+			case Ui::IsButtonDetails :
+				log("Details");
+				log(m_settings->value("mask").toUInt());
+				button = ui->buttonDetails;
+				break;
+			case Ui::IsButtonSaveAs :
+				log("SaveAs");
+				button = ui->buttonSaveAs;
+				break;
+			case Ui::IsButtonSave :
+				log("Save");
+				button = ui->buttonSave;
+				break;
+			case Ui::IsButtonSaveNQuit :
+				log("SaveNQuit");
+				button = ui->buttonSaveNQuit;
+				break;
+			case Ui::IsButtonOpen :
+				log("Open");
+				button = ui->buttonOpen;
+				break;
+			case Ui::IsButtonSave | Ui::IsFavoriteButton :
+				log("SaveFav");
+				button = ui->buttonSaveFav;
+				break;
+			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
+				log("SaveNQuitFav");
+				button = ui->buttonSaveNQuitFav;
+				break;
+			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
+				log("OpenFav");
+				button = ui->buttonOpenFav;
+				break;
+			default :
+				log("ZoomWindow::configureButtons found an unknown button type.");
+				continue;
+		}
+		/*if (button == nullptr) {
+			log("ZoomWindow::configureButtons found a nullptr button!");
+			continue;
+		}*/
+
+		if (buttonMask & Ui::IsEnabled) {
+			log(std::to_string((buttonMask & Ui::Placement) >> 16).c_str());
+			log(std::to_string(buttonMask & Ui::Placement >> 16).c_str());
+			button->parentWidget()->layout()->removeWidget(button);
+			if (buttonMask & Ui::IsInDrawer) {
+				hasDrawer = true;
+				ui->buttonDrawerLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+			} else {
+				hasShelf = true;
+				ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+				if (scaleRef == nullptr && buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
+				/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
+					ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+					if (scaleRef == nullptr) scaleRef = button;
+				} else {	// Let navigation buttons protrude if they are first or last. Also prioritise order weight.
+					switch (buttonMask & Ui::Placement) {
+						case 0 :
+							ui->buttonsLayout->addWidget(button, -3, 0);
+							break;
+						case 10 :
+							log(std::to_string(ui->buttonsLayout->columnCount()).c_str());
+							ui->buttonsLayout->addWidget(button, -3, ui->buttonsLayout->columnCount());
+							break;
+						default:
+							ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+					}
+				}*/
+			}
+		} else delete button;	// Overwrite button presets in .ui file.
 	}
-	switch (m_settings->value("Zoom/checkButtonNext", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonNext);
-			ui->buttonDrawerLayout->insertWidget(4, ui->buttonNext);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonNext;
-	}
-	switch (m_settings->value("Zoom/checkButtonDetails", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonDetails);
-			ui->buttonDrawerLayout->insertWidget(1, ui->buttonDetails);
-			connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonDetails;
-	}
-	switch (m_settings->value("Zoom/checkButtonSaveAs", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonSaveAs);
-			ui->buttonDrawerLayout->insertWidget(1, ui->buttonSaveAs);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonSaveAs;
-	}
-	switch (m_settings->value("Zoom/checkButtonSave", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonSave);
-			ui->buttonDrawerLayout->insertWidget(1, ui->buttonSave);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonSave;
-	}
-	switch (m_settings->value("Zoom/checkButtonSaveNQuit", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonSaveNQuit);
-			ui->buttonDrawerLayout->insertWidget(1, ui->buttonSaveNQuit);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonSaveNQuit;
-	}
-	switch (m_settings->value("Zoom/checkButtonOpen", Qt::Checked).toInt()) {
-		case Qt::Checked :
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			ui->buttonShelfLayout->removeWidget(ui->buttonOpen);
-			ui->buttonDrawerLayout->insertWidget(1, ui->buttonOpen);
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonOpen;
-	}
-	switch (m_settings->value("Zoom/checkButtonSaveFav", Qt::PartiallyChecked).toInt()) {
-		case Qt::Checked :
-			//ui->buttonSaveFav->setParent(ui->buttonShelf);	// ?
-			ui->buttonDrawerLayout->removeWidget(ui->buttonSaveFav);
-			ui->buttonShelfLayout->insertWidget(1, ui->buttonSaveFav);
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonSaveFav;
-	}
-	switch (m_settings->value("Zoom/checkButtonSaveNQuitFav", Qt::PartiallyChecked).toInt()) {
-		case Qt::Checked :
-			//ui->buttonSaveNQuitFav->setParent(ui->buttonShelf);	// ?
-			ui->buttonDrawerLayout->removeWidget(ui->buttonSaveNQuitFav);
-			ui->buttonShelfLayout->insertWidget(1, ui->buttonSaveNQuitFav);
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonSaveNQuitFav;
-	}
-	switch (m_settings->value("Zoom/checkButtonOpenFav", Qt::PartiallyChecked).toInt()) {
-		case Qt::Checked :
-			//ui->buttonOpenFav->setParent(ui->buttonShelf);	// ?
-			ui->buttonDrawerLayout->removeWidget(ui->buttonOpenFav);
-			ui->buttonShelfLayout->insertWidget(1, ui->buttonOpenFav);
-			hasShelf = true;
-			break;
-		case Qt::PartiallyChecked :
-			hasDrawer = true;
-			break;
-		default : delete ui->buttonOpenFav;
-	}
+	m_settings->endArray();
+	log("---configureButtons---");
 
 
-	if (hasDrawer) {
-		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
-		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-		scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-	} else {
-		delete ui->buttonPlus;
-		delete ui->buttonDrawer;
+	if (hasShelf || hasDrawer) {
+		/*if (hasShelf) {
+			if (hasDrawer) scaleRef = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
+		} else delete ui->buttonShelf;*/
+
+		if (hasDrawer) {
+			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
+			if (! hasShelf) {
+				delete ui->buttonShelf;
+				scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
+			} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
+
+			ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
+			connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+		} else {
+			delete ui->buttonPlus;
+			delete ui->buttonDrawer;
+		}
+
+		return;
 	}
 
-	if (hasShelf) {
-		if (scaleRef != nullptr) scaleRef = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-	} else delete ui->buttonShelf;
-
-	if (hasShelf || hasDrawer) return;
 	delete ui->actionButtons;
 }
 
@@ -1172,36 +1157,37 @@ void ZoomWindow::resizeButtons()
 {
 	if (! hasDrawer) return;	// Also used to infer existance of buttonPlus.
 
-
 	// Normal resize gets over-written.
 	/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
 	   I'm not sure how to query those values here or export from here to there dynamically. */
 	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );
 
-	if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
+	/*if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
-	short countDif = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();	// Consider storing this as a class value.
-	QLayout *bot = ui->buttonShelf->layout(), *top = ui->buttonDrawer->layout();
+	//QLayout *bot = ui->buttonShelf->layout(), *top = ui->buttonDrawer->layout();
+	QLayout *shelf = ui->buttonDrawer->layout();
 
-	short xMar = countDif * ( scaleRef->width() + bot->spacing() ) / 2;
+	log(std::to_string(shelfDrawerDiff).c_str());
+	log(std::to_string(scaleRef->width()).c_str());
+	log(std::to_string(ui->buttonDrawer->layout()->spacing()).c_str());
+	short xMar = shelfDrawerDiff * ( scaleRef->width() + ui->buttonDrawer->layout()->spacing() ) / 2;
 
-	QMargins desire = top->contentsMargins();
+	QMargins desire = shelf->contentsMargins();
 	desire.setLeft(xMar);
 	desire.setRight(xMar);
-	top->setContentsMargins(desire);	// Not sure if necessary.
+	shelf->setContentsMargins(desire);	// Not sure if necessary.*/
 }
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
+		resizeButtons();
 	}
 	m_resizeTimer->stop();
 	m_resizeTimer->start(m_timeout);
 	update(true);
 
-	resizeButtons();
-	// Does the order of these two lines matter?
 	QWidget::resizeEvent(e);
 }
 

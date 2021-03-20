@@ -13,6 +13,37 @@
 namespace Ui
 {
 	class ZoomWindow;
+
+
+	// Button type masks:
+
+	constexpr unsigned int Type				= 0x0000FFFF ;	// Bits 0-15.
+
+	constexpr unsigned int IsUtilityButton			=          0b00000001 ;	// Nib0.0, bit 0.
+		constexpr unsigned int IsButtonDetails		=  0b0000000100000001 ;	// Nib2.0, bit8.
+		constexpr unsigned int IsButtonOpen		=  0b0000010000000001 ;	// Nib2.2, bit10.
+
+	constexpr unsigned int IsNavButton			=          0b00000010 ;	// Nib0.1, bit 1.
+		//constexpr unsigned int IsQuit			=  0b0000000100000010 ;	// Nib2.0, bit 8.
+		constexpr unsigned int IsButtonPrev		=  0b0000001000000010 ;	// Nib2.1, bit 9.
+		constexpr unsigned int IsButtonNext		=  0b0000010000000010 ;	// Nib2.2, bit 10.
+
+	constexpr unsigned int IsSavingButton			=          0b00000100 ;	// Nib0.2, bit 2.
+		constexpr unsigned int IsButtonSave		=  0b0000000100000100 ;	// Nib2.0, bit8.
+		constexpr unsigned int IsButtonSaveAs		=  0b0000001000000100 ;	// Nib2.1, bit9.
+		constexpr unsigned int IsButtonSaveNQuit	=  0b0000010000000100 ;	// Nib2.2, bit10.
+
+	constexpr unsigned int IsFavoriteButton			=          0b00001000 ;	// Nib0.3, bit 3.
+
+
+
+	// Button placement masks:
+
+	constexpr unsigned int IsEnabled			= 0xC0000000 ;	// Bits 31-30.
+		constexpr unsigned int IsOnShelf		= 0x80000000 ;	// Bit 31.
+		constexpr unsigned int IsInDrawer		= 0x40000000 ;	// Bit 30.
+	constexpr unsigned int Placement			= 0x3FFF0000 ;	// Bits 16-29
+		// Placement based on horizontal placement of the set bit. Left is top for vertical layouts.
 }
 
 
@@ -180,6 +211,8 @@ class ZoomWindow : public QWidget
 		bool hasShelf = false;
 		bool hasDrawer = false;
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
+		short shelfDrawerDiff = 0;	// For resizeButtons().
+		//short smallButtons = 0;
 
 		// Threads
 		QThread m_imageLoaderThread;

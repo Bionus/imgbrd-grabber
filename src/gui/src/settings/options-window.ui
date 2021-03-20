@@ -1989,162 +1989,925 @@
       <widget class="QWidget" name="pageInterfaceImageWindowButtons">
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
-         <widget class="QLabel" name="label_18">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;
-  &lt;head/&gt;
-  &lt;body&gt;
-    &lt;h3 style=&quot;text-align: center; font-size:12pt;&quot;&gt;These are tri-state checkboxes that control which buttons appear in the media viewer window.&lt;/h3&gt;
-    &lt;div style=&quot;text-align: center;&quot;&gt;
-      &lt;ul style=&quot;display: inline-block; text-align: left; font-size:11pt;&quot;&gt;
-        &lt;li&gt;Buttons corresponding with checked boxes will appear&lt;/li&gt;
-        &lt;li&gt;Buttons corresponding with boxes that are not checked will not appear.&lt;/li&gt;
-        &lt;li&gt;Buttons corresponding with boxes that are half checked will appear in a drawer that you can open and close.&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/div&gt;
-    &lt;p style=&quot;text-align: center;&quot;&gt;&lt;i&gt;See tooltips for a brief description of each button's function.&lt;/i&gt;&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkButtonPrev">
+         <widget class="QGroupBox" name="groupButtonPrev">
           <property name="toolTip">
            <string>Previous media entry</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Prev</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="checkButtonPrev">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_20">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Previous media entry</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="text">
+              <string>Prev</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonPrev">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="wrapping">
+              <bool>false</bool>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="showGroupSeparator" stdset="0">
+              <bool>false</bool>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonNext">
+         <widget class="QGroupBox" name="groupButtonNext">
           <property name="toolTip">
            <string>Next media entry</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Next</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QCheckBox" name="checkButtonNext">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_22">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Next media entry</string>
+             </property>
+             <property name="text">
+              <string>Next</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonNext">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonDetails">
+         <widget class="QGroupBox" name="groupButtonDetails">
           <property name="toolTip">
            <string>View media details</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Details</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QCheckBox" name="checkButtonDetails">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_23">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>View media details</string>
+             </property>
+             <property name="text">
+              <string>Details</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonDetails">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonSaveAs">
+         <widget class="QGroupBox" name="groupButtonSaveAs">
           <property name="toolTip">
            <string>Save file with specified path</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Save As...</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QCheckBox" name="checkButtonSaveAs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_30">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Save file with specified path</string>
+             </property>
+             <property name="text">
+              <string>Save As...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveAs">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonSave">
+         <widget class="QGroupBox" name="groupButtonSave">
           <property name="toolTip">
            <string>Save file to usual path</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Save</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QCheckBox" name="checkButtonSave">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_31">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Save file to usual path</string>
+             </property>
+             <property name="text">
+              <string>Save</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSave">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonSaveNQuit">
+         <widget class="QGroupBox" name="groupButtonSaveNQuit">
           <property name="toolTip">
            <string>Save file to usual path and close the viewer window</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Save and close</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QCheckBox" name="checkButtonSaveNQuit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_32">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Save file to usual path and close the viewer window</string>
+             </property>
+             <property name="text">
+              <string>Save and close</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveNQuit">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonOpen">
+         <widget class="QGroupBox" name="groupButtonOpen">
           <property name="toolTip">
            <string>Open usual save path in file browser</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Open</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QCheckBox" name="checkButtonOpen">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_33">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Open usual save path in file browser</string>
+             </property>
+             <property name="text">
+              <string>Open</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_17">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonOpen">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonSaveFav">
+         <widget class="QGroupBox" name="groupButtonSaveFav">
           <property name="toolTip">
            <string>Save file to favourite path</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Save (fav)</string>
           </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_17">
+           <item>
+            <widget class="QCheckBox" name="checkButtonSaveFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_34">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Save file to favourite path</string>
+             </property>
+             <property name="text">
+              <string>Save (fav)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_18">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveFav">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonSaveNQuitFav">
+         <widget class="QGroupBox" name="groupButtonSaveNQuitFav">
           <property name="toolTip">
            <string>Save file to favourite path and close the viewer window</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Save and close (fav)</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QCheckBox" name="checkButtonSaveNQuitFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_35">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Save file to favourite path and close the viewer window</string>
+             </property>
+             <property name="text">
+              <string>Save and close (fav)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_19">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveNQuitFav">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkButtonOpenFav">
+         <widget class="QGroupBox" name="groupButtonOpenFav">
           <property name="toolTip">
            <string>Open favourite save path in file browser</string>
           </property>
-          <property name="text">
+          <property name="title">
            <string>Open (fav)</string>
           </property>
-          <property name="tristate">
-           <bool>true</bool>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QCheckBox" name="checkButtonOpenFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Partial checks are stored in collapsable drawer</string>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_44">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Open favourite save path in file browser</string>
+             </property>
+             <property name="text">
+              <string>Open (fav)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_20">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonOpenFav">
+             <property name="toolTip">
+              <string>Ascending from left to right</string>
+             </property>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string>th</string>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -3243,50 +4006,60 @@
   <tabstop>checkRememberDrawer</tabstop>
   <tabstop>checkRememberGeometry</tabstop>
   <tabstop>checkButtonPrev</tabstop>
+  <tabstop>spinButtonPrev</tabstop>
   <tabstop>checkButtonNext</tabstop>
+  <tabstop>spinButtonNext</tabstop>
   <tabstop>checkButtonDetails</tabstop>
+  <tabstop>spinButtonDetails</tabstop>
   <tabstop>checkButtonSaveAs</tabstop>
+  <tabstop>spinButtonSaveAs</tabstop>
   <tabstop>checkButtonSave</tabstop>
+  <tabstop>spinButtonSave</tabstop>
   <tabstop>checkButtonSaveNQuit</tabstop>
+  <tabstop>spinButtonSaveNQuit</tabstop>
   <tabstop>checkButtonOpen</tabstop>
+  <tabstop>spinButtonOpen</tabstop>
   <tabstop>checkButtonSaveFav</tabstop>
+  <tabstop>spinButtonSaveFav</tabstop>
   <tabstop>checkButtonSaveNQuitFav</tabstop>
+  <tabstop>spinButtonSaveNQuitFav</tabstop>
   <tabstop>checkButtonOpenFav</tabstop>
+  <tabstop>spinButtonOpenFav</tabstop>
   <tabstop>lineColoringArtists</tabstop>
-  <tabstop>lineColoringCircles</tabstop>
-  <tabstop>lineColoringCopyrights</tabstop>
-  <tabstop>lineColoringCharacters</tabstop>
-  <tabstop>lineColoringSpecies</tabstop>
-  <tabstop>lineColoringMetas</tabstop>
-  <tabstop>lineColoringModels</tabstop>
-  <tabstop>lineColoringGenerals</tabstop>
-  <tabstop>lineColoringFavorites</tabstop>
-  <tabstop>lineColoringKeptForLater</tabstop>
-  <tabstop>lineColoringBlacklisteds</tabstop>
-  <tabstop>lineColoringIgnoreds</tabstop>
   <tabstop>buttonColoringArtistsColor</tabstop>
-  <tabstop>buttonColoringCirclesColor</tabstop>
-  <tabstop>buttonColoringCopyrightsColor</tabstop>
-  <tabstop>buttonColoringCharactersColor</tabstop>
-  <tabstop>buttonColoringSpeciesColor</tabstop>
-  <tabstop>buttonColoringMetasColor</tabstop>
-  <tabstop>buttonColoringModelsColor</tabstop>
-  <tabstop>buttonColoringGeneralsColor</tabstop>
-  <tabstop>buttonColoringFavoritesColor</tabstop>
-  <tabstop>buttonColoringKeptForLaterColor</tabstop>
-  <tabstop>buttonColoringBlacklistedsColor</tabstop>
-  <tabstop>buttonColoringIgnoredsColor</tabstop>
   <tabstop>buttonColoringArtistsFont</tabstop>
+  <tabstop>lineColoringCircles</tabstop>
+  <tabstop>buttonColoringCirclesColor</tabstop>
   <tabstop>buttonColoringCirclesFont</tabstop>
+  <tabstop>lineColoringCopyrights</tabstop>
+  <tabstop>buttonColoringCopyrightsColor</tabstop>
   <tabstop>buttonColoringCopyrightsFont</tabstop>
+  <tabstop>lineColoringCharacters</tabstop>
+  <tabstop>buttonColoringCharactersColor</tabstop>
   <tabstop>buttonColoringCharactersFont</tabstop>
+  <tabstop>lineColoringSpecies</tabstop>
+  <tabstop>buttonColoringSpeciesColor</tabstop>
   <tabstop>buttonColoringSpeciesFont</tabstop>
+  <tabstop>lineColoringMetas</tabstop>
+  <tabstop>buttonColoringMetasColor</tabstop>
   <tabstop>buttonColoringMetasFont</tabstop>
+  <tabstop>lineColoringModels</tabstop>
+  <tabstop>buttonColoringModelsColor</tabstop>
   <tabstop>buttonColoringModelsFont</tabstop>
+  <tabstop>lineColoringGenerals</tabstop>
+  <tabstop>buttonColoringGeneralsColor</tabstop>
   <tabstop>buttonColoringGeneralsFont</tabstop>
+  <tabstop>lineColoringFavorites</tabstop>
+  <tabstop>buttonColoringFavoritesColor</tabstop>
   <tabstop>buttonColoringFavoritesFont</tabstop>
+  <tabstop>lineColoringKeptForLater</tabstop>
+  <tabstop>buttonColoringKeptForLaterColor</tabstop>
   <tabstop>buttonColoringKeptForLaterFont</tabstop>
+  <tabstop>lineColoringBlacklisteds</tabstop>
+  <tabstop>buttonColoringBlacklistedsColor</tabstop>
   <tabstop>buttonColoringBlacklistedsFont</tabstop>
+  <tabstop>lineColoringIgnoreds</tabstop>
+  <tabstop>buttonColoringIgnoredsColor</tabstop>
   <tabstop>buttonColoringIgnoredsFont</tabstop>
   <tabstop>spinMainMargins</tabstop>
   <tabstop>spinServerBorders</tabstop>
