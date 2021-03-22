@@ -1224,6 +1224,7 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
 	QList<unsigned int> buttons;	// See zoom-window.h for mask format.
+	//unsigned int buttons[9] = {0};	// 10 is the maximum number of buttons. Could be referenced in "zoom-window.h".
 
 	buttons.append(Ui::IsButtonPrev | ui->spinButtonPrev->value() << 16 | (ui->checkButtonPrev->checkState() == Qt::Unchecked
 		? 0
@@ -1285,6 +1286,8 @@ void OptionsWindow::save()
 			? Ui::IsOnShelf
 			: Ui::IsInDrawer
 	));
+
+	std::sort(buttons.begin(), buttons.end());
 
 	settings->beginWriteArray("Zoom/buttons");
 	for (int i = 0; i < 10; ++i) {	// 10 is the number of possible buttons. Could be defined in Ui namespace.

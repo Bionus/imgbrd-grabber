@@ -2081,7 +2081,7 @@
               <string>Position: </string>
              </property>
              <property name="maximum">
-              <number>10</number>
+              <number>9</number>
              </property>
             </widget>
            </item>
