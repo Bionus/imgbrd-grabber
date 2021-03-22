@@ -390,12 +390,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 				spinner = ui->spinButtonOpenFav;
 				break;
 		}
-		log(std::to_string(buttonMask).c_str());
-		log(std::to_string(buttonMask & Ui::IsEnabled ? buttonMask & Ui::IsInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked).c_str());
-		log(std::to_string(buttonMask & ~Ui::IsEnabled >> 16).c_str());
+		log( ( "  mask = " + std::to_string(buttonMask) ).c_str() );
+		log( ( "  checkState = " + std::to_string(buttonMask & Ui::IsEnabled ? buttonMask & Ui::IsInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked) ).c_str() );
+		log( ( "  placement = " + std::to_string((buttonMask & Ui::Placement) >> 16 ) ).c_str() );
 		// Ideally not necessary to check IsEnabled. Disabled buttons are only in the list/array to overwrite .ui file default buttons.
 		checker->setCheckState(buttonMask & Ui::IsEnabled ? buttonMask & Ui::IsInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked);
-		spinner->setValue((buttonMask & ~Ui::IsEnabled) >> 16);
+		//spinner->setValue((buttonMask & ~Ui::IsEnabled) >> 16);
+		spinner->setValue((buttonMask & Ui::Placement) >> 16);
 	}
 	settings->endArray();
 
@@ -410,6 +411,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->lineButtonSaveFav->setText(settings->value("lineButtonSaveFav", "Save (fav)").toString());
 		ui->lineButtonSaveNQuitFav->setText(settings->value("lineButtonSaveNQuitFav", "Save and close (fav)").toString());
 		ui->lineButtonOpenFav->setText(settings->value("lineButtonOpenFav", "Destination folder (fav)").toString());
+
+		ui->lineButtonPrev->setCursorPosition(0);
+		ui->lineButtonNext->setCursorPosition(0);
+		ui->lineButtonDetails->setCursorPosition(0);
+		ui->lineButtonSaveAs->setCursorPosition(0);
+		ui->lineButtonSave->setCursorPosition(0);
+		ui->lineButtonSaveNQuit->setCursorPosition(0);
+		ui->lineButtonOpen->setCursorPosition(0);
+		ui->lineButtonSaveFav->setCursorPosition(0);
+		ui->lineButtonSaveNQuitFav->setCursorPosition(0);
+		ui->lineButtonOpenFav->setCursorPosition(0);
 	settings->endGroup();
 	log("---Reading Zoom/Buttons---");
 
@@ -1313,6 +1325,16 @@ void OptionsWindow::save()
 
 	settings->beginGroup("Zoom/Buttons");
 		log(ui->lineButtonPrev->text().toStdString().c_str());
+		log(ui->lineButtonNext->text().toStdString().c_str());
+		log(ui->lineButtonDetails->text().toStdString().c_str());
+		log(ui->lineButtonSaveAs->text().toStdString().c_str());
+		log(ui->lineButtonSave->text().toStdString().c_str());
+		log(ui->lineButtonSaveNQuit->text().toStdString().c_str());
+		log(ui->lineButtonOpen->text().toStdString().c_str());
+		log(ui->lineButtonSaveFav->text().toStdString().c_str());
+		log(ui->lineButtonSaveNQuitFav->text().toStdString().c_str());
+		log(ui->lineButtonOpenFav->text().toStdString().c_str());
+
 		settings->setValue("lineButtonPrev", ui->lineButtonPrev->text());
 		settings->setValue("lineButtonNext", ui->lineButtonNext->text());
 		settings->setValue("lineButtonDetails", ui->lineButtonDetails->text());
