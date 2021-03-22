@@ -235,40 +235,22 @@ void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++");
 
-	// I'm still trying to find a good way of putting this into the sorted loop.
 	m_settings->beginGroup("Zoom/Buttons");
-		ui->buttonPrev->setText(m_settings->value("lineButtonPrev", "<").toString());
-		ui->buttonNext->setText(m_settings->value("lineButtonNext", ">").toString());
-		ui->buttonDetails->setText(m_settings->value("lineButtonDetails", "More details").toString());
-		ui->buttonSaveAs->setText(m_settings->value("lineButtonSaveAs", "Save as...").toString());
-		ui->buttonSave->setText(m_settings->value("lineButtonSave", "Save").toString());
-		ui->buttonSaveNQuit->setText(m_settings->value("lineButtonSaveNQuit", "Save and close").toString());
-		ui->buttonOpen->setText(m_settings->value("lineButtonOpen", "Destination folder").toString());
-		ui->buttonSaveFav->setText(m_settings->value("lineButtonSaveFav", "Save (fav)").toString());
-		ui->buttonSaveNQuitFav->setText(m_settings->value("lineButtonSaveNQuitFav", "Save and close (fav)").toString());
-		ui->buttonOpenFav->setText(m_settings->value("lineButtonOpenFav", "Destination folder (fav)").toString());
-	m_settings->endGroup();
-
-	int size = m_settings->beginReadArray("Zoom/Buttons");
-	for (int i = 0; i < size; ++i) {
-		m_settings->setArrayIndex(i);
+	for (int i = 0; i < 10; ++i) {
 		QPushButton *button = nullptr;
-		unsigned int buttonMask = m_settings->value("mask").toUInt();
-		switch (buttonMask & Ui::Type) {
+		ButtonSettings bs = m_settings->value(QString(i)).value<ButtonSettings>();
+		switch (bs.type) {
 			//case 0 : continue;	// Omitted to remove preconfigured buttons in .ui file.
 			case Ui::IsButtonPrev :
 				log("Prev");
 				button = ui->buttonPrev;
-				//if (buttonMask & Ui::IsOnShelf) smallButtons++;
 				break;
 			case Ui::IsButtonNext :
 				log("Next");
 				button = ui->buttonNext;
-				//if (buttonMask & Ui::IsOnShelf) smallButtons++;
 				break;
 			case Ui::IsButtonDetails :
 				log("Details");
-				log(m_settings->value("mask").toUInt());
 				button = ui->buttonDetails;
 				break;
 			case Ui::IsButtonSaveAs :
@@ -304,16 +286,17 @@ void ZoomWindow::configureButtons()
 				continue;
 		}
 
-		if (buttonMask & Ui::IsEnabled) {
-			log(std::to_string((buttonMask & Ui::Placement) >> 16).c_str());
+		if (bs.isEnabled) {
+			log(std::to_string(bs.position).c_str());
+			if (! bs.text.isEmpty()) button->setText(bs.text);	// Might not be worth checking isEmpty().
 			button->parentWidget()->layout()->removeWidget(button);
-			if (buttonMask & Ui::IsInDrawer) {
+			if (bs.isInDrawer) {
 				hasDrawer = true;
-				ui->buttonDrawerLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+				ui->buttonDrawerLayout->insertWidget(bs.position, button);
 			} else {
 				hasShelf = true;
-				ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
-				if (scaleRef == nullptr && buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
+				ui->buttonShelfLayout->insertWidget(bs.position, button);
+				if (scaleRef == nullptr && bs.type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
 				/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 					ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
 					if (scaleRef == nullptr) scaleRef = button;
@@ -333,15 +316,11 @@ void ZoomWindow::configureButtons()
 			}
 		} else delete button;	// Overwrite button presets in .ui file.
 	}
-	m_settings->endArray();
+	m_settings->endGroup();
 	log("---configureButtons---");
 
 
 	if (hasShelf || hasDrawer) {
-		/*if (hasShelf) {
-			if (hasDrawer) scaleRef = ui->buttonShelf->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly);
-		} else delete ui->buttonShelf;*/
-
 		if (hasDrawer) {
 			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
 			if (! hasShelf) {

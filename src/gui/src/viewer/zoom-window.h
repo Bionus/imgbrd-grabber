@@ -14,36 +14,25 @@ namespace Ui
 {
 	class ZoomWindow;
 
+	class ButtonSettings;
 
 	// Button type masks:
 
-	constexpr unsigned int Type				= 0x0000FFFF ;	// Bits 0-15.
+	constexpr unsigned short IsUtilityButton		=          0b00000001 ;	// Nib0.0, bit 0.
+		constexpr unsigned short IsButtonDetails	=  0b0000000100000001 ;	// Nib2.0, bit8.
+		constexpr unsigned short IsButtonOpen		=  0b0000010000000001 ;	// Nib2.2, bit10.
 
-	constexpr unsigned int IsUtilityButton			=          0b00000001 ;	// Nib0.0, bit 0.
-		constexpr unsigned int IsButtonDetails		=  0b0000000100000001 ;	// Nib2.0, bit8.
-		constexpr unsigned int IsButtonOpen		=  0b0000010000000001 ;	// Nib2.2, bit10.
+	constexpr unsigned short IsNavButton			=          0b00000010 ;	// Nib0.1, bit 1.
+		//constexpr unsigned short IsQuit		=  0b0000000100000010 ;	// Nib2.0, bit 8.
+		constexpr unsigned short IsButtonPrev		=  0b0000001000000010 ;	// Nib2.1, bit 9.
+		constexpr unsigned short IsButtonNext		=  0b0000010000000010 ;	// Nib2.2, bit 10.
 
-	constexpr unsigned int IsNavButton			=          0b00000010 ;	// Nib0.1, bit 1.
-		//constexpr unsigned int IsQuit			=  0b0000000100000010 ;	// Nib2.0, bit 8.
-		constexpr unsigned int IsButtonPrev		=  0b0000001000000010 ;	// Nib2.1, bit 9.
-		constexpr unsigned int IsButtonNext		=  0b0000010000000010 ;	// Nib2.2, bit 10.
+	constexpr unsigned short IsSavingButton			=          0b00000100 ;	// Nib0.2, bit 2.
+		constexpr unsigned short IsButtonSave		=  0b0000000100000100 ;	// Nib2.0, bit8.
+		constexpr unsigned short IsButtonSaveAs		=  0b0000001000000100 ;	// Nib2.1, bit9.
+		constexpr unsigned short IsButtonSaveNQuit	=  0b0000010000000100 ;	// Nib2.2, bit10.
 
-	constexpr unsigned int IsSavingButton			=          0b00000100 ;	// Nib0.2, bit 2.
-		constexpr unsigned int IsButtonSave		=  0b0000000100000100 ;	// Nib2.0, bit8.
-		constexpr unsigned int IsButtonSaveAs		=  0b0000001000000100 ;	// Nib2.1, bit9.
-		constexpr unsigned int IsButtonSaveNQuit	=  0b0000010000000100 ;	// Nib2.2, bit10.
-
-	constexpr unsigned int IsFavoriteButton			=          0b00001000 ;	// Nib0.3, bit 3.
-
-
-
-	// Button placement masks:
-
-	constexpr unsigned int IsEnabled			= 0xC0000000 ;	// Bits 31-30.
-		constexpr unsigned int IsOnShelf		= 0x80000000 ;	// Bit 31.
-		constexpr unsigned int IsInDrawer		= 0x40000000 ;	// Bit 30.
-	constexpr unsigned int Placement			= 0x3FFF0000 ;	// Bits 16-29
-		// Placement based on horizontal placement of the set bit. Left is top for vertical layouts.
+	constexpr unsigned short IsFavoriteButton		=          0b00001000 ;	// Nib0.3, bit 3.
 }
 
 
@@ -219,5 +208,46 @@ class ZoomWindow : public QWidget
 		ImageLoader *m_imageLoader;
 		ImageLoaderQueue *m_imageLoaderQueue;
 };
+
+class ButtonSettings
+{
+	public:
+		enum ButtonWindow
+		{
+			Zoom
+		};
+
+		ButtonWindow onWindow;
+		//unsigned int mask = 0;
+		unsigned short type;
+		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
+		QString text;
+		bool isEnabled;
+		bool isInDrawer;
+
+	bool operator < (const ButtonSettings& str) const {return (type < str.type);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
+
+	// https://stackoverflow.com/questions/37333084/how-to-save-custom-type-to-qsettings
+	friend QDataStream & operator << (QDataStream &arch, const ButtonSettings & object)
+	{
+		arch << object.type;
+		arch << object.position;
+		arch << object.text;
+		arch << object.isEnabled;
+		arch << object.isInDrawer;
+		return arch;
+	}
+	friend QDataStream & operator >> (QDataStream &arch, ButtonSettings & object)
+	{
+		arch >> object.type;
+		arch >> object.position;
+		arch >> object.text;
+		arch >> object.isEnabled;
+		arch >> object.isInDrawer;
+		return arch;
+	}
+};
+
+Q_DECLARE_METATYPE(ButtonSettings)
 
 #endif // ZOOM_WINDOW_H

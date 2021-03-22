@@ -331,97 +331,91 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
 	log("+++Reading Zoom/Buttons+++");
-	int size = settings->beginReadArray("Zoom/Buttons");
-	for (int i = 0; i < size; ++i) {
-		settings->setArrayIndex(i);
+	settings->beginGroup("Zoom/Buttons");
+	for (int i = 0; i < 10; ++i) {
 		QCheckBox *checker = nullptr;
 		QSpinBox *spinner = nullptr;
-		unsigned int buttonMask = settings->value("mask").toUInt();
-		switch (buttonMask & Ui::Type) {
+		QLineEdit *liner = nullptr;
+		ButtonSettings button = settings->value(QString(i)).value<ButtonSettings>();
+		switch (button.type) {
 			//case 0 : continue;	Shouldn't happen right now.
 			case Ui::IsButtonPrev :
 				log("Prev");
 				checker = ui->checkButtonPrev;
 				spinner = ui->spinButtonPrev;
+				ui->lineButtonPrev->setText(button.text.isEmpty() ? "<" : button.text);
+				ui->lineButtonPrev->setCursorPosition(0);
 				break;
 			case Ui::IsButtonNext :
 				log("Next");
 				checker = ui->checkButtonNext;
 				spinner = ui->spinButtonNext;
+				ui->lineButtonNext->setText(button.text.isEmpty() ? ">" : button.text);
+				ui->lineButtonNext->setCursorPosition(0);
 				break;
 			case Ui::IsButtonDetails :
 				log("Details");
 				checker = ui->checkButtonDetails;
 				spinner = ui->spinButtonDetails;
+				ui->lineButtonDetails->setText(button.text.isEmpty() ? "More details" : button.text);
+				ui->lineButtonDetails->setCursorPosition(0);
 				break;
 			case Ui::IsButtonSaveAs :
 				log("SaveAs");
 				checker = ui->checkButtonSaveAs;
 				spinner = ui->spinButtonSaveAs;
+				ui->lineButtonSaveAs->setText(button.text.isEmpty() ? "Save as..." : button.text);
+				ui->lineButtonSaveAs->setCursorPosition(0);
 				break;
 			case Ui::IsButtonSave:
 				log("Save");
 				checker = ui->checkButtonSave;
 				spinner = ui->spinButtonSave;
+				ui->lineButtonSave->setText(button.text.isEmpty() ? "Save" : button.text);
+				ui->lineButtonSave->setCursorPosition(0);
 				break;
 			case Ui::IsButtonSaveNQuit :
 				log("SaveNQuit");
 				checker = ui->checkButtonSaveNQuit;
 				spinner = ui->spinButtonSaveNQuit;
+				ui->lineButtonSaveNQuit->setText(button.text.isEmpty() ? "Save and close" : button.text);
+				ui->lineButtonSaveNQuit->setCursorPosition(0);
 				break;
 			case Ui::IsButtonOpen :
 				log("Open");
 				checker = ui->checkButtonOpen;
 				spinner = ui->spinButtonOpen;
+				ui->lineButtonOpen->setText(button.text.isEmpty() ? "Destination folder" : button.text);
+				ui->lineButtonOpen->setCursorPosition(0);
 				break;
 			case Ui::IsButtonSave | Ui::IsFavoriteButton :
 				log("SaveFav");
 				checker = ui->checkButtonSaveFav;
 				spinner = ui->spinButtonSaveFav;
+				ui->lineButtonSaveFav->setText(button.text.isEmpty() ? "Save (fav)" : button.text);
+				ui->lineButtonSaveFav->setCursorPosition(0);
 				break;
 			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
 				log("SaveNQuitFav");
 				checker = ui->checkButtonSaveNQuitFav;
 				spinner = ui->spinButtonSaveNQuitFav;
+				ui->lineButtonSaveNQuitFav->setText(button.text.isEmpty() ? "Save and close (fav)" : button.text);
+				ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 				break;
 			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
 				log("OpenFav");
 				checker = ui->checkButtonOpenFav;
 				spinner = ui->spinButtonOpenFav;
+				ui->lineButtonOpenFav->setText(button.text.isEmpty() ? "Destination folder (fav)" : button.text);
+				ui->lineButtonOpenFav->setCursorPosition(0);
 				break;
+			default :
+				log("OptionsWindow found an unknown button type.");
+				continue;
 		}
-		log( ( "  mask = " + std::to_string(buttonMask) ).c_str() );
-		log( ( "  checkState = " + std::to_string(buttonMask & Ui::IsEnabled ? buttonMask & Ui::IsInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked) ).c_str() );
-		log( ( "  placement = " + std::to_string((buttonMask & Ui::Placement) >> 16 ) ).c_str() );
-		// Ideally not necessary to check IsEnabled. Disabled buttons are only in the list/array to overwrite .ui file default buttons.
-		checker->setCheckState(buttonMask & Ui::IsEnabled ? buttonMask & Ui::IsInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked);
-		//spinner->setValue((buttonMask & ~Ui::IsEnabled) >> 16);
-		spinner->setValue((buttonMask & Ui::Placement) >> 16);
+		checker->setCheckState(button.isEnabled ? button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked);
+		spinner->setValue(button.position);
 	}
-	settings->endArray();
-
-	settings->beginGroup("Zoom/Buttons");
-		ui->lineButtonPrev->setText(settings->value("lineButtonPrev", "<").toString());
-		ui->lineButtonNext->setText(settings->value("lineButtonNext", ">").toString());
-		ui->lineButtonDetails->setText(settings->value("lineButtonDetails", "More details").toString());
-		ui->lineButtonSaveAs->setText(settings->value("lineButtonSaveAs", "Save as...").toString());
-		ui->lineButtonSave->setText(settings->value("lineButtonSave", "Save").toString());
-		ui->lineButtonSaveNQuit->setText(settings->value("lineButtonSaveNQuit", "Save and close").toString());
-		ui->lineButtonOpen->setText(settings->value("lineButtonOpen", "Destination folder").toString());
-		ui->lineButtonSaveFav->setText(settings->value("lineButtonSaveFav", "Save (fav)").toString());
-		ui->lineButtonSaveNQuitFav->setText(settings->value("lineButtonSaveNQuitFav", "Save and close (fav)").toString());
-		ui->lineButtonOpenFav->setText(settings->value("lineButtonOpenFav", "Destination folder (fav)").toString());
-
-		ui->lineButtonPrev->setCursorPosition(0);
-		ui->lineButtonNext->setCursorPosition(0);
-		ui->lineButtonDetails->setCursorPosition(0);
-		ui->lineButtonSaveAs->setCursorPosition(0);
-		ui->lineButtonSave->setCursorPosition(0);
-		ui->lineButtonSaveNQuit->setCursorPosition(0);
-		ui->lineButtonOpen->setCursorPosition(0);
-		ui->lineButtonSaveFav->setCursorPosition(0);
-		ui->lineButtonSaveNQuitFav->setCursorPosition(0);
-		ui->lineButtonOpenFav->setCursorPosition(0);
 	settings->endGroup();
 	log("---Reading Zoom/Buttons---");
 
@@ -1249,103 +1243,69 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
 	log("+++Writing Zoom/Buttons+++");
-	QList<unsigned int> buttons;	// See zoom-window.h for mask format.
-	//unsigned int buttons[9] = {0};	// 10 is the maximum number of buttons. Could be referenced in "zoom-window.h".
-	//QList<QPair<QString, QString>> buttons;
+	QList<ButtonSettings> buttons;
 
-	buttons.append(Ui::IsButtonPrev | ui->spinButtonPrev->value() << 16 | (ui->checkButtonPrev->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonPrev->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonNext | ui->spinButtonNext->value() << 16 | (ui->checkButtonNext->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonNext->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonDetails | ui->spinButtonDetails->value() << 16 | (ui->checkButtonDetails->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonDetails->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonSaveAs | ui->spinButtonSaveAs->value() << 16 | (ui->checkButtonSaveAs->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonSaveAs->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonSave | ui->spinButtonSave->value() << 16 | (ui->checkButtonSave->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonSave->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonSaveNQuit | ui->spinButtonSaveNQuit->value() << 16 | (ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonSaveNQuit->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonOpen | ui->spinButtonOpen->value() << 16 | (ui->checkButtonOpen->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonOpen->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonSave | Ui::IsFavoriteButton | ui->spinButtonSaveFav->value() << 16 | (ui->checkButtonSaveFav->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonSaveFav->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton | ui->spinButtonSaveNQuitFav->value() << 16 | (ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonSaveNQuitFav->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
-	buttons.append(Ui::IsButtonOpen | Ui::IsFavoriteButton | ui->spinButtonOpenFav->value() << 16 | (ui->checkButtonOpenFav->checkState() == Qt::Unchecked
-		? 0
-		: ui->checkButtonOpenFav->checkState() == Qt::Checked
-			? Ui::IsOnShelf
-			: Ui::IsInDrawer
-	));
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonPrev, ui->spinButtonPrev->value(),
+		ui->lineButtonPrev->text(),
+		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonPrev->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonNext, ui->spinButtonNext->value(),
+		ui->lineButtonNext->text(),
+		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonNext->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonDetails, ui->spinButtonDetails->value(),
+		ui->lineButtonDetails->text(),
+		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonDetails->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveAs, ui->spinButtonSaveAs->value(),
+		ui->lineButtonSaveAs->text(),
+		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveAs->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSave, ui->spinButtonSave->value(),
+		ui->lineButtonSave->text(),
+		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSave->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveNQuit, ui->spinButtonSaveNQuit->value(),
+		ui->lineButtonSaveNQuit->text(),
+		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveNQuit->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonOpen, ui->spinButtonOpen->value(),
+		ui->lineButtonOpen->text(),
+		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonOpen->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSave | Ui::IsFavoriteButton, ui->spinButtonSave->value(),
+		ui->lineButtonSaveFav->text(),
+		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveFav->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton, ui->spinButtonSaveNQuit->value(),
+		ui->lineButtonSaveNQuitFav->text(),
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::Checked ? false : true
+	});
+	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonOpen | Ui::IsFavoriteButton, ui->spinButtonOpen->value(),
+		ui->lineButtonOpenFav->text(),
+		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonOpenFav->checkState() == Qt::Checked ? false : true
+	});
 
 	std::sort(buttons.begin(), buttons.end());
 
-	settings->beginWriteArray("Zoom/Buttons");
-	for (int i = 0; i < 10; ++i) {	// 10 is the number of possible buttons. Could be defined in Ui namespace.
-		settings->setArrayIndex(i);
-		settings->setValue("mask", buttons.at(i));
-	}
-	settings->endArray();
-
+	qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
 	settings->beginGroup("Zoom/Buttons");
-		log(ui->lineButtonPrev->text().toStdString().c_str());
-		log(ui->lineButtonNext->text().toStdString().c_str());
-		log(ui->lineButtonDetails->text().toStdString().c_str());
-		log(ui->lineButtonSaveAs->text().toStdString().c_str());
-		log(ui->lineButtonSave->text().toStdString().c_str());
-		log(ui->lineButtonSaveNQuit->text().toStdString().c_str());
-		log(ui->lineButtonOpen->text().toStdString().c_str());
-		log(ui->lineButtonSaveFav->text().toStdString().c_str());
-		log(ui->lineButtonSaveNQuitFav->text().toStdString().c_str());
-		log(ui->lineButtonOpenFav->text().toStdString().c_str());
-
-		settings->setValue("lineButtonPrev", ui->lineButtonPrev->text());
-		settings->setValue("lineButtonNext", ui->lineButtonNext->text());
-		settings->setValue("lineButtonDetails", ui->lineButtonDetails->text());
-		settings->setValue("lineButtonSaveAs", ui->lineButtonSaveAs->text());
-		settings->setValue("lineButtonSave", ui->lineButtonSave->text());
-		settings->setValue("lineButtonSaveNQuit", ui->lineButtonSaveNQuit->text());
-		settings->setValue("lineButtonOpen", ui->lineButtonOpen->text());
-		settings->setValue("lineButtonSaveFav", ui->lineButtonSaveFav->text());
-		settings->setValue("lineButtonSaveNQuitFav", ui->lineButtonSaveNQuitFav->text());
-		settings->setValue("lineButtonOpenFav", ui->lineButtonOpenFav->text());
+	for (int i = 0; i < 10; ++i) {	// 10 is the number of possible buttons. Could be defined in Ui namespace.
+		log(std::to_string(buttons.at(i).type).c_str());
+		settings->setValue(QString(i), QVariant::fromValue(buttons.at(i)));
+	}
 	settings->endGroup();
+
 	log("---Writing Zoom/Buttons---");
 
 
