@@ -234,7 +234,22 @@ ZoomWindow::~ZoomWindow()
 void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++");
-	int size = m_settings->beginReadArray("Zoom/buttons");
+
+	// I'm still trying to find a good way of putting this into the sorted loop.
+	m_settings->beginGroup("Zoom/Buttons");
+		ui->buttonPrev->setText(m_settings->value("lineButtonPrev", "<").toString());
+		ui->buttonNext->setText(m_settings->value("lineButtonNext", ">").toString());
+		ui->buttonDetails->setText(m_settings->value("lineButtonDetails", "More details").toString());
+		ui->buttonSaveAs->setText(m_settings->value("lineButtonSaveAs", "Save as...").toString());
+		ui->buttonSave->setText(m_settings->value("lineButtonSave", "Save").toString());
+		ui->buttonSaveNQuit->setText(m_settings->value("lineButtonSaveNQuit", "Save and close").toString());
+		ui->buttonOpen->setText(m_settings->value("lineButtonOpen", "Destination folder").toString());
+		ui->buttonSaveFav->setText(m_settings->value("lineButtonSaveFav", "Save (fav)").toString());
+		ui->buttonSaveNQuitFav->setText(m_settings->value("lineButtonSaveNQuitFav", "Save and close (fav)").toString());
+		ui->buttonOpenFav->setText(m_settings->value("lineButtonOpenFav", "Destination folder (fav)").toString());
+	m_settings->endGroup();
+
+	int size = m_settings->beginReadArray("Zoom/Buttons");
 	for (int i = 0; i < size; ++i) {
 		m_settings->setArrayIndex(i);
 		QPushButton *button = nullptr;
@@ -288,14 +303,9 @@ void ZoomWindow::configureButtons()
 				log("ZoomWindow::configureButtons found an unknown button type.");
 				continue;
 		}
-		/*if (button == nullptr) {
-			log("ZoomWindow::configureButtons found a nullptr button!");
-			continue;
-		}*/
 
 		if (buttonMask & Ui::IsEnabled) {
 			log(std::to_string((buttonMask & Ui::Placement) >> 16).c_str());
-			log(std::to_string(buttonMask & Ui::Placement >> 16).c_str());
 			button->parentWidget()->layout()->removeWidget(button);
 			if (buttonMask & Ui::IsInDrawer) {
 				hasDrawer = true;
@@ -689,7 +699,10 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	{
 		case SaveButtonState::Save:
 			// Uses default tool tip.
-			button->setText(fav ? tr("Save (fav)") : tr("Save"));
+			button->setText(fav
+				? tr(m_settings->value("Zoom/lineButtonSaveFav->text()", "Save (fav)").toString().toStdString().c_str())
+				: tr(m_settings->value("Zoom/lineButtonSave->text()", "Save").toString().toStdString().c_str())
+			);
 			break;
 
 		case SaveButtonState::Saving:

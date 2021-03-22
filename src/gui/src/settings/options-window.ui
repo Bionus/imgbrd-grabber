@@ -2011,6 +2011,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2030,20 +2033,33 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_20">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonPrev">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Previous media entry</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
+             <property name="wrapping">
+              <bool>false</bool>
              </property>
-             <property name="text">
-              <string>Prev</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="showGroupSeparator" stdset="0">
+              <bool>false</bool>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
              </property>
             </widget>
            </item>
@@ -2061,27 +2077,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonPrev">
+            <widget class="QLineEdit" name="lineButtonPrev">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="wrapping">
-              <bool>false</bool>
+             <property name="text">
+              <string>&lt;</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-             </property>
-             <property name="showGroupSeparator" stdset="0">
-              <bool>false</bool>
-             </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2111,6 +2121,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2130,17 +2143,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_22">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonNext">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Next media entry</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Next</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>9</number>
              </property>
             </widget>
            </item>
@@ -2158,21 +2184,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonNext">
+            <widget class="QLineEdit" name="lineButtonNext">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>&gt;</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2202,6 +2228,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2221,17 +2250,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_23">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonDetails">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>View media details</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Details</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -2249,21 +2291,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonDetails">
+            <widget class="QLineEdit" name="lineButtonDetails">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>More details</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2293,6 +2335,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2312,17 +2357,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_30">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonSaveAs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Save file with specified path</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Save As...</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>8</number>
              </property>
             </widget>
            </item>
@@ -2340,21 +2398,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveAs">
+            <widget class="QLineEdit" name="lineButtonSaveAs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Save as...</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2384,6 +2442,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2403,17 +2464,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_31">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonSave">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Save file to usual path</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Save</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>2</number>
              </property>
             </widget>
            </item>
@@ -2431,21 +2505,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSave">
+            <widget class="QLineEdit" name="lineButtonSave">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Save</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2475,6 +2549,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2494,17 +2571,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_32">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonSaveNQuit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Save file to usual path and close the viewer window</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Save and close</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2522,21 +2612,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveNQuit">
+            <widget class="QLineEdit" name="lineButtonSaveNQuit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Save and close</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2566,6 +2656,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2585,17 +2678,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_33">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonOpen">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Open usual save path in file browser</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Open</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>4</number>
              </property>
             </widget>
            </item>
@@ -2613,21 +2719,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonOpen">
+            <widget class="QLineEdit" name="lineButtonOpen">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Destination folder</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2658,7 +2764,7 @@
               <string>Enable</string>
              </property>
              <property name="checked">
-              <bool>false</bool>
+              <enum>Qt::PartiallyChecked</enum>
              </property>
              <property name="tristate">
               <bool>true</bool>
@@ -2679,17 +2785,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_34">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonSaveFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Save file to favourite path</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Save (fav)</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>2</number>
              </property>
             </widget>
            </item>
@@ -2707,21 +2826,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveFav">
+            <widget class="QLineEdit" name="lineButtonSaveFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Save (fav)</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2751,6 +2870,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <enum>Qt::PartiallyChecked</enum>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2770,17 +2892,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_35">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonSaveNQuitFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Save file to favourite path and close the viewer window</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Save and close (fav)</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2798,21 +2933,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveNQuitFav">
+            <widget class="QLineEdit" name="lineButtonSaveNQuitFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Save and close (fav)</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2842,6 +2977,9 @@
              <property name="text">
               <string>Enable</string>
              </property>
+             <property name="checked">
+              <enum>Qt::PartiallyChecked</enum>
+             </property>
              <property name="tristate">
               <bool>true</bool>
              </property>
@@ -2861,17 +2999,30 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_44">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
+            <widget class="QSpinBox" name="spinButtonOpenFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Open favourite save path in file browser</string>
+              <string>Ascending from left to right</string>
              </property>
-             <property name="text">
-              <string>Open (fav)</string>
+             <property name="correctionMode">
+              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             </property>
+             <property name="suffix">
+              <string/>
+             </property>
+             <property name="prefix">
+              <string>Position: </string>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="value">
+              <number>4</number>
              </property>
             </widget>
            </item>
@@ -2889,21 +3040,21 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonOpenFav">
+            <widget class="QLineEdit" name="lineButtonOpenFav">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="toolTip">
-              <string>Ascending from left to right</string>
+              <string>Button display text</string>
              </property>
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+             <property name="text">
+              <string>Destination folder (fav)</string>
              </property>
-             <property name="suffix">
-              <string>th</string>
-             </property>
-             <property name="prefix">
-              <string>Position: </string>
-             </property>
-             <property name="maximum">
-              <number>9</number>
+             <property name="cursorPosition">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -4007,24 +4158,34 @@
   <tabstop>checkRememberGeometry</tabstop>
   <tabstop>checkButtonPrev</tabstop>
   <tabstop>spinButtonPrev</tabstop>
+  <tabstop>lineButtonPrev</tabstop>
   <tabstop>checkButtonNext</tabstop>
   <tabstop>spinButtonNext</tabstop>
+  <tabstop>lineButtonNext</tabstop>
   <tabstop>checkButtonDetails</tabstop>
   <tabstop>spinButtonDetails</tabstop>
+  <tabstop>lineButtonDetails</tabstop>
   <tabstop>checkButtonSaveAs</tabstop>
   <tabstop>spinButtonSaveAs</tabstop>
+  <tabstop>lineButtonSaveAs</tabstop>
   <tabstop>checkButtonSave</tabstop>
   <tabstop>spinButtonSave</tabstop>
+  <tabstop>lineButtonSave</tabstop>
   <tabstop>checkButtonSaveNQuit</tabstop>
   <tabstop>spinButtonSaveNQuit</tabstop>
+  <tabstop>lineButtonSaveNQuit</tabstop>
   <tabstop>checkButtonOpen</tabstop>
   <tabstop>spinButtonOpen</tabstop>
+  <tabstop>lineButtonOpen</tabstop>
   <tabstop>checkButtonSaveFav</tabstop>
   <tabstop>spinButtonSaveFav</tabstop>
+  <tabstop>lineButtonSaveFav</tabstop>
   <tabstop>checkButtonSaveNQuitFav</tabstop>
   <tabstop>spinButtonSaveNQuitFav</tabstop>
+  <tabstop>lineButtonSaveNQuitFav</tabstop>
   <tabstop>checkButtonOpenFav</tabstop>
   <tabstop>spinButtonOpenFav</tabstop>
+  <tabstop>lineButtonOpenFav</tabstop>
   <tabstop>lineColoringArtists</tabstop>
   <tabstop>buttonColoringArtistsColor</tabstop>
   <tabstop>buttonColoringArtistsFont</tabstop>

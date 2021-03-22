@@ -330,8 +330,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
-	log("+++Reading Zoom/buttons+++");
-	int size = settings->beginReadArray("Zoom/buttons");
+	log("+++Reading Zoom/Buttons+++");
+	int size = settings->beginReadArray("Zoom/Buttons");
 	for (int i = 0; i < size; ++i) {
 		settings->setArrayIndex(i);
 		QCheckBox *checker = nullptr;
@@ -398,7 +398,20 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		spinner->setValue((buttonMask & ~Ui::IsEnabled) >> 16);
 	}
 	settings->endArray();
-	log("---Reading Zoom/buttons---");
+
+	settings->beginGroup("Zoom/Buttons");
+		ui->lineButtonPrev->setText(settings->value("lineButtonPrev", "<").toString());
+		ui->lineButtonNext->setText(settings->value("lineButtonNext", ">").toString());
+		ui->lineButtonDetails->setText(settings->value("lineButtonDetails", "More details").toString());
+		ui->lineButtonSaveAs->setText(settings->value("lineButtonSaveAs", "Save as...").toString());
+		ui->lineButtonSave->setText(settings->value("lineButtonSave", "Save").toString());
+		ui->lineButtonSaveNQuit->setText(settings->value("lineButtonSaveNQuit", "Save and close").toString());
+		ui->lineButtonOpen->setText(settings->value("lineButtonOpen", "Destination folder").toString());
+		ui->lineButtonSaveFav->setText(settings->value("lineButtonSaveFav", "Save (fav)").toString());
+		ui->lineButtonSaveNQuitFav->setText(settings->value("lineButtonSaveNQuitFav", "Save and close (fav)").toString());
+		ui->lineButtonOpenFav->setText(settings->value("lineButtonOpenFav", "Destination folder (fav)").toString());
+	settings->endGroup();
+	log("---Reading Zoom/Buttons---");
 
 
 	settings->beginGroup("Coloring");
@@ -1223,8 +1236,10 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
+	log("+++Writing Zoom/Buttons+++");
 	QList<unsigned int> buttons;	// See zoom-window.h for mask format.
 	//unsigned int buttons[9] = {0};	// 10 is the maximum number of buttons. Could be referenced in "zoom-window.h".
+	//QList<QPair<QString, QString>> buttons;
 
 	buttons.append(Ui::IsButtonPrev | ui->spinButtonPrev->value() << 16 | (ui->checkButtonPrev->checkState() == Qt::Unchecked
 		? 0
@@ -1289,12 +1304,27 @@ void OptionsWindow::save()
 
 	std::sort(buttons.begin(), buttons.end());
 
-	settings->beginWriteArray("Zoom/buttons");
+	settings->beginWriteArray("Zoom/Buttons");
 	for (int i = 0; i < 10; ++i) {	// 10 is the number of possible buttons. Could be defined in Ui namespace.
 		settings->setArrayIndex(i);
 		settings->setValue("mask", buttons.at(i));
 	}
 	settings->endArray();
+
+	settings->beginGroup("Zoom/Buttons");
+		log(ui->lineButtonPrev->text().toStdString().c_str());
+		settings->setValue("lineButtonPrev", ui->lineButtonPrev->text());
+		settings->setValue("lineButtonNext", ui->lineButtonNext->text());
+		settings->setValue("lineButtonDetails", ui->lineButtonDetails->text());
+		settings->setValue("lineButtonSaveAs", ui->lineButtonSaveAs->text());
+		settings->setValue("lineButtonSave", ui->lineButtonSave->text());
+		settings->setValue("lineButtonSaveNQuit", ui->lineButtonSaveNQuit->text());
+		settings->setValue("lineButtonOpen", ui->lineButtonOpen->text());
+		settings->setValue("lineButtonSaveFav", ui->lineButtonSaveFav->text());
+		settings->setValue("lineButtonSaveNQuitFav", ui->lineButtonSaveNQuitFav->text());
+		settings->setValue("lineButtonOpenFav", ui->lineButtonOpenFav->text());
+	settings->endGroup();
+	log("---Writing Zoom/Buttons---");
 
 
 	settings->beginGroup("Coloring");
