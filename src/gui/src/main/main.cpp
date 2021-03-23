@@ -46,6 +46,7 @@
 	#include <QMessageBox>
 	#include "android.h"
 #endif
+#include "viewer/zoom-window.h"	// Needed for ButtonSettings registration to work.
 
 #ifdef WIN_FILE_PROPS
 	#include "windows-file-property.h"
@@ -65,6 +66,7 @@ int main(int argc, char *argv[])
 	app.setOrganizationDomain("bionus.fr.cr");
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
+	qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY
