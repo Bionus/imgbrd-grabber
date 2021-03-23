@@ -260,10 +260,13 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave :
 				log("Save");
 				button = ui->buttonSave;
+				buttonSaveText = bs.text.replace("&", "&&").toStdString();
+				hasButtonSave = true;
 				break;
 			case Ui::IsButtonSaveNQuit :
 				log("SaveNQuit");
 				button = ui->buttonSaveNQuit;
+				hasButtonSaveNQuit = true;
 				break;
 			case Ui::IsButtonOpen :
 				log("Open");
@@ -272,10 +275,13 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave | Ui::IsFavoriteButton :
 				log("SaveFav");
 				button = ui->buttonSaveFav;
+				buttonSaveFavText = bs.text.replace("&", "&&").toStdString();
+				hasButtonSaveFav = true;
 				break;
 			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
 				log("SaveNQuitFav");
 				button = ui->buttonSaveNQuitFav;
+				hasButtonSaveNQuitFav = true;
 				break;
 			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
 				log("OpenFav");
@@ -288,7 +294,7 @@ void ZoomWindow::configureButtons()
 
 		if (bs.isEnabled) {
 			log(std::to_string(bs.position).c_str());
-			if (! bs.text.isEmpty()) button->setText(bs.text);	// Might not be worth checking isEmpty().
+			if (! bs.text.isEmpty()) button->setText(bs.text.replace("&", "&&"));	// Might not be worth checking isEmpty().
 			button->parentWidget()->layout()->removeWidget(button);
 			if (bs.isInDrawer) {
 				hasDrawer = true;
@@ -640,10 +646,10 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 	if (fav) {
 		m_saveButtonStateFav = state;
-		if (m_settings->value("Zoom/checkButtonSaveNQuitFav", Qt::Unchecked) != Qt::Unchecked) button = ui->buttonSaveNQuitFav;	// These would ideally be in the comment category below.
+		if (hasButtonSaveNQuitFav) button = ui->buttonSaveNQuitFav;	// These would ideally be in the comment category below.
 	} else {
 		m_saveButtonState = state;
-		if (m_settings->value("Zoom/checkButtonSaveNQuit", Qt::Unchecked) != Qt::Unchecked) button = ui->buttonSaveNQuit;	// These would ideally be in the comment category below.
+		if (hasButtonSaveNQuit) button = ui->buttonSaveNQuit;	// These would ideally be in the comment category below.
 	}
 
 	// Update "Save and close" button label:
@@ -670,18 +676,15 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 	// Update "Save" button label:
 	button = nullptr;
-	if (fav && m_settings->value("Zoom/checkButtonSaveFav", Qt::Unchecked) != Qt::Unchecked) button = ui->buttonSaveFav;
-	else if (! fav && m_settings->value("Zoom/checkButtonSave", Qt::Unchecked) != Qt::Unchecked) button = ui->buttonSave;
+	if (fav && hasButtonSaveFav) button = ui->buttonSaveFav;
+	else if (! fav && hasButtonSave) button = ui->buttonSave;
 	else return;
 
 	switch (state)
 	{
 		case SaveButtonState::Save:
 			// Uses default tool tip.
-			button->setText(fav
-				? tr(m_settings->value("Zoom/lineButtonSaveFav->text()", "Save (fav)").toString().toStdString().c_str())
-				: tr(m_settings->value("Zoom/lineButtonSave->text()", "Save").toString().toStdString().c_str())
-			);
+			button->setText( fav ? tr(buttonSaveFavText.c_str()) : tr(buttonSaveText.c_str()) );
 			break;
 
 		case SaveButtonState::Saving:

@@ -331,12 +331,14 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
 	log("+++Reading Zoom/Buttons+++");
+	//qRegisterMetaType<ButtonSettings>("ButtonSettings");
+	qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
 	settings->beginGroup("Zoom/Buttons");
 	for (int i = 0; i < 10; ++i) {
 		QCheckBox *checker = nullptr;
 		QSpinBox *spinner = nullptr;
 		QLineEdit *liner = nullptr;
-		ButtonSettings button = settings->value(QString(i)).value<ButtonSettings>();
+		ButtonSettings button = settings->value(QString::number(i, 10)).value<ButtonSettings>();
 		switch (button.type) {
 			//case 0 : continue;	Shouldn't happen right now.
 			case Ui::IsButtonPrev :
@@ -410,7 +412,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 				ui->lineButtonOpenFav->setCursorPosition(0);
 				break;
 			default :
-				log("OptionsWindow found an unknown button type.");
+				log( ( "OptionsWindow found an unknown button type: " + std::to_string(button.type) ).c_str() );
 				continue;
 		}
 		checker->setCheckState(button.isEnabled ? button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked);
@@ -1298,7 +1300,7 @@ void OptionsWindow::save()
 
 	std::sort(buttons.begin(), buttons.end());
 
-	qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
+	//qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
 	settings->beginGroup("Zoom/Buttons");
 	for (int i = 0; i < 10; ++i) {	// 10 is the number of possible buttons. Could be defined in Ui namespace.
 		log(std::to_string(buttons.at(i).type).c_str());
@@ -1307,6 +1309,7 @@ void OptionsWindow::save()
 	settings->endGroup();
 
 	log("---Writing Zoom/Buttons---");
+	//settings->sync();
 
 
 	settings->beginGroup("Coloring");
