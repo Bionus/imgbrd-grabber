@@ -120,8 +120,10 @@ void DownloadsTab::batchDownloadsTableContextMenu(const QPoint &pos)
 	menu->addAction(QIcon(":/images/icons/arrow-up.png"), tr("Move up"), this, SLOT(batchMoveUp()));
 	menu->addAction(QIcon(":/images/icons/arrow-down.png"), tr("Move down"), this, SLOT(batchMoveDown()));
 	menu->addAction(QIcon(":/images/icons/arrow-bottom.png"), tr("Move to bottom"), this, SLOT(batchMoveToBottom()));
-	menu->addSeparator();
-	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(batchClearSelGroups()));
+	if (!m_getAll) {
+		menu->addSeparator();
+		menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(batchClearSelGroups()));
+	}
 	menu->exec(QCursor::pos());
 }
 
@@ -196,6 +198,10 @@ void DownloadsTab::batchClearSelUniques()
 }
 void DownloadsTab::batchRemoveGroups(QList<int> rows)
 {
+	if (m_getAll) {
+		return;
+	}
+
 	std::sort(rows.begin(), rows.end());
 
 	int rem = 0;
@@ -211,6 +217,10 @@ void DownloadsTab::batchRemoveGroups(QList<int> rows)
 }
 void DownloadsTab::batchRemoveUniques(QList<int> rows)
 {
+	if (m_getAll) {
+		return;
+	}
+
 	std::sort(rows.begin(), rows.end());
 
 	int rem = 0;
