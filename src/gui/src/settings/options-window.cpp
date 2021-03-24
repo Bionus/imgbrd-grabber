@@ -418,6 +418,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	settings->endGroup();
 	log("---Reading Zoom/Buttons---");
 
+	QObject::connect(ui->spinButtonPrev,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonNext,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonDetails,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonSaveAs,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonSave,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonSaveNQuit,	static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonOpen,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonSaveFav,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonSaveNQuitFav,	static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	QObject::connect(ui->spinButtonOpenFav,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -1409,4 +1420,65 @@ void OptionsWindow::save()
 
 	m_profile->sync();
 	emit settingsChanged();
+}
+
+void OptionsWindow::checkSpinners(int match) {
+	QSpinBox *matches[9] = {nullptr};
+	QSpinBox **tester = matches - 1;
+
+	QSpinBox *all[10] = {
+		ui->spinButtonPrev,
+		ui->spinButtonNext,
+		ui->spinButtonDetails,
+		ui->spinButtonSaveAs,
+		ui->spinButtonSave,
+		ui->spinButtonSaveNQuit,
+		ui->spinButtonOpen,
+		ui->spinButtonSaveFav,
+		ui->spinButtonSaveNQuitFav,
+		ui->spinButtonOpenFav
+	};
+
+	unsigned short code = 0;
+
+	for (unsigned short i = 0; i < sizeof(all)/sizeof(all[0]); i++) {
+		//if ((*tester)->value() == match) {
+		if (all[i]->value() == match) {
+			*++tester = all[i];
+			if (all[i] == sender()) code = all[i]->palette().color(QWidget::backgroundRole()).blue();
+		}
+	}
+	if (matches == nullptr) return;	// Just in case.
+
+
+	// Best source I could find...
+	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
+	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
+
+	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
+	/*	"background-color:rgb(" + std::to_string(defBack.red()) + "," + std::to_string(defBack.green()) + "," + std::to_string(defBack.blue()) +
+		";color:rgb(" + std::to_string(defText.red()) + "," + std::to_string(defText.green()) + "," + std::to_string(defText.blue())
+	);*/
+
+	for (tester = &all[0]; tester != &all[10]; tester++) {
+		//if (*tester == nullptr) break;	// Shouldn't be necessary.
+		if ((*tester)->palette().color(QWidget::backgroundRole()).blue() == code) (*tester)->setStyleSheet(defStyle.c_str());
+	}
+
+	if (matches[1] == nullptr) return;
+
+
+	QColor alarmBack(223, 214, 33);
+	//QColor alarmText(0, 0, 0);
+	code = alarmBack.blue() + match;	// Consider increasing this to allow for visual distinction of groups.
+
+	std::string alarmStyle("background-color: #dfd6" + std::to_string(code) + "; color: black;");
+
+	for (tester = &matches[0]; tester != &matches[9]; tester++) {
+		if (*tester == nullptr) break;
+		(*tester)->setStyleSheet(alarmStyle.c_str());
+	}
+
+	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
+	matches[0]->parentWidget()->show();
 }

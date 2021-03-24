@@ -254,6 +254,6 @@ class ButtonSettings
 	}
 };
 
-Q_DECLARE_METATYPE(ButtonSettings);
+Q_DECLARE_METATYPE(ButtonSettings)
 
 #endif // ZOOM_WINDOW_H
