@@ -48,6 +48,10 @@ QString logToHtml(const QString &msg)
 	int levelEnd = msg.indexOf(']', timeEnd + 1);
 	QString level = msg.mid(timeEnd + 2, levelEnd - timeEnd - 2);
 
+	// Escape HTML tags
+	htmlMsg.replace("<", "&lt;");
+	htmlMsg.replace(">", "&gt;");
+
 	// Level color
 	static const QMap<QString, QString> colors
 	{
