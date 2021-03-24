@@ -1422,11 +1422,14 @@ void OptionsWindow::save()
 	emit settingsChanged();
 }
 
-void OptionsWindow::checkSpinners(int match) {
-	QSpinBox *matches[9] = {nullptr};
-	QSpinBox **tester = matches - 1;
-
-	QSpinBox *all[10] = {
+void OptionsWindow::checkSpinners(int newVal) {
+	constexpr unsigned short maxSpinners = 10;
+	QSpinBox *numberMatches[maxSpinners] = {nullptr};
+	QSpinBox **numberTester = numberMatches - 1;
+	QSpinBox *colorMatches[maxSpinners] = {nullptr};
+	QSpinBox **colorTester = colorMatches - 1;
+	// This could probably be eliminated if they were in the same parent widget or had a unique class.
+	QSpinBox *all[maxSpinners] = {
 		ui->spinButtonPrev,
 		ui->spinButtonNext,
 		ui->spinButtonDetails,
@@ -1439,46 +1442,37 @@ void OptionsWindow::checkSpinners(int match) {
 		ui->spinButtonOpenFav
 	};
 
-	unsigned short code = 0;
-
-	for (unsigned short i = 0; i < sizeof(all)/sizeof(all[0]); i++) {
-		//if ((*tester)->value() == match) {
-		if (all[i]->value() == match) {
-			*++tester = all[i];
-			if (all[i] == sender()) code = all[i]->palette().color(QWidget::backgroundRole()).blue();
-		}
+	unsigned short code = qobject_cast<QSpinBox*>(sender())->palette().color(QWidget::backgroundRole()).green();
+	for (unsigned short i = 0; i < maxSpinners; i++) {
+		if (all[i]->value() == newVal) *++numberTester = all[i];
+		if (all[i]->palette().color(QWidget::backgroundRole()).green() == code) *++colorTester = all[i];
 	}
-	if (matches == nullptr) return;	// Just in case.
 
 
-	// Best source I could find...
+	// Reset alarm styles that are no longer relevant. There may be a better source than lineButitonPrev.
 	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
 	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
-
 	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
-	/*	"background-color:rgb(" + std::to_string(defBack.red()) + "," + std::to_string(defBack.green()) + "," + std::to_string(defBack.blue()) +
-		";color:rgb(" + std::to_string(defText.red()) + "," + std::to_string(defText.green()) + "," + std::to_string(defText.blue())
-	);*/
 
-	for (tester = &all[0]; tester != &all[10]; tester++) {
-		//if (*tester == nullptr) break;	// Shouldn't be necessary.
-		if ((*tester)->palette().color(QWidget::backgroundRole()).blue() == code) (*tester)->setStyleSheet(defStyle.c_str());
+	if (colorMatches[2] == nullptr && colorMatches[1] != nullptr) {	// Reset the previous value's style match if there is only one.
+		if (numberMatches[1] != nullptr) colorMatches[0]->setStyleSheet(defStyle.c_str());	// Because they may not be in order.
+		colorMatches[1]->setStyleSheet(defStyle.c_str());
+	}
+	if (numberMatches[1] == nullptr) {	// Alarm style will not be set for this new value.
+		colorMatches[0]->setStyleSheet(defStyle.c_str());
+		return;
 	}
 
-	if (matches[1] == nullptr) return;
 
+	// Set alarm style on spinners with new value.
+	QColor alarmBack(255, (100 - 255) * (static_cast<float>(newVal) / maxSpinners) + 255, 0);	// Green normalised between 100 and 255.
+	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-	QColor alarmBack(223, 214, 33);
-	//QColor alarmText(0, 0, 0);
-	code = alarmBack.blue() + match;	// Consider increasing this to allow for visual distinction of groups.
-
-	std::string alarmStyle("background-color: #dfd6" + std::to_string(code) + "; color: black;");
-
-	for (tester = &matches[0]; tester != &matches[9]; tester++) {
-		if (*tester == nullptr) break;
-		(*tester)->setStyleSheet(alarmStyle.c_str());
+	for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
+		if (*numberTester == nullptr) break;
+		(*numberTester)->setStyleSheet(alarmStyle.c_str());
 	}
 
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
-	matches[0]->parentWidget()->show();
+	numberMatches[0]->parentWidget()->show();	// This could be hard coded.
 }
