@@ -42,7 +42,7 @@ void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 }
 
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
-	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), this), parent)
+	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), parent), parent)
 {}
 
 OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget *parent)
