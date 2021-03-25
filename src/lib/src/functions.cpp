@@ -637,6 +637,7 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 
 	// Fix parameters
 	const QString sep = QStringLiteral("/");
+	maxLength = maxLength == 0 ? 255 : maxLength;
 	QString filename = path + fn;
 
 	// Divide filename
@@ -656,14 +657,13 @@ QString fixFilenameLinux(const QString &fn, const QString &path, int maxLength, 
 		cutStringToUtf8Bytes(part, 255);
 	}
 
-	// Join parts back
-	QString dirpart = parts.join(sep);
-	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
-
 	// A filename cannot exceed 255 bytes
 	const int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
 	cutStringToUtf8Bytes(file, maxLength - extlen);
-	cutStringToUtf8Bytes(file, 255 - extlen);
+
+	// Join parts back
+	QString dirpart = parts.join(sep);
+	filename = (dirpart.isEmpty() ? QString() : dirpart + (!fn.isEmpty() ? sep : QString())) + file;
 
 	// Get separation between filename and path
 	int index = -1;
