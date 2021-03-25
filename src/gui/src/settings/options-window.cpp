@@ -305,6 +305,17 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
+
+	settings->beginGroup("Main/Shortcuts");
+		ui->keyMainQuit->setKeySequence(settings->value("keyMainQuit", QKeySequence(Qt::CTRL + Qt::Key_Q)).toString());
+		ui->keyMainFocusSearch->setKeySequence(settings->value("keyMainFocusSearch", QKeySequence(Qt::Key_S)).toString());
+		ui->keyMainCloseTab->setKeySequence(settings->value("keyMainCloseTab", QKeySequence(Qt::CTRL + Qt::Key_W)).toString());
+		ui->keyMainNewTab->setKeySequence(settings->value("keyMainNewTab", QKeySequence(Qt::CTRL + Qt::Key_T)).toString());
+		ui->keyMainPrevTab->setKeySequence(settings->value("keyMainPrevTab", QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab)).toString());
+		ui->keyMainNextTab->setKeySequence(settings->value("keyMainNextTab", QKeySequence(Qt::CTRL + Qt::Key_Tab)).toString());
+		ui->keyMainBrowseSave->setKeySequence(settings->value("keyMainBrowseSave", QKeySequence(Qt::CTRL + Qt::Key_O)).toString());
+	settings->endGroup();
+
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
 	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", false).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
@@ -326,6 +337,23 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
+
+	settings->beginGroup("Zoom/Shortcuts");
+		ui->keyViewerQuit->setKeySequence(settings->value("keyViewerQuit", QKeySequence(Qt::Key_Q)).toString());
+		ui->keyViewerPrev->setKeySequence(settings->value("keyViewerPrev", QKeySequence(Qt::Key_Left)).toString());
+		ui->keyViewerNext->setKeySequence(settings->value("keyViewerNext", QKeySequence(Qt::Key_Right)).toString());
+		ui->keyViewerDetails->setKeySequence(settings->value("keyViewerDetails", QKeySequence(Qt::Key_D)).toString());
+		ui->keyViewerSaveAs->setKeySequence(settings->value("keyViewerSaveAs", QKeySequence(Qt::SHIFT + Qt::Key_S)).toString());
+		ui->keyViewerSave->setKeySequence(settings->value("keyViewerSave", QKeySequence(Qt::Key_S)).toString());
+		ui->keyViewerSaveNQuit->setKeySequence(settings->value("keyViewerSaveNQuit", QKeySequence(Qt::Key_W)).toString());
+		ui->keyViewerOpen->setKeySequence(settings->value("keyViewerOpen", QKeySequence(Qt::Key_T)).toString());
+		ui->keyViewerSaveFav->setKeySequence(settings->value("keyViewerSaveFav", QKeySequence(Qt::ALT + Qt::Key_S)).toString());
+		ui->keyViewerSaveNQuitFav->setKeySequence(settings->value("keyViewerSaveNQuitFav", QKeySequence(Qt::ALT + Qt::Key_W)).toString());
+		ui->keyViewerOpenFav->setKeySequence(settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_T)).toString());
+		ui->keyViewerToggleSlideshow->setKeySequence(settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString());
+		ui->keyViewerToggleFullscreen->setKeySequence(settings->value("keyViewerToggleFullscreen", QKeySequence(Qt::Key_F)).toString());
+		ui->keyViewerDataToClipboard->setKeySequence(settings->value("keyViewerDataToClipboard", QKeySequence(Qt::CTRL + Qt::Key_C)).toString());
+	settings->endGroup();
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -1124,6 +1152,17 @@ void OptionsWindow::save()
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
 	settings->setValue("slideshow", ui->spinSlideshow->value());
+
+	settings->beginGroup("Main/Shortcuts");
+		settings->setValue("keyMainQuit", ui->keyMainQuit->keySequence().toString());
+		settings->setValue("keyMainFocusSearch", ui->keyMainFocusSearch->keySequence().toString());
+		settings->setValue("keyMainCloseTab", ui->keyMainCloseTab->keySequence().toString());
+		settings->setValue("keyMainNewTab", ui->keyMainNewTab->keySequence().toString());
+		settings->setValue("keyMainPrevTab", ui->keyMainPrevTab->keySequence().toString());
+		settings->setValue("keyMainNextTab", ui->keyMainNextTab->keySequence().toString());
+		settings->setValue("keyMainBrowseSave", ui->keyMainBrowseSave->keySequence().toString());
+	settings->endGroup();
+
 	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
 	settings->setValue("resultsFixedWidthLayout", ui->checkResultsFixedWidthLayout->isChecked());
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
@@ -1145,6 +1184,23 @@ void OptionsWindow::save()
 	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
+
+	settings->beginGroup("Zoom/Shortcuts");
+		settings->setValue("keyViewerQuit", ui->keyViewerQuit->keySequence().toString());
+		settings->setValue("keyViewerPrev", ui->keyViewerPrev->keySequence().toString());
+		settings->setValue("keyViewerNext", ui->keyViewerNext->keySequence().toString());
+		settings->setValue("keyViewerDetails", ui->keyViewerDetails->keySequence().toString());
+		settings->setValue("keyViewerSaveAs", ui->keyViewerSaveAs->keySequence().toString());
+		settings->setValue("keyViewerSave", ui->keyViewerSave->keySequence().toString());
+		settings->setValue("keyViewerSaveNQuit", ui->keyViewerSaveNQuit->keySequence().toString());
+		settings->setValue("keyViewerOpen", ui->keyViewerOpen->keySequence().toString());
+		settings->setValue("keyViewerSaveFav", ui->keyViewerSaveFav->keySequence().toString());
+		settings->setValue("keyViewerSaveNQuitFav", ui->keyViewerSaveNQuitFav->keySequence().toString());
+		settings->setValue("keyViewerOpenFav", ui->keyViewerOpenFav->keySequence().toString());
+		settings->setValue("keyViewerToggleSlideshow", ui->keyViewerToggleSlideshow->keySequence().toString());
+		settings->setValue("keyViewerToggleFullscreen", ui->keyViewerToggleFullscreen->keySequence().toString());
+		settings->setValue("keyViewerDataToClipboard", ui->keyViewerDataToClipboard->keySequence().toString());
+	settings->endGroup();
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
