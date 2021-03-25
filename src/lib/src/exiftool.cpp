@@ -10,6 +10,26 @@ Exiftool::Exiftool(QObject *parent)
 }
 
 
+QString Exiftool::version(int msecs)
+{
+	QProcess process;
+	process.start("exiftool", { "-ver" });
+
+	if (!process.waitForStarted(msecs)) {
+		return "";
+	}
+	if (!process.waitForFinished(msecs)) {
+		process.kill();
+		return "";
+	}
+	if (process.exitCode() != 0) {
+		return "";
+	}
+
+	return QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
+}
+
+
 bool Exiftool::start(int msecs)
 {
 	if (m_process.state() != QProcess::NotRunning) {

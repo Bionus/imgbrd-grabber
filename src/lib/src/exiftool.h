@@ -14,6 +14,8 @@ class Exiftool : public QObject
 	public:
 		explicit Exiftool(QObject *parent = nullptr);
 
+		static QString version(int msecs = 30000);
+
 	public slots:
 		bool start(int msecs = 30000);
 		bool setMetadata(const QString &file, const QMap<QString, QString> &metadata, int msecs = 30000);

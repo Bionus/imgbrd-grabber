@@ -5,15 +5,18 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFontDialog>
+#include <QFutureWatcher>
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QSignalMapper>
 #include <QSqlDatabase>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QtConcurrent>
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
+#include "exiftool.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
 #include "helpers.h"
@@ -139,6 +142,19 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	#endif
 
 	// Metadata using Exiftool
+	QFuture<QString> future = QtConcurrent::run([=]() {
+		return Exiftool::version();
+	});
+	auto *watcher = new QFutureWatcher<QString>(this);
+	connect(watcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = future.result();
+		ui->labelMetadataExiftoolVersion->setText(version.isEmpty() ? tr("exiftool not found") : version);
+		if (version.isEmpty()) {
+			ui->labelMetadataExiftoolVersion->setStyleSheet("color: red");
+		}
+	});
+	watcher->setFuture(future);
+
 	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
 	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
 	for (const auto &pair : metadataExiftool) {
