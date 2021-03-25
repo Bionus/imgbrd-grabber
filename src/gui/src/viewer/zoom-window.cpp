@@ -235,6 +235,21 @@ void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++");
 
+	/*//if (defaultButtonLayout) {
+	if (m_settings->value("Zoom/defaultButtonLayout", true).toBool()) {
+		log("Loading default button layout.");
+		hasButtonSave = true;
+		hasButtonSaveNQuit = true;
+		hasButtonSaveFav = true;
+		hasButtonSaveNQuitFav = true;
+		hasShelf = true;
+		hasDrawer = true;
+		scaleRef = ui->buttonDetails;
+		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
+		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+		return;
+	}*/
+
 	m_settings->beginGroup("Zoom/Buttons");
 	for (int i = 0; i < 10; ++i) {
 		QPushButton *button = nullptr;
@@ -288,8 +303,17 @@ void ZoomWindow::configureButtons()
 				button = ui->buttonOpenFav;
 				break;
 			default :
-				log("ZoomWindow::configureButtons found an unknown button type.");
-				continue;
+				log("ZoomWindow::configureButtons found an unknown button type. Using default layout.");
+				hasButtonSave = true;
+				hasButtonSaveNQuit = true;
+				hasButtonSaveFav = true;
+				hasButtonSaveNQuitFav = true;
+				hasShelf = true;
+				hasDrawer = true;
+				scaleRef = ui->buttonDetails;
+				ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
+				connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+				return;
 		}
 
 		if (bs.isEnabled) {
