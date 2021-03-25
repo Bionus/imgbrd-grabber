@@ -121,6 +121,7 @@ TEST_CASE("Functions")
 					utf8Long += utf8Part;
 				}
 				REQUIRE(fixFilenameLinux(utf8Long + "/image.jpg", "/home/test/") == QString(utf8Long + "/image.jpg"));
+				REQUIRE(fixFilenameLinux(utf8Long + ".jpg", "/home/test/") == QString(utf8Long + ".jpg"));
 
 
 				// 200 UTF-8 chars / 400 bytes is above the limit so should be cut
@@ -131,6 +132,12 @@ TEST_CASE("Functions")
 				REQUIRE(actual != QString(utf8Long + "/image.jpg"));
 				REQUIRE(actual.length() == 127 + 10);
 				REQUIRE(actual.toUtf8().size() == 254 + 10);
+
+				// Same test with the filename instead of dirname
+				const QString actualF = fixFilenameLinux(utf8Long + "-image.jpg", "/home/test/");
+				REQUIRE(actualF != QString(utf8Long + "-image.jpg"));
+				REQUIRE(actualF.length() == 129);
+				REQUIRE(actualF.toUtf8().size() == 254);
 			}
 		}
 	}

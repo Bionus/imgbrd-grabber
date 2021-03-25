@@ -29,7 +29,7 @@ endif()
 
 project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.4.3")
+	set(VERSION "7.5.0")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()
@@ -92,6 +92,13 @@ if(USE_PCH)
 		message(WARNING "Cotire file not found, disabling PCH")
 		set(USE_PCH 0)
 	endif()
+endif()
+
+# Windows file properties
+set(WIN_FILE_PROPS 0)
+if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
+	set(WIN_FILE_PROPS 1)
+	add_definitions(-DWIN_FILE_PROPS=1)
 endif()
 
 # Load Qt5Core here as it can only be included once (QTBUG-87863)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>508</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,6 +81,11 @@
        <item>
         <property name="text">
          <string>Separate log files</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Metadata</string>
         </property>
        </item>
        <item>
@@ -1035,7 +1040,7 @@
              <x>0</x>
              <y>0</y>
              <width>363</width>
-             <height>418</height>
+             <height>426</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1110,6 +1115,82 @@
            </size>
           </property>
          </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageSaveMetadata">
+       <layout class="QFormLayout" name="formLayout_6">
+        <item row="0" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupMetadataPropsys">
+          <property name="title">
+           <string>Windows Property System</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_15">
+           <item row="1" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataPropsys"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonMetadataPropsysAdd">
+             <property name="text">
+              <string>Add new property</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelMetadataPropsysExtensions">
+             <property name="text">
+              <string>Extensions</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineMetadataPropsysExtensions"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupMetadataExiftool">
+          <property name="title">
+           <string>Exiftool</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_23">
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolExtensions">
+             <property name="text">
+              <string>Extensions</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineMetadataExiftoolExtensions"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <layout class="QFormLayout" name="layoutMetadataExiftool"/>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QPushButton" name="buttonMetadataExiftoolAdd">
+             <property name="text">
+              <string>Add new property</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelMetadataExiftoolVersionLabel">
+             <property name="text">
+              <string>Version</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelMetadataExiftoolVersion">
+             <property name="text">
+              <string>Loading...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1852,6 +1933,26 @@
          <widget class="QCheckBox" name="checkImageUseVideoPlayer">
           <property name="text">
            <string>Use built-in video player</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageVideoControls">
+          <property name="text">
+           <string>Show video player controls</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkImageGifControls">
+          <property name="text">
+           <string>Show GIF player controls</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -2938,8 +3039,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>329</x>
-     <y>461</y>
+     <x>338</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -2954,8 +3055,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>461</y>
+     <x>406</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2982,80 +3083,48 @@
   <connection>
    <sender>checkMonitoringEnableTray</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkMonitoringCloseToTray</receiver>
+   <receiver>checkMonitoringMinimizeToTray</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>67</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>350</x>
-     <y>113</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkProxyUseSystem</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widgetCustomProxy</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>41</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>360</x>
-     <y>64</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAddLogFile</sender>
-   <signal>clicked()</signal>
-   <receiver>OptionsWindow</receiver>
-   <slot>addLogFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>647</x>
-     <y>80</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>659</x>
-     <y>413</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkProxyUse</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widgetProxy</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>360</x>
-     <y>43</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>checkMonitoringEnableTray</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkMonitoringMinimizeToTray</receiver>
+   <receiver>checkMonitoringCloseToTray</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>67</y>
+     <x>375</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
-     <x>350</x>
-     <y>90</y>
+     <x>375</x>
+     <y>38</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkImageUseVideoPlayer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkImageVideoControls</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>443</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>427</y>
     </hint>
    </hints>
   </connection>
@@ -3072,6 +3141,54 @@
     <hint type="destinationlabel">
      <x>661</x>
      <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUse</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetProxy</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>38</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddLogFile</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsWindow</receiver>
+   <slot>addLogFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>647</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>659</x>
+     <y>413</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUseSystem</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetCustomProxy</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>375</x>
+     <y>38</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>38</y>
     </hint>
    </hints>
   </connection>

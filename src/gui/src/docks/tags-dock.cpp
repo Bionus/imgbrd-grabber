@@ -53,8 +53,8 @@ void TagsDock::refresh()
 	taglabel->setText(TagStylist(m_profile).stylished(m_currentTab->results(), true, true).join("<br/>"));
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
-	connect(taglabel, SIGNAL(middleClicked(QString)), this, SIGNAL(open(QString)));
-	connect(taglabel, SIGNAL(linkActivated(QString)), this, SIGNAL(openInNewTab(QString)));
+	connect(taglabel, SIGNAL(linkActivated(QString)), this, SIGNAL(open(QString)));
+	connect(taglabel, SIGNAL(middleClicked(QString)), this, SLOT(emitOpenInNewTab()));
 	connect(taglabel, &QAffiche::linkHovered, this, &TagsDock::linkHovered);
 
 	// Context menu

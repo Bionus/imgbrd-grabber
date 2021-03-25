@@ -12,6 +12,7 @@
 #include <utility>
 #include "commands/commands.h"
 #include "downloader/download-query-manager.h"
+#include "exiftool.h"
 #include "functions.h"
 #include "logger.h"
 #include "models/favorite.h"
@@ -139,6 +140,7 @@ Profile::Profile(QString path)
 	}
 
 	m_commands = new Commands(this);
+	m_exiftool = new Exiftool(this);
 
 	// Blacklisted tags
 	const QStringList &blacklist = m_settings->value("blacklistedtags").toString().split(' ', Qt::SkipEmptyParts);
@@ -468,7 +470,7 @@ void Profile::setBlacklistedTags(const Blacklist &blacklist)
 
 void Profile::addBlacklistedTag(const QString &tag)
 {
-	m_blacklist.add(tag);
+	m_blacklist.add(QString(tag).replace(":", "::"));
 
 	syncBlacklist();
 	emit blacklistChanged();
@@ -490,6 +492,7 @@ QStringList &Profile::getKeptForLater() { return m_keptForLater; }
 QStringList &Profile::getIgnored() { return m_ignored; }
 TagFilterList &Profile::getRemovedTags() { return m_removedTags; }
 Commands &Profile::getCommands() { return *m_commands; }
+Exiftool &Profile::getExiftool() { return *m_exiftool; }
 QStringList &Profile::getAutoComplete() { return m_autoComplete; }
 Blacklist &Profile::getBlacklist() { return m_blacklist; }
 const QMap<QString, Source*> &Profile::getSources() const { return m_sources; }
@@ -506,6 +509,8 @@ QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 	for (const QString &url : urls) {
 		if (m_sites.contains(url)) {
 			ret.append(m_sites.value(url));
+		} else {
+			log(QStringLiteral("Unknown site: %1").arg(url), Logger::Error);
 		}
 	}
 	return ret;

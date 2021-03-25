@@ -13,6 +13,7 @@
 
 class Commands;
 class DownloadQueryManager;
+class Exiftool;
 class Md5Database;
 class MonitorManager;
 class QSettings;
@@ -84,6 +85,7 @@ class Profile : public QObject
 		QStringList &getIgnored();
 		TagFilterList &getRemovedTags();
 		Commands &getCommands();
+		Exiftool &getExiftool();
 		QStringList &getAutoComplete();
 		Blacklist &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
@@ -111,6 +113,7 @@ class Profile : public QObject
 		QStringList m_ignored;
 		TagFilterList m_removedTags;
 		Commands *m_commands;
+		Exiftool *m_exiftool;
 		QStringList m_autoComplete;
 		QStringList m_customAutoComplete;
 		Blacklist m_blacklist;

@@ -5,15 +5,18 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFontDialog>
+#include <QFutureWatcher>
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QSignalMapper>
 #include <QSqlDatabase>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QtConcurrent>
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
+#include "exiftool.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
 #include "helpers.h"
@@ -22,6 +25,7 @@
 #include "models/profile.h"
 #include "models/site.h"
 #include "reverse-search/reverse-search-loader.h"
+#include "search-syntax-highlighter.h"
 #include "settings/condition-window.h"
 #include "settings/custom-window.h"
 #include "settings/filename-window.h"
@@ -41,7 +45,7 @@ void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 }
 
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
-	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), this), parent)
+	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), parent), parent)
 {}
 
 OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget *parent)
@@ -123,6 +127,43 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
+	// Metadata using Windows Property System
+	#ifndef WIN_FILE_PROPS
+		ui->groupMetadataPropsys->setEnabled(false);
+	#else
+		ui->lineMetadataPropsysExtensions->setText(settings->value("Save/MetadataPropsysExtensions", "jpg jpeg mp4").toString());
+		const QList<QPair<QString, QString>> metadataPropsys = getMetadataPropsys(settings);
+		for (const auto &pair : metadataPropsys) {
+			auto *leKey = new QLineEdit(pair.first, this);
+			auto *leValue = new QLineEdit(pair.second, this);
+			ui->layoutMetadataPropsys->addRow(leKey, leValue);
+			m_metadataPropsys.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+		}
+	#endif
+
+	// Metadata using Exiftool
+	QFuture<QString> future = QtConcurrent::run([=]() {
+		return Exiftool::version();
+	});
+	auto *watcher = new QFutureWatcher<QString>(this);
+	connect(watcher, &QFutureWatcher<QString>::finished, [=]() {
+		const QString &version = future.result();
+		ui->labelMetadataExiftoolVersion->setText(version.isEmpty() ? tr("exiftool not found") : version);
+		if (version.isEmpty()) {
+			ui->labelMetadataExiftoolVersion->setStyleSheet("color: red");
+		}
+	});
+	watcher->setFuture(future);
+
+	ui->lineMetadataExiftoolExtensions->setText(settings->value("Save/MetadataExiftoolExtensions", "jpg jpeg png gif mp4").toString());
+	const QList<QPair<QString, QString>> metadataExiftool = getMetadataExiftool(settings);
+	for (const auto &pair : metadataExiftool) {
+		auto *leKey = new QLineEdit(pair.first, this);
+		auto *leValue = new QLineEdit(pair.second, this);
+		ui->layoutMetadataExiftool->addRow(leKey, leValue);
+		m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+	}
+
 	// Log
 	settings->beginGroup("Log");
 		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
@@ -131,6 +172,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	// Blacklist
 	ui->textBlacklist->setPlainText(profile->getBlacklist().toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
+	new SearchSyntaxHighlighter(false, ui->textBlacklist->document());
 
 	// Ignored tags
 	ui->textRemovedTags->setPlainText(settings->value("ignoredtags").toString());
@@ -215,7 +257,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 
 		// Build the "tags" settings
-		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(4);
+		auto tagsTree = ui->treeWidget->invisibleRootItem()->child(2)->child(5);
 		tagsTree->addChild(new QTreeWidgetItem({ "Artist" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Copyright" }, tagsTree->type()));
 		tagsTree->addChild(new QTreeWidgetItem({ "Character" }, tagsTree->type()));
@@ -231,7 +273,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "species", false, "unknown", "multiple", this));
 		m_tokenSettings.append(new TokenSettingsWidget(settings, "meta", false, "none", "multiple", this));
 		for (int i = 0; i < m_tokenSettings.count(); ++i) {
-			ui->stackedWidget->insertWidget(i + 8, m_tokenSettings[i]);
+			ui->stackedWidget->insertWidget(i + 9, m_tokenSettings[i]);
 		}
 
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
@@ -271,6 +313,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	ui->checkImageScaleUp->setChecked(settings->value("Zoom/scaleUp", false).toBool());
 	ui->checkImageUseVideoPlayer->setChecked(settings->value("Zoom/useVideoPlayer", true).toBool());
+	ui->checkImageVideoControls->setChecked(settings->value("Zoom/showVideoPlayerControls", true).toBool());
+	ui->checkImageGifControls->setChecked(settings->value("Zoom/showGifPlayerControls", true).toBool());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	const QStringList positionsV { "top", "center", "bottom" };
@@ -435,6 +479,23 @@ void OptionsWindow::addFilename(const QString &condition, const QString &filenam
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
 	ui->layoutConditionals->addLayout(layout);
+}
+
+
+void OptionsWindow::on_buttonMetadataPropsysAdd_clicked()
+{
+	auto *leKey = new QLineEdit(this);
+	auto *leValue = new QLineEdit(this);
+	ui->layoutMetadataPropsys->addRow(leKey, leValue);
+	m_metadataPropsys.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
+}
+
+void OptionsWindow::on_buttonMetadataExiftoolAdd_clicked()
+{
+	auto *leKey = new QLineEdit(this);
+	auto *leValue = new QLineEdit(this);
+	ui->layoutMetadataExiftool->addRow(leKey, leValue);
+	m_metadataExiftool.append(QPair<QLineEdit*, QLineEdit*> { leKey, leValue });
 }
 
 
@@ -995,6 +1056,34 @@ void OptionsWindow::save()
 			tokenSettings->save();
 		}
 
+		settings->setValue("MetadataPropsysExtensions", ui->lineMetadataPropsysExtensions->text());
+		settings->beginWriteArray("MetadataPropsys");
+		for (int i = 0, j = 0; i < m_metadataPropsys.count(); ++i) {
+			const QString &key = m_metadataPropsys[i].first->text();
+			const QString &value = m_metadataPropsys[i].second->text();
+			if (!key.isEmpty() && !value.isEmpty()) {
+				settings->setArrayIndex(j);
+				settings->setValue("key", key);
+				settings->setValue("value", value);
+				++j;
+			}
+		}
+		settings->endArray();
+
+		settings->setValue("MetadataExiftoolExtensions", ui->lineMetadataExiftoolExtensions->text());
+		settings->beginWriteArray("MetadataExiftool");
+		for (int i = 0, j = 0; i < m_metadataExiftool.count(); ++i) {
+			const QString &key = m_metadataExiftool[i].first->text();
+			const QString &value = m_metadataExiftool[i].second->text();
+			if (!key.isEmpty() && !value.isEmpty()) {
+				settings->setArrayIndex(j);
+				settings->setValue("key", key);
+				settings->setValue("value", value);
+				++j;
+			}
+		}
+		settings->endArray();
+
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
@@ -1043,6 +1132,8 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	settings->setValue("Zoom/scaleUp", ui->checkImageScaleUp->isChecked());
 	settings->setValue("Zoom/useVideoPlayer", ui->checkImageUseVideoPlayer->isChecked());
+	settings->setValue("Zoom/showVideoPlayerControls", ui->checkImageVideoControls->isChecked());
+	settings->setValue("Zoom/showGifPlayerControls", ui->checkImageGifControls->isChecked());
 	const QStringList imageTagOrder { "type", "name", "count" };
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	const QStringList positionsV { "top", "center", "bottom" };

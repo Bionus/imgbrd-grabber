@@ -88,6 +88,7 @@ file(GLOB SOURCES
 	"src/utils/md5-fix/*.cpp"
 	"src/utils/tag-loader/*.cpp"
 	"src/viewer/*.cpp"
+	"src/viewer/players/*.cpp"
 	"resources/*.rc"
 	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")

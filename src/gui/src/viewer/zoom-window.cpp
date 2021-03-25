@@ -43,10 +43,12 @@
 #include "threads/image-loader-queue.h"
 #include "ui/QAffiche.h"
 #include "viewer/details-window.h"
+#include "viewer/players/gif-player.h"
+#include "viewer/players/video-player.h"
 
 
 ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
-	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_fullScreen(nullptr), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_labelImageScaled(false)
+	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	connect(parent, &MainWindow::destroyed, this, &QWidget::deleteLater);
@@ -103,15 +105,17 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
 	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+		m_labelImage->setAlignment(getAlignments("imagePositionImage"));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 
-	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
-		m_videoWidget = new QVideoWidget(this);
-		m_stackedWidget->addWidget(m_videoWidget);
+	m_gifPlayer = new GifPlayer(m_settings->value("Zoom/showGifPlayerControls", true).toBool(), getAlignments("imagePositionAnimation"), this);
+	m_stackedWidget->addWidget(m_gifPlayer);
 
-		m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-		m_mediaPlayer->setVideoOutput(m_videoWidget);
+	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
+		// getAlignments("imagePositionVideo")
+		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
+		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 
 	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
@@ -146,10 +150,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	// Background color
 	QString bg = m_settings->value("imageBackgroundColor", "").toString();
 	if (!bg.isEmpty()) {
-		setStyleSheet("#zoomWindow, #scrollAreaWidgetContents { background-color:" + bg + "; }");
-		m_labelImage->setStyleSheet("background-color:" + bg);
-		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
-		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+		setStyleSheet("#ZoomWindow { background-color:" + bg + "; }");
 	}
 
 	load(image);
@@ -215,20 +216,12 @@ void ZoomWindow::go()
  */
 ZoomWindow::~ZoomWindow()
 {
-	if (m_displayMovie != nullptr) {
-		m_displayMovie->deleteLater();
-	}
-
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
 
-	// Fix for weird Linux crash (issue #2190)
-	if (m_videoWidget != nullptr) {
-		m_stackedWidget->removeWidget(m_videoWidget);
-		m_videoWidget->setParent(nullptr);
-		m_videoWidget->deleteLater();
-	}
+	m_gifPlayer->deleteLater();
+	m_videoPlayer->deleteLater();
 
 	// Quit threads
 	m_imageLoaderQueueThread.quit();
@@ -434,10 +427,6 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 		update(!m_finished);
 
 		updateWindowTitle();
-
-		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		}
 	}
 }
 
@@ -695,47 +684,26 @@ void ZoomWindow::draw()
 		return;
 	}
 
+	m_gifPlayer->unload();
+	m_videoPlayer->unload();
+	m_displayImage = QPixmap();
+
 	// GIF (using QLabel support for QMovie)
 	if (!m_isAnimated.isEmpty()) {
-		m_displayMovie = new QMovie(m_imagePath, m_isAnimated.toLatin1(), this);
-		m_displayMovie->start();
-		const QSize &movieSize = m_displayMovie->currentPixmap().size();
-		const QSize &imageSize = m_labelImage->size();
-		if (imageSize.width() < movieSize.width() || imageSize.height() < movieSize.height()) {
-			m_displayMovie->setScaledSize(movieSize.scaled(imageSize, Qt::KeepAspectRatio));
-		}
-		m_labelImage->setMovie(m_displayMovie);
-		m_stackedWidget->setCurrentWidget(m_labelImage);
-
-		m_displayImage = QPixmap();
-
-		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setMovie(m_displayMovie);
-		}
+		m_stackedWidget->setCurrentWidget(m_gifPlayer);
+		m_gifPlayer->load(m_imagePath);
 	}
 	// Videos (using a media player)
 	else if (m_image->isVideo()) {
-		QMediaPlaylist *playlist = new QMediaPlaylist(this);
-		playlist->addMedia(QUrl::fromLocalFile(m_imagePath));
-		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-
-		m_mediaPlayer->setPlaylist(playlist);
-		m_stackedWidget->setCurrentWidget(m_videoWidget);
-		m_mediaPlayer->play();
-
-		m_displayImage = QPixmap();
+		m_stackedWidget->setCurrentWidget(m_videoPlayer);
+		m_videoPlayer->load(m_imagePath);
 	}
 	// Images
 	else {
-		m_displayImage = QPixmap();
 		m_displayImage.load(m_imagePath);
 
 		updateWindowTitle();
 		update();
-
-		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible()) {
-			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		}
 	}
 }
 
@@ -747,17 +715,6 @@ void ZoomWindow::draw()
  */
 void ZoomWindow::update(bool onlySize, bool force)
 {
-	// Update image alignment
-	QString type;
-	if (m_image->isVideo()) {
-		type = "imagePositionVideo";
-	} else if (!m_isAnimated.isEmpty()) {
-		type = "imagePositionAnimation";
-	} else {
-		type = "imagePositionImage";
-	}
-	m_labelImage->setAlignment(getAlignments(type));
-
 	// Only used for images
 	if (m_displayImage.isNull()) {
 		return;
@@ -982,60 +939,47 @@ void ZoomWindow::toggleFullScreen()
 
 void ZoomWindow::fullScreen()
 {
-	if (!m_loadedImage && m_displayMovie == nullptr) {
-		return;
-	}
+	m_fullScreen = new QWidget(this);
+	m_fullScreen->setStyleSheet("background-color: black");
+	m_fullScreen->setWindowFlags(Qt::Window);
+	m_fullScreen->showFullScreen();
 
-	QWidget *widget;
-	if (m_image->isVideo()) {
-		m_videoWidget->setFullScreen(true);
-		widget = m_videoWidget;
-	} else {
-		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
-		m_fullScreen->setStyleSheet("background-color: black");
-		m_fullScreen->setAlignment(Qt::AlignCenter);
-		if (!m_isAnimated.isEmpty()) {
-			m_fullScreen->setMovie(m_displayMovie);
-		} else {
-			m_fullScreen->setImage(m_displayImage.scaled(QGuiApplication::primaryScreen()->geometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		}
-		m_fullScreen->setWindowFlags(Qt::Window);
-		m_fullScreen->showFullScreen();
-
-		connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
-		widget = m_fullScreen;
-	}
+	auto *layout = new QVBoxLayout;
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->addWidget(m_stackedWidget);
+	m_fullScreen->setLayout(layout);
 
 	m_isFullscreen = true;
 	prepareNextSlide();
 
-	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), widget);
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), m_fullScreen);
 		connect(escape, SIGNAL(activated()), this, SLOT(unfullScreen()));
-	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, widget);
+	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, m_fullScreen);
 		connect(toggleFullscreen, SIGNAL(activated()), this, SLOT(unfullScreen()));
-	QShortcut *arrowNext = new QShortcut(QKeySequence(Qt::Key_Right), widget);
+	QShortcut *arrowNext = new QShortcut(QKeySequence(Qt::Key_Right), m_fullScreen);
 		connect(arrowNext, &QShortcut::activated, this, &ZoomWindow::next);
-	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), widget);
+	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), m_fullScreen);
 		connect(arrowPrevious, &QShortcut::activated, this, &ZoomWindow::previous);
-	QShortcut *space = new QShortcut(QKeySequence(Qt::Key_Space), widget);
+	QShortcut *space = new QShortcut(QKeySequence(Qt::Key_Space), m_fullScreen);
 		connect(space, &QShortcut::activated, this, &ZoomWindow::toggleSlideshow);
 
-	widget->setFocus();
+	m_fullScreen->setFocus();
 }
 
 void ZoomWindow::unfullScreen()
 {
 	m_slideshow.stop();
 
-	if (m_image->isVideo()) {
-		m_videoWidget->setFullScreen(false);
-	} else if (m_fullScreen != nullptr) {
+	if (m_fullScreen != nullptr) {
+		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
+
 		m_fullScreen->close();
 		m_fullScreen->deleteLater();
 		m_fullScreen = nullptr;
 	}
 
 	m_isFullscreen = false;
+	update(true);
 }
 
 void ZoomWindow::prepareNextSlide()
@@ -1053,8 +997,8 @@ void ZoomWindow::prepareNextSlide()
 
 	// We make sure to wait to see the whole displayed item
 	const qint64 additionalInterval = !m_isAnimated.isEmpty()
-		? m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount()
-		: (m_image->isVideo() ? m_mediaPlayer->duration() : 0);
+		? m_gifPlayer->duration()
+		: (m_image->isVideo() ? m_videoPlayer->duration() : 0);
 
 	const qint64 totalInterval = interval * 1000 + additionalInterval;
 	m_slideshow.start(totalInterval);

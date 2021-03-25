@@ -14,7 +14,7 @@ Settings::Settings(MixedSettings *settings, QObject *parent)
 
 QVariant Settings::value(const QString &key, const QVariant &defaultValue) const
 {
-    return m_settings->value(key, defaultValue);
+	return m_settings->value(key, defaultValue);
 }
 
 void Settings::setValue(const QString &key, const QVariant &value, const QVariant &defaultValue)

@@ -263,7 +263,7 @@ void FavoritesTab::getAll()
 		const int highLimit = page->highLimit();
 		const int currentCount = page->pageImageCount();
 		const int imageCount = page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
-		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : (highLimit > 0 ? highLimit : currentCount);
+		const int total = imageCount > 0 ? qMax(currentCount, imageCount) : -1;
 		const int perPage = highLimit > 0 ? (imageCount > 0 ? qMin(highLimit, imageCount) : highLimit) : currentCount;
 		if ((perPage == 0 && total == 0) || (currentCount == 0 && imageCount <= 0)) {
 			continue;

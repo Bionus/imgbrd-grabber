@@ -81,6 +81,8 @@ class OptionsWindow : public QDialog
 		void addCustom(const QString &, const QString &);
 		void on_buttonFilenames_clicked();
 		void addFilename(const QString &, const QString &, const QString &);
+		void on_buttonMetadataPropsysAdd_clicked();
+		void on_buttonMetadataExiftoolAdd_clicked();
 
 		// Log files
 		void addLogFile();
@@ -113,6 +115,7 @@ class OptionsWindow : public QDialog
 		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 		QList<TokenSettingsWidget*> m_tokenSettings;
+		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
 };
 
 #endif // OPTIONS_WINDOW_H

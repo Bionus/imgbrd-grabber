@@ -16,9 +16,8 @@ namespace Ui
 }
 
 
+class GifPlayer;
 class QAffiche;
-class QMediaPlayer;
-class QVideoWidget;
 class Profile;
 class MainWindow;
 class DetailsWindow;
@@ -26,6 +25,7 @@ class ImageDownloader;
 class ImageLoader;
 class ImageLoaderQueue;
 class SearchTab;
+class VideoPlayer;
 
 class ZoomWindow : public QWidget
 {
@@ -155,7 +155,7 @@ class ZoomWindow : public QWidget
 		QTime m_lastWheelEvent;
 		QString m_saveAsPending;
 
-		QAffiche *m_fullScreen;
+		QWidget *m_fullScreen = nullptr;
 		QTimer m_slideshow;
 		bool m_isFullscreen;
 		bool m_isSlideshowRunning;
@@ -170,10 +170,9 @@ class ZoomWindow : public QWidget
 		// Display
 		QString m_isAnimated;
 		QPixmap m_displayImage;
-		QMovie *m_displayMovie;
 		bool m_labelImageScaled;
-		QVideoWidget *m_videoWidget = nullptr;
-		QMediaPlayer *m_mediaPlayer = nullptr;
+		GifPlayer *m_gifPlayer = nullptr;
+		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Threads
 		QThread m_imageLoaderThread;

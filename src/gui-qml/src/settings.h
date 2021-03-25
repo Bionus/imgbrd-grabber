@@ -10,16 +10,16 @@ class QSettings;
 
 class Settings : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
+	public:
 		explicit Settings(QSettings *settings, QObject *parent = nullptr);
 		explicit Settings(MixedSettings *settings, QObject *parent = nullptr);
 
-        Q_INVOKABLE QVariant value(const QString &key, const QVariant &defaultValue = {}) const;
+		Q_INVOKABLE QVariant value(const QString &key, const QVariant &defaultValue = {}) const;
 		Q_INVOKABLE void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = {});
 
-    private:
+	private:
 		MixedSettings *m_settings;
 };
 

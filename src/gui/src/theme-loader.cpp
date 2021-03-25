@@ -36,7 +36,9 @@ bool ThemeLoader::setTheme(const QString &name)
 	if (m_currentTheme != name) {
 		m_currentTheme = name;
 
-		m_watcher.removePaths(m_watcher.files());
+		if (!m_watcher.files().isEmpty()) {
+			m_watcher.removePaths(m_watcher.files());
+		}
 		m_watcher.addPath(cssFile);
 	}
 
