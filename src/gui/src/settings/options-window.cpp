@@ -1258,52 +1258,52 @@ void OptionsWindow::save()
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonPrev, ui->spinButtonPrev->value(),
 		ui->lineButtonPrev->text(),
 		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonPrev->checkState() == Qt::Checked ? false : true
+		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonNext, ui->spinButtonNext->value(),
 		ui->lineButtonNext->text(),
 		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonNext->checkState() == Qt::Checked ? false : true
+		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonDetails, ui->spinButtonDetails->value(),
 		ui->lineButtonDetails->text(),
 		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonDetails->checkState() == Qt::Checked ? false : true
+		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveAs, ui->spinButtonSaveAs->value(),
 		ui->lineButtonSaveAs->text(),
 		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveAs->checkState() == Qt::Checked ? false : true
+		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSave, ui->spinButtonSave->value(),
 		ui->lineButtonSave->text(),
 		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSave->checkState() == Qt::Checked ? false : true
+		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveNQuit, ui->spinButtonSaveNQuit->value(),
 		ui->lineButtonSaveNQuit->text(),
 		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuit->checkState() == Qt::Checked ? false : true
+		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonOpen, ui->spinButtonOpen->value(),
 		ui->lineButtonOpen->text(),
 		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpen->checkState() == Qt::Checked ? false : true
+		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSave | Ui::IsFavoriteButton, ui->spinButtonSave->value(),
 		ui->lineButtonSaveFav->text(),
 		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveFav->checkState() == Qt::Checked ? false : true
+		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton, ui->spinButtonSaveNQuit->value(),
 		ui->lineButtonSaveNQuitFav->text(),
 		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::Checked ? false : true
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false
 	});
 	buttons.append((ButtonSettings){ButtonSettings::Zoom, Ui::IsButtonOpen | Ui::IsFavoriteButton, ui->spinButtonOpen->value(),
 		ui->lineButtonOpenFav->text(),
 		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpenFav->checkState() == Qt::Checked ? false : true
+		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false
 	});
 
 	std::sort(buttons.begin(), buttons.end());
