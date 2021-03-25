@@ -20,7 +20,13 @@ bool Exiftool::start(int msecs)
 	const QStringList arguments { "-stay_open", "True", "-@", "-" };
 
 	m_process.start(program, arguments);
-	return m_process.waitForBytesWritten(msecs);
+	bool ok = m_process.waitForStarted(msecs);
+
+	if (!ok) {
+		log(QStringLiteral("Error starting exiftool: %1 (%2)").arg(m_process.errorString()).arg(m_process.error()));
+	}
+
+	return ok;
 }
 
 bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &metadata, int msecs)
@@ -37,6 +43,11 @@ bool Exiftool::setMetadata(const QString &file, const QMap<QString, QString> &me
 
 bool Exiftool::execute(const QString &file, const QString &command, int msecs)
 {
+	if (m_process.state() != QProcess::Running) {
+		log(QStringLiteral("Cannot execute command since Exiftool is not running"));
+		return false;
+	}
+
 	QString toWrite = (command.isEmpty() ? "" : command + "\n") + file + "\n-execute\n";
 	m_process.write(toWrite.toLocal8Bit());
 
@@ -55,6 +66,10 @@ bool Exiftool::execute(const QString &file, const QString &command, int msecs)
 
 bool Exiftool::stop(int msecs)
 {
+	if (m_process.state() == QProcess::NotRunning) {
+		return true;
+	}
+
 	m_process.write("-stay_open\nFalse\n");
 	m_process.closeWriteChannel();
 	return m_process.waitForFinished(msecs);
