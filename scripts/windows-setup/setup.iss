@@ -254,6 +254,8 @@ Type: files; Name: "{app}\imageformats\qsvg4.dll"
 Type: files; Name: "{app}\imageformats\qtga4.dll"
 Type: files; Name: "{app}\imageformats\qtiff4.dll"
 Type: files; Name: "{app}\sqldrivers\qsqlmysql4.dll"
+Type: files; Name: "{app}\mediaservice\dsengine.dll"
+Type: files; Name: "{app}\mediaservice\wmfengine.dll"
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{%UserProfile}\Grabber"
