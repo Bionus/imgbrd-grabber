@@ -509,6 +509,8 @@ QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 	for (const QString &url : urls) {
 		if (m_sites.contains(url)) {
 			ret.append(m_sites.value(url));
+		} else {
+			log(QStringLiteral("Unknown site: %1").arg(url), Logger::Error);
 		}
 	}
 	return ret;
