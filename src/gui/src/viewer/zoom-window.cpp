@@ -684,8 +684,13 @@ void ZoomWindow::draw()
 		return;
 	}
 
-	m_gifPlayer->unload();
-	m_videoPlayer->unload();
+	// Clear active players
+	if (m_gifPlayer != nullptr) {
+		m_gifPlayer->unload();
+	}
+	if (m_videoPlayer != nullptr) {
+		m_videoPlayer->unload();
+	}
 	m_displayImage = QPixmap();
 
 	// GIF (using QLabel support for QMovie)
