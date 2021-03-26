@@ -78,14 +78,14 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
 		QShortcut *saveNQuit = new QShortcut(m_settings->value("keyViewerSaveNQuit", QKeySequence(Qt::Key_W)).toString(), this);
 			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(m_settings->value("keyViewerOpen", QKeySequence(Qt::Key_T)).toString(), this);
+		QShortcut *open = new QShortcut(m_settings->value("keyViewerOpen", QKeySequence(Qt::Key_B)).toString(), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
 		QShortcut *saveFav = new QShortcut(m_settings->value("keyViewerSaveFav", QKeySequence(Qt::ALT + Qt::Key_S)).toString(), this);
 			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
 		QShortcut *saveNQuitFav = new QShortcut(m_settings->value("keyViewerSaveNQuitFav", QKeySequence(Qt::ALT + Qt::Key_W)).toString(), this);
 			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
-		QShortcut *openFav = new QShortcut(m_settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_T)).toString(), this);
+		QShortcut *openFav = new QShortcut(m_settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_B)).toString(), this);
 			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
 		QShortcut *toggleSlideshow = new QShortcut(m_settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString(), this);

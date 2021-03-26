@@ -313,7 +313,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyMainNewTab->setKeySequence(settings->value("keyMainNewTab", QKeySequence(Qt::CTRL + Qt::Key_T)).toString());
 		ui->keyMainPrevTab->setKeySequence(settings->value("keyMainPrevTab", QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab)).toString());
 		ui->keyMainNextTab->setKeySequence(settings->value("keyMainNextTab", QKeySequence(Qt::CTRL + Qt::Key_Tab)).toString());
-		ui->keyMainBrowseSave->setKeySequence(settings->value("keyMainBrowseSave", QKeySequence(Qt::CTRL + Qt::Key_O)).toString());
+		ui->keyMainBrowseSave->setKeySequence(settings->value("keyMainBrowseSave", QKeySequence(Qt::CTRL + Qt::Key_B)).toString());
 	settings->endGroup();
 
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
@@ -346,10 +346,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyViewerSaveAs->setKeySequence(settings->value("keyViewerSaveAs", QKeySequence(Qt::SHIFT + Qt::Key_S)).toString());
 		ui->keyViewerSave->setKeySequence(settings->value("keyViewerSave", QKeySequence(Qt::Key_S)).toString());
 		ui->keyViewerSaveNQuit->setKeySequence(settings->value("keyViewerSaveNQuit", QKeySequence(Qt::Key_W)).toString());
-		ui->keyViewerOpen->setKeySequence(settings->value("keyViewerOpen", QKeySequence(Qt::Key_T)).toString());
+		ui->keyViewerOpen->setKeySequence(settings->value("keyViewerOpen", QKeySequence(Qt::Key_B)).toString());
 		ui->keyViewerSaveFav->setKeySequence(settings->value("keyViewerSaveFav", QKeySequence(Qt::ALT + Qt::Key_S)).toString());
 		ui->keyViewerSaveNQuitFav->setKeySequence(settings->value("keyViewerSaveNQuitFav", QKeySequence(Qt::ALT + Qt::Key_W)).toString());
-		ui->keyViewerOpenFav->setKeySequence(settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_T)).toString());
+		ui->keyViewerOpenFav->setKeySequence(settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_B)).toString());
 		ui->keyViewerToggleSlideshow->setKeySequence(settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString());
 		ui->keyViewerToggleFullscreen->setKeySequence(settings->value("keyViewerToggleFullscreen", QKeySequence(Qt::Key_F)).toString());
 		ui->keyViewerDataToClipboard->setKeySequence(settings->value("keyViewerDataToClipboard", QKeySequence(Qt::CTRL + Qt::Key_C)).toString());
