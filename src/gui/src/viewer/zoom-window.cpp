@@ -62,35 +62,35 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	ui->progressBarDownload->hide();
 
 	m_settings->beginGroup("Zoom/Shortcuts");
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyViewerQuit", Qt::Key_Escape), this);
+		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
 			connect(quit, &QShortcut::activated, this, &ZoomWindow::close);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyViewerPrev", Qt::Key_Left), this);
+		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
 			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyViewerNext", Qt::Key_Right), this);
+		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
 			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
 
-		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyViewerDetails", Qt::Key_D), this);
+		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
 			connect(details, &QShortcut::activated, this, &ZoomWindow::showDetails);
-		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keyViewerSaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
+		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
 			connect(saveAs, &QShortcut::activated, this, &ZoomWindow::saveImageAs);
 
-		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keyViewerSave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
+		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keyViewerSaveNQuit", Qt::CTRL + Qt::Key_W), this);
+		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
 			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyViewerOpen", Qt::CTRL + Qt::Key_B), this);
+		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_B), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
-		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keyViewerSaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
+		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
 			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
-		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keyViewerSaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
+		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
 			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
-		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyViewerOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_B), this);
+		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_B), this);
 			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyViewerToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
+		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
-		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyViewerDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
+		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ZoomWindow::copyImageDataToClipboard);
 	m_settings->endGroup();
 
@@ -976,15 +976,15 @@ void ZoomWindow::fullScreen()
 	prepareNextSlide();
 
 	m_settings->beginGroup("Zoom/Shortcuts");	// Could probably just use the variables already initialised when this ZoomWindow was constructed.
-		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyViewerQuit", Qt::Key_Escape), m_fullScreen);
+		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
 			connect(quit, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
-		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyViewerToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
+		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
-		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyViewerPrev", Qt::Key_Left), m_fullScreen);
+		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
 			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
-		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyViewerNext", Qt::Key_Right), m_fullScreen);
+		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
 			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
-		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyViewerToggleSlideshow", Qt::Key_Space), m_fullScreen);
+		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ZoomWindow::toggleSlideshow);
 	m_settings->endGroup();
 

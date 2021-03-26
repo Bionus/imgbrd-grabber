@@ -186,19 +186,19 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	}
 
 	m_settings->beginGroup("Main/Shortcuts");
-		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyMainCloseTab", Qt::CTRL + Qt::Key_W));
+		ui->actionClosetab->setShortcut(getKeySequence(m_settings, "keyCloseTab", Qt::CTRL + Qt::Key_W));
 
-		QShortcut *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyMainFocusSearch", Qt::CTRL + Qt::Key_L), this);
+		QShortcut *actionFocusSearch = new QShortcut(getKeySequence(m_settings, "keyFocusSearch", Qt::CTRL + Qt::Key_L), this);
 			connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
-		QShortcut *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyMainPrevTab", Qt::CTRL + Qt::Key_PageDown), this);
+		QShortcut *actionPrevTab = new QShortcut(getKeySequence(m_settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown), this);
 			connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
-		QShortcut *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyMainNextTab", Qt::CTRL + Qt::Key_PageUp), this);
+		QShortcut *actionNextTab = new QShortcut(getKeySequence(m_settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp), this);
 			connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 
-		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyMainNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
-		ui->actionQuit->setShortcut(getKeySequence(m_settings, "keyMainQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
-		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyMainBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_B));
+		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
+		ui->actionQuit->setShortcut(getKeySequence(m_settings, "keyQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
+		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_B));
 	m_settings->endGroup();
 
 	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);
