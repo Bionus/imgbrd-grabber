@@ -198,7 +198,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 		ui->actionAddtab->setShortcut(getKeySequence(m_settings, "keyNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
 		ui->actionQuit->setShortcut(getKeySequence(m_settings, "keyQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
-		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_B));
+		ui->actionFolder->setShortcut(getKeySequence(m_settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
 	m_settings->endGroup();
 
 	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);

@@ -78,14 +78,14 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
 		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
 			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_B), this);
+		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
 		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
 			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
 		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
 			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
-		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_B), this);
+		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
 			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
