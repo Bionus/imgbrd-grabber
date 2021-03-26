@@ -201,8 +201,8 @@ class ZoomWindow : public QWidget
 		bool hasDrawer = false;
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
 		short shelfDrawerDiff = 0;	// For resizeButtons().
-		/*std::string buttonSaveText = "Save";
-		std::string buttonSaveFavText = "Save (fav)";*/
+		std::string buttonSaveText = "Save";
+		std::string buttonSaveFavText = "Save (fav)";
 		bool hasButtonSave = false;
 		bool hasButtonSaveNQuit = false;
 		bool hasButtonSaveFav = false;
