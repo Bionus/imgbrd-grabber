@@ -185,21 +185,22 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_trayIcon = nullptr;
 	}
 
-	ui->actionClosetab->setShortcut(QKeySequence::Close);
-	QShortcut *actionCloseTabW = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	connect(actionCloseTabW, &QShortcut::activated, ui->actionClosetab, &QAction::trigger);
+	m_settings->beginGroup("Main/Shortcuts");
+		QShortcut *actionFocusSearch = new QShortcut(m_settings->value("keyMainFocusSearch", QKeySequence(Qt::Key_S)).toString(), this);
+			connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
 
-	QShortcut *actionFocusSearch = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
-	connect(actionFocusSearch, &QShortcut::activated, this, &MainWindow::focusSearch);
+		QShortcut *actionCloseTabW = new QShortcut(m_settings->value("keyMainCloseTab", QKeySequence(Qt::CTRL + Qt::Key_W)).toString(), this);
+			connect(actionCloseTabW, &QShortcut::activated, ui->actionClosetab, &QAction::trigger);
 
-	QShortcut *actionNextTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
-	connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
-	QShortcut *actionPrevTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
-	connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
+		QShortcut *actionPrevTab = new QShortcut(m_settings->value("keyMainPrevTab", QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab)).toString(), this);
+			connect(actionPrevTab, &QShortcut::activated, this, &MainWindow::tabPrev);
+		QShortcut *actionNextTab = new QShortcut(m_settings->value("keyMainNextTab", QKeySequence(Qt::CTRL + Qt::Key_Tab)).toString(), this);
+			connect(actionNextTab, &QShortcut::activated, this, &MainWindow::tabNext);
 
-	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
-	ui->actionQuit->setShortcut(QKeySequence::Quit);
-	ui->actionFolder->setShortcut(QKeySequence::Open);
+		ui->actionAddtab->setShortcut(m_settings->value("keyMainNewTab", QKeySequence(Qt::CTRL + Qt::Key_T)).toString());
+		ui->actionQuit->setShortcut(m_settings->value("keyMainQuit", QKeySequence(Qt::CTRL + Qt::Key_Q)).toString());
+		ui->actionFolder->setShortcut(m_settings->value("keyMainBrowseSave", QKeySequence(Qt::CTRL + Qt::Key_O)).toString());
+	m_settings->endGroup();
 
 	connect(ui->actionQuit, &QAction::triggered, this, &QMainWindow::close);
 	connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
