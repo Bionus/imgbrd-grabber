@@ -307,13 +307,13 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
 
 	settings->beginGroup("Main/Shortcuts");
-		ui->keyMainQuit->setKeySequence(settings->value("keyMainQuit", QKeySequence(Qt::CTRL + Qt::Key_Q)).toString());
-		ui->keyMainFocusSearch->setKeySequence(settings->value("keyMainFocusSearch", QKeySequence(Qt::Key_S)).toString());
-		ui->keyMainCloseTab->setKeySequence(settings->value("keyMainCloseTab", QKeySequence(Qt::CTRL + Qt::Key_W)).toString());
-		ui->keyMainNewTab->setKeySequence(settings->value("keyMainNewTab", QKeySequence(Qt::CTRL + Qt::Key_T)).toString());
-		ui->keyMainPrevTab->setKeySequence(settings->value("keyMainPrevTab", QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab)).toString());
-		ui->keyMainNextTab->setKeySequence(settings->value("keyMainNextTab", QKeySequence(Qt::CTRL + Qt::Key_Tab)).toString());
-		ui->keyMainBrowseSave->setKeySequence(settings->value("keyMainBrowseSave", QKeySequence(Qt::CTRL + Qt::Key_B)).toString());
+		ui->keyMainQuit->setKeySequence(getKeySequence(settings, "keyMainQuit", QKeySequence::Quit, Qt::CTRL + Qt::Key_Q));
+		ui->keyMainFocusSearch->setKeySequence(getKeySequence(settings, "keyMainFocusSearch", Qt::CTRL + Qt::Key_L));
+		ui->keyMainCloseTab->setKeySequence(getKeySequence(settings, "keyMainCloseTab", Qt::CTRL + Qt::Key_W));
+		ui->keyMainNewTab->setKeySequence(getKeySequence(settings, "keyMainNewTab", QKeySequence::AddTab, Qt::CTRL + Qt::Key_T));
+		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyMainPrevTab", Qt::CTRL + Qt::Key_PageDown));
+		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyMainNextTab", Qt::CTRL + Qt::Key_PageUp));
+		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyMainBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_B));
 	settings->endGroup();
 
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
@@ -339,20 +339,20 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", QString()).toString());
 
 	settings->beginGroup("Zoom/Shortcuts");
-		ui->keyViewerQuit->setKeySequence(settings->value("keyViewerQuit", QKeySequence(Qt::Key_Q)).toString());
-		ui->keyViewerPrev->setKeySequence(settings->value("keyViewerPrev", QKeySequence(Qt::Key_Left)).toString());
-		ui->keyViewerNext->setKeySequence(settings->value("keyViewerNext", QKeySequence(Qt::Key_Right)).toString());
-		ui->keyViewerDetails->setKeySequence(settings->value("keyViewerDetails", QKeySequence(Qt::Key_D)).toString());
-		ui->keyViewerSaveAs->setKeySequence(settings->value("keyViewerSaveAs", QKeySequence(Qt::SHIFT + Qt::Key_S)).toString());
-		ui->keyViewerSave->setKeySequence(settings->value("keyViewerSave", QKeySequence(Qt::Key_S)).toString());
-		ui->keyViewerSaveNQuit->setKeySequence(settings->value("keyViewerSaveNQuit", QKeySequence(Qt::Key_W)).toString());
-		ui->keyViewerOpen->setKeySequence(settings->value("keyViewerOpen", QKeySequence(Qt::Key_B)).toString());
-		ui->keyViewerSaveFav->setKeySequence(settings->value("keyViewerSaveFav", QKeySequence(Qt::ALT + Qt::Key_S)).toString());
-		ui->keyViewerSaveNQuitFav->setKeySequence(settings->value("keyViewerSaveNQuitFav", QKeySequence(Qt::ALT + Qt::Key_W)).toString());
-		ui->keyViewerOpenFav->setKeySequence(settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_B)).toString());
-		ui->keyViewerToggleSlideshow->setKeySequence(settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString());
-		ui->keyViewerToggleFullscreen->setKeySequence(settings->value("keyViewerToggleFullscreen", QKeySequence(Qt::Key_F)).toString());
-		ui->keyViewerDataToClipboard->setKeySequence(settings->value("keyViewerDataToClipboard", QKeySequence(Qt::CTRL + Qt::Key_C)).toString());
+		ui->keyViewerQuit->setKeySequence(getKeySequence(settings, "keyViewerQuit", Qt::Key_Escape));
+		ui->keyViewerPrev->setKeySequence(getKeySequence(settings, "keyViewerPrev", Qt::Key_Left));
+		ui->keyViewerNext->setKeySequence(getKeySequence(settings, "keyViewerNext", Qt::Key_Right));
+		ui->keyViewerDetails->setKeySequence(getKeySequence(settings, "keyViewerDetails", Qt::Key_D));
+		ui->keyViewerSaveAs->setKeySequence(getKeySequence(settings, "keyViewerSaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+		ui->keyViewerSave->setKeySequence(getKeySequence(settings, "keyViewerSave", QKeySequence::Save, Qt::CTRL + Qt::Key_S));
+		ui->keyViewerSaveNQuit->setKeySequence(getKeySequence(settings, "keyViewerSaveNQuit", Qt::CTRL + Qt::Key_W));
+		ui->keyViewerOpen->setKeySequence(getKeySequence(settings, "keyViewerOpen", Qt::CTRL + Qt::Key_B));
+		ui->keyViewerSaveFav->setKeySequence(getKeySequence(settings, "keyViewerSaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S));
+		ui->keyViewerSaveNQuitFav->setKeySequence(getKeySequence(settings, "keyViewerSaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W));
+		ui->keyViewerOpenFav->setKeySequence(getKeySequence(settings, "keyViewerOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_B));
+		ui->keyViewerToggleSlideshow->setKeySequence(getKeySequence(settings, "keyViewerToggleSlideshow", Qt::Key_Space));
+		ui->keyViewerToggleFullscreen->setKeySequence(getKeySequence(settings, "keyViewerToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11));
+		ui->keyViewerDataToClipboard->setKeySequence(getKeySequence(settings, "keyViewerDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C));
 	settings->endGroup();
 
 	settings->beginGroup("Coloring");

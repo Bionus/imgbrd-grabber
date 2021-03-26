@@ -62,37 +62,35 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	ui->progressBarDownload->hide();
 
 	m_settings->beginGroup("Zoom/Shortcuts");
-		QShortcut *quit = new QShortcut(m_settings->value("keyViewerQuit", QKeySequence(Qt::Key_Q)).toString(), this);
+		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyViewerQuit", Qt::Key_Escape), this);
 			connect(quit, &QShortcut::activated, this, &ZoomWindow::close);
-		QShortcut *prev = new QShortcut(m_settings->value("keyViewerPrev", QKeySequence(Qt::Key_Left)).toString(), this);
+		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyViewerPrev", Qt::Key_Left), this);
 			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
-		QShortcut *next = new QShortcut(m_settings->value("keyViewerNext", QKeySequence(Qt::Key_Right)).toString(), this);
+		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyViewerNext", Qt::Key_Right), this);
 			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
 
-		QShortcut *details = new QShortcut(m_settings->value("keyViewerDetails", QKeySequence(Qt::Key_D)).toString(), this);
+		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyViewerDetails", Qt::Key_D), this);
 			connect(details, &QShortcut::activated, this, &ZoomWindow::showDetails);
-		QShortcut *saveAs = new QShortcut(m_settings->value("keyViewerSaveAs", QKeySequence(Qt::SHIFT + Qt::Key_S)).toString(), this);
+		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keyViewerSaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
 			connect(saveAs, &QShortcut::activated, this, &ZoomWindow::saveImageAs);
 
-		QShortcut *save = new QShortcut(m_settings->value("keyViewerSave", QKeySequence(Qt::Key_S)).toString(), this);
+		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keyViewerSave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveNQuit = new QShortcut(m_settings->value("keyViewerSaveNQuit", QKeySequence(Qt::Key_W)).toString(), this);
+		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keyViewerSaveNQuit", Qt::CTRL + Qt::Key_W), this);
 			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
-		QShortcut *open = new QShortcut(m_settings->value("keyViewerOpen", QKeySequence(Qt::Key_B)).toString(), this);
+		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyViewerOpen", Qt::CTRL + Qt::Key_B), this);
 			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
-		QShortcut *saveFav = new QShortcut(m_settings->value("keyViewerSaveFav", QKeySequence(Qt::ALT + Qt::Key_S)).toString(), this);
+		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keyViewerSaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
 			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
-		QShortcut *saveNQuitFav = new QShortcut(m_settings->value("keyViewerSaveNQuitFav", QKeySequence(Qt::ALT + Qt::Key_W)).toString(), this);
+		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keyViewerSaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
 			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
-		QShortcut *openFav = new QShortcut(m_settings->value("keyViewerOpenFav", QKeySequence(Qt::ALT + Qt::Key_B)).toString(), this);
+		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyViewerOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_B), this);
 			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
 
-		QShortcut *toggleSlideshow = new QShortcut(m_settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString(), this);
-			connect(toggleSlideshow, &QShortcut::activated, this, &ZoomWindow::toggleSlideshow);
-		QShortcut *toggleFullscreen = new QShortcut(m_settings->value("keyViewerToggleFullscreen", QKeySequence(Qt::Key_F)).toString(), this);
+		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyViewerToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
-		QShortcut *copyDataToClipboard = new QShortcut(m_settings->value("keyViewerDataToClipboard", QKeySequence(Qt::CTRL + Qt::Key_S)).toString(), this);
+		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyViewerDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ZoomWindow::copyImageDataToClipboard);
 	m_settings->endGroup();
 
@@ -977,17 +975,16 @@ void ZoomWindow::fullScreen()
 	m_isFullscreen = true;
 	prepareNextSlide();
 
-
 	m_settings->beginGroup("Zoom/Shortcuts");	// Could probably just use the variables already initialised when this ZoomWindow was constructed.
-		QShortcut *quit = new QShortcut(m_settings->value("keyViewerQuit", QKeySequence(Qt::Key_Q)).toString(), m_fullScreen);
+		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyViewerQuit", Qt::Key_Escape), m_fullScreen);
 			connect(quit, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
-		QShortcut *toggleFullscreen = new QShortcut(m_settings->value("keyViewerToggleFullscreen", QKeySequence(Qt::Key_F)).toString(), m_fullScreen);
+		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyViewerToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
-		QShortcut *prev = new QShortcut(m_settings->value("keyViewerPrev", QKeySequence(Qt::Key_Left)).toString(), m_fullScreen);
+		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyViewerPrev", Qt::Key_Left), m_fullScreen);
 			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
-		QShortcut *next = new QShortcut(m_settings->value("keyViewerNext", QKeySequence(Qt::Key_Right)).toString(), m_fullScreen);
+		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyViewerNext", Qt::Key_Right), m_fullScreen);
 			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
-		QShortcut *toggleSlideshow = new QShortcut(m_settings->value("keyViewerToggleSlideshow", QKeySequence(Qt::Key_Space)).toString(), m_fullScreen);
+		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyViewerToggleSlideshow", Qt::Key_Space), m_fullScreen);
 			connect(toggleSlideshow, &QShortcut::activated, this, &ZoomWindow::toggleSlideshow);
 	m_settings->endGroup();
 
