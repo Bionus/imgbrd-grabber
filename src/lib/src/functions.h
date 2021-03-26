@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QString>
+#include <QKeySequence>
 #include "backports/backports.h"
 
 
@@ -89,6 +90,9 @@ QUrl removeCacheBuster(QUrl url);
 
 bool canCreateLinkType(const QString &type, const QString &dir);
 bool createLink(const QString &from, const QString &to, const QString &type);
+
+QKeySequence getKeySequence(QSettings *settings, const QString &key, QKeySequence::StandardKey standardDefault, const QKeySequence &altDefault);
+QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def);
 
 
 

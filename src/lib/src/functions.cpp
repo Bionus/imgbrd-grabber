@@ -1118,3 +1118,22 @@ bool createLink(const QString &from, const QString &to, const QString &type)
 	log(QStringLiteral("Invalid link type '%1'").arg(type), Logger::Error);
 	return false;
 }
+
+
+QKeySequence getKeySequence(QSettings *settings, const QString &key, QKeySequence::StandardKey standardDefault, const QKeySequence &altDefault)
+{
+	const auto standards = QKeySequence::keyBindings(standardDefault);
+	if (standards.isEmpty()) {
+		return getKeySequence(settings, key, altDefault);
+	}
+	return getKeySequence(settings, key, standards.first());
+}
+
+QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def)
+{
+	QString val = settings->value(key).toString();
+	if (val.isEmpty()) {
+		return def;
+	}
+	return QKeySequence(val);
+}
