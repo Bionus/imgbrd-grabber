@@ -293,7 +293,8 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave :
 				log("Save");
 				button = ui->buttonSave;
-				buttonSaveText = bs.text.replace("&", "&&").toStdString();
+				if (bs.text.isEmpty()) buttonSaveText = "Save";
+				else buttonSaveText = bs.text.replace("&", "&&").toStdString();
 				hasButtonSave = true;
 				break;
 			case Ui::IsButtonSaveNQuit :
@@ -308,7 +309,8 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave | Ui::IsFavoriteButton :
 				log("SaveFav");
 				button = ui->buttonSaveFav;
-				buttonSaveFavText = bs.text.replace("&", "&&").toStdString();
+				if (bs.text.isEmpty()) buttonSaveFavText = "Save (fav)";
+				else buttonSaveFavText = bs.text.replace("&", "&&").toStdString();
 				hasButtonSaveFav = true;
 				break;
 			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
@@ -322,6 +324,8 @@ void ZoomWindow::configureButtons()
 				break;
 			default :
 				log("ZoomWindow::configureButtons found an unknown button type. Using default layout.");
+				buttonSaveText = "Save";
+				buttonSaveFavText = "Save (fav)";
 				hasButtonSave = true;
 				hasButtonSaveNQuit = true;
 				hasButtonSaveFav = true;
