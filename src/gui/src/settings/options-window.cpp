@@ -13,6 +13,7 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QtConcurrent>
+//#include <QShortcut>
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
@@ -126,6 +127,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
+
+	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialogue", QKeySequence::Quit, Qt::CTRL + Qt::Key_Y));
+	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialogue", QKeySequence::Quit, Qt::CTRL + Qt::Key_N));
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -463,6 +467,10 @@ void OptionsWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
+	/*QShortcut *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), fw);
+		connect(accept, &QShortcut::activated, fw, &QDialog::accept);
+	QShortcut *decline = new QShortcut(getKeySequence(settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), fw);
+		connect(decline, &QShortcut::activated, fw, &QDialog::reject);*/
 	fw->show();
 }
 void OptionsWindow::on_buttonFavoritesPlus_clicked()
@@ -476,6 +484,10 @@ void OptionsWindow::on_buttonCustom_clicked()
 {
 	auto *cw = new CustomWindow(this);
 	connect(cw, &CustomWindow::validated, this, &OptionsWindow::addCustom);
+	/*QShortcut *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), cw);
+		connect(accept, &QShortcut::activated, cw, &QDialog::accept);
+	QShortcut *decline = new QShortcut(getKeySequence(settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), cw);
+		connect(decline, &QShortcut::activated, cw, &QDialog::reject);*/
 	cw->show();
 }
 void OptionsWindow::addCustom(const QString &name, const QString &tags)
@@ -490,6 +502,10 @@ void OptionsWindow::on_buttonFilenames_clicked()
 {
 	auto *cw = new ConditionWindow();
 	connect(cw, &ConditionWindow::validated, this, &OptionsWindow::addFilename);
+	/*QShortcut *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), cw);
+		connect(accept, &QShortcut::activated, cw, &QDialog::accept);
+	QShortcut *decline = new QShortcut(getKeySequence(settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), cw);
+		connect(decline, &QShortcut::activated, cw, &QDialog::accept);*/
 	cw->show();
 }
 void OptionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
@@ -560,6 +576,10 @@ void OptionsWindow::addLogFile()
 {
 	auto *logWindow = new LogWindow(-1, m_profile, this);
 	connect(logWindow, &LogWindow::validated, this, &OptionsWindow::setLogFile);
+	/*QShortcut *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), logWindow);
+		connect(accept, &QShortcut::activated, logWindow, &QDialog::accept);
+	QShortcut *decline = new QShortcut(getKeySequence(settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), logWindow);
+		connect(decline, &QShortcut::activated, logWindow, &QDialog::reject);*/
 	logWindow->show();
 }
 
@@ -670,6 +690,10 @@ void OptionsWindow::addWebService()
 {
 	auto *wsWindow = new WebServiceWindow(nullptr, this);
 	connect(wsWindow, &WebServiceWindow::validated, this, &OptionsWindow::setWebService);
+	/*QShortcut *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), wsWindow);
+		connect(accept, &QShortcut::activated, wsWindow, &QDialog::accept);
+	QShortcut *decline = new QShortcut(getKeySequence(settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), wsWindow);
+		connect(decline, &QShortcut::activated, wsWindow, &QDialog::reject);*/
 	wsWindow->show();
 }
 
@@ -982,6 +1006,9 @@ void OptionsWindow::save()
 		settings->setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
 		m_profile->emitFavorite();
 	}
+
+	settings->setValue("keyAcceptDialogue", ui->keyAcceptDialogue->keySequence().toString());
+	settings->setValue("keyDeclineDialogue", ui->keyDeclineDialogue->keySequence().toString());
 
 	// Log
 	settings->beginGroup("Log");

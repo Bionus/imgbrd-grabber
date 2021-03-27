@@ -1054,8 +1054,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>363</width>
-             <height>438</height>
+             <width>68</width>
+             <height>16</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1496,6 +1496,34 @@
           </property>
          </widget>
         </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelDeclineDialogue">
+          <property name="text">
+           <string>Decline dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="QKeySequenceEdit" name="keyDeclineDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelAcceptDialogue">
+          <property name="text">
+           <string>Accept dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QKeySequenceEdit" name="keyAcceptDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceMainWindow">
@@ -1659,8 +1687,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>381</width>
-             <height>483</height>
+             <width>308</width>
+             <height>417</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2256,7 +2284,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>367</width>
+             <width>226</width>
              <height>810</height>
             </rect>
            </property>
