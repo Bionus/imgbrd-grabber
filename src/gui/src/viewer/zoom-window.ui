@@ -69,7 +69,7 @@
                <x>0</x>
                <y>0</y>
                <width>68</width>
-               <height>389</height>
+               <height>383</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -132,7 +132,7 @@
       <number>6</number>
      </property>
      <property name="verticalSpacing">
-      <number>0</number>
+      <number>5</number>
      </property>
      <item row="1" column="1" alignment="Qt::AlignHCenter">
       <widget class="QWidget" name="buttonDrawer" native="true">
@@ -162,7 +162,7 @@
          <number>0</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>0</number>
@@ -173,7 +173,7 @@
         <item>
          <widget class="QPushButton" name="buttonSaveFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -189,7 +189,7 @@
         <item>
          <widget class="QPushButton" name="buttonSaveNQuitFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -205,7 +205,7 @@
         <item>
          <widget class="QPushButton" name="buttonOpenFav">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -237,7 +237,7 @@
          <number>0</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>0</number>
@@ -248,7 +248,7 @@
         <item>
          <widget class="QPushButton" name="buttonDetails">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -264,7 +264,7 @@
         <item>
          <widget class="QPushButton" name="buttonSave">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -280,7 +280,7 @@
         <item>
          <widget class="QPushButton" name="buttonSaveNQuit">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -296,7 +296,7 @@
         <item>
          <widget class="QPushButton" name="buttonOpen">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -312,7 +312,7 @@
         <item>
          <widget class="QPushButton" name="buttonSaveAs">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>

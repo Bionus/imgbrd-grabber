@@ -260,8 +260,8 @@ void ZoomWindow::configureButtons()
 		hasButtonSaveNQuit = true;
 		hasButtonSaveFav = true;
 		hasButtonSaveNQuitFav = true;
-		hasShelf = true;
-		hasDrawer = true;
+		countOnShelf = 5;
+		countInDrawer = 3;
 		scaleRef = ui->buttonDetails;
 		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
@@ -344,25 +344,26 @@ void ZoomWindow::configureButtons()
 				hasButtonSaveNQuit = true;
 				hasButtonSaveFav = true;
 				hasButtonSaveNQuitFav = true;
-
-				hasShelf = true;
-				hasDrawer = true;
+				countOnShelf = 5;
+				countInDrawer = 3;
 				scaleRef = ui->buttonDetails;
 				ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 				connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 				return;
 		}
 
-		//log(std::to_string(bs->position).c_str());
+		//log(("position = " + std::to_string(bs->position)).c_str());
 		if (! bs->text.isEmpty()) button->setText(bs->text.replace("&", "&&"));	// Might not be worth checking isEmpty().
 		button->parentWidget()->layout()->removeWidget(button);
 		if (bs->isInDrawer) {
-			hasDrawer = true;
+			countInDrawer++;
 			ui->buttonDrawerLayout->insertWidget(bs->position, button);
 		} else {
-			hasShelf = true;
 			ui->buttonShelfLayout->insertWidget(bs->position, button);
-			if (scaleRef == nullptr && bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
+			if (bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
+				countOnShelf++;
+				if (scaleRef == nullptr) scaleRef = button;
+			}
 			/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 				ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
 				if (scaleRef == nullptr) scaleRef = button;
@@ -396,15 +397,15 @@ void ZoomWindow::configureButtons()
 	if (! hasButtonSaveNQuitFav) delete ui->buttonSaveNQuitFav;
 
 
-	if (hasShelf || hasDrawer) {
-		if (hasDrawer) {
+	if (countOnShelf || countInDrawer) {
+		if (countInDrawer) {
 			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-			if (! hasShelf) {
+			if (! countOnShelf) {
 				delete ui->buttonShelf;
 				scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
 			//} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 			}
-			shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
+			//shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 
 			ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 			connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
@@ -1224,45 +1225,44 @@ void ZoomWindow::toggleSlideshow()
 
 void ZoomWindow::resizeButtons()
 {
-	if (! hasDrawer) return;	// Also used to infer existance of buttonPlus.
+	if (! countInDrawer) return;	// Also used to infer existance of buttonPlus.
 
 	// Normal resize gets over-written.
 	/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
 	   I'm not sure how to query those values here or export from here to there dynamically. */
-	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );
+	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );	// Fix scaling for large buttons.
 
-	if (! hasShelf) return;	// || ! ui->buttonPlus->isChecked()?
+	if (! countOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
 	QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
+	short shelfDrawerDiff = countOnShelf - countInDrawer;
 
 	unsigned short max;
-	if (shelfDrawerDiff < 0) {
-		log("shelfDrawerDiff < 0");
-		max = drawer->parentWidget()->width();
-		shelf->setMaximumWidth(max);
-	} else {
-		log("shelfDrawerDiff > 0");
-		max = shelf->width();
-		if (shelfDrawerDiff > 4) {
-			unsigned short max2 = (scaleRef->width() + 6) * 3;	// Indent drawer inward.
-			max = max > max2 ? max2 : max;
+	if (shelfDrawerDiff < 0) max = shelf->width();	// Minus width of navigation buttons?
+	else {	// More buttons on shelf than in drawer.
+		max = shelf->width();	// Does not include navigation buttons.
+		unsigned short max2 = scaleRef->width() + 6;	// 6 is the horizontal spacing.
+
+		if (shelfDrawerDiff == 0) max2 = scaleRef->width() * countOnShelf;	// Overwrites pre-set max2 factor. Wasteful.
+		else if (countOnShelf == 1) max2 = max;
+		else if (countInDrawer == 1) {
+			log(("max2 = " + std::to_string(max2)).c_str());
+			max2 *= countOnShelf % 2 ? 1: 2;	// Shouldn't have the +6 for spacing.
+			log(("max2 = " + std::to_string(max2)).c_str());
+		} else if (countInDrawer % 2) {	// countInDrawer is even.
+			if (countOnShelf % 2) max2 *= countOnShelf - (countOnShelf - countInDrawer);
+			else if (countOnShelf < 7) max2 *= 3;
+			else max2 *= 5;	// Assuming countOnShelf < 9. Not currently possible.
+		} else {	// countInDrawer is odd.
+			if (countOnShelf % 2) max2 = shelf->width() * (countOnShelf / countInDrawer);	// Overwrites pre-set max2 factor. Wasteful.
+			else max2 *= countOnShelf - (countOnShelf - countInDrawer);
 		}
+
+		max = max > max2 ? max2 : max;
+		// Adjust for width of navigation buttons?
 	}
-	log((std::string("maximumWidth = ") + std::to_string(max)).c_str());
-	drawer->setMaximumWidth(max);
-
-	/*QMargins desire = ui->buttonsLayout->contentsMargins();
-	//short xMar = ( ui->buttonsLayout->parentWidget()->width() - drawer->width() > shelf->width() ? drawer->width() : shelf->width() ) / 2;
-	//xMar *= 0.94;
-	//desire.setLeft(xMar + desire.left());
-	//desire.setRight(xMar + desire.right());
-	//desire.setLeft(xMar);
-	//desire.setRight(xMar);
-
-	short xFact = ( ui->buttonsLayout->parentWidget()->width() * 0.95 ) / 2;
-	desire.setLeft(xFact);
-	desire.setRight(xFact);
-	ui->buttonsLayout->setContentsMargins(desire);*/
+	//drawer->setMaximumWidth(max);
+	drawer->setFixedWidth(max);	// Not sure why I have to set fixed width, since horizontal size policies are expanding.
 }
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)
@@ -1281,7 +1281,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
-	m_settings->setValue("Zoom/plus", hasDrawer ? ui->buttonPlus->isChecked() : false);
+	m_settings->setValue("Zoom/plus", countInDrawer ? ui->buttonPlus->isChecked() : false);
 	m_settings->sync();
 
 	m_image->abortTags();
@@ -1298,8 +1298,8 @@ void ZoomWindow::showEvent(QShowEvent *e)
 {
 	Q_UNUSED(e)
 
-	resizeButtons();
 	showThumbnail();
+	resizeButtons();
 }
 
 void ZoomWindow::showThumbnail()

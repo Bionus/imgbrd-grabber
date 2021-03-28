@@ -197,10 +197,10 @@ class ZoomWindow : public QWidget
 		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Buttons
-		bool hasShelf = false;
-		bool hasDrawer = false;
+		unsigned short countOnShelf = 0;	// Does not include navigation buttons.
+		unsigned short countInDrawer = 0;	// Does not include navigation buttons.
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
-		short shelfDrawerDiff = 0;	// For resizeButtons().
+		//short shelfDrawerDiff = 0;	// For resizeButtons().
 		std::string buttonSaveText, buttonSaveFavText;
 		bool hasButtonSave = false;
 		bool hasButtonSaveNQuit = false;
@@ -230,7 +230,7 @@ class ButtonSettings
 		bool isEnabled;
 		bool isInDrawer;
 
-	bool operator < (const ButtonSettings& str) const {return (type < str.type);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
+	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
 
 	// https://stackoverflow.com/questions/37333084/how-to-save-custom-type-to-qsettings
 	friend QDataStream & operator << (QDataStream &arch, const ButtonSettings & object)

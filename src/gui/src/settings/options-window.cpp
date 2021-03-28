@@ -346,7 +346,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->checkButtonSaveNQuitFav->setCheckState(Qt::PartiallyChecked);
 		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
 	} else {
-		log("+++Reading Zoom/Buttons+++");
+		//log("+++Reading Zoom/Buttons+++");
 		settings->beginGroup("Zoom");
 		QList<ButtonSettings> buttons = settings->value("allButtons").value<QList<ButtonSettings> >();
 		for (QList<ButtonSettings>::iterator button = buttons.begin(); button != buttons.end(); button++) {
@@ -355,70 +355,70 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			switch (button->type) {
 				//case 0 : continue;	Shouldn't happen right now.
 				case Ui::IsButtonPrev :
-					log("Prev");
+					//log("Prev");
 					checker = ui->checkButtonPrev;
 					spinner = ui->spinButtonPrev;
 					ui->lineButtonPrev->setText(button->text.isEmpty() ? "<" : button->text);
 					ui->lineButtonPrev->setCursorPosition(0);
 					break;
 				case Ui::IsButtonNext :
-					log("Next");
+					//log("Next");
 					checker = ui->checkButtonNext;
 					spinner = ui->spinButtonNext;
 					ui->lineButtonNext->setText(button->text.isEmpty() ? ">" : button->text);
 					ui->lineButtonNext->setCursorPosition(0);
 					break;
 				case Ui::IsButtonDetails :
-					log("Details");
+					//log("Details");
 					checker = ui->checkButtonDetails;
 					spinner = ui->spinButtonDetails;
 					ui->lineButtonDetails->setText(button->text.isEmpty() ? "More details" : button->text);
 					ui->lineButtonDetails->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveAs :
-					log("SaveAs");
+					//log("SaveAs");
 					checker = ui->checkButtonSaveAs;
 					spinner = ui->spinButtonSaveAs;
 					ui->lineButtonSaveAs->setText(button->text.isEmpty() ? "Save as..." : button->text);
 					ui->lineButtonSaveAs->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSave:
-					log("Save");
+					//log("Save");
 					checker = ui->checkButtonSave;
 					spinner = ui->spinButtonSave;
 					ui->lineButtonSave->setText(button->text.isEmpty() ? "Save" : button->text);
 					ui->lineButtonSave->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveNQuit :
-					log("SaveNQuit");
+					//log("SaveNQuit");
 					checker = ui->checkButtonSaveNQuit;
 					spinner = ui->spinButtonSaveNQuit;
 					ui->lineButtonSaveNQuit->setText(button->text.isEmpty() ? "Save and close" : button->text);
 					ui->lineButtonSaveNQuit->setCursorPosition(0);
 					break;
 				case Ui::IsButtonOpen :
-					log("Open");
+					//log("Open");
 					checker = ui->checkButtonOpen;
 					spinner = ui->spinButtonOpen;
 					ui->lineButtonOpen->setText(button->text.isEmpty() ? "Destination folder" : button->text);
 					ui->lineButtonOpen->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSave | Ui::IsFavoriteButton :
-					log("SaveFav");
+					//log("SaveFav");
 					checker = ui->checkButtonSaveFav;
 					spinner = ui->spinButtonSaveFav;
 					ui->lineButtonSaveFav->setText(button->text.isEmpty() ? "Save (fav)" : button->text);
 					ui->lineButtonSaveFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
-					log("SaveNQuitFav");
+					//log("SaveNQuitFav");
 					checker = ui->checkButtonSaveNQuitFav;
 					spinner = ui->spinButtonSaveNQuitFav;
 					ui->lineButtonSaveNQuitFav->setText(button->text.isEmpty() ? "Save and close (fav)" : button->text);
 					ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonOpen | Ui::IsFavoriteButton :
-					log("OpenFav");
+					//log("OpenFav");
 					checker = ui->checkButtonOpenFav;
 					spinner = ui->spinButtonOpenFav;
 					ui->lineButtonOpenFav->setText(button->text.isEmpty() ? "Destination folder (fav)" : button->text);
@@ -432,7 +432,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			spinner->setValue(button->position);
 		}
 		settings->endGroup();
-		log("---Reading Zoom/Buttons---");
+		//log("---Reading Zoom/Buttons---");
 
 		QObject::connect(ui->spinButtonPrev,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		QObject::connect(ui->spinButtonNext,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
@@ -1296,7 +1296,7 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
-	log("+++Writing Zoom/Buttons+++");
+	//log("+++Writing Zoom/Buttons+++");
 	//settings->setValue("Zoom/defaultButtonLayout", ui->checkZoomDefaultButtonLayout->isChecked());
 	QList<ButtonSettings> buttons, active;
 
@@ -1358,8 +1358,46 @@ void OptionsWindow::save()
 		for (QList<ButtonSettings>::iterator i = buttons.begin(); i != buttons.end(); i++) if (i->isEnabled) active.append(*i);
 		std::sort(active.begin(), active.end());
 		settings->setValue("activeButtons", QVariant::fromValue(active));
+
+		/*for (QList<ButtonSettings>::iterator button = active.begin(); button != active.end(); button++) {
+			switch (button->type) {
+				case Ui::IsButtonPrev :
+					log("Prev");
+					break;
+				case Ui::IsButtonNext :
+					log("Next");
+					break;
+				case Ui::IsButtonDetails :
+					log("Details");
+					break;
+				case Ui::IsButtonSaveAs :
+					log("SaveAs");
+					break;
+				case Ui::IsButtonSave:
+					log("Save");
+					break;
+				case Ui::IsButtonSaveNQuit :
+					log("SaveNQuit");
+					break;
+				case Ui::IsButtonOpen :
+					log("Open");
+					break;
+				case Ui::IsButtonSave | Ui::IsFavoriteButton :
+					log("SaveFav");
+					break;
+				case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
+					log("SaveNQuitFav");
+					break;
+				case Ui::IsButtonOpen | Ui::IsFavoriteButton :
+					log("OpenFav");
+					break;
+				default :
+					log("OptionsWindow found an unknown button type.");
+					continue;
+			}
+		}*/
 	settings->endGroup();
-	log("---Writing Zoom/Buttons---");
+	//log("---Writing Zoom/Buttons---");
 
 	settings->beginGroup("Zoom/Shortcuts");
 		settings->setValue("keyQuit", ui->keyViewerQuit->keySequence().toString());
