@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	app.setOrganizationDomain("bionus.fr.cr");
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
-	qRegisterMetaTypeStreamOperators<ButtonSettings>("ButtonSettings");
+	qRegisterMetaTypeStreamOperators<QList<ButtonSettings> >("QList<ButtonSettings>");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY

@@ -268,12 +268,11 @@ void ZoomWindow::configureButtons()
 		return;
 	}*/
 
-	m_settings->beginGroup("Zoom/Buttons");
-	for (int i = 0; i < 10; ++i) {
+	m_settings->beginGroup("Zoom");
+	QList<ButtonSettings> buttons = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
+	for (QList<ButtonSettings>::iterator bs = buttons.begin(); bs != buttons.end(); bs++) {
 		QPushButton *button = nullptr;
-		ButtonSettings bs = m_settings->value(QString(i)).value<ButtonSettings>();
-		switch (bs.type) {
-			//case 0 : continue;	// Omitted to remove preconfigured buttons in .ui file.
+		switch (bs->type) {
 			case Ui::IsButtonPrev :
 				log("Prev");
 				button = ui->buttonPrev;
@@ -293,14 +292,14 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave :
 				log("Save");
 				button = ui->buttonSave;
-				if (bs.text.isEmpty()) buttonSaveText = "Save";
-				else buttonSaveText = bs.text.replace("&", "&&").toStdString();
-				if (bs.isEnabled) hasButtonSave = true;
+				if (bs->text.isEmpty()) buttonSaveText = "Save";
+				else buttonSaveText = bs->text.replace("&", "&&").toStdString();
+				hasButtonSave = true;
 				break;
 			case Ui::IsButtonSaveNQuit :
 				log("SaveNQuit");
 				button = ui->buttonSaveNQuit;
-				if (bs.isEnabled) hasButtonSaveNQuit = true;
+				hasButtonSaveNQuit = true;
 				break;
 			case Ui::IsButtonOpen :
 				log("Open");
@@ -309,14 +308,14 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonSave | Ui::IsFavoriteButton :
 				log("SaveFav");
 				button = ui->buttonSaveFav;
-				if (bs.text.isEmpty()) buttonSaveFavText = "Save (fav)";
-				else buttonSaveFavText = bs.text.replace("&", "&&").toStdString();
-				if (bs.isEnabled) hasButtonSaveFav = true;
+				if (bs->text.isEmpty()) buttonSaveFavText = "Save (fav)";
+				else buttonSaveFavText = bs->text.replace("&", "&&").toStdString();
+				hasButtonSaveFav = true;
 				break;
 			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
 				log("SaveNQuitFav");
 				button = ui->buttonSaveNQuitFav;
-				if (bs.isEnabled) hasButtonSaveNQuitFav = true;
+				hasButtonSaveNQuitFav = true;
 				break;
 			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
 				log("OpenFav");
@@ -341,17 +340,17 @@ void ZoomWindow::configureButtons()
 				return;
 		}
 
-		if (bs.isEnabled) {
-			log(std::to_string(bs.position).c_str());
-			if (! bs.text.isEmpty()) button->setText(bs.text.replace("&", "&&"));	// Might not be worth checking isEmpty().
+		if (bs->isEnabled) {
+			log(std::to_string(bs->position).c_str());
+			if (! bs->text.isEmpty()) button->setText(bs->text.replace("&", "&&"));	// Might not be worth checking isEmpty().
 			button->parentWidget()->layout()->removeWidget(button);
-			if (bs.isInDrawer) {
+			if (bs->isInDrawer) {
 				hasDrawer = true;
-				ui->buttonDrawerLayout->insertWidget(bs.position, button);
+				ui->buttonDrawerLayout->insertWidget(bs->position, button);
 			} else {
 				hasShelf = true;
-				ui->buttonShelfLayout->insertWidget(bs.position, button);
-				if (scaleRef == nullptr && bs.type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
+				ui->buttonShelfLayout->insertWidget(bs->position, button);
+				if (scaleRef == nullptr && bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
 				/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 					ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
 					if (scaleRef == nullptr) scaleRef = button;
