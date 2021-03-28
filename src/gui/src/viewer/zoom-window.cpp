@@ -267,6 +267,13 @@ void ZoomWindow::configureButtons()
 		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 		return;
 	}*/
+	bool deletePrev = true;
+	bool deleteNext = true;
+	bool deleteDetails = true;
+	bool deleteSaveAs = true;
+	bool deleteOpen = true;
+	bool deleteOpenFav = true;
+
 
 	m_settings->beginGroup("Zoom");
 	QList<ButtonSettings> buttons = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
@@ -276,18 +283,22 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonPrev :
 				log("Prev");
 				button = ui->buttonPrev;
+				deletePrev = false;
 				break;
 			case Ui::IsButtonNext :
 				log("Next");
 				button = ui->buttonNext;
+				deleteNext = false;
 				break;
 			case Ui::IsButtonDetails :
 				log("Details");
 				button = ui->buttonDetails;
+				deleteDetails = false;
 				break;
 			case Ui::IsButtonSaveAs :
 				log("SaveAs");
 				button = ui->buttonSaveAs;
+				deleteSaveAs = false;
 				break;
 			case Ui::IsButtonSave :
 				log("Save");
@@ -304,6 +315,7 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonOpen :
 				log("Open");
 				button = ui->buttonOpen;
+				deleteOpen = false;
 				break;
 			case Ui::IsButtonSave | Ui::IsFavoriteButton :
 				log("SaveFav");
@@ -320,6 +332,7 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
 				log("OpenFav");
 				button = ui->buttonOpenFav;
+				deleteOpenFav = false;
 				break;
 			default :
 				log("ZoomWindow::configureButtons found an unknown button type. Using default layout.");
@@ -340,38 +353,47 @@ void ZoomWindow::configureButtons()
 				return;
 		}
 
-		if (bs->isEnabled) {
-			log(std::to_string(bs->position).c_str());
-			if (! bs->text.isEmpty()) button->setText(bs->text.replace("&", "&&"));	// Might not be worth checking isEmpty().
-			button->parentWidget()->layout()->removeWidget(button);
-			if (bs->isInDrawer) {
-				hasDrawer = true;
-				ui->buttonDrawerLayout->insertWidget(bs->position, button);
-			} else {
-				hasShelf = true;
-				ui->buttonShelfLayout->insertWidget(bs->position, button);
-				if (scaleRef == nullptr && bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
-				/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
-					ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
-					if (scaleRef == nullptr) scaleRef = button;
-				} else {	// Let navigation buttons protrude if they are first or last. Also prioritise order weight.
-					switch (buttonMask & Ui::Placement) {
-						case 0 :
-							ui->buttonsLayout->addWidget(button, -3, 0);
-							break;
-						case 10 :
-							log(std::to_string(ui->buttonsLayout->columnCount()).c_str());
-							ui->buttonsLayout->addWidget(button, -3, ui->buttonsLayout->columnCount());
-							break;
-						default:
-							ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
-					}
-				}*/
-			}
-		} else delete button;	// Overwrite button presets in .ui file.
+		//log(std::to_string(bs->position).c_str());
+		if (! bs->text.isEmpty()) button->setText(bs->text.replace("&", "&&"));	// Might not be worth checking isEmpty().
+		button->parentWidget()->layout()->removeWidget(button);
+		if (bs->isInDrawer) {
+			hasDrawer = true;
+			ui->buttonDrawerLayout->insertWidget(bs->position, button);
+		} else {
+			hasShelf = true;
+			ui->buttonShelfLayout->insertWidget(bs->position, button);
+			if (scaleRef == nullptr && bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) scaleRef = button;
+			/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
+				ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+				if (scaleRef == nullptr) scaleRef = button;
+			} else {	// Let navigation buttons protrude if they are first or last. Also prioritise order weight.
+				switch (buttonMask & Ui::Placement) {
+					case 0 :
+						ui->buttonsLayout->addWidget(button, -3, 0);
+						break;
+					case 10 :
+						log(std::to_string(ui->buttonsLayout->columnCount()).c_str());
+						ui->buttonsLayout->addWidget(button, -3, ui->buttonsLayout->columnCount());
+						break;
+					default:
+						ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
+				}
+			}*/
+		}
 	}
 	m_settings->endGroup();
 	log("---configureButtons---");
+
+	if (deletePrev) delete ui->buttonPrev;
+	if (deleteNext) delete ui->buttonNext;
+	if (deleteDetails) delete ui->buttonDetails;
+	if (deleteSaveAs) delete ui->buttonSaveAs;
+	if (deleteOpen) delete ui->buttonOpen;
+	if (deleteOpenFav) delete ui->buttonOpenFav;
+	if (! hasButtonSave) delete ui->buttonSave;
+	if (! hasButtonSaveFav) delete ui->buttonSaveFav;
+	if (! hasButtonSaveNQuit) delete ui->buttonSaveNQuit;
+	if (! hasButtonSaveNQuitFav) delete ui->buttonSaveNQuitFav;
 
 
 	if (hasShelf || hasDrawer) {
