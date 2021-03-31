@@ -1,9 +1,11 @@
 #ifndef ZOOM_WINDOW_H
 #define ZOOM_WINDOW_H
 
+#include <unordered_map>
 #include <QPointer>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QString>	// For QDataStream to std::string.
 #include <QtNetwork>
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
@@ -13,8 +15,6 @@
 namespace Ui
 {
 	class ZoomWindow;
-
-	class ButtonSettings;
 
 	// Button type masks:
 
@@ -34,6 +34,112 @@ namespace Ui
 
 	constexpr unsigned short IsFavoriteButton		=          0b00001000 ;	// Nib0.3, bit 3.
 }
+
+//typedef void ButtonEffect();
+//template <typename T>
+//template <typename T>
+//using ButtonEffect = void (T::*)();
+//template <typename T>
+//template <typename T = Ui::ZoomWindow>
+class ZoomWindow;
+template <typename scope = ZoomWindow>
+using ButtonEffect = void (scope::*)();
+//template <typename scope = ZoomWindow, typename ...params>
+//using ButtonEffect = void (scope::*)(params...);
+//template <typename scope = ZoomWindow, typename R = void, typename ...params>
+//using ButtonEffect = R (scope::*)(params...);
+
+class ButtonState
+{
+	public:
+		unsigned short type;
+		//ButtonEffect *function = nullptr;
+		QString text;
+		QString toolTip = "";
+		ButtonEffect<> function = nullptr;
+
+	friend QDataStream & operator << (QDataStream &out, const ButtonState &in)
+	{
+		out << in.type;
+		out << in.text;
+		out << in.toolTip;
+		return out;
+	}
+	friend QDataStream & operator >> (QDataStream &in, ButtonState &out)
+	{
+		in >> out.type;
+
+		in >> out.text;
+		in >> out.toolTip;
+		return in;
+	}
+};
+
+class ButtonInstance
+{
+	public:
+		unsigned short type;
+		QPushButton *pointer = nullptr;
+		QList<ButtonState> states;
+		ButtonState *current = nullptr;
+
+		//ButtonEffect *function = nullptr;
+};
+
+class ButtonSettings
+{
+	public:
+		/*enum ButtonWindow
+		{
+			Zoom
+		};
+
+		ButtonWindow onWindow;*/
+		//unsigned int mask = 0;
+		unsigned short type;
+		std::string name;
+		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
+		QList<ButtonState> states;
+		bool isEnabled;
+		bool isInDrawer;
+
+	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
+
+	// https://stackoverflow.com/questions/37333084/how-to-save-custom-type-to-qsettings
+	friend QDataStream & operator << (QDataStream &out, const ButtonSettings &in)
+	{
+		out << in.type;
+		out << QString::fromStdString(in.name);
+		out << in.position;
+		out << in.states;
+		out << in.isEnabled;
+		out << in.isInDrawer;
+		return out;
+	}
+	friend QDataStream & operator >> (QDataStream &in, ButtonSettings &out)
+	{
+		in >> out.type;
+
+		// https://forum.qt.io/topic/74962/serializing-std-string-over-qdatastream/2
+		/*char *tmp;
+		in >> tmp;
+		if (tmp) out.name = tmp;
+		delete[] tmp;*/
+		/*QByteArray tmp;
+		in >> tmp;
+		if (!tmp.isEmpty) out.name = tmp.toStdString();
+		out.name = QString::toStdString(QSt*/
+		QString tmp;
+		in >> tmp;
+		out.name = tmp.toStdString();
+
+		in >> out.position;
+		in >> out.states;
+		in >> out.isEnabled;
+		in >> out.isInDrawer;
+		return in;
+	}
+};
 
 
 class GifPlayer;
@@ -87,6 +193,7 @@ class ZoomWindow : public QWidget
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
+		void saveImageNotFav();	// This is stupid.
 		void saveImageNow();
 		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
@@ -95,6 +202,7 @@ class ZoomWindow : public QWidget
 		void openPoolId(Page*);
 		void openSaveDir(bool fav = false);
 		void openSaveDirFav();
+		void openSaveDirNotFav();	// This is stupid.
 		void linkHovered(const QString &);
 		void contextMenu(const QPoint &pos);
 		void openInNewTab();
@@ -201,56 +309,20 @@ class ZoomWindow : public QWidget
 		unsigned short countInDrawer = 0;	// Does not include navigation buttons.
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
 		//short shelfDrawerDiff = 0;	// For resizeButtons().
-		std::string buttonSaveText, buttonSaveFavText;
+		//
+		std::unordered_map<std::string, ButtonInstance> buttons;
+		//ButtonInstance *saveButtons[4] = {nullptr};
+		/*std::string buttonSaveText = "Save", buttonSaveFavText = "Save (fav)";
 		bool hasButtonSave = false;
 		bool hasButtonSaveNQuit = false;
 		bool hasButtonSaveFav = false;
-		bool hasButtonSaveNQuitFav = false;
+		bool hasButtonSaveNQuitFav = false;*/
 
 		// Threads
 		QThread m_imageLoaderThread;
 		QThread m_imageLoaderQueueThread;
 		ImageLoader *m_imageLoader;
 		ImageLoaderQueue *m_imageLoaderQueue;
-};
-
-class ButtonSettings
-{
-	public:
-		enum ButtonWindow
-		{
-			Zoom
-		};
-
-		ButtonWindow onWindow;
-		//unsigned int mask = 0;
-		unsigned short type;
-		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
-		QString text;
-		bool isEnabled;
-		bool isInDrawer;
-
-	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
-
-	// https://stackoverflow.com/questions/37333084/how-to-save-custom-type-to-qsettings
-	friend QDataStream & operator << (QDataStream &arch, const ButtonSettings & object)
-	{
-		arch << object.type;
-		arch << object.position;
-		arch << object.text;
-		arch << object.isEnabled;
-		arch << object.isInDrawer;
-		return arch;
-	}
-	friend QDataStream & operator >> (QDataStream &arch, ButtonSettings & object)
-	{
-		arch >> object.type;
-		arch >> object.position;
-		arch >> object.text;
-		arch >> object.isEnabled;
-		arch >> object.isInDrawer;
-		return arch;
-	}
 };
 
 Q_DECLARE_METATYPE(ButtonSettings)

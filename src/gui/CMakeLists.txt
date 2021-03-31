@@ -6,6 +6,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	set(USE_QSCINTILLA 1)
 endif()
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Disable Google Breakpad and QScintilla on Linux builds
 if(DEFINED ENV{TRAVIS})
 	set(USE_BREAKPAD 0)

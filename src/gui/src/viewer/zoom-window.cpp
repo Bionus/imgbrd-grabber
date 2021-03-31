@@ -252,152 +252,105 @@ ZoomWindow::~ZoomWindow()
 void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++");
+	ButtonInstance *bi;
 
-	/*//if (defaultButtonLayout) {
-	if (m_settings->value("Zoom/defaultButtonLayout", true).toBool()) {
-		log("Loading default button layout.");
-		hasButtonSave = true;
-		hasButtonSaveNQuit = true;
-		hasButtonSaveFav = true;
-		hasButtonSaveNQuitFav = true;
-		countOnShelf = 5;
-		countInDrawer = 3;
-		scaleRef = ui->buttonDetails;
-		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
-		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-		return;
-	}*/
-	bool deletePrev = true;
-	bool deleteNext = true;
-	bool deleteDetails = true;
-	bool deleteSaveAs = true;
-	bool deleteOpen = true;
-	bool deleteOpenFav = true;
-
-
+		// Load button configuration from settings:
 	m_settings->beginGroup("Zoom");
-	QList<ButtonSettings> buttons = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
-	for (QList<ButtonSettings>::iterator bs = buttons.begin(); bs != buttons.end(); bs++) {
-		QPushButton *button = nullptr;
-		switch (bs->type) {
-			case Ui::IsButtonPrev :
-				log("Prev");
-				button = ui->buttonPrev;
-				deletePrev = false;
-				break;
-			case Ui::IsButtonNext :
-				log("Next");
-				button = ui->buttonNext;
-				deleteNext = false;
-				break;
-			case Ui::IsButtonDetails :
-				log("Details");
-				button = ui->buttonDetails;
-				deleteDetails = false;
-				break;
-			case Ui::IsButtonSaveAs :
-				log("SaveAs");
-				button = ui->buttonSaveAs;
-				deleteSaveAs = false;
-				break;
-			case Ui::IsButtonSave :
-				log("Save");
-				button = ui->buttonSave;
-				if (bs->text.isEmpty()) buttonSaveText = "Save";
-				else buttonSaveText = bs->text.replace("&", "&&").toStdString();
-				hasButtonSave = true;
-				break;
-			case Ui::IsButtonSaveNQuit :
-				log("SaveNQuit");
-				button = ui->buttonSaveNQuit;
-				hasButtonSaveNQuit = true;
-				break;
-			case Ui::IsButtonOpen :
-				log("Open");
-				button = ui->buttonOpen;
-				deleteOpen = false;
-				break;
-			case Ui::IsButtonSave | Ui::IsFavoriteButton :
-				log("SaveFav");
-				button = ui->buttonSaveFav;
-				if (bs->text.isEmpty()) buttonSaveFavText = "Save (fav)";
-				else buttonSaveFavText = bs->text.replace("&", "&&").toStdString();
-				hasButtonSaveFav = true;
-				break;
-			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
-				log("SaveNQuitFav");
-				button = ui->buttonSaveNQuitFav;
-				hasButtonSaveNQuitFav = true;
-				break;
-			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
-				log("OpenFav");
-				button = ui->buttonOpenFav;
-				deleteOpenFav = false;
-				break;
-			default :
-				log("ZoomWindow::configureButtons found an unknown button type. Using default layout.");
-				buttonSaveText = "Save";
-				buttonSaveFavText = "Save (fav)";
+	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
+	for (QList<ButtonSettings>::iterator bs = bss.begin(); bs != bss.end(); bs++) {
+		//std::pair<std::string, ButtonInstance> *bi = nullptr;
+		bi = nullptr;
+		bi = &(buttons.insert(std::pair<std::string, ButtonInstance>(
+		//bi = bis.insert(std::pair<std::string, ButtonInstance>(
+			bs->name,
+			ButtonInstance{bs->type, new QPushButton, bs->states}	// This is why I switched to C++14. Could be worked around.
+		//)).first;
+		//))).first.second;
+		)).first->second);
 
-				// Note that these might be misleading if unknown button type is found after some are deleted.
-				hasButtonSave = true;
-				hasButtonSaveNQuit = true;
-				hasButtonSaveFav = true;
-				hasButtonSaveNQuitFav = true;
-				countOnShelf = 5;
-				countInDrawer = 3;
-				scaleRef = ui->buttonDetails;
-				ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
-				connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-				return;
-		}
-
-		//log(("position = " + std::to_string(bs->position)).c_str());
-		if (! bs->text.isEmpty()) button->setText(bs->text.replace("&", "&&"));	// Might not be worth checking isEmpty().
-		button->parentWidget()->layout()->removeWidget(button);
 		if (bs->isInDrawer) {
 			countInDrawer++;
-			ui->buttonDrawerLayout->insertWidget(bs->position, button);
+			ui->buttonDrawerLayout->insertWidget(bs->position, bi->pointer);
 		} else {
-			ui->buttonShelfLayout->insertWidget(bs->position, button);
+			ui->buttonShelfLayout->insertWidget(bs->position, bi->pointer);
 			if (bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 				countOnShelf++;
-				if (scaleRef == nullptr) scaleRef = button;
+				if (scaleRef == nullptr) scaleRef = bi->pointer;
 			}
-			/*if (buttonMask & Ui::Type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
-				ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
-				if (scaleRef == nullptr) scaleRef = button;
-			} else {	// Let navigation buttons protrude if they are first or last. Also prioritise order weight.
-				switch (buttonMask & Ui::Placement) {
-					case 0 :
-						ui->buttonsLayout->addWidget(button, -3, 0);
-						break;
-					case 10 :
-						log(std::to_string(ui->buttonsLayout->columnCount()).c_str());
-						ui->buttonsLayout->addWidget(button, -3, ui->buttonsLayout->columnCount());
-						break;
-					default:
-						ui->buttonShelfLayout->insertWidget((buttonMask & Ui::Placement) >> 16, button);
-				}
-			}*/
 		}
 	}
 	m_settings->endGroup();
+
+	if (!(countOnShelf || countInDrawer)) {
+		delete ui->buttonsLayout;
+		return;
+	}
+
+		// Generic button configuration:
+	for (std::unordered_map<std::string, ButtonInstance>::iterator it = buttons.begin(); it != buttons.end(); it++) {
+		QPushButton *button = it->second.pointer;
+
+			// Hard coded:
+		button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+			// From state:
+		ButtonState *state = nullptr;
+		state = it->second.current = const_cast<ButtonState*>(&(it->second.states.at(0)));	// Consider using [].
+		button->setText(state->text.replace("&", "&&"));
+		button->setToolTip(state->toolTip);
+
+			// Initialise state 0 functions. This should be eliminated.
+		state->function = nullptr;	// Clear old addresses from previous application session.
+		switch (it->second.type) {
+			case Ui::IsButtonPrev :
+				button->setMaximumWidth(24);
+				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+				ui->buttonsLayout->setAlignment(button, Qt::AlignRight);
+				state->function = &ZoomWindow::previous;
+				break;
+			case Ui::IsButtonNext :
+				button->setMaximumWidth(24);
+				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+				ui->buttonsLayout->setAlignment(button, Qt::AlignLeft);
+				state->function = &ZoomWindow::next;
+				break;
+			case Ui::IsButtonDetails :
+				state->function = &ZoomWindow::showDetails;
+				break;
+			case Ui::IsButtonSaveAs :
+				state->function = &ZoomWindow::saveImageAs;
+				break;
+			case Ui::IsButtonSave :
+				state->function = &ZoomWindow::saveImageNotFav;	// Default parameters not computed during compilation?
+				break;
+			case Ui::IsButtonSaveNQuit :
+				state->function = &ZoomWindow::saveNQuit;
+				break;
+			case Ui::IsButtonOpen :
+				state->function = &ZoomWindow::openSaveDirNotFav;	// Default parameters not computed during compilation?
+				break;
+			case Ui::IsButtonSave | Ui::IsFavoriteButton :
+				state->function = &ZoomWindow::saveImageFav;
+				break;
+			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
+				state->function = &ZoomWindow::saveNQuitFav;
+				break;
+			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
+				state->function = &ZoomWindow::openSaveDirFav;
+				break;
+			default :
+				log("Failed to set function for unknown button type!");
+				continue;
+		}
+		//if (state->function != nullptr) {	// Connections to bad pointers seem to succeed.
+			bool connected = connect(button, &QPushButton::clicked, this, state->function);
+			log(("Connection for button " + it->first + " " + (connected ? "succeeded" : "failed!")).c_str());
+		//}
+	}
 	log("---configureButtons---");
 
-	if (deletePrev) delete ui->buttonPrev;
-	if (deleteNext) delete ui->buttonNext;
-	if (deleteDetails) delete ui->buttonDetails;
-	if (deleteSaveAs) delete ui->buttonSaveAs;
-	if (deleteOpen) delete ui->buttonOpen;
-	if (deleteOpenFav) delete ui->buttonOpenFav;
-	if (! hasButtonSave) delete ui->buttonSave;
-	if (! hasButtonSaveFav) delete ui->buttonSaveFav;
-	if (! hasButtonSaveNQuit) delete ui->buttonSaveNQuit;
-	if (! hasButtonSaveNQuitFav) delete ui->buttonSaveNQuitFav;
 
-
-	if (countOnShelf || countInDrawer) {
+	//if (countOnShelf || countInDrawer) {
 		if (countInDrawer) {
 			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
 			if (! countOnShelf) {
@@ -415,9 +368,9 @@ void ZoomWindow::configureButtons()
 		}
 
 		return;
-	}
+	//}
 
-	delete ui->buttonsLayout;
+	//delete ui->buttonsLayout;
 }
 
 void ZoomWindow::imageContextMenu()
@@ -526,6 +479,8 @@ void ZoomWindow::openSaveDir(bool fav)
 }
 void ZoomWindow::openSaveDirFav()
 { openSaveDir(true); }
+void ZoomWindow::openSaveDirNotFav()
+{ openSaveDir(false); }
 
 void ZoomWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
@@ -713,90 +668,35 @@ void ZoomWindow::colore()
 }
 void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 {
-	QPushButton *button = nullptr;
+	constexpr unsigned short MaxSaveButtons = 2;
+	std::unordered_map<std::string, ButtonInstance>::iterator relevant[MaxSaveButtons];
+	ButtonInstance *button;
+	ButtonState *tobe;
 
+	// These could be initialised in ZoomWindow::configureButtons, but I think this is better.
 	if (fav) {
-		m_saveButtonStateFav = state;
-		if (hasButtonSaveNQuitFav) button = ui->buttonSaveNQuitFav;	// These would ideally be in the comment category below.
+		m_saveButtonStateFav = state;	// button.find("SaveFav").current could be used instead, falling back on ("SaveNQuitFav").
+		relevant[0] = buttons.find("SaveNQuitFav");
+		relevant[1] = buttons.find("SaveFav");
 	} else {
 		m_saveButtonState = state;
-		if (hasButtonSaveNQuit) button = ui->buttonSaveNQuit;	// These would ideally be in the comment category below.
+		relevant[0] = buttons.find("SaveNQuit");
+		relevant[1] = buttons.find("Save");
 	}
 
-	// Update "Save and close" button label:
-	if (button != nullptr) {
-		switch (state)
-		{
-			case SaveButtonState::Save:
-				// Uses default tool tip.
-				button->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
-				break;
+	for (unsigned short i = 0; i != MaxSaveButtons; i++) {
+		if (relevant[i] == buttons.end()) continue;
+		button = &(relevant[i]->second);
 
-			case SaveButtonState::Saving:
-				button->setToolTip(QString());
-				button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-				break;
+		if (button->states.size() <= state) tobe = &(button->states.back());	// Last state is default, like switch case default.
+		else tobe = button->current = &(button->states[state]);
 
-			default:
-				button->setToolTip(tr("Close this window"));	// If this is actually what it does, why are there two of them?
-				button->setText(fav ? tr("Close (fav)") : tr("Close"));
-				break;
-		}
-	}
+		button->pointer->setText( tr( tobe->text.toStdString().c_str() ) );
+		button->pointer->setToolTip( tr( tobe->toolTip.toStdString().c_str() ) );
 
-
-	// Update "Save" button label:
-	button = nullptr;
-	if (fav && hasButtonSaveFav) button = ui->buttonSaveFav;
-	else if (! fav && hasButtonSave) button = ui->buttonSave;
-	else return;
-
-	switch (state)
-	{
-		case SaveButtonState::Save:
-			// Uses default tool tip.
-			button->setText( fav ? tr(buttonSaveFavText.c_str()) : tr(buttonSaveText.c_str()) );
-			break;
-
-		case SaveButtonState::Saving:
-			button->setToolTip(QString());
-			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			break;
-
-		case SaveButtonState::Saved:
-			button->setToolTip(m_imagePath);
-			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
-			break;
-
-		case SaveButtonState::Copied:
-			button->setToolTip(QString());
-			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
-			break;
-
-		case SaveButtonState::Moved:
-			button->setToolTip(QString());
-			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
-			break;
-
-		case SaveButtonState::Linked:
-			button->setToolTip(QString());
-			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
-			break;
-
-		case SaveButtonState::ExistsMd5:
-			button->setToolTip(m_imagePath);
-			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
-			break;
-
-		case SaveButtonState::ExistsDisk:
-			button->setToolTip(m_imagePath); // No tool tip appears for me. This function was called before m_imagePath assignment in replyFinishedDetails.
-			button->setText(fav ? tr("Already saved (fav)") : tr("Already saved"));
-			break;
-
-		case SaveButtonState::Delete:
-			button->setToolTip(QString());
-			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
-			break;
+		button->pointer->disconnect();
+		if (tobe->function == nullptr) connect(button->pointer, &QPushButton::clicked, this, tobe->function = button->states.at(0).function);
+		else connect(button->pointer, &QPushButton::clicked, this, tobe->function);
 	}
 }
 
@@ -1013,6 +913,8 @@ void ZoomWindow::saveImage(bool fav)
 }
 void ZoomWindow::saveImageFav()
 { saveImage(true); }
+void ZoomWindow::saveImageNotFav()	// This is stupid.
+{ saveImage(false); }
 void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs) {
@@ -1400,6 +1302,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	}
 
 	// Reset buttons
+	// Is this still necessary?
 	setButtonState(false, SaveButtonState::Save);
 	setButtonState(true, SaveButtonState::Save);
 
