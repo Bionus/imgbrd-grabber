@@ -252,20 +252,15 @@ ZoomWindow::~ZoomWindow()
 void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++");
-	ButtonInstance *bi;
+	ButtonInstance *bi = nullptr;
 
 		// Load button configuration from settings:
 	m_settings->beginGroup("Zoom");
 	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
 	for (QList<ButtonSettings>::iterator bs = bss.begin(); bs != bss.end(); bs++) {
-		//std::pair<std::string, ButtonInstance> *bi = nullptr;
-		bi = nullptr;
 		bi = &(buttons.insert(std::pair<std::string, ButtonInstance>(
-		//bi = bis.insert(std::pair<std::string, ButtonInstance>(
 			bs->name,
-			ButtonInstance{bs->type, new QPushButton, bs->states}	// This is why I switched to C++14. Could be worked around.
-		//)).first;
-		//))).first.second;
+			ButtonInstance{bs->type, new QPushButton(this), bs->states}	// This is why I switched to C++14. Could be worked around.
 		)).first->second);
 
 		if (bs->isInDrawer) {
@@ -694,7 +689,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		button->pointer->setText( tr( tobe->text.toStdString().c_str() ) );
 		button->pointer->setToolTip( tr( tobe->toolTip.toStdString().c_str() ) );
 
-		button->pointer->disconnect();
+		disconnect(button->pointer, &QPushButton::clicked, nullptr, nullptr);
 		if (tobe->function == nullptr) connect(button->pointer, &QPushButton::clicked, this, tobe->function = button->states.at(0).function);
 		else connect(button->pointer, &QPushButton::clicked, this, tobe->function);
 	}
