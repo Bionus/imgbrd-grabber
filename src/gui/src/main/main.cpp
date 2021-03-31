@@ -46,7 +46,7 @@
 	#include <QMessageBox>
 	#include "android.h"
 #endif
-#include "viewer/zoom-window.h"	// Needed for ButtonSettings registration to work.
+#include "custom-buttons.h"	// Needed for ButtonSettings registration to work.
 
 #ifdef WIN_FILE_PROPS
 	#include "windows-file-property.h"

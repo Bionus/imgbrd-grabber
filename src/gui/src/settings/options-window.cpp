@@ -33,7 +33,8 @@
 #include "settings/token-settings-widget.h"
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
-#include "viewer/zoom-window.h"
+#include "viewer/zoom-window.h"	// Still needed?
+#include "custom-buttons.h"
 
 void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
