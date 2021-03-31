@@ -86,10 +86,10 @@ class ButtonSettings
 		//unsigned int mask = 0;
 		unsigned short type;
 		std::string name;
-		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
 		QList<ButtonState> states;
 		bool isEnabled;
 		bool isInDrawer;
+		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
 
 	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
 
