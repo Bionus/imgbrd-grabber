@@ -44,7 +44,9 @@ fi
 if ((!installed)); then exit 12; fi
 
 # Build the project in the build directory
-./scripts/build.sh ${1:-gui translations} || exit 21
+if (($#)); then ./scripts/build.sh "$@" || exit 21
+else ./scripts/build.sh 'gui' 'translations' || exit 21
+fi
 
 # Move the built binary to the release folder with its config
 ./scripts/package.sh "release"
