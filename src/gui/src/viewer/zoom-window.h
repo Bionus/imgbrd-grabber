@@ -8,13 +8,13 @@
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
+#include "custom-buttons.h"
 
 
 namespace Ui
 {
 	class ZoomWindow;
 }
-
 
 class GifPlayer;
 class QAffiche;
@@ -32,7 +32,7 @@ class ZoomWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		enum SaveButtonState
+		enum SaveButtonState : unsigned short
 		{
 			Save,
 			Saving,
@@ -44,6 +44,7 @@ class ZoomWindow : public QWidget
 			ExistsDisk,
 			Delete
 		};
+
 		enum PendingAction
 		{
 			PendingNothing,
@@ -67,6 +68,7 @@ class ZoomWindow : public QWidget
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
+		void saveImageNotFav();	// This is stupid.
 		void saveImageNow();
 		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
@@ -75,6 +77,7 @@ class ZoomWindow : public QWidget
 		void openPoolId(Page*);
 		void openSaveDir(bool fav = false);
 		void openSaveDirFav();
+		void openSaveDirNotFav();	// This is stupid.
 		void linkHovered(const QString &);
 		void contextMenu(const QPoint &pos);
 		void openInNewTab();
@@ -111,12 +114,14 @@ class ZoomWindow : public QWidget
 	protected:
 		void closeEvent(QCloseEvent *) override;
 		void resizeEvent(QResizeEvent *) override;
+		void resizeButtons();
 		void showEvent(QShowEvent *) override;
 		void mouseReleaseEvent(QMouseEvent *) override;
 		void wheelEvent(QWheelEvent *) override;
 		void draw();
 
 	private:
+		void configureButtons();
 		void showThumbnail();
 		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(const QString &type);
@@ -163,7 +168,7 @@ class ZoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		SaveButtonState m_saveButonState, m_saveButonStateFav;
+		SaveButtonState m_saveButtonState, m_saveButtonStateFav;
 
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
@@ -174,6 +179,13 @@ class ZoomWindow : public QWidget
 		GifPlayer *m_gifPlayer = nullptr;
 		VideoPlayer *m_videoPlayer = nullptr;
 
+		// Buttons
+		std::unordered_map<std::string, ButtonInstance> buttons;
+		unsigned short countOnShelf = 0;	// Does not include navigation buttons.
+		unsigned short countInDrawer = 0;	// Does not include navigation buttons.
+		QWidget *scaleRef = nullptr;	// For resizeButtons().
+		//short shelfDrawerDiff = 0;	// For resizeButtons().
+
 		// Threads
 		QThread m_imageLoaderThread;
 		QThread m_imageLoaderQueueThread;
@@ -181,4 +193,46 @@ class ZoomWindow : public QWidget
 		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
+namespace Ui	// Testing.
+{
+	//enum  ZoomWindow::SaveButtonState : unsigned short;
+	//enum  SaveButtonState : unsigned short;
+
+	const ButtonState DefaultPrevState (0, QStringLiteral("<"), QStringLiteral("Previous search result"));
+	const ButtonState DefaultNextState (0, QStringLiteral(">"), QStringLiteral("Next search result"));
+	const ButtonState DefaultDetailsState (0, QStringLiteral("Details"), QStringLiteral("Media details"));
+	const ButtonState DefaultSaveAsState (0, QStringLiteral("Save as..."), QStringLiteral("Save to irregular location"));
+
+	const ButtonState DefaultSaveStateSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save"), QStringLiteral("Save to usual location"));
+	const ButtonState DefaultSaveStateSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving..."), QStringLiteral(""));
+	const ButtonState DefaultSaveStateSaved (ZoomWindow::SaveButtonState::Saved, QStringLiteral("Saved..."), QStringLiteral(""));
+	const ButtonState DefaultSaveStateCopied (ZoomWindow::SaveButtonState::Copied, QStringLiteral("Copied!"), QStringLiteral(""));
+	const ButtonState DefaultSaveStateMoved (ZoomWindow::SaveButtonState::Moved, QStringLiteral("Moved!"), QStringLiteral(""));
+	const ButtonState DefaultSaveStateLinked (ZoomWindow::SaveButtonState::Linked, QStringLiteral("Link created!"), QStringLiteral(""));
+	const ButtonState DefaultSaveStateExistsMd5 (ZoomWindow::SaveButtonState::ExistsMd5, QStringLiteral("MD5 already exists"), QStringLiteral(""));
+	const ButtonState DefaultSaveStateExistsDisk (ZoomWindow::SaveButtonState::ExistsDisk, QStringLiteral("Already saved"), QStringLiteral(""));
+	const ButtonState DefaultSaveStateDelete (ZoomWindow::SaveButtonState::Delete, QStringLiteral("Delete"), QStringLiteral(""));
+
+	const ButtonState DefaultSaveNQuitStateSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save & close"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState DefaultSaveNQuitStateSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving..."), QStringLiteral(""));
+	const ButtonState DefaultSaveNQuitStateClose (2, QStringLiteral("Close"), QStringLiteral(""));	// Consider adding this to SaveButtonState.
+
+	const ButtonState DefaultOpenState (0, QStringLiteral("Open"), QStringLiteral("Open usual save location in new window"));
+
+	const ButtonState DefaultSaveFavStateSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to favourite location"));
+	const ButtonState DefaultSaveFavStateSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateSaved (ZoomWindow::SaveButtonState::Saved, QStringLiteral("Saved... (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateCopied (ZoomWindow::SaveButtonState::Copied, QStringLiteral("Copied! (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateMoved (ZoomWindow::SaveButtonState::Moved, QStringLiteral("Moved! (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateLinked (ZoomWindow::SaveButtonState::Linked, QStringLiteral("Link created! (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateExistsMd5 (ZoomWindow::SaveButtonState::ExistsMd5, QStringLiteral("MD5 already exists (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateExistsDisk (ZoomWindow::SaveButtonState::ExistsDisk, QStringLiteral("Already saved (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveFavStateDelete (ZoomWindow::SaveButtonState::Delete, QStringLiteral("Delete (fav)"), QStringLiteral(""));
+
+	const ButtonState DefaultSaveNQuitFavStateSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState DefaultSaveNQuitFavStateSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
+	const ButtonState DefaultSaveNQuitFavStateClose (2, QStringLiteral("Close (fav)"), QStringLiteral(""));	// Consider adding this to SaveButtonState.
+
+	const ButtonState DefaultOpenFavState (0, QStringLiteral("Open (fav)"), QStringLiteral("Open favourite save location in new window"));
+}
 #endif // ZOOM_WINDOW_H

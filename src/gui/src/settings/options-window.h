@@ -83,6 +83,7 @@ class OptionsWindow : public QDialog
 		void addFilename(const QString &, const QString &, const QString &);
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
+		void checkSpinners(int);
 
 		// Log files
 		void addLogFile();

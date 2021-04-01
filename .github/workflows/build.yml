@@ -498,7 +498,9 @@ jobs:
         cmake --build . --config Release --target gui-qml_apk
 
     - name: Generate package
-      run: mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber.apk
+      run: |
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber.apk 2> /dev/null
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber.apk 2> /dev/null
 
     - name: Upload package
       uses: actions/upload-artifact@v2
