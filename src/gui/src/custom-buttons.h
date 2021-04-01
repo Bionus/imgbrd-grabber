@@ -3,7 +3,8 @@
 
 #include <unordered_map>
 #include <QPushButton>
-#include <QString>	// For QDataStream to std::string.
+#include <QString>
+//#include <QLatin1String>
 
 
 namespace Ui
@@ -29,6 +30,13 @@ namespace Ui
 	constexpr unsigned short IsFavoriteButton		=          0b00001000 ;	// Nib0.3, bit 3.
 }
 
+// https://stackoverflow.com/questions/56201976/qt-vs-constexpr-string-literal
+/*struct ConstLatin1String : public QLatin1String
+{
+    constexpr ConstLatin1String(const char* const s) :
+        QLatin1String(s, static_cast<int>(std::char_traits<char>::length(s))) {}
+};*/
+
 class ZoomWindow;
 template <typename scope = ZoomWindow>
 using ButtonEffect = void (scope::*)();
@@ -37,14 +45,27 @@ using ButtonEffect = void (scope::*)();
 //template <typename scope = ZoomWindow, typename R = void, typename ...params>
 //using ButtonEffect = R (scope::*)(params...);
 
+/*// https://www.tutorialfor.com/questions-144170.htm
+class QString
+{
+	public:
+		constexpr QString (char * str) {mStr = str;}
+		char * mStr = 0;
+};*/
+
 class ButtonState
 {
 	public:
 		unsigned short type;
-		//ButtonEffect *function = nullptr;
 		QString text;
 		QString toolTip = "";
 		ButtonEffect<> function = nullptr;
+
+		//constexpr ButtonState(unsigned short type, const char *text, const char *toolTip) : type(type), text(text), toolTip(toolTip){}
+		//constexpr ButtonState(const unsigned short type, const QString text, const QString toolTip) : type(type), text(text), toolTip(toolTip){}
+		//constexpr ButtonState(unsigned short type, ConstLatin1String text, ConstLatin1String toolTip) : type(type), text(text), toolTip(toolTip){}
+		//constexpr ButtonState(const unsigned short type, std::string text, std::string toolTip) : type(type), text(text), toolTip(toolTip){}
+		ButtonState(unsigned short type, QString text, QString toolTip) : type(type), text(text), toolTip(toolTip){}
 
 	friend QDataStream & operator << (QDataStream &out, const ButtonState &in)
 	{

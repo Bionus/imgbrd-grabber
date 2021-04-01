@@ -32,7 +32,7 @@ class ZoomWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		enum SaveButtonState
+		enum SaveButtonState : unsigned short
 		{
 			Save,
 			Saving,
@@ -44,6 +44,7 @@ class ZoomWindow : public QWidget
 			ExistsDisk,
 			Delete
 		};
+
 		enum PendingAction
 		{
 			PendingNothing,
@@ -192,4 +193,46 @@ class ZoomWindow : public QWidget
 		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
+namespace Ui	// Testing.
+{
+	//enum  ZoomWindow::SaveButtonState : unsigned short;
+	//enum  SaveButtonState : unsigned short;
+
+	const ButtonState defaultPrevButton (0, QStringLiteral("<"), QStringLiteral("Previous search result"));
+	const ButtonState defaultNextButton (0, QStringLiteral(">"), QStringLiteral("Next search result"));
+	const ButtonState defaultDetailsButton (0, QStringLiteral("Details"), QStringLiteral("Media details"));
+	const ButtonState defaultSaveAsButton (0, QStringLiteral("Save as..."), QStringLiteral("Save to irregular location"));
+
+	const ButtonState defaultSaveButtonSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save"), QStringLiteral("Save to usual location"));
+	const ButtonState defaultSaveButtonSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving..."), QStringLiteral(""));
+	const ButtonState defaultSaveButtonSaved (ZoomWindow::SaveButtonState::Saved, QStringLiteral("Saved..."), QStringLiteral(""));
+	const ButtonState defaultSaveButtonCopied (ZoomWindow::SaveButtonState::Copied, QStringLiteral("Copied!"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonMoved (ZoomWindow::SaveButtonState::Moved, QStringLiteral("Moved!"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonLinked (ZoomWindow::SaveButtonState::Linked, QStringLiteral("Link created!"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonExistsMd5 (ZoomWindow::SaveButtonState::ExistsMd5, QStringLiteral("MD5 already exists"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonExistsDisk (ZoomWindow::SaveButtonState::ExistsDisk, QStringLiteral("Already saved"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonDelete (ZoomWindow::SaveButtonState::Delete, QStringLiteral("Delete"), QStringLiteral(""));
+
+	const ButtonState defaultSaveNQuitButtonSave (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save & close"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState defaultSaveNQuitButtonSaving (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving..."), QStringLiteral(""));
+	const ButtonState defaultSaveNQuitButtonClose (2, QStringLiteral("Close"), QStringLiteral(""));	// Consider adding this to SaveButtonState.
+
+	const ButtonState defaultOpenButton (0, QStringLiteral("Open"), QStringLiteral("Open usual save location in new window"));
+
+	const ButtonState defaultSaveButtonSaveFav (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to favourite location"));
+	const ButtonState defaultSaveButtonSavingFav (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonSavedFav (ZoomWindow::SaveButtonState::Saved, QStringLiteral("Saved... (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonCopiedFav (ZoomWindow::SaveButtonState::Copied, QStringLiteral("Copied! (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonMovedFav (ZoomWindow::SaveButtonState::Moved, QStringLiteral("Moved! (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonLinkedFav (ZoomWindow::SaveButtonState::Linked, QStringLiteral("Link created! (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonExistsMd5Fav (ZoomWindow::SaveButtonState::ExistsMd5, QStringLiteral("MD5 already exists (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonExistsDiskFav (ZoomWindow::SaveButtonState::ExistsDisk, QStringLiteral("Already saved (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveButtonDeleteFav (ZoomWindow::SaveButtonState::Delete, QStringLiteral("Delete (fav)"), QStringLiteral(""));
+
+	const ButtonState defaultSaveNQuitButtonSaveFav (ZoomWindow::SaveButtonState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState defaultSaveNQuitButtonSavingFav (ZoomWindow::SaveButtonState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
+	const ButtonState defaultSaveNQuitButtonCloseFav (2, QStringLiteral("Close (fav)"), QStringLiteral(""));	// Consider adding this to SaveButtonState.
+
+	const ButtonState defaultOpenFavButton (0, QStringLiteral("Open (fav)"), QStringLiteral("Open favourite save location in new window"));
+}
 #endif // ZOOM_WINDOW_H
