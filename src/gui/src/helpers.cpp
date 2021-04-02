@@ -1,4 +1,5 @@
 #include "helpers.h"
+#include <QDialog>
 #include <QLayout>
 #include <QMessageBox>
 #if defined(Q_OS_WIN)
@@ -14,7 +15,10 @@
 	#include <QDesktopServices>
 	#include <QUrl>
 #endif
+#include <QSettings>
+#include <QShortcut>
 #include <QWidget>
+#include "functions.h"
 
 
 /**
@@ -79,4 +83,13 @@ void clearLayout(QLayout *layout)
 		}
 		delete item;
 	}
+}
+
+void setupDialogShortcuts(QDialog *dialog, QSettings *settings)
+{
+	auto *accept = new QShortcut(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL + Qt::Key_Y), dialog);
+	QObject::connect(accept, &QShortcut::activated, dialog, &QDialog::accept);
+
+	auto *reject = new QShortcut(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL + Qt::Key_N), dialog);
+	QObject::connect(reject, &QShortcut::activated, dialog, &QDialog::reject);
 }

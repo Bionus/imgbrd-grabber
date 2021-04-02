@@ -52,6 +52,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	connect(parent, &MainWindow::destroyed, this, &QWidget::deleteLater);
+
 	ui->setupUi(this);
 
 	m_pendingAction = PendingNothing;
@@ -219,12 +220,6 @@ void ZoomWindow::go()
 
 	m_detailsWindow = new DetailsWindow(m_profile, this);
 	colore();
-
-	QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::Key_Y), m_detailsWindow);
-		//connect(accept, &QShortcut::activated, m_detailsWindow, &QDialog::done(0));
-		connect(accept, &QShortcut::activated, m_detailsWindow, &QDialog::accept);
-	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::Key_N), m_detailsWindow);
-		connect(decline, &QShortcut::activated, m_detailsWindow, &QDialog::accept);
 
 	// Load image details (exact tags & co)
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails, Qt::UniqueConnection);

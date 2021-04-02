@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>528</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1054,8 +1054,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>68</width>
-             <height>16</height>
+             <width>359</width>
+             <height>440</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1687,8 +1687,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>308</width>
-             <height>417</height>
+             <width>288</width>
+             <height>449</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2284,8 +2284,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>226</width>
-             <height>810</height>
+             <width>212</width>
+             <height>869</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
