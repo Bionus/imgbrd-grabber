@@ -62,10 +62,6 @@ void StartWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
-	/*QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), fw);
-		connect(accept, &QShortcut::activated, fw, &QDialog::accept);
-	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), fw);
-		connect(decline, &QShortcut::activated, fw, &QDialog::reject);*/
 	fw->show();
 }
 

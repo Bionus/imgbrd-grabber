@@ -467,9 +467,9 @@ void MainWindow::onFirstLoad()
 	connect(swin, &StartWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
 	connect(swin, &StartWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
 	connect(swin, &StartWindow::sourceChanged, this, &MainWindow::setSource);
-	QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), swin);
+	QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::Key_Y), swin);
 		connect(accept, &QShortcut::activated, swin, &QDialog::accept);
-	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), swin);
+	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::Key_N), swin);
 		connect(decline, &QShortcut::activated, swin, &QDialog::reject);
 	swin->show();
 }
@@ -796,9 +796,9 @@ void MainWindow::options()
 	connect(options, &OptionsWindow::languageChanged, &m_languageLoader, &LanguageLoader::setLanguage);
 	connect(options, &OptionsWindow::settingsChanged, m_settingsDock, &SettingsDock::reset);
 	connect(options, &QDialog::accepted, this, &MainWindow::optionsClosed);
-	QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::CTRL + Qt::Key_Y), options);
+	QShortcut *accept = new QShortcut(getKeySequence(m_settings, "keyAcceptDialogue", Qt::Key_Y), options);
 		connect(accept, &QShortcut::activated, options, &QDialog::accept);
-	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::CTRL + Qt::Key_N), options);
+	QShortcut *decline = new QShortcut(getKeySequence(m_settings, "keyDeclineDialogue", Qt::Key_N), options);
 		connect(decline, &QShortcut::activated, options, &QDialog::reject);
 	options->show();
 
