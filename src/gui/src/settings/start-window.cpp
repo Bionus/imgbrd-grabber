@@ -17,6 +17,8 @@ StartWindow::StartWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::StartWindow), m_profile(profile)
 {
 	ui->setupUi(this);
+	setupDialogShortcuts(this, m_profile->getSettings());
+
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{github}", PROJECT_GITHUB_URL));
 

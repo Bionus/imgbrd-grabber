@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>528</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1054,8 +1054,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>363</width>
-             <height>438</height>
+             <width>359</width>
+             <height>440</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1496,6 +1496,34 @@
           </property>
          </widget>
         </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelDeclineDialogue">
+          <property name="text">
+           <string>Decline dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="QKeySequenceEdit" name="keyDeclineDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelAcceptDialogue">
+          <property name="text">
+           <string>Accept dialogue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QKeySequenceEdit" name="keyAcceptDialogue">
+          <property name="keySequence">
+           <string>Ctrl+N</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceMainWindow">
@@ -1659,8 +1687,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>381</width>
-             <height>483</height>
+             <width>288</width>
+             <height>449</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2256,8 +2284,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>367</width>
-             <height>810</height>
+             <width>212</width>
+             <height>869</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
