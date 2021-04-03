@@ -20,42 +20,50 @@ In this example, there are two shortcuts available:
 
 # Main window
 
-| Shortcut | Action |
-|---|---|
-| <kbd>Ctrl+W</kbd>`*` | Close tab |
-| <kbd>Ctrl+L</kbd> | Focus search field |
-| <kbd>Ctrl+PageDown</kbd> | Go to the next tab |
-| <kbd>Ctrl+PageUp</kbd> | Go to the previous tab |
-| <kbd>Ctrl+T</kbd>`*` | New tab |
-| <kbd>Ctrl+Q</kbd>`*` | Quit the application |
-| <kbd>Ctrl+O</kbd>`*` | Open save directory in file browser |
+| Action | Default shortcut | Qt Shortcut |
+|---|---|---|
+| Quit the application | <kbd>Ctrl+Q</kbd>`*` |
+| Focus search field | <kbd>Ctrl+L</kbd> |
+| Close tab | <kbd>Ctrl+W</kbd>`*`|
+| Re-open closed tab | | <kbd>Ctrl+Shift+Tab</kbd>`*` |
+| New tab | <kbd>Ctrl+T</kbd>`*` |
+| Go to the previous tab | <kbd>Ctrl+PageUp</kbd> | <kbd>Ctrl+Shift+Tab</kbd>`*` |
+| Go to the next tab | <kbd>Ctrl+PageDown</kbd> | <kbd>Ctrl+Tab</kbd>`*` |
+| Open save directory in file browser | <kbd>Ctrl+O</kbd>`*` |
 
 # Downloads tab
 
-| Shortcut | Action |
+| Action | Default shortcut |
 |---|---|
-| <kbd>Delete</kbd> | Remove selected downloads |
+| Remove selected downloads | <kbd>Delete</kbd> |
 
-# Image window
+# Viewer window
 
 ## Normal mode
 
-| Shortcut | Action |
+| Action | Default shortcut |
 |---|---|
-| <kbd>Escape</kbd> | Close the window |
-| <kbd>Ctrl+S</kbd>`*` | Save the image |
-| <kbd>Ctrl+Shift+S</kbd>`*` | Save the image as |
-| <kbd>Right arrow</kbd> | Go to the next image |
-| <kbd>Left arrow</kbd> | Go to the previous image |
-| <kbd>Ctrl+C</kbd>`*` | Copy the image's raw data to the clipboard |
-| <kbd>F11</kbd>`*` | Toggle full-screen mode |
+| Close the window | <kbd>Escape</kbd> |
+| Show previous search result | <kbd>Left arrow</kbd> |
+| Show next search result | <kbd>Right arrow</kbd> |
+| Open media details | <kbd>D</kbd> |
+| Save media as... | <kbd>Ctrl+Shift+S</kbd>`*` |
+| Save media | <kbd>Ctrl+S</kbd>`*` |
+| Save media and close window | <kbd>Ctrl+W</kbd>`*` |
+| Open save path in file browser | <kbd>Ctrl+O</kbd> |
+| Favourite media | <kbd>Ctrl+Alt+S</kbd>`*` |
+| Favourite media and close window | <kbd>Ctrl+Alt+W</kbd>`*` |
+| Open favourite path in file browser | <kbd>Ctrl+Alt+O</kbd> |
+| Toggle full-screen mode | <kbd>F11</kbd>`*` |
+| Toggle slideshow mode | <kbd>Space</kbd>`*` |
+| Copy the image's raw data to the clipboard | <kbd>Ctrl+C</kbd>`*` |
 
 ## Full-screen mode
 
-| Shortcut | Action |
+| Action | Default shortcut |
 |---|---|
-| <kbd>Escape</kbd> | Leave full-screen mode |
-| <kbd>F11</kbd>`*` | Leave full-screen mode |
-| <kbd>Right arrow</kbd> | Go to the next image |
-| <kbd>Left arrow</kbd> | Go to the previous image |
-| <kbd>Space</kbd> | Toggle slideshow |
+| Leave full-screen mode | <kbd>Escape</kbd> |
+| Leave full-screen mode | <kbd>F11</kbd>`*` |
+| Show next media | <kbd>Right arrow</kbd> |
+| Show previous media | <kbd>Left arrow</kbd> |
+| Toggle slideshow | <kbd>Space</kbd> |
