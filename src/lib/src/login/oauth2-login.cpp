@@ -109,6 +109,11 @@ void OAuth2Login::refresh(bool login)
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
+	if (m_refreshToken.isEmpty()) {
+		log(QStringLiteral("[%1] Cannot refresh OAuth2 token without a refresh token").arg(m_site->url()), Logger::Warning);
+		return;
+	}
+
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 
