@@ -142,6 +142,12 @@ void OAuth2Login::refreshLoginFinished()
 {
 	const bool ok = readResponse(m_refreshReply);
 	if (!ok) {
+		if (m_auth->authType() == "refresh_token") {
+			log(QStringLiteral("[%1] Refresh failed").arg(m_site->url()), Logger::Warning);
+			emit loggedIn(Result::Failure);
+			return;
+		}
+
 		log(QStringLiteral("[%1] Refresh failed, clearing tokens and re-trying login...").arg(m_site->url()), Logger::Warning);
 		m_accessToken.clear();
 		m_settings->remove("auth/accessToken");
