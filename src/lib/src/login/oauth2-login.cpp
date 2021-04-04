@@ -166,7 +166,14 @@ void OAuth2Login::refreshFinished()
 bool OAuth2Login::readResponse(NetworkReply *reply)
 {
 	const QString result = reply->readAll();
-	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
+	QJsonParseError error;
+	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8(), &error);
+
+	// Ensure we got a proper JSON
+	if (jsonDocument.isNull()) {
+		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), error.errorString()).arg(error.offset).arg(result), Logger::Warning);
+		return false;
+	}
 
 	// Some OAuth2 API wrap their responses in 'response' JSON objects
 	QJsonObject jsonObject = jsonDocument.object();
