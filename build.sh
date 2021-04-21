@@ -14,7 +14,7 @@ git submodule update --init --recursive
 
 # Install required packages
 declare -i no_pm=1 installed=0
-for pm in pacman apt-get emerge; do
+for pm in pacman apt-get emerge yum; do
 	if type "$pm" > /dev/null 2>&1 ; then
 		no_pm=0
 		case "$pm" in
@@ -31,6 +31,12 @@ for pm in pacman apt-get emerge; do
 				$permission emerge --noreplace --ask --verbose \
 					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
 					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
+				&& installed=1
+				;;
+			yum)
+				## Assumes default USE flags are enabled.
+				$permission yum install -y \
+          openssl-devel g++ cmake nodejs npm qt5-qtbase-devel qt5-qtscript-devel qt5-qtmultimedia-devel qt5-qtdeclarative-devel qt5-qttools-devel rsync \
 				&& installed=1
 				;;
 		esac
