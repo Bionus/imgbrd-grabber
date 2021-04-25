@@ -160,7 +160,7 @@ Source::Source(Profile *profile, const QString &dir)
 
 		js.close();
 	} else {
-		log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning);
+		log(QStringLiteral("Javascript model not found for '%1' in '%2'").arg(m_diskName, js.fileName()), Logger::Warning);
 	}
 
 	// Get the list of all sites pertaining to this source

@@ -91,7 +91,7 @@ bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 		log(QStringLiteral("Invalid images per page number: %1").arg(page), Logger::Warning);
 		return false;
 	}
-	if (total < 1) {
+	if (total < 1 && total != -1) {
 		log(QStringLiteral("Invalid total number: %1").arg(total), Logger::Warning);
 		return false;
 	}
