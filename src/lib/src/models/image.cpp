@@ -300,6 +300,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
 	const QString site = json["website"].toString();
 	if (!sites.contains(site)) {
+		log(QStringLiteral("Unknown site: %1").arg(site), Logger::Warning);
 		return false;
 	}
 
