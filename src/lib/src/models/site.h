@@ -28,7 +28,7 @@ class Site : public QObject
 	public:
 		enum QueryType
 		{
-			UnkownType = -1,
+			UnknownType = -1,
 			List = 0,
 			Img = 1,
 			Thumbnail = 2,
@@ -64,8 +64,8 @@ class Site : public QObject
 		void syncSettings() const;
 		MixedSettings *settings() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
-		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
+		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
+		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
@@ -84,10 +84,6 @@ class Site : public QObject
 		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
 		QString fixLoginUrl(QString url) const;
-		Auth *getAuth() const;
-
-	private:
-		NetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);

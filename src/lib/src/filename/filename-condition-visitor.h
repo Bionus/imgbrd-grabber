@@ -25,7 +25,6 @@ class FilenameConditionVisitor : public FilenameVisitorJavaScript
 
 	private:
 		const QMap<QString, Token> &m_tokens;
-		QStringList m_tags;
 
 		bool m_result = false;
 };

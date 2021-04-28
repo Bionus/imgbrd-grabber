@@ -97,7 +97,7 @@ class PageApi : public QObject
 		QMap<QString, QString> m_headers;
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
-		NetworkReply *m_reply, *m_replyTags;
+		NetworkReply *m_reply;
 		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
 		bool m_imagesCountSafe, m_pagesCountSafe;
 		bool m_loading = false;

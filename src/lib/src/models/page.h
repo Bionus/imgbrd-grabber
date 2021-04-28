@@ -22,7 +22,7 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0, QString lastPageMinDate = "", QString lastPageMaxDate = "");
+		explicit Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = nullptr, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0, const QString& lastPageMinDate = "", const QString& lastPageMaxDate = "");
 		~Page() override;
 		void setLastPage(Page *page);
 		void fallback(bool loadIfPossible = true);

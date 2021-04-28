@@ -1,5 +1,6 @@
 #include "models/page.h"
 #include <QUrl>
+#include <algorithm>
 #include <utility>
 #include "analytics.h"
 #include "functions.h"
@@ -9,7 +10,7 @@
 #include "models/site.h"
 
 
-Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, QString lastPageMinDate, QString lastPageMaxDate)
+Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, const QString &lastPageMinDate, const QString &lastPageMaxDate)
 	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -216,12 +217,13 @@ QMap<QString, QUrl> Page::urls() const
 
 bool Page::hasSource() const
 {
-	for (auto pageApi : qAsConst(m_pageApis)) {
-		if (!pageApi->source().isEmpty()) {
-			return true;
-		}
+	return std::any_of(
+		m_pageApis.constBegin(),
+		m_pageApis.constEnd(),
+		[](PageApi *pageApi) {
+		return !pageApi->source().isEmpty();
 	}
-	return false;
+	);
 }
 
 int Page::imagesCount(bool guess) const

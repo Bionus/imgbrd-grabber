@@ -55,8 +55,8 @@ class Filename
 		int needExactTags(const QStringList &forcedTokens = {}, const QStringList &customTokens = {}) const;
 
 	protected:
-		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
-		bool returnError(const QString &msg, QString *error) const;
+		static QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings);
+		static bool returnError(const QString &msg, QString *error);
 
 	private:
 		QString m_format;

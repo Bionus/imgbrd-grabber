@@ -34,7 +34,7 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QString &t
 	// Prioritize paths in the same directory for the action
 	if (!sameDirPaths.isEmpty()) {
 		const QString setting = m_settings->value("Save/md5DuplicatesSameDir", "save").toString();
-		const QPair<QString, QString> ret = action(md5, sameDirPaths, setting);
+		QPair<QString, QString> ret = action(md5, sameDirPaths, setting);
 		if (!ret.first.isEmpty()) {
 			return ret;
 		}
@@ -43,7 +43,7 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QString &t
 	// Fallback to duplicates found in other places
 	if (!notSameDirPaths.isEmpty()) {
 		const QString setting = m_settings->value("Save/md5Duplicates", "save").toString();
-		const QPair<QString, QString> ret = action(md5, notSameDirPaths, setting);
+		QPair<QString, QString> ret = action(md5, notSameDirPaths, setting);
 		if (!ret.first.isEmpty()) {
 			return ret;
 		}
@@ -67,7 +67,7 @@ QPair<QString, QString> Md5Database::action(const QString &md5, const QStringLis
 
 	// If we want to keep deleted files, we can't return a "move" action or similar, as there are no files to move
 	if (keepDeleted) {
-		QString path = paths.first(); // The actual path is irrelevant since none exist
+		const QString &path = paths.first(); // The actual path is irrelevant since none exist
 		if (action != "ignore") {
 			action = "save";
 		}

@@ -197,7 +197,6 @@ Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
 const QStringList &Source::getAdditionalTokens() const { return m_additionalTokens; }
 const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
-Auth *Source::getAuth(const QString &name) const { return m_auths.value(name); }
 
 Api *Source::getApi(const QString &name) const
 {

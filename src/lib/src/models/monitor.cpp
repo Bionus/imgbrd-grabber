@@ -9,7 +9,7 @@
 
 
 Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted)
-	: m_sites(sites), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(query), m_postFilters(postFilters), m_notify(notify), m_getBlacklisted(getBlacklisted)
+	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted)
 {}
 
 qint64 Monitor::secsToNextCheck() const

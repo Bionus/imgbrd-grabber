@@ -62,8 +62,8 @@ void Site::loadConfig()
 	if (m_settings != nullptr) {
 		m_settings->deleteLater();
 	}
-	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
-	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
+	auto *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	auto *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*> { settingsCustom, settingsDefaults });
 	m_name = m_settings->value("name", m_url).toString();
 
@@ -235,7 +235,7 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> cHeaders)
+QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders)
 {
 	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
@@ -283,10 +283,13 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
 	// Additional headers
-	for (const QString &name : cHeaders.keys()) {
-		QByteArray val = cHeaders[name].startsWith("md5:")
-			? QCryptographicHash::hash(cHeaders[name].toLatin1(), QCryptographicHash::Md5).toHex()
-			: cHeaders[name].toLatin1();
+	for (auto it = cHeaders.constBegin(); it != cHeaders.constEnd(); ++it) {
+		const QString &name = it.key();
+		const QString &value = it.value();
+
+		QByteArray val = value.startsWith("md5:")
+			? QCryptographicHash::hash(value.toLatin1(), QCryptographicHash::Md5).toHex()
+			: value.toLatin1();
 		request.setRawHeader(name.toLatin1(), val);
 	}
 
@@ -294,7 +297,7 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	return request;
 }
 
-NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> headers)
+NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)
 {
 	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
 	return m_manager->get(request, static_cast<int>(type));
@@ -372,8 +375,6 @@ QString Site::fixLoginUrl(QString url) const
 
 	return m_login->complementUrl(std::move(url));
 }
-
-Auth *Site::getAuth() const { return m_auth; }
 
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
