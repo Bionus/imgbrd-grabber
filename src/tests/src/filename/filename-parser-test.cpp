@@ -248,7 +248,7 @@ TEST_CASE("FilenameParser")
 		FilenameParser parser("out/<\"tag\"?some tag is present:%artist%");
 		parser.parseRoot();
 
-		REQUIRE(parser.error() == QString("Expected '>' at the end of contional"));
+		REQUIRE(parser.error() == QString("Expected '>' at the end of conditional"));
 	}
 
 	SECTION("ParseConditionalWithInvalidCharacters")

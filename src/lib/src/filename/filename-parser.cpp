@@ -278,7 +278,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			delete condition;
 			delete ifTrue;
 			delete ifFalse;
-			throw std::runtime_error("Expected '>' at the end of contional");
+			throw std::runtime_error("Expected '>' at the end of conditional");
 		}
 	}
 
