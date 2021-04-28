@@ -111,7 +111,7 @@ void Tag::write(QJsonObject &json) const
 	if (!m_type.isUnknown()) {
 		json["type"] = m_type.name();
 	}
-	if (m_count >= 0) {
+	if (m_count > 0) {
 		json["count"] = m_count;
 	}
 	if (!m_related.isEmpty()) {

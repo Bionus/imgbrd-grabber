@@ -270,17 +270,18 @@ void Image::write(QJsonObject &json) const
 	}
 
 	// Tags
-	QStringList tags;
-	tags.reserve(m_tags.count());
+	QJsonArray tags;
 	for (const Tag &tag : m_tags) {
-		tags.append(tag.text());
+		QJsonObject jsonTag;
+		tag.write(jsonTag);
+		tags.append(jsonTag);
 	}
 
 	// FIXME: real serialization
 	json["name"] = m_name;
 	json["id"] = QString::number(m_id);
 	json["md5"] = m_md5;
-	json["tags"] = QJsonArray::fromStringList(tags);
+	json["tags"] = tags;
 	json["url"] = m_url.toString();
 	json["search"] = QJsonArray::fromStringList(m_search);
 
@@ -332,8 +333,15 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	m_tags.reserve(jsonTags.count());
-	for (const auto &tag : jsonTags) {
-		m_tags.append(Tag(tag.toString()));
+	for (const auto &jsonTag : jsonTags) {
+		if (jsonTag.isString()) {
+			m_tags.append(Tag(jsonTag.toString()));
+		} else {
+			Tag tag;
+			if (tag.read(jsonTag.toObject())) {
+				m_tags.append(tag);
+			}
+		}
 	}
 
 	// Search
