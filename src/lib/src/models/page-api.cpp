@@ -33,6 +33,10 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, Searc
 
 void PageApi::setLastPage(Page *page)
 {
+	if (!page->isValid()) {
+		return;
+	}
+
 	m_lastPage = page->page();
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();

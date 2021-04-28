@@ -108,9 +108,10 @@ void Page::setLastPage(Page *page)
 
 void Page::load(bool rateLimit)
 {
-	if (m_currentApi < 0 || m_pageApis.isEmpty()) {
+	if (m_currentApi < 0 || m_currentApi >= m_pageApis.count()) {
 		log(QStringLiteral("[%1] No available API to perform the request").arg(m_site->url()), Logger::Error);
 		m_errors.append(tr("No available API to perform the request."));
+		emit failedLoading(this);
 		return;
 	}
 
@@ -137,11 +138,9 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 }
 void Page::abort()
 {
-	if (m_currentApi < 0 || m_pageApis.isEmpty()) {
-		log(QStringLiteral("[%1] No available API to abort").arg(m_site->url()), Logger::Error);
+	if (m_currentApi < 0 || m_currentApi >= m_pageApis.count()) {
 		return;
 	}
-
 	m_pageApis[m_currentApi]->abort();
 }
 
@@ -202,6 +201,7 @@ const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage()
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
+bool Page::isValid() const{ return !m_pageApis.isEmpty(); }
 
 QMap<QString, QUrl> Page::urls() const
 {
