@@ -171,7 +171,8 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 	// Ensure we got a proper JSON
 	if (jsonDocument.isNull()) {
-		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), error.errorString()).arg(error.offset).arg(result), Logger::Warning);
+		const QString extract = (error.offset < 100 ? "" : "...") + result.mid(error.offset - 100, 200) + (error.offset > result.length() - 100 ? "" : "...");
+		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), error.errorString()).arg(error.offset).arg(extract), Logger::Warning);
 		return false;
 	}
 
