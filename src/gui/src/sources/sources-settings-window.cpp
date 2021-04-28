@@ -182,13 +182,13 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	}
 
 	// Headers
-	QMap<QString, QVariant> headers = site->setting("headers").toMap();
+	QMap<QString, QString> headers = site->settingsHeaders();
 	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableHeaders->setRowCount(headers.count());
 	int headerRow = 0;
 	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
 		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(it.key()));
-		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value().toString()));
+		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value()));
 		headerRow++;
 	}
 
@@ -347,7 +347,8 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("cookies", cookies, QList<QVariant>());
 
 	// Headers
-	QMap<QString, QVariant> headers;
+	MixedSettings *settings = m_site->settings();
+	settings->beginGroup("Headers");
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
@@ -355,9 +356,9 @@ void SourcesSettingsWindow::saveSettings()
 			continue;
 		}
 
-		headers.insert(key->text(), value != nullptr ? value->text().toLatin1() : "");
+		settings->setValue(key->text(), value != nullptr ? value->text() : "");
 	}
-	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
+	settings->endGroup();
 
 	m_site->syncSettings();
 	m_site->loadConfig();

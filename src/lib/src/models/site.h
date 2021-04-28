@@ -63,6 +63,7 @@ class Site : public QObject
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
 		void syncSettings() const;
 		MixedSettings *settings() const;
+		QMap<QString, QString> settingsHeaders() const;
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});

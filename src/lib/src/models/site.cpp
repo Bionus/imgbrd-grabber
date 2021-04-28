@@ -289,9 +289,9 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 void Site::setRequestHeaders(QNetworkRequest &request) const
 {
 	// Custom headers
-	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
+	QMap<QString, QString> headers = settingsHeaders();
 	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
-		request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1());
+		request.setRawHeader(it.key().toLatin1(), it.value().toLatin1());
 	}
 
 	// User-Agent header tokens and default value
@@ -301,6 +301,24 @@ void Site::setRequestHeaders(QNetworkRequest &request) const
 	}
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
+}
+
+QMap<QString, QString> Site::settingsHeaders() const
+{
+	QMap<QString, QString> headers;
+
+	QMap<QString, QVariant> legacyHeaders = m_settings->value("headers").toMap();
+	for (auto it = legacyHeaders.constBegin(); it != legacyHeaders.constEnd(); ++it) {
+		headers.insert(it.key(), it.value().toString());
+	}
+
+	m_settings->beginGroup("Headers");
+	for (const QString &key : m_settings->childKeys()) {
+		headers.insert(key, m_settings->value(key).toString());
+	}
+	m_settings->endGroup();
+
+	return headers;
 }
 
 NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)
