@@ -73,12 +73,16 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	emit queryChanged();
 
 	Site *site = m_profile->getSites().value(siteUrl);
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
 
-	connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
-	connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
-	page->load(false);
+	connect(site, &Site::loggedIn, [=]() {
+		Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
 
+		connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
+		connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
+		page->load(false);
+	});
+
+	site->login();
 }
 void MainScreen::searchFinished(Page *page)
 {

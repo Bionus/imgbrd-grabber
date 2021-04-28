@@ -201,7 +201,7 @@ const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage()
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
-bool Page::isValid() const{ return !m_pageApis.isEmpty(); }
+bool Page::isValid() const { return !m_pageApis.isEmpty(); }
 
 QMap<QString, QUrl> Page::urls() const
 {
