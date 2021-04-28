@@ -107,6 +107,11 @@ void Page::setLastPage(Page *page)
 
 void Page::load(bool rateLimit)
 {
+	if (m_currentApi < 0 || m_pageApis.isEmpty()) {
+		log(QStringLiteral("[%1] No available API to perform the request").arg(m_site->url()), Logger::Error);
+		return;
+	}
+
 	connect(m_pageApis[m_currentApi], &PageApi::finishedLoading, this, &Page::loadFinished);
 	m_pageApis[m_currentApi]->load(rateLimit);
 }
@@ -130,6 +135,11 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 }
 void Page::abort()
 {
+	if (m_currentApi < 0 || m_pageApis.isEmpty()) {
+		log(QStringLiteral("[%1] No available API to abort").arg(m_site->url()), Logger::Error);
+		return;
+	}
+
 	m_pageApis[m_currentApi]->abort();
 }
 
