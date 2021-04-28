@@ -269,18 +269,7 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 		m_login->complementRequest(&request);
 	}
 
-	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
-	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
-		request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1());
-	}
-
-	// User-Agent header tokens and default value
-	QString userAgent = request.rawHeader("User-Agent");
-	if (userAgent.isEmpty()) {
-		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
-	}
-	userAgent.replace("%version%", QString(VERSION));
-	request.setRawHeader("User-Agent", userAgent.toLatin1());
+	setRequestHeaders(request);
 
 	// Additional headers
 	for (auto it = cHeaders.constBegin(); it != cHeaders.constEnd(); ++it) {
@@ -295,6 +284,23 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return request;
+}
+
+void Site::setRequestHeaders(QNetworkRequest &request) const
+{
+	// Custom headers
+	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
+		request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1());
+	}
+
+	// User-Agent header tokens and default value
+	QString userAgent = request.rawHeader("User-Agent");
+	if (userAgent.isEmpty()) {
+		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
+	}
+	userAgent.replace("%version%", QString(VERSION));
+	request.setRawHeader("User-Agent", userAgent.toLatin1());
 }
 
 NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)

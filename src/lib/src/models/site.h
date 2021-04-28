@@ -68,6 +68,7 @@ class Site : public QObject
 		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
+		void setRequestHeaders(QNetworkRequest &request) const;
 
 		// Api
 		const QList<Api*> &getApis() const;

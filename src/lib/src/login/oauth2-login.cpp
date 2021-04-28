@@ -42,6 +42,7 @@ void OAuth2Login::login()
 
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
+	m_site->setRequestHeaders(request);
 
 	QList<QStrP> body;
 
@@ -105,7 +106,6 @@ void OAuth2Login::refresh(bool login)
 {
 	log(QStringLiteral("[%1] Refreshing OAuth2 token...").arg(m_site->url()), Logger::Info);
 
-	const QString type = m_auth->authType();
 	const QString consumerKey = m_settings->value("auth/consumerKey").toString();
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
@@ -116,6 +116,7 @@ void OAuth2Login::refresh(bool login)
 
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
+	m_site->setRequestHeaders(request);
 
 	const QList<QStrP> body {
 		{ "grant_type", "refresh_token" },
