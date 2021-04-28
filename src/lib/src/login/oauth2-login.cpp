@@ -111,6 +111,9 @@ void OAuth2Login::refresh(bool login)
 
 	if (m_refreshToken.isEmpty()) {
 		log(QStringLiteral("[%1] Cannot refresh OAuth2 token without a refresh token").arg(m_site->url()), Logger::Warning);
+		if (login) {
+			emit loggedIn(Result::Failure);
+		}
 		return;
 	}
 

@@ -110,6 +110,7 @@ void Page::load(bool rateLimit)
 {
 	if (m_currentApi < 0 || m_pageApis.isEmpty()) {
 		log(QStringLiteral("[%1] No available API to perform the request").arg(m_site->url()), Logger::Error);
+		m_errors.append(tr("No available API to perform the request."));
 		return;
 	}
 

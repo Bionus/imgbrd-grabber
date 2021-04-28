@@ -125,7 +125,7 @@ export const source: ISource = {
     apis: {
         json: {
             name: "JSON",
-            auth: [],
+            auth: ["oauth2"],
             forcedLimit: 30,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
