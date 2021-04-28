@@ -93,9 +93,8 @@ QList<QMap<QString, Token>> Filename::expandTokens(QMap<QString, Token> tokens, 
 	ret.append(tokens);
 
 	const bool isJavascript = m_format.startsWith(QLatin1String("javascript:"));
-	for (auto it = tokens.constBegin(); it != tokens.constEnd(); ++it) {
-		const QString &key = it.key();
-		const Token &token = it.value();
+	for (const QString &key : tokens.keys()) {
+		const Token &token = tokens[key];
 		if (token.value().type() != QVariant::StringList) {
 			continue;
 		}
