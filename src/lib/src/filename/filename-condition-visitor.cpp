@@ -17,7 +17,11 @@
 
 FilenameConditionVisitor::FilenameConditionVisitor(const QMap<QString, Token> &tokens, QSettings *settings)
 	: FilenameVisitorJavaScript(settings), m_tokens(tokens)
-{}
+{
+	if (m_tokens.contains("allos")) {
+		m_tags = m_tokens["allos"].value().toStringList();
+	}
+}
 
 bool FilenameConditionVisitor::run(const FilenameNodeCondition &node)
 {
@@ -65,7 +69,8 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionOp &node)
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 {
-	m_result = node.filter->match(m_tokens).isEmpty();
+	m_result = m_tags.contains(node.tag.text())
+		|| node.filter->match(m_tokens).isEmpty();
 }
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionToken &node)
