@@ -8,7 +8,7 @@
 
 
 ImageLoader::ImageLoader(QObject *parent)
-	: QObject(parent), m_size(Size::Full), m_status(Status::Null), m_progress(0)
+	: QObject(parent), m_size(Size::Full), m_automatic(true), m_status(Status::Null), m_progress(0)
 {}
 
 
@@ -21,7 +21,7 @@ void ImageLoader::setImage(QSharedPointer<Image> image)
 	m_image = std::move(image);
 	emit imageChanged();
 
-	if (!m_image.isNull() ) {
+	if (!m_image.isNull() && m_automatic) {
 		load();
 	}
 }
@@ -34,6 +34,16 @@ void ImageLoader::setSize(ImageLoader::Size size)
 {
 	m_size = size;
 	emit sizeChanged();
+}
+
+bool ImageLoader::automatic() const
+{
+	return m_automatic;
+}
+void ImageLoader::setAutomatic(bool automatic)
+{
+	m_automatic = automatic;
+	emit automaticChanged();
 }
 
 qreal ImageLoader::progress() const

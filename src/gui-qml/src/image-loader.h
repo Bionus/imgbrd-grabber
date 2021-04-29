@@ -14,6 +14,7 @@ class ImageLoader : public QObject
 
 	Q_PROPERTY(QSharedPointer<Image> image READ image WRITE setImage NOTIFY imageChanged)
 	Q_PROPERTY(ImageLoader::Size size READ size WRITE setSize NOTIFY sizeChanged)
+	Q_PROPERTY(bool automatic READ automatic WRITE setAutomatic NOTIFY automaticChanged)
 
 	Q_PROPERTY(qreal progress READ progress NOTIFY progressChanged)
 	Q_PROPERTY(ImageLoader::Status status READ status NOTIFY statusChanged)
@@ -46,6 +47,9 @@ class ImageLoader : public QObject
 		ImageLoader::Size size() const;
 		void setSize(ImageLoader::Size size);
 
+		bool automatic() const;
+		void setAutomatic(bool automatic);
+
 		qreal progress() const;
 		ImageLoader::Status status() const;
 		QString error() const;
@@ -65,6 +69,7 @@ class ImageLoader : public QObject
 	signals:
 		void imageChanged();
 		void sizeChanged();
+		void automaticChanged();
 		void progressChanged();
 		void statusChanged();
 		void errorChanged();
@@ -73,6 +78,7 @@ class ImageLoader : public QObject
 	private:
 		QSharedPointer<Image> m_image;
 		ImageLoader::Size m_size;
+		bool m_automatic;
 
 		qreal m_progress;
 		ImageLoader::Status m_status;
