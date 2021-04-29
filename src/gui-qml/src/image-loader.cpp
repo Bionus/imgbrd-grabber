@@ -77,7 +77,7 @@ void ImageLoader::load()
 	emit statusChanged();
 	emit errorChanged();
 
-	static const  QMap<Size, QString> sizeToString = {
+	static const QMap<Size, QString> sizeToString = {
 		{ Size::Full, QStringLiteral("full") },
 		{ Size::Sample, QStringLiteral("sample") },
 		{ Size::Thumbnail, QStringLiteral("thumb") }
