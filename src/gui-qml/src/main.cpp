@@ -5,8 +5,9 @@
 #include <QSettings>
 #include "functions.h"
 #include "language-loader.h"
+#include "loaders/gallery-search-loader.h"
 #include "loaders/image-loader.h"
-#include "loaders/page-loader.h"
+#include "loaders/tag-search-loader.h"
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -52,7 +53,8 @@ int main(int argc, char *argv[])
 
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
-	qmlRegisterType<PageLoader>("Grabber", 1, 0, "PageLoader");
+	qmlRegisterType<GallerySearchLoader>("Grabber", 1, 0, "GallerySearchLoader");
+	qmlRegisterType<TagSearchLoader>("Grabber", 1, 0, "TagSearchLoader");
 	qmlRegisterType<ImageLoader>("Grabber", 1, 0, "ImageLoader");
 
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");

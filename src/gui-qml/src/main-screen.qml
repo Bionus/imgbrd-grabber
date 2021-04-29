@@ -135,6 +135,7 @@ ApplicationWindow {
         GalleryScreen {
             id: galleryScreen
             visible: false
+            site: gSettings.activeSource.value
 
             onBack: mainStackView.pop()
         }

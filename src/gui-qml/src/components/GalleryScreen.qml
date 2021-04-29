@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
 import QtGraphicalEffects 1.0
@@ -12,14 +13,20 @@ Page {
 
     signal back()
 
+    property int page: 1
+    property string site
     property var gallery
-    property string name
-    property var results
 
-    function load(gallery) {
-        root.gallery = gallery;
-        root.name = "Gallery";
-        root.results = []
+    GallerySearchLoader {
+        id: galleryLoader
+
+        site: root.site
+        gallery: root.gallery
+        page: root.page
+        perPage: 20
+        profile: backend.profile
+
+        onGalleryChanged: galleryLoader.load()
     }
 
     header: ToolBar {
@@ -44,7 +51,7 @@ Page {
         id: imageScreen
 
         ImageScreen {
-            images: root.results
+            images: galleryLoader.results
             index: 0
 
             onClosed: mainStackView.pop()
@@ -56,7 +63,7 @@ Page {
         anchors.fill: parent
 
         ResultsView {
-            results: root.results
+            results: galleryLoader.results
             thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
             thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
             thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
@@ -84,7 +91,7 @@ Page {
 
                 onClicked: {
                     page--
-                    searchTab.load()
+                    galleryLoader.load()
                 }
             }
 
@@ -103,7 +110,7 @@ Page {
 
                 onClicked: {
                     page++
-                    searchTab.load()
+                    galleryLoader.load()
                 }
             }
         }

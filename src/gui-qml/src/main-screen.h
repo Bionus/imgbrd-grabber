@@ -24,7 +24,7 @@ class MainScreen : public QObject
 	Q_PROPERTY(QStringList favorites READ favorites NOTIFY favoritesChanged)
 	Q_PROPERTY(QStringList autoComplete READ autoComplete NOTIFY autoCompleteChanged)
 	Q_PROPERTY(QString settingsFileName READ settingsFileName CONSTANT)
-	Q_PROPERTY(Profile* profile READ profile CONSTANT)
+	Q_PROPERTY(Profile * profile READ profile CONSTANT)
 
 	public:
 		explicit MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent = nullptr);

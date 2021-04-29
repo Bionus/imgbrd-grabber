@@ -16,7 +16,7 @@ Page {
     property int page: 1
     property string site
 
-    PageLoader {
+    TagSearchLoader {
         id: pageLoader
 
         site: searchTab.site

@@ -1,4 +1,4 @@
-#include "page-loader.h"
+#include "search-loader.h"
 #include <QEventLoop>
 #include <QSharedPointer>
 #include <utility>
@@ -9,12 +9,12 @@
 #include "models/site.h"
 
 
-PageLoader::PageLoader(QObject *parent)
+SearchLoader::SearchLoader(QObject *parent)
 	: Loader(parent), m_page(1), m_perPage(20)
 {}
 
 
-void PageLoader::load()
+void SearchLoader::search(SearchQuery query)
 {
 	setStatus(Status::Loading);
 	setError("");
@@ -27,13 +27,14 @@ void PageLoader::load()
 	site->login();
 	loop.exec();
 
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), m_query.split(' '), m_page, m_perPage, m_postFilter.split(' '), false, this);
-	connect(page, &Page::finishedLoading, this, &PageLoader::searchFinished);
-	connect(page, &Page::failedLoading, this, &PageLoader::searchFinished);
+	Page *page = new Page(m_profile, site, m_profile->getSites().values(), std::move(query), m_page, m_perPage, m_postFilter.split(' '), false, this);
+	connect(page, &Page::finishedLoading, this, &SearchLoader::searchFinished);
+	connect(page, &Page::failedLoading, this, &SearchLoader::searchFinished);
 	page->load(false);
 
 }
-void PageLoader::searchFinished(Page *page)
+
+void SearchLoader::searchFinished(Page *page)
 {
 	if (!page->errors().isEmpty()) {
 		setError(page->errors().join('\n'));
