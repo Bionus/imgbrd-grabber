@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtMultimedia 5.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
@@ -104,18 +105,24 @@ Page {
                             anchors.fill: parent
 
                             sourceComponent: ColumnLayout {
+                                ImageLoader {
+                                    id: loader
+                                    image: modelData.image
+                                    size: (showHd && index == swipeView.currentIndex ? ImageLoader.Full : ImageLoader.Sample)
+                                }
+
                                 ZoomableImage {
                                     id: img
                                     Layout.fillWidth: true
                                     Layout.fillHeight: true
-                                    source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                                    source: loader.source
                                     animated: modelData.isAnimated
                                     clip: true
                                 }
 
                                 ProgressBar {
-                                    value: img.progress
-                                    visible: img.status != Image.Ready
+                                    value: loader.progress
+                                    visible: loader.status != ImageLoader.Ready
                                     Layout.fillWidth: true
                                 }
                             }

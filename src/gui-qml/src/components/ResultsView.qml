@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
 import QtGraphicalEffects 1.0
@@ -44,9 +45,15 @@ ScrollView {
         delegate: Item {
             height: img.height + root.thumbnailSpacing
 
+            ImageLoader {
+                id: loader
+                image: modelData.image
+                size: ImageLoader.Thumbnail
+            }
+
             Image {
                 id: img
-                source: modelData.previewUrl
+                source: loader.source
                 fillMode: root.thumbnailFillMode
                 anchors.centerIn: parent
                 width: parent.width - root.thumbnailSpacing

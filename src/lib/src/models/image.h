@@ -77,6 +77,7 @@ class Image : public QObject, public Downloadable
 		void setParentGallery(const QSharedPointer<Image> &parentGallery);
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
+		Profile *getProfile() const { return m_profile; }
 
 		// Preview pixmap store
 		QPixmap previewImage() const;

@@ -73,16 +73,18 @@ void MainScreen::search(const QString &siteUrl, const QString &query, int pageNu
 	emit queryChanged();
 
 	Site *site = m_profile->getSites().value(siteUrl);
+	site->setAutoLogin(false);
 
-	connect(site, &Site::loggedIn, [=]() {
-		Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
-
-		connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
-		connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
-		page->load(false);
-	});
-
+	QEventLoop loop;
+	QObject::connect(site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 	site->login();
+	loop.exec();
+
+	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
+	connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
+	connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
+	page->load(false);
+
 }
 void MainScreen::searchFinished(Page *page)
 {

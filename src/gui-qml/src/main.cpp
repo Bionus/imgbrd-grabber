@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <QSettings>
 #include "functions.h"
+#include "image-loader.h"
 #include "language-loader.h"
 #include "main-screen.h"
 #include "models/image.h"
@@ -46,8 +47,12 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
+	qRegisterMetaType<ImageLoader::Size>("ImageLoader::Size");
+
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
+	qmlRegisterType<ImageLoader>("Grabber", 1, 0, "ImageLoader");
+
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
 	qRegisterMetaType<Settings*>("Settings*");
 	qRegisterMetaType<QmlImage*>("QmlImage*");
