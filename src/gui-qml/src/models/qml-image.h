@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
+#include <utility>
 #include "models/image.h"
 #include "tags/tag-stylist.h"
 
@@ -25,7 +26,7 @@ class QmlImage : public QObject
 
 	public:
 		QmlImage(QSharedPointer<Image> image, Profile *profile, QObject *parent = nullptr)
-			: QObject(parent), m_image(image), m_profile(profile) {}
+			: QObject(parent), m_image(std::move(image)), m_profile(profile) {}
 
 		QSharedPointer<Image> image() const { return m_image; }
 		QString previewUrl() const { return m_image->url(Image::Size::Thumbnail).toString(); }

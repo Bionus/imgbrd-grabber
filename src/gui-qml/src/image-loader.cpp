@@ -67,9 +67,14 @@ void ImageLoader::load()
 	emit statusChanged();
 	emit errorChanged();
 
-	Profile *profile = m_image->getProfile();
+	static const  QMap<Size, QString> sizeToString = {
+		{ Size::Full, QStringLiteral("full") },
+		{ Size::Sample, QStringLiteral("sample") },
+		{ Size::Thumbnail, QStringLiteral("thumb") }
+	};
 
-	const Filename fn = Filename(QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
+	Profile *profile = m_image->getProfile();
+	const Filename fn = Filename(sizeToString[m_size] + "_" + QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
 	const QStringList paths = fn.path(*m_image.data(), profile, profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
 
 	auto downloader = new ImageDownloader(profile, m_image, paths, 1, false, false, this, false, false, imageSize(), false, false);
