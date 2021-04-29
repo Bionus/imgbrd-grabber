@@ -72,6 +72,12 @@ ScrollView {
                         radius: root.thumbnailRadius
                     }
                 }
+
+                InnerBorder {
+                    visible: modelData.color.a > 0
+                    color: modelData.color
+                    size: 3
+                }
             }
 
             MouseArea {
