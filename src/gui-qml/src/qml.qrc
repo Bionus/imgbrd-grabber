@@ -42,5 +42,6 @@
         <file>components/settings/items/ColorSetting.qml</file>
         <file>components/settings/items/MaterialColorSetting.qml</file>
         <file>components/InnerBorder.qml</file>
+        <file>components/Badge.qml</file>
     </qresource>
 </RCC>

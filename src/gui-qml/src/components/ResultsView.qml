@@ -78,6 +78,11 @@ ScrollView {
                     color: modelData.color
                     size: 3
                 }
+
+                Badge {
+                    visible: !!modelData.badge
+                    text: modelData.badge
+                }
             }
 
             MouseArea {
