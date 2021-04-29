@@ -87,7 +87,9 @@ ScrollView {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: mainStackView.push(imageScreen, { index: index })
+                onClicked: modelData.isGallery
+                    ? mainStackView.push(galleryScreen, { gallery: modelData.image })
+                    : mainStackView.push(imageScreen, { index: index })
             }
         }
     }

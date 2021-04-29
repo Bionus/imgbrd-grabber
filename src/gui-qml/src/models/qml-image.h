@@ -26,6 +26,7 @@ class QmlImage : public QObject
 	Q_PROPERTY(QSharedPointer<Image> image READ image CONSTANT)
 	Q_PROPERTY(bool isAnimated READ isAnimated CONSTANT)
 	Q_PROPERTY(bool isVideo READ isVideo CONSTANT)
+	Q_PROPERTY(bool isGallery READ isGallery CONSTANT)
 
 	public:
 		QmlImage(QSharedPointer<Image> image, Profile *profile, QObject *parent = nullptr)
@@ -40,6 +41,7 @@ class QmlImage : public QObject
 		QColor color() const { return m_image->color().isValid() ? m_image->color() : QColor(0, 0, 0, 0); }
 		bool isAnimated() const { return !m_image->isAnimated().isEmpty(); }
 		bool isVideo() const { return m_image->isVideo(); }
+		bool isGallery() const { return m_image->isGallery(); }
 
 	private:
 		QSharedPointer<Image> m_image;

@@ -134,6 +134,13 @@ ApplicationWindow {
             }
         }
 
+        GalleryScreen {
+            id: galleryScreen
+            visible: false
+
+            onBack: mainStackView.pop()
+        }
+
         SourcesScreen {
             id: sourcesScreen
             visible: false
