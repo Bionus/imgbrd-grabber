@@ -17,10 +17,7 @@
 #include "settings.h"
 #include "share/share-utils.h"
 #include "utils/logging.h"
-#include "models/qml-image.h"
 #include "models/qml-site.h"
-
-#define IMAGES_PER_PAGE 20
 
 
 MainScreen::MainScreen(Profile *profile, ShareUtils *shareUtils, QObject *parent)
@@ -65,38 +62,6 @@ void MainScreen::refreshFavorites()
 		m_favorites.append(fav.getName(false));
 	}
 	emit favoritesChanged();
-}
-
-void MainScreen::search(const QString &siteUrl, const QString &query, int pageNumber, const QString &postFilter)
-{
-	m_query = query;
-	emit queryChanged();
-
-	Site *site = m_profile->getSites().value(siteUrl);
-	site->setAutoLogin(false);
-
-	QEventLoop loop;
-	QObject::connect(site, &Site::loggedIn, &loop, &QEventLoop::quit, Qt::QueuedConnection);
-	site->login();
-	loop.exec();
-
-	Page *page = new Page(m_profile, site, m_profile->getSites().values(), query.split(' '), pageNumber, IMAGES_PER_PAGE, postFilter.split(' '), false, this);
-	connect(page, &Page::finishedLoading, this, &MainScreen::searchFinished);
-	connect(page, &Page::failedLoading, this, &MainScreen::searchFinished);
-	page->load(false);
-
-}
-void MainScreen::searchFinished(Page *page)
-{
-	QList<QSharedPointer<Image>> results = page->images();
-
-	m_results.clear();
-	m_results.reserve(results.count());
-	for (const QSharedPointer<Image> &img : results) {
-		m_results.append(new QmlImage(img, m_profile, this));
-	}
-
-	emit resultsChanged();
 }
 
 void MainScreen::newLog(const QString &message)

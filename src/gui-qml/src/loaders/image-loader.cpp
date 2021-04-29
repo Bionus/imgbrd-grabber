@@ -8,7 +8,7 @@
 
 
 ImageLoader::ImageLoader(QObject *parent)
-	: QObject(parent), m_size(Size::Full), m_automatic(true), m_status(Status::Null), m_progress(0)
+	: Loader(parent), m_size(Size::Full), m_automatic(true), m_progress(0)
 {}
 
 
@@ -50,14 +50,6 @@ qreal ImageLoader::progress() const
 {
 	return m_progress;
 }
-ImageLoader::Status ImageLoader::status() const
-{
-	return m_status;
-}
-QString ImageLoader::error() const
-{
-	return m_error;
-}
 
 QString ImageLoader::source() const
 {
@@ -72,10 +64,8 @@ void ImageLoader::setSource(QString source)
 
 void ImageLoader::load()
 {
-	m_status = Status::Loading;
-	m_error = QString();
-	emit statusChanged();
-	emit errorChanged();
+	setStatus(Status::Loading);
+	setError("");
 
 	static const QMap<Size, QString> sizeToString = {
 		{ Size::Full, QStringLiteral("full") },
@@ -108,18 +98,20 @@ void ImageLoader::saved(const QSharedPointer<Image> &img, const QList<ImageSaveR
 
 	if (res.result == 500) {
 		setError(tr("File is too big to be displayed."));
+		setSource("");
 	} else if (res.result == Image::SaveResult::NotFound) {
 		setError(tr("Image not found."));
+		setSource("");
 	} else if (res.result == Image::SaveResult::NetworkError) {
 		setError(tr("Error loading the image."));
+		setSource("");
 	} else if (res.result == Image::SaveResult::Error) {
 		setError(tr("Error saving the image."));
+		setSource("");
 	} else {
 		img->setTemporaryPath(res.path, res.size);
 		setSource("file:///" + res.path);
-
-		m_status = Status::Ready;
-		emit statusChanged();
+		setStatus(Status::Ready);
 	}
 }
 
@@ -132,15 +124,4 @@ Image::Size ImageLoader::imageSize() const
 		return Image::Size::Sample;
 	}
 	return Image::Size::Thumbnail;
-}
-
-void ImageLoader::setError(QString error)
-{
-	m_error = std::move(error);
-	m_status = Status::Error;
-
-	setSource("");
-
-	emit errorChanged();
-	emit statusChanged();
 }

@@ -87,8 +87,6 @@ ApplicationWindow {
                 visible: currentPage == "search"
                 anchors.fill: parent
                 site: gSettings.activeSource.value
-                query: backend.query
-                results: backend.results
 
                 onOpenSources: mainStackView.push(sourcesScreen)
             }

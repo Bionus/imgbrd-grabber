@@ -1,14 +1,14 @@
 #ifndef IMAGE_LOADER_H
 #define IMAGE_LOADER_H
 
-#include <QObject>
+#include "loader.h"
 #include <QSharedPointer>
 #include <QString>
 #include <downloader/image-save-result.h>
 #include "models/image.h"
 
 
-class ImageLoader : public QObject
+class ImageLoader : public Loader
 {
 	Q_OBJECT
 
@@ -17,20 +17,9 @@ class ImageLoader : public QObject
 	Q_PROPERTY(bool automatic READ automatic WRITE setAutomatic NOTIFY automaticChanged)
 
 	Q_PROPERTY(qreal progress READ progress NOTIFY progressChanged)
-	Q_PROPERTY(ImageLoader::Status status READ status NOTIFY statusChanged)
-	Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 	Q_PROPERTY(QString source READ source NOTIFY sourceChanged)
 
 	public:
-		enum Status
-		{
-			Null,
-			Ready,
-			Loading,
-			Error
-		};
-		Q_ENUM(Status)
-
 		enum Size
 		{
 			Thumbnail,
@@ -51,15 +40,13 @@ class ImageLoader : public QObject
 		void setAutomatic(bool automatic);
 
 		qreal progress() const;
-		ImageLoader::Status status() const;
-		QString error() const;
 		QString source() const;
 
-		Q_INVOKABLE void load();
+	public slots:
+		void load() override;
 
 	protected:
 		Image::Size imageSize() const;
-		void setError(QString error);
 		void setSource(QString source);
 
 	protected slots:
@@ -71,8 +58,6 @@ class ImageLoader : public QObject
 		void sizeChanged();
 		void automaticChanged();
 		void progressChanged();
-		void statusChanged();
-		void errorChanged();
 		void sourceChanged();
 
 	private:
@@ -81,8 +66,6 @@ class ImageLoader : public QObject
 		bool m_automatic;
 
 		qreal m_progress;
-		ImageLoader::Status m_status;
-		QString m_error;
 		QString m_source;
 };
 
