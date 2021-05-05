@@ -23,6 +23,7 @@ if(WIN_FILE_PROPS)
 else()
 	include(ListFilterRegex)
 	listFilterRegex(SOURCES "windows-file-property.*")
+	listFilterRegex(SOURCES "windows-url-protocol.*")
 endif()
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
