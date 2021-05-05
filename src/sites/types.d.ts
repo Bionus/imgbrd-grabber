@@ -128,7 +128,7 @@ interface IAuthCheckMaxPage {
     value: number;
 }
 
-type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth | IHttpBasicAuth;
+type IAuth = IBasicAuth | IOauth2Auth | IOauth1Auth | IHttpAuth | IHttpBasicAuth;
 interface IOauth2Auth {
     type: "oauth2";
     authType: "password" | "client_credentials" | "header_basic" | "refresh_token";
@@ -136,6 +136,12 @@ interface IOauth2Auth {
     tokenUrl?: string;
     refreshTokenUrl?: string;
     scope?: string[];
+}
+interface IOauth1Auth {
+    type: "oauth1";
+    temporaryCredentialsUrl: string,
+    authorizationUrl: string,
+    tokenCredentialsUrl: string,
 }
 interface IBasicAuth {
     type: "url";

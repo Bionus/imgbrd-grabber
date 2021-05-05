@@ -11,6 +11,7 @@
 #include "auth/auth-hash-field.h"
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
@@ -114,6 +115,11 @@ Source::Source(Profile *profile, const QString &dir)
 					const QString authType = auth.property("authType").toString();
 					const QString tokenUrl = auth.property("tokenUrl").toString();
 					ret = new OAuth2Auth(type, authType, tokenUrl);
+				} else if (type == "oauth1") {
+					const QString temporaryCredentialsUrl = auth.property("temporaryCredentialsUrl").toString();
+					const QString authorizationUrl = auth.property("authorizationUrl").toString();
+					const QString tokenCredentialsUrl = auth.property("tokenCredentialsUrl").toString();
+					ret = new OAuth1Auth(type, temporaryCredentialsUrl, authorizationUrl, tokenCredentialsUrl);
 				} else if (type == "http_basic") {
 					const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
 					const QString passwordType = auth.property("passwordType").toString();

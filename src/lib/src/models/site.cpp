@@ -10,6 +10,7 @@
 #include <utility>
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
@@ -17,6 +18,7 @@
 #include "login/http-basic-login.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
+#include "login/oauth1-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
@@ -132,6 +134,8 @@ void Site::loadConfig()
 				m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "oauth2") {
 				m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "oauth1") {
+				m_login = new OAuth1Login(dynamic_cast<OAuth1Auth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "post") {
 				m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "get") {
