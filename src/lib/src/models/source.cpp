@@ -114,7 +114,10 @@ Source::Source(Profile *profile, const QString &dir)
 				if (type == "oauth2") {
 					const QString authType = auth.property("authType").toString();
 					const QString tokenUrl = auth.property("tokenUrl").toString();
-					ret = new OAuth2Auth(type, authType, tokenUrl);
+					const QString authorizationUrl = auth.property("authorizationUrl").toString();
+					const QString redirectUrl = auth.property("redirectUrl").toString();
+					const QString urlProtocol = auth.property("urlProtocol").toString();
+					ret = new OAuth2Auth(type, authType, tokenUrl, authorizationUrl, redirectUrl, urlProtocol);
 				} else if (type == "oauth1") {
 					const QString temporaryCredentialsUrl = auth.property("temporaryCredentialsUrl").toString();
 					const QString authorizationUrl = auth.property("authorizationUrl").toString();

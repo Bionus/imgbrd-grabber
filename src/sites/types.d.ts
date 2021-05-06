@@ -131,10 +131,13 @@ interface IAuthCheckMaxPage {
 type IAuth = IBasicAuth | IOauth2Auth | IOauth1Auth | IHttpAuth | IHttpBasicAuth;
 interface IOauth2Auth {
     type: "oauth2";
-    authType: "password" | "client_credentials" | "header_basic" | "refresh_token";
+    authType: "password" | "client_credentials" | "header_basic" | "refresh_token"  | "pkce";
     requestUrl?: string;
     tokenUrl?: string;
     refreshTokenUrl?: string;
+    authorizationUrl?: string;
+    redirectUrl?: string;
+    urlProtocol?: string;
     scope?: string[];
 }
 interface IOauth1Auth {

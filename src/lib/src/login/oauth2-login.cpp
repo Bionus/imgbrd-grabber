@@ -1,12 +1,24 @@
 #include "login/oauth2-login.h"
+#include <QCoreApplication>
+#include <QDataStream>
+#include <QDesktopServices>
+#include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QOAuth2AuthorizationCodeFlow>
+#include <QOAuthHttpServerReplyHandler>
+#include <QRandomGenerator>
+#include <QUrlQuery>
 #include "auth/oauth2-auth.h"
 #include "logger.h"
+#include "login/site-network-access-manager.h"
 #include "mixed-settings.h"
 #include "models/site.h"
 #include "network/network-manager.h"
 #include "network/network-reply.h"
+#ifdef Q_OS_WIN
+	#include "windows-url-protocol.h"
+#endif
 
 
 using QStrP = QPair<QString, QString>;
@@ -20,7 +32,15 @@ OAuth2Login::OAuth2Login(OAuth2Auth *auth, Site *site, NetworkManager *manager, 
 
 bool OAuth2Login::isTestable() const
 {
-	return !m_auth->tokenUrl().isEmpty();
+	return !m_auth->tokenUrl().isEmpty()
+		&& (m_auth->authType() != "pkce" || !m_auth->authorizationUrl().isEmpty());
+}
+
+QString toUrlBase64(const QByteArray &data)
+{
+	QString ret = data.toBase64();
+	ret.replace('+', '-').replace('/', '_').remove(QRegularExpression("=+$"));
+	return ret;
 }
 
 void OAuth2Login::login()
@@ -79,6 +99,96 @@ void OAuth2Login::login()
 		}
 	} else if (type == "refresh_token") {
 		refresh(true);
+		return;
+	} else if (type == "pkce") {
+		const QString urlProtocol = m_auth->urlProtocol();
+		if (!urlProtocol.isEmpty()) {
+			#ifdef Q_OS_WIN
+				if (protocolExists(urlProtocol)) {
+					protocolUninstall(urlProtocol);
+				}
+				protocolInstall(urlProtocol, QStringLiteral(R"("%1" --url-protocol "%2")").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1"));
+			#else
+				log(QStringLiteral("[%1] This OAuth 2 login requires a custom URL protocol, which is only supported on Windows").arg(m_site->url()), Logger::Error);
+			#endif
+		}
+
+		auto *manager = new SiteNetworkAccessManager(m_site, this);
+		auto *flow = new QOAuth2AuthorizationCodeFlow(consumerKey, consumerSecret, manager, this);
+		flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
+		flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
+
+		auto *replyHandler = new QOAuthHttpServerReplyHandler(1337, this);
+		flow->setReplyHandler(replyHandler);
+
+		// Detect when the connection succeeded
+		QObject::connect(flow, &QOAuth2AuthorizationCodeFlow::statusChanged, [=](QAbstractOAuth::Status status) {
+			if (status == QAbstractOAuth::Status::Granted) {
+				if (!urlProtocol.isEmpty()) {
+					protocolUninstall(urlProtocol);
+				}
+
+				m_accessToken = flow->token();
+				m_refreshToken = flow->refreshToken();
+				m_settings->setValue("auth/accessToken", m_accessToken);
+				m_settings->setValue("auth/refreshToken", m_refreshToken);
+
+				emit loggedIn(Result::Success);
+
+				flow->deleteLater();
+				manager->deleteLater();
+				replyHandler->deleteLater();
+			}
+		});
+
+		// Generate a base64 from 32 random bytes
+		QByteArray byteVerifier;
+		QDataStream stream(&byteVerifier, QIODevice::WriteOnly);
+		for (int i = 0; i < 8; ++i) {
+			stream << QRandomGenerator::global()->generate();
+		}
+		const QString codeVerifier = toUrlBase64(byteVerifier);
+
+		// PKCE challenge
+		flow->setModifyParametersFunction([=](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
+			if (stage == QAbstractOAuth::Stage::RequestingAuthorization) {
+				const QString codeChallenge = toUrlBase64(QCryptographicHash::hash(codeVerifier.toLatin1(), QCryptographicHash::Sha256));
+
+				parameters->insert("code_challenge", codeChallenge);
+				parameters->insert("code_challenge_method", "S256");
+
+				// TODO(Bionus): do this correctly in the JS file
+				parameters->insert("client", "pixiv-android");
+			}
+			if (stage == QAbstractOAuth::Stage::RequestingAccessToken) {
+				parameters->insert("client_id", consumerKey);
+				parameters->insert("client_secret", consumerSecret);
+				parameters->insert("code_verifier", codeVerifier);
+				parameters->insert("include_policy", true);
+
+				const QString redirectUrl = m_auth->redirectUrl();
+				if (!redirectUrl.isEmpty()) {
+					parameters->insert("redirect_uri", m_site->fixUrl(redirectUrl).toString(QUrl::FullyEncoded));
+				}
+			}
+		});
+
+		// Open browser when necessary
+		connect(flow, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, [=](QUrl url) {
+			log(QStringLiteral("Login with OAuth1 via browser `%1`").arg(url.toString()), Logger::Info);
+			qDebug() << "authorizeWithBrowser" << url.toString();
+
+			// Override OAuth 2 "state" security for sites that don't support it
+			disconnect(replyHandler, &QAbstractOAuthReplyHandler::callbackReceived, flow, &QOAuth2AuthorizationCodeFlow::authorizationCallbackReceived);
+			connect(replyHandler, &QAbstractOAuthReplyHandler::callbackReceived, [=](QVariantMap values) {
+				values.insert("state", QUrlQuery(url).queryItemValue("state"));
+				flow->authorizationCallbackReceived(values);
+			});
+
+			QDesktopServices::openUrl(url);
+		});
+
+		flow->grant();
 		return;
 	}
 
