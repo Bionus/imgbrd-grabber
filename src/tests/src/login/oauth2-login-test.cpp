@@ -21,7 +21,7 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	settings->setValue("auth/accessToken", "");
 	settings->setValue("auth/refreshToken", "");
 
-	OAuth2Auth auth("oauth2", type, "/token",  "/authorization", "/redirect", "");
+	OAuth2Auth auth("oauth2", type, "/token", "/authorization", "/redirect", "");
 	OAuth2Login login(&auth, site, manager, settings);
 
 	REQUIRE(login.isTestable());
