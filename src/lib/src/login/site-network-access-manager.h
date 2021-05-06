@@ -14,8 +14,8 @@ class SiteNetworkAccessManager : public QNetworkAccessManager
 	protected:
 		QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &originalReq, QIODevice *outgoingData = nullptr) override;
 
-    private:
-        Site *m_site;
+	private:
+		Site *m_site;
 };
 
 #endif // SITE_NETWORK_ACCESS_MANAGER_H

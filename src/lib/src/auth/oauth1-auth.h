@@ -9,9 +9,9 @@ class OAuth1Auth : public Auth
 {
 	public:
 		OAuth1Auth(QString type, QString temporaryCredentialsUrl, QString authorizationUrl, QString tokenCredentialsUrl);
-        QString temporaryCredentialsUrl() const;
-        QString authorizationUrl() const;
-        QString tokenCredentialsUrl() const;
+		QString temporaryCredentialsUrl() const;
+		QString authorizationUrl() const;
+		QString tokenCredentialsUrl() const;
 		QList<AuthSettingField> settingFields() const override;
 
 	private:

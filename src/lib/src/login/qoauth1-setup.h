@@ -16,8 +16,8 @@ class QOAuth1Setup : public QOAuth1
 
 		void publicSetup(QNetworkRequest *request, const QVariantMap &signingParameters, QNetworkAccessManager::Operation operation)
 		{
-            setup(request, signingParameters, operation);
-        }
+			setup(request, signingParameters, operation);
+		}
 };
 
 #endif // QOAUTH1_SETUP_H

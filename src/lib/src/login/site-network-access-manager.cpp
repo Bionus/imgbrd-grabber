@@ -5,12 +5,12 @@
 
 
 SiteNetworkAccessManager::SiteNetworkAccessManager(Site *site, QObject *parent)
-    : QNetworkAccessManager(parent), m_site(site)
+	: QNetworkAccessManager(parent), m_site(site)
 {}
 
 QNetworkReply *SiteNetworkAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &originalReq, QIODevice *outgoingData)
 {
-    QNetworkRequest newReq(originalReq);
-    m_site->setRequestHeaders(newReq);
-    return QNetworkAccessManager::createRequest(op, newReq, outgoingData);
+	QNetworkRequest newReq(originalReq);
+	m_site->setRequestHeaders(newReq);
+	return QNetworkAccessManager::createRequest(op, newReq, outgoingData);
 }
