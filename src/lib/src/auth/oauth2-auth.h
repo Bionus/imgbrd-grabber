@@ -14,6 +14,7 @@ class OAuth2Auth : public Auth
 		QString authorizationUrl() const;
 		QString redirectUrl() const;
 		QString urlProtocol() const;
+		QString name() const override;
 		QList<AuthSettingField> settingFields() const override;
 
 	private:

@@ -32,6 +32,11 @@ QString OAuth2Auth::urlProtocol() const
 	return m_urlProtocol;
 }
 
+QString OAuth2Auth::name() const
+{
+	return type() + "_" + m_authType;
+}
+
 QList<AuthSettingField> OAuth2Auth::settingFields() const
 {
 	AuthSettingField consumerKeyField;

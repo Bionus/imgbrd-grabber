@@ -98,7 +98,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "get", tr("GET") },
 		{ "post", tr("POST") },
 		{ "oauth1", tr("OAuth 1") },
-		{ "oauth2", tr("OAuth 2") }
+		{ "oauth2_password", tr("OAuth 2 (password)") },
+		{ "oauth2_client_credentials", tr("OAuth 2 (client credentials)") },
+		{ "oauth2_header_basic", tr("OAuth 2 (header basic)") },
+		{ "oauth2_refresh_token", tr("OAuth 2 (refresh token)") },
+		{ "oauth2_pkce", tr("OAuth 2 (PKCE)") }
 	};
 	static const QMap<QString, QString> fieldLabels
 	{
@@ -121,7 +125,8 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 
 		const QString id = it.key();
 		const QString type = it.value()->type();
-		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, id);
+		const QString name = it.value()->name();
+		ui->comboLoginType->addItem(typeNames.contains(name) ? typeNames[name] : name, id);
 		if (id == loginType) {
 			activeLoginIndex = ui->comboLoginType->count() - 1;
 		}
