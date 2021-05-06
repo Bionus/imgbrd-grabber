@@ -119,9 +119,10 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
 		bool canTestLogin = false;
 
+		const QString id = it.key();
 		const QString type = it.value()->type();
-		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, type);
-		if (type == loginType) {
+		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, id);
+		if (id == loginType) {
 			activeLoginIndex = ui->comboLoginType->count() - 1;
 		}
 

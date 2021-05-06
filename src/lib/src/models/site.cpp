@@ -120,10 +120,10 @@ void Site::loadConfig()
 	const QString defType = m_settings->value("login/type", "url").toString();
 	if (defType != "disabled") {
 		const auto &auths = m_source->getAuths();
-		for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-			if (it.value()->type() == defType || m_auth == nullptr) {
-				m_auth = it.value();
-			}
+		if (auths.contains(defType)) {
+			m_auth = auths[defType];
+		} else if (!auths.isEmpty()) {
+			m_auth = auths.first();
 		}
 		if (m_login != nullptr) {
 			m_login->deleteLater();
