@@ -124,9 +124,11 @@ void OAuth2Login::login()
 		// Detect when the connection succeeded
 		QObject::connect(flow, &QOAuth2AuthorizationCodeFlow::statusChanged, [=](QAbstractOAuth::Status status) {
 			if (status == QAbstractOAuth::Status::Granted) {
-				if (!urlProtocol.isEmpty()) {
-					protocolUninstall(urlProtocol);
-				}
+				#ifdef Q_OS_WIN
+					if (!urlProtocol.isEmpty()) {
+						protocolUninstall(urlProtocol);
+					}
+				#endif
 
 				m_accessToken = flow->token();
 				m_refreshToken = flow->refreshToken();
