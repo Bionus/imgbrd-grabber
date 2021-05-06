@@ -41,7 +41,7 @@ class Site : public QObject
 			Success = 0,
 			Error = 1,
 			Impossible = 2,
-			Already = 2
+			Already = 3
 		};
 		enum LoginStatus
 		{
