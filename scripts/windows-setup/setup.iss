@@ -113,6 +113,7 @@ Source: "{#QtDir}\Qt5Gui.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt5Multimedia.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5MultimediaWidgets.dll";    DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Network.dll";              DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtDir}\Qt5NetworkAuth.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5OpenGL.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5PrintSupport.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt5Qml.dll";                  DestDir: "{app}"; Flags: ignoreversion
