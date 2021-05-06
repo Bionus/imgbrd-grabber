@@ -28,9 +28,9 @@ OAuth1Login::OAuth1Login(OAuth1Auth *auth, Site *site, NetworkManager *manager, 
 	m_oauth1->setTokenCredentials(accessToken, accessTokenSecret);
 
 	// Setup URLs
-	m_oauth1->setTemporaryCredentialsUrl(QUrl(m_auth->temporaryCredentialsUrl()));
-	m_oauth1->setAuthorizationUrl(QUrl(m_auth->authorizationUrl()));
-	m_oauth1->setTokenCredentialsUrl(QUrl(m_auth->tokenCredentialsUrl()));
+	m_oauth1->setTemporaryCredentialsUrl(m_site->fixUrl(m_auth->temporaryCredentialsUrl()));
+	m_oauth1->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
+	m_oauth1->setTokenCredentialsUrl(m_site->fixUrl(m_auth->tokenCredentialsUrl()));
 
 	// Automatically open browser when necessary
 	QObject::connect(m_oauth1, &QOAuth1::authorizeWithBrowser, [=](QUrl url) {
