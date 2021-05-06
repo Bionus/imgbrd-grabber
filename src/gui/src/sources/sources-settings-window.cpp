@@ -12,12 +12,14 @@
 #include "auth/field-auth.h"
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
 #include "login/http-basic-login.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
+#include "login/oauth1-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
@@ -142,6 +144,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		if (type == "oauth2") {
 			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
 			canTestLogin = OAuth2Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
+		} else if (type == "oauth1") {
+			auto *oauth = dynamic_cast<OAuth1Auth*>(it.value());
+			canTestLogin = OAuth1Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
 		} else if (type == "http_basic") {
 			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
 			canTestLogin = HttpBasicLogin(basicAuth, m_site, nullptr, m_site->settings()).isTestable();
