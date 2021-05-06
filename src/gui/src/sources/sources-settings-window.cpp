@@ -271,12 +271,29 @@ void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 			setLoginStatus(tr("Unable to test"));
 			break;
 	}
+
+	updateFields();
 }
 
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
 	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestLogin->setText(italic);
+}
+
+void SourcesSettingsWindow::updateFields()
+{
+	for (auto it = m_credentialFields.begin(); it != m_credentialFields.end(); ++it) {
+		for (auto jt = it.value().begin(); jt != it.value().end(); ++jt) {
+			const QString type = it.key();
+			const QString id = jt.key();
+
+			const QString val = m_site->settings()->value("auth/" + id).toString();
+			if (!val.isEmpty()) {
+				m_credentialFields[type][id]->setText(val);
+			}
+		}
+	}
 }
 
 void SourcesSettingsWindow::saveSettings()

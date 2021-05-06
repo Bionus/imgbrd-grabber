@@ -41,6 +41,7 @@ class SourcesSettingsWindow : public QDialog
 	protected:
 		void saveSettings();
 		void setLoginStatus(const QString &msg);
+		void updateFields();
 
 	private:
 		Ui::SourcesSettingsWindow *ui;
