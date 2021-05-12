@@ -15,6 +15,7 @@ env:
   QT_MODULES: qtnetworkauth
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
 
 jobs:
   uncrustify:
@@ -219,6 +220,7 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+      CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
       - name: Checkout
