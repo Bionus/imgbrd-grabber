@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSettings>
+#include "analytics.h"
 #include "functions.h"
 #include "language-loader.h"
 #include "loaders/gallery-search-loader.h"
@@ -85,6 +86,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	Profile profile(savePath());
+	QSettings *settings = profile.getSettings();
+
+	// Analytics
+	Analytics::getInstance().setTrackingID("UA-22768717-6");
+	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
+	Analytics::getInstance().startSession();
+	Analytics::getInstance().sendEvent("lifecycle", "start");
+
 	const QUrl url(QStringLiteral("qrc:/main-screen.qml"));
 
 	QQmlApplicationEngine engine;
@@ -107,13 +117,12 @@ int main(int argc, char *argv[])
 	ShareUtils shareUtils(nullptr);
 	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);
 
-	Profile profile(savePath());
 	MainScreen mainScreen(&profile, &shareUtils, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
 	engine.rootContext()->setContextProperty("backend", &mainScreen);
 
-	Settings settings(profile.getSettings());
-	engine.rootContext()->setContextProperty("settings", &settings);
+	Settings qmlSettings(settings);
+	engine.rootContext()->setContextProperty("settings", &qmlSettings);
 
 	// Load translations
 	LanguageLoader languageLoader(savePath("languages/", true, false));
