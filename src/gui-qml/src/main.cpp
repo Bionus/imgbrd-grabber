@@ -138,8 +138,8 @@ int main(int argc, char *argv[])
 			log(QStringLiteral("Android write permission not granted"), Logger::Error);
 		}
 
-		if (settings.value("Save/path").toString().isEmpty()) {
-			settings.setValue("Save/path", QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first() + "/Grabber");
+		if (settings->value("Save/path").toString().isEmpty()) {
+			settings->setValue("Save/path", QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first() + "/Grabber");
 		}
 	#endif
 
