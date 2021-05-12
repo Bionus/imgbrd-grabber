@@ -121,6 +121,18 @@ void OAuth2Login::login()
 		auto *replyHandler = new QOAuthHttpServerReplyHandler(1337, this);
 		flow->setReplyHandler(replyHandler);
 
+		// Ensure the response handler HTTP server could be started properly
+		if (!replyHandler->isListening()) {
+			log(QStringLiteral("[%1] OAuth2 HTTP handler not started").arg(m_site->url()), Logger::Error);
+			emit loggedIn(Result::Failure);
+
+			flow->deleteLater();
+			manager->deleteLater();
+			replyHandler->deleteLater();
+			return;
+		}
+		log(QStringLiteral("[%1] OAuth2 HTTP handler listening on port %2").arg(m_site->url(), QString::number(replyHandler->port())), Logger::Info);
+
 		// Detect when the connection succeeded
 		QObject::connect(flow, &QOAuth2AuthorizationCodeFlow::statusChanged, [=](QAbstractOAuth::Status status) {
 			if (status == QAbstractOAuth::Status::Granted) {
@@ -176,9 +188,8 @@ void OAuth2Login::login()
 		});
 
 		// Open browser when necessary
-		connect(flow, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, [=](QUrl url) {
-			log(QStringLiteral("Login with OAuth1 via browser `%1`").arg(url.toString()), Logger::Info);
-			qDebug() << "authorizeWithBrowser" << url.toString();
+		connect(flow, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, [=](const QUrl &url) {
+			log(QStringLiteral("[%1] Login with OAuth2 via browser `%2`").arg(m_site->url(), url.toString()), Logger::Info);
 
 			// Override OAuth 2 "state" security for sites that don't support it
 			disconnect(replyHandler, &QAbstractOAuthReplyHandler::callbackReceived, flow, &QOAuth2AuthorizationCodeFlow::authorizationCallbackReceived);
