@@ -49,7 +49,7 @@ bool OAuth1Login::isTestable() const
 void OAuth1Login::login()
 {
 	// Start a response handler
-	QOAuthHttpServerReplyHandler replyHandler(1337, this);
+	QOAuthHttpServerReplyHandler replyHandler(58923, this);
 	replyHandler.setCallbackPath("callback");
 	m_oauth1->setReplyHandler(&replyHandler);
 

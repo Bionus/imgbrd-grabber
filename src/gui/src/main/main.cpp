@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	// Handler for custom URL protocols, redirecting to the main program through HTTP calls
 	if (argc == 3 && QString(argv[1]) == "--url-protocol") {
 		QNetworkAccessManager manager;
-		QNetworkRequest request(QUrl("http://127.0.0.1:1337/" + QString(argv[2])));
+		QNetworkRequest request(QUrl("http://127.0.0.1:58923/" + QString(argv[2])));
 
 		QEventLoop loop;
 		QObject::connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);

@@ -118,7 +118,7 @@ void OAuth2Login::login()
 		flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
 		flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
 
-		auto *replyHandler = new QOAuthHttpServerReplyHandler(1337, this);
+		auto *replyHandler = new QOAuthHttpServerReplyHandler(58923, this);
 		flow->setReplyHandler(replyHandler);
 
 		// Ensure the response handler HTTP server could be started properly
