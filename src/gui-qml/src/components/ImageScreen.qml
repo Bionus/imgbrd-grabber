@@ -156,6 +156,8 @@ Page {
                             }
                         }
                     }
+
+                    Component.onCompleted: modelData.loadTags()
                 }
             }
         }
