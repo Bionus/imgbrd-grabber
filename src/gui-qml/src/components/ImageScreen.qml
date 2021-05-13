@@ -2,6 +2,7 @@ import Grabber 1.0
 import QtMultimedia 5.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 Page {
@@ -160,7 +161,7 @@ Page {
 
                         Label {
                             anchors.fill: parent
-                            text: modelData.tags.join("<br/>")
+                            text: (Material.theme == Material.Dark ? modelData.tagsDark : modelData.tags).join("<br/>")
                             textFormat: Text.RichText
 
                             onLinkActivated: {
