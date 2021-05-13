@@ -11,7 +11,7 @@ Page {
 
     property var images
     property int index
-    property var image: images[index]
+    property var image: images[swipeView.currentIndex]
 
     property bool showHd: false
     property bool showTags: false
