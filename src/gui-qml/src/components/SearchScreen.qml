@@ -150,7 +150,7 @@ Page {
                 background.anchors.fill: prevButton
                 width: 40
                 icon.source: "/images/icons/previous.png"
-                enabled: pageLoader.query !== "" && page > 1
+                enabled: pageLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
 
@@ -176,7 +176,7 @@ Page {
                 background.anchors.fill: nextButton
                 width: 40
                 icon.source: "/images/icons/next.png"
-                enabled: pageLoader.query !== ""
+                enabled: pageLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
 

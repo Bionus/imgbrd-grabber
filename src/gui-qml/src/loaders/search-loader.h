@@ -22,6 +22,8 @@ class SearchLoader : public Loader
 	Q_PROPERTY(Profile * profile READ profile WRITE setProfile NOTIFY profileChanged)
 
 	Q_PROPERTY(QList<QmlImage*> results READ results NOTIFY resultsChanged)
+	Q_PROPERTY(bool hasPrev READ hasPrev NOTIFY hasPrevChanged)
+	Q_PROPERTY(bool hasNext READ hasNext NOTIFY hasNextChanged)
 
 	public:
 		explicit SearchLoader(QObject *parent = nullptr);
@@ -42,6 +44,8 @@ class SearchLoader : public Loader
 		void setProfile(Profile *profile) { m_profile = profile; emit profileChanged(); }
 
 		const QList<QmlImage*> &results() const { return m_results; }
+		bool hasPrev() const { return m_hasPrev; }
+		bool hasNext() const { return m_hasNext; }
 
 	protected slots:
 		void search(SearchQuery query);
@@ -56,6 +60,8 @@ class SearchLoader : public Loader
 		void postFilterChanged();
 		void resultsChanged();
 		void profileChanged();
+		void hasPrevChanged();
+		void hasNextChanged();
 
 	private:
 		QString m_site;
@@ -65,6 +71,8 @@ class SearchLoader : public Loader
 		Profile *m_profile;
 
 		QList<QmlImage*> m_results;
+		bool m_hasPrev;
+		bool m_hasNext;
 };
 
 #endif // SEARCH_LOADER_H

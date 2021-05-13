@@ -10,7 +10,7 @@
 
 
 SearchLoader::SearchLoader(QObject *parent)
-	: Loader(parent), m_page(1), m_perPage(20)
+	: Loader(parent), m_page(1), m_perPage(20), m_hasPrev(false), m_hasNext(false)
 {}
 
 
@@ -48,6 +48,17 @@ void SearchLoader::searchFinished(Page *page)
 	for (const QSharedPointer<Image> &img : results) {
 		m_results.append(new QmlImage(img, m_profile, this));
 	}
+
+	m_hasPrev = page->page() > 1;
+	emit hasPrevChanged();
+
+	int pageCount = page->pagesCount();
+	int maxPages = page->maxPagesCount();
+	if (pageCount <= 0 && maxPages > 0) {
+		pageCount = maxPages;
+	}
+	m_hasNext = pageCount > page->page() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->pageImageCount() > 0);
+	emit hasNextChanged();
 
 	emit resultsChanged();
 	setStatus(Status::Ready);
