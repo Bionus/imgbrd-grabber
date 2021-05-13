@@ -194,6 +194,9 @@ Profile::~Profile()
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
 	// delete m_urlDownloaderManager;
+
+	m_exiftool->stop();
+
 }
 
 
