@@ -29,5 +29,7 @@ void Loader::setError(QString error)
 	m_error = std::move(error);
 	emit errorChanged();
 
-	setStatus(Status::Error);
+	if (!error.isEmpty()) {
+		setStatus(Status::Error);
+	}
 }

@@ -90,7 +90,6 @@ QStringList Md5Database::exists(const QString &md5)
 		return ret;
 	}
 
-
 	const bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
 
 	const QStringList pths = paths(md5);

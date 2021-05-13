@@ -30,9 +30,22 @@ Page {
                 onClicked: backend.shareImage(image.image)
             }
 
+            ImageLoader {
+                id: downloader
+                image: root.image.image
+                automatic: false
+	            filename: gSettings.save_filename.value
+	            path: gSettings.save_path.value
+            }
             ToolButton {
-                icon.source: "/images/icons/download.png"
-                onClicked: backend.downloadImage(image.image)
+                icon.source: downloader.status == ImageLoader.Ready
+                    ? "/images/icons/delete.png"
+                    : (downloader.status == ImageLoader.Loading
+                        ? "/images/icons/loading.png"
+                        : (downloader.status == ImageLoader.Error
+                            ? "/images/icons/warning.png"
+                            : "/images/icons/download.png"))
+                onClicked: downloader.status == ImageLoader.Ready ? downloader.remove() : downloader.load()
             }
 
             ToolButton {

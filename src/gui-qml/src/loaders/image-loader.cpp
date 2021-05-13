@@ -2,6 +2,7 @@
 #include <QUuid>
 #include <utility>
 #include "downloader/image-downloader.h"
+#include "logger.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -10,6 +11,38 @@
 ImageLoader::ImageLoader(QObject *parent)
 	: Loader(parent), m_size(Size::Full), m_automatic(true), m_progress(0)
 {}
+
+void ImageLoader::componentComplete()
+{
+	if (m_image.isNull()) {
+		return;
+	}
+
+	QStringList alreadyExisting = m_image->getProfile()->md5Exists(m_image->md5());
+	if (!m_filename.isEmpty() && !m_path.isEmpty()) {
+		alreadyExisting << m_image->paths(m_filename, m_path, 0);
+	}
+	QString already;
+	for (const QString &path : alreadyExisting) {
+		if (QFile::exists(path)) {
+			already = path;
+		}
+	}
+	if (!already.isEmpty()) {
+		m_image->setSavePath(already);
+	}
+
+	const QString savePath = m_image->savePath();
+	if (!savePath.isEmpty()) {
+		log(QStringLiteral("Image loaded from the file `%1`").arg(savePath));
+		setSource("file:///" + savePath);
+		setStatus(Status::Ready);
+	}
+
+	if (m_automatic) {
+		load();
+	}
+}
 
 
 QSharedPointer<Image> ImageLoader::image() const
@@ -21,9 +54,9 @@ void ImageLoader::setImage(QSharedPointer<Image> image)
 	m_image = std::move(image);
 	emit imageChanged();
 
-	if (!m_image.isNull() && m_automatic) {
-		load();
-	}
+	setError("");
+	setSource("");
+	setStatus(Status::Null);
 }
 
 ImageLoader::Size ImageLoader::size() const
@@ -64,6 +97,11 @@ void ImageLoader::setSource(QString source)
 
 void ImageLoader::load()
 {
+	if (m_image.isNull()) {
+		setError("Null image");
+		return;
+	}
+
 	setStatus(Status::Loading);
 	setError("");
 
@@ -74,10 +112,17 @@ void ImageLoader::load()
 	};
 
 	Profile *profile = m_image->getProfile();
-	const Filename fn = Filename(sizeToString[m_size] + "_" + QUuid::createUuid().toString().mid(1, 36) + ".%ext%");
-	const QStringList paths = fn.path(*m_image.data(), profile, profile->tempPath(), 1, Filename::ExpandConditionals | Filename::Path);
 
-	auto downloader = new ImageDownloader(profile, m_image, paths, 1, false, false, this, false, false, imageSize(), false, false);
+	const QString filename = m_filename.isEmpty()
+		? sizeToString[m_size] + "_" + QUuid::createUuid().toString().mid(1, 36) + ".%ext%"
+		: m_filename;
+	const QString path = m_path.isEmpty() ? profile->tempPath() : m_path;
+	const bool temp = m_path.isEmpty() || m_filename.isEmpty();
+
+	const Filename fn = Filename(filename);
+	const QStringList paths = fn.path(*m_image.data(), profile, path, 1, Filename::ExpandConditionals | Filename::Path);
+
+	auto downloader = new ImageDownloader(profile, m_image, paths, 1, !temp, !temp, this, false, false, imageSize(), !temp, false);
 	connect(downloader, &ImageDownloader::downloadProgress, this, &ImageLoader::downloadProgress);
 	connect(downloader, &ImageDownloader::saved, this, &ImageLoader::saved);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
@@ -109,7 +154,9 @@ void ImageLoader::saved(const QSharedPointer<Image> &img, const QList<ImageSaveR
 		setError(tr("Error saving the image."));
 		setSource("");
 	} else {
-		img->setTemporaryPath(res.path, res.size);
+		if (m_path.isEmpty() || m_filename.isEmpty()) {
+			img->setTemporaryPath(res.path, res.size);
+		}
 		setSource("file:///" + res.path);
 		setStatus(Status::Ready);
 	}
@@ -124,4 +171,14 @@ Image::Size ImageLoader::imageSize() const
 		return Image::Size::Sample;
 	}
 	return Image::Size::Thumbnail;
+}
+
+void ImageLoader::remove()
+{
+	if (status() != Status::Ready || m_source.isEmpty()) {
+		return;
+	}
+	if (QFile::remove(m_source.mid(8))) {
+		setStatus(Status::Null);
+	}
 }
