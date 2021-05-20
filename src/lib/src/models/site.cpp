@@ -458,8 +458,9 @@ bool Site::remove()
 {
 	// Read sites list
 	QFile f(m_source->getPath() + "/sites.txt");
-	if (!f.open(QIODevice::ReadOnly))
+	if (!f.open(QIODevice::ReadOnly)) {
 		return false;
+	}
 	QString rawSites = f.readAll();
 	f.close();
 
@@ -469,8 +470,9 @@ bool Site::remove()
 	sites.removeAll(m_url);
 
 	// Save the sites list again
-	if (!f.open(QIODevice::WriteOnly))
+	if (!f.open(QIODevice::WriteOnly)) {
 		return false;
+	}
 	f.write(sites.join("\r\n").toLatin1());
 	f.close();
 
