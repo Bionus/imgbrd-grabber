@@ -206,6 +206,16 @@ bool MainScreen::importSettings(const QString &source)
 	return true;
 }
 
+bool MainScreen::removeSite(QmlSite *site)
+{
+	if (site->remove()) {
+		m_sites.removeAll(site);
+		emit sitesChanged();
+		return true;
+	}
+	return false;
+}
+
 QString MainScreen::toLocalFile(const QString &url)
 {
 	if (url.startsWith("file:")) {

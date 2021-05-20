@@ -51,6 +51,7 @@ class MainScreen : public QObject
 		void loadSuggestions(const QString &prefix, int limit);
 		bool exportSettings(const QString &dest);
 		bool importSettings(const QString &source);
+		bool removeSite(QmlSite *site);
 
 	protected slots:
 		void refreshSites();
