@@ -1,5 +1,6 @@
 #include "search-loader.h"
 #include <QEventLoop>
+#include <QSettings>
 #include <QSharedPointer>
 #include <utility>
 #include "models/image.h"
@@ -42,10 +43,14 @@ void SearchLoader::searchFinished(Page *page)
 	}
 
 	const QList<QSharedPointer<Image>> results = page->images();
+	const bool hideBlacklisted = m_profile->getSettings()->value("hideblacklisted", false).toBool();
 
 	m_results.clear();
 	m_results.reserve(results.count());
 	for (const QSharedPointer<Image> &img : results) {
+		if (hideBlacklisted && !m_profile->getBlacklist().match(img->tokens(m_profile)).isEmpty()) {
+			continue;
+		}
 		m_results.append(new QmlImage(img, m_profile, this));
 	}
 
