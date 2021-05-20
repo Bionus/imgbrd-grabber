@@ -224,17 +224,7 @@ void SourcesSettingsWindow::deleteSite()
 {
 	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes) {
-		QFile f(m_site->getSource()->getPath() + "/sites.txt");
-		f.open(QIODevice::ReadOnly);
-		QString sites = f.readAll();
-		f.close();
-		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
-		stes.removeAll(m_site->url());
-		f.open(QIODevice::WriteOnly);
-		f.write(stes.join("\r\n").toLatin1());
-		f.close();
-		close();
+		m_site->remove();
 		emit siteDeleted(m_site->url());
 	}
 }

@@ -453,3 +453,27 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 
 	return m_loggedIn == LoginStatus::LoggedIn;
 }
+
+bool Site::remove()
+{
+	// Read sites list
+	QFile f(m_source->getPath() + "/sites.txt");
+	if (!f.open(QIODevice::ReadOnly))
+		return false;
+	QString rawSites = f.readAll();
+	f.close();
+
+	// Remove the site from the list
+	rawSites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QStringList sites = rawSites.split("\r\n", Qt::SkipEmptyParts);
+	sites.removeAll(m_url);
+
+	// Save the sites list again
+	if (!f.open(QIODevice::WriteOnly))
+		return false;
+	f.write(sites.join("\r\n").toLatin1());
+	f.close();
+
+	emit removed();
+	return true;
+}

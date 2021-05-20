@@ -53,6 +53,7 @@ class Site : public QObject
 
 		Site(QString url, Source *source);
 		~Site() override;
+
 		void loadConfig();
 		const QString &type() const;
 		const QString &name() const;
@@ -70,6 +71,7 @@ class Site : public QObject
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 		void setRequestHeaders(QNetworkRequest &request) const;
+		bool remove();
 
 		// Api
 		const QList<Api*> &getApis() const;
@@ -94,6 +96,7 @@ class Site : public QObject
 	signals:
 		void loggedIn(Site *site, Site::LoginResult result);
 		void finishedLoadingTags(const QList<Tag> &tags);
+		void removed();
 
 	private:
 		QString m_type;
