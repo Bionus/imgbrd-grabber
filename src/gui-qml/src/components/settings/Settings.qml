@@ -93,6 +93,7 @@ Item {
         property string value: backend.getBlacklist()
         function setValue(val) {
             backend.setBlacklist(val)
+            value = val
         }
     }
     property Setting hideblacklisted: Setting {
