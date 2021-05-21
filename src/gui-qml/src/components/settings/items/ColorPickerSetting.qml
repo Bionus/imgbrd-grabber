@@ -10,7 +10,7 @@ Item {
 
     property string name
     property Setting setting
-    property bool allowAuto: false
+    property bool allowAuto: true
     property var currentValue: setting.value
     property color initialValueColor: setting.value || "black"
     property color currentValueColor: setting.value || "black"

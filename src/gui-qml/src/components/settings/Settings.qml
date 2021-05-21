@@ -214,6 +214,68 @@ Item {
         obj: root.obj
     }
 
+    // Coloring
+    property Setting coloring_colors_artists: Setting {
+        key: "Coloring/Colors/artists"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_circles: Setting {
+        key: "Coloring/Colors/circles"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_copyrights: Setting {
+        key: "Coloring/Colors/copyrights"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_characters: Setting {
+        key: "Coloring/Colors/characters"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_species: Setting {
+        key: "Coloring/Colors/species"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_metas: Setting {
+        key: "Coloring/Colors/metas"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_models: Setting {
+        key: "Coloring/Colors/models"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_generals: Setting {
+        key: "Coloring/Colors/generals"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_favorites: Setting {
+        key: "Coloring/Colors/favorites"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_keptForLater: Setting {
+        key: "Coloring/Colors/keptForLater"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_blacklisteds: Setting {
+        key: "Coloring/Colors/blacklisteds"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_ignoreds: Setting {
+        key: "Coloring/Colors/ignoreds"
+        def: ""
+        obj: root.obj
+    }
+
     // Mobile-specific settings
     property Setting mobile_confirmExit: Setting {
         key: "Mobile/confirmExit"

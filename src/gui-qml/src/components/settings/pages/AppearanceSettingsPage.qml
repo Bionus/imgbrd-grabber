@@ -35,8 +35,12 @@ ColumnLayout {
     ColorPickerSetting {
         name: qsTr("Background color")
         setting: gSettings.imageBackgroundColor
-        allowAuto: true
         Layout.fillWidth: true
+    }
+    SettingItem {
+        name: qsTr("Tags")
+        Layout.fillWidth: true
+        onClicked: openSettingsPage("AppearanceTagsSettingsPage.qml")
     }
 
     Item {

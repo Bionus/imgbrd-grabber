@@ -14,6 +14,10 @@ Page {
     property string currentSource
     property var sources
 
+    function openSettingsPage(path) {
+        stackView.push(settingsPage, { path: path })
+    }
+
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -88,7 +92,7 @@ Page {
                 text: model.name
                 icon.source: model.icon
 
-                onClicked: stackView.push(settingsPage, { path: model.component })
+                onClicked: openSettingsPage(model.component)
             }
         }
     }
