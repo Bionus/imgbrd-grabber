@@ -18,21 +18,23 @@ void ImageLoader::componentComplete()
 		return;
 	}
 
-	QStringList alreadyExisting = m_image->getProfile()->md5Exists(m_image->md5());
-	if (!m_filename.isEmpty() && !m_path.isEmpty()) {
-		alreadyExisting << m_image->paths(m_filename, m_path, 0);
-	}
-	QString already;
-	for (const QString &path : alreadyExisting) {
-		if (QFile::exists(path)) {
-			already = path;
+	if (m_size != Size::Thumbnail) {
+		QStringList alreadyExisting = m_image->getProfile()->md5Exists(m_image->md5());
+		if (!m_filename.isEmpty() && !m_path.isEmpty()) {
+			alreadyExisting << m_image->paths(m_filename, m_path, 0);
+		}
+		QString already;
+		for (const QString &path : alreadyExisting) {
+			if (QFile::exists(path)) {
+				already = path;
+			}
+		}
+		if (!already.isEmpty()) {
+			m_image->setSavePath(already);
 		}
 	}
-	if (!already.isEmpty()) {
-		m_image->setSavePath(already);
-	}
 
-	const QString savePath = m_image->savePath();
+	const QString savePath = m_image->savePath(imageSize());
 	if (!savePath.isEmpty()) {
 		log(QStringLiteral("Image loaded from the file `%1`").arg(savePath));
 		setSource("file:///" + savePath);

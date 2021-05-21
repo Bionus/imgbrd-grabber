@@ -540,7 +540,9 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 
 	QFile f(path);
 	if (!f.exists() || force) {
-		const QPair<QString, QString> md5action = m_profile->md5Action(md5(), path);
+		const QPair<QString, QString> md5action = size != Size::Thumbnail
+			? m_profile->md5Action(md5(), path)
+			: QPair<QString, QString>("save", "");
 		const QString &whatToDo = md5action.first;
 		const QString &md5Duplicate = md5action.second;
 
