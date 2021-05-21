@@ -113,7 +113,9 @@ Page {
                     clip: true
                     currentIndex: showTags && index == swipeView.currentIndex ? 1 : 0
 
-                    Item {
+                    Rectangle {
+                        color: gSettings.imageBackgroundColor.value || "transparent"
+
                         Loader {
                             active: !modelData.isVideo
                             anchors.fill: parent

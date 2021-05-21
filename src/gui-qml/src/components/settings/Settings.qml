@@ -208,6 +208,11 @@ Item {
         obj: root.obj
         parser: (v) => globals.materialColors[Number(v)]
     }
+    property Setting imageBackgroundColor: Setting {
+        key: "imageBackgroundColor"
+        def: ""
+        obj: root.obj
+    }
 
     // Mobile-specific settings
     property Setting mobile_confirmExit: Setting {

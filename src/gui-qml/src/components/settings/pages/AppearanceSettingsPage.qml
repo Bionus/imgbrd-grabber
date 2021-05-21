@@ -28,6 +28,17 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
+    SettingTitle {
+        Layout.fillWidth: true
+        text: qsTr("Image")
+    }
+    ColorPickerSetting {
+        name: qsTr("Background color")
+        setting: gSettings.imageBackgroundColor
+        allowAuto: true
+        Layout.fillWidth: true
+    }
+
     Item {
         Layout.fillHeight: true
     }
