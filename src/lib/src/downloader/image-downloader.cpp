@@ -93,6 +93,7 @@ void ImageDownloader::save()
 		return;
 	}
 
+	log(QStringLiteral("Not enough information to directly load the image (from blacklist: %1 / from file url: %2 / from filename tags: %3/%4)").arg(blacklistNeedTags).arg(needFileUrl).arg(filenameNeedTags).arg(needTags), Logger::Info);
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
 	m_image->loadDetails();
 }
