@@ -212,6 +212,17 @@ void PageApi::parseActual()
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	const int offset = (m_page - 1) * m_imagesPerPage;
 
+	// Detect Cloudflare
+	if ((statusCode == 403 || statusCode == 429 || statusCode == 503) && m_reply->rawHeader("server") == "cloudflare") {
+		m_errors.append("Cloudflare wall");
+		log(QStringLiteral("[%1][%2] Cloudflare wall for '%3'").arg(m_site->url(), m_format, m_reply->url().toString()), Logger::Error);
+		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
+		emit finishedLoading(this, LoadResult::Error);
+		return;
+	}
+
 	// Try to read the reply
 	m_source = m_reply->readAll();
 	if (m_source.isEmpty() || (m_reply->error() != NetworkReply::NetworkError::NoError && !parseErrors)) {

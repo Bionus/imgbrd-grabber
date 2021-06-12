@@ -438,6 +438,14 @@ void Image::parseDetails()
 		return;
 	}
 
+	// Detect Cloudflare
+	if ((statusCode == 403 || statusCode == 429 || statusCode == 503) && m_loadDetails->rawHeader("server") == "cloudflare") {
+		log(QStringLiteral("Cloudflare wall for '%1'").arg(m_pageUrl.toString()), Logger::Error);
+		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
+		return;
+	}
+
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
 		if (m_loadDetails->error() != NetworkReply::NetworkError::OperationCanceledError) {
