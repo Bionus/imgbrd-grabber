@@ -352,6 +352,14 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		}
 	#endif
 
+	// %num% does not play well with simultaneous downloads
+	if (tokens.contains("num") && profile != nullptr) {
+		int simultaneous = qMax(1, qMin(profile->getSettings()->value("Save/simultaneous").toInt(), 10));
+		if (simultaneous > 1) {
+			return returnError(orange.arg(QObject::tr("The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.")), error);
+		}
+	}
+
 	// Check if code is unique
 	if (!tokens.contains("md5") && !tokens.contains("website") && !tokens.contains("websitename") && !tokens.contains("count") && tokens.contains("id")) {
 		return returnError(green.arg(QObject::tr("You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.")), error);
