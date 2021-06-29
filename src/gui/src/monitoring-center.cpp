@@ -86,6 +86,10 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 		count += countRun;
 		newImages += newImagesRun;
+
+		if (countRun == 0) {
+			log(QStringLiteral("No results for monitor '%1' on site '%2'").arg(search.toString(), site->name()), Logger::Warning);
+		}
 	}
 
 	emit statusChanged(monitor, MonitoringStatus::Performing);
