@@ -8,8 +8,8 @@
 #include "models/site.h"
 
 
-Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted)
-	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted)
+Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated, bool preciseCumulated, SearchQuery query, QStringList postFilters, bool notify, int delay, bool getBlacklisted, QString lastState, QDateTime lastStateSince, int lastStateCount)
+	: m_sites(std::move(sites)), m_interval(interval), m_delay(delay), m_lastCheck(std::move(lastCheck)), m_cumulated(cumulated), m_preciseCumulated(preciseCumulated), m_download(download), m_pathOverride(std::move(pathOverride)), m_filenameOverride(std::move(filenameOverride)), m_query(std::move(query)), m_postFilters(std::move(postFilters)), m_notify(notify), m_getBlacklisted(getBlacklisted), m_lastState(std::move(lastState)), m_lastStateSince(std::move(lastStateSince)), m_lastStateCount(lastStateCount)
 {}
 
 qint64 Monitor::secsToNextCheck() const
@@ -87,6 +87,32 @@ bool Monitor::getBlacklisted() const
 	return m_getBlacklisted;
 }
 
+const QString &Monitor::lastState() const
+{
+	return m_lastState;
+}
+const QDateTime &Monitor::lastStateSince() const
+{
+	return m_lastStateSince;
+}
+int Monitor::lastStateCount() const
+{
+	return m_lastStateCount;
+}
+void Monitor::setLastState(const QString &lastState)
+{
+	if (m_lastState == lastState) {
+		m_lastStateCount++;
+		if (m_lastStateSince.isNull() || !m_lastStateSince.isValid()) {
+			m_lastStateSince = QDateTime::currentDateTimeUtc();
+		}
+	} else {
+		m_lastState = lastState;
+		m_lastStateCount = 1;
+		m_lastStateSince = QDateTime::currentDateTimeUtc();
+	}
+}
+
 
 void Monitor::toJson(QJsonObject &json) const
 {
@@ -107,6 +133,12 @@ void Monitor::toJson(QJsonObject &json) const
 	json["postFilters"] = QJsonArray::fromStringList(m_postFilters);
 	json["notify"] = m_notify;
 	json["getBlacklisted"] = m_getBlacklisted;
+
+	QJsonObject lastState;
+	lastState["state"] = m_lastState;
+	lastState["since"] = m_lastStateSince.toString(Qt::ISODate);
+	lastState["count"] = m_lastStateCount;
+	json["lastState"] = lastState;
 
 	QJsonObject jsonQuery;
 	m_query.write(jsonQuery);
@@ -143,10 +175,19 @@ Monitor Monitor::fromJson(const QJsonObject &json, Profile *profile)
 		postFilters.append(filter.toString());
 	}
 
+	QString lastState;
+	QDateTime lastStateSince;
+	int lastStateCount = 0;
+	if (json.contains("lastState")) {
+		lastState = json["lastState"]["state"].toString();
+		lastStateSince = QDateTime::fromString(json["lastState"]["since"].toString(), Qt::ISODate);
+		lastStateCount = json["lastState"]["count"].toInt();
+	}
+
 	SearchQuery query;
 	query.read(json["query"].toObject(), profile);
 
-	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify, delay, getBlacklisted);
+	return Monitor(sites, interval, lastCheck, download, pathOverride, filenameOverride, cumulated, preciseCumulated, query, postFilters, notify, delay, getBlacklisted, lastState, lastStateSince, lastStateCount);
 }
 
 

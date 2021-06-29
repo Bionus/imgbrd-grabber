@@ -32,7 +32,7 @@ int MonitorTableModel::rowCount(const QModelIndex &parent) const
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 8;
+	return 9;
 }
 
 QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -49,6 +49,7 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 				case 5: return QString("Post-filters");
 				case 6: return QString("Last check");
 				case 7: return QString("Next check");
+				case 8: return QString("Last state");
 			}
 		} else {
 			return QString::number(section + 1);
@@ -135,6 +136,12 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 
 		case 7:
 			return timeToString(monitor.secsToNextCheck());
+
+		case 8:
+			if (monitor.lastState().isEmpty()) {
+				return {};
+			}
+			return tr("\"%1\" %n time(s), since %2", "", monitor.lastStateCount()).arg(monitor.lastState(), monitor.lastStateSince().toString(Qt::DefaultLocaleShortDate));
 	}
 
 	return {};

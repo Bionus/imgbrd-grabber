@@ -12,7 +12,7 @@ class Site;
 class Monitor
 {
 	public:
-		Monitor(QList<Site*> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true, int delay = 0, bool getBlacklisted = false);
+		Monitor(QList<Site*> sites, int interval, QDateTime lastCheck, bool download, QString pathOverride, QString filenameOverride, int cumulated = 0, bool preciseCumulated = true, SearchQuery query = {}, QStringList postFilters = {}, bool notify = true, int delay = 0, bool getBlacklisted = false, QString lastState = {}, QDateTime lastStateSince = {}, int lastStateCount = 0);
 		qint64 secsToNextCheck() const;
 
 		// Getters and setters
@@ -31,6 +31,10 @@ class Monitor
 		const QStringList &postFilters() const;
 		bool notify() const;
 		bool getBlacklisted() const;
+		const QString &lastState() const;
+		const QDateTime &lastStateSince() const;
+		int lastStateCount() const;
+		void setLastState(const QString &lastState);
 
 		// Serialization
 		void toJson(QJsonObject &json) const;
@@ -50,6 +54,9 @@ class Monitor
 		QStringList m_postFilters;
 		bool m_notify;
 		bool m_getBlacklisted;
+		QString m_lastState;
+		QDateTime m_lastStateSince;
+		int m_lastStateCount;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);
