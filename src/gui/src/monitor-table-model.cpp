@@ -132,7 +132,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			return monitor.postFilters().join(' ');
 
 		case 6:
-			return monitor.lastCheck().toString(Qt::DefaultLocaleShortDate);
+			return monitor.lastCheck().toLocalTime().toString(Qt::DefaultLocaleShortDate);
 
 		case 7:
 			return timeToString(monitor.secsToNextCheck());
@@ -141,7 +141,7 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			if (monitor.lastState().isEmpty()) {
 				return {};
 			}
-			return tr("\"%1\" %n time(s), since %2", "", monitor.lastStateCount()).arg(monitor.lastState(), monitor.lastStateSince().toString(Qt::DefaultLocaleShortDate));
+			return tr("\"%1\" %n time(s), since %2", "", monitor.lastStateCount()).arg(monitor.lastState(), monitor.lastStateSince().toLocalTime().toString(Qt::DefaultLocaleShortDate));
 	}
 
 	return {};
