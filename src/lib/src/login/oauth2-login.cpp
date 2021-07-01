@@ -338,6 +338,21 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 		if (expires || expires_in) {
 			int expiresSecond = jsonObject.value(expires ? "expires" : "expires_in").toInt();
 			m_expires = QDateTime::currentDateTime().addSecs(expiresSecond);
+		}
+		if (m_refreshToken.count('.') == 2) {
+			const QStringList parts = m_refreshToken.split('.');
+			const QJsonDocument jsonPayloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64(parts[1].toUtf8()));
+			if (!jsonPayloadDoc.isNull()) {
+				const QJsonObject jsonPayload = jsonPayloadDoc.object();
+				const QJsonValue jsonExp = jsonPayload.value("exp");
+				if (!jsonExp.isUndefined()) {
+					m_expires = QDateTime::fromSecsSinceEpoch(jsonExp.toInt(), Qt::UTC);
+				}
+			}
+		}
+
+		if (!m_expires.isNull()) {
+			const int expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
 			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
 			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
 		}
