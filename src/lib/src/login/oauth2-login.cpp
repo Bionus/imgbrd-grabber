@@ -1,4 +1,5 @@
 #include "login/oauth2-login.h"
+#include <QByteArray>
 #include <QCoreApplication>
 #include <QDataStream>
 #include <QDesktopServices>
@@ -61,7 +62,6 @@ void OAuth2Login::login()
 	const QString consumerSecret = m_settings->value("auth/consumerSecret").toString();
 
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 	m_site->setRequestHeaders(request);
 
 	QList<QStrP> body;
@@ -205,12 +205,30 @@ void OAuth2Login::login()
 		return;
 	}
 
-	// Post request and wait for a reply
-	QString bodyStr;
-	for (const QStrP &pair : body) {
-		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + QUrl::toPercentEncoding(pair.second);
+	// Build body
+	QByteArray data;
+	if (type == "password_json") {
+		QJsonObject bodyJson;
+		bodyJson["login"] = m_settings->value("auth/pseudo").toString();
+		bodyJson["password"] = m_settings->value("auth/password").toString();
+
+		QJsonDocument jsonDoc(bodyJson);
+		QString test(jsonDoc.toJson());
+
+		data = jsonDoc.toJson();
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	} else {
+		QString bodyStr;
+		for (const QStrP &pair : body) {
+			bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + QUrl::toPercentEncoding(pair.second);
+		}
+
+		data = bodyStr.toUtf8();
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 	}
-	m_tokenReply = m_manager->post(request, bodyStr.toUtf8());
+
+	// Post request and wait for a reply
+	m_tokenReply = m_manager->post(request, data);
 	connect(m_tokenReply, &NetworkReply::finished, this, &OAuth2Login::loginFinished);
 }
 

@@ -55,6 +55,11 @@ export const source: ISource = {
                 value: 50,
             },
         },
+        oauth2: {
+            type: "oauth2",
+            authType: "password_json",
+            tokenUrl: "https://capi-v2.sankakucomplex.com/auth/token",
+        },
     },
     apis: {
         json: {
@@ -62,12 +67,18 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): IUrl => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
-                    return baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    const url = baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    return {
+                        url,
+                        headers: {
+                            Accept: "application/vnd.sankaku.api+json;v=2",
+                        },
+                    };
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);

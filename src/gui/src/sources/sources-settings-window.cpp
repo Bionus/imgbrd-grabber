@@ -99,6 +99,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "post", tr("POST") },
 		{ "oauth1", tr("OAuth 1") },
 		{ "oauth2_password", tr("OAuth 2 (password)") },
+		{ "oauth2_password_json", tr("OAuth 2 (JSON password)") },
 		{ "oauth2_client_credentials", tr("OAuth 2 (client credentials)") },
 		{ "oauth2_header_basic", tr("OAuth 2 (header basic)") },
 		{ "oauth2_refresh_token", tr("OAuth 2 (refresh token)") },

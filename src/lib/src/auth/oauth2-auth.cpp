@@ -47,7 +47,7 @@ QList<AuthSettingField> OAuth2Auth::settingFields() const
 
 	QList<AuthSettingField> fields { consumerKeyField, consumerSecretField };
 
-	if (m_authType == "password") {
+	if (m_authType == "password" || m_authType == "password_json") {
 		AuthSettingField pseudoField;
 		pseudoField.id = "pseudo";
 
