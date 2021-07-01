@@ -875,7 +875,7 @@ QString Image::tooltip() const
 		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toString(Qt::DefaultLocaleShortDate)));
+		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate)));
 }
 
 QString Image::counter() const
@@ -908,7 +908,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Score"), token<QString>("score")),
 		QStrP(tr("Author"), !author.isEmpty() ? author : unknown),
 		QStrP(),
-		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toString(Qt::DefaultLocaleShortDate) : unknown),
+		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),
