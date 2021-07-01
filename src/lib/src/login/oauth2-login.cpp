@@ -293,13 +293,13 @@ void OAuth2Login::refreshFinished()
 bool OAuth2Login::readResponse(NetworkReply *reply)
 {
 	const QString result = reply->readAll();
-	QJsonParseError error;
-	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8(), &error);
+	QJsonParseError parseError;
+	const QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8(), &parseError);
 
 	// Ensure we got a proper JSON
 	if (jsonDocument.isNull()) {
-		const QString extract = (error.offset < 100 ? "" : "...") + result.mid(error.offset - 100, 200) + (error.offset > result.length() - 100 ? "" : "...");
-		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), error.errorString()).arg(error.offset).arg(extract), Logger::Warning);
+		const QString extract = (parseError.offset < 100 ? "" : "...") + result.mid(parseError.offset - 100, 200) + (parseError.offset > result.length() - 100 ? "" : "...");
+		log(QStringLiteral("[%1] Error parsing JSON response: %2 at position %3 - %4").arg(m_site->url(), parseError.errorString()).arg(parseError.offset).arg(extract), Logger::Warning);
 		return false;
 	}
 
@@ -311,10 +311,15 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 
 	const QJsonValue tokenType = jsonObject.value("token_type");
 	if (tokenType.isUndefined()) {
-		log(QStringLiteral("[%1] No OAuth2 token type received: %2").arg(m_site->url(), result), Logger::Warning);
+		const QJsonValue error = jsonObject.value("error");
+		if (!error.isUndefined()) {
+			log(QStringLiteral("[%1] Error during OAuth2 login: %2").arg(m_site->url(), error.toString()), Logger::Warning);
+		} else {
+			log(QStringLiteral("[%1] No OAuth2 token type received: %2").arg(m_site->url(), result), Logger::Warning);
+		}
 		return false;
 	}
-	if (tokenType.toString() != QLatin1String("bearer")) {
+	if (tokenType.toString().toLower() != QLatin1String("bearer")) {
 		log(QStringLiteral("[%1] Wrong OAuth2 token type received (%2).").arg(m_site->url(), tokenType.toString()), Logger::Warning);
 		return false;
 	}
