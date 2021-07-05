@@ -390,7 +390,7 @@ void Image::loadDetails(bool rateLimit)
 	}
 
 	if (m_loadedDetails || m_pageUrl.isEmpty()) {
-		emit finishedLoadingTags();
+		emit finishedLoadingTags(LoadTagsResult::Ok);
 		return;
 	}
 
@@ -443,16 +443,18 @@ void Image::parseDetails()
 		log(QStringLiteral("Cloudflare wall for '%1'").arg(m_pageUrl.toString()), Logger::Error);
 		m_loadDetails->deleteLater();
 		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::CloudflareError);
 		return;
 	}
 
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
 		if (m_loadDetails->error() != NetworkReply::NetworkError::OperationCanceledError) {
-			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
+			log(QStringLiteral("Loading details error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
 		}
 		m_loadDetails->deleteLater();
 		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::NetworkError);
 		return;
 	}
 
@@ -469,7 +471,9 @@ void Image::parseDetails()
 	if (!ret.error.isEmpty()) {
 		auto logLevel = m_detailsParsWarnAsErr ? Logger::Error : Logger::Warning;
 		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), logLevel);
-		emit finishedLoadingTags();
+		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::Error);
 		return;
 	}
 
@@ -509,7 +513,7 @@ void Image::parseDetails()
 
 	refreshTokens();
 
-	emit finishedLoadingTags();
+	emit finishedLoadingTags(LoadTagsResult::Ok);
 }
 
 /**

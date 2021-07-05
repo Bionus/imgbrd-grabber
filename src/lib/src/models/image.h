@@ -26,6 +26,14 @@ class Image : public QObject, public Downloadable
 	Q_OBJECT
 
 	public:
+		enum LoadTagsResult
+		{
+			Ok,
+			Error,
+			CloudflareError,
+			NetworkError
+		};
+
 		Image();
 		explicit Image(Profile *profile);
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
@@ -126,7 +134,7 @@ class Image : public QObject, public Downloadable
 
 	signals:
 		void finishedLoadingPreview();
-		void finishedLoadingTags();
+		void finishedLoadingTags(LoadTagsResult result);
 		void urlChanged(const QUrl &before, const QUrl &after);
 
 	private:

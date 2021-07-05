@@ -636,6 +636,8 @@ void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList
 		showLoadingError("Image not found.");
 	} else if (res.result == Image::SaveResult::NetworkError) {
 		showLoadingError("Error loading the image.");
+	} else if (res.result == Image::SaveResult::DetailsLoadError) {
+		showLoadingError("Error loading the image's details.");
 	} else if (res.result == Image::SaveResult::Error) {
 		showLoadingError("Error saving the image.");
 	} else {

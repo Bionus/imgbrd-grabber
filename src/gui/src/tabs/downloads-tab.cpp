@@ -984,7 +984,7 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QList<I
 		}
 	}
 
-	if (res == Image::SaveResult::NetworkError) {
+	if (res == Image::SaveResult::NetworkError || res == Image::SaveResult::DetailsLoadError) {
 		m_getAllErrors++;
 		m_getAllFailed.append(download);
 	} else if (res == Image::SaveResult::NotFound) {
