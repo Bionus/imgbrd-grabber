@@ -6,53 +6,53 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="11"/>
       <source>About</source>
-      <translation type="unfinished"/>
+      <translation>关于</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="14"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>版本</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>See project on Github</source>
-      <translation type="unfinished"/>
+      <translation>查看 Github 上的项目</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
       <source>Report an issue</source>
-      <translation type="unfinished"/>
+      <translation>反馈问题</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="33"/>
       <source>Author</source>
-      <translation type="unfinished"/>
+      <translation>开发者</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="36"/>
       <source>Email</source>
-      <translation type="unfinished"/>
+      <translation>电子邮箱</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="42"/>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="65"/>
       <source>Github</source>
-      <translation type="unfinished"/>
+      <translation>Github</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="50"/>
       <source>Donate</source>
-      <translation type="unfinished"/>
+      <translation>捐助</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="53"/>
       <source>Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Patreon</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="59"/>
       <source>Paypal</source>
-      <translation type="unfinished"/>
+      <translation>Paypal</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="24"/>
       <source>Add new source</source>
-      <translation type="unfinished"/>
+      <translation>添加新的来源</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="34"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>错误</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="43"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>类型</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="53"/>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../src/components/LogScreen.qml" line="18"/>
       <source>Log</source>
-      <translation type="unfinished"/>
+      <translation>日志</translation>
     </message>
   </context>
   <context>
