@@ -34,6 +34,7 @@ class Filename
 			File = CapLength | Fix,
 			Path = File | IncludeFolder,
 			Default = Complex | File,
+			Full = Complex | Path,
 		};
 		Q_DECLARE_FLAGS(PathFlags, PathFlag)
 
