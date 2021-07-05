@@ -211,9 +211,7 @@ void OAuth2Login::login()
 		QJsonObject bodyJson;
 		bodyJson["login"] = m_settings->value("auth/pseudo").toString();
 		bodyJson["password"] = m_settings->value("auth/password").toString();
-
 		QJsonDocument jsonDoc(bodyJson);
-		QString test(jsonDoc.toJson());
 
 		data = jsonDoc.toJson();
 		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -259,23 +257,36 @@ void OAuth2Login::refresh(bool login)
 	}
 
 	QNetworkRequest request(m_site->fixUrl(m_auth->tokenUrl()));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
 	m_site->setRequestHeaders(request);
 
-	const QList<QStrP> body {
-		{ "grant_type", "refresh_token" },
-		{ "client_id", consumerKey },
-		{ "client_secret", consumerSecret },
-		{ "refresh_token", m_refreshToken }
-	};
+	// Build body
+	QByteArray data;
+	if (m_auth->authType() == "password_json") {
+		QJsonObject bodyJson;
+		bodyJson["refresh_token"] = m_refreshToken;
+		QJsonDocument jsonDoc(bodyJson);
+
+		data = jsonDoc.toJson();
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	} else {
+		const QList<QStrP> body {
+			{ "grant_type", "refresh_token" },
+			{ "client_id", consumerKey },
+			{ "client_secret", consumerSecret },
+			{ "refresh_token", m_refreshToken }
+		};
+
+		QString bodyStr;
+		for (const QStrP &pair : body) {
+			bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second;
+		}
+
+		data = bodyStr.toUtf8();
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
+	}
 
 	// Post request and wait for a reply
-	QString bodyStr;
-	for (const QStrP &pair : body) {
-		bodyStr += (!bodyStr.isEmpty() ? "&" : "") + pair.first + "=" + pair.second;
-	}
-	m_refreshReply = m_manager->post(request, bodyStr.toUtf8());
-
+	m_refreshReply = m_manager->post(request, data);
 	if (login) {
 		connect(m_refreshReply, &NetworkReply::finished, this, &OAuth2Login::refreshLoginFinished);
 	} else {
