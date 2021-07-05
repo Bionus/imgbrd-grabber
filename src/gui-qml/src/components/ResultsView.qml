@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
 import QtGraphicalEffects 1.0
@@ -44,9 +45,15 @@ ScrollView {
         delegate: Item {
             height: img.height + root.thumbnailSpacing
 
+            ImageLoader {
+                id: loader
+                image: modelData.image
+                size: ImageLoader.Thumbnail
+            }
+
             Image {
                 id: img
-                source: modelData.previewUrl
+                source: loader.source
                 fillMode: root.thumbnailFillMode
                 anchors.centerIn: parent
                 width: parent.width - root.thumbnailSpacing
@@ -65,11 +72,24 @@ ScrollView {
                         radius: root.thumbnailRadius
                     }
                 }
+
+                InnerBorder {
+                    visible: modelData.color.a > 0
+                    color: modelData.color
+                    size: 3
+                }
+
+                Badge {
+                    visible: !!modelData.badge
+                    text: modelData.badge
+                }
             }
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: mainStackView.push(imageScreen, { index: index })
+                onClicked: modelData.isGallery
+                    ? mainStackView.push(galleryScreen, { gallery: modelData.image })
+                    : mainStackView.push(imageScreen, { index: index })
             }
         }
     }

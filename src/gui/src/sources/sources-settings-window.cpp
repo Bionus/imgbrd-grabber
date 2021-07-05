@@ -12,12 +12,14 @@
 #include "auth/field-auth.h"
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
 #include "login/http-basic-login.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
+#include "login/oauth1-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
@@ -96,7 +98,12 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		{ "get", tr("GET") },
 		{ "post", tr("POST") },
 		{ "oauth1", tr("OAuth 1") },
-		{ "oauth2", tr("OAuth 2") }
+		{ "oauth2_password", tr("OAuth 2 (password)") },
+		{ "oauth2_password_json", tr("OAuth 2 (JSON password)") },
+		{ "oauth2_client_credentials", tr("OAuth 2 (client credentials)") },
+		{ "oauth2_header_basic", tr("OAuth 2 (header basic)") },
+		{ "oauth2_refresh_token", tr("OAuth 2 (refresh token)") },
+		{ "oauth2_pkce", tr("OAuth 2 (PKCE)") }
 	};
 	static const QMap<QString, QString> fieldLabels
 	{
@@ -117,9 +124,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
 		bool canTestLogin = false;
 
+		const QString id = it.key();
 		const QString type = it.value()->type();
-		ui->comboLoginType->addItem(typeNames.contains(type) ? typeNames[type] : type, type);
-		if (type == loginType) {
+		const QString name = it.value()->name();
+		ui->comboLoginType->addItem(typeNames.contains(name) ? typeNames[name] : name, id);
+		if (id == loginType) {
 			activeLoginIndex = ui->comboLoginType->count() - 1;
 		}
 
@@ -142,6 +151,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		if (type == "oauth2") {
 			auto *oauth = dynamic_cast<OAuth2Auth*>(it.value());
 			canTestLogin = OAuth2Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
+		} else if (type == "oauth1") {
+			auto *oauth = dynamic_cast<OAuth1Auth*>(it.value());
+			canTestLogin = OAuth1Login(oauth, m_site, nullptr, m_site->settings()).isTestable();
 		} else if (type == "http_basic") {
 			auto *basicAuth = dynamic_cast<HttpBasicAuth*>(it.value());
 			canTestLogin = HttpBasicLogin(basicAuth, m_site, nullptr, m_site->settings()).isTestable();
@@ -182,17 +194,21 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	}
 
 	// Headers
-	QMap<QString, QVariant> headers = site->setting("headers").toMap();
+	QMap<QString, QString> headers = site->settingsHeaders();
 	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableHeaders->setRowCount(headers.count());
 	int headerRow = 0;
 	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
 		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(it.key()));
-		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value().toString()));
+		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(it.value()));
 		headerRow++;
 	}
 
-	ui->comboLoginType->setCurrentIndex(activeLoginIndex);
+	if (ui->comboLoginType->currentIndex() != activeLoginIndex) {
+		ui->comboLoginType->setCurrentIndex(activeLoginIndex);
+	} else {
+		setLoginType(activeLoginIndex);
+	}
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
@@ -213,17 +229,7 @@ void SourcesSettingsWindow::deleteSite()
 {
 	const int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes) {
-		QFile f(m_site->getSource()->getPath() + "/sites.txt");
-		f.open(QIODevice::ReadOnly);
-		QString sites = f.readAll();
-		f.close();
-		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
-		stes.removeAll(m_site->url());
-		f.open(QIODevice::WriteOnly);
-		f.write(stes.join("\r\n").toLatin1());
-		f.close();
-		close();
+		m_site->remove();
 		emit siteDeleted(m_site->url());
 	}
 }
@@ -265,12 +271,29 @@ void SourcesSettingsWindow::loginTested(Site *site, Site::LoginResult result)
 			setLoginStatus(tr("Unable to test"));
 			break;
 	}
+
+	updateFields();
 }
 
 void SourcesSettingsWindow::setLoginStatus(const QString &msg)
 {
 	const QString italic = QStringLiteral("<i>%1</li>").arg(msg);
 	ui->labelTestLogin->setText(italic);
+}
+
+void SourcesSettingsWindow::updateFields()
+{
+	for (auto it = m_credentialFields.begin(); it != m_credentialFields.end(); ++it) {
+		for (auto jt = it.value().begin(); jt != it.value().end(); ++jt) {
+			const QString type = it.key();
+			const QString id = jt.key();
+
+			const QString val = m_site->settings()->value("auth/" + id).toString();
+			if (!val.isEmpty()) {
+				m_credentialFields[type][id]->setText(val);
+			}
+		}
+	}
 }
 
 void SourcesSettingsWindow::saveSettings()
@@ -347,7 +370,8 @@ void SourcesSettingsWindow::saveSettings()
 	m_site->setSetting("cookies", cookies, QList<QVariant>());
 
 	// Headers
-	QMap<QString, QVariant> headers;
+	MixedSettings *settings = m_site->settings();
+	settings->beginGroup("Headers");
 	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableHeaders->item(i, 0);
 		QTableWidgetItem *value = ui->tableHeaders->item(i, 1);
@@ -355,9 +379,9 @@ void SourcesSettingsWindow::saveSettings()
 			continue;
 		}
 
-		headers.insert(key->text(), value != nullptr ? value->text().toLatin1() : "");
+		settings->setValue(key->text(), value != nullptr ? value->text() : "");
 	}
-	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
+	settings->endGroup();
 
 	m_site->syncSettings();
 	m_site->loadConfig();

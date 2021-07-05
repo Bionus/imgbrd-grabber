@@ -11,3 +11,8 @@ QString Auth::type() const
 {
 	return m_type;
 }
+
+QString Auth::name() const
+{
+	return m_type;
+}

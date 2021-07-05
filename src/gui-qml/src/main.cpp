@@ -3,8 +3,12 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSettings>
+#include "analytics.h"
 #include "functions.h"
 #include "language-loader.h"
+#include "loaders/gallery-search-loader.h"
+#include "loaders/image-loader.h"
+#include "loaders/tag-search-loader.h"
 #include "main-screen.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -46,9 +50,16 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
+	qRegisterMetaType<ImageLoader::Size>("ImageLoader::Size");
+
 	qmlRegisterType<StatusBar>("StatusBar", 0, 1, "StatusBar");
 	qmlRegisterType<SyntaxHighlighterHelper>("Grabber", 1, 0, "SyntaxHighlighterHelper");
+	qmlRegisterType<GallerySearchLoader>("Grabber", 1, 0, "GallerySearchLoader");
+	qmlRegisterType<TagSearchLoader>("Grabber", 1, 0, "TagSearchLoader");
+	qmlRegisterType<ImageLoader>("Grabber", 1, 0, "ImageLoader");
+
 	qRegisterMetaType<QSharedPointer<Image>>("QSharedPointer<Image>");
+	qRegisterMetaType<Profile*>("Profile*");
 	qRegisterMetaType<Settings*>("Settings*");
 	qRegisterMetaType<QmlImage*>("QmlImage*");
 	qRegisterMetaType<QList<QmlImage*>>("QList>QmlImage*>");
@@ -75,6 +86,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	Profile profile(savePath());
+	QSettings *settings = profile.getSettings();
+
+	// Analytics
+	Analytics::getInstance().setTrackingID("UA-22768717-6");
+	Analytics::getInstance().setEnabled(settings->value("send_usage_data", true).toBool());
+	Analytics::getInstance().startSession();
+	Analytics::getInstance().sendEvent("lifecycle", "start");
+
 	const QUrl url(QStringLiteral("qrc:/main-screen.qml"));
 
 	QQmlApplicationEngine engine;
@@ -97,18 +117,17 @@ int main(int argc, char *argv[])
 	ShareUtils shareUtils(nullptr);
 	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);
 
-	Profile profile(savePath());
 	MainScreen mainScreen(&profile, &shareUtils, &engine);
 	engine.setObjectOwnership(&mainScreen, QQmlEngine::CppOwnership);
 	engine.rootContext()->setContextProperty("backend", &mainScreen);
 
-	Settings settings(profile.getSettings());
-	engine.rootContext()->setContextProperty("settings", &settings);
+	Settings qmlSettings(settings);
+	engine.rootContext()->setContextProperty("settings", &qmlSettings);
 
 	// Load translations
 	LanguageLoader languageLoader(savePath("languages/", true, false));
 	languageLoader.install(qApp);
-	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString());
+	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString(), profile.getSettings()->value("useSystemLocale", true).toBool());
 	engine.rootContext()->setContextProperty("languageLoader", &languageLoader);
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
 		QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);
@@ -119,8 +138,8 @@ int main(int argc, char *argv[])
 			log(QStringLiteral("Android write permission not granted"), Logger::Error);
 		}
 
-		if (settings.value("Save/path").toString().isEmpty()) {
-			settings.setValue("Save/path", QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first() + "/Grabber");
+		if (settings->value("Save/path").toString().isEmpty()) {
+			settings->setValue("Save/path", QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first() + "/Grabber");
 		}
 	#endif
 

@@ -23,3 +23,11 @@ The date format is `YYYY-MM-DD`.
 * `date:>=START`: get results after the given date (inclusive)
 * `date:<=END`: get results before the given date (inclusive)
 * `date:START..END`: get results between the start and end date
+
+## Login
+
+Pixiv removed username/password authentication.
+As such, you need to use OAuth access and refresh tokens directly.
+
+Here's an useful Python script that allows you to do exactly that:  
+<https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde>

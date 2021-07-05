@@ -28,7 +28,7 @@ class Site : public QObject
 	public:
 		enum QueryType
 		{
-			UnkownType = -1,
+			UnknownType = -1,
 			List = 0,
 			Img = 1,
 			Thumbnail = 2,
@@ -41,7 +41,7 @@ class Site : public QObject
 			Success = 0,
 			Error = 1,
 			Impossible = 2,
-			Already = 2
+			Already = 3
 		};
 		enum LoginStatus
 		{
@@ -53,6 +53,7 @@ class Site : public QObject
 
 		Site(QString url, Source *source);
 		~Site() override;
+
 		void loadConfig();
 		const QString &type() const;
 		const QString &name() const;
@@ -63,11 +64,14 @@ class Site : public QObject
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def) const;
 		void syncSettings() const;
 		MixedSettings *settings() const;
+		QMap<QString, QString> settingsHeaders() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
-		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, QMap<QString, QString> headers = {});
+		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
+		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
+		void setRequestHeaders(QNetworkRequest &request) const;
+		bool remove();
 
 		// Api
 		const QList<Api*> &getApis() const;
@@ -84,10 +88,6 @@ class Site : public QObject
 		bool isLoggedIn(bool unknown = false, bool pending = false) const;
 		bool canTestLogin() const;
 		QString fixLoginUrl(QString url) const;
-		Auth *getAuth() const;
-
-	private:
-		NetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);
@@ -96,6 +96,7 @@ class Site : public QObject
 	signals:
 		void loggedIn(Site *site, Site::LoginResult result);
 		void finishedLoadingTags(const QList<Tag> &tags);
+		void removed();
 
 	private:
 		QString m_type;

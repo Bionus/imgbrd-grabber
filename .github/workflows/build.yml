@@ -12,8 +12,10 @@ on:
 
 env:
   QT_VERSION: 5.15.1
+  QT_MODULES: qtnetworkauth
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
 
 jobs:
   uncrustify:
@@ -86,13 +88,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Build
         run: |
@@ -155,13 +158,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
         uses: actions/cache@v1
@@ -216,6 +220,7 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+      CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
       - name: Checkout
@@ -228,13 +233,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Build
         run: |
@@ -300,13 +306,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
           arch: ${{ matrix.qt_arch }}
 
       - name: Vendor cache
@@ -348,7 +355,7 @@ jobs:
         shell: cmd
         run: |
           if "${{ matrix.suffix }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
-          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1j.exe"
+          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1k.exe" --fail
           OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
           rm OpenSSL.exe
 
@@ -454,13 +461,14 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: ${{ runner.os }}-android-QtCache-${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-android-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: ${{ env.QT_VERSION }}
+        modules: ${{ env.QT_MODULES }}
         target: android
         arch: android
 

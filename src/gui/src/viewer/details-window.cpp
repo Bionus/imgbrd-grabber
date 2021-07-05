@@ -3,12 +3,14 @@
 #include <ui_details-window.h>
 #include "helpers.h"
 #include "models/image.h"
+#include "models/profile.h"
 
 
 DetailsWindow::DetailsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::DetailsWindow), m_profile(profile)
 {
 	ui->setupUi(this);
+	setupDialogShortcuts(this, m_profile->getSettings());
 }
 
 DetailsWindow::~DetailsWindow()

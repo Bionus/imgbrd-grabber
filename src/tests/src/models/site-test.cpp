@@ -174,7 +174,7 @@ TEST_CASE("Site")
 		QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 		siteSettings.setValue("auth/pseudo", "user");
 		siteSettings.setValue("auth/password", "somepassword");
-		siteSettings.setValue("login/type", "post");
+		siteSettings.setValue("login/type", "session");
 		siteSettings.setValue("login/post/pseudo", "name");
 		siteSettings.setValue("login/post/password", "password");
 		siteSettings.setValue("login/post/url", "/session");

@@ -14,5 +14,8 @@ NetworkReply *HttpPostLogin::getReply(const QUrl &url, const QUrlQuery &query) c
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-	return m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
+	QString data = query.query(QUrl::FullyEncoded)
+		.replace('+', "%2B")
+		.replace("%20", "+");
+	return m_manager->post(request, data.toUtf8());
 }

@@ -16,7 +16,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, SearchQuery query, int page, int limit, PostFilter postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, QString lastPageMinDate, QString lastPageMaxDate)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_query(std::move(query)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_lastPageMinDate(lastPageMinDate), m_lastPageMaxDate(lastPageMaxDate), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_query(std::move(query)), m_errors(QStringList()), m_postFiltering(std::move(postFiltering)), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_lastPageMinDate(std::move(lastPageMinDate)), m_lastPageMaxDate(std::move(lastPageMaxDate)), m_smart(smart), m_reply(nullptr)
 {
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
@@ -33,6 +33,10 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, Searc
 
 void PageApi::setLastPage(Page *page)
 {
+	if (!page->isValid()) {
+		return;
+	}
+
 	m_lastPage = page->page();
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
@@ -207,6 +211,17 @@ void PageApi::parseActual()
 	const bool parseErrors = isGallery ? m_api->parseGalleryErrors() : m_api->parsePageErrors();
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	const int offset = (m_page - 1) * m_imagesPerPage;
+
+	// Detect Cloudflare
+	if ((statusCode == 403 || statusCode == 429 || statusCode == 503) && m_reply->rawHeader("server") == "cloudflare") {
+		m_errors.append("Cloudflare wall");
+		log(QStringLiteral("[%1][%2] Cloudflare wall for '%3'").arg(m_site->url(), m_format, m_reply->url().toString()), Logger::Error);
+		setReply(nullptr);
+		m_loaded = true;
+		m_loading = false;
+		emit finishedLoading(this, LoadResult::Error);
+		return;
+	}
 
 	// Try to read the reply
 	m_source = m_reply->readAll();

@@ -14,7 +14,7 @@ TagStylist::TagStylist(Profile *profile)
 	: m_profile(profile)
 {}
 
-QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, const QString &sort) const
+QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, const QString &sort, bool dark) const
 {
 	// Sort tag list
 	if (sort == QLatin1String("type")) {
@@ -28,9 +28,10 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 	// Generate style map
 	static const QStringList tlist { "artists", "circles", "copyrights", "characters", "species", "metas", "models", "generals", "favorites", "keptForLater", "blacklisteds", "ignoreds", "favorites" };
 	static const QStringList defaults { "#aa0000", "#55bbff", "#aa00aa", "#00aa00", "#ee6600", "#ee6600", "#0000ee", "#000000", "#ffc0cb", "#000000", "#000000", "#999999", "#ffcccc" };
+	static const QStringList defaultsDark { "#ff8888", "#55bbff", "#cc66cc", "#66cc66", "#ee6600", "#ee6600", "#0000ee", "#ffffff", "#ffc0cb", "#ffffff", "#000000", "#999999", "#ffcccc" };
 	QMap<QString, QString> styles;
 	for (const QString &key : tlist) {
-		const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+		const QString color = m_profile->getSettings()->value("Coloring/Colors/" + key, (dark ? defaultsDark : defaults).at(tlist.indexOf(key))).toString();
 		const QString font = m_profile->getSettings()->value("Coloring/Fonts/" + key).toString();
 
 		QString fontCss;

@@ -87,7 +87,7 @@ TEST_CASE("Behoimi")
 		REQUIRE(tags[2].type().name() == QString("model"));
 	}
 
-	SECTION("XmlTags")
+	/*SECTION("XmlTags")
 	{
 		QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml", "tags.xml");
 
@@ -107,5 +107,5 @@ TEST_CASE("Behoimi")
 		REQUIRE(tags[1].text() == QString("07_ghost"));
 		REQUIRE(tags[1].count() == 3);
 		REQUIRE(tags[1].type().name() == QString("copyright"));
-	}
+	}*/
 }

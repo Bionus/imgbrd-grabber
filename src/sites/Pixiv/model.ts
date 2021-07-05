@@ -121,11 +121,19 @@ export const source: ISource = {
             authType: "refresh_token",
             tokenUrl: "https://oauth.secure.pixiv.net/auth/token",
         },
+        oauth2_pkce: {
+            type: "oauth2",
+            authType: "pkce",
+            authorizationUrl: "https://app-api.pixiv.net/web/v1/login",
+            tokenUrl: "https://oauth.secure.pixiv.net/auth/token",
+            redirectUrl: "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback",
+            urlProtocol: "pixiv",
+        },
     },
     apis: {
         json: {
             name: "JSON",
-            auth: [],
+            auth: ["oauth2", "oauth2_pkce"],
             forcedLimit: 30,
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {

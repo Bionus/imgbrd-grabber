@@ -112,9 +112,10 @@ export const source: ISource = {
                     return { images };
                 },
             },
-            tags: {
+            // Disabled because the "page" parameter doesn't work
+            /*tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tag/index.json?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.json?limit=" + opts.limit + "&order=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -133,7 +134,7 @@ export const source: ISource = {
 
                     return { tags };
                 },
-            },
+            },*/
         },
         xml: {
             name: "XML",
@@ -164,9 +165,10 @@ export const source: ISource = {
                     };
                 },
             },
-            tags: {
+            // Disabled because the "page" parameter doesn't work
+            /*tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tag/index.xml?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index.xml?limit=" + opts.limit + "&order=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     const map = {
@@ -186,7 +188,7 @@ export const source: ISource = {
 
                     return { tags };
                 },
-            },
+            },*/
         },
         html: {
             name: "Regex",
@@ -224,13 +226,30 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tag";
+                },
+                parse: (src: string): IParsedTagTypes | IError => {
+                    const contents = src.match(/<select id="type" name="type">([\s\S]+)<\/select>/);
+                    if (!contents) {
+                        return { error: "Parse error: could not find the tag type <select> tag" };
+                    }
+                    const results = Grabber.regexMatches('<option value="(?<id>\\d+)">(?<name>[^<]+)</option>', contents[1]);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tag/index?limit=" + opts.limit + "&page=" + query.page;
+                    return "/tag/index?limit=" + opts.limit + "&order=" + query.order + "&page=" + query.page;
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags("<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*(?:<a[^>]+>\\?</a>\\s*)?<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?<type>.+?)\\s*\\([^()]+\\)\\s*</td>", src),
+                        tags: Grabber.regexToTags("<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td[^>]*>\\s*(?:<a[^>]+>\\?</a>\\s*)?<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?<type>.+?)\\s*(?:\\([^()]+\\)\\s*)?</td>", src),
                     };
                 },
             },

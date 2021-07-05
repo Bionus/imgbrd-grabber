@@ -1,9 +1,19 @@
+function buildImageFromJson(img: any): IImage {
+    img.created_at = img.created_at["s"];
+    img.score = img.total_score;
+    img.author = img.author.name;
+
+    return completeImage(img);
+}
+
 function completeImage(img: IImage): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    img.file_url = img.file_url!.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    if (img.file_url) {
+        img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    }
 
     return img;
 }
@@ -55,6 +65,11 @@ export const source: ISource = {
                 value: 50,
             },
         },
+        oauth2: {
+            type: "oauth2",
+            authType: "password_json",
+            tokenUrl: "https://capi-v2.sankakucomplex.com/auth/token",
+        },
     },
     apis: {
         json: {
@@ -62,26 +77,37 @@ export const source: ISource = {
             auth: [],
             maxLimit: 200,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string => {
+                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): IUrl => {
                     const baseUrl = opts.baseUrl
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
-                    return baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    const url = baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    return {
+                        url,
+                        headers: {
+                            Accept: "application/vnd.sankaku.api+json;v=2",
+                        },
+                    };
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
-
-                    const images: IImage[] = [];
-                    for (const img of data) {
-                        img.created_at = img.created_at["s"];
-                        img.score = img.total_score;
-                        images.push(completeImage(img));
-                    }
-
+                    const images: IImage[] = data.map(buildImageFromJson);
                     return { images };
                 },
             },
+            details: {
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//chan.", "//capi-v2.")
+                        .replace("//idol.", "//iapi.");
+                    return baseUrl + "/posts/" + id;
+                },
+                parse: function (src) {
+                    const data = JSON.parse(src);
+                    return buildImageFromJson(data);
+                },
+            }
         },
         html: {
             name: "Regex",

@@ -42,7 +42,11 @@ void setupSite(const QString &source, const QString &site, QString dir)
 	QDir().mkpath(dir);
 	QFile::remove(dir + "/defaults.ini");
 	QFile::remove(dir + "/settings.ini");
+	QFile::remove(dir + "/tag-types.txt");
 	if (QFile::exists("sites/" + source + "/" + site + "/defaults.ini")) {
 		QFile("sites/" + source + "/" + site + "/defaults.ini").copy(dir + "/defaults.ini");
+	}
+	if (QFile::exists("sites/" + source + "/" + site + "/tag-types.txt")) {
+		QFile("sites/" + source + "/" + site + "/tag-types.txt").copy(dir + "/tag-types.txt");
 	}
 }

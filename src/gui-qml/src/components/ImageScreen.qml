@@ -1,6 +1,8 @@
+import Grabber 1.0
 import QtMultimedia 5.12
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 Page {
@@ -10,7 +12,7 @@ Page {
 
     property var images
     property int index
-    property var image: images[index]
+    property var image: images[swipeView.currentIndex]
 
     property bool showHd: false
     property bool showTags: false
@@ -29,9 +31,22 @@ Page {
                 onClicked: backend.shareImage(image.image)
             }
 
+            ImageLoader {
+                id: downloader
+                image: root.image.image
+                automatic: false
+	            filename: gSettings.save_filename.value
+	            path: gSettings.save_path.value
+            }
             ToolButton {
-                icon.source: "/images/icons/download.png"
-                onClicked: backend.downloadImage(image.image)
+                icon.source: downloader.status == ImageLoader.Ready
+                    ? "/images/icons/delete.png"
+                    : (downloader.status == ImageLoader.Loading
+                        ? "/images/icons/loading.png"
+                        : (downloader.status == ImageLoader.Error
+                            ? "/images/icons/warning.png"
+                            : "/images/icons/download.png"))
+                onClicked: downloader.status == ImageLoader.Ready ? downloader.remove() : downloader.load()
             }
 
             ToolButton {
@@ -98,24 +113,32 @@ Page {
                     clip: true
                     currentIndex: showTags && index == swipeView.currentIndex ? 1 : 0
 
-                    Item {
+                    Rectangle {
+                        color: gSettings.imageBackgroundColor.value || "transparent"
+
                         Loader {
                             active: !modelData.isVideo
                             anchors.fill: parent
 
                             sourceComponent: ColumnLayout {
+                                ImageLoader {
+                                    id: loader
+                                    image: modelData.image
+                                    size: (showHd && index == swipeView.currentIndex ? ImageLoader.Full : ImageLoader.Sample)
+                                }
+
                                 ZoomableImage {
                                     id: img
                                     Layout.fillWidth: true
                                     Layout.fillHeight: true
-                                    source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                                    source: loader.source
                                     animated: modelData.isAnimated
                                     clip: true
                                 }
 
                                 ProgressBar {
-                                    value: img.progress
-                                    visible: img.status != Image.Ready
+                                    value: loader.progress
+                                    visible: loader.status != ImageLoader.Ready
                                     Layout.fillWidth: true
                                 }
                             }
@@ -140,7 +163,7 @@ Page {
 
                         Label {
                             anchors.fill: parent
-                            text: modelData.tags.join("<br/>")
+                            text: (Material.theme == Material.Dark ? modelData.tagsDark : modelData.tags).join("<br/>")
                             textFormat: Text.RichText
 
                             onLinkActivated: {
@@ -149,6 +172,8 @@ Page {
                             }
                         }
                     }
+
+                    Component.onCompleted: modelData.loadTags()
                 }
             }
         }

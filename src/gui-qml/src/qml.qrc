@@ -19,6 +19,7 @@
         <file>components/VideoPlayer.qml</file>
         <file>components/settings/pages/AboutSettingsPage.qml</file>
         <file>components/settings/pages/AppearanceSettingsPage.qml</file>
+        <file>components/settings/pages/AppearanceTagsSettingsPage.qml</file>
         <file>components/settings/pages/BlacklistSettingsPage.qml</file>
         <file>components/settings/pages/InterfaceSettingsPage.qml</file>
         <file>components/settings/pages/NetworkSettingsPage.qml</file>
@@ -39,7 +40,11 @@
         <file>components/FavoritesScreen.qml</file>
         <file>components/AutoCompleteSearchEdit.qml</file>
         <file>components/settings/pages/AdvancedSettingsPage.qml</file>
+        <file>components/settings/items/ColorPickerSetting.qml</file>
         <file>components/settings/items/ColorSetting.qml</file>
         <file>components/settings/items/MaterialColorSetting.qml</file>
+        <file>components/GalleryScreen.qml</file>
+        <file>components/InnerBorder.qml</file>
+        <file>components/Badge.qml</file>
     </qresource>
 </RCC>

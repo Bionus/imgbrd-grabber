@@ -69,7 +69,8 @@ void FilenameConditionVisitor::visit(const FilenameNodeConditionOp &node)
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionTag &node)
 {
-	m_result = node.filter->match(m_tokens).isEmpty();
+	m_result = m_tags.contains(node.tag.text())
+		|| node.filter->match(m_tokens).isEmpty();
 }
 
 void FilenameConditionVisitor::visit(const FilenameNodeConditionToken &node)

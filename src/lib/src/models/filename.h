@@ -34,6 +34,7 @@ class Filename
 			File = CapLength | Fix,
 			Path = File | IncludeFolder,
 			Default = Complex | File,
+			Full = Complex | Path,
 		};
 		Q_DECLARE_FLAGS(PathFlags, PathFlag)
 
@@ -55,8 +56,8 @@ class Filename
 		int needExactTags(const QStringList &forcedTokens = {}, const QStringList &customTokens = {}) const;
 
 	protected:
-		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
-		bool returnError(const QString &msg, QString *error) const;
+		static QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings);
+		static bool returnError(const QString &msg, QString *error);
 
 	private:
 		QString m_format;

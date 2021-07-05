@@ -457,4 +457,10 @@ TEST_CASE("Functions")
 			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", true) == QStringList { "a", "b", "c", "d" });
 		}
 	}
+
+	SECTION("decodeHtmlEntities")
+	{
+		REQUIRE(decodeHtmlEntities("pok&eacute;mon") == QString("pokémon"));
+		REQUIRE(decodeHtmlEntities("a&amp;b") == QString("a&b"));
+	}
 }

@@ -11,6 +11,10 @@
 
 #define UNICODE_MAX 0x10FFFFul
 
+#ifdef WIN32
+	#pragma execution_character_set("utf-8")
+#endif
+
 static const char *const NAMED_ENTITIES[][2] =
 {
 	{ "AElig;", "Æ" },

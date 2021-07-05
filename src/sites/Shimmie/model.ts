@@ -70,6 +70,15 @@ function transformTag(query: string): string {
         parts[0] = metaMapping[parts[0]];
     }
 
+    // Favorites special case
+    if (parts[0] === "fav") {
+        if (/^\d+$/.test(parts[1])) {
+            parts[0] = "favorited_by_userno";
+        } else {
+            parts[0] = "favourited_by";
+        }
+    }
+
     // Range search is not supported so should be split into two parts
     if (parts.length === 2 && parts[1].indexOf("..") >= 0) {
         const range = parts[1].split("..");

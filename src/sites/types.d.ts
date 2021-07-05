@@ -128,14 +128,23 @@ interface IAuthCheckMaxPage {
     value: number;
 }
 
-type IAuth = IBasicAuth | IOauth2Auth | IHttpAuth | IHttpBasicAuth;
+type IAuth = IBasicAuth | IOauth2Auth | IOauth1Auth | IHttpAuth | IHttpBasicAuth;
 interface IOauth2Auth {
     type: "oauth2";
-    authType: "password" | "client_credentials" | "header_basic" | "refresh_token";
+    authType: "password" | "password_json" | "client_credentials" | "header_basic" | "refresh_token"  | "pkce";
     requestUrl?: string;
     tokenUrl?: string;
     refreshTokenUrl?: string;
+    authorizationUrl?: string;
+    redirectUrl?: string;
+    urlProtocol?: string;
     scope?: string[];
+}
+interface IOauth1Auth {
+    type: "oauth1";
+    temporaryCredentialsUrl: string,
+    authorizationUrl: string,
+    tokenCredentialsUrl: string,
 }
 interface IBasicAuth {
     type: "url";
@@ -193,6 +202,11 @@ interface IUrlOptions {
     loggedIn: boolean;
 }
 
+interface IUrlDetailsOptions {
+    baseUrl: string;
+    loggedIn: boolean;
+}
+
 interface IPreviousSearch {
     page: number;
     minIdM1: string;
@@ -215,7 +229,7 @@ interface IApi {
     };
     details?: {
         parseErrors?: boolean;
-        url: (id: string, md5: string) => IUrl | IError | string;
+        url: (id: string, md5: string, opts: IUrlDetailsOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {

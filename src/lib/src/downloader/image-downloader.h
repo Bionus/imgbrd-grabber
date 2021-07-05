@@ -44,7 +44,7 @@ class ImageDownloader : public QObject
 		void saved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 
 	private slots:
-		void loadedSave();
+		void loadedSave(Image::LoadTagsResult result);
 		void loadImage();
 		void downloadProgressImage(qint64 v1, qint64 v2);
 		void writeError();

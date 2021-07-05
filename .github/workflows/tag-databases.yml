@@ -1,0 +1,62 @@
+name: Tag databases
+
+on:
+  schedule:
+    - cron: '0 3 * * 3' # 3 am every Wednesday
+  workflow_dispatch: 
+
+jobs:
+  tag_databases:
+    name: Tag databases
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download Nightly
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          version: tags/nightly
+          file: Grabber_nightly-x86_64.AppImage
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract AppImage
+        run: |
+          mv Grabber_nightly-x86_64.AppImage Grabber.AppImage
+          sudo chmod +x Grabber.AppImage
+          ./Grabber.AppImage --appimage-extract
+          cp -r squashfs-root/usr/share/Grabber/* .
+          touch settings.ini
+
+      - name: Generate tag databases
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: ./scripts/generate-tag-databases.sh
+
+      - name: Get date for release body
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Nightly
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: tag-databases
+          name: Tag databases
+          allowUpdates: true
+          draft: false
+          prerelease: true
+          artifacts: databases/*
+          body: |
+            Those files are tag databases used to prevent doing too many requests on sources.
+            They are automatically generated and contain all tags with more than 100 images at the time of the generation.
+
+            To use them, rename them to `tags.db` and move them to:
+            ```
+            C:/Users/%USERNAME%/AppData/Local/Bionus/Grabber/sites/%SOURCE_NAME%/%SITE_DOMAIN%/tags.db
+            ```
+
+            Note that not all sources require a tag database as they might already provide the tag type information in the listing API.
+
+            **Date:** ${{ steps.date.outputs.date }}

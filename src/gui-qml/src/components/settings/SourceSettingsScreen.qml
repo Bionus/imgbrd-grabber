@@ -27,6 +27,18 @@ Page {
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
+
+            ToolButton {
+                visible: image.sampleUrl !== image.fileUrl
+                icon.source: "/images/icons/delete.png"
+                onClicked: {
+                    if (backend.removeSite(root.site)) {
+                        root.closed();
+                    } else {
+                        console.error("Error removing the site")
+                    }
+                }
+            }
         }
     }
 

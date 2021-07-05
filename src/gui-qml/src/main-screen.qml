@@ -87,8 +87,6 @@ ApplicationWindow {
                 visible: currentPage == "search"
                 anchors.fill: parent
                 site: gSettings.activeSource.value
-                query: backend.query
-                results: backend.results
 
                 onOpenSources: mainStackView.push(sourcesScreen)
             }
@@ -132,6 +130,14 @@ ApplicationWindow {
                     text: qsTr("Don't ask again")
                 }
             }
+        }
+
+        GalleryScreen {
+            id: galleryScreen
+            visible: false
+            site: gSettings.activeSource.value
+
+            onBack: mainStackView.pop()
         }
 
         SourcesScreen {

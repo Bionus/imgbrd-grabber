@@ -69,6 +69,12 @@ QNetworkReply *NetworkReply::networkReply() const
 	return m_reply;
 }
 
+QByteArray NetworkReply::rawHeader(const QByteArray &headerName) const
+{
+	return m_reply->rawHeader(headerName);
+}
+
+
 bool NetworkReply::isRunning() const
 {
 	if (!m_started && !m_aborted) {

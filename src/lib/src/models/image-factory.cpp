@@ -7,6 +7,7 @@
 #include <QString>
 #include <QVariant>
 #include <QVariantMap>
+#include <utility>
 #include "functions.h"
 #include "models/image.h"
 #include "models/page.h"
@@ -18,7 +19,7 @@
 
 QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent)
 {
-	return ImageFactory::build(site, details, QVariantMap(), profile, parent);
+	return ImageFactory::build(site, std::move(details), QVariantMap(), profile, parent);
 }
 
 QSharedPointer<Image> ImageFactory::build(Site *site, QMap<QString, QString> details, QVariantMap data, Profile *profile, Page *parent)

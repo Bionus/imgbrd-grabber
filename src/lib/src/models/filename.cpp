@@ -33,7 +33,7 @@ Filename::Filename(QString format)
 	m_ast = FilenameCache::Get(m_format);
 }
 
-QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings) const
+QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings)
 {
 	QList<Token> ret;
 	QStringList value = token.value().toStringList();
@@ -279,7 +279,7 @@ void Filename::setEscapeMethod(QString (*escapeMethod)(const QVariant &))
 	m_escapeMethod = escapeMethod;
 }
 
-bool Filename::returnError(const QString &msg, QString *error) const
+bool Filename::returnError(const QString &msg, QString *error)
 {
 	if (error != nullptr) {
 		*error = msg;
@@ -309,7 +309,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		return returnError(red.arg(QObject::tr("Can't compile your filename: %1").arg(m_ast->error())), error);
 	}
 
-	const auto &toks = m_ast->tokens();
+	const auto &tokens = m_ast->tokens();
 
 	// Field must end by an extension
 	if (!m_format.endsWith(".%ext%")) {
@@ -317,22 +317,22 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Field must contain an unique token
-	if (!toks.contains("md5") && !toks.contains("id") && !toks.contains("num")) {
+	if (!tokens.contains("md5") && !tokens.contains("id") && !tokens.contains("num")) {
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 	}
 
 	// Looking for unknown tokens
-	QStringList tokens { "tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author" };
+	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author" };
 	if (profile != nullptr) {
-		tokens.append(profile->getAdditionalTokens());
-		tokens.append(getCustoms(profile->getSettings()).keys());
+		knownTokens.append(profile->getAdditionalTokens());
+		knownTokens.append(getCustoms(profile->getSettings()).keys());
 	}
 	static const QRegularExpression rx("%(.+?)%");
 	auto matches = rx.globalMatch(m_format);
 	while (matches.hasNext()) {
 		auto match = matches.next();
 		bool found = false;
-		for (const QString &token : tokens) {
+		for (const QString &token : knownTokens) {
 			if (QRegularExpression("%(?:gallery\\.)?" + token + "(?::[^%]+)?%").match(match.captured(0)).hasMatch()) {
 				found = true;
 			}
@@ -352,8 +352,16 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		}
 	#endif
 
+	// %num% does not play well with simultaneous downloads
+	if (tokens.contains("num") && profile != nullptr) {
+		int simultaneous = qMax(1, qMin(profile->getSettings()->value("Save/simultaneous").toInt(), 10));
+		if (simultaneous > 1) {
+			return returnError(orange.arg(QObject::tr("The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.")), error);
+		}
+	}
+
 	// Check if code is unique
-	if (!toks.contains("md5") && !toks.contains("website") && !toks.contains("websitename") && !toks.contains("count") && toks.contains("id")) {
+	if (!tokens.contains("md5") && !tokens.contains("website") && !tokens.contains("websitename") && !tokens.contains("count") && tokens.contains("id")) {
 		return returnError(green.arg(QObject::tr("You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.")), error);
 	}
 

@@ -89,10 +89,11 @@ void ImageDownloader::save()
 	const bool filenameNeedTags = needTags == 2 || (needTags == 1 && m_image->hasUnknownTag());
 	const bool blacklistNeedTags = m_blacklist != nullptr && m_image->tags().isEmpty();
 	if (!blacklistNeedTags && !needFileUrl && (!m_loadTags || !m_paths.isEmpty() || !filenameNeedTags)) {
-		loadedSave();
+		loadedSave(Image::LoadTagsResult::Ok);
 		return;
 	}
 
+	log(QStringLiteral("Not enough information to directly load the image (from blacklist: %1 / from file url: %2 / from filename tags: %3/%4)").arg(blacklistNeedTags).arg(needFileUrl).arg(filenameNeedTags).arg(needTags), Logger::Info);
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
 	m_image->loadDetails();
 }
@@ -141,9 +142,15 @@ void ImageDownloader::abort()
 	}
 }
 
-void ImageDownloader::loadedSave()
+void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 {
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
+
+	// Detect error when loading an image's tags
+	if (result != Image::LoadTagsResult::Ok) {
+		emit saved(m_image, makeResult({ "" }, Image::SaveResult::DetailsLoadError));
+		return;
+	}
 
 	// Get the download path from the image if possible
 	if (m_paths.isEmpty()) {
