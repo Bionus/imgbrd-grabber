@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 	// Load translations
 	LanguageLoader languageLoader(savePath("languages/", true, false));
 	languageLoader.install(qApp);
-	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString());
+	languageLoader.setLanguage(profile.getSettings()->value("language", "English").toString(), profile.getSettings()->value("useSystemLocale", true).toBool());
 	engine.rootContext()->setContextProperty("languageLoader", &languageLoader);
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
 		QObject::connect(&languageLoader, &LanguageLoader::languageChanged, &engine, &QQmlEngine::retranslate);

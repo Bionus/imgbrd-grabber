@@ -102,7 +102,7 @@ void StartWindow::save()
 	QString lang = ui->comboLanguage->currentData().toString();
 	if (settings->value("language", "English").toString() != lang) {
 		settings->setValue("language", lang);
-		emit languageChanged(lang);
+		emit languageChanged(lang, settings->value("useSystemLocale", true).toBool());
 	}
 
 	emit sourceChanged(ui->comboSource->currentText());

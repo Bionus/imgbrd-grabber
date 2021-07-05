@@ -1312,9 +1312,11 @@ void OptionsWindow::save()
 	}
 
 	const QString lang = ui->comboLanguages->currentData().toString();
-	if (settings->value("language", "English").toString() != lang) {
+	const bool useSystemLocale = ui->checkUseSystemLocale->isChecked();
+	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toString() != useSystemLocale) {
 		settings->setValue("language", lang);
-		emit languageChanged(lang);
+		settings->setValue("useSystemLocale", useSystemLocale);
+		emit languageChanged(lang, useSystemLocale);
 	}
 
 	m_profile->sync();

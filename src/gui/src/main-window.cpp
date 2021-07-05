@@ -114,7 +114,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	// Load translations
 	m_languageLoader.install(qApp);
-	m_languageLoader.setLanguage(m_settings->value("language", "English").toString());
+	m_languageLoader.setLanguage(m_settings->value("language", "English").toString(), m_settings->value("useSystemLocale", true).toBool());
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);

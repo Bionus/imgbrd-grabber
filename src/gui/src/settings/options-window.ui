@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>542</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -210,14 +210,14 @@
         <item row="0" column="1">
          <widget class="QComboBox" name="comboLanguages"/>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="label_63">
           <property name="text">
            <string>At start</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QComboBox" name="comboStart">
           <item>
            <property name="text">
@@ -236,14 +236,14 @@
           </item>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="labelCheckForUpdates">
           <property name="text">
            <string>Check for updates</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QComboBox" name="comboCheckForUpdates">
           <property name="currentIndex">
            <number>4</number>
@@ -275,24 +275,24 @@
           </item>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_48">
           <property name="text">
            <string>Whitelist</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="QLineEdit" name="lineWhitelist"/>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_50">
           <property name="text">
            <string>Download</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QComboBox" name="comboWhitelist">
           <property name="currentIndex">
            <number>0</number>
@@ -314,7 +314,7 @@
           </item>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_51">
           <property name="text">
            <string>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</string>
@@ -324,27 +324,27 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_64">
           <property name="text">
            <string>Adds</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineAdd"/>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelGlobalPostFilter">
           <property name="text">
            <string>Post-filters</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="QLineEdit" name="lineGlobalPostFilter"/>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_65">
           <property name="text">
            <string>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</string>
@@ -354,24 +354,34 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGlobalPostFilterExplicit">
           <property name="text">
            <string>Explicitely add global post-filter to tab post-filter field</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
            <string>Ask for confirmation before closing the window</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSendUsageData">
           <property name="text">
            <string>Send anonymous usage data</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkUseSystemLocale">
+          <property name="text">
+           <string>Use system locale for dates and numbers</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -395,6 +405,7 @@
        <zorder>lineGlobalPostFilter</zorder>
        <zorder>checkSendUsageData</zorder>
        <zorder>checkGlobalPostFilterExplicit</zorder>
+       <zorder>checkUseSystemLocale</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -1054,8 +1065,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>359</width>
-             <height>440</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaWidgetLayout">
@@ -1687,8 +1698,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>288</width>
-             <height>449</height>
+             <width>323</width>
+             <height>407</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2284,8 +2295,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>212</width>
-             <height>869</height>
+             <width>235</width>
+             <height>785</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">

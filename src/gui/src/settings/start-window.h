@@ -27,8 +27,8 @@ class StartWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 
 	signals:
-		void sourceChanged(const QString &);
-		void languageChanged(const QString &);
+		void sourceChanged(const QString &source);
+		void languageChanged(const QString &lang, bool useSystemLocale);
 		void settingsChanged();
 
 	private:
