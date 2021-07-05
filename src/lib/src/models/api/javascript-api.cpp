@@ -472,7 +472,11 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 		return ret;
 	}
 
-	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5 });
+	QJSValue opts = m_source.engine()->newObject();
+	opts.setProperty("baseUrl", site->baseUrl());
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
+
+	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5, opts });
 	fillUrlObject(result, site, ret);
 
 	return ret;

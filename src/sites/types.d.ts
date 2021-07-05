@@ -202,6 +202,11 @@ interface IUrlOptions {
     loggedIn: boolean;
 }
 
+interface IUrlDetailsOptions {
+    baseUrl: string;
+    loggedIn: boolean;
+}
+
 interface IPreviousSearch {
     page: number;
     minIdM1: string;
@@ -224,7 +229,7 @@ interface IApi {
     };
     details?: {
         parseErrors?: boolean;
-        url: (id: string, md5: string) => IUrl | IError | string;
+        url: (id: string, md5: string, opts: IUrlDetailsOptions) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedDetails | IError;
     };
     gallery?: {

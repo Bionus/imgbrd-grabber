@@ -1,3 +1,11 @@
+function buildImageFromJson(img: any): IImage {
+    img.created_at = img.created_at["s"];
+    img.score = img.total_score;
+    img.author = img.author.name;
+
+    return completeImage(img);
+}
+
 function completeImage(img: IImage): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
@@ -84,17 +92,22 @@ export const source: ISource = {
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = JSON.parse(src);
-
-                    const images: IImage[] = [];
-                    for (const img of data) {
-                        img.created_at = img.created_at["s"];
-                        img.score = img.total_score;
-                        images.push(completeImage(img));
-                    }
-
+                    const images: IImage[] = data.map(buildImageFromJson);
                     return { images };
                 },
             },
+            details: {
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    const baseUrl = opts.baseUrl
+                        .replace("//chan.", "//capi-v2.")
+                        .replace("//idol.", "//iapi.");
+                    return baseUrl + "/posts/" + id;
+                },
+                parse: function (src) {
+                    const data = JSON.parse(src);
+                    return buildImageFromJson(data);
+                },
+            }
         },
         html: {
             name: "Regex",
