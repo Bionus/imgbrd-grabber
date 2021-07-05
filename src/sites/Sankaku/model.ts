@@ -3,7 +3,9 @@ function completeImage(img: IImage): IImage {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    img.file_url = img.file_url!.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    if (img.file_url) {
+        img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
+    }
 
     return img;
 }
