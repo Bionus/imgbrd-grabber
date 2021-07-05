@@ -204,7 +204,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 		headerRow++;
 	}
 
-	ui->comboLoginType->setCurrentIndex(activeLoginIndex);
+	if (ui->comboLoginType->currentIndex() != activeLoginIndex) {
+		ui->comboLoginType->setCurrentIndex(activeLoginIndex);
+	} else {
+		setLoginType(activeLoginIndex);
+	}
 }
 
 SourcesSettingsWindow::~SourcesSettingsWindow()
