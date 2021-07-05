@@ -2,6 +2,7 @@
 #include <QCloseEvent>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QMessageBox>
 #include <QRegularExpression>
 #include <QSettings>
 #include <ui_tag-tab.h>
@@ -13,6 +14,8 @@
 #include "models/site.h"
 #include "search-window.h"
 #include "ui/text-edit.h"
+
+#define MONITOR_IMAGES_WARNING 10000
 
 
 TagTab::TagTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
@@ -244,7 +247,27 @@ void TagTab::getAll()
 }
 void TagTab::monitor()
 {
-	const QStringList tags = m_search->toPlainText().trimmed().split(" ", Qt::SkipEmptyParts);
+	const QString search = m_search->toPlainText().trimmed();
+
+	int totalCount = 0;
+	for (const auto &page : getPagesToDownload()) {
+		totalCount += page->imagesCount() >= 0 ? page->imagesCount() : page->maxImagesCount();
+	}
+
+	// Warn in case of adding huge monitors
+	if (search.isEmpty()) {
+		const int response = QMessageBox::warning(this, tr("Monitoring an empty search"), tr("You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?"), QMessageBox::Yes | QMessageBox::No);
+		if (response != QMessageBox::Yes) {
+			return;
+		}
+	} else if (totalCount >= MONITOR_IMAGES_WARNING) {
+		const int response = QMessageBox::warning(this, tr("Monitoring a big search"), tr("You are about to add a monitor for a search with a lot of results (%1). Are you sure?").arg(totalCount), QMessageBox::Yes | QMessageBox::No);
+		if (response != QMessageBox::Yes) {
+			return;
+		}
+	}
+
+	const QStringList tags = search.split(" ", Qt::SkipEmptyParts);
 	const bool notify = m_settings->value("Monitoring/enableTray", false).toBool();
 	Monitor monitor(loadSites(), 24 * 60 * 60, QDateTime::currentDateTimeUtc(), true, QString(), QString(), 0, true, tags, postFilter(), notify);
 	m_profile->monitorManager()->add(monitor);
