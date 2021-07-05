@@ -151,7 +151,7 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="33"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>图片</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="36"/>
@@ -243,7 +243,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation type="unfinished"/>
+      <translation>每行一个黑名单项。单行多个标签将视为&apos;每个标签都包含&apos;时生效。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation type="unfinished"/>
+      <translation>如果图像的扩展名是 &quot;.jpeg&quot;， 它将被替换成 &quot;.jpg&quot; 。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -721,7 +721,7 @@
     <message>
       <location filename="../src/components/SourcesScreen.qml" line="26"/>
       <source>Sources selection</source>
-      <translation type="unfinished"/>
+      <translation>自动探测来源</translation>
     </message>
   </context>
   <context>
@@ -767,22 +767,22 @@
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>GET</source>
-      <translation type="unfinished"/>
+      <translation>GET</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>POST</source>
-      <translation type="unfinished"/>
+      <translation>POST</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>OAuth 2</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
@@ -812,7 +812,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="116"/>
       <source>Do you want to exit?</source>
-      <translation type="unfinished"/>
+      <translation>您是否想要退出？</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
