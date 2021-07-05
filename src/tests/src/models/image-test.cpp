@@ -168,7 +168,7 @@ TEST_CASE("Image")
 	SECTION("LoadDetails")
 	{
 		// Load details
-		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags(Image::LoadTagsResult)));
 		img->loadDetails();
 		REQUIRE(spy.wait());
 
@@ -190,7 +190,7 @@ TEST_CASE("Image")
 	}
 	SECTION("LoadDetailsAbort")
 	{
-		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags(Image::LoadTagsResult)));
 		img->loadDetails();
 		img->abortTags();
 		REQUIRE(!spy.wait(1000));
@@ -202,7 +202,7 @@ TEST_CASE("Image")
 		img = ImageFactory::build(site, details, profile);
 
 		// Load details
-		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags()));
+		QSignalSpy spy(img.data(), SIGNAL(finishedLoadingTags(Image::LoadTagsResult)));
 		img->loadDetails();
 		REQUIRE(spy.wait());
 
@@ -222,7 +222,7 @@ TEST_CASE("Image")
 		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::Saved);
+		REQUIRE(res.first() == Image::SaveResult::Saved);
 		REQUIRE(file.exists());
 		file.remove();
 	}
@@ -235,7 +235,7 @@ TEST_CASE("Image")
 			QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), path);
 
 			REQUIRE(res.count() == 1);
-			REQUIRE(res.first() == Image::Error);
+			REQUIRE(res.first() == Image::SaveResult::Error);
 		}
 	#endif
 	SECTION("SaveAlreadyExists")
@@ -248,7 +248,7 @@ TEST_CASE("Image")
 		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::AlreadyExistsDisk);
+		REQUIRE(res.first() == Image::SaveResult::AlreadyExistsDisk);
 	}
 	SECTION("SaveDuplicate")
 	{
@@ -268,14 +268,14 @@ TEST_CASE("Image")
 		settings->setValue("Save/md5DuplicatesSameDir", "ignore");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::AlreadyExistsMd5);
+		REQUIRE(res.first() == Image::SaveResult::AlreadyExistsMd5);
 		REQUIRE(!file.exists());
 
 		settings->setValue("Save/md5Duplicates", "copy");
 		settings->setValue("Save/md5DuplicatesSameDir", "copy");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::Copied);
+		REQUIRE(res.first() == Image::SaveResult::Copied);
 		REQUIRE(file.exists());
 		REQUIRE(QFile("tests/resources/tmp/source.png").exists());
 		file.remove();
@@ -284,7 +284,7 @@ TEST_CASE("Image")
 		settings->setValue("Save/md5DuplicatesSameDir", "move");
 		res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::Moved);
+		REQUIRE(res.first() == Image::SaveResult::Moved);
 		REQUIRE(file.exists());
 		REQUIRE(!QFile("tests/resources/tmp/source.png").exists());
 		file.remove();
@@ -310,7 +310,7 @@ TEST_CASE("Image")
 		QMap<QString, Image::SaveResult> res = img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 		REQUIRE(res.count() == 1);
-		REQUIRE(res.first() == Image::Saved);
+		REQUIRE(res.first() == Image::SaveResult::Saved);
 		REQUIRE(file.exists());
 		REQUIRE(logFile.exists());
 
