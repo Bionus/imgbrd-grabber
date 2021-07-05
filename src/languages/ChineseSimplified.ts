@@ -935,7 +935,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="231"/>
       <source>...</source>
-      <translation type="unfinished"/>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="246"/>
@@ -973,7 +973,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
       <source>Last viewed</source>
-      <translation type="unfinished"/>
+      <translation>上次查看</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
@@ -1193,12 +1193,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/players/gif-player.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished"/>
+      <translation>Form</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/players/gif-player.ui" line="74"/>
       <source>00:00 / 00:00</source>
-      <translation type="unfinished"/>
+      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>
@@ -1385,22 +1385,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>删除</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>保存为...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>保存图片</translation>
     </message>
   </context>
   <context>
@@ -1408,7 +1408,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/keep-for-later-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
   </context>
   <context>
@@ -1416,7 +1416,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/language-loader.cpp" line="93"/>
       <source>en_US</source>
-      <translation type="unfinished"/>
+      <translation>zh_CN</translation>
     </message>
   </context>
   <context>
@@ -1734,17 +1734,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="56"/>
       <source>%v</source>
-      <translation type="unfinished"/>
+      <translation>%v</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
-      <translation type="unfinished"/>
+      <translation>开始</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="85"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>取消</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
@@ -1865,7 +1865,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
@@ -1896,12 +1896,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 分钟</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>过滤器</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="113"/>
@@ -2653,7 +2653,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1520"/>
       <location filename="../gui/src/settings/options-window.ui" line="1534"/>
       <source>Ctrl+N</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+N</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
@@ -2743,7 +2743,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1730"/>
       <source>Ctrl+Q</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Q</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1746"/>
@@ -2754,7 +2754,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
       <location filename="../gui/src/settings/options-window.ui" line="2464"/>
       <source>S</source>
-      <translation type="unfinished"/>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1774"/>
@@ -2764,7 +2764,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1786"/>
       <source>Ctrl+W</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
@@ -2774,7 +2774,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1814"/>
       <source>Ctrl+T</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1830"/>
@@ -2784,7 +2784,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1842"/>
       <source>Ctrl+Shift+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1858"/>
@@ -2794,7 +2794,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1870"/>
       <source>Ctrl+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1886"/>
@@ -2804,7 +2804,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1898"/>
       <source>Ctrl+O</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1936"/>
@@ -3052,7 +3052,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2324"/>
       <source>Esc</source>
-      <translation type="unfinished"/>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2340"/>
@@ -3072,7 +3072,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2408"/>
       <source>D</source>
-      <translation type="unfinished"/>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2424"/>
@@ -3082,7 +3082,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2436"/>
       <source>Shift+S</source>
-      <translation type="unfinished"/>
+      <translation>Shift+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2480"/>
@@ -3092,7 +3092,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2492"/>
       <source>W</source>
-      <translation type="unfinished"/>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2508"/>
@@ -3102,7 +3102,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2520"/>
       <source>O</source>
-      <translation type="unfinished"/>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2536"/>
@@ -3112,7 +3112,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2548"/>
       <source>Alt+S</source>
-      <translation type="unfinished"/>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2564"/>
@@ -3122,7 +3122,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2576"/>
       <source>Alt+W</source>
-      <translation type="unfinished"/>
+      <translation>Alt+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2592"/>
@@ -3132,7 +3132,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
       <source>Alt+O</source>
-      <translation type="unfinished"/>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2620"/>
@@ -3142,7 +3142,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2632"/>
       <source>F11</source>
-      <translation type="unfinished"/>
+      <translation>F11</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2648"/>
@@ -3152,7 +3152,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2660"/>
       <source>Space</source>
-      <translation type="unfinished"/>
+      <translation>Space</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2676"/>
@@ -3162,7 +3162,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2688"/>
       <source>C</source>
-      <translation type="unfinished"/>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2706"/>
@@ -5077,7 +5077,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/players/video-player.ui" line="61"/>
       <source>00:00 / 00:00</source>
-      <translation type="unfinished"/>
+      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>

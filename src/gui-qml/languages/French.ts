@@ -93,37 +93,37 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="13"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>Sauvegarde</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
       <source>Export settings</source>
-      <translation type="unfinished"/>
+      <translation>Exporter les paramètres</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Backup the app settings.ini file on your device.</source>
-      <translation type="unfinished"/>
+      <translation>Sauvegarder le fichier settings.ini de l'application sur votre appareil.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
       <source>Please choose a directory</source>
-      <translation type="unfinished"/>
+      <translation>Veuillez choisir un répertoire</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="33"/>
       <source>Import settings</source>
-      <translation type="unfinished"/>
+      <translation>Importer les paramètres</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="34"/>
       <source>Import the app settings.ini from an existing file.</source>
-      <translation type="unfinished"/>
+      <translation>Importer les paramètres à partir d'un fichier settings.ini existant.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="42"/>
       <source>Please choose a file</source>
-      <translation type="unfinished"/>
+      <translation>Veuillez choisir un fichier</translation>
     </message>
   </context>
   <context>
@@ -151,17 +151,17 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="33"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>Image</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="36"/>
       <source>Background color</source>
-      <translation type="unfinished"/>
+      <translation>Couleur d'arrière-plan</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Mots-clés</translation>
     </message>
   </context>
   <context>
@@ -169,67 +169,67 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="11"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>Mots-clés</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="14"/>
       <source>Artists</source>
-      <translation type="unfinished"/>
+      <translation>Artistes</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="19"/>
       <source>Circle</source>
-      <translation type="unfinished"/>
+      <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="24"/>
       <source>Series</source>
-      <translation type="unfinished"/>
+      <translation>Séries</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="29"/>
       <source>Characters</source>
-      <translation type="unfinished"/>
+      <translation>Personnages</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="34"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>Espèces</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="39"/>
       <source>Metas</source>
-      <translation type="unfinished"/>
+      <translation>Métas</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="44"/>
       <source>Models</source>
-      <translation type="unfinished"/>
+      <translation>Modèles</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="49"/>
       <source>Generals</source>
-      <translation type="unfinished"/>
+      <translation>Généraux</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="54"/>
       <source>Favorites</source>
-      <translation type="unfinished"/>
+      <translation>Favoris</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="59"/>
       <source>Kept for later</source>
-      <translation type="unfinished"/>
+      <translation>Gardés pour plus tard</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="64"/>
       <source>Blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>En liste noire</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="69"/>
       <source>Ignored</source>
-      <translation type="unfinished"/>
+      <translation>Ignorés</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="22"/>
       <source>Favorites</source>
-      <translation type="unfinished"/>
+      <translation>Favoris</translation>
     </message>
   </context>
   <context>
@@ -312,22 +312,22 @@
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="147"/>
       <source>File is too big to be displayed.</source>
-      <translation type="unfinished"/>
+      <translation>Ce fichier est trop gros pour être affiché.</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="150"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>Image introuvable.</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="153"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors du chargement de l'image.</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="156"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors de l'enregistrement de l'image.</translation>
     </message>
   </context>
   <context>
@@ -398,17 +398,17 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
       <source>Image viewer</source>
-      <translation type="unfinished"/>
+      <translation>Visionneuse d'images</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="80"/>
       <source>Buttons at the bottom</source>
-      <translation type="unfinished"/>
+      <translation>Boutons en bas</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
       <source>Move the action buttons to the bottom of the screen.</source>
-      <translation type="unfinished"/>
+      <translation>Déplacez les boutons d'action en bas de l'écran.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="48"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter</translation>
     </message>
   </context>
   <context>
@@ -645,7 +645,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="79"/>
       <source>Advanced</source>
-      <translation type="unfinished"/>
+      <translation>Options avancées</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="84"/>
@@ -678,12 +678,12 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="75"/>
       <source>Login</source>
-      <translation type="unfinished"/>
+      <translation>Connexion</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="84"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>Type</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="124"/>
@@ -762,27 +762,27 @@
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP Basic</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="49"/>
       <source>GET</source>
-      <translation type="unfinished"/>
+      <translation>GET</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="50"/>
       <source>POST</source>
-      <translation type="unfinished"/>
+      <translation>POST</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="51"/>
       <source>OAuth 1</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 1</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="52"/>
       <source>OAuth 2</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
@@ -797,17 +797,17 @@
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
       <source>Password</source>
-      <translation type="unfinished"/>
+      <translation>Mot de passe</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="58"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>Sel</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="59"/>
       <source>API key</source>
-      <translation type="unfinished"/>
+      <translation>Clé d'API</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="116"/>
