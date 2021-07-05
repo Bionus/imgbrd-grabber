@@ -17,6 +17,10 @@ export const source: ISource = {
         and: " ",
     },
     auth: {
+        httpBasic: {
+            type: "http_basic",
+            passwordType: "apiKey",
+        },
         url: {
             type: "url",
             fields: [
