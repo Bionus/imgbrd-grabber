@@ -134,7 +134,7 @@ class Image : public QObject, public Downloadable
 
 	signals:
 		void finishedLoadingPreview();
-		void finishedLoadingTags(LoadTagsResult result);
+		void finishedLoadingTags(Image::LoadTagsResult result);
 		void urlChanged(const QUrl &before, const QUrl &after);
 
 	private:
@@ -178,5 +178,6 @@ class Image : public QObject, public Downloadable
 
 Q_DECLARE_METATYPE(Image)
 Q_DECLARE_METATYPE(Image::SaveResult)
+Q_DECLARE_METATYPE(Image::LoadTagsResult)
 
 #endif // IMAGE_H
