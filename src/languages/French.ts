@@ -1855,7 +1855,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Recherche</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
@@ -1865,12 +1865,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Dernière vérification</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Sources</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
@@ -1917,12 +1917,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="168"/>
       <source>Path</source>
-      <translation type="unfinished"/>
+      <translation>Chemin</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="175"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Nom de fichier</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="185"/>
@@ -3004,7 +3004,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1022"/>
       <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Si la longueur du fichier est supérieure à ce nombre, elle sera raccourcie. Laisser à 0 pour utiliser la limite par défaut. Ne pas aller au-delà de 260 sous Windows à moins que vous ne sachiez ce que vous faites.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2009"/>
@@ -3014,27 +3014,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2235"/>
       <source>Scale up small images to fit window</source>
-      <translation type="unfinished"/>
+      <translation>Agrandir les petites images pour les adapter à la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2242"/>
       <source>Use built-in video player</source>
-      <translation type="unfinished"/>
+      <translation>Utiliser le lecteur vidéo intégré</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2252"/>
       <source>Show video player controls</source>
-      <translation type="unfinished"/>
+      <translation>Afficher les commandes du lecteur vidéo</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2262"/>
       <source>Show GIF player controls</source>
-      <translation type="unfinished"/>
+      <translation>Afficher les commandes du lecteur GIF</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2312"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>Fermer</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2324"/>
@@ -3064,7 +3064,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2424"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer sous...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2436"/>
@@ -3841,7 +3841,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="169"/>
       <source>invalid or missing login information</source>
-      <translation type="unfinished"/>
+      <translation>informations de connexion non valides ou manquantes</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="175"/>
@@ -4108,27 +4108,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargements</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="36"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Dossier</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="78"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Nom</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="107"/>
       <source>Reset</source>
-      <translation type="unfinished"/>
+      <translation>Réinitialiser</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="114"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.cpp" line="46"/>
@@ -4401,7 +4401,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP Basic</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
@@ -4493,7 +4493,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>Sel</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
@@ -4898,7 +4898,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/tags-dock.ui" line="20"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargements</translation>
     </message>
   </context>
   <context>
@@ -5060,7 +5060,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/wiki-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargements</translation>
     </message>
   </context>
   <context>
