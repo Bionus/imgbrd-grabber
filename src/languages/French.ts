@@ -978,12 +978,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
       <source>Last viewed</source>
-      <translation type="unfinished"/>
+      <translation>Dernière vue</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</translation>
     </message>
   </context>
   <context>
@@ -1104,12 +1104,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="419"/>
       <source>Mark as last viewed</source>
-      <translation type="unfinished"/>
+      <translation>Marquer comme dernier vu</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="426"/>
       <source>Choose as image</source>
-      <translation type="unfinished"/>
+      <translation>Choisir comme image</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="334"/>
@@ -1717,7 +1717,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
       <source>Generate a SQLite MD5 database using an existing TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>Générer une base de données des MD5 au format SQLite en utilisant une base de données MD5 au format TXT existante.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
@@ -1732,7 +1732,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
       <source>You are not using a TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>Vous n'utilisez pas de base de données TXT MD5.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
@@ -1840,7 +1840,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation type="unfinished"/>
+      <translation>Modifier un moniteur</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
@@ -1927,7 +1927,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="185"/>
       <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Laisser vide pour utiliser les options par défaut.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="192"/>
@@ -1979,7 +1979,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="26"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>Moniteurs</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
@@ -2507,7 +2507,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1286"/>
       <source>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Les images plus grandes que la largeur et/ou la hauteur maximale seront redimensionnées pour s'adapter.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1319"/>
@@ -3282,12 +3282,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3281"/>
       <source>&lt;i&gt;These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image. Ils n'apparaîtront pas dans les variables telles que %copyright% ou %all%.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3301"/>
       <source>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Un tag par ligne. Les tags ignorées ne seront pas traités comme ayant un type particulier, et donc n'apparaîtront pas, par exemple, dans %copyright%. Ils apparaîtront cependant toujours dans %all%.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3315"/>
@@ -3443,7 +3443,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="460"/>
       <source>Choose a temporary folder</source>
-      <translation type="unfinished"/>
+      <translation>Choisissez un dossier temporaire</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="555"/>
@@ -3632,7 +3632,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../lib/src/models/filename.cpp" line="359"/>
       <source>The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.</source>
-      <translation type="unfinished"/>
+      <translation>La variable %num% ne fonctionne pas correctement avec les téléchargements simultanés. Pensez à une autre méthode ou téléchargez des images une à la fois.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="365"/>
@@ -4875,7 +4875,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="259"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>Vous êtes sur le point d'ajouter un moniteur pour une recherche vide, ce qui peut conduire à de nombreux résultats. Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="264"/>
@@ -4885,7 +4885,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="264"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>Vous êtes sur le point d'ajouter un moniteur pour une recherche avec beaucoup de résultats (%1). Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="300"/>
