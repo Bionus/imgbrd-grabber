@@ -2761,7 +2761,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1814"/>
       <source>Ctrl+T</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1830"/>
@@ -2781,7 +2781,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1870"/>
       <source>Ctrl+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1886"/>
@@ -2958,7 +2958,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>Métadonnées</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
@@ -2979,27 +2979,27 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="360"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation type="unfinished"/>
+      <translation>Forcer l'ajout du post-filtrage dans tout les onglets</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="381"/>
       <source>Use system locale for dates and numbers</source>
-      <translation type="unfinished"/>
+      <translation>Utiliser la langue du système pour les dates et les chiffres</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="845"/>
       <source>Temporary directory</source>
-      <translation type="unfinished"/>
+      <translation>Dossier temporaire</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="852"/>
       <source>&lt;i&gt;Leave empty to use the default temporary directory.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Laisser vide pour utiliser le dossier temporaire par défaut.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="876"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>Si c'est dans le même répertoire</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1022"/>
@@ -3054,7 +3054,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2396"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>Détails</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2408"/>
@@ -3114,7 +3114,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2592"/>
       <source>Destination folder (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Dossier de destination (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
@@ -4488,7 +4488,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>Identifiant</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
