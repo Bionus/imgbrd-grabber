@@ -12,7 +12,7 @@ ColumnLayout {
     }
     ComboSetting {
         name: qsTr("Language")
-        options: ["English", "French"]
+        options: ["English", "French", "Russian", "ChineseSimplified", "Polish"]
         setting: gSettings.language
         Layout.fillWidth: true
     }
