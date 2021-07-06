@@ -6,12 +6,12 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="11"/>
       <source>About</source>
-      <translation type="unfinished"/>
+      <translation>О программе</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="14"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>Версия</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="33"/>
       <source>Author</source>
-      <translation type="unfinished"/>
+      <translation>Автор</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="36"/>
@@ -37,7 +37,7 @@
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="42"/>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="65"/>
       <source>Github</source>
-      <translation type="unfinished"/>
+      <translation>GitHub</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="50"/>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="53"/>
       <source>Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Patreon</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="59"/>
       <source>Paypal</source>
-      <translation type="unfinished"/>
+      <translation>PayPal</translation>
     </message>
   </context>
   <context>
@@ -60,32 +60,32 @@
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="24"/>
       <source>Add new source</source>
-      <translation type="unfinished"/>
+      <translation>Добавить новый источник</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="34"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>Ошибка</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="43"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>Тип</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="53"/>
       <source>URL</source>
-      <translation type="unfinished"/>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="63"/>
       <source>HTTPS</source>
-      <translation type="unfinished"/>
+      <translation>HTTPS</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="74"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>Добавить</translation>
     </message>
   </context>
   <context>
@@ -131,17 +131,17 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="11"/>
       <source>Appearance</source>
-      <translation type="unfinished"/>
+      <translation>Оформление</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="14"/>
       <source>Theme</source>
-      <translation type="unfinished"/>
+      <translation>Тема</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="21"/>
       <source>Primary color</source>
-      <translation type="unfinished"/>
+      <translation>Основной цвет</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="26"/>
@@ -238,12 +238,12 @@
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="11"/>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="14"/>
       <source>Blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Чёрный список</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation type="unfinished"/>
+      <translation>Одна строка на чёрный список. Несколько тегов составляют &apos;И&apos; условие.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../src/components/LogScreen.qml" line="18"/>
       <source>Log</source>
-      <translation type="unfinished"/>
+      <translation>Журнал</translation>
     </message>
   </context>
   <context>
@@ -453,7 +453,7 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="105"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Поиск</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="111"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="141"/>
       <source>Settings</source>
-      <translation type="unfinished"/>
+      <translation>Настройки</translation>
     </message>
   </context>
   <context>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="11"/>
       <source>Proxy</source>
-      <translation type="unfinished"/>
+      <translation>Прокси</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="14"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="34"/>
       <source>Replace JPEG by JPG</source>
-      <translation type="unfinished"/>
+      <translation>Заменить JPEG на JPG</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
@@ -597,12 +597,12 @@
     <message>
       <location filename="../src/components/SearchScreen.qml" line="50"/>
       <source>Search...</source>
-      <translation type="unfinished"/>
+      <translation>Поиск...</translation>
     </message>
     <message>
       <location filename="../src/components/SearchScreen.qml" line="166"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Источники</translation>
     </message>
   </context>
   <context>
@@ -610,32 +610,32 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="31"/>
       <source>Settings</source>
-      <translation type="unfinished"/>
+      <translation>Настройки</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="49"/>
       <source>Interface</source>
-      <translation type="unfinished"/>
+      <translation>Интерфейс</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="54"/>
       <source>Appearance</source>
-      <translation type="unfinished"/>
+      <translation>Оформление</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="59"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="64"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Источники</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Чёрный список</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
@@ -668,7 +668,7 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="63"/>
       <source>HTTPS</source>
-      <translation type="unfinished"/>
+      <translation>HTTPS</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="64"/>
@@ -698,22 +698,22 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="138"/>
       <source>Source 1</source>
-      <translation type="unfinished"/>
+      <translation>Источник 1</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="150"/>
       <source>Source 2</source>
-      <translation type="unfinished"/>
+      <translation>Источник 2</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="162"/>
       <source>Source 3</source>
-      <translation type="unfinished"/>
+      <translation>Источник 3</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="174"/>
       <source>Source 4</source>
-      <translation type="unfinished"/>
+      <translation>Источник 4</translation>
     </message>
   </context>
   <context>
@@ -734,22 +734,22 @@
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="14"/>
       <source>Source 1</source>
-      <translation type="unfinished"/>
+      <translation>Источник 1</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="21"/>
       <source>Source 2</source>
-      <translation type="unfinished"/>
+      <translation>Источник 2</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="28"/>
       <source>Source 3</source>
-      <translation type="unfinished"/>
+      <translation>Источник 3</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="35"/>
       <source>Source 4</source>
-      <translation type="unfinished"/>
+      <translation>Источник 4</translation>
     </message>
   </context>
   <context>
@@ -812,12 +812,12 @@
     <message>
       <location filename="../src/main-screen.qml" line="116"/>
       <source>Do you want to exit?</source>
-      <translation type="unfinished"/>
+      <translation>Вы действительно хотите выйти?</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
       <source>Don&apos;t ask again</source>
-      <translation type="unfinished"/>
+      <translation>Более не спрашивать</translation>
     </message>
   </context>
 </TS>
