@@ -1053,7 +1053,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("sources", Token(m_sources));
 	tokens.insert("filesize", Token(m_sizes[Image::Size::Full]->fileSize));
 	tokens.insert("name", Token(m_name));
-	tokens.insert("position", Token(m_position > 0 ? QString::number(m_position) : ""));
+	tokens.insert("position", m_position > 0 ? Token(m_position) : Token(""));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i) {
