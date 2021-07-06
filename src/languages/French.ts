@@ -1378,22 +1378,22 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer sous...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer l'image</translation>
     </message>
   </context>
   <context>
@@ -1401,7 +1401,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/keep-for-later-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>Téléchargements</translation>
     </message>
   </context>
   <context>
@@ -2455,19 +2455,19 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1152"/>
       <source>Windows Property System</source>
-      <translation type="unfinished"/>
+      <translation>Système de propriétés Windows</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1161"/>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
       <source>Add new property</source>
-      <translation type="unfinished"/>
+      <translation>Ajouter une nouvelle propriété</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1168"/>
       <location filename="../gui/src/settings/options-window.ui" line="1187"/>
       <source>Extensions</source>
-      <translation type="unfinished"/>
+      <translation>Extensions</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1181"/>
@@ -2492,17 +2492,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1240"/>
       <source>Resize</source>
-      <translation type="unfinished"/>
+      <translation>Redimensionnement</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1246"/>
       <source>Max width</source>
-      <translation type="unfinished"/>
+      <translation>Largeur maximale</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1266"/>
       <source>Max height</source>
-      <translation type="unfinished"/>
+      <translation>Hauteur maximale</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1286"/>
