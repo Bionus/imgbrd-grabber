@@ -1175,7 +1175,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Monitorer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -4850,7 +4850,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>Monitorer</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
@@ -4870,7 +4870,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="259"/>
       <source>Monitoring an empty search</source>
-      <translation type="unfinished"/>
+      <translation>Ajout d'un moniteur de recherche vide</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="259"/>
@@ -4880,7 +4880,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="264"/>
       <source>Monitoring a big search</source>
-      <translation type="unfinished"/>
+      <translation>Ajout d'un grand moniteur</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="264"/>
