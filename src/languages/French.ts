@@ -2751,7 +2751,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1786"/>
       <source>Ctrl+W</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
@@ -2771,7 +2771,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1842"/>
       <source>Ctrl+Shift+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1858"/>
@@ -2791,7 +2791,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1898"/>
       <source>Ctrl+O</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1936"/>
@@ -3039,17 +3039,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2324"/>
       <source>Esc</source>
-      <translation type="unfinished"/>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2340"/>
       <source>Prev</source>
-      <translation type="unfinished"/>
+      <translation>Précédent</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2368"/>
       <source>Next</source>
-      <translation type="unfinished"/>
+      <translation>Suivant</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2396"/>
@@ -3069,12 +3069,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2436"/>
       <source>Shift+S</source>
-      <translation type="unfinished"/>
+      <translation>Shift+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2480"/>
       <source>Save and close</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer et fermer</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2492"/>
@@ -3084,7 +3084,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2508"/>
       <source>Destination folder</source>
-      <translation type="unfinished"/>
+      <translation>Dossier de destination</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2520"/>
@@ -3094,7 +3094,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2536"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2548"/>
@@ -3104,7 +3104,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2564"/>
       <source>Save and close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer et fermer (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2576"/>
@@ -3124,7 +3124,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2620"/>
       <source>Toggle full-screen</source>
-      <translation type="unfinished"/>
+      <translation>Basculer en mode plein écran</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2632"/>
@@ -3134,17 +3134,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2648"/>
       <source>Toggle slideshow</source>
-      <translation type="unfinished"/>
+      <translation>Activer/désactiver le diaporama</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2660"/>
       <source>Space</source>
-      <translation type="unfinished"/>
+      <translation>Space</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2676"/>
       <source>Copy raw media data to clipboard</source>
-      <translation type="unfinished"/>
+      <translation>Copier les données brutes du média dans le presse-papiers</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2688"/>
