@@ -3277,7 +3277,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3271"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Tags retirés</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3281"/>
@@ -4133,7 +4133,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/docks/settings-dock.cpp" line="46"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Choisir un dossier de sauvegarde</translation>
     </message>
   </context>
   <context>
