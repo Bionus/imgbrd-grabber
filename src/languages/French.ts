@@ -2735,7 +2735,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1746"/>
       <source>Focus search field</source>
-      <translation type="unfinished"/>
+      <translation>Sélectionner le champ de recherche</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
@@ -2746,7 +2746,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1774"/>
       <source>Close tab</source>
-      <translation type="unfinished"/>
+      <translation>Fermer l'onglet</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1786"/>
@@ -2756,7 +2756,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
       <source>New tab</source>
-      <translation type="unfinished"/>
+      <translation>Nouvel onglet</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1814"/>
@@ -2766,7 +2766,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1830"/>
       <source>Open previous tab</source>
-      <translation type="unfinished"/>
+      <translation>Onglet précédent</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1842"/>
@@ -2776,7 +2776,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1858"/>
       <source>Open next tab</source>
-      <translation type="unfinished"/>
+      <translation>Onglet suivant</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1870"/>
@@ -2786,7 +2786,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1886"/>
       <source>Call external application to browse save directory</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le repertoire de sauvegarde avec une application externe</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1898"/>
