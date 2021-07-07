@@ -2634,7 +2634,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>Decline dialogue</source>
-      <translation type="unfinished"/>
+      <translation>Refuser la fenêtre de dialogue</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1520"/>
@@ -2645,7 +2645,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>Accept dialogue</source>
-      <translation type="unfinished"/>
+      <translation>Accepter la fenêtre de dialogue</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1548"/>
@@ -2963,7 +2963,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Image size</source>
-      <translation type="unfinished"/>
+      <translation>Redimensionnement</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
@@ -4458,17 +4458,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
       <source>OAuth 2 (password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (mot de passe)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="102"/>
       <source>OAuth 2 (JSON password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (mot de passe JSON)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="103"/>
       <source>OAuth 2 (client credentials)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (identifiants)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
@@ -4483,7 +4483,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
       <source>OAuth 2 (PKCE)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
@@ -4513,12 +4513,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="117"/>
       <source>Access token</source>
-      <translation type="unfinished"/>
+      <translation>Jeton d'accès</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="118"/>
       <source>Refresh token</source>
-      <translation type="unfinished"/>
+      <translation>Jeton de rafraîchissement</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="230"/>
