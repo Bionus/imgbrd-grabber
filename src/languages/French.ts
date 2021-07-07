@@ -1432,7 +1432,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open settings directory</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le répertoire des paramètres</translation>
     </message>
   </context>
   <context>
@@ -1649,17 +1649,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/main-window.ui" line="443"/>
       <source>Save downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer la liste des téléchargements</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="452"/>
       <source>Load downloads list</source>
-      <translation type="unfinished"/>
+      <translation>Charger la liste des téléchargements</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>Convertisseur de base de données MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="466"/>
@@ -1712,7 +1712,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>Chargeur de tags</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1845,7 +1845,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Général</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="40"/>
@@ -1937,12 +1937,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
       <source>You need to enable the system tray icon to use notifications.</source>
-      <translation type="unfinished"/>
+      <translation>Vous devez activer l'icône de la zone de notification pour utiliser les notifications.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="53"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Choisir un dossier de sauvegarde</translation>
     </message>
   </context>
   <context>
@@ -2968,7 +2968,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
       <source>Main window</source>
-      <translation type="unfinished"/>
+      <translation>Fenêtre principale</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="122"/>
@@ -4746,12 +4746,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="70"/>
       <source>Loading tag types...</source>
-      <translation type="unfinished"/>
+      <translation>Chargement des types de tags...</translation>
     </message>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="80"/>
       <source>Error loading tag types.</source>
-      <translation type="unfinished"/>
+      <translation>Erreur lors du chargement des types de tags.</translation>
     </message>
   </context>
   <context>
