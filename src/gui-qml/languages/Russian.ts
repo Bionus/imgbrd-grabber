@@ -16,12 +16,12 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>See project on Github</source>
-      <translation type="unfinished"/>
+      <translation>Проект Github</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
       <source>Report an issue</source>
-      <translation type="unfinished"/>
+      <translation>Сообщить об ошибке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="33"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="36"/>
       <source>Email</source>
-      <translation type="unfinished"/>
+      <translation>Email</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="42"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="50"/>
       <source>Donate</source>
-      <translation type="unfinished"/>
+      <translation>Пожертвовать</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="53"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="26"/>
       <source>Accent color</source>
-      <translation type="unfinished"/>
+      <translation>Дополнительный цвет</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="33"/>
@@ -248,47 +248,47 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
       <source>Hide blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Скрыть чёрный список</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
       <source>Hide blacklisted images from the results.</source>
-      <translation type="unfinished"/>
+      <translation>Скрыть чёрный список изображений из результатов.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
       <source>Download blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>Скачать в чёрном списке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="27"/>
       <source>Download blacklisted images during batch downloads.</source>
-      <translation type="unfinished"/>
+      <translation>Скачивайте изображения из чёрного списка при пакетной загрузке.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="34"/>
       <source>Tagging</source>
-      <translation type="unfinished"/>
+      <translation>Тегирование</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="37"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>Удалённые теги</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won&apos;t be taken into account when saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>Эти теги не будут приниматься во внимание при сохранении изображения.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
       <source>Ignored tags</source>
-      <translation type="unfinished"/>
+      <translation>Игнорируемые теги</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="44"/>
       <source>One per line. Their tag type will be reset to the default.</source>
-      <translation type="unfinished"/>
+      <translation>По одному на строку. Их тип тегов будет сброшен до значения по умолчанию.</translation>
     </message>
   </context>
   <context>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../src/components/settings/items/FolderSetting.qml" line="29"/>
       <source>Please choose a directory</source>
-      <translation type="unfinished"/>
+      <translation>Пожалуйста, выберите папку</translation>
     </message>
   </context>
   <context>
@@ -335,7 +335,7 @@
     <message>
       <location filename="../src/components/ImageScreen.qml" line="70"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>Изображение</translation>
     </message>
   </context>
   <context>
@@ -343,57 +343,57 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="11"/>
       <source>Interface</source>
-      <translation type="unfinished"/>
+      <translation>Интерфейс</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="14"/>
       <source>Language</source>
-      <translation type="unfinished"/>
+      <translation>Язык</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="22"/>
       <source>Search results</source>
-      <translation type="unfinished"/>
+      <translation>Результаты поиска</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="25"/>
       <source>Columns (portrait)</source>
-      <translation type="unfinished"/>
+      <translation>Столбцы (портрет)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="32"/>
       <source>Columns (landscape)</source>
-      <translation type="unfinished"/>
+      <translation>Строки (ландшафт)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="39"/>
       <source>Layout type</source>
-      <translation type="unfinished"/>
+      <translation>Тип шаблона</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="46"/>
       <source>Grid ratio</source>
-      <translation type="unfinished"/>
+      <translation>Соотношение сетки</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="54"/>
       <source>Thumbnail fill mode</source>
-      <translation type="unfinished"/>
+      <translation>Режим заполнения эскизов</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="62"/>
       <source>Spaced grid</source>
-      <translation type="unfinished"/>
+      <translation>Разнесённая сетка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="69"/>
       <source>Rounded grid</source>
-      <translation type="unfinished"/>
+      <translation>Скругленная сетка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
       <source>Slightly round thumbnails.</source>
-      <translation type="unfinished"/>
+      <translation>Немного округляет миниатюры.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
@@ -414,22 +414,22 @@
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="91"/>
       <source>Confirm exit</source>
-      <translation type="unfinished"/>
+      <translation>Подтвердите выход</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="92"/>
       <source>Show a confirmation dialog before exiting.</source>
-      <translation type="unfinished"/>
+      <translation>Показывать подтверждение перед выходом.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="97"/>
       <source>Double tap to exit</source>
-      <translation type="unfinished"/>
+      <translation>Нажмите дважды, чтобы выйти</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="98"/>
       <source>Tap back button twice to exit.</source>
-      <translation type="unfinished"/>
+      <translation>Нажмите кнопку назад дважды, чтобы выйти.</translation>
     </message>
   </context>
   <context>
@@ -458,12 +458,12 @@
     <message>
       <location filename="../src/components/MainDrawer.qml" line="111"/>
       <source>Favorites</source>
-      <translation type="unfinished"/>
+      <translation>Избранное</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="117"/>
       <source>Log</source>
-      <translation type="unfinished"/>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../src/components/MainDrawer.qml" line="141"/>
@@ -481,37 +481,37 @@
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="14"/>
       <source>Enable proxy</source>
-      <translation type="unfinished"/>
+      <translation>Включить прокси</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="19"/>
       <source>Use system-wide proxy settings</source>
-      <translation type="unfinished"/>
+      <translation>Использовать системные настройки прокси</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="25"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>Тип</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="33"/>
       <source>Host</source>
-      <translation type="unfinished"/>
+      <translation>Хост</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="39"/>
       <source>Port</source>
-      <translation type="unfinished"/>
+      <translation>Порт</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="46"/>
       <source>Username</source>
-      <translation type="unfinished"/>
+      <translation>Имя пользовалеля</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="52"/>
       <source>Password</source>
-      <translation type="unfinished"/>
+      <translation>Пароль</translation>
     </message>
   </context>
   <context>
@@ -521,27 +521,27 @@
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="14"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>Папка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="19"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>Имя файла</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="24"/>
       <source>Tags separator</source>
-      <translation type="unfinished"/>
+      <translation>Разделитель тегов</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="29"/>
       <source>Replace spaces by underscores</source>
-      <translation type="unfinished"/>
+      <translation>Заменить пробелы на символы подчеркивания</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="34"/>
@@ -551,45 +551,45 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation type="unfinished"/>
+      <translation>Если изображение с расширением &quot;.jpeg&quot;, то оно будет заменено на &quot;.jpg&quot;.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
       <source>Duplicate management</source>
-      <translation type="unfinished"/>
+      <translation>Управление дубликатами</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="45"/>
       <source>If a file already exists globally</source>
-      <translation type="unfinished"/>
+      <translation>Если файл уже существует где-либо</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Copy</source>
-      <translation type="unfinished"/>
+      <translation>Копировать</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Move</source>
-      <translation type="unfinished"/>
+      <translation>Переместить</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Don&apos;t save</source>
-      <translation type="unfinished"/>
+      <translation>Не сохранять</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it&apos;s in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>Если в той же папке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation type="unfinished"/>
+      <translation>Сохранять удаленные файлы в списке MD5</translation>
     </message>
   </context>
   <context>
@@ -640,7 +640,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
       <source>Network</source>
-      <translation type="unfinished"/>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="79"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="84"/>
       <source>About</source>
-      <translation type="unfinished"/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -658,12 +658,12 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="51"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>Основные</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="54"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Имя</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="63"/>
@@ -673,7 +673,7 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="64"/>
       <source>Use a secure connection.</source>
-      <translation type="unfinished"/>
+      <translation>Использовать безопасное соединение.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="75"/>
@@ -688,12 +688,12 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="124"/>
       <source>API order</source>
-      <translation type="unfinished"/>
+      <translation>Через API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="133"/>
       <source>Use default API order</source>
-      <translation type="unfinished"/>
+      <translation>Использовать API по умолчанию</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="138"/>
@@ -721,7 +721,7 @@
     <message>
       <location filename="../src/components/SourcesScreen.qml" line="26"/>
       <source>Sources selection</source>
-      <translation type="unfinished"/>
+      <translation>Выбор источников</translation>
     </message>
   </context>
   <context>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="11"/>
       <source>API order</source>
-      <translation type="unfinished"/>
+      <translation>Через API</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="14"/>
