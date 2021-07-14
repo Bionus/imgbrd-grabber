@@ -4703,7 +4703,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
       <source>Blacklist</source>
-      <translation>Liste noire</translation>
+      <translation>Ajouter à la liste noire</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
