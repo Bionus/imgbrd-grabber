@@ -933,11 +933,6 @@ Please solve the issue before resuming the download.</source>
       <translation>&lt;i&gt; 留空将使用默认设置 &lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="231"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/favorite-window.ui" line="246"/>
       <source>Delete</source>
       <translation>删除</translation>
@@ -1186,19 +1181,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="339"/>
       <source>Get &amp;all</source>
       <translation>获取&amp;所有图片</translation>
-    </message>
-  </context>
-  <context>
-    <name>GifPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="74"/>
-      <source>00:00 / 00:00</source>
-      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>
@@ -1486,11 +1468,6 @@ Please solve the issue before resuming the download.</source>
       <translation>路径</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="147"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
       <translation>&lt;i&gt;每当图片保存时，一个文本文件将储存在相同的地方，包含这个图片的标签。&lt;/i&gt;</translation>
@@ -1732,11 +1709,6 @@ Please solve the issue before resuming the download.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="56"/>
-      <source>%v</source>
-      <translation>%v</translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
       <translation>开始</translation>
@@ -1875,11 +1847,6 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/monitor-window.ui" line="69"/>
-      <source>yyyy/MM/dd HH:mm:ss</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -4585,11 +4552,6 @@ Please solve the issue before resuming the download.</source>
       <translation>全选</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.ui" line="99"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/sources/sources-window.ui" line="174"/>
       <source>Add</source>
       <translation>添加</translation>
@@ -4657,11 +4619,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/start-window.ui" line="69"/>
       <source>Format</source>
       <translation>格式</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/start-window.ui" line="93"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="102"/>
@@ -4781,11 +4738,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
       <source>Tag loader</source>
       <translation>标签加载器</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="55"/>
-      <source>%v</source>
-      <translation>%v</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="87"/>
@@ -4979,11 +4931,6 @@ Please solve the issue before resuming the download.</source>
   <context>
     <name>TokenSettingsWidget</name>
     <message>
-      <location filename="../gui/src/settings/token-settings-widget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="20"/>
       <source>If empty</source>
       <translation>如果为空</translation>
@@ -5065,19 +5012,6 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/updater/update-dialog.cpp" line="60"/>
       <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
       <translation>版本 &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>VideoPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="14"/>
-      <source>Form</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="61"/>
-      <source>00:00 / 00:00</source>
-      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>

@@ -942,11 +942,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>&lt;i&gt;Frei lassen, um die Standardeinstellungen zu nutzen.&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="231"/>
-      <source>...</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <location filename="../gui/src/favorite-window.ui" line="246"/>
       <source>Delete</source>
       <translation>Löschen</translation>
@@ -1195,19 +1190,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="339"/>
       <source>Get &amp;all</source>
       <translation>&amp;Alles herunterladen</translation>
-    </message>
-  </context>
-  <context>
-    <name>GifPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="14"/>
-      <source>Form</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="74"/>
-      <source>00:00 / 00:00</source>
-      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1496,11 +1478,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Pfad</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="147"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Jedes Mal, wenn ein Bild gespeichert wird, wird eine externe Textdatei mit dem gleichen Namen am selben Ort gespeichert.&lt;/i&gt;</translation>
@@ -1742,11 +1719,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="56"/>
-      <source>%v</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
       <translation type="unfinished"/>
@@ -1886,11 +1858,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/monitor-window.ui" line="69"/>
-      <source>yyyy/MM/dd HH:mm:ss</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -4594,11 +4561,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <translation>Alles auswählen</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.ui" line="99"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/sources/sources-window.ui" line="174"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
@@ -4666,11 +4628,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/settings/start-window.ui" line="69"/>
       <source>Format</source>
       <translation>Format</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/start-window.ui" line="93"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="102"/>
@@ -4790,11 +4747,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
       <source>Tag loader</source>
       <translation>Tag-Loader</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="55"/>
-      <source>%v</source>
-      <translation>%v</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="87"/>
@@ -4986,11 +4938,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
   <context>
     <name>TokenSettingsWidget</name>
     <message>
-      <location filename="../gui/src/settings/token-settings-widget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formular</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="20"/>
       <source>If empty</source>
       <translation>Wenn leer</translation>
@@ -5072,19 +5019,6 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
       <location filename="../gui/src/updater/update-dialog.cpp" line="60"/>
       <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
       <translation>Version &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>VideoPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="14"/>
-      <source>Form</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="61"/>
-      <source>00:00 / 00:00</source>
-      <translation type="unfinished"/>
     </message>
   </context>
   <context>

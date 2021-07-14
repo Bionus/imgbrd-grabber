@@ -757,7 +757,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>Through URL</source>
-      <translation type="unfinished"/>
+      <translation>Via l'URL</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
@@ -787,12 +787,12 @@
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
       <source>Username</source>
-      <translation type="unfinished"/>
+      <translation>Nom d'utilisateur</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="56"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>Identifiant</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
