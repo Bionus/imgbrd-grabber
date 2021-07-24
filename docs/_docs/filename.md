@@ -63,6 +63,7 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `websitename`: the website name as set in the sources' settings.
 * `height`: the image's height.
 * `width`: the image's width.
+* `aspect_ratio`: the image's aspect ratio in decimal format. 
 * `mpixels`: the image's height multiplied by the image's width.
 * `author`: the name of the author of the image.
 * `authorid`: the ID of the author of the image.

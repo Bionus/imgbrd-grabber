@@ -45,7 +45,7 @@ SearchSyntaxHighlighter::SearchSyntaxHighlighter(bool full, QTextDocument *paren
 
 	// Meta format "meta:value"
 	metaFormat.setForeground(QColor("#a52a2a"));
-	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?(?: |$)", QRegularExpression::CaseInsensitiveOption);
+	rule.pattern = QRegularExpression("(?: |^)(user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|aspect_ratio|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent|sort|grabber):([^: ][^ ]*)?(?: |$)", QRegularExpression::CaseInsensitiveOption);
 	rule.format = metaFormat;
 	highlightingRules.append(rule);
 }

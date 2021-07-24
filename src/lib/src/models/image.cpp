@@ -914,6 +914,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(),
 		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
+		QStrP(tr("Aspect Ratio"), token<QString>("aspect_ratio")),
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),
 		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
@@ -1043,6 +1044,11 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("id", Token(m_id));
 	tokens.insert("height", Token(height()));
 	tokens.insert("width", Token(width()));
+	if (height() > 0 && width() > 0){
+		tokens.insert("aspect_ratio", Token((float)width() / (float)height()));
+	} else {
+		tokens.insert("aspect_ratio", Token(0.));
+	}
 	tokens.insert("mpixels", Token(width() * height()));
 	tokens.insert("url_file", Token(m_url));
 	tokens.insert("url_original", Token(m_sizes[Size::Full]->url.toString()));

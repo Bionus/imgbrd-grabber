@@ -170,7 +170,7 @@ Profile::Profile(QString path)
 	// m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
 
 	// Complete auto-complete
-	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
+	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited", "aspect_ratio:>1.2", "aspect_ratio:<0.8", "aspect_ratio:0.75..1.25" };
 	m_autoComplete.reserve(m_autoComplete.count() + m_customAutoComplete.count() + m_favorites.count() + specialCompletes.count());
 	m_autoComplete.append(m_customAutoComplete);
 	for (const Favorite &fav : qAsConst(m_favorites)) {
