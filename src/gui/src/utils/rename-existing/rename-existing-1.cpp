@@ -150,8 +150,8 @@ void RenameExisting1::setImageResult(Image *img)
 
 	QFileInfo fi(m_getAll[md5].path);
 	auto tokens = img->tokens(m_profile);
-	tokens.insert("directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
-	tokens.insert("filename", Token(fi.fileName()));
+	tokens.insert("old_directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
+	tokens.insert("old_filename", Token(fi.fileName()));
 
 	Filename fn(ui->lineFilenameDestination->text());
 	QStringList paths = fn.path(tokens, m_profile, dir, 0, Filename::Complex | Filename::Path);
