@@ -612,6 +612,8 @@ void MainWindow::restoreLastClosedTab()
 }
 void MainWindow::currentTabChanged(int tab)
 {
+	Q_UNUSED(tab);
+
 	if (!m_loaded) {
 		return;
 	}
