@@ -166,7 +166,7 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 		// Use a random temporary file if we need the MD5 or equivalent
 		if (m_filename.needTemporaryFile(m_image->tokens(m_profile))) {
 			const QString tmpDir = !m_path.isEmpty() ? m_path : m_profile->tempPath();
-			m_temporaryPath = tmpDir + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+			m_temporaryPath = tmpDir + QDir::separator() + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
 		}
 	}
 
