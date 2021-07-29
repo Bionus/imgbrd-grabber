@@ -82,6 +82,7 @@ export const source: ISource = {
                     }
 
                     const images: IImage[] = [];
+                    let invalid = 0;
                     for (const image of data["posts"]) {
                         const img = Grabber.mapFields(image, map);
 
@@ -106,11 +107,18 @@ export const source: ISource = {
                         }
                         img.tags = tags;
 
-                        if (!image.file.md5 || image.file.md5.length === 0) {
+                        if (!img.md5 || img.md5.length === 0) {
                             continue;
+                        }
+                        if (img.md5 && !img.file_url) {
+                            invalid++;
                         }
 
                         images.push(completeImage(img));
+                    }
+
+                    if (invalid > 0) {
+                        console.warn(`${invalid} image(s) without URL found, login to view them`);
                     }
 
                     return { images };
@@ -162,6 +170,11 @@ export const source: ISource = {
                     const match = src.match(/<div id="page">\s*<p>([^<]+)<\/p>\s*<\/div>/m);
                     if (match) {
                         return { error: match[1] };
+                    }
+
+                    const warn = src.match(/<div class="[^"]*hidden-posts-notice">(.+?)<\/div>/m);
+                    if (warn) {
+                        console.warn(warn[1]);
                     }
 
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
