@@ -221,6 +221,13 @@ void ImageDownloader::loadedSave(Image::LoadTagsResult result)
 	}
 
 	m_url = m_image->url(m_size);
+
+	if (m_url.isEmpty()) {
+		log(QStringLiteral("Image without URL found for '%1'").arg(m_paths.first()), Logger::Warning);
+		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
+		return;
+	}
+
 	log(QStringLiteral("Loading and saving image from `%1` in `%2`").arg(m_url.toString(), m_paths.first()));
 	loadImage();
 }
