@@ -301,7 +301,7 @@ void Site::setRequestHeaders(QNetworkRequest &request) const
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
 	if (userAgent.isEmpty()) {
-		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
+		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0");
 	}
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
