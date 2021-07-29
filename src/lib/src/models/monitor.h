@@ -35,6 +35,7 @@ class Monitor
 		const QDateTime &lastStateSince() const;
 		int lastStateCount() const;
 		void setLastState(const QString &lastState);
+		void setForceRun();
 
 		// Serialization
 		void toJson(QJsonObject &json) const;
@@ -57,6 +58,7 @@ class Monitor
 		QString m_lastState;
 		QDateTime m_lastStateSince;
 		int m_lastStateCount;
+		bool m_forceRun;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);
