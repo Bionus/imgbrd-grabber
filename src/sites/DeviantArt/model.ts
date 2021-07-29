@@ -23,6 +23,13 @@ function parseSearch(search: string): { query: string, order?: number } {
     return { query, order }
 }
 
+function completeImage(img: IImage): IImage {
+    if (!img.id && img.page_url) {
+        img.id = Grabber.regexToConst("id", "-(?<id>\\d+)$", img.page_url);
+    }
+    return img;
+}
+
 export const source: ISource = {
     name: "DeviantArt",
     apis: {
@@ -52,7 +59,6 @@ export const source: ISource = {
                         const rating = image["media:rating"]["#text"].trim();
 
                         const img: IImage = {
-                            id: Grabber.regexToConst("id", "-(?<id>\\d+)$", image["link"]["#text"]),
                             // page_url: image["link"]["#text"],
                             created_at: image["pubDate"]["#text"],
                             name: image["media:title"]["#text"],
@@ -66,10 +72,29 @@ export const source: ISource = {
                         };
                         img.sample_url = img.file_url;
 
-                        images.push(img);
+                        images.push(completeImage(img));
                     }
 
                     return { images };
+                },
+            },
+        },
+        html: {
+            name: "Regex",
+            auth: [],
+            forcedLimit: 24,
+            search: {
+                url: (query: ISearchQuery, opts: IUrlOptions): string | IError => {
+                    const parsed = parseSearch(query.search);
+                    return "/search/deviations?q=" + encodeURIComponent(parsed.query) + "&page=" + query.page;
+                },
+                parse: (src: string): IParsedSearch => {
+                    console.log(JSON.stringify(Grabber.regexToTags('<a href="[^"]*/search/deviations\\?q=[^"]+" data-tag="(?<name>[^"]+)"[^>]*>[^<]+</a>', src)));
+                    return {
+                        images: Grabber.regexToImages('<section.*?<a data-hook="deviation_link" href="(?<page_url>[^"]+)"[^>]*>.*?<img[^>]+src="(?<preview_url>[^"]+)"[^>]*>.*?<h2[^<]*>(?<name>[^<]+)</h2>', src).map(completeImage),
+                        tags: Grabber.regexToTags('<a href="[^"]*/search/deviations\\?q=[^"]+" data-tag="(?<name>[^"]+)"[^>]*>[^<]+</a>', src),
+                        imageCount: Grabber.regexToConst("count", '>(?<count>\\d+) results<', src),
+                    };
                 },
             },
         },
