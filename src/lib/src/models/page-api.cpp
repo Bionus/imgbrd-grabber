@@ -195,7 +195,7 @@ void PageApi::parse()
 
 	// Detect HTTP 429 / 509 usage limit reached
 	const int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (statusCode == 429 || statusCode ==  509) {
+	if (statusCode == 429 || statusCode == 509) {
 		log(QStringLiteral("[%1][%2] Limit reached (%3). New try.").arg(m_site->url(), m_format, QString::number(statusCode)), Logger::Warning);
 		load(true, true);
 		return;
