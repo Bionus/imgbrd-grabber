@@ -14,6 +14,10 @@ Monitor::Monitor(QList<Site *> sites, int interval, QDateTime lastCheck, bool do
 
 qint64 Monitor::secsToNextCheck() const
 {
+	if (m_forceRun) {
+		return -1;
+	}
+
 	auto now = QDateTime::currentDateTimeUtc();
 	return now.secsTo(m_lastCheck.addSecs(m_interval));
 }
@@ -42,6 +46,7 @@ const QDateTime &Monitor::lastCheck() const
 void Monitor::setLastCheck(const QDateTime &lastCheck)
 {
 	m_lastCheck = lastCheck;
+	m_forceRun = false;
 }
 
 int Monitor::cumulated() const
@@ -111,6 +116,11 @@ void Monitor::setLastState(const QString &lastState)
 		m_lastStateCount = 1;
 		m_lastStateSince = QDateTime::currentDateTimeUtc();
 	}
+}
+
+void Monitor::setForceRun()
+{
+	m_forceRun = true;
 }
 
 

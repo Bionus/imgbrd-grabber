@@ -36,6 +36,7 @@ class MonitorsTab : public QWidget
 
 	public slots:
 		void toggleMonitoring();
+		void startNow();
 
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);

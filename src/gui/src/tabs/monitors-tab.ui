@@ -47,11 +47,18 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutStatus" stretch="0">
+    <layout class="QHBoxLayout" name="layoutStatus" stretch="0,0">
      <item>
       <widget class="QPushButton" name="buttonToggle">
        <property name="text">
         <string>Stop</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonStartNow">
+       <property name="text">
+        <string>Start now</string>
        </property>
       </widget>
      </item>
@@ -93,8 +100,8 @@
    <slot>toggleMonitoring()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>767</x>
-     <y>507</y>
+     <x>395</x>
+     <y>518</y>
     </hint>
     <hint type="destinationlabel">
      <x>795</x>
@@ -102,9 +109,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonStartNow</sender>
+   <signal>clicked()</signal>
+   <receiver>MonitorsTab</receiver>
+   <slot>startNow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>743</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>778</x>
+     <y>525</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>monitorsTableContextMenu(QPoint)</slot>
   <slot>toggleMonitoring()</slot>
+  <slot>startNow()</slot>
  </slots>
 </ui>

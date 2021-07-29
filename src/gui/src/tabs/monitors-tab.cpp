@@ -81,3 +81,17 @@ void MonitorsTab::toggleMonitoring()
 	}
 	ui->buttonToggle->setText(running ? tr("Start") : tr("Stop"));
 }
+
+void MonitorsTab::startNow()
+{
+	for (Favorite &fav : m_profile->getFavorites()) {
+		for (Monitor &monitor : fav.getMonitors()) {
+			monitor.setForceRun();
+		}
+	}
+	for (auto &monitor : m_monitorManager->monitors()) {
+		monitor.setForceRun();
+	}
+
+	m_monitoringCenter->tick();
+}
