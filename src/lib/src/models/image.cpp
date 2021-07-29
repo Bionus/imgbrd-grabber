@@ -432,8 +432,8 @@ void Image::parseDetails()
 	}
 
 	const int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (statusCode == 429) {
-		log(QStringLiteral("Details limit reached (429). New try."));
+	if (statusCode == 429 || statusCode == 509) {
+		log(QStringLiteral("Details limit reached (HTTP %1). New try.").arg(statusCode));
 		loadDetails(true);
 		return;
 	}
