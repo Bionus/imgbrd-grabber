@@ -89,6 +89,9 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type == QLatin1String("oc")) {
 		return QStringLiteral("character");
 	}
+	if (type == QLatin1String("metadata")) {
+		return QStringLiteral("meta");
+	}
 
 	if (type.length() == 1) {
 		const int typeId = type.toInt();
