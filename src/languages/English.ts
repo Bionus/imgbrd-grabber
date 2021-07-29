@@ -943,11 +943,6 @@ Please solve the issue before resuming the download.</translation>
       <translation>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="231"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/favorite-window.ui" line="246"/>
       <source>Delete</source>
       <translation>Delete</translation>
@@ -1196,19 +1191,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="339"/>
       <source>Get &amp;all</source>
       <translation>Get &amp;all</translation>
-    </message>
-  </context>
-  <context>
-    <name>GifPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/gif-player.ui" line="74"/>
-      <source>00:00 / 00:00</source>
-      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>
@@ -1497,11 +1479,6 @@ Please solve the issue before resuming the download.</translation>
       <translation>Path</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="147"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/log-window.ui" line="179"/>
       <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
       <translation>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</translation>
@@ -1743,11 +1720,6 @@ Please solve the issue before resuming the download.</translation>
       <translation>Generate a SQLite MD5 database using an existing TXT MD5 database.</translation>
     </message>
     <message>
-      <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="56"/>
-      <source>%v</source>
-      <translation>%v</translation>
-    </message>
-    <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
       <translation>Start</translation>
@@ -1894,11 +1866,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
       <translation>Last check</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/monitor-window.ui" line="69"/>
-      <source>yyyy/MM/dd HH:mm:ss</source>
-      <translation>yyyy/MM/dd HH:mm:ss</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
@@ -4607,11 +4574,6 @@ Please solve the issue before resuming the download.</translation>
       <translation>Check all</translation>
     </message>
     <message>
-      <location filename="../gui/src/sources/sources-window.ui" line="99"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../gui/src/sources/sources-window.ui" line="174"/>
       <source>Add</source>
       <translation>Add</translation>
@@ -4679,11 +4641,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/settings/start-window.ui" line="69"/>
       <source>Format</source>
       <translation>Format</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/start-window.ui" line="93"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="102"/>
@@ -4803,11 +4760,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
       <source>Tag loader</source>
       <translation>Tag loader</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="55"/>
-      <source>%v</source>
-      <translation>%v</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="87"/>
@@ -5002,11 +4954,6 @@ Please solve the issue before resuming the download.</translation>
   <context>
     <name>TokenSettingsWidget</name>
     <message>
-      <location filename="../gui/src/settings/token-settings-widget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../gui/src/settings/token-settings-widget.ui" line="20"/>
       <source>If empty</source>
       <translation>If empty</translation>
@@ -5088,19 +5035,6 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/updater/update-dialog.cpp" line="60"/>
       <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
       <translation>Version &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>VideoPlayer</name>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/viewer/players/video-player.ui" line="61"/>
-      <source>00:00 / 00:00</source>
-      <translation>00:00 / 00:00</translation>
     </message>
   </context>
   <context>
