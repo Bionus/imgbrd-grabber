@@ -232,8 +232,6 @@ Source: "{#SrcDir}\dist\common\themes\QDarkStyleSheet\*"; DestDir: "{localappdat
 Source: "{#SrcDir}\dist\common\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"; Flags: onlyifdoesntexist
 
 [InstallDelete]
-Type: filesandordirs; Name: "{app}\languages\updater"
-Type: filesandordirs; Name: "{app}\sites"
 Type: files; Name: "{app}\Updater.exe"
 Type: files; Name: "{app}\VERSION"
 Type: files; Name: "{app}\MD5"
