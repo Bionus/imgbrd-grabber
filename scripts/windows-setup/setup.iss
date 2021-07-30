@@ -125,6 +125,8 @@ Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\German.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Japanese.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
+Source: "{#BuildDir}\crash-reporter\languages\Korean.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Polish.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
@@ -143,6 +145,8 @@ Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"
 Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\German.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Japanese.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "{#BuildDir}\languages\Korean.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Polish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Russian.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\Spanish.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
