@@ -130,7 +130,7 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
 	settings->beginGroup(QStringLiteral("Save/Customs"));
 	const QStringList keys = settings->childKeys();
 	for (const QString &key : keys) {
-		tokens.insert(key, settings->value(key).toString().split(' '));
+		tokens.insert(key, splitStringMulti({ ' ', '\n' }, settings->value(key).toString(), true));
 	}
 	settings->endGroup();
 	return tokens;
