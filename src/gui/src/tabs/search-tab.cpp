@@ -463,7 +463,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 	}
 
 	// Re-enable endless loading if all sources have reached the last page
-	if (finished) {
+	if (finished && page->isValid()) {
 		bool allFinished = true;
 		for (auto ps : qAsConst(m_pages)) {
 			const int pagesCount = ps.first()->pagesCount();
