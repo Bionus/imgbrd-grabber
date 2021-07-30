@@ -1,3 +1,10 @@
+function buildSearch(search: string): string {
+    // Replace "ratio:4:3" meta by "4:3_aspect_ratio" tag
+    search = search.replace(/(^| )ratio:(\d+:\d+)($| )/g, "$1$2_aspect_ratio$3");
+
+    return search;
+}
+
 function buildImageFromJson(img: any): IImage {
     img.created_at = img.created_at["s"];
     img.score = img.total_score;
@@ -82,7 +89,8 @@ export const source: ISource = {
                         .replace("//chan.", "//capi-v2.")
                         .replace("//idol.", "//iapi.");
                     const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 1000 : 50, "page={page}", "prev={max}", "next={min-1}");
-                    const url = baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(query.search);
+                    const search = buildSearch(query.search);
+                    const url = baseUrl + "/posts?lang=english&" + pagePart + "&limit=" + opts.limit + "&tags=" + encodeURIComponent(search);
                     return {
                         url,
                         headers: {
@@ -103,7 +111,7 @@ export const source: ISource = {
                         .replace("//idol.", "//iapi.");
                     return baseUrl + "/posts/" + id;
                 },
-                parse: function (src) {
+                parse: (src: string): IParsedDetails => {
                     const data = JSON.parse(src);
                     return buildImageFromJson(data);
                 },
@@ -117,7 +125,8 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
-                        return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(query.search);
+                        const search = buildSearch(query.search);
+                        return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(search);
                     } catch (e) {
                         return { error: e.message };
                     }
