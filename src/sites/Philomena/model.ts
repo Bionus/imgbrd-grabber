@@ -143,7 +143,13 @@ export const source: ISource = {
                     return "/api/v1/json/images/" + id;
                 },
                 parse: (src: string): IParsedDetails => {
-                    const data = JSON.parse(src);
+                    let data = JSON.parse(src);
+
+                    // Newer versions of Philomena wrap details in an "image" object
+                    if ("image" in data && !("representations" in data)) {
+                        data = data["image"];
+                    }
+
                     return {
                         createdAt: data["created_at"],
                         imageUrl: data["representations"]["full"],
