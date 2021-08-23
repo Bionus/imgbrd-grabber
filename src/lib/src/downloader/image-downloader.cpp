@@ -321,6 +321,13 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 			emit saved(m_image, makeResult(m_paths, Image::SaveResult::NotFound));
 		}
 	} else if (error != NetworkReply::NetworkError::OperationCanceledError) {
+		// "HostNotFoundError" might be caused by network loss, so we emit a blocking "Error" instead
+		if (error == NetworkReply::NetworkError::HostNotFoundError || msg.contains("unreachable")) {
+			log(QStringLiteral("Host '%1' not found for the image: `%2`: %3 (%4)").arg(m_reply->url().host(), m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+			emit saved(m_image, makeResult(m_paths, Image::SaveResult::Error));
+			return;
+		}
+
 		log(QStringLiteral("Network error for the image: `%1`: %2 (%3)").arg(m_image->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
 		emit saved(m_image, makeResult(m_paths, Image::SaveResult::NetworkError));
 	}
