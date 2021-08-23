@@ -199,16 +199,26 @@ jobs:
           working-directory: src
           run: ../build/tests/tests
 
-      - name: Generate package
+      - name: Generate AppImage
         run: |
           ./scripts/package-appimage.sh
           mv Grabber_*-x86_64.AppImage Grabber-x86_64.AppImage
 
-      - name: Upload package
+      - name: Upload AppImage
         uses: actions/upload-artifact@v2
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
+          if-no-files-found: error
+
+      - name: Generate archive
+        run: ./scripts/package-linux.sh
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: Grabber.tar.gz
+          path: Grabber.tar.gz
           if-no-files-found: error
 
   macos:
@@ -527,10 +537,15 @@ jobs:
       VERSION: ${{ needs.version.outputs.version }}
 
     steps:
-      - name: Download artifact (Linux)
+      - name: Download artifact (Linux AppImage)
         uses: actions/download-artifact@v2
         with:
           name: Grabber-x86_64.AppImage
+
+      - name: Download artifact (Linux archive)
+        uses: actions/download-artifact@v2
+        with:
+          name: Grabber.tar.gz
 
       - name: Download artifact (macOS)
         uses: actions/download-artifact@v2
@@ -567,6 +582,7 @@ jobs:
       - name: Rename artifacts
         run: |
           mv Grabber-x86_64.AppImage Grabber_${VERSION}-x86_64.AppImage
+          mv Grabber.tar.gz Grabber_${VERSION}.tar.gz
           mv Grabber.dmg Grabber_${VERSION}.dmg
           mv Grabber_x86.exe Grabber_${VERSION}_x86.exe
           mv Grabber_x64.exe Grabber_${VERSION}_x64.exe
