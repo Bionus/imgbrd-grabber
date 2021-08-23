@@ -169,7 +169,7 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	}
 
 	// Forbidden characters and spaces replacement settings
-	if (name != "allo" && !name.startsWith("url_") && name != "filename" && name != "directory" && !clean) {
+	if (name != "allo" && !name.startsWith("url_") && name != "filename" && name != "directory" && name != "old_filename" && name != "old_directory" && !clean) {
 		res = cleanVariable(res, options);
 	}
 
