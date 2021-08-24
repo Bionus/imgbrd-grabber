@@ -69,6 +69,10 @@ QList<QSharedPointer<Image>> SearchImagesCliCommand::getAllImages()
 
 void SearchImagesCliCommand::loadMoreDetails(const QList<QSharedPointer<Image>> &images)
 {
+	if (images.isEmpty()) {
+		return;
+	}
+
 	int work = images.length();
 	int requestsLimit = 5; // Simultaneous requests
 	int runningRequests = 0;
