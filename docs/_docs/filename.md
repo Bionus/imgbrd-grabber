@@ -79,9 +79,8 @@ Note that here, each slash (`/`) corresponds to a different directory:
 * `count`: counts the current image downloaded during a batch download. Useful to have unique counters per batchs.
 * `num`: counter that goes up for every file with the same name. Useful to prevent overwriting already existing files.
 * `position`: the position of the image in the results list or gallery (starts at 1).
-* ~~`directory`: when renaming, store the local path for the current file (useful to rename images, without changing directory structure).~~ Beware this token is replaced by old_directory but seems to still work in the origin filename field, but not on the destination filename field.
-* `old_directory` : when renaming, store the local path for the current file (useful to rename images, without changing directory structure).
-* `old_filename` : when renaming, store the local filename for the current file (useful to move images, but keeping their local names) Beware, this token keep the extension of the file, therefore, should not be used with %ext%.
+* `old_directory`: when renaming, store the local path for the current file. (useful to rename images, without changing directory structure).
+* `old_filename`: when renaming, store the local filename for the current file. (useful to move images, but keeping their local names) Beware, this token keep the extension of the file, therefore, should not be used with %ext%.
 
 ## Gallery tokens
 
