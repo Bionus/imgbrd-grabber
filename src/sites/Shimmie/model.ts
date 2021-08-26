@@ -179,7 +179,7 @@ export const source: ISource = {
                     if (query.search.length > 0) {
                         return { error: "Tag search is impossible with Shimmie RSS API." };
                     }
-                    return "/index.php?q=/rss/images/" + query.page;
+                    return "/rss/images/" + query.page;
                 },
                 parse: (src: string): IParsedSearch => {
                     const data = Grabber.makeArray(Grabber.parseXML(src).rss.channel.item);
@@ -229,9 +229,9 @@ export const source: ISource = {
                 parseErrors: true,
                 url: (query: ISearchQuery): string => {
                     if (query.search.length > 0) {
-                        return "/index.php?q=/post/list/" + transformQuery(query.search) + "/" + query.page;
+                        return "/post/list/" + transformQuery(query.search) + "/" + query.page;
                     }
-                    return "/index.php?q=/post/list/" + query.page;
+                    return "/post/list/" + query.page;
                 },
                 parse: (src: string, statusCode: number): IParsedSearch | IError => {
                     // 404 are not really "errors" as they just mean "no result"
@@ -272,7 +272,7 @@ export const source: ISource = {
             },
             details: {
                 url: (id: string, md5: string): string => {
-                    return "/index.php?q=/post/view/" + id;
+                    return "/post/view/" + id;
                 },
                 parse: parseDetails,
             },
