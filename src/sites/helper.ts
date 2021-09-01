@@ -103,7 +103,7 @@ addHelper("fileSizeToInt", (str: string): number => {
     if  (typeof str !== "string") {
         return str as any;
     }
-    const res = str.match(/^(\d+(?:\.\d+))\s*(\w+)$/);
+    const res = str.match(/^(\d+(?:\.\d+)?)\s*(\w+)$/);
     if (res) {
         const val = parseFloat(res[1]);
         const unit = res[2].toLowerCase();
