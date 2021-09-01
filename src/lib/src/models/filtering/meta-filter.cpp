@@ -5,6 +5,7 @@
 #include <QStringBuilder>
 #include <QTimeZone>
 #include <utility>
+#include "functions.h"
 #include "loader/token.h"
 
 
@@ -44,6 +45,8 @@ static int stringToInt(const QString &text)
 { return text.toInt(); }
 static int stringToFloat(const QString &text)
 { return qRound(text.toFloat() * 1000); }
+static qint64 stringToFileSize(const QString &text)
+{ return parseFileSize(text); }
 
 // FIXME(Bionus): remove globals
 static QDateTime ageToDateImage;
@@ -183,6 +186,8 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 			cond = rangeCheck(stringToDate, token.toDateTime(), m_val);
 		} else if (m_type == "score") {
 			cond = rangeCheck(stringToFloat, qRound(token.toFloat() * 1000), m_val);
+		} else if (m_type == "filesize") {
+			cond = rangeCheck(stringToFileSize, token.toLongLong(), m_val);
 		} else {
 			cond = rangeCheck(stringToInt, input, m_val);
 		}
