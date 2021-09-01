@@ -166,10 +166,14 @@ QString MetaFilter::match(const QMap<QString, Token> &tokens, bool invert) const
 	}
 
 	const QVariant &token = tokens[m_type].value();
-	if (token.type() == QVariant::Int || token.type() == QVariant::DateTime || token.type() == QVariant::ULongLong || m_type == "score") {
+	if (token.type() == QVariant::Int || token.type() == QVariant::UInt || token.type() == QVariant::DateTime || token.type() == QVariant::LongLong || token.type() == QVariant::ULongLong || m_type == "score") {
 		int input = 0;
 		if (token.type() == QVariant::Int) {
 			input = token.toInt();
+		} else if (token.type() == QVariant::UInt) {
+			input = token.toUInt();
+		} else if (token.type() == QVariant::LongLong) {
+			input = token.toLongLong();
 		} else if (token.type() == QVariant::ULongLong) {
 			input = token.toULongLong();
 		}
