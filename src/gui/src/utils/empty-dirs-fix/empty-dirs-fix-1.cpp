@@ -48,7 +48,7 @@ QStringList EmptyDirsFix1::mkList(const QDir &dir)
 		if (isEmpty(QDir(dir.path() + "/" + dirs.at(i)))) {
 			ret.append(dir.path() + "/" + dirs.at(i));
 		} else {
-			mkList(QDir(dir.path() + "/" + dirs.at(i)));
+			ret.append(mkList(QDir(dir.path() + "/" + dirs.at(i))));
 		}
 	}
 	return ret;
