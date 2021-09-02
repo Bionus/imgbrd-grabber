@@ -17,9 +17,20 @@ function makeImage(image: any): IImage {
     return image;
 }
 
+const tagTypeMap: Record<string, string> = {
+    tag: "general",
+    language: "meta",
+    category: "general",
+    character: "character",
+    parody: "copyright",
+    artist: "artist",
+    group: "artist",
+};
+
 function makeTag(tag: any): ITag {
     return {
         id: tag["id"],
+        type: tag["type"] in tagTypeMap ? tagTypeMap[tag["type"]] : undefined,
         name: tag["name"],
         count: tag["count"],
     };
