@@ -55,7 +55,7 @@ export const source: ISource = {
                             gallery_count: gallery["num_pages"],
                             id: gallery["id"],
                             name: gallery["title"]["english"],
-                            date: gallery["upload_date"],
+                            created_at: gallery["upload_date"],
                             tags: gallery["tags"].map(makeTag),
                             preview_url: "https://t.nhentai.net/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
                             preview_width: thumb["w"],
@@ -83,7 +83,7 @@ export const source: ISource = {
                         const image = pages[page];
                         const index = parseInt(page, 10) + 1;
                         images.push({
-                            date: data["upload_date"],
+                            created_at: data["upload_date"],
                             tags: data["tags"].map(makeTag),
                             file_url: "https://i.nhentai.net/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
                             width: image["w"],
