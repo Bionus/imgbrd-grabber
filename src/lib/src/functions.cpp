@@ -330,7 +330,6 @@ qint64 parseFileSize(const QString &str)
 	static const QRegularExpression rx(QStringLiteral("^(\\d+(?:\\.\\d+)?)\\s*([a-zA-Z]+)$"));
 	const auto match = rx.match(str);
 	if (match.hasMatch()) {
-		const QString v = match.captured(1);
 		const double val = match.captured(1).toDouble();
 		const QString unit = match.captured(2).toLower();
 		if (unit == QStringLiteral("gb")) {
