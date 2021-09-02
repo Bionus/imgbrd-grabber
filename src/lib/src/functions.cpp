@@ -325,6 +325,27 @@ QString formatFilesize(double size)
 	return QStringLiteral("%1 %2").arg(roundedSize).arg(unit);
 }
 
+qint64 parseFileSize(const QString &str)
+{
+	static const QRegularExpression rx(QStringLiteral("^(\\d+(?:\\.\\d+)?)\\s*([a-zA-Z]+)$"));
+	const auto match = rx.match(str);
+	if (match.hasMatch()) {
+		const double val = match.captured(1).toDouble();
+		const QString unit = match.captured(2).toLower();
+		if (unit == QStringLiteral("gb")) {
+			return qRound64(val * 1024 * 1024 * 1024);
+		}
+		if (unit == QStringLiteral("mb")) {
+			return qRound64(val * 1024 * 1024);
+		}
+		if (unit == QStringLiteral("kb")) {
+			return qRound64(val * 1024);
+		}
+		return qRound64(val);
+	}
+	return qRound64(str.toDouble());
+}
+
 bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);

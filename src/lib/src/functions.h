@@ -45,6 +45,7 @@ int levenshtein(QString, QString);
 QString stripTags(QString);
 QString getUnit(double *size);
 QString formatFilesize(double size);
+qint64 parseFileSize(const QString &str);
 QString getExtension(const QUrl &url);
 QUrl setExtension(QUrl url, const QString &extension);
 bool isUrl(const QString &str);
