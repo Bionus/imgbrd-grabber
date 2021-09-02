@@ -93,37 +93,37 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="13"/>
       <source>Backup</source>
-      <translation type="unfinished"/>
+      <translation>备份</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
       <source>Export settings</source>
-      <translation type="unfinished"/>
+      <translation>导出配置</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Backup the app settings.ini file on your device.</source>
-      <translation type="unfinished"/>
+      <translation>在您的设备上备份应用程序 settings.ini 文件</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
       <source>Please choose a directory</source>
-      <translation type="unfinished"/>
+      <translation>请选择一个目录</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="33"/>
       <source>Import settings</source>
-      <translation type="unfinished"/>
+      <translation>导入配置</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="34"/>
       <source>Import the app settings.ini from an existing file.</source>
-      <translation type="unfinished"/>
+      <translation>从现有文件导入应用程序 setting.ini</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="42"/>
       <source>Please choose a file</source>
-      <translation type="unfinished"/>
+      <translation>请选择一个文件</translation>
     </message>
   </context>
   <context>
@@ -156,12 +156,12 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="36"/>
       <source>Background color</source>
-      <translation type="unfinished"/>
+      <translation>背景颜色</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="41"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>标签</translation>
     </message>
   </context>
   <context>
@@ -169,27 +169,27 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="11"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>标签</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="14"/>
       <source>Artists</source>
-      <translation type="unfinished"/>
+      <translation>艺术家</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="19"/>
       <source>Circle</source>
-      <translation type="unfinished"/>
+      <translation>社团</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="24"/>
       <source>Series</source>
-      <translation type="unfinished"/>
+      <translation>系列</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="29"/>
       <source>Characters</source>
-      <translation type="unfinished"/>
+      <translation>角色</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="34"/>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="39"/>
       <source>Metas</source>
-      <translation type="unfinished"/>
+      <translation>元数据</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="44"/>
@@ -214,22 +214,22 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="54"/>
       <source>Favorites</source>
-      <translation type="unfinished"/>
+      <translation>收藏</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="59"/>
       <source>Kept for later</source>
-      <translation type="unfinished"/>
+      <translation>等下再看</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="64"/>
       <source>Blacklisted</source>
-      <translation type="unfinished"/>
+      <translation>已列入黑名单</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="69"/>
       <source>Ignored</source>
-      <translation type="unfinished"/>
+      <translation>已忽略</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="22"/>
       <source>Favorites</source>
-      <translation type="unfinished"/>
+      <translation>收藏</translation>
     </message>
   </context>
   <context>
@@ -312,22 +312,22 @@
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="147"/>
       <source>File is too big to be displayed.</source>
-      <translation type="unfinished"/>
+      <translation>文件过大，无法显示</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="150"/>
       <source>Image not found.</source>
-      <translation type="unfinished"/>
+      <translation>未找到图片</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="153"/>
       <source>Error loading the image.</source>
-      <translation type="unfinished"/>
+      <translation>加载图片失败</translation>
     </message>
     <message>
       <location filename="../src/loaders/image-loader.cpp" line="156"/>
       <source>Error saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>保存图像时失败</translation>
     </message>
   </context>
   <context>
@@ -398,12 +398,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
       <source>Image viewer</source>
-      <translation type="unfinished"/>
+      <translation>图像查看器</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="80"/>
       <source>Buttons at the bottom</source>
-      <translation type="unfinished"/>
+      <translation>底部按钮</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="48"/>
       <source>Add</source>
-      <translation type="unfinished"/>
+      <translation>添加</translation>
     </message>
   </context>
   <context>
@@ -645,7 +645,7 @@
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="79"/>
       <source>Advanced</source>
-      <translation type="unfinished"/>
+      <translation>高级设置</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SettingsScreen.qml" line="84"/>
@@ -678,12 +678,12 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="75"/>
       <source>Login</source>
-      <translation type="unfinished"/>
+      <translation>登录</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="84"/>
       <source>Type</source>
-      <translation type="unfinished"/>
+      <translation>类型</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="124"/>
@@ -787,17 +787,17 @@
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
       <source>Username</source>
-      <translation type="unfinished"/>
+      <translation>用户名</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="56"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>用户 ID</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="57"/>
       <source>Password</source>
-      <translation type="unfinished"/>
+      <translation>密码</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="58"/>
@@ -807,7 +807,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="59"/>
       <source>API key</source>
-      <translation type="unfinished"/>
+      <translation>API 密钥</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="116"/>
