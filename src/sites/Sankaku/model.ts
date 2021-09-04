@@ -10,15 +10,15 @@ function buildImageFromJson(img: any): IImage {
     img.score = img.total_score;
     img.author = img.author.name;
 
-    return completeImage(img);
+    return completeImage(img, true);
 }
 
-function completeImage(img: IImage): IImage {
+function completeImage(img: IImage, fromJson: boolean = false): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    if (img.file_url) {
+    if (img.file_url && !fromJson) {
         img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
     }
 
