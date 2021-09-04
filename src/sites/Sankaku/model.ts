@@ -159,6 +159,33 @@ export const source: ISource = {
                     };
                 },
             },
+            tagTypes: {
+                url: (): string => {
+                    return "/tag/index";
+                },
+                parse: (src: string): IParsedTagTypes | IError => {
+                    const contents = src.match(/<select[^>]* id=['"]?type['"]?[^>]*>([\s\S]+)<\/select>/);
+                    if (!contents) {
+                        return { error: "Parse error: could not find the tag type <select> tag" };
+                    }
+                    const results = Grabber.regexMatches('<option value="?(?<id>\\d+)"?>(?<name>[^<]+)</option>', contents[1]);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
+            tags: {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
+                    return "/tag/index?language=en&order=" + query.order + "&page=" + query.page;
+                },
+                parse: (src: string): IParsedTags => {
+                    return {
+                        tags: Grabber.regexToTags('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="?tag-type-(?<type>[^">]+)"?>\\s*\\[<a[^>]+>\\?</a>\\]\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>', src),
+                    };
+                },
+            },
             check: {
                 url: (): string => {
                     return "/";
