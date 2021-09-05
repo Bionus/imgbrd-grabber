@@ -38,7 +38,7 @@ void getProperty(const QJSValue &val, const QString &key, int &out)
 	}
 
 	const QJSValue prop = val.property(key);
-	if (prop.isUndefined() || prop.isNull() || !prop.isNumber()) {
+	if (prop.isUndefined() || prop.isNull() || !(prop.isNumber() || prop.isString())) {
 		return;
 	}
 
@@ -51,7 +51,7 @@ void getProperty(const QJSValue &val, const QString &key, double &out)
 	}
 
 	const QJSValue prop = val.property(key);
-	if (prop.isUndefined() || prop.isNull() || !prop.isNumber()) {
+	if (prop.isUndefined() || prop.isNull() || !(prop.isNumber() || prop.isString())) {
 		return;
 	}
 
