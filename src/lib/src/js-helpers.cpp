@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJSEngine>
 #include <QJSValue>
+#include <QUrl>
 #include <QStringList>
 #include "logger.h"
 #include "models/api/javascript-console-helper.h"
@@ -28,6 +29,72 @@ QJSEngine *buildJsEngine(const QString &helperFile)
 	}
 
 	return engine;
+}
+
+void getProperty(const QJSValue &val, const QString &key, int &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !prop.isNumber()) {
+		return;
+	}
+
+	out = prop.toInt();
+}
+void getProperty(const QJSValue &val, const QString &key, double &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !prop.isNumber()) {
+		return;
+	}
+
+	out = prop.toNumber();
+}
+void getProperty(const QJSValue &val, const QString &key, QString &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !prop.isString()) {
+		return;
+	}
+
+	out = prop.toString();
+}
+void getProperty(const QJSValue &val, const QString &key, QUrl &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !prop.isString()) {
+		return;
+	}
+
+	out = prop.toString();
+}
+void getProperty(const QJSValue &val, const QString &key, bool &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !prop.isBool()) {
+		return;
+	}
+
+	out = prop.toBool();
 }
 
 QStringList jsToStringList(const QJSValue &val)
