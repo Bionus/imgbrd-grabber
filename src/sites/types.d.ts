@@ -221,6 +221,7 @@ interface IApi {
     name: string;
     auth: string[];
     maxLimit?: number;
+    forcedTokens?: string[];
     forcedLimit?: number;
     search: {
         parseErrors?: boolean;

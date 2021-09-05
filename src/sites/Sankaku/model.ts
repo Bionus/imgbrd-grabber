@@ -28,7 +28,6 @@ function completeImage(img: IImage, fromJson: boolean): IImage {
 export const source: ISource = {
     name: "Sankaku",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
-    forcedTokens: ["*"],
     tagFormat: {
         case: "lower",
         wordSeparator: "_",
@@ -121,6 +120,7 @@ export const source: ISource = {
             name: "Regex",
             auth: [],
             forcedLimit: 20,
+            forcedTokens: ["*"],
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
