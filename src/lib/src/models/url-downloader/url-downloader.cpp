@@ -26,12 +26,10 @@ const QString &UrlDownloader::name() const
 
 bool UrlDownloader::canDownload(const QUrl &url) const
 {
-	for (const auto &regex : m_regexes) {
-		if (regex.match(url.toString()).hasMatch()) {
-			return true;
-		}
-	}
-	return false;
+	const QString str = url.toString();
+	return std::any_of(m_regexes.constBegin(), m_regexes.constEnd(), [&str](const QRegularExpression &rx) {
+		return rx.match(str).hasMatch();
+	});
 }
 
 UrlDownloaderUrl UrlDownloader::url(const QUrl &url) const
@@ -119,21 +117,11 @@ UrlDownloaderResult UrlDownloader::parse(const QString &source, int statusCode) 
 			const QJSValue &file = files.property(i);
 
 			UrlDownloaderFile rFile;
-			if (file.hasProperty("url") && !file.property("url").isUndefined()) {
-				rFile.url = file.property("url").toString();
-			}
-			if (file.hasProperty("width") && !file.property("width").isUndefined()) {
-				rFile.width = file.property("width").toInt();
-			}
-			if (file.hasProperty("height") && !file.property("height").isUndefined()) {
-				rFile.height = file.property("height").toInt();
-			}
-			if (file.hasProperty("filesize") && !file.property("filesize").isUndefined()) {
-				rFile.filesize = file.property("filesize").toInt();
-			}
-			if (file.hasProperty("ext") && !file.property("ext").isUndefined()) {
-				rFile.ext = file.property("ext").toString();
-			}
+			getProperty(file, "url", rFile.url);
+			getProperty(file, "width", rFile.width);
+			getProperty(file, "height", rFile.height);
+			getProperty(file, "filesize", rFile.filesize);
+			getProperty(file, "ext", rFile.ext);
 
 			ret.files.append(rFile);
 		}
