@@ -1,0 +1,59 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '30 15 * * 4'
+
+env:
+  QT_VERSION: 5.15.2
+  QT_MODULES: qtnetworkauth
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['cpp', 'javascript']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache Qt
+        id: cache-qt
+        if: matrix.language == 'cpp'
+        uses: actions/cache@v1
+        with:
+          path: ../Qt
+          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
+
+      - name: Install Qt
+        if: matrix.language == 'cpp'
+        uses: jurplel/install-qt-action@v2
+        with:
+          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
