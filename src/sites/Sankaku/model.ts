@@ -13,7 +13,7 @@ function buildImageFromJson(img: any): IImage {
     return completeImage(img, true);
 }
 
-function completeImage(img: IImage, fromJson: boolean = false): IImage {
+function completeImage(img: IImage, fromJson: boolean): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
@@ -139,7 +139,7 @@ export const source: ISource = {
                     wiki = wiki ? wiki.replace(/href="\/wiki\/show\?title=([^"]+)"/g, 'href="$1"') : undefined;
                     return {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
-                        images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map(completeImage),
+                        images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map((img: IImage) => completeImage(img, false)),
                         wiki,
                         pageCount: lastPage ? Grabber.countToInt(lastPage) : undefined,
                         imageCount: searchImageCounts.length === 1 ? Grabber.countToInt(searchImageCounts[0].count) : undefined,
