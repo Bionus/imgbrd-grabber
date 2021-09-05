@@ -28,13 +28,9 @@ QString JavascriptDownloader::getName() const
 bool JavascriptDownloader::canHandle(const QUrl &url) const
 {
 	const QString str = url.toString();
-	return std::any_of(
-		m_regularExpressions.constBegin(),
-		m_regularExpressions.constEnd(),
-		[&str](const QRegularExpression &rx) {
-			return rx.match(str).hasMatch();
-		}
-	);
+	return std::any_of(m_regularExpressions.constBegin(), m_regularExpressions.constEnd(), [&str](const QRegularExpression &rx) {
+		return rx.match(str).hasMatch();
+	});
 }
 
 DownloadableUrl JavascriptDownloader::url(const QUrl &url) const
