@@ -39,6 +39,11 @@ UrlDownloaderUrl UrlDownloader::url(const QUrl &url) const
 	UrlDownloaderUrl ret;
 
 	QJSValue urlFunction = m_downloader.property("handlers").property(m_index).property("url");
+	if (urlFunction.isUndefined()) {
+		ret.url = url.toString();
+		return ret;
+	}
+
 	const QJSValue &result = urlFunction.call(QList<QJSValue> { url.toString() });
 
 	// Script errors and exceptions

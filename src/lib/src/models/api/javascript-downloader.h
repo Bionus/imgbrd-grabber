@@ -40,10 +40,9 @@ class JavascriptDownloader : public QObject
 {
 	Q_OBJECT
 
-	protected:
+	public:
 		JavascriptDownloader(QString name, const QJSValue &handler);
 
-	public:
 		QString getName() const;
 		bool canHandle(const QUrl &url) const;
 		DownloadableUrl url(const QUrl &url) const;
