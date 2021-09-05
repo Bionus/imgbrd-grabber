@@ -125,9 +125,9 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			continue;
 		}
 
-		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
-		const QString text = tag.property("name").toString();
-		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
+		const int id = getPropertyOr(tag, "id", 0);
+		const QString text = getPropertyOr(tag, "name", QString());
+		const int count = getPropertyOr(tag, "count", 0);
 
 		QString type;
 		int typeId = -1;
@@ -138,9 +138,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 				type = tag.property("type").toString();
 			}
 		}
-		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined()) {
-			typeId = tag.property("typeId").toInt();
-		}
+		getProperty(tag, "typeId", typeId);
 
 		QStringList related;
 		if (tag.hasProperty("related") && !tag.property("related").isUndefined()) {
@@ -238,18 +236,10 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	}
 
 	// Basic properties
-	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined()) {
-		ret.imageCount = results.property("imageCount").toInt();
-	}
-	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined()) {
-		ret.pageCount = results.property("pageCount").toInt();
-	}
-	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString()) {
-		ret.urlNextPage = results.property("urlNextPage").toString();
-	}
-	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString()) {
-		ret.urlPrevPage = results.property("urlPrevPage").toString();
-	}
+	getProperty(results, "imageCount", ret.imageCount);
+	getProperty(results, "pageCount", ret.pageCount);
+	getProperty(results, "urlNextPage", ret.urlNextPage);
+	getProperty(results, "urlPrevPage", ret.urlPrevPage);
 	if (results.hasProperty("wiki") && results.property("wiki").isString()) {
 		ret.wiki = results.property("wiki").toString();
 		ret.wiki = ret.wiki.replace("href=\"/", "href=\"" + site->baseUrl() + "/");
