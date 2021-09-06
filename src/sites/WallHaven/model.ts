@@ -63,6 +63,7 @@ export const source: ISource = {
                         "file_size": "file_size",
                         "created_at": "created_at",
                         "file_url": "path",
+                        "sample_url": "path",
                         "preview_url": "thumbs.original",
                     };
 
