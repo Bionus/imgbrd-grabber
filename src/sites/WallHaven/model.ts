@@ -1,15 +1,31 @@
+function parseSearch(search: string): { query: string, purity: string } {
+    let query: string = "";
+    let purity: string = "111";
+    for (const tag of search.split(" ")) {
+        if (tag.indexOf("rating:") === 0) {
+            const val = tag.substr(7);
+            purity = val === "s" || val === "safe" ? "100" : (val === "e" || val === "explicit" ? "001" : "010");
+        } else if (tag.indexOf("-rating:") === 0) {
+            const val = tag.substr(8);
+            purity = val === "s" || val === "safe" ? "011" : (val === "e" || val === "explicit" ? "110" : "101");
+        } else {
+            query += (query ? " " : "") + tag;
+        }
+    }
+    return { query, purity }
+}
 
 export const source: ISource = {
     name: "WallHaven",
-    modifiers: [],
+    modifiers: ["rating:s", "rating:safe", "rating:q", "rating:questionable", "rating:e", "rating:explicit"],
     forcedTokens: ["tags"],
     auth: {
         url: {
             type: "url",
             fields: [
                 {
-                    id: "apikey",
-                    key: "apiKey",
+                    id: "apiKey",
+                    key: "apikey",
                 },
             ],
         },
@@ -20,13 +36,14 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 24,
             search: {
-                url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
-                    return "/api/v1/search?q" + encodeURIComponent(query.search) + "&purity=111&page=" + query.page;
+                url: (query: ISearchQuery): string => {
+                    const search = parseSearch(query.search);
+                    return "/api/v1/search?q=" + encodeURIComponent(search.query) + "&purity=" + search.purity + "&page=" + query.page;
                 },
-                parse: (src: string): IParsedSearch | IError => {
+                parse: (src: string): IParsedSearch => {
                     const map = {
                         "id": "id",
-                        "page_url": "url",
+                        // "page_url": "url",
                         "source": "source",
                         "width": "dimension_x",
                         "height": "dimension_y",
@@ -41,6 +58,7 @@ export const source: ISource = {
                     const images: IImage[] = [];
                     for (const image of data["data"]) {
                         const img: IImage = Grabber.mapFields(image, map);
+                        img.page_url = "/api/v1/w/" + img.id;
                         img.rating = image.purity === "sfw" ? "safe" : (image.purity === "nsfw" ? "explicit" : "questionable");
                         img.ext = image.file_type === "image/png" ? "png" : (image.file_type === "image/jpeg" ? "jpg" : undefined);
                         images.push(img);
