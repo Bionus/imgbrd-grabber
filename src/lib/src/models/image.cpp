@@ -142,7 +142,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 
 	// Page url
 	if (details.contains("page_url")) {
-		m_pageUrl = details["page_url"];
+		m_pageUrl = m_parentSite->fixUrl(m_parentSite->fixLoginUrl(details["page_url"]));
 	}
 
 	// Tags
