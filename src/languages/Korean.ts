@@ -477,7 +477,7 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="132"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>소스가 유효하지 않습니다</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
@@ -1389,7 +1389,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/keep-for-later-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 된 파일</translation>
     </message>
   </context>
   <context>
