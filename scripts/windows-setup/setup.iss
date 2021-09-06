@@ -232,6 +232,10 @@ Source: "{#SrcDir}\sites\Twitter\icon.png";   DestDir: "{localappdata}\Bionus\Gr
 Source: "{#SrcDir}\sites\Twitter\model.js";   DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Twitter\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter"; Flags: onlyifdoesntexist
 Source: "{#SrcDir}\sites\Twitter\api.twitter.com\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Twitter\api.twitter.com"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\WallHaven\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\WallHaven"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\WallHaven\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\WallHaven"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\WallHaven\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\WallHaven"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\WallHaven\wallhaven.cc\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\WallHaven\wallhaven.cc"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Zerochan\model.js";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
