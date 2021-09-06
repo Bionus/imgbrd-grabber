@@ -6,6 +6,21 @@ function parseTags(str: string, type: string): ITag[] {
     return tags;
 }
 
+// Transforms a parsed query into a "ID1+ID2" format
+function buildQuery(search: IParsedSearchQuery): string {
+    return Grabber.visitSearch(
+        search,
+        (tag: ITag) => {
+            if (!tag.id) {
+                throw new Error(`Tag ID not found for "${tag.name}"`);
+            }
+            return String(tag.id)
+        },
+        (left: string, right: string) => left + "+" + right,
+        () => { throw new Error("OR operand not supported"); },
+    );
+}
+
 export const source: ISource = {
     name: "E-Shuushuu",
     modifiers: [],
@@ -23,13 +38,13 @@ export const source: ISource = {
             auth: [],
             forcedLimit: 15,
             search: {
+                parseInput: true,
                 parseErrors: true,
                 url: (query: ISearchQuery): string => {
-                    if (query.search.length === 0) {
+                    if (query.search.length === 0 || !query.parsedSearch) {
                         return "/?page=" + query.page;
                     }
-                    const tagIds = query.search.split(" ").join("+");
-                    return "/search/results/?page=" + query.page + "tags=" + tagIds;
+                    return "/search/results/?page=" + query.page + "&tags=" + buildQuery(query.parsedSearch);
                 },
                 parse: (src: string): IParsedSearch | IError => {
                     const images = Grabber.regexToImages('<div class="image_block">.+?<a href="/image/(?<id>\\d+)/">.*?<a class="thumb_image" href="(?<file_url>[^"]+)"[^>]*>.*?<img src="(?<preview_url>[^"]+)"[^>]*>.*?<dl>(?<metadata>.+?)</dl>', src);
@@ -69,11 +84,14 @@ export const source: ISource = {
             },
             tags: {
                 url: (query: ITagsQuery, opts: IUrlOptions): string => {
-                    return "/tags?limit=" + opts.limit + "&search[order]=" + query.order + "&page=" + query.page;
+                    return "/tags/?page=" + query.page + "&type=1&show_aliases=1";
                 },
                 parse: (src: string): IParsedTags => {
                     return {
-                        tags: Grabber.regexToTags('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="category-(?<typeId>\\d+)">\\s*<a[^>]+>\\?</a>\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>\\s*<td[^>]*>\\s*(?:<a href="/tags/(?<id>\\d+)/[^"]+">)?', src),
+                        tags: Grabber.regexToTags('<li><a href="/tags/(?<id>\\d+)">(?<name>[^<]+)</a></li>', src).map((tag: ITag) => {
+                            tag.typeId = 1;
+                            return tag;
+                        }),
                     };
                 },
             },
