@@ -21,12 +21,14 @@ class TagDatabaseSqlite : public TagDatabase
 		bool save() override;
 		void setTags(const QList<Tag> &tags, bool createTagTypes = false) override;
 		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
+		QMap<QString, int> getTagIds(const QStringList &tags) const override;
 		int count() const override;
 
 	private:
 		QString m_tagFile;
 		QSqlDatabase m_database;
 		mutable QHash<QString, TagType> m_cache;
+		mutable QHash<QString, int> m_cacheIds;
 		mutable int m_count;
 };
 

@@ -3,6 +3,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <utility>
+#include "logger.h"
 #include "tags/tag.h"
 
 
@@ -103,6 +104,12 @@ QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags)
 	}
 
 	return ret;
+}
+
+QMap<QString, int> TagDatabaseInMemory::getTagIds(const QStringList &tags) const
+{
+	log("Tag IDs are not supported with in-memory tag databases.");
+	return QMap<QString, int>();
 }
 
 int TagDatabaseInMemory::count() const
