@@ -86,7 +86,7 @@ void MonitorsTab::removeSelected()
 		}
 	}
 
-	std::sort(rows.begin(), rows.end(), std::greater<>());
+	std::sort(rows.begin(), rows.end(), std::greater<int>());
 
 	for (int i : qAsConst(rows)) {
 		m_monitorTableModel->removeRow(i);
