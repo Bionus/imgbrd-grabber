@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>228</height>
+    <height>272</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -76,17 +76,10 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</string>
+        <string>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelCredits">
-       <property name="text">
-        <string>Russian translation by Николай Тихонов.</string>
        </property>
       </widget>
      </item>
