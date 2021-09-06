@@ -70,6 +70,24 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
+QJSValue buildParsedSearchTag(QJSEngine *engine, const QString &name, int id)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("name", name);
+	if (id > 0) {
+		ret.setProperty("id", id);
+	}
+	return ret;
+}
+QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const QJSValue left, const QJSValue right)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("operator", "and");
+	ret.setProperty("left", left);
+	ret.setProperty("right", right);
+	return ret;
+}
+
 PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
 {
 	PageUrl ret;
@@ -82,8 +100,36 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastP
 		return ret;
 	}
 
+	// Parse query if necessary
+	QJSValue parsedSearch;
+	const bool parseInput = getJsConst("search.parseInput", false).toBool();
+	if (parseInput && !search.trimmed().isEmpty()) {
+		QStringList operands = search.split(" ", Qt::SkipEmptyParts);
+		const auto tagIds = site->tagDatabase()->getTagIds(operands);
+
+		QJSEngine *engine = m_source.engine();
+
+		const QString firstTag = operands.takeFirst();
+		const auto first = buildParsedSearchTag(engine, firstTag, tagIds[firstTag]);
+
+		if (operands.isEmpty()) {
+			parsedSearch = first;
+		} else {
+			const QString secondTag = operands.takeFirst();
+			const auto second = buildParsedSearchTag(engine, secondTag, tagIds[secondTag]);
+			parsedSearch = buildParsedSearchOperator(engine, "and", first, second);
+
+			while (!operands.isEmpty()) {
+				const QString nextTag = operands.takeFirst();
+				const auto next = buildParsedSearchTag(engine, nextTag, tagIds[nextTag]);
+				parsedSearch = buildParsedSearchOperator(engine, "and", parsedSearch, next);
+			}
+		}
+	}
+
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("search", search);
+	query.setProperty("parsedSearch", parsedSearch);
 	query.setProperty("page", page);
 
 	QJSValue opts = m_source.engine()->newObject();
