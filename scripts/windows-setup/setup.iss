@@ -198,6 +198,11 @@ Source: "{#SrcDir}\sites\E-Hentai\model.js";     DestDir: "{localappdata}\Bionus
 Source: "{#SrcDir}\sites\E-Hentai\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai"; Flags: onlyifdoesntexist
 Source: "{#SrcDir}\sites\E-Hentai\e-hentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\e-hentai.org"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Hentai\exhentai.org\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Hentai\exhentai.org"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\E-Shuushuu\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\E-Shuushuu\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\E-Shuushuu\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\E-Shuushuu\e-shuushuu.net\defaults.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\e-shuushuu.net"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\E-Shuushuu\e-shuushuu.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\e-shuushuu.net"; Flags: onlyifdoesntexist
 Source: "{#SrcDir}\sites\FurAffinity\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\FurAffinity\model.js";     DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\FurAffinity\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\FurAffinity"; Flags: onlyifdoesntexist
