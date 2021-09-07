@@ -14,6 +14,13 @@ TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
+TagDatabaseSqlite::~TagDatabaseSqlite()
+{
+	if (m_database.isOpen()) {
+		m_database.close();
+	}
+}
+
 bool TagDatabaseSqlite::open()
 {
 	// Don't re-open databases
