@@ -239,9 +239,9 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders)
+QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders, bool autoLogin)
 {
-	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
+	if (m_autoLogin && autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
 	}
 

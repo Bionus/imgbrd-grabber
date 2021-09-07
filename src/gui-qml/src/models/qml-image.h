@@ -7,6 +7,7 @@
 #include <QString>
 #include <utility>
 #include "models/image.h"
+#include "models/site.h"
 #include "tags/tag-stylist.h"
 
 
@@ -20,6 +21,7 @@ class QmlImage : public QObject
 	Q_PROPERTY(QString previewUrl READ previewUrl CONSTANT)
 	Q_PROPERTY(QString sampleUrl READ sampleUrl CONSTANT)
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
+	Q_PROPERTY(QString siteUrl READ siteUrl CONSTANT)
 	Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
 	Q_PROPERTY(QStringList tagsDark READ tagsDark NOTIFY tagsChanged)
 	Q_PROPERTY(QString badge READ badge CONSTANT)
@@ -40,6 +42,7 @@ class QmlImage : public QObject
 		QString previewUrl() const { return m_image->url(Image::Size::Thumbnail).toString(); }
 		QString sampleUrl() const { return m_image->url(Image::Size::Sample).toString(); }
 		QString fileUrl() const { return m_image->url(Image::Size::Full).toString(); }
+		QString siteUrl() const { return m_image->parentSite()->url(); }
 		QStringList tags() const { return TagStylist(m_profile).stylished(m_image->tags(), true, false, "type", false); }
 		QStringList tagsDark() const { return TagStylist(m_profile).stylished(m_image->tags(), true, false, "type", true); }
 		QString badge() const { return m_image->counter(); }

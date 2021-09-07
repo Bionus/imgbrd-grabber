@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <QSettings>
 #include "analytics.h"
+#include "async-image-provider.h"
 #include "functions.h"
 #include "language-loader.h"
 #include "loaders/gallery-search-loader.h"
@@ -113,6 +114,8 @@ int main(int argc, char *argv[])
 		engine.rootContext()->setContextProperty("NIGHTLY", false);
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
 	#endif
+
+	engine.addImageProvider("async", new AsyncImageProvider(&profile));
 
 	ShareUtils shareUtils(nullptr);
 	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);

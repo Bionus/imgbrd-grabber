@@ -66,7 +66,7 @@ class Site : public QObject
 		MixedSettings *settings() const;
 		QMap<QString, QString> settingsHeaders() const;
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
+		QNetworkRequest makeRequest(QUrl url, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {}, bool login = true);
 		NetworkReply *get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl = {}, const QString &ref = "", Image *img = nullptr, const QMap<QString, QString>& headers = {});
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;

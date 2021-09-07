@@ -45,15 +45,9 @@ ScrollView {
         delegate: Item {
             height: img.height + root.thumbnailSpacing
 
-            ImageLoader {
-                id: loader
-                image: modelData.image
-                size: ImageLoader.Thumbnail
-            }
-
             Image {
                 id: img
-                source: loader.source
+                source: "image://async/" + modelData.siteUrl + "¤" + modelData.previewUrl
                 fillMode: root.thumbnailFillMode
                 anchors.centerIn: parent
                 width: parent.width - root.thumbnailSpacing
