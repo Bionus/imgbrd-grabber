@@ -21,12 +21,10 @@ bool unzipFile(const QString &filePath, const QString &destinationDir)
 	}
 
 	// Extract each file in the archive
-	for (int i = 0; i < (int)mz_zip_reader_get_num_files(&zip_archive); i++)
-	{
+	for (int i = 0; i < (int) mz_zip_reader_get_num_files(&zip_archive); i++) {
 		// Read file information
 		mz_zip_archive_file_stat file_stat;
-		if (!mz_zip_reader_file_stat(&zip_archive, i, &file_stat))
-		{
+		if (!mz_zip_reader_file_stat(&zip_archive, i, &file_stat)) {
 			log(QStringLiteral("mz_zip_reader_file_stat failed"), Logger::Error);
 			mz_zip_reader_end(&zip_archive);
 			return false;
