@@ -417,7 +417,7 @@ QString savePath(const QString &file, bool exists, bool writable)
 	return QDir::toNativeSeparators(dir + QLatin1Char('/') + file);
 }
 
-bool copyRecursively(QString srcFilePath, QString tgtFilePath)
+bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
 {
 	// Trim directory names of their trailing slashes
 	if (srcFilePath.endsWith(QDir::separator())) {
@@ -429,6 +429,13 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	// Directly copy files using Qt function
 	if (!QFileInfo(srcFilePath).isDir()) {
+		if (QFile::exists(tgtFilePath)) {
+			if (overwrite) {
+				QFile::remove(tgtFilePath);
+			} else {
+				return false;
+			}
+		}
 		return QFile(srcFilePath).copy(tgtFilePath);
 	}
 
@@ -444,7 +451,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 	for (const QString &fileName : fileNames) {
 		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
 		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath)) {
+		if (!copyRecursively(newSrcFilePath, newTgtFilePath, overwrite)) {
 			return false;
 		}
 	}
