@@ -69,6 +69,7 @@ class Profile : public QObject
 		void addAutoComplete(const QString &tag);
 
 		// Sites management
+		void addSource(Source *source);
 		void addSite(Site *site);
 		void removeSite(Site *site);
 

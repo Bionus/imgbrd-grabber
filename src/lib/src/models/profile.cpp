@@ -44,12 +44,7 @@ Profile::Profile(QString path)
 			continue;
 		}
 
-		m_sources.insert(source->getName(), source);
-		m_additionalTokens.append(source->getAdditionalTokens());
-
-		for (Site *site : source->getSites()) {
-			m_sites.insert(site->url(), site);
-		}
+		addSource(source);
 	}
 
 	// Load favorites
@@ -433,6 +428,16 @@ void Profile::addAutoComplete(const QString &tag)
 	m_customAutoComplete.append(tag);
 }
 
+
+void Profile::addSource(Source *source)
+{
+	m_sources.insert(source->getName(), source);
+	m_additionalTokens.append(source->getAdditionalTokens());
+
+	for (Site *site : source->getSites()) {
+		m_sites.insert(site->url(), site);
+	}
+}
 
 void Profile::addSite(Site *site)
 {
