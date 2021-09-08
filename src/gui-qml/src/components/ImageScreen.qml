@@ -168,7 +168,7 @@ Page {
 
                             onLinkActivated: {
                                 root.closed()
-                                searchTab.load(link)
+                                searchTab.load(decodeURIComponent(link))
                             }
                         }
                     }
