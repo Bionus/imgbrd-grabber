@@ -138,6 +138,7 @@ Page {
             Layout.fillWidth: true
 
             onOpenImage: mainStackView.push(imageScreen, { index: index })
+            onRefresh: load()
         }
 
         RowLayout {

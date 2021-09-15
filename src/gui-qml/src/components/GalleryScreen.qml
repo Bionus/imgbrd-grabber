@@ -73,6 +73,7 @@ Page {
             Layout.fillWidth: true
 
             onOpenImage: mainStackView.push(imageScreen, { index: index })
+            onRefresh: galleryLoader.load()
         }
 
         RowLayout {
