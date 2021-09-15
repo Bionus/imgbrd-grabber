@@ -21,7 +21,7 @@ void AsyncImageResponse::replyFinished()
 		QImage thumbnail;
 		thumbnail.loadFromData(m_reply->readAll());
 
-		if (!m_rect.isNull() && !m_rect.isEmpty())  {
+		if (!m_rect.isNull() && !m_rect.isEmpty()) {
 			thumbnail = thumbnail.copy(m_rect);
 		}
 
