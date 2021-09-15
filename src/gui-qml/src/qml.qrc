@@ -46,5 +46,6 @@
         <file>components/GalleryScreen.qml</file>
         <file>components/InnerBorder.qml</file>
         <file>components/Badge.qml</file>
+        <file>components/Loading.qml</file>
     </qresource>
 </RCC>

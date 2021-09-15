@@ -62,18 +62,27 @@ Page {
         spacing: 0
         anchors.fill: parent
 
-        ResultsView {
-            results: galleryLoader.results
-            thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
-            thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
-            thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
-            thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
-            thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
+        Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            onOpenImage: mainStackView.push(imageScreen, { index: index })
-            onRefresh: galleryLoader.load()
+            ResultsView {
+                results: galleryLoader.results
+                thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
+                thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
+                thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
+                thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
+                thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
+                anchors.fill: parent
+
+                onOpenImage: mainStackView.push(imageScreen, { index: index })
+                onRefresh: galleryLoader.load()
+            }
+
+            Loading {
+                visible: galleryLoader.status == TagSearchLoader.Loading
+                anchors.fill: parent
+            }
         }
 
         RowLayout {
