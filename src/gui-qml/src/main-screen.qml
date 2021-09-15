@@ -73,6 +73,20 @@ ApplicationWindow {
         onOpenSettings: mainStackView.push(settingsScreen)
     }
 
+    Dialog {
+        title: qsTr("Update available")
+        anchors.centerIn: Overlay.overlay
+        modal: true
+        visible: updateChecker.updateAvailable
+        standardButtons: Dialog.Cancel | Dialog.Ok
+
+        onAccepted: Qt.openUrlExternally(updateChecker.latestUrl)
+
+        Text {
+            text: updateChecker.changelog
+        }
+    }
+
     StackView {
         id: mainStackView
         anchors.fill: parent

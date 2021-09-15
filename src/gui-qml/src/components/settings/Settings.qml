@@ -122,6 +122,11 @@ Item {
         def: true // false on desktop
         obj: root.obj
     }
+    property Setting checkForUpdates: Setting {
+        key: "check_for_updates"
+        def: 24 * 60 * 60
+        obj: root.obj
+    }
 
     // QML-only settings
     property Setting zoom_buttonsAtBottom: Setting {
