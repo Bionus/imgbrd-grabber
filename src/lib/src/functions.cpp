@@ -11,6 +11,7 @@
 #include <QJSValue>
 #include <QLocale>
 #include <QProcess>
+#include <QRect>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
@@ -1164,4 +1165,26 @@ QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeyS
 		return def;
 	}
 	return QKeySequence(val);
+}
+
+
+QString rectToString(const QRect &rect)
+{
+	if (rect.isNull()) {
+		return "";
+	}
+	return QStringLiteral("%1;%2;%3;%4")
+		.arg(rect.x())
+		.arg(rect.y())
+		.arg(rect.width())
+		.arg(rect.height());
+}
+
+QRect stringToRect(const QString &str)
+{
+	const QStringList parts = str.split(';');
+	if (parts.count() == 4) {
+		return QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt());
+	}
+	return {};
 }

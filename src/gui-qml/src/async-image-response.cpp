@@ -4,8 +4,8 @@
 #include <QQuickTextureFactory>
 
 
-AsyncImageResponse::AsyncImageResponse(QNetworkReply *reply)
-	: m_reply(reply)
+AsyncImageResponse::AsyncImageResponse(QNetworkReply *reply, const QRect &rect)
+	: m_reply(reply), m_rect(rect)
 {
 	connect(m_reply, &QNetworkReply::finished, this, &AsyncImageResponse::replyFinished);
 }
@@ -20,6 +20,11 @@ void AsyncImageResponse::replyFinished()
 	if (m_reply->error() == QNetworkReply::NoError) {
 		QImage thumbnail;
 		thumbnail.loadFromData(m_reply->readAll());
+
+		if (!m_rect.isNull() && !m_rect.isEmpty())  {
+			thumbnail = thumbnail.copy(m_rect);
+		}
+
 		m_texture = QQuickTextureFactory::textureFactoryForImage(thumbnail);
 	}
 

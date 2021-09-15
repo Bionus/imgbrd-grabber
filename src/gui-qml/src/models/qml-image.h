@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 #include <QString>
 #include <utility>
+#include "functions.h"
 #include "models/image.h"
 #include "models/site.h"
 #include "tags/tag-stylist.h"
@@ -19,6 +20,7 @@ class QmlImage : public QObject
 	Q_OBJECT
 
 	Q_PROPERTY(QString previewUrl READ previewUrl CONSTANT)
+	Q_PROPERTY(QString previewRect READ previewRect CONSTANT)
 	Q_PROPERTY(QString sampleUrl READ sampleUrl CONSTANT)
 	Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
 	Q_PROPERTY(QString siteUrl READ siteUrl CONSTANT)
@@ -40,6 +42,7 @@ class QmlImage : public QObject
 
 		QSharedPointer<Image> image() const { return m_image; }
 		QString previewUrl() const { return m_image->url(Image::Size::Thumbnail).toString(); }
+		QString previewRect() const { return rectToString(m_image->rect(Image::Size::Thumbnail)); }
 		QString sampleUrl() const { return m_image->url(Image::Size::Sample).toString(); }
 		QString fileUrl() const { return m_image->url(Image::Size::Full).toString(); }
 		QString siteUrl() const { return m_image->parentSite()->url(); }

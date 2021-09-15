@@ -62,6 +62,7 @@ class Image : public QObject, public Downloadable
 		const QUrl &pageUrl() const;
 		const QUrl &fileUrl() const;
 		QSize size(Size size = Size::Full) const;
+		QRect rect(Size size = Size::Full) const;
 		const QString &name() const;
 		Page *page() const;
 		const QUrl &parentUrl() const;
