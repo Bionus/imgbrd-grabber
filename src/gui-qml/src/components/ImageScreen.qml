@@ -14,7 +14,7 @@ Page {
     property int index
     property var image: images[swipeView.currentIndex]
 
-    property bool showHd: false
+    property bool showHd: !gSettings.zoom_viewSamples.value
     property bool showTags: false
 
     Component {
@@ -100,7 +100,11 @@ Page {
         currentIndex: root.index
         anchors.fill: parent
         clip: true
-        onCurrentIndexChanged: { showHd = false; showTags = false }
+
+        onCurrentIndexChanged: {
+            showHd = !gSettings.zoom_viewSamples.value
+            showTags = false
+        }
 
         Repeater {
             model: root.images

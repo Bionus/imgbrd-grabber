@@ -117,6 +117,11 @@ Item {
             backend.setIgnored(val)
         }
     }
+    property Setting zoom_viewSamples: Setting {
+        key: "Zoom/viewSamples"
+        def: true // false on desktop
+        obj: root.obj
+    }
 
     // QML-only settings
     property Setting zoom_buttonsAtBottom: Setting {
