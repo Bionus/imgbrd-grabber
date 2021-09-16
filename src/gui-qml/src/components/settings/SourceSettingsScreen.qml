@@ -22,6 +22,22 @@ Page {
         headers = arr
     }
 
+    property var cookies: []
+    function writeCookies(arr) {
+        var vals = arr.map((c) => c.key + "=" + c.value)
+        console.log("vals", JSON.stringify(vals))
+        root.site.settings.setValue("cookies", vals)
+    }
+    function refreshCookies() {
+        cookies = root.site.settings.value("cookies").map((c) => {
+            var index = c.indexOf("=")
+            var key = c.substring(0, index)
+            var value = c.substring(index + 1)
+            return { key, value }
+        })
+        console.log("cookies", JSON.stringify(cookies))
+    }
+
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -255,6 +271,33 @@ Page {
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true
+            }
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Cookies")
+            }
+            KeyValueSetting {
+                values: cookies
+                onAppend: {
+                    var arr = cookies.slice().concat({ key, value })
+                    writeCookies(arr)
+                    refreshCookies()
+                }
+                onEdit: {
+                    var arr = cookies.slice()
+                    arr[index] = { key, value }
+                    writeCookies(arr)
+                    refreshCookies()
+                }
+                onRemove: {
+                    var arr = cookies.slice()
+                    arr.splice(index, 1)
+                    writeCookies(arr)
+                    refreshCookies()
+                }
+                Layout.fillWidth: true
+                Component.onCompleted: refreshCookies()
             }
 
             SettingTitle {

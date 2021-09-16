@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <QObject>
+#include <QJSValue>
 #include <QVariant>
 
 
@@ -17,7 +18,7 @@ class Settings : public QObject
 		explicit Settings(MixedSettings *settings, QObject *parent = nullptr);
 
 		Q_INVOKABLE QVariant value(const QString &key, const QVariant &defaultValue = {}) const;
-		Q_INVOKABLE void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = {});
+		Q_INVOKABLE void setValue(const QString &key, const QJSValue &value, const QVariant &defaultValue = {});
 		Q_INVOKABLE void remove(const QString &key);
 		Q_INVOKABLE QStringList childKeys(const QString &parent = {});
 
