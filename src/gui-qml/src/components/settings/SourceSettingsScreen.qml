@@ -183,6 +183,62 @@ Page {
             visible: !useDefaultApiOrderSetting.value
         }
 
+        SettingTitle {
+            Layout.fillWidth: true
+            text: qsTr("Download")
+        }
+        // FIXME(Bionus): Not supported by the AsyncImageProvider at the moment
+        /*SpinBoxSetting {
+            name: qsTr("Interval (thumbnail)")
+            max: 60 * 60
+            setting: Setting {
+                key: "download/throttle_thumbnail"
+                def: 0
+                obj: root.site.settings
+            }
+            Layout.fillWidth: true
+        }*/
+        SpinBoxSetting {
+            name: qsTr("Interval (image)")
+            max: 60 * 60
+            setting: Setting {
+                key: "download/throttle_image"
+                def: 0
+                obj: root.site.settings
+            }
+            Layout.fillWidth: true
+        }
+        SpinBoxSetting {
+            name: qsTr("Interval (page)")
+            max: 60 * 60
+            setting: Setting {
+                key: "download/throttle_page"
+                def: 0
+                obj: root.site.settings
+            }
+            Layout.fillWidth: true
+        }
+        SpinBoxSetting {
+            name: qsTr("Interval (details)")
+            max: 60 * 60
+            setting: Setting {
+                key: "download/throttle_details"
+                def: 0
+                obj: root.site.settings
+            }
+            Layout.fillWidth: true
+        }
+        SpinBoxSetting {
+            name: qsTr("Interval (error)")
+            max: 60 * 60
+            setting: Setting {
+                key: "download/throttle_retry"
+                def: 0
+                obj: root.site.settings
+            }
+            Layout.fillWidth: true
+        }
+
         Item {
             Layout.fillHeight: true
         }
