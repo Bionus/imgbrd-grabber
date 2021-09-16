@@ -34,6 +34,7 @@
         <file>components/settings/items/TextAreaSetting.qml</file>
         <file>components/settings/items/TextFieldSetting.qml</file>
         <file>components/settings/items/RadioSetting.qml</file>
+        <file>components/settings/items/KeyValueSetting.qml</file>
         <file>components/ResultsView.qml</file>
         <file>components/settings/pages/SourcesSettingsPage.qml</file>
         <file>components/SearchEdit.qml</file>
