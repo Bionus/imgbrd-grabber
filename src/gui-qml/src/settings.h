@@ -18,6 +18,8 @@ class Settings : public QObject
 
 		Q_INVOKABLE QVariant value(const QString &key, const QVariant &defaultValue = {}) const;
 		Q_INVOKABLE void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = {});
+		Q_INVOKABLE void remove(const QString &key);
+		Q_INVOKABLE QStringList childKeys(const QString &parent = {});
 
 	private:
 		MixedSettings *m_settings;

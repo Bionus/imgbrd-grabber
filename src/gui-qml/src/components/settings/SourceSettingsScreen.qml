@@ -12,6 +12,16 @@ Page {
 
     property var site
 
+    property var headers: []
+    function refreshHeaders() {
+        var arr = []
+        for (var key of root.site.settings.childKeys("Headers")) {
+            var value = root.site.settings.value("Headers/" + key)
+            arr.push({ key, value })
+        }
+        headers = arr
+    }
+
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -245,6 +255,29 @@ Page {
                     obj: root.site.settings
                 }
                 Layout.fillWidth: true
+            }
+
+            SettingTitle {
+                Layout.fillWidth: true
+                text: qsTr("Headers")
+            }
+            KeyValueSetting {
+                values: headers
+                onAppend: {
+                    root.site.settings.setValue("Headers/" + key, value)
+                    refreshHeaders()
+                }
+                onEdit: {
+                    root.site.settings.remove("Headers/" + oldKey)
+                    root.site.settings.setValue("Headers/" + key, value)
+                    refreshHeaders()
+                }
+                onRemove: {
+                    root.site.settings.remove("Headers/" + key)
+                    refreshHeaders()
+                }
+                Layout.fillWidth: true
+                Component.onCompleted: refreshHeaders()
             }
 
             Item {
