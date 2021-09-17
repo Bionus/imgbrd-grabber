@@ -15,7 +15,7 @@ Page {
     property var sources
 
     function openSettingsPage(path) {
-        stackView.push(settingsPage, { path: path })
+        settingsStackView.push(settingsPage, { path: path })
     }
 
     header: ToolBar {
@@ -24,7 +24,7 @@ Page {
 
             ToolButton {
                 icon.source: "/images/icons/back.png"
-                onClicked: stackView.depth > 1 ? stackView.pop() : root.closed()
+                onClicked: settingsStackView.depth > 1 ? settingsStackView.pop() : root.closed()
             }
 
             Label {
@@ -37,7 +37,7 @@ Page {
     }
 
     StackView {
-        id: stackView
+        id: settingsStackView
         anchors.fill: parent
         initialItem: mainSettings
 
@@ -116,8 +116,8 @@ Page {
 
     Keys.onReleased: {
         if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-            if (stackView.depth > 1) {
-                stackView.pop()
+            if (settingsStackView.depth > 1) {
+                settingsStackView.pop()
             } else {
                 root.closed()
             }
