@@ -84,6 +84,9 @@ function parseImage(image: any, fromGallery: boolean): IImage {
     } else if (image["age_limit"] === "r18") {
         img.rating = "explicit";
     }
+    if (!("age_limit" in image)) {
+        img.rating = image["x_restrict"] === 1 ? "explicit" : "safe";
+    }
     img.created_at = image["created_time"] || image["create_date"];
     if (image["caption"]) {
         img.description = image["caption"];
