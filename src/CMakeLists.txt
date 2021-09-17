@@ -113,7 +113,7 @@ add_subdirectory(e2e EXCLUDE_FROM_ALL)
 add_subdirectory(crash-reporter)
 
 add_subdirectory(languages)
-add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
+add_custom_target(translations DEPENDS General_translations CrashReporter_translations gui-qml_translations)
 install(DIRECTORY "dist/common/" DESTINATION "share/Grabber")
 install(DIRECTORY "sites" DESTINATION "share/Grabber"
 	PATTERN "node_modules" EXCLUDE
