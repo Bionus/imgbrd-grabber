@@ -14,6 +14,7 @@ Page {
     property int index
     property var image: images[swipeView.currentIndex]
 
+    property bool hasSample: image.sampleUrl !== image.fileUrl && image.sampleUrl !== image.previewUrl
     property bool showHd: !gSettings.zoom_viewSamples.value
     property bool showTags: false
 
@@ -50,7 +51,7 @@ Page {
             }
 
             ToolButton {
-                visible: image.sampleUrl !== image.fileUrl
+                visible: hasSample
                 icon.source: showHd ? "/images/icons/ld.png" : "/images/icons/hd.png"
                 onClicked: showHd = !showHd
             }
@@ -128,7 +129,7 @@ Page {
                                 ImageLoader {
                                     id: loader
                                     image: modelData.image
-                                    size: (showHd && index == swipeView.currentIndex ? ImageLoader.Full : ImageLoader.Sample)
+                                    size: (showHd || !hasSample ? ImageLoader.Full : ImageLoader.Sample)
                                 }
 
                                 ZoomableImage {
@@ -154,7 +155,7 @@ Page {
 
                             sourceComponent: VideoPlayer {
                                 fillMode: VideoOutput.PreserveAspectFit
-                                source: showHd && index == swipeView.currentIndex ? modelData.fileUrl : modelData.sampleUrl
+                                source: showHd || !hasSample ? modelData.fileUrl : modelData.sampleUrl
                                 clip: true
                                 autoPlay: index == swipeView.currentIndex
                             }
