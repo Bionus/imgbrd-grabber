@@ -477,17 +477,17 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="132"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>此来源无效</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="unfinished"/>
+      <translation>每页图片数必须大于等于 1.</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="154"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="unfinished"/>
+      <translation>图片数限制必须大于或等于 0.</translation>
     </message>
   </context>
   <context>
@@ -557,17 +557,17 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="119"/>
       <source>Move to top</source>
-      <translation type="unfinished"/>
+      <translation>移至顶端</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Move to bottom</source>
-      <translation type="unfinished"/>
+      <translation>移至底部</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="125"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>删除</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="330"/>
@@ -870,17 +870,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="121"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>后过滤</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="131"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>来源</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="138"/>
       <source>Edit sources</source>
-      <translation type="unfinished"/>
+      <translation>编辑来源</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="146"/>
@@ -910,7 +910,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="50"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>优先级</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="189"/>
@@ -945,7 +945,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="77"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>选择保存文件夹</translation>
     </message>
   </context>
   <context>
@@ -953,17 +953,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="39"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>名称</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="44"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>优先级</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
@@ -998,7 +998,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="85"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>优先级</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="90"/>
@@ -1078,7 +1078,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="131"/>
       <source>You don't have any favorite yet.</source>
-      <translation type="unfinished"/>
+      <translation>你还没有任何收藏</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="144"/>
@@ -1094,12 +1094,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="419"/>
       <source>Mark as last viewed</source>
-      <translation type="unfinished"/>
+      <translation>标记为已看</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="426"/>
       <source>Choose as image</source>
-      <translation type="unfinished"/>
+      <translation>选择一个图片</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="334"/>
@@ -1165,7 +1165,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>显示器</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1421,7 +1421,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open settings directory</source>
-      <translation type="unfinished"/>
+      <translation>打开设置目录</translation>
     </message>
   </context>
   <context>
@@ -1638,27 +1638,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="443"/>
       <source>Save downloads list</source>
-      <translation type="unfinished"/>
+      <translation>保存下载列表</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="452"/>
       <source>Load downloads list</source>
-      <translation type="unfinished"/>
+      <translation>加载下载列表</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>MD5 数据库转换器</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="466"/>
       <source>Donate with PayPal</source>
-      <translation type="unfinished"/>
+      <translation>使用 PayPal 捐赠</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="475"/>
       <source>Donate with Patreon</source>
-      <translation type="unfinished"/>
+      <translation>通过 Patreon 捐赠</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="156"/>
@@ -1701,12 +1701,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>标签加载器</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
       <source>Generate a SQLite MD5 database using an existing TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>使用现有的 TXT MD5 数据库生成 SQLite MD5 数据库</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
@@ -1721,17 +1721,19 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
       <source>You are not using a TXT MD5 database.</source>
-      <translation type="unfinished"/>
+      <translation>您没有使用 TXT MD5 数据库</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>已完成</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n md5(s) 已转换 (%1)</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1814,7 +1816,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="144"/>
       <source>"%1" %n time(s), since %2</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%1" %n 次, 自 %2</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1822,17 +1826,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation type="unfinished"/>
+      <translation>编辑显示器</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>常规​​​​​</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="40"/>
       <source>Tag corresponding to the favorite. It is not often useful to change it.</source>
-      <translation type="unfinished"/>
+      <translation>标签和收藏相对应。大部分时候不需要修改。</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
@@ -1842,22 +1846,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>上一次你选择”标记为已看“。</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>上次检查</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>来源</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>时长</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
@@ -1873,58 +1877,58 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="113"/>
       <source>Edit sources</source>
-      <translation type="unfinished"/>
+      <translation>编辑来源</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="120"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>延迟</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="138"/>
       <source>Notification</source>
-      <translation type="unfinished"/>
+      <translation>通知</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="144"/>
       <location filename="../gui/src/monitor-window.ui" line="161"/>
       <source>Enabled</source>
-      <translation type="unfinished"/>
+      <translation>启用</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="155"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="168"/>
       <source>Path</source>
-      <translation type="unfinished"/>
+      <translation>路径</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="175"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>文件名</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="185"/>
       <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;留空将使用默认设置&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="192"/>
       <source>Download blacklisted images</source>
-      <translation type="unfinished"/>
+      <translation>下载黑名单中的图片</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
       <source>You need to enable the system tray icon to use notifications.</source>
-      <translation type="unfinished"/>
+      <translation>您需要启用系统托盘图标才能使用通知</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="53"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>选择保存的文件夹</translation>
     </message>
   </context>
   <context>
@@ -1959,28 +1963,28 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="26"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>显示器</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="82"/>
       <source>Stop</source>
-      <translation type="unfinished"/>
+      <translation>停止</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="69"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>编辑</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="70"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>删除</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="82"/>
       <source>Start</source>
-      <translation type="unfinished"/>
+      <translation>开始</translation>
     </message>
   </context>
   <context>
@@ -2435,34 +2439,34 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1152"/>
       <source>Windows Property System</source>
-      <translation type="unfinished"/>
+      <translation>Windows 属性系统</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1161"/>
       <location filename="../gui/src/settings/options-window.ui" line="1200"/>
       <source>Add new property</source>
-      <translation type="unfinished"/>
+      <translation>添加新属性</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1168"/>
       <location filename="../gui/src/settings/options-window.ui" line="1187"/>
       <source>Extensions</source>
-      <translation type="unfinished"/>
+      <translation>扩展组件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1181"/>
       <source>Exiftool</source>
-      <translation type="unfinished"/>
+      <translation>Exif 工具</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1207"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>版本</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1214"/>
       <source>Loading...</source>
-      <translation type="unfinished"/>
+      <translation>加载中……</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1228"/>
@@ -2472,22 +2476,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1240"/>
       <source>Resize</source>
-      <translation type="unfinished"/>
+      <translation>调整大小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1246"/>
       <source>Max width</source>
-      <translation type="unfinished"/>
+      <translation>最大宽度</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1266"/>
       <source>Max height</source>
-      <translation type="unfinished"/>
+      <translation>最大高度</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1286"/>
       <source>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;大于最大宽度和/或高度的图像将根据需要调整大小。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1319"/>
@@ -2614,7 +2618,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>Decline dialogue</source>
-      <translation type="unfinished"/>
+      <translation>拒绝对话</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1520"/>
@@ -2625,7 +2629,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1527"/>
       <source>Accept dialogue</source>
-      <translation type="unfinished"/>
+      <translation>接受对话</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1548"/>
@@ -2705,7 +2709,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1715"/>
       <source>Quit application</source>
-      <translation type="unfinished"/>
+      <translation>退出应用程序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1730"/>
@@ -2715,7 +2719,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1746"/>
       <source>Focus search field</source>
-      <translation type="unfinished"/>
+      <translation>聚焦于搜索框</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1758"/>
@@ -2726,7 +2730,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1774"/>
       <source>Close tab</source>
-      <translation type="unfinished"/>
+      <translation>关闭选项卡</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1786"/>
@@ -2736,7 +2740,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1802"/>
       <source>New tab</source>
-      <translation type="unfinished"/>
+      <translation>新建选项卡</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1814"/>
@@ -2746,7 +2750,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1830"/>
       <source>Open previous tab</source>
-      <translation type="unfinished"/>
+      <translation>打开上一个选项卡</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1842"/>
@@ -2756,7 +2760,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1858"/>
       <source>Open next tab</source>
-      <translation type="unfinished"/>
+      <translation>打开下一个选项卡</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1870"/>
@@ -2766,7 +2770,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1886"/>
       <source>Call external application to browse save directory</source>
-      <translation type="unfinished"/>
+      <translation>调用外部程序以浏览保存目录</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1898"/>
@@ -2938,48 +2942,48 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>元数据</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Image size</source>
-      <translation type="unfinished"/>
+      <translation>图像大小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
       <source>Main window</source>
-      <translation type="unfinished"/>
+      <translation>主窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="122"/>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Shortcuts</source>
-      <translation type="unfinished"/>
+      <translation>快捷键</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="360"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation type="unfinished"/>
+      <translation>将全局后过滤器显式添加到选项卡后过滤器字段</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="381"/>
       <source>Use system locale for dates and numbers</source>
-      <translation type="unfinished"/>
+      <translation>使用系统区域设置的日期和数字</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="845"/>
       <source>Temporary directory</source>
-      <translation type="unfinished"/>
+      <translation>临时目录</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="852"/>
       <source>&lt;i&gt;Leave empty to use the default temporary directory.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;留空将使用默认临时文件夹。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="876"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>如果文件在同一目录中</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1022"/>
@@ -2994,27 +2998,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2235"/>
       <source>Scale up small images to fit window</source>
-      <translation type="unfinished"/>
+      <translation>放大小图像以适应窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2242"/>
       <source>Use built-in video player</source>
-      <translation type="unfinished"/>
+      <translation>使用内置视频播放器</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2252"/>
       <source>Show video player controls</source>
-      <translation type="unfinished"/>
+      <translation>显示视频播放器控件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2262"/>
       <source>Show GIF player controls</source>
-      <translation type="unfinished"/>
+      <translation>显示 GIF 播放器控件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2312"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>关闭</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2324"/>
@@ -3024,17 +3028,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2340"/>
       <source>Prev</source>
-      <translation type="unfinished"/>
+      <translation>上一页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2368"/>
       <source>Next</source>
-      <translation type="unfinished"/>
+      <translation>下一页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2396"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>详情</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2408"/>
@@ -3044,7 +3048,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2424"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>另存为...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2436"/>
@@ -3054,7 +3058,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2480"/>
       <source>Save and close</source>
-      <translation type="unfinished"/>
+      <translation>保存并关闭</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2492"/>
@@ -3064,7 +3068,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2508"/>
       <source>Destination folder</source>
-      <translation type="unfinished"/>
+      <translation>目标文件夹</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2520"/>
@@ -3074,7 +3078,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2536"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2548"/>
@@ -3084,7 +3088,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2564"/>
       <source>Save and close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>保存并关闭 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2576"/>
@@ -3094,7 +3098,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2592"/>
       <source>Destination folder (fav)</source>
-      <translation type="unfinished"/>
+      <translation>目标文件夹（收藏）</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2604"/>
@@ -3104,7 +3108,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2620"/>
       <source>Toggle full-screen</source>
-      <translation type="unfinished"/>
+      <translation>切换全屏显示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2632"/>
@@ -3114,7 +3118,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2648"/>
       <source>Toggle slideshow</source>
-      <translation type="unfinished"/>
+      <translation>切换幻灯片</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2660"/>
@@ -3124,7 +3128,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2676"/>
       <source>Copy raw media data to clipboard</source>
-      <translation type="unfinished"/>
+      <translation>复制原始媒体数据到剪贴板</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2688"/>
@@ -3257,7 +3261,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3271"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>删除标签</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3281"/>
@@ -3388,13 +3392,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="155"/>
       <source>exiftool not found</source>
-      <translation type="unfinished"/>
+      <translation>找不到 exiftool</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="221"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1078"/>
       <source>Shortcut</source>
-      <translation type="unfinished"/>
+      <translation>快捷键</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="221"/>
@@ -3402,13 +3406,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.cpp" line="1078"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1081"/>
       <source>Hard link</source>
-      <translation type="unfinished"/>
+      <translation>硬链接</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="224"/>
       <location filename="../gui/src/settings/options-window.cpp" line="1081"/>
       <source>Symbolic link</source>
-      <translation type="unfinished"/>
+      <translation>符号链接</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="446"/>
@@ -3423,7 +3427,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="460"/>
       <source>Choose a temporary folder</source>
-      <translation type="unfinished"/>
+      <translation>选择临时文件夹</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="555"/>
@@ -3468,7 +3472,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/page.cpp" line="113"/>
       <source>No available API to perform the request.</source>
-      <translation type="unfinished"/>
+      <translation>没有可用于执行请求的 API</translation>
     </message>
   </context>
   <context>
@@ -3698,17 +3702,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="71"/>
       <source>h 'h' m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h' m 'm'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="71"/>
       <source>h 'h'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="71"/>
       <source>m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>m 'm'</translation>
     </message>
   </context>
   <context>
@@ -3820,7 +3824,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="169"/>
       <source>invalid or missing login information</source>
-      <translation type="unfinished"/>
+      <translation>无效或缺少登录信息</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="175"/>
@@ -4086,32 +4090,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>下载</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="36"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>文件夹</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="78"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>名称</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="107"/>
       <source>Reset</source>
-      <translation type="unfinished"/>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="114"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.cpp" line="46"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>选择保存文件夹</translation>
     </message>
   </context>
   <context>
@@ -4436,17 +4440,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="101"/>
       <source>OAuth 2 (password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (密码)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="102"/>
       <source>OAuth 2 (JSON password)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (JSON 密码)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="103"/>
       <source>OAuth 2 (client credentials)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (客户端凭据)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
@@ -4456,17 +4460,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="105"/>
       <source>OAuth 2 (refresh token)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (刷新令牌)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="106"/>
       <source>OAuth 2 (PKCE)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (PKCE)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>用户 ID</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
@@ -4491,12 +4495,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="117"/>
       <source>Access token</source>
-      <translation type="unfinished"/>
+      <translation>访问令牌</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="118"/>
       <source>Refresh token</source>
-      <translation type="unfinished"/>
+      <translation>刷新令牌</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="230"/>
@@ -4724,12 +4728,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="70"/>
       <source>Loading tag types...</source>
-      <translation type="unfinished"/>
+      <translation>正在加载标签类型...</translation>
     </message>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="80"/>
       <source>Error loading tag types.</source>
-      <translation type="unfinished"/>
+      <translation>加载标签类型时出错</translation>
     </message>
   </context>
   <context>
