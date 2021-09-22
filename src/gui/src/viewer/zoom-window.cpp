@@ -1131,7 +1131,7 @@ void ZoomWindow::resizeButtons()
 	// Normal resize gets over-written.
 	/* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
 	   I'm not sure how to query those values here or export from here to there dynamically. */
-	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );	// Fix scaling for large buttons.
+	//ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );	// Fix scaling for large buttons.
 
 	if (countOnShelf == smallButtonsOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
