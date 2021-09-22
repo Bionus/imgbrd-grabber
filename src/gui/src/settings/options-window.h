@@ -84,6 +84,7 @@ class OptionsWindow : public QDialog
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
 		void checkSpinners(int);
+		void checkAllSpinners();
 
 		// Log files
 		void addLogFile();

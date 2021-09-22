@@ -442,6 +442,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		settings->endGroup();
 		log("---Reading Zoom/Buttons---");
 
+		checkAllSpinners();
 		QObject::connect(ui->spinButtonPrev,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		QObject::connect(ui->spinButtonNext,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		QObject::connect(ui->spinButtonDetails,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
@@ -1601,4 +1602,45 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
 	numberMatches[0]->parentWidget()->show();	// This could be hard coded.
+}
+void OptionsWindow::checkAllSpinners() {
+	constexpr unsigned short maxSpinners = 10;
+	// This could probably be eliminated if they were in the same parent widget or had a unique class.
+	QSpinBox *all[maxSpinners] = {
+		ui->spinButtonPrev,
+		ui->spinButtonNext,
+		ui->spinButtonDetails,
+		ui->spinButtonSaveAs,
+		ui->spinButtonSave,
+		ui->spinButtonSaveNQuit,
+		ui->spinButtonOpen,
+		ui->spinButtonSaveFav,
+		ui->spinButtonSaveNQuitFav,
+		ui->spinButtonOpenFav
+	};
+
+	for (unsigned short checker = 0; checker < maxSpinners; checker++) {
+
+		int checkVal = all[checker]->value();
+		QSpinBox *numberMatches[maxSpinners] = {nullptr};
+		QSpinBox **numberTester = numberMatches - 1;
+
+		for (unsigned short i = 0; i < maxSpinners; i++) {
+			if (all[i]->value() == checkVal) *++numberTester = all[i];
+		}
+
+		if (numberMatches[1] == nullptr) continue;	// Alarm style will not be set for this new value.
+
+
+		// Set alarm style on spinners with matching value.
+		QColor alarmBack(255, (100 - 255) * (static_cast<float>(checkVal) / maxSpinners) + 255, 0);	// Green normalised between 100 and 255.
+		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
+
+		for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
+			if (*numberTester == nullptr) break;
+			(*numberTester)->setStyleSheet(alarmStyle.c_str());
+		}
+
+	}
+	all[0]->parentWidget()->show();	// This could be hard coded.
 }
