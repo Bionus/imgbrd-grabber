@@ -22,7 +22,7 @@ MonitorWindow::MonitorWindow(Profile *profile, Monitor monitor, QWidget *parent)
 	}
 
 	ui->linePostFilters->setText(m_monitor.postFilters().join(' '));
-	ui->dateLastCheck->setDateTime(m_monitor.lastCheck());
+	ui->dateLastCheck->setDateTime(m_monitor.lastCheck().toLocalTime());
 	ui->spinInterval->setValue(qFloor(m_monitor.interval() / 60.0));
 	ui->spinDelay->setValue(qFloor(m_monitor.delay() / 60.0));
 

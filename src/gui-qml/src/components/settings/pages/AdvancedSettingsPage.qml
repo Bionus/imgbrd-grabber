@@ -10,6 +10,18 @@ ColumnLayout {
 
     SettingTitle {
         Layout.fillWidth: true
+        text: qsTr("Updates")
+    }
+    ComboSetting {
+        name: qsTr("Check for updates interval")
+        options: [qsTr("Every time"), qsTr("Once a day"), qsTr("Once a week"), qsTr("Once a month"), qsTr("Never")]
+        values: [0, 24 * 60 * 60, 7 * 24 * 60 * 60, 30 * 24 * 60 * 60, -1]
+        setting: gSettings.checkForUpdates
+        Layout.fillWidth: true
+    }
+
+    SettingTitle {
+        Layout.fillWidth: true
         text: qsTr("Backup")
     }
     SettingItem {

@@ -21,7 +21,7 @@ class LanguageLoader : public QObject
 		bool uninstall(QCoreApplication *app);
 
 	public slots:
-		bool setLanguage(const QString &lang);
+		bool setLanguage(const QString &lang, bool useSystemLocale);
 
 	signals:
 		void languageChanged();

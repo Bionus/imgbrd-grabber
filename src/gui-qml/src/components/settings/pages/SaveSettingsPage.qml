@@ -61,6 +61,82 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
+    SettingTitle {
+        Layout.fillWidth: true
+        text: qsTr("Tags")
+    }
+    Repeater {
+        model: ListModel {
+            ListElement {
+                name: qsTr("Artist")
+                key: "artist"
+                enableShorter: false
+                defaultEmpty: "anonymous"
+                defaultMultiple: "multiple artists"
+            }
+            ListElement {
+                name: qsTr("Copyright")
+                key: "copyright"
+                enableShorter: true
+                defaultEmpty: "misc"
+                defaultMultiple: "crossover"
+            }
+            ListElement {
+                name: qsTr("Character")
+                key: "character"
+                enableShorter: false
+                defaultEmpty: "unknown"
+                defaultMultiple: "group"
+            }
+            ListElement {
+                name: qsTr("Model")
+                key: "model"
+                enableShorter: false
+                defaultEmpty: "unknown"
+                defaultMultiple: "multiple"
+            }
+            ListElement {
+                name: qsTr("Photo set")
+                key: "photo_set"
+                enableShorter: false
+                defaultEmpty: "unknown"
+                defaultMultiple: "multiple"
+            }
+            ListElement {
+                name: qsTr("Species")
+                key: "species"
+                enableShorter: false
+                defaultEmpty: "unknown"
+                defaultMultiple: "multiple"
+            }
+            ListElement {
+                name: qsTr("Meta")
+                key: "meta"
+                enableShorter: false
+                defaultEmpty: "none"
+                defaultMultiple: "multiple"
+            }
+        }
+        delegate: SettingItem {
+            Layout.fillWidth: true
+
+            name: model.name
+
+            onClicked: settingsStackView.push(tagSaveSettingsPage, {
+                key: model.key,
+                enableShorter: model.enableShorter,
+                defaultEmpty: model.defaultEmpty,
+                defaultMultiple: model.defaultMultiple
+            })
+        }
+    }
+
+    Component {
+        id: tagSaveSettingsPage
+
+        TagSaveSettingsPage {}
+    }
+
     Item {
         Layout.fillHeight: true
     }

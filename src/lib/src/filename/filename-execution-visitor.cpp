@@ -145,6 +145,12 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	// Convert value to a basic string using the given options
 	if (val.type() == QVariant::DateTime) {
 		res = variableToString(name, val.toDateTime(), options);
+	} else if (val.type() == QVariant::ULongLong) {
+		res = variableToString(name, val.toULongLong(), options);
+	} else if (val.type() == QVariant::LongLong) {
+		res = variableToString(name, val.toLongLong(), options);
+	} else if (val.type() == QVariant::UInt) {
+		res = variableToString(name, val.toUInt(), options);
 	} else if (val.type() == QVariant::Int) {
 		res = variableToString(name, val.toInt(), options);
 	} else if (val.type() == QVariant::StringList) {
@@ -163,7 +169,7 @@ void FilenameExecutionVisitor::visitVariable(const QString &fullName, const QMap
 	}
 
 	// Forbidden characters and spaces replacement settings
-	if (name != "allo" && !name.startsWith("url_") && name != "filename" && name != "directory" && !clean) {
+	if (name != "allo" && !name.startsWith("url_") && name != "filename" && name != "directory" && name != "old_filename" && name != "old_directory" && !clean) {
 		res = cleanVariable(res, options);
 	}
 
@@ -197,7 +203,8 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, QDateTim
 	return val.toString(format);
 }
 
-QString FilenameExecutionVisitor::variableToString(const QString &name, int val, const QMap<QString, QString> &options)
+template <typename T>
+QString FilenameExecutionVisitor::variableToString(const QString &name, T val, const QMap<QString, QString> &options)
 {
 	Q_UNUSED(name);
 

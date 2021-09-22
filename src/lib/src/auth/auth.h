@@ -18,6 +18,7 @@ class Auth
 		explicit Auth(QString type);
 		virtual ~Auth() = default;
 		QString type() const;
+		virtual QString name() const;
 		virtual QList<AuthSettingField> settingFields() const = 0;
 
 	private:

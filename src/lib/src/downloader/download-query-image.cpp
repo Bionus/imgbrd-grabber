@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <utility>
+#include "logger.h"
 #include "models/image.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -39,6 +40,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, Profile *profile)
 
 	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName)) {
+		log(QStringLiteral("Unknown site: %1").arg(siteName), Logger::Warning);
 		return false;
 	}
 

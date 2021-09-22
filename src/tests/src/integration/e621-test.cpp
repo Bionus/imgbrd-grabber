@@ -8,9 +8,9 @@
 
 TEST_CASE("E621")
 {
-	SECTION("SwfUrls")
+	SECTION("HTML SWF search")
 	{
-		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "regex", "swf rating:safe", "results.html");
+		QList<QSharedPointer<Image>> images = getImages("E621", "e621.net", "regex", "swf rating:safe", "results.html");
 
 		// Convert results
 		QStringList md5s, urls;
@@ -23,75 +23,50 @@ TEST_CASE("E621")
 
 		// Check results
 		md5s = md5s.mid(0, 3);
-		QStringList expected = QStringList() << "cb0523430ab3a75216fe1b3a3a42cac5" << "4533e0a1bf7b132038f7ab3864ecd027" << "d8461800f2a107f2d928fcbca00f6019";
+		QStringList expected = QStringList() << "7da0468faa919931761286a7e7ae63b6" << "02ceb824579f74ac005d856992fb8da8" << "b224993c9c150fc7010c5c4d96ac4b10";
 		REQUIRE(images.count() == 20);
 		REQUIRE(md5s == expected);
 
 		// Compare URLs
 		QStringList expectedUrls = QStringList()
-			<< "https://static1.e621.net/data/cb/05/cb0523430ab3a75216fe1b3a3a42cac5.swf"
-			<< "https://static1.e621.net/data/45/33/4533e0a1bf7b132038f7ab3864ecd027.swf"
-			<< "https://static1.e621.net/data/d8/46/d8461800f2a107f2d928fcbca00f6019.swf";
+			<< "https://static1.e621.net/data/7d/a0/7da0468faa919931761286a7e7ae63b6.swf"
+			<< "https://static1.e621.net/data/02/ce/02ceb824579f74ac005d856992fb8da8.swf"
+			<< "https://static1.e621.net/data/b2/24/b224993c9c150fc7010c5c4d96ac4b10.swf";
 		QStringList actualUrls = urls.mid(0, 3);
 		REQUIRE(actualUrls == expectedUrls);
 	}
 
-	SECTION("XmlTypedTags")
+	SECTION("JSON search with typed tags")
 	{
-		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "xml", "rating:safe", "results-typed.xml");
+		QList<QSharedPointer<Image>> images = getImages("E621", "e621.net", "json", "rating:safe", "results.json");
 		REQUIRE(!images.isEmpty());
 
 		QList<Tag> tags = images.first()->tags();
-		REQUIRE(tags.count() == 22);
+		REQUIRE(tags.count() == 24);
 
-		REQUIRE(tags[0].text() == QString("female"));
-		REQUIRE(tags[0].type().name() == QString("general"));
-		REQUIRE(tags[21].text() == QString("mammal"));
-		REQUIRE(tags[21].type().name() == QString("species"));
+		REQUIRE(tags[16].text() == QString("zenfry"));
+		REQUIRE(tags[16].type().name() == QString("artist"));
 	}
 
-	SECTION("JsonTypedTags")
+	SECTION("HTML tags")
 	{
-		QList<QSharedPointer<Image>> images = getImages("Danbooru", "e621.net", "json", "rating:safe", "results-typed.json");
-		REQUIRE(!images.isEmpty());
+		QList<Tag> tags = getTags("E621", "e621.net", "regex", "tags.html");
 
-		QList<Tag> tags = images.first()->tags();
-		REQUIRE(tags.count() == 22);
+		REQUIRE(tags.count() == 75);
 
-		REQUIRE(tags[21].text() == QString("equine"));
-		REQUIRE(tags[21].type().name() == QString("species"));
+		REQUIRE(tags[1].text() == QString("mammal"));
+		REQUIRE(tags[1].count() == 1770103);
+		REQUIRE(tags[1].type().name() == QString("species"));
 	}
 
-	SECTION("HtmlTags")
+	SECTION("JSON tags")
 	{
-		QList<Tag> tags = getTags("Danbooru", "e621.net", "regex", "tags.html");
+		QList<Tag> tags = getTags("E621", "e621.net", "json", "tags.json");
 
-		REQUIRE(tags.count() == 100);
+		REQUIRE(tags.count() == 75);
 
-		REQUIRE(tags[0].text() == QString("mammal"));
-		REQUIRE(tags[0].count() == 907884);
-		REQUIRE(tags[0].type().name() == QString("species"));
-	}
-
-	SECTION("XmlTags")
-	{
-		QList<Tag> tags = getTags("Danbooru", "e621.net", "xml", "tags.xml");
-
-		REQUIRE(tags.count() == 100);
-
-		REQUIRE(tags[0].text() == QString("mammal"));
-		REQUIRE(tags[0].count() == 866534);
-		REQUIRE(tags[0].type().name() == QString("species"));
-	}
-
-	SECTION("JsonTags")
-	{
-		QList<Tag> tags = getTags("Danbooru", "e621.net", "json", "tags.json");
-
-		REQUIRE(tags.count() == 100);
-
-		REQUIRE(tags[0].text() == QString("mammal"));
-		REQUIRE(tags[0].count() == 866534);
-		REQUIRE(tags[0].type().name() == QString("species"));
+		REQUIRE(tags[1].text() == QString("mammal"));
+		REQUIRE(tags[1].count() == 1770104);
+		REQUIRE(tags[1].type().name() == QString("species"));
 	}
 }

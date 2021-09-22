@@ -14,13 +14,17 @@ Page {
     property string currentSource
     property var sources
 
+    function openSettingsPage(path) {
+        settingsStackView.push(settingsPage, { path: path })
+    }
+
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
 
             ToolButton {
                 icon.source: "/images/icons/back.png"
-                onClicked: stackView.depth > 1 ? stackView.pop() : root.closed()
+                onClicked: settingsStackView.depth > 1 ? settingsStackView.pop() : root.closed()
             }
 
             Label {
@@ -33,7 +37,7 @@ Page {
     }
 
     StackView {
-        id: stackView
+        id: settingsStackView
         anchors.fill: parent
         initialItem: mainSettings
 
@@ -88,7 +92,7 @@ Page {
                 text: model.name
                 icon.source: model.icon
 
-                onClicked: stackView.push(settingsPage, { path: model.component })
+                onClicked: openSettingsPage(model.component)
             }
         }
     }
@@ -112,8 +116,8 @@ Page {
 
     Keys.onReleased: {
         if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
-            if (stackView.depth > 1) {
-                stackView.pop()
+            if (settingsStackView.depth > 1) {
+                settingsStackView.pop()
             } else {
                 root.closed()
             }

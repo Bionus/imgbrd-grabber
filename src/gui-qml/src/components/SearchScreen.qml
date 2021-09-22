@@ -1,3 +1,4 @@
+import Grabber 1.0
 import QtQml 2.12
 import QtQuick 2.12
 import QtGraphicalEffects 1.0
@@ -14,14 +15,23 @@ Page {
 
     property int page: 1
     property string site
-    property string query
-    property var results
+
+    TagSearchLoader {
+        id: pageLoader
+
+        site: searchTab.site
+        query: textFieldSearch.text
+        page: searchTab.page
+        perPage: 20
+        postFilter: textFieldPostFiltering.text
+        profile: backend.profile
+    }
 
     function load(tag) {
         if (tag) {
             textFieldSearch.text = tag
         }
-        backend.search(site, textFieldSearch.text, page, textFieldPostFiltering.text)
+        pageLoader.load()
     }
 
     header: ToolBar {
@@ -55,7 +65,7 @@ Page {
         id: imageScreen
 
         ImageScreen {
-            images: results
+            images: pageLoader.results
             index: 0
 
             onClosed: mainStackView.pop()
@@ -102,11 +112,13 @@ Page {
                 height: 40
 
                 ToolButton {
-                    property var isFavorited: Array.prototype.indexOf.call(backend.favorites, backend.query) >= 0
+                    property var isFavorited: Array.prototype.indexOf.call(backend.favorites, pageLoader.query) >= 0
                     icon.source: "/images/icons/" + (isFavorited ? "favorites_filled" : "favorites") + ".png"
                     icon.color: isFavorited ? "pink" : Material.foreground
-                    enabled: query !== ""
-                    onClicked: isFavorited ? backend.removeFavorite(backend.query) : backend.addFavorite(backend.query, searchTab.site)
+                    enabled: pageLoader.query !== ""
+                    onClicked: isFavorited
+                        ? backend.removeFavorite(pageLoader.query)
+                        : backend.addFavorite(pageLoader.query, searchTab.site)
                 }
 
                 Item {
@@ -115,17 +127,27 @@ Page {
             }
         }
 
-        ResultsView {
-            results: searchTab.results
-            thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
-            thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
-            thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
-            thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
-            thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
+        Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            onOpenImage: mainStackView.push(imageScreen, { index: index })
+            ResultsView {
+                results: pageLoader.results
+                thumbnailHeightToWidthRatio: gSettings.resultsLayoutType.value === "flow" ? 0 : gSettings.resultsHeightToWidthRatio.value
+                thumbnailSpacing: gSettings.resultsSpaceBetweenImages.value === "none" ? 0 : (gSettings.resultsSpaceBetweenImages.value === "minimal" ? 2 : 8)
+                thumbnailPadding: gSettings.resultsSpaceBetweenImages.value === "medium"
+                thumbnailRadius: gSettings.resultsRoundImages.value ? 8 : 0
+                thumbnailFillMode: gSettings.resultsLayoutType.value === "grid" && gSettings.resultsThumbnailFillMode.value === "crop" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
+                anchors.fill: parent
+
+                onOpenImage: mainStackView.push(imageScreen, { index: index })
+                onRefresh: load()
+            }
+
+            Loading {
+                visible: pageLoader.status == TagSearchLoader.Loading
+                anchors.fill: parent
+            }
         }
 
         RowLayout {
@@ -138,7 +160,7 @@ Page {
                 background.anchors.fill: prevButton
                 width: 40
                 icon.source: "/images/icons/previous.png"
-                enabled: query !== "" && page > 1
+                enabled: pageLoader.hasPrev
                 Layout.fillHeight: true
                 Material.elevation: 0
 
@@ -164,7 +186,7 @@ Page {
                 background.anchors.fill: nextButton
                 width: 40
                 icon.source: "/images/icons/next.png"
-                enabled: query !== ""
+                enabled: pageLoader.hasNext
                 Layout.fillHeight: true
                 Material.elevation: 0
 

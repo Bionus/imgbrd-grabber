@@ -52,7 +52,7 @@ const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const
 		{
 			const QString pth = profile->getSettings()->value("Save/path").toString();
 			Filename filename(profile->getSettings()->value("Save/filename").toString());
-			QStringList paths = filename.path(tokens, profile, pth);
+			QStringList paths = filename.path(tokens, profile, pth, 0, Filename::Full);
 			bool alreadyExists = false;
 			for (const QString &path : paths) {
 				if (QFile::exists(path)) {

@@ -31,9 +31,9 @@ class MonitoringCenter : public QObject
 	public slots:
 		void start();
 		void stop();
+		void tick();
 
 	protected slots:
-		void tick();
 		void queueEmpty();
 
 	protected:

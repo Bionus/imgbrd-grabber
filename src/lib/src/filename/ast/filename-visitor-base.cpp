@@ -1,7 +1,4 @@
 #include "filename/ast/filename-visitor-base.h"
-#include <QJSEngine>
-#include <QJSValue>
-#include <QVariant>
 #include "filename/ast/filename-node-condition.h"
 #include "filename/ast/filename-node-condition-ignore.h"
 #include "filename/ast/filename-node-condition-invert.h"
@@ -14,7 +11,6 @@
 #include "filename/ast/filename-node-root.h"
 #include "filename/ast/filename-node-text.h"
 #include "filename/ast/filename-node-variable.h"
-#include "loader/token.h"
 
 
 void FilenameVisitorBase::visit(const FilenameNodeConditional &node)

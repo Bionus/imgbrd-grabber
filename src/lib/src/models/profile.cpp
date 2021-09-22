@@ -25,31 +25,26 @@
 
 
 Profile::Profile()
-	: m_settings(nullptr), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
+	: m_settings(nullptr), m_commands(nullptr), m_exiftool(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
+	: m_path(std::move(path)), m_settings(settings), m_favorites(std::move(favorites)), m_keptForLater(std::move(keptForLater)), m_commands(nullptr), m_exiftool(nullptr), m_md5s(nullptr), m_monitorManager(nullptr), m_downloadQueryManager(nullptr), m_urlDownloaderManager(nullptr)
 {}
 Profile::Profile(QString path)
-	: m_path(std::move(path))
+	: m_path(std::move(path)), m_urlDownloaderManager(nullptr)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
 	// Load sources
 	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (const QString &dir : dirs) {
-		Source *source = new Source(this, m_path + "/sites/" + dir);
+		auto *source = new Source(this, m_path + "/sites/" + dir);
 		if (source->getApis().isEmpty()) {
 			source->deleteLater();
 			continue;
 		}
 
-		m_sources.insert(source->getName(), source);
-		m_additionalTokens.append(source->getAdditionalTokens());
-
-		for (Site *site : source->getSites()) {
-			m_sites.insert(site->url(), site);
-		}
+		addSource(source);
 	}
 
 	// Load favorites
@@ -71,10 +66,10 @@ Profile::Profile(QString path)
 	} else {
 		QFile fileFavorites(m_path + "/favorites.txt");
 		if (fileFavorites.open(QFile::ReadOnly | QFile::Text)) {
-			QString favs = fileFavorites.readAll();
+			QString favorites = fileFavorites.readAll();
 			fileFavorites.close();
 
-			QStringList words = favs.split("\n", Qt::SkipEmptyParts);
+			QStringList words = favorites.split("\n", Qt::SkipEmptyParts);
 			m_favorites.reserve(words.count());
 			for (const QString &word : words) {
 				Favorite fav = Favorite::fromString(m_path, word);
@@ -167,7 +162,7 @@ Profile::Profile(QString path)
 	m_downloadQueryManager = new DownloadQueryManager(m_path + "/restore.igl", this);
 
 	// URL downloaders
-	// m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
+	m_urlDownloaderManager = new UrlDownloaderManager(m_path + "/sites", this);
 
 	// Complete auto-complete
 	static QStringList specialCompletes = { "grabber:alreadyExists", "grabber:inMd5List", "grabber:downloaded", "grabber:favorited" };
@@ -193,7 +188,11 @@ Profile::~Profile()
 	delete m_commands;
 	delete m_monitorManager;
 	delete m_downloadQueryManager;
-	// delete m_urlDownloaderManager;
+	delete m_urlDownloaderManager;
+
+	if (m_exiftool != nullptr) {
+		m_exiftool->stop();
+	}
 }
 
 
@@ -280,7 +279,7 @@ void Profile::syncBlacklist() const
 
 QString Profile::tempPath() const
 {
-	const QString override = m_settings->value("tempPathOverride", "").toString();
+	QString override = m_settings->value("tempPathOverride", "").toString();
 	if (!override.isEmpty() && QFile::exists(override)) {
 		return override;
 	}
@@ -429,6 +428,16 @@ void Profile::addAutoComplete(const QString &tag)
 	m_customAutoComplete.append(tag);
 }
 
+
+void Profile::addSource(Source *source)
+{
+	m_sources.insert(source->getName(), source);
+	m_additionalTokens.append(source->getAdditionalTokens());
+
+	for (Site *site : source->getSites()) {
+		m_sites.insert(site->url(), site);
+	}
+}
 
 void Profile::addSite(Site *site)
 {

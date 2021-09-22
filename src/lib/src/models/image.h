@@ -26,6 +26,14 @@ class Image : public QObject, public Downloadable
 	Q_OBJECT
 
 	public:
+		enum LoadTagsResult
+		{
+			Ok,
+			Error,
+			CloudflareError,
+			NetworkError
+		};
+
 		Image();
 		explicit Image(Profile *profile);
 		Image(Site *site, QMap<QString, QString> details, Profile *profile, Page *parent = nullptr);
@@ -54,6 +62,7 @@ class Image : public QObject, public Downloadable
 		const QUrl &pageUrl() const;
 		const QUrl &fileUrl() const;
 		QSize size(Size size = Size::Full) const;
+		QRect rect(Size size = Size::Full) const;
 		const QString &name() const;
 		Page *page() const;
 		const QUrl &parentUrl() const;
@@ -77,6 +86,7 @@ class Image : public QObject, public Downloadable
 		void setParentGallery(const QSharedPointer<Image> &parentGallery);
 		void setPromoteDetailParsWarn(bool);
 		bool isValid() const;
+		Profile *getProfile() const { return m_profile; }
 
 		// Preview pixmap store
 		QPixmap previewImage() const;
@@ -125,7 +135,7 @@ class Image : public QObject, public Downloadable
 
 	signals:
 		void finishedLoadingPreview();
-		void finishedLoadingTags();
+		void finishedLoadingTags(Image::LoadTagsResult result);
 		void urlChanged(const QUrl &before, const QUrl &after);
 
 	private:
@@ -169,5 +179,6 @@ class Image : public QObject, public Downloadable
 
 Q_DECLARE_METATYPE(Image)
 Q_DECLARE_METATYPE(Image::SaveResult)
+Q_DECLARE_METATYPE(Image::LoadTagsResult)
 
 #endif // IMAGE_H

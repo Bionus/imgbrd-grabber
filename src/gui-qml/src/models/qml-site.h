@@ -31,6 +31,7 @@ class QmlSite : public QObject
 		QString name() const { return m_site->name(); }
 		Settings *settings() const { return m_settings; }
 		QList<QmlAuth*> authFields() const { return m_fields; }
+		bool remove() { return m_site->remove(); }
 
 	private:
 		Site *m_site;

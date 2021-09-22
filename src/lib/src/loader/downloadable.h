@@ -33,7 +33,8 @@ class Downloadable
 			Error,
 			NotLoaded,
 			NotFound,
-			NetworkError
+			NetworkError,
+			DetailsLoadError
 		};
 
 		enum Size

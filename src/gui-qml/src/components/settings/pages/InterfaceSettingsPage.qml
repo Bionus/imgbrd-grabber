@@ -12,7 +12,8 @@ ColumnLayout {
     }
     ComboSetting {
         name: qsTr("Language")
-        options: ["English", "French"]
+        options: ["English", "French - Français", "Russian - русский", "Chinese (Simplified) - 中文（简体）", "Polish - Polskie", "Japanese - 日本語"]
+        values: ["English", "French", "Russian", "ChineseSimplified", "Polish", "Japanese"]
         setting: gSettings.language
         Layout.fillWidth: true
     }
@@ -75,6 +76,12 @@ ColumnLayout {
     SettingTitle {
         Layout.fillWidth: true
         text: qsTr("Image viewer")
+    }
+    CheckBoxSetting {
+        name: qsTr("Load samples")
+        subtitle: qsTr("Load sample-sized versions of the images by default if available.")
+        setting: gSettings.zoom_viewSamples
+        Layout.fillWidth: true
     }
     CheckBoxSetting {
         name: qsTr("Buttons at the bottom")

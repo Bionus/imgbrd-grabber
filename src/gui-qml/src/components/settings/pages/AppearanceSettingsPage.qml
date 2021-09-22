@@ -28,6 +28,21 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
+    SettingTitle {
+        Layout.fillWidth: true
+        text: qsTr("Image")
+    }
+    ColorPickerSetting {
+        name: qsTr("Background color")
+        setting: gSettings.imageBackgroundColor
+        Layout.fillWidth: true
+    }
+    SettingItem {
+        name: qsTr("Tags")
+        Layout.fillWidth: true
+        onClicked: openSettingsPage("AppearanceTagsSettingsPage.qml")
+    }
+
     Item {
         Layout.fillHeight: true
     }

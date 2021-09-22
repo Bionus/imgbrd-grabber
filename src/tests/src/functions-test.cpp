@@ -222,6 +222,16 @@ TEST_CASE("Functions")
 		REQUIRE(formatFilesize(7340032) == QString("%1 %2").arg("7", units[2]));
 	}
 
+	SECTION("Parse file size")
+	{
+		REQUIRE(parseFileSize("123") == 123);
+		REQUIRE(parseFileSize("12.3") == 12);
+		REQUIRE(parseFileSize("123 KB") == (123 * 1024));
+		REQUIRE(parseFileSize("1.23 KB") == 1260); // Round(1.23 *  1024)
+		REQUIRE(parseFileSize("123 MB") == (123 * 1024 * 1024));
+		REQUIRE(parseFileSize("12 GB") == (12. * 1024 * 1024 * 1024));
+	}
+
 	SECTION("GetExtension")
 	{
 		REQUIRE(getExtension(QUrl("")) == QString(""));
@@ -456,5 +466,11 @@ TEST_CASE("Functions")
 			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", false) == QStringList { "a", "b", "c", "d", "", "", "" });
 			REQUIRE(splitStringMulti({ ',', ';' }, "a,b;c,d,;,", true) == QStringList { "a", "b", "c", "d" });
 		}
+	}
+
+	SECTION("decodeHtmlEntities")
+	{
+		REQUIRE(decodeHtmlEntities("pok&eacute;mon") == QString("pokémon"));
+		REQUIRE(decodeHtmlEntities("a&amp;b") == QString("a&b"));
 	}
 }

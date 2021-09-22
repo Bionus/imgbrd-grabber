@@ -28,6 +28,7 @@ class NetworkReply : public QObject
 		NetworkError error() const;
 		QString errorString() const;
 		QNetworkReply *networkReply() const;
+		QByteArray rawHeader(const QByteArray &headerName) const;
 		bool isRunning() const;
 
 	public slots:

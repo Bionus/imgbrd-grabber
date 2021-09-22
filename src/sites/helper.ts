@@ -103,7 +103,7 @@ addHelper("fileSizeToInt", (str: string): number => {
     if  (typeof str !== "string") {
         return str as any;
     }
-    const res = str.match(/^(\d+(?:\.\d+))\s*(\w+)$/);
+    const res = str.match(/^(\d+(?:\.\d+)?)\s*(\w+)$/);
     if (res) {
         const val = parseFloat(res[1]);
         const unit = res[2].toLowerCase();
@@ -210,3 +210,15 @@ addHelper("regexToConst", (key: string, regexp: string, src: string): string | u
     }
     return undefined;
 });
+
+function _visitSearch(search: IParsedSearchQuery, tag: (tag: ITag) => string, and: (left: string, right: string) => string, or: (left: string, right: string) => string): string {
+    if ("operator" in search) {
+        const left = _visitSearch(search.left, tag, and, or);
+        const right = _visitSearch(search.right, tag, and, or);
+        const func = search.operator === "and" ? and : or;
+        return func(left, right);
+    } else {
+        return tag(search);
+    }
+}
+addHelper("visitSearch", _visitSearch);

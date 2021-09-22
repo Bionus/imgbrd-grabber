@@ -2,6 +2,7 @@
 #define FUNCTIONS_H
 
 #include <QMap>
+#include <QRect>
 #include <QString>
 #include <QKeySequence>
 #include "backports/backports.h"
@@ -40,11 +41,12 @@ QStringList splitStringMulti(const QList<QChar> &seps, const QString &str, bool 
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);
-bool copyRecursively(QString srcFilePath, QString tgtFilePath);
+bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite = false);
 int levenshtein(QString, QString);
 QString stripTags(QString);
 QString getUnit(double *size);
 QString formatFilesize(double size);
+qint64 parseFileSize(const QString &str);
 QString getExtension(const QUrl &url);
 QUrl setExtension(QUrl url, const QString &extension);
 bool isUrl(const QString &str);
@@ -93,6 +95,9 @@ bool createLink(const QString &from, const QString &to, const QString &type);
 
 QKeySequence getKeySequence(QSettings *settings, const QString &key, QKeySequence::StandardKey standardDefault, const QKeySequence &altDefault);
 QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def);
+
+QString rectToString(const QRect &rect);
+QRect stringToRect(const QString &str);
 
 
 

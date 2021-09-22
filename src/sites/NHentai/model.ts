@@ -17,9 +17,20 @@ function makeImage(image: any): IImage {
     return image;
 }
 
+const tagTypeMap: Record<string, string> = {
+    tag: "general",
+    language: "meta",
+    category: "general",
+    character: "character",
+    parody: "copyright",
+    artist: "artist",
+    group: "artist",
+};
+
 function makeTag(tag: any): ITag {
     return {
         id: tag["id"],
+        type: tag["type"] in tagTypeMap ? tagTypeMap[tag["type"]] : undefined,
         name: tag["name"],
         count: tag["count"],
     };
@@ -55,7 +66,7 @@ export const source: ISource = {
                             gallery_count: gallery["num_pages"],
                             id: gallery["id"],
                             name: gallery["title"]["english"],
-                            date: gallery["upload_date"],
+                            created_at: gallery["upload_date"],
                             tags: gallery["tags"].map(makeTag),
                             preview_url: "https://t.nhentai.net/galleries/" + gallery["media_id"] + "/thumb." + extensionMap[thumb["t"]],
                             preview_width: thumb["w"],
@@ -83,7 +94,7 @@ export const source: ISource = {
                         const image = pages[page];
                         const index = parseInt(page, 10) + 1;
                         images.push({
-                            date: data["upload_date"],
+                            created_at: data["upload_date"],
                             tags: data["tags"].map(makeTag),
                             file_url: "https://i.nhentai.net/galleries/" + data["media_id"] + "/" + index + "." + extensionMap[image["t"]],
                             width: image["w"],

@@ -128,13 +128,13 @@ void FilenamePrintVisitor::visit(const FilenameNodeVariable &node)
 		m_result += ";";
 
 		int i = 0;
-		for (const auto &opt : node.opts.keys()) {
+		for (auto it = node.opts.constBegin(); it != node.opts.constEnd(); ++it) {
 			if (i++ > 0) {
 				m_result += ",";
 			}
-			m_result += opt;
-			if (!node.opts[opt].isEmpty()) {
-				m_result += "=" + node.opts[opt];
+			m_result += it.key();
+			if (!it.value().isEmpty()) {
+				m_result += "=" + it.value();
 			}
 		}
 	}

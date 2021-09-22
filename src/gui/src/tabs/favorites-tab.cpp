@@ -127,6 +127,13 @@ void FavoritesTab::updateFavorites()
 
 	clearLayout(m_favoritesLayout);
 
+	if (m_favorites.isEmpty()) {
+		ui->labelFavorites->setText(tr("You don't have any favorite yet."));
+		ui->labelFavorites->show();
+	} else {
+		ui->labelFavorites->hide();
+	}
+
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	const qreal upscale = m_settings->value("thumbnailUpscale", 1.0).toDouble();
 	const int borderSize = m_settings->value("borders", 3).toInt();

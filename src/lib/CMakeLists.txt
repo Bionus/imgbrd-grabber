@@ -3,10 +3,11 @@ project(lib)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Gui REQUIRED) # For some classes such as QPixmap
 find_package(Qt5Network REQUIRED)
+find_package(Qt5NetworkAuth REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
-set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Network Qt5::Qml Qt5::Sql Qt5::Xml)
+set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Network Qt5::NetworkAuth Qt5::Qml Qt5::Sql Qt5::Xml)
 
 # Android specials
 if(ANDROID)
@@ -14,7 +15,7 @@ if(ANDROID)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
 endif()
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 include_directories("src/")
 
 if(WIN_FILE_PROPS)
@@ -22,6 +23,7 @@ if(WIN_FILE_PROPS)
 else()
 	include(ListFilterRegex)
 	listFilterRegex(SOURCES "windows-file-property.*")
+	listFilterRegex(SOURCES "windows-url-protocol.*")
 endif()
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})

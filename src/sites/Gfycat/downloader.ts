@@ -36,7 +36,7 @@ export const downloader: IDownloader = {
             return {
                 tokens: Grabber.mapFields(data, {
                     "name": "title",
-                    "author": "userName",
+                    "author": "username",
                     "md5": "md5",
                     "source": "subreddit",
                     "created_at": "createDate",

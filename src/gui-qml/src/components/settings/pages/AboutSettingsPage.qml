@@ -17,6 +17,11 @@ ColumnLayout {
             : "Version " + VERSION
         Layout.fillWidth: true
     }
+    SettingItem {
+        name: qsTr("Check for updates")
+        Layout.fillWidth: true
+        onClicked: updateChecker.checkForUpdates()
+    }
     LinkSettingItem {
         name: qsTr("See project on Github")
         url: "https://github.com/Bionus/imgbrd-grabber"

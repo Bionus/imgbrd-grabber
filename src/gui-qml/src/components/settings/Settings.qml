@@ -93,6 +93,7 @@ Item {
         property string value: backend.getBlacklist()
         function setValue(val) {
             backend.setBlacklist(val)
+            value = val
         }
     }
     property Setting hideblacklisted: Setting {
@@ -115,6 +116,16 @@ Item {
         function setValue(val) {
             backend.setIgnored(val)
         }
+    }
+    property Setting zoom_viewSamples: Setting {
+        key: "Zoom/viewSamples"
+        def: true // false on desktop
+        obj: root.obj
+    }
+    property Setting checkForUpdates: Setting {
+        key: "check_for_updates"
+        def: 24 * 60 * 60
+        obj: root.obj
     }
 
     // QML-only settings
@@ -206,6 +217,73 @@ Item {
         def: Material.Amber
         obj: root.obj
         parser: (v) => globals.materialColors[Number(v)]
+    }
+    property Setting imageBackgroundColor: Setting {
+        key: "imageBackgroundColor"
+        def: ""
+        obj: root.obj
+    }
+
+    // Coloring
+    property Setting coloring_colors_artists: Setting {
+        key: "Coloring/Colors/artists"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_circles: Setting {
+        key: "Coloring/Colors/circles"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_copyrights: Setting {
+        key: "Coloring/Colors/copyrights"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_characters: Setting {
+        key: "Coloring/Colors/characters"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_species: Setting {
+        key: "Coloring/Colors/species"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_metas: Setting {
+        key: "Coloring/Colors/metas"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_models: Setting {
+        key: "Coloring/Colors/models"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_generals: Setting {
+        key: "Coloring/Colors/generals"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_favorites: Setting {
+        key: "Coloring/Colors/favorites"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_keptForLater: Setting {
+        key: "Coloring/Colors/keptForLater"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_blacklisteds: Setting {
+        key: "Coloring/Colors/blacklisteds"
+        def: ""
+        obj: root.obj
+    }
+    property Setting coloring_colors_ignoreds: Setting {
+        key: "Coloring/Colors/ignoreds"
+        def: ""
+        obj: root.obj
     }
 
     // Mobile-specific settings

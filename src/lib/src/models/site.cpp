@@ -10,6 +10,7 @@
 #include <utility>
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
@@ -17,6 +18,7 @@
 #include "login/http-basic-login.h"
 #include "login/http-get-login.h"
 #include "login/http-post-login.h"
+#include "login/oauth1-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
 #include "mixed-settings.h"
@@ -62,8 +64,8 @@ void Site::loadConfig()
 	if (m_settings != nullptr) {
 		m_settings->deleteLater();
 	}
-	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
-	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
+	auto *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	auto *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*> { settingsCustom, settingsDefaults });
 	m_name = m_settings->value("name", m_url).toString();
 
@@ -118,10 +120,10 @@ void Site::loadConfig()
 	const QString defType = m_settings->value("login/type", "url").toString();
 	if (defType != "disabled") {
 		const auto &auths = m_source->getAuths();
-		for (auto it = auths.constBegin(); it != auths.constEnd(); ++it) {
-			if (it.value()->type() == defType || m_auth == nullptr) {
-				m_auth = it.value();
-			}
+		if (auths.contains(defType)) {
+			m_auth = auths[defType];
+		} else if (!auths.isEmpty()) {
+			m_auth = auths.first();
 		}
 		if (m_login != nullptr) {
 			m_login->deleteLater();
@@ -132,6 +134,8 @@ void Site::loadConfig()
 				m_login = new UrlLogin(dynamic_cast<UrlAuth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "oauth2") {
 				m_login = new OAuth2Login(dynamic_cast<OAuth2Auth*>(m_auth), this, m_manager, m_settings);
+			} else if (type == "oauth1") {
+				m_login = new OAuth1Login(dynamic_cast<OAuth1Auth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "post") {
 				m_login = new HttpPostLogin(dynamic_cast<HttpAuth*>(m_auth), this, m_manager, m_settings);
 			} else if (type == "get") {
@@ -151,7 +155,8 @@ void Site::loadConfig()
 	m_cookies.clear();
 	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
 	for (const QVariant &variant : settingsCookies) {
-		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
+		QByteArray byteArray = variant.type() == QVariant::ByteArray ? variant.toByteArray() : variant.toString().toUtf8();
+		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(byteArray);
 		for (QNetworkCookie cookie : cookies) {
 			cookie.setDomain(m_url);
 			cookie.setPath("/");
@@ -235,9 +240,9 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> cHeaders)
+QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders, bool autoLogin)
 {
-	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
+	if (m_autoLogin && autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
 	}
 
@@ -269,24 +274,16 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 		m_login->complementRequest(&request);
 	}
 
-	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
-	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
-		request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1());
-	}
-
-	// User-Agent header tokens and default value
-	QString userAgent = request.rawHeader("User-Agent");
-	if (userAgent.isEmpty()) {
-		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%");
-	}
-	userAgent.replace("%version%", QString(VERSION));
-	request.setRawHeader("User-Agent", userAgent.toLatin1());
+	setRequestHeaders(request);
 
 	// Additional headers
-	for (const QString &name : cHeaders.keys()) {
-		QByteArray val = cHeaders[name].startsWith("md5:")
-			? QCryptographicHash::hash(cHeaders[name].toLatin1(), QCryptographicHash::Md5).toHex()
-			: cHeaders[name].toLatin1();
+	for (auto it = cHeaders.constBegin(); it != cHeaders.constEnd(); ++it) {
+		const QString &name = it.key();
+		const QString &value = it.value();
+
+		QByteArray val = value.startsWith("md5:")
+			? QCryptographicHash::hash(value.toLatin1(), QCryptographicHash::Md5).toHex()
+			: value.toLatin1();
 		request.setRawHeader(name.toLatin1(), val);
 	}
 
@@ -294,7 +291,42 @@ QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &
 	return request;
 }
 
-NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, QMap<QString, QString> headers)
+void Site::setRequestHeaders(QNetworkRequest &request) const
+{
+	// Custom headers
+	QMap<QString, QString> headers = settingsHeaders();
+	for (auto it = headers.constBegin(); it != headers.constEnd(); ++it) {
+		request.setRawHeader(it.key().toLatin1(), it.value().toLatin1());
+	}
+
+	// User-Agent header tokens and default value
+	QString userAgent = request.rawHeader("User-Agent");
+	if (userAgent.isEmpty()) {
+		userAgent = QStringLiteral("Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0");
+	}
+	userAgent.replace("%version%", QString(VERSION));
+	request.setRawHeader("User-Agent", userAgent.toLatin1());
+}
+
+QMap<QString, QString> Site::settingsHeaders() const
+{
+	QMap<QString, QString> headers;
+
+	QMap<QString, QVariant> legacyHeaders = m_settings->value("headers").toMap();
+	for (auto it = legacyHeaders.constBegin(); it != legacyHeaders.constEnd(); ++it) {
+		headers.insert(it.key(), it.value().toString());
+	}
+
+	m_settings->beginGroup("Headers");
+	for (const QString &key : m_settings->childKeys()) {
+		headers.insert(key, m_settings->value(key).toString());
+	}
+	m_settings->endGroup();
+
+	return headers;
+}
+
+NetworkReply *Site::get(const QUrl &url, Site::QueryType type, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &headers)
 {
 	const QNetworkRequest request = this->makeRequest(url, pageUrl, ref, img, headers);
 	return m_manager->get(request, static_cast<int>(type));
@@ -373,8 +405,6 @@ QString Site::fixLoginUrl(QString url) const
 	return m_login->complementUrl(std::move(url));
 }
 
-Auth *Site::getAuth() const { return m_auth; }
-
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
 	if (url.isEmpty()) {
@@ -423,4 +453,30 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 	}
 
 	return m_loggedIn == LoginStatus::LoggedIn;
+}
+
+bool Site::remove()
+{
+	// Read sites list
+	QFile f(m_source->getPath() + "/sites.txt");
+	if (!f.open(QIODevice::ReadOnly)) {
+		return false;
+	}
+	QString rawSites = f.readAll();
+	f.close();
+
+	// Remove the site from the list
+	rawSites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QStringList sites = rawSites.split("\r\n", Qt::SkipEmptyParts);
+	sites.removeAll(m_url);
+
+	// Save the sites list again
+	if (!f.open(QIODevice::WriteOnly)) {
+		return false;
+	}
+	f.write(sites.join("\r\n").toLatin1());
+	f.close();
+
+	emit removed();
+	return true;
 }

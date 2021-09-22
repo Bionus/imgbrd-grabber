@@ -4,6 +4,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <utility>
+#include "logger.h"
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -76,12 +77,22 @@ bool DownloadQueryGroup::read(const QJsonObject &json, Profile *profile)
 	const QMap<QString, Site*> &sites = profile->getSites();
 	const QString siteName = json["site"].toString();
 	if (!sites.contains(siteName)) {
+		log(QStringLiteral("Unknown site: %1").arg(siteName), Logger::Warning);
 		return false;
 	}
 	site = sites[siteName];
 
 	// Validate values
-	if (page < 1 || perpage < 1 || total < 1) {
+	if (page < 1) {
+		log(QStringLiteral("Invalid page number: %1").arg(page), Logger::Warning);
+		return false;
+	}
+	if (perpage < 1) {
+		log(QStringLiteral("Invalid images per page number: %1").arg(page), Logger::Warning);
+		return false;
+	}
+	if (total < 1 && total != -1) {
+		log(QStringLiteral("Invalid total number: %1").arg(total), Logger::Warning);
 		return false;
 	}
 

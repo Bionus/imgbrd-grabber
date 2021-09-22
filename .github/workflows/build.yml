@@ -11,9 +11,11 @@ on:
     - '**.md'
 
 env:
-  QT_VERSION: 5.15.1
+  QT_VERSION: 5.15.2
+  QT_MODULES: qtnetworkauth
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
 
 jobs:
   uncrustify:
@@ -86,13 +88,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Build
         run: |
@@ -155,13 +158,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Vendor cache
         uses: actions/cache@v1
@@ -195,16 +199,26 @@ jobs:
           working-directory: src
           run: ../build/tests/tests
 
-      - name: Generate package
+      - name: Generate AppImage
         run: |
           ./scripts/package-appimage.sh
           mv Grabber_*-x86_64.AppImage Grabber-x86_64.AppImage
 
-      - name: Upload package
+      - name: Upload AppImage
         uses: actions/upload-artifact@v2
         with:
           name: Grabber-x86_64.AppImage
           path: Grabber-x86_64.AppImage
+          if-no-files-found: error
+
+      - name: Generate archive
+        run: ./scripts/package-linux.sh
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: Grabber.tar.gz
+          path: Grabber.tar.gz
           if-no-files-found: error
 
   macos:
@@ -216,6 +230,7 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+      CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
       - name: Checkout
@@ -228,13 +243,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
 
       - name: Build
         run: |
@@ -279,7 +295,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5198020/qsqlmysql.dll_Qt_SQL_driver_5.15.1_MSVC2019_64-Bit.zip
+      MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5575770/qsqlmysql.dll_Qt_SQL_driver_5.15.2_MSVC2019_64-bit.zip
       QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
@@ -300,13 +316,14 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ../Qt
-          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}
+          key: ${{ runner.os }}-${{ matrix.arch }}-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
           version: ${{ env.QT_VERSION }}
+          modules: ${{ env.QT_MODULES }}
           arch: ${{ matrix.qt_arch }}
 
       - name: Vendor cache
@@ -348,7 +365,7 @@ jobs:
         shell: cmd
         run: |
           if "${{ matrix.suffix }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
-          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1j.exe"
+          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1L.exe" --fail
           OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
           rm OpenSSL.exe
 
@@ -454,13 +471,14 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: ${{ runner.os }}-android-QtCache-${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-android-QtCache-${{ env.QT_VERSION }}-${{ env.QT_MODULES }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: ${{ env.QT_VERSION }}
+        modules: ${{ env.QT_MODULES }}
         target: android
         arch: android
 
@@ -521,10 +539,15 @@ jobs:
       VERSION: ${{ needs.version.outputs.version }}
 
     steps:
-      - name: Download artifact (Linux)
+      - name: Download artifact (Linux AppImage)
         uses: actions/download-artifact@v2
         with:
           name: Grabber-x86_64.AppImage
+
+      - name: Download artifact (Linux archive)
+        uses: actions/download-artifact@v2
+        with:
+          name: Grabber.tar.gz
 
       - name: Download artifact (macOS)
         uses: actions/download-artifact@v2
@@ -561,6 +584,7 @@ jobs:
       - name: Rename artifacts
         run: |
           mv Grabber-x86_64.AppImage Grabber_${VERSION}-x86_64.AppImage
+          mv Grabber.tar.gz Grabber_${VERSION}.tar.gz
           mv Grabber.dmg Grabber_${VERSION}.dmg
           mv Grabber_x86.exe Grabber_${VERSION}_x86.exe
           mv Grabber_x64.exe Grabber_${VERSION}_x64.exe

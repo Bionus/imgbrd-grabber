@@ -12,10 +12,10 @@ Tired of waiting for the next update? Want to get the latest developer version? 
 
 ## Dependencies
 
-Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2017. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one used to push releases and updates. You can also theoretically replace Qt 5.12.3 by any Qt version from the 5.* branch.
+Bullets with '`*`' are mandatory, other are optional. Note that the compiler used for official builds is Visual Studio 2019. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one used to push releases and updates.
 
-  * `*`Qt 5.12.3 (MSVC 2017)
-  * `*`Visual Studio 2017 compiler
+  * `*`Qt 5.14 or higher (MSVC 2019)
+  * `*`Visual Studio 2019 C++ compiler
   * `*`CMake 2.8.12 or above
   * `*`NodeJS (for building images sources)
   * QScintilla2 (for syntax highlighting in JavaScript filename window)
@@ -24,7 +24,8 @@ Bullets with '`*`' are mandatory, other are optional. Note that the compiler use
 ## Instructions
 
 ### Qt
-You can find the 5.12.3 MSVC 2015 x86 version here: [online installer](http://mirrors.ukfast.co.uk/sites/qt.io/archive/online_installers/3.1/qt-unified-windows-x86-3.1.1-online.exe), [offline installer](https://download.qt.io/official_releases/qt/5.12/5.12.3/qt-opensource-windows-x86-5.12.3.exe.mirrorlist).
+You can find the Qt installer here:  
+[https://www.qt.io/download-qt-installer]
 
 Just download and install.
 
@@ -69,7 +70,7 @@ Shortcut: just run `./build.sh` at the root of the repository, and it will build
 
 Bullets with '`*`' are mandatory, other are optional.
 
-  * `*`Qt 5.7.0
+  * `*`Qt 5.14 or higher
   * `*`g++
   * `*`CMake 2.8.12 or above
   * `*`NodeJS (for building images sources)
@@ -80,19 +81,25 @@ Bullets with '`*`' are mandatory, other are optional.
 ## Instructions
 
 ### Qt
-You can install Qt from the command line, for example using using `apt`:
+Most Linux package managers do not provide up-to-date Qt packages. As such, it is recommended to either use [aqtinstall](https://github.com/miurahr/aqtinstall), or a third-party repository.
+
+For example using `apt` and the [beineri](https://launchpad.net/~beineri) repository:
+```bash
+sudo add-apt-repository ppa:beineri/opt-qt-5.15.2-bionic
+sudo apt-get update
+sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations
+source /opt/qt515/bin/qt515-env.sh
+```
+
+If you know your package manager has up-to-date Qt versions, you can use it, for example using using `apt`:
 ```bash
 sudo apt install -y "qtbase5-dev" "qtscript5-dev" "qtmultimedia5-dev" "qtdeclarative5-dev" "qttools5-dev" "qttools5-dev-tools"
 ```
 
-If you're using Fedora:
+Or if you're using Fedora:
 ```bash
 sudo dnf install -y "qt5-qtbase" "qt5-qtbase-devel" "qt5-qtmultimedia-devel" "qt5-qtscript-devel" "qscintilla-qt5-devel" "qt5-linguist" --best
 ```
-
-Alternatively, you can find the 5.12.3 x64 installer here: [https://download.qt.io/official_releases/qt/5.12/5.12.3/qt-opensource-linux-x64-5.12.3.run.mirrorlist](https://download.qt.io/official_releases/qt/5.12/5.12.3/qt-opensource-linux-x64-5.12.3.run.mirrorlist).
-
-Just download and install.
 
 ### Compiler
 You can use the g++ compiler to compile the program. If it's not already installed, the process may vary depending on your Linux distribution. Note that you can also replace g++ with clang if you want.

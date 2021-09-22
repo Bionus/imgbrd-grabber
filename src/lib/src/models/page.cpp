@@ -1,5 +1,6 @@
 #include "models/page.h"
 #include <QUrl>
+#include <algorithm>
 #include <utility>
 #include "analytics.h"
 #include "functions.h"
@@ -9,7 +10,7 @@
 #include "models/site.h"
 
 
-Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, QString lastPageMinDate, QString lastPageMaxDate)
+Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, SearchQuery query, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId, const QString &lastPageMinDate, const QString &lastPageMaxDate)
 	: QObject(parent), m_site(site), m_regexApi(-1), m_query(std::move(query)), m_errors(QStringList()), m_imagesPerPage(limit), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -107,6 +108,13 @@ void Page::setLastPage(Page *page)
 
 void Page::load(bool rateLimit)
 {
+	if (m_currentApi < 0 || m_currentApi >= m_pageApis.count()) {
+		log(QStringLiteral("[%1] No available API to perform the request").arg(m_site->url()), Logger::Error);
+		m_errors.append(tr("No available API to perform the request."));
+		emit failedLoading(this);
+		return;
+	}
+
 	connect(m_pageApis[m_currentApi], &PageApi::finishedLoading, this, &Page::loadFinished);
 	m_pageApis[m_currentApi]->load(rateLimit);
 }
@@ -130,6 +138,9 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 }
 void Page::abort()
 {
+	if (m_currentApi < 0 || m_currentApi >= m_pageApis.count()) {
+		return;
+	}
 	m_pageApis[m_currentApi]->abort();
 }
 
@@ -190,6 +201,7 @@ const QUrl &Page::prevPage() const { return m_pageApis[m_currentApi]->prevPage()
 int Page::highLimit() const { return m_pageApis[m_currentApi]->highLimit(); }
 bool Page::hasNext() const { return m_pageApis[m_currentApi]->hasNext(); }
 bool Page::isLoaded() const { return m_pageApis[m_currentApi]->isLoaded(); }
+bool Page::isValid() const { return !m_pageApis.isEmpty(); }
 
 QMap<QString, QUrl> Page::urls() const
 {
@@ -206,12 +218,13 @@ QMap<QString, QUrl> Page::urls() const
 
 bool Page::hasSource() const
 {
-	for (auto pageApi : qAsConst(m_pageApis)) {
-		if (!pageApi->source().isEmpty()) {
-			return true;
-		}
+	return std::any_of(
+		m_pageApis.constBegin(),
+		m_pageApis.constEnd(),
+		[](PageApi *pageApi) {
+		return !pageApi->source().isEmpty();
 	}
-	return false;
+	);
 }
 
 int Page::imagesCount(bool guess) const

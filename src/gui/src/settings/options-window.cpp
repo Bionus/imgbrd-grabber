@@ -58,6 +58,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->setupUi(this);
 
 	QSettings *settings = profile->getSettings();
+	setupDialogShortcuts(this, settings);
 
 	ui->splitter->setSizes({ 160, ui->stackedWidget->sizeHint().width() });
 	ui->splitter->setStretchFactor(0, 0);
@@ -127,6 +128,9 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 
 	const QStringList ftypes { "ind", "in", "id", "nd", "i", "n", "d" };
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
+
+	ui->keyAcceptDialogue->setKeySequence(getKeySequence(settings, "keyAcceptDialog", Qt::CTRL + Qt::Key_Y));
+	ui->keyDeclineDialogue->setKeySequence(getKeySequence(settings, "keyDeclineDialog", Qt::CTRL + Qt::Key_N));
 
 	// Metadata using Windows Property System
 	#ifndef WIN_FILE_PROPS
@@ -575,12 +579,14 @@ void OptionsWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
+	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
 }
 void OptionsWindow::on_buttonFavoritesPlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
 	connect(fw, &FilenameWindow::validated, ui->lineFavorites, &QLineEdit::setText);
+	setupDialogShortcuts(fw, m_profile->getSettings());
 	fw->show();
 }
 
@@ -588,6 +594,7 @@ void OptionsWindow::on_buttonCustom_clicked()
 {
 	auto *cw = new CustomWindow(this);
 	connect(cw, &CustomWindow::validated, this, &OptionsWindow::addCustom);
+	setupDialogShortcuts(cw, m_profile->getSettings());
 	cw->show();
 }
 void OptionsWindow::addCustom(const QString &name, const QString &tags)
@@ -602,6 +609,7 @@ void OptionsWindow::on_buttonFilenames_clicked()
 {
 	auto *cw = new ConditionWindow();
 	connect(cw, &ConditionWindow::validated, this, &OptionsWindow::addFilename);
+	setupDialogShortcuts(cw, m_profile->getSettings());
 	cw->show();
 }
 void OptionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
@@ -672,6 +680,7 @@ void OptionsWindow::addLogFile()
 {
 	auto *logWindow = new LogWindow(-1, m_profile, this);
 	connect(logWindow, &LogWindow::validated, this, &OptionsWindow::setLogFile);
+	setupDialogShortcuts(logWindow, m_profile->getSettings());
 	logWindow->show();
 }
 
@@ -679,6 +688,7 @@ void OptionsWindow::editLogFile(int index)
 {
 	auto *logWindow = new LogWindow(index, m_profile, this);
 	connect(logWindow, &LogWindow::validated, this, &OptionsWindow::setLogFile);
+	setupDialogShortcuts(logWindow, m_profile->getSettings());
 	logWindow->show();
 }
 
@@ -782,6 +792,7 @@ void OptionsWindow::addWebService()
 {
 	auto *wsWindow = new WebServiceWindow(nullptr, this);
 	connect(wsWindow, &WebServiceWindow::validated, this, &OptionsWindow::setWebService);
+	setupDialogShortcuts(wsWindow, m_profile->getSettings());
 	wsWindow->show();
 }
 
@@ -790,6 +801,7 @@ void OptionsWindow::editWebService(int id)
 	int pos = m_webServicesIds[id];
 	auto *wsWindow = new WebServiceWindow(&m_webServices[pos], this);
 	connect(wsWindow, &WebServiceWindow::validated, this, &OptionsWindow::setWebService);
+	setupDialogShortcuts(wsWindow, m_profile->getSettings());
 	wsWindow->show();
 }
 
@@ -1094,6 +1106,9 @@ void OptionsWindow::save()
 		settings->setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
 		m_profile->emitFavorite();
 	}
+
+	settings->setValue("keyAcceptDialog", ui->keyAcceptDialogue->keySequence().toString());
+	settings->setValue("keyDeclineDialog", ui->keyDeclineDialogue->keySequence().toString());
 
 	// Log
 	settings->beginGroup("Log");
@@ -1522,9 +1537,11 @@ void OptionsWindow::save()
 	}
 
 	const QString lang = ui->comboLanguages->currentData().toString();
-	if (settings->value("language", "English").toString() != lang) {
+	const bool useSystemLocale = ui->checkUseSystemLocale->isChecked();
+	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toString() != useSystemLocale) {
 		settings->setValue("language", lang);
-		emit languageChanged(lang);
+		settings->setValue("useSystemLocale", useSystemLocale);
+		emit languageChanged(lang, useSystemLocale);
 	}
 
 	m_profile->sync();

@@ -52,7 +52,7 @@
          <bool>false</bool>
         </property>
         <property name="format">
-         <string>%v</string>
+         <string notr="true">%v</string>
         </property>
        </widget>
       </item>

@@ -164,6 +164,12 @@ QStringList SearchTab::reasonsToFail(Page *page, const QStringList &completion, 
 {
 	QStringList reasons = QStringList();
 
+	// No valid API
+	if (!page->isValid()) {
+		reasons.append(tr("invalid or missing login information"));
+		return reasons;
+	}
+
 	// Filtered images
 	if (page->pageImageCount() > 0) {
 		reasons.append(tr("all images filtered"));
@@ -379,7 +385,7 @@ void SearchTab::failedLoading(Page *page)
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	addResultsPage(page, QList<QSharedPointer<Image>>(), merged);
 
-	postLoading(page, page->images());
+	postLoading(page, page->isValid() ? page->images() : QList<QSharedPointer<Image>>());
 }
 
 void SearchTab::httpsRedirect(Page *page)
@@ -457,7 +463,7 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 	}
 
 	// Re-enable endless loading if all sources have reached the last page
-	if (finished) {
+	if (finished && page->isValid()) {
 		bool allFinished = true;
 		for (auto ps : qAsConst(m_pages)) {
 			const int pagesCount = ps.first()->pagesCount();
@@ -736,6 +742,21 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 }
 void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, const QString &noResultsMessage)
 {
+	// No results message
+	if (images.isEmpty()) {
+		QString meant;
+		QStringList reasons = reasonsToFail(page, m_completion, &meant);
+		if (!meant.isEmpty() && ui_widgetMeant != nullptr) {
+			ui_widgetMeant->show();
+			ui_labelMeant->setText(meant);
+		}
+
+		const QString name = page->isValid() ? QStringLiteral("<a href=\"%1\">%2</a>").arg(page->url().toString().toHtmlEscaped(), page->site()->name()) : page->site()->name();
+		const QString msg = noResultsMessage == nullptr ? tr("No result") : noResultsMessage;
+		txt->setText(name + " - " + msg + (reasons.count() > 0 ? "<br/>" + tr("Possible reasons: %1").arg(reasons.join(", ")) : QString()));
+		return;
+	}
+
 	const int pageCount = page->pagesCount();
 	const int imageCount = page->imagesCount();
 
@@ -755,28 +776,16 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		totalCount += p->images().count();
 	}
 
-	// No results message
-	if (images.isEmpty()) {
-		QString meant;
-		QStringList reasons = reasonsToFail(page, m_completion, &meant);
-		if (!meant.isEmpty() && ui_widgetMeant != nullptr) {
-			ui_widgetMeant->show();
-			ui_labelMeant->setText(meant);
-		}
-		const QString msg = noResultsMessage == nullptr ? tr("No result") : noResultsMessage;
-		txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + msg + (reasons.count() > 0 ? "<br/>" + tr("Possible reasons: %1").arg(reasons.join(", ")) : QString()));
-	} else {
-		const QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-		const QString pageCountStr = pageCount > 0
-			? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount)
-			: (page->maxPagesCount() == -1 ? "?" : tr("max %1").arg(page->maxPagesCount()));
-		const QString imageCountStr = imageCount > 0
-			? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
-			: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
+	const QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+	const QString pageCountStr = pageCount > 0
+		? (page->pagesCount(false) == -1 ? "~" : QString()) + QString::number(pageCount)
+		: (page->maxPagesCount() == -1 ? "?" : tr("max %1").arg(page->maxPagesCount()));
+	const QString imageCountStr = imageCount > 0
+		? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
+		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
 
-		const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
-		txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel);
-	}
+	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
+	txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel);
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool()) {
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", Qt::SkipEmptyParts);
@@ -1310,8 +1319,15 @@ void SearchTab::loadPage()
 			m_siteLayouts[site]->addLayout(pageLayout);
 		}
 
-		// Load tags if necessary
 		m_stop = false;
+
+		// Skip invalid pages
+		if (!page->isValid()) {
+			failedLoading(page);
+			continue;
+		}
+
+		// Load tags if necessary
 		if (m_settings->value("useregexfortags", true).toBool()) {
 			connect(page, &Page::finishedLoadingTags, this, &SearchTab::finishedLoadingTags);
 			page->loadTags();

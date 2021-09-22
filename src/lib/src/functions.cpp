@@ -11,6 +11,7 @@
 #include <QJSValue>
 #include <QLocale>
 #include <QProcess>
+#include <QRect>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
@@ -130,7 +131,7 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
 	settings->beginGroup(QStringLiteral("Save/Customs"));
 	const QStringList keys = settings->childKeys();
 	for (const QString &key : keys) {
-		tokens.insert(key, settings->value(key).toString().split(' '));
+		tokens.insert(key, splitStringMulti({ ' ', '\n' }, settings->value(key).toString(), true));
 	}
 	settings->endGroup();
 	return tokens;
@@ -325,6 +326,27 @@ QString formatFilesize(double size)
 	return QStringLiteral("%1 %2").arg(roundedSize).arg(unit);
 }
 
+qint64 parseFileSize(const QString &str)
+{
+	static const QRegularExpression rx(QStringLiteral("^(\\d+(?:\\.\\d+)?)\\s*([a-zA-Z]+)$"));
+	const auto match = rx.match(str);
+	if (match.hasMatch()) {
+		const double val = match.captured(1).toDouble();
+		const QString unit = match.captured(2).toLower();
+		if (unit == QStringLiteral("gb")) {
+			return qRound64(val * 1024 * 1024 * 1024);
+		}
+		if (unit == QStringLiteral("mb")) {
+			return qRound64(val * 1024 * 1024);
+		}
+		if (unit == QStringLiteral("kb")) {
+			return qRound64(val * 1024);
+		}
+		return qRound64(val);
+	}
+	return qRound64(str.toDouble());
+}
+
 bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);
@@ -396,7 +418,7 @@ QString savePath(const QString &file, bool exists, bool writable)
 	return QDir::toNativeSeparators(dir + QLatin1Char('/') + file);
 }
 
-bool copyRecursively(QString srcFilePath, QString tgtFilePath)
+bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
 {
 	// Trim directory names of their trailing slashes
 	if (srcFilePath.endsWith(QDir::separator())) {
@@ -408,6 +430,13 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	// Directly copy files using Qt function
 	if (!QFileInfo(srcFilePath).isDir()) {
+		if (QFile::exists(tgtFilePath)) {
+			if (overwrite) {
+				QFile::remove(tgtFilePath);
+			} else {
+				return false;
+			}
+		}
 		return QFile(srcFilePath).copy(tgtFilePath);
 	}
 
@@ -423,7 +452,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 	for (const QString &fileName : fileNames) {
 		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
 		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath)) {
+		if (!copyRecursively(newSrcFilePath, newTgtFilePath, overwrite)) {
 			return false;
 		}
 	}
@@ -1136,4 +1165,26 @@ QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeyS
 		return def;
 	}
 	return QKeySequence(val);
+}
+
+
+QString rectToString(const QRect &rect)
+{
+	if (rect.isNull()) {
+		return "";
+	}
+	return QStringLiteral("%1;%2;%3;%4")
+		.arg(rect.x())
+		.arg(rect.y())
+		.arg(rect.width())
+		.arg(rect.height());
+}
+
+QRect stringToRect(const QString &str)
+{
+	const QStringList parts = str.split(';');
+	if (parts.count() == 4) {
+		return QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt());
+	}
+	return {};
 }

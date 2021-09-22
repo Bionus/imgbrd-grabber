@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
    <property name="leftMargin">
@@ -71,7 +71,7 @@
       <item>
        <widget class="QLabel" name="labelDuration">
         <property name="text">
-         <string>00:00 / 00:00</string>
+         <string notr="true">00:00 / 00:00</string>
         </property>
        </widget>
       </item>

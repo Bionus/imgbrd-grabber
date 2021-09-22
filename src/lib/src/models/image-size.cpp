@@ -3,11 +3,13 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonObject>
+#include "logger.h"
 
 
 ImageSize::~ImageSize()
 {
 	if (!m_temporaryPath.isEmpty()) {
+		log(QStringLiteral("Deleting temporary file `%1`").arg(m_temporaryPath));
 		QFile::remove(m_temporaryPath);
 	}
 }

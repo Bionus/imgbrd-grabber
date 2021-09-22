@@ -52,7 +52,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	ui->tableBatchUniques->setModel(m_batchsModel);
 
 	ui->tableBatchGroups->loadGeometry(m_settings, "Downloads/Groups");
-	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques");
+	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques", QList<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
 	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
@@ -984,7 +984,7 @@ void DownloadsTab::getAllGetImageSaved(const QSharedPointer<Image> &img, QList<I
 		}
 	}
 
-	if (res == Image::SaveResult::NetworkError) {
+	if (res == Image::SaveResult::NetworkError || res == Image::SaveResult::DetailsLoadError) {
 		m_getAllErrors++;
 		m_getAllFailed.append(download);
 	} else if (res == Image::SaveResult::NotFound) {

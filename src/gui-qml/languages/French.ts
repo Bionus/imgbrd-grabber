@@ -89,6 +89,44 @@
     </message>
   </context>
   <context>
+    <name>AdvancedSettingsPage</name>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="13"/>
+      <source>Backup</source>
+      <translation>Sauvegarde</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
+      <source>Export settings</source>
+      <translation>Exporter les paramètres</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Backup the app settings.ini file on your device.</source>
+      <translation>Sauvegarder le fichier settings.ini de l'application sur votre appareil.</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
+      <source>Please choose a directory</source>
+      <translation>Veuillez choisir un répertoire</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="33"/>
+      <source>Import settings</source>
+      <translation>Importer les paramètres</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="34"/>
+      <source>Import the app settings.ini from an existing file.</source>
+      <translation>Importer les paramètres à partir d'un fichier settings.ini existant.</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="42"/>
+      <source>Please choose a file</source>
+      <translation>Veuillez choisir un fichier</translation>
+    </message>
+  </context>
+  <context>
     <name>AppearanceSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="11"/>
@@ -106,9 +144,92 @@
       <translation>Couleur principale</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="28"/>
+      <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="26"/>
       <source>Accent color</source>
       <translation>Couleur d'accentuation</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="33"/>
+      <source>Image</source>
+      <translation>Image</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="36"/>
+      <source>Background color</source>
+      <translation>Couleur d'arrière-plan</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="41"/>
+      <source>Tags</source>
+      <translation>Mots-clés</translation>
+    </message>
+  </context>
+  <context>
+    <name>AppearanceTagsSettingsPage</name>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="11"/>
+      <source>Tags</source>
+      <translation>Mots-clés</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="14"/>
+      <source>Artists</source>
+      <translation>Artistes</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="19"/>
+      <source>Circle</source>
+      <translation>Cercle</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="24"/>
+      <source>Series</source>
+      <translation>Séries</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="29"/>
+      <source>Characters</source>
+      <translation>Personnages</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="34"/>
+      <source>Species</source>
+      <translation>Espèces</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="39"/>
+      <source>Metas</source>
+      <translation>Métas</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="44"/>
+      <source>Models</source>
+      <translation>Modèles</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="49"/>
+      <source>Generals</source>
+      <translation>Généraux</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="54"/>
+      <source>Favorites</source>
+      <translation>Favoris</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="59"/>
+      <source>Kept for later</source>
+      <translation>Gardés pour plus tard</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="64"/>
+      <source>Blacklisted</source>
+      <translation>En liste noire</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="69"/>
+      <source>Ignored</source>
+      <translation>Ignorés</translation>
     </message>
   </context>
   <context>
@@ -171,6 +292,14 @@
     </message>
   </context>
   <context>
+    <name>FavoritesScreen</name>
+    <message>
+      <location filename="../src/components/FavoritesScreen.qml" line="22"/>
+      <source>Favorites</source>
+      <translation>Favoris</translation>
+    </message>
+  </context>
+  <context>
     <name>FolderSetting</name>
     <message>
       <location filename="../src/components/settings/items/FolderSetting.qml" line="29"/>
@@ -179,9 +308,32 @@
     </message>
   </context>
   <context>
+    <name>ImageLoader</name>
+    <message>
+      <location filename="../src/loaders/image-loader.cpp" line="147"/>
+      <source>File is too big to be displayed.</source>
+      <translation>Ce fichier est trop gros pour être affiché.</translation>
+    </message>
+    <message>
+      <location filename="../src/loaders/image-loader.cpp" line="150"/>
+      <source>Image not found.</source>
+      <translation>Image introuvable.</translation>
+    </message>
+    <message>
+      <location filename="../src/loaders/image-loader.cpp" line="153"/>
+      <source>Error loading the image.</source>
+      <translation>Erreur lors du chargement de l'image.</translation>
+    </message>
+    <message>
+      <location filename="../src/loaders/image-loader.cpp" line="156"/>
+      <source>Error saving the image.</source>
+      <translation>Erreur lors de l'enregistrement de l'image.</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="33"/>
+      <location filename="../src/components/ImageScreen.qml" line="70"/>
       <source>Image</source>
       <translation>Image</translation>
     </message>
@@ -245,24 +397,47 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
+      <source>Image viewer</source>
+      <translation>Visionneuse d'images</translation>
+    </message>
+    <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="80"/>
+      <source>Buttons at the bottom</source>
+      <translation>Boutons en bas</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
+      <source>Move the action buttons to the bottom of the screen.</source>
+      <translation>Déplacez les boutons d'action en bas de l'écran.</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="91"/>
       <source>Confirm exit</source>
       <translation>Confirmation de sortie</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="92"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>Afficher une fenêtre de confirmation avant quitter.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="86"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="97"/>
       <source>Double tap to exit</source>
       <translation>Taper deux fois pour quitter</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="98"/>
       <source>Tap back button twice to exit.</source>
       <translation>Taper le bouton retour deux fois pour quitter.</translation>
+    </message>
+  </context>
+  <context>
+    <name>KeyValueSetting</name>
+    <message>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="48"/>
+      <source>Add</source>
+      <translation>Ajouter</translation>
     </message>
   </context>
   <context>
@@ -420,12 +595,12 @@
   <context>
     <name>SearchScreen</name>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="40"/>
+      <location filename="../src/components/SearchScreen.qml" line="50"/>
       <source>Search...</source>
       <translation>Recherche...</translation>
     </message>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="105"/>
+      <location filename="../src/components/SearchScreen.qml" line="166"/>
       <source>Sources</source>
       <translation>Sources</translation>
     </message>
@@ -433,42 +608,47 @@
   <context>
     <name>SettingsScreen</name>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="27"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="31"/>
       <source>Settings</source>
       <translation>Options</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="45"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="49"/>
       <source>Interface</source>
       <translation>Interface</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="49"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="54"/>
       <source>Appearance</source>
       <translation>Apparence</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="53"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="59"/>
       <source>Save</source>
       <translation>Enregistrer</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="57"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="64"/>
       <source>Sources</source>
       <translation>Sources</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="61"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
       <source>Blacklist</source>
       <translation>Liste noire</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="65"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="74"/>
       <source>Network</source>
       <translation>Réseau</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SettingsScreen.qml" line="69"/>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="79"/>
+      <source>Advanced</source>
+      <translation>Options avancées</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SettingsScreen.qml" line="84"/>
       <source>About</source>
       <translation>À propos</translation>
     </message>
@@ -476,52 +656,62 @@
   <context>
     <name>SourceSettingsScreen</name>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="40"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="51"/>
       <source>General</source>
       <translation>Général</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="43"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="54"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="52"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="63"/>
       <source>HTTPS</source>
       <translation>HTTPS</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="53"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="64"/>
       <source>Use a secure connection.</source>
       <translation>Utiliser une connexion sécurisée.</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="64"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="75"/>
+      <source>Login</source>
+      <translation>Connexion</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="84"/>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="124"/>
       <source>API order</source>
       <translation>Ordre des API</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="73"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="133"/>
       <source>Use default API order</source>
       <translation>Utiliser l'ordre par défaut</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="78"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="138"/>
       <source>Source 1</source>
       <translation>Source 1</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="90"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="150"/>
       <source>Source 2</source>
       <translation>Source 2</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="102"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="162"/>
       <source>Source 3</source>
       <translation>Source 3</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="114"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="174"/>
       <source>Source 4</source>
       <translation>Source 4</translation>
     </message>
@@ -565,12 +755,67 @@
   <context>
     <name>main-screen</name>
     <message>
-      <location filename="../src/main-screen.qml" line="83"/>
+      <location filename="../src/main-screen.qml" line="47"/>
+      <source>Through URL</source>
+      <translation>Via l'URL</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="48"/>
+      <source>HTTP Basic</source>
+      <translation>HTTP Basic</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="49"/>
+      <source>GET</source>
+      <translation>GET</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="50"/>
+      <source>POST</source>
+      <translation>POST</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="51"/>
+      <source>OAuth 1</source>
+      <translation>OAuth 1</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="52"/>
+      <source>OAuth 2</source>
+      <translation>OAuth 2</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="55"/>
+      <source>Username</source>
+      <translation>Nom d'utilisateur</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="56"/>
+      <source>User ID</source>
+      <translation>Identifiant</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="57"/>
+      <source>Password</source>
+      <translation>Mot de passe</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="58"/>
+      <source>Salt</source>
+      <translation>Sel</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="59"/>
+      <source>API key</source>
+      <translation>Clé d'API</translation>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="116"/>
       <source>Do you want to exit?</source>
       <translation>Voulez-vous vraiment quitter ?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="97"/>
+      <location filename="../src/main-screen.qml" line="130"/>
       <source>Don&apos;t ask again</source>
       <translation>Ne pas me re-demander</translation>
     </message>

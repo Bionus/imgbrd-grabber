@@ -59,6 +59,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 	int count = 0;
 	int newImages = 0;
 	QList<QSharedPointer<Image>> newImagesList;
+	QString state = "";
 
 	for (Site *site : monitor.sites()) {
 		// Create a pack loader
@@ -86,6 +87,13 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 		count += countRun;
 		newImages += newImagesRun;
+
+		if (countRun == 0) {
+			log(QStringLiteral("No results for monitor '%1' on site '%2'").arg(search.toString(), site->name()), Logger::Warning);
+		}
+
+		const QString newState = countRun == 0 ? "empty" : (newImagesRun == 0 ? "finished" : "ok");
+		state = state.isEmpty() || state == newState ? newState : "mixed";
 	}
 
 	emit statusChanged(monitor, MonitoringStatus::Performing);
@@ -128,6 +136,7 @@ bool MonitoringCenter::checkMonitor(Monitor &monitor, const SearchQuery &search,
 
 	// Update monitor
 	monitor.setLastCheck(limit);
+	monitor.setLastState(state);
 	monitor.setCumulated(monitor.cumulated() + newImages, count != 1 && newImages < count);
 	m_changed = true;
 

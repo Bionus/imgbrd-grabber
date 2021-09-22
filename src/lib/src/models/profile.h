@@ -56,7 +56,7 @@ class Profile : public QObject
 		void addIgnored(const QString &tag);
 		void removeIgnored(const QString &tag);
 
-		// Removed tags managementc
+		// Removed tags management
 		void setRemovedTags(const QString &raw);
 
 		// MD5 management
@@ -69,6 +69,7 @@ class Profile : public QObject
 		void addAutoComplete(const QString &tag);
 
 		// Sites management
+		void addSource(Source *source);
 		void addSite(Site *site);
 		void removeSite(Site *site);
 

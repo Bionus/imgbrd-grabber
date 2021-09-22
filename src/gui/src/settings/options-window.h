@@ -105,7 +105,7 @@ class OptionsWindow : public QDialog
 		void save();
 
 	signals:
-		void languageChanged(const QString &lang);
+		void languageChanged(const QString &lang, bool useSystemLocale);
 		void settingsChanged();
 
 	private:

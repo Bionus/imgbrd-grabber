@@ -83,11 +83,20 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type == QLatin1String("source")) {
 		return QStringLiteral("general");
 	}
+	if (type == QLatin1String("genre")) {
+		return QStringLiteral("general");
+	}
 	if (type == QLatin1String("character group")) {
 		return QStringLiteral("general");
 	}
 	if (type == QLatin1String("oc")) {
 		return QStringLiteral("character");
+	}
+	if (type == QLatin1String("medium")) {
+		return QStringLiteral("meta");
+	}
+	if (type == QLatin1String("metadata")) {
+		return QStringLiteral("meta");
 	}
 
 	if (type.length() == 1) {
@@ -111,7 +120,7 @@ void Tag::write(QJsonObject &json) const
 	if (!m_type.isUnknown()) {
 		json["type"] = m_type.name();
 	}
-	if (m_count >= 0) {
+	if (m_count > 0) {
 		json["count"] = m_count;
 	}
 	if (!m_related.isEmpty()) {

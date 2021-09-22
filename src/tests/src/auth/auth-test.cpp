@@ -29,10 +29,13 @@ TEST_CASE("Auth")
 
 	SECTION("OAuth2 auth")
 	{
-		OAuth2Auth auth("oauth2", "password", "https://www.google.com");
+		OAuth2Auth auth("oauth2", "password", "https://www.google.com/token", "https://www.google.com/authorization", "https://www.google.com/redirect", "google");
 
 		REQUIRE(auth.type() == QString("oauth2"));
 		REQUIRE(auth.authType() == QString("password"));
-		REQUIRE(auth.tokenUrl() == QString("https://www.google.com"));
+		REQUIRE(auth.tokenUrl() == QString("https://www.google.com/token"));
+		REQUIRE(auth.authorizationUrl() == QString("https://www.google.com/authorization"));
+		REQUIRE(auth.redirectUrl() == QString("https://www.google.com/redirect"));
+		REQUIRE(auth.urlProtocol() == QString("google"));
 	}
 }

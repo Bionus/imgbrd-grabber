@@ -33,7 +33,6 @@ class Source : public QObject
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
 		const QMap<QString, Auth*> &getAuths() const;
-		Auth *getAuth(const QString &name) const;
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
 		const QStringList &getAdditionalTokens() const;

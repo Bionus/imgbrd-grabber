@@ -11,6 +11,7 @@
 #include "auth/auth-hash-field.h"
 #include "auth/http-auth.h"
 #include "auth/http-basic-auth.h"
+#include "auth/oauth1-auth.h"
 #include "auth/oauth2-auth.h"
 #include "auth/url-auth.h"
 #include "functions.h"
@@ -113,7 +114,15 @@ Source::Source(Profile *profile, const QString &dir)
 				if (type == "oauth2") {
 					const QString authType = auth.property("authType").toString();
 					const QString tokenUrl = auth.property("tokenUrl").toString();
-					ret = new OAuth2Auth(type, authType, tokenUrl);
+					const QString authorizationUrl = auth.property("authorizationUrl").toString();
+					const QString redirectUrl = auth.property("redirectUrl").toString();
+					const QString urlProtocol = auth.property("urlProtocol").toString();
+					ret = new OAuth2Auth(type, authType, tokenUrl, authorizationUrl, redirectUrl, urlProtocol);
+				} else if (type == "oauth1") {
+					const QString temporaryCredentialsUrl = auth.property("temporaryCredentialsUrl").toString();
+					const QString authorizationUrl = auth.property("authorizationUrl").toString();
+					const QString tokenCredentialsUrl = auth.property("tokenCredentialsUrl").toString();
+					ret = new OAuth1Auth(type, temporaryCredentialsUrl, authorizationUrl, tokenCredentialsUrl);
 				} else if (type == "http_basic") {
 					const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
 					const QString passwordType = auth.property("passwordType").toString();
@@ -160,7 +169,7 @@ Source::Source(Profile *profile, const QString &dir)
 
 		js.close();
 	} else {
-		log(QStringLiteral("Javascript model not found for %1").arg(m_diskName), Logger::Warning);
+		log(QStringLiteral("Javascript model not found for '%1' in '%2'").arg(m_diskName, js.fileName()), Logger::Warning);
 	}
 
 	// Get the list of all sites pertaining to this source
@@ -197,7 +206,6 @@ Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }
 const QStringList &Source::getAdditionalTokens() const { return m_additionalTokens; }
 const QMap<QString, Auth*> &Source::getAuths() const { return m_auths; }
-Auth *Source::getAuth(const QString &name) const { return m_auths.value(name); }
 
 Api *Source::getApi(const QString &name) const
 {

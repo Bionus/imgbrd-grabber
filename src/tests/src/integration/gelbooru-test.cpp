@@ -66,6 +66,6 @@ TEST_CASE("Gelbooru")
 
 		REQUIRE(tags[3].text() == QString("highres"));
 		REQUIRE(tags[3].count() == 2357638);
-		REQUIRE(tags[3].type().name() == QString("metadata"));
+		REQUIRE(tags[3].type().name() == QString("meta"));
 	}
 }

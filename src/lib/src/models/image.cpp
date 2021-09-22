@@ -142,7 +142,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 
 	// Page url
 	if (details.contains("page_url")) {
-		m_pageUrl = details["page_url"];
+		m_pageUrl = m_parentSite->fixUrl(m_parentSite->fixLoginUrl(details["page_url"]));
 	}
 
 	// Tags
@@ -270,17 +270,18 @@ void Image::write(QJsonObject &json) const
 	}
 
 	// Tags
-	QStringList tags;
-	tags.reserve(m_tags.count());
+	QJsonArray tags;
 	for (const Tag &tag : m_tags) {
-		tags.append(tag.text());
+		QJsonObject jsonTag;
+		tag.write(jsonTag);
+		tags.append(jsonTag);
 	}
 
 	// FIXME: real serialization
 	json["name"] = m_name;
 	json["id"] = QString::number(m_id);
 	json["md5"] = m_md5;
-	json["tags"] = QJsonArray::fromStringList(tags);
+	json["tags"] = tags;
 	json["url"] = m_url.toString();
 	json["search"] = QJsonArray::fromStringList(m_search);
 
@@ -300,6 +301,7 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
 	const QString site = json["website"].toString();
 	if (!sites.contains(site)) {
+		log(QStringLiteral("Unknown site: %1").arg(site), Logger::Warning);
 		return false;
 	}
 
@@ -331,8 +333,15 @@ bool Image::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 	// Tags
 	QJsonArray jsonTags = json["tags"].toArray();
 	m_tags.reserve(jsonTags.count());
-	for (const auto &tag : jsonTags) {
-		m_tags.append(Tag(tag.toString()));
+	for (const auto &jsonTag : jsonTags) {
+		if (jsonTag.isString()) {
+			m_tags.append(Tag(jsonTag.toString()));
+		} else {
+			Tag tag;
+			if (tag.read(jsonTag.toObject())) {
+				m_tags.append(tag);
+			}
+		}
 	}
 
 	// Search
@@ -381,7 +390,7 @@ void Image::loadDetails(bool rateLimit)
 	}
 
 	if (m_loadedDetails || m_pageUrl.isEmpty()) {
-		emit finishedLoadingTags();
+		emit finishedLoadingTags(LoadTagsResult::Ok);
 		return;
 	}
 
@@ -423,19 +432,29 @@ void Image::parseDetails()
 	}
 
 	const int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (statusCode == 429) {
-		log(QStringLiteral("Details limit reached (429). New try."));
+	if (statusCode == 429 || statusCode == 509) {
+		log(QStringLiteral("Details limit reached (HTTP %1). New try.").arg(statusCode));
 		loadDetails(true);
+		return;
+	}
+
+	// Detect Cloudflare
+	if ((statusCode == 403 || statusCode == 429 || statusCode == 503) && m_loadDetails->rawHeader("server") == "cloudflare") {
+		log(QStringLiteral("Cloudflare wall for '%1'").arg(m_pageUrl.toString()), Logger::Error);
+		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::CloudflareError);
 		return;
 	}
 
 	// Aborted or connection error
 	if (m_loadDetails->error()) {
 		if (m_loadDetails->error() != NetworkReply::NetworkError::OperationCanceledError) {
-			log(QStringLiteral("Loading error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
+			log(QStringLiteral("Loading details error for '%1': %2").arg(m_pageUrl.toString(), m_loadDetails->errorString()), Logger::Error);
 		}
 		m_loadDetails->deleteLater();
 		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::NetworkError);
 		return;
 	}
 
@@ -452,7 +471,9 @@ void Image::parseDetails()
 	if (!ret.error.isEmpty()) {
 		auto logLevel = m_detailsParsWarnAsErr ? Logger::Error : Logger::Warning;
 		log(QStringLiteral("[%1][%2] %3").arg(m_parentSite->url(), api->getName(), ret.error), logLevel);
-		emit finishedLoadingTags();
+		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
+		emit finishedLoadingTags(LoadTagsResult::Error);
 		return;
 	}
 
@@ -492,7 +513,7 @@ void Image::parseDetails()
 
 	refreshTokens();
 
-	emit finishedLoadingTags();
+	emit finishedLoadingTags(LoadTagsResult::Ok);
 }
 
 /**
@@ -531,7 +552,9 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 
 	QFile f(path);
 	if (!f.exists() || force) {
-		const QPair<QString, QString> md5action = m_profile->md5Action(md5(), path);
+		const QPair<QString, QString> md5action = size != Size::Thumbnail
+			? m_profile->md5Action(md5(), path)
+			: QPair<QString, QString>("save", "");
 		const QString &whatToDo = md5action.first;
 		const QString &md5Duplicate = md5action.second;
 
@@ -717,6 +740,7 @@ QString Image::dateRaw() const { return token<QString>("date_raw"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size(Size size) const { return m_sizes[size]->size; }
+QRect Image::rect(Size size) const { return m_sizes[size]->rect; }
 const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
@@ -856,7 +880,7 @@ QString Image::tooltip() const
 		.arg(author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(author))
 		.arg(width() == 0 || height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(width()), QString::number(height())))
 		.arg(m_sizes[Image::Size::Full]->fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toString(Qt::DefaultLocaleShortDate)));
+		.arg(!createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate)));
 }
 
 QString Image::counter() const
@@ -889,7 +913,7 @@ QList<QStrP> Image::detailsData() const
 		QStrP(tr("Score"), token<QString>("score")),
 		QStrP(tr("Author"), !author.isEmpty() ? author : unknown),
 		QStrP(),
-		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toString(Qt::DefaultLocaleShortDate) : unknown),
+		QStrP(tr("Date"), createdAt.isValid() ? createdAt.toLocalTime().toString(Qt::DefaultLocaleShortDate) : unknown),
 		QStrP(tr("Size"), !size().isEmpty() ? QString::number(width()) + "x" + QString::number(height()) : unknown),
 		QStrP(tr("Filesize"), m_sizes[Image::Size::Full]->fileSize != 0 ? formatFilesize(m_sizes[Image::Size::Full]->fileSize) : unknown),
 		QStrP(),
@@ -1030,7 +1054,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	tokens.insert("sources", Token(m_sources));
 	tokens.insert("filesize", Token(m_sizes[Image::Size::Full]->fileSize));
 	tokens.insert("name", Token(m_name));
-	tokens.insert("position", Token(m_position > 0 ? QString::number(m_position) : ""));
+	tokens.insert("position", m_position > 0 ? Token(m_position) : Token(""));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i) {

@@ -70,6 +70,24 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
+QJSValue buildParsedSearchTag(QJSEngine *engine, const QString &name, int id)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("name", name);
+	if (id > 0) {
+		ret.setProperty("id", id);
+	}
+	return ret;
+}
+QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const QJSValue left, const QJSValue right)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("operator", "and");
+	ret.setProperty("left", left);
+	ret.setProperty("right", right);
+	return ret;
+}
+
 PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
 {
 	PageUrl ret;
@@ -82,8 +100,36 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastP
 		return ret;
 	}
 
+	// Parse query if necessary
+	QJSValue parsedSearch;
+	const bool parseInput = getJsConst("search.parseInput", false).toBool();
+	if (parseInput && !search.trimmed().isEmpty()) {
+		QStringList operands = search.split(" ", Qt::SkipEmptyParts);
+		const auto tagIds = site->tagDatabase()->getTagIds(operands);
+
+		QJSEngine *engine = m_source.engine();
+
+		const QString firstTag = operands.takeFirst();
+		const auto first = buildParsedSearchTag(engine, firstTag, tagIds[firstTag]);
+
+		if (operands.isEmpty()) {
+			parsedSearch = first;
+		} else {
+			const QString secondTag = operands.takeFirst();
+			const auto second = buildParsedSearchTag(engine, secondTag, tagIds[secondTag]);
+			parsedSearch = buildParsedSearchOperator(engine, "and", first, second);
+
+			while (!operands.isEmpty()) {
+				const QString nextTag = operands.takeFirst();
+				const auto next = buildParsedSearchTag(engine, nextTag, tagIds[nextTag]);
+				parsedSearch = buildParsedSearchOperator(engine, "and", parsedSearch, next);
+			}
+		}
+	}
+
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("search", search);
+	query.setProperty("parsedSearch", parsedSearch);
 	query.setProperty("page", page);
 
 	QJSValue opts = m_source.engine()->newObject();
@@ -125,9 +171,9 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			continue;
 		}
 
-		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
-		const QString text = tag.property("name").toString();
-		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
+		const int id = getPropertyOr(tag, "id", 0);
+		const QString text = getPropertyOr(tag, "name", QString());
+		const int count = getPropertyOr(tag, "count", 0);
 
 		QString type;
 		int typeId = -1;
@@ -138,9 +184,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 				type = tag.property("type").toString();
 			}
 		}
-		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined()) {
-			typeId = tag.property("typeId").toInt();
-		}
+		getProperty(tag, "typeId", typeId);
 
 		QStringList related;
 		if (tag.hasProperty("related") && !tag.property("related").isUndefined()) {
@@ -238,18 +282,10 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 	}
 
 	// Basic properties
-	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined()) {
-		ret.imageCount = results.property("imageCount").toInt();
-	}
-	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined()) {
-		ret.pageCount = results.property("pageCount").toInt();
-	}
-	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString()) {
-		ret.urlNextPage = results.property("urlNextPage").toString();
-	}
-	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString()) {
-		ret.urlPrevPage = results.property("urlPrevPage").toString();
-	}
+	getProperty(results, "imageCount", ret.imageCount);
+	getProperty(results, "pageCount", ret.pageCount);
+	getProperty(results, "urlNextPage", ret.urlNextPage);
+	getProperty(results, "urlPrevPage", ret.urlPrevPage);
 	if (results.hasProperty("wiki") && results.property("wiki").isString()) {
 		ret.wiki = results.property("wiki").toString();
 		ret.wiki = ret.wiki.replace("href=\"/", "href=\"" + site->baseUrl() + "/");
@@ -472,7 +508,11 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 		return ret;
 	}
 
-	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5 });
+	QJSValue opts = m_source.engine()->newObject();
+	opts.setProperty("baseUrl", site->baseUrl());
+	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
+
+	const QJSValue result = urlFunction.call(QList<QJSValue> { QString::number(id), md5, opts });
 	fillUrlObject(result, site, ret);
 
 	return ret;
