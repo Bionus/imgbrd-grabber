@@ -30,6 +30,7 @@ for pm in pacman apt-get emerge yum; do
 				## Assumes default USE flags are enabled.
 				$permission emerge --noreplace --ask --verbose \
 					"dev-qt/qtcore" "dev-qt/qtscript" "dev-qt/qtmultimedia" "dev-qt/qtdeclarative" "dev-qt/qtsql" \
+					"dev-qt/qtnetwork" "dev-qt/qtnetworkauth" \
 					"sys-devel/gcc" "dev-util/cmake" "net-libs/nodejs" \
 				&& installed=1
 				;;
