@@ -231,8 +231,9 @@ class ZoomWindow : public QWidget
 
 		// Buttons
 		std::unordered_map<std::string, ButtonInstance> buttons;
-		unsigned short countOnShelf = 0;	// Does not include navigation buttons.
-		unsigned short countInDrawer = 0;	// Does not include navigation buttons.
+		unsigned short countOnShelf = 0;
+		unsigned short countInDrawer = 0;
+		unsigned short smallButtonsOnShelf = 0;
 		QWidget *scaleRef = nullptr;	// For resizeButtons().
 		//short shelfDrawerDiff = 0;	// For resizeButtons().
 

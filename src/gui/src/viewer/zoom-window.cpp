@@ -269,10 +269,10 @@ void ZoomWindow::configureButtons()
 			ui->buttonDrawerLayout->insertWidget(bs->position, bi->pointer);
 		} else {
 			ui->buttonShelfLayout->insertWidget(bs->position, bi->pointer);
+			countOnShelf++;
 			if (bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
-				countOnShelf++;
 				if (scaleRef == nullptr) scaleRef = bi->pointer;
-			}
+			} else smallButtonsOnShelf++;
 		}
 	}
 	m_settings->endGroup();
@@ -301,13 +301,13 @@ void ZoomWindow::configureButtons()
 			case Ui::IsButtonPrev :
 				button->setMaximumWidth(24);
 				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				ui->buttonsLayout->setAlignment(button, Qt::AlignRight);
+				button->parentWidget()->layout()->setAlignment(button, Qt::AlignRight);
 				state->function = &ZoomWindow::previous;
 				break;
 			case Ui::IsButtonNext :
 				button->setMaximumWidth(24);
 				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				ui->buttonsLayout->setAlignment(button, Qt::AlignLeft);
+				button->parentWidget()->layout()->setAlignment(button, Qt::AlignLeft);
 				state->function = &ZoomWindow::next;
 				break;
 			case Ui::IsButtonDetails :
@@ -349,9 +349,10 @@ void ZoomWindow::configureButtons()
 	//if (countOnShelf || countInDrawer) {
 		if (countInDrawer) {
 			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-			if (! countOnShelf) {
-				delete ui->buttonShelf;
+			if (countOnShelf == smallButtonsOnShelf) {
 				scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
+				if (countOnShelf == 0) delete ui->buttonShelf;
+				else ui->buttonShelfLayout->insertWidget(1, ui->buttonPlus);
 			//} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 			}
 			//shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
@@ -1132,7 +1133,7 @@ void ZoomWindow::resizeButtons()
 	   I'm not sure how to query those values here or export from here to there dynamically. */
 	ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );	// Fix scaling for large buttons.
 
-	if (! countOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
+	if (countOnShelf == smallButtonsOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
 	QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
 	short shelfDrawerDiff = countOnShelf - countInDrawer;
