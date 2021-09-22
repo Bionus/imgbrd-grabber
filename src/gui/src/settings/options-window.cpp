@@ -409,14 +409,14 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					//log("SaveFav");
 					checker = ui->checkButtonSaveFav;
 					spinner = ui->spinButtonSaveFav;
-					ui->lineButtonSaveFav->setText(button->states[0].text.isEmpty() ? Ui::defaultSaveFavButtonSave.text : button->states[0].text);
+					ui->lineButtonSaveFav->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveFavStateSave.text : button->states[0].text);
 					ui->lineButtonSaveFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
 					//log("SaveNQuitFav");
 					checker = ui->checkButtonSaveNQuitFav;
 					spinner = ui->spinButtonSaveNQuitFav;
-					ui->lineButtonSaveNQuitFav->setText(button->states[0].text.isEmpty() ? Ui::defaultSaveNQuitFavButtonSave.text : button->states[0].text);
+					ui->lineButtonSaveNQuitFav->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveNQuitFavStateSave.text : button->states[0].text);
 					ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonOpen | Ui::IsFavoriteButton :
@@ -1366,15 +1366,15 @@ void OptionsWindow::save()
 	});
 
 	states.clear();
-	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveFav->text(), Ui::defaultSaveFavButtonSave.toolTip});
-	states.append(Ui::DefaultSaveStateSavingFav);
-	states.append(Ui::DefaultSaveStateSavedFav);
-	states.append(Ui::DefaultSaveStateCopiedFav);
-	states.append(Ui::DefaultSaveStateMovedFav);
-	states.append(Ui::DefaultSaveStateLinkedFav);
-	states.append(Ui::DefaultSaveStateExistsMd5Fav);
-	states.append(Ui::DefaultSaveStateExistsDiskFav);
-	states.append(Ui::DefaultSaveStateDeleteFav);
+	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveFav->text(), Ui::DefaultSaveFavStateSave.toolTip});
+	states.append(Ui::DefaultSaveFavStateSaving);
+	states.append(Ui::DefaultSaveFavStateSaved);
+	states.append(Ui::DefaultSaveFavStateCopied);
+	states.append(Ui::DefaultSaveFavStateMoved);
+	states.append(Ui::DefaultSaveFavStateLinked);
+	states.append(Ui::DefaultSaveFavStateExistsMd5);
+	states.append(Ui::DefaultSaveFavStateExistsDisk);
+	states.append(Ui::DefaultSaveFavStateDelete);
 	buttons.append(ButtonSettings {Ui::IsButtonSave | Ui::IsFavoriteButton, "SaveFav", states,
 		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
@@ -1383,9 +1383,9 @@ void OptionsWindow::save()
 
 
 	states.clear();
-	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveNQuitFav->text(), Ui::defaultSaveNQuitFavButtonSave.toolTip});
-	states.append(Ui::DefaultSaveNQuitStateSavingFav);
-	states.append(Ui::DefaultSaveNQuitStateCloseFav);
+	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveNQuitFav->text(), Ui::DefaultSaveNQuitFavStateSave.toolTip});
+	states.append(Ui::DefaultSaveNQuitFavStateSaving);
+	states.append(Ui::DefaultSaveNQuitFavStateClose);
 	buttons.append(ButtonSettings {Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton, "SaveNQuitFav", states,
 		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,

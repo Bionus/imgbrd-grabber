@@ -66,6 +66,7 @@ class ButtonState
 		//constexpr ButtonState(unsigned short type, ConstLatin1String text, ConstLatin1String toolTip) : type(type), text(text), toolTip(toolTip){}
 		//constexpr ButtonState(const unsigned short type, std::string text, std::string toolTip) : type(type), text(text), toolTip(toolTip){}
 		ButtonState(unsigned short type, QString text, QString toolTip) : type(type), text(text), toolTip(toolTip){}
+		ButtonState(){};	// QtSettings seems to require this.
 
 	friend QDataStream & operator << (QDataStream &out, const ButtonState &in)
 	{
@@ -77,7 +78,6 @@ class ButtonState
 	friend QDataStream & operator >> (QDataStream &in, ButtonState &out)
 	{
 		in >> out.type;
-
 		in >> out.text;
 		in >> out.toolTip;
 		return in;
