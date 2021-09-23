@@ -140,7 +140,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      LINUXDEPLOYQT_VERSION: 7
+      LINUXDEPLOYQT_VERSION: continuous
 
     steps:
       - name: Checkout
