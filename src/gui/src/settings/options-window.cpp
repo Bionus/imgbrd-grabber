@@ -1569,10 +1569,10 @@ void OptionsWindow::checkSpinners(int newVal) {
 		ui->spinButtonOpenFav
 	};
 
-	unsigned short code = qobject_cast<QSpinBox*>(sender())->palette().color(QWidget::backgroundRole()).green();
+	const QColor *code = &qobject_cast<QSpinBox*>(sender())->palette().color(QWidget::backgroundRole());
 	for (unsigned short i = 0; i < maxSpinners; i++) {
 		if (all[i]->value() == newVal) *++numberTester = all[i];
-		if (all[i]->palette().color(QWidget::backgroundRole()).green() == code) *++colorTester = all[i];
+		if (all[i]->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = all[i];
 	}
 
 
