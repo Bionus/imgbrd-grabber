@@ -442,6 +442,16 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		settings->endGroup();
 		log("---Reading Zoom/Buttons---");
 
+		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
+		//QList<std::pair<QCheckBox*, QSpinBox*>> csPairs;
+		for (unsigned short i = 0; i < buttonGroups.count(); i++) {
+			// Note that this will break if multiple checkboxes or spinners are in any group.
+			csPairs.append(std::make_pair(
+				buttonGroups.at(i)->findChild<QCheckBox *>(),
+				buttonGroups.at(i)->findChild<QSpinBox *>()
+			));
+		}
+		//checkAllSpinners(&csPairs);
 		checkAllSpinners();
 		QObject::connect(ui->spinButtonPrev,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		QObject::connect(ui->spinButtonNext,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
@@ -1549,30 +1559,19 @@ void OptionsWindow::save()
 	emit settingsChanged();
 }
 
+//void OptionsWindow::checkSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkSpinners(int newVal) {
-	constexpr unsigned short maxSpinners = 10;
-	QSpinBox *numberMatches[maxSpinners] = {nullptr};
+	QSpinBox *numberMatches[csPairs.size()] = {nullptr};
 	QSpinBox **numberTester = numberMatches - 1;
-	QSpinBox *colorMatches[maxSpinners] = {nullptr};
+	QSpinBox *colorMatches[csPairs.size()] = {nullptr};
 	QSpinBox **colorTester = colorMatches - 1;
-	// This could probably be eliminated if they were in the same parent widget or had a unique class.
-	QSpinBox *all[maxSpinners] = {
-		ui->spinButtonPrev,
-		ui->spinButtonNext,
-		ui->spinButtonDetails,
-		ui->spinButtonSaveAs,
-		ui->spinButtonSave,
-		ui->spinButtonSaveNQuit,
-		ui->spinButtonOpen,
-		ui->spinButtonSaveFav,
-		ui->spinButtonSaveNQuitFav,
-		ui->spinButtonOpenFav
-	};
+
+	//const int newVal = &qobject_cast<QSpinBox*>(sender())->value();
 
 	const QColor *code = &qobject_cast<QSpinBox*>(sender())->palette().color(QWidget::backgroundRole());
-	for (unsigned short i = 0; i < maxSpinners; i++) {
-		if (all[i]->value() == newVal) *++numberTester = all[i];
-		if (all[i]->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = all[i];
+	for (unsigned short i = 0; i < csPairs.size(); i++) {
+		if (csPairs.at(i).second->value() == newVal) *++numberTester = csPairs.at(i).second;
+		if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = csPairs.at(i).second;
 	}
 
 
@@ -1592,7 +1591,7 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 
 	// Set alarm style on spinners with new value.
-	QColor alarmBack(255, (100 - 255) * (static_cast<float>(newVal) / maxSpinners) + 255, 0);	// Green normalised between 100 and 255.
+	QColor alarmBack(255, (100 - 255) * (static_cast<float>(newVal) / csPairs.size()) + 255, 0);	// Green normalised between 100 and 255.
 	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 	for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
@@ -1603,37 +1602,23 @@ void OptionsWindow::checkSpinners(int newVal) {
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
 	numberMatches[0]->parentWidget()->show();	// This could be hard coded.
 }
+//void OptionsWindow::checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkAllSpinners() {
-	constexpr unsigned short maxSpinners = 10;
-	// This could probably be eliminated if they were in the same parent widget or had a unique class.
-	QSpinBox *all[maxSpinners] = {
-		ui->spinButtonPrev,
-		ui->spinButtonNext,
-		ui->spinButtonDetails,
-		ui->spinButtonSaveAs,
-		ui->spinButtonSave,
-		ui->spinButtonSaveNQuit,
-		ui->spinButtonOpen,
-		ui->spinButtonSaveFav,
-		ui->spinButtonSaveNQuitFav,
-		ui->spinButtonOpenFav
-	};
+	for (unsigned short checker = 0; checker < csPairs.size(); checker++) {
 
-	for (unsigned short checker = 0; checker < maxSpinners; checker++) {
-
-		int checkVal = all[checker]->value();
-		QSpinBox *numberMatches[maxSpinners] = {nullptr};
+		int checkVal = csPairs.at(checker).second->value();
+		QSpinBox *numberMatches[csPairs.size()] = {nullptr};
 		QSpinBox **numberTester = numberMatches - 1;
 
-		for (unsigned short i = 0; i < maxSpinners; i++) {
-			if (all[i]->value() == checkVal) *++numberTester = all[i];
+		for (unsigned short i = 0; i < csPairs.size(); i++) {
+			if (csPairs.at(i).second->value() == checkVal) *++numberTester = csPairs.at(i).second;
 		}
 
 		if (numberMatches[1] == nullptr) continue;	// Alarm style will not be set for this new value.
 
 
 		// Set alarm style on spinners with matching value.
-		QColor alarmBack(255, (100 - 255) * (static_cast<float>(checkVal) / maxSpinners) + 255, 0);	// Green normalised between 100 and 255.
+		QColor alarmBack(255, (100 - 255) * (static_cast<float>(checkVal) / csPairs.size()) + 255, 0);	// Green normalised between 100 and 255.
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 		for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
@@ -1642,5 +1627,5 @@ void OptionsWindow::checkAllSpinners() {
 		}
 
 	}
-	all[0]->parentWidget()->show();	// This could be hard coded.
+	csPairs.at(0).second->parentWidget()->show();	// This could be hard coded.
 }

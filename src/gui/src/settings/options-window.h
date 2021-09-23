@@ -17,6 +17,9 @@ class Profile;
 class ThemeLoader;
 class TokenSettingsWidget;
 
+class QCheckBox;
+class QSpinBox;
+
 class OptionsWindow : public QDialog
 {
 	Q_OBJECT
@@ -84,6 +87,7 @@ class OptionsWindow : public QDialog
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
 		void checkSpinners(int);
+		//void checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *);
 		void checkAllSpinners();
 
 		// Log files
@@ -118,6 +122,7 @@ class OptionsWindow : public QDialog
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
+		QList<std::pair<QCheckBox*, QSpinBox*>> csPairs;
 };
 
 #endif // OPTIONS_WINDOW_H
