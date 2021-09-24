@@ -89,6 +89,7 @@ class OptionsWindow : public QDialog
 		void checkSpinners(int);
 		//void checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *);
 		void checkAllSpinners();
+		void checkAllSpinnersWithPlacement(int);
 
 		// Log files
 		void addLogFile();
