@@ -32,7 +32,7 @@ int MonitorTableModel::rowCount(const QModelIndex &parent) const
 int MonitorTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 9;
+	return 11;
 }
 
 QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -50,6 +50,8 @@ QVariant MonitorTableModel::headerData(int section, Qt::Orientation orientation,
 				case 6: return QString("Last check");
 				case 7: return QString("Next check");
 				case 8: return QString("Last state");
+				case 9: return QString("Last state count");
+				case 10: return QString("Last state since");
 			}
 		} else {
 			return QString::number(section + 1);
@@ -132,16 +134,25 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 			return monitor.postFilters().join(' ');
 
 		case 6:
-			return monitor.lastCheck().toLocalTime().toString(Qt::DefaultLocaleShortDate);
+			return monitor.lastCheck();
 
 		case 7:
 			return timeToString(monitor.secsToNextCheck());
 
 		case 8:
+			return monitor.lastState();
+
+		case 9:
 			if (monitor.lastState().isEmpty()) {
 				return {};
 			}
-			return tr("\"%1\" %n time(s), since %2", "", monitor.lastStateCount()).arg(monitor.lastState(), monitor.lastStateSince().toLocalTime().toString(Qt::DefaultLocaleShortDate));
+			return tr("%n time(s)", "", monitor.lastStateCount());
+
+		case 10:
+			if (monitor.lastState().isEmpty()) {
+				return {};
+			}
+			return monitor.lastStateSince();
 	}
 
 	return {};
