@@ -1612,7 +1612,11 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 
 	// Set alarm style on spinners with new value.
-	QColor alarmBack(255, (100 - 255) * (static_cast<float>(newVal) / csPairs.size()) + 255, 0);	// Green normalised between 100 and 255.
+	QColor alarmBack(
+		(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255,	// Red normalised between 200 and 255.
+		(100 - 255) * (static_cast<float>(newVal) / csPairs.size()) + 255,	// Green normalised between 100 and 255.
+		0
+	);
 	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 	for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
@@ -1641,7 +1645,11 @@ void OptionsWindow::checkAllSpinners() {
 
 
 		// Set alarm style on spinners with matching value.
-		QColor alarmBack(255, (100 - 255) * (static_cast<float>(checkVal) / csPairs.size()) + 255, 0);	// Green normalised between 100 and 255.
+		QColor alarmBack(
+			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255,	// Red normalised between 200 and 255.
+			(100 - 255) * (static_cast<float>(checkVal) / csPairs.size()) + 255,	// Green normalised between 100 and 255.
+			0
+		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
 		for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
