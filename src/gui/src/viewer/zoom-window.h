@@ -164,7 +164,6 @@ class ZoomWindow : public QWidget
 	protected:
 		void closeEvent(QCloseEvent *) override;
 		void resizeEvent(QResizeEvent *) override;
-		void resizeButtons();
 		void showEvent(QShowEvent *) override;
 		void mouseReleaseEvent(QMouseEvent *) override;
 		void wheelEvent(QWheelEvent *) override;
@@ -172,6 +171,7 @@ class ZoomWindow : public QWidget
 
 	private:
 		void configureButtons();
+		void resizeButtons();
 		void showThumbnail();
 		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(const QString &type);
