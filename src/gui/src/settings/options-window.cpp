@@ -1591,7 +1591,10 @@ void OptionsWindow::checkSpinners(int newVal) {
 	const QColor *code = &srcSpinner->palette().color(QWidget::backgroundRole());
 	for (unsigned short i = 0; i < csPairs.size(); i++) {
 		if (csPairs.at(i).first->checkState() != srcPlacement) continue;
-		if (csPairs.at(i).second->value() == newVal) *++numberTester = csPairs.at(i).second;
+		if (
+			srcPlacement != Qt::CheckState::Unchecked
+			&& csPairs.at(i).second->value() == newVal
+		) *++numberTester = csPairs.at(i).second;
 		if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = csPairs.at(i).second;
 	}
 
@@ -1637,7 +1640,10 @@ void OptionsWindow::checkAllSpinners() {
 
 		Qt::CheckState srcPlacement = csPairs.at(checker).first->checkState();
 		for (unsigned short i = 0; i < csPairs.size(); i++) {
-			if (csPairs.at(i).first->checkState() != srcPlacement) continue;
+			if (
+				srcPlacement == Qt::CheckState::Unchecked
+				|| csPairs.at(i).first->checkState() != srcPlacement
+			) continue;
 			if (csPairs.at(i).second->value() == checkVal) *++numberTester = csPairs.at(i).second;
 		}
 
@@ -1692,7 +1698,7 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 				|| testVal == checkVal
 			) {
 				if (
-					srcPlacement != Qt::CheckState::Unchecked
+					checkState != Qt::CheckState::Unchecked
 					&& testState == checkState
 					&& testVal == checkVal
 				) *++numberTester = csPairs.at(i).second;
