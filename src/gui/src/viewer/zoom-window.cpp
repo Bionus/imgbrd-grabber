@@ -260,6 +260,7 @@ void ZoomWindow::configureButtons()
 	ui->buttonsLayout->setRowMinimumHeight(1, 15);
 	ui->buttonsLayout->setRowMinimumHeight(2, 15);*/
 	//ui->buttonsLayout->setSpacing(0);
+	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 
 		// Load button configuration from settings:
 	m_settings->beginGroup("Zoom");
@@ -277,13 +278,13 @@ void ZoomWindow::configureButtons()
 		if (bs->isInDrawer) {
 			countInDrawer++;
 			//ui->buttonDrawerLayout->insertWidget(bs->position, bi->pointer);
-			log( ( "Adding button to grid: 1," + std::to_string(bs->position) + ",1," + std::to_string(bs->position + 1) ).c_str() );
-			ui->buttonsLayout->addWidget(bi->pointer, 1, bs->position, 1, bs->position + 1, Qt::AlignHCenter);
+			log( ( "Adding button to grid: 1," + std::to_string(bs->position) + ",1,1" ).c_str() );
+			ui->buttonsLayout->addWidget(bi->pointer, 1, bs->position, 1, 1, Qt::AlignHCenter);
 		} else {
 			countOnShelf++;
 			//ui->buttonShelfLayout->insertWidget(bs->position, bi->pointer);
-			log( ( "Adding button to grid: 0," + std::to_string(bs->position) + ",0," + std::to_string(bs->position + 1) ).c_str() );
-			ui->buttonsLayout->addWidget(bi->pointer, 0, bs->position, 0, bs->position + 1, Qt::AlignHCenter);
+			log( ( "Adding button to grid: 0," + std::to_string(bs->position) + ",0,1" ).c_str() );
+			ui->buttonsLayout->addWidget(bi->pointer, 0, bs->position, 1, 1, Qt::AlignHCenter);
 			if (bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 				if (scaleRef == nullptr) scaleRef = bi->pointer;
 			} //else smallButtonsOnShelf++;
@@ -372,7 +373,7 @@ void ZoomWindow::configureButtons()
 			//} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 			}*/
 			log( ( "Adding buttonPlus to grid: 2," + std::to_string(maxBlWidth/2) + ",2," + std::to_string(maxBlWidth/2) ).c_str() );
-			ui->buttonsLayout->addWidget(ui->buttonPlus, 2, maxBlWidth/2, 2, maxBlWidth/2);
+			ui->buttonsLayout->addWidget(ui->buttonPlus, 2, maxBlWidth / 2, 1, 1);
 			//shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 
 			ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());

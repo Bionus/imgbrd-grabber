@@ -1662,6 +1662,7 @@ void OptionsWindow::checkAllSpinners() {
 	csPairs.at(0).second->parentWidget()->show();	// This could be hard coded.
 }
 void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
+	// There may be a better source than lineButitonPrev.
 	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
 	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
 	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
@@ -1699,7 +1700,7 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 			}
 		}
 
-		// Reset alarm styles that are no longer relevant. There may be a better source than lineButitonPrev.
+		// Reset alarm styles that are no longer relevant.
 		if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
 			//if (colorMatches.size() == 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
 			colorMatches.at(0)->setStyleSheet(defStyle.c_str());
