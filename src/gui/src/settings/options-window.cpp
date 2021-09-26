@@ -1572,10 +1572,7 @@ void OptionsWindow::save()
 
 //void OptionsWindow::checkSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkSpinners(int newVal) {
-	QSpinBox *numberMatches[csPairs.size()] = {nullptr};
-	QSpinBox **numberTester = numberMatches - 1;
-	QSpinBox *colorMatches[csPairs.size()] = {nullptr};
-	QSpinBox **colorTester = colorMatches - 1;
+	std::vector<QSpinBox*> numberMatches, colorMatches;
 
 	//const int newVal = &qobject_cast<QSpinBox*>(sender())->value();
 
@@ -1594,8 +1591,8 @@ void OptionsWindow::checkSpinners(int newVal) {
 		if (
 			srcPlacement != Qt::CheckState::Unchecked
 			&& csPairs.at(i).second->value() == newVal
-		) *++numberTester = csPairs.at(i).second;
-		if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = csPairs.at(i).second;
+		) numberMatches.push_back(csPairs.at(i).second);
+		if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) colorMatches.push_back(csPairs.at(i).second);
 	}
 
 
@@ -1604,12 +1601,13 @@ void OptionsWindow::checkSpinners(int newVal) {
 	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
 	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
 
-	if (colorMatches[2] == nullptr && colorMatches[1] != nullptr) {	// Reset the previous value's style match if there is only one.
-		if (numberMatches[1] != nullptr) colorMatches[0]->setStyleSheet(defStyle.c_str());	// Because they may not be in order.
-		colorMatches[1]->setStyleSheet(defStyle.c_str());
+	if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
+		if (numberMatches.size() >= 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+		colorMatches.at(1)->setStyleSheet(defStyle.c_str());
 	}
-	if (numberMatches[1] == nullptr) {	// Alarm style will not be set for this new value.
-		colorMatches[0]->setStyleSheet(defStyle.c_str());
+	if (numberMatches.size() == 1) {	// Alarm style will not be set for this new value.
+		//colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+		numberMatches.at(0)->setStyleSheet(defStyle.c_str());
 		return;
 	}
 
@@ -1622,21 +1620,20 @@ void OptionsWindow::checkSpinners(int newVal) {
 	);
 	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-	for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
-		if (*numberTester == nullptr) break;
-		(*numberTester)->setStyleSheet(alarmStyle.c_str());
+	for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
+		it->setStyleSheet(alarmStyle.c_str());
 	}
 
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
-	numberMatches[0]->parentWidget()->show();	// This could be hard coded.
+	numberMatches.at(0)->parentWidget()->show();	// This could be hard coded.
 }
 //void OptionsWindow::checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkAllSpinners() {
+	std::vector<QSpinBox*> numberMatches;
 	for (unsigned short checker = 0; checker < csPairs.size(); checker++) {
+		numberMatches.clear();
 
 		int checkVal = csPairs.at(checker).second->value();
-		QSpinBox *numberMatches[csPairs.size()] = {nullptr};
-		QSpinBox **numberTester = numberMatches - 1;
 
 		Qt::CheckState srcPlacement = csPairs.at(checker).first->checkState();
 		for (unsigned short i = 0; i < csPairs.size(); i++) {
@@ -1644,10 +1641,10 @@ void OptionsWindow::checkAllSpinners() {
 				srcPlacement == Qt::CheckState::Unchecked
 				|| csPairs.at(i).first->checkState() != srcPlacement
 			) continue;
-			if (csPairs.at(i).second->value() == checkVal) *++numberTester = csPairs.at(i).second;
+			if (csPairs.at(i).second->value() == checkVal) numberMatches.push_back(csPairs.at(i).second);
 		}
 
-		if (numberMatches[1] == nullptr) continue;	// Alarm style will not be set for this new value.
+		if (numberMatches.size() == 1) continue;	// Alarm style will not be set for this new value.
 
 
 		// Set alarm style on spinners with matching value.
@@ -1658,9 +1655,8 @@ void OptionsWindow::checkAllSpinners() {
 		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-		for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
-			if (*numberTester == nullptr) break;
-			(*numberTester)->setStyleSheet(alarmStyle.c_str());
+		for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
+			it->setStyleSheet(alarmStyle.c_str());
 		}
 
 	}
@@ -1680,15 +1676,13 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 		}
 	}
 
+	std::vector<QSpinBox*> numberMatches, colorMatches;
 	for (unsigned short checker = 0; checker < csPairs.size(); checker++) {
+		numberMatches.clear();
+		colorMatches.clear();
 
 		int checkVal = csPairs.at(checker).second->value();
 		Qt::CheckState checkState = csPairs.at(checker).first->checkState();
-
-		QSpinBox *numberMatches[csPairs.size()] = {nullptr};
-		QSpinBox **numberTester = numberMatches - 1;
-		QSpinBox *colorMatches[csPairs.size()] = {nullptr};
-		QSpinBox **colorTester = colorMatches - 1;
 
 		for (unsigned short i = 0; i < csPairs.size(); i++) {
 			Qt::CheckState testState = csPairs.at(i).first->checkState();
@@ -1701,17 +1695,19 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 					checkState != Qt::CheckState::Unchecked
 					&& testState == checkState
 					&& testVal == checkVal
-				) *++numberTester = csPairs.at(i).second;
-				if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) *++colorTester = csPairs.at(i).second;
+				) numberMatches.push_back(csPairs.at(i).second);
+				if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) colorMatches.push_back(csPairs.at(i).second);
 			}
 		}
 
 		// Reset alarm styles that are no longer relevant. There may be a better source than lineButitonPrev.
-		if (colorMatches[2] == nullptr && colorMatches[1] != nullptr) {	// Reset the previous value's style match if there is only one.
-			colorMatches[0]->setStyleSheet(defStyle.c_str());
-			colorMatches[1]->setStyleSheet(defStyle.c_str());
+		if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
+			//if (colorMatches.size() == 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+			colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+			//colorMatches.at(1)->setStyleSheet(defStyle.c_str());
+			if (colorMatches.size() == 2) colorMatches.at(1)->setStyleSheet(defStyle.c_str());
 		}
-		if (numberMatches[1] == nullptr && numberMatches[0] != nullptr) {	// No conflict to indicate.
+		if (numberMatches.size() == 1) {	// No conflict to indicate.
 			csPairs.at(checker).second->setStyleSheet(defStyle.c_str());
 			continue;
 		}
@@ -1724,9 +1720,8 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-		for (numberTester = &numberMatches[0]; numberTester != &numberMatches[9]; numberTester++) {	// Set alarm style on spinners with new value.
-			if (*numberTester == nullptr) break;
-			(*numberTester)->setStyleSheet(alarmStyle.c_str());
+		for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
+			it->setStyleSheet(alarmStyle.c_str());
 		}
 
 	}
