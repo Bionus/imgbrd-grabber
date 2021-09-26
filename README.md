@@ -25,6 +25,10 @@ You can download the latest release [here](https://github.com/Bionus/imgbrd-grab
 
 For users interested, a nightly version is built automatically on every commit on the `develop` branch, and can be downloaded [here](https://github.com/Bionus/imgbrd-grabber/releases/nightly). Note that it might be less stable than official releases, so use at your own risk.
 
+### Installation on Archlinux
+For ArchLinux users, a [package on the AUR](https://aur.archlinux.org/packages/imgbrd-grabber-bin) is available.
+Install by issuing the command: `paru -Sy imgbrd-grabber-bin`
+
 ## Features
 
 ### Browse
