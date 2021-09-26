@@ -1602,11 +1602,10 @@ void OptionsWindow::checkSpinners(int newVal) {
 	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
 
 	if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
-		if (numberMatches.size() >= 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
-		colorMatches.at(1)->setStyleSheet(defStyle.c_str());
+		if (colorMatches.size() == 2) colorMatches.at(1)->setStyleSheet(defStyle.c_str());
+		colorMatches.at(0)->setStyleSheet(defStyle.c_str());
 	}
 	if (numberMatches.size() == 1) {	// Alarm style will not be set for this new value.
-		//colorMatches.at(0)->setStyleSheet(defStyle.c_str());
 		numberMatches.at(0)->setStyleSheet(defStyle.c_str());
 		return;
 	}
@@ -1625,7 +1624,7 @@ void OptionsWindow::checkSpinners(int newVal) {
 	}
 
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
-	numberMatches.at(0)->parentWidget()->show();	// This could be hard coded.
+	colorMatches.at(0)->parentWidget()->show();	// This could be hard coded.
 }
 //void OptionsWindow::checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkAllSpinners() {
