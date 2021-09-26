@@ -255,6 +255,12 @@ void ZoomWindow::configureButtons()
 	log("+++configureButtons+++");
 	ButtonInstance *bi = nullptr;
 
+	unsigned short maxBlWidth = 9;
+	/*ui->buttonsLayout->setRowMinimumHeight(0, 15);
+	ui->buttonsLayout->setRowMinimumHeight(1, 15);
+	ui->buttonsLayout->setRowMinimumHeight(2, 15);*/
+	//ui->buttonsLayout->setSpacing(0);
+
 		// Load button configuration from settings:
 	m_settings->beginGroup("Zoom");
 	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
@@ -264,21 +270,30 @@ void ZoomWindow::configureButtons()
 			ButtonInstance{bs->type, new QPushButton(this), bs->states}	// This is why I switched to C++14. Could be worked around.
 		)).first->second);
 
+		//bi->pointer->setMinimumSize(24, 15);
+		//bi->pointer->setMaximumSize(999999, 16777215);
+		//bi->pointer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
 		if (bs->isInDrawer) {
 			countInDrawer++;
-			ui->buttonDrawerLayout->insertWidget(bs->position, bi->pointer);
+			//ui->buttonDrawerLayout->insertWidget(bs->position, bi->pointer);
+			log( ( "Adding button to grid: 1," + std::to_string(bs->position) + ",1," + std::to_string(bs->position + 1) ).c_str() );
+			ui->buttonsLayout->addWidget(bi->pointer, 1, bs->position, 1, bs->position + 1, Qt::AlignHCenter);
 		} else {
-			ui->buttonShelfLayout->insertWidget(bs->position, bi->pointer);
 			countOnShelf++;
+			//ui->buttonShelfLayout->insertWidget(bs->position, bi->pointer);
+			log( ( "Adding button to grid: 0," + std::to_string(bs->position) + ",0," + std::to_string(bs->position + 1) ).c_str() );
+			ui->buttonsLayout->addWidget(bi->pointer, 0, bs->position, 0, bs->position + 1, Qt::AlignHCenter);
 			if (bs->type & ~(Ui::IsButtonPrev | Ui::IsButtonNext)) {
 				if (scaleRef == nullptr) scaleRef = bi->pointer;
-			} else smallButtonsOnShelf++;
+			} //else smallButtonsOnShelf++;
 		}
 	}
 	m_settings->endGroup();
 
 	if (!(countOnShelf || countInDrawer)) {
 		delete ui->buttonsLayout;
+		log("---configureButtons---");
 		return;
 	}
 
@@ -288,6 +303,8 @@ void ZoomWindow::configureButtons()
 
 			// Hard coded:
 		button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		//button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+		//button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 			// From state:
 		ButtonState *state = nullptr;
@@ -299,15 +316,15 @@ void ZoomWindow::configureButtons()
 		state->function = nullptr;	// Clear old addresses from previous application session.
 		switch (it->second.type) {
 			case Ui::IsButtonPrev :
-				button->setMaximumWidth(24);
+				/*button->setMaximumWidth(24);
 				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				button->parentWidget()->layout()->setAlignment(button, Qt::AlignRight);
+				button->parentWidget()->layout()->setAlignment(button, Qt::AlignRight);*/
 				state->function = &ZoomWindow::previous;
 				break;
 			case Ui::IsButtonNext :
-				button->setMaximumWidth(24);
+				/*button->setMaximumWidth(24);
 				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				button->parentWidget()->layout()->setAlignment(button, Qt::AlignLeft);
+				button->parentWidget()->layout()->setAlignment(button, Qt::AlignLeft);*/
 				state->function = &ZoomWindow::next;
 				break;
 			case Ui::IsButtonDetails :
@@ -343,28 +360,30 @@ void ZoomWindow::configureButtons()
 			log(("Connection for button " + it->first + " " + (connected ? "succeeded" : "failed!")).c_str());
 		//}
 	}
-	log("---configureButtons---");
 
 
 	//if (countOnShelf || countInDrawer) {
 		if (countInDrawer) {
 			//if (scaleRef == nullptr) scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
-			if (countOnShelf == smallButtonsOnShelf) {
+			/*if (countOnShelf == smallButtonsOnShelf) {
 				scaleRef = ui->buttonDrawer->findChild<QPushButton*>(QString(), Qt::FindDirectChildrenOnly); 
 				if (countOnShelf == 0) delete ui->buttonShelf;
 				else ui->buttonShelfLayout->insertWidget(1, ui->buttonPlus);
 			//} else shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
-			}
+			}*/
+			log( ( "Adding buttonPlus to grid: 2," + std::to_string(maxBlWidth/2) + ",2," + std::to_string(maxBlWidth/2) ).c_str() );
+			ui->buttonsLayout->addWidget(ui->buttonPlus, 2, maxBlWidth/2, 2, maxBlWidth/2);
 			//shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
 
 			ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 			connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 		} else {
 			delete ui->buttonPlus;
-			delete ui->buttonDrawer;
+			//delete ui->buttonDrawer;
 		}
 
-		return;
+	log("---configureButtons---");
+	return;
 	//}
 
 	//delete ui->buttonsLayout;
@@ -1135,7 +1154,15 @@ void ZoomWindow::resizeButtons()
 
 	if (countOnShelf == smallButtonsOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
 
-	QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
+	/*unsigned short shelfWidth = ui->buttonShelf->width();
+	unsigned short drawerWidth =
+		shelfWidth * (countInDrawer / static_cast<float>(countOnShelf - smallButtonsOnShelf))
+		- (countOnShelf / 2) * 6	// Spacing between buttons.
+		//- (smallButtonsOnShelf * 16)
+	;
+	ui->buttonDrawer->setFixedWidth(shelfWidth > drawerWidth ? drawerWidth : shelfWidth);*/
+
+	/*QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
 	short shelfDrawerDiff = countOnShelf - countInDrawer;
 
 	unsigned short max;
@@ -1163,7 +1190,7 @@ void ZoomWindow::resizeButtons()
 		// Adjust for width of navigation buttons?
 	}
 	//drawer->setMaximumWidth(max);
-	drawer->setFixedWidth(max);	// Not sure why I have to set fixed width, since horizontal size policies are expanding.
+	drawer->setFixedWidth(max);	// Not sure why I have to set fixed width, since horizontal size policies are expanding.*/
 }
 
 void ZoomWindow::resizeEvent(QResizeEvent *e)
