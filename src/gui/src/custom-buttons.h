@@ -111,6 +111,7 @@ class ButtonSettings
 		bool isEnabled;
 		bool isInDrawer;
 		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
+		unsigned short relativeWidth;	// QGridLayout column width span.
 
 	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
 
@@ -120,6 +121,7 @@ class ButtonSettings
 		out << in.type;
 		out << QString::fromStdString(in.name);
 		out << in.position;
+		out << in.relativeWidth;
 		out << in.states;
 		out << in.isEnabled;
 		out << in.isInDrawer;
@@ -143,6 +145,7 @@ class ButtonSettings
 		out.name = tmp.toStdString();
 
 		in >> out.position;
+		in >> out.relativeWidth;
 		in >> out.states;
 		in >> out.isEnabled;
 		in >> out.isInDrawer;

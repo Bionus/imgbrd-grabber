@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>569</height>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1703,8 +1703,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>323</width>
-             <height>407</height>
+             <width>308</width>
+             <height>417</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2340,7 +2340,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonPrev">
+            <widget class="QSpinBox" name="spinButtonPrevPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2398,7 +2398,42 @@
               <string>&lt;</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_21">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonPrevWidth">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
              </property>
             </widget>
            </item>
@@ -2450,7 +2485,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonNext">
+            <widget class="QSpinBox" name="spinButtonNextPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2505,7 +2540,36 @@
               <string>&gt;</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_22">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonNextWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
              </property>
             </widget>
            </item>
@@ -2557,7 +2621,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonDetails">
+            <widget class="QSpinBox" name="spinButtonDetailsPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2612,7 +2676,39 @@
               <string>More details</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>12</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_23">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonDetailsWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2664,7 +2760,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveAs">
+            <widget class="QSpinBox" name="spinButtonSaveAsPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2719,7 +2815,39 @@
               <string>Save as...</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_24">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveAsWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2771,7 +2899,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSave">
+            <widget class="QSpinBox" name="spinButtonSavePosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2826,7 +2954,39 @@
               <string>Save</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>4</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_25">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2878,7 +3038,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveNQuit">
+            <widget class="QSpinBox" name="spinButtonSaveNQuitPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -2933,7 +3093,39 @@
               <string>Save and close</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>14</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_26">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveNQuitWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -2985,7 +3177,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonOpen">
+            <widget class="QSpinBox" name="spinButtonOpenPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -3040,7 +3232,39 @@
               <string>Destination folder</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>18</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_27">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonOpenWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -3071,7 +3295,7 @@
               <string>Enable</string>
              </property>
              <property name="checked">
-              <enum>Qt::PartiallyChecked</enum>
+              <bool>true</bool>
              </property>
              <property name="tristate">
               <bool>true</bool>
@@ -3092,7 +3316,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveFav">
+            <widget class="QSpinBox" name="spinButtonSaveFavPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -3147,7 +3371,39 @@
               <string>Save (fav)</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_28">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveFavWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -3178,7 +3434,7 @@
               <string>Enable</string>
              </property>
              <property name="checked">
-              <enum>Qt::PartiallyChecked</enum>
+              <bool>true</bool>
              </property>
              <property name="tristate">
               <bool>true</bool>
@@ -3199,7 +3455,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonSaveNQuitFav">
+            <widget class="QSpinBox" name="spinButtonSaveNQuitFavPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -3254,7 +3510,39 @@
               <string>Save and close (fav)</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>20</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_29">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonSaveNQuitFavWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -3285,7 +3573,7 @@
               <string>Enable</string>
              </property>
              <property name="checked">
-              <enum>Qt::PartiallyChecked</enum>
+              <bool>true</bool>
              </property>
              <property name="tristate">
               <bool>true</bool>
@@ -3306,7 +3594,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinButtonOpenFav">
+            <widget class="QSpinBox" name="spinButtonOpenFavPosition">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -3361,7 +3649,39 @@
               <string>Destination folder (fav)</string>
              </property>
              <property name="cursorPosition">
-              <number>0</number>
+              <number>24</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_30">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinButtonOpenFavWidth">
+             <property name="toolTip">
+              <string>Smaller numbers make for smaller buttons</string>
+             </property>
+             <property name="prefix">
+              <string>Width: </string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>3</number>
              </property>
             </widget>
            </item>
@@ -3397,8 +3717,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>235</width>
-             <height>785</height>
+             <width>226</width>
+             <height>810</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -4894,34 +5214,34 @@
   <tabstop>checkRememberDrawer</tabstop>
   <tabstop>checkRememberGeometry</tabstop>
   <tabstop>checkButtonPrev</tabstop>
-  <tabstop>spinButtonPrev</tabstop>
+  <tabstop>spinButtonPrevPosition</tabstop>
   <tabstop>lineButtonPrev</tabstop>
   <tabstop>checkButtonNext</tabstop>
-  <tabstop>spinButtonNext</tabstop>
+  <tabstop>spinButtonNextPosition</tabstop>
   <tabstop>lineButtonNext</tabstop>
   <tabstop>checkButtonDetails</tabstop>
-  <tabstop>spinButtonDetails</tabstop>
+  <tabstop>spinButtonDetailsPosition</tabstop>
   <tabstop>lineButtonDetails</tabstop>
   <tabstop>checkButtonSaveAs</tabstop>
-  <tabstop>spinButtonSaveAs</tabstop>
+  <tabstop>spinButtonSaveAsPosition</tabstop>
   <tabstop>lineButtonSaveAs</tabstop>
   <tabstop>checkButtonSave</tabstop>
-  <tabstop>spinButtonSave</tabstop>
+  <tabstop>spinButtonSavePosition</tabstop>
   <tabstop>lineButtonSave</tabstop>
   <tabstop>checkButtonSaveNQuit</tabstop>
-  <tabstop>spinButtonSaveNQuit</tabstop>
+  <tabstop>spinButtonSaveNQuitPosition</tabstop>
   <tabstop>lineButtonSaveNQuit</tabstop>
   <tabstop>checkButtonOpen</tabstop>
-  <tabstop>spinButtonOpen</tabstop>
+  <tabstop>spinButtonOpenPosition</tabstop>
   <tabstop>lineButtonOpen</tabstop>
   <tabstop>checkButtonSaveFav</tabstop>
-  <tabstop>spinButtonSaveFav</tabstop>
+  <tabstop>spinButtonSaveFavPosition</tabstop>
   <tabstop>lineButtonSaveFav</tabstop>
   <tabstop>checkButtonSaveNQuitFav</tabstop>
-  <tabstop>spinButtonSaveNQuitFav</tabstop>
+  <tabstop>spinButtonSaveNQuitFavPosition</tabstop>
   <tabstop>lineButtonSaveNQuitFav</tabstop>
   <tabstop>checkButtonOpenFav</tabstop>
-  <tabstop>spinButtonOpenFav</tabstop>
+  <tabstop>spinButtonOpenFavPosition</tabstop>
   <tabstop>lineButtonOpenFav</tabstop>
   <tabstop>lineColoringArtists</tabstop>
   <tabstop>buttonColoringArtistsColor</tabstop>

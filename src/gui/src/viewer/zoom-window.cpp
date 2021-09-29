@@ -260,7 +260,9 @@ void ZoomWindow::configureButtons()
 	if (drawerIsOpen) ui->buttonPlus->setText(QChar('-'));
 
 	std::vector<short> maxColPos;
-	unsigned short row;
+	std::vector<unsigned int> spanSum;
+	//std::vector<unsigned short> lastSpan;
+	std::vector<std::vector<unsigned short>> spans;
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 	//ui->buttonsLayout->setAlignment(ui->buttonsLayout, Qt::AlignHCenter);
 	//ui->windowLayout->setAlignment(ui->buttonsLayout, Qt::AlignHCenter);
@@ -274,6 +276,7 @@ void ZoomWindow::configureButtons()
 			ButtonInstance{bs->type, new QPushButton(this), bs->states}	// This is why I switched to C++14. Could be worked around.
 		)).first->second);
 
+		unsigned short row;
 		if (bs->isInDrawer) {
 			drawerButtons.push_back(bi->pointer);
 			row = 1;
@@ -283,32 +286,40 @@ void ZoomWindow::configureButtons()
 			row = 0;
 		}
 
-		if (maxColPos.size() <= row) maxColPos.push_back(-1);
-
-		unsigned short effectivePosition = bs->position > maxColPos.at(row)  ? ++maxColPos.at(row) : bs->position;
-
-		if (effectivePosition >= maxColPos.at(row)) {	// Configure new column.
-			ui->buttonsLayout->setColumnStretch(effectivePosition, 1);
+		if (maxColPos.size() <= row) {	// Configure new row.
+			maxColPos.push_back(-1);
+			spanSum.push_back(0);
+			spans.resize(row+1);
 		}
+		spans.at(row).push_back(bs->relativeWidth - 1);	// Don't count starting position.
 
-		log( ( "Adding button to grid: " + std::to_string(row) + "," + std::to_string(effectivePosition) + ",1,1" ).c_str() );
+		unsigned short effectivePosition = (bs->position > maxColPos.at(row)  ? ++maxColPos.at(row) : bs->position) + spanSum.at(row);	// Make columns contiguous.
+		if (bs->relativeWidth > 1) spanSum.at(row) += bs->relativeWidth - 1;
+
+		log( ( "Adding button to grid: " + std::to_string(row) + "," + std::to_string(effectivePosition) + ",1," + std::to_string(bs->relativeWidth) ).c_str() );
 		//ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, 1, Qt::AlignHCenter);
-		ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, 1);
-		//ui->buttonsLayout->setRowStretch(row, 1);	// Inefficient to call in loop. Fix later.
+		ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, bs->relativeWidth);
 	}
 	m_settings->endGroup();
 
-	unsigned short biggestMaxColPos = 0;
+	unsigned short biggestMaxRow, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
-		if (maxColPos.at(i) > biggestMaxColPos) biggestMaxColPos = maxColPos.at(i);
+		if (maxColPos.at(i) + spans.at(i).back() > biggestMaxColPos) {
+			biggestMaxRow = i;
+			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
+			log( ( "biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back()) ).c_str() );
+		}
+		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
 		ui->buttonsLayout->setRowStretch(i, 1);
+	}
+	for (unsigned short i = 0; i < ui->buttonsLayout->columnCount(); i++) {	// Configure columns.
+			ui->buttonsLayout->setColumnStretch(i, 1);
 	}
 
 	if (!drawerButtons.empty()) {
-		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(biggestMaxColPos/2) + ",1,1" ).c_str() );
-		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), biggestMaxColPos/2, 1, 1);
+		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2) ).c_str() );
+		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
 		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
-		//ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", true).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
 		ui->buttonPlus->setChecked(drawerIsOpen);
 		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 	} else if (countOnShelf) delete ui->buttonPlus;
@@ -318,22 +329,34 @@ void ZoomWindow::configureButtons()
 		return;
 	}
 
+	bool biggestIsOdd = biggestMaxColPos%2;
+	unsigned short rescalingOffset = 0;
 	for (std::unordered_map<std::string, ButtonInstance>::iterator it = buttons.begin(); it != buttons.end(); it++) {
 		QPushButton *button = it->second.pointer;
 
 		// Re-center each row based on flexible column count:
+		// 	Note: This does not currently account for unbalanced spans on left and right sides.
 		int originRow, originCol, originRowSpan, originColSpan;
 		ui->buttonsLayout->getItemPosition(ui->buttonsLayout->indexOf(button), &originRow, &originCol, &originRowSpan, &originColSpan);
-		if (originRow != biggestMaxColPos) {
-			unsigned short diff = biggestMaxColPos - maxColPos.at(originRow);
+		unsigned short newCol = originCol;
+		unsigned short diff = (biggestMaxColPos - maxColPos.at(originRow))/2;
+		if (diff++ != 0) {	// Convert to vector.at() index.
+			//diff++;	// Convert to vector.at() index.
+			while (diff > 0) {
+				newCol += spans.at(biggestMaxRow).at(diff);
+				diff--;
+			}
 
-			/*float offset = (biggestMaxColPos - maxColPos.at(originRow)) - diff;
-			if (offset != 0) {
-				// Add spacer to grid column 0 with width of offset?
-			}*/
-
-			//if (diff != 0) ui->buttonsLayout->addWidget(button, originRow, originCol + diff/2, originRowSpan, originColSpan);
-			if (diff != 0) ui->buttonsLayout->addWidget(button, originRow, originCol + diff/2, originRowSpan, originColSpan);
+			if (biggestIsOdd ^ maxColPos.at(originRow)%2) {	// Adjust spans and starting columns to compensate for mismatched numbers of buttons on rows.
+				log( ( "Should rescale odd/even-- rescalingOffset = " + std::to_string(rescalingOffset) ).c_str() );
+				log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol + rescalingOffset) ).c_str() );
+				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
+				//ui->buttonsLayout->addWidget(button, originRow, newCol + rescalingOffset++, originRowSpan, originColSpan + 1);	// Buttons aren't in order here. :(
+			} else {
+				log("Should not rescale odd/even.");
+				log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
+				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
+			}
 		}
 
 
