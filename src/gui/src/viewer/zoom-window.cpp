@@ -256,6 +256,8 @@ void ZoomWindow::configureButtons()
 	ButtonInstance *bi = nullptr;
 
 	unsigned short countOnShelf = 0;
+	bool drawerIsOpen = m_settings->value("Zoom/rememberDrawer", true).toBool() && m_settings->value("Zoom/plus", true).toBool(); 
+	if (drawerIsOpen) ui->buttonPlus->setText(QChar('-'));
 
 	std::vector<short> maxColPos;
 	unsigned short row;
@@ -275,6 +277,7 @@ void ZoomWindow::configureButtons()
 		if (bs->isInDrawer) {
 			drawerButtons.push_back(bi->pointer);
 			row = 1;
+			if (!drawerIsOpen) bi->pointer->setVisible(false);
 		} else {
 			countOnShelf++;
 			row = 0;
@@ -282,22 +285,34 @@ void ZoomWindow::configureButtons()
 
 		if (maxColPos.size() <= row) maxColPos.push_back(-1);
 
-		unsigned short effectivePosition = bs->position > maxColPos.at(row)  ? ++maxColPos.at(row) : bs->position;	// ++maxColPos.at(row) ?
+		unsigned short effectivePosition = bs->position > maxColPos.at(row)  ? ++maxColPos.at(row) : bs->position;
 
 		if (effectivePosition >= maxColPos.at(row)) {	// Configure new column.
 			ui->buttonsLayout->setColumnStretch(effectivePosition, 1);
 		}
 
 		log( ( "Adding button to grid: " + std::to_string(row) + "," + std::to_string(effectivePosition) + ",1,1" ).c_str() );
-		ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, 1, Qt::AlignHCenter);
-		ui->buttonsLayout->setRowStretch(row, 1);	// Inefficient to call in loop. Fix later.
+		//ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, 1, Qt::AlignHCenter);
+		ui->buttonsLayout->addWidget(bi->pointer, row, effectivePosition, 1, 1);
+		//ui->buttonsLayout->setRowStretch(row, 1);	// Inefficient to call in loop. Fix later.
 	}
 	m_settings->endGroup();
 
 	unsigned short biggestMaxColPos = 0;
-	for (auto &it : maxColPos) if (it > biggestMaxColPos) biggestMaxColPos = it;
+	for (unsigned short i = 0; i < maxColPos.size(); i++) {
+		if (maxColPos.at(i) > biggestMaxColPos) biggestMaxColPos = maxColPos.at(i);
+		ui->buttonsLayout->setRowStretch(i, 1);
+	}
 
-	if (countOnShelf == 0 && drawerButtons.empty() ) {
+	if (!drawerButtons.empty()) {
+		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(biggestMaxColPos/2) + ",1,1" ).c_str() );
+		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), biggestMaxColPos/2, 1, 1);
+		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
+		//ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", true).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
+		ui->buttonPlus->setChecked(drawerIsOpen);
+		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+	} else if (countOnShelf) delete ui->buttonPlus;
+	else {
 		delete ui->buttonsLayout;
 		log("---configureButtons---");
 		return;
@@ -382,17 +397,6 @@ void ZoomWindow::configureButtons()
 			log(("Connection for button " + it->first + " " + (connected ? "succeeded" : "failed!")).c_str());
 		//}
 	}
-
-
-	if (!drawerButtons.empty()) {
-		log( ( "Adding buttonPlus to grid: 2," + std::to_string(biggestMaxColPos/2) + ",1,1" ).c_str() );
-		ui->buttonsLayout->addWidget(ui->buttonPlus, 2, biggestMaxColPos/2, 1, 1);
-		//shelfDrawerDiff = ui->buttonShelf->children().count() - ui->buttonDrawer->children().count();
-
-		ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool() && m_settings->value("Zoom/rememberDrawer", true).toBool());
-		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-	} else if (countOnShelf) delete ui->buttonPlus;
-	else delete ui->buttonsLayout;
 
 	log( ( "rowCount: " + std::to_string(ui->buttonsLayout->rowCount()) ).c_str() );
 	log( ( "columnCount: " + std::to_string(ui->buttonsLayout->columnCount()) ).c_str() );

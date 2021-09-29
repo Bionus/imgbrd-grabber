@@ -137,14 +137,14 @@
      <item row="0" column="0" alignment="Qt::AlignHCenter">
       <widget class="QPushButton" name="buttonPlus">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="maximumSize">
         <size>
-         <width>140</width>
+         <width>16777215</width>
          <height>12</height>
         </size>
        </property>
