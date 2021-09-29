@@ -26,7 +26,7 @@
    <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0">
+  <layout class="QVBoxLayout" name="windowLayout" stretch="1,0,0">
    <item>
     <layout class="QGridLayout" name="overlayLayout">
      <item row="0" column="0">
