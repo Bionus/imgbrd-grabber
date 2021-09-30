@@ -286,9 +286,11 @@ void ZoomWindow::configureButtons()
 			row = 0;
 		}
 
-		if (maxColPos.size() <= row) {	// Configure new row.
-			maxColPos.push_back(-1);
-			spanSum.push_back(0);
+		if (maxColPos.size() <= row) {	// Initialise new row.
+			while (maxColPos.size() <= row) {	// Configure up to new row.
+				maxColPos.push_back(-1);
+				spanSum.push_back(0);
+			}
 			spans.resize(row+1);
 		}
 		spans.at(row).push_back(bs->relativeWidth - 1);	// Don't count starting position.
@@ -329,34 +331,25 @@ void ZoomWindow::configureButtons()
 		return;
 	}
 
+	for (unsigned short row = 0; row < spans.size(); row++) {
+		spanSum.at(row) += spans.at(row).size();	// Make spanSum include count of initial column positions for each row.
+	}
+
 	bool biggestIsOdd = biggestMaxColPos%2;
 	unsigned short rescalingOffset = 0;
 	for (std::unordered_map<std::string, ButtonInstance>::iterator it = buttons.begin(); it != buttons.end(); it++) {
 		QPushButton *button = it->second.pointer;
 
 		// Re-center each row based on flexible column count:
-		// 	Note: This does not currently account for unbalanced spans on left and right sides.
 		int originRow, originCol, originRowSpan, originColSpan;
 		ui->buttonsLayout->getItemPosition(ui->buttonsLayout->indexOf(button), &originRow, &originCol, &originRowSpan, &originColSpan);
-		unsigned short newCol = originCol;
-		unsigned short diff = (biggestMaxColPos - maxColPos.at(originRow))/2;
-		if (diff++ != 0) {	// Convert to vector.at() index.
-			//diff++;	// Convert to vector.at() index.
-			while (diff > 0) {
-				newCol += spans.at(biggestMaxRow).at(diff);
-				diff--;
-			}
-
-			if (biggestIsOdd ^ maxColPos.at(originRow)%2) {	// Adjust spans and starting columns to compensate for mismatched numbers of buttons on rows.
-				log( ( "Should rescale odd/even-- rescalingOffset = " + std::to_string(rescalingOffset) ).c_str() );
-				log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol + rescalingOffset) ).c_str() );
-				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
-				//ui->buttonsLayout->addWidget(button, originRow, newCol + rescalingOffset++, originRowSpan, originColSpan + 1);	// Buttons aren't in order here. :(
-			} else {
-				log("Should not rescale odd/even.");
-				log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
-				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
-			}
+		// Note: these spanSum values may not account for the width of the last button on each row. Not sure if important.
+		unsigned short offset = ( spanSum.at(biggestMaxRow) - spanSum.at(originRow) ) / 2;	// Row content is centred-- offset using free space on left side.
+		log( ( "Total diff = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow)) ).c_str() );
+		if (offset != 0) {
+			unsigned short newCol = originCol + offset + rescalingOffset;
+			log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
+			ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
 		}
 
 

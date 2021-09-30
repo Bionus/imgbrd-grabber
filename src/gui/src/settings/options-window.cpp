@@ -1454,8 +1454,10 @@ void OptionsWindow::save()
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonOpenFav->text(), Ui::DefaultOpenFavState.toolTip}}),
 		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenPosition->value(),
-		(unsigned short) ui->spinButtonOpenWidth->value()
+		/*(unsigned short) ui->spinButtonOpenPosition->value(),
+		(unsigned short) ui->spinButtonOpenWidth->value()*/
+		(unsigned short) ui->spinButtonOpenFavPosition->value(),
+		(unsigned short) ui->spinButtonOpenFavWidth->value()
 	});
 
 	settings->beginGroup("Zoom");
