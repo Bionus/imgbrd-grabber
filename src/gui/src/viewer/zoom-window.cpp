@@ -335,8 +335,9 @@ void ZoomWindow::configureButtons()
 		spanSum.at(row) += spans.at(row).size();	// Make spanSum include count of initial column positions for each row.
 	}
 
-	bool biggestIsOdd = biggestMaxColPos%2;
-	unsigned short rescalingOffset = 0;
+	/*bool biggestIsOdd = spans.at(biggestMaxRow).size()%2;
+	std::vector<unsigned short> rescalingOffset (maxColPos.size(), 0);
+	//std::vector<float> rescalingOffset (maxColPos.size(), 0);*/
 	for (std::unordered_map<std::string, ButtonInstance>::iterator it = buttons.begin(); it != buttons.end(); it++) {
 		QPushButton *button = it->second.pointer;
 
@@ -345,11 +346,18 @@ void ZoomWindow::configureButtons()
 		ui->buttonsLayout->getItemPosition(ui->buttonsLayout->indexOf(button), &originRow, &originCol, &originRowSpan, &originColSpan);
 		// Note: these spanSum values may not account for the width of the last button on each row. Not sure if important.
 		unsigned short offset = ( spanSum.at(biggestMaxRow) - spanSum.at(originRow) ) / 2;	// Row content is centred-- offset using free space on left side.
-		log( ( "Total diff = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow)) ).c_str() );
+		log( ( "Total diff from reference = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow)) ).c_str() );
 		if (offset != 0) {
-			unsigned short newCol = originCol + offset + rescalingOffset;
+			//if (rescalingOffset.at(originRow)) log( ( "rescalingOffset.at(row) = " + std::to_string(rescalingOffset.at(originRow)) ).c_str() );
+			unsigned short newCol = originCol + offset;
 			log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
+			//unsigned short newCol = originCol + offset + rescalingOffset.at(originRow);
 			ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
+			/*if (biggestIsOdd ^ spans.at(originRow).size()%2) {	// Adjust spans and starting columns to compensate for mismatched numbers of buttons on rows.
+				log("Rescaling due to even/odd mismatch with reference row.");
+				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan + 1);	// Buttons aren't in order!
+				rescalingOffset.at(originRow)++;
+			} else ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);*/
 		}
 
 
