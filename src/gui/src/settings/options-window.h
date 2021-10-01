@@ -86,7 +86,6 @@ class OptionsWindow : public QDialog
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
 		void checkSpinners(int newVal);
-		//void checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *);
 		void checkAllSpinners();
 		void checkAllSpinnersWithPlacement(int srcPlacement);
 

@@ -1576,11 +1576,8 @@ void OptionsWindow::save()
 	emit settingsChanged();
 }
 
-//void OptionsWindow::checkSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkSpinners(int newVal) {
 	std::vector<QSpinBox*> numberMatches, colorMatches;
-
-	//const int newVal = &qobject_cast<QSpinBox*>(sender())->value();
 
 	auto *srcSpinner = qobject_cast<QSpinBox*>(sender());
 	Qt::CheckState srcPlacement;
@@ -1634,7 +1631,6 @@ void OptionsWindow::checkSpinners(int newVal) {
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
 	colorMatches.at(0)->parentWidget()->show(); // This could be hard coded.
 }
-//void OptionsWindow::checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkAllSpinners() {
 	std::vector<QSpinBox*> numberMatches;
 	for (const auto &checker : m_zoomSettingPairs) {
