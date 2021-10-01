@@ -134,13 +134,13 @@ jobs:
 
   linux:
     name: Linux
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: version
 
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      LINUXDEPLOYQT_VERSION: 7
+      LINUXDEPLOYQT_VERSION: continuous
 
     steps:
       - name: Checkout
@@ -229,7 +229,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+      OPENSSL_ROOT_DIR: /usr/local/opt/openssl@1.1
       CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
