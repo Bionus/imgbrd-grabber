@@ -452,7 +452,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			positionSpinner->setValue(button.position);
 			widthSpinner->setValue(button.relativeWidth);
 
-			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
+			m_buttonSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
 				checker,
 				positionSpinner
 			));
@@ -1581,7 +1581,7 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 	auto *srcSpinner = qobject_cast<QSpinBox*>(sender());
 	Qt::CheckState srcPlacement;
-	for (const auto &pair : m_zoomSettingPairs) {
+	for (const auto &pair : m_buttonSettingPairs) {
 		if (pair.second == srcSpinner) {
 			srcPlacement = pair.first->checkState();
 			break;
@@ -1589,7 +1589,7 @@ void OptionsWindow::checkSpinners(int newVal) {
 	}
 
 	const QColor *code = &srcSpinner->palette().color(QWidget::backgroundRole());
-	for (const auto &pair : m_zoomSettingPairs) {
+	for (const auto &pair : m_buttonSettingPairs) {
 		if (pair.first->checkState() != srcPlacement) {
 			continue;
 		}
@@ -1619,7 +1619,7 @@ void OptionsWindow::checkSpinners(int newVal) {
 	// Set alarm style on spinners with new value.
 	QColor alarmBack(
 		(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
-		(100 - 255) * (static_cast<float>(newVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
+		(100 - 255) * (static_cast<float>(newVal) / m_buttonSettingPairs.size()) + 255, // Green normalised between 100 and 255.
 		0
 	);
 	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
@@ -1633,13 +1633,13 @@ void OptionsWindow::checkSpinners(int newVal) {
 }
 void OptionsWindow::checkAllSpinners() {
 	std::vector<QSpinBox*> numberMatches;
-	for (const auto &checker : m_zoomSettingPairs) {
+	for (const auto &checker : m_buttonSettingPairs) {
 		numberMatches.clear();
 
 		int checkVal = checker.second->value();
 
 		Qt::CheckState srcPlacement = checker.first->checkState();
-		for (const auto &pair : m_zoomSettingPairs) {
+		for (const auto &pair : m_buttonSettingPairs) {
 			if (srcPlacement == Qt::CheckState::Unchecked || pair.first->checkState() != srcPlacement) {
 				continue;
 			}
@@ -1656,7 +1656,7 @@ void OptionsWindow::checkAllSpinners() {
 		// Set alarm style on spinners with matching value.
 		QColor alarmBack(
 			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
-			(100 - 255) * (static_cast<float>(checkVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
+			(100 - 255) * (static_cast<float>(checkVal) / m_buttonSettingPairs.size()) + 255, // Green normalised between 100 and 255.
 			0
 		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
@@ -1665,7 +1665,7 @@ void OptionsWindow::checkAllSpinners() {
 			it->setStyleSheet(alarmStyle.c_str());
 		}
 	}
-	m_zoomSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
+	m_buttonSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
 }
 void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 	// There may be a better source than lineButtonPrev.
@@ -1675,7 +1675,7 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 
 	const QColor *code;
 	auto *srcChecker = qobject_cast<QCheckBox*>(sender());
-	for (const auto &pair : m_zoomSettingPairs) {
+	for (const auto &pair : m_buttonSettingPairs) {
 		if (pair.first == srcChecker) {
 			code = &pair.second->palette().color(QWidget::backgroundRole());
 			break;
@@ -1683,14 +1683,14 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 	}
 
 	std::vector<QSpinBox*> numberMatches, colorMatches;
-	for (const auto &checker : m_zoomSettingPairs) {
+	for (const auto &checker : m_buttonSettingPairs) {
 		numberMatches.clear();
 		colorMatches.clear();
 
 		int checkVal = checker.second->value();
 		Qt::CheckState checkState = checker.first->checkState();
 
-		for (const auto &pair : m_zoomSettingPairs) {
+		for (const auto &pair : m_buttonSettingPairs) {
 			Qt::CheckState testState = pair.first->checkState();
 			int testVal = pair.second->value();
 			if (testState == srcPlacement || testVal == checkVal) {
@@ -1718,7 +1718,7 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 		// Set alarm style on spinners with matching value.
 		QColor alarmBack(
 			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
-			(100 - 255) * (static_cast<float>(checkVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
+			(100 - 255) * (static_cast<float>(checkVal) / m_buttonSettingPairs.size()) + 255, // Green normalised between 100 and 255.
 			0
 		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
@@ -1729,5 +1729,5 @@ void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
 
 	}
 
-	m_zoomSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
+	m_buttonSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
 }

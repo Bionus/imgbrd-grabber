@@ -121,7 +121,7 @@ class OptionsWindow : public QDialog
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
-		QList<QPair<QCheckBox*, QSpinBox*>> m_zoomSettingPairs;
+		QList<QPair<QCheckBox*, QSpinBox*>> m_buttonSettingPairs;
 };
 
 #endif // OPTIONS_WINDOW_H
