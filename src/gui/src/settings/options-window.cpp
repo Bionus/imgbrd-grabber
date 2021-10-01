@@ -447,26 +447,23 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			}
 			log(button.name.c_str());
 			//log(std::to_string(button->type).c_str());
+
 			checker->setCheckState(button.isEnabled ? (button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked) : Qt::Unchecked);
 			positionSpinner->setValue(button.position);
 			widthSpinner->setValue(button.relativeWidth);
+
+			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
+				checker,
+				positionSpinner
+			));
+
+			QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
+			QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		}
 		settings->endGroup();
 		log("---Reading Zoom/Buttons---");
 
-		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
-		QRegularExpression match(QRegularExpression::wildcardToRegularExpression("*Position"));
-		for (const QGroupBox *buttonGroup : buttonGroups) {
-			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
-				buttonGroup->findChild<QCheckBox*>(),	// May break something if buttonGroup contains more than one QCheckBox.
-				buttonGroup->findChildren<QSpinBox*>(match).front()
-			));
-		}
 		checkAllSpinners();
-		for (auto buttonPair : m_zoomSettingPairs) {
-			QObject::connect(buttonPair.first, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-			QObject::connect(buttonPair.second, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		}
 	}
 
 	settings->beginGroup("Zoom/Shortcuts");
