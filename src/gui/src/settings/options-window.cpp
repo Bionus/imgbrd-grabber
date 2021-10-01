@@ -455,11 +455,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		log("---Reading Zoom/Buttons---");
 
 		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
+		QRegularExpression match(QRegularExpression::wildcardToRegularExpression("*Position"));
 		for (const QGroupBox *buttonGroup : buttonGroups) {
-			// Note that this will break if multiple checkboxes or spinners are in any group.
 			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
-				buttonGroup->findChild<QCheckBox*>(),
-				buttonGroup->findChild<QSpinBox*>()
+				buttonGroup->findChild<QCheckBox*>(),	// May break something if buttonGroup contains more than one QCheckBox.
+				buttonGroup->findChildren<QSpinBox*>(match).front()
 			));
 		}
 		checkAllSpinners();
