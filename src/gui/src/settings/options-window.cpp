@@ -455,7 +455,6 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		log("---Reading Zoom/Buttons---");
 
 		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
-		//QList<std::pair<QCheckBox*, QSpinBox*>> csPairs;
 		for (const QGroupBox *buttonGroup : buttonGroups) {
 			// Note that this will break if multiple checkboxes or spinners are in any group.
 			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
@@ -463,29 +462,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 				buttonGroup->findChild<QSpinBox*>()
 			));
 		}
-		//checkAllSpinners(&csPairs);
 		checkAllSpinners();
-		QObject::connect(ui->spinButtonPrevPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonNextPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonDetailsPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonSaveAsPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonSavePosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonSaveNQuitPosition,	static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonOpenPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonSaveFavPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonSaveNQuitFavPosition,	static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		QObject::connect(ui->spinButtonOpenFavPosition,		static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-
-		QObject::connect(ui->checkButtonPrev,		static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonNext,		static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonDetails,	static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonSaveAs,		static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonSave,		static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonSaveNQuit,	static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonOpen,		static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonSaveFav,	static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonSaveNQuitFav,	static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-		QObject::connect(ui->checkButtonOpenFav,	static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
+		for (auto buttonPair : m_zoomSettingPairs) {
+			QObject::connect(buttonPair.first, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
+			QObject::connect(buttonPair.second, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+		}
 	}
 
 	settings->beginGroup("Zoom/Shortcuts");
