@@ -13,8 +13,12 @@ permalink: /docs/
 3. If you haven't left the "start Grabber" checked at the end of the installation, go to the installation folder, then launch "Grabber.exe" (or use the shortcut created on the desktop during the installation).
 
 ## Arch Linux
+For Arch Linux users, there are packages on the AUR
+* [imgbrd-grabber-bin](https://aur.archlinux.org/packages/imgbrd-grabber-bin) which pulls the latest `tar.gz` release.
+* [imgbrd-grabber-appimage](https://aur.archlinux.org/packages/imgbrd-grabber-appimage) which pulls the latest `appimage` release.
+* [imgbrd-grabber](https://aur.archlinux.org/packages/imgbrd-grabber) which builds the package from source.
 
-Grabber can be installed from the aur package [imgbrd-grabber-git](https://aur.archlinux.org/packages/imgbrd-grabber-git/), and otherwise installed by following the generic Linux instructions. After installation, see [Linux Configuration](#linux-configuration).
+Install by issuing the command, substituting the package you want to install: `paru -Sy imgbrd-grabber-bin`
 
 ## Linux
 Compile Grabber by following the instructions on the [Compilation]({{ site.baseurl }}{% link _docs/compilation.md %}#linux) page. Upon completion run `make install`.
