@@ -14,11 +14,10 @@ namespace Ui
 
 
 class Profile;
-class ThemeLoader;
-class TokenSettingsWidget;
-
 class QCheckBox;
 class QSpinBox;
+class ThemeLoader;
+class TokenSettingsWidget;
 
 class OptionsWindow : public QDialog
 {
@@ -86,10 +85,10 @@ class OptionsWindow : public QDialog
 		void addFilename(const QString &, const QString &, const QString &);
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
-		void checkSpinners(int);
+		void checkSpinners(int newVal);
 		//void checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *);
 		void checkAllSpinners();
-		void checkAllSpinnersWithPlacement(int);
+		void checkAllSpinnersWithPlacement(int srcPlacement);
 
 		// Log files
 		void addLogFile();
@@ -123,7 +122,7 @@ class OptionsWindow : public QDialog
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
-		QList<std::pair<QCheckBox*, QSpinBox*>> csPairs;
+		QList<QPair<QCheckBox*, QSpinBox*>> m_zoomSettingPairs;
 };
 
 #endif // OPTIONS_WINDOW_H

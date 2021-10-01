@@ -355,18 +355,18 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		log("+++Reading Zoom/Buttons+++");
 		settings->beginGroup("Zoom");
 		QList<ButtonSettings> buttons = settings->value("allButtons").value<QList<ButtonSettings>>();
-		for (QList<ButtonSettings>::iterator button = buttons.begin(); button != buttons.end(); button++) {
+		for (const auto &button : buttons) {
 			QCheckBox *checker = nullptr;
 			QSpinBox *positionSpinner = nullptr;
 			QSpinBox *widthSpinner = nullptr;
-			switch (button->type) {
+			switch (button.type) {
 				//case 0 : continue;	Shouldn't happen right now.
 				case Ui::IsButtonPrev :
 					//log("Prev");
 					checker = ui->checkButtonPrev;
 					positionSpinner = ui->spinButtonPrevPosition;
 					widthSpinner = ui->spinButtonPrevWidth;
-					ui->lineButtonPrev->setText(button->states[0].text.isEmpty() ? Ui::DefaultPrevState.text : button->states[0].text);
+					ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? Ui::DefaultPrevState.text : button.states[0].text);
 					ui->lineButtonPrev->setCursorPosition(0);
 					break;
 				case Ui::IsButtonNext :
@@ -374,7 +374,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonNext;
 					positionSpinner = ui->spinButtonNextPosition;
 					widthSpinner = ui->spinButtonNextWidth;
-					ui->lineButtonNext->setText(button->states[0].text.isEmpty() ? Ui::DefaultNextState.text : button->states[0].text);
+					ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? Ui::DefaultNextState.text : button.states[0].text);
 					ui->lineButtonNext->setCursorPosition(0);
 					break;
 				case Ui::IsButtonDetails :
@@ -382,7 +382,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonDetails;
 					positionSpinner = ui->spinButtonDetailsPosition;
 					widthSpinner = ui->spinButtonDetailsWidth;
-					ui->lineButtonDetails->setText(button->states[0].text.isEmpty() ? Ui::DefaultDetailsState.text : button->states[0].text);
+					ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? Ui::DefaultDetailsState.text : button.states[0].text);
 					ui->lineButtonDetails->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveAs :
@@ -390,7 +390,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonSaveAs;
 					positionSpinner = ui->spinButtonSaveAsPosition;
 					widthSpinner = ui->spinButtonSaveAsWidth;
-					ui->lineButtonSaveAs->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveAsState.text : button->states[0].text);
+					ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveAsState.text : button.states[0].text);
 					ui->lineButtonSaveAs->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSave:
@@ -398,7 +398,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonSave;
 					positionSpinner = ui->spinButtonSavePosition;
 					widthSpinner = ui->spinButtonSaveWidth;
-					ui->lineButtonSave->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveStateSave.text : button->states[0].text);
+					ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveStateSave.text : button.states[0].text);
 					ui->lineButtonSave->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveNQuit :
@@ -406,7 +406,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonSaveNQuit;
 					positionSpinner = ui->spinButtonSaveNQuitPosition;
 					widthSpinner = ui->spinButtonSaveNQuitWidth;
-					ui->lineButtonSaveNQuit->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveNQuitStateSave.text : button->states[0].text);
+					ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveNQuitStateSave.text : button.states[0].text);
 					ui->lineButtonSaveNQuit->setCursorPosition(0);
 					break;
 				case Ui::IsButtonOpen :
@@ -414,7 +414,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonOpen;
 					positionSpinner = ui->spinButtonOpenPosition;
 					widthSpinner = ui->spinButtonOpenWidth;
-					ui->lineButtonOpen->setText(button->states[0].text.isEmpty() ? Ui::DefaultOpenState.text : button->states[0].text);
+					ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? Ui::DefaultOpenState.text : button.states[0].text);
 					ui->lineButtonOpen->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSave | Ui::IsFavoriteButton :
@@ -422,7 +422,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonSaveFav;
 					positionSpinner = ui->spinButtonSaveFavPosition;
 					widthSpinner = ui->spinButtonSaveFavWidth;
-					ui->lineButtonSaveFav->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveFavStateSave.text : button->states[0].text);
+					ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveFavStateSave.text : button.states[0].text);
 					ui->lineButtonSaveFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
@@ -430,7 +430,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonSaveNQuitFav;
 					positionSpinner = ui->spinButtonSaveNQuitFavPosition;
 					widthSpinner = ui->spinButtonSaveNQuitFavWidth;
-					ui->lineButtonSaveNQuitFav->setText(button->states[0].text.isEmpty() ? Ui::DefaultSaveNQuitFavStateSave.text : button->states[0].text);
+					ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
 					ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 					break;
 				case Ui::IsButtonOpen | Ui::IsFavoriteButton :
@@ -438,29 +438,29 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					checker = ui->checkButtonOpenFav;
 					positionSpinner = ui->spinButtonOpenFavPosition;
 					widthSpinner = ui->spinButtonOpenFavWidth;
-					ui->lineButtonOpenFav->setText(button->states[0].text.isEmpty() ? Ui::DefaultOpenFavState.text : button->states[0].text);
+					ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? Ui::DefaultOpenFavState.text : button.states[0].text);
 					ui->lineButtonOpenFav->setCursorPosition(0);
 					break;
 				default :
 					log("OptionsWindow found an unknown button type.");
 					continue;
 			}
-			log(button->name.c_str());
+			log(button.name.c_str());
 			//log(std::to_string(button->type).c_str());
-			checker->setCheckState(button->isEnabled ? button->isInDrawer ? Qt::PartiallyChecked : Qt::Checked : Qt::Unchecked);
-			positionSpinner->setValue(button->position);
-			widthSpinner->setValue(button->relativeWidth);
+			checker->setCheckState(button.isEnabled ? (button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked) : Qt::Unchecked);
+			positionSpinner->setValue(button.position);
+			widthSpinner->setValue(button.relativeWidth);
 		}
 		settings->endGroup();
 		log("---Reading Zoom/Buttons---");
 
 		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
 		//QList<std::pair<QCheckBox*, QSpinBox*>> csPairs;
-		for (unsigned short i = 0; i < buttonGroups.count(); i++) {
+		for (const QGroupBox *buttonGroup : buttonGroups) {
 			// Note that this will break if multiple checkboxes or spinners are in any group.
-			csPairs.append(std::make_pair(
-				buttonGroups.at(i)->findChild<QCheckBox *>(),
-				buttonGroups.at(i)->findChild<QSpinBox *>()
+			m_zoomSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
+				buttonGroup->findChild<QCheckBox*>(),
+				buttonGroup->findChild<QSpinBox*>()
 			));
 		}
 		//checkAllSpinners(&csPairs);
@@ -1461,11 +1461,17 @@ void OptionsWindow::save()
 	settings->beginGroup("Zoom");
 		settings->setValue("allButtons", QVariant::fromValue(buttons));
 
-		for (QList<ButtonSettings>::iterator i = buttons.begin(); i != buttons.end(); i++) if (i->isEnabled) active.append(*i);
+		for (const auto &button : buttons) {
+			if (button.isEnabled) {
+				active.append(button);
+			}
+		}
 		std::sort(active.begin(), active.end());
 		settings->setValue("activeButtons", QVariant::fromValue(active));
 
-		for (QList<ButtonSettings>::iterator button = active.begin(); button != active.end(); button++) log(button->name.c_str());
+		for (const auto &button : active) {
+			log(button.name.c_str());
+		}
 	settings->endGroup();
 	log("---Writing Zoom/Buttons---");
 
@@ -1598,36 +1604,38 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 	//const int newVal = &qobject_cast<QSpinBox*>(sender())->value();
 
-	QSpinBox *srcSpinner = qobject_cast<QSpinBox*>(sender());
+	auto *srcSpinner = qobject_cast<QSpinBox*>(sender());
 	Qt::CheckState srcPlacement;
-	for (unsigned short i = 0; i < csPairs.size(); i++) {
-		if (csPairs.at(i).second == srcSpinner) {
-			srcPlacement = csPairs.at(i).first->checkState();
+	for (const auto &pair : m_zoomSettingPairs) {
+		if (pair.second == srcSpinner) {
+			srcPlacement = pair.first->checkState();
 			break;
 		}
 	}
 
 	const QColor *code = &srcSpinner->palette().color(QWidget::backgroundRole());
-	for (unsigned short i = 0; i < csPairs.size(); i++) {
-		if (csPairs.at(i).first->checkState() != srcPlacement) continue;
-		if (
-			srcPlacement != Qt::CheckState::Unchecked
-			&& csPairs.at(i).second->value() == newVal
-		) numberMatches.push_back(csPairs.at(i).second);
-		if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) colorMatches.push_back(csPairs.at(i).second);
+	for (const auto &pair : m_zoomSettingPairs) {
+		if (pair.first->checkState() != srcPlacement) {
+			continue;
+		}
+		if (srcPlacement != Qt::CheckState::Unchecked && pair.second->value() == newVal) {
+			numberMatches.push_back(pair.second);
+		}
+		if (pair.second->palette().color(QWidget::backgroundRole()) == *code) {
+			colorMatches.push_back(pair.second);
+		}
 	}
-
 
 	// Reset alarm styles that are no longer relevant. There may be a better source than lineButitonPrev.
 	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
 	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
 	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
 
-	if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
+	if (colorMatches.size() == 1 || colorMatches.size() == 2) { // Reset the previous value's style match if there is only one.
 		if (colorMatches.size() == 2) colorMatches.at(1)->setStyleSheet(defStyle.c_str());
 		colorMatches.at(0)->setStyleSheet(defStyle.c_str());
 	}
-	if (numberMatches.size() == 1) {	// Alarm style will not be set for this new value.
+	if (numberMatches.size() == 1) { // Alarm style will not be set for this new value.
 		numberMatches.at(0)->setStyleSheet(defStyle.c_str());
 		return;
 	}
@@ -1635,118 +1643,117 @@ void OptionsWindow::checkSpinners(int newVal) {
 
 	// Set alarm style on spinners with new value.
 	QColor alarmBack(
-		(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255,	// Red normalised between 200 and 255.
-		(100 - 255) * (static_cast<float>(newVal) / csPairs.size()) + 255,	// Green normalised between 100 and 255.
+		(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
+		(100 - 255) * (static_cast<float>(newVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
 		0
 	);
 	std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-	for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
+	for (auto it : numberMatches) { // Set alarm style on spinners with new value.
 		it->setStyleSheet(alarmStyle.c_str());
 	}
 
 	// Would be nice to have a short transition effect. Maybe 0.4 seconds.
-	colorMatches.at(0)->parentWidget()->show();	// This could be hard coded.
+	colorMatches.at(0)->parentWidget()->show(); // This could be hard coded.
 }
 //void OptionsWindow::checkAllSpinners(QList<std::pair<QCheckBox*, QSpinBox*>> *csPairs) {
 void OptionsWindow::checkAllSpinners() {
 	std::vector<QSpinBox*> numberMatches;
-	for (unsigned short checker = 0; checker < csPairs.size(); checker++) {
+	for (const auto &checker : m_zoomSettingPairs) {
 		numberMatches.clear();
 
-		int checkVal = csPairs.at(checker).second->value();
+		int checkVal = checker.second->value();
 
-		Qt::CheckState srcPlacement = csPairs.at(checker).first->checkState();
-		for (unsigned short i = 0; i < csPairs.size(); i++) {
-			if (
-				srcPlacement == Qt::CheckState::Unchecked
-				|| csPairs.at(i).first->checkState() != srcPlacement
-			) continue;
-			if (csPairs.at(i).second->value() == checkVal) numberMatches.push_back(csPairs.at(i).second);
-		}
-
-		if (numberMatches.size() == 1) continue;	// Alarm style will not be set for this new value.
-
-
-		// Set alarm style on spinners with matching value.
-		QColor alarmBack(
-			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255,	// Red normalised between 200 and 255.
-			(100 - 255) * (static_cast<float>(checkVal) / csPairs.size()) + 255,	// Green normalised between 100 and 255.
-			0
-		);
-		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
-
-		for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
-			it->setStyleSheet(alarmStyle.c_str());
-		}
-
-	}
-	csPairs.at(0).second->parentWidget()->show();	// This could be hard coded.
-}
-void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
-	// There may be a better source than lineButitonPrev.
-	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
-	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
-	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
-
-	const QColor *code;
-	QCheckBox *srcChecker = qobject_cast<QCheckBox*>(sender());
-	for (unsigned short i = 0; i < csPairs.size(); i++) {
-		if (csPairs.at(i).first == srcChecker) {
-			code = &csPairs.at(i).second->palette().color(QWidget::backgroundRole());
-			break;
-		}
-	}
-
-	std::vector<QSpinBox*> numberMatches, colorMatches;
-	for (unsigned short checker = 0; checker < csPairs.size(); checker++) {
-		numberMatches.clear();
-		colorMatches.clear();
-
-		int checkVal = csPairs.at(checker).second->value();
-		Qt::CheckState checkState = csPairs.at(checker).first->checkState();
-
-		for (unsigned short i = 0; i < csPairs.size(); i++) {
-			Qt::CheckState testState = csPairs.at(i).first->checkState();
-			int testVal = csPairs.at(i).second->value();
-			if (
-				testState == srcPlacement
-				|| testVal == checkVal
-			) {
-				if (
-					checkState != Qt::CheckState::Unchecked
-					&& testState == checkState
-					&& testVal == checkVal
-				) numberMatches.push_back(csPairs.at(i).second);
-				if (csPairs.at(i).second->palette().color(QWidget::backgroundRole()) == *code) colorMatches.push_back(csPairs.at(i).second);
+		Qt::CheckState srcPlacement = checker.first->checkState();
+		for (const auto &pair : m_zoomSettingPairs) {
+			if (srcPlacement == Qt::CheckState::Unchecked || pair.first->checkState() != srcPlacement) {
+				continue;
+			}
+			if (pair.second->value() == checkVal) {
+				numberMatches.push_back(pair.second);
 			}
 		}
 
-		// Reset alarm styles that are no longer relevant.
-		if (colorMatches.size() == 1 || colorMatches.size() == 2) {	// Reset the previous value's style match if there is only one.
-			//if (colorMatches.size() == 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
-			colorMatches.at(0)->setStyleSheet(defStyle.c_str());
-			//colorMatches.at(1)->setStyleSheet(defStyle.c_str());
-			if (colorMatches.size() == 2) colorMatches.at(1)->setStyleSheet(defStyle.c_str());
-		}
-		if (numberMatches.size() == 1) {	// No conflict to indicate.
-			csPairs.at(checker).second->setStyleSheet(defStyle.c_str());
+		// Alarm style will not be set for this new value.
+		if (numberMatches.size() == 1) {
 			continue;
 		}
 
 		// Set alarm style on spinners with matching value.
 		QColor alarmBack(
-			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255,	// Red normalised between 200 and 255.
-			(100 - 255) * (static_cast<float>(checkVal) / csPairs.size()) + 255,	// Green normalised between 100 and 255.
+			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
+			(100 - 255) * (static_cast<float>(checkVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
 			0
 		);
 		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
 
-		for (auto it : numberMatches) {	// Set alarm style on spinners with new value.
+		for (auto it : numberMatches) { // Set alarm style on spinners with new value.
+			it->setStyleSheet(alarmStyle.c_str());
+		}
+	}
+	m_zoomSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
+}
+void OptionsWindow::checkAllSpinnersWithPlacement(int srcPlacement) {
+	// There may be a better source than lineButtonPrev.
+	QColor defBack = ui->lineButtonPrev->palette().color(QWidget::backgroundRole());
+	QColor defText = ui->lineButtonPrev->palette().color(QWidget::foregroundRole());
+	std::string defStyle("background-color:" + defBack.name(QColor::HexRgb).toStdString() + ";color:" + defText.name(QColor::HexRgb).toStdString());
+
+	const QColor *code;
+	auto *srcChecker = qobject_cast<QCheckBox*>(sender());
+	for (const auto &pair : m_zoomSettingPairs) {
+		if (pair.first == srcChecker) {
+			code = &pair.second->palette().color(QWidget::backgroundRole());
+			break;
+		}
+	}
+
+	std::vector<QSpinBox*> numberMatches, colorMatches;
+	for (const auto &checker : m_zoomSettingPairs) {
+		numberMatches.clear();
+		colorMatches.clear();
+
+		int checkVal = checker.second->value();
+		Qt::CheckState checkState = checker.first->checkState();
+
+		for (const auto &pair : m_zoomSettingPairs) {
+			Qt::CheckState testState = pair.first->checkState();
+			int testVal = pair.second->value();
+			if (testState == srcPlacement || testVal == checkVal) {
+				if (checkState != Qt::CheckState::Unchecked && testState == checkState && testVal == checkVal) {
+					numberMatches.push_back(pair.second);
+				}
+				if (pair.second->palette().color(QWidget::backgroundRole()) == *code) {
+					colorMatches.push_back(pair.second);
+				}
+			}
+		}
+
+		// Reset alarm styles that are no longer relevant.
+		if (colorMatches.size() == 1 || colorMatches.size() == 2) { // Reset the previous value's style match if there is only one.
+			//if (colorMatches.size() == 2) colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+			colorMatches.at(0)->setStyleSheet(defStyle.c_str());
+			//colorMatches.at(1)->setStyleSheet(defStyle.c_str());
+			if (colorMatches.size() == 2) colorMatches.at(1)->setStyleSheet(defStyle.c_str());
+		}
+		if (numberMatches.size() == 1) { // No conflict to indicate.
+			checker.second->setStyleSheet(defStyle.c_str());
+			continue;
+		}
+
+		// Set alarm style on spinners with matching value.
+		QColor alarmBack(
+			(200 - 255) * (static_cast<float>(srcPlacement + 1) / 3) + 255, // Red normalised between 200 and 255.
+			(100 - 255) * (static_cast<float>(checkVal) / m_zoomSettingPairs.size()) + 255, // Green normalised between 100 and 255.
+			0
+		);
+		std::string alarmStyle("background-color:" + alarmBack.name(QColor::HexRgb).toStdString() + ";color:black;");
+
+		for (auto it : numberMatches) { // Set alarm style on spinners with new value.
 			it->setStyleSheet(alarmStyle.c_str());
 		}
 
 	}
 
-	csPairs.at(0).second->parentWidget()->show();	// This could be hard coded.
+	m_zoomSettingPairs.at(0).second->parentWidget()->show(); // This could be hard coded.
 }
