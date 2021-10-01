@@ -261,11 +261,8 @@ void ZoomWindow::configureButtons()
 
 	std::vector<short> maxColPos;
 	std::vector<unsigned int> spanSum;
-	//std::vector<unsigned short> lastSpan;
 	std::vector<std::vector<unsigned short>> spans;
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
-	//ui->buttonsLayout->setAlignment(ui->buttonsLayout, Qt::AlignHCenter);
-	//ui->windowLayout->setAlignment(ui->buttonsLayout, Qt::AlignHCenter);
 
 		// Load button configuration from settings:
 	m_settings->beginGroup("Zoom");
@@ -311,7 +308,10 @@ void ZoomWindow::configureButtons()
 			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
 			log( ( "biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back()) ).c_str() );
 		}
+
 		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
+
+		// Configure rows:
 		ui->buttonsLayout->setRowStretch(i, 1);
 	}
 	for (unsigned short i = 0; i < ui->buttonsLayout->columnCount(); i++) {	// Configure columns.
@@ -364,7 +364,6 @@ void ZoomWindow::configureButtons()
 		// Generic button configuration:
 
 			// Hard coded:
-		//button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 			// From state:
@@ -373,19 +372,13 @@ void ZoomWindow::configureButtons()
 		button->setText(state->text.replace("&", "&&"));
 		button->setToolTip(state->toolTip);
 
-			// Initialise state 0 functions. This should be eliminated.
+			// Initialise state 0 functions. This should be eliminated if possible.
 		state->function = nullptr;	// Clear old addresses from previous application session.
 		switch (it->second.type) {
 			case Ui::IsButtonPrev :
-				/*button->setMaximumWidth(24);
-				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				button->parentWidget()->layout()->setAlignment(button, Qt::AlignRight);*/
 				state->function = &ZoomWindow::previous;
 				break;
 			case Ui::IsButtonNext :
-				/*button->setMaximumWidth(24);
-				button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-				button->parentWidget()->layout()->setAlignment(button, Qt::AlignLeft);*/
 				state->function = &ZoomWindow::next;
 				break;
 			case Ui::IsButtonDetails :

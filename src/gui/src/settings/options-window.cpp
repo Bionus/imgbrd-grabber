@@ -346,15 +346,31 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
-	if (settings->value("firstload", true).toBool()) {
-		// Fix for tristates, which don't seem to be supported by Designer's ui files.
+	log("+++Reading Zoom/Buttons+++");
+	settings->beginGroup("Zoom");
+	QList<ButtonSettings> buttons = settings->value("allButtons").value<QList<ButtonSettings>>();
+	log( ( "buttons.size() = " + std::to_string(buttons.size()) ).c_str() );
+	if (buttons.empty()) {	// Fix for tristates, which don't seem to be supported by Designer's ui files.
+		log("No button settings found. Writing defaults...");
 		ui->checkButtonSaveFav->setCheckState(Qt::PartiallyChecked);
 		ui->checkButtonSaveNQuitFav->setCheckState(Qt::PartiallyChecked);
 		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
+
+		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
+		QRegularExpression match(QRegularExpression::wildcardToRegularExpression("*Position"));
+		for (const QGroupBox *buttonGroup : buttonGroups) {
+			QCheckBox *checker = buttonGroup->findChild<QCheckBox*>(); // May break something if buttonGroup contains more than one QCheckBox.
+			QSpinBox *positionSpinner = buttonGroup->findChildren<QSpinBox*>(match).front();
+
+			m_buttonSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
+				checker,
+				positionSpinner
+			));
+
+			QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
+			QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+		}
 	} else {
-		log("+++Reading Zoom/Buttons+++");
-		settings->beginGroup("Zoom");
-		QList<ButtonSettings> buttons = settings->value("allButtons").value<QList<ButtonSettings>>();
 		for (const auto &button : buttons) {
 			QCheckBox *checker = nullptr;
 			QSpinBox *positionSpinner = nullptr;
@@ -460,11 +476,11 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
 			QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
 		}
-		settings->endGroup();
-		log("---Reading Zoom/Buttons---");
-
-		checkAllSpinners();
 	}
+	settings->endGroup();
+	log("---Reading Zoom/Buttons---");
+
+	checkAllSpinners();
 
 	settings->beginGroup("Zoom/Shortcuts");
 		ui->keyViewerQuit->setKeySequence(getKeySequence(settings, "keyQuit", Qt::Key_Escape));
