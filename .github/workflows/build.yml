@@ -296,7 +296,8 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5575770/qsqlmysql.dll_Qt_SQL_driver_5.15.2_MSVC2019_64-bit.zip
-      QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
+      QSCINTILLA_VERSION: 2.13.0
+      QSCINTILLA_DIR: QScintilla_src-2.13.0
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
@@ -343,10 +344,10 @@ jobs:
         working-directory: vendor
         shell: cmd
         run: |
-          curl -Lo "%QSCINTILLA_VERSION%.zip" "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip"
-          7z x "%QSCINTILLA_VERSION%.zip" -y
-          rm "%QSCINTILLA_VERSION%.zip"
-          cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/%QSCINTILLA_VERSION%/QScintilla_src-%QSCINTILLA_VERSION%.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "%QSCINTILLA_DIR%\src"
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           qmake qscintilla.pro
           nmake
@@ -355,7 +356,7 @@ jobs:
         working-directory: vendor
         shell: cmd
         run: |
-          cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+          cd "%QSCINTILLA_DIR%\src"
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           nmake install
 
