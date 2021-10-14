@@ -1481,7 +1481,7 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
 	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
 
-	QList<ButtonSettings> buttons, active;
+	QList<ButtonSettings> buttons;
 	QList<ButtonState> states;
 
 	// Prev
@@ -1602,6 +1602,7 @@ void OptionsWindow::saveButtonSettings(QSettings *settings)
 	settings->setValue("Zoom/allButtons", QVariant::fromValue(buttons));
 
 	// Write pre-filtered setting with only active buttons
+	QList<ButtonSettings> active;
 	for (const auto &button : buttons) {
 		if (button.isEnabled) {
 			active.append(button);
