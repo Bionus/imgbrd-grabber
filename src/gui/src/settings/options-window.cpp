@@ -347,139 +347,10 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	ui->checkRememberDrawer->setChecked(settings->value("Zoom/rememberDrawer", true).toBool());
 	ui->checkRememberGeometry->setChecked(settings->value("Zoom/rememberGeometry", true).toBool());
 
-	log("+++Reading Zoom/Buttons+++");
-	settings->beginGroup("Zoom");
-	QList<ButtonSettings> buttons = settings->value("allButtons").value<QList<ButtonSettings>>();
-	log( ( "buttons.size() = " + std::to_string(buttons.size()) ).c_str() );
-	if (buttons.empty()) {	// Fix for tristates, which don't seem to be supported by Designer's ui files.
-		log("No button settings found. Writing defaults...");
-		ui->checkButtonSaveFav->setCheckState(Qt::PartiallyChecked);
-		ui->checkButtonSaveNQuitFav->setCheckState(Qt::PartiallyChecked);
-		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
-
-		QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
-		QRegularExpression match(QRegularExpression::wildcardToRegularExpression("*Position"));
-		for (const QGroupBox *buttonGroup : buttonGroups) {
-			QCheckBox *checker = buttonGroup->findChild<QCheckBox*>(); // May break something if buttonGroup contains more than one QCheckBox.
-			QSpinBox *positionSpinner = buttonGroup->findChildren<QSpinBox*>(match).front();
-
-			m_buttonSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
-				checker,
-				positionSpinner
-			));
-
-			QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-			QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		}
-	} else {
-		for (const auto &button : buttons) {
-			QCheckBox *checker = nullptr;
-			QSpinBox *positionSpinner = nullptr;
-			QSpinBox *widthSpinner = nullptr;
-			switch (button.type) {
-				//case 0 : continue;	Shouldn't happen right now.
-				case CustomButtons::IsButtonPrev :
-					//log("Prev");
-					checker = ui->checkButtonPrev;
-					positionSpinner = ui->spinButtonPrevPosition;
-					widthSpinner = ui->spinButtonPrevWidth;
-					ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultPrevState.text : button.states[0].text);
-					ui->lineButtonPrev->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonNext :
-					//log("Next");
-					checker = ui->checkButtonNext;
-					positionSpinner = ui->spinButtonNextPosition;
-					widthSpinner = ui->spinButtonNextWidth;
-					ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultNextState.text : button.states[0].text);
-					ui->lineButtonNext->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonDetails :
-					//log("Details");
-					checker = ui->checkButtonDetails;
-					positionSpinner = ui->spinButtonDetailsPosition;
-					widthSpinner = ui->spinButtonDetailsWidth;
-					ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultDetailsState.text : button.states[0].text);
-					ui->lineButtonDetails->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonSaveAs :
-					//log("SaveAs");
-					checker = ui->checkButtonSaveAs;
-					positionSpinner = ui->spinButtonSaveAsPosition;
-					widthSpinner = ui->spinButtonSaveAsWidth;
-					ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveAsState.text : button.states[0].text);
-					ui->lineButtonSaveAs->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonSave:
-					//log("Save");
-					checker = ui->checkButtonSave;
-					positionSpinner = ui->spinButtonSavePosition;
-					widthSpinner = ui->spinButtonSaveWidth;
-					ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveStateSave.text : button.states[0].text);
-					ui->lineButtonSave->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonSaveNQuit :
-					//log("SaveNQuit");
-					checker = ui->checkButtonSaveNQuit;
-					positionSpinner = ui->spinButtonSaveNQuitPosition;
-					widthSpinner = ui->spinButtonSaveNQuitWidth;
-					ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitStateSave.text : button.states[0].text);
-					ui->lineButtonSaveNQuit->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonOpen :
-					//log("Open");
-					checker = ui->checkButtonOpen;
-					positionSpinner = ui->spinButtonOpenPosition;
-					widthSpinner = ui->spinButtonOpenWidth;
-					ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenState.text : button.states[0].text);
-					ui->lineButtonOpen->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
-					//log("SaveFav");
-					checker = ui->checkButtonSaveFav;
-					positionSpinner = ui->spinButtonSaveFavPosition;
-					widthSpinner = ui->spinButtonSaveFavWidth;
-					ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveFavStateSave.text : button.states[0].text);
-					ui->lineButtonSaveFav->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
-					//log("SaveNQuitFav");
-					checker = ui->checkButtonSaveNQuitFav;
-					positionSpinner = ui->spinButtonSaveNQuitFavPosition;
-					widthSpinner = ui->spinButtonSaveNQuitFavWidth;
-					ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
-					ui->lineButtonSaveNQuitFav->setCursorPosition(0);
-					break;
-				case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
-					//log("OpenFav");
-					checker = ui->checkButtonOpenFav;
-					positionSpinner = ui->spinButtonOpenFavPosition;
-					widthSpinner = ui->spinButtonOpenFavWidth;
-					ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenFavState.text : button.states[0].text);
-					ui->lineButtonOpenFav->setCursorPosition(0);
-					break;
-				default :
-					log("OptionsWindow found an unknown button type.");
-					continue;
-			}
-			log(button.name);
-			// log(QString::number(button->type));
-
-			checker->setCheckState(button.isEnabled ? (button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked) : Qt::Unchecked);
-			positionSpinner->setValue(button.position);
-			widthSpinner->setValue(button.relativeWidth);
-
-			m_buttonSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
-				checker,
-				positionSpinner
-			));
-
-			QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
-			QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
-		}
-	}
-	settings->endGroup();
-	log("---Reading Zoom/Buttons---");
+	log("+++Reading Zoom/Buttons+++", Logger::Debug);
+	initButtonSettingPairs();
+	loadButtonSettings(settings);
+	log("---Reading Zoom/Buttons---", Logger::Debug);
 
 	checkAllSpinners();
 
@@ -1592,6 +1463,137 @@ void OptionsWindow::save()
 	m_profile->sync();
 	emit settingsChanged();
 }
+
+
+void OptionsWindow::initButtonSettingPairs()
+{
+	QList<QGroupBox*> buttonGroups = ui->pageInterfaceImageWindowButtons->findChildren<QGroupBox *>();
+	QRegularExpression match(QRegularExpression::wildcardToRegularExpression("*Position"));
+
+	for (const QGroupBox *buttonGroup : buttonGroups) {
+		auto *checker = buttonGroup->findChild<QCheckBox*>(); // May break if buttonGroup contains more than one QCheckBox
+		QSpinBox *positionSpinner = buttonGroup->findChildren<QSpinBox*>(match).front();
+
+		m_buttonSettingPairs.append(QPair<QCheckBox*, QSpinBox*>(
+			checker,
+			positionSpinner
+		));
+
+		QObject::connect(checker, static_cast<void (QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OptionsWindow::checkAllSpinnersWithPlacement);
+		QObject::connect(positionSpinner, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsWindow::checkSpinners);
+	}
+}
+
+void OptionsWindow::loadButtonSettings(QSettings *settings)
+{
+	QList<ButtonSettings> buttons = settings->value("Zoom/allButtons").value<QList<ButtonSettings>>();
+
+	// Qt Designer UI files do not allow tri-states, that we want set by default for favorites buttons
+	if (buttons.empty()) {
+		log("No button settings found. Writing defaults...");
+		ui->checkButtonSaveFav->setCheckState(Qt::PartiallyChecked);
+		ui->checkButtonSaveNQuitFav->setCheckState(Qt::PartiallyChecked);
+		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
+		return;
+	}
+
+	for (const auto &button : buttons) {
+		QCheckBox *checker = nullptr;
+		QSpinBox *positionSpinner = nullptr;
+		QSpinBox *widthSpinner = nullptr;
+
+		switch (button.type) {
+			case CustomButtons::IsButtonPrev :
+				checker = ui->checkButtonPrev;
+				positionSpinner = ui->spinButtonPrevPosition;
+				widthSpinner = ui->spinButtonPrevWidth;
+				ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultPrevState.text : button.states[0].text);
+				ui->lineButtonPrev->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonNext :
+				checker = ui->checkButtonNext;
+				positionSpinner = ui->spinButtonNextPosition;
+				widthSpinner = ui->spinButtonNextWidth;
+				ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultNextState.text : button.states[0].text);
+				ui->lineButtonNext->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonDetails :
+				checker = ui->checkButtonDetails;
+				positionSpinner = ui->spinButtonDetailsPosition;
+				widthSpinner = ui->spinButtonDetailsWidth;
+				ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultDetailsState.text : button.states[0].text);
+				ui->lineButtonDetails->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonSaveAs :
+				checker = ui->checkButtonSaveAs;
+				positionSpinner = ui->spinButtonSaveAsPosition;
+				widthSpinner = ui->spinButtonSaveAsWidth;
+				ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveAsState.text : button.states[0].text);
+				ui->lineButtonSaveAs->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonSave:
+				checker = ui->checkButtonSave;
+				positionSpinner = ui->spinButtonSavePosition;
+				widthSpinner = ui->spinButtonSaveWidth;
+				ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveStateSave.text : button.states[0].text);
+				ui->lineButtonSave->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonSaveNQuit :
+				checker = ui->checkButtonSaveNQuit;
+				positionSpinner = ui->spinButtonSaveNQuitPosition;
+				widthSpinner = ui->spinButtonSaveNQuitWidth;
+				ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitStateSave.text : button.states[0].text);
+				ui->lineButtonSaveNQuit->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonOpen :
+				checker = ui->checkButtonOpen;
+				positionSpinner = ui->spinButtonOpenPosition;
+				widthSpinner = ui->spinButtonOpenWidth;
+				ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenState.text : button.states[0].text);
+				ui->lineButtonOpen->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
+				checker = ui->checkButtonSaveFav;
+				positionSpinner = ui->spinButtonSaveFavPosition;
+				widthSpinner = ui->spinButtonSaveFavWidth;
+				ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveFavStateSave.text : button.states[0].text);
+				ui->lineButtonSaveFav->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
+				checker = ui->checkButtonSaveNQuitFav;
+				positionSpinner = ui->spinButtonSaveNQuitFavPosition;
+				widthSpinner = ui->spinButtonSaveNQuitFavWidth;
+				ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
+				ui->lineButtonSaveNQuitFav->setCursorPosition(0);
+				break;
+
+			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
+				checker = ui->checkButtonOpenFav;
+				positionSpinner = ui->spinButtonOpenFavPosition;
+				widthSpinner = ui->spinButtonOpenFavWidth;
+				ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenFavState.text : button.states[0].text);
+				ui->lineButtonOpenFav->setCursorPosition(0);
+				break;
+
+			default :
+				log(QStringLiteral("OptionsWindow found an unknown button type: %1").arg(button.type), Logger::Error);
+				continue;
+		}
+
+		checker->setCheckState(button.isEnabled ? (button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked) : Qt::Unchecked);
+		positionSpinner->setValue(button.position);
+		widthSpinner->setValue(button.relativeWidth);
+	}
+}
+
 
 void OptionsWindow::checkSpinners(int newVal) {
 	std::vector<QSpinBox*> numberMatches, colorMatches;

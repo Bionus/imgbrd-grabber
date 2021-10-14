@@ -85,6 +85,10 @@ class OptionsWindow : public QDialog
 		void addFilename(const QString &, const QString &, const QString &);
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
+
+		// Custom image window buttons
+		void initButtonSettingPairs();
+		void loadButtonSettings(QSettings *settings);
 		void checkSpinners(int newVal);
 		void checkAllSpinners();
 		void checkAllSpinnersWithPlacement(int srcPlacement);
