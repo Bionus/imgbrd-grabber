@@ -5,10 +5,12 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QtNetwork>
+#include <unordered_map>
+#include <vector>
+#include "custom-buttons.h"
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
-#include "custom-buttons.h"
 
 
 namespace Ui

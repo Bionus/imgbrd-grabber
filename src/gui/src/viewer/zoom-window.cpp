@@ -22,6 +22,7 @@
 #include <QVideoWidget>
 #include <QWheelEvent>
 #include <ui_zoom-window.h>
+#include "custom-buttons.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"

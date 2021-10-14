@@ -16,6 +16,7 @@
 #include <ui_options-window.h>
 #include <algorithm>
 #include "analytics.h"
+#include "custom-buttons.h"
 #include "exiftool.h"
 #include "functions.h"
 #include "filename/conditional-filename.h"
@@ -34,7 +35,7 @@
 #include "settings/web-service-window.h"
 #include "theme-loader.h"
 #include "viewer/zoom-window.h"	// Still needed?
-#include "custom-buttons.h"
+
 
 void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 	auto *model = qobject_cast<QStandardItemModel*>(combo->model());
