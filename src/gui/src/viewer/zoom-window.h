@@ -11,6 +11,9 @@
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
+#include "viewer/zoom-window-buttons.h"
+
+using SaveButtonState = ZoomWindowButtons::SaveState;
 
 
 namespace Ui
@@ -34,19 +37,6 @@ class ZoomWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		enum SaveButtonState : unsigned short
-		{
-			Save,
-			Saving,
-			Saved,
-			Copied,
-			Moved,
-			Linked,
-			ExistsMd5,
-			ExistsDisk,
-			Delete
-		};
-
 		enum PendingAction
 		{
 			PendingNothing,
@@ -92,7 +82,7 @@ class ZoomWindow : public QWidget
 		void openFile(bool now = false);
 		void updateWindowTitle();
 		void showLoadingError(const QString &message);
-		void setButtonState(bool fav, SaveButtonState state);
+		void setButtonState(bool fav, ZoomWindowButtons::SaveState state);
 		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 
 		// Context menus
