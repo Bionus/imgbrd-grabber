@@ -2395,10 +2395,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>&lt;</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>1</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2537,10 +2537,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>&gt;</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>1</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2673,10 +2673,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>More details</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>12</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2812,10 +2812,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Save as...</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>10</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2951,10 +2951,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Save</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>4</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -3090,10 +3090,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Save and close</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>14</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -3229,10 +3229,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Destination folder</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>18</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -3368,10 +3368,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Save (fav)</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>10</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -3507,10 +3507,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Save and close (fav)</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>20</number>
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -3646,10 +3646,10 @@
               <string>Button display text</string>
              </property>
              <property name="text">
-              <string>Destination folder (fav)</string>
+              <string/>
              </property>
              <property name="cursorPosition">
-              <number>24</number>
+              <number>0</number>
              </property>
             </widget>
            </item>

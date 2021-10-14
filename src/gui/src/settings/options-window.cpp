@@ -1488,12 +1488,26 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 {
 	QList<ButtonSettings> buttons = settings->value("Zoom/allButtons").value<QList<ButtonSettings>>();
 
-	// Qt Designer UI files do not allow tri-states, that we want set by default for favorites buttons
 	if (buttons.empty()) {
 		log("No button settings found. Writing defaults...");
+
+		// Qt Designer UI files do not allow tri-states, that we want set by default for favorites buttons
 		ui->checkButtonSaveFav->setCheckState(Qt::PartiallyChecked);
 		ui->checkButtonSaveNQuitFav->setCheckState(Qt::PartiallyChecked);
 		ui->checkButtonOpenFav->setCheckState(Qt::PartiallyChecked);
+
+		// Use default text from the ZoomWindowButtons namespace to have a single source of truth for default values
+		ui->lineButtonPrev->setText(ZoomWindowButtons::DefaultPrevState.text);
+		ui->lineButtonNext->setText(ZoomWindowButtons::DefaultNextState.text);
+		ui->lineButtonDetails->setText(ZoomWindowButtons::DefaultDetailsState.text);
+		ui->lineButtonSaveAs->setText(ZoomWindowButtons::DefaultSaveAsState.text);
+		ui->lineButtonSave->setText(ZoomWindowButtons::DefaultSaveStateSave.text);
+		ui->lineButtonSaveNQuit->setText(ZoomWindowButtons::DefaultSaveNQuitStateSave.text);
+		ui->lineButtonOpen->setText(ZoomWindowButtons::DefaultOpenState.text);
+		ui->lineButtonSaveFav->setText(ZoomWindowButtons::DefaultSaveFavStateSave.text);
+		ui->lineButtonSaveNQuitFav->setText(ZoomWindowButtons::DefaultSaveNQuitFavStateSave.text);
+		ui->lineButtonOpenFav->setText(ZoomWindowButtons::DefaultOpenFavState.text);
+
 		return;
 	}
 
@@ -1508,7 +1522,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonPrevPosition;
 				widthSpinner = ui->spinButtonPrevWidth;
 				ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultPrevState.text : button.states[0].text);
-				ui->lineButtonPrev->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonNext :
@@ -1516,7 +1529,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonNextPosition;
 				widthSpinner = ui->spinButtonNextWidth;
 				ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultNextState.text : button.states[0].text);
-				ui->lineButtonNext->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonDetails :
@@ -1524,7 +1536,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonDetailsPosition;
 				widthSpinner = ui->spinButtonDetailsWidth;
 				ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultDetailsState.text : button.states[0].text);
-				ui->lineButtonDetails->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonSaveAs :
@@ -1532,7 +1543,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonSaveAsPosition;
 				widthSpinner = ui->spinButtonSaveAsWidth;
 				ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveAsState.text : button.states[0].text);
-				ui->lineButtonSaveAs->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonSave:
@@ -1540,7 +1550,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonSavePosition;
 				widthSpinner = ui->spinButtonSaveWidth;
 				ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveStateSave.text : button.states[0].text);
-				ui->lineButtonSave->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonSaveNQuit :
@@ -1548,7 +1557,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonSaveNQuitPosition;
 				widthSpinner = ui->spinButtonSaveNQuitWidth;
 				ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitStateSave.text : button.states[0].text);
-				ui->lineButtonSaveNQuit->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonOpen :
@@ -1556,7 +1564,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonOpenPosition;
 				widthSpinner = ui->spinButtonOpenWidth;
 				ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenState.text : button.states[0].text);
-				ui->lineButtonOpen->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
@@ -1564,7 +1571,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonSaveFavPosition;
 				widthSpinner = ui->spinButtonSaveFavWidth;
 				ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveFavStateSave.text : button.states[0].text);
-				ui->lineButtonSaveFav->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
@@ -1572,7 +1578,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonSaveNQuitFavPosition;
 				widthSpinner = ui->spinButtonSaveNQuitFavWidth;
 				ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
-				ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 				break;
 
 			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
@@ -1580,7 +1585,6 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 				positionSpinner = ui->spinButtonOpenFavPosition;
 				widthSpinner = ui->spinButtonOpenFavWidth;
 				ui->lineButtonOpenFav->setText(button.states[0].text.isEmpty() ? ZoomWindowButtons::DefaultOpenFavState.text : button.states[0].text);
-				ui->lineButtonOpenFav->setCursorPosition(0);
 				break;
 
 			default :
