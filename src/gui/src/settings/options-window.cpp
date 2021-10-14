@@ -1215,131 +1215,9 @@ void OptionsWindow::save()
 	settings->setValue("Zoom/rememberDrawer", ui->checkRememberDrawer->isChecked());
 	settings->setValue("Zoom/rememberGeometry", ui->checkRememberGeometry->isChecked());
 
-	log("+++Writing Zoom/Buttons+++");
-	QList<ButtonSettings> buttons, active;
-	QList<ButtonState> states;
-
-	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
-	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
-
-	buttons.append(ButtonSettings {CustomButtons::IsButtonPrev, "Prev",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonPrev->text(), ZoomWindowButtons::DefaultPrevState.toolTip}}),
-		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonPrevPosition->value(),
-		(unsigned short) ui->spinButtonPrevWidth->value()
-	});
-	buttons.append(ButtonSettings {CustomButtons::IsButtonNext, "Next",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonNext->text(), ZoomWindowButtons::DefaultNextState.toolTip}}),
-		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonNextPosition->value(),
-		(unsigned short) ui->spinButtonNextWidth->value()
-	});
-	buttons.append(ButtonSettings {CustomButtons::IsButtonDetails, "Details",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonDetails->text(), ZoomWindowButtons::DefaultDetailsState.toolTip}}),
-		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonDetailsPosition->value(),
-		(unsigned short) ui->spinButtonDetailsWidth->value()
-	});
-	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveAs, "SaveAs",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveAs->text(), ZoomWindowButtons::DefaultSaveAsState.toolTip}}),
-		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveAsPosition->value(),
-		(unsigned short) ui->spinButtonSaveAsWidth->value()
-	});
-
-	//states.clear();
-	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSave->text(), ZoomWindowButtons::DefaultSaveStateSave.toolTip});
-	states.append(ZoomWindowButtons::DefaultSaveStateSaving);
-	states.append(ZoomWindowButtons::DefaultSaveStateSaved);
-	states.append(ZoomWindowButtons::DefaultSaveStateCopied);
-	states.append(ZoomWindowButtons::DefaultSaveStateMoved);
-	states.append(ZoomWindowButtons::DefaultSaveStateLinked);
-	states.append(ZoomWindowButtons::DefaultSaveStateExistsMd5);
-	states.append(ZoomWindowButtons::DefaultSaveStateExistsDisk);
-	states.append(ZoomWindowButtons::DefaultSaveStateDelete);
-	buttons.append(ButtonSettings {CustomButtons::IsButtonSave, "Save", states,
-		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSavePosition->value(),
-		(unsigned short) ui->spinButtonSaveWidth->value()
-	});
-
-	states.clear();
-	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveNQuit->text(), ZoomWindowButtons::DefaultSaveNQuitStateSave.toolTip});
-	states.append(ZoomWindowButtons::DefaultSaveNQuitStateSaving);
-	states.append(ZoomWindowButtons::DefaultSaveNQuitStateClose);
-	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit, "SaveNQuit", states,
-		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitWidth->value()
-	});
-
-	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen, "Open",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonOpen->text(), ZoomWindowButtons::DefaultOpenState.toolTip}}),
-		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenPosition->value(),
-		(unsigned short) ui->spinButtonOpenWidth->value()
-	});
-
-	states.clear();
-	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveFav->text(), ZoomWindowButtons::DefaultSaveFavStateSave.toolTip});
-	states.append(ZoomWindowButtons::DefaultSaveFavStateSaving);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateSaved);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateCopied);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateMoved);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateLinked);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateExistsMd5);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateExistsDisk);
-	states.append(ZoomWindowButtons::DefaultSaveFavStateDelete);
-	buttons.append(ButtonSettings {CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, "SaveFav", states,
-		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveFavWidth->value()
-	});
-
-
-	states.clear();
-	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveNQuitFav->text(), ZoomWindowButtons::DefaultSaveNQuitFavStateSave.toolTip});
-	states.append(ZoomWindowButtons::DefaultSaveNQuitFavStateSaving);
-	states.append(ZoomWindowButtons::DefaultSaveNQuitFavStateClose);
-	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, "SaveNQuitFav", states,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonSaveNQuitFavPosition->value(),
-		(unsigned short) ui->spinButtonSaveNQuitFavWidth->value()
-	});
-
-	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, "OpenFav",
-		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonOpenFav->text(), ZoomWindowButtons::DefaultOpenFavState.toolTip}}),
-		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
-		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,
-		(unsigned short) ui->spinButtonOpenFavPosition->value(),
-		(unsigned short) ui->spinButtonOpenFavWidth->value()
-	});
-
-	settings->beginGroup("Zoom");
-		settings->setValue("allButtons", QVariant::fromValue(buttons));
-
-		for (const auto &button : buttons) {
-			if (button.isEnabled) {
-				active.append(button);
-			}
-		}
-		std::sort(active.begin(), active.end());
-		settings->setValue("activeButtons", QVariant::fromValue(active));
-
-		for (const auto &button : active) {
-			log(button.name);
-		}
-	settings->endGroup();
-	log("---Writing Zoom/Buttons---");
+	log("+++Writing Zoom/Buttons+++", Logger::Debug);
+	saveButtonSettings(settings);
+	log("---Writing Zoom/Buttons---", Logger::Debug);
 
 	settings->beginGroup("Zoom/Shortcuts");
 		settings->setValue("keyQuit", ui->keyViewerQuit->keySequence().toString());
@@ -1596,6 +1474,141 @@ void OptionsWindow::loadButtonSettings(QSettings *settings)
 		positionSpinner->setValue(button.position);
 		widthSpinner->setValue(button.relativeWidth);
 	}
+}
+
+void OptionsWindow::saveButtonSettings(QSettings *settings)
+{
+	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
+	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
+
+	QList<ButtonSettings> buttons, active;
+	QList<ButtonState> states;
+
+	// Prev
+	buttons.append(ButtonSettings {CustomButtons::IsButtonPrev, "Prev",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonPrev->text(), ZoomWindowButtons::DefaultPrevState.toolTip}}),
+		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonPrevPosition->value(),
+		(unsigned short) ui->spinButtonPrevWidth->value()
+	});
+
+	// Next
+	buttons.append(ButtonSettings {CustomButtons::IsButtonNext, "Next",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonNext->text(), ZoomWindowButtons::DefaultNextState.toolTip}}),
+		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonNextPosition->value(),
+		(unsigned short) ui->spinButtonNextWidth->value()
+	});
+
+	// Details
+	buttons.append(ButtonSettings {CustomButtons::IsButtonDetails, "Details",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonDetails->text(), ZoomWindowButtons::DefaultDetailsState.toolTip}}),
+		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonDetailsPosition->value(),
+		(unsigned short) ui->spinButtonDetailsWidth->value()
+	});
+
+	// Save as
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveAs, "SaveAs",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveAs->text(), ZoomWindowButtons::DefaultSaveAsState.toolTip}}),
+		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonSaveAsPosition->value(),
+		(unsigned short) ui->spinButtonSaveAsWidth->value()
+	});
+
+	// Save
+	states.clear();
+	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSave->text(), ZoomWindowButtons::DefaultSaveStateSave.toolTip});
+	states.append(ZoomWindowButtons::DefaultSaveStateSaving);
+	states.append(ZoomWindowButtons::DefaultSaveStateSaved);
+	states.append(ZoomWindowButtons::DefaultSaveStateCopied);
+	states.append(ZoomWindowButtons::DefaultSaveStateMoved);
+	states.append(ZoomWindowButtons::DefaultSaveStateLinked);
+	states.append(ZoomWindowButtons::DefaultSaveStateExistsMd5);
+	states.append(ZoomWindowButtons::DefaultSaveStateExistsDisk);
+	states.append(ZoomWindowButtons::DefaultSaveStateDelete);
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSave, "Save", states,
+		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonSavePosition->value(),
+		(unsigned short) ui->spinButtonSaveWidth->value()
+	});
+
+	// Save and quit
+	states.clear();
+	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveNQuit->text(), ZoomWindowButtons::DefaultSaveNQuitStateSave.toolTip});
+	states.append(ZoomWindowButtons::DefaultSaveNQuitStateSaving);
+	states.append(ZoomWindowButtons::DefaultSaveNQuitStateClose);
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit, "SaveNQuit", states,
+		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonSaveNQuitPosition->value(),
+		(unsigned short) ui->spinButtonSaveNQuitWidth->value()
+	});
+
+	// Open
+	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen, "Open",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonOpen->text(), ZoomWindowButtons::DefaultOpenState.toolTip}}),
+		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonOpenPosition->value(),
+		(unsigned short) ui->spinButtonOpenWidth->value()
+	});
+
+	// Save (fav)
+	states.clear();
+	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveFav->text(), ZoomWindowButtons::DefaultSaveFavStateSave.toolTip});
+	states.append(ZoomWindowButtons::DefaultSaveFavStateSaving);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateSaved);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateCopied);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateMoved);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateLinked);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateExistsMd5);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateExistsDisk);
+	states.append(ZoomWindowButtons::DefaultSaveFavStateDelete);
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, "SaveFav", states,
+		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonSaveFavPosition->value(),
+		(unsigned short) ui->spinButtonSaveFavWidth->value()
+	});
+
+	// Save and quit (fav)
+	states.clear();
+	states.append(ButtonState {ZoomWindowButtons::SaveState::Save, ui->lineButtonSaveNQuitFav->text(), ZoomWindowButtons::DefaultSaveNQuitFavStateSave.toolTip});
+	states.append(ZoomWindowButtons::DefaultSaveNQuitFavStateSaving);
+	states.append(ZoomWindowButtons::DefaultSaveNQuitFavStateClose);
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, "SaveNQuitFav", states,
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonSaveNQuitFavPosition->value(),
+		(unsigned short) ui->spinButtonSaveNQuitFavWidth->value()
+	});
+
+	// Open (fav)
+	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, "OpenFav",
+		QList<ButtonState>({ButtonState{ZoomWindowButtons::SaveState::Save, ui->lineButtonOpenFav->text(), ZoomWindowButtons::DefaultOpenFavState.toolTip}}),
+		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
+		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,
+		(unsigned short) ui->spinButtonOpenFavPosition->value(),
+		(unsigned short) ui->spinButtonOpenFavWidth->value()
+	});
+
+	// Write settings
+	settings->setValue("Zoom/allButtons", QVariant::fromValue(buttons));
+
+	// Write pre-filtered setting with only active buttons
+	for (const auto &button : buttons) {
+		if (button.isEnabled) {
+			active.append(button);
+		}
+	}
+	std::sort(active.begin(), active.end());
+	settings->setValue("Zoom/activeButtons", QVariant::fromValue(active));
 }
 
 

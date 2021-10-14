@@ -89,6 +89,7 @@ class OptionsWindow : public QDialog
 		// Custom image window buttons
 		void initButtonSettingPairs();
 		void loadButtonSettings(QSettings *settings);
+		void saveButtonSettings(QSettings *settings);
 		void checkSpinners(int newVal);
 		void checkAllSpinners();
 		void checkAllSpinnersWithPlacement(int srcPlacement);
