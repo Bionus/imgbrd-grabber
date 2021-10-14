@@ -174,11 +174,6 @@ class ZoomWindow : public QWidget
 		// Buttons
 		std::unordered_map<QString, ButtonInstance> buttons;
 		std::vector<QPushButton*> drawerButtons;
-		/*unsigned short countOnShelf = 0;
-		unsigned short countInDrawer = 0;
-		unsigned short smallButtonsOnShelf = 0;
-		QWidget *scaleRef = nullptr;	// For resizeButtons().
-		//short shelfDrawerDiff = 0;	// For resizeButtons().*/
 
 		// Threads
 		QThread m_imageLoaderThread;

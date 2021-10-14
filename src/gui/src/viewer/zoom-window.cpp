@@ -1193,61 +1193,10 @@ void ZoomWindow::toggleSlideshow()
 	}
 }
 
-/*void ZoomWindow::resizeButtons()
-{
-	if (! countInDrawer) return;	// Also used to infer existance of buttonPlus.
-
-	// Normal resize gets over-written.
-	*//* Factor is hard-coded based on the width differential between action buttons now and as set in the .ui file.
-	   I'm not sure how to query those values here or export from here to there dynamically. */
-	//ui->buttonPlus->setFixedSize( static_cast<int>(0.42857 * scaleRef->width()), ui->buttonPlus->height() );	// Fix scaling for large buttons.
-
-	//if (countOnShelf == smallButtonsOnShelf) return;	// || ! ui->buttonPlus->isChecked()?
-
-	/*unsigned short shelfWidth = ui->buttonShelf->width();
-	unsigned short drawerWidth =
-		shelfWidth * (countInDrawer / static_cast<float>(countOnShelf - smallButtonsOnShelf))
-		- (countOnShelf / 2) * 6	// Spacing between buttons.
-		//- (smallButtonsOnShelf * 16)
-	;
-	ui->buttonDrawer->setFixedWidth(shelfWidth > drawerWidth ? drawerWidth : shelfWidth);*/
-
-	/*QWidget *shelf = ui->buttonShelf, *drawer = ui->buttonDrawer;
-	short shelfDrawerDiff = countOnShelf - countInDrawer;
-
-	unsigned short max;
-	if (shelfDrawerDiff < 0) max = shelf->width();	// Minus width of navigation buttons?
-	else {	// More buttons on shelf than in drawer.
-		max = shelf->width();	// Does not include navigation buttons.
-		unsigned short max2 = scaleRef->width() + 6;	// 6 is the horizontal spacing.
-
-		if (shelfDrawerDiff == 0) max2 = scaleRef->width() * countOnShelf;	// Overwrites pre-set max2 factor. Wasteful.
-		else if (countOnShelf == 1) max2 = max;
-		else if (countInDrawer == 1) {
-			log(("max2 = " + std::to_string(max2)).c_str());
-			max2 *= countOnShelf % 2 ? 1: 2;	// Shouldn't have the +6 for spacing.
-			log(("max2 = " + std::to_string(max2)).c_str());
-		} else if (countInDrawer % 2) {	// countInDrawer is even.
-			if (countOnShelf % 2) max2 *= countOnShelf - (countOnShelf - countInDrawer);
-			else if (countOnShelf < 7) max2 *= 3;
-			else max2 *= 5;	// Assuming countOnShelf < 9. Not currently possible.
-		} else {	// countInDrawer is odd.
-			if (countOnShelf % 2) max2 = shelf->width() * (countOnShelf / countInDrawer);	// Overwrites pre-set max2 factor. Wasteful.
-			else max2 *= countOnShelf - (countOnShelf - countInDrawer);
-		}
-
-		max = max > max2 ? max2 : max;
-		// Adjust for width of navigation buttons?
-	}
-	//drawer->setMaximumWidth(max);
-	drawer->setFixedWidth(max);	// Not sure why I have to set fixed width, since horizontal size policies are expanding.
-}*/
-
 void ZoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
-		//resizeButtons();
 	}
 	m_resizeTimer->stop();
 	m_resizeTimer->start(m_timeout);
@@ -1277,7 +1226,6 @@ void ZoomWindow::showEvent(QShowEvent *e)
 	Q_UNUSED(e)
 
 	showThumbnail();
-	//resizeButtons();
 }
 
 void ZoomWindow::showThumbnail()
