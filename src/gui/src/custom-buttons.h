@@ -1,3 +1,4 @@
+#include "custom-buttons/defaults.h"
 #include "custom-buttons/flags.h"
 #include "custom-buttons/instance.h"
 #include "custom-buttons/settings.h"
