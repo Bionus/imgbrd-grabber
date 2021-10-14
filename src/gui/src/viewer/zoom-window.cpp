@@ -375,34 +375,34 @@ void ZoomWindow::configureButtons()
 			// Initialise state 0 functions. This should be eliminated if possible.
 		state->function = nullptr;	// Clear old addresses from previous application session.
 		switch (it->second.type) {
-			case Ui::IsButtonPrev :
+			case CustomButtons::IsButtonPrev :
 				state->function = &ZoomWindow::previous;
 				break;
-			case Ui::IsButtonNext :
+			case CustomButtons::IsButtonNext :
 				state->function = &ZoomWindow::next;
 				break;
-			case Ui::IsButtonDetails :
+			case CustomButtons::IsButtonDetails :
 				state->function = &ZoomWindow::showDetails;
 				break;
-			case Ui::IsButtonSaveAs :
+			case CustomButtons::IsButtonSaveAs :
 				state->function = &ZoomWindow::saveImageAs;
 				break;
-			case Ui::IsButtonSave :
+			case CustomButtons::IsButtonSave :
 				state->function = &ZoomWindow::saveImageNotFav;	// Default parameters not computed during compilation?
 				break;
-			case Ui::IsButtonSaveNQuit :
+			case CustomButtons::IsButtonSaveNQuit :
 				state->function = &ZoomWindow::saveNQuit;
 				break;
-			case Ui::IsButtonOpen :
+			case CustomButtons::IsButtonOpen :
 				state->function = &ZoomWindow::openSaveDirNotFav;	// Default parameters not computed during compilation?
 				break;
-			case Ui::IsButtonSave | Ui::IsFavoriteButton :
+			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
 				state->function = &ZoomWindow::saveImageFav;
 				break;
-			case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
+			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
 				state->function = &ZoomWindow::saveNQuitFav;
 				break;
-			case Ui::IsButtonOpen | Ui::IsFavoriteButton :
+			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
 				state->function = &ZoomWindow::openSaveDirFav;
 				break;
 			default :

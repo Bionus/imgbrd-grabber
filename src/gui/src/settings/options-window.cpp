@@ -377,7 +377,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 			QSpinBox *widthSpinner = nullptr;
 			switch (button.type) {
 				//case 0 : continue;	Shouldn't happen right now.
-				case Ui::IsButtonPrev :
+				case CustomButtons::IsButtonPrev :
 					//log("Prev");
 					checker = ui->checkButtonPrev;
 					positionSpinner = ui->spinButtonPrevPosition;
@@ -385,7 +385,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonPrev->setText(button.states[0].text.isEmpty() ? Ui::DefaultPrevState.text : button.states[0].text);
 					ui->lineButtonPrev->setCursorPosition(0);
 					break;
-				case Ui::IsButtonNext :
+				case CustomButtons::IsButtonNext :
 					//log("Next");
 					checker = ui->checkButtonNext;
 					positionSpinner = ui->spinButtonNextPosition;
@@ -393,7 +393,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonNext->setText(button.states[0].text.isEmpty() ? Ui::DefaultNextState.text : button.states[0].text);
 					ui->lineButtonNext->setCursorPosition(0);
 					break;
-				case Ui::IsButtonDetails :
+				case CustomButtons::IsButtonDetails :
 					//log("Details");
 					checker = ui->checkButtonDetails;
 					positionSpinner = ui->spinButtonDetailsPosition;
@@ -401,7 +401,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonDetails->setText(button.states[0].text.isEmpty() ? Ui::DefaultDetailsState.text : button.states[0].text);
 					ui->lineButtonDetails->setCursorPosition(0);
 					break;
-				case Ui::IsButtonSaveAs :
+				case CustomButtons::IsButtonSaveAs :
 					//log("SaveAs");
 					checker = ui->checkButtonSaveAs;
 					positionSpinner = ui->spinButtonSaveAsPosition;
@@ -409,7 +409,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonSaveAs->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveAsState.text : button.states[0].text);
 					ui->lineButtonSaveAs->setCursorPosition(0);
 					break;
-				case Ui::IsButtonSave:
+				case CustomButtons::IsButtonSave:
 					//log("Save");
 					checker = ui->checkButtonSave;
 					positionSpinner = ui->spinButtonSavePosition;
@@ -417,7 +417,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonSave->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveStateSave.text : button.states[0].text);
 					ui->lineButtonSave->setCursorPosition(0);
 					break;
-				case Ui::IsButtonSaveNQuit :
+				case CustomButtons::IsButtonSaveNQuit :
 					//log("SaveNQuit");
 					checker = ui->checkButtonSaveNQuit;
 					positionSpinner = ui->spinButtonSaveNQuitPosition;
@@ -425,7 +425,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonSaveNQuit->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveNQuitStateSave.text : button.states[0].text);
 					ui->lineButtonSaveNQuit->setCursorPosition(0);
 					break;
-				case Ui::IsButtonOpen :
+				case CustomButtons::IsButtonOpen :
 					//log("Open");
 					checker = ui->checkButtonOpen;
 					positionSpinner = ui->spinButtonOpenPosition;
@@ -433,7 +433,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonOpen->setText(button.states[0].text.isEmpty() ? Ui::DefaultOpenState.text : button.states[0].text);
 					ui->lineButtonOpen->setCursorPosition(0);
 					break;
-				case Ui::IsButtonSave | Ui::IsFavoriteButton :
+				case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
 					//log("SaveFav");
 					checker = ui->checkButtonSaveFav;
 					positionSpinner = ui->spinButtonSaveFavPosition;
@@ -441,7 +441,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonSaveFav->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveFavStateSave.text : button.states[0].text);
 					ui->lineButtonSaveFav->setCursorPosition(0);
 					break;
-				case Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton :
+				case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
 					//log("SaveNQuitFav");
 					checker = ui->checkButtonSaveNQuitFav;
 					positionSpinner = ui->spinButtonSaveNQuitFavPosition;
@@ -449,7 +449,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					ui->lineButtonSaveNQuitFav->setText(button.states[0].text.isEmpty() ? Ui::DefaultSaveNQuitFavStateSave.text : button.states[0].text);
 					ui->lineButtonSaveNQuitFav->setCursorPosition(0);
 					break;
-				case Ui::IsButtonOpen | Ui::IsFavoriteButton :
+				case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
 					//log("OpenFav");
 					checker = ui->checkButtonOpenFav;
 					positionSpinner = ui->spinButtonOpenFavPosition;
@@ -1350,28 +1350,28 @@ void OptionsWindow::save()
 	/* Note: enums make ButtonState's type more clear to read but it's probably safer to hard code unsigned shorts.	*
 	 * This might eliminate the header dependency and enums should be logically ordered anyway.			*/
 
-	buttons.append(ButtonSettings {Ui::IsButtonPrev, "Prev",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonPrev, "Prev",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonPrev->text(), Ui::DefaultPrevState.toolTip}}),
 		ui->checkButtonPrev->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonPrev->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonPrevPosition->value(),
 		(unsigned short) ui->spinButtonPrevWidth->value()
 	});
-	buttons.append(ButtonSettings {Ui::IsButtonNext, "Next",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonNext, "Next",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonNext->text(), Ui::DefaultNextState.toolTip}}),
 		ui->checkButtonNext->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonNext->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonNextPosition->value(),
 		(unsigned short) ui->spinButtonNextWidth->value()
 	});
-	buttons.append(ButtonSettings {Ui::IsButtonDetails, "Details",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonDetails, "Details",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonDetails->text(), Ui::DefaultDetailsState.toolTip}}),
 		ui->checkButtonDetails->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonDetails->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonDetailsPosition->value(),
 		(unsigned short) ui->spinButtonDetailsWidth->value()
 	});
-	buttons.append(ButtonSettings {Ui::IsButtonSaveAs, "SaveAs",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveAs, "SaveAs",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveAs->text(), Ui::DefaultSaveAsState.toolTip}}),
 		ui->checkButtonSaveAs->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveAs->checkState() == Qt::PartiallyChecked ? true : false,
@@ -1389,7 +1389,7 @@ void OptionsWindow::save()
 	states.append(Ui::DefaultSaveStateExistsMd5);
 	states.append(Ui::DefaultSaveStateExistsDisk);
 	states.append(Ui::DefaultSaveStateDelete);
-	buttons.append(ButtonSettings {Ui::IsButtonSave, "Save", states,
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSave, "Save", states,
 		ui->checkButtonSave->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSave->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonSavePosition->value(),
@@ -1400,14 +1400,14 @@ void OptionsWindow::save()
 	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveNQuit->text(), Ui::DefaultSaveNQuitStateSave.toolTip});
 	states.append(Ui::DefaultSaveNQuitStateSaving);
 	states.append(Ui::DefaultSaveNQuitStateClose);
-	buttons.append(ButtonSettings {Ui::IsButtonSaveNQuit, "SaveNQuit", states,
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit, "SaveNQuit", states,
 		ui->checkButtonSaveNQuit->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveNQuit->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonSaveNQuitPosition->value(),
 		(unsigned short) ui->spinButtonSaveNQuitWidth->value()
 	});
 
-	buttons.append(ButtonSettings {Ui::IsButtonOpen, "Open",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen, "Open",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonOpen->text(), Ui::DefaultOpenState.toolTip}}),
 		ui->checkButtonOpen->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonOpen->checkState() == Qt::PartiallyChecked ? true : false,
@@ -1425,7 +1425,7 @@ void OptionsWindow::save()
 	states.append(Ui::DefaultSaveFavStateExistsMd5);
 	states.append(Ui::DefaultSaveFavStateExistsDisk);
 	states.append(Ui::DefaultSaveFavStateDelete);
-	buttons.append(ButtonSettings {Ui::IsButtonSave | Ui::IsFavoriteButton, "SaveFav", states,
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, "SaveFav", states,
 		ui->checkButtonSaveFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveFav->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonSaveFavPosition->value(),
@@ -1437,14 +1437,14 @@ void OptionsWindow::save()
 	states.append(ButtonState {ZoomWindow::SaveButtonState::Save, ui->lineButtonSaveNQuitFav->text(), Ui::DefaultSaveNQuitFavStateSave.toolTip});
 	states.append(Ui::DefaultSaveNQuitFavStateSaving);
 	states.append(Ui::DefaultSaveNQuitFavStateClose);
-	buttons.append(ButtonSettings {Ui::IsButtonSaveNQuit | Ui::IsFavoriteButton, "SaveNQuitFav", states,
+	buttons.append(ButtonSettings {CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, "SaveNQuitFav", states,
 		ui->checkButtonSaveNQuitFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonSaveNQuitFav->checkState() == Qt::PartiallyChecked ? true : false,
 		(unsigned short) ui->spinButtonSaveNQuitFavPosition->value(),
 		(unsigned short) ui->spinButtonSaveNQuitFavWidth->value()
 	});
 
-	buttons.append(ButtonSettings {Ui::IsButtonOpen | Ui::IsFavoriteButton, "OpenFav",
+	buttons.append(ButtonSettings {CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, "OpenFav",
 		QList<ButtonState>({ButtonState{ZoomWindow::SaveButtonState::Save, ui->lineButtonOpenFav->text(), Ui::DefaultOpenFavState.toolTip}}),
 		ui->checkButtonOpenFav->checkState() == Qt::Unchecked ? false : true,
 		ui->checkButtonOpenFav->checkState() == Qt::PartiallyChecked ? true : false,

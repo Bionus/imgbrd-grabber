@@ -1,16 +1,12 @@
 #ifndef CUSTOM_BUTTONS_H
 #define CUSTOM_BUTTONS_H
 
-#include <unordered_map>
 #include <QPushButton>
 #include <QString>
-//#include <QLatin1String>
 
 
-namespace Ui
+namespace CustomButtons
 {
-	class ZoomWindow;
-
 	// Button type masks:
 
 	constexpr unsigned short IsUtilityButton		=          0b00000001 ;	// Nib0.0, bit 0.
@@ -18,7 +14,7 @@ namespace Ui
 		constexpr unsigned short IsButtonOpen		=  0b0000010000000001 ;	// Nib2.2, bit10.
 
 	constexpr unsigned short IsNavButton			=          0b00000010 ;	// Nib0.1, bit 1.
-		//constexpr unsigned short IsQuit		=  0b0000000100000010 ;	// Nib2.0, bit 8.
+		//constexpr unsigned short IsQuit			=  0b0000000100000010 ;	// Nib2.0, bit 8.
 		constexpr unsigned short IsButtonPrev		=  0b0000001000000010 ;	// Nib2.1, bit 9.
 		constexpr unsigned short IsButtonNext		=  0b0000010000000010 ;	// Nib2.2, bit 10.
 
@@ -65,8 +61,8 @@ class ButtonState
 		//constexpr ButtonState(const unsigned short type, const QString text, const QString toolTip) : type(type), text(text), toolTip(toolTip){}
 		//constexpr ButtonState(unsigned short type, ConstLatin1String text, ConstLatin1String toolTip) : type(type), text(text), toolTip(toolTip){}
 		//constexpr ButtonState(const unsigned short type, std::string text, std::string toolTip) : type(type), text(text), toolTip(toolTip){}
-		ButtonState(unsigned short type, QString text, QString toolTip) : type(type), text(text), toolTip(toolTip){}
-		ButtonState(){};	// QtSettings seems to require this.
+		ButtonState(unsigned short type, QString text, QString toolTip) : type(type), text(std::move(text)), toolTip(std::move(toolTip)) {}
+		ButtonState() {} // QtSettings seems to require this.
 
 	friend QDataStream & operator << (QDataStream &out, const ButtonState &in)
 	{
