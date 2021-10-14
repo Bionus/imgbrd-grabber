@@ -268,7 +268,7 @@ void ZoomWindow::configureButtons()
 	m_settings->beginGroup("Zoom");
 	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
 	for (QList<ButtonSettings>::iterator bs = bss.begin(); bs != bss.end(); bs++) {
-		bi = &(buttons.insert(std::pair<std::string, ButtonInstance>(
+		bi = &(buttons.insert(std::pair<QString, ButtonInstance>(
 			bs->name,
 			ButtonInstance{bs->type, new QPushButton(this), bs->states}	// This is why I switched to C++14. Could be worked around.
 		)).first->second);
@@ -338,8 +338,8 @@ void ZoomWindow::configureButtons()
 	/*bool biggestIsOdd = spans.at(biggestMaxRow).size()%2;
 	std::vector<unsigned short> rescalingOffset (maxColPos.size(), 0);
 	//std::vector<float> rescalingOffset (maxColPos.size(), 0);*/
-	for (std::unordered_map<std::string, ButtonInstance>::iterator it = buttons.begin(); it != buttons.end(); it++) {
-		QPushButton *button = it->second.pointer;
+	for (auto& it : buttons) {
+		QPushButton *button = it.second.pointer;
 
 		// Re-center each row based on flexible column count:
 		int originRow, originCol, originRowSpan, originColSpan;
@@ -368,13 +368,13 @@ void ZoomWindow::configureButtons()
 
 			// From state:
 		ButtonState *state = nullptr;
-		state = it->second.current = const_cast<ButtonState*>(&(it->second.states.at(0)));	// Consider using [].
+		state = it.second.current = const_cast<ButtonState*>(&(it.second.states.at(0)));	// Consider using [].
 		button->setText(state->text.replace("&", "&&"));
 		button->setToolTip(state->toolTip);
 
 			// Initialise state 0 functions. This should be eliminated if possible.
 		state->function = nullptr;	// Clear old addresses from previous application session.
-		switch (it->second.type) {
+		switch (it.second.type) {
 			case CustomButtons::IsButtonPrev :
 				state->function = &ZoomWindow::previous;
 				break;
@@ -411,12 +411,12 @@ void ZoomWindow::configureButtons()
 		}
 		//if (state->function != nullptr) {	// Connections to bad pointers seem to succeed.
 			bool connected = connect(button, &QPushButton::clicked, this, state->function);
-			log(("Connection for button " + it->first + " " + (connected ? "succeeded" : "failed!")).c_str());
+			log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"));
 		//}
 	}
 
-	log( ( "rowCount: " + std::to_string(ui->buttonsLayout->rowCount()) ).c_str() );
-	log( ( "columnCount: " + std::to_string(ui->buttonsLayout->columnCount()) ).c_str() );
+	log("rowCount: " + QString::number(ui->buttonsLayout->rowCount()));
+	log("columnCount: " + QString::number(ui->buttonsLayout->columnCount()));
 
 	log("---configureButtons---");
 	return;
@@ -718,7 +718,7 @@ void ZoomWindow::colore()
 void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 {
 	constexpr unsigned short MaxSaveButtons = 2;
-	std::unordered_map<std::string, ButtonInstance>::iterator relevant[MaxSaveButtons];
+	std::unordered_map<QString, ButtonInstance>::iterator relevant[MaxSaveButtons];
 	ButtonInstance *button;
 	ButtonState *tobe;
 

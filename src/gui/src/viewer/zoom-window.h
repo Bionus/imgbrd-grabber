@@ -230,7 +230,7 @@ class ZoomWindow : public QWidget
 		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Buttons
-		std::unordered_map<std::string, ButtonInstance> buttons;
+		std::unordered_map<QString, ButtonInstance> buttons;
 		std::vector<QPushButton*> drawerButtons;
 		/*unsigned short countOnShelf = 0;
 		unsigned short countInDrawer = 0;

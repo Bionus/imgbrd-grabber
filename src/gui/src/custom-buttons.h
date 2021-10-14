@@ -102,20 +102,22 @@ class ButtonSettings
 		ButtonWindow onWindow;*/
 		//unsigned int mask = 0;
 		unsigned short type;
-		std::string name;
+		QString name;
 		QList<ButtonState> states;
 		bool isEnabled;
 		bool isInDrawer;
-		unsigned short position;	// Based on horizontal placement of the set bit. Left is top for vertical layouts.
-		unsigned short relativeWidth;	// QGridLayout column width span.
+		unsigned short position; // Based on horizontal placement of the set bit. Left is top for vertical layouts.
+		unsigned short relativeWidth; // QGridLayout column width span.
 
-	bool operator < (const ButtonSettings& str) const {return (position < str.position);}	// https://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
+	bool operator < (const ButtonSettings& str) const
+	{
+		return position < str.position;
+	}
 
-	// https://stackoverflow.com/questions/37333084/how-to-save-custom-type-to-qsettings
 	friend QDataStream & operator << (QDataStream &out, const ButtonSettings &in)
 	{
 		out << in.type;
-		out << QString::fromStdString(in.name);
+		out << in.name;
 		out << in.position;
 		out << in.relativeWidth;
 		out << in.states;
@@ -126,20 +128,7 @@ class ButtonSettings
 	friend QDataStream & operator >> (QDataStream &in, ButtonSettings &out)
 	{
 		in >> out.type;
-
-		// https://forum.qt.io/topic/74962/serializing-std-string-over-qdatastream/2
-		/*char *tmp;
-		in >> tmp;
-		if (tmp) out.name = tmp;
-		delete[] tmp;*/
-		/*QByteArray tmp;
-		in >> tmp;
-		if (!tmp.isEmpty) out.name = tmp.toStdString();
-		out.name = QString::toStdString(QSt*/
-		QString tmp;
-		in >> tmp;
-		out.name = tmp.toStdString();
-
+		in >> out.name;
 		in >> out.position;
 		in >> out.relativeWidth;
 		in >> out.states;

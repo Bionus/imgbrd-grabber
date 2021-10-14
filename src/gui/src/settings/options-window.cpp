@@ -461,8 +461,8 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 					log("OptionsWindow found an unknown button type.");
 					continue;
 			}
-			log(button.name.c_str());
-			//log(std::to_string(button->type).c_str());
+			log(button.name);
+			// log(QString::number(button->type));
 
 			checker->setCheckState(button.isEnabled ? (button.isInDrawer ? Qt::PartiallyChecked : Qt::Checked) : Qt::Unchecked);
 			positionSpinner->setValue(button.position);
@@ -1464,7 +1464,7 @@ void OptionsWindow::save()
 		settings->setValue("activeButtons", QVariant::fromValue(active));
 
 		for (const auto &button : active) {
-			log(button.name.c_str());
+			log(button.name);
 		}
 	settings->endGroup();
 	log("---Writing Zoom/Buttons---");
