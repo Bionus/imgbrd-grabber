@@ -112,7 +112,7 @@ jobs:
           run: ../build/tests/tests
 
       - name: Upload coverage results
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
 
   version:
     name: Version
