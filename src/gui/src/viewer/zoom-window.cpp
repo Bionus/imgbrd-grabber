@@ -729,9 +729,9 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	constexpr unsigned short MaxSaveButtons = 2;
 	std::unordered_map<QString, ButtonInstance>::iterator relevant[MaxSaveButtons];
 
-	// These could be initialised in ZoomWindow::configureButtons, but I think this is better.
+	// Find all save state related buttons that should be updated when the state changes
 	if (fav) {
-		m_saveButtonStateFav = state; // button.find("SaveFav").current could be used instead, falling back on ("SaveNQuitFav").
+		m_saveButtonStateFav = state;
 		relevant[0] = buttons.find("SaveNQuitFav");
 		relevant[1] = buttons.find("SaveFav");
 	} else {
@@ -740,29 +740,30 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		relevant[1] = buttons.find("Save");
 	}
 
+	// Loop through all relevant buttons
 	for (unsigned short i = 0; i != MaxSaveButtons; i++) {
+		// If the button was not found in "buttons" (if disabled for example), ignore it
 		if (relevant[i] == buttons.end()) {
 			continue;
 		}
 		ButtonInstance *button = &(relevant[i]->second);
 
-		ButtonState *tobe;
-		if (button->states.size() <= state) {
-			tobe = &(button->states.back()); // Last state is default, like switch case default.
-		} else {
-			tobe = button->current = &(button->states[state]);
-		}
+		// Find the next button state
+		ButtonState *newState = button->states.size() <= state
+			? &(button->states.back()) // Last state is used by default, like a switch case default
+			: &(button->states[state]);
+		button->current = newState;
 
 		// Update button text
-		button->pointer->setText(tr(tobe->text.toStdString().c_str()));
-		button->pointer->setToolTip(tr(tobe->toolTip.toStdString().c_str()));
+		button->pointer->setText(tr(newState->text.toStdString().c_str()));
+		button->pointer->setToolTip(tr(newState->toolTip.toStdString().c_str()));
 
 		// Connect button to its new action
-		if (tobe->function == nullptr) {
-			tobe->function = button->states.at(0).function;
+		if (newState->function == nullptr) {
+			newState->function = button->states.at(0).function;
 		}
 		disconnect(button->pointer, &QPushButton::clicked, nullptr, nullptr);
-		connect(button->pointer, &QPushButton::clicked, this, tobe->function);
+		connect(button->pointer, &QPushButton::clicked, this, newState->function);
 	}
 }
 
