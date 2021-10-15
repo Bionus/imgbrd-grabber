@@ -2,15 +2,10 @@
 #define CUSTOM_BUTTONS_STATE_H
 
 #include <QString>
+#include <functional>
 
 
 class ZoomWindow;
-template <typename scope = ZoomWindow>
-using ButtonEffect = void (scope::*)();
-//template <typename scope = ZoomWindow, typename ...params>
-//using ButtonEffect = void (scope::*)(params...);
-//template <typename scope = ZoomWindow, typename R = void, typename ...params>
-//using ButtonEffect = R (scope::*)(params...);
 
 class ButtonState
 {
@@ -18,7 +13,7 @@ class ButtonState
 		unsigned short type;
 		QString text;
 		QString toolTip = "";
-		ButtonEffect<> function = nullptr;
+		std::function<void(ZoomWindow*)> function = nullptr;
 
 		ButtonState(unsigned short type, QString text, QString toolTip = "");
 

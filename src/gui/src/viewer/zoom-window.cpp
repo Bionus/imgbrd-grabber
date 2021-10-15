@@ -393,13 +393,17 @@ void ZoomWindow::configureButtons()
 				state->function = &ZoomWindow::saveImageAs;
 				break;
 			case CustomButtons::IsButtonSave :
-				state->function = &ZoomWindow::saveImageNotFav;	// Default parameters not computed during compilation?
+				state->function = [](ZoomWindow *zw) {
+					zw->saveImage(false);
+				};
 				break;
 			case CustomButtons::IsButtonSaveNQuit :
 				state->function = &ZoomWindow::saveNQuit;
 				break;
 			case CustomButtons::IsButtonOpen :
-				state->function = &ZoomWindow::openSaveDirNotFav;	// Default parameters not computed during compilation?
+				state->function = [](ZoomWindow *zw) {
+					zw->openSaveDir(false);
+				};
 				break;
 			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
 				state->function = &ZoomWindow::saveImageFav;
@@ -415,7 +419,7 @@ void ZoomWindow::configureButtons()
 				continue;
 		}
 		//if (state->function != nullptr) {	// Connections to bad pointers seem to succeed.
-			bool connected = connect(button, &QPushButton::clicked, this, state->function);
+			bool connected = connect(button, &QPushButton::clicked, std::bind(state->function, this));
 			log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"));
 		//}
 	}
@@ -532,8 +536,6 @@ void ZoomWindow::openSaveDir(bool fav)
 }
 void ZoomWindow::openSaveDirFav()
 { openSaveDir(true); }
-void ZoomWindow::openSaveDirNotFav()
-{ openSaveDir(false); }
 
 void ZoomWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
@@ -763,7 +765,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 			newState->function = button->states.at(0).function;
 		}
 		disconnect(button->pointer, &QPushButton::clicked, nullptr, nullptr);
-		connect(button->pointer, &QPushButton::clicked, this, newState->function);
+		connect(button->pointer, &QPushButton::clicked, std::bind(newState->function, this));
 	}
 }
 
@@ -982,8 +984,6 @@ void ZoomWindow::saveImage(bool fav)
 }
 void ZoomWindow::saveImageFav()
 { saveImage(true); }
-void ZoomWindow::saveImageNotFav()
-{ saveImage(false); }
 void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs) {
