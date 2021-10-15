@@ -20,8 +20,10 @@ class ButtonState
 		QString toolTip = "";
 		ButtonEffect<> function = nullptr;
 
+		ButtonState(unsigned short type, QString text, QString toolTip = "");
+
 		// QSettings serialization
-		ButtonState() {}
+		ButtonState() = default;
 		friend QDataStream& operator <<(QDataStream &out, const ButtonState &in);
 		friend QDataStream& operator >>(QDataStream &in, ButtonState &out);
 };
