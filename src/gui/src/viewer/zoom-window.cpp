@@ -374,7 +374,7 @@ void ZoomWindow::configureButtons()
 			// From state:
 		ButtonState *state = nullptr;
 		state = it.second.current = const_cast<ButtonState*>(&(it.second.states.at(0)));	// Consider using [].
-		button->setText(state->text.replace("&", "&&"));
+		button->setText( QString(state->text).replace("&", "&&") );
 		button->setToolTip(state->toolTip);
 
 			// Initialise state 0 functions. This should be eliminated if possible.
@@ -758,7 +758,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		button->current = newState;
 
 		// Update button text
-		button->pointer->setText(tr(newState->text.toStdString().c_str()));
+		button->pointer->setText(tr( QString(newState->text).replace("&", "&&").toStdString().c_str()));
 		button->pointer->setToolTip(tr(newState->toolTip.toStdString().c_str()));
 
 		// Connect button to its new action
