@@ -13,7 +13,7 @@ class ButtonState
 		unsigned short type;
 		QString text;
 		QString toolTip = "";
-		std::function<void(ZoomWindow*)> function = nullptr;
+		std::function<void()> function = nullptr;
 
 		ButtonState(unsigned short type, QString text, QString toolTip = "");
 

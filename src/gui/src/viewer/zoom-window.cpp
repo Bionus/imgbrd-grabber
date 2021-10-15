@@ -381,45 +381,46 @@ void ZoomWindow::configureButtons()
 		state->function = nullptr;	// Clear old addresses from previous application session.
 		switch (it.second.type) {
 			case CustomButtons::IsButtonPrev :
-				state->function = &ZoomWindow::previous;
+				state->function = std::bind(&ZoomWindow::previous, this);
 				break;
 			case CustomButtons::IsButtonNext :
-				state->function = &ZoomWindow::next;
+				state->function = std::bind(&ZoomWindow::next, this);
 				break;
 			case CustomButtons::IsButtonDetails :
-				state->function = &ZoomWindow::showDetails;
+				state->function = std::bind(&ZoomWindow::showDetails, this);
 				break;
 			case CustomButtons::IsButtonSaveAs :
-				state->function = &ZoomWindow::saveImageAs;
+				state->function = std::bind(&ZoomWindow::saveImageAs, this);
 				break;
 			case CustomButtons::IsButtonSave :
-				state->function = [](ZoomWindow *zw) {
-					zw->saveImage(false);
+				state->function = [=]() {
+					this->saveImage(false);
 				};
 				break;
 			case CustomButtons::IsButtonSaveNQuit :
-				state->function = &ZoomWindow::saveNQuit;
+				state->function = std::bind(&ZoomWindow::saveNQuit, this);
 				break;
 			case CustomButtons::IsButtonOpen :
-				state->function = [](ZoomWindow *zw) {
-					zw->openSaveDir(false);
+				state->function = [=]() {
+					this->openSaveDir(false);
 				};
 				break;
 			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
-				state->function = &ZoomWindow::saveImageFav;
+				state->function = std::bind(&ZoomWindow::saveImageFav, this);
 				break;
 			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
-				state->function = &ZoomWindow::saveNQuitFav;
+				state->function = std::bind(&ZoomWindow::saveNQuitFav, this);
 				break;
 			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
-				state->function = &ZoomWindow::openSaveDirFav;
+				state->function = std::bind(&ZoomWindow::openSaveDirFav, this);
 				break;
 			default :
 				log("Failed to set function for unknown button type!");
 				continue;
 		}
 		//if (state->function != nullptr) {	// Connections to bad pointers seem to succeed.
-			bool connected = connect(button, &QPushButton::clicked, std::bind(state->function, this));
+			//bool connected = connect(button, &QPushButton::clicked, std::bind(state->function, this));
+			bool connected = connect(button, &QPushButton::clicked, state->function);
 			log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"));
 		//}
 	}
@@ -765,7 +766,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 			newState->function = button->states.at(0).function;
 		}
 		disconnect(button->pointer, &QPushButton::clicked, nullptr, nullptr);
-		connect(button->pointer, &QPushButton::clicked, std::bind(newState->function, this));
+		connect(button->pointer, &QPushButton::clicked, newState->function);
 	}
 }
 
