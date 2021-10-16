@@ -20,7 +20,7 @@ _Note: in this wiki, I'll consider that you're using Windows. But on Linux & oth
 
 First, we're going to install WAMP, which contains everithing required to have a local web server.
 
-1. Download the latest version of WampServer here (2.2e as I am writing this): http://sourceforge.net/projects/wampserver/
+1. Download the latest version of WampServer here (2.2e as I am writing this): <http://sourceforge.net/projects/wampserver/>
 2. Install it somewhere that doesn’t requires admin rights to write into (such as the default location: `C:\wamp`)
 3. At the end of the installation, the installer may ask for two things.
     1. What your favorite browser is. It doesn't really matter, so you can leave it to the default value which will be Internet Explorer, or change it to another browser (Firefox, Chrome, etc.).
@@ -32,11 +32,11 @@ First, we're going to install WAMP, which contains everithing required to have a
 
 # Installing Gelbooru
 
-1. Download the latest version of Gelbooru here (0.1.11 as I am writing this): [http://gelbooru.com/index.php?page=forum&s=view&id=99](http://gelbooru.com/index.php?page=forum&s=view&id=99)
-2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be http://localhost/subfolder/, and if you don’t it will only be [http://localhost/](http://localhost/). It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "gelbooru".
+1. Download the latest version of Gelbooru here (0.1.11 as I am writing this): <http://gelbooru.com/index.php?page=forum&s=view&id=99>
+2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be <http://localhost/subfolder/>, and if you don’t it will only be <http://localhost/>. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "gelbooru".
 3. Create a folder named `1` in the `images` folder.
 4. If you are using linux, give the `images`, `images/1` and `thumbnails` folders writable permissions.
-5. Then, go to [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/). If you have to login, use "root" as username and "" as password (no password).
+5. Then, go to <http://localhost/phpmyadmin/>. If you have to login, use "root" as username and "" as password (no password).
 6. Then, go to the databases tab and create a database named "gelbooru" with an `utf8_unicode_ci` encoding.
 7. Once done, Go to the "SQL" tab, and put this query in the text area and click "Go":
 ```sql
@@ -60,13 +60,13 @@ error_reporting(0);
 ```
 You can of course change these values to whatever you want.
 
-10. Go to [http://localhost/gelbooru/install/](http://localhost/gelbooru/install/) and register your admin account.
+10. Go to <http://localhost/gelbooru/install/> and register your admin account.
 11. If you don’t see any errors the installation went well! As the script suggests, you can now delete the `C:\wamp\www\gelbooru\install` folder.
 12. Finally, go to phpMyAdmin, click on the "gelbooru" database on the left menu, then click on the "SQL" tab, and put this query in the text area and click "Go":
 ```sql
 ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
 ```
-13. You can now access your booru by going here: http://localhost/gelbooru/
+13. You can now access your booru by going here: <http://localhost/gelbooru/>
 14. If you still run into errors after adding images, click on the WampServer icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
 
@@ -112,7 +112,7 @@ Now, every time you save an image, a copy will be created in your local booru!
 
 ## Thumbnails
 
-If you test, you'll see that it doesn't totally work: thumbnails are not generated when doing this. To fix this, just visit [http://localhost/gelbooru/thumbs\_fix.php](http://localhost/gelbooru/thumbs_fix.php). Note that you must be logged in as administrator in Gelbooru to do this.
+If you test, you'll see that it doesn't totally work: thumbnails are not generated when doing this. To fix this, just visit <http://localhost/gelbooru/thumbs_fix.php>. Note that you must be logged in as administrator in Gelbooru to do this.
 
 
 ## Searches with short tags

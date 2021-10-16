@@ -32,10 +32,10 @@ First, we're going to install WAMP, which contains everithing required to have a
 ## Shimmie
 
 1. Download the latest version of Shimmie [here](https://github.com/shish/shimmie2).
-2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be http://localhost/subfolder/, and if you don’t it will only be [http://localhost/](http://localhost/). It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "shimmie".
-3. Go to [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/). If you have to login, use "root" as username and "" as password (no password).
+2. Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be <http://localhost/subfolder/>, and if you don’t it will only be <http://localhost/>. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "shimmie".
+3. Go to <http://localhost/phpmyadmin/>. If you have to login, use "root" as username and "" as password (no password).
 4. Then, go to the databases tab and create a database named "shimmie" with an "utf8_unicode_ci" encoding.
-5. Go to [http://localhost/shimmie/](http://localhost/shimmie/)
+5. Go to <http://localhost/shimmie/>
 6. Enter your database information then click "install" (type: `MySQL`, host: `localhost`, username: `root`, no password, db name: `shimmie`).
 7. Hopefully you'll end up at the welcome screen!
 8. From there, register a new user with the `admin` username to have your admin account.
@@ -50,7 +50,7 @@ The default max upload size is around 1MB. With these steps, it will increase to
 1. Edit the `php.ini` file located in "C:\wamp\bin\php\php5.6.19" (the version number can change depending on which version of WAMP you installed). Note that if there is also a `phpForApache.ini` file, you must edit both.
 2. Change `upload_max_filesize = 2M` into `upload_max_filesize = 100M`.
 3. Restart WAMP services (left click > restart services).
-4. Go to http://localhost/phpmyadmin/
+4. Go to <http://localhost/phpmyadmin/>
 5. Go to the "SQL" tab, and execute
 ```sql
 INSERT INTO `shimmie`.`config` (`name`, `value`) VALUES ('upload_size', '104857600');

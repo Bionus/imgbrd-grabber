@@ -40,7 +40,7 @@ Set the `MOUNT_DATA` environment variable to point to the `data` directory (on W
 * Run `docker-compose pull`
 * Run `docker-compose up -d`
 
-You're done! You should be able to access Szurubooru in your browser at [http://localhost:8080/](http://localhost:8080/)
+You're done! You should be able to access Szurubooru in your browser at <http://localhost:8080/>
 
 
 ## Configuration
