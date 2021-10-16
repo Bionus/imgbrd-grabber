@@ -258,18 +258,19 @@ void ZoomWindow::configureButtons()
 {
 	log("+++configureButtons+++", Logger::Debug);
 
-	unsigned short countOnShelf = 0;
 	bool drawerIsOpen = m_settings->value("Zoom/rememberDrawer", true).toBool() && m_settings->value("Zoom/plus", true).toBool(); 
-	if (drawerIsOpen) ui->buttonPlus->setText(QChar('-'));
+	if (drawerIsOpen) {
+		ui->buttonPlus->setText(QChar('-'));
+	}
 
+	unsigned short countOnShelf = 0;
 	std::vector<short> maxColPos;
 	std::vector<unsigned int> spanSum;
 	std::vector<std::vector<unsigned short>> spans;
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 
 		// Load button configuration from settings:
-	m_settings->beginGroup("Zoom");
-	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
+	QList<ButtonSettings> bss = m_settings->value("Zoom/activeButtons").value<QList<ButtonSettings>>();
 	for (auto &bs : bss) {
 		auto *pushButton = new QPushButton(this);
 		m_buttons.insert(std::pair<QString, ButtonInstance>(
@@ -298,14 +299,14 @@ void ZoomWindow::configureButtons()
 		}
 		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position.
 
-		unsigned short effectivePosition = (bs.position > maxColPos.at(row)  ? ++maxColPos.at(row) : bs.position) + spanSum.at(row);	// Make columns contiguous.
-		if (bs.relativeWidth > 1) spanSum.at(row) += bs.relativeWidth - 1;
+		unsigned short effectivePosition = (bs.position > maxColPos.at(row) ? ++maxColPos.at(row) : bs.position) + spanSum.at(row);	// Make columns contiguous.
+		if (bs.relativeWidth > 1) {
+			spanSum.at(row) += bs.relativeWidth - 1;
+		}
 
-		log( ( "Adding button to grid: " + std::to_string(row) + "," + std::to_string(effectivePosition) + ",1," + std::to_string(bs.relativeWidth) ).c_str() );
-		//ui->buttonsLayout->addWidget(pushButton, row, effectivePosition, 1, 1, Qt::AlignHCenter);
+		log("Adding button to grid: " + QString::number(row) + "," + QString::number(effectivePosition) + ",1," + QString::number(bs.relativeWidth), Logger::Debug);
 		ui->buttonsLayout->addWidget(pushButton, row, effectivePosition, 1, bs.relativeWidth);
 	}
-	m_settings->endGroup();
 
 	unsigned short biggestMaxRow, biggestMaxColPos = 0;
 	for (unsigned short i = 0; i < maxColPos.size(); i++) {
@@ -320,25 +321,33 @@ void ZoomWindow::configureButtons()
 		// Configure rows:
 		ui->buttonsLayout->setRowStretch(i, 1);
 	}
-	for (unsigned short i = 0; i < ui->buttonsLayout->columnCount(); i++) {	// Configure columns.
-			ui->buttonsLayout->setColumnStretch(i, 1);
+
+	// Give all columns a stretch factor of 1 to make sure they're all the same size
+	for (int i = 0; i < ui->buttonsLayout->columnCount(); i++) {
+		ui->buttonsLayout->setColumnStretch(i, 1);
 	}
 
+	//  If there are buttons in the drawer, we add the "+" button
 	if (!m_drawerButtons.empty()) {
 		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2) ).c_str() );
 		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
 		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
 		ui->buttonPlus->setChecked(drawerIsOpen);
 		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
-	} else if (countOnShelf) delete ui->buttonPlus;
+	}
+	// Otherwise, if there are other buttons, we only delete the "+" button
+	else if (countOnShelf) {
+		ui->buttonPlus->deleteLater();
+	}
+	// Otherwise, that means there are no buttons at all, and we delete the whole button layout and stop here
 	else {
-		delete ui->buttonsLayout;
+		ui->buttonsLayout->deleteLater();
 		log("---configureButtons---", Logger::Debug);
 		return;
 	}
 
 	for (unsigned short row = 0; row < spans.size(); row++) {
-		spanSum.at(row) += spans.at(row).size();	// Make spanSum include count of initial column positions for each row.
+		spanSum.at(row) += spans.at(row).size(); // Make spanSum include count of initial column positions for each row.
 	}
 
 	/*bool biggestIsOdd = spans.at(biggestMaxRow).size()%2;
