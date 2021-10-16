@@ -382,69 +382,54 @@ void ZoomWindow::configureButtons()
 		button->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
 
 			// From state:
-		ButtonState *state = nullptr;
-		state = it.second.current = const_cast<ButtonState*>(&(it.second.states.at(0)));	// Consider using [].
+		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
 		button->setText( QString(state->text).replace("&", "&&") );
 		button->setToolTip(state->toolTip);
 
 			// Initialise state 0 functions. This should be eliminated if possible.
-		state->function = nullptr;	// Clear old addresses from previous application session.
 		switch (it.second.type) {
-			case CustomButtons::IsButtonPrev :
-				state->function = std::bind(&ZoomWindow::previous, this);
+			case CustomButtons::IsButtonPrev:
+				state->function = [this]{ previous(); };
 				break;
-			case CustomButtons::IsButtonNext :
-				state->function = std::bind(&ZoomWindow::next, this);
+			case CustomButtons::IsButtonNext:
+				state->function = [this]{ next(); };
 				break;
-			case CustomButtons::IsButtonDetails :
-				state->function = std::bind(&ZoomWindow::showDetails, this);
+			case CustomButtons::IsButtonDetails:
+				state->function = [this]{ showDetails(); };
 				break;
-			case CustomButtons::IsButtonSaveAs :
-				state->function = std::bind(&ZoomWindow::saveImageAs, this);
+			case CustomButtons::IsButtonSaveAs:
+				state->function = [this]{ saveImageAs(); };
 				break;
-			case CustomButtons::IsButtonSave :
-				state->function = [=]() {
-					this->saveImage(false);
-				};
+			case CustomButtons::IsButtonSave:
+				state->function = [this]{ saveImage(false); };
 				break;
-			case CustomButtons::IsButtonSaveNQuit :
-				state->function = [=]() {
-					this->saveNQuit(false);
-				};
+			case CustomButtons::IsButtonSaveNQuit:
+				state->function = [this]{ saveNQuit(false); };
 				break;
-			case CustomButtons::IsButtonOpen :
-				state->function = [=]() {
-					this->openSaveDir(false);
-				};
+			case CustomButtons::IsButtonOpen:
+				state->function = [this]{ openSaveDir(false); };
 				break;
-			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
-				state->function = [=]() {
-					this->saveImage(true);
-				};
+			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ saveImage(true); };
 				break;
-			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
-				state->function = [=]() {
-					this->saveNQuit(true);
-				};
+			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ saveNQuit(true); };
 				break;
-			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
-				state->function = [=]() {
-					this->openSaveDir(true);
-				};
+			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ openSaveDir(true); };
 				break;
 			default :
-				log("Failed to set function for unknown button type!");
+				state->function = nullptr;
+				log(QStringLiteral("Failed to set function for unknown button type '%1'").arg(it.second.type));
 				continue;
 		}
-		//if (state->function != nullptr) {	// Connections to bad pointers seem to succeed.
-			//bool connected = connect(button, &QPushButton::clicked, std::bind(state->function, this));
-			bool connected = connect(button, &QPushButton::clicked, state->function);
-			log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"));
-		//}
+
+		bool connected = connect(button, &QPushButton::clicked, state->function);
+		log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"), Logger::Debug);
 	}
 
-	log("rowCount: " + QString::number(ui->buttonsLayout->rowCount()));
-	log("columnCount: " + QString::number(ui->buttonsLayout->columnCount()));
+	log("rowCount: " + QString::number(ui->buttonsLayout->rowCount()), Logger::Debug);
+	log("columnCount: " + QString::number(ui->buttonsLayout->columnCount()), Logger::Debug);
 
 	log("---configureButtons---", Logger::Debug);
 }
