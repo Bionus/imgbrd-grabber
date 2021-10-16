@@ -167,8 +167,8 @@ class ZoomWindow : public QWidget
 		VideoPlayer *m_videoPlayer = nullptr;
 
 		// Buttons
-		std::unordered_map<QString, ButtonInstance> buttons;
-		std::vector<QPushButton*> drawerButtons;
+		std::unordered_map<QString, ButtonInstance> m_buttons;
+		std::vector<QPushButton*> m_drawerButtons;
 
 		// Threads
 		QThread m_imageLoaderThread;

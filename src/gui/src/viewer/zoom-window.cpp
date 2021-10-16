@@ -272,14 +272,14 @@ void ZoomWindow::configureButtons()
 	QList<ButtonSettings> bss = m_settings->value("activeButtons").value<QList<ButtonSettings>>();
 	for (auto &bs : bss) {
 		auto *pushButton = new QPushButton(this);
-		buttons.insert(std::pair<QString, ButtonInstance>(
+		m_buttons.insert(std::pair<QString, ButtonInstance>(
 			bs.name,
 			ButtonInstance{bs.type, pushButton, bs.states} // This is why I switched to C++14. Could be worked around.
 		));
 
 		unsigned short row;
 		if (bs.isInDrawer) {
-			drawerButtons.push_back(pushButton);
+			m_drawerButtons.push_back(pushButton);
 			row = 1;
 			if (!drawerIsOpen) {
 				pushButton->setVisible(false);
@@ -324,7 +324,7 @@ void ZoomWindow::configureButtons()
 			ui->buttonsLayout->setColumnStretch(i, 1);
 	}
 
-	if (!drawerButtons.empty()) {
+	if (!m_drawerButtons.empty()) {
 		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2) ).c_str() );
 		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
 		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
@@ -344,7 +344,7 @@ void ZoomWindow::configureButtons()
 	/*bool biggestIsOdd = spans.at(biggestMaxRow).size()%2;
 	std::vector<unsigned short> rescalingOffset (maxColPos.size(), 0);
 	//std::vector<float> rescalingOffset (maxColPos.size(), 0);*/
-	for (auto &it : buttons) {
+	for (auto &it : m_buttons) {
 		QPushButton *button = it.second.pointer;
 
 		// Re-center each row based on flexible column count:
@@ -742,18 +742,18 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	// Find all save state related buttons that should be updated when the state changes
 	if (fav) {
 		m_saveButtonStateFav = state;
-		relevant[0] = buttons.find("SaveNQuitFav");
-		relevant[1] = buttons.find("SaveFav");
+		relevant[0] = m_buttons.find("SaveNQuitFav");
+		relevant[1] = m_buttons.find("SaveFav");
 	} else {
 		m_saveButtonState = state;
-		relevant[0] = buttons.find("SaveNQuit");
-		relevant[1] = buttons.find("Save");
+		relevant[0] = m_buttons.find("SaveNQuit");
+		relevant[1] = m_buttons.find("Save");
 	}
 
 	// Loop through all relevant buttons
 	for (unsigned short i = 0; i != MaxSaveButtons; i++) {
 		// If the button was not found in "buttons" (if disabled for example), ignore it
-		if (relevant[i] == buttons.end()) {
+		if (relevant[i] == m_buttons.end()) {
 			continue;
 		}
 		ButtonInstance *button = &(relevant[i]->second);
@@ -1203,7 +1203,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
-	m_settings->setValue("Zoom/plus", drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
+	m_settings->setValue("Zoom/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
 	m_settings->sync();
 
 	m_image->abortTags();
@@ -1393,7 +1393,7 @@ void ZoomWindow::updateButtonPlus()
 {
 	const bool isOpen = ui->buttonPlus->isChecked();
 	ui->buttonPlus->setText(QChar(isOpen ? '-' : '+'));
-	for (auto button : drawerButtons) {
+	for (auto button : m_drawerButtons) {
 		button->setVisible(isOpen);
 	}
 }
