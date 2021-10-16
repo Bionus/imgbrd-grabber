@@ -87,7 +87,7 @@ For example using `apt` and the [beineri](https://launchpad.net/~beineri) reposi
 ```bash
 sudo add-apt-repository ppa:beineri/opt-qt-5.15.2-bionic
 sudo apt-get update
-sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations
+sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations qt515networkauth-no-lgpl
 source /opt/qt515/bin/qt515-env.sh
 ```
 
