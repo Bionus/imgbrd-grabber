@@ -90,9 +90,7 @@ class OptionsWindow : public QDialog
 		void initButtonSettingPairs();
 		void loadButtonSettings(QSettings *settings);
 		void saveButtonSettings(QSettings *settings);
-		void checkSpinners(int newVal);
 		void checkAllSpinners();
-		void checkAllSpinnersWithPlacement(int srcPlacement);
 
 		// Log files
 		void addLogFile();
