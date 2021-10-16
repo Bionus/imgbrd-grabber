@@ -149,6 +149,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "Penguin-Guru",
+      "name": "Penguin-Guru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22182988?v=4",
+      "profile": "https://github.com/Penguin-Guru",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitConvention": "none"
