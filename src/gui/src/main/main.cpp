@@ -50,6 +50,7 @@
 	#include <QMessageBox>
 	#include "android.h"
 #endif
+#include "custom-buttons.h" // Needed for ButtonSettings registration to work.
 
 #ifdef WIN_FILE_PROPS
 	#include "windows-file-property.h"
@@ -82,6 +83,7 @@ int main(int argc, char *argv[])
 	}
 
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
+	qRegisterMetaTypeStreamOperators<QList<ButtonSettings>>("QList<ButtonSettings>");
 
 	// Set window title according to the current build
 	#ifdef NIGHTLY

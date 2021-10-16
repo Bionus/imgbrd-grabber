@@ -14,6 +14,8 @@ namespace Ui
 
 
 class Profile;
+class QCheckBox;
+class QSpinBox;
 class ThemeLoader;
 class TokenSettingsWidget;
 
@@ -84,6 +86,12 @@ class OptionsWindow : public QDialog
 		void on_buttonMetadataPropsysAdd_clicked();
 		void on_buttonMetadataExiftoolAdd_clicked();
 
+		// Custom image window buttons
+		void initButtonSettingPairs();
+		void loadButtonSettings(QSettings *settings);
+		void saveButtonSettings(QSettings *settings);
+		void checkAllSpinners();
+
 		// Log files
 		void addLogFile();
 		void showLogFiles(QSettings *settings);
@@ -116,6 +124,7 @@ class OptionsWindow : public QDialog
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 		QList<TokenSettingsWidget*> m_tokenSettings;
 		QList<QPair<QLineEdit*, QLineEdit*>> m_metadataPropsys, m_metadataExiftool;
+		QList<QPair<QCheckBox*, QSpinBox*>> m_buttonSettingPairs;
 };
 
 #endif // OPTIONS_WINDOW_H

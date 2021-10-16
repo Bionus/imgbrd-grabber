@@ -5,9 +5,15 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QtNetwork>
+#include <unordered_map>
+#include <vector>
+#include "custom-buttons.h"
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
+#include "viewer/zoom-window-buttons.h"
+
+using SaveButtonState = ZoomWindowButtons::SaveState;
 
 
 namespace Ui
@@ -32,18 +38,6 @@ class ZoomWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		enum SaveButtonState
-		{
-			Save,
-			Saving,
-			Saved,
-			Copied,
-			Moved,
-			Linked,
-			ExistsMd5,
-			ExistsDisk,
-			Delete
-		};
 		enum PendingAction
 		{
 			PendingNothing,
@@ -63,10 +57,8 @@ class ZoomWindow : public QWidget
 		void replyFinishedDetails();
 		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
-		void saveNQuit();
-		void saveNQuitFav();
+		void saveNQuit(bool fav = false);
 		void saveImage(bool fav = false);
-		void saveImageFav();
 		void saveImageNow();
 		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
@@ -74,7 +66,6 @@ class ZoomWindow : public QWidget
 		void openPool(const QString &);
 		void openPoolId(Page*);
 		void openSaveDir(bool fav = false);
-		void openSaveDirFav();
 		void linkHovered(const QString &);
 		void contextMenu(const QPoint &pos);
 		void openInNewTab();
@@ -87,7 +78,7 @@ class ZoomWindow : public QWidget
 		void openFile(bool now = false);
 		void updateWindowTitle();
 		void showLoadingError(const QString &message);
-		void setButtonState(bool fav, SaveButtonState state);
+		void setButtonState(bool fav, ZoomWindowButtons::SaveState state);
 		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 
 		// Context menus
@@ -117,6 +108,7 @@ class ZoomWindow : public QWidget
 		void draw();
 
 	private:
+		void configureButtons();
 		void showThumbnail();
 		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(const QString &type);
@@ -163,7 +155,7 @@ class ZoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		SaveButtonState m_saveButonState, m_saveButonStateFav;
+		SaveButtonState m_saveButtonState, m_saveButtonStateFav;
 
 		QMap<QSharedPointer<Image>, ImageDownloader*> m_imageDownloaders;
 
@@ -173,6 +165,10 @@ class ZoomWindow : public QWidget
 		bool m_labelImageScaled;
 		GifPlayer *m_gifPlayer = nullptr;
 		VideoPlayer *m_videoPlayer = nullptr;
+
+		// Buttons
+		std::unordered_map<QString, ButtonInstance> m_buttons;
+		std::vector<QPushButton*> m_drawerButtons;
 
 		// Threads
 		QThread m_imageLoaderThread;

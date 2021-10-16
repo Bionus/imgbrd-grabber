@@ -22,6 +22,7 @@
 #include <QVideoWidget>
 #include <QWheelEvent>
 #include <ui_zoom-window.h>
+#include "custom-buttons.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"
@@ -58,8 +59,10 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_pendingAction = PendingNothing;
 	m_pendingClose = false;
 
-	restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
-	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool());
+	if (m_settings->value("Zoom/rememberGeometry", true).toBool()) {
+		restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
+	}
+	
 	ui->progressBarDownload->hide();
 
 	m_settings->beginGroup("Zoom/Shortcuts");
@@ -77,23 +80,26 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
-			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
+		QShortcut *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
+			// Pointer name must not overlap with function name ("saveNQuit"...
+			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
 		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
-			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
+			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));
 
 		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
-			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
+			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
-			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
+			connect(saveNQuitFav, &QShortcut::activated, this, [this]{saveNQuit(true);});
 		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
-			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
+			connect(openFav, &QShortcut::activated, this, [this]{openSaveDir(true);});
 
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
 		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
 			connect(copyDataToClipboard, &QShortcut::activated, this, &ZoomWindow::copyImageDataToClipboard);
 	m_settings->endGroup();
+
+	configureButtons();
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -136,9 +142,6 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
-
-	connect(ui->buttonDetails, &QPushButton::clicked, this, &ZoomWindow::showDetails);
-	connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
 
 	m_labelImage->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_labelImage, &QAffiche::customContextMenuRequested, this, &ZoomWindow::imageContextMenu);
@@ -251,6 +254,186 @@ ZoomWindow::~ZoomWindow()
 	delete ui;
 }
 
+void ZoomWindow::configureButtons()
+{
+	log("+++configureButtons+++", Logger::Debug);
+
+	bool drawerIsOpen = m_settings->value("Zoom/rememberDrawer", true).toBool() && m_settings->value("Zoom/plus", true).toBool(); 
+	if (drawerIsOpen) {
+		ui->buttonPlus->setText(QChar('-'));
+	}
+
+	unsigned short countOnShelf = 0;
+	std::vector<short> maxColPos;
+	std::vector<unsigned int> spanSum;
+	std::vector<std::vector<unsigned short>> spans;
+	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
+
+		// Load button configuration from settings:
+	QList<ButtonSettings> bss = m_settings->value("Zoom/activeButtons").value<QList<ButtonSettings>>();
+	for (auto &bs : bss) {
+		auto *pushButton = new QPushButton(this);
+		m_buttons.insert(std::pair<QString, ButtonInstance>(
+			bs.name,
+			ButtonInstance{bs.type, pushButton, bs.states} // This is why I switched to C++14. Could be worked around.
+		));
+
+		unsigned short row;
+		if (bs.isInDrawer) {
+			m_drawerButtons.push_back(pushButton);
+			row = 1;
+			if (!drawerIsOpen) {
+				pushButton->setVisible(false);
+			}
+		} else {
+			countOnShelf++;
+			row = 0;
+		}
+
+		if (maxColPos.size() <= row) { // Initialise new row.
+			while (maxColPos.size() <= row) { // Configure up to new row.
+				maxColPos.push_back(-1);
+				spanSum.push_back(0);
+			}
+			spans.resize(row + 1);
+		}
+		spans.at(row).push_back(bs.relativeWidth - 1); // Don't count starting position.
+
+		unsigned short effectivePosition = (bs.position > maxColPos.at(row) ? ++maxColPos.at(row) : bs.position) + spanSum.at(row);	// Make columns contiguous.
+		if (bs.relativeWidth > 1) {
+			spanSum.at(row) += bs.relativeWidth - 1;
+		}
+
+		log("Adding button to grid: " + QString::number(row) + "," + QString::number(effectivePosition) + ",1," + QString::number(bs.relativeWidth), Logger::Debug);
+		ui->buttonsLayout->addWidget(pushButton, row, effectivePosition, 1, bs.relativeWidth);
+	}
+
+	unsigned short biggestMaxRow, biggestMaxColPos = 0;
+	for (unsigned short i = 0; i < maxColPos.size(); i++) {
+		if (maxColPos.at(i) + spans.at(i).back() > biggestMaxColPos) {
+			biggestMaxRow = i;
+			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
+			log( ( "biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back()) ).c_str() );
+		}
+
+		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
+
+		// Configure rows:
+		ui->buttonsLayout->setRowStretch(i, 1);
+	}
+
+	// Give all columns a stretch factor of 1 to make sure they're all the same size
+	for (int i = 0; i < ui->buttonsLayout->columnCount(); i++) {
+		ui->buttonsLayout->setColumnStretch(i, 1);
+	}
+
+	//  If there are buttons in the drawer, we add the "+" button
+	if (!m_drawerButtons.empty()) {
+		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2) ).c_str() );
+		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
+		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
+		ui->buttonPlus->setChecked(drawerIsOpen);
+		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+	}
+	// Otherwise, if there are other buttons, we only delete the "+" button
+	else if (countOnShelf) {
+		ui->buttonPlus->deleteLater();
+	}
+	// Otherwise, that means there are no buttons at all, and we delete the whole button layout and stop here
+	else {
+		ui->buttonsLayout->deleteLater();
+		log("---configureButtons---", Logger::Debug);
+		return;
+	}
+
+	for (unsigned short row = 0; row < spans.size(); row++) {
+		spanSum.at(row) += spans.at(row).size(); // Make spanSum include count of initial column positions for each row.
+	}
+
+	/*bool biggestIsOdd = spans.at(biggestMaxRow).size()%2;
+	std::vector<unsigned short> rescalingOffset (maxColPos.size(), 0);
+	//std::vector<float> rescalingOffset (maxColPos.size(), 0);*/
+	for (auto &it : m_buttons) {
+		QPushButton *button = it.second.pointer;
+
+		// Re-center each row based on flexible column count:
+		int originRow, originCol, originRowSpan, originColSpan;
+		ui->buttonsLayout->getItemPosition(ui->buttonsLayout->indexOf(button), &originRow, &originCol, &originRowSpan, &originColSpan);
+		// Note: these spanSum values may not account for the width of the last button on each row. Not sure if important.
+		unsigned short offset = ( spanSum.at(biggestMaxRow) - spanSum.at(originRow) ) / 2;	// Row content is centred-- offset using free space on left side.
+		log( ( "Total diff from reference = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow)) ).c_str() );
+		if (offset != 0) {
+			//if (rescalingOffset.at(originRow)) log( ( "rescalingOffset.at(row) = " + std::to_string(rescalingOffset.at(originRow)) ).c_str() );
+			unsigned short newCol = originCol + offset;
+			log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
+			//unsigned short newCol = originCol + offset + rescalingOffset.at(originRow);
+			ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
+			/*if (biggestIsOdd ^ spans.at(originRow).size()%2) {	// Adjust spans and starting columns to compensate for mismatched numbers of buttons on rows.
+				log("Rescaling due to even/odd mismatch with reference row.");
+				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan + 1);	// Buttons aren't in order!
+				rescalingOffset.at(originRow)++;
+			} else ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);*/
+		}
+
+
+		// Generic button configuration:
+
+			// Hard coded:
+		button->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+
+			// From state:
+		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
+		button->setText( QString(state->text).replace("&", "&&") );
+		button->setToolTip(state->toolTip);
+
+			// Initialise state 0 functions. This should be eliminated if possible.
+		switch (it.second.type) {
+			case CustomButtons::IsButtonPrev:
+				state->function = [this]{ previous(); };
+				break;
+			case CustomButtons::IsButtonNext:
+				state->function = [this]{ next(); };
+				break;
+			case CustomButtons::IsButtonDetails:
+				state->function = [this]{ showDetails(); };
+				break;
+			case CustomButtons::IsButtonSaveAs:
+				state->function = [this]{ saveImageAs(); };
+				break;
+			case CustomButtons::IsButtonSave:
+				state->function = [this]{ saveImage(false); };
+				break;
+			case CustomButtons::IsButtonSaveNQuit:
+				state->function = [this]{ saveNQuit(false); };
+				break;
+			case CustomButtons::IsButtonOpen:
+				state->function = [this]{ openSaveDir(false); };
+				break;
+			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ saveImage(true); };
+				break;
+			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ saveNQuit(true); };
+				break;
+			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton:
+				state->function = [this]{ openSaveDir(true); };
+				break;
+			default :
+				state->function = nullptr;
+				log(QStringLiteral("Failed to set function for unknown button type '%1'").arg(it.second.type));
+				continue;
+		}
+
+		bool connected = connect(button, &QPushButton::clicked, state->function);
+		log("Connection for button " + it.first + " " + (connected ? "succeeded" : "failed!"), Logger::Debug);
+	}
+
+	log("rowCount: " + QString::number(ui->buttonsLayout->rowCount()), Logger::Debug);
+	log("columnCount: " + QString::number(ui->buttonsLayout->columnCount()), Logger::Debug);
+
+	log("---configureButtons---", Logger::Debug);
+}
+
 void ZoomWindow::imageContextMenu()
 {
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
@@ -275,6 +458,7 @@ void ZoomWindow::imageContextMenu()
 
 	menu->exec(QCursor::pos());
 }
+
 void ZoomWindow::reloadImage()
 {
 	load(true);
@@ -354,8 +538,6 @@ void ZoomWindow::openSaveDir(bool fav)
 		}
 	}
 }
-void ZoomWindow::openSaveDirFav()
-{ openSaveDir(true); }
 
 void ZoomWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
@@ -500,32 +682,29 @@ void ZoomWindow::replyFinishedDetails()
 	if (!md5Exists.isEmpty() || !source1.isEmpty() || !source2.isEmpty()) {
 		imagePath = !md5Exists.isEmpty() ? md5Exists : (!source1.isEmpty() ? source1 : source2);
 
-		// Update save button state
-		const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
-		setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
-		setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
-
 		// Fix extension when it should be guessed
 		const QString fext = imagePath.section('.', -1);
 		m_image->setFileExtension(fext);
 
 		// Ensure the file actually exists before trying to set it as the source
 		if (QFile::exists(imagePath)) {
+			m_imagePath = imagePath;	// Moved before setButtonState so tool tips can reference it.
+
+			// Update save button state
+			const SaveButtonState md5State = !md5Exists.isEmpty() && md5Action != "save" ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
+			setButtonState(false, !source1.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+			setButtonState(true, !source2.isEmpty() ? SaveButtonState::ExistsDisk : md5State);
+
 			m_source = imagePath;
 			m_image->setSavePath(m_source);
+
+			log(QStringLiteral("Image loaded from the file `%1`").arg(imagePath));
+			m_finished = true;
+			m_loadedImage = true;
+			pendingUpdate();
+
+			draw();
 		}
-	}
-
-	// If a file to load the image from was found
-	if (!imagePath.isEmpty() && QFile::exists(imagePath)) {
-		m_imagePath = imagePath;
-		log(QStringLiteral("Image loaded from the file `%1`").arg(imagePath));
-
-		m_finished = true;
-		m_loadedImage = true;
-		pendingUpdate();
-
-		draw();
 	}
 	// If the file does not exist, we have to load it
 	else {
@@ -548,74 +727,47 @@ void ZoomWindow::colore()
 
 	m_detailsWindow->setImage(m_image);
 }
+
 void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 {
-	// Update state
+	constexpr unsigned short MaxSaveButtons = 2;
+	std::unordered_map<QString, ButtonInstance>::iterator relevant[MaxSaveButtons];
+
+	// Find all save state related buttons that should be updated when the state changes
 	if (fav) {
-		m_saveButonStateFav = state;
+		m_saveButtonStateFav = state;
+		relevant[0] = m_buttons.find("SaveNQuitFav");
+		relevant[1] = m_buttons.find("SaveFav");
 	} else {
-		m_saveButonState = state;
+		m_saveButtonState = state;
+		relevant[0] = m_buttons.find("SaveNQuit");
+		relevant[1] = m_buttons.find("Save");
 	}
 
-	// Update actual button label
-	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
-	button->setToolTip(QString());
-	switch (state)
-	{
-		case SaveButtonState::Save:
-			button->setText(fav ? tr("Save (fav)") : tr("Save"));
-			break;
+	// Loop through all relevant buttons
+	for (unsigned short i = 0; i != MaxSaveButtons; i++) {
+		// If the button was not found in "buttons" (if disabled for example), ignore it
+		if (relevant[i] == m_buttons.end()) {
+			continue;
+		}
+		ButtonInstance *button = &(relevant[i]->second);
 
-		case SaveButtonState::Saving:
-			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			break;
+		// Find the next button state
+		ButtonState *newState = button->states.size() <= state
+			? &(button->states.back()) // Last state is used by default, like a switch case default
+			: &(button->states[state]);
+		button->current = newState;
 
-		case SaveButtonState::Saved:
-			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
-			break;
+		// Update button text
+		button->pointer->setText(tr( QString(newState->text).replace("&", "&&").toStdString().c_str()));
+		button->pointer->setToolTip(tr(newState->toolTip.toStdString().c_str()));
 
-		case SaveButtonState::Copied:
-			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
-			break;
-
-		case SaveButtonState::Moved:
-			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
-			break;
-
-		case SaveButtonState::Linked:
-			button->setText(fav ? tr("Link created! (fav)") : tr("Link created!"));
-			break;
-
-		case SaveButtonState::ExistsMd5:
-			button->setToolTip(m_imagePath);
-			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
-			break;
-
-		case SaveButtonState::ExistsDisk:
-			button->setToolTip(m_imagePath);
-			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
-			break;
-
-		case SaveButtonState::Delete:
-			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
-			break;
-	}
-
-	// Update "Save a close" button label
-	QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
-	switch (state)
-	{
-		case SaveButtonState::Save:
-			saveQuit->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
-			break;
-
-		case SaveButtonState::Saving:
-			saveQuit->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
-			break;
-
-		default:
-			saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
-			break;
+		// Connect button to its new action
+		if (newState->function == nullptr) {
+			newState->function = button->states.at(0).function;
+		}
+		disconnect(button->pointer, &QPushButton::clicked, nullptr, nullptr);
+		connect(button->pointer, &QPushButton::clicked, newState->function);
 	}
 }
 
@@ -772,34 +924,22 @@ Qt::Alignment ZoomWindow::getAlignments(const QString &type)
 	return vAlign | hAlign;
 }
 
-void ZoomWindow::saveNQuit()
+void ZoomWindow::saveNQuit(bool fav)
 {
 	if (!m_source.isEmpty()) {
 		close();
 		return;
 	}
 
-	setButtonState(false, SaveButtonState::Saving);
-	m_pendingAction = PendingSave;
-	m_pendingClose = true;
-	pendingUpdate();
-}
-void ZoomWindow::saveNQuitFav()
-{
-	if (!m_source.isEmpty()) {
-		close();
-		return;
-	}
-
-	setButtonState(true, SaveButtonState::Saving);
-	m_pendingAction = PendingSaveFav;
+	setButtonState(fav, SaveButtonState::Saving);
+	m_pendingAction = fav ? PendingSaveFav : PendingSave;
 	m_pendingClose = true;
 	pendingUpdate();
 }
 
 void ZoomWindow::saveImage(bool fav)
 {
-	const SaveButtonState state = fav ? m_saveButonStateFav : m_saveButonState;
+	const SaveButtonState state = fav ? m_saveButtonStateFav : m_saveButtonState;
 	switch (state)
 	{
 		case SaveButtonState::Save:
@@ -832,8 +972,6 @@ void ZoomWindow::saveImage(bool fav)
 			setButtonState(fav, SaveButtonState::Delete);
 	}
 }
-void ZoomWindow::saveImageFav()
-{ saveImage(true); }
 void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs) {
@@ -1044,8 +1182,6 @@ void ZoomWindow::toggleSlideshow()
 	}
 }
 
-
-
 void ZoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive()) {
@@ -1061,7 +1197,7 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 void ZoomWindow::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("Zoom/geometry", saveGeometry());
-	m_settings->setValue("Zoom/plus", ui->buttonPlus->isChecked());
+	m_settings->setValue("Zoom/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
 	m_settings->sync();
 
 	m_image->abortTags();
@@ -1179,6 +1315,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	}
 
 	// Reset buttons
+	// Is this still necessary?
 	setButtonState(false, SaveButtonState::Save);
 	setButtonState(true, SaveButtonState::Save);
 
@@ -1248,7 +1385,11 @@ void ZoomWindow::previous()
 
 void ZoomWindow::updateButtonPlus()
 {
-	ui->buttonPlus->setText(QChar(ui->buttonPlus->isChecked() ? '-' : '+'));
+	const bool isOpen = ui->buttonPlus->isChecked();
+	ui->buttonPlus->setText(QChar(isOpen ? '-' : '+'));
+	for (auto button : m_drawerButtons) {
+		button->setVisible(isOpen);
+	}
 }
 
 void ZoomWindow::openFile(bool now)
