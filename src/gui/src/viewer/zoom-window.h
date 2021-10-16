@@ -57,10 +57,8 @@ class ZoomWindow : public QWidget
 		void replyFinishedDetails();
 		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
-		void saveNQuit();
-		void saveNQuitFav();
+		void saveNQuit(bool fav = false);
 		void saveImage(bool fav = false);
-		void saveImageFav();
 		void saveImageNow();
 		void saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result);
 		void saveImageAs();
@@ -68,7 +66,6 @@ class ZoomWindow : public QWidget
 		void openPool(const QString &);
 		void openPoolId(Page*);
 		void openSaveDir(bool fav = false);
-		void openSaveDirFav();
 		void linkHovered(const QString &);
 		void contextMenu(const QPoint &pos);
 		void openInNewTab();

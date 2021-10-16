@@ -80,17 +80,18 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 
 		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-		QShortcut *saveNQuit = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
-			connect(saveNQuit, SIGNAL(activated()), this, SLOT(saveNQuit()));
+		QShortcut *SNQ = new QShortcut(getKeySequence(m_settings, "keySaveNQuit", Qt::CTRL + Qt::Key_W), this);
+			// Pointer name must not overlap with function name ("saveNQuit"...
+			connect(SNQ, SIGNAL(activated()), this, SLOT(saveNQuit()));
 		QShortcut *open = new QShortcut(getKeySequence(m_settings, "keyOpen", Qt::CTRL + Qt::Key_O), this);
-			connect(open, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
+			connect(open, SIGNAL(activated()), this, SLOT(openSaveDir()));
 
 		QShortcut *saveFav = new QShortcut(getKeySequence(m_settings, "keySaveFav", Qt::CTRL + Qt::ALT + Qt::Key_S), this);
-			connect(saveFav, SIGNAL(activated()), this, SLOT(saveImageFav()));
+			connect(saveFav, &QShortcut::activated, this, [this]{saveImage(true);});
 		QShortcut *saveNQuitFav = new QShortcut(getKeySequence(m_settings, "keySaveNQuitFav", Qt::CTRL + Qt::ALT + Qt::Key_W), this);
-			connect(saveNQuitFav, SIGNAL(activated()), this, SLOT(saveNQuitFav()));
+			connect(saveNQuitFav, &QShortcut::activated, this, [this]{saveNQuit(true);});
 		QShortcut *openFav = new QShortcut(getKeySequence(m_settings, "keyOpenFav", Qt::CTRL + Qt::ALT + Qt::Key_O), this);
-			connect(openFav, SIGNAL(activated()), this, SLOT(openSaveDirFav()));
+			connect(openFav, &QShortcut::activated, this, [this]{openSaveDir(true);});
 
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
 			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
@@ -398,7 +399,9 @@ void ZoomWindow::configureButtons()
 				};
 				break;
 			case CustomButtons::IsButtonSaveNQuit :
-				state->function = std::bind(&ZoomWindow::saveNQuit, this);
+				state->function = [=]() {
+					this->saveNQuit(false);
+				};
 				break;
 			case CustomButtons::IsButtonOpen :
 				state->function = [=]() {
@@ -406,13 +409,19 @@ void ZoomWindow::configureButtons()
 				};
 				break;
 			case CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton :
-				state->function = std::bind(&ZoomWindow::saveImageFav, this);
+				state->function = [=]() {
+					this->saveImage(true);
+				};
 				break;
 			case CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton :
-				state->function = std::bind(&ZoomWindow::saveNQuitFav, this);
+				state->function = [=]() {
+					this->saveNQuit(true);
+				};
 				break;
 			case CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton :
-				state->function = std::bind(&ZoomWindow::openSaveDirFav, this);
+				state->function = [=]() {
+					this->openSaveDir(true);
+				};
 				break;
 			default :
 				log("Failed to set function for unknown button type!");
@@ -535,8 +544,6 @@ void ZoomWindow::openSaveDir(bool fav)
 		}
 	}
 }
-void ZoomWindow::openSaveDirFav()
-{ openSaveDir(true); }
 
 void ZoomWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
@@ -923,27 +930,15 @@ Qt::Alignment ZoomWindow::getAlignments(const QString &type)
 	return vAlign | hAlign;
 }
 
-void ZoomWindow::saveNQuit()
+void ZoomWindow::saveNQuit(bool fav)
 {
 	if (!m_source.isEmpty()) {
 		close();
 		return;
 	}
 
-	setButtonState(false, SaveButtonState::Saving);
-	m_pendingAction = PendingSave;
-	m_pendingClose = true;
-	pendingUpdate();
-}
-void ZoomWindow::saveNQuitFav()
-{
-	if (!m_source.isEmpty()) {
-		close();
-		return;
-	}
-
-	setButtonState(true, SaveButtonState::Saving);
-	m_pendingAction = PendingSaveFav;
+	setButtonState(fav, SaveButtonState::Saving);
+	m_pendingAction = fav ? PendingSaveFav : PendingSave;
 	m_pendingClose = true;
 	pendingUpdate();
 }
@@ -983,8 +978,6 @@ void ZoomWindow::saveImage(bool fav)
 			setButtonState(fav, SaveButtonState::Delete);
 	}
 }
-void ZoomWindow::saveImageFav()
-{ saveImage(true); }
 void ZoomWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs) {
