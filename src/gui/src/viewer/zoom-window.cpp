@@ -379,7 +379,7 @@ void ZoomWindow::configureButtons()
 		// Generic button configuration:
 
 			// Hard coded:
-		button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		button->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
 
 			// From state:
 		ButtonState *state = nullptr;
