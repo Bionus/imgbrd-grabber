@@ -52,8 +52,8 @@ class FavoritesTab : public SearchTab
 		// Others
 		void closeEvent(QCloseEvent *) override;
 		void focusSearch() override;
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr) override;
-		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr) override;
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, int filteredImages, const QString &noResultsMessage = nullptr) override;
+		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, int filteredImages, const QString &noResultsMessage = nullptr) override;
 		void updateTitle() override;
 		void splitterMoved(int pos, int index);
 

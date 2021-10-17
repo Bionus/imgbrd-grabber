@@ -223,19 +223,19 @@ void FavoritesTab::write(QJsonObject &json) const
 }
 
 
-void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
+void FavoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, int filteredImages, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
+	SearchTab::addResultsPage(page, imgs, merged, filteredImages, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
 	ui->splitter->setSizes({ (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1), 1 });
 }
 
-void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
+void FavoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, int filteredImages, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage)
 
-	SearchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
+	SearchTab::setPageLabelText(txt, page, imgs, filteredImages, tr("No result since the %1").arg(m_loadFavorite.toString(Qt::DefaultLocaleShortDate)));
 }
 
 void FavoritesTab::setTags(const QString &tags, bool preload)

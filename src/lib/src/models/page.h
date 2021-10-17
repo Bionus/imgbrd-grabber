@@ -48,6 +48,7 @@ class Page : public QObject
 		bool hasNext() const;
 		int page() const;
 		int pageImageCount() const;
+		int filteredImageCount() const;
 		qulonglong minId() const;
 		qulonglong maxId() const;
 		QString minDate() const;

@@ -130,6 +130,7 @@ void PageApi::load(bool rateLimit, bool force)
 	m_loaded = false;
 	m_loading = true;
 	m_pageImageCount = 0;
+	m_filteredImageCount = 0;
 	m_imagesCount = -1;
 	m_maxImagesCount = -1;
 	m_pagesCount = -1;
@@ -156,6 +157,7 @@ bool PageApi::addImage(const QSharedPointer<Image> &img)
 
 	QStringList filters = m_postFiltering.match(img->tokens(m_profile));
 	if (!filters.isEmpty()) {
+		m_filteredImageCount++;
 		img->deleteLater();
 		log(QStringLiteral("[%1][%2] Image filtered. Reason: %3.").arg(m_site->url(), m_format, filters.join(", ")), Logger::Info);
 		return false;
@@ -383,6 +385,7 @@ void PageApi::clear()
 {
 	m_images.clear();
 	m_pageImageCount = 0;
+	m_filteredImageCount = 0;
 }
 
 const QList<QSharedPointer<Image>> &PageApi::images() const { return m_images; }
@@ -401,6 +404,8 @@ int PageApi::page() const
 { return m_page; }
 int PageApi::pageImageCount() const
 { return m_pageImageCount; }
+int PageApi::filteredImageCount() const
+{ return m_filteredImageCount; }
 int PageApi::highLimit() const
 { return m_api->maxLimit(); }
 

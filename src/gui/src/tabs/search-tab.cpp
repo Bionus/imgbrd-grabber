@@ -350,11 +350,13 @@ void SearchTab::finishedLoading(Page *page)
 
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
+	int filteredImages = 0;
 	QString error;
 	for (const QSharedPointer<Image> &img : page->images()) {
 		if (validateImage(img, error)) {
 			validImages.append(img);
 		} else if (!error.isEmpty()) {
+			filteredImages++;
 			log(error);
 		}
 	}
@@ -367,7 +369,7 @@ void SearchTab::finishedLoading(Page *page)
 	m_images.append(images);
 
 	updatePaginationButtons(page);
-	addResultsPage(page, images, merged);
+	addResultsPage(page, images, merged, filteredImages);
 
 	if (!m_settings->value("useregexfortags", true).toBool()) {
 		setTagsFromPages(m_pages);
@@ -383,7 +385,7 @@ void SearchTab::failedLoading(Page *page)
 	}
 
 	const bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
-	addResultsPage(page, QList<QSharedPointer<Image>>(), merged);
+	addResultsPage(page, QList<QSharedPointer<Image>>(), merged, 0);
 
 	postLoading(page, page->isValid() ? page->images() : QList<QSharedPointer<Image>>());
 }
@@ -518,17 +520,20 @@ void SearchTab::finishedLoadingTags(Page *page)
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> images;
+	int filteredImages = 0;
 	QString error;
 	for (const QSharedPointer<Image> &img : page->images()) {
 		if (validateImage(img, error)) {
 			images.append(img);
+		} else {
+			filteredImages++;
 		}
 	}
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr)) {
 		setMergedLabelText(m_siteLabels[nullptr], m_images);
 	} else if (m_siteLabels.contains(page->site())) {
-		setPageLabelText(m_siteLabels[page->site()], page, images);
+		setPageLabelText(m_siteLabels[page->site()], page, images, filteredImages);
 	}
 }
 
@@ -668,7 +673,7 @@ bool SearchTab::containsMergedMd5(int page, const QString &md5)
 	return false;
 }
 
-void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &images, bool merged, const QString &noResultsMessage)
+void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &images, bool merged, int filteredImages, const QString &noResultsMessage)
 {
 	if (merged) {
 		return;
@@ -691,7 +696,7 @@ void SearchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 		ui_layoutResults->addWidget(txt, page_y, page_x);
 		ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 	}
-	setPageLabelText(m_siteLabels[site], page, images, noResultsMessage);
+	setPageLabelText(m_siteLabels[site], page, images, filteredImages, noResultsMessage);
 
 	if (m_siteLayouts.contains(page->site()) && m_pages.value(page->website()).count() == 1) {
 		addLayout(m_siteLayouts[page->site()], page_y + 1, page_x);
@@ -740,7 +745,7 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(page).arg(maxPage).arg(images.count()).arg(tr("max %1").arg(sumImages));
 	txt->setText(QString(links + " - " + countLabel));
 }
-void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, const QString &noResultsMessage)
+void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &images, int filteredImages, const QString &noResultsMessage)
 {
 	// No results message
 	if (images.isEmpty()) {
@@ -774,6 +779,7 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 			lastPage = p->page();
 		}
 		totalCount += p->images().count();
+		filteredImages += p->filteredImageCount();
 	}
 
 	const QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
@@ -783,9 +789,10 @@ void SearchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	const QString imageCountStr = imageCount > 0
 		? (page->imagesCount(false) == -1 ? "~" : QString()) + QString::number(imageCount)
 		: (page->maxImagesCount() == -1 ? "?" : tr("max %1").arg(page->maxImagesCount()));
+	const QString filteredCountStr = filteredImages > 0 ? " - " + tr("%1 filtered").arg(filteredImages) : "";
 
 	const QString countLabel = tr("Page %1 of %2 (%3 of %4)").arg(pageLabel, pageCountStr).arg(totalCount).arg(imageCountStr);
-	txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel);
+	txt->setText("<a href=\"" + page->url().toString().toHtmlEscaped() + "\">" + page->site()->name() + "</a> - " + countLabel + filteredCountStr);
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool()) {
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", Qt::SkipEmptyParts);
