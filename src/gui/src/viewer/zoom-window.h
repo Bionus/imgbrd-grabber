@@ -86,6 +86,7 @@ class ZoomWindow : public QWidget
 		void reloadImage();
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
+		void copyImageLinkToClipboard();
 
 		// Full screen
 		void toggleFullScreen();

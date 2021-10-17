@@ -447,6 +447,8 @@ void ZoomWindow::imageContextMenu()
 	connect(copyImageAction, &QAction::triggered, this, &ZoomWindow::copyImageFileToClipboard);
 	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, &QAction::triggered, this, &ZoomWindow::copyImageDataToClipboard);
+	QAction *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
+	connect(copyLinkAction, &QAction::triggered, this, &ZoomWindow::copyImageLinkToClipboard);
 
 	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
@@ -454,6 +456,7 @@ void ZoomWindow::imageContextMenu()
 	menu->insertSeparator(first);
 	menu->insertAction(first, copyImageAction);
 	menu->insertAction(first, copyDataAction);
+	menu->insertAction(first, copyLinkAction);
 	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
@@ -472,6 +475,10 @@ void ZoomWindow::copyImageFileToClipboard()
 void ZoomWindow::copyImageDataToClipboard()
 {
 	QApplication::clipboard()->setPixmap(m_displayImage);
+}
+void ZoomWindow::copyImageLinkToClipboard()
+{
+	QApplication::clipboard()->setText(m_image->fileUrl().toString());
 }
 
 void ZoomWindow::showDetails()
