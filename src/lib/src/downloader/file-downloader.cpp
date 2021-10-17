@@ -76,7 +76,7 @@ void FileDownloader::replyFinished()
 		} else if (invalidHtml) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Invalid HTML content returned");
-		} else if (emptyFile) {
+		} else if (emptyFile && error == NetworkReply::NetworkError::NoError) {
 			log(QString("Empty file returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Empty file returned");
 		} else {
