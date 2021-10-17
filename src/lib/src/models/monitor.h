@@ -58,7 +58,7 @@ class Monitor
 		QString m_lastState;
 		QDateTime m_lastStateSince;
 		int m_lastStateCount;
-		bool m_forceRun;
+		bool m_forceRun = false;
 };
 
 bool operator==(const Monitor &lhs, const Monitor &rhs);
