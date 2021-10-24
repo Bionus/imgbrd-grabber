@@ -1,4 +1,6 @@
 #include "tags/tag-database-sqlite.h"
+#include <QDir>
+#include <QFileInfo>
 #include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
@@ -26,6 +28,15 @@ bool TagDatabaseSqlite::open()
 	// Don't re-open databases
 	if (m_database.isOpen()) {
 		return true;
+	}
+
+	// Create the parent directory if it doesn't exist
+	const QString parentDir = QFileInfo(m_tagFile).absolutePath();
+	if (!QDir().exists(parentDir)) {
+		if (!QDir().mkpath(parentDir)) {
+			log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
+			return false;
+		}
 	}
 
 	// Load and connect to the database
