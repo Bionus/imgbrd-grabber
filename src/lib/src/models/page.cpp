@@ -129,10 +129,11 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 		Analytics::getInstance().sendEvent("Page load", "Success", eventLabel);
 		emit finishedLoading(this);
 	} else {
-		Analytics::getInstance().sendEvent("Page load", "Error", eventLabel);
-		if (!api->errors().isEmpty()) {
-			m_errors.append(api->errors());
+		const QStringList &errors = api->errors();
+		if (errors.isEmpty() || !errors.first().contains("impossible")) {
+			Analytics::getInstance().sendEvent("Page load", "Error", eventLabel);
 		}
+		m_errors.append(errors);
 		fallback();
 	}
 }
