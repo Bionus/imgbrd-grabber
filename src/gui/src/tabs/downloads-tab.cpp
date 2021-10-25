@@ -494,7 +494,7 @@ void DownloadsTab::getAll(bool all)
 	if (!all) {
 		QSet<int> tdl = selectedRows(ui->tableBatchUniques);
 		for (const int row : tdl) {
-			DownloadQueryImage batch = m_batchs[row];
+			const DownloadQueryImage &batch = m_batchs[row];
 			BatchDownloadImage d;
 			d.image = batch.image;
 			d.queryImage = &batch;
