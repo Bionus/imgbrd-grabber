@@ -351,7 +351,10 @@ export const source: ISource = {
                 parse: (src: string): boolean => {
                     return src.indexOf("Running Danbooru v2") !== -1
                         || src.search(/Running Danbooru <a[^>]*>v2/) !== -1
-                        || src.indexOf("https://github.com/danbooru/danbooru") !== -1;
+                        || src.indexOf("https://github.com/danbooru/danbooru") !== -1
+                        || src.indexOf("ATFBooru") !== -1
+                        || src.indexOf("All The Fallen") !== -1
+                        || src.indexOf("https://github.com/Iratu/atfbooru") !== -1;
                 },
             },
         },
