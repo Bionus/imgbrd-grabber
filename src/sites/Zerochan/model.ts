@@ -80,7 +80,8 @@ export const source: ISource = {
                     }
                 },
                 parse: (src: string): IParsedSearch => {
-                    const parsed = Grabber.parseXML(src);
+                    const fixedSrc = src.replace(/<div.*?>[\s\S]+?<\/div>/, "") // Fix malformed XML for multi-tag search
+                    const parsed = Grabber.parseXML(fixedSrc);
                     const data = Grabber.makeArray(parsed.rss.channel.item);
 
                     const images: IImage[] = [];
