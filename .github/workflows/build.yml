@@ -16,6 +16,8 @@ env:
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
+  QSCINTILLA_VERSION: 2.13.0
+  QSCINTILLA_DIR: QScintilla_src-2.13.0
 
 jobs:
   uncrustify:
@@ -172,11 +174,28 @@ jobs:
         id: vendor-cache
         with:
           path: vendor
-          key: ${{ runner.os }}-linuxdeployqt-${{ env.LINUXDEPLOYQT_VERSION }}
+          key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/build.yml') }}
 
       - name: Create vendor dir
         if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: mkdir vendor
+
+      - name: Build QScintilla
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        working-directory: vendor
+        run: |
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/${QSCINTILLA_VERSION}/QScintilla_src-${QSCINTILLA_VERSION}.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "${QSCINTILLA_DIR}/src"
+          qmake qscintilla.pro
+          make
+
+      - name: Install QScintilla
+        working-directory: vendor
+        run: |
+          cd "${QSCINTILLA_DIR}/src"
+          make install
 
       - name: Download linuxdeployqt
         if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -252,6 +271,34 @@ jobs:
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
+      - name: Vendor cache
+        uses: actions/cache@v1
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/build.yml') }}
+
+      - name: Create vendor dir
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: mkdir vendor
+
+      - name: Build QScintilla
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        working-directory: vendor
+        run: |
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/${QSCINTILLA_VERSION}/QScintilla_src-${QSCINTILLA_VERSION}.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "${QSCINTILLA_DIR}/src"
+          qmake qscintilla.pro
+          make
+
+      - name: Install QScintilla
+        working-directory: vendor
+        run: |
+          cd "${QSCINTILLA_DIR}/src"
+          make install
+
       - name: Build
         run: |
           mkdir build
@@ -296,8 +343,6 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5575770/qsqlmysql.dll_Qt_SQL_driver_5.15.2_MSVC2019_64-bit.zip
-      QSCINTILLA_VERSION: 2.13.0
-      QSCINTILLA_DIR: QScintilla_src-2.13.0
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
