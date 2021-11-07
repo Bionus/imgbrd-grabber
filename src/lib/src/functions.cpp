@@ -916,18 +916,13 @@ QString getFilenameMd5(const QString &fileName, const QString &format)
 	while (matches.hasNext()) {
 		const auto match = matches.next();
 		const bool isMd5 = match.captured(1) == QLatin1String("md5");
-		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
+		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>[0-9A-F]{32,})") : QStringLiteral("(.+?)"));
 	}
 
-	const QRegularExpression rx(reg);
+	const QRegularExpression rx(reg, QRegularExpression::CaseInsensitiveOption);
 	const auto match = rx.match(fileName);
 	if (match.hasMatch()) {
-		const QString md5 = match.captured("md5");
-
-		static const QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
-		if (rxMd5.match(md5).hasMatch()) {
-			return md5;
-		}
+		return match.captured("md5");
 	} else {
 		log(QStringLiteral("Unable to detect MD5 file `%1`").arg(fileName), Logger::Warning);
 	}
