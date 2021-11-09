@@ -83,7 +83,7 @@ describe("Danbooru (2.0)", () => {
 
         describe("Details", () => {
             it("returns the url", () => {
-                expect(source.apis.html.details!.url("123", "")).toEqual("/posts/123");
+                expect(source.apis.html.details!.url("123", "", { baseUrl:  "", loggedIn: false })).toEqual("/posts/123");
             });
 
             it("parses the response correctly", () => {

@@ -77,7 +77,7 @@ describe("Shimmie", () => {
 
         describe("Details", () => {
             it("returns the url", () => {
-                expect(source.apis.html.details!.url("123", "")).toEqual("/post/view/123");
+                expect(source.apis.html.details!.url("123", "", { baseUrl:  "", loggedIn: false })).toEqual("/post/view/123");
             });
 
             it("parses the response correctly", () => {
