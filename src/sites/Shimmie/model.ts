@@ -72,11 +72,9 @@ function transformTag(query: string): string {
 
     // Favorites special case
     if (parts[0] === "fav") {
-        if (/^\d+$/.test(parts[1])) {
-            parts[0] = "favorited_by_userno";
-        } else {
-            parts[0] = "favourited_by";
-        }
+        parts[0] = /^\d+$/.test(parts[1])
+            ? "favorited_by_userno"
+            : "favourited_by";
     }
 
     // Range search is not supported so should be split into two parts

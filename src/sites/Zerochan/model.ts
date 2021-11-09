@@ -75,7 +75,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
                         return "/" + formatSearch(query.search) + "?s=id&xml&" + pagePart;
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -119,7 +119,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
                         return "/" + formatSearch(query.search) + "?" + pagePart;
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },

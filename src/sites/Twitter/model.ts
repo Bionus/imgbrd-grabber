@@ -154,7 +154,7 @@ export const source: ISource = {
                             "screen_name=" + encodeURIComponent(search.user),
                         ];
                         return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
