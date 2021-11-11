@@ -40,6 +40,7 @@ class RenameExisting1 : public QDialog
 		QMap<QString, Site*> m_sites;
 		Filename m_filename;
 		int m_needDetails;
+		bool m_useIdKey;
 		QList<RenameExistingFile> m_details;
 		QMap<QString, RenameExistingFile> m_getAll;
 };

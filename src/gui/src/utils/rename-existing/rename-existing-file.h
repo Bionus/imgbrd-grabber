@@ -7,7 +7,7 @@
 
 struct RenameExistingFile
 {
-	QString md5;
+	QString key;
 	QString path;
 	QString newPath;
 	QStringList children;
