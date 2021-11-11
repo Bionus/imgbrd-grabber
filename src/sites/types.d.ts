@@ -239,8 +239,9 @@ interface IApi {
     };
     details?: {
         parseErrors?: boolean;
+        fullResults?: boolean;
         url: (id: string, md5: string, opts: IUrlDetailsOptions) => IUrl | IError | string;
-        parse: (src: string, statusCode: number) => IParsedDetails | IError;
+        parse: (src: string, statusCode: number) => IParsedDetails | IImage | IError;
     };
     gallery?: {
         parseErrors?: boolean;

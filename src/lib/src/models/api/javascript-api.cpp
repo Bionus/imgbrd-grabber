@@ -202,6 +202,60 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	return ret;
 }
 
+QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, Page *parentPage, int index, int first) const
+{
+	QList<Tag> tags;
+	QVariantMap data;
+
+	QMap<QString, QString> d;
+	QJSValueIterator it(raw);
+	while (it.hasNext()) {
+		it.next();
+
+		const QString &key = it.name();
+		const QJSValue &val = it.value();
+
+		if (val.isUndefined()) {
+			log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
+			continue;
+		}
+
+		if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
+			tags = makeTags(val, site);
+		} else if (key == QLatin1String("tokens")) {
+			QJSValueIterator dit(val);
+			while (dit.hasNext()) {
+				dit.next();
+				QVariant dval = dit.value().toVariant();
+				if (dit.value().isString() && dval.toString().startsWith("date:")) {
+					const QDateTime date = qDateTimeFromString(dval.toString().mid(5));
+					if (date.isValid()) {
+						dval = date;
+					}
+				}
+				if (dit.value().isString() && dval.toString().startsWith("b64:")) {
+					dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
+				}
+				data[dit.name()] = dval;
+			}
+		} else if (val.isArray()) {
+			d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
+		} else {
+			d[key] = val.toString();
+		}
+	}
+
+	if (!d.isEmpty()) {
+		const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(index));
+		QSharedPointer<Image> img = parseImage(site, parentPage, d, data, pos, tags);
+		if (!img.isNull()) {
+			return img;
+		}
+	}
+
+	return nullptr;
+}
+
 ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int statusCode, int first) const
 {
 	ParsedPage ret;
@@ -230,53 +284,9 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 		const QJSValue images = results.property("images");
 		const quint32 length = images.property("length").toUInt();
 		for (quint32 i = 0; i < length; ++i) {
-			QList<Tag> tags;
-			QVariantMap data;
-
-			QMap<QString, QString> d;
-			QJSValueIterator it(images.property(i));
-			while (it.hasNext()) {
-				it.next();
-
-				const QString &key = it.name();
-				const QJSValue &val = it.value();
-
-				if (val.isUndefined()) {
-					log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
-					continue;
-				}
-
-				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
-					tags = makeTags(val, site);
-				} else if (key == QLatin1String("tokens")) {
-					QJSValueIterator dit(val);
-					while (dit.hasNext()) {
-						dit.next();
-						QVariant dval = dit.value().toVariant();
-						if (dit.value().isString() && dval.toString().startsWith("date:")) {
-							const QDateTime date = qDateTimeFromString(dval.toString().mid(5));
-							if (date.isValid()) {
-								dval = date;
-							}
-						}
-						if (dit.value().isString() && dval.toString().startsWith("b64:")) {
-							dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
-						}
-						data[dit.name()] = dval;
-					}
-				} else if (val.isArray()) {
-					d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
-				} else {
-					d[key] = val.toString();
-				}
-			}
-
-			if (!d.isEmpty()) {
-				const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(i));
-				QSharedPointer<Image> img = parseImage(parentPage, d, data, pos, tags);
-				if (!img.isNull()) {
-					ret.images.append(img);
-				}
+			auto img = makeImage(images.property(i), site, parentPage, i, first);
+			if (!img.isNull()) {
+				ret.images.append(img);
 			}
 		}
 	}
@@ -495,6 +505,11 @@ bool JavascriptApi::canLoadDetails() const
 	QJSValue urlFunction = api.property("details").property("url");
 	return !urlFunction.isUndefined();
 }
+bool JavascriptApi::canLoadFullDetails() const
+{
+	return canLoadDetails()
+		&& getJsConst("details.fullResults").toBool();
+}
 
 PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site) const
 {
@@ -535,6 +550,12 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	// Script errors and exceptions
 	if (results.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	// Full details
+	if (canLoadFullDetails()) {
+		ret.image = makeImage(results, site);
 		return ret;
 	}
 

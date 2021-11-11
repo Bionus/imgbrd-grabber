@@ -80,6 +80,7 @@ class Site : public QObject
 		Source *getSource() const;
 		Api *firstValidApi() const;
 		Api *detailsApi() const;
+		Api *fullDetailsApi() const;
 		Api *tagsApi() const;
 
 		// Login

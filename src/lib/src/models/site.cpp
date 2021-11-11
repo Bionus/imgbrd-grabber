@@ -383,6 +383,15 @@ Api *Site::detailsApi() const
 	}
 	return nullptr;
 }
+Api *Site::fullDetailsApi() const
+{
+	for (Api *api : m_apis) {
+		if (api->canLoadFullDetails()) {
+			return api;
+		}
+	}
+	return nullptr;
+}
 Api *Site::tagsApi() const
 {
 	for (Api *api : m_apis) {
