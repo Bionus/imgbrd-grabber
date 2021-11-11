@@ -132,7 +132,12 @@ void SearchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 	QList<Tag> tagList;
 	QStringList tagsGot;
 	for (const auto &ps : pages) {
-		QList<Tag> tags = ps.last()->tags();
+		const auto page = ps.last();
+		if (!page->isValid()) {
+			continue;
+		}
+
+		QList<Tag> tags = page->tags();
 		for (const Tag &tag : tags) {
 			if (!tag.text().isEmpty()) {
 				// Add to auto-complete list if it has enough count
@@ -447,14 +452,14 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 
 		// Create the label when loading the first page
 		if (m_page == 1 && m_siteLabels.isEmpty()) {
-			QLabel *txt = new QLabel(this);
+			auto *txt = new QLabel(this);
 			txt->setOpenExternalLinks(true);
 			setMergedLabelText(txt, m_images);
 			m_siteLabels.insert(nullptr, txt);
 
 			ui_layoutResults->addWidget(txt, 0, 0);
 			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
-		} else {
+		} else if (!m_siteLabels.isEmpty()) {
 			setMergedLabelText(m_siteLabels[nullptr], m_images);
 		}
 	}
@@ -468,6 +473,9 @@ void SearchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imag
 	if (finished && page->isValid()) {
 		bool allFinished = true;
 		for (auto ps : qAsConst(m_pages)) {
+			if (!ps.first()->isValid() || !ps.last()->isValid()) {
+				continue;
+			}
 			const int pagesCount = ps.first()->pagesCount();
 			const int imagesPerPage = ps.first()->imagesPerPage();
 			if ((ps.last()->page() < pagesCount || pagesCount == -1) && ps.last()->pageImageCount() >= imagesPerPage) {
@@ -711,6 +719,10 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 
 	for (const auto &ps : qAsConst(m_pages)) {
 		const QSharedPointer<Page> first = ps.first();
+		if (!first->isValid()) {
+			continue;
+		}
+
 		const int imagesCount = first->imagesCount();
 		if (imagesCount > 0) {
 			sumImages += first->imagesCount();
@@ -737,7 +749,9 @@ void SearchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	} else {
 		for (const auto &ps : qAsConst(m_pages)) {
 			const auto &p = ps.last();
-			links += QString(!links.isEmpty() ? ", " : QString()) + "<a href=\"" + p->url().toString().toHtmlEscaped() + "\">" + p->site()->name() + "</a>";
+			if (p->isValid()) {
+				links += QString(!links.isEmpty() ? ", " : QString()) + "<a href=\"" + p->url().toString().toHtmlEscaped() + "\">" + p->site()->name() + "</a>";
+			}
 		}
 	}
 
@@ -1293,6 +1307,17 @@ void SearchTab::loadPage()
 	const int currentPage = ui_spinPage->value() + m_endlessLoadOffset;
 	setEndlessLoadingMode(false);
 
+	m_page = 0;
+
+	// Reset merged state
+	if (merged && ui_progressMergeResults != nullptr) {
+		ui_progressMergeResults->setValue(0);
+		ui_progressMergeResults->setMaximum(m_pages.count());
+	}
+	if (ui_stackedMergeResults != nullptr) {
+		ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1);
+	}
+
 	for (Site *site : loadSites()) {
 		// Stored URL
 		SearchQuery query = m_lastQuery;
@@ -1345,15 +1370,6 @@ void SearchTab::loadPage()
 	}
 	if (merged && !m_layouts.empty() && m_endlessLoadOffset == 0) {
 		addLayout(m_layouts[nullptr], 1, 0);
-	}
-	m_page = 0;
-
-	if (merged && ui_progressMergeResults != nullptr) {
-		ui_progressMergeResults->setValue(0);
-		ui_progressMergeResults->setMaximum(m_pages.count());
-	}
-	if (ui_stackedMergeResults != nullptr) {
-		ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1);
 	}
 }
 
