@@ -27,6 +27,7 @@ class RenameExisting1 : public QDialog
 	private slots:
 		void getAll(Page *p);
 		void getTags();
+		void fullDetailsFinished();
 		void loadNext();
 		void on_buttonCancel_clicked();
 		void on_buttonContinue_clicked();

@@ -10,11 +10,13 @@
 #include "helpers.h"
 #include "loader/token.h"
 #include "logger.h"
+#include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 #include "utils/rename-existing/rename-existing-2.h"
 
 
@@ -154,6 +156,40 @@ void RenameExisting1::getTags()
 	setImageResult(img);
 }
 
+void RenameExisting1::fullDetailsFinished()
+{
+	auto *reply = qobject_cast<NetworkReply*>(sender());
+
+	// Network error
+	if (reply->error()) {
+		if (reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
+			log(QStringLiteral("Loading full image details error for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
+		}
+		reply->deleteLater();
+		loadNext();
+		return;
+	}
+
+	// Extract data from reply and clean it up
+	const QString source = QString::fromUtf8(reply->readAll());
+	const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	reply->deleteLater();
+
+	// Parse response
+	Site *site = m_sites.value(ui->comboSource->currentText());
+	Api *api = site->fullDetailsApi();
+	ParsedDetails parsed = api->parseDetails(source, statusCode, site);
+
+	// Parsing error
+	if (!parsed.error.isEmpty()) {
+		log(QStringLiteral("Error loading full image details: %1").arg(parsed.error), Logger::Error);
+		loadNext();
+		return;
+	}
+
+	setImageResult(parsed.image.data());
+}
+
 void RenameExisting1::setImageResult(Image *img)
 {
 	const QString &key = m_useIdKey ? QString::number(img->id()) : img->md5();
@@ -178,8 +214,20 @@ void RenameExisting1::loadNext()
 		const RenameExistingFile det = m_details.takeFirst();
 		m_getAll.insert(det.key, det);
 
+		Site *site = m_sites.value(ui->comboSource->currentText());
+
+		// Try to load the image details from the full details API if available
+		Api *api = site->fullDetailsApi();
+		if (api != nullptr) {
+			QString url = api->detailsUrl(m_useIdKey ? det.key.toLongLong() : 0, !m_useIdKey ? det.key : "", site).url;
+			NetworkReply *reply = site->get(url, Site::QueryType::Details);
+			connect(reply, &NetworkReply::finished, this, &RenameExisting1::fullDetailsFinished);
+			return;
+		}
+
+		// Otherwise, try a "key:VAL" search using the listing API
 		QStringList query(QString(m_useIdKey ? "id" : "md5") + ":" + det.key);
-		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), query, 1, 1);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, 1, 1);
 		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
 
