@@ -904,7 +904,7 @@ QString getFileMd5(const QString &path)
 	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 }
 
-QString getFilenameMd5(const QString &fileName, const QString &format)
+QString getFilenameToken(const QString &fileName, const QString &format, const QString &token, const QString &regex = ".+")
 {
 	QString reg = "^" + QRegExp::escape(format) + "$";
 	#ifdef Q_OS_WIN
@@ -915,19 +915,27 @@ QString getFilenameMd5(const QString &fileName, const QString &format)
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
-		const bool isMd5 = match.captured(1) == QLatin1String("md5");
-		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>[0-9A-F]{32,})") : QStringLiteral("(.+?)"));
+		const bool isToken = match.captured(1) == token;
+		reg.replace(match.captured(0), isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
 	}
 
 	const QRegularExpression rx(reg, QRegularExpression::CaseInsensitiveOption);
 	const auto match = rx.match(fileName);
 	if (match.hasMatch()) {
-		return match.captured("md5");
+		return match.captured("token");
 	} else {
-		log(QStringLiteral("Unable to detect MD5 file `%1`").arg(fileName), Logger::Warning);
+		log(QStringLiteral("Unable to detect %1 file `%2`").arg(token, fileName), Logger::Warning);
 	}
 
 	return QString();
+}
+QString getFilenameMd5(const QString &fileName, const QString &format)
+{
+	return getFilenameToken(fileName, format, "md5", "[0-9A-F]{32,}");
+}
+QString getFilenameId(const QString &fileName, const QString &format)
+{
+	return getFilenameToken(fileName, format, "id", "[0-9]+");
 }
 
 

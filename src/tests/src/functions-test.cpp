@@ -427,6 +427,7 @@ TEST_CASE("Functions")
 		REQUIRE(getFilenameMd5("", "%md5%.%ext%") == QString());
 		REQUIRE(getFilenameMd5("lol.jpg", "%md5%.%ext%") == QString());
 		REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%") == QString());
+		REQUIRE(getFilenameMd5("123456789", "%md5%") == QString());
 
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6", "%md5%") == QString("098f6bcd4621d373cade4e832627b4f6"));
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
@@ -434,6 +435,21 @@ TEST_CASE("Functions")
 
 		#ifdef Q_OS_WIN
 			REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%\\%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
+		#endif
+	}
+	SECTION("GetFilenameId")
+	{
+		REQUIRE(getFilenameId("", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("lol.jpg", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("test/123456789.jpg", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("098f6bcd4621d373cade4e832627b4f6", "%id%") == QString());
+
+		REQUIRE(getFilenameId("123456789", "%id%") == QString("123456789"));
+		REQUIRE(getFilenameId("123456789.jpg", "%id%.%ext%") == QString("123456789"));
+		REQUIRE(getFilenameId("test/123456789.jpg", "%artist%/%id%.%ext%") == QString("123456789"));
+
+		#ifdef Q_OS_WIN
+			REQUIRE(getFilenameId("test/123456789.jpg", "%artist%\\%id%.%ext%") == QString("123456789"));
 		#endif
 	}
 
