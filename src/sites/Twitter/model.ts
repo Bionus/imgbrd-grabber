@@ -186,6 +186,16 @@ export const source: ISource = {
                     };
                 },
             },
+            details: {
+                fullResults: true,
+                url: (id: string): string => {
+                    return "/1.1/statuses/show.json?id=" + id + "&tweet_mode=extended";
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src);
+                    return parseTweet(data, true);
+                },
+            },
         },
     },
 };
