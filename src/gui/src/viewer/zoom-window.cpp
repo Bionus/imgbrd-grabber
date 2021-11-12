@@ -313,7 +313,7 @@ void ZoomWindow::configureButtons()
 		if (maxColPos.at(i) + spans.at(i).back() > biggestMaxColPos) {
 			biggestMaxRow = i;
 			biggestMaxColPos = maxColPos.at(i) + spans.at(i).back();
-			log( ( "biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back()) ).c_str() );
+			log(("biggestMaxColPos = " + std::to_string(maxColPos.at(i) + spans.at(i).back()) + " = " + std::to_string(maxColPos.at(i)) + " + " + std::to_string(spans.at(i).back())).c_str(), Logger::Debug);
 		}
 
 		maxColPos.at(i) += spans.at(i).back();	// Redefine as end, rather than beginning, position.
@@ -329,7 +329,7 @@ void ZoomWindow::configureButtons()
 
 	//  If there are buttons in the drawer, we add the "+" button
 	if (!m_drawerButtons.empty()) {
-		log( ( "Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2) ).c_str() );
+		log(("Adding buttonPlus to grid: " + std::to_string(maxColPos.size()) + "," + std::to_string(ui->buttonsLayout->columnCount()/2) + ",1," + std::to_string(ui->buttonsLayout->columnCount()%2 ? 1 : 2)).c_str(), Logger::Debug);
 		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
 		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
 		ui->buttonPlus->setChecked(drawerIsOpen);
@@ -361,15 +361,15 @@ void ZoomWindow::configureButtons()
 		ui->buttonsLayout->getItemPosition(ui->buttonsLayout->indexOf(button), &originRow, &originCol, &originRowSpan, &originColSpan);
 		// Note: these spanSum values may not account for the width of the last button on each row. Not sure if important.
 		unsigned short offset = ( spanSum.at(biggestMaxRow) - spanSum.at(originRow) ) / 2;	// Row content is centred-- offset using free space on left side.
-		log( ( "Total diff from reference = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow)) ).c_str() );
+		log(("Total diff from reference = " + std::to_string(spanSum.at(biggestMaxRow)) + " - " + std::to_string(spanSum.at(originRow))).c_str(), Logger::Debug);
 		if (offset != 0) {
-			//if (rescalingOffset.at(originRow)) log( ( "rescalingOffset.at(row) = " + std::to_string(rescalingOffset.at(originRow)) ).c_str() );
+			//if (rescalingOffset.at(originRow)) log(("rescalingOffset.at(row) = " + std::to_string(rescalingOffset.at(originRow))).c_str(), Logger::Debug);
 			unsigned short newCol = originCol + offset;
-			log( ( "Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol) ).c_str() );
+			log(("Repositioning button on row " + std::to_string(originRow) + " : " + std::to_string(originCol) + " -> " + std::to_string(newCol)).c_str(), Logger::Debug);
 			//unsigned short newCol = originCol + offset + rescalingOffset.at(originRow);
 			ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);
 			/*if (biggestIsOdd ^ spans.at(originRow).size()%2) {	// Adjust spans and starting columns to compensate for mismatched numbers of buttons on rows.
-				log("Rescaling due to even/odd mismatch with reference row.");
+				log("Rescaling due to even/odd mismatch with reference row.", Logger::Debug);
 				ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan + 1);	// Buttons aren't in order!
 				rescalingOffset.at(originRow)++;
 			} else ui->buttonsLayout->addWidget(button, originRow, newCol, originRowSpan, originColSpan);*/
@@ -420,7 +420,7 @@ void ZoomWindow::configureButtons()
 				break;
 			default :
 				state->function = nullptr;
-				log(QStringLiteral("Failed to set function for unknown button type '%1'").arg(it.second.type));
+				log(QStringLiteral("Failed to set function for unknown button type '%1'").arg(it.second.type), Logger::Error);
 				continue;
 		}
 
