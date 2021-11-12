@@ -224,17 +224,14 @@ export const source: ISource = {
                 },
             },
             details: {
+                fullResults: true,
                 url: (id: string, md5: string): string => {
                     if (id === "" || id === "0") { return ""; } // Gallery images don't have an ID
                     return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
                 },
-                parse: (src: string): IParsedDetails => {
+                parse: (src: string): IImage => {
                     const data = JSON.parse(src)["response"][0];
-                    return {
-                        imageUrl: data["is_manga"] ? undefined : data["image_urls"]["large"],
-                        tags: data["tags"],
-                        createdAt: data["created_time"],
-                    };
+                    return parseImage(data, false);
                 },
             },
         },
