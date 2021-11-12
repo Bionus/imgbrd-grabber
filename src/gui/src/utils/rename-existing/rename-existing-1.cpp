@@ -163,7 +163,7 @@ void RenameExisting1::fullDetailsFinished()
 	// Network error
 	if (reply->error()) {
 		if (reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
-			log(QStringLiteral("Loading full image details error for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
+			log(QStringLiteral("Error loading full image details for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
 		}
 		reply->deleteLater();
 		loadNext();
@@ -220,6 +220,7 @@ void RenameExisting1::loadNext()
 		Api *api = site->fullDetailsApi();
 		if (api != nullptr) {
 			QString url = api->detailsUrl(m_useIdKey ? det.key.toLongLong() : 0, !m_useIdKey ? det.key : "", site).url;
+			log(QStringLiteral("Loading full image details from `%1`").arg(url), Logger::Info);
 			NetworkReply *reply = site->get(url, Site::QueryType::Details);
 			connect(reply, &NetworkReply::finished, this, &RenameExisting1::fullDetailsFinished);
 			return;
