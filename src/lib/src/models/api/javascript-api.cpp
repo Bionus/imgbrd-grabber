@@ -556,6 +556,12 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	// Full details
 	if (canLoadFullDetails()) {
 		ret.image = makeImage(results, site);
+
+		// "Backward compatibility" for older call sites
+		ret.tags = ret.image->tags();
+		ret.imageUrl = ret.image->fileUrl().toString();
+		ret.createdAt = ret.image->createdAt();
+
 		return ret;
 	}
 
