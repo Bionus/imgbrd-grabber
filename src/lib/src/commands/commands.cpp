@@ -156,6 +156,7 @@ bool Commands::execute(const QString &command) const
 		QString program = args.takeFirst();
 
 		QProcess proc;
+		proc.setProcessChannelMode(QProcess::MergedChannels);
 		proc.start(program, args);
 
 		if (!proc.waitForFinished()) {
