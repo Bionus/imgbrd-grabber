@@ -32,24 +32,22 @@ Don't forget to update the `MOUNT_` variables in the `.env` file.
 ## Install NodeJS
 
 You need NodeJS to be installed on your maching to use the upload script used by Grabber.
-Just run the installer you can find on their website: https://nodejs.org/en/
-
-On Linux, you can just do:
-```
-sudo apt-get install nodejs
-```
+You can download it from [their website](https://nodejs.org/en/download/), or from a package manager [here](https://nodejs.org/en/download/package-manager/).
 
 
 ## Download the upload script
 
 Download the [szurubooru.js](szurubooru.js) file into Grabber's installation folder.
 
-Note that this script uses the NodeJS "axios" and "form-data" plugins, so install them with:
+
+## Install NodeJS global packages
+
+This script uses the NodeJS "axios" and "form-data" plugins, so you can install them with:
 ```
 npm install -g axios form-data
 ```
 
-Make sure the NODE_PATH environment variable is properly set to point to your global node_modules folder. On Windows, it's usually:
+Make sure the `NODE_PATH` environment variable is properly set to point to your global node_modules folder. On Windows, it's usually:
 ```
 C:\Users\%USERNAME%\AppData\Roaming\npm\node_modules
 ```
