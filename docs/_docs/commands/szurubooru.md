@@ -11,42 +11,17 @@ title: Szurubooru
 
 # Szurubooru
 
-ℹ️ Note that this is inspired by the official [INSTALL.md](https://github.com/rr-/szurubooru/blob/master/doc/INSTALL.md) file, so feel free to refer to the official install documentation instead.
+## Install
+Follow the official [INSTALL.md](https://github.com/rr-/szurubooru/blob/master/doc/INSTALL.md) documentation from the Szurubooru repository.
+Note that you'll need to have [Docker](https://docs.docker.com/get-docker/) installed.
 
-
-## Install Docker
-
-You need Docker to be installed on your maching to use Szurubooru. Setup instructions can be found here for Windows: https://docs.docker.com/docker-for-windows/install/
-
-
-## Download Szurubooru
-
-* Download [the Git archive](https://github.com/rr-/szurubooru/archive/master.zip) and unzip it somewhere
-* Open Docker settings, and in "Resources > File sharing", add the Szurubooru directory
-* Copy `server/config.yaml.dist` to `server/config.yaml`
-* Copy `doc/example.env` to `.env` (at the root directory)
-
-
-## Setup the data directory
-
-Create a `data` directory somewhere (for example, at the root directory of Szurubooru). Note that this will be where all the images are stored!
-
-Set the `MOUNT_DATA` environment variable to point to the `data` directory (on Windows: right click "This computer > Properties > Advanced system settings > Environment Variables")
-
-
-## Run
-
-* Open a terminal in the Szurubooru directory
-* Run `docker-compose pull`
-* Run `docker-compose up -d`
-
-You're done! You should be able to access Szurubooru in your browser at <http://localhost:8080/>
+Don't forget to update the `MOUNT_` variables in the `.env` file.
 
 
 ## Configuration
 
 * Create an account on the [registration page](http://localhost:8080/register), you should automatically be an administrator
-* Create tag categories in the [tag categories page](http://localhost:8080/tag-categories) (it is recommended to at least add the "character", "copyright", and "artist" categories)
+* Create tag categories in the [tag categories page](http://localhost:8080/tag-categories), it is recommended to at least add the "character", "copyright", "artist", and "meta" categories, as well as renaming "default" to "general"
 * Create a token with a very late expiration date in "Account > Login tokens"
 
 
