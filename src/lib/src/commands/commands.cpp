@@ -159,12 +159,8 @@ bool Commands::execute(const QString &command) const
 		proc.start(program, args);
 
 		// Connect command output to logs
-		QObject::connect(&proc, &QProcess::readyReadStandardOutput, [&proc]() {
-			log(QStringLiteral("[Command stdout] %1").arg(QString(proc.readAllStandardOutput())), Logger::Debug);
-		});
-		QObject::connect(&proc, &QProcess::readyReadStandardError, [&proc]() {
-			log(QStringLiteral("[Command stderr] %1").arg(QString(proc.readAllStandardError())), Logger::Error);
-		});
+		QObject::connect(&proc, &QProcess::readyReadStandardOutput, [&proc]() { log(QStringLiteral("[Command stdout] %1").arg(QString(proc.readAllStandardOutput())), Logger::Debug); });
+		QObject::connect(&proc, &QProcess::readyReadStandardError, [&proc]() { log(QStringLiteral("[Command stderr] %1").arg(QString(proc.readAllStandardError())), Logger::Error); });
 
 		// Wait for  the command to finish 30s
 		if (!proc.waitForFinished()) {
