@@ -72,8 +72,20 @@ QStringList splitCommand(const QString &command)
 	int quoteCount = 0;
 	QChar lastQuote;
 	bool inQuote = false;
+	bool inEscape = false;
 
 	for (const QChar c : command) {
+		// Escape character (\)
+		if (c == QLatin1Char('\\') && !inEscape) {
+			inEscape = true;
+			continue;
+		}
+		if (inEscape) {
+			inEscape = false;
+			tmp += c;
+			continue;
+		}
+
 		// Count quotes
 		if ((c == QLatin1Char('"') || c == QLatin1Char('\'')) && (c == lastQuote || lastQuote.isNull())) {
 			++quoteCount;

@@ -499,6 +499,13 @@ TEST_CASE("Functions")
 			REQUIRE(splitCommand("a b c") == QStringList { "a", "b", "c" });
 		}
 
+		SECTION("Backslash escape")
+		{
+			REQUIRE(splitCommand("a\\ b c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a\\\\ b c") == QStringList { "a\\", "b", "c" });
+			REQUIRE(splitCommand("\\\"a b\\\" c") == QStringList { "\"a", "b\"", "c" });
+		}
+
 		SECTION("Double quote escape")
 		{
 			REQUIRE(splitCommand("\"a b\" c") == QStringList { "a b", "c" });
