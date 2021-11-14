@@ -156,16 +156,25 @@ bool Commands::execute(const QString &command) const
 		QString program = args.takeFirst();
 
 		QProcess proc;
-		proc.setProcessChannelMode(QProcess::MergedChannels);
 		proc.start(program, args);
 
+		// Connect command output to logs
+		QObject::connect(&proc, &QProcess::readyReadStandardOutput, [&proc]() {
+			log(QStringLiteral("[Command stdout] %1").arg(QString(proc.readAllStandardOutput())), Logger::Debug);
+		});
+		QObject::connect(&proc, &QProcess::readyReadStandardError, [&proc]() {
+			log(QStringLiteral("[Command stderr] %1").arg(QString(proc.readAllStandardError())), Logger::Error);
+		});
+
+		// Wait for  the command to finish 30s
 		if (!proc.waitForFinished()) {
 			log(QStringLiteral("Command execution timeout"), Logger::Error);
 		}
 
+		// Check the return code for error codes (stderr output does not cause a "false" return)
 		const int code = proc.exitCode();
 		if (code != 0) {
-			log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+			log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
 			return false;
 		}
 
