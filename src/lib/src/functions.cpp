@@ -70,30 +70,43 @@ QStringList splitCommand(const QString &command)
 
 	QString tmp;
 	int quoteCount = 0;
+	QChar lastQuote;
 	bool inQuote = false;
 
-	for (int i = 0; i < command.size(); ++i) {
-		if (command.at(i) == QLatin1Char('"')) {
+	for (const QChar c : command) {
+		// Count quotes
+		if ((c == QLatin1Char('"') || c == QLatin1Char('\'')) && (c == lastQuote || lastQuote.isNull())) {
 			++quoteCount;
+			lastQuote = c;
+
+			// Allow escaping quotes using triple quotes
 			if (quoteCount == 3) {
 				quoteCount = 0;
-				tmp += command.at(i);
+				tmp += c;
 			}
 			continue;
 		}
+
 		if (quoteCount) {
+			// If the previous character was only one quote
 			if (quoteCount == 1) {
 				inQuote = !inQuote;
 			}
+
+			// This means we saw  two quotes in a row, which are ignored
 			quoteCount = 0;
 		}
-		if (!inQuote && command.at(i).isSpace()) {
+
+		// If we finally reached a space outside a quoted argument, we flush
+		if (!inQuote && c.isSpace()) {
 			args += tmp;
 			tmp.clear();
 		} else {
-			tmp += command.at(i);
+			tmp += c;
 		}
 	}
+
+	// Flush the last argument
 	if (!tmp.isEmpty()) {
 		args += tmp;
 	}

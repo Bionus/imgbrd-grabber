@@ -489,4 +489,39 @@ TEST_CASE("Functions")
 		REQUIRE(decodeHtmlEntities("pok&eacute;mon") == QString("pokémon"));
 		REQUIRE(decodeHtmlEntities("a&amp;b") == QString("a&b"));
 	}
+
+	SECTION("splitCommand")
+	{
+		SECTION("Basic usage")
+		{
+			REQUIRE(splitCommand("") == QStringList {});
+			REQUIRE(splitCommand("a") == QStringList { "a" });
+			REQUIRE(splitCommand("a b c") == QStringList { "a", "b", "c" });
+		}
+
+		SECTION("Double quote escape")
+		{
+			REQUIRE(splitCommand("\"a b\" c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a \"b c\"") == QStringList { "a", "b c" });
+			REQUIRE(splitCommand("\"a b c\"") == QStringList { "a b c" });
+			REQUIRE(splitCommand("\"a b \"\"\" c\"") == QStringList { "a b \" c" });
+		}
+
+		SECTION("Single quote escape")
+		{
+			REQUIRE(splitCommand("'a b' c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a 'b c'") == QStringList { "a", "b c" });
+			REQUIRE(splitCommand("'a b c'") == QStringList { "a b c" });
+			REQUIRE(splitCommand("'a b ''' c'") == QStringList { "a b ' c" });
+		}
+
+		SECTION("Mixed quotes escape")
+		{
+			REQUIRE(splitCommand("'a \"b\"' c") == QStringList { "a \"b\"", "c" });
+			REQUIRE(splitCommand("a '\"b\" c'") == QStringList { "a", "\"b\" c" });
+			REQUIRE(splitCommand("\"a 'b'\" c") == QStringList { "a 'b'", "c" });
+			REQUIRE(splitCommand("a \"'b' c\"") == QStringList { "a", "'b' c" });
+			REQUIRE(splitCommand("a \"'b' \"\"\" c\"") == QStringList { "a", "'b' \" c" });
+		}
+	}
 }
