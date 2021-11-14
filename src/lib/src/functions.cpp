@@ -103,9 +103,12 @@ QStringList splitCommand(const QString &command)
 			// If the previous character was only one quote
 			if (quoteCount == 1) {
 				inQuote = !inQuote;
+				if (!inQuote) {
+					lastQuote = QChar();
+				}
 			}
 
-			// This means we saw  two quotes in a row, which are ignored
+			// This means we saw two quotes in a row, which are ignored
 			quoteCount = 0;
 		}
 

@@ -524,6 +524,7 @@ TEST_CASE("Functions")
 
 		SECTION("Mixed quotes escape")
 		{
+			REQUIRE(splitCommand("'a' b \"c\"") == QStringList { "a", "b", "c" });
 			REQUIRE(splitCommand("'a \"b\"' c") == QStringList { "a \"b\"", "c" });
 			REQUIRE(splitCommand("a '\"b\" c'") == QStringList { "a", "\"b\" c" });
 			REQUIRE(splitCommand("\"a 'b'\" c") == QStringList { "a 'b'", "c" });
