@@ -1029,6 +1029,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	const TagFilterList &remove = profile->getRemovedTags();
 
 	QMap<QString, Token> tokens;
+	QMap<QString, QStringList> details;
 
 	// Pool
 	static const QRegularExpression poolRegexp("pool:(\\d+)");
@@ -1065,19 +1066,19 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 	tokens.insert("search", Token(m_search.join(' ')));
 
+	// Raw untouched tags (with underscores)
+	for (const Tag &tag : m_tags) {
+		details["allos"].append(QString(tag.text()).replace(' ', '_'));
+	}
+
 	// Tags
 	const auto tags = remove.filterTags(m_tags);
-	QMap<QString, QStringList> details;
 	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);
 		details["alls_namespaces"].append(tag.type().name());
-
-		QString underscored = QString(t);
-		underscored.replace(' ', '_');
-		details["allos"].append(underscored);
 	}
 
 	// Shorten copyrights
