@@ -212,6 +212,10 @@ QString FilenameExecutionVisitor::variableToString(const QString &name, T val, c
 		? QString("%1").arg(val, options["length"].toInt(), 10, QChar('0'))
 		: QString::number(val);
 }
+template QString FilenameExecutionVisitor::variableToString<int>(const QString &name, int val, const QMap<QString, QString> &options);
+template QString FilenameExecutionVisitor::variableToString<uint>(const QString &name, uint val, const QMap<QString, QString> &options);
+template QString FilenameExecutionVisitor::variableToString<qlonglong>(const QString &name, qlonglong val, const QMap<QString, QString> &options);
+template QString FilenameExecutionVisitor::variableToString<qulonglong>(const QString &name, qulonglong val, const QMap<QString, QString> &options);
 
 QString FilenameExecutionVisitor::variableToString(const QString &name, QStringList val, const QMap<QString, QString> &options)
 {
