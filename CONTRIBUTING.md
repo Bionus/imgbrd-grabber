@@ -70,7 +70,7 @@ Start by follwing the [Reporting Bugs](#reporting-bugs) guidelines. Additionally
 If you want to ensure your pull request is merged in a timely manner, it is better to follow a few guidelines:
 
 * **Use an explicit commit message**, to help maintainers understand what your pull request is about.
-* **If you changed the code, make sure the program still passes the tests**. They are run automatically on Travis in any case, but your pull request won't be merged if the tests are broken.
+* **If you changed the code, make sure the program still passes the tests**. They are run automatically on Github Actions in any case, but your pull request won't be merged if the tests are broken.
 * **Follow the coding style of the project**. There is no fixed coding style, but please try to adapt to the code of the project.
 * **Document the code** if what you added is not obvious.
 * **If your pull request is complex, add a detailed description**. You can either add it in your commit message or in the Github discussion.

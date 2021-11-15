@@ -9,12 +9,6 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Disable Google Breakpad and QScintilla on Linux builds
-if(DEFINED ENV{TRAVIS})
-	set(USE_BREAKPAD 0)
-	set(USE_QSCINTILLA 0)
-endif()
-
 # Disable Google Breakpad if the provided folder does not exist
 if(USE_BREAKPAD)
 	if(NOT DEFINED BREAKPAD)
