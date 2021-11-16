@@ -83,18 +83,39 @@ QVariant MonitorTableModel::data(const QModelIndex &index, int role) const
 	const Monitor &monitor = m_monitorManager->monitors()[row];
 
 	// Icon in the first column
-	if (role == Qt::DecorationRole && index.column() == 0) {
-		static const QMap<MonitoringCenter::MonitoringStatus, QIcon> s_iconMap
+	if (role == Qt::DecorationRole) {
+		switch (index.column())
 		{
-			{ MonitoringCenter::Waiting, QIcon(":/images/status/pending.png") },
-			{ MonitoringCenter::Checking, QIcon(":/images/status/downloading.png") },
-			{ MonitoringCenter::Performing, QIcon(":/images/status/ok.png") },
-		};
-		auto status = m_statuses.contains(row) ? m_statuses[row] : MonitoringCenter::Waiting;
-		if (!s_iconMap.contains(status)) {
-			return {};
+			case 0: {
+				static const QMap<MonitoringCenter::MonitoringStatus, QIcon> s_statusIconMap
+				{
+					{MonitoringCenter::Waiting, QIcon(":/images/status/pending.png")},
+					{MonitoringCenter::Checking, QIcon(":/images/status/downloading.png")},
+					{MonitoringCenter::Performing, QIcon(":/images/status/ok.png")},
+				};
+				const auto status = m_statuses.contains(row) ? m_statuses[row] : MonitoringCenter::Waiting;
+				if (!s_statusIconMap.contains(status)) {
+					return {};
+				}
+				return s_statusIconMap[status];
+			}
+
+			case 8: {
+				static const QMap<QString, QIcon> s_lastStateIconMap
+				{
+					{"empty", QIcon(":/images/status/error.png")},
+					{"finished", QIcon(":/images/status/ignored.png")},
+					{"ok", QIcon(":/images/status/ok.png")},
+					{"mixed", QIcon(":/images/status/unknown.png")},
+				};
+				const QString lastState = monitor.lastState();
+				if (!s_lastStateIconMap.contains(lastState)) {
+					return {};
+				}
+				return s_lastStateIconMap[lastState];
+			}
 		}
-		return s_iconMap[status];
+		return {};
 	}
 
 	if (role != Qt::DisplayRole) {
