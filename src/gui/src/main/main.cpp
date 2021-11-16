@@ -84,14 +84,6 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	// Use fixed point size for high-DPI screens
-	#ifdef Q_OS_WIN
-		QFont font = app.font();
-		font.setPointSize(10);
-		font.setPointSizeF(9.75);
-		app.setFont(font);
-	#endif
-
 	qRegisterMetaType<PageApi::LoadResult>("LoadResult");
 	qRegisterMetaTypeStreamOperators<QList<ButtonSettings>>("QList<ButtonSettings>");
 

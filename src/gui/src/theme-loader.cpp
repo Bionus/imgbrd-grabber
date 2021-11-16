@@ -1,5 +1,6 @@
 #include "theme-loader.h"
 #include <QApplication>
+#include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
 
@@ -18,11 +19,22 @@ QStringList ThemeLoader::getAllThemes() const
 
 bool ThemeLoader::setTheme(const QString &name)
 {
+	QString defaultStyleSheet;
+
+	#ifdef Q_OS_WIN
+		// Use a minimum font-size of 9pt for all elements on scaled screens
+		double screenRatio = (qApp->desktop()->logicalDpiX() * qApp->devicePixelRatio()) / 96.0;
+		if (screenRatio > 1.0) {
+			defaultStyleSheet = "* { font-size: 9pt; }";
+		}
+	#endif
+
 	const QString dir = QString(m_path).replace('\\', '/') + name + "/";
 	const QString cssFile = dir + "style.css";
 
 	QFile f(cssFile);
 	if (!f.open(QFile::ReadOnly | QFile::Text)) {
+		qApp->setStyleSheet(defaultStyleSheet);
 		return false;
 	}
 
@@ -42,7 +54,7 @@ bool ThemeLoader::setTheme(const QString &name)
 		m_watcher.addPath(cssFile);
 	}
 
-	qApp->setStyleSheet(css);
+	qApp->setStyleSheet(defaultStyleSheet + css);
 	return true;
 }
 
