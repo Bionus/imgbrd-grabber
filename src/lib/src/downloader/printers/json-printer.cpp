@@ -42,14 +42,14 @@ void JsonPrinter::print(const QList<QSharedPointer<Image>> &images) const
 	printArray(jsonArray);
 }
 
-void JsonPrinter::print(const Tag &tag) const
+void JsonPrinter::print(const Tag &tag, Site *site) const
 {
 	QJsonObject jsonTag;
 	tag.write(jsonTag);
 	printObject(jsonTag);
 }
 
-void JsonPrinter::print(const QList<Tag> &tags) const
+void JsonPrinter::print(const QList<Tag> &tags, Site *site) const
 {
 	QJsonArray jsonArray;
 	for (const Tag &tag : tags) {

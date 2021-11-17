@@ -38,7 +38,7 @@ void SimplePrinter::print(const QList<QSharedPointer<Image>> &images) const
 	}
 }
 
-void SimplePrinter::print(const Tag &tag) const
+void SimplePrinter::print(const Tag &tag, Site *site) const
 {
 	QString ret = m_tagsFormat;
 	ret.replace("\\t", "\t");
@@ -47,13 +47,13 @@ void SimplePrinter::print(const Tag &tag) const
 	ret.replace("%tag", tag.text());
 	ret.replace("%count", QString::number(tag.count()));
 	ret.replace("%type", tag.type().name());
-	ret.replace("%stype", QString::number(tag.type().number()));
+	ret.replace("%stype", QString::number(tag.type().number(site)));
 	print(ret);
 }
 
-void SimplePrinter::print(const QList<Tag> &tags) const
+void SimplePrinter::print(const QList<Tag> &tags, Site *site) const
 {
 	for (const Tag &tag : tags) {
-		print(tag);
+		print(tag, site);
 	}
 }

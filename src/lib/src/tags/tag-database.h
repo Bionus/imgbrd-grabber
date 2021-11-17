@@ -26,6 +26,7 @@ class TagDatabase
 		virtual QMap<QString, int> getTagIds(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
 		const QMap<int, TagType> &tagTypes() const;
+		int getTagTypeNumber(const TagType &type);
 
 	protected:
 		explicit TagDatabase(QString typeFile);

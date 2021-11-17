@@ -78,7 +78,7 @@ TEST_CASE("Tag")
 	{
 		Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
-		REQUIRE(tag.type().number() == 1);
+		REQUIRE(tag.type().number(nullptr) == 1);
 	}
 	SECTION("SetType")
 	{

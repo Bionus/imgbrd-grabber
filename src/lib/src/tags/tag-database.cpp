@@ -49,3 +49,8 @@ const QMap<int, TagType> &TagDatabase::tagTypes() const
 {
 	return m_tagTypeDatabase.getAll();
 }
+
+int TagDatabase::getTagTypeNumber(const TagType &type)
+{
+	return m_tagTypeDatabase.get(type, false);
+}

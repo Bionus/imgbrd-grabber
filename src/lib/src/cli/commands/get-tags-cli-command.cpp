@@ -62,7 +62,7 @@ void GetTagsCliCommand::run()
 		}
 	}
 
-	m_printer->print(results);
+	m_printer->print(results, nullptr);
 
 	emit finished(0);
 }

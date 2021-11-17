@@ -10,6 +10,7 @@ class Image;
 class Profile;
 class QJsonArray;
 class QJsonObject;
+class Site;
 class Tag;
 
 class JsonPrinter : public Printer
@@ -22,8 +23,8 @@ class JsonPrinter : public Printer
 
 		void print(const Image &val) const override;
 		void print(const QList<QSharedPointer<Image>> &images) const override;
-		void print(const Tag &tag) const override;
-		void print(const QList<Tag> &tags) const override;
+		void print(const Tag &tag, Site *site) const override;
+		void print(const QList<Tag> &tags, Site *site) const override;
 
 	protected:
 		void printArray(const QJsonArray &array) const;

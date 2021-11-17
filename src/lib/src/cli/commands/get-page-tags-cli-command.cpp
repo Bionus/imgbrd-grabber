@@ -50,7 +50,7 @@ void GetPageTagsCliCommand::run()
 		}
 	}
 
-	m_printer->print(tags);
+	m_printer->print(tags, nullptr);
 
 	emit finished(0);
 }

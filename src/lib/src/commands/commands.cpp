@@ -6,6 +6,7 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
+#include "models/image.h"
 #include "models/profile.h"
 #include "tags/tag.h"
 
@@ -104,7 +105,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 			exec.replace("%tag%", original)
 				.replace("%original%", tag.text())
 				.replace("%type%", tag.type().name())
-				.replace("%number%", QString::number(tag.type().number()));
+				.replace("%number%", QString::number(tag.type().number(img.parentSite())));
 
 			if (!execute(exec)) {
 				return false;
@@ -123,7 +124,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 			exec.replace("%tag%", m_sqlWorker->escape(original))
 				.replace("%original%", m_sqlWorker->escape(tag.text()))
 				.replace("%type%", m_sqlWorker->escape(tag.type().name()))
-				.replace("%number%", QString::number(tag.type().number()));
+				.replace("%number%", QString::number(tag.type().number(img.parentSite())));
 
 			if (!sqlExec(exec)) {
 				return false;
