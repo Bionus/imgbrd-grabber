@@ -212,12 +212,12 @@ export const source: ISource = {
             },
             gallery: {
                 url: (query: IGalleryQuery): string => {
-                    return "https://public-api.secure.pixiv.net/v1/works/" + query.id + ".json?image_sizes=large";
+                    return "https://app-api.pixiv.net/v1/illust/detail?illust_id=" + query.id + "&image_sizes=large";
                 },
                 parse: (src: string): IParsedGallery => {
-                    const data = JSON.parse(src)["response"][0];
+                    const data = JSON.parse(src)["illust"];
                     return {
-                        images: data["metadata"]["pages"].map((page: any) => parseImage({ ...data, ...page }, true)),
+                        images: data["meta_pages"].map((page: any) => parseImage({ ...data, ...page }, true)),
                         tags: data["tags"],
                         imageCount: data["page_count"],
                     };
@@ -227,10 +227,10 @@ export const source: ISource = {
                 fullResults: true,
                 url: (id: string, md5: string): string => {
                     if (id === "" || id === "0") { return ""; } // Gallery images don't have an ID
-                    return "https://public-api.secure.pixiv.net/v1/works/" + id + ".json?image_sizes=large";
+                    return "https://app-api.pixiv.net/v1/illust/detail?illust_id=" + id + "&image_sizes=large";
                 },
                 parse: (src: string): IImage => {
-                    const data = JSON.parse(src)["response"][0];
+                    const data = JSON.parse(src)["illust"];
                     return parseImage(data, false);
                 },
             },
