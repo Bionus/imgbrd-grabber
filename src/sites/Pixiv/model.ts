@@ -231,7 +231,16 @@ export const source: ISource = {
                 },
                 parse: (src: string): IImage => {
                     const data = JSON.parse(src)["illust"];
-                    return parseImage(data, false);
+                    const img = parseImage(data, false);
+
+                    // For galleries, we should trust the original information from the gallery endpoint, not the new one which is always the first page
+                    if (img.type === "gallery") {
+                        delete img.file_url;
+                        delete img.sample_url;
+                        delete img.preview_url;
+                    }
+
+                    return img;
                 },
             },
         },
