@@ -137,7 +137,7 @@ void ImagePreview::finishedLoadingPreview()
 	// Loading error
 	if (m_reply->error() != NetworkReply::NetworkError::NoError) {
 		const QString ext = getExtension(m_reply->url());
-		if (ext != "jpg") {
+		if (!ext.isEmpty() && ext != "jpg") {
 			log(QStringLiteral("Error loading thumbnail (%1), new try with extension JPG").arg(m_reply->errorString()), Logger::Warning);
 			m_thumbnailUrl = setExtension(m_reply->url(), "jpg");
 			load();
