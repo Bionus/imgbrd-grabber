@@ -3,7 +3,7 @@
 #ifdef HEADLESS
 	#include <QCoreApplication>
 #else
-	#include <QGuiApplication>
+	#include <QApplication>
 #endif
 #include "functions.h"
 #include "vendor/catch/single_include/catch2/catch.hpp"
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	#ifdef HEADLESS
 		QCoreApplication app(argc, argv);
 	#else
-		QGuiApplication app(argc, argv);
+		QApplication app(argc, argv);
 	#endif
 
 	// Used for networking and finding test resource files

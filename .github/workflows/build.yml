@@ -108,10 +108,16 @@ jobs:
           cmake --build . --config Debug
 
       - name: Test
-        uses: GabrielBB/xvfb-action@v1.2
+        uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
           run: ../build/tests/tests
+
+      - name: Test GUI
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          working-directory: src
+          run: ../build/gui/tests/gui-tests
 
       - name: Upload coverage results
         uses: codecov/codecov-action@v2
@@ -218,6 +224,12 @@ jobs:
           working-directory: src
           run: ../build/tests/tests
 
+      - name: Test GUI
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          working-directory: src
+          run: ../build/gui/tests/gui-tests
+
       - name: Generate AppImage
         run: |
           ./scripts/package-appimage.sh
@@ -310,6 +322,10 @@ jobs:
       - name: Test
         working-directory: src
         run: ../build/tests/tests
+
+      - name: Test GUI
+        working-directory: src
+        run: ../build/gui/tests/gui-tests
 
       - name: Generate package
         run: ./scripts/package-mac.sh

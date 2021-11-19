@@ -14,7 +14,7 @@ set(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Test Qt5::Widgets)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 include(ListFilterRegex)
 listFilterRegex(SOURCES "vendor")
-include_directories("src/" "../lib/src/")
+include_directories("src/" "src/common/" "../lib/src/")
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_test(${PROJECT_NAME} ${PROJECT_NAME})

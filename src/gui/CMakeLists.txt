@@ -172,3 +172,6 @@ endif()
 if(USE_PCH)
 	cotire(${PROJECT_NAME})
 endif()
+
+# Tests
+add_subdirectory(tests)
