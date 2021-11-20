@@ -27,4 +27,15 @@ TEST_CASE("FilenamePrintVisitor")
 
 		REQUIRE(result == QString("Root(Text('out/');Variable('md5';opt);Text('.');Variable('ext'))"));
 	}
+
+	SECTION("Conditional")
+	{
+		FilenameParser parser("<\"tag\"&%token%?true:false>");
+		auto ast = parser.parseRoot();
+
+		FilenamePrintVisitor printVisitor;
+		QString result = printVisitor.run(*ast);
+
+		REQUIRE(result == QString("Root(Conditional(ConditionOp(ConditionTag('tag');And;ConditionToken('token'));Text('true');Text('false')))"));
+	}
 }
