@@ -12,6 +12,7 @@ TEST_CASE("Auth")
 		UrlAuth auth("url", fields, 50);
 
 		REQUIRE(auth.type() == QString("url"));
+		REQUIRE(auth.name() == QString("url"));
 		REQUIRE(auth.fields() == fields);
 		REQUIRE(auth.maxPage() == 50);
 	}
@@ -22,6 +23,7 @@ TEST_CASE("Auth")
 		HttpAuth auth("post", "https://www.google.com", fields, "cookie");
 
 		REQUIRE(auth.type() == QString("post"));
+		REQUIRE(auth.name() == QString("post"));
 		REQUIRE(auth.url() == QString("https://www.google.com"));
 		REQUIRE(auth.fields() == fields);
 		REQUIRE(auth.cookie() == QString("cookie"));
@@ -32,6 +34,7 @@ TEST_CASE("Auth")
 		OAuth2Auth auth("oauth2", "password", "https://www.google.com/token", "https://www.google.com/authorization", "https://www.google.com/redirect", "google");
 
 		REQUIRE(auth.type() == QString("oauth2"));
+		REQUIRE(auth.name() == QString("oauth2_password"));
 		REQUIRE(auth.authType() == QString("password"));
 		REQUIRE(auth.tokenUrl() == QString("https://www.google.com/token"));
 		REQUIRE(auth.authorizationUrl() == QString("https://www.google.com/authorization"));

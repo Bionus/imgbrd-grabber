@@ -6,9 +6,9 @@
 #include "catch.h"
 
 
-MixedSettings *makeSettings(QString key, QString value)
+MixedSettings *makeSettings(const QString &key, const QString &value)
 {
-	QSettings *settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
+	auto *settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 	settings->setValue(key, value);
 
 	return new MixedSettings(QList<QSettings*>() << settings);
@@ -52,7 +52,7 @@ TEST_CASE("AuthField")
 		REQUIRE(field.key() == QString("key"));
 		REQUIRE(field.type() == AuthField::FieldType::Const);
 
-		MixedSettings *settings = new MixedSettings(QList<QSettings*>());
+		auto *settings = new MixedSettings(QList<QSettings*>());
 		REQUIRE(field.value(settings) == QString("val"));
 		delete settings;
 	}
@@ -65,7 +65,7 @@ TEST_CASE("AuthField")
 		REQUIRE(field.type() == AuthField::FieldType::Hash);
 		REQUIRE(field.salt() == QString("test-%pseudo%"));
 
-		MixedSettings *settings = makeSettings("auth/pseudo", "user");
+		auto *settings = makeSettings("auth/pseudo", "user");
 		REQUIRE(field.value(settings) == QString("42b27efc1480b4fe6d7eaa5eec47424d")); // md5("test-user")
 		delete settings;
 	}
@@ -78,7 +78,7 @@ TEST_CASE("AuthField")
 		REQUIRE(field.type() == AuthField::FieldType::Hash);
 		REQUIRE(field.salt() == QString("test-%pseudo%"));
 
-		MixedSettings *settings = new MixedSettings(QList<QSettings*>());
+		auto *settings = new MixedSettings(QList<QSettings*>());
 		REQUIRE(field.value(settings) == QString());
 		delete settings;
 	}

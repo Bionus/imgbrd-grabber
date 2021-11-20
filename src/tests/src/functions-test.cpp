@@ -532,4 +532,32 @@ TEST_CASE("Functions")
 			REQUIRE(splitCommand("a \"'b' \"\"\" c\"") == QStringList { "a", "'b' \" c" });
 		}
 	}
+
+	SECTION("getKeySequence")
+	{
+		auto *profile = makeProfile();
+		auto *settings = profile->getSettings();
+
+		settings->setValue("exists", QKeySequence("E"));
+
+		REQUIRE(getKeySequence(settings, "exists", Qt::Key_D).toString() == QString("E"));
+		REQUIRE(getKeySequence(settings, "not-found", Qt::Key_D).toString() == QString("D"));
+		REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Open, Qt::Key_D).toString() == QString("Ctrl+O"));
+
+		#ifndef Q_OS_MAC
+			// On macOS, QKeySequence::Preferences is defined so it would return "Ctrl+," rather than "D"
+			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Preferences, Qt::Key_D).toString() == QString("D"));
+		#endif
+	}
+
+	SECTION("rectToString")
+	{
+		REQUIRE(rectToString(QRect()) == QString());
+		REQUIRE(rectToString(QRect(1, 2, 3, 4)) == QString("1;2;3;4"));
+	}
+	SECTION("stringToRect")
+	{
+		REQUIRE(stringToRect("") == QRect());
+		REQUIRE(stringToRect("1;2;3;4") == QRect(1, 2, 3, 4));
+	}
 }

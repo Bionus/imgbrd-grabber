@@ -76,6 +76,34 @@ TEST_CASE("FilenameParser")
 		REQUIRE(filename->exprs.count() == 4);
 	}
 
+	SECTION("Escape")
+	{
+		SECTION("Using ^")
+		{
+			FilenameParser parser("^%md5^%");
+			auto filename = parser.parseRoot();
+			REQUIRE(parser.error() == QString());
+
+			REQUIRE(filename->exprs.count() == 1);
+
+			auto txt = dynamic_cast<FilenameNodeText *>(filename->exprs[0]);
+			REQUIRE(txt != nullptr);
+			REQUIRE(txt->text == QString("%md5%"));
+		}
+
+		SECTION("XML characters")
+		{
+			FilenameParser parser("<<test>>");
+			auto filename = parser.parseRoot();
+			REQUIRE(parser.error() == QString());
+
+			REQUIRE(filename->exprs.count() == 1);
+
+			auto txt = dynamic_cast<FilenameNodeText *>(filename->exprs[0]);
+			REQUIRE(txt != nullptr);
+			REQUIRE(txt->text == QString("<test>"));
+		}
+	}
 
 	SECTION("ParseConditional")
 	{

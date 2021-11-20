@@ -36,6 +36,10 @@ bool createZip(const QString &filePath, const QHash<QString, QString> &files)
 bool unzipFile(const QString &filePath, const QString &destinationDir)
 {
 	QDir dir(destinationDir);
+	if (!dir.exists() && !QDir().mkpath(destinationDir)) {
+		log(QStringLiteral("Could not create ZIP extraction directory"), Logger::Error);
+		return false;
+	}
 
 	// C-style initialization
 	mz_zip_archive zip_archive;
@@ -68,7 +72,5 @@ bool unzipFile(const QString &filePath, const QString &destinationDir)
 	}
 
 	// Close the archive
-	mz_zip_reader_end(&zip_archive);
-
-	return true;
+	return mz_zip_reader_end(&zip_archive);
 }
