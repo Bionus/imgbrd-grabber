@@ -74,10 +74,16 @@ if(USE_SSL AND (NOT ANDROID))
 endif()
 
 # Enable code coverage on GCC
-if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
-	include(cmake/CodeCoverage.cmake)
-	setup_target_for_coverage(coverage tests coverage)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+if(DEFINED ENV{COVERAGE})
+	if(CMAKE_COMPILER_IS_GNUCXX)
+		message(STATUS "Compiling with code coverage")
+		include(cmake/CodeCoverage.cmake)
+		setup_target_for_coverage(coverage tests coverage)
+		setup_target_for_coverage(coverage-gui tests-gui coverage-gui)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+	else()
+		message(WARNING "Coverage not enabled because of compiler")
+	endif()
 endif()
 
 # Pre-compiled headers

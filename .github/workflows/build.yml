@@ -119,6 +119,12 @@ jobs:
           working-directory: src
           run: ../build/gui/tests/gui-tests
 
+      - name: Capture coverage info
+        run: |
+          lcov --directory . --capture --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+          lcov --list coverage.info
+
       - name: Upload coverage results
         uses: codecov/codecov-action@v2
 
