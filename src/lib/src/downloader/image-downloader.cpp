@@ -102,6 +102,7 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 {
 	int need = 0;
 
+	// Check external log files
 	const auto logFiles = getExternalLogFiles(settings);
 	for (auto it = logFiles.constBegin(); it != logFiles.constEnd(); ++it) {
 		need = qMax(need, Filename(it.value().value("content").toString()).needExactTags(nullptr, settings));
@@ -110,15 +111,17 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 		}
 	}
 
-	QStringList settingNames = QStringList()
-		<< "Exec/tag_before"
-		<< "Exec/image"
-		<< "Exec/tag_after"
-		<< "Exec/SQL/before"
-		<< "Exec/SQL/tag_before"
-		<< "Exec/SQL/image"
-		<< "Exec/SQL/tag_after"
-		<< "Exec/SQL/after";
+	// Check commands
+	static const QStringList settingNames {
+		"Exec/tag_before",
+		"Exec/image",
+		"Exec/tag_after",
+		"Exec/SQL/before",
+		"Exec/SQL/tag_before",
+		"Exec/SQL/image",
+		"Exec/SQL/tag_after",
+		"Exec/SQL/after",
+	};
 	for (const QString &setting : settingNames) {
 		const QString value = settings->value(setting, "").toString();
 		if (value.isEmpty()) {
@@ -130,6 +133,24 @@ int ImageDownloader::needExactTags(QSettings *settings) const
 			return need;
 		}
 	}
+
+	// Check Exiftool metadata
+	for (const auto &pair : getMetadataExiftool(settings)) {
+		need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+		if (need == 2) {
+			return need;
+		}
+	}
+
+	#ifdef WIN_FILE_PROPS
+		// Check Windows Property System
+		for (const auto &pair : getMetadataPropsys(settings)) {
+			need = qMax(need, Filename(pair.second).needExactTags(nullptr, settings));
+			if (need == 2) {
+				return need;
+			}
+		}
+	#endif
 
 	return need;
 }
