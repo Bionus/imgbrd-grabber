@@ -47,7 +47,7 @@ void disableItem(QComboBox *combo, const int index, const QString &toolTip) {
 }
 
 OptionsWindow::OptionsWindow(Profile *profile, QWidget *parent)
-	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), parent), parent)
+	: OptionsWindow(profile, new ThemeLoader(savePath("themes/", true, false), profile->getSettings(), parent), parent)
 {}
 
 OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget *parent)
@@ -199,6 +199,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 	QStringList infiniteScroll { "disabled", "button", "scroll" };
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
+	ui->checkScaleFontSize->setChecked(settings->value("Interface/scaleFontSize", true).toBool());
 
 	// Resize
 	settings->beginGroup("ImageSize");
@@ -1041,6 +1042,7 @@ void OptionsWindow::save()
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
+	settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
