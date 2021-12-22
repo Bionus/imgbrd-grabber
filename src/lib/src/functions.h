@@ -6,6 +6,7 @@
 #include <QString>
 #include <QKeySequence>
 #include "backports/backports.h"
+#include "utils/file-utils.h"
 
 
 class ConditionalFilename;
@@ -41,7 +42,6 @@ QStringList splitStringMulti(const QList<QChar> &seps, const QString &str, bool 
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);
-bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite = false);
 int levenshtein(QString, QString);
 QString stripTags(QString);
 QString getUnit(double *size);

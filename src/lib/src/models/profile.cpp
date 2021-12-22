@@ -22,6 +22,7 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "models/url-downloader/url-downloader-manager.h"
+#include "utils/file-utils.h"
 
 
 Profile::Profile()
@@ -230,50 +231,34 @@ void Profile::sync()
 }
 void Profile::syncFavorites() const
 {
-	QFile fileFavorites(m_path + "/favorites.json");
-	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		// Generate JSON array
-		QJsonArray favoritesJson;
-		for (const Favorite &fav : qAsConst(m_favorites)) {
-			QJsonObject unique;
-			fav.toJson(unique);
-			favoritesJson.append(unique);
-		}
-
-		// Generate result
-		QJsonObject full;
-		full["version"] = 1;
-		full["favorites"] = favoritesJson;
-
-		// Write result
-		QJsonDocument saveDoc(full);
-		fileFavorites.write(saveDoc.toJson());
-		fileFavorites.close();
+	// Generate JSON array
+	QJsonArray favoritesJson;
+	for (const Favorite &fav : qAsConst(m_favorites)) {
+		QJsonObject unique;
+		fav.toJson(unique);
+		favoritesJson.append(unique);
 	}
+
+	// Generate result
+	QJsonObject full;
+	full["version"] = 1;
+	full["favorites"] = favoritesJson;
+
+	// Write result
+	QJsonDocument saveDoc(full);
+	safeWriteFile(m_path + "/favorites.json", saveDoc.toJson());
 }
 void Profile::syncKeptForLater() const
 {
-	QFile fileKfl(m_path + "/viewitlater.txt");
-	if (fileKfl.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileKfl.write(m_keptForLater.join("\r\n").toUtf8());
-		fileKfl.close();
-	}
+	safeWriteFile(m_path + "/viewitlater.txt", m_keptForLater.join("\r\n").toUtf8());
 }
 void Profile::syncIgnored() const
 {
-	QFile fileIgnored(m_path + "/ignore.txt");
-	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileIgnored.write(m_ignored.join("\r\n").toUtf8());
-		fileIgnored.close();
-	}
+	safeWriteFile(m_path + "/ignore.txt", m_ignored.join("\r\n").toUtf8());
 }
 void Profile::syncBlacklist() const
 {
-	QFile fileBlacklist(m_path + "/blacklist.txt");
-	if (fileBlacklist.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		fileBlacklist.write(m_blacklist.toString().toUtf8());
-		fileBlacklist.close();
-	}
+	safeWriteFile(m_path + "/blacklist.txt", m_blacklist.toString().toUtf8());
 	m_settings->remove("blacklistedtags");
 }
 

@@ -446,48 +446,6 @@ QString savePath(const QString &file, bool exists, bool writable)
 	return QDir::toNativeSeparators(dir + QLatin1Char('/') + file);
 }
 
-bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
-{
-	// Trim directory names of their trailing slashes
-	if (srcFilePath.endsWith(QDir::separator())) {
-		srcFilePath.chop(1);
-	}
-	if (tgtFilePath.endsWith(QDir::separator())) {
-		tgtFilePath.chop(1);
-	}
-
-	// Directly copy files using Qt function
-	if (!QFileInfo(srcFilePath).isDir()) {
-		if (QFile::exists(tgtFilePath)) {
-			if (overwrite) {
-				QFile::remove(tgtFilePath);
-			} else {
-				return false;
-			}
-		}
-		return QFile(srcFilePath).copy(tgtFilePath);
-	}
-
-	// Try to create the target directory
-	QDir targetDir(tgtFilePath);
-	targetDir.cdUp();
-	if (!targetDir.mkpath(QDir(tgtFilePath).dirName())) {
-		return false;
-	}
-
-	QDir sourceDir(srcFilePath);
-	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	for (const QString &fileName : fileNames) {
-		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
-		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath, overwrite)) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
 /**
  * Return the levenshtein distance between two strings.
  * @param	s1	First string.

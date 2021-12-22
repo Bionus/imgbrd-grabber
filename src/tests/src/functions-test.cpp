@@ -72,19 +72,6 @@ static QFont makeFont(const QString &name, int size, bool usePixels, int weight,
 
 TEST_CASE("Functions")
 {
-	SECTION("CopyRecursively")
-	{
-		QString from = QDir::toNativeSeparators("tests/resources/recurse/");
-		QString to = QDir::toNativeSeparators("tests/resources/tmp/recurse/");
-
-		QDir(to).removeRecursively();
-
-		REQUIRE(copyRecursively(from, to));
-		REQUIRE(QFile::exists(to + "test.txt"));
-		REQUIRE(QFile::exists(to + "test/test1.txt"));
-		REQUIRE(QFile::exists(to + "test/test2.txt"));
-	}
-
 	SECTION("Fix filename")
 	{
 		SECTION("Windows")
