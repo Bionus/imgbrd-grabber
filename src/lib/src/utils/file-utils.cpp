@@ -1,6 +1,7 @@
 #include "file-utils.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QSaveFile>
 #include <QString>
 #include <QStringList>
 
@@ -49,34 +50,22 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
 
 bool safeWriteFile(const QString &filePath, const QByteArray &data, bool backup)
 {
-	const QString newFilePath = filePath + ".new";
-
-	// Write data to temporary "new" file
-	QFile newFile(newFilePath);
-	if (!newFile.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		return false;
-	}
-	newFile.write(data);
-	newFile.close();
-
-	// Rename does not overwrite, so we need to first clear the original file path
-	if (QFile::exists(filePath)) {
-		if (backup) {
-			// Move the file to a "bak" file to ensure no data is lost
-			const QString oldFilePath = filePath + ".bak";
-			if (QFile::exists(oldFilePath) && !QFile::remove(oldFilePath)) {
-				return false;
-			}
-			if (!QFile::rename(filePath, oldFilePath)) {
-				return false;
-			}
-		} else {
-			if (!QFile::remove(filePath)) {
-				return false;
-			}
+	// Copy the file to a "bak" file to ensure no data is lost
+	if (backup) {
+		const QString backupFilePath = filePath + ".bak";
+		if (QFile::exists(backupFilePath) && !QFile::remove(backupFilePath)) {
+			return false;
+		}
+		if (!QFile::copy(filePath, backupFilePath)) {
+			return false;
 		}
 	}
 
-	// Move new file to existing one
-	return QFile::rename(newFilePath, filePath);
+	// Use QSaveFile to safely write data to the file
+	QSaveFile file(filePath);
+	if (!file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+		return false;
+	}
+	file.write(data);
+	return file.commit();
 }
