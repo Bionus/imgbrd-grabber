@@ -25,6 +25,7 @@ TEST_CASE("File utils")
 	{
 		const QString file = "tests/resources/tmp/safe.txt";
 		QFile::remove(file);
+		QFile::remove(file + ".bak");
 
 		SECTION("Basic usage")
 		{
