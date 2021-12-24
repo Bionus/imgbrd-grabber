@@ -73,8 +73,10 @@ void BatchDownloader::start()
 	m_counterSum = 0;
 
 	// Reset total
+
+
 	auto *group = dynamic_cast<DownloadQueryGroup*>(m_query);
-	m_totalCount = group != nullptr ? group->total : 1;
+	m_totalCount = (group) ? group->total : 1;
 
 	// m_profile->getCommands().before();
 	login();
@@ -107,7 +109,7 @@ void BatchDownloader::loginFinished()
 	disconnect(m_query->site, &Site::loggedIn, this, &BatchDownloader::loginFinished);
 
 	auto *group = dynamic_cast<DownloadQueryGroup*>(m_query);
-	if (group != nullptr) {
+	if (group) {
 		bool usePacking = m_settings->value("packing_enable", true).toBool();
 		int imagesPerPack = m_settings->value("packing_size", 1000).toInt();
 		m_packLoader = new PackLoader(m_profile, *group, usePacking ? imagesPerPack : -1, this);
@@ -115,6 +117,10 @@ void BatchDownloader::loginFinished()
 		nextPack();
 	} else {
 		auto *img = dynamic_cast<DownloadQueryImage*>(m_query);
+		if (!img) {
+			m_pendingDownloads.append({});
+			return;
+		}
 		m_pendingDownloads.append(img->image);
 		nextImages();
 	}
