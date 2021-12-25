@@ -1,0 +1,75 @@
+name: Build
+
+on:
+  push:
+    branches: [master, develop]
+    paths:
+      - 'src/sites/**/model.ts'
+
+jobs:
+  metadata:
+    name: Sources metadata
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [master, develop]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Install sites dependencies
+        working-directory: src/sites
+        run: npm ci
+
+      - name: Build sites
+        working-directory: src/sites
+        run: npm run build
+
+      - name: Generate sources metadata
+        run: node scripts/generate-sources-metadata.js | tee metadata-${{ matrix.branch }}.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.branch }}
+          path: metadata-${{ matrix.branch }}.json
+          if-no-files-found: error
+
+  upload:
+    name: Upload to GitHub releases
+    runs-on: ubuntu-latest
+    needs: metadata
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Rename artifacts
+        run: |
+          mv master/metadata-master.json metadata.json
+          mv develop/metadata-develop.json .
+
+      - name: Get date for body
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
+
+      - name: Upload result
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: sources-metadata
+          name: Sources metadata
+          allowUpdates: true
+          draft: false
+          prerelease: true
+          artifacts: metadata.json,metadata-develop.json
+          body: |
+            Automatically uploaded by Github actions.
+
+            **Head:** ${{ github.sha }}
+            **Date:** ${{ steps.date.outputs.date }}
