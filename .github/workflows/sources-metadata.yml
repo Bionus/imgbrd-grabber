@@ -4,6 +4,8 @@ on:
   push:
     branches: [master, develop]
     paths:
+      - '.github/workflows/sources-metadata.yml'
+      - 'scripts/generate-sources-metadata.js'
       - 'src/sites/**/model.ts'
 
 jobs:
