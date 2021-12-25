@@ -76,3 +76,10 @@ jobs:
 
             **Head:** ${{ github.sha }}
             **Date:** ${{ steps.date.outputs.date }}
+
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          failOnError: false
+          name: |
+            master
+            develop
