@@ -97,14 +97,15 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
+                        const baseUrl = opts.baseUrl.replace("//api.", "//");
                         const search: string = query.search.replace(/(^| )order:/gi, "$1sort:");
                         const fav = search.match(/(?:^| )fav:(\d+)(?:$| )/);
                         if (fav) {
                             const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 50);
-                            return "/index.php?page=favorites&s=view&id=" + fav[1] + pagePart;
+                            return baseUrl + "/index.php?page=favorites&s=view&id=" + fav[1] + pagePart;
                         } else {
                             const pagePart = Grabber.pageUrl(query.page, previous, 20000, "&pid={page}", "&pid={page}", " id:<{min}&p=1", (p: number) => (p - 1) * 42);
-                            return "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
+                            return baseUrl + "/index.php?page=post&s=list&tags=" + encodeURIComponent(search) + pagePart;
                         }
                     } catch (e: any) {
                         return { error: e.message };
@@ -124,8 +125,9 @@ export const source: ISource = {
                 },
             },
             details: {
-                url: (id: string, md5: string): string => {
-                    return "/index.php?page=post&s=view&id=" + id;
+                url: (id: string, md5: string, opts: IUrlDetailsOptions): string => {
+                    const baseUrl = opts.baseUrl.replace("//api.", "//");
+                    return baseUrl + "/index.php?page=post&s=view&id=" + id;
                 },
                 parse: (src: string): IParsedDetails => {
                     return {
@@ -136,11 +138,12 @@ export const source: ISource = {
             },
             tagTypes: false,
             tags: {
-                url: (query: ITagsQuery): string => {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
+                    const baseUrl = opts.baseUrl.replace("//api.", "//");
                     const sorts = { count: "desc", date: "asc", name: "asc" };
                     const orderBys = { count: "index_count", date: "updated", name: "tag" };
                     const page: number = (query.page - 1) * 50;
-                    return "/index.php?page=tags&s=list&pid=" + page + "&sort=" + sorts[query.order] + "&order_by=" + orderBys[query.order];
+                    return baseUrl + "/index.php?page=tags&s=list&pid=" + page + "&sort=" + sorts[query.order] + "&order_by=" + orderBys[query.order];
                 },
                 parse: (src: string): IParsedTags => {
                     return {
