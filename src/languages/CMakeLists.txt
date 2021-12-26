@@ -18,7 +18,7 @@ file(GLOB_RECURSE SOURCES
 qt5_create_translation(QM_FILES_FOR_TS ${SOURCES} ${TS_FILES_FOR_TS}) # Re-generate TS and generate QM for 'YourLanguage'
 qt5_add_translation(QM_FILES ${TS_FILES_FOR_QM}) # Only generate QM for actual translations
 
-add_custom_target(General_translations ALL DEPENDS ${QM_FILES_FOR_TS} ${QM_FILES})
+add_custom_target(General_translations ALL DEPENDS ${QM_FILES_FOR_TS} ${QM_FILES} SOURCES ${TS_FILES_FOR_TS})
 
 if(APPLE AND UNIX)
 	install(FILES ${QM_FILES} DESTINATION Grabber.app/Contents/Resources/languages)

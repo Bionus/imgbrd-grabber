@@ -1,4 +1,6 @@
 #include "tags/tag-database-sqlite.h"
+#include <QDir>
+#include <QFileInfo>
 #include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
@@ -14,11 +16,27 @@ TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
+TagDatabaseSqlite::~TagDatabaseSqlite()
+{
+	if (m_database.isOpen()) {
+		m_database.close();
+	}
+}
+
 bool TagDatabaseSqlite::open()
 {
 	// Don't re-open databases
 	if (m_database.isOpen()) {
 		return true;
+	}
+
+	// Create the parent directory if it doesn't exist
+	const QString parentDir = QFileInfo(m_tagFile).absolutePath();
+	if (!QDir().exists(parentDir)) {
+		if (!QDir().mkpath(parentDir)) {
+			log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
+			return false;
+		}
 	}
 
 	// Load and connect to the database
@@ -133,6 +151,50 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) c
 		const TagType type = m_tagTypeDatabase.get(typeId);
 		ret.insert(tag, type);
 		m_cache.insert(tag, type);
+	}
+
+	return ret;
+}
+
+QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
+{
+	QMap<QString, int> ret;
+
+	// Escape values
+	QStringList formatted;
+	QSqlDriver *driver = m_database.driver();
+	for (const QString &tag : tags) {
+		if (m_cacheIds.contains(tag)) {
+			ret.insert(tag, m_cacheIds[tag]);
+		} else {
+			QSqlField f;
+			f.setType(QVariant::String);
+			f.setValue(tag);
+			formatted.append(driver->formatValue(f));
+		}
+	}
+
+	// If all values have already been loaded from the memory cache
+	if (formatted.isEmpty()) {
+		return ret;
+	}
+
+	// Execute query
+	const QString sql = "SELECT tag, id FROM tags WHERE tag IN (" + formatted.join(",") + ")";
+	QSqlQuery query(m_database);
+	query.setForwardOnly(true);
+	if (!query.exec(sql)) {
+		log(QStringLiteral("SQL error when getting tags: %1").arg(query.lastError().text()), Logger::Error);
+		return ret;
+	}
+
+	const int idTag = query.record().indexOf("tag");
+	const int idId = query.record().indexOf("id");
+	while (query.next()) {
+		const QString tag = query.value(idTag).toString();
+		const int id = query.value(idId).toInt();
+		ret.insert(tag, id);
+		m_cacheIds.insert(tag, id);
 	}
 
 	return ret;

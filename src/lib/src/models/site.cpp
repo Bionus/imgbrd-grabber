@@ -155,7 +155,8 @@ void Site::loadConfig()
 	m_cookies.clear();
 	QList<QVariant> settingsCookies = m_settings->value("cookies").toList();
 	for (const QVariant &variant : settingsCookies) {
-		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
+		QByteArray byteArray = variant.type() == QVariant::ByteArray ? variant.toByteArray() : variant.toString().toUtf8();
+		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(byteArray);
 		for (QNetworkCookie cookie : cookies) {
 			cookie.setDomain(m_url);
 			cookie.setPath("/");
@@ -239,9 +240,9 @@ void Site::loginFinished(Login::Result result)
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders)
+QNetworkRequest Site::makeRequest(QUrl url, const QUrl &pageUrl, const QString &ref, Image *img, const QMap<QString, QString> &cHeaders, bool autoLogin)
 {
-	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown) {
+	if (m_autoLogin && autoLogin && m_loggedIn == LoginStatus::Unknown) {
 		login();
 	}
 
@@ -377,6 +378,15 @@ Api *Site::detailsApi() const
 {
 	for (Api *api : m_apis) {
 		if (api->canLoadDetails()) {
+			return api;
+		}
+	}
+	return nullptr;
+}
+Api *Site::fullDetailsApi() const
+{
+	for (Api *api : m_apis) {
+		if (api->canLoadFullDetails()) {
 			return api;
 		}
 	}

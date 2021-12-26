@@ -129,10 +129,11 @@ void Page::loadFinished(PageApi *api, PageApi::LoadResult status)
 		Analytics::getInstance().sendEvent("Page load", "Success", eventLabel);
 		emit finishedLoading(this);
 	} else {
-		Analytics::getInstance().sendEvent("Page load", "Error", eventLabel);
-		if (!api->errors().isEmpty()) {
-			m_errors.append(api->errors());
+		const QStringList &errors = api->errors();
+		if (errors.isEmpty() || !errors.first().contains("impossible")) {
+			Analytics::getInstance().sendEvent("Page load", "Error", eventLabel);
 		}
+		m_errors.append(errors);
 		fallback();
 	}
 }
@@ -192,6 +193,7 @@ const QStringList &Page::errors() const { return m_errors; }
 int Page::imagesPerPage() const { return m_imagesPerPage; }
 int Page::page() const { return m_page; }
 int Page::pageImageCount() const { return m_pageApis[m_currentApi]->pageImageCount(); }
+int Page::filteredImageCount() const { return m_pageApis[m_currentApi]->filteredImageCount(); }
 const QList<QSharedPointer<Image>> &Page::images() const { return m_pageApis[m_currentApi]->images(); }
 const QUrl &Page::url() const { return m_pageApis[m_currentApi]->url(); }
 const QUrl &Page::friendlyUrl() const { return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url(); }

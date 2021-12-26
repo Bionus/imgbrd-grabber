@@ -52,7 +52,7 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	ui->tableBatchUniques->setModel(m_batchsModel);
 
 	ui->tableBatchGroups->loadGeometry(m_settings, "Downloads/Groups");
-	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques");
+	ui->tableBatchUniques->loadGeometry(m_settings, "Downloads/Uniques", QList<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
 	QStringList splitterSizes = m_settings->value("batchSplitter", "100,100").toString().split(',');
 	ui->splitter->setSizes({ splitterSizes[0].toInt(), splitterSizes[1].toInt() });
@@ -494,7 +494,7 @@ void DownloadsTab::getAll(bool all)
 	if (!all) {
 		QSet<int> tdl = selectedRows(ui->tableBatchUniques);
 		for (const int row : tdl) {
-			DownloadQueryImage batch = m_batchs[row];
+			const DownloadQueryImage &batch = m_batchs[row];
 			BatchDownloadImage d;
 			d.image = batch.image;
 			d.queryImage = &batch;

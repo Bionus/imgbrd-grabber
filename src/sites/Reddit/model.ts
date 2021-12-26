@@ -77,7 +77,7 @@ export const source: ISource = {
                         "preview_url": "thumbnail",
                         "preview_width": "thumbnail_width",
                         "preview_height": "thumbnail_height",
-                        "page_url": "permalink",
+                        // "page_url": "permalink",
                         "score": "score",
                     };
 
@@ -130,6 +130,21 @@ export const source: ISource = {
 
                         // Rating
                         img.rating = raw.over_18 ? "explicit" : "safe";
+
+                        // Fix invalid previews
+                        if (img.preview_url === "spoiler" || img.preview_url === "default" || img.preview_url === "nsfw") {
+                            const preview = raw.preview.images[0].resolutions[0]
+                            if (preview) {
+                                img.preview_url = preview.url;
+                                img.preview_width = preview.width;
+                                img.preview_height = preview.height;
+                            } else {
+                                img.preview_url = undefined;
+                            }
+                        }
+                        if (!img.preview_url && img.sample_url) {
+                            img.preview_url = img.sample_url;
+                        }
 
                         images.push(img);
                     }

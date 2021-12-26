@@ -82,6 +82,7 @@ class ImageLoader : public Loader, public QQmlParserStatus
 		QString m_filename;
 		QString m_path;
 
+		bool m_loaded = false;
 		qreal m_progress;
 		QString m_source;
 };

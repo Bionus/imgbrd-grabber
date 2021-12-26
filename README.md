@@ -134,11 +134,14 @@ See the [Compilation](https://bionus.github.io/imgbrd-grabber/docs/compilation.h
   <tr>
     <td align="center"><a href="https://github.com/ccppoo"><img src="https://avatars0.githubusercontent.com/u/46418312?s=122?s=122" width="122px;" alt=""/><br /><sub><b>ccppoo</b></sub></a><br /><a href="#translation-ccppoo" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/yami-no-tusbas"><img src="https://avatars2.githubusercontent.com/u/3921598?v=4?s=122" width="122px;" alt=""/><br /><sub><b>YamiNoSho</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/issues?q=author%3Ayami-no-tusbas" title="Bug reports">🐛</a> <a href="#question-yami-no-tusbas" title="Answering Questions">💬</a> <a href="#ideas-yami-no-tusbas" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/waitingmoon"><img src="https://avatars.githubusercontent.com/u/16256443?v=4?s=122" width="122px;" alt=""/><br /><sub><b>waitingmoon</b></sub></a><br /><a href="#translation-waitingmoon" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/Penguin-Guru"><img src="https://avatars.githubusercontent.com/u/22182988?v=4?s=122" width="122px;" alt=""/><br /><sub><b>Penguin-Guru</b></sub></a><br /><a href="https://github.com/Bionus/imgbrd-grabber/commits?author=Penguin-Guru" title="Code">💻</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.

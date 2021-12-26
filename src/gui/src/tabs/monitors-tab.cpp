@@ -4,6 +4,7 @@
 #include <QSortFilterProxyModel>
 #include <QtMath>
 #include <QSettings>
+#include <QShortcut>
 #include <ui_monitors-tab.h>
 #include <algorithm>
 #include "logger.h"
@@ -26,6 +27,10 @@ MonitorsTab::MonitorsTab(Profile *profile, MonitorManager *monitorManager, Monit
 	m_monitorTableModel->setSourceModel(monitorTableModel);
 	ui->tableMonitors->setModel(m_monitorTableModel);
 	connect(m_monitoringCenter, &MonitoringCenter::statusChanged, monitorTableModel, &MonitorTableModel::setStatus);
+
+	QShortcut *actionRemoveSelected = new QShortcut(QKeySequence::Delete, ui->tableMonitors);
+	actionRemoveSelected->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(actionRemoveSelected, &QShortcut::activated, this, &MonitorsTab::removeSelected);
 
 	ui->tableMonitors->loadGeometry(m_settings, "Monitoring", QList<int> { 0, 1, 2, 3, 4 });
 }
@@ -67,8 +72,25 @@ void MonitorsTab::monitorsTableContextMenu(const QPoint &pos)
 
 	auto *menu = new QMenu(this);
 	menu->addAction(QIcon(":/images/icons/edit.png"), tr("Edit"), [this, monitor]() { (new MonitorWindow(m_profile, monitor, this))->show(); });
-	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this, monitor]() { m_monitorManager->remove(monitor); });
+	menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), [this]() { removeSelected(); });
 	menu->exec(QCursor::pos());
+}
+
+void MonitorsTab::removeSelected()
+{
+	QList<int> rows;
+	for (const QModelIndex &index : ui->tableMonitors->selectionModel()->selection().indexes()) {
+		const int row = index.row();
+		if (!rows.contains(row)) {
+			rows.append(row);
+		}
+	}
+
+	std::sort(rows.begin(), rows.end(), std::greater<int>());
+
+	for (int i : qAsConst(rows)) {
+		m_monitorTableModel->removeRow(i);
+	}
 }
 
 void MonitorsTab::toggleMonitoring()

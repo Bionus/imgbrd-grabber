@@ -10,16 +10,18 @@
 #include "helpers.h"
 #include "loader/token.h"
 #include "logger.h"
+#include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "network/network-reply.h"
 #include "utils/rename-existing/rename-existing-2.h"
 
 
 RenameExisting1::RenameExisting1(Site *selected, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(0)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites()), m_needDetails(0), m_useIdKey(false)
 {
 	ui->setupUi(this);
 
@@ -62,11 +64,17 @@ void RenameExisting1::on_buttonContinue_clicked()
 	}
 
 	// Make sure the input is valid
-	if (!ui->radioForce->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%md5%"))) {
+	if (ui->radioFilenameMd5->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%md5%"))) {
 		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonContinue->setEnabled(true);
 		return;
 	}
+	if (ui->radioFilenameId->isChecked() && !ui->lineFilenameOrigin->text().contains(QStringLiteral("%id%"))) {
+		error(this, tr("If you want to get the ID from the filename, you have to include the %id% token in it."));
+		ui->buttonContinue->setEnabled(true);
+		return;
+	}
+	m_useIdKey = ui->radioFilenameId->isChecked();
 
 	// Suffixes
 	QStringList suffixes = ui->lineSuffixes->text().split(',');
@@ -82,13 +90,18 @@ void RenameExisting1::on_buttonContinue_clicked()
 		const QString fileName = file.first;
 		const QString path = dir.absoluteFilePath(fileName);
 
-		QString md5 = ui->radioForce->isChecked()
-			? getFileMd5(path)
-			: getFilenameMd5(fileName, ui->lineFilenameOrigin->text());
+		QString key;
+		if (m_useIdKey) {
+			key = getFilenameId(fileName, ui->lineFilenameOrigin->text());
+		} else {
+			key = ui->radioForceMd5->isChecked()
+				? getFileMd5(path)
+				: getFilenameMd5(fileName, ui->lineFilenameOrigin->text());
+		}
 
-		if (!md5.isEmpty()) {
+		if (!key.isEmpty()) {
 			RenameExistingFile det;
-			det.md5 = md5;
+			det.key = key;
 			det.path = QDir::toNativeSeparators(path);
 			if (!file.second.isEmpty()) {
 				QStringList children;
@@ -143,19 +156,53 @@ void RenameExisting1::getTags()
 	setImageResult(img);
 }
 
+void RenameExisting1::fullDetailsFinished()
+{
+	auto *reply = qobject_cast<NetworkReply*>(sender());
+
+	// Network error
+	if (reply->error()) {
+		if (reply->error() != NetworkReply::NetworkError::OperationCanceledError) {
+			log(QStringLiteral("Error loading full image details for '%1': %2").arg(reply->url().toString(), reply->errorString()), Logger::Error);
+		}
+		reply->deleteLater();
+		loadNext();
+		return;
+	}
+
+	// Extract data from reply and clean it up
+	const QString source = QString::fromUtf8(reply->readAll());
+	const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	reply->deleteLater();
+
+	// Parse response
+	Site *site = m_sites.value(ui->comboSource->currentText());
+	Api *api = site->fullDetailsApi();
+	ParsedDetails parsed = api->parseDetails(source, statusCode, site);
+
+	// Parsing error
+	if (!parsed.error.isEmpty()) {
+		log(QStringLiteral("Error loading full image details: %1").arg(parsed.error), Logger::Error);
+		loadNext();
+		return;
+	}
+
+	setImageResult(parsed.image.data());
+}
+
 void RenameExisting1::setImageResult(Image *img)
 {
-	const QString &md5 = img->md5();
+	const QString &key = m_useIdKey ? QString::number(img->id()) : img->md5();
 	const QString &dir = ui->lineFolder->text();
 
-	QFileInfo fi(m_getAll[md5].path);
+	QFileInfo fi(m_getAll[key].path);
 	auto tokens = img->tokens(m_profile);
 	tokens.insert("old_directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
 	tokens.insert("old_filename", Token(fi.fileName()));
 
 	Filename fn(ui->lineFilenameDestination->text());
 	QStringList paths = fn.path(tokens, m_profile, dir, 0, Filename::Complex | Filename::Path);
-	m_getAll[md5].newPath = paths.first();
+	m_getAll[key].newPath = paths.first();
 
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
 	loadNext();
@@ -165,16 +212,30 @@ void RenameExisting1::loadNext()
 {
 	if (!m_details.isEmpty()) {
 		const RenameExistingFile det = m_details.takeFirst();
-		m_getAll.insert(det.md5, det);
+		m_getAll.insert(det.key, det);
 
-		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.md5), 1, 1);
+		Site *site = m_sites.value(ui->comboSource->currentText());
+
+		// Try to load the image details from the full details API if available
+		Api *api = site->fullDetailsApi();
+		if (api != nullptr) {
+			QString url = api->detailsUrl(m_useIdKey ? det.key.toLongLong() : 0, !m_useIdKey ? det.key : "", site).url;
+			log(QStringLiteral("Loading full image details from `%1`").arg(url), Logger::Info);
+			NetworkReply *reply = site->get(url, Site::QueryType::Details);
+			connect(reply, &NetworkReply::finished, this, &RenameExisting1::fullDetailsFinished);
+			return;
+		}
+
+		// Otherwise, try a "key:VAL" search using the listing API
+		QStringList query(QString(m_useIdKey ? "id" : "md5") + ":" + det.key);
+		Page *page = new Page(m_profile, site, m_sites.values(), query, 1, 1);
 		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
 
 		return;
 	}
 
-	RenameExisting2 *nextStep = new RenameExisting2(m_getAll.values(), QDir::toNativeSeparators(ui->lineFolder->text()), parentWidget());
+	auto *nextStep = new RenameExisting2(m_getAll.values(), QDir::toNativeSeparators(ui->lineFolder->text()), parentWidget());
 	close();
 	nextStep->show();
 }

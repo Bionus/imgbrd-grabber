@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>246</height>
+    <height>317</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,14 +29,14 @@
     <widget class="QLineEdit" name="lineFolder"/>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="QRadioButton" name="radioForce">
+    <widget class="QRadioButton" name="radioForceMd5">
      <property name="text">
       <string>Force md5 calculation</string>
      </property>
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
-    <widget class="QRadioButton" name="radioFilename">
+    <widget class="QRadioButton" name="radioFilenameMd5">
      <property name="text">
       <string>Get md5 in filename</string>
      </property>
@@ -45,37 +45,37 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="labelFilenameOrigin">
      <property name="text">
       <string>Origin filename</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLineEdit" name="lineFilenameOrigin"/>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="labelFilenameDestination">
      <property name="text">
       <string>Destintation filename</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QLineEdit" name="lineFilenameDestination"/>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="labelSource">
      <property name="text">
       <string>Source</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="7" column="1">
     <widget class="QComboBox" name="comboSource"/>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="8" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="enabled">
       <bool>true</bool>
@@ -85,7 +85,7 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <layout class="QHBoxLayout" name="layoutButtons">
      <item>
       <spacer name="horizontalSpacer">
@@ -116,13 +116,20 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QLineEdit" name="lineSuffixes"/>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="labelSuffixes">
      <property name="text">
       <string>Suffixes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QRadioButton" name="radioFilenameId">
+     <property name="text">
+      <string>Get ID in filename</string>
      </property>
     </widget>
    </item>

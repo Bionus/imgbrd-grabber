@@ -72,10 +72,14 @@ void RenameExisting2::on_buttonOk_clicked()
 		}
 
 		// Move file
-		QFile::rename(image.path, image.newPath);
+		if (!QFile::rename(image.path, image.newPath)) {
+			log(QStringLiteral("Could not rename file from `%1` to `%2`").arg(image.path, image.newPath), Logger::Error);
+		}
 		for (const QString &child : image.children) {
 			const QString newPath = QString(child).replace(image.path, image.newPath);
-			QFile::rename(child, newPath);
+			if (!QFile::rename(child, newPath)) {
+				log(QStringLiteral("Could not rename child file from `%1` to `%2`").arg(image.path, image.newPath), Logger::Error);
+			}
 		}
 
 		// Delete old path if necessary

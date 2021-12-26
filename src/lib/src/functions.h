@@ -2,9 +2,11 @@
 #define FUNCTIONS_H
 
 #include <QMap>
+#include <QRect>
 #include <QString>
 #include <QKeySequence>
 #include "backports/backports.h"
+#include "utils/file-utils.h"
 
 
 class ConditionalFilename;
@@ -40,7 +42,6 @@ QStringList splitStringMulti(const QList<QChar> &seps, const QString &str, bool 
 
 QDateTime qDateTimeFromString(const QString &str);
 QString savePath(const QString &file = "", bool exists = false, bool writable = true);
-bool copyRecursively(QString srcFilePath, QString tgtFilePath);
 int levenshtein(QString, QString);
 QString stripTags(QString);
 QString getUnit(double *size);
@@ -78,6 +79,7 @@ QString fixCloudflareEmails(QString html);
 
 QString getFileMd5(const QString &path);
 QString getFilenameMd5(const QString &fileName, const QString &format);
+QString getFilenameId(const QString &fileName, const QString &format);
 
 QString parseMarkdown(QString str);
 QString decodeHtmlEntities(const QString &html);
@@ -94,6 +96,9 @@ bool createLink(const QString &from, const QString &to, const QString &type);
 
 QKeySequence getKeySequence(QSettings *settings, const QString &key, QKeySequence::StandardKey standardDefault, const QKeySequence &altDefault);
 QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeySequence &def);
+
+QString rectToString(const QRect &rect);
+QRect stringToRect(const QString &str);
 
 
 

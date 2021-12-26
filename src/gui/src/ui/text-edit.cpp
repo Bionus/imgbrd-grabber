@@ -27,9 +27,12 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 
 QSize TextEdit::sizeHint() const
 {
-	QFontMetrics fm(font());
+	ensurePolished();
+
+	const QFontMetrics fm = fontMetrics();
 	const int h = qMax(fm.height(), 14) + 4;
 	const int w = fm.horizontalAdvance(QLatin1Char('x')) * 17 + 4;
+
 	QStyleOptionFrame opt;
 	opt.initFrom(this);
 	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));

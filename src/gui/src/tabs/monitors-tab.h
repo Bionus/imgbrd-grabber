@@ -40,6 +40,7 @@ class MonitorsTab : public QWidget
 
 	protected slots:
 		void monitorsTableContextMenu(const QPoint &pos);
+		void removeSelected();
 
 	private:
 		Profile *m_profile;

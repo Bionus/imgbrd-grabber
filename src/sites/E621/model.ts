@@ -47,7 +47,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 750, "{page}", "a{max}", "b{min}");
                         return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -118,7 +118,7 @@ export const source: ISource = {
                     }
 
                     if (invalid > 0) {
-                        console.warn(`${invalid} image(s) without URL found, login to view them`);
+                        console.warn(`${invalid} image(s) without URL found, login to view them`); // tslint:disable-line:no-console
                     }
 
                     return { images };
@@ -162,7 +162,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -174,7 +174,7 @@ export const source: ISource = {
 
                     const warn = src.match(/<div class="[^"]*hidden-posts-notice">(.+?)<\/div>/m);
                     if (warn) {
-                        console.warn(warn[1]);
+                        console.warn(warn[1]); // tslint:disable-line:no-console
                     }
 
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);

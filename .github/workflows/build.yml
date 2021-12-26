@@ -16,6 +16,8 @@ env:
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
   IS_NIGHTLY: ${{ !startsWith(github.ref, 'refs/tags/v') }}
   CMAKE_BUILD_PARALLEL_LEVEL: 2
+  QSCINTILLA_VERSION: 2.13.0
+  QSCINTILLA_DIR: QScintilla_src-2.13.0
 
 jobs:
   uncrustify:
@@ -106,13 +108,25 @@ jobs:
           cmake --build . --config Debug
 
       - name: Test
-        uses: GabrielBB/xvfb-action@v1.2
+        uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
           run: ../build/tests/tests
 
+      - name: Test GUI
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          working-directory: src
+          run: ../build/gui/tests/gui-tests
+
+      - name: Capture coverage info
+        run: |
+          lcov --directory . --capture --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+          lcov --list coverage.info
+
       - name: Upload coverage results
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
 
   version:
     name: Version
@@ -134,13 +148,13 @@ jobs:
 
   linux:
     name: Linux
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: version
 
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      LINUXDEPLOYQT_VERSION: 7
+      LINUXDEPLOYQT_VERSION: continuous
 
     steps:
       - name: Checkout
@@ -172,11 +186,28 @@ jobs:
         id: vendor-cache
         with:
           path: vendor
-          key: ${{ runner.os }}-linuxdeployqt-${{ env.LINUXDEPLOYQT_VERSION }}
+          key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/build.yml') }}
 
       - name: Create vendor dir
         if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: mkdir vendor
+
+      - name: Build QScintilla
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        working-directory: vendor
+        run: |
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/${QSCINTILLA_VERSION}/QScintilla_src-${QSCINTILLA_VERSION}.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "${QSCINTILLA_DIR}/src"
+          qmake qscintilla.pro
+          make
+
+      - name: Install QScintilla
+        working-directory: vendor
+        run: |
+          cd "${QSCINTILLA_DIR}/src"
+          make install
 
       - name: Download linuxdeployqt
         if: steps.vendor-cache.outputs.cache-hit != 'true'
@@ -198,6 +229,12 @@ jobs:
         with:
           working-directory: src
           run: ../build/tests/tests
+
+      - name: Test GUI
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          working-directory: src
+          run: ../build/gui/tests/gui-tests
 
       - name: Generate AppImage
         run: |
@@ -229,7 +266,7 @@ jobs:
     env:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
-      OPENSSL_ROOT_DIR: /usr/local/opt/openssl/
+      OPENSSL_ROOT_DIR: /usr/local/opt/openssl@1.1
       CMAKE_BUILD_PARALLEL_LEVEL: 3
 
     steps:
@@ -252,6 +289,34 @@ jobs:
           version: ${{ env.QT_VERSION }}
           modules: ${{ env.QT_MODULES }}
 
+      - name: Vendor cache
+        uses: actions/cache@v1
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.os }}-vendor-${{ hashFiles('.github/workflows/build.yml') }}
+
+      - name: Create vendor dir
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: mkdir vendor
+
+      - name: Build QScintilla
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        working-directory: vendor
+        run: |
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/${QSCINTILLA_VERSION}/QScintilla_src-${QSCINTILLA_VERSION}.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "${QSCINTILLA_DIR}/src"
+          qmake qscintilla.pro
+          make
+
+      - name: Install QScintilla
+        working-directory: vendor
+        run: |
+          cd "${QSCINTILLA_DIR}/src"
+          make install
+
       - name: Build
         run: |
           mkdir build
@@ -263,6 +328,10 @@ jobs:
       - name: Test
         working-directory: src
         run: ../build/tests/tests
+
+      - name: Test GUI
+        working-directory: src
+        run: ../build/gui/tests/gui-tests
 
       - name: Generate package
         run: ./scripts/package-mac.sh
@@ -296,7 +365,6 @@ jobs:
       GRABBER_VERSION: ${{ needs.version.outputs.version }}
       GRABBER_IS_NIGHTLY: ${{ needs.version.outputs.nightly }}
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/5575770/qsqlmysql.dll_Qt_SQL_driver_5.15.2_MSVC2019_64-bit.zip
-      QSCINTILLA_VERSION: QScintilla_gpl-2.10.8
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
       APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
@@ -343,10 +411,10 @@ jobs:
         working-directory: vendor
         shell: cmd
         run: |
-          curl -Lo "%QSCINTILLA_VERSION%.zip" "https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.10.8/%QSCINTILLA_VERSION%.zip"
-          7z x "%QSCINTILLA_VERSION%.zip" -y
-          rm "%QSCINTILLA_VERSION%.zip"
-          cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+          curl -Lo "QScintilla.zip" "https://www.riverbankcomputing.com/static/Downloads/QScintilla/%QSCINTILLA_VERSION%/QScintilla_src-%QSCINTILLA_VERSION%.zip"
+          7z x "QScintilla.zip" -y
+          rm "QScintilla.zip"
+          cd "%QSCINTILLA_DIR%\src"
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           qmake qscintilla.pro
           nmake
@@ -355,7 +423,7 @@ jobs:
         working-directory: vendor
         shell: cmd
         run: |
-          cd "%QSCINTILLA_VERSION%\Qt4Qt5"
+          cd "%QSCINTILLA_DIR%\src"
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.suffix }}
           nmake install
 
@@ -365,7 +433,7 @@ jobs:
         shell: cmd
         run: |
           if "${{ matrix.suffix }}"=="x86" (set "OPENSSL_PREFIX=Win32OpenSSL") else (set "OPENSSL_PREFIX=Win64OpenSSL")
-          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1L.exe" --fail
+          curl -Lo OpenSSL.exe "https://slproweb.com/download/%OPENSSL_PREFIX%-1_1_1m.exe" --fail
           OpenSSL.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR="%OPENSSL_ROOT_DIR%"
           rm OpenSSL.exe
 
@@ -505,7 +573,6 @@ jobs:
           -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk-bundle \
           -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
           -DANDROID_STL:STRING=c++_shared \
-          -DCMAKE_BUILD_TYPE:STRING=Debug \
           -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
           -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR \
@@ -516,7 +583,9 @@ jobs:
         cmake --build . --config Release --target gui-qml_apk
 
     - name: Generate package
-      run: mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber.apk
+      run: |
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/debug/gui-qml-armeabi-v7a-debug.apk Grabber.apk 2> /dev/null || true
+        mv build/gui-qml/gui-qml-armeabi-v7a/build/outputs/apk/release/gui-qml-armeabi-v7a-release-signed.apk Grabber.apk 2> /dev/null || true
 
     - name: Upload package
       uses: actions/upload-artifact@v2

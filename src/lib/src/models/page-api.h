@@ -52,6 +52,7 @@ class PageApi : public QObject
 		bool hasNext() const;
 		int page() const;
 		int pageImageCount() const;
+		int filteredImageCount() const;
 		qulonglong minId() const;
 		qulonglong maxId() const;
 		QString minDate() const;
@@ -98,7 +99,7 @@ class PageApi : public QObject
 		QList<QSharedPointer<Image>> m_images;
 		QList<Tag> m_tags;
 		NetworkReply *m_reply;
-		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount;
+		int m_imagesCount, m_maxImagesCount, m_pagesCount, m_pageImageCount, m_filteredImageCount;
 		bool m_imagesCountSafe, m_pagesCountSafe;
 		bool m_loading = false;
 		bool m_loaded = false;

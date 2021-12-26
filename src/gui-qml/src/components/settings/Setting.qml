@@ -9,7 +9,7 @@ Item {
     property var def
     property var obj: settings
     property var parser: null
-    property var _parser: parser !== null ? parser : (typeof def === "boolean" ? ((v) => v === true || v === "true") : null)
+    property var _parser: parser !== null ? parser : (typeof def === "boolean" ? ((v) => v === true || v === "true") : (typeof def === "number" ? ((v) => Number(v)) : null))
 
     property var value: _parser !== null ? _parser(rawValue) : rawValue
     property var rawValue: root.obj

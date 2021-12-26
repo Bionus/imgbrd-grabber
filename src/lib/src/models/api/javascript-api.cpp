@@ -70,6 +70,24 @@ void JavascriptApi::fillUrlObject(const QJSValue &result, Site *site, PageUrl &r
 }
 
 
+QJSValue buildParsedSearchTag(QJSEngine *engine, const QString &name, int id)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("name", name);
+	if (id > 0) {
+		ret.setProperty("id", id);
+	}
+	return ret;
+}
+QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const QJSValue left, const QJSValue right)
+{
+	QJSValue ret = engine->newObject();
+	ret.setProperty("operator", "and");
+	ret.setProperty("left", left);
+	ret.setProperty("right", right);
+	return ret;
+}
+
 PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastPageInformation lastPage, Site *site) const
 {
 	PageUrl ret;
@@ -82,8 +100,36 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastP
 		return ret;
 	}
 
+	// Parse query if necessary
+	QJSValue parsedSearch;
+	const bool parseInput = getJsConst("search.parseInput", false).toBool();
+	if (parseInput && !search.trimmed().isEmpty()) {
+		QStringList operands = search.split(" ", Qt::SkipEmptyParts);
+		const auto tagIds = site->tagDatabase()->getTagIds(operands);
+
+		QJSEngine *engine = m_source.engine();
+
+		const QString firstTag = operands.takeFirst();
+		const auto first = buildParsedSearchTag(engine, firstTag, tagIds[firstTag]);
+
+		if (operands.isEmpty()) {
+			parsedSearch = first;
+		} else {
+			const QString secondTag = operands.takeFirst();
+			const auto second = buildParsedSearchTag(engine, secondTag, tagIds[secondTag]);
+			parsedSearch = buildParsedSearchOperator(engine, "and", first, second);
+
+			while (!operands.isEmpty()) {
+				const QString nextTag = operands.takeFirst();
+				const auto next = buildParsedSearchTag(engine, nextTag, tagIds[nextTag]);
+				parsedSearch = buildParsedSearchOperator(engine, "and", parsedSearch, next);
+			}
+		}
+	}
+
 	QJSValue query = m_source.engine()->newObject();
 	query.setProperty("search", search);
+	query.setProperty("parsedSearch", parsedSearch);
 	query.setProperty("page", page);
 
 	QJSValue opts = m_source.engine()->newObject();
@@ -125,9 +171,9 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 			continue;
 		}
 
-		const int id = tag.hasProperty("id") && !tag.property("id").isUndefined() ? tag.property("id").toInt() : 0;
-		const QString text = tag.property("name").toString();
-		const int count = tag.hasProperty("count") && !tag.property("count").isUndefined() ? tag.property("count").toInt() : 0;
+		const int id = getPropertyOr(tag, "id", 0);
+		const QString text = getPropertyOr(tag, "name", QString());
+		const int count = getPropertyOr(tag, "count", 0);
 
 		QString type;
 		int typeId = -1;
@@ -138,9 +184,7 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 				type = tag.property("type").toString();
 			}
 		}
-		if (tag.hasProperty("typeId") && !tag.property("typeId").isUndefined()) {
-			typeId = tag.property("typeId").toInt();
-		}
+		getProperty(tag, "typeId", typeId);
 
 		QStringList related;
 		if (tag.hasProperty("related") && !tag.property("related").isUndefined()) {
@@ -156,6 +200,60 @@ QList<Tag> JavascriptApi::makeTags(const QJSValue &tags, Site *site) const
 	}
 
 	return ret;
+}
+
+QSharedPointer<Image> JavascriptApi::makeImage(const QJSValue &raw, Site *site, Page *parentPage, int index, int first) const
+{
+	QList<Tag> tags;
+	QVariantMap data;
+
+	QMap<QString, QString> d;
+	QJSValueIterator it(raw);
+	while (it.hasNext()) {
+		it.next();
+
+		const QString &key = it.name();
+		const QJSValue &val = it.value();
+
+		if (val.isUndefined()) {
+			log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
+			continue;
+		}
+
+		if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
+			tags = makeTags(val, site);
+		} else if (key == QLatin1String("tokens")) {
+			QJSValueIterator dit(val);
+			while (dit.hasNext()) {
+				dit.next();
+				QVariant dval = dit.value().toVariant();
+				if (dit.value().isString() && dval.toString().startsWith("date:")) {
+					const QDateTime date = qDateTimeFromString(dval.toString().mid(5));
+					if (date.isValid()) {
+						dval = date;
+					}
+				}
+				if (dit.value().isString() && dval.toString().startsWith("b64:")) {
+					dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
+				}
+				data[dit.name()] = dval;
+			}
+		} else if (val.isArray()) {
+			d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
+		} else {
+			d[key] = val.toString();
+		}
+	}
+
+	if (!d.isEmpty()) {
+		const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(index));
+		QSharedPointer<Image> img = parseImage(site, parentPage, d, data, pos, tags);
+		if (!img.isNull()) {
+			return img;
+		}
+	}
+
+	return nullptr;
 }
 
 ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPage, const QString &source, int statusCode, int first) const
@@ -186,70 +284,18 @@ ParsedPage JavascriptApi::parsePageInternal(const QString &type, Page *parentPag
 		const QJSValue images = results.property("images");
 		const quint32 length = images.property("length").toUInt();
 		for (quint32 i = 0; i < length; ++i) {
-			QList<Tag> tags;
-			QVariantMap data;
-
-			QMap<QString, QString> d;
-			QJSValueIterator it(images.property(i));
-			while (it.hasNext()) {
-				it.next();
-
-				const QString &key = it.name();
-				const QJSValue &val = it.value();
-
-				if (val.isUndefined()) {
-					log(QStringLiteral("Undefined value returned by JS model: %1").arg(key), Logger::Debug);
-					continue;
-				}
-
-				if (key == QLatin1String("tags_obj") || (key == QLatin1String("tags") && val.isArray())) {
-					tags = makeTags(val, site);
-				} else if (key == QLatin1String("tokens")) {
-					QJSValueIterator dit(val);
-					while (dit.hasNext()) {
-						dit.next();
-						QVariant dval = dit.value().toVariant();
-						if (dit.value().isString() && dval.toString().startsWith("date:")) {
-							const QDateTime date = qDateTimeFromString(dval.toString().mid(5));
-							if (date.isValid()) {
-								dval = date;
-							}
-						}
-						if (dit.value().isString() && dval.toString().startsWith("b64:")) {
-							dval = QByteArray::fromBase64(dval.toString().mid(4).toLatin1()).toHex();
-						}
-						data[dit.name()] = dval;
-					}
-				} else if (val.isArray()) {
-					d[key] = jsToStringList(val).join(key == QLatin1String("sources") ? '\n' : ' ');
-				} else {
-					d[key] = val.toString();
-				}
-			}
-
-			if (!d.isEmpty()) {
-				const int pos = first + (d.contains("position") ? d["position"].toInt() : static_cast<int>(i));
-				QSharedPointer<Image> img = parseImage(parentPage, d, data, pos, tags);
-				if (!img.isNull()) {
-					ret.images.append(img);
-				}
+			auto img = makeImage(images.property(i), site, parentPage, i, first);
+			if (!img.isNull()) {
+				ret.images.append(img);
 			}
 		}
 	}
 
 	// Basic properties
-	if (results.hasProperty("imageCount") && !results.property("imageCount").isUndefined()) {
-		ret.imageCount = results.property("imageCount").toInt();
-	}
-	if (results.hasProperty("pageCount") && !results.property("pageCount").isUndefined()) {
-		ret.pageCount = results.property("pageCount").toInt();
-	}
-	if (results.hasProperty("urlNextPage") && results.property("urlNextPage").isString()) {
-		ret.urlNextPage = results.property("urlNextPage").toString();
-	}
-	if (results.hasProperty("urlPrevPage") && results.property("urlPrevPage").isString()) {
-		ret.urlPrevPage = results.property("urlPrevPage").toString();
-	}
+	getProperty(results, "imageCount", ret.imageCount);
+	getProperty(results, "pageCount", ret.pageCount);
+	getProperty(results, "urlNextPage", ret.urlNextPage);
+	getProperty(results, "urlPrevPage", ret.urlPrevPage);
 	if (results.hasProperty("wiki") && results.property("wiki").isString()) {
 		ret.wiki = results.property("wiki").toString();
 		ret.wiki = ret.wiki.replace("href=\"/", "href=\"" + site->baseUrl() + "/");
@@ -459,6 +505,11 @@ bool JavascriptApi::canLoadDetails() const
 	QJSValue urlFunction = api.property("details").property("url");
 	return !urlFunction.isUndefined();
 }
+bool JavascriptApi::canLoadFullDetails() const
+{
+	return canLoadDetails()
+		&& getJsConst("details.fullResults").toBool();
+}
 
 PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site) const
 {
@@ -499,6 +550,18 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	// Script errors and exceptions
 	if (results.isError()) {
 		ret.error = QStringLiteral("Uncaught exception at line %1: %2").arg(results.property("lineNumber").toInt()).arg(results.toString());
+		return ret;
+	}
+
+	// Full details
+	if (canLoadFullDetails()) {
+		ret.image = makeImage(results, site);
+
+		// "Backward compatibility" for older call sites
+		ret.tags = ret.image->tags();
+		ret.imageUrl = ret.image->fileUrl().toString();
+		ret.createdAt = ret.image->createdAt();
+
 		return ret;
 	}
 

@@ -6,11 +6,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	set(USE_QSCINTILLA 1)
 endif()
 
-# Disable Google Breakpad and QScintilla on Linux builds
-if(DEFINED ENV{TRAVIS})
-	set(USE_BREAKPAD 0)
-	set(USE_QSCINTILLA 0)
-endif()
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Disable Google Breakpad if the provided folder does not exist
 if(USE_BREAKPAD)
@@ -74,6 +71,7 @@ file(GLOB SOURCES
 	"src/main/main.cpp"
 	"src/*.cpp"
 	"src/batch/*.cpp"
+	"src/custom-buttons/*.cpp"
 	"src/docks/*.cpp"
 	"src/settings/*.cpp"
 	"src/sources/*.cpp"
@@ -174,3 +172,6 @@ endif()
 if(USE_PCH)
 	cotire(${PROJECT_NAME})
 endif()
+
+# Tests
+add_subdirectory(tests)

@@ -21,7 +21,7 @@ Example of commonly used property names (non-exhaustive):
 * System.Comment
 
 The full list can be found here:  
-[https://docs.microsoft.com/en-us/windows/win32/properties/props]
+<https://docs.microsoft.com/en-us/windows/win32/properties/props>
 
 Here's a basic example of what is possible to do:
 
@@ -40,7 +40,7 @@ Example of commonly used property names (non-exhaustive):
 * XMP.Creator
 
 The full list can be found here:  
-[https://exiftool.org/#supported]
+<https://exiftool.org/#supported>
 
 Note that you don't necessarily need to put the IPTC/XMP prefix, as Exiftool will find it automatically (checking in this order: EXIF, IPTC, XMP).
 

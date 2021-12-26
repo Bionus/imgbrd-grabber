@@ -55,9 +55,9 @@ void FilenamePrintVisitor::visit(const FilenameNodeConditionInvert &node)
 
 void FilenamePrintVisitor::visit(const FilenameNodeConditionJavaScript &node)
 {
-	m_result += "ConditionJavaScript('";
+	m_result += "ConditionJavaScript(";
 	m_result += node.script;
-	m_result += "')";
+	m_result += ")";
 }
 
 void FilenamePrintVisitor::visit(const FilenameNodeConditionOp &node)
@@ -91,9 +91,9 @@ void FilenamePrintVisitor::visit(const FilenameNodeConditionToken &node)
 
 void FilenamePrintVisitor::visit(const FilenameNodeJavaScript &node)
 {
-	m_result += "JavaScript('";
+	m_result += "JavaScript(";
 	m_result += node.script;
-	m_result += "')";
+	m_result += ")";
 }
 
 void FilenamePrintVisitor::visit(const FilenameNodeRoot &node)

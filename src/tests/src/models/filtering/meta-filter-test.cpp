@@ -93,6 +93,21 @@ TEST_CASE("MetaFilter")
 		REQUIRE(MetaFilter("date", "someday").match(tokens) == QString("image's date does not match"));
 	}
 
+	SECTION("Match file size")
+	{
+		QMap<QString, Token> tokens;
+		tokens.insert("filesize", Token(2345678));
+
+		REQUIRE(MetaFilter("filesize", ">1234567").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", ">=1mb").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "<3MB").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "<=4567kb").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "..10MB").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "1mb..").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "1MB..1GB").match(tokens) == QString());
+		REQUIRE(MetaFilter("filesize", "2345678").match(tokens) == QString());
+	}
+
 	SECTION("MatchRating")
 	{
 		QMap<QString, Token> tokens;

@@ -322,7 +322,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	}
 
 	// Looking for unknown tokens
-	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author" };
+	QStringList knownTokens {"tags", "artist", "general", "copyright", "character", "model", "photo_set", "species", "meta", "filename", "rating", "md5", "website", "websitename", "ext", "all", "id", "search", "search_(\\d+)", "allo", "date", "score", "count", "width", "height", "pool", "url_file", "url_page", "num", "name", "position", "current_date", "author", "authorid", "parentid" };
 	if (profile != nullptr) {
 		knownTokens.append(profile->getAdditionalTokens());
 		knownTokens.append(getCustoms(profile->getSettings()).keys());

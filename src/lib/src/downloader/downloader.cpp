@@ -132,7 +132,7 @@ void Downloader::getPageTags()
 	}
 
 	if (m_quit) {
-		m_printer->print(list);
+		m_printer->print(list, nullptr);
 		emit quit();
 	} else {
 		emit finishedTags(list);
@@ -184,7 +184,7 @@ void Downloader::getTags()
 	}
 
 	if (m_quit) {
-		m_printer->print(results);
+		m_printer->print(results, nullptr);
 		emit quit();
 	} else {
 		emit finishedTags(results);

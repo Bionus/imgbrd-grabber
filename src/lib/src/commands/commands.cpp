@@ -6,6 +6,7 @@
 #include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
+#include "models/image.h"
 #include "models/profile.h"
 #include "tags/tag.h"
 
@@ -104,7 +105,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 			exec.replace("%tag%", original)
 				.replace("%original%", tag.text())
 				.replace("%type%", tag.type().name())
-				.replace("%number%", QString::number(tag.type().number()));
+				.replace("%number%", QString::number(tag.type().number(img.parentSite())));
 
 			if (!execute(exec)) {
 				return false;
@@ -123,7 +124,7 @@ bool Commands::tag(const Image &img, const Tag &tag, bool after)
 			exec.replace("%tag%", m_sqlWorker->escape(original))
 				.replace("%original%", m_sqlWorker->escape(tag.text()))
 				.replace("%type%", m_sqlWorker->escape(tag.type().name()))
-				.replace("%number%", QString::number(tag.type().number()));
+				.replace("%number%", QString::number(tag.type().number(img.parentSite())));
 
 			if (!sqlExec(exec)) {
 				return false;
@@ -158,13 +159,19 @@ bool Commands::execute(const QString &command) const
 		QProcess proc;
 		proc.start(program, args);
 
+		// Connect command output to logs
+		QObject::connect(&proc, &QProcess::readyReadStandardOutput, [&proc]() { log(QStringLiteral("[Command stdout] %1").arg(QString(proc.readAllStandardOutput())), Logger::Debug); });
+		QObject::connect(&proc, &QProcess::readyReadStandardError, [&proc]() { log(QStringLiteral("[Command stderr] %1").arg(QString(proc.readAllStandardError())), Logger::Error); });
+
+		// Wait for  the command to finish 30s
 		if (!proc.waitForFinished()) {
 			log(QStringLiteral("Command execution timeout"), Logger::Error);
 		}
 
+		// Check the return code for error codes (stderr output does not cause a "false" return)
 		const int code = proc.exitCode();
 		if (code != 0) {
-			log(QStringLiteral("Error executing command (return code: %1): %2").arg(code).arg(QString(proc.readAll())), Logger::Error);
+			log(QStringLiteral("Error executing command (return code: %1)").arg(code), Logger::Error);
 			return false;
 		}
 

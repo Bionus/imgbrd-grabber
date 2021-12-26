@@ -23,8 +23,10 @@ class TagDatabase
 		virtual void setTags(const QList<Tag> &tags, bool createTagTypes = false) = 0;
 		virtual void setTagTypes(const QList<TagTypeWithId> &tagTypes);
 		virtual QMap<QString, TagType> getTagTypes(const QStringList &tags) const = 0;
+		virtual QMap<QString, int> getTagIds(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
 		const QMap<int, TagType> &tagTypes() const;
+		int getTagTypeNumber(const TagType &type);
 
 	protected:
 		explicit TagDatabase(QString typeFile);

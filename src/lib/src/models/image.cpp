@@ -142,7 +142,7 @@ Image::Image(Site *site, QMap<QString, QString> details, QVariantMap data, Profi
 
 	// Page url
 	if (details.contains("page_url")) {
-		m_pageUrl = details["page_url"];
+		m_pageUrl = m_parentSite->fixUrl(m_parentSite->fixLoginUrl(details["page_url"]));
 	}
 
 	// Tags
@@ -232,7 +232,7 @@ void Image::init()
 	// Setup extension rotator
 	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 	const QStringList extensions = animated
-		? QStringList { "webm", "mp4", "gif", "jpg", "png", "jpeg", "swf" }
+		? QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }
 		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
 	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 }
@@ -740,6 +740,7 @@ QString Image::dateRaw() const { return token<QString>("date_raw"); }
 const QUrl &Image::fileUrl() const { return m_sizes[Size::Full]->url; }
 const QUrl &Image::pageUrl() const { return m_pageUrl; }
 QSize Image::size(Size size) const { return m_sizes[size]->size; }
+QRect Image::rect(Size size) const { return m_sizes[size]->rect; }
 const QString &Image::name() const { return m_name; }
 QPixmap Image::previewImage() const { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
 const QPixmap &Image::previewImage() { return m_sizes[Image::Size::Thumbnail]->pixmap(); }
@@ -1028,6 +1029,7 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	const TagFilterList &remove = profile->getRemovedTags();
 
 	QMap<QString, Token> tokens;
+	QMap<QString, QStringList> details;
 
 	// Pool
 	static const QRegularExpression poolRegexp("pool:(\\d+)");
@@ -1064,19 +1066,19 @@ QMap<QString, Token> Image::generateTokens(Profile *profile) const
 	}
 	tokens.insert("search", Token(m_search.join(' ')));
 
+	// Raw untouched tags (with underscores)
+	for (const Tag &tag : m_tags) {
+		details["allos"].append(QString(tag.text()).replace(' ', '_'));
+	}
+
 	// Tags
 	const auto tags = remove.filterTags(m_tags);
-	QMap<QString, QStringList> details;
 	for (const Tag &tag : tags) {
 		const QString &t = tag.text();
 
 		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);
 		details["alls_namespaces"].append(tag.type().name());
-
-		QString underscored = QString(t);
-		underscored.replace(' ', '_');
-		details["allos"].append(underscored);
 	}
 
 	// Shorten copyrights

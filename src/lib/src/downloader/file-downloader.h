@@ -29,6 +29,7 @@ class FileDownloader : public QObject
 		bool m_allowHtmlResponses;
 		NetworkReply *m_reply;
 		QFile m_file;
+		int m_readSize;
 		bool m_writeError;
 };
 

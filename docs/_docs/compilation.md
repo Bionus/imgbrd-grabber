@@ -25,24 +25,24 @@ Bullets with '`*`' are mandatory, other are optional. Note that the compiler use
 
 ### Qt
 You can find the Qt installer here:  
-[https://www.qt.io/download-qt-installer]
+<https://www.qt.io/download-qt-installer>
 
 Just download and install.
 
 ### Compiler
-You can use the free Visual Studio Community version to compile (note that only the compiler is required). You can find it here: [https://www.visualstudio.com/downloads/](https://www.visualstudio.com/downloads/)
+You can use the free Visual Studio Community version to compile (note that only the compiler is required). You can find it here: <https://www.visualstudio.com/downloads/>
 
 Just download and install.
 
 ### NodeJS
-You can find it here: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+You can find it here: <https://nodejs.org/en/download/>
 
 Just download and install.
 
 ### QScintilla
 If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
-Else, you can find it here: [http://www.riverbankcomputing.com/software/qscintilla/download](http://www.riverbankcomputing.com/software/qscintilla/download)
+Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
 
   1. Download
   1. Open the Qt command prompt (you can find it in the start menu)
@@ -87,7 +87,7 @@ For example using `apt` and the [beineri](https://launchpad.net/~beineri) reposi
 ```bash
 sudo add-apt-repository ppa:beineri/opt-qt-5.15.2-bionic
 sudo apt-get update
-sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations
+sudo apt install qt515base qt515multimedia qt515script qt515tools qt515translations qt515networkauth-no-lgpl
 source /opt/qt515/bin/qt515-env.sh
 ```
 
@@ -129,7 +129,7 @@ They're usually found in packages managers by the name `libssl-dev`.
 ### QScintilla
 If you don't want to use QScintilla, edit the "gui/CMakeLists.txt" file and change the line `set(USE_QSCINTILLA 1)` into `set(USE_QSCINTILLA 0)`.
 
-Else, you can find it here: [http://www.riverbankcomputing.com/software/qscintilla/download](http://www.riverbankcomputing.com/software/qscintilla/download)
+Else, you can find it here: <http://www.riverbankcomputing.com/software/qscintilla/download>
   1. Download
   1. Open a terminal
   1. Browse to where you extracted QScintilla using the "cd" command (for example, "cd /home/Bionus/QScintilla-gpl-2.7.2").

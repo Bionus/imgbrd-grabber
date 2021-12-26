@@ -413,13 +413,22 @@ TEST_CASE("Filename")
 		assertPath(profile, img, "%md5_forced%", "956ddde86fb5ce85218b21e2f49e5c50");
 	}
 
-	SECTION("PathOptionMax")
+	SECTION("Options")
 	{
-		assertPath(profile, img, "%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
-	}
-	SECTION("PathOptionMaxDouble")
-	{
-		assertPath(profile, img, "%md5:maxlength=16,maxlength=8%.%ext%", "1bc29b36.jpg");
+		SECTION("Max length")
+		{
+			assertPath(profile, img, "%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
+		}
+
+		SECTION("Multiple options")
+		{
+			assertPath(profile, img, "%md5:maxlength=16,maxlength=8%.%ext%", "1bc29b36.jpg");
+		}
+
+		SECTION("htmlescape")
+		{
+			assertPath(profile, img, "%search%.%ext%", "testing well.jpg");
+		}
 	}
 	SECTION("PathOptionDateFormat")
 	{

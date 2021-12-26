@@ -40,12 +40,18 @@ QVariant NetworkReply::attribute(QNetworkRequest::Attribute code) const
 
 QByteArray NetworkReply::readAll()
 {
-	return m_reply->readAll();
+	if (m_reply != nullptr) {
+		return m_reply->readAll();
+	}
+	return {};
 }
 
 qint64 NetworkReply::bytesAvailable() const
 {
-	return m_reply->bytesAvailable();
+	if (m_reply != nullptr) {
+		return m_reply->bytesAvailable();
+	}
+	return 0;
 }
 
 QNetworkReply::NetworkError NetworkReply::error() const
@@ -71,7 +77,10 @@ QNetworkReply *NetworkReply::networkReply() const
 
 QByteArray NetworkReply::rawHeader(const QByteArray &headerName) const
 {
-	return m_reply->rawHeader(headerName);
+	if (m_reply != nullptr) {
+		return m_reply->rawHeader(headerName);
+	}
+	return {};
 }
 
 

@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <QSettings>
 #include "analytics.h"
+#include "async-image-provider.h"
 #include "functions.h"
 #include "language-loader.h"
 #include "loaders/gallery-search-loader.h"
@@ -20,6 +21,7 @@
 #include "share/share-utils.h"
 #include "statusbar.h"
 #include "syntax-highlighter-helper.h"
+#include "update-checker.h"
 
 
 #if defined(Q_OS_ANDROID)
@@ -114,6 +116,8 @@ int main(int argc, char *argv[])
 		engine.rootContext()->setContextProperty("NIGHTLY_COMMIT", QString());
 	#endif
 
+	engine.addImageProvider("async", new AsyncImageProvider(&profile));
+
 	ShareUtils shareUtils(nullptr);
 	engine.rootContext()->setContextProperty("shareUtils", &shareUtils);
 
@@ -123,6 +127,9 @@ int main(int argc, char *argv[])
 
 	Settings qmlSettings(settings);
 	engine.rootContext()->setContextProperty("settings", &qmlSettings);
+
+	UpdateChecker updateChecker(settings);
+	engine.rootContext()->setContextProperty("updateChecker", &updateChecker);
 
 	// Load translations
 	LanguageLoader languageLoader(savePath("languages/", true, false));

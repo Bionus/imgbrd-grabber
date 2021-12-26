@@ -1,5 +1,7 @@
 #include "tags/tag-type.h"
 #include <QMap>
+#include "models/site.h"
+#include "tags/tag-database.h"
 
 
 TagType::TagType()
@@ -27,8 +29,14 @@ const QString &TagType::name() const
 	return m_name;
 }
 
-int TagType::number() const
+int TagType::number(Site *site) const
 {
+	if (m_isUnknown) {
+		return -1;
+	}
+	if (site != nullptr) {
+		return site->tagDatabase()->getTagTypeNumber(*this);
+	}
 	static const QMap<QString, int> shortTypes
 	{
 		{ "general", 0 },
@@ -39,8 +47,7 @@ int TagType::number() const
 		{ "model", 5 },
 		{ "photo_set", 6 },
 	};
-
-	return !m_isUnknown && shortTypes.contains(m_name) ? shortTypes[m_name] : -1;
+	return shortTypes.contains(m_name) ? shortTypes[m_name] : -1;
 }
 
 bool operator==(const TagType &a, const TagType &b)

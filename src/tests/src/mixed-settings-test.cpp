@@ -95,6 +95,20 @@ TEST_CASE("MixedSettings")
 		REQUIRE(parent->value("test", "none").toString() == QString("none"));
 	}
 
+	SECTION("Remove value")
+	{
+		MixedSettings settings(QList<QSettings*>() << child << parent);
+
+		child->setValue("test", "child");
+		parent->setValue("test", "parent");
+
+		settings.remove("test");
+		settings.sync();
+
+		REQUIRE(child->value("test", "none").toString() == QString("none"));
+		REQUIRE(parent->value("test", "none").toString() == QString("none"));
+	}
+
 	SECTION("ChildKeys")
 	{
 		MixedSettings settings(QList<QSettings*>() << child << parent);

@@ -10,15 +10,15 @@ function buildImageFromJson(img: any): IImage {
     img.score = img.total_score;
     img.author = img.author.name;
 
-    return completeImage(img);
+    return completeImage(img, true);
 }
 
-function completeImage(img: IImage): IImage {
+function completeImage(img: IImage, fromJson: boolean): IImage {
     if ((!img.file_url || img.file_url.length < 5) && img.preview_url) {
         img.file_url = img.preview_url.replace("/preview/", "/");
     }
 
-    if (img.file_url) {
+    if (img.file_url && !fromJson) {
         img.file_url = img.file_url.replace(/([^s])\.sankakucomplex/, "$1s.sankakucomplex");
     }
 
@@ -28,7 +28,6 @@ function completeImage(img: IImage): IImage {
 export const source: ISource = {
     name: "Sankaku",
     modifiers: ["rating:safe", "rating:questionable", "rating:explicit", "user:", "fav:", "fastfav:", "md5:", "source:", "id:", "width:", "height:", "score:", "mpixels:", "filesize:", "date:", "gentags:", "arttags:", "chartags:", "copytags:", "approver:", "parent:", "sub:", "order:id", "order:id_desc", "order:score", "order:score_asc", "order:mpixels", "order:mpixels_asc", "order:filesize", "order:landscape", "order:portrait", "order:favcount", "order:rank", "order:change", "order:change_desc", "parent:none", "unlocked:rating"],
-    forcedTokens: ["*"],
     tagFormat: {
         case: "lower",
         wordSeparator: "_",
@@ -121,13 +120,14 @@ export const source: ISource = {
             name: "Regex",
             auth: [],
             forcedLimit: 20,
+            forcedTokens: ["*"],
             search: {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, opts.loggedIn ? 50 : 25, "page={page}", "prev={max}", "next={min-1}");
                         const search = buildSearch(query.search);
                         return "/post/index?" + pagePart + "&tags=" + encodeURIComponent(search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -139,7 +139,7 @@ export const source: ISource = {
                     wiki = wiki ? wiki.replace(/href="\/wiki\/show\?title=([^"]+)"/g, 'href="$1"') : undefined;
                     return {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
-                        images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map(completeImage),
+                        images: Grabber.regexToImages('<span[^>]* id="?p(?<id>\\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+/preview/\\w{2}/\\w{2}/(?<md5>[^.]+)\\.[^"]+|[^"]+/download-preview.png)" title="(?<tags>[^"]+)"[^>]+></a></span>', src).map((img: IImage) => completeImage(img, false)),
                         wiki,
                         pageCount: lastPage ? Grabber.countToInt(lastPage) : undefined,
                         imageCount: searchImageCounts.length === 1 ? Grabber.countToInt(searchImageCounts[0].count) : undefined,
@@ -156,6 +156,33 @@ export const source: ISource = {
                         tags: Grabber.regexToTags('<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<name>[^<]+)</a>.*?<span class="?post-count"?>(?<count>\\d+)</span>.*?</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<li>Original: <a href="(?<url>[^"]+)"|<a href="(?<url_2>[^"]+)">Save this file', src).replace(/&amp;/g, "&"),
                         createdAt: Grabber.regexToConst("date", '<a href="/\\?tags=date[^"]+" title="(?<date>[^"]+)">', src),
+                    };
+                },
+            },
+            tagTypes: {
+                url: (): string => {
+                    return "/tag/index";
+                },
+                parse: (src: string): IParsedTagTypes | IError => {
+                    const contents = src.match(/<select[^>]* id=['"]?type['"]?[^>]*>([\s\S]+)<\/select>/);
+                    if (!contents) {
+                        return { error: "Parse error: could not find the tag type <select> tag" };
+                    }
+                    const results = Grabber.regexMatches('<option value="?(?<id>\\d+)"?>(?<name>[^<]+)</option>', contents[1]);
+                    const types = results.map((r: any) => ({
+                        id: r.id,
+                        name: r.name.toLowerCase(),
+                    }));
+                    return { types };
+                },
+            },
+            tags: {
+                url: (query: ITagsQuery, opts: IUrlOptions): string => {
+                    return "/tag/index?language=en&order=" + query.order + "&page=" + query.page;
+                },
+                parse: (src: string): IParsedTags => {
+                    return {
+                        tags: Grabber.regexToTags('<tr[^>]*>\\s*<td[^>]*>(?<count>\\d+)</td>\\s*<td class="?tag-type-(?<type>[^">]+)"?>\\s*\\[<a[^>]+>\\?</a>\\]\\s*<a[^>]+>(?<name>.+?)</a>\\s*</td>', src),
                     };
                 },
             },

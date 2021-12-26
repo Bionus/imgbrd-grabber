@@ -90,10 +90,6 @@ void Logger::setupMessageOutput(bool log)
  */
 void Logger::log(const QString &l, LogLevel level)
 {
-	if (m_exitOnError && level == Logger::LogLevel::Error) {
-		throw std::runtime_error(l.toStdString());
-	}
-
 	if (level < m_level) {
 		return;
 	}
@@ -122,6 +118,10 @@ void Logger::log(const QString &l, LogLevel level)
 	#ifdef QT_DEBUG
 		qDebug() << time.toString(timeFormat) << levelStr << l;
 	#endif
+
+	if (m_exitOnError && level == Logger::LogLevel::Error) {
+		throw std::runtime_error(l.toStdString());
+	}
 }
 
 void Logger::logCommand(const QString &l)

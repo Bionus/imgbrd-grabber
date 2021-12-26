@@ -83,11 +83,17 @@ QString Tag::GetType(QString type, QMap<int, QString> ids)
 	if (type == QLatin1String("source")) {
 		return QStringLiteral("general");
 	}
+	if (type == QLatin1String("genre")) {
+		return QStringLiteral("general");
+	}
 	if (type == QLatin1String("character group")) {
 		return QStringLiteral("general");
 	}
 	if (type == QLatin1String("oc")) {
 		return QStringLiteral("character");
+	}
+	if (type == QLatin1String("medium")) {
+		return QStringLiteral("meta");
 	}
 	if (type == QLatin1String("metadata")) {
 		return QStringLiteral("meta");

@@ -24,6 +24,7 @@
         <file>components/settings/pages/InterfaceSettingsPage.qml</file>
         <file>components/settings/pages/NetworkSettingsPage.qml</file>
         <file>components/settings/pages/SaveSettingsPage.qml</file>
+        <file>components/settings/pages/TagSaveSettingsPage.qml</file>
         <file>components/settings/items/CheckBoxSetting.qml</file>
         <file>components/settings/items/ComboSetting.qml</file>
         <file>components/settings/items/FolderSetting.qml</file>
@@ -34,6 +35,7 @@
         <file>components/settings/items/TextAreaSetting.qml</file>
         <file>components/settings/items/TextFieldSetting.qml</file>
         <file>components/settings/items/RadioSetting.qml</file>
+        <file>components/settings/items/KeyValueSetting.qml</file>
         <file>components/ResultsView.qml</file>
         <file>components/settings/pages/SourcesSettingsPage.qml</file>
         <file>components/SearchEdit.qml</file>
@@ -46,5 +48,6 @@
         <file>components/GalleryScreen.qml</file>
         <file>components/InnerBorder.qml</file>
         <file>components/Badge.qml</file>
+        <file>components/Loading.qml</file>
     </qresource>
 </RCC>

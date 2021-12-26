@@ -6,6 +6,7 @@
 
 
 class Image;
+class Site;
 class Tag;
 
 class Printer
@@ -16,8 +17,8 @@ class Printer
 
 		virtual void print(const Image &image) const = 0;
 		virtual void print(const QList<QSharedPointer<Image>> &images) const = 0;
-		virtual void print(const Tag &tag) const = 0;
-		virtual void print(const QList<Tag> &tags) const = 0;
+		virtual void print(const Tag &tag, Site *site) const = 0;
+		virtual void print(const QList<Tag> &tags, Site *site) const = 0;
 };
 
 #endif // PRINTER_H

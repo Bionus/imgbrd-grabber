@@ -354,7 +354,7 @@ void SourcesSettingsWindow::saveSettings()
 	}
 
 	// Cookies
-	QList<QVariant> cookies;
+	QStringList cookies;
 	for (int i = 0; i < ui->tableCookies->rowCount(); ++i) {
 		QTableWidgetItem *key = ui->tableCookies->item(i, 0);
 		QTableWidgetItem *value = ui->tableCookies->item(i, 1);
@@ -367,7 +367,7 @@ void SourcesSettingsWindow::saveSettings()
 		cookie.setValue(value != nullptr ? value->text().toLatin1() : "");
 		cookies.append(cookie.toRawForm());
 	}
-	m_site->setSetting("cookies", cookies, QList<QVariant>());
+	m_site->setSetting("cookies", cookies, QStringList());
 
 	// Headers
 	MixedSettings *settings = m_site->settings();

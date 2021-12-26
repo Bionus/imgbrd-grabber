@@ -27,6 +27,7 @@ class RenameExisting1 : public QDialog
 	private slots:
 		void getAll(Page *p);
 		void getTags();
+		void fullDetailsFinished();
 		void loadNext();
 		void on_buttonCancel_clicked();
 		void on_buttonContinue_clicked();
@@ -40,6 +41,7 @@ class RenameExisting1 : public QDialog
 		QMap<QString, Site*> m_sites;
 		Filename m_filename;
 		int m_needDetails;
+		bool m_useIdKey;
 		QList<RenameExistingFile> m_details;
 		QMap<QString, RenameExistingFile> m_getAll;
 };

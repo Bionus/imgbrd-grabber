@@ -12,6 +12,12 @@ AstFilename::AstFilename(const QString &str)
 	: m_parser(str)
 {}
 
+AstFilename::~AstFilename()
+{
+	delete m_ast;
+}
+
+
 void AstFilename::parse()
 {
 	auto ast = m_parser.parseRoot();

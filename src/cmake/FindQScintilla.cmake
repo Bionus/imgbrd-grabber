@@ -52,7 +52,7 @@ find_path ( QSCINTILLA_INCLUDE_DIR
 set ( QSCINTILLA_INCLUDE_DIRS ${QSCINTILLA_INCLUDE_DIR} )
 
 # version
-set ( _VERSION_FILE ${QSCINTILLA_INCLUDE_DIR}/Qsci/qsciglobal.h )
+set ( _VERSION_FILE ${QSCINTILLA_INCLUDE_DIR}/qsciglobal.h )
 if ( EXISTS ${_VERSION_FILE} )
   file ( STRINGS ${_VERSION_FILE} _VERSION_LINE REGEX "define[ ]+QSCINTILLA_VERSION_STR" )
   if ( _VERSION_LINE )
@@ -80,7 +80,7 @@ endif ()
 
 
 find_library ( QSCINTILLA_LIBRARY
-  NAMES qscintilla qscintilla2 libqscintilla2
+  NAMES qscintilla qscintilla2 libqscintilla2 qscintilla2_qt5
   HINTS ${QT_LIBRARY_DIR}
 )
 

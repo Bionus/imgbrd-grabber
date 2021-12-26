@@ -11,6 +11,7 @@
 #include <QJSValue>
 #include <QLocale>
 #include <QProcess>
+#include <QRect>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
@@ -69,30 +70,58 @@ QStringList splitCommand(const QString &command)
 
 	QString tmp;
 	int quoteCount = 0;
+	QChar lastQuote;
 	bool inQuote = false;
+	bool inEscape = false;
 
-	for (int i = 0; i < command.size(); ++i) {
-		if (command.at(i) == QLatin1Char('"')) {
+	for (const QChar c : command) {
+		// Escape character (\)
+		if (c == QLatin1Char('\\') && !inEscape) {
+			inEscape = true;
+			continue;
+		}
+		if (inEscape) {
+			inEscape = false;
+			tmp += c;
+			continue;
+		}
+
+		// Count quotes
+		if ((c == QLatin1Char('"') || c == QLatin1Char('\'')) && (c == lastQuote || lastQuote.isNull())) {
 			++quoteCount;
+			lastQuote = c;
+
+			// Allow escaping quotes using triple quotes
 			if (quoteCount == 3) {
 				quoteCount = 0;
-				tmp += command.at(i);
+				tmp += c;
 			}
 			continue;
 		}
+
 		if (quoteCount) {
+			// If the previous character was only one quote
 			if (quoteCount == 1) {
 				inQuote = !inQuote;
+				if (!inQuote) {
+					lastQuote = QChar();
+				}
 			}
+
+			// This means we saw two quotes in a row, which are ignored
 			quoteCount = 0;
 		}
-		if (!inQuote && command.at(i).isSpace()) {
+
+		// If we finally reached a space outside a quoted argument, we flush
+		if (!inQuote && c.isSpace()) {
 			args += tmp;
 			tmp.clear();
 		} else {
-			tmp += command.at(i);
+			tmp += c;
 		}
 	}
+
+	// Flush the last argument
 	if (!tmp.isEmpty()) {
 		args += tmp;
 	}
@@ -415,41 +444,6 @@ QString savePath(const QString &file, bool exists, bool writable)
 		#endif
 	#endif
 	return QDir::toNativeSeparators(dir + QLatin1Char('/') + file);
-}
-
-bool copyRecursively(QString srcFilePath, QString tgtFilePath)
-{
-	// Trim directory names of their trailing slashes
-	if (srcFilePath.endsWith(QDir::separator())) {
-		srcFilePath.chop(1);
-	}
-	if (tgtFilePath.endsWith(QDir::separator())) {
-		tgtFilePath.chop(1);
-	}
-
-	// Directly copy files using Qt function
-	if (!QFileInfo(srcFilePath).isDir()) {
-		return QFile(srcFilePath).copy(tgtFilePath);
-	}
-
-	// Try to create the target directory
-	QDir targetDir(tgtFilePath);
-	targetDir.cdUp();
-	if (!targetDir.mkpath(QDir(tgtFilePath).dirName())) {
-		return false;
-	}
-
-	QDir sourceDir(srcFilePath);
-	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	for (const QString &fileName : fileNames) {
-		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
-		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath)) {
-			return false;
-		}
-	}
-
-	return true;
 }
 
 /**
@@ -896,7 +890,7 @@ QString getFileMd5(const QString &path)
 	return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 }
 
-QString getFilenameMd5(const QString &fileName, const QString &format)
+QString getFilenameToken(const QString &fileName, const QString &format, const QString &token, const QString &regex = ".+")
 {
 	QString reg = "^" + QRegExp::escape(format) + "$";
 	#ifdef Q_OS_WIN
@@ -907,24 +901,27 @@ QString getFilenameMd5(const QString &fileName, const QString &format)
 	auto matches = regx.globalMatch(format);
 	while (matches.hasNext()) {
 		const auto match = matches.next();
-		const bool isMd5 = match.captured(1) == QLatin1String("md5");
-		reg.replace(match.captured(0), isMd5 ? QStringLiteral("(?<md5>.+?)") : QStringLiteral("(.+?)"));
+		const bool isToken = match.captured(1) == token;
+		reg.replace(match.captured(0), isToken ? QString("(?<token>%1)").arg(regex) : QStringLiteral("(.+?)"));
 	}
 
-	const QRegularExpression rx(reg);
+	const QRegularExpression rx(reg, QRegularExpression::CaseInsensitiveOption);
 	const auto match = rx.match(fileName);
 	if (match.hasMatch()) {
-		const QString md5 = match.captured("md5");
-
-		static const QRegularExpression rxMd5("^[0-9A-F]{32,}$", QRegularExpression::CaseInsensitiveOption);
-		if (rxMd5.match(md5).hasMatch()) {
-			return md5;
-		}
+		return match.captured("token");
 	} else {
-		log(QStringLiteral("Unable to detect MD5 file `%1`").arg(fileName), Logger::Warning);
+		log(QStringLiteral("Unable to detect %1 file `%2`").arg(token, fileName), Logger::Warning);
 	}
 
 	return QString();
+}
+QString getFilenameMd5(const QString &fileName, const QString &format)
+{
+	return getFilenameToken(fileName, format, "md5", "[0-9A-F]{32,}");
+}
+QString getFilenameId(const QString &fileName, const QString &format)
+{
+	return getFilenameToken(fileName, format, "id", "[0-9]+");
 }
 
 
@@ -1157,4 +1154,26 @@ QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeyS
 		return def;
 	}
 	return QKeySequence(val);
+}
+
+
+QString rectToString(const QRect &rect)
+{
+	if (rect.isNull()) {
+		return "";
+	}
+	return QStringLiteral("%1;%2;%3;%4")
+		.arg(rect.x())
+		.arg(rect.y())
+		.arg(rect.width())
+		.arg(rect.height());
+}
+
+QRect stringToRect(const QString &str)
+{
+	const QStringList parts = str.split(';');
+	if (parts.count() == 4) {
+		return QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt());
+	}
+	return {};
 }

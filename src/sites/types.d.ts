@@ -182,8 +182,16 @@ interface ISearchFormatType {
     prefix?: string;
 }
 
+type IParsedSearchQuery = ITag | IParsedSearchOperator;
+interface IParsedSearchOperator {
+    operator: "or" | "and";
+    left: IParsedSearchQuery;
+    right: IParsedSearchQuery;
+}
+
 interface ISearchQuery {
     search: string;
+    parsedSearch?: IParsedSearchQuery;
     page: number;
 }
 interface IGalleryQuery {
@@ -221,16 +229,19 @@ interface IApi {
     name: string;
     auth: string[];
     maxLimit?: number;
+    forcedTokens?: string[];
     forcedLimit?: number;
     search: {
+        parseInput?: boolean;
         parseErrors?: boolean;
         url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined) => IUrl | IError | string;
         parse: (src: string, statusCode: number) => IParsedSearch | IError;
     };
     details?: {
         parseErrors?: boolean;
+        fullResults?: boolean;
         url: (id: string, md5: string, opts: IUrlDetailsOptions) => IUrl | IError | string;
-        parse: (src: string, statusCode: number) => IParsedDetails | IError;
+        parse: (src: string, statusCode: number) => IParsedDetails | IImage | IError;
     };
     gallery?: {
         parseErrors?: boolean;

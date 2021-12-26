@@ -67,8 +67,10 @@ QString logToHtml(const QString &msg)
 	}
 
 	// Time color
-	htmlMsg.insert(timeEnd + 1, "</span>");
-	htmlMsg.insert(0, "<span style='color:darkgreen'>");
+	if (timeEnd > 0) {
+		htmlMsg.insert(timeEnd + 1, "</span>");
+		htmlMsg.insert(0, "<span style='color:darkgreen'>");
+	}
 
 	// Links color
 	static const QRegularExpression rxLinks("`(http[^`]+)`");

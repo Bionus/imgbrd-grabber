@@ -8,7 +8,7 @@
 
 
 FileDownloader::FileDownloader(bool allowHtmlResponses, QObject *parent)
-	: QObject(parent), m_allowHtmlResponses(allowHtmlResponses), m_reply(nullptr), m_writeError(false)
+	: QObject(parent), m_allowHtmlResponses(allowHtmlResponses), m_reply(nullptr), m_readSize(0), m_writeError(false)
 {}
 
 bool FileDownloader::start(NetworkReply *reply, const QString &path)
@@ -16,6 +16,7 @@ bool FileDownloader::start(NetworkReply *reply, const QString &path)
 	m_file.setFileName(path);
 	const bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
+	m_readSize = 0;
 	m_writeError = false;
 	m_reply = reply;
 
@@ -36,7 +37,10 @@ void FileDownloader::replyReadyRead()
 		return;
 	}
 
-	if (m_file.write(m_reply->readAll()) < 0) {
+	const QByteArray data = m_reply->readAll();
+	m_readSize += data.size();
+
+	if (m_file.write(data) < 0) {
 		m_writeError = true;
 		m_reply->abort();
 	} else {
@@ -46,7 +50,9 @@ void FileDownloader::replyReadyRead()
 
 void FileDownloader::replyFinished()
 {
-	QByteArray data = m_reply->readAll();
+	const QByteArray data = m_reply->readAll();
+	m_readSize += data.size();
+
 	const qint64 written = m_file.write(data);
 	m_file.close();
 
@@ -54,7 +60,9 @@ void FileDownloader::replyFinished()
 	const auto msg = m_reply->errorString();
 	const bool failedLastWrite = data.length() > 0 && written < 0;
 	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
-	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml) {
+	const bool emptyFile = m_readSize == 0;
+
+	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml || emptyFile) {
 		// Ignore those errors as they are caused by a bug in Qt
 		if (error != NetworkReply::NetworkError::NoError && msg.contains("140E0197")) {
 			log(QStringLiteral("Ignored network error '140E0197' for the image: `%1`: %2 (%3)").arg(m_reply->url().toString().toHtmlEscaped()).arg(error).arg(msg), Logger::Info);
@@ -68,6 +76,9 @@ void FileDownloader::replyFinished()
 		} else if (invalidHtml) {
 			log(QString("Invalid HTML content returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Invalid HTML content returned");
+		} else if (emptyFile && error == NetworkReply::NetworkError::NoError) {
+			log(QString("Empty file returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
+			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Empty file returned");
 		} else {
 			emit networkError(m_reply->error(), m_reply->errorString());
 		}

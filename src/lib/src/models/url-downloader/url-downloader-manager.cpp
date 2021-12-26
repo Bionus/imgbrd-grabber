@@ -19,6 +19,17 @@ UrlDownloaderManager::UrlDownloaderManager(const QString &root, QObject *parent)
 	}
 }
 
+UrlDownloaderManager::~UrlDownloaderManager()
+{
+	for (auto *downloader : m_downloaders) {
+		downloader->deleteLater();
+	}
+	m_downloaders.clear();
+
+	m_engine->deleteLater();
+}
+
+
 bool UrlDownloaderManager::load(const QString &file)
 {
 	QFile f(file);

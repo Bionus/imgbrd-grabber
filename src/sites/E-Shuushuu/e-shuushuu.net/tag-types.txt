@@ -1,0 +1,4 @@
+1,general
+2,copyright
+4,character
+3,artist

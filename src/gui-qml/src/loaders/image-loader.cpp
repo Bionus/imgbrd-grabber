@@ -44,6 +44,7 @@ void ImageLoader::componentComplete()
 	if (m_automatic) {
 		load();
 	}
+	m_loaded = true;
 }
 
 
@@ -69,6 +70,10 @@ void ImageLoader::setSize(ImageLoader::Size size)
 {
 	m_size = size;
 	emit sizeChanged();
+
+	if (m_automatic && m_loaded) {
+		load();
+	}
 }
 
 bool ImageLoader::automatic() const
@@ -99,6 +104,9 @@ void ImageLoader::setSource(QString source)
 
 void ImageLoader::load()
 {
+	if (status() == Status::Loading) {
+		return;
+	}
 	if (m_image.isNull()) {
 		setError("Null image");
 		return;

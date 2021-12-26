@@ -16,10 +16,8 @@ Api::Api(QString name)
 QString Api::getName() const { return m_name; }
 
 
-QSharedPointer<Image> Api::parseImage(Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags) const
+QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags) const
 {
-	Site *site = parentPage->site();
-
 	d["position"] = QString::number(position + 1);
 
 	// Remove dot before extension

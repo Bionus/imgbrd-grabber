@@ -12,6 +12,8 @@ class AstFilename
 {
 	public:
 		explicit AstFilename(const QString &str);
+		~AstFilename();
+
 		const QString &error();
 		FilenameNodeRoot *ast();
 		const QSet<QString> &tokens();

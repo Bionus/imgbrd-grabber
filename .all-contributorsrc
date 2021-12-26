@@ -140,6 +140,24 @@
         "question",
         "ideas"
       ]
+    },
+    {
+      "login": "waitingmoon",
+      "name": "waitingmoon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16256443?v=4",
+      "profile": "https://github.com/waitingmoon",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Penguin-Guru",
+      "name": "Penguin-Guru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22182988?v=4",
+      "profile": "https://github.com/Penguin-Guru",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitConvention": "none"

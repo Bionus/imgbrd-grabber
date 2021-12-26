@@ -96,5 +96,6 @@ async function setTagCategory(name, category) {
     } catch (e) {
         console.error("Error creating post: " + e.message);
         console.error(e.response.data);
+        process.exit(1);
     }
 })();

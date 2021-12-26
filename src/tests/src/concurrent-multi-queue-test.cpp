@@ -7,6 +7,15 @@
 
 TEST_CASE("ConcurrentMultiQueue")
 {
+	SECTION("Global concurrency")
+	{
+		ConcurrentMultiQueue multiQueue;
+		REQUIRE(multiQueue.globalConcurrency() == 1);
+
+		multiQueue.setGlobalConcurrency(2);
+		REQUIRE(multiQueue.globalConcurrency() == 2);
+	}
+
 	SECTION("Single queue")
 	{
 		QList<int> results;

@@ -72,19 +72,6 @@ static QFont makeFont(const QString &name, int size, bool usePixels, int weight,
 
 TEST_CASE("Functions")
 {
-	SECTION("CopyRecursively")
-	{
-		QString from = QDir::toNativeSeparators("tests/resources/recurse/");
-		QString to = QDir::toNativeSeparators("tests/resources/tmp/recurse/");
-
-		QDir(to).removeRecursively();
-
-		REQUIRE(copyRecursively(from, to));
-		REQUIRE(QFile::exists(to + "test.txt"));
-		REQUIRE(QFile::exists(to + "test/test1.txt"));
-		REQUIRE(QFile::exists(to + "test/test2.txt"));
-	}
-
 	SECTION("Fix filename")
 	{
 		SECTION("Windows")
@@ -427,6 +414,7 @@ TEST_CASE("Functions")
 		REQUIRE(getFilenameMd5("", "%md5%.%ext%") == QString());
 		REQUIRE(getFilenameMd5("lol.jpg", "%md5%.%ext%") == QString());
 		REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%") == QString());
+		REQUIRE(getFilenameMd5("123456789", "%md5%") == QString());
 
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6", "%md5%") == QString("098f6bcd4621d373cade4e832627b4f6"));
 		REQUIRE(getFilenameMd5("098f6bcd4621d373cade4e832627b4f6.jpg", "%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
@@ -434,6 +422,21 @@ TEST_CASE("Functions")
 
 		#ifdef Q_OS_WIN
 			REQUIRE(getFilenameMd5("test/098f6bcd4621d373cade4e832627b4f6.jpg", "%artist%\\%md5%.%ext%") == QString("098f6bcd4621d373cade4e832627b4f6"));
+		#endif
+	}
+	SECTION("GetFilenameId")
+	{
+		REQUIRE(getFilenameId("", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("lol.jpg", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("test/123456789.jpg", "%id%.%ext%") == QString());
+		REQUIRE(getFilenameId("098f6bcd4621d373cade4e832627b4f6", "%id%") == QString());
+
+		REQUIRE(getFilenameId("123456789", "%id%") == QString("123456789"));
+		REQUIRE(getFilenameId("123456789.jpg", "%id%.%ext%") == QString("123456789"));
+		REQUIRE(getFilenameId("test/123456789.jpg", "%artist%/%id%.%ext%") == QString("123456789"));
+
+		#ifdef Q_OS_WIN
+			REQUIRE(getFilenameId("test/123456789.jpg", "%artist%\\%id%.%ext%") == QString("123456789"));
 		#endif
 	}
 
@@ -472,5 +475,76 @@ TEST_CASE("Functions")
 	{
 		REQUIRE(decodeHtmlEntities("pok&eacute;mon") == QString("pokémon"));
 		REQUIRE(decodeHtmlEntities("a&amp;b") == QString("a&b"));
+	}
+
+	SECTION("splitCommand")
+	{
+		SECTION("Basic usage")
+		{
+			REQUIRE(splitCommand("") == QStringList {});
+			REQUIRE(splitCommand("a") == QStringList { "a" });
+			REQUIRE(splitCommand("a b c") == QStringList { "a", "b", "c" });
+		}
+
+		SECTION("Backslash escape")
+		{
+			REQUIRE(splitCommand("a\\ b c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a\\\\ b c") == QStringList { "a\\", "b", "c" });
+			REQUIRE(splitCommand("\\\"a b\\\" c") == QStringList { "\"a", "b\"", "c" });
+		}
+
+		SECTION("Double quote escape")
+		{
+			REQUIRE(splitCommand("\"a b\" c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a \"b c\"") == QStringList { "a", "b c" });
+			REQUIRE(splitCommand("\"a b c\"") == QStringList { "a b c" });
+			REQUIRE(splitCommand("\"a b \"\"\" c\"") == QStringList { "a b \" c" });
+		}
+
+		SECTION("Single quote escape")
+		{
+			REQUIRE(splitCommand("'a b' c") == QStringList { "a b", "c" });
+			REQUIRE(splitCommand("a 'b c'") == QStringList { "a", "b c" });
+			REQUIRE(splitCommand("'a b c'") == QStringList { "a b c" });
+			REQUIRE(splitCommand("'a b ''' c'") == QStringList { "a b ' c" });
+		}
+
+		SECTION("Mixed quotes escape")
+		{
+			REQUIRE(splitCommand("'a' b \"c\"") == QStringList { "a", "b", "c" });
+			REQUIRE(splitCommand("'a \"b\"' c") == QStringList { "a \"b\"", "c" });
+			REQUIRE(splitCommand("a '\"b\" c'") == QStringList { "a", "\"b\" c" });
+			REQUIRE(splitCommand("\"a 'b'\" c") == QStringList { "a 'b'", "c" });
+			REQUIRE(splitCommand("a \"'b' c\"") == QStringList { "a", "'b' c" });
+			REQUIRE(splitCommand("a \"'b' \"\"\" c\"") == QStringList { "a", "'b' \" c" });
+		}
+	}
+
+	SECTION("getKeySequence")
+	{
+		auto *profile = makeProfile();
+		auto *settings = profile->getSettings();
+
+		settings->setValue("exists", QKeySequence("E"));
+
+		REQUIRE(getKeySequence(settings, "exists", Qt::Key_D).toString() == QString("E"));
+		REQUIRE(getKeySequence(settings, "not-found", Qt::Key_D).toString() == QString("D"));
+		REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Open, Qt::Key_D).toString() == QString("Ctrl+O"));
+
+		#ifndef Q_OS_MAC
+			// On macOS, QKeySequence::Preferences is defined so it would return "Ctrl+," rather than "D"
+			REQUIRE(getKeySequence(settings, "not-found", QKeySequence::Preferences, Qt::Key_D).toString() == QString("D"));
+		#endif
+	}
+
+	SECTION("rectToString")
+	{
+		REQUIRE(rectToString(QRect()) == QString());
+		REQUIRE(rectToString(QRect(1, 2, 3, 4)) == QString("1;2;3;4"));
+	}
+	SECTION("stringToRect")
+	{
+		REQUIRE(stringToRect("") == QRect());
+		REQUIRE(stringToRect("1;2;3;4") == QRect(1, 2, 3, 4));
 	}
 }

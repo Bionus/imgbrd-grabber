@@ -1,3 +1,9 @@
+function formatSearch(query: string): string {
+    return encodeURIComponent(query
+        .replace(" ", ", ")
+        .replace("_", " "));
+}
+
 function completeImage(img: IImage): IImage {
     if (!img.file_url || img.file_url.length < 5) {
         img.file_url = img.preview_url;
@@ -68,13 +74,14 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                        return "/" + query.search + "?s=id&xml&" + pagePart;
-                    } catch (e) {
+                        return "/" + formatSearch(query.search) + "?s=id&xml&" + pagePart;
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
                 parse: (src: string): IParsedSearch => {
-                    const parsed = Grabber.parseXML(src);
+                    const fixedSrc = src.replace(/<div.*?>[\s\S]+?<\/div>/, "") // Fix malformed XML for multi-tag search
+                    const parsed = Grabber.parseXML(fixedSrc);
                     const data = Grabber.makeArray(parsed.rss.channel.item);
 
                     const images: IImage[] = [];
@@ -111,8 +118,8 @@ export const source: ISource = {
                 url: (query: ISearchQuery, opts: IUrlOptions, previous: IPreviousSearch | undefined): string | IError => {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 100, "p={page}", "o={max}", "o={min}");
-                        return "/" + query.search + "?" + pagePart;
-                    } catch (e) {
+                        return "/" + formatSearch(query.search) + "?" + pagePart;
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },

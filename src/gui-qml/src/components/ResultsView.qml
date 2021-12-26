@@ -12,6 +12,7 @@ ScrollView {
     id: root
 
     signal openImage(int index)
+    signal refresh()
 
     property var results
     property double thumbnailHeightToWidthRatio: 0
@@ -31,75 +32,81 @@ ScrollView {
     onThumbnailPaddingChanged: resultsRefresher.restart()
     onThumbnailFillModeChanged: resultsRefresher.restart()
 
-    ColumnFlow {
-        id: resultsLayout
-
-        anchors.fill: parent
-        columns: window.width > window.height
-            ? gSettings.resultsColumnCountLandscape.value
-            : gSettings.resultsColumnCountPortrait.value
-        model: results
-
-        onColumnsChanged: resultsRefresher.restart()
-
-        delegate: Item {
-            height: img.height + root.thumbnailSpacing
-
-            ImageLoader {
-                id: loader
-                image: modelData.image
-                size: ImageLoader.Thumbnail
+    Flickable {
+        property bool atBeginningStart: false
+        onFlickStarted: {
+            atBeginningStart = atYBeginning
+        }
+        onFlickEnded: {
+            if (atYBeginning && atBeginningStart) {
+                refresh()
             }
+        }
 
-            Image {
-                id: img
-                source: loader.source
-                fillMode: root.thumbnailFillMode
-                anchors.centerIn: parent
-                width: parent.width - root.thumbnailSpacing
-                height: root.thumbnailHeightToWidthRatio < 0.1
-                    ? img.width * (img.implicitHeight / img.implicitWidth)
-                    : img.width * root.thumbnailHeightToWidthRatio
+        ColumnFlow {
+            id: resultsLayout
 
-                onHeightChanged: resultsRefresher.restart()
+            anchors.fill: parent
+            columns: window.width > window.height
+                ? gSettings.resultsColumnCountLandscape.value
+                : gSettings.resultsColumnCountPortrait.value
+            model: results
 
-                layer.enabled: root.thumbnailRadius > 0
-                layer.effect: OpacityMask {
-                    maskSource: Rectangle {
-                        anchors.centerIn: parent
-                        width: img.width
-                        height: img.height
-                        radius: root.thumbnailRadius
+            onColumnsChanged: resultsRefresher.restart()
+
+            delegate: Item {
+                height: img.height + root.thumbnailSpacing
+
+                Image {
+                    id: img
+                    source: "image://async/" + modelData.siteUrl + "¤" + modelData.previewUrl + "¤" + modelData.previewRect
+                    fillMode: root.thumbnailFillMode
+                    anchors.centerIn: parent
+                    width: parent.width - root.thumbnailSpacing
+                    height: root.thumbnailHeightToWidthRatio < 0.1
+                        ? img.width * (img.implicitHeight / img.implicitWidth)
+                        : img.width * root.thumbnailHeightToWidthRatio
+
+                    onHeightChanged: resultsRefresher.restart()
+
+                    layer.enabled: root.thumbnailRadius > 0
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                            anchors.centerIn: parent
+                            width: img.width
+                            height: img.height
+                            radius: root.thumbnailRadius
+                        }
+                    }
+
+                    InnerBorder {
+                        visible: modelData.color.a > 0
+                        color: modelData.color
+                        size: 3
+                    }
+
+                    Badge {
+                        visible: !!modelData.badge
+                        text: modelData.badge
                     }
                 }
 
-                InnerBorder {
-                    visible: modelData.color.a > 0
-                    color: modelData.color
-                    size: 3
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: modelData.isGallery
+                        ? mainStackView.push(galleryScreen, { gallery: modelData.image })
+                        : mainStackView.push(imageScreen, { index: index })
                 }
-
-                Badge {
-                    visible: !!modelData.badge
-                    text: modelData.badge
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: modelData.isGallery
-                    ? mainStackView.push(galleryScreen, { gallery: modelData.image })
-                    : mainStackView.push(imageScreen, { index: index })
             }
         }
-    }
 
-    Timer {
-        id: resultsRefresher
-        interval: 100
-        running: false
-        repeat: false
+        Timer {
+            id: resultsRefresher
+            interval: 100
+            running: false
+            repeat: false
 
-        onTriggered: resultsLayout.reEvalColumns()
+            onTriggered: resultsLayout.reEvalColumns()
+        }
     }
 }

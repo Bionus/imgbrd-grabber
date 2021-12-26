@@ -95,7 +95,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts.json?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -189,7 +189,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts.xml?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -284,7 +284,7 @@ export const source: ISource = {
                     try {
                         const pagePart = Grabber.pageUrl(query.page, previous, 1000, "{page}", "a{max}", "b{min}");
                         return "/posts?limit=" + opts.limit + "&page=" + pagePart + "&tags=" + encodeURIComponent(query.search);
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -296,11 +296,12 @@ export const source: ISource = {
 
                     let wiki = Grabber.regexToConst("wiki", '<div id="excerpt"(?:[^>]+)>(?<wiki>.+?)</div>', src);
                     wiki = wiki ? wiki.replace(/href="\/wiki_pages\/show_or_new\?title=([^"]+)"/g, 'href="$1"') : wiki;
+                    const pageCounts = Grabber.regexMatches('>(?<page>\\d+)</(?:a|span)></li><li[^<]*><(?:a|span)[^>]*>(?:&gt;&gt;|<i class="[^"]+"></i>)<|</i>\\s*<(?:a|span)[^>]*>(?<page_2>\\d+)<', src);
                     return {
                         tags: Grabber.regexToTags('<li class="(?:category|tag-type)-(?<typeId>[^"]+)"[^>]*>(?:\\s*<a class="wiki-link" href="[^"]+">\\?</a>)?(?:\\s*<a[^>]* class="search-inc-tag">[^<]+</a>\\s*<a[^>]* class="search-exl-tag">[^<]+</a>)?\\s*<a class="search-tag"\\s+[^>]*href="[^"]+"[^>]*>(?<name>[^<]+)</a>\\s*<span class="post-count"[^>]*>(?<count>[^<]+)</span>\\s*</li>', src),
                         images: Grabber.regexToImages('<article[^>]* id="[^"]*" class="[^"]*"\\s+data-id="(?<id>[^"]*)"\\s+data-has-sound="[^"]*"\\s+data-tags="(?<tags>[^"]*)"\\s+data-pools="(?<pools>[^"]*)"(?:\\s+data-uploader="(?<author>[^"]*)")?\\s+data-approver-id="(?<approver>[^"]*)"\\s+data-rating="(?<rating>[^"]*)"\\s+data-width="(?<width>[^"]*)"\\s+data-height="(?<height>[^"]*)"\\s+data-flags="(?<flags>[^"]*)"\\s+data-parent-id="(?<parent_id>[^"]*)"\\s+data-has-children="(?<has_children>[^"]*)"\\s+data-score="(?<score>[^"]*)"\\s+data-views="[^"]*"\\s+data-fav-count="(?<fav_count>[^"]*)"\\s+data-pixiv-id="[^"]*"\\s+data-file-ext="(?<ext>[^"]*)"\\s+data-source="(?<source>[^"]*)"\\s+data-top-tagger="[^"]*"\\s+data-uploader-id="[^"]*"\\s+data-normalized-source="[^"]*"\\s+data-is-favorited="[^"]*"\\s+data-md5="(?<md5>[^"]*)"\\s+data-file-url="(?<file_url>[^"]*)"\\s+data-large-file-url="(?<sample_url>[^"]*)"\\s+data-preview-file-url="(?<preview_url>[^"]*)"', src).map(completeImage),
                         wiki,
-                        pageCount: Grabber.regexToConst("page", '>(?<page>\\d+)</(?:a|span)></li><li[^<]*><(?:a|span)[^>]*>(?:&gt;&gt;|<i class="[^"]+"></i>)<|</i>\\s*<(?:a|span)[^>]*>(?<page_2>\\d+)<', src),
+                        pageCount: pageCounts?.length > 0 ? pageCounts[pageCounts.length - 1]["page"] : undefined,
                     };
                 },
             },
@@ -350,7 +351,10 @@ export const source: ISource = {
                 parse: (src: string): boolean => {
                     return src.indexOf("Running Danbooru v2") !== -1
                         || src.search(/Running Danbooru <a[^>]*>v2/) !== -1
-                        || src.indexOf("https://github.com/danbooru/danbooru") !== -1;
+                        || src.indexOf("https://github.com/danbooru/danbooru") !== -1
+                        || src.indexOf("ATFBooru") !== -1
+                        || src.indexOf("All The Fallen") !== -1
+                        || src.indexOf("https://github.com/Iratu/atfbooru") !== -1;
                 },
             },
         },

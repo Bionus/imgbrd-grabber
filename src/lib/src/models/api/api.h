@@ -54,6 +54,7 @@ struct ParsedDetails
 	QList<Tag> tags;
 	QString imageUrl;
 	QDateTime createdAt;
+	QSharedPointer<Image> image;
 };
 
 struct ParsedCheck
@@ -118,6 +119,7 @@ class Api : public QObject
 		virtual bool canLoadTagTypes() const = 0;
 		virtual bool canLoadTags() const = 0;
 		virtual bool canLoadDetails() const = 0;
+		virtual bool canLoadFullDetails() const = 0;
 		virtual bool canLoadCheck() const = 0;
 		virtual int forcedLimit() const = 0;
 		virtual int maxLimit() const = 0;
@@ -125,7 +127,7 @@ class Api : public QObject
 		virtual QStringList forcedTokens() const = 0;
 
 	protected:
-		QSharedPointer<Image> parseImage(Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;
+		QSharedPointer<Image> parseImage(Site *site, Page *parentPage, QMap<QString, QString> d, QVariantMap data, int position, const QList<Tag> &tags = QList<Tag>()) const;
 
 	private:
 		QString m_name;

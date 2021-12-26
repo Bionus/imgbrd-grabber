@@ -154,7 +154,7 @@ export const source: ISource = {
                             "screen_name=" + encodeURIComponent(search.user),
                         ];
                         return "/1.1/statuses/user_timeline.json?" + params.join("&") + pageUrl;
-                    } catch (e) {
+                    } catch (e: any) {
                         return { error: e.message };
                     }
                 },
@@ -184,6 +184,16 @@ export const source: ISource = {
                         imageCount: images.length,
                         pageCount: 1,
                     };
+                },
+            },
+            details: {
+                fullResults: true,
+                url: (id: string): string => {
+                    return "/1.1/statuses/show.json?id=" + id + "&tweet_mode=extended";
+                },
+                parse: (src: string): IParsedDetails => {
+                    const data = JSON.parse(src);
+                    return parseTweet(data, true);
                 },
             },
         },

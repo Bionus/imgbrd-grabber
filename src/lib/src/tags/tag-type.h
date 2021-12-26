@@ -5,6 +5,8 @@
 #include <QString>
 
 
+class Site;
+
 class TagType
 {
 	public:
@@ -12,7 +14,7 @@ class TagType
 		explicit TagType(const QString &name);
 		bool isUnknown() const;
 		const QString &name() const;
-		int number() const;
+		int number(Site *site) const;
 
 	private:
 		bool m_isUnknown;

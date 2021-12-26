@@ -29,7 +29,7 @@ endif()
 
 project(Grabber)
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
-	set(VERSION "7.6.2")
+	set(VERSION "7.7.0")
 else()
 	string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 endif()
@@ -74,10 +74,16 @@ if(USE_SSL AND (NOT ANDROID))
 endif()
 
 # Enable code coverage on GCC
-if((DEFINED ENV{COVERAGE}) AND CMAKE_COMPILER_IS_GNUCXX)
-	include(cmake/CodeCoverage.cmake)
-	setup_target_for_coverage(coverage tests coverage)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+if(DEFINED ENV{COVERAGE})
+	if(CMAKE_COMPILER_IS_GNUCXX)
+		message(STATUS "Compiling with code coverage")
+		include(cmake/CodeCoverage.cmake)
+		setup_target_for_coverage(coverage tests coverage)
+		setup_target_for_coverage(coverage-gui tests-gui coverage-gui)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+	else()
+		message(WARNING "Coverage not enabled because of compiler")
+	endif()
 endif()
 
 # Pre-compiled headers
@@ -113,7 +119,7 @@ add_subdirectory(e2e EXCLUDE_FROM_ALL)
 add_subdirectory(crash-reporter)
 
 add_subdirectory(languages)
-add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
+add_custom_target(translations DEPENDS General_translations CrashReporter_translations gui-qml_translations)
 install(DIRECTORY "dist/common/" DESTINATION "share/Grabber")
 install(DIRECTORY "sites" DESTINATION "share/Grabber"
 	PATTERN "node_modules" EXCLUDE
