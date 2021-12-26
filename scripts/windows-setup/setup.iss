@@ -22,7 +22,7 @@
 #endif
 
 #ifndef MyAppVersion
-# define MyAppVersion "7.6.2"
+# define MyAppVersion "7.7.0"
 #endif
 
 #ifndef QtApngDll
