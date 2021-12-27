@@ -1282,8 +1282,14 @@ void OptionsWindow::save()
 		settings->setValue("useSystem", ui->checkProxyUseSystem->isChecked());
 		const QStringList ptypes { "http", "socks5" };
 		settings->setValue("type", ptypes.at(ui->comboProxyType->currentIndex()));
-		settings->setValue("hostName", ui->lineProxyHostName->text());
-		settings->setValue("port", ui->spinProxyPort->value());
+		QStringList hostNameTemp = ui->lineProxyHostName->text().split(':');
+		if (hostNameTemp.size() > 1 && hostNameTemp.last().toUShort() > 0) {
+			settings->setValue("hostName", hostNameTemp.mid(0, hostNameTemp.size() - 1).join(':'));
+			settings->setValue("port", hostNameTemp.last().toUShort());
+		} else {
+			settings->setValue("hostName", ui->lineProxyHostName->text());
+			settings->setValue("port", ui->spinProxyPort->value());
+		}
 		settings->setValue("user", ui->lineProxyUser->text());
 		settings->setValue("password", ui->lineProxyPassword->text());
 	settings->endGroup();
