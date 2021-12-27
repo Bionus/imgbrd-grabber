@@ -296,6 +296,7 @@ void MainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	connect(m_favoritesTab, &SearchTab::changed, this, &MainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, m_favoritesTab->windowTitle());
 	ui->tabWidget->setCurrentIndex(0);
+	favoritesDock->tabChanged(m_favoritesTab);
 
 	// Tab corner widget
 	QWidget *cornerWidget = new QWidget(this);
