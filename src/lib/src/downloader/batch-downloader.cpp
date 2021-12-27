@@ -115,8 +115,9 @@ void BatchDownloader::loginFinished()
 		nextPack();
 	} else {
 		auto *img = dynamic_cast<DownloadQueryImage*>(m_query);
-		if (!img)
+		if (!img) {
 			return;
+		}
 		m_pendingDownloads.append(img->image);
 		nextImages();
 	}
