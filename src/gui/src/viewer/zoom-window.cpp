@@ -1035,6 +1035,9 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageS
 		{
 			case Image::SaveResult::Saved:
 				setButtonState(fav, SaveButtonState::Saved);
+				if (img == m_image) {
+					m_imagePath = res.path;
+				}
 				break;
 
 			case Image::SaveResult::Copied:
