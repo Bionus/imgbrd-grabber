@@ -14,7 +14,8 @@ AstFilename::AstFilename(const QString &str)
 
 AstFilename::~AstFilename()
 {
-	delete m_ast;
+	if (m_ast)
+		delete m_ast;
 }
 
 
