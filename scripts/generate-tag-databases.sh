@@ -6,7 +6,7 @@ set -e
 DESTDIR="databases"
 SOURCES=(
     "Gelbooru (0.2)/gelbooru.com"
-    "Gelbooru (0.2)/rule34.xxx"
+    "Gelbooru (0.2)/api.rule34.xxx"
 )
 MIN_TAG_COUNT=100
 
