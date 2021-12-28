@@ -1,6 +1,7 @@
 #ifndef CUSTOM_BUTTONS_DEFAULTS_H
 #define CUSTOM_BUTTONS_DEFAULTS_H
 
+#include <QMap>
 #include <QStringLiteral>
 #include "custom-buttons/state.h"
 
@@ -56,6 +57,22 @@ namespace ZoomWindowButtons
 	const ButtonState DefaultSaveNQuitFavStateClose(2, QStringLiteral("Close (fav)"), QStringLiteral("")); // Consider adding this to SaveButtonState.
 
 	const ButtonState DefaultOpenFavState(0, QStringLiteral("Open (fav)"), QStringLiteral("Open favourite save location in new window"));
+
+
+	const QMap<unsigned short, ButtonState> DefaultStates {
+		{ CustomButtons::IsButtonPrev, DefaultPrevState },
+		{ CustomButtons::IsButtonNext, DefaultNextState },
+		{ CustomButtons::IsButtonDetails, DefaultDetailsState },
+		{ CustomButtons::IsButtonSaveAs, DefaultSaveAsState },
+
+		{ CustomButtons::IsButtonSave, DefaultSaveStateSave },
+		{ CustomButtons::IsButtonSaveNQuit, DefaultSaveNQuitStateSave },
+		{ CustomButtons::IsButtonOpen, DefaultOpenState },
+
+		{ CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, DefaultSaveFavStateSave },
+		{ CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, DefaultSaveNQuitFavStateSave },
+		{ CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, DefaultOpenFavState },
+	};
 }
 
 #endif // CUSTOM_BUTTONS_DEFAULTS_H

@@ -383,8 +383,9 @@ void ZoomWindow::configureButtons()
 
 			// From state:
 		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
-		button->setText( QString(state->text).replace("&", "&&") );
-		button->setToolTip(state->toolTip);
+		const ButtonState &defaultState = ZoomWindowButtons::DefaultStates.value(it.second.type);
+		button->setText(QString(state->text.isEmpty() ? defaultState.text : state->text).replace("&", "&&"));
+		button->setToolTip(state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip);
 
 			// Initialise state 0 functions. This should be eliminated if possible.
 		switch (it.second.type) {
