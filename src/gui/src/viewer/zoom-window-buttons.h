@@ -51,7 +51,7 @@ namespace ZoomWindowButtons
 	const ButtonState DefaultSaveFavStateExistsDisk(SaveState::ExistsDisk, QStringLiteral("Already saved (fav)"), QStringLiteral(""));
 	const ButtonState DefaultSaveFavStateDelete(SaveState::Delete, QStringLiteral("Delete (fav)"), QStringLiteral(""));
 
-	const ButtonState DefaultSaveNQuitFavStateSave(SaveState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState DefaultSaveNQuitFavStateSave(SaveState::Save, QStringLiteral("Save & close (fav)"), QStringLiteral("Save to favourite location and close window"));
 	const ButtonState DefaultSaveNQuitFavStateSaving(SaveState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
 	const ButtonState DefaultSaveNQuitFavStateClose(2, QStringLiteral("Close (fav)"), QStringLiteral("")); // Consider adding this to SaveButtonState.
 
