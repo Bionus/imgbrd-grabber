@@ -31,3 +31,9 @@ bool ConditionalFilename::matches(const QMap<QString, Token> &tokens, QSettings 
 	FilenameConditionVisitor conditionVisitor(tokens, settings);
 	return conditionVisitor.run(*m_ast);
 }
+
+ConditionalFilename::~ConditionalFilename()
+{
+	if (m_ast)
+		delete m_ast;
+}
