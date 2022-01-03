@@ -78,7 +78,9 @@ export const source: ISource = {
                     const data = Grabber.makeArray(parsed.posts.post);
                     const images: IImage[] = [];
                     for (const image of data) {
-                        if (image && "@attributes" in image) {
+                        if (image && "id" in image) {
+                            images.push(completeImage(Grabber.typedXML(image)));
+                        } else if (image && "@attributes" in image) {
                             images.push(completeImage(image["@attributes"]));
                         }
                     }
