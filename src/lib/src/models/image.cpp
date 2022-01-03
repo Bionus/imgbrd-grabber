@@ -612,6 +612,16 @@ Image::SaveResult Image::save(const QString &path, Size size, bool force, bool b
 
 	return res;
 }
+QString &pathTokens(QString &filename, const QString &path)
+{
+	const QString &nativePath = QDir::toNativeSeparators(path);
+	const QString &dir = QFileInfo(nativePath).absolutePath();
+	return filename
+		.replace("%path:nobackslash%", QString(nativePath).replace("\\", "/"))
+		.replace("%path%", nativePath)
+		.replace("%dir:nobackslash%", QString(dir).replace("\\", "/"))
+		.replace("%dir%", dir);
+}
 void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCommands, int count, bool basic)
 {
 	if (addMd5) {
@@ -640,8 +650,8 @@ void Image::postSaving(const QString &path, Size size, bool addMd5, bool startCo
 				}
 
 				// Replace some post-save tokens
-				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
-					.replace("%path%", QDir::toNativeSeparators(path));
+				pathTokens(fileTagsPath, path);
+				pathTokens(contents, path);
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
