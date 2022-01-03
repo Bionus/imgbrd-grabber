@@ -58,9 +58,10 @@ void FileDownloader::replyFinished()
 
 	const auto error = m_reply->error();
 	const auto msg = m_reply->errorString();
+	const QUrl redirectUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	const bool failedLastWrite = data.length() > 0 && written < 0;
 	const bool invalidHtml = !m_allowHtmlResponses && QString(data.left(100)).trimmed().startsWith("<!DOCTYPE", Qt::CaseInsensitive);
-	const bool emptyFile = m_readSize == 0;
+	const bool emptyFile = m_readSize == 0 && redirectUrl.isEmpty();
 
 	if (error != NetworkReply::NetworkError::NoError || failedLastWrite || invalidHtml || emptyFile) {
 		// Ignore those errors as they are caused by a bug in Qt
@@ -80,7 +81,7 @@ void FileDownloader::replyFinished()
 			log(QString("Empty file returned for url '%1'").arg(m_reply->url().toString()), Logger::Info);
 			emit networkError(NetworkReply::NetworkError::ContentNotFoundError, "Empty file returned");
 		} else {
-			emit networkError(m_reply->error(), m_reply->errorString());
+			emit networkError(error, msg);
 		}
 		return;
 	}
