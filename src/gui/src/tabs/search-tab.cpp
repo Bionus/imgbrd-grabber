@@ -1504,3 +1504,8 @@ QStringList SearchTab::postFilter(bool includeGlobal) const
 
 const QString &SearchTab::screenName() const
 { return m_screenName; }
+
+bool SearchTab::isLocked() const
+{ return m_isLocked; }
+void SearchTab::setLocked(bool locked)
+{ m_isLocked = locked; }

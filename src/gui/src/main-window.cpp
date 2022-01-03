@@ -569,7 +569,7 @@ void MainWindow::updateTabTitle(SearchTab *tab)
 {
 	int index = ui->tabWidget->indexOf(tab);
 	const QString oldText = ui->tabWidget->tabText(index);
-	const QString newText = tab->windowTitle();
+	const QString newText = tab->windowTitle() + (tab->isLocked() ? " 🔒" : "");
 	if (newText != oldText) {
 		ui->tabWidget->setTabText(index, newText);
 	}
@@ -654,9 +654,11 @@ void MainWindow::setCurrentTab(QWidget *widget)
 
 void MainWindow::closeCurrentTab()
 {
-	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
 	auto currentTab = ui->tabWidget->currentWidget();
-	if (currentTab->maximumWidth() != 16777214) {
+	auto *tab = dynamic_cast<SearchTab*>(currentTab);
+
+	// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
+	if (tab != nullptr && !tab->isLocked() && currentTab->maximumWidth() != 16777214) {
 		currentTab->deleteLater();
 	}
 }
@@ -886,7 +888,26 @@ void MainWindow::tabContextMenuRequested(const QPoint &pos)
 {
 	Q_UNUSED(pos);
 
+	int tabIndex = ui->tabWidget->tabBar()->tabAt(pos);
+
 	auto *menu = new QMenu(this);
+	if (tabIndex != -1) {
+		auto *tab = dynamic_cast<SearchTab*>(ui->tabWidget->widget(tabIndex));
+		if (tab != nullptr && tab->maximumWidth() != 16777214) {
+			if (tab->isLocked()) {
+				menu->addAction(QIcon(":/images/icons/unlock.png"), tr("Unlock tab"), [this, tab]() {
+					tab->setLocked(false);
+					updateTabTitle(tab);
+				});
+			} else {
+				menu->addAction(QIcon(":/images/icons/lock.png"), tr("Lock tab"), [this, tab]() {
+					tab->setLocked(true);
+					updateTabTitle(tab);
+				});
+			}
+			menu->addSeparator();
+		}
+	}
 	menu->addAction(ui->actionAddtab);
 	menu->addAction(ui->actionRestoreLastClosedTab);
 	menu->exec(QCursor::pos());

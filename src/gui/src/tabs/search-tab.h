@@ -57,6 +57,8 @@ class SearchTab : public QWidget
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
 		const QString &screenName() const;
+		bool isLocked() const;
+		void setLocked(bool locked);
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -164,6 +166,7 @@ class SearchTab : public QWidget
 		QString m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;
 		QMap<QString, QMap<QString, QString>> m_lastUrls;
+		bool m_isLocked = false;
 
 		QStringList m_completion;
 		QMap<ImagePreview*, QSharedPointer<Image>> m_thumbnailsLoading;
