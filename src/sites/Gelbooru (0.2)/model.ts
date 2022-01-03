@@ -68,6 +68,30 @@ export const source: ISource = {
                     return "/index.php?page=dapi&s=post&q=index&limit=" + opts.limit + "&pid=" + page + "&tags=" + encodeURIComponent(search);
                 },
                 parse: (src: string): IParsedSearch | IError => {
+                    const map = {
+                        "id": "id",
+                        "created_at": "created_at",
+                        "score": "score",
+                        "width": "width",
+                        "height": "height",
+                        "md5": "md5",
+                        "rating": "rating",
+                        "status": "status",
+                        "source": "source",
+                        "change": "change",
+                        "author": "owner",
+                        "creator_id": "uploader_id",
+                        "parent_id": "parent_id",
+                        "preview_height": "preview_height",
+                        "preview_width": "preview_width",
+                        "tags": "tags",
+                        "has_notes": "has_notes",
+                        "has_comments": "has_comments",
+                        "file_url": "file_url",
+                        "preview_url": "preview_url",
+                        "has_children": "has_children"
+                    };
+                    
                     const parsed = Grabber.parseXML(src);
 
                     // Handle error messages
@@ -75,12 +99,11 @@ export const source: ISource = {
                         return { error: parsed["response"]["@attributes"]["reason"] };
                     }
 
-                    const data = Grabber.makeArray(parsed.posts.post);
+                    const data = Grabber.makeArray(Grabber.typedXML(parsed).posts.post);
                     const images: IImage[] = [];
                     for (const image of data) {
-                        if (image && "@attributes" in image) {
-                            images.push(completeImage(image["@attributes"]));
-                        }
+                        const img = Grabber.mapFields(image, map);
+                        images.push(completeImage(img));
                     }
 
                     return {
