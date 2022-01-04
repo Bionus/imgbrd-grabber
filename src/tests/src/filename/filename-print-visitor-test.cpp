@@ -43,6 +43,18 @@ TEST_CASE("FilenamePrintVisitor")
 		REQUIRE(result == QString("Root(Conditional(ConditionOp(ConditionTag('tag');And;ConditionInvert(ConditionToken('token')));Text('true');Text('false')))"));
 	}
 
+	SECTION("Conditional with many operands")
+	{
+		FilenameParser parser(R"(<a&b|c&d|e&f?true:false>)");
+		auto *ast = parser.parseRoot();
+
+		FilenamePrintVisitor printVisitor;
+		QString result = printVisitor.run(*ast);
+		delete ast;
+
+		REQUIRE(result == QString("Root(Conditional(ConditionOp(ConditionOp(ConditionOp(ConditionTag('a');And;ConditionTag('b'));Or;ConditionOp(ConditionTag('c');And;ConditionTag('d')));Or;ConditionOp(ConditionTag('e');And;ConditionTag('f')));Text('true');Text('false')))"));
+	}
+
 	SECTION("Conditional (legacy)")
 	{
 		FilenameParser parser("<legacy conditional \"tag\" -%token%>");

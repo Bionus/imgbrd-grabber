@@ -297,7 +297,7 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 
 	QStack<QChar> opsStack;
 	QStack<FilenameNodeCondition*> termStack;
-	FilenameNodeCondition *lhs = parseSingleCondition();
+	termStack.push(parseSingleCondition());
 
 	while (!finished()) {
 		skipSpaces();
@@ -307,8 +307,6 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		if (c != '&' && c != '|') {
 			break;
 		}
-
-		termStack.push(lhs);
 
 		int prec = (c == '&' ? 2 : 1);
 
@@ -349,15 +347,9 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		termStack.push(expr);
 	}
 
-	auto term = lhs;
-
-	if (!termStack.isEmpty()) {
-		term = termStack.pop();
-	}
-
 	skipSpaces();
 
-	return term;
+	return termStack.isEmpty() ? nullptr : termStack.pop();
 }
 
 FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
