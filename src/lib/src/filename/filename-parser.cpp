@@ -426,7 +426,7 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 	QString tag = quotes
 		? readUntil({ '"' })
-		: readUntil({ ' ', '&', '|', '?' }, true);
+		: readUntil({ ' ', '&', '|', '(', ')', '?' }, true);
 
 	if (quotes) {
 		m_index++; // "
