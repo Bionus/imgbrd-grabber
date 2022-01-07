@@ -767,8 +767,9 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		button->current = newState;
 
 		// Update button text
-		button->pointer->setText(tr( QString(newState->text).replace("&", "&&").toStdString().c_str()));
-		button->pointer->setToolTip(tr(newState->toolTip.toStdString().c_str()));
+		const ButtonState &defaultState = ZoomWindowButtons::DefaultStates.value(button->type);
+		button->pointer->setText(tr( QString(newState->text.isEmpty() ? defaultState.text : newState->text).replace("&", "&&").toStdString().c_str()));
+		button->pointer->setToolTip(tr((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str()));
 
 		// Connect button to its new action
 		if (newState->function == nullptr) {
