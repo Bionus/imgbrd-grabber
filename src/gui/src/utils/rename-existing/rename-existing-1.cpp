@@ -195,14 +195,18 @@ void RenameExisting1::setImageResult(Image *img)
 	const QString &key = m_useIdKey ? QString::number(img->id()) : img->md5();
 	const QString &dir = ui->lineFolder->text();
 
-	QFileInfo fi(m_getAll[key].path);
-	auto tokens = img->tokens(m_profile);
-	tokens.insert("old_directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
-	tokens.insert("old_filename", Token(fi.fileName()));
+	if (!key.isEmpty()) {
+		QFileInfo fi(m_getAll[key].path);
+		auto tokens = img->tokens(m_profile);
+		tokens.insert("old_directory", Token(fi.absolutePath().mid(dir.count() + (dir.endsWith("/") || dir.endsWith("\\") ? 0 : 1))));
+		tokens.insert("old_filename", Token(fi.fileName()));
 
-	Filename fn(ui->lineFilenameDestination->text());
-	QStringList paths = fn.path(tokens, m_profile, dir, 0, Filename::Complex | Filename::Path);
-	m_getAll[key].newPath = paths.first();
+		Filename fn(ui->lineFilenameDestination->text());
+		QStringList paths = fn.path(tokens, m_profile, dir, 0, Filename::Complex | Filename::Path);
+		m_getAll[key].newPath = paths.first();
+	} else {
+		log(QStringLiteral("No key found for image, skipping"), Logger::Warning);
+	}
 
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
 	loadNext();
