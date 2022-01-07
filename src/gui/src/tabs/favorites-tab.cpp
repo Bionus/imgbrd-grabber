@@ -2,6 +2,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSettings>
+#include <QShortcut>
 #include <QtMath>
 #include <ui_favorites-tab.h>
 #include <algorithm>
@@ -81,6 +82,10 @@ FavoritesTab::FavoritesTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 		ui->comboAsc->setCurrentIndex(static_cast<int>(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	ui->widgetResults->hide();
+
+	auto *closeShortcut = new QShortcut(getKeySequence(m_settings, "Main/Shortcuts/keyFavoritesBack", Qt::Key_Escape), this);
+	closeShortcut->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(closeShortcut, &QShortcut::activated, this, &FavoritesTab::favoritesBack);
 
 	connect(m_profile, &Profile::favoritesChanged, this, &FavoritesTab::updateFavorites);
 	updateFavorites();

@@ -321,6 +321,7 @@ OptionsWindow::OptionsWindow(Profile *profile, ThemeLoader *themeLoader, QWidget
 		ui->keyMainPrevTab->setKeySequence(getKeySequence(settings, "keyPrevTab", Qt::CTRL + Qt::Key_PageDown));
 		ui->keyMainNextTab->setKeySequence(getKeySequence(settings, "keyNextTab", Qt::CTRL + Qt::Key_PageUp));
 		ui->keyMainBrowseSave->setKeySequence(getKeySequence(settings, "keyBrowseSave", QKeySequence::Open, Qt::CTRL + Qt::Key_O));
+		ui->keyMainFavoritesBack->setKeySequence(getKeySequence(settings, "keyFavoritesBack", Qt::Key_Escape));
 	settings->endGroup();
 
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
@@ -1189,6 +1190,7 @@ void OptionsWindow::save()
 		settings->setValue("keyPrevTab", ui->keyMainPrevTab->keySequence().toString());
 		settings->setValue("keyNextTab", ui->keyMainNextTab->keySequence().toString());
 		settings->setValue("keyBrowseSave", ui->keyMainBrowseSave->keySequence().toString());
+		settings->setValue("keyFavoritesBack", ui->keyMainFavoritesBack->keySequence().toString());
 	settings->endGroup();
 
 	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());

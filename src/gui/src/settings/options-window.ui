@@ -1918,6 +1918,24 @@
              </widget>
             </item>
             <item>
+             <widget class="QGroupBox" name="groupMainShortcutFavoritesBack">
+              <property name="title">
+               <string>Back out from favorites results</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_29">
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QKeySequenceEdit" name="keyMainFavoritesBack"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <spacer name="verticalSpacer_5">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
