@@ -15,6 +15,7 @@ Whatever URL is entered when adding a site with this source, it will be override
 * `mode:{partial,full,tc}`: tag search type (default: `partial`)
 * `bookmarks:USER_ID`: fetch a given user's bookmarks
 * `user:USER_ID`: fetch art from a given user
+* `type:{illust,manga}`: only load works of a given type (only applies to `user:` and empty searches)
 
 ### Date
 The date format is `YYYY-MM-DD`.

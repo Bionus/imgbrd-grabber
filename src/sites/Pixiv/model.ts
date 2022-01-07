@@ -6,7 +6,7 @@ function urlSampleToThumbnail(url: string): string {
     return url.replace("/img-master/", "/c/150x150/img-master/");
 }
 
-function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, startDate?: string, endDate?: string } {
+function parseSearch(search: string): { mode: string, tags: string[], bookmarks?: number, user?: number, startDate?: string, endDate?: string, type?: string } {
     const modes = {
         "partial": "partial_match_for_tags",
         "full": "exact_match_for_tags",
@@ -16,6 +16,7 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
     let mode = "partial_match_for_tags";
     let bookmarks = undefined;
     let user = undefined;
+    let type = undefined;
     const tags = [];
     let startDate = undefined;
     let endDate = undefined;
@@ -35,9 +36,15 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
         }
         if (part.indexOf("bookmarks:") === 0) {
             bookmarks = parseInt(part.substr(10), 10);
+            continue;
         }
         if (part.indexOf("user:") === 0) {
             user = parseInt(part.substr(5), 10);
+            continue;
+        }
+        if (part.indexOf("type:") === 0) {
+            type = part.substr(5);
+            continue;
         }
 
         if (part.indexOf("date:") === 0) {
@@ -60,7 +67,7 @@ function parseSearch(search: string): { mode: string, tags: string[], bookmarks?
         tags.push(part);
     }
 
-    return { mode, tags, bookmarks, user, startDate, endDate };
+    return { mode, tags, bookmarks, user, startDate, endDate, type };
 }
 
 function parseImage(image: any, fromGallery: boolean): IImage {
@@ -166,19 +173,26 @@ export const source: ISource = {
                         }
                         illustParams.push("user_id=" + search.bookmarks);
                         illustParams.push("restrict=public");
+                        if (search.type) {
+                            console.warn("Type filtering does not apply to user bookmarks");
+                        }
                         return "https://app-api.pixiv.net/v1/user/bookmarks/illust?" + illustParams.join("&");
                     }
 
                     // User's illusts
                     if (search.user !== undefined && search.user > 0) {
                         illustParams.push("user_id=" + search.user);
-                        illustParams.push("type=illust");
+                        if (search.type) {
+                            illustParams.push("type=" + search.type);
+                        }
                         return "https://app-api.pixiv.net/v1/user/illusts?" + illustParams.join("&");
                     }
 
                     // Newest (when no tag is provided)
                     if (search.tags.length === 0) {
-                        illustParams.push("content_type=illust");
+                        if (search.type) {
+                            illustParams.push("content_type=" + search.type);
+                        }
                         return "https://app-api.pixiv.net/v1/illust/new?" + illustParams.join("&");
                     }
 
@@ -186,6 +200,9 @@ export const source: ISource = {
                     illustParams.push("word=" + encodeURIComponent(search.tags.join(" ")));
                     illustParams.push("search_target=" + search.mode);
                     illustParams.push("sort=date_desc"); // date_desc, date_asc
+                    if (search.type) {
+                        console.warn("Type filtering does not apply to search");
+                    }
                     return "https://app-api.pixiv.net/v1/search/illust?" + illustParams.join("&");
                 },
                 parse: (src: string): IParsedSearch => {
