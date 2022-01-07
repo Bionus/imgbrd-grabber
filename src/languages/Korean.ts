@@ -5038,212 +5038,212 @@ Please solve the issue before resuming the download.</source>
     </message>
   </context>
   <context>
-    <name>ZoomWindow</name>
+    <name>ViewerWindow</name>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="23"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="1212"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="1214"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="23"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="1212"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="1214"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="147"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="147"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="566"/>
       <source>Save</source>
       <translation>저장하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="154"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="154"/>
       <source>More details</source>
       <translation>상세정보 더 보기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="161"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="609"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="161"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="609"/>
       <source>Save and close</source>
       <translation>저장하고 닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="168"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="168"/>
       <source>Destination folder</source>
       <translation>대상 폴더</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="175"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="175"/>
       <source>Save as...</source>
       <translation>다른 이름으로 저장...</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="219"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="219"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="566"/>
       <source>Save (fav)</source>
       <translation>저장 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="226"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="609"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="226"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="609"/>
       <source>Save and close (fav)</source>
       <translation>저장하고 닫기 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="233"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="233"/>
       <source>Destination folder (fav)</source>
       <translation>대상 폴더 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="259"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="259"/>
       <source>Reload</source>
       <translation>다시 불러오기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="263"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="263"/>
       <source>Copy file</source>
       <translation>파일 복사</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="265"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="265"/>
       <source>Copy data</source>
       <translation>데이터 복사</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="346"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="346"/>
       <source>Folder does not exist</source>
       <translation>폴더가 존재하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="346"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="346"/>
       <source>The save folder does not exist yet. Create it?</source>
       <translation>저장할 폴더가 존재하지 않습니다. 새로 만들까요?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="350"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="350"/>
       <source>Error creating folder.
 %1</source>
       <translation>폴더를 생성하는 중 에러가 발생했습니다.
 %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="613"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="570"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="613"/>
       <source>Saving... (fav)</source>
       <translation>저장 중... (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="613"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="570"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="613"/>
       <source>Saving...</source>
       <translation>저장 중...</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="574"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="574"/>
       <source>Saved! (fav)</source>
       <translation>저장됨! (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="574"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="574"/>
       <source>Saved!</source>
       <translation>저장됨!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="578"/>
       <source>Copied! (fav)</source>
       <translation>복사됨! (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="578"/>
       <source>Copied!</source>
       <translation>복사됨!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="582"/>
       <source>Moved! (fav)</source>
       <translation>이동됨! (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="582"/>
       <source>Moved!</source>
       <translation>이동됨!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="586"/>
       <source>Link created! (fav)</source>
       <translation>링크 생성됨! (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="586"/>
       <source>Link created!</source>
       <translation>링크 생성됨!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="591"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="591"/>
       <source>MD5 already exists (fav)</source>
       <translation>MD5가 이미 존재합니다 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="591"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="591"/>
       <source>MD5 already exists</source>
       <translation>MD5가 이미 존재합니다</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="596"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="596"/>
       <source>Already exists (fav)</source>
       <translation>이미 존재합니다(fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="596"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="596"/>
       <source>Already exists</source>
       <translation>이미 존재합니다</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="600"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="600"/>
       <source>Delete (fav)</source>
       <translation>삭제하기 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="600"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="600"/>
       <source>Delete</source>
       <translation>삭제하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="617"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="617"/>
       <source>Close (fav)</source>
       <translation>닫기 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="617"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="617"/>
       <source>Close</source>
       <translation>닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="633"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="633"/>
       <source>File is too big to be displayed.
 %1</source>
       <translation>파일을 보여주기에 너무 큽니다.
 %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="861"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="863"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="861"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="863"/>
       <source>Error</source>
       <translation>에러</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="861"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="861"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
       <translation>저장할 폴더를 지정하지 않았습니다! 옵션창을 여시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="863"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="863"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
       <translation>포멧을 지정하지 않았습니다! 옵션창을 여시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="922"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="922"/>
       <source>Error saving image.</source>
       <translation>이미지 저장중에 에러가 발생했습니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="945"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="945"/>
       <source>Save image</source>
       <translation>이미지 저장</translation>
     </message>

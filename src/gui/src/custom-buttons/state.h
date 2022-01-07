@@ -5,8 +5,6 @@
 #include <functional>
 
 
-class ZoomWindow;
-
 class ButtonState
 {
 	public:

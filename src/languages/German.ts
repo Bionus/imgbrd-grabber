@@ -5048,211 +5048,211 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     </message>
   </context>
   <context>
-    <name>ZoomWindow</name>
+    <name>ViewerWindow</name>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="23"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="1212"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="1214"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="23"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="1212"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="1214"/>
       <source>Image</source>
       <translation>Bild</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="147"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="147"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="566"/>
       <source>Save</source>
       <translation>Speichern</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="154"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="154"/>
       <source>More details</source>
       <translation>Weitere Details</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="161"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="609"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="161"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="609"/>
       <source>Save and close</source>
       <translation>Speichern und schließen</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="168"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="168"/>
       <source>Destination folder</source>
       <translation>Zielordner</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="175"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="175"/>
       <source>Save as...</source>
       <translation>Speichern unter...</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="219"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="566"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="219"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="566"/>
       <source>Save (fav)</source>
       <translation>Speichern (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="226"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="609"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="226"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="609"/>
       <source>Save and close (fav)</source>
       <translation>Speichern und schließen (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.ui" line="233"/>
+      <location filename="../gui/src/viewer/viewer-window.ui" line="233"/>
       <source>Destination folder (fav)</source>
       <translation>Zielordner (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="259"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="259"/>
       <source>Reload</source>
       <translation>Neu laden</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="263"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="263"/>
       <source>Copy file</source>
       <translation>Datei kopieren</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="265"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="265"/>
       <source>Copy data</source>
       <translation>Daten kopieren</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="346"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="346"/>
       <source>Folder does not exist</source>
       <translation>Ordner existiert nicht</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="346"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="346"/>
       <source>The save folder does not exist yet. Create it?</source>
       <translation>Der Speicherordner existiert noch nicht. Erstellen?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="350"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="350"/>
       <source>Error creating folder.
 %1</source>
       <translation>Fehler beim Erstellen des Ordners.
 %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="613"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="570"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="613"/>
       <source>Saving... (fav)</source>
       <translation>Speichern... (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="570"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="613"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="570"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="613"/>
       <source>Saving...</source>
       <translation>Speichern...</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="574"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="574"/>
       <source>Saved! (fav)</source>
       <translation>Gespeichert! (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="574"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="574"/>
       <source>Saved!</source>
       <translation>Gespeichert!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="578"/>
       <source>Copied! (fav)</source>
       <translation>Kopiert! (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="578"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="578"/>
       <source>Copied!</source>
       <translation>Kopiert!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="582"/>
       <source>Moved! (fav)</source>
       <translation>Verschoben! (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="582"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="582"/>
       <source>Moved!</source>
       <translation>Verschoben!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="586"/>
       <source>Link created! (fav)</source>
       <translation>Link erstellt! (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="586"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="586"/>
       <source>Link created!</source>
       <translation>Link erstellt!</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="591"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="591"/>
       <source>MD5 already exists (fav)</source>
       <translation>MD5 existiert bereits (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="591"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="591"/>
       <source>MD5 already exists</source>
       <translation>MD5 existiert bereits</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="596"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="596"/>
       <source>Already exists (fav)</source>
       <translation>Existiert bereits (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="596"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="596"/>
       <source>Already exists</source>
       <translation>Existiert bereits</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="600"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="600"/>
       <source>Delete (fav)</source>
       <translation>Löschen (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="600"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="600"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="617"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="617"/>
       <source>Close (fav)</source>
       <translation>Schließen (Fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="617"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="617"/>
       <source>Close</source>
       <translation>Schließen</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="633"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="633"/>
       <source>File is too big to be displayed.
 %1</source>
       <translation>Datei ist zu groß, um angezeigt zu werden. %1</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="861"/>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="863"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="861"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="863"/>
       <source>Error</source>
       <translation>Fehler</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="861"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="861"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
       <translation>Sie haben keinen Speicher-Ordner angegeben! Möchten Sie das Optionenfenster öffnen?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="863"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="863"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
       <translation>Sie haben kein Speicher-Format angegeben! Möchten Sie das Optionenfenster öffnen?</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="922"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="922"/>
       <source>Error saving image.</source>
       <translation>Fehler beim Speichern des Bildes.</translation>
     </message>
     <message>
-      <location filename="../gui/src/viewer/zoom-window.cpp" line="945"/>
+      <location filename="../gui/src/viewer/viewer-window.cpp" line="945"/>
       <source>Save image</source>
       <translation>Bild speichern</translation>
     </message>

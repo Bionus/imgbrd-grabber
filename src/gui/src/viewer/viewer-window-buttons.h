@@ -1,12 +1,12 @@
-#ifndef CUSTOM_BUTTONS_DEFAULTS_H
-#define CUSTOM_BUTTONS_DEFAULTS_H
+#ifndef VIEWER_WINDOW_BUTTONS_H
+#define VIEWER_WINDOW_BUTTONS_H
 
 #include <QMap>
 #include <QStringLiteral>
 #include "custom-buttons/state.h"
 
 
-namespace ZoomWindowButtons
+namespace ViewerWindowButtons
 {
 	enum SaveState : unsigned short
 	{
@@ -75,4 +75,4 @@ namespace ZoomWindowButtons
 	};
 }
 
-#endif // CUSTOM_BUTTONS_DEFAULTS_H
+#endif // VIEWER_WINDOW_BUTTONS_H

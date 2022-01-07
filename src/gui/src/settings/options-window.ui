@@ -1957,7 +1957,7 @@
       <widget class="QWidget" name="pageImageWindow">
        <layout class="QFormLayout" name="formLayout_22">
         <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkSingleDetailsWindow">
+         <widget class="QCheckBox" name="checkViewerSingleWindow">
           <property name="text">
            <string>Use a single image window</string>
           </property>
@@ -2017,7 +2017,7 @@
          </widget>
         </item>
         <item row="4" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageCloseMiddleClick">
+         <widget class="QCheckBox" name="checkViewerCloseMiddleClick">
           <property name="text">
            <string>Middle click to close window</string>
           </property>
@@ -2027,7 +2027,7 @@
          </widget>
         </item>
         <item row="5" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageNavigateScroll">
+         <widget class="QCheckBox" name="checkViewerNavigateScroll">
           <property name="text">
            <string>Enable scroll wheel navigation</string>
           </property>
@@ -2037,14 +2037,14 @@
          </widget>
         </item>
         <item row="6" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkZoomViewSamples">
+         <widget class="QCheckBox" name="checkViewerViewSamples">
           <property name="text">
            <string>Use image samples</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkZoomShowTagCount">
+         <widget class="QCheckBox" name="checkViewerShowTagCount">
           <property name="text">
            <string>Show tag count</string>
           </property>
@@ -2058,7 +2058,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <widget class="QComboBox" name="comboImageTagOrder">
+         <widget class="QComboBox" name="comboViewerTagOrder">
           <item>
            <property name="text">
             <string>Type</string>
@@ -2263,14 +2263,14 @@
          </layout>
         </item>
         <item row="13" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageScaleUp">
+         <widget class="QCheckBox" name="checkViewerScaleUp">
           <property name="text">
            <string>Scale up small images to fit window</string>
           </property>
          </widget>
         </item>
         <item row="14" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageUseVideoPlayer">
+         <widget class="QCheckBox" name="checkViewerUseVideoPlayer">
           <property name="text">
            <string>Use built-in video player</string>
           </property>
@@ -2280,7 +2280,7 @@
          </widget>
         </item>
         <item row="17" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkRememberDrawer">
+         <widget class="QCheckBox" name="checkViewerRememberDrawer">
           <property name="text">
            <string>Remember button drawer state</string>
           </property>
@@ -2290,7 +2290,7 @@
          </widget>
         </item>
         <item row="18" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkRememberGeometry">
+         <widget class="QCheckBox" name="checkViewerRememberGeometry">
           <property name="text">
            <string>Remember window geometry</string>
           </property>
@@ -2300,7 +2300,7 @@
          </widget>
         </item>
         <item row="15" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageVideoControls">
+         <widget class="QCheckBox" name="checkViewerVideoControls">
           <property name="text">
            <string>Show video player controls</string>
           </property>
@@ -2310,7 +2310,7 @@
          </widget>
         </item>
         <item row="16" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkImageGifControls">
+         <widget class="QCheckBox" name="checkViewerGifControls">
           <property name="text">
            <string>Show GIF player controls</string>
           </property>
@@ -5276,15 +5276,15 @@
   <tabstop>checkShowWarnings</tabstop>
   <tabstop>checkGetUnloadedPages</tabstop>
   <tabstop>checkInvertToggle</tabstop>
-  <tabstop>checkSingleDetailsWindow</tabstop>
+  <tabstop>checkViewerSingleWindow</tabstop>
   <tabstop>comboTagsPosition</tabstop>
   <tabstop>spinPreload</tabstop>
   <tabstop>spinSlideshow</tabstop>
-  <tabstop>checkImageCloseMiddleClick</tabstop>
-  <tabstop>checkImageNavigateScroll</tabstop>
-  <tabstop>checkZoomViewSamples</tabstop>
-  <tabstop>checkZoomShowTagCount</tabstop>
-  <tabstop>comboImageTagOrder</tabstop>
+  <tabstop>checkViewerCloseMiddleClick</tabstop>
+  <tabstop>checkViewerNavigateScroll</tabstop>
+  <tabstop>checkViewerViewSamples</tabstop>
+  <tabstop>checkViewerShowTagCount</tabstop>
+  <tabstop>comboViewerTagOrder</tabstop>
   <tabstop>comboImagePositionImageV</tabstop>
   <tabstop>comboImagePositionImageH</tabstop>
   <tabstop>comboImagePositionAnimationV</tabstop>
@@ -5293,10 +5293,10 @@
   <tabstop>comboImagePositionVideoH</tabstop>
   <tabstop>lineImageBackgroundColor</tabstop>
   <tabstop>buttonImageBackgroundColor</tabstop>
-  <tabstop>checkImageScaleUp</tabstop>
-  <tabstop>checkImageUseVideoPlayer</tabstop>
-  <tabstop>checkRememberDrawer</tabstop>
-  <tabstop>checkRememberGeometry</tabstop>
+  <tabstop>checkViewerScaleUp</tabstop>
+  <tabstop>checkViewerUseVideoPlayer</tabstop>
+  <tabstop>checkViewerRememberDrawer</tabstop>
+  <tabstop>checkViewerRememberGeometry</tabstop>
   <tabstop>checkButtonPrev</tabstop>
   <tabstop>spinButtonPrevPosition</tabstop>
   <tabstop>lineButtonPrev</tabstop>
@@ -5551,9 +5551,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkImageUseVideoPlayer</sender>
+   <sender>checkViewerUseVideoPlayer</sender>
    <signal>toggled(bool)</signal>
-   <receiver>checkImageVideoControls</receiver>
+   <receiver>checkViewerVideoControls</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

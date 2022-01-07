@@ -1177,3 +1177,21 @@ QRect stringToRect(const QString &str)
 	}
 	return {};
 }
+
+
+void renameSettingsGroup(QSettings *settings, const QString &before, const QString &after)
+{
+	settings->beginGroup(before);
+	const QStringList keys = settings->allKeys();
+	settings->endGroup();
+
+	for (const QString &key : keys) {
+		renameSettingsKey(settings,  before + "/" + key, after + "/" + key);
+	}
+}
+
+void renameSettingsKey(QSettings *settings, const QString &before, const QString &after)
+{
+	settings->setValue(after, settings->value(before));
+	settings->remove(before);
+}

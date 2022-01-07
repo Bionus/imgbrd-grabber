@@ -783,7 +783,7 @@ QString Image::savePath(Size size) const
 Image::Size Image::preferredDisplaySize() const
 {
 	const bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
-	const bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
+	const bool viewSample = m_settings->value("Viewer/viewSamples", false).toBool();
 
 	return !url(Size::Sample).isEmpty() && (!getOriginals || viewSample)
 		? Size::Sample
@@ -883,7 +883,7 @@ QString Image::tooltip() const
 	const QString &score = token<QString>("score");
 
 	return QStringLiteral("%1%2%3%4%5%6%7%8")
-		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')))
+		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Viewer/tagOrder", "type").toString()).join(' ')))
 		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
 		.arg(rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(rating))
 		.arg(!score.isEmpty() ? tr("<b>Score:</b> %1<br/>").arg(score) : " ")
@@ -915,7 +915,7 @@ QList<QStrP> Image::detailsData() const
 	int parentId = token<int>("parentid");
 
 	return {
-		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Zoom/tagOrder", "type").toString()).join(' ')),
+		QStrP(tr("Tags"), TagStylist(m_profile).stylished(m_tags, false, false, m_settings->value("Viewer/tagOrder", "type").toString()).join(' ')),
 		QStrP(),
 		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
 		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),

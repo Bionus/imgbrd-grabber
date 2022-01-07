@@ -28,7 +28,7 @@
 #include "ui/QBouton.h"
 #include "ui/text-edit.h"
 #include "ui/verticalscrollarea.h"
-#include "viewer/zoom-window.h"
+#include "viewer/viewer-window.h"
 
 #define FIXED_IMAGE_WIDTH 150
 
@@ -941,7 +941,7 @@ void SearchTab::addResultsImage(const QSharedPointer<Image> &img, Page *page, bo
 	layout->insertWidget(relativePosition, widget);
 
 	connect(preview, &ImagePreview::finished, this, &SearchTab::finishedLoadingPreview);
-	connect(preview, &ImagePreview::clicked, [this, absolutePosition]() { this->webZoom(absolutePosition); });
+	connect(preview, &ImagePreview::clicked, [this, absolutePosition]() { this->openImage(absolutePosition); });
 	connect(preview, &ImagePreview::toggled, [this, absolutePosition](bool toggle, bool range) { this->toggleImage(absolutePosition, toggle, range); });
 	preview->load();
 }
@@ -1064,7 +1064,7 @@ void SearchTab::updateCheckboxes()
 	DONE();
 }
 
-void SearchTab::webZoom(int id)
+void SearchTab::openImage(int id)
 {
 	if (id < 0 || id >= m_images.count()) {
 		return;
@@ -1090,18 +1090,18 @@ void SearchTab::openImage(const QSharedPointer<Image> &image)
 		return;
 	}
 
-	if (m_settings->value("Zoom/singleWindow", false).toBool() && !m_lastZoomWindow.isNull()) {
-		m_lastZoomWindow->reuse(m_images, image, image->parentSite());
-		m_lastZoomWindow->activateWindow();
+	if (m_settings->value("Viewer/singleWindow", false).toBool() && !m_lastViewerWindow.isNull()) {
+		m_lastViewerWindow->reuse(m_images, image, image->parentSite());
+		m_lastViewerWindow->activateWindow();
 		return;
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->parentSite(), m_profile, m_parent, this);
-	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
-	zoom->show();
+	auto *viewer = new ViewerWindow(m_images, image, image->parentSite(), m_profile, m_parent, this);
+	connect(viewer, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+	connect(viewer, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
+	viewer->show();
 
-	m_lastZoomWindow = zoom;
+	m_lastViewerWindow = viewer;
 }
 
 

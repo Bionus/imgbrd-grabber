@@ -100,6 +100,9 @@ QKeySequence getKeySequence(QSettings *settings, const QString &key, const QKeyS
 QString rectToString(const QRect &rect);
 QRect stringToRect(const QString &str);
 
+void renameSettingsGroup(QSettings *settings, const QString &before, const QString &after);
+void renameSettingsKey(QSettings *settings, const QString &before, const QString &after);
+
 
 
 template <typename T>

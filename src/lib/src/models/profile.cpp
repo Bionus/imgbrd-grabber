@@ -36,6 +36,9 @@ Profile::Profile(QString path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
+	// Rename deprecated settings keys
+	renameSettingsGroup(m_settings, "Zoom", "Viewer");
+
 	// Load sources
 	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (const QString &dir : dirs) {
