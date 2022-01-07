@@ -1331,7 +1331,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="labelThumbnailUpscale">
           <property name="text">
-           <string>Upscaling</string>
+           <string>Thumbnail scaling</string>
           </property>
          </widget>
         </item>
