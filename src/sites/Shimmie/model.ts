@@ -249,6 +249,7 @@ export const source: ISource = {
                             tags: details.tags,
                             images: [completeImage({
                                 id: Grabber.regexToConst("id", `<input[^>]+name=['"]image_id['"][^>]+value=['"](?<id>\\d+)['"][^>]*>`, src),
+                                md5: details.imageUrl?.match(/\/([a-z0-9]{32})\//i)?.[1],
                                 date: details.createdAt,
                                 file_url: details.imageUrl,
                                 preview_url: details.imageUrl?.replace("/_images/", "/_thumbs/"),
