@@ -98,6 +98,9 @@ function parseImage(image: any, fromGallery: boolean): IImage {
     if (image["caption"]) {
         img.description = image["caption"];
     }
+    if (image["image_urls"] && image["image_urls"]["original"]) {
+        img.file_url = image["image_urls"]["original"];
+    }
     if (!fromGallery) {
         if (image["is_manga"]) {
             img.type = "gallery";
