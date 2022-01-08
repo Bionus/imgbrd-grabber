@@ -242,8 +242,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
-      <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation>每行一个黑名单项。单行多个标签将视为&apos;每个标签都包含&apos;时生效。</translation>
+      <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
+      <translation>每行一个黑名单项。单行多个标签将视为'每个标签都包含'时生效。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
-      <source>These won&apos;t be taken into account when saving the image.</source>
+      <source>These won't be taken into account when saving the image.</source>
       <translation>这些标签在保存图片时不会被处理。</translation>
     </message>
     <message>
@@ -550,8 +550,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
-      <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation>如果图像的扩展名是 &quot;.jpeg&quot;， 它将被替换成 &quot;.jpg&quot; 。</translation>
+      <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
+      <translation>如果图像的扩展名是 ".jpeg"， 它将被替换成 ".jpg" 。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -578,12 +578,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>不要保存</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
-      <source>If it&apos;s in the same directory</source>
+      <source>If it's in the same directory</source>
       <translation>如果文件在同一个目录中</translation>
     </message>
     <message>
@@ -816,7 +816,7 @@
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
-      <source>Don&apos;t ask again</source>
+      <source>Don't ask again</source>
       <translation>不再显示</translation>
     </message>
   </context>

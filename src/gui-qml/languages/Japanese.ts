@@ -242,7 +242,7 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
-      <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
+      <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
-      <source>These won&apos;t be taken into account when saving the image.</source>
+      <source>These won't be taken into account when saving the image.</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -550,7 +550,7 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
-      <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
+      <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -578,12 +578,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>保存しない</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
-      <source>If it&apos;s in the same directory</source>
+      <source>If it's in the same directory</source>
       <translation type="unfinished"/>
     </message>
     <message>
@@ -816,7 +816,7 @@
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
-      <source>Don&apos;t ask again</source>
+      <source>Don't ask again</source>
       <translation>次回から確認しない</translation>
     </message>
   </context>

@@ -242,8 +242,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
-      <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation>Одна строка на чёрный список. Несколько тегов составляют &apos;И&apos; условие.</translation>
+      <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
+      <translation>Одна строка на чёрный список. Несколько тегов составляют 'И' условие.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
-      <source>These won&apos;t be taken into account when saving the image.</source>
+      <source>These won't be taken into account when saving the image.</source>
       <translation>Эти теги не будут приниматься во внимание при сохранении изображения.</translation>
     </message>
     <message>
@@ -550,8 +550,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
-      <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation>Если изображение с расширением &quot;.jpeg&quot;, то оно будет заменено на &quot;.jpg&quot;.</translation>
+      <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
+      <translation>Если изображение с расширением ".jpeg", то оно будет заменено на ".jpg".</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -578,12 +578,12 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>Не сохранять</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
-      <source>If it&apos;s in the same directory</source>
+      <source>If it's in the same directory</source>
       <translation>Если в той же папке</translation>
     </message>
     <message>
@@ -816,7 +816,7 @@
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
-      <source>Don&apos;t ask again</source>
+      <source>Don't ask again</source>
       <translation>Более не спрашивать</translation>
     </message>
   </context>

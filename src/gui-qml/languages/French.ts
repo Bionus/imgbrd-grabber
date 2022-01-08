@@ -242,8 +242,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
-      <source>One line per blacklist. Multiple tags make an &apos;AND&apos; condition.</source>
-      <translation>Une ligne par liste noire. Plusieurs tags font une condition &apos;ET&apos;.</translation>
+      <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
+      <translation>Une ligne par liste noire. Plusieurs tags font une condition 'ET'.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -277,8 +277,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
-      <source>These won&apos;t be taken into account when saving the image.</source>
-      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de l&apos;image.</translation>
+      <source>These won't be taken into account when saving the image.</source>
+      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -550,8 +550,8 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
-      <source>If the image&apos;s extension is &quot;.jpeg&quot;, it will be replaced by &quot;.jpg&quot;.</source>
-      <translation>Si l'extension de l'image est &quot;.jpeg&quot;, elle sera remplacée par &quot;.jpg&quot;.</translation>
+      <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
+      <translation>Si l'extension de l'image est ".jpeg", elle sera remplacée par ".jpg".</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -578,13 +578,13 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
-      <source>Don&apos;t save</source>
+      <source>Don't save</source>
       <translation>Ne pas sauvegarder</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
-      <source>If it&apos;s in the same directory</source>
-      <translation>Si c&apos;est dans le même répertoire</translation>
+      <source>If it's in the same directory</source>
+      <translation>Si c'est dans le même répertoire</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -816,7 +816,7 @@
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
-      <source>Don&apos;t ask again</source>
+      <source>Don't ask again</source>
       <translation>Ne pas me re-demander</translation>
     </message>
   </context>
