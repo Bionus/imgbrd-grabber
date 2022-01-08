@@ -16,7 +16,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>Check for updates</source>
-      <translation type="unfinished"/>
+      <translation>업데이트 확인</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
@@ -108,27 +108,27 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Every time</source>
-      <translation type="unfinished"/>
+      <translation>매 번</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a day</source>
-      <translation type="unfinished"/>
+      <translation>하루에 한 번</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a week</source>
-      <translation type="unfinished"/>
+      <translation>일주일에 한 번</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a month</source>
-      <translation type="unfinished"/>
+      <translation>한달에 한 번</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Never</source>
-      <translation type="unfinished"/>
+      <translation>절대로</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
@@ -502,12 +502,12 @@
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="93"/>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="122"/>
       <source>Value</source>
-      <translation type="unfinished"/>
+      <translation>Value</translation>
     </message>
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="105"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>수정하기</translation>
     </message>
   </context>
   <context>
@@ -664,7 +664,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="66"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>태그</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
@@ -694,7 +694,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>종</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
@@ -828,37 +828,37 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="222"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>다운로드</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="236"/>
       <source>Interval (image)</source>
-      <translation type="unfinished"/>
+      <translation>간격 (이미지)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="246"/>
       <source>Interval (page)</source>
-      <translation type="unfinished"/>
+      <translation>간격 (페이지)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="256"/>
       <source>Interval (details)</source>
-      <translation type="unfinished"/>
+      <translation>간격 (세부사항)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="266"/>
       <source>Interval (error)</source>
-      <translation type="unfinished"/>
+      <translation>간격 (에러)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="278"/>
       <source>Cookies</source>
-      <translation type="unfinished"/>
+      <translation>쿠키</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="305"/>
       <source>Headers</source>
-      <translation type="unfinished"/>
+      <translation>헤더(Header)</translation>
     </message>
   </context>
   <context>
@@ -902,22 +902,22 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="16"/>
       <source>If empty</source>
-      <translation type="unfinished"/>
+      <translation>비어있으면</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="24"/>
       <source>Separator</source>
-      <translation type="unfinished"/>
+      <translation>구분자</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="32"/>
       <source>Sort</source>
-      <translation type="unfinished"/>
+      <translation>정렬</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="42"/>
       <source>If more than n tags</source>
-      <translation type="unfinished"/>
+      <translation>만약 n개의 태그 보다 많을 경우</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
@@ -928,7 +928,7 @@
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="72"/>
       <source>Keep n tags</source>
-      <translation type="unfinished"/>
+      <translation>n개의 태그 유지하기</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
@@ -938,12 +938,12 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
       <source>Replace all tags by</source>
-      <translation type="unfinished"/>
+      <translation>모든 태그 다음으로 교체</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="100"/>
       <source>Use shortest if possible</source>
-      <translation type="unfinished"/>
+      <translation>가능하면 제일 짧은 것 사용하기</translation>
     </message>
   </context>
   <context>
