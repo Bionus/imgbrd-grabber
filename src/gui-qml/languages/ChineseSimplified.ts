@@ -16,7 +16,7 @@
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
       <source>Check for updates</source>
-      <translation type="unfinished"/>
+      <translation>检查更新</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
@@ -108,27 +108,27 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Every time</source>
-      <translation type="unfinished"/>
+      <translation>每次启动</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a day</source>
-      <translation type="unfinished"/>
+      <translation>每天</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a week</source>
-      <translation type="unfinished"/>
+      <translation>每周</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a month</source>
-      <translation type="unfinished"/>
+      <translation>每月</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Never</source>
-      <translation type="unfinished"/>
+      <translation>从不</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
@@ -234,7 +234,7 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="34"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>物种 (Species)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="39"/>
@@ -244,12 +244,12 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="44"/>
       <source>Models</source>
-      <translation type="unfinished"/>
+      <translation>模型</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="49"/>
       <source>Generals</source>
-      <translation type="unfinished"/>
+      <translation>一般</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="54"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>这些标签在保存图片时不会被处理。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -500,12 +500,12 @@
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="93"/>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="122"/>
       <source>Value</source>
-      <translation type="unfinished"/>
+      <translation>值</translation>
     </message>
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="105"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>编辑</translation>
     </message>
   </context>
   <context>
@@ -647,7 +647,7 @@
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Don't save</source>
-      <translation type="unfinished"/>
+      <translation>不要保存</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
@@ -662,7 +662,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="66"/>
       <source>Tags</source>
-      <translation type="unfinished"/>
+      <translation>标签</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
@@ -692,7 +692,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
       <source>Species</source>
-      <translation type="unfinished"/>
+      <translation>物种 (Species)</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
@@ -826,37 +826,37 @@
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="222"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>何时下载原图</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="236"/>
       <source>Interval (image)</source>
-      <translation type="unfinished"/>
+      <translation>时间间隔（请求图片）</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="246"/>
       <source>Interval (page)</source>
-      <translation type="unfinished"/>
+      <translation>时间间隔（请求页面）</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="256"/>
       <source>Interval (details)</source>
-      <translation type="unfinished"/>
+      <translation>时间间隔（请求图片详情）</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="266"/>
       <source>Interval (error)</source>
-      <translation type="unfinished"/>
+      <translation>时间间隔（发生错误）</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="278"/>
       <source>Cookies</source>
-      <translation type="unfinished"/>
+      <translation>Cookies</translation>
     </message>
     <message>
       <location filename="../src/components/settings/SourceSettingsScreen.qml" line="305"/>
       <source>Headers</source>
-      <translation type="unfinished"/>
+      <translation>请求头部</translation>
     </message>
   </context>
   <context>
@@ -900,22 +900,22 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="16"/>
       <source>If empty</source>
-      <translation type="unfinished"/>
+      <translation>如果为空</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="24"/>
       <source>Separator</source>
-      <translation type="unfinished"/>
+      <translation>分割器</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="32"/>
       <source>Sort</source>
-      <translation type="unfinished"/>
+      <translation>排序</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="42"/>
       <source>If more than n tags</source>
-      <translation type="unfinished"/>
+      <translation>如果多余 n 个标签</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
@@ -926,7 +926,7 @@
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="72"/>
       <source>Keep n tags</source>
-      <translation type="unfinished"/>
+      <translation>保留 n 个标签</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
@@ -936,12 +936,12 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
       <source>Replace all tags by</source>
-      <translation type="unfinished"/>
+      <translation>用 ... 替换所有标签</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="100"/>
       <source>Use shortest if possible</source>
-      <translation type="unfinished"/>
+      <translation>尽量缩短</translation>
     </message>
   </context>
   <context>
@@ -949,7 +949,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="47"/>
       <source>Through URL</source>
-      <translation type="unfinished"/>
+      <translation>通过 url</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="48"/>
