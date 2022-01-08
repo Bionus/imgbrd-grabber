@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber는 Binous가 제작하였습니다.&lt;br/&gt;&lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt; 웹사이트&lt;/span&gt;&lt;/a&gt; 를 방문하여 업데이트 정보, 사이트/번역 파일을 받으세요.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -552,17 +552,17 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="119"/>
       <source>Move to top</source>
-      <translation type="unfinished"/>
+      <translation>맨 위로</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Move to bottom</source>
-      <translation type="unfinished"/>
+      <translation>맨 아래로</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="125"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>없애기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="330"/>
@@ -904,7 +904,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="50"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>우선순위</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="189"/>
@@ -939,7 +939,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="77"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -947,27 +947,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 된 파일</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="39"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>이름</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="44"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>우선순위</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
       <source>Last viewed</source>
-      <translation type="unfinished"/>
+      <translation>최근에 봤음</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;이름:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;메모:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;최근 조회:&lt;/b&gt; %3</translation>
     </message>
   </context>
   <context>
@@ -992,7 +992,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="85"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>우선순위</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="90"/>
@@ -1088,7 +1088,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="424"/>
       <source>Mark as last viewed</source>
-      <translation type="unfinished"/>
+      <translation>최근에 본 것으로 표시</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="431"/>
@@ -1159,7 +1159,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>모니터링</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1361,22 +1361,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>삭제</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>저장</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>다른 이름으로 저장</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>이미지 저장</translation>
     </message>
   </context>
   <context>
@@ -1474,7 +1474,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
       <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;사용가능한 토큰: "저장"부분과 같습니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1632,12 +1632,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="443"/>
       <source>Save downloads list</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 목록 저장하기</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="452"/>
       <source>Load downloads list</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 목록 불러오기</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
@@ -1647,12 +1647,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="466"/>
       <source>Donate with PayPal</source>
-      <translation type="unfinished"/>
+      <translation>PayPal로 후원하기</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="475"/>
       <source>Donate with Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Patreon으로 후원하기</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="156"/>
@@ -1705,7 +1705,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="14"/>
       <source>Tag loader</source>
-      <translation type="unfinished"/>
+      <translation>태그 로더</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
@@ -1715,12 +1715,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
-      <translation type="unfinished"/>
+      <translation>시작</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="85"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
@@ -1730,12 +1730,14 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>완료됨</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>MD5 변환중 ( %1 개 중 %n 개 완료)</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1826,12 +1828,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation type="unfinished"/>
+      <translation>모니터링 수정하기</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
       <source>General</source>
-      <translation type="unfinished"/>
+      <translation>일반</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="40"/>
@@ -1841,7 +1843,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
@@ -1882,12 +1884,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="120"/>
       <source>Delay</source>
-      <translation type="unfinished"/>
+      <translation>지연</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="138"/>
       <source>Notification</source>
-      <translation type="unfinished"/>
+      <translation>알림</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="144"/>
@@ -1898,7 +1900,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="155"/>
       <source>Download</source>
-      <translation type="unfinished"/>
+      <translation>다운로드</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="168"/>
@@ -1908,17 +1910,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="175"/>
       <source>Filename</source>
-      <translation type="unfinished"/>
+      <translation>파일이름</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="185"/>
       <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;기본 설정을 이용하려면 비워두세요.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="192"/>
       <source>Download blacklisted images</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트도 다운로드하기</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="42"/>
@@ -1928,7 +1930,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.cpp" line="53"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -1965,7 +1967,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="104"/>
       <source>Stop</source>
-      <translation type="unfinished"/>
+      <translation>정지</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
@@ -1975,17 +1977,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
       <source>Edit</source>
-      <translation type="unfinished"/>
+      <translation>수정</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="75"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>제거하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="104"/>
       <source>Start</source>
-      <translation type="unfinished"/>
+      <translation>시작</translation>
     </message>
   </context>
   <context>
@@ -2452,13 +2454,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1166"/>
       <location filename="../gui/src/settings/options-window.ui" line="1205"/>
       <source>Add new property</source>
-      <translation type="unfinished"/>
+      <translation>속성 추가</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1173"/>
       <location filename="../gui/src/settings/options-window.ui" line="1192"/>
       <source>Extensions</source>
-      <translation type="unfinished"/>
+      <translation>확장 프로그램</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1186"/>
@@ -2468,12 +2470,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1212"/>
       <source>Version</source>
-      <translation type="unfinished"/>
+      <translation>버전</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1219"/>
       <source>Loading...</source>
-      <translation type="unfinished"/>
+      <translation>불러오는 중…</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1233"/>
@@ -2483,22 +2485,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1245"/>
       <source>Resize</source>
-      <translation type="unfinished"/>
+      <translation>크기 조정</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1251"/>
       <source>Max width</source>
-      <translation type="unfinished"/>
+      <translation>최대 폭</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1271"/>
       <source>Max height</source>
-      <translation type="unfinished"/>
+      <translation>최대 높이</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1291"/>
       <source>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt; 이미지의 크기가 열린 창의 최대 폭 또는 높이보다 클 경우 자동으로 맞춰서 보여집니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1324"/>
@@ -2626,7 +2628,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1525"/>
       <location filename="../gui/src/settings/options-window.ui" line="1539"/>
       <source>Ctrl+N</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+N</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1518"/>
@@ -2716,7 +2718,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1745"/>
       <source>Ctrl+Q</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Q</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1761"/>
@@ -2727,47 +2729,47 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="1773"/>
       <location filename="../gui/src/settings/options-window.ui" line="3970"/>
       <source>S</source>
-      <translation type="unfinished"/>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1789"/>
       <source>Close tab</source>
-      <translation type="unfinished"/>
+      <translation>탭 닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1801"/>
       <source>Ctrl+W</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1817"/>
       <source>New tab</source>
-      <translation type="unfinished"/>
+      <translation>새 탭</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1829"/>
       <source>Ctrl+T</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1845"/>
       <source>Open previous tab</source>
-      <translation type="unfinished"/>
+      <translation>이전 탭 열기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1857"/>
       <source>Ctrl+Shift+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1873"/>
       <source>Open next tab</source>
-      <translation type="unfinished"/>
+      <translation>다음 탭 열기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1885"/>
       <source>Ctrl+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1901"/>
@@ -2777,7 +2779,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1913"/>
       <source>Ctrl+O</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1969"/>
@@ -2944,23 +2946,23 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>메타 데이터</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Image size</source>
-      <translation type="unfinished"/>
+      <translation>이미지 크기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
       <source>Main window</source>
-      <translation type="unfinished"/>
+      <translation>메인 창</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="122"/>
       <location filename="../gui/src/settings/options-window.ui" line="137"/>
       <source>Shortcuts</source>
-      <translation type="unfinished"/>
+      <translation>단축키</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="365"/>
@@ -3010,66 +3012,66 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2305"/>
       <source>Show video player controls</source>
-      <translation type="unfinished"/>
+      <translation>비디오 플레이어 도구 보이기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2315"/>
       <source>Show GIF player controls</source>
-      <translation type="unfinished"/>
+      <translation>GIF 플레이어 도구 보이기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3818"/>
       <source>Close</source>
-      <translation type="unfinished"/>
+      <translation>닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3830"/>
       <source>Esc</source>
-      <translation type="unfinished"/>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2371"/>
       <location filename="../gui/src/settings/options-window.ui" line="3846"/>
       <source>Prev</source>
-      <translation type="unfinished"/>
+      <translation>이전</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2516"/>
       <location filename="../gui/src/settings/options-window.ui" line="3874"/>
       <source>Next</source>
-      <translation type="unfinished"/>
+      <translation>다음</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2652"/>
       <location filename="../gui/src/settings/options-window.ui" line="3902"/>
       <source>Details</source>
-      <translation type="unfinished"/>
+      <translation>자세히</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3914"/>
       <source>D</source>
-      <translation type="unfinished"/>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3930"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>다른 이름으로 저장...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3942"/>
       <source>Shift+S</source>
-      <translation type="unfinished"/>
+      <translation>Shift+S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3069"/>
       <location filename="../gui/src/settings/options-window.ui" line="3986"/>
       <source>Save and close</source>
-      <translation type="unfinished"/>
+      <translation>저장하고 닫기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3998"/>
       <source>W</source>
-      <translation type="unfinished"/>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4014"/>
@@ -3079,7 +3081,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4026"/>
       <source>O</source>
-      <translation type="unfinished"/>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3347"/>
@@ -3090,13 +3092,13 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4054"/>
       <source>Alt+S</source>
-      <translation type="unfinished"/>
+      <translation>Alt + S</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3486"/>
       <location filename="../gui/src/settings/options-window.ui" line="4070"/>
       <source>Save and close (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장하고 닫기 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1334"/>
@@ -3289,7 +3291,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4082"/>
       <source>Alt+W</source>
-      <translation type="unfinished"/>
+      <translation>Alt + W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4098"/>
@@ -3299,7 +3301,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4110"/>
       <source>Alt+O</source>
-      <translation type="unfinished"/>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4126"/>
@@ -3309,7 +3311,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4138"/>
       <source>F11</source>
-      <translation type="unfinished"/>
+      <translation>F11</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4154"/>
@@ -3329,7 +3331,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4194"/>
       <source>C</source>
-      <translation type="unfinished"/>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4212"/>
@@ -3457,7 +3459,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4777"/>
       <source>Removed tags</source>
-      <translation type="unfinished"/>
+      <translation>제거된 태그</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4787"/>
@@ -3734,7 +3736,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
       <source>Unknown option '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>알 수 없는 옵션 '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="477"/>
@@ -3744,12 +3746,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
       <source>Missing value after '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>필요한 입력 값이 '%1' 이후로 없습니다.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
       <source>Unexpected value after '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>알 수 없는 값이 '%1' 이후로 있습니다.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -4176,12 +4178,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="81"/>
       <source>Landscape orientation</source>
-      <translation type="unfinished"/>
+      <translation>가로 방향</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="86"/>
       <source>Portrait orientation</source>
-      <translation type="unfinished"/>
+      <translation>세로 방향</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="91"/>
@@ -4299,32 +4301,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="36"/>
       <source>Folder</source>
-      <translation type="unfinished"/>
+      <translation>폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="78"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>이름</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="107"/>
       <source>Reset</source>
-      <translation type="unfinished"/>
+      <translation>초기화</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.ui" line="114"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>저장</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/settings-dock.cpp" line="46"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -4679,12 +4681,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>사용자 아이디</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>솔트(Salt)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
@@ -4704,12 +4706,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="117"/>
       <source>Access token</source>
-      <translation type="unfinished"/>
+      <translation>액세스 토큰</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="118"/>
       <source>Refresh token</source>
-      <translation type="unfinished"/>
+      <translation>토큰 갱신</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="230"/>
@@ -4841,7 +4843,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
       <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Grabber를 처음 사용하시는 거면 우선 &lt;a href="{website}/docs/"&gt;를 읽는 것을 권장드립니다. 다음을 참고하세요 &lt;/a&gt; wiki page.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4879,7 +4881,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation type="unfinished"/>
+      <translation>임시저장하지 않기</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
@@ -4889,7 +4891,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트에 추가하지 않기</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -4899,7 +4901,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
       <source>Don't ignore</source>
-      <translation type="unfinished"/>
+      <translation>무시하지 않기</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="42"/>
@@ -4937,12 +4939,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="71"/>
       <source>Loading tag types...</source>
-      <translation type="unfinished"/>
+      <translation>태그 타입 불러오는 중...</translation>
     </message>
     <message>
       <location filename="../lib/src/tools/tag-list-loader.cpp" line="81"/>
       <source>Error loading tag types.</source>
-      <translation type="unfinished"/>
+      <translation>태그 타입을 불러오는 중 에러가 발생했습니다.</translation>
     </message>
   </context>
   <context>
@@ -4965,7 +4967,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>주어진 소스를 통해서 컴퓨터 내에 태그 데이터 베이스를 생성합니다. 추가로, 소스의 API가 태그 종류의 정보를 제공하지 않아도 Grabber는 컴퓨터 내 태그 데이터 베이스를 통해 확인할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -5040,7 +5042,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>Monitor</source>
-      <translation type="unfinished"/>
+      <translation>모니터링</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
@@ -5075,7 +5077,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>엄청 많은 검색 결과물들을 모니터링을 하려고 합니다(%1 개). 진짜 할거에요?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
@@ -5088,7 +5090,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/tags-dock.ui" line="20"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 된 파일</translation>
     </message>
   </context>
   <context>
@@ -5333,7 +5335,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/wiki-dock.ui" line="26"/>
       <source>Downloads</source>
-      <translation type="unfinished"/>
+      <translation>다운로드 된 파일</translation>
     </message>
   </context>
 </TS>
