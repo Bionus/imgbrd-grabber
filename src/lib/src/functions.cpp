@@ -1186,7 +1186,7 @@ void renameSettingsGroup(QSettings *settings, const QString &before, const QStri
 	settings->endGroup();
 
 	for (const QString &key : keys) {
-		renameSettingsKey(settings,  before + "/" + key, after + "/" + key);
+		renameSettingsKey(settings, before + "/" + key, after + "/" + key);
 	}
 }
 
