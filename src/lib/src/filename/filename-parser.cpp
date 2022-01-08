@@ -295,26 +295,9 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 
 	skipSpaces();
 
-	FilenameNodeCondition *lhs;
-
-	// Parenthesis
-	QChar p = peek();
-	if (p == '(') {
-		m_index++; // (
-
-		lhs = parseConditionNode();
-		if (peek() != ')') {
-			delete lhs;
-			throw std::runtime_error("Expected ')' after condition in parenthesis");
-		}
-
-		m_index++; // )
-	} else {
-		lhs = parseSingleCondition();
-	}
-
 	QStack<QChar> opsStack;
 	QStack<FilenameNodeCondition*> termStack;
+	termStack.push(parseSingleCondition());
 
 	while (!finished()) {
 		skipSpaces();
@@ -324,8 +307,6 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		if (c != '&' && c != '|') {
 			break;
 		}
-
-		termStack.push(lhs);
 
 		int prec = (c == '&' ? 2 : 1);
 
@@ -366,20 +347,28 @@ FilenameNodeCondition *FilenameParser::parseConditionNode()
 		termStack.push(expr);
 	}
 
-	auto term = lhs;
-
-	if (!termStack.isEmpty()) {
-		term = termStack.pop();
-	}
-
 	skipSpaces();
 
-	return term;
+	return termStack.isEmpty() ? nullptr : termStack.pop();
 }
 
 FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 {
 	QChar c = peek();
+
+	// Parenthesis
+	if (c == '(') {
+		m_index++; // (
+
+		auto *ret = parseConditionNode();
+		if (peek() != ')') {
+			delete ret;
+			throw std::runtime_error("Expected ')' after condition in parenthesis");
+		}
+
+		m_index++; // )
+		return ret;
+	}
 
 	if (legacy && c == '-') {
 		return parseConditionIgnore();
@@ -437,7 +426,7 @@ FilenameNodeConditionTag *FilenameParser::parseConditionTag(bool quotes)
 
 	QString tag = quotes
 		? readUntil({ '"' })
-		: readUntil({ ' ', '&', '|', '?' }, true);
+		: readUntil({ ' ', '&', '|', '(', ')', '?' }, true);
 
 	if (quotes) {
 		m_index++; // "

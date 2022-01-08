@@ -1,5 +1,5 @@
-#ifndef ZOOM_WINDOW_H
-#define ZOOM_WINDOW_H
+#ifndef VIEWER_WINDOW_H
+#define VIEWER_WINDOW_H
 
 #include <QPointer>
 #include <QPushButton>
@@ -11,14 +11,14 @@
 #include "downloader/image-save-result.h"
 #include "models/favorite.h"
 #include "models/image.h"
-#include "viewer/zoom-window-buttons.h"
+#include "viewer/viewer-window-buttons.h"
 
-using SaveButtonState = ZoomWindowButtons::SaveState;
+using SaveButtonState = ViewerWindowButtons::SaveState;
 
 
 namespace Ui
 {
-	class ZoomWindow;
+	class ViewerWindow;
 }
 
 
@@ -33,7 +33,7 @@ class ImageLoaderQueue;
 class SearchTab;
 class VideoPlayer;
 
-class ZoomWindow : public QWidget
+class ViewerWindow : public QWidget
 {
 	Q_OBJECT
 
@@ -47,15 +47,15 @@ class ZoomWindow : public QWidget
 			PendingOpen,
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
-		~ZoomWindow() override;
+		ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab);
+		~ViewerWindow() override;
 		void go();
 		void load(bool force = false);
 
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
+		void replyFinishedImage(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result);
 		void display(const QPixmap &, int);
 		void saveNQuit(bool fav = false);
 		void saveImage(bool fav = false);
@@ -78,7 +78,7 @@ class ZoomWindow : public QWidget
 		void openFile(bool now = false);
 		void updateWindowTitle();
 		void showLoadingError(const QString &message);
-		void setButtonState(bool fav, ZoomWindowButtons::SaveState state);
+		void setButtonState(bool fav, ViewerWindowButtons::SaveState state);
 		void reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site);
 
 		// Context menus
@@ -129,7 +129,7 @@ class ZoomWindow : public QWidget
 		QStringList &m_viewItLater;
 		QStringList &m_ignore;
 		QSettings *m_settings;
-		Ui::ZoomWindow *ui;
+		Ui::ViewerWindow *ui;
 		DetailsWindow *m_detailsWindow;
 		QSharedPointer<Image> m_image;
 		Site *m_site;
@@ -178,4 +178,4 @@ class ZoomWindow : public QWidget
 		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
-#endif // ZOOM_WINDOW_H
+#endif // VIEWER_WINDOW_H

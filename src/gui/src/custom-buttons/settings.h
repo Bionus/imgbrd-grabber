@@ -13,7 +13,7 @@ class ButtonSettings
 	public:
 		/*enum ButtonWindow
 		{
-			Zoom
+			Viewer
 		};
 
 		ButtonWindow onWindow;*/

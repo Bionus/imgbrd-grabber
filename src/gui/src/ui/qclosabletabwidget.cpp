@@ -1,6 +1,7 @@
 #include "ui/qclosabletabwidget.h"
 #include <QMouseEvent>
 #include <QTabBar>
+#include "tabs/search-tab.h"
 
 
 QClosableTabWidget::QClosableTabWidget(QWidget *parent)
@@ -16,9 +17,10 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 		if (mouseEvent != nullptr && mouseEvent->button() == Qt::MiddleButton) {
 			const int index = tabBar()->tabAt(mouseEvent->pos());
 			QWidget *w = widget(index);
+			SearchTab *tab = dynamic_cast<SearchTab*>(w);
 
 			// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
-			if (w->maximumWidth() != 16777214) {
+			if (tab != nullptr && !tab->isLocked() && w->maximumWidth() != 16777214) {
 				w->deleteLater();
 				removeTab(index);
 				return true;

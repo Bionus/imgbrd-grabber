@@ -1,11 +1,12 @@
-#ifndef CUSTOM_BUTTONS_DEFAULTS_H
-#define CUSTOM_BUTTONS_DEFAULTS_H
+#ifndef VIEWER_WINDOW_BUTTONS_H
+#define VIEWER_WINDOW_BUTTONS_H
 
+#include <QMap>
 #include <QStringLiteral>
 #include "custom-buttons/state.h"
 
 
-namespace ZoomWindowButtons
+namespace ViewerWindowButtons
 {
 	enum SaveState : unsigned short
 	{
@@ -51,11 +52,27 @@ namespace ZoomWindowButtons
 	const ButtonState DefaultSaveFavStateExistsDisk(SaveState::ExistsDisk, QStringLiteral("Already saved (fav)"), QStringLiteral(""));
 	const ButtonState DefaultSaveFavStateDelete(SaveState::Delete, QStringLiteral("Delete (fav)"), QStringLiteral(""));
 
-	const ButtonState DefaultSaveNQuitFavStateSave(SaveState::Save, QStringLiteral("Save (fav)"), QStringLiteral("Save to usual location and close window"));
+	const ButtonState DefaultSaveNQuitFavStateSave(SaveState::Save, QStringLiteral("Save & close (fav)"), QStringLiteral("Save to favourite location and close window"));
 	const ButtonState DefaultSaveNQuitFavStateSaving(SaveState::Saving, QStringLiteral("Saving... (fav)"), QStringLiteral(""));
 	const ButtonState DefaultSaveNQuitFavStateClose(2, QStringLiteral("Close (fav)"), QStringLiteral("")); // Consider adding this to SaveButtonState.
 
 	const ButtonState DefaultOpenFavState(0, QStringLiteral("Open (fav)"), QStringLiteral("Open favourite save location in new window"));
+
+
+	const QMap<unsigned short, ButtonState> DefaultStates {
+		{ CustomButtons::IsButtonPrev, DefaultPrevState },
+		{ CustomButtons::IsButtonNext, DefaultNextState },
+		{ CustomButtons::IsButtonDetails, DefaultDetailsState },
+		{ CustomButtons::IsButtonSaveAs, DefaultSaveAsState },
+
+		{ CustomButtons::IsButtonSave, DefaultSaveStateSave },
+		{ CustomButtons::IsButtonSaveNQuit, DefaultSaveNQuitStateSave },
+		{ CustomButtons::IsButtonOpen, DefaultOpenState },
+
+		{ CustomButtons::IsButtonSave | CustomButtons::IsFavoriteButton, DefaultSaveFavStateSave },
+		{ CustomButtons::IsButtonSaveNQuit | CustomButtons::IsFavoriteButton, DefaultSaveNQuitFavStateSave },
+		{ CustomButtons::IsButtonOpen | CustomButtons::IsFavoriteButton, DefaultOpenFavState },
+	};
 }
 
-#endif // CUSTOM_BUTTONS_DEFAULTS_H
+#endif // VIEWER_WINDOW_BUTTONS_H

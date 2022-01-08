@@ -80,13 +80,13 @@ ColumnLayout {
     CheckBoxSetting {
         name: qsTr("Load samples")
         subtitle: qsTr("Load sample-sized versions of the images by default if available.")
-        setting: gSettings.zoom_viewSamples
+        setting: gSettings.viewer_viewSamples
         Layout.fillWidth: true
     }
     CheckBoxSetting {
         name: qsTr("Buttons at the bottom")
         subtitle: qsTr("Move the action buttons to the bottom of the screen.")
-        setting: gSettings.zoom_buttonsAtBottom
+        setting: gSettings.viewer_buttonsAtBottom
         Layout.fillWidth: true
     }
 

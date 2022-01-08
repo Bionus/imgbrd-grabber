@@ -115,6 +115,7 @@ void TagTab::write(QJsonObject &json) const
 	json["columns"] = ui->spinColumns->value();
 	json["postFiltering"] = QJsonArray::fromStringList(postFilter());
 	json["mergeResults"] = ui->checkMergeResults->isChecked();
+	json["isLocked"] = isLocked();
 
 	// Last urls
 	QJsonObject lastUrls;
@@ -188,6 +189,8 @@ bool TagTab::read(const QJsonObject &json, bool preload)
 		tags.append(tag.toString());
 	}
 	setTags(tags.join(' '), preload);
+
+	setLocked(json["isLocked"].toBool());
 
 	return true;
 }

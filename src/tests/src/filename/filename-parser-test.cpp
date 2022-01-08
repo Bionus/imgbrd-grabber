@@ -301,6 +301,28 @@ TEST_CASE("FilenameParser")
 		REQUIRE(ifTrue->text == QString("yes"));
 	}
 
+	SECTION("Parse conditional with parenthesis")
+	{
+		FilenameParser parser(R"(<"a" & ("b" | "c") ? yes>)");
+		auto filename = parser.parseRoot();
+		REQUIRE(parser.error() == QString());
+
+		REQUIRE(filename->exprs.count() == 1);
+
+		auto conditional = dynamic_cast<FilenameNodeConditional*>(filename->exprs[0]);
+		REQUIRE(conditional != nullptr);
+		REQUIRE(conditional->ifTrue != nullptr);
+		REQUIRE(conditional->ifFalse == nullptr);
+
+		auto cond = dynamic_cast<FilenameNodeConditionOp*>(conditional->condition);
+		REQUIRE(cond != nullptr);
+		REQUIRE(cond->op == FilenameNodeConditionOp::Operator::And);
+
+		auto right = dynamic_cast<FilenameNodeConditionOp*>(cond->right);
+		REQUIRE(right != nullptr);
+		REQUIRE(right->op == FilenameNodeConditionOp::Operator::Or);
+	}
+
 
 	SECTION("ParseConditionTag")
 	{
@@ -384,6 +406,21 @@ TEST_CASE("FilenameParser")
 
 		auto invert = dynamic_cast<FilenameNodeConditionInvert*>(right->right);
 		REQUIRE(invert != nullptr);
+	}
+
+	SECTION("ParseConditionMixedOperatorsParenthesis")
+	{
+		FilenameParser parser("(\"my_tag\" | %some_token%) & %my_token%");
+		auto cond = parser.parseCondition();
+		REQUIRE(parser.error() == QString());
+
+		auto opCond = dynamic_cast<FilenameNodeConditionOp*>(cond);
+		REQUIRE(opCond != nullptr);
+		REQUIRE(opCond->op == FilenameNodeConditionOp::Operator::And);
+
+		auto left = dynamic_cast<FilenameNodeConditionOp*>(opCond->left);
+		REQUIRE(left != nullptr);
+		REQUIRE(left->op == FilenameNodeConditionOp::Operator::Or);
 	}
 
 	SECTION("ParseConditionNoOperator")

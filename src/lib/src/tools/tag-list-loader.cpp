@@ -1,6 +1,7 @@
 #include "tools/tag-list-loader.h"
 #include <QEventLoop>
 #include <QObject>
+#include "logger.h"
 #include "models/api/api.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -119,10 +120,14 @@ void TagListLoader::tagsLoaded()
 
 	bool newTag = false;
 	QList<Tag> tags = m_currentTagApi->tags();
-	for (const auto &tag : tags) {
-		if (tag.count() == 0 || tag.count() >= m_minTagCount) {
-			m_results.append(tag);
-			newTag = true;
+	if (!m_results.isEmpty() && !tags.isEmpty() && tags.first() == m_results.first()) {
+		log(QStringLiteral("Loop detected, stopping here."), Logger::Warning);
+	} else {
+		for (const auto &tag: tags) {
+			if (tag.count() == 0 || tag.count() >= m_minTagCount) {
+				m_results.append(tag);
+				newTag = true;
+			}
 		}
 	}
 

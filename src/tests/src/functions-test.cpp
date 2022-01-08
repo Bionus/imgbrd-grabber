@@ -547,4 +547,26 @@ TEST_CASE("Functions")
 		REQUIRE(stringToRect("") == QRect());
 		REQUIRE(stringToRect("1;2;3;4") == QRect(1, 2, 3, 4));
 	}
+
+	SECTION("renameSettingsKey")
+	{
+		QSettings settings("tests/resources/tmp/settings.ini", QSettings::IniFormat);
+		settings.setValue("before", 123);
+
+		renameSettingsKey(&settings, "before", "after");
+
+		REQUIRE(settings.value("before", -1).toInt() == -1);
+		REQUIRE(settings.value("after", -1).toInt() == 123);
+	}
+	SECTION("renameSettingsGroup")
+	{
+		QSettings settings("tests/resources/tmp/settings.ini", QSettings::IniFormat);
+		settings.setValue("before/key", 123);
+		settings.setValue("before/group/key", 123);
+
+		renameSettingsGroup(&settings, "before", "after");
+
+		REQUIRE(settings.value("before/group/key", -1).toInt() == -1);
+		REQUIRE(settings.value("after/group/key", -1).toInt() == 123);
+	}
 }

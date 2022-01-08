@@ -27,7 +27,7 @@ class ImagePreview;
 class FixedSizeGridLayout;
 class TextEdit;
 class VerticalScrollArea;
-class ZoomWindow;
+class ViewerWindow;
 
 class SearchTab : public QWidget
 {
@@ -57,6 +57,8 @@ class SearchTab : public QWidget
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
 		const QString &screenName() const;
+		bool isLocked() const;
+		void setLocked(bool locked);
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -86,7 +88,7 @@ class SearchTab : public QWidget
 		void saveSources(const QList<Site *> &sel, bool canLoad = true);
 		void updateCheckboxes();
 		// Zooms
-		void webZoom(int);
+		void openImage(int absolutePosition);
 		void openImage(const QSharedPointer<Image> &image);
 		// Pagination
 		void firstPage();
@@ -164,6 +166,7 @@ class SearchTab : public QWidget
 		QString m_wiki;
 		QMap<Page*, QList<QSharedPointer<Image>>> m_validImages;
 		QMap<QString, QMap<QString, QString>> m_lastUrls;
+		bool m_isLocked = false;
 
 		QStringList m_completion;
 		QMap<ImagePreview*, QSharedPointer<Image>> m_thumbnailsLoading;
@@ -180,7 +183,7 @@ class SearchTab : public QWidget
 		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;
 		int m_endlessLoadOffset;
 		bool m_pageMergedMode;
-		QPointer<ZoomWindow> m_lastZoomWindow;
+		QPointer<ViewerWindow> m_lastViewerWindow;
 
 		// History
 		bool m_from_history;

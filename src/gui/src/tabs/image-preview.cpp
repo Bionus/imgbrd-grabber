@@ -316,12 +316,12 @@ void ImagePreview::contextSaveImageAs()
 
 	const QStringList filenames = format.path(*m_image, m_profile);
 	const QString filename = filenames.first().section(QDir::separator(), -1);
-	const QString lastDir = settings->value("Zoom/lastDir").toString();
+	const QString lastDir = settings->value("Viewer/lastDir").toString();
 
 	QString path = QFileDialog::getSaveFileName(m_container, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!path.isEmpty()) {
 		path = QDir::toNativeSeparators(path);
-		settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
+		settings->setValue("Viewer/lastDir", path.section(QDir::separator(), 0, -2));
 
 		if (!tmpPath.isEmpty()) {
 			QFile::rename(tmpPath, path);

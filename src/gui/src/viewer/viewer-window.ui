@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ZoomWindow</class>
- <widget class="QWidget" name="ZoomWindow">
+ <class>ViewerWindow</class>
+ <widget class="QWidget" name="ViewerWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -176,7 +176,7 @@
   <connection>
    <sender>labelPools</sender>
    <signal>linkActivated(QString)</signal>
-   <receiver>ZoomWindow</receiver>
+   <receiver>ViewerWindow</receiver>
    <slot>openPool(QString)</slot>
    <hints>
     <hint type="sourcelabel">

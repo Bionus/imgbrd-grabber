@@ -15,7 +15,7 @@ Page {
     property var image: images[swipeView.currentIndex]
 
     property bool hasSample: image.sampleUrl !== image.fileUrl && image.sampleUrl !== image.previewUrl
-    property bool showHd: !gSettings.zoom_viewSamples.value
+    property bool showHd: !gSettings.viewer_viewSamples.value
     property bool showTags: false
 
     Component {
@@ -75,14 +75,14 @@ Page {
             }
 
             Loader {
-                active: !gSettings.zoom_buttonsAtBottom.value
+                active: !gSettings.viewer_buttonsAtBottom.value
                 sourceComponent: actionButtons
             }
         }
     }
 
     footer: Loader {
-        active: gSettings.zoom_buttonsAtBottom.value
+        active: gSettings.viewer_buttonsAtBottom.value
         sourceComponent: Component {
             RowLayout {
                 Label {
@@ -103,7 +103,7 @@ Page {
         clip: true
 
         onCurrentIndexChanged: {
-            showHd = !gSettings.zoom_viewSamples.value
+            showHd = !gSettings.viewer_viewSamples.value
             showTags = false
         }
 

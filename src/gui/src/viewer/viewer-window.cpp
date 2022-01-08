@@ -1,4 +1,4 @@
-#include "viewer/zoom-window.h"
+#include "viewer/viewer-window.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
@@ -21,7 +21,7 @@
 #include <QUrl>
 #include <QVideoWidget>
 #include <QWheelEvent>
-#include <ui_zoom-window.h>
+#include <ui_viewer-window.h>
 #include "custom-buttons.h"
 #include "downloader/image-downloader.h"
 #include "functions.h"
@@ -48,8 +48,8 @@
 #include "viewer/players/video-player.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
-	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_labelImageScaled(false)
+ViewerWindow::ViewerWindow(QList<QSharedPointer<Image>> images, const QSharedPointer<Image> &image, Site *site, Profile *profile, MainWindow *parent, SearchTab *tab)
+	: QWidget(nullptr, Qt::Window), m_parent(parent), m_tab(tab), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ViewerWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_finished(false), m_size(0), m_isFullscreen(false), m_isSlideshowRunning(false), m_images(std::move(images)), m_displayImage(QPixmap()), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	connect(parent, &MainWindow::destroyed, this, &QWidget::deleteLater);
@@ -59,24 +59,24 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_pendingAction = PendingNothing;
 	m_pendingClose = false;
 
-	if (m_settings->value("Zoom/rememberGeometry", true).toBool()) {
-		restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
+	if (m_settings->value("Viewer/rememberGeometry", true).toBool()) {
+		restoreGeometry(m_settings->value("Viewer/geometry").toByteArray());
 	}
 	
 	ui->progressBarDownload->hide();
 
-	m_settings->beginGroup("Zoom/Shortcuts");
+	m_settings->beginGroup("Viewer/Shortcuts");
 		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), this);
-			connect(quit, &QShortcut::activated, this, &ZoomWindow::close);
+			connect(quit, &QShortcut::activated, this, &ViewerWindow::close);
 		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), this);
-			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
+			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
 		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), this);
-			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
+			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 
 		QShortcut *details = new QShortcut(getKeySequence(m_settings, "keyDetails", Qt::Key_D), this);
-			connect(details, &QShortcut::activated, this, &ZoomWindow::showDetails);
+			connect(details, &QShortcut::activated, this, &ViewerWindow::showDetails);
 		QShortcut *saveAs = new QShortcut(getKeySequence(m_settings, "keySaveAs", QKeySequence::SaveAs, Qt::CTRL + Qt::SHIFT + Qt::Key_S), this);
-			connect(saveAs, &QShortcut::activated, this, &ZoomWindow::saveImageAs);
+			connect(saveAs, &QShortcut::activated, this, &ViewerWindow::saveImageAs);
 
 		QShortcut *save = new QShortcut(getKeySequence(m_settings, "keySave", QKeySequence::Save, Qt::CTRL + Qt::Key_S), this);
 			connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
@@ -94,9 +94,9 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 			connect(openFav, &QShortcut::activated, this, [this]{openSaveDir(true);});
 
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), this);
-			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::toggleFullScreen);
+			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::toggleFullScreen);
 		QShortcut *copyDataToClipboard = new QShortcut(getKeySequence(m_settings, "keyDataToClipboard", QKeySequence::Copy, Qt::CTRL + Qt::Key_C), this);
-			connect(copyDataToClipboard, &QShortcut::activated, this, &ZoomWindow::copyImageDataToClipboard);
+			connect(copyDataToClipboard, &QShortcut::activated, this, &ViewerWindow::copyImageDataToClipboard);
 	m_settings->endGroup();
 
 	configureButtons();
@@ -104,9 +104,9 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_labelTagsLeft->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		connect(m_labelTagsLeft, &QAffiche::customContextMenuRequested, this, &ZoomWindow::contextMenu);
-		connect(m_labelTagsLeft, &QAffiche::linkActivated, this, &ZoomWindow::openUrl);
-		connect(m_labelTagsLeft, &QAffiche::linkHovered, this, &ZoomWindow::linkHovered);
+		connect(m_labelTagsLeft, &QAffiche::customContextMenuRequested, this, &ViewerWindow::contextMenu);
+		connect(m_labelTagsLeft, &QAffiche::linkActivated, this, &ViewerWindow::openUrl);
+		connect(m_labelTagsLeft, &QAffiche::linkHovered, this, &ViewerWindow::linkHovered);
 		connect(m_labelTagsLeft, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->scrollAreaWidgetContents->layout()->addWidget(m_labelTagsLeft);
 
@@ -114,17 +114,17 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		m_labelTagsTop->setWordWrap(true);
 		m_labelTagsTop->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_labelTagsTop->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		connect(m_labelTagsTop, &QAffiche::customContextMenuRequested, this, &ZoomWindow::contextMenu);
-		connect(m_labelTagsTop, &QAffiche::linkActivated, this, &ZoomWindow::openUrl);
-		connect(m_labelTagsTop, &QAffiche::linkHovered, this, &ZoomWindow::linkHovered);
+		connect(m_labelTagsTop, &QAffiche::customContextMenuRequested, this, &ViewerWindow::contextMenu);
+		connect(m_labelTagsTop, &QAffiche::linkActivated, this, &ViewerWindow::openUrl);
+		connect(m_labelTagsTop, &QAffiche::linkHovered, this, &ViewerWindow::linkHovered);
 		connect(m_labelTagsTop, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->verticalLayout->insertWidget(0, m_labelTagsTop, 0);
 
 	// Automatically re-color if some settings change
-	connect(m_profile, &Profile::favoritesChanged, this, &ZoomWindow::colore);
-	connect(m_profile, &Profile::keptForLaterChanged, this, &ZoomWindow::colore);
-	connect(m_profile, &Profile::ignoredChanged, this, &ZoomWindow::colore);
-	connect(m_profile, &Profile::blacklistChanged, this, &ZoomWindow::colore);
+	connect(m_profile, &Profile::favoritesChanged, this, &ViewerWindow::colore);
+	connect(m_profile, &Profile::keptForLaterChanged, this, &ViewerWindow::colore);
+	connect(m_profile, &Profile::ignoredChanged, this, &ViewerWindow::colore);
+	connect(m_profile, &Profile::blacklistChanged, this, &ViewerWindow::colore);
 
 	m_stackedWidget = new QStackedWidget(this);
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
@@ -134,20 +134,20 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 
-	m_gifPlayer = new GifPlayer(m_settings->value("Zoom/showGifPlayerControls", true).toBool(), getAlignments("imagePositionAnimation"), this);
+	m_gifPlayer = new GifPlayer(m_settings->value("Viewer/showGifPlayerControls", true).toBool(), getAlignments("imagePositionAnimation"), this);
 	m_stackedWidget->addWidget(m_gifPlayer);
 
-	if (m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
+	if (m_settings->value("Viewer/useVideoPlayer", true).toBool()) {
 		// getAlignments("imagePositionVideo")
-		m_videoPlayer = new VideoPlayer(m_settings->value("Zoom/showVideoPlayerControls", true).toBool(), this);
+		m_videoPlayer = new VideoPlayer(m_settings->value("Viewer/showVideoPlayerControls", true).toBool(), this);
 		m_stackedWidget->addWidget(m_videoPlayer);
 	}
 
 	m_labelImage->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_labelImage, &QAffiche::customContextMenuRequested, this, &ZoomWindow::imageContextMenu);
+	connect(m_labelImage, &QAffiche::customContextMenuRequested, this, &ViewerWindow::imageContextMenu);
 
 	m_slideshow.setSingleShot(true);
-	connect(&m_slideshow, &QTimer::timeout, this, &ZoomWindow::next);
+	connect(&m_slideshow, &QTimer::timeout, this, &ViewerWindow::next);
 
 	// Overlay progressbar and image
 	ui->overlayLayout->removeWidget(ui->progressBarDownload);
@@ -163,21 +163,21 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, const QSharedPointer
 	m_imageLoaderQueue->moveToThread(&m_imageLoaderQueueThread);
 	connect(&m_imageLoaderThread, &QThread::finished, m_imageLoader, &QObject::deleteLater);
 	connect(&m_imageLoaderQueueThread, &QThread::finished, m_imageLoaderQueue, &QObject::deleteLater);
-	connect(this, &ZoomWindow::loadImage, m_imageLoaderQueue, &ImageLoaderQueue::load);
-	connect(this, &ZoomWindow::clearLoadQueue, m_imageLoaderQueue, &ImageLoaderQueue::clear);
-	connect(m_imageLoaderQueue, &ImageLoaderQueue::finished, this, &ZoomWindow::display);
+	connect(this, &ViewerWindow::loadImage, m_imageLoaderQueue, &ImageLoaderQueue::load);
+	connect(this, &ViewerWindow::clearLoadQueue, m_imageLoaderQueue, &ImageLoaderQueue::clear);
+	connect(m_imageLoaderQueue, &ImageLoaderQueue::finished, this, &ViewerWindow::display);
 	m_imageLoaderQueueThread.start();
 	m_imageLoaderThread.start();
 
 	// Background color
 	QString bg = m_settings->value("imageBackgroundColor", "").toString();
 	if (!bg.isEmpty()) {
-		setStyleSheet("#ZoomWindow { background-color:" + bg + "; }");
+		setStyleSheet("#ViewerWindow { background-color:" + bg + "; }");
 	}
 
 	load(image);
 }
-void ZoomWindow::go()
+void ViewerWindow::go()
 {
 	ui->labelPools->hide();
 	bool whitelisted = false;
@@ -225,7 +225,7 @@ void ZoomWindow::go()
 	colore();
 
 	// Load image details (exact tags & co)
-	connect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails, Qt::UniqueConnection);
+	connect(m_image.data(), &Image::finishedLoadingTags, this, &ViewerWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
 
 	if (!m_isFullscreen) {
@@ -234,9 +234,9 @@ void ZoomWindow::go()
 }
 
 /**
- * Destructor of the zoomWindow class
+ * Destructor of the ViewerWindow class
  */
-ZoomWindow::~ZoomWindow()
+ViewerWindow::~ViewerWindow()
 {
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
@@ -254,11 +254,11 @@ ZoomWindow::~ZoomWindow()
 	delete ui;
 }
 
-void ZoomWindow::configureButtons()
+void ViewerWindow::configureButtons()
 {
 	log("+++configureButtons+++", Logger::Debug);
 
-	bool drawerIsOpen = m_settings->value("Zoom/rememberDrawer", true).toBool() && m_settings->value("Zoom/plus", true).toBool(); 
+	bool drawerIsOpen = m_settings->value("Viewer/rememberDrawer", true).toBool() && m_settings->value("Viewer/plus", true).toBool(); 
 	if (drawerIsOpen) {
 		ui->buttonPlus->setText(QChar('-'));
 	}
@@ -270,7 +270,7 @@ void ZoomWindow::configureButtons()
 	ui->buttonsLayout->setOriginCorner(Qt::BottomLeftCorner);
 
 		// Load button configuration from settings:
-	QList<ButtonSettings> bss = m_settings->value("Zoom/activeButtons").value<QList<ButtonSettings>>();
+	QList<ButtonSettings> bss = m_settings->value("Viewer/activeButtons").value<QList<ButtonSettings>>();
 	for (auto &bs : bss) {
 		auto *pushButton = new QPushButton(this);
 		m_buttons.insert(std::pair<QString, ButtonInstance>(
@@ -333,7 +333,7 @@ void ZoomWindow::configureButtons()
 		ui->buttonsLayout->addWidget(ui->buttonPlus, maxColPos.size(), ui->buttonsLayout->columnCount()/2, 1, ui->buttonsLayout->columnCount()%2 ? 1 : 2);
 		ui->buttonsLayout->setRowStretch(maxColPos.size(), 1);
 		ui->buttonPlus->setChecked(drawerIsOpen);
-		connect(ui->buttonPlus, &QPushButton::toggled, this, &ZoomWindow::updateButtonPlus);
+		connect(ui->buttonPlus, &QPushButton::toggled, this, &ViewerWindow::updateButtonPlus);
 	}
 	// Otherwise, if there are other buttons, we only delete the "+" button
 	else if (countOnShelf) {
@@ -383,8 +383,9 @@ void ZoomWindow::configureButtons()
 
 			// From state:
 		ButtonState *state = it.second.current = &(it.second.states.first()); // Consider using [].
-		button->setText( QString(state->text).replace("&", "&&") );
-		button->setToolTip(state->toolTip);
+		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(it.second.type);
+		button->setText(QString(state->text.isEmpty() ? defaultState.text : state->text).replace("&", "&&"));
+		button->setToolTip(state->toolTip.isEmpty() ? defaultState.toolTip : state->toolTip);
 
 			// Initialise state 0 functions. This should be eliminated if possible.
 		switch (it.second.type) {
@@ -434,21 +435,21 @@ void ZoomWindow::configureButtons()
 	log("---configureButtons---", Logger::Debug);
 }
 
-void ZoomWindow::imageContextMenu()
+void ViewerWindow::imageContextMenu()
 {
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Reload action
 	QAction *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
-	connect(reloadImageAction, &QAction::triggered, this, &ZoomWindow::reloadImage);
+	connect(reloadImageAction, &QAction::triggered, this, &ViewerWindow::reloadImage);
 
 	// Copy actions
 	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
-	connect(copyImageAction, &QAction::triggered, this, &ZoomWindow::copyImageFileToClipboard);
+	connect(copyImageAction, &QAction::triggered, this, &ViewerWindow::copyImageFileToClipboard);
 	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
-	connect(copyDataAction, &QAction::triggered, this, &ZoomWindow::copyImageDataToClipboard);
+	connect(copyDataAction, &QAction::triggered, this, &ViewerWindow::copyImageDataToClipboard);
 	QAction *copyLinkAction = new QAction(QIcon(":/images/icons/globe.png"), tr("Copy link"), menu);
-	connect(copyLinkAction, &QAction::triggered, this, &ZoomWindow::copyImageLinkToClipboard);
+	connect(copyLinkAction, &QAction::triggered, this, &ViewerWindow::copyImageLinkToClipboard);
 
 	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
@@ -462,44 +463,44 @@ void ZoomWindow::imageContextMenu()
 	menu->exec(QCursor::pos());
 }
 
-void ZoomWindow::reloadImage()
+void ViewerWindow::reloadImage()
 {
 	load(true);
 }
-void ZoomWindow::copyImageFileToClipboard()
+void ViewerWindow::copyImageFileToClipboard()
 {
 	auto *mimeData = new QMimeData();
 	mimeData->setUrls({ QUrl::fromLocalFile(m_imagePath) });
 	QApplication::clipboard()->setMimeData(mimeData);
 }
-void ZoomWindow::copyImageDataToClipboard()
+void ViewerWindow::copyImageDataToClipboard()
 {
 	QApplication::clipboard()->setPixmap(m_displayImage);
 }
-void ZoomWindow::copyImageLinkToClipboard()
+void ViewerWindow::copyImageLinkToClipboard()
 {
 	QApplication::clipboard()->setText(m_image->fileUrl().toString());
 }
 
-void ZoomWindow::showDetails()
+void ViewerWindow::showDetails()
 {
 	m_detailsWindow->setImage(m_image);
 	m_detailsWindow->show();
 }
 
-void ZoomWindow::openUrl(const QString &url)
+void ViewerWindow::openUrl(const QString &url)
 { emit linkClicked(QUrl::fromPercentEncoding(url.toUtf8())); }
-void ZoomWindow::openPool(const QString &url)
+void ViewerWindow::openPool(const QString &url)
 {
 	if (url.startsWith(QLatin1String("pool:"))) {
 		emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->parentSite()->url());
 	} else {
 		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList { "id:" + url }, 1, 1, QStringList(), false, this);
-		connect(p, &Page::finishedLoading, this, &ZoomWindow::openPoolId);
+		connect(p, &Page::finishedLoading, this, &ViewerWindow::openPoolId);
 		p->load();
 	}
 }
-void ZoomWindow::openPoolId(Page *p)
+void ViewerWindow::openPoolId(Page *p)
 {
 	if (p->images().empty()) {
 		p->deleteLater();
@@ -518,7 +519,7 @@ void ZoomWindow::openPoolId(Page *p)
 	go();
 }
 
-void ZoomWindow::openSaveDir(bool fav)
+void ViewerWindow::openSaveDir(bool fav)
 {
 	// If the file was already saved, we focus on it
 	if (!m_source.isEmpty()) {
@@ -546,9 +547,9 @@ void ZoomWindow::openSaveDir(bool fav)
 	}
 }
 
-void ZoomWindow::linkHovered(const QString &url)
+void ViewerWindow::linkHovered(const QString &url)
 { m_link = QUrl::fromPercentEncoding(url.toUtf8()); }
-void ZoomWindow::contextMenu(const QPoint &pos)
+void ViewerWindow::contextMenu(const QPoint &pos)
 {
 	Q_UNUSED(pos)
 
@@ -558,18 +559,18 @@ void ZoomWindow::contextMenu(const QPoint &pos)
 
 	Page page(m_profile, m_site, { m_site }, QStringList { m_link });
 	auto *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, { m_site }, true, this);
-	connect(menu, &TagContextMenu::openNewTab, this, &ZoomWindow::openInNewTab);
-	connect(menu, &TagContextMenu::setFavoriteImage, this, &ZoomWindow::setfavorite);
+	connect(menu, &TagContextMenu::openNewTab, this, &ViewerWindow::openInNewTab);
+	connect(menu, &TagContextMenu::setFavoriteImage, this, &ViewerWindow::setfavorite);
 	menu->exec(QCursor::pos());
 }
 
-void ZoomWindow::openInNewTab()
+void ViewerWindow::openInNewTab()
 {
 	if (!m_link.isEmpty()) {
 		m_parent->addTab(m_link, false, true, m_tab);
 	}
 }
-void ZoomWindow::setfavorite()
+void ViewerWindow::setfavorite()
 {
 	Favorite fav(m_link);
 	const int pos = m_favorites.indexOf(fav);
@@ -583,7 +584,7 @@ void ZoomWindow::setfavorite()
 	m_profile->emitFavorite();
 }
 
-void ZoomWindow::load(bool force)
+void ViewerWindow::load(bool force)
 {
 	const Image::Size size = m_image->preferredDisplaySize();
 	log(QStringLiteral("Loading image from `%1`").arg(m_image->url(size).toString()));
@@ -601,8 +602,8 @@ void ZoomWindow::load(bool force)
 		dwl = new ImageDownloader(m_profile, m_image, paths, 1, false, false, this, true, force, size, false, true);
 		m_imageDownloaders.insert(m_image, dwl);
 	}
-	connect(dwl, &ImageDownloader::downloadProgress, this, &ZoomWindow::downloadProgress, Qt::UniqueConnection);
-	connect(dwl, &ImageDownloader::saved, this, &ZoomWindow::replyFinishedZoom, Qt::UniqueConnection);
+	connect(dwl, &ImageDownloader::downloadProgress, this, &ViewerWindow::downloadProgress, Qt::UniqueConnection);
+	connect(dwl, &ImageDownloader::saved, this, &ViewerWindow::replyFinishedImage, Qt::UniqueConnection);
 
 	m_imageTime.start();
 
@@ -613,7 +614,7 @@ void ZoomWindow::load(bool force)
 
 #define PERCENT 0.05
 #define TIME 500
-void ZoomWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
+void ViewerWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
 {
 	Q_UNUSED(img)
 
@@ -627,7 +628,7 @@ void ZoomWindow::downloadProgress(QSharedPointer<Image> img, qint64 bytesReceive
 		// emit loadImage(m_image->data());
 	}
 }
-void ZoomWindow::display(const QPixmap &pix, int size)
+void ViewerWindow::display(const QPixmap &pix, int size)
 {
 	if (!pix.size().isEmpty() && size >= m_size) {
 		m_size = size;
@@ -638,9 +639,9 @@ void ZoomWindow::display(const QPixmap &pix, int size)
 	}
 }
 
-void ZoomWindow::replyFinishedDetails()
+void ViewerWindow::replyFinishedDetails()
 {
-	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ZoomWindow::replyFinishedDetails);
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &ViewerWindow::replyFinishedDetails);
 
 	m_loadedDetails = true;
 	colore();
@@ -720,9 +721,9 @@ void ZoomWindow::replyFinishedDetails()
 
 	updateWindowTitle();
 }
-void ZoomWindow::colore()
+void ViewerWindow::colore()
 {
-	QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
+	QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Viewer/showTagCount", false).toBool(), false, m_settings->value("Viewer/tagOrder", "type").toString());
 	const QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden()) {
@@ -735,7 +736,7 @@ void ZoomWindow::colore()
 	m_detailsWindow->setImage(m_image);
 }
 
-void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
+void ViewerWindow::setButtonState(bool fav, SaveButtonState state)
 {
 	constexpr unsigned short MaxSaveButtons = 2;
 	std::unordered_map<QString, ButtonInstance>::iterator relevant[MaxSaveButtons];
@@ -766,8 +767,9 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 		button->current = newState;
 
 		// Update button text
-		button->pointer->setText(tr( QString(newState->text).replace("&", "&&").toStdString().c_str()));
-		button->pointer->setToolTip(tr(newState->toolTip.toStdString().c_str()));
+		const ButtonState &defaultState = ViewerWindowButtons::DefaultStates.value(button->type);
+		button->pointer->setText(tr( QString(newState->text.isEmpty() ? defaultState.text : newState->text).replace("&", "&&").toStdString().c_str()));
+		button->pointer->setToolTip(tr((newState->toolTip.isEmpty() ? defaultState.toolTip : newState->toolTip).toStdString().c_str()));
 
 		// Connect button to its new action
 		if (newState->function == nullptr) {
@@ -778,7 +780,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	}
 }
 
-void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result)
+void ViewerWindow::replyFinishedImage(const QSharedPointer<Image> &img, const QList<ImageSaveResult> &result)
 {
 	ImageSaveResult res = result.first();
 	log(QStringLiteral("Image received from `%1`").arg(img->url(res.size).toString()));
@@ -811,14 +813,14 @@ void ZoomWindow::replyFinishedZoom(const QSharedPointer<Image> &img, const QList
 	}
 }
 
-void ZoomWindow::showLoadingError(const QString &message)
+void ViewerWindow::showLoadingError(const QString &message)
 {
 	log(message);
 	ui->labelLoadingError->setText(message);
 	ui->labelLoadingError->show();
 }
 
-void ZoomWindow::pendingUpdate()
+void ViewerWindow::pendingUpdate()
 {
 	// If we don't want to save, nothing to do
 	if (m_pendingAction == PendingNothing) {
@@ -857,10 +859,10 @@ void ZoomWindow::pendingUpdate()
 	}
 }
 
-void ZoomWindow::draw()
+void ViewerWindow::draw()
 {
 	// Videos don't get drawn
-	if (m_image->isVideo() && !m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
+	if (m_image->isVideo() && !m_settings->value("Viewer/useVideoPlayer", true).toBool()) {
 		return;
 	}
 
@@ -898,14 +900,14 @@ void ZoomWindow::draw()
  * Updates the image label to use the current image.
  * @param onlySize true to update the image quickly
  */
-void ZoomWindow::update(bool onlySize, bool force)
+void ViewerWindow::update(bool onlySize, bool force)
 {
 	// Only used for images
 	if (m_displayImage.isNull()) {
 		return;
 	}
 
-	const bool needScaling = m_settings->value("Zoom/scaleUp", false).toBool()
+	const bool needScaling = m_settings->value("Viewer/scaleUp", false).toBool()
 		|| m_displayImage.width() > m_labelImage->width()
 		|| m_displayImage.height() > m_labelImage->height();
 	if (needScaling && (onlySize || m_loadedImage || force)) {
@@ -920,7 +922,7 @@ void ZoomWindow::update(bool onlySize, bool force)
 	m_stackedWidget->setCurrentWidget(m_labelImage);
 }
 
-Qt::Alignment ZoomWindow::getAlignments(const QString &type)
+Qt::Alignment ViewerWindow::getAlignments(const QString &type)
 {
 	const QString vertical = m_settings->value(type + "V", "center").toString();
 	const QString horizontal = m_settings->value(type + "H", "left").toString();
@@ -931,7 +933,7 @@ Qt::Alignment ZoomWindow::getAlignments(const QString &type)
 	return vAlign | hAlign;
 }
 
-void ZoomWindow::saveNQuit(bool fav)
+void ViewerWindow::saveNQuit(bool fav)
 {
 	if (!m_source.isEmpty()) {
 		close();
@@ -944,7 +946,7 @@ void ZoomWindow::saveNQuit(bool fav)
 	pendingUpdate();
 }
 
-void ZoomWindow::saveImage(bool fav)
+void ViewerWindow::saveImage(bool fav)
 {
 	const SaveButtonState state = fav ? m_saveButtonStateFav : m_saveButtonState;
 	switch (state)
@@ -979,7 +981,7 @@ void ZoomWindow::saveImage(bool fav)
 			setButtonState(fav, SaveButtonState::Delete);
 	}
 }
-void ZoomWindow::saveImageNow()
+void ViewerWindow::saveImageNow()
 {
 	if (m_pendingAction == PendingSaveAs) {
 		if (QFile::exists(m_saveAsPending)) {
@@ -1018,11 +1020,11 @@ void ZoomWindow::saveImageNow()
 	}
 
 	auto downloader = new ImageDownloader(m_profile, m_image, fn, pth, 1, true, true, this, false);
-	connect(downloader, &ImageDownloader::saved, this, &ZoomWindow::saveImageNowSaved);
+	connect(downloader, &ImageDownloader::saved, this, &ViewerWindow::saveImageNowSaved);
 	connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 	downloader->save();
 }
-void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result)
+void ViewerWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageSaveResult> &result)
 {
 	Q_UNUSED(img)
 
@@ -1035,6 +1037,9 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageS
 		{
 			case Image::SaveResult::Saved:
 				setButtonState(fav, SaveButtonState::Saved);
+				if (img == m_image) {
+					m_imagePath = res.path;
+				}
 				break;
 
 			case Image::SaveResult::Copied:
@@ -1080,17 +1085,17 @@ void ZoomWindow::saveImageNowSaved(QSharedPointer<Image> img, const QList<ImageS
 	m_pendingClose = false;
 }
 
-void ZoomWindow::saveImageAs()
+void ViewerWindow::saveImageAs()
 {
 	const Filename format(m_settings->value("Save/filename").toString());
 	const QStringList filenames = format.path(*m_image, m_profile);
 	const QString filename = filenames.first().section(QDir::separator(), -1);
-	const QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
+	const QString lastDir = m_settings->value("Viewer/lastDir", "").toString();
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!path.isEmpty()) {
 		path = QDir::toNativeSeparators(path);
-		m_settings->setValue("Zoom/lastDir", path.section(QDir::separator(), 0, -2));
+		m_settings->setValue("Viewer/lastDir", path.section(QDir::separator(), 0, -2));
 
 		m_saveAsPending = path;
 		m_pendingAction = PendingSaveAs;
@@ -1099,7 +1104,7 @@ void ZoomWindow::saveImageAs()
 }
 
 
-void ZoomWindow::toggleFullScreen()
+void ViewerWindow::toggleFullScreen()
 {
 	if (m_isFullscreen) {
 		unfullScreen();
@@ -1108,7 +1113,7 @@ void ZoomWindow::toggleFullScreen()
 	}
 }
 
-void ZoomWindow::fullScreen()
+void ViewerWindow::fullScreen()
 {
 	m_fullScreen = new QWidget(this);
 	m_fullScreen->setStyleSheet("background-color: black");
@@ -1123,23 +1128,23 @@ void ZoomWindow::fullScreen()
 	m_isFullscreen = true;
 	prepareNextSlide();
 
-	m_settings->beginGroup("Zoom/Shortcuts");	// Could probably just use the variables already initialised when this ZoomWindow was constructed.
+	m_settings->beginGroup("Viewer/Shortcuts"); // Could probably just use the variables already initialised when this ViewerWindow was constructed.
 		QShortcut *quit = new QShortcut(getKeySequence(m_settings, "keyQuit", Qt::Key_Escape), m_fullScreen);
-			connect(quit, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
+			connect(quit, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
 		QShortcut *toggleFullscreen = new QShortcut(getKeySequence(m_settings, "keyToggleFullscreen", QKeySequence::FullScreen, Qt::Key_F11), m_fullScreen);
-			connect(toggleFullscreen, &QShortcut::activated, this, &ZoomWindow::unfullScreen);
+			connect(toggleFullscreen, &QShortcut::activated, this, &ViewerWindow::unfullScreen);
 		QShortcut *prev = new QShortcut(getKeySequence(m_settings, "keyPrev", Qt::Key_Left), m_fullScreen);
-			connect(prev, &QShortcut::activated, this, &ZoomWindow::previous);
+			connect(prev, &QShortcut::activated, this, &ViewerWindow::previous);
 		QShortcut *next = new QShortcut(getKeySequence(m_settings, "keyNext", Qt::Key_Right), m_fullScreen);
-			connect(next, &QShortcut::activated, this, &ZoomWindow::next);
+			connect(next, &QShortcut::activated, this, &ViewerWindow::next);
 		QShortcut *toggleSlideshow = new QShortcut(getKeySequence(m_settings, "keyToggleSlideshow", Qt::Key_Space), m_fullScreen);
-			connect(toggleSlideshow, &QShortcut::activated, this, &ZoomWindow::toggleSlideshow);
+			connect(toggleSlideshow, &QShortcut::activated, this, &ViewerWindow::toggleSlideshow);
 	m_settings->endGroup();
 
 	m_fullScreen->setFocus();
 }
 
-void ZoomWindow::unfullScreen()
+void ViewerWindow::unfullScreen()
 {
 	m_slideshow.stop();
 
@@ -1155,7 +1160,7 @@ void ZoomWindow::unfullScreen()
 	update(true);
 }
 
-void ZoomWindow::prepareNextSlide()
+void ViewerWindow::prepareNextSlide()
 {
 	// Slideshow is only enabled in fullscreen
 	if (!m_isFullscreen) {
@@ -1178,7 +1183,7 @@ void ZoomWindow::prepareNextSlide()
 	m_isSlideshowRunning = true;
 }
 
-void ZoomWindow::toggleSlideshow()
+void ViewerWindow::toggleSlideshow()
 {
 	m_isSlideshowRunning = !m_isSlideshowRunning;
 
@@ -1189,7 +1194,7 @@ void ZoomWindow::toggleSlideshow()
 	}
 }
 
-void ZoomWindow::resizeEvent(QResizeEvent *e)
+void ViewerWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive()) {
 		m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000));
@@ -1201,10 +1206,10 @@ void ZoomWindow::resizeEvent(QResizeEvent *e)
 	QWidget::resizeEvent(e);
 }
 
-void ZoomWindow::closeEvent(QCloseEvent *e)
+void ViewerWindow::closeEvent(QCloseEvent *e)
 {
-	m_settings->setValue("Zoom/geometry", saveGeometry());
-	m_settings->setValue("Zoom/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
+	m_settings->setValue("Viewer/geometry", saveGeometry());
+	m_settings->setValue("Viewer/plus", m_drawerButtons.empty() ? false : ui->buttonPlus->isChecked());
 	m_settings->sync();
 
 	m_image->abortTags();
@@ -1217,14 +1222,14 @@ void ZoomWindow::closeEvent(QCloseEvent *e)
 	e->accept();
 }
 
-void ZoomWindow::showEvent(QShowEvent *e)
+void ViewerWindow::showEvent(QShowEvent *e)
 {
 	Q_UNUSED(e)
 
 	showThumbnail();
 }
 
-void ZoomWindow::showThumbnail()
+void ViewerWindow::showThumbnail()
 {
 	QSize size = m_image->size();
 	if (size.isEmpty()) {
@@ -1232,7 +1237,7 @@ void ZoomWindow::showThumbnail()
 	}
 
 	// Videos get a static resizable overlay
-	if (m_image->isVideo() && !m_settings->value("Zoom/useVideoPlayer", true).toBool()) {
+	if (m_image->isVideo() && !m_settings->value("Viewer/useVideoPlayer", true).toBool()) {
 		// A video thumbnail should not be upscaled to more than three times its size
 		QSize maxSize = QSize(500, 500) * m_settings->value("thumbnailUpscale", 1.0).toDouble();
 		if (size.width() > maxSize.width() || size.height() > maxSize.height()) {
@@ -1263,7 +1268,7 @@ void ZoomWindow::showThumbnail()
 }
 
 
-void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site)
+void ViewerWindow::reuse(const QList<QSharedPointer<Image>> &images, const QSharedPointer<Image> &image, Site *site)
 {
 	m_images = images;
 	m_site = site;
@@ -1271,7 +1276,7 @@ void ZoomWindow::reuse(const QList<QSharedPointer<Image>> &images, const QShared
 	load(image);
 }
 
-void ZoomWindow::load(const QSharedPointer<Image> &image)
+void ViewerWindow::load(const QSharedPointer<Image> &image)
 {
 	emit clearLoadQueue();
 
@@ -1333,7 +1338,7 @@ void ZoomWindow::load(const QSharedPointer<Image> &image)
 	go();
 }
 
-void ZoomWindow::updateWindowTitle()
+void ViewerWindow::updateWindowTitle()
 {
 	QStringList infos;
 
@@ -1360,7 +1365,7 @@ void ZoomWindow::updateWindowTitle()
 	setWindowTitle(QStringLiteral("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
-int ZoomWindow::firstNonBlacklisted(int direction)
+int ViewerWindow::firstNonBlacklisted(int direction)
 {
 	int index = m_images.indexOf(m_image);
 	const int first = index;
@@ -1374,7 +1379,7 @@ int ZoomWindow::firstNonBlacklisted(int direction)
 	return index;
 }
 
-void ZoomWindow::next()
+void ViewerWindow::next()
 {
 	m_image->abortTags();
 
@@ -1382,7 +1387,7 @@ void ZoomWindow::next()
 	load(m_images[index]);
 }
 
-void ZoomWindow::previous()
+void ViewerWindow::previous()
 {
 	m_image->abortTags();
 
@@ -1390,7 +1395,7 @@ void ZoomWindow::previous()
 	load(m_images[index]);
 }
 
-void ZoomWindow::updateButtonPlus()
+void ViewerWindow::updateButtonPlus()
 {
 	const bool isOpen = ui->buttonPlus->isChecked();
 	ui->buttonPlus->setText(QChar(isOpen ? '-' : '+'));
@@ -1399,7 +1404,7 @@ void ZoomWindow::updateButtonPlus()
 	}
 }
 
-void ZoomWindow::openFile(bool now)
+void ViewerWindow::openFile(bool now)
 {
 	if (!now) {
 		m_pendingAction = PendingOpen;
@@ -1411,7 +1416,7 @@ void ZoomWindow::openFile(bool now)
 	m_pendingAction = PendingNothing;
 }
 
-void ZoomWindow::mouseReleaseEvent(QMouseEvent *e)
+void ViewerWindow::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (e->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool()) {
 		close();
@@ -1421,7 +1426,7 @@ void ZoomWindow::mouseReleaseEvent(QMouseEvent *e)
 	QWidget::mouseReleaseEvent(e);
 }
 
-void ZoomWindow::wheelEvent(QWheelEvent *e)
+void ViewerWindow::wheelEvent(QWheelEvent *e)
 {
 	if (m_settings->value("imageNavigateScroll", true).toBool()) {
 		// Ignore events triggered when reaching the bottom of the tag list
