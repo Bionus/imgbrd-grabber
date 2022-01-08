@@ -15,42 +15,47 @@
     </message>
     <message>
       <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="21"/>
+      <source>Check for updates</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
       <source>See project on Github</source>
       <translation>깃허브에서 프로젝트 더 보기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="26"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="31"/>
       <source>Report an issue</source>
       <translation>문제 보고하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="33"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="38"/>
       <source>Author</source>
       <translation>작가</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="36"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="41"/>
       <source>Email</source>
       <translation>이메일</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="42"/>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="65"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="47"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="70"/>
       <source>Github</source>
       <translation>깃허브</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="50"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="55"/>
       <source>Donate</source>
       <translation>도네이션</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="53"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="58"/>
       <source>Patreon</source>
       <translation>Patreon(후원)</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="59"/>
+      <location filename="../src/components/settings/pages/AboutSettingsPage.qml" line="64"/>
       <source>Paypal</source>
       <translation>페이팔</translation>
     </message>
@@ -92,36 +97,71 @@
     <name>AdvancedSettingsPage</name>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="13"/>
+      <source>Updates</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
+      <source>Check for updates interval</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Every time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Once a day</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Once a week</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Once a month</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <source>Never</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
       <source>Backup</source>
       <translation>백업하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="28"/>
       <source>Export settings</source>
       <translation>설정 내보내기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="29"/>
       <source>Backup the app settings.ini file on your device.</source>
       <translation>앱 설정 파일(settings.ini)을 저장해서 백업하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="37"/>
       <source>Please choose a directory</source>
       <translation>다운로드할 폴더를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="33"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="45"/>
       <source>Import settings</source>
       <translation>설정 불러오기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="34"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="46"/>
       <source>Import the app settings.ini from an existing file.</source>
       <translation>앱 설정 파일(settings.ini) 불러오기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="42"/>
+      <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="54"/>
       <source>Please choose a file</source>
       <translation>파일을 선택하세요</translation>
     </message>
@@ -312,22 +352,22 @@
   <context>
     <name>ImageLoader</name>
     <message>
-      <location filename="../src/loaders/image-loader.cpp" line="147"/>
+      <location filename="../src/loaders/image-loader.cpp" line="155"/>
       <source>File is too big to be displayed.</source>
       <translation>보여주기에 파일이 너무 큽니다</translation>
     </message>
     <message>
-      <location filename="../src/loaders/image-loader.cpp" line="150"/>
+      <location filename="../src/loaders/image-loader.cpp" line="158"/>
       <source>Image not found.</source>
       <translation>이미지를 찾을 수 없음</translation>
     </message>
     <message>
-      <location filename="../src/loaders/image-loader.cpp" line="153"/>
+      <location filename="../src/loaders/image-loader.cpp" line="161"/>
       <source>Error loading the image.</source>
       <translation>이미지 로딩 중 에러 발생</translation>
     </message>
     <message>
-      <location filename="../src/loaders/image-loader.cpp" line="156"/>
+      <location filename="../src/loaders/image-loader.cpp" line="164"/>
       <source>Error saving the image.</source>
       <translation>이미지 저장 중 에러 발생</translation>
     </message>
@@ -335,7 +375,7 @@
   <context>
     <name>ImageScreen</name>
     <message>
-      <location filename="../src/components/ImageScreen.qml" line="70"/>
+      <location filename="../src/components/ImageScreen.qml" line="71"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
@@ -353,83 +393,93 @@
       <translation>언어</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="22"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="23"/>
       <source>Search results</source>
       <translation>검색 결과</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="25"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="26"/>
       <source>Columns (portrait)</source>
       <translation>세로 모드</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="32"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="33"/>
       <source>Columns (landscape)</source>
       <translation>가로 모드</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="39"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="40"/>
       <source>Layout type</source>
       <translation>레이아웃 타입</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="46"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="47"/>
       <source>Grid ratio</source>
       <translation>격자 비율</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="54"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="55"/>
       <source>Thumbnail fill mode</source>
       <translation>썸네일 꽉 찬 모드</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="62"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="63"/>
       <source>Spaced grid</source>
       <translation>간격있는 격자</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="69"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
       <source>Rounded grid</source>
       <translation>모서리가 둥근 격자</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="71"/>
       <source>Slightly round thumbnails.</source>
       <translation>모서리가 살짝 둥근 썸네일</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="77"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="78"/>
       <source>Image viewer</source>
       <translation>이미지 뷰어</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="80"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
+      <source>Load samples</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="82"/>
+      <source>Load sample-sized versions of the images by default if available.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
       <source>Buttons at the bottom</source>
       <translation>아래쪽 버튼</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
       <source>Move the action buttons to the bottom of the screen.</source>
       <translation>액션 버튼 화면 아래로 이동하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="88"/>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="91"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="95"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="98"/>
       <source>Confirm exit</source>
       <translation>종료 확인</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="92"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="99"/>
       <source>Show a confirmation dialog before exiting.</source>
       <translation>종료하기 전에 확인 창 보여주기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="97"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="104"/>
       <source>Double tap to exit</source>
       <translation>두 번 클릭해서 닫기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="98"/>
+      <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="105"/>
       <source>Tap back button twice to exit.</source>
       <translation>뒤로가기 두 번 클릭해서 닫기</translation>
     </message>
@@ -437,9 +487,27 @@
   <context>
     <name>KeyValueSetting</name>
     <message>
-      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="48"/>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="63"/>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="76"/>
       <source>Add</source>
       <translation>추가</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="85"/>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="114"/>
+      <source>Key</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="93"/>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="122"/>
+      <source>Value</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/items/KeyValueSetting.qml" line="105"/>
+      <source>Edit</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -593,6 +661,46 @@
       <source>Keep deleted files in the MD5 list</source>
       <translation>파일이 삭제되어도 MD5 목록에 유지하기</translation>
     </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="66"/>
+      <source>Tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
+      <source>Artist</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="78"/>
+      <source>Copyright</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="85"/>
+      <source>Character</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="92"/>
+      <source>Model</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="99"/>
+      <source>Photo set</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
+      <source>Species</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
+      <source>Meta</source>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>SearchScreen</name>
@@ -602,7 +710,7 @@
       <translation>찾기...</translation>
     </message>
     <message>
-      <location filename="../src/components/SearchScreen.qml" line="166"/>
+      <location filename="../src/components/SearchScreen.qml" line="176"/>
       <source>Sources</source>
       <translation>소스</translation>
     </message>
@@ -658,64 +766,99 @@
   <context>
     <name>SourceSettingsScreen</name>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="51"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="85"/>
       <source>General</source>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="54"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="88"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="63"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="97"/>
       <source>HTTPS</source>
       <translation>HTTPS</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="64"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="98"/>
       <source>Use a secure connection.</source>
       <translation>보안 연결 사용하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="75"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="109"/>
       <source>Login</source>
       <translation>로그인</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="84"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="118"/>
       <source>Type</source>
       <translation>타입</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="124"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="158"/>
       <source>API order</source>
       <translation>API 순서</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="133"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="167"/>
       <source>Use default API order</source>
       <translation>기본 API 순서 사용하기</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="138"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="172"/>
       <source>Source 1</source>
       <translation>소스 1</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="150"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="184"/>
       <source>Source 2</source>
       <translation>소스 2</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="162"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="196"/>
       <source>Source 3</source>
       <translation>소스 3</translation>
     </message>
     <message>
-      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="174"/>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="208"/>
       <source>Source 4</source>
       <translation>소스 4</translation>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="222"/>
+      <source>Download</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="236"/>
+      <source>Interval (image)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="246"/>
+      <source>Interval (page)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="256"/>
+      <source>Interval (details)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="266"/>
+      <source>Interval (error)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="278"/>
+      <source>Cookies</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/SourceSettingsScreen.qml" line="305"/>
+      <source>Headers</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -752,6 +895,55 @@
       <location filename="../src/components/settings/pages/SourcesSettingsPage.qml" line="35"/>
       <source>Source 4</source>
       <translation>소스 4</translation>
+    </message>
+  </context>
+  <context>
+    <name>TagSaveSettingsPage</name>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="16"/>
+      <source>If empty</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="24"/>
+      <source>Separator</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="32"/>
+      <source>Sort</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="42"/>
+      <source>If more than n tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
+      <source>Action</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="72"/>
+      <source>Keep n tags</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
+      <source>Then add</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
+      <source>Replace all tags by</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="100"/>
+      <source>Use shortest if possible</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -812,7 +1004,12 @@
       <translation>API 키</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="116"/>
+      <location filename="../src/main-screen.qml" line="77"/>
+      <source>Update available</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <location filename="../src/main-screen.qml" line="130"/>
       <source>Do you want to exit?</source>
       <translation>종료 하시겠습니까?</translation>
     </message>
