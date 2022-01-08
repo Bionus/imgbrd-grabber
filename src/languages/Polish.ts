@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Program opracowany przez Bionus.&lt;br/&gt;Odwiedź &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;stronę internetową programu&lt;/span&gt;&lt;/a&gt; aby być na bieżąco z aktualizacjami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -475,17 +475,17 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="132"/>
       <source>This source is not valid.</source>
-      <translation type="unfinished"/>
+      <translation>To źródło jest nieprawidłowe.</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="unfinished"/>
+      <translation>Ilość obrazów na stronę musi być większa lub równa 1.</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="154"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="unfinished"/>
+      <translation>Limit ilości obrazów musi być większy lub równy 0.</translation>
     </message>
   </context>
   <context>
@@ -555,17 +555,17 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="119"/>
       <source>Move to top</source>
-      <translation type="unfinished"/>
+      <translation>Przesuń na samą górę</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="122"/>
       <source>Move to bottom</source>
-      <translation type="unfinished"/>
+      <translation>Przesuń na dół</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="125"/>
       <source>Remove</source>
-      <translation type="unfinished"/>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="330"/>
@@ -895,17 +895,17 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="121"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>Filtrowanie końcowe</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="131"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Źródła</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="138"/>
       <source>Edit sources</source>
-      <translation type="unfinished"/>
+      <translation>Edytuj źródła</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="146"/>
@@ -935,7 +935,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="50"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorytet</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="189"/>
@@ -970,7 +970,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="77"/>
       <source>Choose a save folder</source>
-      <translation type="unfinished"/>
+      <translation>Wybierz folder zapisu</translation>
     </message>
   </context>
   <context>
@@ -983,22 +983,22 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="39"/>
       <source>Name</source>
-      <translation type="unfinished"/>
+      <translation>Nazwa</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="44"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorytet</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.ui" line="49"/>
       <source>Last viewed</source>
-      <translation type="unfinished"/>
+      <translation>Ostatnio wyświetlone</translation>
     </message>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation type="unfinished"/>
+      <translation>&lt;b&gt;Nazwa:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Notatka:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Ostatnio wyświetlone:&lt;/b&gt; %3</translation>
     </message>
   </context>
   <context>
@@ -1023,7 +1023,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="85"/>
       <source>Priority</source>
-      <translation type="unfinished"/>
+      <translation>Priorytet</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="90"/>
@@ -1124,7 +1124,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="431"/>
       <source>Choose as image</source>
-      <translation type="unfinished"/>
+      <translation>Wybierz jako obraz</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="339"/>
@@ -1395,22 +1395,22 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="249"/>
       <source>Delete</source>
-      <translation type="unfinished"/>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="251"/>
       <source>Save</source>
-      <translation type="unfinished"/>
+      <translation>Zapisz</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="257"/>
       <source>Save as...</source>
-      <translation type="unfinished"/>
+      <translation>Zapisz jako...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/image-preview.cpp" line="321"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>Zapisz obraz</translation>
     </message>
   </context>
   <context>
@@ -1426,7 +1426,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../lib/src/language-loader.cpp" line="93"/>
       <source>en_US</source>
-      <translation type="unfinished"/>
+      <translation>pl_PL</translation>
     </message>
   </context>
   <context>
@@ -1449,7 +1449,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
       <source>Open settings directory</source>
-      <translation type="unfinished"/>
+      <translation>Otwórz katalog ustawień</translation>
     </message>
   </context>
   <context>
@@ -1508,7 +1508,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="213"/>
       <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Dostępne tokeny: takie same jak w części „Zapisz”.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
@@ -1676,17 +1676,17 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
       <source>MD5 database converter</source>
-      <translation type="unfinished"/>
+      <translation>Konwerter bazy danych MD5</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="466"/>
       <source>Donate with PayPal</source>
-      <translation type="unfinished"/>
+      <translation>Wesprzyj przez PayPala</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="475"/>
       <source>Donate with Patreon</source>
-      <translation type="unfinished"/>
+      <translation>Wesprzyj przez Patreon</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="156"/>
@@ -1749,12 +1749,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
       <source>Start</source>
-      <translation type="unfinished"/>
+      <translation>Rozpocznij</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="85"/>
       <source>Cancel</source>
-      <translation type="unfinished"/>
+      <translation>Anuluj</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
@@ -1764,7 +1764,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>Finished</source>
-      <translation type="unfinished"/>
+      <translation>Ukończone</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
@@ -1878,33 +1878,33 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
       <source>Search</source>
-      <translation type="unfinished"/>
+      <translation>Wyszukaj</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>Ostatni raz kliknąłeś „Oznacz jako wyświetlone”.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
       <source>Last check</source>
-      <translation type="unfinished"/>
+      <translation>Ostatnie sprawdzenie</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>Źródła</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
       <source>Interval</source>
-      <translation type="unfinished"/>
+      <translation>Ineterwał</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> min</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
@@ -2774,37 +2774,37 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1801"/>
       <source>Ctrl+W</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+W</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1817"/>
       <source>New tab</source>
-      <translation type="unfinished"/>
+      <translation>Nowa karta</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1829"/>
       <source>Ctrl+T</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1845"/>
       <source>Open previous tab</source>
-      <translation type="unfinished"/>
+      <translation>Otwórz poprzednią kartę</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1857"/>
       <source>Ctrl+Shift+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1873"/>
       <source>Open next tab</source>
-      <translation type="unfinished"/>
+      <translation>Otwórz następną kartę</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1885"/>
       <source>Ctrl+Tab</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+Tab</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1901"/>
@@ -2814,7 +2814,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1913"/>
       <source>Ctrl+O</source>
-      <translation type="unfinished"/>
+      <translation>Ctrl+O</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1969"/>
@@ -2981,23 +2981,23 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
       <source>Metadata</source>
-      <translation type="unfinished"/>
+      <translation>Metadane</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="103"/>
       <source>Image size</source>
-      <translation type="unfinished"/>
+      <translation>Rozmiar obrazu</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="113"/>
       <source>Main window</source>
-      <translation type="unfinished"/>
+      <translation>Główne okno</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="122"/>
       <location filename="../gui/src/settings/options-window.ui" line="137"/>
       <source>Shortcuts</source>
-      <translation type="unfinished"/>
+      <translation>Skróty</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="365"/>
@@ -3771,7 +3771,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
       <source>Unknown option '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>Nieznana opcja '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="477"/>
@@ -3781,12 +3781,12 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="569"/>
       <source>Missing value after '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>Brak wartości po '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
       <source>Unexpected value after '%1'.</source>
-      <translation type="unfinished"/>
+      <translation>Nieoczekiwana wartość po '%1'.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -4886,7 +4886,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="117"/>
       <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;Jeśli używasz Grabbera po raz pierwszy, zalecamy zapoznanie się z &lt;a href="{website}/docs/"&gt;informacjami dla początkujących&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="132"/>
@@ -4924,7 +4924,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation type="unfinished"/>
+      <translation>Nie zachowuj na później</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
@@ -4934,7 +4934,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don't blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Nie umieszczaj na czarnej liście</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -4944,7 +4944,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
       <source>Don't ignore</source>
-      <translation type="unfinished"/>
+      <translation>Nie ignoruj</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="42"/>
@@ -5010,7 +5010,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>Wygeneruj lokalną bazę tagów dla danego źródła. Następnie, nawet jeśli źródłowe API nie dostarcza informacji o typie tagu, Grabber może bezpośrednio sprawdzić go w swojej lokalnej bazie tagów.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
