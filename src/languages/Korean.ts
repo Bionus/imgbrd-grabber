@@ -254,19 +254,19 @@
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>h 'h' m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>h '시간' m '분' s '초'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>m '분' s '초'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>s 's'</source>
-      <translation type="unfinished"/>
+      <translation>s '초'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="394"/>
@@ -477,12 +477,12 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation type="unfinished"/>
+      <translation>페이지 당 이미지는 1보다 크거나 같아야 합니다</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="154"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation type="unfinished"/>
+      <translation>이미지 제한은 0보다 크거가 같아야합니다</translation>
     </message>
   </context>
   <context>
@@ -630,7 +630,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="572"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>또 묻지마세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="609"/>
@@ -656,7 +656,7 @@
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="978"/>
       <source>Not enough space on the destination drive "%1".
 Please free some space before resuming the download.</source>
-      <translation type="unfinished"/>
+      <translation>저장공간이 부족합니다 "%1". 다운로드를 다시 시작하기 전에 저장공간을 확보하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="980"/>
@@ -834,7 +834,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="70"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>가장 최근에 "봤음으로 표시"를 선택한 시간</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="73"/>
@@ -864,12 +864,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="121"/>
       <source>Post-filtering</source>
-      <translation type="unfinished"/>
+      <translation>후처리</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="131"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="138"/>
@@ -1072,7 +1072,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
       <source>You don't have any favorite yet.</source>
-      <translation type="unfinished"/>
+      <translation>아직 즐겨찾기를 등록한 포스트가 없습니다</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="149"/>
@@ -1093,7 +1093,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="431"/>
       <source>Choose as image</source>
-      <translation type="unfinished"/>
+      <translation>이미지로 선택하기</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="339"/>
@@ -1677,12 +1677,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="459"/>
       <source>The Mozilla Firefox addon "Danbooru Downloader" has been detected on your system. Do you want to load its preferences?</source>
-      <translation type="unfinished"/>
+      <translation>모질라 파이어 폭스 브라우저의 애드온(Add-On) 단보루 다운로더(Danbooru Downloader)를 발견했습니다. 이 기능을 사용 하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="744"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>또 묻지마세요...</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="898"/>
@@ -1838,7 +1838,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="40"/>
       <source>Tag corresponding to the favorite. It is not often useful to change it.</source>
-      <translation type="unfinished"/>
+      <translation>태그가 즐겨찾기와 일치합니다. 딱히 좋은 선택은 아닙니다...</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="43"/>
@@ -1848,7 +1848,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation type="unfinished"/>
+      <translation>가장 최근에 "봤음으로 표시"를 선택한 시간</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
@@ -1858,7 +1858,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="76"/>
       <source>Sources</source>
-      <translation type="unfinished"/>
+      <translation>소스</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
@@ -1869,12 +1869,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
       <location filename="../gui/src/monitor-window.ui" line="127"/>
       <source> min</source>
-      <translation type="unfinished"/>
+      <translation> 분</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
       <source>Post-filters</source>
-      <translation type="unfinished"/>
+      <translation>필터링 후</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="113"/>
@@ -1905,7 +1905,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="168"/>
       <source>Path</source>
-      <translation type="unfinished"/>
+      <translation>경로</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="175"/>
@@ -1938,17 +1938,21 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="105"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>태그 '%1'에 해당되는 새로운 이미지가 '%2'에서 발견되었습니다</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>태그 '%1'에 해당되는 %n 개의 새로운 이미지가 '%2'에서 발견되었습니다</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>태그 '%1'에 해당되는 새로운 이미지가 %n 개 넘게 '%2'에서 발견되었습니다</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
@@ -1961,7 +1965,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="26"/>
       <source>Monitors</source>
-      <translation type="unfinished"/>
+      <translation>모니터</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
@@ -2167,7 +2171,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="307"/>
       <source>Don't download automatically</source>
-      <translation type="unfinished"/>
+      <translation>수동으로 다운로드하기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="312"/>
@@ -2383,12 +2387,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="798"/>
       <location filename="../gui/src/settings/options-window.ui" line="904"/>
       <source>Don't save</source>
-      <translation type="unfinished"/>
+      <translation>저장하지 않기</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="806"/>
       <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;파일의 정체성은 MD5 알고리즘에 기반합니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="813"/>
@@ -2587,7 +2591,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1450"/>
       <source>Don't show</source>
-      <translation type="unfinished"/>
+      <translation>표시 안 함</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1458"/>
@@ -2698,7 +2702,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1663"/>
       <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;이 옵션을 활성화하면, '페이지 다운받기' 버튼은 '페이지 당 이미지 개수', '페이지 수', 등 모든 정보가 로딩이 안되어도 반영이 될겁니다&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1673"/>
@@ -3076,7 +3080,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4014"/>
       <source>Destination folder</source>
-      <translation type="unfinished"/>
+      <translation>대상 폴더</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4026"/>
@@ -3087,7 +3091,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3347"/>
       <location filename="../gui/src/settings/options-window.ui" line="4042"/>
       <source>Save (fav)</source>
-      <translation type="unfinished"/>
+      <translation>저장 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4054"/>
@@ -3296,7 +3300,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4098"/>
       <source>Destination folder (fav)</source>
-      <translation type="unfinished"/>
+      <translation>대상 폴더 (fav)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4110"/>
@@ -3402,7 +3406,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4524"/>
       <source>Metas</source>
-      <translation type="unfinished"/>
+      <translation>기타</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4571"/>
@@ -3444,7 +3448,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4739"/>
       <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;한 줄 당 하나의 블랙리스트를 입력하세요. 한 줄에 여러 태그를 입력하시면 "AND" (동시 만족)조건을 발생시킬 수 있습니다.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4749"/>
@@ -3565,7 +3569,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5061"/>
       <location filename="../gui/src/settings/options-window.ui" line="5131"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished"/>
+      <translation>추가 태그: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: 태그 &lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 태그 타입, "일반", "작가", "copyright", "캐릭터", "모델" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 태그 타입 개수 (0개에서 6개)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5081"/>
@@ -3784,17 +3788,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="303"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation type="unfinished"/>
+      <translation>자바스크립트 표현식이 옳바르지 않습니다.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="309"/>
       <source>Can't compile your filename: %1</source>
-      <translation type="unfinished"/>
+      <translation>다음 파일명을 컴파일 할 수 없습니다: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="316"/>
       <source>Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
-      <translation type="unfinished"/>
+      <translation>당신의 파일명이 확장자로 끝나지 않습니다(예: %ext%)! 저장된 파일을 열 수 없을 수도 있습니다.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="321"/>
@@ -3809,7 +3813,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="351"/>
       <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? " : &lt; &gt; |</source>
-      <translation type="unfinished"/>
+      <translation>Windows 운영체제에서 파일이름으로 사용할 수 없는 문자가 들어있습니다! 사용하면 안되는 것들: * ? " : &lt; &gt; |</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="359"/>
@@ -3834,38 +3838,38 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="36"/>
       <source>image has a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>이미지에 "%1" 토큰이 있습니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/token-filter.cpp" line="39"/>
       <source>image does not have a "%1" token</source>
-      <translation type="unfinished"/>
+      <translation>이미지에 "%1" 토큰이 없습니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="156"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="196"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="232"/>
       <source>image's %1 does not match</source>
-      <translation type="unfinished"/>
+      <translation>이미지의 %1 이(가) 일치하지 않습니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="159"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="199"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="235"/>
       <source>image's %1 match</source>
-      <translation type="unfinished"/>
+      <translation>이미지의 %1 이(가) 일치합니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="135"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="212"/>
       <source>image is not "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지가 "%1" 아닙니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="138"/>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="215"/>
       <source>image is "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지가 "%1" 입니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="147"/>
@@ -3875,27 +3879,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="168"/>
       <source>unknown type "%1" (available types: "%2")</source>
-      <translation type="unfinished"/>
+      <translation>알 수 없는 타입 "%1" (가능한 타입: "%2")</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="221"/>
       <source>image's source does not starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지 소스가 다음과 같이 시작하지 않습니다 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="224"/>
       <source>image's source starts with "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지 소스가 다음과 같이 시작합니다 "%1"</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="50"/>
       <source>image does not contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지에 "%1"이(가) 포함되어있지 않습니다</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/tag-filter.cpp" line="53"/>
       <source>image contains "%1"</source>
-      <translation type="unfinished"/>
+      <translation>이미지에 "%1"이(가) 포함되어있습니다</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
@@ -4001,7 +4005,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="138"/>
       <source>No image found when renaming image '%1'</source>
-      <translation type="unfinished"/>
+      <translation>이름을 수정하려는 이미지('%1') 를 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -4062,7 +4066,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="408"/>
       <source>An HTTP to HTTPS redirection has been detected for the website %1. Do you want to enable SSL on it? The recommended setting is 'yes'.</source>
-      <translation type="unfinished"/>
+      <translation>웹 사이트 %1에서 HTTP to HTTPS redirection이 탐지되었습니다. SSL을 활성화 하시겠습니까? 권장되는 설정은 '예'입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="410"/>
@@ -4364,7 +4368,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="79"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation type="unfinished"/>
+      <translation>사이트의 타입을 알 수 없습니다. URL이 맞는지 확실합니까?</translation>
     </message>
   </context>
   <context>
@@ -4594,7 +4598,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP Basic</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
@@ -5236,7 +5240,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1361"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>이미지</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
@@ -5246,17 +5250,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
       <source>Reload</source>
-      <translation type="unfinished"/>
+      <translation>다시 불러오기</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="447"/>
       <source>Copy file</source>
-      <translation type="unfinished"/>
+      <translation>파일 복사</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="449"/>
       <source>Copy data</source>
-      <translation type="unfinished"/>
+      <translation>데이터 복사</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="451"/>
@@ -5266,50 +5270,52 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>Folder does not exist</source>
-      <translation type="unfinished"/>
+      <translation>폴더가 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>The save folder does not exist yet. Create it?</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더가 존재하지 않습니다. 새로 만들까요?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="542"/>
       <source>Error creating folder.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>폴더를 생성하는 중 에러가 발생했습니다.
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="794"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>파일을 보여주기에 너무 큽니다.
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>에러</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>저장할 폴더를 지정하지 않았습니다! 옵션창을 여시겠습니까?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>포멧을 지정하지 않았습니다! 옵션창을 여시겠습니까?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1072"/>
       <source>Error saving image.</source>
-      <translation type="unfinished"/>
+      <translation>이미지 저장중에 에러가 발생했습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1095"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>이미지 저장</translation>
     </message>
   </context>
   <context>
