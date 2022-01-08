@@ -133,12 +133,12 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="25"/>
       <source>Backup</source>
-      <translation>Kopia zapasowa</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="28"/>
       <source>Export settings</source>
-      <translation>Eksportuj ustawienia</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="29"/>
@@ -148,22 +148,22 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="37"/>
       <source>Please choose a directory</source>
-      <translation>Proszę wybrać folder</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="45"/>
       <source>Import settings</source>
-      <translation>Importuj ustawienia</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="46"/>
       <source>Import the app settings.ini from an existing file.</source>
-      <translation>Importuj ustawienia z istniejącego pliku settings.ini.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="54"/>
       <source>Please choose a file</source>
-      <translation>Proszę wybrać plik</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -191,17 +191,17 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="33"/>
       <source>Image</source>
-      <translation>Obraz</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="36"/>
       <source>Background color</source>
-      <translation>Kolor tła</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceSettingsPage.qml" line="41"/>
       <source>Tags</source>
-      <translation>Tagi</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="11"/>
       <source>Tags</source>
-      <translation>Tagi</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="14"/>
       <source>Artists</source>
-      <translation>Wykonawcy</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="19"/>
@@ -224,17 +224,17 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="24"/>
       <source>Series</source>
-      <translation>Serie</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="29"/>
       <source>Characters</source>
-      <translation>Postacie</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="34"/>
       <source>Species</source>
-      <translation>Gatunki</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="39"/>
@@ -244,32 +244,32 @@
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="44"/>
       <source>Models</source>
-      <translation>Modele</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="49"/>
       <source>Generals</source>
-      <translation>Ogólne</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="54"/>
       <source>Favorites</source>
-      <translation>Ulubione</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="59"/>
       <source>Kept for later</source>
-      <translation>Zachowane na później</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="64"/>
       <source>Blacklisted</source>
-      <translation>Na czarnej liście</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AppearanceTagsSettingsPage.qml" line="69"/>
       <source>Ignored</source>
-      <translation>Ignorowane</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -288,12 +288,12 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
       <source>Hide blacklisted</source>
-      <translation>Ukryj z czarnej listy</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="21"/>
       <source>Hide blacklisted images from the results.</source>
-      <translation>Ukryj obrazy z czarnej listy z listy wyników.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="26"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../src/components/FavoritesScreen.qml" line="22"/>
       <source>Favorites</source>
-      <translation>Ulubione</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
