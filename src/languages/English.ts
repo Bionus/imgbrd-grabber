@@ -4898,7 +4898,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don&apos;t keep for later</source>
-      <translation type="unfinished"/>
+      <translation>Don&apos;t keep for later</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
@@ -4908,7 +4908,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
       <source>Don&apos;t blacklist</source>
-      <translation type="unfinished"/>
+      <translation>Don&apos;t blacklist</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
@@ -4918,7 +4918,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
       <source>Don&apos;t ignore</source>
-      <translation type="unfinished"/>
+      <translation>Don&apos;t ignore</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="42"/>
@@ -4984,7 +4984,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation type="unfinished"/>
+      <translation>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -5254,80 +5254,82 @@ Please solve the issue before resuming the download.</translation>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1361"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>Image</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
       <source>Expand button drawer</source>
-      <translation type="unfinished"/>
+      <translation>Expand button drawer</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
       <source>Reload</source>
-      <translation type="unfinished"/>
+      <translation>Reload</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="447"/>
       <source>Copy file</source>
-      <translation type="unfinished"/>
+      <translation>Copy file</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="449"/>
       <source>Copy data</source>
-      <translation type="unfinished"/>
+      <translation>Copy data</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="451"/>
       <source>Copy link</source>
-      <translation type="unfinished"/>
+      <translation>Copy link</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>Folder does not exist</source>
-      <translation type="unfinished"/>
+      <translation>Folder does not exist</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>
       <source>The save folder does not exist yet. Create it?</source>
-      <translation type="unfinished"/>
+      <translation>The save folder does not exist yet. Create it?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="542"/>
       <source>Error creating folder.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>Error creating folder.
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="794"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation type="unfinished"/>
+      <translation>File is too big to be displayed.
+%1</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>Error</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>You did not specified a save folder! Do you want to open the options window?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>You did not specified a save format! Do you want to open the options window?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1072"/>
       <source>Error saving image.</source>
-      <translation type="unfinished"/>
+      <translation>Error saving image.</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1095"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>Save image</translation>
     </message>
   </context>
   <context>
