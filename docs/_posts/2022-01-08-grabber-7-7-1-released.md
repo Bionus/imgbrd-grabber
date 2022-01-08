@@ -1,6 +1,6 @@
 ---
 title: "Grabber 7.7.1 released"
-date: 2022-01-08 16:47 +0100
+date: 2022-01-08 16:57 +0100
 categories: release
 ---
 
