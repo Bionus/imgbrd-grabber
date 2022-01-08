@@ -1978,12 +1978,22 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="107"/>
       <source>%n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n nowy obraz został znaleziony dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowe obrazy zostały znalezione dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
+        <numerusform>%n nowych obrazów zostało znalezionych dla tagu '%1' w '%2'</numerusform>
+      </translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>Znaleziono więcej niż %n nowy obraz dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowe obrazy dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
+        <numerusform>Znaleziono więcej niż %n nowych obrazów dla tagu '%1' w '%2'</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
@@ -3600,7 +3610,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
       <location filename="../gui/src/settings/options-window.ui" line="5061"/>
       <location filename="../gui/src/settings/options-window.ui" line="5131"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation type="unfinished"/>
+      <translation>Dodatkowe tagi: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag typu, "general", "artist", "copyright", "character", "model" lub "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: tag typu liczbowego (pomiędzy 0 a 6)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5081"/>
