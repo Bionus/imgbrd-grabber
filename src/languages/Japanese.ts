@@ -254,19 +254,19 @@
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>h 'h' m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h' m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>m 'm' s 's'</source>
-      <translation type="unfinished"/>
+      <translation>m 'm' s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="390"/>
       <location filename="../gui/src/batch/batch-window.cpp" line="391"/>
       <source>s 's'</source>
-      <translation type="unfinished"/>
+      <translation>s 's'</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="394"/>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="572"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>次回から確認しない</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="609"/>
@@ -1660,7 +1660,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="744"/>
       <source>Don't ask me again</source>
-      <translation type="unfinished"/>
+      <translation>次回から確認しない</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="898"/>
@@ -2141,7 +2141,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="307"/>
       <source>Don't download automatically</source>
-      <translation type="unfinished"/>
+      <translation>自動的にダウンロードしない</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="312"/>
@@ -2357,7 +2357,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="798"/>
       <location filename="../gui/src/settings/options-window.ui" line="904"/>
       <source>Don't save</source>
-      <translation type="unfinished"/>
+      <translation>保存しない</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="806"/>
@@ -2539,7 +2539,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1427"/>
       <source>Source's type display</source>
-      <translation type="unfinished"/>
+      <translation>ソースタイプの表示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1435"/>
@@ -2561,7 +2561,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1450"/>
       <source>Don't show</source>
-      <translation type="unfinished"/>
+      <translation>表示しない</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1458"/>
@@ -2795,7 +2795,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2012"/>
       <source>s</source>
-      <translation type="unfinished"/>
+      <translation>s</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2022"/>
@@ -3494,12 +3494,12 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="4936"/>
       <location filename="../gui/src/settings/options-window.ui" line="5150"/>
       <source>Host</source>
-      <translation type="unfinished"/>
+      <translation>ホスト</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4946"/>
       <source>Port</source>
-      <translation type="unfinished"/>
+      <translation>ポート</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4960"/>
@@ -3740,7 +3740,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="989"/>
       <source>Options:</source>
-      <translation type="unfinished"/>
+      <translation>設定:</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="1014"/>
@@ -3874,17 +3874,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>h 'h' m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h' m 'm'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>h 'h'</source>
-      <translation type="unfinished"/>
+      <translation>h 'h'</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-table-model.cpp" line="73"/>
       <source>m 'm'</source>
-      <translation type="unfinished"/>
+      <translation>m 'm'</translation>
     </message>
   </context>
   <context>
@@ -3908,7 +3908,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="41"/>
       <source>Get md5 in filename</source>
-      <translation type="unfinished"/>
+      <translation>ファイル名のmd5を取得する</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="51"/>
@@ -4170,7 +4170,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="104"/>
       <source>Rating</source>
-      <translation type="unfinished"/>
+      <translation>レーティング</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="119"/>
@@ -4321,7 +4321,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="53"/>
       <source>Url</source>
-      <translation type="unfinished"/>
+      <translation>Url</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/site-window.ui" line="74"/>
@@ -4571,12 +4571,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
       <source>GET</source>
-      <translation type="unfinished"/>
+      <translation>GET</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="99"/>
       <source>POST</source>
-      <translation type="unfinished"/>
+      <translation>POST</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="100"/>
@@ -4653,7 +4653,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="111"/>
       <source>User ID</source>
-      <translation type="unfinished"/>
+      <translation>ユーザーID</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
@@ -4663,7 +4663,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
       <source>API key</source>
-      <translation type="unfinished"/>
+      <translation>APIキー</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="115"/>
@@ -5206,7 +5206,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1361"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1363"/>
       <source>Image</source>
-      <translation type="unfinished"/>
+      <translation>画像</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
@@ -5216,17 +5216,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
       <source>Reload</source>
-      <translation type="unfinished"/>
+      <translation>再読み込み</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="447"/>
       <source>Copy file</source>
-      <translation type="unfinished"/>
+      <translation>ファイルをコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="449"/>
       <source>Copy data</source>
-      <translation type="unfinished"/>
+      <translation>データをコピー</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="451"/>
@@ -5259,27 +5259,27 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>Error</source>
-      <translation type="unfinished"/>
+      <translation>エラー</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1008"/>
       <source>You did not specified a save folder! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>保存フォルダーが指定されていません! 設定ウィンドウを開きますか?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1010"/>
       <source>You did not specified a save format! Do you want to open the options window?</source>
-      <translation type="unfinished"/>
+      <translation>保存形式が指定されていません! 設定ウィンドウを開きますか?</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1072"/>
       <source>Error saving image.</source>
-      <translation type="unfinished"/>
+      <translation>画像を保存中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="1095"/>
       <source>Save image</source>
-      <translation type="unfinished"/>
+      <translation>画像を保存</translation>
     </message>
   </context>
   <context>
