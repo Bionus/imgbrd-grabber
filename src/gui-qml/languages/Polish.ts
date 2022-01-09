@@ -1014,7 +1014,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation type="unfinished"/>
+      <translation>Nie pytaj ponownie</translation>
     </message>
   </context>
 </TS>
