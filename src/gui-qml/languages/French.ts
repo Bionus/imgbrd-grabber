@@ -318,7 +318,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de limage.</translation>
+      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
