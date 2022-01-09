@@ -318,7 +318,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.</translation>
+      <translation>Ces tags ne seront pas pris en compte lors de la sauvegarde de limage.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -1012,9 +1012,9 @@
       <translation>Voulez-vous vraiment quitter ?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>Ne pas me re-demander</translation>
+      <translation>Ne plus demander</translation>
     </message>
   </context>
 </TS>
