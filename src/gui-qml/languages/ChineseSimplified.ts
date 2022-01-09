@@ -283,7 +283,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
-      <translation>每行一个黑名单项。单行多个标签将视为'每个标签都包含'时生效。</translation>
+      <translation>每行一个黑名单项。单行多个标签将视为每个标签都包含时生效。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -619,7 +619,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>如果图像的扩展名是 ".jpeg"， 它将被替换成 ".jpg" 。</translation>
+      <translation>如果图像的扩展名是".jpeg"，它将被替换成 ".jpg"。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -652,7 +652,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>如果文件在同一个目录中</translation>
+      <translation>如果文件在同一目录中</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -1012,9 +1012,9 @@
       <translation>您是否想要退出？</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>不再显示</translation>
+      <translation>不再询问</translation>
     </message>
   </context>
 </TS>
