@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Один MD в строку.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Один ИД на строку.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded images</source>
-      <translation>Следовать за загружамыми изображениями</translation>
+      <translation>Следовать за загружаемыми изображениями</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="115"/>
       <source>Blacklist</source>
-      <translation>Черный список</translation>
+      <translation>Чёрный список</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="61"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="14"/>
       <source>Blacklist fixer</source>
-      <translation>Черный список</translation>
+      <translation>Наладчик чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="71"/>
       <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Оставьте пустым чтобы использовать папку по умолчанию.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Оставьте пустым, чтобы использовать папку по умолчанию.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
@@ -823,10 +823,10 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
       <translation>
-        <numerusform>Вы собираетесь удалить %n папку. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папки. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папку. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папки. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
       </translation>
     </message>
   </context>
@@ -1731,7 +1731,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="742"/>
       <source>Are you sure you want to quit?</source>
-      <translation>Вы уверены что хотите выйти?</translation>
+      <translation>Вы уверены, что хотите выйти?</translation>
     </message>
   </context>
   <context>
@@ -2438,7 +2438,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="806"/>
       <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Идентичность файла определяется по его MD5 сумме.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Идентичность файла определяется по его MD5-сумме.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="813"/>
