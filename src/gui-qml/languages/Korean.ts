@@ -283,7 +283,8 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
-      <translation type="unfinished"/>
+      <translation>블랙리스트 할 태그를 한 줄에 하나씩 입력하세요.
+동시에 여러 개의 태그를 블랙리스트로 등록하려면 AND (예: 'female'AND'male') 같이 작성하세요</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -318,7 +319,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation type="unfinished"/>
+      <translation>이 것들은 이미지를 저장할 때 상관없습니다.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -620,7 +621,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation type="unfinished"/>
+      <translation>이미지 확장자가 ".jpeg"이면 ".jpg " 확장자로 바뀔 것입니다.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -648,12 +649,12 @@
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Don't save</source>
-      <translation>저장하지 않기</translation>
+      <translation>저장 안 함</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation type="unfinished"/>
+      <translation>같은 폴더에 있을 경우</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -1015,7 +1016,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation type="unfinished"/>
+      <translation>다시 표시하지 않기</translation>
     </message>
   </context>
 </TS>
