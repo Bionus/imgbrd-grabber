@@ -1012,7 +1012,7 @@
       <translation>終了しますか?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
       <translation>次回から確認しない</translation>
     </message>

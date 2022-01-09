@@ -16,7 +16,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>Особая благодарность всем участникам за их помощь в улучшении программы на протяжении многих лет, будь то путём предоставления кода и переводов или сообщениями о проблемах и предложениями новых возможностей.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
       <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Один MD в строку.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Один ИД на строку.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="114"/>
       <source>Follow downloaded images</source>
-      <translation>Следовать за загружамыми изображениями</translation>
+      <translation>Следовать за загружаемыми изображениями</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="121"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="115"/>
       <source>Blacklist</source>
-      <translation>Черный список</translation>
+      <translation>Чёрный список</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="61"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="14"/>
       <source>Blacklist fixer</source>
-      <translation>Черный список</translation>
+      <translation>Наладчик чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="71"/>
       <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Оставьте пустым чтобы использовать папку по умолчанию.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Оставьте пустым, чтобы использовать папку по умолчанию.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
@@ -823,10 +823,10 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="48"/>
       <source>You are about to delete %n folder. Are you sure you want to continue?</source>
       <translation>
-        <numerusform>Вы собираетесь удалить %n папку. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папки. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
-        <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папку. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папки. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
+        <numerusform>Вы собираетесь удалить %n папок. Уверены, что хотите продолжить?</numerusform>
       </translation>
     </message>
   </context>
@@ -1721,17 +1721,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="898"/>
       <source>Unlock tab</source>
-      <translation type="unfinished"/>
+      <translation>Открепить вкладку</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="903"/>
       <source>Lock tab</source>
-      <translation type="unfinished"/>
+      <translation>Закрепить вкладку</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="742"/>
       <source>Are you sure you want to quit?</source>
-      <translation>Вы уверены что хотите выйти?</translation>
+      <translation>Вы уверены, что хотите выйти?</translation>
     </message>
   </context>
   <context>
@@ -1860,7 +1860,12 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
       <source>%n time(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n раз</numerusform>
+        <numerusform>%n раза</numerusform>
+        <numerusform>%n раз</numerusform>
+        <numerusform>%n раз</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -2022,7 +2027,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>Запустить</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
@@ -2253,7 +2258,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Buttons</source>
-      <translation type="unfinished"/>
+      <translation>Кнопки</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="372"/>
@@ -2438,7 +2443,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="806"/>
       <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Идентичность файла определяется по его MD5 сумме.&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Идентичность файла определяется по его MD5-сумме.&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="813"/>
@@ -3153,32 +3158,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1334"/>
       <source>Thumbnail scaling</source>
-      <translation type="unfinished"/>
+      <translation>Масштабирование миниатюр</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Scale font size</source>
-      <translation type="unfinished"/>
+      <translation>Масштабировать размер шрифта</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1923"/>
       <source>Back out from favorites results</source>
-      <translation type="unfinished"/>
+      <translation>Вернуться из результатов избранного</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2285"/>
       <source>Remember button drawer state</source>
-      <translation type="unfinished"/>
+      <translation>Запоминать состояние секции с кнопками</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2295"/>
       <source>Remember window geometry</source>
-      <translation type="unfinished"/>
+      <translation>Запоминать размеры окна</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2368"/>
       <source>Previous media entry</source>
-      <translation type="unfinished"/>
+      <translation>Предыдущая медиа-позиция</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2383"/>
@@ -3192,7 +3197,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3498"/>
       <location filename="../gui/src/settings/options-window.ui" line="3637"/>
       <source>Partial checks are stored in collapsable drawer</source>
-      <translation type="unfinished"/>
+      <translation>Частичные проверки хранятся в складной секции</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2386"/>
@@ -3206,7 +3211,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3501"/>
       <location filename="../gui/src/settings/options-window.ui" line="3640"/>
       <source>Enable</source>
-      <translation type="unfinished"/>
+      <translation>Включить</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2418"/>
@@ -3220,7 +3225,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3533"/>
       <location filename="../gui/src/settings/options-window.ui" line="3672"/>
       <source>Ascending from left to right</source>
-      <translation type="unfinished"/>
+      <translation>По возрастанию слева направо</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2433"/>
@@ -3234,7 +3239,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3542"/>
       <location filename="../gui/src/settings/options-window.ui" line="3681"/>
       <source>Position: </source>
-      <translation type="unfinished"/>
+      <translation>Позиция: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2462"/>
@@ -3248,7 +3253,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3574"/>
       <location filename="../gui/src/settings/options-window.ui" line="3713"/>
       <source>Button display text</source>
-      <translation type="unfinished"/>
+      <translation>Текст на кнопке</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2494"/>
@@ -3262,7 +3267,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3600"/>
       <location filename="../gui/src/settings/options-window.ui" line="3739"/>
       <source>Smaller numbers make for smaller buttons</source>
-      <translation type="unfinished"/>
+      <translation>Малые числа для меньших кнопок</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2497"/>
@@ -3276,67 +3281,67 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3603"/>
       <location filename="../gui/src/settings/options-window.ui" line="3742"/>
       <source>Width: </source>
-      <translation type="unfinished"/>
+      <translation>Ширина: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2513"/>
       <source>Next media entry</source>
-      <translation type="unfinished"/>
+      <translation>Следующая медиа-позиция</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2649"/>
       <source>View media details</source>
-      <translation type="unfinished"/>
+      <translation>Просмотр сведений о медиа</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2788"/>
       <source>Save file with specified path</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить файл в указанную папку</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2791"/>
       <source>Save As...</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить как...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2927"/>
       <source>Save file to usual path</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить файл в стандартную папку</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3066"/>
       <source>Save file to usual path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить файл в стандартную папку и закрыть окно просмотра</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3205"/>
       <source>Open usual save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Открыть стандартный путь сохранения в файловом браузере</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3208"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>Открыть</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3344"/>
       <source>Save file to favourite path</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить файл в папку избранного</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3483"/>
       <source>Save file to favourite path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Сохранить файл в папку избранного и закрыть окно просмотра</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3622"/>
       <source>Open favourite save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Открыть путь сохранения избранного в файловом браузере</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3625"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>Открыть (избранное)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4082"/>
@@ -4024,7 +4029,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="132"/>
       <source>Get ID in filename</source>
-      <translation type="unfinished"/>
+      <translation>Получить ИД в имени файла</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
@@ -4039,7 +4044,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="73"/>
       <source>If you want to get the ID from the filename, you have to include the %id% token in it.</source>
-      <translation type="unfinished"/>
+      <translation>Если вы хотите получить идентификатор из имени файла, вы должны включить в него токен %id%.</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="122"/>
@@ -4163,7 +4168,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="806"/>
       <source>%1 filtered</source>
-      <translation type="unfinished"/>
+      <translation>%1 отфильтровано</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="855"/>
@@ -5302,7 +5307,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
       <source>Expand button drawer</source>
-      <translation type="unfinished"/>
+      <translation>Развернуть секцию кнопок</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
@@ -5322,7 +5327,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="451"/>
       <source>Copy link</source>
-      <translation type="unfinished"/>
+      <translation>Копировать ссылку</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="538"/>

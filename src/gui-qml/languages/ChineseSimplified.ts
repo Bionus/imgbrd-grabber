@@ -619,7 +619,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>如果图像的扩展名是 ".jpeg"， 它将被替换成 ".jpg" 。</translation>
+      <translation>如果图像的扩展名是".jpeg"，它将被替换成".jpg"。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -1012,7 +1012,7 @@
       <translation>您是否想要退出？</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
       <translation>不再显示</translation>
     </message>

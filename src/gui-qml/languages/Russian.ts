@@ -98,12 +98,12 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="13"/>
       <source>Updates</source>
-      <translation type="unfinished"/>
+      <translation>Обновления</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="16"/>
       <source>Check for updates interval</source>
-      <translation type="unfinished"/>
+      <translation>Интервал проверки обновлений</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
@@ -283,7 +283,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
-      <translation>Одна строка на чёрный список. Несколько тегов составляют 'И' условие.</translation>
+      <translation>Один на строку в чёрном списке. Несколько тегов составляют логический оператор «И».</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation>Эти теги не будут приниматься во внимание при сохранении изображения.</translation>
+      <translation>Эти теги не будут учтены при сохранении изображения.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -443,12 +443,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
       <source>Load samples</source>
-      <translation type="unfinished"/>
+      <translation>Загрузить образцы</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="82"/>
       <source>Load sample-sized versions of the images by default if available.</source>
-      <translation type="unfinished"/>
+      <translation>По умолчанию загружать изображения, уменьшенного размера, если возможно.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
@@ -494,7 +494,7 @@
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="85"/>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="114"/>
       <source>Key</source>
-      <translation type="unfinished"/>
+      <translation>Ключ</translation>
     </message>
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="93"/>
@@ -619,7 +619,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>Если изображение с расширением ".jpeg", то оно будет заменено на ".jpg".</translation>
+      <translation>Если расширение файла содержит «.jpeg», то оно будет заменено на «.jpg».</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -647,12 +647,12 @@
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Don't save</source>
-      <translation>Не сохранять</translation>
+      <translation>Не скачивать</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>Если в той же папке</translation>
+      <translation>Если это есть в той же папке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -667,27 +667,27 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="71"/>
       <source>Artist</source>
-      <translation type="unfinished"/>
+      <translation>Автор</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="78"/>
       <source>Copyright</source>
-      <translation type="unfinished"/>
+      <translation>Авторское право</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="85"/>
       <source>Character</source>
-      <translation type="unfinished"/>
+      <translation>Персонаж</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="92"/>
       <source>Model</source>
-      <translation type="unfinished"/>
+      <translation>Модель</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="99"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Фотосет</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
@@ -697,7 +697,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Мета</translation>
     </message>
   </context>
   <context>
@@ -920,7 +920,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>Действие</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
@@ -931,7 +931,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
       <source>Then add</source>
-      <translation type="unfinished"/>
+      <translation>Затем добавить</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
@@ -1004,7 +1004,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="77"/>
       <source>Update available</source>
-      <translation type="unfinished"/>
+      <translation>Доступно обновление</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
@@ -1012,9 +1012,9 @@
       <translation>Вы действительно хотите выйти?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>Более не спрашивать</translation>
+      <translation>Больше не спрашивать</translation>
     </message>
   </context>
 </TS>

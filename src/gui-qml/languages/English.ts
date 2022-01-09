@@ -1012,7 +1012,7 @@
       <translation>Do you want to exit?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
       <translation>Don't ask again</translation>
     </message>
