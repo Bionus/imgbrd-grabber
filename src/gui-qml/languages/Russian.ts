@@ -283,7 +283,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
-      <translation>Одна строка на чёрный список. Несколько тегов составляют 'И' условие.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="38"/>
       <source>These won't be taken into account when saving the image.</source>
-      <translation>Эти теги не будут приниматься во внимание при сохранении изображения.</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="43"/>
@@ -619,7 +619,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>Если изображение с расширением ".jpeg", то оно будет заменено на ".jpg".</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -647,12 +647,12 @@
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="46"/>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="53"/>
       <source>Don't save</source>
-      <translation>Не сохранять</translation>
+      <translation>Не скачивать</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>Если в той же папке</translation>
+      <translation>Если это есть в той же папке</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -1012,9 +1012,9 @@
       <translation>Вы действительно хотите выйти?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>Более не спрашивать</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
 </TS>
