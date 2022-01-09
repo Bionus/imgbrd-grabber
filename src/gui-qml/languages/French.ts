@@ -443,12 +443,12 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="81"/>
       <source>Load samples</source>
-      <translation type="unfinished"/>
+      <translation>Charger les sample</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="82"/>
       <source>Load sample-sized versions of the images by default if available.</source>
-      <translation type="unfinished"/>
+      <translation>Charger le sample des images par défaut si disponible.</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="87"/>
@@ -494,7 +494,7 @@
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="85"/>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="114"/>
       <source>Key</source>
-      <translation type="unfinished"/>
+      <translation>Clé</translation>
     </message>
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="93"/>
@@ -687,7 +687,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="99"/>
       <source>Photo set</source>
-      <translation type="unfinished"/>
+      <translation>Set de photos</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="106"/>
@@ -697,7 +697,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="113"/>
       <source>Meta</source>
-      <translation type="unfinished"/>
+      <translation>Méta</translation>
     </message>
   </context>
   <context>
@@ -920,7 +920,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="56"/>
       <source>Action</source>
-      <translation type="unfinished"/>
+      <translation>Action</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="63"/>
@@ -931,7 +931,7 @@
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="81"/>
       <source>Then add</source>
-      <translation type="unfinished"/>
+      <translation>Puis ajouter</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/TagSaveSettingsPage.qml" line="90"/>
@@ -1004,7 +1004,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="77"/>
       <source>Update available</source>
-      <translation type="unfinished"/>
+      <translation>Mise à jour disponible</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="130"/>
