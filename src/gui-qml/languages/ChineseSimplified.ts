@@ -619,7 +619,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="35"/>
       <source>If the image's extension is ".jpeg", it will be replaced by ".jpg".</source>
-      <translation>如果图像的扩展名是".jpeg"，它将被替换成 ".jpg"。</translation>
+      <translation>如果图像的扩展名是".jpeg"，它将被替换成".jpg"。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="42"/>
@@ -652,7 +652,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="52"/>
       <source>If it's in the same directory</source>
-      <translation>如果文件在同一目录中</translation>
+      <translation>如果文件在同一个目录中</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="59"/>
@@ -1014,7 +1014,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>不再询问</translation>
+      <translation>不再显示</translation>
     </message>
   </context>
 </TS>
