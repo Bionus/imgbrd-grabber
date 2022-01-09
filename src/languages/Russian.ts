@@ -1527,7 +1527,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="75"/>
       <source>Help</source>
-      <translation>Помощь</translation>
+      <translation>Справка</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="89"/>
@@ -3625,7 +3625,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5081"/>
       <source>Start</source>
-      <translation>Начать</translation>
+      <translation>Начало</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5121"/>
