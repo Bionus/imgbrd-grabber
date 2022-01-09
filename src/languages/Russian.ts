@@ -64,7 +64,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="97"/>
       <source>Download images with blacklisted tags</source>
-      <translation>Скачивать изображения с тегами из черного списка</translation>
+      <translation>Скачивать изображения с тегами из чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
@@ -285,7 +285,7 @@
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="14"/>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.cpp" line="94"/>
       <source>Blacklist fixer</source>
-      <translation>Фиксер черного списка</translation>
+      <translation>Наладчик чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
@@ -1434,17 +1434,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="26"/>
       <source>Log</source>
-      <translation>Лог</translation>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="71"/>
       <source>Clear log</source>
-      <translation>Очистить лог</translation>
+      <translation>Очистить журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="78"/>
       <source>Open log</source>
-      <translation>Открыть лог</translation>
+      <translation>Открыть журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/log-tab.ui" line="85"/>
@@ -1457,7 +1457,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="14"/>
       <source>Log</source>
-      <translation>Лог</translation>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="20"/>
@@ -1611,7 +1611,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="318"/>
       <source>Blacklist fixer</source>
-      <translation>Фиксер черного списка</translation>
+      <translation>Наладчик чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="323"/>
@@ -2119,7 +2119,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="153"/>
       <source>Log</source>
-      <translation>Лог</translation>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="159"/>
@@ -2248,7 +2248,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4766"/>
       <source>Download images containing blacklisted tags</source>
-      <translation>Сохранять изображения с тегами из черного списка</translation>
+      <translation>Скачивать изображения с тегами из чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="335"/>
@@ -3489,7 +3489,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4712"/>
       <source>Show log</source>
-      <translation>Показывать лог</translation>
+      <translation>Показать журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4726"/>
@@ -3504,7 +3504,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4749"/>
       <source>Ignore images containing a blacklisted tag</source>
-      <translation>Игнорировать изображения содержащие теги из черного списка</translation>
+      <translation>Игнорировать изображения, содержащие тег из чёрного списка</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4756"/>
@@ -3608,13 +3608,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5041"/>
       <location filename="../gui/src/settings/options-window.ui" line="5111"/>
       <source>Tag (after)</source>
-      <translation>Тег (перед)</translation>
+      <translation>Тег (после)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5051"/>
       <location filename="../gui/src/settings/options-window.ui" line="5091"/>
       <source>Tag (before)</source>
-      <translation>Тег (после)</translation>
+      <translation>Тег (перед)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5061"/>
@@ -5385,7 +5385,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="14"/>
       <source>Log</source>
-      <translation>Лог</translation>
+      <translation>Журнал</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="20"/>
