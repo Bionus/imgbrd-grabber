@@ -283,7 +283,7 @@
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="15"/>
       <source>One line per blacklist. Multiple tags make an 'AND' condition.</source>
-      <translation>每行一个黑名单项。单行多个标签将视为每个标签都包含时生效。</translation>
+      <translation>每行一个黑名单项。单行多个标签将视为'每个标签都包含'时生效。</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/BlacklistSettingsPage.qml" line="20"/>
