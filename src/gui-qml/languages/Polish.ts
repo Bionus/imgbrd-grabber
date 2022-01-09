@@ -1012,9 +1012,9 @@
       <translation>Czy chcesz wyjść?</translation>
     </message>
     <message>
-      <location filename="../src/main-screen.qml" line="130"/>
+      <location filename="../src/main-screen.qml" line="144"/>
       <source>Don't ask again</source>
-      <translation>Nie pytaj ponownie</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
 </TS>
