@@ -16,7 +16,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>Un grand merci à tous les contributeurs pour leur aide à améliorer le programme au fil des ans, que ce soit via du code, des traductions, ou en signalant des problèmes et en suggérant de nouvelles fonctionnalités.</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
@@ -1995,7 +1995,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>Démarrer maintenant</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
@@ -3126,32 +3126,32 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1334"/>
       <source>Thumbnail scaling</source>
-      <translation type="unfinished"/>
+      <translation>Mise à l'échelle des miniatures</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Scale font size</source>
-      <translation type="unfinished"/>
+      <translation>Mettre à l'échelle les polices</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1923"/>
       <source>Back out from favorites results</source>
-      <translation type="unfinished"/>
+      <translation>Sortir des résultats des favoris</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2285"/>
       <source>Remember button drawer state</source>
-      <translation type="unfinished"/>
+      <translation>Restaurer l'état du tiroir des boutons</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2295"/>
       <source>Remember window geometry</source>
-      <translation type="unfinished"/>
+      <translation>Restaurer la taille de la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2368"/>
       <source>Previous media entry</source>
-      <translation type="unfinished"/>
+      <translation>Média précédent</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2383"/>
@@ -3165,7 +3165,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="3498"/>
       <location filename="../gui/src/settings/options-window.ui" line="3637"/>
       <source>Partial checks are stored in collapsable drawer</source>
-      <translation type="unfinished"/>
+      <translation>Les coches partielles vont dans le tiroir des boutons</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2386"/>
@@ -3221,7 +3221,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="3574"/>
       <location filename="../gui/src/settings/options-window.ui" line="3713"/>
       <source>Button display text</source>
-      <translation type="unfinished"/>
+      <translation>Texte des boutons</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2494"/>
@@ -3235,7 +3235,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <location filename="../gui/src/settings/options-window.ui" line="3600"/>
       <location filename="../gui/src/settings/options-window.ui" line="3739"/>
       <source>Smaller numbers make for smaller buttons</source>
-      <translation type="unfinished"/>
+      <translation>Des petits numéros font des boutons plus petits</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2497"/>
@@ -3254,37 +3254,37 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2513"/>
       <source>Next media entry</source>
-      <translation type="unfinished"/>
+      <translation>Média suivant</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2649"/>
       <source>View media details</source>
-      <translation type="unfinished"/>
+      <translation>Voir les détails du média</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2788"/>
       <source>Save file with specified path</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer le fichier avec le chemin spécifié</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2791"/>
       <source>Save As...</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer Sous...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2927"/>
       <source>Save file to usual path</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer le fichier dans le chemin habituel</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3066"/>
       <source>Save file to usual path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer le fichier dans le chemin habituel puis fermer la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3205"/>
       <source>Open usual save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le chemin de sauvegarde habituel dans le navigateur de fichiers</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3208"/>
@@ -3294,17 +3294,17 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3344"/>
       <source>Save file to favourite path</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer le fichier dans le chemin des favoris</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3483"/>
       <source>Save file to favourite path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>Enregistrer le fichier dans le chemin des favoris puis fermer la fenêtre</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3622"/>
       <source>Open favourite save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le chemin de sauvegarde favori dans le navigateur de fichiers</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3625"/>
@@ -5269,7 +5269,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
       <location filename="../gui/src/viewer/viewer-window.ui" line="152"/>
       <source>Expand button drawer</source>
-      <translation type="unfinished"/>
+      <translation>Ouvrir le tiroir des boutons</translation>
     </message>
     <message>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="443"/>
