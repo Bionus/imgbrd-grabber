@@ -175,8 +175,13 @@
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
          <property name="text">
-          <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</string>
+          <string>Each time an image is saved, an external text file will be save with the same name at the same location.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -209,8 +214,13 @@
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="labelContentHelp">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</string>
+      <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

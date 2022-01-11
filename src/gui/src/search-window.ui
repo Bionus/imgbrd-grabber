@@ -212,8 +212,13 @@
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="label_5">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</string>
+      <string>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
