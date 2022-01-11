@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
       <source>One ID per line.</source>
-      <translation type="unfinished"/>
+      <translation>Один ИД на строку.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
@@ -118,7 +118,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation type="unfinished"/>
+      <translation>Один MD5 в строку.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation type="unfinished"/>
+      <translation>Вы можете использовать либо переменную либо тег как условие.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>Leave empty to use the default folder.</source>
-      <translation type="unfinished"/>
+      <translation>Оставьте пустым, чтобы использовать папку по умолчанию.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation type="unfinished"/>
+      <translation>Оставьте пустым чтобы использовать имя по умолчанию.</translation>
     </message>
   </context>
   <context>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="32"/>
       <source>Separate tags by spaces or line breaks</source>
-      <translation type="unfinished"/>
+      <translation>Разделяйте теги пробелами</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="39"/>
@@ -925,7 +925,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
       <source>Set the interval to 0 to disable monitoring.</source>
-      <translation type="unfinished"/>
+      <translation>Установите интервал в 0 для отключения мониторинга.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -955,7 +955,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="220"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>Оставьте пустым для использования настроек по умолчанию.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="256"/>
@@ -1498,7 +1498,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1508,7 +1508,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation type="unfinished"/>
+      <translation>Доступные переменные такие же как во вкладке "Сохранение".</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -1960,7 +1960,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="190"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>Оставьте пустым для использования стандартных настроек.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
@@ -2237,7 +2237,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="330"/>
       <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
-      <translation type="unfinished"/>
+      <translation>Изображения с тегами из белого списка будут скачиваться автоматически в соответствии с этой установкой.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
@@ -2443,7 +2443,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="821"/>
       <source>File's identity is based on the MD5 algorithm.</source>
-      <translation type="unfinished"/>
+      <translation>Идентичность файла определяется по его MD5-сумме.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="828"/>
@@ -2493,7 +2493,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1150"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation type="unfinished"/>
+      <translation>Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
@@ -2555,7 +2555,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1326"/>
       <source>Images bigger than the max width and/or height will be resized to fit.</source>
-      <translation type="unfinished"/>
+      <translation>Изображения больше максимальной ширины и/или высоты будут изменены по размеру.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1359"/>
@@ -2615,7 +2615,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>Список избранного будет скрыт как только будет достигнуто заданное количество изображений.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -2667,7 +2667,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
-      <translation type="unfinished"/>
+      <translation>Число отображаемых букв рядом с галочками источников в расширенном режиме поиска.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
@@ -2753,7 +2753,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1713"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
-      <translation type="unfinished"/>
+      <translation>Если активировать эту опцию, то при нажатии на кнопку "Скачать эту страницу" будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1723"/>
@@ -2763,7 +2763,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1735"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
-      <translation type="unfinished"/>
+      <translation>Если эта опция включена, нажатие на изображение пометить его для загрузки, в то время как Ctrl+Click откроет окно с деталями.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1785"/>
@@ -2991,7 +2991,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="365"/>
       <source>These tags and post-filters will be automatically added to every search.</source>
-      <translation type="unfinished"/>
+      <translation>Эти теги и постфильтры будут автоматически добавлены в каждый поиск.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
@@ -3037,7 +3037,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="877"/>
       <source>Leave empty to use the default temporary directory.</source>
-      <translation type="unfinished"/>
+      <translation>Оставьте пустым, чтобы использовать стандартную временную папку.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="901"/>
@@ -3047,7 +3047,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1052"/>
       <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
-      <translation type="unfinished"/>
+      <translation>Если длина имени файла больше чем это число, оно будет сокращено. Оставьте 0 для использования лимита по умолчанию. Не ставьте выше 260 в Windows, если не знаете, что делаете.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2097"/>
@@ -3499,7 +3499,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4799"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
-      <translation type="unfinished"/>
+      <translation>Одна строка в чёрном списке. Вы можете поставить несколько тегов в одну строку, чтобы создать условия "И".</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4809"/>
@@ -3509,7 +3509,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="unfinished"/>
+      <translation>Если включено, изображения с тегами из чёрного списка не будут отображаться в результатах, иначе каждый раз вас будут спрашивать о показе таких изображений.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4842"/>
@@ -3519,12 +3519,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4857"/>
       <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
-      <translation type="unfinished"/>
+      <translation>Эти теги не будут приниматься в учётной записи при сохранении изображения. Они не будут отображаться в токенах, таких как %copyright% или %all%.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4882"/>
       <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
-      <translation type="unfinished"/>
+      <translation>Один тег на строку. Игнорируемые тэги не будут рассматриваться как имеющие какой-либо конкретный тип, и поэтому не отобразятся, например, в %copyright%. Однако они все ещё появятся в %all%.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4896"/>
@@ -4336,7 +4336,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="221"/>
       <source>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>Помните, что некоторые имиджборды ограничивают количество тегов для не премиумных пользователей.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="249"/>
@@ -4906,7 +4906,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="122"/>
       <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
-      <translation type="unfinished"/>
+      <translation>Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href="{website}/docs/"&gt;информацией для начинающих&lt;/a&gt;(на английском).</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="137"/>
