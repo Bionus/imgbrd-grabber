@@ -16,7 +16,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
       <source>Special thanks to all contributors for their help improving the program over the years, be it by providing to the code, translations, or reporting issues and suggesting new features.</source>
-      <translation type="unfinished"/>
+      <translation>特别感谢所有贡献者多年来对改进程序提供的帮助，无论是贡献代码、翻译，还是回报问题和建议新功能。</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.cpp" line="38"/>
@@ -1688,12 +1688,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="898"/>
       <source>Unlock tab</source>
-      <translation type="unfinished"/>
+      <translation>解锁标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="903"/>
       <source>Lock tab</source>
-      <translation type="unfinished"/>
+      <translation>锁定标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="742"/>
@@ -1821,7 +1821,9 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
       <location filename="../gui/src/monitor-table-model.cpp" line="170"/>
       <source>%n time(s)</source>
-      <translation type="unfinished"/>
+      <translation>
+        <numerusform>%n 次</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -1977,7 +1979,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="61"/>
       <source>Start now</source>
-      <translation type="unfinished"/>
+      <translation>立即运行</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.cpp" line="74"/>
@@ -2208,7 +2210,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
       <source>Buttons</source>
-      <translation type="unfinished"/>
+      <translation>按钮</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="372"/>
@@ -2997,7 +2999,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1027"/>
       <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;文件名长度若大于此数字，将被缩短。如果您不知道这个选项的意义，请保持其为 0。除非您知道您在做什么，否则请勿在 Windows 上使此值超过 260。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2042"/>
@@ -3113,7 +3115,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Scale font size</source>
-      <translation type="unfinished"/>
+      <translation>缩放字体大小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1923"/>
@@ -3133,7 +3135,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2368"/>
       <source>Previous media entry</source>
-      <translation type="unfinished"/>
+      <translation>上一页媒体条目</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2383"/>
@@ -3161,7 +3163,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3501"/>
       <location filename="../gui/src/settings/options-window.ui" line="3640"/>
       <source>Enable</source>
-      <translation type="unfinished"/>
+      <translation>启用</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2418"/>
@@ -3175,7 +3177,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3533"/>
       <location filename="../gui/src/settings/options-window.ui" line="3672"/>
       <source>Ascending from left to right</source>
-      <translation type="unfinished"/>
+      <translation>从左往右升序</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2433"/>
@@ -3189,7 +3191,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3542"/>
       <location filename="../gui/src/settings/options-window.ui" line="3681"/>
       <source>Position: </source>
-      <translation type="unfinished"/>
+      <translation>位置: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2462"/>
@@ -3203,7 +3205,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3574"/>
       <location filename="../gui/src/settings/options-window.ui" line="3713"/>
       <source>Button display text</source>
-      <translation type="unfinished"/>
+      <translation>按钮显示文本</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2494"/>
@@ -3217,7 +3219,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3600"/>
       <location filename="../gui/src/settings/options-window.ui" line="3739"/>
       <source>Smaller numbers make for smaller buttons</source>
-      <translation type="unfinished"/>
+      <translation>数字越小，按钮越小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2497"/>
@@ -3231,67 +3233,67 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3603"/>
       <location filename="../gui/src/settings/options-window.ui" line="3742"/>
       <source>Width: </source>
-      <translation type="unfinished"/>
+      <translation>宽度: </translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2513"/>
       <source>Next media entry</source>
-      <translation type="unfinished"/>
+      <translation>下一页媒体条目</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2649"/>
       <source>View media details</source>
-      <translation type="unfinished"/>
+      <translation>查看媒体详情</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2788"/>
       <source>Save file with specified path</source>
-      <translation type="unfinished"/>
+      <translation>使用指定路径保存文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2791"/>
       <source>Save As...</source>
-      <translation type="unfinished"/>
+      <translation>另存为...</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2927"/>
       <source>Save file to usual path</source>
-      <translation type="unfinished"/>
+      <translation>保存文件到常用路径</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3066"/>
       <source>Save file to usual path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>保存文件到常用路径并关闭查看器窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3205"/>
       <source>Open usual save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>在文件浏览器中打开常用保存路径</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3208"/>
       <source>Open</source>
-      <translation type="unfinished"/>
+      <translation>打开</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3344"/>
       <source>Save file to favourite path</source>
-      <translation type="unfinished"/>
+      <translation>保存文件到收藏路径</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3483"/>
       <source>Save file to favourite path and close the viewer window</source>
-      <translation type="unfinished"/>
+      <translation>保存文件到收藏路径并关闭查看器窗口</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3622"/>
       <source>Open favourite save path in file browser</source>
-      <translation type="unfinished"/>
+      <translation>在文件浏览器中打开收藏保存路径</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="3625"/>
       <source>Open (fav)</source>
-      <translation type="unfinished"/>
+      <translation>打开 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4082"/>
@@ -3469,12 +3471,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4787"/>
       <source>&lt;i&gt;These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;这些标签在保存图片时将不被考量。它们将不会出现在形如 %copyright% 或 %all% 之类的变量中。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4807"/>
       <source>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</source>
-      <translation type="unfinished"/>
+      <translation>&lt;i&gt;每行一个标签。被忽略的标签将不会被认为归属于任何特定类别，因此不会出现在如 %copyright% 之类的变量中。虽然它们仍会出现在 %all% 中。&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
@@ -3819,7 +3821,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="359"/>
       <source>The %num% token does not play well with simultaneous downloads. Consider another method or downloading images one at a time.</source>
-      <translation type="unfinished"/>
+      <translation>%num% 变量和并行下载兼容性不佳。请考虑改用其它方法，或一次仅下载一张图片。</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="365"/>
@@ -4115,7 +4117,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="806"/>
       <source>%1 filtered</source>
-      <translation type="unfinished"/>
+      <translation>%1 已过滤</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="855"/>
@@ -4601,7 +4603,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
       <source>HTTP Basic</source>
-      <translation type="unfinished"/>
+      <translation>HTTP 基本验证</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="98"/>
@@ -4673,7 +4675,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="104"/>
       <source>OAuth 2 (header basic)</source>
-      <translation type="unfinished"/>
+      <translation>OAuth 2 (HTTP 头基本验证)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="105"/>
@@ -4693,7 +4695,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="113"/>
       <source>Salt</source>
-      <translation type="unfinished"/>
+      <translation>盐值</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="114"/>
