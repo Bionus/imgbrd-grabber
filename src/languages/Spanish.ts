@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
       <source>One ID per line.</source>
-      <translation type="unfinished"/>
+      <translation>Una ID por linea.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
@@ -118,7 +118,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation type="unfinished"/>
+      <translation>Una MD5 por linea.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation type="unfinished"/>
+      <translation>Puede añadir un identificador personalizado o etiquetas como condición.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -424,12 +424,12 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>Leave empty to use the default folder.</source>
-      <translation type="unfinished"/>
+      <translation>Deje vacío el espacio para usar la carpeta predeterminada.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation type="unfinished"/>
+      <translation>Deje el espacio vacío para usar el nombre de archivo predeterminado.</translation>
     </message>
   </context>
   <context>
@@ -901,7 +901,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
       <source>Set the interval to 0 to disable monitoring.</source>
-      <translation type="unfinished"/>
+      <translation>Establecer el intervalo a 0 y dejar de monitorizar.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -1472,7 +1472,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Cada vez que se guarde una imagen, se creará un archivo de texto adicional con el mismo nombre en el mismo lugar, conteniendo las etiquetas de la imagen.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1482,7 +1482,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation type="unfinished"/>
+      <translation>Identificadores disponibles: Los mismos que se utilizan en la sección "Guardar".</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -2195,7 +2195,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="330"/>
       <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
-      <translation type="unfinished"/>
+      <translation>Las imágenes que contengan una etiqueta de la lista blanca serán descargadas automáticamente de acuerdo a la opción elegida.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
@@ -2401,7 +2401,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="821"/>
       <source>File's identity is based on the MD5 algorithm.</source>
-      <translation type="unfinished"/>
+      <translation>La identidad del archivo se encuentra usando el algoritmo MD5.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="828"/>
@@ -2451,7 +2451,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1150"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation type="unfinished"/>
+      <translation>Cada vez que se guarde una imagen, se creará un archivo de texto adicional con el mismo nombre en el mismo lugar, conteniendo las etiquetas de la imagen.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
@@ -2573,7 +2573,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>La lista de favoritos se esconderá al alcanzar este número de imágenes.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -2625,7 +2625,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
-      <translation type="unfinished"/>
+      <translation>El número de letras que se mostrará junto a las casillas de las fuentes en la ventana principal.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
@@ -2711,7 +2711,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1713"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
-      <translation type="unfinished"/>
+      <translation>Si esta opción está activa, al presionar el botón "Obtener esta página" se tomarán en cuenta las modificaciones hechas al número de imágenes por página, el número de la página, etc. incluso si no pudo cargarse.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1723"/>
@@ -2721,7 +2721,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1735"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
-      <translation type="unfinished"/>
+      <translation>Con esta opción activada, clicar sobre una imagen lo marcará para descargar, mientras Ctrl+Click abrirá una ventana con los detalles.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1785"/>
@@ -3457,7 +3457,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4799"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
-      <translation type="unfinished"/>
+      <translation>Una linea por lista negra. Tu puedes poner multiples etiquetas en una sola linea para hacer condiciones "AND".</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4809"/>
@@ -3467,7 +3467,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="unfinished"/>
+      <translation>Cuando esté activado, las imágenes que contengan una etiqueta de la lista negra no se mostrarán. De otra forma, se le preguntará antes de mostrar una de estas imágenes.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4842"/>
@@ -4290,7 +4290,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="221"/>
       <source>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>Recuerde que algunos imageboards limitan el uso a cierto número de etiquetas para los usuarios sin membresía premium.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="249"/>
@@ -4860,7 +4860,7 @@ Por favor, resuelva este problema antes de continuar las descarga.</translation>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="122"/>
       <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
-      <translation type="unfinished"/>
+      <translation>Si estás usando Grabber por primera vez, te recomendamos primero leer la &lt;a href="{website}/docs/"&gt;Primeros pasos&lt;/a&gt; pagina de la wiki.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="137"/>
