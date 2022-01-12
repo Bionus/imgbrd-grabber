@@ -105,20 +105,20 @@
       <translation>파일명</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="133"/>
-      <source>&lt;i&gt;One ID per line.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;한 줄당 한 개의 아이디를 입력하세요.&lt;/i&gt;</translation>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
+      <source>One ID per line.</source>
+      <translation>한 줄당 한 개의 아이디를 입력하세요.</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="150"/>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="205"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="215"/>
       <source>+</source>
       <translation>+</translation>
     </message>
     <message>
-      <location filename="../gui/src/batch/add-unique-window.ui" line="188"/>
-      <source>&lt;i&gt;One MD5 per line.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;한 줄에 하나의 MD5를 입력하세요.&lt;/i&gt;</translation>
+      <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
+      <source>One MD5 per line.</source>
+      <translation>한 줄에 하나의 MD5를 입력하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -401,34 +401,34 @@
       <translation>커스텀 토큰 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="27"/>
-      <source>&lt;i&gt;You can either use a token or tags as a condition.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;토큰이나 태그를 조건으로 설정할 수 있습니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/condition-window.ui" line="32"/>
+      <source>You can either use a token or tags as a condition.</source>
+      <translation>토큰이나 태그를 조건으로 설정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="34"/>
+      <location filename="../gui/src/settings/condition-window.ui" line="39"/>
       <source>Condition</source>
       <translation>조건</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="44"/>
+      <location filename="../gui/src/settings/condition-window.ui" line="49"/>
       <source>Filename</source>
       <translation>파일명</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="64"/>
+      <location filename="../gui/src/settings/condition-window.ui" line="69"/>
       <source>Folder</source>
       <translation>폴더</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="71"/>
-      <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;비어두면 기본 폴더를 사용합니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/condition-window.ui" line="81"/>
+      <source>Leave empty to use the default folder.</source>
+      <translation>비어두면 기본 폴더를 사용합니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/condition-window.ui" line="81"/>
-      <source>&lt;i&gt;Leave empty to use the default filename.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;비어두면 기본 파일 이름을 사용합니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/condition-window.ui" line="96"/>
+      <source>Leave empty to use the default filename.</source>
+      <translation>비어두면 기본 파일 이름을 사용합니다.</translation>
     </message>
   </context>
   <context>
@@ -439,17 +439,17 @@
       <translation>커스텀 토큰 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/custom-window.ui" line="27"/>
-      <source>&lt;i&gt;Separate tags by spaces or line breaks&lt;/i&gt;</source>
-      <translation>&lt;i&gt;태그를 스페이스(공백)이나 줄(Enter)로 구분하세요&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/custom-window.ui" line="32"/>
+      <source>Separate tags by spaces or line breaks</source>
+      <translation>태그를 스페이스(공백)이나 줄(Enter)로 구분하세요</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/custom-window.ui" line="34"/>
+      <location filename="../gui/src/settings/custom-window.ui" line="39"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/custom-window.ui" line="44"/>
+      <location filename="../gui/src/settings/custom-window.ui" line="49"/>
       <source>Tags</source>
       <translation>태그</translation>
     </message>
@@ -892,9 +892,9 @@ Please solve the issue before resuming the download.</source>
       <translation> 분</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="179"/>
-      <source>&lt;i&gt;Set the interval to 0 to disable monitoring.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;모니터링을 비활성화 하려면 간격을 0으로 설정하세요.&lt;/i&gt;</translation>
+      <location filename="../gui/src/favorite-window.ui" line="184"/>
+      <source>Set the interval to 0 to disable monitoring.</source>
+      <translation>모니터링을 비활성화 하려면 간격을 0으로 설정하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -907,27 +907,27 @@ Please solve the issue before resuming the download.</source>
       <translation>우선순위</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="189"/>
+      <location filename="../gui/src/favorite-window.ui" line="194"/>
       <source>Download</source>
       <translation>다운로드</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="196"/>
+      <location filename="../gui/src/favorite-window.ui" line="201"/>
       <source>Path</source>
       <translation>경로</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="203"/>
+      <location filename="../gui/src/favorite-window.ui" line="208"/>
       <source>Filename</source>
       <translation>파일명</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="210"/>
-      <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;기본 설정을 이용하려면 비워두세요.&lt;/i&gt;</translation>
+      <location filename="../gui/src/favorite-window.ui" line="220"/>
+      <source>Leave empty to use default settings.</source>
+      <translation>기본 설정을 이용하려면 비워두세요.</translation>
     </message>
     <message>
-      <location filename="../gui/src/favorite-window.ui" line="246"/>
+      <location filename="../gui/src/favorite-window.ui" line="256"/>
       <source>Delete</source>
       <translation>삭제하기</translation>
     </message>
@@ -1462,22 +1462,22 @@ Please solve the issue before resuming the download.</source>
       <translation>경로</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="179"/>
-      <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;사진이 저장될 때마다, 외부 텍스트 파일이 같은 이름, 같은 위치에 저장될 것입니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/log-window.ui" line="184"/>
+      <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
+      <translation>사진이 저장될 때마다, 외부 텍스트 파일이 같은 이름, 같은 위치에 저장될 것입니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="193"/>
+      <location filename="../gui/src/settings/log-window.ui" line="198"/>
       <source>Text file content</source>
       <translation>텍스트 파일 컨텐츠</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="213"/>
-      <source>&lt;i&gt;Available tokens: the same as in the "Save" part.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;사용가능한 토큰: "저장"부분과 같습니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/log-window.ui" line="223"/>
+      <source>Available tokens: the same as in the "Save" part.</source>
+      <translation>사용가능한 토큰: "저장"부분과 같습니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/log-window.ui" line="223"/>
+      <location filename="../gui/src/settings/log-window.ui" line="233"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
@@ -1913,12 +1913,12 @@ Please solve the issue before resuming the download.</source>
       <translation>파일이름</translation>
     </message>
     <message>
-      <location filename="../gui/src/monitor-window.ui" line="185"/>
-      <source>&lt;i&gt;Leave empty to use default settings.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;기본 설정을 이용하려면 비워두세요.&lt;/i&gt;</translation>
+      <location filename="../gui/src/monitor-window.ui" line="190"/>
+      <source>Leave empty to use default settings.</source>
+      <translation>기본 설정을 이용하려면 비워두세요.</translation>
     </message>
     <message>
-      <location filename="../gui/src/monitor-window.ui" line="192"/>
+      <location filename="../gui/src/monitor-window.ui" line="197"/>
       <source>Download blacklisted images</source>
       <translation>블랙리스트도 다운로드하기</translation>
     </message>
@@ -2013,10 +2013,10 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="69"/>
-      <location filename="../gui/src/settings/options-window.ui" line="783"/>
-      <location filename="../gui/src/settings/options-window.ui" line="889"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2930"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3958"/>
+      <location filename="../gui/src/settings/options-window.ui" line="793"/>
+      <location filename="../gui/src/settings/options-window.ui" line="909"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2985"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4013"/>
       <source>Save</source>
       <translation>저장하기</translation>
     </message>
@@ -2092,13 +2092,13 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="184"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5075"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5150"/>
       <source>Commands</source>
       <translation>명령어</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="188"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5180"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5255"/>
       <source>Database</source>
       <translation>데이터 베이스</translation>
     </message>
@@ -2114,7 +2114,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="229"/>
-      <location filename="../gui/src/settings/options-window.ui" line="744"/>
+      <location filename="../gui/src/settings/options-window.ui" line="754"/>
       <source>Do nothing</source>
       <translation>아무것도 안하기</translation>
     </message>
@@ -2184,23 +2184,23 @@ Please solve the issue before resuming the download.</source>
       <translation>썸네일 로딩중에</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="325"/>
-      <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;화이트리스트에 있는 태그가 포함된 이미지는 위의 옵션에 따라 자동으로 다운로드 될 예정입니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="330"/>
+      <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
+      <translation>화이트리스트에 있는 태그가 포함된 이미지는 위의 옵션에 따라 자동으로 다운로드 될 예정입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4797"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4867"/>
       <source>Ignored tags</source>
       <translation>무시된 태그</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4766"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4831"/>
       <source>Download images containing blacklisted tags</source>
       <translation>블랙리스트 태그를 포함한 이미지 다운로드</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="335"/>
+      <location filename="../gui/src/settings/options-window.ui" line="340"/>
       <source>Adds</source>
       <translation>추가</translation>
     </message>
@@ -2210,725 +2210,725 @@ Please solve the issue before resuming the download.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="372"/>
+      <location filename="../gui/src/settings/options-window.ui" line="382"/>
       <source>Ask for confirmation before closing the window</source>
       <translation>창 닫기 전에 물어보기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="379"/>
+      <location filename="../gui/src/settings/options-window.ui" line="389"/>
       <source>Send anonymous usage data</source>
       <translation>익명으로 사용 데이터 보내기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="423"/>
+      <location filename="../gui/src/settings/options-window.ui" line="433"/>
       <source>Images per page</source>
       <translation>페이지당 이미지 수</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="430"/>
+      <location filename="../gui/src/settings/options-window.ui" line="440"/>
       <source>Number of columns</source>
       <translation>줄의 개수</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="437"/>
+      <location filename="../gui/src/settings/options-window.ui" line="447"/>
       <source>Source 1</source>
       <translation>소스 1</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="444"/>
+      <location filename="../gui/src/settings/options-window.ui" line="454"/>
       <source>Source 2</source>
       <translation>소스 2</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="451"/>
+      <location filename="../gui/src/settings/options-window.ui" line="461"/>
       <source>Source 3</source>
       <translation>소스 3</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="458"/>
+      <location filename="../gui/src/settings/options-window.ui" line="468"/>
       <source>Source 4</source>
       <translation>소스 4</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="491"/>
+      <location filename="../gui/src/settings/options-window.ui" line="501"/>
       <source>Get more precise tags when searching images</source>
       <translation>이미지 검색할 때 더 정교한 태그 불러오기</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="502"/>
-      <location filename="../gui/src/settings/options-window.ui" line="529"/>
-      <location filename="../gui/src/settings/options-window.ui" line="556"/>
-      <location filename="../gui/src/settings/options-window.ui" line="583"/>
-      <source>XML</source>
-      <translation>XML</translation>
-    </message>
-    <message>
-      <location filename="../gui/src/settings/options-window.ui" line="507"/>
-      <location filename="../gui/src/settings/options-window.ui" line="534"/>
-      <location filename="../gui/src/settings/options-window.ui" line="561"/>
-      <location filename="../gui/src/settings/options-window.ui" line="588"/>
-      <source>JSON</source>
-      <translation>JSON</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="512"/>
       <location filename="../gui/src/settings/options-window.ui" line="539"/>
       <location filename="../gui/src/settings/options-window.ui" line="566"/>
       <location filename="../gui/src/settings/options-window.ui" line="593"/>
-      <source>Regex</source>
-      <translation>정규식</translation>
+      <source>XML</source>
+      <translation>XML</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="517"/>
       <location filename="../gui/src/settings/options-window.ui" line="544"/>
       <location filename="../gui/src/settings/options-window.ui" line="571"/>
       <location filename="../gui/src/settings/options-window.ui" line="598"/>
+      <source>JSON</source>
+      <translation>JSON</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="522"/>
+      <location filename="../gui/src/settings/options-window.ui" line="549"/>
+      <location filename="../gui/src/settings/options-window.ui" line="576"/>
+      <location filename="../gui/src/settings/options-window.ui" line="603"/>
+      <source>Regex</source>
+      <translation>정규식</translation>
+    </message>
+    <message>
+      <location filename="../gui/src/settings/options-window.ui" line="527"/>
+      <location filename="../gui/src/settings/options-window.ui" line="554"/>
+      <location filename="../gui/src/settings/options-window.ui" line="581"/>
+      <location filename="../gui/src/settings/options-window.ui" line="608"/>
       <source>RSS</source>
       <translation>RSS</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="606"/>
+      <location filename="../gui/src/settings/options-window.ui" line="616"/>
       <source>Auto tag add</source>
       <translation>자동 태그 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="630"/>
+      <location filename="../gui/src/settings/options-window.ui" line="640"/>
       <source>Download original images</source>
       <translation>원본 이미지 다운로드하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="640"/>
+      <location filename="../gui/src/settings/options-window.ui" line="650"/>
       <source>Download sample on error</source>
       <translation>에러 발생시 샘플 다운로드하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="650"/>
+      <location filename="../gui/src/settings/options-window.ui" line="660"/>
       <source>Download images automatically</source>
       <translation>이미지 자동으로 다운로드하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="657"/>
+      <location filename="../gui/src/settings/options-window.ui" line="667"/>
       <source>Keep original creation date</source>
       <translation>원본 생성일 유지하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="667"/>
+      <location filename="../gui/src/settings/options-window.ui" line="677"/>
       <source>Get extension from file header</source>
       <translation>파일 헤더에서 확장자 불러오기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="677"/>
+      <location filename="../gui/src/settings/options-window.ui" line="687"/>
       <source>Folder</source>
       <translation>폴더</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="689"/>
-      <location filename="../gui/src/settings/options-window.ui" line="710"/>
-      <location filename="../gui/src/settings/options-window.ui" line="872"/>
+      <location filename="../gui/src/settings/options-window.ui" line="699"/>
+      <location filename="../gui/src/settings/options-window.ui" line="720"/>
+      <location filename="../gui/src/settings/options-window.ui" line="892"/>
       <source>Browse</source>
       <translation>찾아보기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="698"/>
-      <location filename="../gui/src/settings/options-window.ui" line="949"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4384"/>
+      <location filename="../gui/src/settings/options-window.ui" line="708"/>
+      <location filename="../gui/src/settings/options-window.ui" line="969"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4439"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="719"/>
+      <location filename="../gui/src/settings/options-window.ui" line="729"/>
       <source>Simultaneous downloads</source>
       <translation>동시 다운로드</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="736"/>
+      <location filename="../gui/src/settings/options-window.ui" line="746"/>
       <source>When the download is finished</source>
       <translation>다운로드가 완료되면</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="749"/>
+      <location filename="../gui/src/settings/options-window.ui" line="759"/>
       <source>Close window</source>
       <translation>창 닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="754"/>
+      <location filename="../gui/src/settings/options-window.ui" line="764"/>
       <source>Open CD tray</source>
       <translation>CD 꺼내기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="759"/>
+      <location filename="../gui/src/settings/options-window.ui" line="769"/>
       <source>Play a sound</source>
       <translation>소리 재생하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="764"/>
+      <location filename="../gui/src/settings/options-window.ui" line="774"/>
       <source>Shutdown</source>
       <translation>종료</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="772"/>
+      <location filename="../gui/src/settings/options-window.ui" line="782"/>
       <source>If a file already exists globally</source>
       <translation>파일이 이미 존재하면</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="788"/>
-      <location filename="../gui/src/settings/options-window.ui" line="842"/>
-      <location filename="../gui/src/settings/options-window.ui" line="894"/>
+      <location filename="../gui/src/settings/options-window.ui" line="798"/>
+      <location filename="../gui/src/settings/options-window.ui" line="857"/>
+      <location filename="../gui/src/settings/options-window.ui" line="914"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="793"/>
-      <location filename="../gui/src/settings/options-window.ui" line="899"/>
+      <location filename="../gui/src/settings/options-window.ui" line="803"/>
+      <location filename="../gui/src/settings/options-window.ui" line="919"/>
       <source>Move</source>
       <translation>이동</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="798"/>
-      <location filename="../gui/src/settings/options-window.ui" line="904"/>
+      <location filename="../gui/src/settings/options-window.ui" line="808"/>
+      <location filename="../gui/src/settings/options-window.ui" line="924"/>
       <source>Don't save</source>
       <translation>저장하지 않기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="806"/>
-      <source>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;파일의 정체성은 MD5 알고리즘에 기반합니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="821"/>
+      <source>File's identity is based on the MD5 algorithm.</source>
+      <translation>파일의 정체성은 MD5 알고리즘에 기반합니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="813"/>
+      <location filename="../gui/src/settings/options-window.ui" line="828"/>
       <source>Automatic redownload</source>
       <translation>자동 재다운로드</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="827"/>
+      <location filename="../gui/src/settings/options-window.ui" line="842"/>
       <source>Keep deleted files in the MD5 list</source>
       <translation>파일이 삭제되어도 MD5 목록에 유지하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="834"/>
+      <location filename="../gui/src/settings/options-window.ui" line="849"/>
       <source>If an image yields multiple files</source>
       <translation>만약 이미지에서 여러 파일이 나오면</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="916"/>
+      <location filename="../gui/src/settings/options-window.ui" line="936"/>
       <source>Default</source>
       <translation>기본값</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="982"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1002"/>
       <source>Tags separator</source>
       <translation>태그 분리기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="996"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1016"/>
       <source>Replace spaces by underscores</source>
       <translation>공백 언더바('_')로 바꾸기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1003"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1023"/>
       <source>Replace JPEG by JPG</source>
       <translation>JPEG를 JPG로 바꾸기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1013"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1033"/>
       <source>Max length</source>
       <translation>최대 길이</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1041"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1066"/>
       <source>Add a conditional filename</source>
       <translation>조건부 파일명 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1120"/>
-      <source>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;이미지가 저장될 때마다, 이미지 정보가, 분류 또는 다른 기능을 위해 별도의 텍스트 파일에 저장될 겁니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="1150"/>
+      <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
+      <translation>이미지가 저장될 때마다, 이미지 정보가, 분류 또는 다른 기능을 위해 별도의 텍스트 파일에 저장될 겁니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1133"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1163"/>
       <source>Add a separate log file</source>
       <translation>별도의 로그 파일 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1157"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1187"/>
       <source>Windows Property System</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1166"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1205"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1196"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1235"/>
       <source>Add new property</source>
       <translation>속성 추가</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1173"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1192"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1203"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1222"/>
       <source>Extensions</source>
       <translation>확장 프로그램</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1186"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1216"/>
       <source>Exiftool</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1212"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1242"/>
       <source>Version</source>
       <translation>버전</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1219"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1249"/>
       <source>Loading...</source>
       <translation>불러오는 중…</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1233"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1263"/>
       <source>Add a custom token</source>
       <translation>커스텀 토큰 추가하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1245"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1275"/>
       <source>Resize</source>
       <translation>크기 조정</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1251"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1281"/>
       <source>Max width</source>
       <translation>최대 폭</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1271"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1301"/>
       <source>Max height</source>
       <translation>최대 높이</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1291"/>
-      <source>&lt;i&gt;Images bigger than the max width and/or height will be resized to fit.&lt;/i&gt;</source>
-      <translation>&lt;i&gt; 이미지의 크기가 열린 창의 최대 폭 또는 높이보다 클 경우 자동으로 맞춰서 보여집니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="1326"/>
+      <source>Images bigger than the max width and/or height will be resized to fit.</source>
+      <translation>이미지의 크기가 열린 창의 최대 폭 또는 높이보다 클 경우 자동으로 맞춰서 보여집니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1324"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1359"/>
       <source>Theme</source>
       <translation>테마</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1341"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1376"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1354"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1389"/>
       <source>Favorites display</source>
       <translation>즐겨찾기만 보여주기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1362"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1397"/>
       <source>Image, name and details</source>
       <translation>이미지, 이름과 상세 정보</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1367"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1402"/>
       <source>Image and name</source>
       <translation>이미지와 이름</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1372"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1407"/>
       <source>Image and details</source>
       <translation>이미지와 상세정보</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1377"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1412"/>
       <source>Name and details</source>
       <translation>이름과 상세정보</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1382"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1417"/>
       <source>Image only</source>
       <translation>이미지만</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1387"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1422"/>
       <source>Name only</source>
       <translation>이름만</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1392"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1427"/>
       <source>Details only</source>
       <translation>상세 정보만 보이기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1400"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1435"/>
       <source>Hide favorites</source>
       <translation>즐겨찾기 숨기기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1417"/>
-      <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;즐겨찾기 목록은 이미지 수에 도달했을 때 사라질 겁니다..&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="1457"/>
+      <source>The favorites list will be hidden as soon as this image number has been reached.</source>
+      <translation>즐겨찾기 목록은 이미지 수에 도달했을 때 사라질 겁니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1427"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1467"/>
       <source>Source's type display</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1435"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1475"/>
       <source>Text</source>
       <translation>텍스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1440"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5031"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5101"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1480"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5106"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5176"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1445"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1485"/>
       <source>Image and text</source>
       <translation>이미지와 텍스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1450"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1490"/>
       <source>Don't show</source>
       <translation>표시 안 함</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1458"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1498"/>
       <source>Displayed letters</source>
       <translation>표시된 문자들</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1468"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1508"/>
       <source>Display n letters</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1473"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1513"/>
       <source>Before first dot</source>
       <translation>첫번째 점 전에</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1478"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1518"/>
       <source>Before last dot</source>
       <translation>마지막 점 전에</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1501"/>
-      <source>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the "+" part of the main window.&lt;/i&gt;</source>
+      <location filename="../gui/src/settings/options-window.ui" line="1546"/>
+      <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1511"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1556"/>
       <source>Preload all tabs when restoring a previous session</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1532"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1577"/>
       <source>Decline dialogue</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1525"/>
-      <location filename="../gui/src/settings/options-window.ui" line="1539"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1570"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1584"/>
       <source>Ctrl+N</source>
       <translation>Ctrl+N</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1518"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1563"/>
       <source>Accept dialogue</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1563"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1608"/>
       <source>Use a scroll area</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1573"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1618"/>
       <source>Use a fixed-image-width layout</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1583"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1628"/>
       <source>Infinite scroll</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1591"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1636"/>
       <source>Disabled</source>
       <translation>비활성화 됨</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1596"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1641"/>
       <source>Button</source>
       <translation>버튼</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1601"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1646"/>
       <source>Scroll</source>
       <translation>스크롤</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1609"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1654"/>
       <source>Remember page number when infinite scrolling</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1616"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1661"/>
       <source>Resize previews instead of cropping them</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1626"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1671"/>
       <source>Enable autocompletion</source>
       <translation>자동완성 켜기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1636"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1681"/>
       <source>Show warning if an incompatible modifier is found</source>
       <translation>동시에 사용할 수 없는 한정어 발견시 경고 표시하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1646"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1691"/>
       <source>Show other warnings</source>
       <translation>모든 경고 보기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1656"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1701"/>
       <source>Download not loaded pages</source>
       <translation>로딩안된 페이지 다운로드하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1663"/>
-      <source>&lt;i&gt;If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;이 옵션을 활성화하면, '페이지 다운받기' 버튼은 '페이지 당 이미지 개수', '페이지 수', 등 모든 정보가 로딩이 안되어도 반영이 될겁니다&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="1713"/>
+      <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
+      <translation>이 옵션을 활성화하면, '페이지 다운받기' 버튼은 '페이지 당 이미지 개수', '페이지 수', 등 모든 정보가 로딩이 안되어도 반영이 될겁니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1673"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1723"/>
       <source>Invert Click and Ctrl+Click actions</source>
       <translation>클릭과 컨트롤(Ctrl)+클릭 행동 되돌리기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1680"/>
-      <source>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;이 옵션이 활성화된 상태로 이미지를 클릭하면 다운로드를 하도록 표시를 남길겁니다. Ctrl+클릭은 그대로 세부사항을 보여주는 창을 보여줍니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="1735"/>
+      <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
+      <translation>이 옵션이 활성화된 상태로 이미지를 클릭하면 다운로드를 하도록 표시를 남길겁니다. Ctrl+클릭은 그대로 세부사항을 보여주는 창을 보여줍니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1730"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1785"/>
       <source>Quit application</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1745"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1800"/>
       <source>Ctrl+Q</source>
       <translation>Ctrl+Q</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1761"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1816"/>
       <source>Focus search field</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1773"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3970"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1828"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4025"/>
       <source>S</source>
       <translation>S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1789"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1844"/>
       <source>Close tab</source>
       <translation>탭 닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1801"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1856"/>
       <source>Ctrl+W</source>
       <translation>Ctrl+W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1817"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1872"/>
       <source>New tab</source>
       <translation>새 탭</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1829"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1884"/>
       <source>Ctrl+T</source>
       <translation>Ctrl+T</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1845"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1900"/>
       <source>Open previous tab</source>
       <translation>이전 탭 열기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1857"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1912"/>
       <source>Ctrl+Shift+Tab</source>
       <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1873"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1928"/>
       <source>Open next tab</source>
       <translation>다음 탭 열기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1885"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1940"/>
       <source>Ctrl+Tab</source>
       <translation>Ctrl+Tab</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1901"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1956"/>
       <source>Call external application to browse save directory</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1913"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1968"/>
       <source>Ctrl+O</source>
       <translation>Ctrl+O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1969"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2024"/>
       <source>Tag list position</source>
       <translation>태그 목록 위치</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1977"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2095"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2032"/>
       <location filename="../gui/src/settings/options-window.ui" line="2150"/>
       <location filename="../gui/src/settings/options-window.ui" line="2205"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2260"/>
       <source>Top</source>
       <translation>위</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1982"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2117"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2037"/>
       <location filename="../gui/src/settings/options-window.ui" line="2172"/>
       <location filename="../gui/src/settings/options-window.ui" line="2227"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3858"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2282"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3913"/>
       <source>Left</source>
       <translation>옆</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1987"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2042"/>
       <source>Auto</source>
       <translation>자동</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1995"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2050"/>
       <source>Preloading</source>
       <translation>미리 로딩</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2005"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2060"/>
       <source>Slideshow</source>
       <translation>슬라이드 쇼</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2012"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2067"/>
       <source>s</source>
       <translation>초</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2022"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2077"/>
       <source>Middle click to close window</source>
       <translation>창을 닫으려면 가운데를 클릭하세요</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2032"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2087"/>
       <source>Enable scroll wheel navigation</source>
       <translation>스크롤 휠 네비게이션 활성화하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2049"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2104"/>
       <source>Show tag count</source>
       <translation>태그 개수 보여주기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2056"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2111"/>
       <source>Tag order</source>
       <translation>태그 순서</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2064"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4915"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2119"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4990"/>
       <source>Type</source>
       <translation>타입</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2069"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2124"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2074"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2129"/>
       <source>Count</source>
       <translation>개수</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2082"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2137"/>
       <source>Image position</source>
       <translation>이미지 위치</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2100"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2122"/>
       <location filename="../gui/src/settings/options-window.ui" line="2155"/>
       <location filename="../gui/src/settings/options-window.ui" line="2177"/>
       <location filename="../gui/src/settings/options-window.ui" line="2210"/>
       <location filename="../gui/src/settings/options-window.ui" line="2232"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2265"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2287"/>
       <source>Center</source>
       <translation>가운데</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2105"/>
       <location filename="../gui/src/settings/options-window.ui" line="2160"/>
       <location filename="../gui/src/settings/options-window.ui" line="2215"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2270"/>
       <source>Bottom</source>
       <translation>하단</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2127"/>
       <location filename="../gui/src/settings/options-window.ui" line="2182"/>
       <location filename="../gui/src/settings/options-window.ui" line="2237"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3886"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2292"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3941"/>
       <source>Right</source>
       <translation>오른쪽</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2137"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2192"/>
       <source>Animation position</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2192"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2247"/>
       <source>Video position</source>
       <translation>비디오 위치</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2247"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2302"/>
       <source>Background color</source>
       <translation>배경색</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2259"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4228"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4256"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4284"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4312"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4340"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4368"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4396"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4424"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4452"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4480"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4508"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4536"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4614"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4636"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2314"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4283"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4311"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4339"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4367"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4395"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4423"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4451"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4479"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4507"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4535"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4563"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4591"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4669"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4691"/>
       <source>Color</source>
       <translation>색</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1962"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2017"/>
       <source>Use a single image window</source>
       <translation>싱글 이미지 창 이용하기</translation>
     </message>
@@ -2938,12 +2938,12 @@ Please solve the issue before resuming the download.</source>
       <translation>태그</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="355"/>
-      <source>&lt;i&gt;These tags and post-filters will be automatically added to every search.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;이 태그와 게시물 필터는 검색할 때마다 자동으로 반영됩니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="365"/>
+      <source>These tags and post-filters will be automatically added to every search.</source>
+      <translation>이 태그와 게시물 필터는 검색할 때마다 자동으로 반영됩니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="345"/>
+      <location filename="../gui/src/settings/options-window.ui" line="350"/>
       <source>Post-filters</source>
       <translation>필터링 후</translation>
     </message>
@@ -2969,625 +2969,625 @@ Please solve the issue before resuming the download.</source>
       <translation>단축키</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="365"/>
+      <location filename="../gui/src/settings/options-window.ui" line="375"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="386"/>
+      <location filename="../gui/src/settings/options-window.ui" line="396"/>
       <source>Use system locale for dates and numbers</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="850"/>
+      <location filename="../gui/src/settings/options-window.ui" line="865"/>
       <source>Temporary directory</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="857"/>
-      <source>&lt;i&gt;Leave empty to use the default temporary directory.&lt;/i&gt;</source>
+      <location filename="../gui/src/settings/options-window.ui" line="877"/>
+      <source>Leave empty to use the default temporary directory.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="881"/>
+      <location filename="../gui/src/settings/options-window.ui" line="901"/>
       <source>If it's in the same directory</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1027"/>
-      <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.&lt;/i&gt;</source>
+      <location filename="../gui/src/settings/options-window.ui" line="1052"/>
+      <source>If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit. Don't go above 260 on Windows unless you know what you're doing.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2042"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2097"/>
       <source>Use image samples</source>
       <translation>샘플 이미지 이용하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2268"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2323"/>
       <source>Scale up small images to fit window</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2275"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2330"/>
       <source>Use built-in video player</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2305"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2360"/>
       <source>Show video player controls</source>
       <translation>비디오 플레이어 도구 보이기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2315"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2370"/>
       <source>Show GIF player controls</source>
       <translation>GIF 플레이어 도구 보이기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3818"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3873"/>
       <source>Close</source>
       <translation>닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3830"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3885"/>
       <source>Esc</source>
       <translation>Esc</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2371"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3846"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2426"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3901"/>
       <source>Prev</source>
       <translation>이전</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2516"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3874"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2571"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3929"/>
       <source>Next</source>
       <translation>다음</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2652"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3902"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2707"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3957"/>
       <source>Details</source>
       <translation>자세히</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3914"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3969"/>
       <source>D</source>
       <translation>D</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3930"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3985"/>
       <source>Save as...</source>
       <translation>다른 이름으로 저장...</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3942"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3997"/>
       <source>Shift+S</source>
       <translation>Shift+S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3069"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3986"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3124"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4041"/>
       <source>Save and close</source>
       <translation>저장하고 닫기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3998"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4053"/>
       <source>W</source>
       <translation>W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4014"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4069"/>
       <source>Destination folder</source>
       <translation>대상 폴더</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4026"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4081"/>
       <source>O</source>
       <translation>O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3347"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4042"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3402"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4097"/>
       <source>Save (fav)</source>
       <translation>저장 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4054"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4109"/>
       <source>Alt+S</source>
       <translation>Alt + S</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3486"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4070"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3541"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4125"/>
       <source>Save and close (fav)</source>
       <translation>저장하고 닫기 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1334"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1369"/>
       <source>Thumbnail scaling</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1546"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1591"/>
       <source>Scale font size</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="1923"/>
+      <location filename="../gui/src/settings/options-window.ui" line="1978"/>
       <source>Back out from favorites results</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2285"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2340"/>
       <source>Remember button drawer state</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2295"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2350"/>
       <source>Remember window geometry</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2368"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2423"/>
       <source>Previous media entry</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2383"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2528"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2664"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2803"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2942"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3081"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3220"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3359"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3498"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3637"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2438"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2583"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2719"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2858"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2997"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3136"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3275"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3414"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3553"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3692"/>
       <source>Partial checks are stored in collapsable drawer</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2386"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2531"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2667"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2806"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2945"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3084"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3223"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3362"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3501"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3640"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2441"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2586"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2722"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2861"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3000"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3139"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3278"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3417"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3556"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3695"/>
       <source>Enable</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2418"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2563"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2699"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2838"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2977"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3116"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3255"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3394"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3533"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3672"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2473"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2618"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2754"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2893"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3032"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3171"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3310"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3449"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3588"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3727"/>
       <source>Ascending from left to right</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2433"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2572"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2708"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2847"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2986"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3125"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3264"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3403"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3542"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3681"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2488"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2627"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2763"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2902"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3041"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3180"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3319"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3458"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3597"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3736"/>
       <source>Position: </source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2462"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2604"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2740"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2879"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3018"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3157"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3296"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3435"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3574"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3713"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2517"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2659"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2795"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2934"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3073"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3212"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3351"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3490"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3629"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3768"/>
       <source>Button display text</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2494"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2630"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2766"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2905"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3044"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3183"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3322"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3461"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3600"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3739"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2549"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2685"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2821"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2960"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3099"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3238"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3377"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3516"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3655"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3794"/>
       <source>Smaller numbers make for smaller buttons</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2497"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2633"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2769"/>
-      <location filename="../gui/src/settings/options-window.ui" line="2908"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3047"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3186"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3325"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3464"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3603"/>
-      <location filename="../gui/src/settings/options-window.ui" line="3742"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2552"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2688"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2824"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2963"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3102"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3241"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3380"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3519"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3658"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3797"/>
       <source>Width: </source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2513"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2568"/>
       <source>Next media entry</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2649"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2704"/>
       <source>View media details</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2788"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2843"/>
       <source>Save file with specified path</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2791"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2846"/>
       <source>Save As...</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="2927"/>
+      <location filename="../gui/src/settings/options-window.ui" line="2982"/>
       <source>Save file to usual path</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3066"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3121"/>
       <source>Save file to usual path and close the viewer window</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3205"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3260"/>
       <source>Open usual save path in file browser</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3208"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3263"/>
       <source>Open</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3344"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3399"/>
       <source>Save file to favourite path</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3483"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3538"/>
       <source>Save file to favourite path and close the viewer window</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3622"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3677"/>
       <source>Open favourite save path in file browser</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="3625"/>
+      <location filename="../gui/src/settings/options-window.ui" line="3680"/>
       <source>Open (fav)</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4082"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4137"/>
       <source>Alt+W</source>
       <translation>Alt + W</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4098"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4153"/>
       <source>Destination folder (fav)</source>
       <translation>대상 폴더 (fav)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4110"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4165"/>
       <source>Alt+O</source>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4126"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4181"/>
       <source>Toggle full-screen</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4138"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4193"/>
       <source>F11</source>
       <translation>F11</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4154"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4209"/>
       <source>Toggle slideshow</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4166"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4221"/>
       <source>Space</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4182"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4237"/>
       <source>Copy raw media data to clipboard</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4194"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4249"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4212"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4267"/>
       <source>Artists</source>
       <translation>아티스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4235"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4263"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4291"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4319"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4347"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4375"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4403"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4431"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4459"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4487"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4515"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4543"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4290"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4318"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4346"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4374"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4402"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4430"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4458"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4486"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4514"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4542"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4570"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4598"/>
       <source>Font</source>
       <translation>폰트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4244"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4299"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4272"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4327"/>
       <source>Series</source>
       <translation>시리즈</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4300"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4355"/>
       <source>Characters</source>
       <translation>등장인물</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4328"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4383"/>
       <source>Models</source>
       <translation>모델</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4356"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4411"/>
       <source>Generals</source>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4412"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4467"/>
       <source>Blacklisted</source>
       <translation>블랙리스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4440"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4495"/>
       <source>Ignored</source>
       <translation>무시됨</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4468"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4523"/>
       <source>Species</source>
       <translation>종</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4496"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4551"/>
       <source>Kept for later</source>
       <translation>임시저장 되었습니다</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4524"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4579"/>
       <source>Metas</source>
       <translation>기타</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4571"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4626"/>
       <source>Hosts</source>
       <translation>호스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4577"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4654"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4632"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4709"/>
       <source>Horizontal margins</source>
       <translation>위, 아래 가장자리</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4597"/>
-      <location filename="../gui/src/settings/options-window.ui" line="4688"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4652"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4743"/>
       <source>Borders</source>
       <translation>테두리</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4648"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4703"/>
       <source>Images</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4671"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4726"/>
       <source>Vertical margins</source>
       <translation>왼, 오른쪽 가장자리</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4712"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4767"/>
       <source>Show log</source>
       <translation>로그 표시</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4726"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4781"/>
       <source>Blacklisted tags</source>
       <translation>블랙리스트된 태그</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4739"/>
-      <source>&lt;i&gt;One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;한 줄 당 하나의 블랙리스트를 입력하세요. 한 줄에 여러 태그를 입력하시면 "AND" (동시 만족)조건을 발생시킬 수 있습니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="4799"/>
+      <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
+      <translation>한 줄 당 하나의 블랙리스트를 입력하세요. 한 줄에 여러 태그를 입력하시면 "AND" (동시 만족)조건을 발생시킬 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4749"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4809"/>
       <source>Ignore images containing a blacklisted tag</source>
       <translation>블랙리스트 태그를 포함한 이미지 무시하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4756"/>
-      <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;이 박스를 체크하면 블랙리스트 태그가 포함된 이미지는 검색 결과에 보이지 않습니다. 체크를 안하면 블랙리스트 된 이미지가 보일때마다 확인 여부를 물어볼 것입니다.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/options-window.ui" line="4821"/>
+      <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
+      <translation>이 박스를 체크하면 블랙리스트 태그가 포함된 이미지는 검색 결과에 보이지 않습니다. 체크를 안하면 블랙리스트 된 이미지가 보일때마다 확인 여부를 물어볼 것입니다.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4777"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4842"/>
       <source>Removed tags</source>
       <translation>제거된 태그</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4787"/>
-      <source>&lt;i&gt;These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.&lt;/i&gt;</source>
+      <location filename="../gui/src/settings/options-window.ui" line="4857"/>
+      <source>These tags will not be taken in account when saving image. They won't appear in tokens such as %copyright% or %all%.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4807"/>
-      <source>&lt;i&gt;One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.&lt;/i&gt;</source>
+      <location filename="../gui/src/settings/options-window.ui" line="4882"/>
+      <source>One tag per line. Ignored tags will not be treated as having any particular type, and therefore not appearing, for example, in %copyright%. They will however still appear in %all%.</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4821"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4896"/>
       <source>Delay on startup</source>
       <translation type="unfinished"/>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4828"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4903"/>
       <source> s</source>
       <translation> 초</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4838"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4913"/>
       <source>Tray icon</source>
       <translation>작업 표시줄 아이콘</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4847"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4922"/>
       <source>Minimize to tray</source>
       <translation>작업 표시줄로 최소화</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4857"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4932"/>
       <source>Close to tray</source>
       <translation>창을 닫은 후 작업표시줄에 남기기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4864"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4939"/>
       <source>Enable system tray icon</source>
       <translation>시스템 작업 표시줄 아이콘 활성화</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4878"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4953"/>
       <source>Use proxy</source>
       <translation>프록시 사용하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4923"/>
+      <location filename="../gui/src/settings/options-window.ui" line="4998"/>
       <source>HTTP</source>
       <translation>HTTP</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4928"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5003"/>
       <source>SOCKS v5</source>
       <translation>SOCKS v5</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4936"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5150"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5011"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5225"/>
       <source>Host</source>
       <translation>호스트</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4946"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5021"/>
       <source>Port</source>
       <translation>포트번호</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4960"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5160"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5035"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5235"/>
       <source>User</source>
       <translation>사용자</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4967"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5170"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5042"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5245"/>
       <source>Password</source>
       <translation>비밀번호</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="4987"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5062"/>
       <source>Use system-wide proxy settings</source>
       <translation>시스템-전역 프록시 설정 사용하기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5004"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5079"/>
       <source>Add a web service</source>
       <translation>웹 서비스 추가히기</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5041"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5111"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5116"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5186"/>
       <source>Tag (after)</source>
       <translation>태그 (사용 후)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5051"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5091"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5126"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5166"/>
       <source>Tag (before)</source>
       <translation>태그 (사용 전)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5061"/>
-      <location filename="../gui/src/settings/options-window.ui" line="5131"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5136"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5206"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
       <translation>추가 태그: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: 태그 &lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 태그 타입, "일반", "작가", "copyright", "캐릭터", "모델" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 태그 타입 개수 (0개에서 6개)</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5081"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5156"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5121"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5196"/>
       <source>End</source>
       <translation>끝</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5144"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5219"/>
       <source>Credentials</source>
       <translation>증명서</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/options-window.ui" line="5190"/>
+      <location filename="../gui/src/settings/options-window.ui" line="5265"/>
       <source>Driver</source>
       <translation>드라이버</translation>
     </message>
@@ -4275,17 +4275,17 @@ Please solve the issue before resuming the download.</source>
       <translation>캘린더</translation>
     </message>
     <message>
-      <location filename="../gui/src/search-window.ui" line="216"/>
-      <source>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation>&lt;i&gt;몇몇 이미지(보드) 사이트는 회원 또는 유료회원이 아닌 경우 특정 개수 이상의 태그를 사용할 수 없는 것을 참고하세요.</translation>
+      <location filename="../gui/src/search-window.ui" line="221"/>
+      <source>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
+      <translation>몇몇 이미지(보드) 사이트는 회원 또는 유료회원이 아닌 경우 특정 개수 이상의 태그를 사용할 수 없는 것을 참고하세요.</translation>
     </message>
     <message>
-      <location filename="../gui/src/search-window.ui" line="244"/>
+      <location filename="../gui/src/search-window.ui" line="249"/>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../gui/src/search-window.ui" line="263"/>
+      <location filename="../gui/src/search-window.ui" line="268"/>
       <source>Tags</source>
       <translation>태그</translation>
     </message>
@@ -4845,12 +4845,12 @@ Please solve the issue before resuming the download.</source>
       <translation>소스</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/start-window.ui" line="117"/>
-      <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Grabber를 처음 사용하시는 거면 우선 &lt;a href="{website}/docs/"&gt;를 읽는 것을 권장드립니다. 다음을 참고하세요 &lt;/a&gt; wiki page.&lt;/i&gt;</translation>
+      <location filename="../gui/src/settings/start-window.ui" line="122"/>
+      <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
+      <translation>Grabber를 처음 사용하시는 거면 우선 &lt;a href="{website}/docs/"&gt;를 읽는 것을 권장드립니다. 다음을 참고하세요 &lt;/a&gt; wiki page.</translation>
     </message>
     <message>
-      <location filename="../gui/src/settings/start-window.ui" line="132"/>
+      <location filename="../gui/src/settings/start-window.ui" line="137"/>
       <source>Options</source>
       <translation>옵션</translation>
     </message>
