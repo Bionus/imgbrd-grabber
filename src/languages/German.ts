@@ -2576,7 +2576,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>Die Favoritenliste wird ausgeblendet, sobald diese Bildnummer erreicht wurde.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -2628,7 +2628,7 @@ Beheben sie bitte das Problem, bevor sie den Download fortsetzen.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
-      <translation type="unfinished"/>
+      <translation>Anzahl der angezeigten Buchstaben neben den Kontrollkästchen der Quellen im "+" Teil des Hauptfensters.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
