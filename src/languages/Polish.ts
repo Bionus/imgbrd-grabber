@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
       <source>One ID per line.</source>
-      <translation type="unfinished"/>
+      <translation>Jedno ID na wiersz.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
@@ -118,7 +118,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation type="unfinished"/>
+      <translation>Jedno MD5 na wiersz.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation type="unfinished"/>
+      <translation>Możesz użyć tokena lub tagów jako warunku.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>Leave empty to use the default folder.</source>
-      <translation type="unfinished"/>
+      <translation>Pozostaw puste, aby użyć domyślnego folderu.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation type="unfinished"/>
+      <translation>Pozostaw puste, aby użyć domyślnej nazwy pliku.</translation>
     </message>
   </context>
   <context>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="32"/>
       <source>Separate tags by spaces or line breaks</source>
-      <translation type="unfinished"/>
+      <translation>Rozdziel tagi według spacji lub podziałów linii</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="39"/>
@@ -926,7 +926,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
       <source>Set the interval to 0 to disable monitoring.</source>
-      <translation type="unfinished"/>
+      <translation>Ustaw interwał na 0, aby wyłączyć monitorowanie.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -956,7 +956,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="220"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>Pozostaw puste, aby użyć ustawień domyślnych.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="256"/>
@@ -1499,7 +1499,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>Po każdym zapisaniu obrazu zewnętrzny plik tekstowy zostanie zapisany pod tą samą nazwą w tej samej lokalizacji.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1509,7 +1509,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation type="unfinished"/>
+      <translation>Dostępne tokeny: takie same jak w części „Zapisz”.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -1951,7 +1951,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="190"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>Pozostaw puste, aby użyć ustawień domyślnych.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
@@ -2228,7 +2228,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="330"/>
       <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
-      <translation type="unfinished"/>
+      <translation>Obrazy zawierające tagi z białej listy zostaną pobrane automatycznie zgodnie z powyższą opcją.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
@@ -2434,7 +2434,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="821"/>
       <source>File's identity is based on the MD5 algorithm.</source>
-      <translation type="unfinished"/>
+      <translation>Tożsamość pliku jest określana przez sumę MD5.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="828"/>
@@ -2484,7 +2484,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1150"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation type="unfinished"/>
+      <translation>Za każdym razem, gdy obraz jest zapisywany, jego informacje mogą być dodawane do oddzielnego pliku tekstowego w celu późniejszego przetworzenia lub do celów organizacji.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
@@ -2606,7 +2606,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>Lista ulubionych zostanie ukryta natychmiast po osiągnięciu tego numeru obrazu.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -2658,7 +2658,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1546"/>
       <source>Number of displayed letters near the sources' checkboxes in the "+" part of the main window.</source>
-      <translation type="unfinished"/>
+      <translation>Liczba wyświetlanych liter w pobliżu pól wyboru źródeł w części „+” okna głównego.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
@@ -2744,7 +2744,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1713"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
-      <translation type="unfinished"/>
+      <translation>Jeśli włączysz tę opcję, po kliknięciu przycisku „Pobierz tę stronę” zostaną uwzględnione zmiany liczby obrazów na stronie, liczby stron itd., nawet jeśli nie zostały pobrane.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1723"/>
@@ -2754,7 +2754,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1735"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
-      <translation type="unfinished"/>
+      <translation>Po włączeniu tej opcji kliknięcie obrazu spowoduje zaznaczenie go do pobrania, natomiast Ctrl + kliknięcie otworzy okno szczegółów.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1785"/>
@@ -3490,7 +3490,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4799"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
-      <translation type="unfinished"/>
+      <translation>Jeden wiersz dla czarnej listy. Możesz umieścić wiele tagów w jednym wierszu, w tym celu skorzystaj z warunku "AND".</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4809"/>
@@ -3500,7 +3500,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="unfinished"/>
+      <translation>Obrazy zawierające tag na czarnej liście nie będą wyświetlane w wynikach, jeśli to pole jest zaznaczone. W przeciwnym razie przed wyświetleniem jednego z tych obrazów zostanie wyświetlone potwierdzenie.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4842"/>
@@ -4327,7 +4327,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/search-window.ui" line="221"/>
       <source>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>Pamiętaj, że niektóre strony imageboards ograniczają liczbę tagów dla użytkowników innych niż premium.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="249"/>
@@ -4897,7 +4897,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="122"/>
       <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
-      <translation type="unfinished"/>
+      <translation>Jeśli używasz Grabbera po raz pierwszy, zalecamy zapoznanie się z &lt;a href="{website}/docs/"&gt;informacjami dla początkujących&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="137"/>
