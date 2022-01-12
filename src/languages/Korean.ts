@@ -107,7 +107,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="138"/>
       <source>One ID per line.</source>
-      <translation type="unfinished"/>
+      <translation>한 줄당 한 개의 아이디를 입력하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="155"/>
@@ -118,7 +118,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation type="unfinished"/>
+      <translation>한 줄에 하나의 MD5를 입력하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -403,7 +403,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation type="unfinished"/>
+      <translation>토큰이나 태그를 조건으로 설정할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -423,12 +423,12 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="81"/>
       <source>Leave empty to use the default folder.</source>
-      <translation type="unfinished"/>
+      <translation>비어두면 기본 폴더를 사용합니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="96"/>
       <source>Leave empty to use the default filename.</source>
-      <translation type="unfinished"/>
+      <translation>비어두면 기본 파일 이름을 사용합니다.</translation>
     </message>
   </context>
   <context>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="32"/>
       <source>Separate tags by spaces or line breaks</source>
-      <translation type="unfinished"/>
+      <translation>태그를 스페이스(공백)이나 줄(Enter)로 구분하세요</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/custom-window.ui" line="39"/>
@@ -894,7 +894,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="184"/>
       <source>Set the interval to 0 to disable monitoring.</source>
-      <translation type="unfinished"/>
+      <translation>모니터링을 비활성화 하려면 간격을 0으로 설정하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="152"/>
@@ -924,7 +924,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="220"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>기본 설정을 이용하려면 비워두세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="256"/>
@@ -1464,7 +1464,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="184"/>
       <source>Each time an image is saved, an external text file will be save with the same name at the same location.</source>
-      <translation type="unfinished"/>
+      <translation>사진이 저장될 때마다, 외부 텍스트 파일이 같은 이름, 같은 위치에 저장될 것입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="198"/>
@@ -1474,7 +1474,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="223"/>
       <source>Available tokens: the same as in the "Save" part.</source>
-      <translation type="unfinished"/>
+      <translation>사용가능한 토큰: "저장"부분과 같습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/log-window.ui" line="233"/>
@@ -1915,7 +1915,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="190"/>
       <source>Leave empty to use default settings.</source>
-      <translation type="unfinished"/>
+      <translation>기본 설정을 이용하려면 비워두세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="197"/>
@@ -2186,7 +2186,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="330"/>
       <source>Images containing a whitelisted tag will be downloaded automatically according to the option above.</source>
-      <translation type="unfinished"/>
+      <translation>화이트리스트에 있는 태그가 포함된 이미지는 위의 옵션에 따라 자동으로 다운로드 될 예정입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="164"/>
@@ -2392,7 +2392,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="821"/>
       <source>File's identity is based on the MD5 algorithm.</source>
-      <translation type="unfinished"/>
+      <translation>파일의 정체성은 MD5 알고리즘에 기반합니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="828"/>
@@ -2442,7 +2442,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1150"/>
       <source>Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.</source>
-      <translation type="unfinished"/>
+      <translation>이미지가 저장될 때마다, 이미지 정보가, 분류 또는 다른 기능을 위해 별도의 텍스트 파일에 저장될 겁니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
@@ -2504,7 +2504,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1326"/>
       <source>Images bigger than the max width and/or height will be resized to fit.</source>
-      <translation type="unfinished"/>
+      <translation>이미지의 크기가 열린 창의 최대 폭 또는 높이보다 클 경우 자동으로 맞춰서 보여집니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1359"/>
@@ -2564,7 +2564,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation type="unfinished"/>
+      <translation>즐겨찾기 목록은 이미지 수에 도달했을 때 사라질 겁니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -3448,7 +3448,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4799"/>
       <source>One line per blacklist. You can put multiple tags on a single line to make "AND" conditions.</source>
-      <translation type="unfinished"/>
+      <translation>한 줄 당 하나의 블랙리스트를 입력하세요. 한 줄에 여러 태그를 입력하시면 "AND" (동시 만족)조건을 발생시킬 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4809"/>
@@ -3458,7 +3458,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4821"/>
       <source>Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.</source>
-      <translation type="unfinished"/>
+      <translation>이 박스를 체크하면 블랙리스트 태그가 포함된 이미지는 검색 결과에 보이지 않습니다. 체크를 안하면 블랙리스트 된 이미지가 보일때마다 확인 여부를 물어볼 것입니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4842"/>
@@ -4277,7 +4277,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="221"/>
       <source>Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</source>
-      <translation type="unfinished"/>
+      <translation>몇몇 이미지(보드) 사이트는 회원 또는 유료회원이 아닌 경우 특정 개수 이상의 태그를 사용할 수 없는 것을 참고하세요.</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="249"/>
@@ -4847,7 +4847,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="122"/>
       <source>If you use Grabber for the first time, it is advised to first read the &lt;a href="{website}/docs/"&gt;getting started&lt;/a&gt; wiki page.</source>
-      <translation type="unfinished"/>
+      <translation>Grabber를 처음 사용하시는 거면 우선 &lt;a href="{website}/docs/"&gt;를 읽는 것을 권장드립니다. 다음을 참고하세요 &lt;/a&gt; wiki page.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/start-window.ui" line="137"/>
