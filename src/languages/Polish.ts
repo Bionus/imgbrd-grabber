@@ -2982,7 +2982,7 @@ Rozwiąż problem przed wznowieniem pobierania.</translation>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="365"/>
       <source>These tags and post-filters will be automatically added to every search.</source>
-      <translation type="unfinished"/>
+      <translation>Te tagi i filtry końcowe zostaną automatycznie dodane do każdego wyszukiwania.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
