@@ -2702,7 +2702,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1713"/>
       <source>If you activate this option, pressing the "Get this page" button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.</source>
-      <translation type="unfinished"/>
+      <translation>이 옵션을 활성화하면, '페이지 다운받기' 버튼은 '페이지 당 이미지 개수', '페이지 수', 등 모든 정보가 로딩이 안되어도 반영이 될겁니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1723"/>
@@ -2712,7 +2712,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1735"/>
       <source>With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.</source>
-      <translation type="unfinished"/>
+      <translation>이 옵션이 활성화된 상태로 이미지를 클릭하면 다운로드를 하도록 표시를 남길겁니다. Ctrl+클릭은 그대로 세부사항을 보여주는 창을 보여줍니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1785"/>
@@ -2940,7 +2940,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="365"/>
       <source>These tags and post-filters will be automatically added to every search.</source>
-      <translation type="unfinished"/>
+      <translation>이 태그와 게시물 필터는 검색할 때마다 자동으로 반영됩니다.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
