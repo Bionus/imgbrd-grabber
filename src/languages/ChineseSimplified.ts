@@ -181,7 +181,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="132"/>
       <source>When the download is finished</source>
-      <translation>当下载完成时执行</translation>
+      <translation>下载完成时</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="140"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="150"/>
       <source>Open CD tray</source>
-      <translation>打开 CD 播放器</translation>
+      <translation>弹出光驱</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="155"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="394"/>
       <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
-      <translation>&lt;b&gt;平均速度：&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;已耗时间：&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;剩余时间：&lt;/b&gt; %4</translation>
+      <translation>&lt;b&gt;平均速度: &lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;已用时间: &lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;剩余时间: &lt;/b&gt; %4</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.cpp" line="424"/>
@@ -403,7 +403,7 @@
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="32"/>
       <source>You can either use a token or tags as a condition.</source>
-      <translation>你可以使用变量或标签来做条件。</translation>
+      <translation>你可以使用变量或标签作为条件。</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/condition-window.ui" line="39"/>
@@ -472,17 +472,17 @@
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="132"/>
       <source>This source is not valid.</source>
-      <translation>此来源无效</translation>
+      <translation>此来源无效。</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="144"/>
       <source>The image per page value must be greater or equal to 1.</source>
-      <translation>每页图片数必须大于等于 1.</translation>
+      <translation>每页图片数必须大于等于 1。</translation>
     </message>
     <message>
       <location filename="../gui/src/download-group-table-model.cpp" line="154"/>
       <source>The image limit must be greater or equal to 0.</source>
-      <translation>图片数限制必须大于或等于 0.</translation>
+      <translation>图片数限制必须大于或等于 0。</translation>
     </message>
   </context>
   <context>
@@ -527,7 +527,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.ui" line="207"/>
       <source>Download selected</source>
-      <translation>下载已选择的</translation>
+      <translation>下载选中</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="121"/>
@@ -567,7 +567,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="330"/>
       <source>Groups (%1/%2)</source>
-      <translation>群组 (%1/%2)</translation>
+      <translation>分组 (%1/%2)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="362"/>
@@ -723,7 +723,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="1111"/>
       <source>%n file(s) skipped from a previous download.</source>
       <translation>
-        <numerusform>跳过 %n 个已经下载过的文件</numerusform>
+        <numerusform>%n 个之前下载过的文件被跳过。</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -825,7 +825,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="47"/>
       <source>Between 0 and 100, the note can be used to sort the favorites in preference order.</source>
-      <translation>值在 0 到 100 之间，注释可以通过偏爱度来进行排序。</translation>
+      <translation>值在 0 到 100 之间，备注可以用于按喜好排序收藏。</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="57"/>
@@ -835,7 +835,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="70"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation>上一次你选择”标记为已看“。</translation>
+      <translation>上一次你选择”标记为看过“。</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="73"/>
@@ -935,7 +935,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="69"/>
       <source>Choose an image</source>
-      <translation>选择一个图片</translation>
+      <translation>选择一张图片</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.cpp" line="77"/>
@@ -968,7 +968,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/docks/favorites-dock.cpp" line="106"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释：&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;上次查看：&lt;/b&gt; %3</translation>
+      <translation>&lt;b&gt;名称: &lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释: &lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;上次查看: &lt;/b&gt; %3</translation>
     </message>
   </context>
   <context>
