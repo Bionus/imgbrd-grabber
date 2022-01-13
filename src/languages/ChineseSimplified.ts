@@ -2400,7 +2400,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="828"/>
       <source>Automatic redownload</source>
-      <translation>自动重下载</translation>
+      <translation>自动重新下载</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="842"/>
@@ -2410,7 +2410,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="849"/>
       <source>If an image yields multiple files</source>
-      <translation>如果一个图像生成多个文件</translation>
+      <translation>如果一张图片生成多个文件</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="936"/>
@@ -2430,7 +2430,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1023"/>
       <source>Replace JPEG by JPG</source>
-      <translation>替换 JPG 为 JPEG</translation>
+      <translation>替换 JPEG 为 JPG</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1033"/>
@@ -2472,7 +2472,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1216"/>
       <source>Exiftool</source>
-      <translation>Exif 工具</translation>
+      <translation>Exiftool</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1242"/>
@@ -2492,7 +2492,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1275"/>
       <source>Resize</source>
-      <translation>调整大小</translation>
+      <translation>缩放</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1281"/>
@@ -2522,7 +2522,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1389"/>
       <source>Favorites display</source>
-      <translation>显示收藏</translation>
+      <translation>收藏显示</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1397"/>
@@ -2547,7 +2547,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1417"/>
       <source>Image only</source>
-      <translation>只有图片</translation>
+      <translation>仅图片</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1422"/>
@@ -2557,7 +2557,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1427"/>
       <source>Details only</source>
-      <translation>只有详情</translation>
+      <translation>仅详情</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1435"/>
@@ -2629,7 +2629,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1577"/>
       <source>Decline dialogue</source>
-      <translation>拒绝对话</translation>
+      <translation>对话框拒绝快捷键</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1570"/>
@@ -2640,7 +2640,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1563"/>
       <source>Accept dialogue</source>
-      <translation>接受对话</translation>
+      <translation>对话框接受快捷键</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1608"/>
@@ -2741,7 +2741,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1844"/>
       <source>Close tab</source>
-      <translation>关闭选项卡</translation>
+      <translation>关闭标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1856"/>
@@ -2751,7 +2751,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1872"/>
       <source>New tab</source>
-      <translation>新建选项卡</translation>
+      <translation>新标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1884"/>
@@ -2761,7 +2761,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1900"/>
       <source>Open previous tab</source>
-      <translation>打开上一个选项卡</translation>
+      <translation>打开上一个标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1912"/>
@@ -2771,7 +2771,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1928"/>
       <source>Open next tab</source>
-      <translation>打开下一个选项卡</translation>
+      <translation>打开下一个标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1940"/>
@@ -2808,7 +2808,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="2282"/>
       <location filename="../gui/src/settings/options-window.ui" line="3913"/>
       <source>Left</source>
-      <translation>左边</translation>
+      <translation>左侧</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2042"/>
@@ -2828,7 +2828,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2067"/>
       <source>s</source>
-      <translation>s</translation>
+      <translation> 秒</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2077"/>
@@ -2864,7 +2864,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2129"/>
       <source>Count</source>
-      <translation>顺序</translation>
+      <translation>计数</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2137"/>
@@ -2948,7 +2948,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
       <source>Post-filters</source>
-      <translation>过滤器</translation>
+      <translation>后过滤器</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
@@ -2974,12 +2974,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="375"/>
       <source>Explicitely add global post-filter to tab post-filter field</source>
-      <translation>将全局后过滤器显式添加到选项卡后过滤器字段</translation>
+      <translation>将全局后过滤器显式添加到标签页后过滤器区域</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="396"/>
       <source>Use system locale for dates and numbers</source>
-      <translation>使用系统区域设置的日期和数字</translation>
+      <translation>使用系统区域对应的日期和数字格式</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="865"/>
@@ -3094,7 +3094,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3402"/>
       <location filename="../gui/src/settings/options-window.ui" line="4097"/>
       <source>Save (fav)</source>
-      <translation>保存（收藏）</translation>
+      <translation>保存 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4109"/>
@@ -3110,7 +3110,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1369"/>
       <source>Thumbnail scaling</source>
-      <translation type="unfinished"/>
+      <translation>缩略图缩放</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1591"/>
@@ -3120,17 +3120,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1978"/>
       <source>Back out from favorites results</source>
-      <translation type="unfinished"/>
+      <translation>从收藏结果页回退到上一级</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2340"/>
       <source>Remember button drawer state</source>
-      <translation type="unfinished"/>
+      <translation>记住按钮展开状态</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2350"/>
       <source>Remember window geometry</source>
-      <translation type="unfinished"/>
+      <translation>记住窗口位置和大小</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2423"/>
