@@ -3404,7 +3404,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4551"/>
       <source>Kept for later</source>
-      <translation>等下再看</translation>
+      <translation>稍后再看</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4579"/>
@@ -4890,12 +4890,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="26"/>
       <source>Don't keep for later</source>
-      <translation>取消等下再看</translation>
+      <translation>取消稍后再看</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="28"/>
       <source>Keep for later</source>
-      <translation>等下再看</translation>
+      <translation>稍后再看</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="33"/>
@@ -4976,7 +4976,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
       <source>Generate the local tag database for a given source. Afterwards, even if the source's API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-      <translation>生成给定源的本地标签数据库。之后，即使源API没有提供标签类型信息，Grabber也可以在本地标签数据库中直接检查。</translation>
+      <translation>生成给定源的本地标签数据库。之后，即使源 API 没有提供标签类型信息，Grabber 也可以在本地标签数据库中直接检查。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -5011,7 +5011,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="166"/>
       <source>Maybe you meant:</source>
-      <translation>或许你的意思是：</translation>
+      <translation>你要找的是不是:</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="195"/>
@@ -5051,7 +5051,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
       <source>Monitor</source>
-      <translation>显示器</translation>
+      <translation>监视</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
@@ -5071,22 +5071,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>Monitoring an empty search</source>
-      <translation type="unfinished"/>
+      <translation>正监视一个结果为空的搜索</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
       <source>You are about to add a monitor for an empty search, which can lead to a lots of results. Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>您正要为一个结果为空的搜索添加监视器，该搜索可能会产生大量结果。您确定要这么做吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>Monitoring a big search</source>
-      <translation type="unfinished"/>
+      <translation>正监视一个巨型搜索</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="267"/>
       <source>You are about to add a monitor for a search with a lot of results (%1). Are you sure?</source>
-      <translation type="unfinished"/>
+      <translation>您正要为一个有巨量结果 (%1) 的搜索添加监视器。您确定要这么做吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="303"/>
@@ -5124,7 +5124,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/ui/text-edit.cpp" line="275"/>
       <source>Kept for later</source>
-      <translation>等下再看</translation>
+      <translation>稍后再看</translation>
     </message>
     <message>
       <location filename="../gui/src/ui/text-edit.cpp" line="293"/>
