@@ -1013,7 +1013,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="224"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>确定 (&amp;K)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="271"/>
@@ -1038,27 +1038,27 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="544"/>
       <source>Mark as &amp;viewed</source>
-      <translation>标记为&amp;已看</translation>
+      <translation>标记为看过 (&amp;V)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="551"/>
       <source>Get &amp;selected</source>
-      <translation>获取 &amp;已选择的图片</translation>
+      <translation>获取选中 (&amp;S)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="558"/>
       <source>Get this &amp;page</source>
-      <translation>获取此&amp;页面的图片</translation>
+      <translation>获取此页 (&amp;P)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="565"/>
       <source>Get &amp;all</source>
-      <translation>获取&amp;所有图片</translation>
+      <translation>获取全部 (&amp;A)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="612"/>
       <source>S&amp;ources</source>
-      <translation>&amp;来源</translation>
+      <translation>来源 (&amp;O)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="619"/>
@@ -1068,7 +1068,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="669"/>
       <source>Mark all as vie&amp;wed</source>
-      <translation>标记所有为 &amp;已看</translation>
+      <translation>标记所有为看过 (&amp;W)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="136"/>
@@ -1078,7 +1078,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="149"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
-      <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释：&lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;上次查看：&lt;/b&gt; %3</translation>
+      <translation>&lt;b&gt;名称: &lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;注释: &lt;/b&gt; %2 %&lt;br/&gt;&lt;b&gt;上次查看: &lt;/b&gt; %3</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="235"/>
@@ -1140,7 +1140,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="129"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>确定 (&amp;K)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="176"/>
@@ -1165,17 +1165,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
       <source>Get &amp;selected</source>
-      <translation>获取 &amp;已选择的图片</translation>
+      <translation>获取选中 (&amp;S)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="332"/>
       <source>Get this &amp;page</source>
-      <translation>获取此&amp;页面的图片</translation>
+      <translation>获取此页 (&amp;P)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="339"/>
       <source>Get &amp;all</source>
-      <translation>获取&amp;所有图片</translation>
+      <translation>获取全部 (&amp;A)</translation>
     </message>
   </context>
   <context>
@@ -1183,7 +1183,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="886"/>
       <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation>&lt;b&gt;标签：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;标签:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="873"/>
@@ -1194,37 +1194,37 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="874"/>
       <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation>&lt;b&gt;名称：&lt;/b&gt; %1&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;名称:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="888"/>
       <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation>&lt;b&gt;分级：&lt;/b&gt; %1&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;分级:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="889"/>
       <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
-      <translation>&lt;b&gt;得分：&lt;/b&gt; %1&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;得分:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="890"/>
       <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
-      <translation>&lt;b&gt;用户：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;用户:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="891"/>
       <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
-      <translation>&lt;b&gt;大小：&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;大小:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="892"/>
       <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
-      <translation>&lt;b&gt;文件大小：&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
+      <translation>&lt;b&gt;文件大小:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="893"/>
       <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
-      <translation>&lt;b&gt;日期：&lt;/b&gt; %1</translation>
+      <translation>&lt;b&gt;日期:&lt;/b&gt; %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="903"/>
@@ -1668,7 +1668,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="171"/>
       <source>&amp;Quit</source>
-      <translation>&amp;退出</translation>
+      <translation>退出 (&amp;Q)</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="250"/>
@@ -3572,7 +3572,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="5136"/>
       <location filename="../gui/src/settings/options-window.ui" line="5206"/>
       <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, "general", "artist", "copyright", "character", "model" or "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-      <translation>额外标签：: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, "general", "artist", "copyright", "character", "model" 或 "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 ( 0 到 6 之间)</translation>
+      <translation>额外标签: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: 标签本身&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: 标签类型, "general", "artist", "copyright", "character", "model" 或 "photo_set"&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: 标签类型数 (介于 0 和 6 之间)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="5156"/>
@@ -3685,12 +3685,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="116"/>
       <source>Pl&amp;us</source>
-      <translation>Pl&amp;us</translation>
+      <translation>+ (&amp;U)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="139"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>确定 (&amp;K)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="179"/>
@@ -3715,7 +3715,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="415"/>
       <source>Get &amp;selected</source>
-      <translation>获取 &amp;已选择的图片</translation>
+      <translation>获取选中 (&amp;S)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="422"/>
@@ -3725,7 +3725,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
       <source>Get &amp;all</source>
-      <translation>获取&amp;所有图片</translation>
+      <translation>获取全部 (&amp;A)</translation>
     </message>
   </context>
   <context>
@@ -5006,7 +5006,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="126"/>
       <source>O&amp;k</source>
-      <translation>O&amp;k</translation>
+      <translation>确定 (&amp;K)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="166"/>
@@ -5041,7 +5041,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="412"/>
       <source>S&amp;ources</source>
-      <translation>&amp;来源</translation>
+      <translation>来源 (&amp;O)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="419"/>
@@ -5066,7 +5066,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="493"/>
       <source>Get &amp;all</source>
-      <translation>获取&amp;所有图片</translation>
+      <translation>获取全部 (&amp;a)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.cpp" line="262"/>
