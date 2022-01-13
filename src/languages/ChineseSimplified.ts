@@ -1099,7 +1099,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="339"/>
       <source>Mark as viewed</source>
-      <translation>标记为已看</translation>
+      <translation>标记为看过</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.cpp" line="339"/>
@@ -1160,7 +1160,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="318"/>
       <source>Monitor</source>
-      <translation>显示器</translation>
+      <translation>监视</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="325"/>
@@ -1259,7 +1259,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="922"/>
       <source>Rating</source>
-      <translation>评级</translation>
+      <translation>分级</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="923"/>
@@ -1336,7 +1336,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="939"/>
       <source>Notes</source>
-      <translation>注释</translation>
+      <translation>备注</translation>
     </message>
   </context>
   <context>
@@ -1516,7 +1516,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/main-window.ui" line="345"/>
       <location filename="../gui/src/main-window.ui" line="348"/>
       <source>Kept for later</source>
-      <translation>等下再看</translation>
+      <translation>稍后再看</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="177"/>
@@ -1527,12 +1527,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="201"/>
       <source>Wiki</source>
-      <translation>Wiki</translation>
+      <translation>百科</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="225"/>
       <source>Destination</source>
-      <translation>目标文件名</translation>
+      <translation>保存目的地</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="256"/>
@@ -1588,7 +1588,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="368"/>
       <source>New pool tab</source>
-      <translation>添加新集合标签页</translation>
+      <translation>新集合标签页</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="373"/>
@@ -1618,7 +1618,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="414"/>
       <source>Project GitHub</source>
-      <translation>项目 Github</translation>
+      <translation>项目 GitHub</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="426"/>
@@ -1643,12 +1643,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="457"/>
       <source>MD5 database converter</source>
-      <translation>MD5 数据库转换器</translation>
+      <translation>MD5 数据库转换</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="466"/>
       <source>Donate with PayPal</source>
-      <translation>使用 PayPal 捐赠</translation>
+      <translation>通过 PayPal 捐赠</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="475"/>
@@ -1663,7 +1663,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="156"/>
       <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
-      <translation>找不到来源。是否有配置问题？尝试重新安装程序。</translation>
+      <translation>找不到来源。配置是否有问题？请尝试重新安装程序。</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="171"/>
@@ -1673,7 +1673,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="250"/>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
-      <translation>看来上次程序没有正常结束。你想要恢复会话吗？</translation>
+      <translation>看来上次程序没有正常退出。你想要恢复上次的会话吗？</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="459"/>
@@ -1711,7 +1711,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="30"/>
       <source>Generate a SQLite MD5 database using an existing TXT MD5 database.</source>
-      <translation>使用现有的 TXT MD5 数据库生成 SQLite MD5 数据库</translation>
+      <translation>使用现有的 TXT MD5 数据库生成 SQLite MD5 数据库。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.ui" line="78"/>
@@ -1726,7 +1726,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="18"/>
       <source>You are not using a TXT MD5 database.</source>
-      <translation>您没有使用 TXT MD5 数据库</translation>
+      <translation>您并未使用 TXT MD5 数据库。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
@@ -1737,7 +1737,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/utils/md5-database-converter/md5-database-converter.cpp" line="63"/>
       <source>%n md5(s) converted (out of %1)</source>
       <translation>
-        <numerusform>%n md5(s) 已转换 (%1)</numerusform>
+        <numerusform>%n 个 md5 已转换 (%1)</numerusform>
       </translation>
     </message>
   </context>
@@ -1751,7 +1751,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="27"/>
       <source>This tool will clear your MD5 list and fill it again with the MD5 of the files found in the folder set below.</source>
-      <translation>这个工具会清空你的 MD5 列表并重新填入下面设置的目录中找到的 MD5。</translation>
+      <translation>这个工具会清空你的 MD5 列表并重新填入从下面设置的目录中找到的文件的 MD5。</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -1831,7 +1831,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="20"/>
       <source>Edit a monitor</source>
-      <translation>编辑显示器</translation>
+      <translation>编辑监控</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="34"/>
@@ -1851,7 +1851,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="53"/>
       <source>Last time you clicked on "Mark as viewed".</source>
-      <translation>上一次你选择”标记为已看“。</translation>
+      <translation>上一次你选择”标记为看过“。</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="56"/>
@@ -1866,7 +1866,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="83"/>
       <source>Interval</source>
-      <translation>时长</translation>
+      <translation>间隔</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="90"/>
@@ -1877,7 +1877,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="100"/>
       <source>Post-filters</source>
-      <translation>过滤器</translation>
+      <translation>后过滤</translation>
     </message>
     <message>
       <location filename="../gui/src/monitor-window.ui" line="113"/>
@@ -1941,7 +1941,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="105"/>
       <source>New images found for tag '%1' on '%2'</source>
-      <translation>在 '%2' 上发现标签含 '%1' 的新图片</translation>
+      <translation>在 '%2' 上发现标签 '%1' 的新图片</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/monitoring-center.cpp" line="107"/>
@@ -1954,13 +1954,13 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/monitoring-center.cpp" line="109"/>
       <source>More than %n new image(s) found for tag '%1' on '%2'</source>
       <translation>
-        <numerusform>在 '%2' 上发现 %n + 张标签 '%1' 的新图片</numerusform>
+        <numerusform>在 '%2' 上发现多于 %n 张标签 '%1' 的新图片</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
       <source>Grabber monitoring</source>
-      <translation>Gabber 监视器</translation>
+      <translation>Grabber 监视器</translation>
     </message>
   </context>
   <context>
@@ -1968,7 +1968,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="26"/>
       <source>Monitors</source>
-      <translation>显示器</translation>
+      <translation>监视</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/monitors-tab.ui" line="54"/>
@@ -2169,7 +2169,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="296"/>
       <source>Download</source>
-      <translation>何时下载原图</translation>
+      <translation>下载原图</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="307"/>
@@ -2205,7 +2205,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="340"/>
       <source>Adds</source>
-      <translation>自动添加标签</translation>
+      <translation>追加标签</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="132"/>
@@ -2312,7 +2312,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="667"/>
       <source>Keep original creation date</source>
-      <translation>保留源创建时间</translation>
+      <translation>保留原始创建时间</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="677"/>
@@ -2346,7 +2346,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="746"/>
       <source>When the download is finished</source>
-      <translation>当下载完成时执行</translation>
+      <translation>下载完成时</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="759"/>
@@ -2356,7 +2356,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="764"/>
       <source>Open CD tray</source>
-      <translation>打开 CD 播放器</translation>
+      <translation>弹出光驱</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="769"/>
@@ -2371,7 +2371,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="782"/>
       <source>If a file already exists globally</source>
-      <translation>如果一个图片文件已经存在于文件夹中</translation>
+      <translation>若全局范围内文件已存在</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="798"/>
@@ -3720,7 +3720,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="422"/>
       <source>Get this &amp;page</source>
-      <translation>获取此&amp;页面的图片</translation>
+      <translation>获取此页 (&amp;P)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="429"/>
@@ -5001,7 +5001,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="103"/>
       <source>Pl&amp;us</source>
-      <translation>Pl&amp;us</translation>
+      <translation>+ (&amp;U)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="126"/>
@@ -5046,7 +5046,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="419"/>
       <source>&amp;Merge results</source>
-      <translation>&amp;合并结果</translation>
+      <translation>合并结果 (&amp;M)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="472"/>
@@ -5056,12 +5056,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="479"/>
       <source>Get &amp;selected</source>
-      <translation>获取 &amp;已选择的图片</translation>
+      <translation>获取选中 (&amp;S)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="486"/>
       <source>Get this &amp;page</source>
-      <translation>获取此&amp;页面的图片</translation>
+      <translation>获取此页 (&amp;P)</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="493"/>
