@@ -3125,7 +3125,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2340"/>
       <source>Remember button drawer state</source>
-      <translation>记住按钮展开状态</translation>
+      <translation>记住按钮抽屉状态</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2350"/>
@@ -3149,7 +3149,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.ui" line="3553"/>
       <location filename="../gui/src/settings/options-window.ui" line="3692"/>
       <source>Partial checks are stored in collapsable drawer</source>
-      <translation type="unfinished"/>
+      <translation>半选会使其被置于可折叠的按钮抽屉中</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2441"/>
@@ -3303,7 +3303,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4153"/>
       <source>Destination folder (fav)</source>
-      <translation>目标文件夹（收藏）</translation>
+      <translation>目标文件夹 (收藏)</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4165"/>
@@ -3627,7 +3627,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="466"/>
       <source>Choose a save folder for favorites</source>
-      <translation>选择收藏保存的目录</translation>
+      <translation>选择收藏保存的文件夹</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="473"/>
@@ -3695,7 +3695,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="179"/>
       <source>Maybe you meant:</source>
-      <translation>或许你的意思是：</translation>
+      <translation>你要找的是不是:</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="208"/>
@@ -3758,7 +3758,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="578"/>
       <source>Unexpected value after '%1'.</source>
-      <translation>'%1' 后的值不可用。</translation>
+      <translation>'%1' 后的值不可预料。</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="978"/>
@@ -4044,7 +4044,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="180"/>
       <source>all images filtered</source>
-      <translation>所有图像已过滤</translation>
+      <translation>所有图像均被过滤</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="186"/>
@@ -4054,7 +4054,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="191"/>
       <source>too many tags</source>
-      <translation>太多标签</translation>
+      <translation>标签过多</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="196"/>
@@ -4152,32 +4152,32 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="46"/>
       <source>ID (ascending)</source>
-      <translation>ID（升序）</translation>
+      <translation>ID (升序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="51"/>
       <source>ID (descending)</source>
-      <translation>ID（降序）</translation>
+      <translation>ID (降序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="56"/>
       <source>Score (ascending)</source>
-      <translation>得分（升序）</translation>
+      <translation>得分 (升序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="61"/>
       <source>Score (descending)</source>
-      <translation>得分（降序）</translation>
+      <translation>得分 (降序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="66"/>
       <source>Megapixels (ascending)</source>
-      <translation>百万像素（升序）</translation>
+      <translation>百万像素 (升序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="71"/>
       <source>Megapixels (descending)</source>
-      <translation>百万像素（降序）</translation>
+      <translation>百万像素 (降序)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="76"/>
@@ -4207,37 +4207,37 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="104"/>
       <source>Rating</source>
-      <translation>评级</translation>
+      <translation>分级</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="119"/>
       <source>Safe</source>
-      <translation>安全评级（Safe）</translation>
+      <translation>安全评级 (Safe)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="124"/>
       <source>Safe (no)</source>
-      <translation>非安全评级（Safe no）</translation>
+      <translation>非安全评级 (Safe no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="129"/>
       <source>Questionable</source>
-      <translation>疑问评级（Questionable）</translation>
+      <translation>疑问评级 (Questionable)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="134"/>
       <source>Questionable (no)</source>
-      <translation>非疑问评级（Questionable no）</translation>
+      <translation>非疑问评级 (Questionable no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="139"/>
       <source>Explicit</source>
-      <translation>限制级（Explicit）</translation>
+      <translation>限制级 (Explicit)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="144"/>
       <source>Explicit (no)</source>
-      <translation>非限制级（Explicit no）</translation>
+      <translation>非限制级 (Explicit no)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="154"/>
@@ -4247,22 +4247,22 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="167"/>
       <source>Deleted</source>
-      <translation>已删除（Deleted）</translation>
+      <translation>已删除 (Deleted)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="172"/>
       <source>Active</source>
-      <translation>正常（Active）</translation>
+      <translation>正常 (Active)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="177"/>
       <source>Flagged</source>
-      <translation>已被标记（Flagged）</translation>
+      <translation>已被标记 (Flagged)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="182"/>
       <source>Pending</source>
-      <translation>等待处理（Pending）</translation>
+      <translation>等待处理 (Pending)</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="187"/>
@@ -4277,7 +4277,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="207"/>
       <source>Calendar</source>
-      <translation>日期</translation>
+      <translation>日历</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="221"/>
@@ -4302,7 +4302,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.cpp" line="115"/>
       <source>Search an image</source>
-      <translation>搜索一个图片</translation>
+      <translation>以图搜图</translation>
     </message>
   </context>
   <context>
@@ -4391,7 +4391,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="37"/>
       <source>Referer (default)</source>
-      <translation>Referer（默认）</translation>
+      <translation>Referer (默认)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="45"/>
@@ -4424,7 +4424,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="68"/>
       <source>Referer (preview)</source>
-      <translation>Referer（预览）</translation>
+      <translation>Referer (预览)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="76"/>
@@ -4435,7 +4435,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="104"/>
       <source>Referer (image)</source>
-      <translation>Referer（图片）</translation>
+      <translation>Referer (图片)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="132"/>
@@ -4506,7 +4506,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="267"/>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="284"/>
       <source>s</source>
-      <translation>s</translation>
+      <translation> 秒</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="295"/>
@@ -4598,7 +4598,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="96"/>
       <source>Through URL</source>
-      <translation>通过 url</translation>
+      <translation>通过 URL</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
