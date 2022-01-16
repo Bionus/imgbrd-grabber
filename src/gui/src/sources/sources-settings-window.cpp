@@ -364,7 +364,7 @@ void SourcesSettingsWindow::saveSettings()
 
 		QNetworkCookie cookie;
 		cookie.setName(key->text().toLatin1());
-		cookie.setValue(value != nullptr ? value->text().toLatin1() : "");
+		cookie.setValue(value != nullptr ? value->text().toLatin1() : QByteArray());
 		cookies.append(cookie.toRawForm());
 	}
 	m_site->setSetting("cookies", cookies, QStringList());

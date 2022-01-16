@@ -1341,7 +1341,7 @@ void OptionsWindow::save()
 
 	const QString lang = ui->comboLanguages->currentData().toString();
 	const bool useSystemLocale = ui->checkUseSystemLocale->isChecked();
-	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toString() != useSystemLocale) {
+	if (settings->value("language", "English").toString() != lang || settings->value("useSystemLocale", true).toBool() != useSystemLocale) {
 		settings->setValue("language", lang);
 		settings->setValue("useSystemLocale", useSystemLocale);
 		emit languageChanged(lang, useSystemLocale);

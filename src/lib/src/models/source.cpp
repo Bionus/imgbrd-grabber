@@ -71,7 +71,8 @@ Source::Source(Profile *profile, const QString &dir)
 
 		const QString src = "(function() { var window = {}; " + js.readAll().replace("export var source = ", "return ") + " })()";
 
-		m_jsSource = jsEngine()->evaluate(src, js.fileName());
+		auto *engine = jsEngine();
+		m_jsSource = engine->evaluate(src, js.fileName());
 		if (m_jsSource.isError()) {
 			log(QStringLiteral("Uncaught exception at line %1: %2").arg(m_jsSource.property("lineNumber").toInt()).arg(m_jsSource.toString()), Logger::Error);
 		} else {
@@ -83,7 +84,7 @@ Source::Source(Profile *profile, const QString &dir)
 			QJSValueIterator it(apis);
 			while (it.hasNext()) {
 				it.next();
-				m_apis.append(new JavascriptApi(m_jsSource, jsEngineMutex(), it.name()));
+				m_apis.append(new JavascriptApi(engine, m_jsSource, jsEngineMutex(), it.name()));
 			}
 			if (m_apis.isEmpty()) {
 				log(QStringLiteral("No valid source has been found in the model.js file from %1.").arg(m_name));

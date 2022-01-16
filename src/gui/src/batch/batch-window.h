@@ -23,7 +23,7 @@ namespace Ui
 }
 
 
-class QTime;
+class QElapsedTimer;
 
 class BatchWindow : public QDialog
 {
@@ -84,7 +84,7 @@ class BatchWindow : public QDialog
 		QMap<QUrl, ExponentialMovingAverage> m_speeds;
 		ExponentialMovingAverage m_mean;
 		bool m_cancel, m_paused;
-		QTime *m_time, *m_start;
+		QElapsedTimer *m_time, *m_start;
 		#ifdef Q_OS_WIN
 			QWinTaskbarButton *m_taskBarButton;
 			QWinTaskbarProgress *m_taskBarProgress;

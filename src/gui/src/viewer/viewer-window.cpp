@@ -1435,7 +1435,7 @@ void ViewerWindow::wheelEvent(QWheelEvent *e)
 		}
 
 		// Ignore events if we already got one less than 500ms ago
-		if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500) {
+		if (m_lastWheelEvent.isValid() && m_lastWheelEvent.elapsed() <= 500) {
 			e->ignore();
 		}
 		m_lastWheelEvent.start();

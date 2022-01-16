@@ -58,7 +58,7 @@ void SettingsDock::reset()
 	QStringList filenames;
 	if (f.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
-		while ((line = f.readLine()) > 0) {
+		while (!(line = f.readLine()).isEmpty()) {
 			QString l = line.trimmed();
 			if (!l.isEmpty() && !filenames.contains(l)) {
 				filenames.append(l);

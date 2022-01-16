@@ -26,5 +26,5 @@ bool saveBackup(Profile *profile, const QString &filePath)
 	}
 
 	// Create backup ZIP
-	return createZip("C:/Users/Nicolas/Desktop/backup.zip", zipFiles);
+	return createZip(filePath, zipFiles);
 }

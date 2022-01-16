@@ -68,7 +68,7 @@ bool FilenameParser::finished()
 
 void FilenameParser::skipSpaces()
 {
-	while (peek().isSpace()) {
+	while (!finished() && peek().isSpace()) {
 		m_index++;
 	}
 }
@@ -262,7 +262,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			: new FilenameNodeRoot(exprs);
 	} else {
 		condition = parseConditionNode();
-		if (peek() != '?') {
+		if (finished() || peek() != '?') {
 			delete condition;
 			throw std::runtime_error("Expected '?' after condition");
 		}
@@ -274,7 +274,7 @@ FilenameNodeConditional *FilenameParser::parseConditional()
 			ifFalse = parseExpr({ '>' });
 		}
 
-		if (peek() != '>') {
+		if (finished() || peek() != '>') {
 			delete condition;
 			delete ifTrue;
 			delete ifFalse;
@@ -361,7 +361,7 @@ FilenameNodeCondition *FilenameParser::parseSingleCondition(bool legacy)
 		m_index++; // (
 
 		auto *ret = parseConditionNode();
-		if (peek() != ')') {
+		if (finished() || peek() != ')') {
 			delete ret;
 			throw std::runtime_error("Expected ')' after condition in parenthesis");
 		}

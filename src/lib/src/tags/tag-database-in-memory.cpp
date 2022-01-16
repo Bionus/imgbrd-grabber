@@ -108,6 +108,7 @@ QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags)
 
 QMap<QString, int> TagDatabaseInMemory::getTagIds(const QStringList &tags) const
 {
+	Q_UNUSED(tags);
 	log("Tag IDs are not supported with in-memory tag databases.");
 	return QMap<QString, int>();
 }

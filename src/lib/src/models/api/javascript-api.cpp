@@ -23,8 +23,8 @@ QString normalize(QString key)
 	return key;
 }
 
-JavascriptApi::JavascriptApi(const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
-	: Api(normalize(key)), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
+JavascriptApi::JavascriptApi(QJSEngine *engine, const QJSValue &source, QMutex *jsEngineMutex, const QString &key)
+	: Api(normalize(key)), m_engine(engine), m_source(source), m_key(key), m_engineMutex(jsEngineMutex)
 {}
 
 
@@ -79,10 +79,10 @@ QJSValue buildParsedSearchTag(QJSEngine *engine, const QString &name, int id)
 	}
 	return ret;
 }
-QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const QJSValue left, const QJSValue right)
+QJSValue buildParsedSearchOperator(QJSEngine *engine, const QString &op, const QJSValue &left, const QJSValue &right)
 {
 	QJSValue ret = engine->newObject();
-	ret.setProperty("operator", "and");
+	ret.setProperty("operator", op);
 	ret.setProperty("left", left);
 	ret.setProperty("right", right);
 	return ret;
@@ -107,39 +107,37 @@ PageUrl JavascriptApi::pageUrl(const QString &search, int page, int limit, LastP
 		QStringList operands = search.split(" ", Qt::SkipEmptyParts);
 		const auto tagIds = site->tagDatabase()->getTagIds(operands);
 
-		QJSEngine *engine = m_source.engine();
-
 		const QString firstTag = operands.takeFirst();
-		const auto first = buildParsedSearchTag(engine, firstTag, tagIds[firstTag]);
+		const auto first = buildParsedSearchTag(m_engine, firstTag, tagIds[firstTag]);
 
 		if (operands.isEmpty()) {
 			parsedSearch = first;
 		} else {
 			const QString secondTag = operands.takeFirst();
-			const auto second = buildParsedSearchTag(engine, secondTag, tagIds[secondTag]);
-			parsedSearch = buildParsedSearchOperator(engine, "and", first, second);
+			const auto second = buildParsedSearchTag(m_engine, secondTag, tagIds[secondTag]);
+			parsedSearch = buildParsedSearchOperator(m_engine, "and", first, second);
 
 			while (!operands.isEmpty()) {
 				const QString nextTag = operands.takeFirst();
-				const auto next = buildParsedSearchTag(engine, nextTag, tagIds[nextTag]);
-				parsedSearch = buildParsedSearchOperator(engine, "and", parsedSearch, next);
+				const auto next = buildParsedSearchTag(m_engine, nextTag, tagIds[nextTag]);
+				parsedSearch = buildParsedSearchOperator(m_engine, "and", parsedSearch, next);
 			}
 		}
 	}
 
-	QJSValue query = m_source.engine()->newObject();
+	QJSValue query = m_engine->newObject();
 	query.setProperty("search", search);
 	query.setProperty("parsedSearch", parsedSearch);
 	query.setProperty("page", page);
 
-	QJSValue opts = m_source.engine()->newObject();
+	QJSValue opts = m_engine->newObject();
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 
 	QJSValue previous = QJSValue(QJSValue::UndefinedValue);
 	if (lastPage.page > 0) {
-		previous = m_source.engine()->newObject();
+		previous = m_engine->newObject();
 		previous.setProperty("page", lastPage.page);
 		previous.setProperty("minIdM1", QString::number(lastPage.minId - 1));
 		previous.setProperty("minId", QString::number(lastPage.minId));
@@ -327,12 +325,12 @@ PageUrl JavascriptApi::galleryUrl(const QSharedPointer<Image> &gallery, int page
 		return ret;
 	}
 
-	QJSValue query = m_source.engine()->newObject();
+	QJSValue query = m_engine->newObject();
 	query.setProperty("id", QString::number(gallery->id()));
 	query.setProperty("md5", gallery->md5());
 	query.setProperty("page", page);
 
-	QJSValue opts = m_source.engine()->newObject();
+	QJSValue opts = m_engine->newObject();
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
@@ -452,11 +450,11 @@ PageUrl JavascriptApi::tagsUrl(int page, int limit, const QString &order, Site *
 		return ret;
 	}
 
-	QJSValue query = m_source.engine()->newObject();
+	QJSValue query = m_engine->newObject();
 	query.setProperty("page", page);
 	query.setProperty("order", order);
 
-	QJSValue opts = m_source.engine()->newObject();
+	QJSValue opts = m_engine->newObject();
 	opts.setProperty("limit", limit);
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
@@ -523,7 +521,7 @@ PageUrl JavascriptApi::detailsUrl(qulonglong id, const QString &md5, Site *site)
 		return ret;
 	}
 
-	QJSValue opts = m_source.engine()->newObject();
+	QJSValue opts = m_engine->newObject();
 	opts.setProperty("baseUrl", site->baseUrl());
 	opts.setProperty("loggedIn", site->isLoggedIn(false, true));
 

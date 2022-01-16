@@ -33,6 +33,10 @@ class Image : public QObject, public Downloadable
 			CloudflareError,
 			NetworkError
 		};
+		Q_ENUM(LoadTagsResult)
+
+		Q_ENUM(SaveResult)
+		Q_ENUM(Size)
 
 		Image();
 		explicit Image(Profile *profile);

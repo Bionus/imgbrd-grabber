@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QElapsedTimer>
 #include "tags/tag.h"
 #include "tags/tag-database-sqlite.h"
 #include "catch.h"
@@ -16,7 +17,7 @@ TEST_CASE("TagDatabaseSqlite")
 	{
 		database.setTags(QList<Tag>());
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 		int elapsed = timer.elapsed();
@@ -32,7 +33,7 @@ TEST_CASE("TagDatabaseSqlite")
 	{
 		database.setTags(QList<Tag>() << Tag("tag1", TagType("general")) << Tag("tag2", TagType("artist")) << Tag("tag3", TagType("copyright")) << Tag("tag4", TagType("character")));
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3");
 		int elapsed = timer.elapsed();
@@ -52,7 +53,7 @@ TEST_CASE("TagDatabaseSqlite")
 	{
 		database.setTags(QList<Tag>() << Tag("tag1", TagType("general")) << Tag("tag2", TagType("artist")) << Tag("tag3", TagType("copyright")) << Tag("tag4", TagType("character")));
 
-		QTime timer;
+		QElapsedTimer timer;
 		timer.start();
 		QMap<QString, TagType> types = database.getTagTypes(QStringList() << "tag1" << "tag3" << "tag5" << "missing_tag");
 		int elapsed = timer.elapsed();

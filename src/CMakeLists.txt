@@ -107,8 +107,8 @@ if(MSVC OR CMAKE_CXX_COMPILER MATCHES "cl\\.exe")
 	add_definitions(-DWIN_FILE_PROPS=1)
 endif()
 
-# Load Qt5Core here as it can only be included once (QTBUG-87863)
-find_package(Qt5Core REQUIRED)
+# Load Qt5::Core here as it can only be included once (QTBUG-87863)
+find_package(Qt5 COMPONENTS Core REQUIRED)
 
 add_subdirectory(lib)
 add_subdirectory(gui)

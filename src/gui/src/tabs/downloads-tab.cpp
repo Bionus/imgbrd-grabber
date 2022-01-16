@@ -1,12 +1,13 @@
 #include "tabs/downloads-tab.h"
 #include <QCheckBox>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMenu>
 #include <QMessageBox>
 #include <QShortcut>
-#include <QSound>
+#include <QSoundEffect>
 #include <QTimer>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QStorageInfo>
@@ -38,7 +39,7 @@
 
 
 DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainWindow *parent)
-	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_downloadQueue(downloadQueue), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0)
+	: QWidget(parent), ui(new Ui::DownloadsTab), m_profile(profile), m_settings(profile->getSettings()), m_downloadQueue(downloadQueue), m_parent(parent), m_getAll(false), m_progressDialog(nullptr), m_batchAutomaticRetries(0), m_finishedSoundEffect(this)
 {
 	ui->setupUi(this);
 
@@ -71,6 +72,8 @@ DownloadsTab::DownloadsTab(Profile *profile, DownloadQueue *downloadQueue, MainW
 	m_saveLinkList->setInterval(100);
 	m_saveLinkList->setSingleShot(true);
 	connect(m_saveLinkList, &QTimer::timeout, this, &DownloadsTab::saveLinkListDefault);
+
+	m_finishedSoundEffect.setSource(QUrl(":/sounds/finished.wav"));
 }
 
 DownloadsTab::~DownloadsTab()
@@ -907,9 +910,9 @@ void DownloadsTab::getAllGetImage(const BatchDownloadImage &download, int siteId
 
 	// Track download progress
 	m_progressDialog->loadingImage(img->url());
-	m_downloadTime.insert(img->url(), QTime());
+	m_downloadTime.insert(img->url(), QElapsedTimer());
 	m_downloadTime[img->url()].start();
-	m_downloadTimeLast.insert(img->url(), QTime());
+	m_downloadTimeLast.insert(img->url(), QElapsedTimer());
 	m_downloadTimeLast[img->url()].start();
 
 	// Start loading and saving image
@@ -1066,8 +1069,8 @@ void DownloadsTab::getAllFinished()
 			// Trigger minor end actions on retry
 			switch (m_progressDialog->endAction())
 			{
-				case 2: openTray();                             break;
-				case 4: QSound::play(":/sounds/finished.wav");  break;
+				case 2: openTray();                   	break;
+				case 4: m_finishedSoundEffect.play();	break;
 			}
 			activateWindow();
 
@@ -1121,11 +1124,11 @@ void DownloadsTab::getAllFinished()
 	// Final action
 	switch (m_progressDialog->endAction())
 	{
-		case 1: m_progressDialog->close();              break;
-		case 2: openTray();                             break;
-		case 3: m_parent->saveFolder();                 break;
-		case 4: QSound::play(":/sounds/finished.wav");  break;
-		case 5: shutDown();                             break;
+		case 1: m_progressDialog->close();      break;
+		case 2: openTray();                     break;
+		case 3: m_parent->saveFolder();         break;
+		case 4: m_finishedSoundEffect.play();	break;
+		case 5: shutDown();                     break;
 	}
 	activateWindow();
 	m_getAll = false;

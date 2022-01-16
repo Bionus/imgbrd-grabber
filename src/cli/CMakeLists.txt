@@ -2,7 +2,7 @@ project(cli)
 
 add_definitions(-DCLI=1)
 
-find_package(Qt5Network REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
 set(QT_LIBRARIES Qt5::Core Qt5::Network)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
