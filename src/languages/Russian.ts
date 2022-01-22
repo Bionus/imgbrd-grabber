@@ -69,7 +69,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
   </context>
   <context>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
       <source>Filesize</source>
-      <translation>Размер</translation>
+      <translation>Размер файла</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="99"/>
@@ -1053,7 +1053,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="278"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="298"/>
@@ -1175,7 +1175,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="176"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="183"/>
@@ -1314,7 +1314,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="928"/>
       <source>Filesize</source>
-      <translation>Размер</translation>
+      <translation>Размер файла</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="930"/>
@@ -2473,7 +2473,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1016"/>
       <source>Replace spaces by underscores</source>
-      <translation>Заменять пробелы "_"</translation>
+      <translation>Заменять пробелы на подчёркивания</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1023"/>
@@ -2996,7 +2996,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
       <source>Post-filters</source>
-      <translation>Пост-фильтры</translation>
+      <translation>Постфильтры</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
@@ -3437,7 +3437,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4467"/>
       <source>Blacklisted</source>
-      <translation>В черном списке</translation>
+      <translation>В чёрном списке</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4495"/>
@@ -3534,7 +3534,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4903"/>
       <source> s</source>
-      <translation> s</translation>
+      <translation> с</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4913"/>
@@ -3758,7 +3758,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="245"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="415"/>
@@ -4256,7 +4256,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="96"/>
       <source>Rank</source>
-      <translation>Ранк</translation>
+      <translation>Ранг</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="104"/>
@@ -4627,7 +4627,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="110"/>
       <source>Username</source>
-      <translation>Имя пользовалеля</translation>
+      <translation>Имя пользователя</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
@@ -5073,7 +5073,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="195"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="254"/>
