@@ -1,7 +1,7 @@
 function formatSearch(query: string): string {
     return encodeURIComponent(query
-        .replace(" ", ", ")
-        .replace("_", " "));
+        .replace(/ /g, ", ")
+        .replace(/_/g, " "));
 }
 
 function completeImage(img: IImage): IImage {
