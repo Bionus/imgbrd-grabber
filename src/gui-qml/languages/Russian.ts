@@ -979,7 +979,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
       <source>Username</source>
-      <translation type="unfinished"/>
+      <translation>Имя пользователя</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="56"/>
