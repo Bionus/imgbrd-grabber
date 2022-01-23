@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include "tags/tag-type-database.h"
+#include "utils/read-write-path.h"
 
 
 class QString;
@@ -29,7 +30,7 @@ class TagDatabase
 		int getTagTypeNumber(const TagType &type);
 
 	protected:
-		explicit TagDatabase(QString typeFile);
+		explicit TagDatabase(ReadWritePath typeFile);
 
 	protected:
 		TagTypeDatabase m_tagTypeDatabase;

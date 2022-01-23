@@ -9,11 +9,13 @@ class ReadWritePath
 	public:
 		ReadWritePath(QString readPath, QString writePath);
 
-		QString readPath() const { return m_readPath; }
+		QString readPath() const;
 		QString readPath(const QString &path) const;
 
-		QString writePath() const { return m_writePath; }
+		QString writePath() const;
 		QString writePath(const QString &path, bool createParent = false) const;
+
+		ReadWritePath readWritePath(const QString &path) const;
 
 	private:
 		QString m_readPath;

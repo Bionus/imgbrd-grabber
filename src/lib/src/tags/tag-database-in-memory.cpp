@@ -6,9 +6,10 @@
 #include "logger.h"
 #include "tags/tag.h"
 #include "utils/file-utils.h"
+#include "utils/read-write-path.h"
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
+TagDatabaseInMemory::TagDatabaseInMemory(const ReadWritePath &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 

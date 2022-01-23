@@ -60,7 +60,7 @@ Site::Site(QString url, Source *source)
 
 void Site::loadConfig()
 {
-	const ReadWritePath siteDir(m_source->getPath().readPath() + QDir::separator() + m_url, m_source->getPath().writePath() + QDir::separator() + m_url);
+	const ReadWritePath siteDir = m_source->getPath().readWritePath(m_url);
 
 	if (m_settings != nullptr) {
 		m_settings->deleteLater();
@@ -168,7 +168,7 @@ void Site::loadConfig()
 
 	// Tag database
 	delete m_tagDatabase;
-	m_tagDatabase = TagDatabaseFactory::Create(siteDir.writePath());
+	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 	m_tagDatabase->loadTypes();
 	m_tagDatabase->open();
 

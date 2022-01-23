@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QString>
 #include "tags/tag-type.h"
+#include "utils/read-write-path.h"
 
 
 struct TagTypeWithId;
@@ -11,7 +12,7 @@ struct TagTypeWithId;
 class TagTypeDatabase
 {
 	public:
-		explicit TagTypeDatabase(QString file);
+		explicit TagTypeDatabase(ReadWritePath file);
 		bool load();
 		bool save();
 		const QMap<int, TagType> &getAll() const;
@@ -26,7 +27,7 @@ class TagTypeDatabase
 		int addTagType(const TagType &tagType);
 
 	private:
-		QString m_file;
+		ReadWritePath m_file;
 		QMap<int, TagType> m_tagTypes;
 		QMap<QString, int> m_invertedTagTypes;
 		int m_maxTagTypeId = -1;

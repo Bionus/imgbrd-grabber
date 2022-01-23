@@ -2,19 +2,16 @@
 #include <QFile>
 #include "tags/tag-database-in-memory.h"
 #include "tags/tag-database-sqlite.h"
+#include "utils/read-write-path.h"
 
 
-TagDatabase *TagDatabaseFactory::Create(QString directory)
+TagDatabase *TagDatabaseFactory::Create(const ReadWritePath &directory)
 {
-	if (!directory.endsWith("/") && !directory.endsWith("\\")) {
-		directory += "/";
+	const ReadWritePath typesFile = directory.readWritePath("tag-types.txt");
+
+	if (QFile::exists(directory.writePath("tags.txt"))) {
+		return new TagDatabaseInMemory(typesFile, directory.writePath("tags.txt"));
 	}
 
-	const QString typesFile = directory + "tag-types.txt";
-
-	if (QFile::exists(directory + "tags.txt")) {
-		return new TagDatabaseInMemory(typesFile, directory + "tags.txt");
-	}
-
-	return new TagDatabaseSqlite(typesFile, directory + "tags.db");
+	return new TagDatabaseSqlite(typesFile, directory.writePath("tags.db"));
 }

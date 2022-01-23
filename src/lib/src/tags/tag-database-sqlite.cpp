@@ -13,7 +13,7 @@
 #include "utils/file-utils.h"
 
 
-TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
+TagDatabaseSqlite::TagDatabaseSqlite(const ReadWritePath &typeFile, QString tagFile)
 	: TagDatabase(typeFile), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
@@ -228,6 +228,9 @@ QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
 
 int TagDatabaseSqlite::count() const
 {
+	if (!QFile::exists(m_tagFile)) {
+		return 0;
+	}
 	if (m_count != -1 || !m_database.isOpen()) {
 		return m_count;
 	}

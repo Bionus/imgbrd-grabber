@@ -169,7 +169,7 @@ Source: "{#SrcDir}\sites\Anime pictures\icon.png";     DestDir: "{app}\sites\Ani
 Source: "{#SrcDir}\sites\Anime pictures\model.js";     DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\sites.txt";    DestDir: "{app}\sites\Anime pictures"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Anime pictures\anime-pictures.net\defaults.ini";  DestDir: "{app}\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\Anime pictures\anime-pictures.net\tag-types.txt"; DestDir: "{app}\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\icon.png";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\model.js";     DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Philomena\sites.txt";    DestDir: "{app}\sites\Philomena"; Flags: ignoreversion
@@ -178,12 +178,12 @@ Source: "{#SrcDir}\sites\Danbooru\icon.png";           DestDir: "{app}\sites\Dan
 Source: "{#SrcDir}\sites\Danbooru\model.js";           DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\sites.txt";          DestDir: "{app}\sites\Danbooru"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru\behoimi.org\defaults.ini";              DestDir: "{app}\sites\Danbooru\behoimi.org"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\Danbooru\behoimi.org\tag-types.txt";             DestDir: "{app}\sites\Danbooru\behoimi.org"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru (2.0)\icon.png";     DestDir: "{app}\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru (2.0)\model.js";     DestDir: "{app}\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru (2.0)\sites.txt";    DestDir: "{app}\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Danbooru (2.0)\danbooru.donmai.us\defaults.ini";              DestDir: "{app}\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\Danbooru (2.0)\danbooru.donmai.us\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\Danbooru (2.0)\danbooru.donmai.us\tag-types.txt";             DestDir: "{app}\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\DeviantArt\icon.png";           DestDir: "{app}\sites\DeviantArt"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\DeviantArt\model.js";           DestDir: "{app}\sites\DeviantArt"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\DeviantArt\sites.txt";          DestDir: "{app}\sites\DeviantArt"; Flags: ignoreversion
@@ -192,7 +192,7 @@ Source: "{#SrcDir}\sites\E621\icon.png";     DestDir: "{app}\sites\E621"; Flags:
 Source: "{#SrcDir}\sites\E621\model.js";     DestDir: "{app}\sites\E621"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E621\sites.txt";    DestDir: "{app}\sites\E621"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E621\e621.net\defaults.ini";              DestDir: "{app}\sites\E621\e621.net"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\E621\e621.net\tag-types.txt";             DestDir: "{localappdata}\Bionus\Grabber\sites\E621\e621.net"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\E621\e621.net\tag-types.txt";             DestDir: "{app}\sites\E621\e621.net"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Hentai\icon.png";     DestDir: "{app}\sites\E-Hentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Hentai\model.js";     DestDir: "{app}\sites\E-Hentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Hentai\sites.txt";    DestDir: "{app}\sites\E-Hentai"; Flags: ignoreversion
@@ -202,7 +202,7 @@ Source: "{#SrcDir}\sites\E-Shuushuu\icon.png";     DestDir: "{app}\sites\E-Shuus
 Source: "{#SrcDir}\sites\E-Shuushuu\model.js";     DestDir: "{app}\sites\E-Shuushuu"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Shuushuu\sites.txt";    DestDir: "{app}\sites\E-Shuushuu"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\E-Shuushuu\e-shuushuu.net\defaults.ini";  DestDir: "{app}\sites\E-Shuushuu\e-shuushuu.net"; Flags: ignoreversion
-Source: "{#SrcDir}\sites\E-Shuushuu\e-shuushuu.net\tag-types.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\E-Shuushuu\e-shuushuu.net"; Flags: onlyifdoesntexist
+Source: "{#SrcDir}\sites\E-Shuushuu\e-shuushuu.net\tag-types.txt"; DestDir: "{app}\sites\E-Shuushuu\e-shuushuu.net"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\FurAffinity\icon.png";     DestDir: "{app}\sites\FurAffinity"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\FurAffinity\model.js";     DestDir: "{app}\sites\FurAffinity"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\FurAffinity\sites.txt";    DestDir: "{app}\sites\FurAffinity"; Flags: ignoreversion
