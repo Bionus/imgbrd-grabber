@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<QList<QmlAuthSettingField*>>("QList<QmlAuthSettingField*>");
 
 	// Copy settings files to writable directory
-	const QStringList toCopy { "sites/", "themes/", "webservices/" };
+	const QStringList toCopy { "themes/", "webservices/" };
 	for (const QString &tgt : toCopy) {
 		const QString from = savePath(tgt, true, false);
 		const QString to = savePath(tgt, true, true);
