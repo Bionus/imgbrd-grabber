@@ -1,4 +1,5 @@
 #include "file-utils.h"
+#include "logger.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QSaveFile>
@@ -83,12 +84,14 @@ bool writeFile(const QString &filePath, const QByteArray &data)
 {
 	// Ensure the parent directory exists
 	if (!ensureFileParent(filePath)) {
+		log(QStringLiteral("Could not create parent directory for file `%1`").arg(filePath), Logger::Error);
 		return false;
 	}
 
 	// Write the data to the disk
 	QFile file(filePath);
 	if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+		log(QStringLiteral("Could not open file `%1` for writing: error %2").arg(filePath).arg(file.error()), Logger::Error);
 		return false;
 	}
 	file.write(data);
