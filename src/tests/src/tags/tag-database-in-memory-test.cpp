@@ -138,7 +138,7 @@ TEST_CASE("TagDatabaseInMemory")
 	}
 
 
-	SECTION("Save empty")
+	SECTION("Don't save empty")
 	{
 		QString filename = "test_tmp_tags_file.txt";
 
@@ -148,11 +148,7 @@ TEST_CASE("TagDatabaseInMemory")
 		database.setTags(QList<Tag>());
 		REQUIRE(database.save());
 
-		QFile f(filename);
-		REQUIRE(f.open(QFile::ReadOnly | QFile::Text));
-		QString content = f.readAll();
-		REQUIRE(content.isEmpty());
-		REQUIRE(f.remove());
+		REQUIRE(!QFile::exists(filename));
 	}
 
 	SECTION("Save data")

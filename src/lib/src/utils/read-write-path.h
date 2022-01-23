@@ -7,6 +7,8 @@
 class ReadWritePath
 {
 	public:
+		ReadWritePath(const char *path);
+		ReadWritePath(const QString &path);
 		ReadWritePath(QString readPath, QString writePath);
 
 		QString readPath() const;

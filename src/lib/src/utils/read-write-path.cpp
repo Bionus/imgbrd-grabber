@@ -6,6 +6,13 @@
 #include "utils/file-utils.h"
 
 
+ReadWritePath::ReadWritePath(const char *path)
+	: ReadWritePath(QString(path))
+{}
+ReadWritePath::ReadWritePath(const QString &path)
+	: m_readPath(path), m_writePath(path)
+{}
+
 ReadWritePath::ReadWritePath(QString readPath, QString writePath)
 	: m_readPath(std::move(readPath)), m_writePath(std::move(writePath))
 {}

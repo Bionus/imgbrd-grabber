@@ -63,7 +63,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 		}
 
 		{
-			Source tmpSource(m_profile, ReadWritePath(d.filePath(), d.filePath()));
+			Source tmpSource(m_profile, ReadWritePath(d.filePath()));
 			if (tmpSource.getApis().isEmpty()) {
 				log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
 				continue;
@@ -72,7 +72,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 
 		const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
 		copyRecursively(d.filePath(), dest, true);
-		m_profile->addSource(new Source(m_profile, ReadWritePath(dest, dest)));
+		m_profile->addSource(new Source(m_profile, ReadWritePath(dest)));
 	}
 
 	emit finished(ImportResult::Success);
