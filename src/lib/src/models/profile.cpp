@@ -126,7 +126,7 @@ Profile::Profile(QString path)
 		: (Md5Database*) new Md5DatabaseText(m_path + "/md5s.txt", m_settings);
 
 	// Load auto-complete
-	QFile fileAutoComplete(m_path + "/words.txt");
+	QFile fileAutoComplete(savePath("words.txt", true, false));
 	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text)) {
 		QString line;
 		while (!(line = fileAutoComplete.readLine()).isEmpty()) {
