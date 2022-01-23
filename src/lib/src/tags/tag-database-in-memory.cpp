@@ -5,6 +5,7 @@
 #include <utility>
 #include "logger.h"
 #include "tags/tag.h"
+#include "utils/file-utils.h"
 
 
 TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, QString tagFile)
@@ -61,6 +62,14 @@ bool TagDatabaseInMemory::load()
 
 bool TagDatabaseInMemory::save()
 {
+	if (m_database.isEmpty()) {
+		return TagDatabase::save();
+	}
+
+	if (!ensureFileParent(m_tagFile)) {
+		return false;
+	}
+
 	QFile file(m_tagFile);
 	if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
 		return false;

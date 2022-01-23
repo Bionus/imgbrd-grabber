@@ -169,8 +169,8 @@ void Site::loadConfig()
 	// Tag database
 	delete m_tagDatabase;
 	m_tagDatabase = TagDatabaseFactory::Create(siteDir.writePath());
-	m_tagDatabase->open();
 	m_tagDatabase->loadTypes();
+	m_tagDatabase->open();
 
 	// Setup throttling
 	m_manager->setMaxConcurrency(setting("download/simultaneous", 10).toInt());

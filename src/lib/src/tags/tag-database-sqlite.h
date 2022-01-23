@@ -24,6 +24,9 @@ class TagDatabaseSqlite : public TagDatabase
 		QMap<QString, int> getTagIds(const QStringList &tags) const override;
 		int count() const override;
 
+	protected:
+		bool init();
+
 	private:
 		QString m_tagFile;
 		QSqlDatabase m_database;

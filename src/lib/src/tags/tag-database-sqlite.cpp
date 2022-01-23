@@ -26,6 +26,19 @@ TagDatabaseSqlite::~TagDatabaseSqlite()
 
 bool TagDatabaseSqlite::open()
 {
+	if (!TagDatabase::open()) {
+		return false;
+	}
+
+	if (!QFile::exists(m_tagFile)) {
+		return true;
+	}
+
+	return init();
+}
+
+bool TagDatabaseSqlite::init()
+{
 	// Don't re-open databases
 	if (m_database.isOpen()) {
 		return true;
@@ -53,12 +66,14 @@ bool TagDatabaseSqlite::open()
 		return false;
 	}
 
-	return TagDatabase::open();
+	return true;
 }
 
 bool TagDatabaseSqlite::close()
 {
-	m_database.close();
+	if (m_database.isOpen()) {
+		m_database.close();
+	}
 
 	return TagDatabase::close();
 }
@@ -75,6 +90,11 @@ bool TagDatabaseSqlite::save()
 
 void TagDatabaseSqlite::setTags(const QList<Tag> &tags, bool createTagTypes)
 {
+	// Ensure the database is initialized
+	if (!init() || !m_database.isOpen()) {
+		return;
+	}
+
 	QSqlQuery clearQuery(m_database);
 	clearQuery.prepare(QStringLiteral("DELETE FROM tags"));
 	if (!clearQuery.exec()) {
@@ -109,6 +129,10 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags, bool createTagTypes)
 QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
+
+	if (!m_database.isOpen()) {
+		return ret;
+	}
 
 	// Escape values
 	QStringList formatted;
@@ -158,6 +182,10 @@ QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
 {
 	QMap<QString, int> ret;
 
+	if (!m_database.isOpen()) {
+		return ret;
+	}
+
 	// Escape values
 	QStringList formatted;
 	QSqlDriver *driver = m_database.driver();
@@ -200,7 +228,7 @@ QMap<QString, int> TagDatabaseSqlite::getTagIds(const QStringList &tags) const
 
 int TagDatabaseSqlite::count() const
 {
-	if (m_count != -1) {
+	if (m_count != -1 || !m_database.isOpen()) {
 		return m_count;
 	}
 
