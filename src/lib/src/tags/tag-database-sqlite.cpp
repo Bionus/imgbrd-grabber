@@ -10,6 +10,7 @@
 #include <utility>
 #include "logger.h"
 #include "tags/tag.h"
+#include "utils/file-utils.h"
 
 
 TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, QString tagFile)
@@ -31,12 +32,9 @@ bool TagDatabaseSqlite::open()
 	}
 
 	// Create the parent directory if it doesn't exist
-	const QString parentDir = QFileInfo(m_tagFile).absolutePath();
-	if (!QDir().exists(parentDir)) {
-		if (!QDir().mkpath(parentDir)) {
-			log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
-			return false;
-		}
+	if (!ensureFileParent(m_tagFile)) {
+		log(QStringLiteral("Error creating tag database parent directory"), Logger::Error);
+		return false;
 	}
 
 	// Load and connect to the database

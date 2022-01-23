@@ -23,7 +23,7 @@ SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
 
 	m_sources = profile->getSources().values();
 	for (Source *source : qAsConst(m_sources)) {
-		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
+		ui->comboBox->addItem(QIcon(source->getPath().readPath("icon.png")), source->getName());
 	}
 }
 

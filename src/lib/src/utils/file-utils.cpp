@@ -69,3 +69,30 @@ bool safeWriteFile(const QString &filePath, const QByteArray &data, bool backup)
 	file.write(data);
 	return file.commit();
 }
+
+bool ensureFileParent(const QString &filePath)
+{
+	const QString parentDir = QFileInfo(filePath).absolutePath();
+	if (QDir().exists(parentDir)) {
+		return true;
+	}
+	return QDir().mkpath(parentDir);
+}
+
+bool writeFile(const QString &filePath, const QByteArray &data)
+{
+	// Ensure the parent directory exists
+	if (!ensureFileParent(filePath)) {
+		return false;
+	}
+
+	// Write the data to the disk
+	QFile file(filePath);
+	if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+		return false;
+	}
+	file.write(data);
+	file.close();
+
+	return true;
+}

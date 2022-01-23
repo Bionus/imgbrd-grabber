@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "updater/updater.h"
+#include "utils/read-write-path.h"
 
 
 class SourceUpdater : public Updater
@@ -10,7 +11,7 @@ class SourceUpdater : public Updater
 	Q_OBJECT
 
 	public:
-		SourceUpdater(QString source, QString directory, QString baseUrl);
+		SourceUpdater(QString source, ReadWritePath directory, QString baseUrl);
 
 	public slots:
 		void checkForUpdates() const override;
@@ -23,7 +24,7 @@ class SourceUpdater : public Updater
 
 	private:
 		QString m_source;
-		QString m_directory;
+		ReadWritePath m_directory;
 		QString m_baseUrl;
 };
 

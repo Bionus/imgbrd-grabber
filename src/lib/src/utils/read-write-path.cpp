@@ -1,71 +1,30 @@
-#include "file-utils.h"
+#include "read-write-path.h"
+#include <utility>
 #include <QDir>
-#include <QFileInfo>
-#include <QSaveFile>
+#include <QFile>
 #include <QString>
-#include <QStringList>
+#include "utils/file-utils.h"
 
 
-bool copyRecursively(QString srcFilePath, QString tgtFilePath, bool overwrite)
+ReadWritePath::ReadWritePath(QString readPath, QString writePath)
+	: m_readPath(std::move(readPath)), m_writePath(std::move(writePath))
+{}
+
+
+QString ReadWritePath::readPath(const QString &path) const
 {
-	// Trim directory names of their trailing slashes
-	if (srcFilePath.endsWith(QDir::separator())) {
-		srcFilePath.chop(1);
+	QString writePath = m_writePath + QDir::separator() + path;
+	if (QFile::exists(writePath)) {
+		return writePath;
 	}
-	if (tgtFilePath.endsWith(QDir::separator())) {
-		tgtFilePath.chop(1);
-	}
-
-	// Directly copy files using Qt function
-	if (!QFileInfo(srcFilePath).isDir()) {
-		if (QFile::exists(tgtFilePath)) {
-			if (overwrite) {
-				QFile::remove(tgtFilePath);
-			} else {
-				return false;
-			}
-		}
-		return QFile(srcFilePath).copy(tgtFilePath);
-	}
-
-	// Try to create the target directory
-	QDir targetDir(tgtFilePath);
-	targetDir.cdUp();
-	if (!targetDir.mkpath(QDir(tgtFilePath).dirName())) {
-		return false;
-	}
-
-	QDir sourceDir(srcFilePath);
-	const QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	for (const QString &fileName : fileNames) {
-		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
-		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-		if (!copyRecursively(newSrcFilePath, newTgtFilePath, overwrite)) {
-			return false;
-		}
-	}
-
-	return true;
+	return m_readPath + QDir::separator() + path;
 }
 
-bool safeWriteFile(const QString &filePath, const QByteArray &data, bool backup)
+QString ReadWritePath::writePath(const QString &path, bool createParent) const
 {
-	// Copy the file to a "bak" file to ensure no data is lost
-	if (backup) {
-		const QString backupFilePath = filePath + ".bak";
-		if (QFile::exists(backupFilePath) && !QFile::remove(backupFilePath)) {
-			return false;
-		}
-		if (!QFile::copy(filePath, backupFilePath)) {
-			return false;
-		}
+	QString ret = m_writePath + QDir::separator() + path;
+	if (createParent) {
+		ensureFileParent(ret);
 	}
-
-	// Use QSaveFile to safely write data to the file
-	QSaveFile file(filePath);
-	if (!file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
-		return false;
-	}
-	file.write(data);
-	return file.commit();
+	return ret;
 }

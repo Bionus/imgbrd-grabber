@@ -1,5 +1,6 @@
 #include "models/site.h"
 #include <QCryptographicHash>
+#include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -59,19 +60,19 @@ Site::Site(QString url, Source *source)
 
 void Site::loadConfig()
 {
-	const QString siteDir = m_source->getPath() + "/" + m_url + "/";
+	const ReadWritePath siteDir(m_source->getPath().readPath() + QDir::separator() + m_url, m_source->getPath().writePath() + QDir::separator() + m_url);
 
 	if (m_settings != nullptr) {
 		m_settings->deleteLater();
 	}
-	auto *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
-	auto *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
+	auto *settingsCustom = new QSettings(siteDir.writePath("settings.ini"), QSettings::IniFormat);
+	auto *settingsDefaults = new QSettings(siteDir.readPath("defaults.ini"), QSettings::IniFormat);
 	m_settings = new MixedSettings(QList<QSettings*> { settingsCustom, settingsDefaults });
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Cookies
 	if (m_cookieJar == nullptr) {
-		m_cookieJar = new PersistentCookieJar(siteDir + "cookies.txt", m_manager);
+		m_cookieJar = new PersistentCookieJar(siteDir.writePath("cookies.txt"), m_manager);
 		m_manager->setCookieJar(m_cookieJar);
 	}
 
@@ -167,7 +168,7 @@ void Site::loadConfig()
 
 	// Tag database
 	delete m_tagDatabase;
-	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
+	m_tagDatabase = TagDatabaseFactory::Create(siteDir.writePath());
 	m_tagDatabase->open();
 	m_tagDatabase->loadTypes();
 
@@ -466,26 +467,9 @@ bool Site::isLoggedIn(bool unknown, bool pending) const
 
 bool Site::remove()
 {
-	// Read sites list
-	QFile f(m_source->getPath() + "/sites.txt");
-	if (!f.open(QIODevice::ReadOnly)) {
-		return false;
+	const bool ret = m_source->removeSite(this);
+	if (ret) {
+		emit removed();
 	}
-	QString rawSites = f.readAll();
-	f.close();
-
-	// Remove the site from the list
-	rawSites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QStringList sites = rawSites.split("\r\n", Qt::SkipEmptyParts);
-	sites.removeAll(m_url);
-
-	// Save the sites list again
-	if (!f.open(QIODevice::WriteOnly)) {
-		return false;
-	}
-	f.write(sites.join("\r\n").toLatin1());
-	f.close();
-
-	emit removed();
-	return true;
+	return ret;
 }

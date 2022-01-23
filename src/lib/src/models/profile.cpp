@@ -23,6 +23,7 @@
 #include "models/source.h"
 #include "models/url-downloader/url-downloader-manager.h"
 #include "utils/file-utils.h"
+#include "utils/read-write-path.h"
 
 
 Profile::Profile()
@@ -40,9 +41,17 @@ Profile::Profile(QString path)
 	renameSettingsGroup(m_settings, "Zoom", "Viewer");
 
 	// Load sources
-	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (const QString &dir : dirs) {
-		auto *source = new Source(this, m_path + "/sites/" + dir);
+	const QString defaultPath = savePath("sites/", true, false);
+	const QString customPath = m_path + "/sites/";
+	QStringList sites = QDir(customPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	if (!defaultPath.startsWith(m_path)) {
+		sites += QDir(defaultPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		sites.removeDuplicates();
+	}
+	for (const QString &dir : sites) {
+		const QString readDir = defaultPath + dir;
+		const QString writeDir = customPath + dir;
+		auto *source = new Source(this, ReadWritePath(readDir, writeDir));
 		if (source->getApis().isEmpty()) {
 			source->deleteLater();
 			continue;
@@ -430,22 +439,7 @@ void Profile::addSource(Source *source)
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
-
-	// Update the source's sites.txt file
-	Source *src = site->getSource();
-	QFile f(src->getPath() + "/sites.txt");
-	f.open(QIODevice::ReadOnly);
-	QString sites = f.readAll();
-	f.close();
-	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QStringList stes = sites.split("\r\n", Qt::SkipEmptyParts);
-	stes.append(site->url());
-	stes.removeDuplicates();
-	stes.sort();
-	f.open(QIODevice::WriteOnly);
-	f.write(stes.join("\r\n").toLatin1());
-	f.close();
-
+	site->getSource()->addSite(site);
 	emit sitesChanged();
 }
 

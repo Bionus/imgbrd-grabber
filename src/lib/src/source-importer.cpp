@@ -7,6 +7,7 @@
 #include "logger.h"
 #include "models/profile.h"
 #include "models/source.h"
+#include "utils/read-write-path.h"
 #include "utils/zip.h"
 
 
@@ -62,7 +63,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 		}
 
 		{
-			Source tmpSource(m_profile, d.filePath());
+			Source tmpSource(m_profile, ReadWritePath(d.filePath(), d.filePath()));
 			if (tmpSource.getApis().isEmpty()) {
 				log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
 				continue;
@@ -71,7 +72,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 
 		const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
 		copyRecursively(d.filePath(), dest, true);
-		m_profile->addSource(new Source(m_profile, dest));
+		m_profile->addSource(new Source(m_profile, ReadWritePath(dest, dest)));
 	}
 
 	emit finished(ImportResult::Success);
