@@ -393,30 +393,30 @@ QString savePath(const QString &file, bool exists, bool writable)
 {
 	const QString &check = exists ? file : QStringLiteral("settings.ini");
 
+	// Test mode
 	if (isTestModeEnabled()) {
 		if (QDir(QDir::currentPath() + "/tests/resources/").exists()) {
 			return QDir::toNativeSeparators(QDir::currentPath() + "/tests/resources/" + file);
 		}
 	}
 
+	// Install directory
 	if (validSavePath(qApp->applicationDirPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(qApp->applicationDirPath() + "/" + file);
 	}
+	#if defined(Q_OS_ANDROID)
+		if (validSavePath("assets:/" + check, writable)) {
+			return QDir::toNativeSeparators("assets:/" + file);
+		}
+	#endif
+
+	// Various possible configuration directories
 	if (validSavePath(QDir::currentPath() + "/" + check, writable)) {
 		return QDir::toNativeSeparators(QDir::currentPath() + "/" + file);
 	}
 	if (validSavePath(QDir::homePath() + "/Grabber/" + check, writable)) {
 		return QDir::toNativeSeparators(QDir::homePath() + "/Grabber/" + file);
 	}
-	#if defined(Q_OS_ANDROID)
-		const QString &appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-		if (validSavePath(appData + "/" + check, writable)) {
-			return QDir::toNativeSeparators(appData + "/" + file);
-		}
-		if (validSavePath("assets:/" + check, writable)) {
-			return QDir::toNativeSeparators("assets:/" + file);
-		}
-	#endif
 	#ifdef __linux__
 		if (validSavePath(QDir::homePath() + "/.Grabber/" + check, writable)) {
 			return QDir::toNativeSeparators(QDir::homePath() + "/.Grabber/" + file);
@@ -429,6 +429,7 @@ QString savePath(const QString &file, bool exists, bool writable)
 		}
 	#endif
 
+	// Fallback to standard config location if no other exists
 	QString dir;
 	#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 		#if defined(Q_OS_ANDROID)
