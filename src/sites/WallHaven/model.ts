@@ -1,8 +1,9 @@
-function parseSearch(search: string): { query: string, purity: string, order: string, sort: string } {
+function parseSearch(search: string): { query: string, purity: string, order: string, sort: string, ratios: string[] } {
     let query: string = "";
     let purity: string = "111";
     let order: string = "date_added";
     let sort: string = "desc";
+    const ratios: string[] = [];
     for (const tag of search.split(" ")) {
         if (tag.indexOf("rating:") === 0) {
             const val = tag.substr(7);
@@ -10,7 +11,7 @@ function parseSearch(search: string): { query: string, purity: string, order: st
         } else if (tag.indexOf("-rating:") === 0) {
             const val = tag.substr(8);
             purity = val === "s" || val === "safe" ? "011" : (val === "e" || val === "explicit" ? "110" : "101");
-        }  else if (tag.indexOf("order:") === 0) {
+        } else if (tag.indexOf("order:") === 0) {
             const val = tag.substr(6);
             if (val.substr(-5) === "_desc") {
                 order =  val.substr(0, val.length - 5);
@@ -21,11 +22,14 @@ function parseSearch(search: string): { query: string, purity: string, order: st
             } else {
                 order = val;
             }
+        } else if (tag.indexOf("ratio:") === 0) {
+            const val = tag.substr(6);
+            ratios.push(val.replace(/[:/]/g, "x"));
         } else {
             query += (query ? " " : "") + tag;
         }
     }
-    return { query, purity, order, sort }
+    return { query, purity, order, sort, ratios }
 }
 
 export const source: ISource = {
@@ -51,7 +55,17 @@ export const source: ISource = {
             search: {
                 url: (query: ISearchQuery): string => {
                     const search = parseSearch(query.search);
-                    return "/api/v1/search?q=" + encodeURIComponent(search.query) + "&purity=" + search.purity + "&page=" + query.page + "&sorting=" + search.order + "&order=" + search.sort;
+                    const params: Record<string, any> = {
+                        q: search.query,
+                        purity: search.purity,
+                        page: query.page,
+                        sorting: search.order,
+                        order: search.sort,
+                    };
+                    if (search.ratios.length > 0) {
+                        params["ratios"] = search.ratios.join(",");
+                    }
+                    return "/api/v1/search?" + Grabber.buildQueryParams(params);
                 },
                 parse: (src: string): IParsedSearch => {
                     const map = {

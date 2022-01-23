@@ -222,3 +222,11 @@ function _visitSearch(search: IParsedSearchQuery, tag: (tag: ITag) => string, an
     }
 }
 addHelper("visitSearch", _visitSearch);
+
+addHelper("buildQueryParams", (params: Record<string, string | number | boolean>): string => {
+    const ret = [];
+    for (const key in params) {
+        ret.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+    }
+    return ret.join("&");
+});
