@@ -952,6 +952,17 @@ void OptionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
+	// Theme settings
+	const QString theme = ui->comboTheme->currentText();
+	const bool themeChanged = theme != settings->value("theme", "Default").toString();
+	const bool scaleFontSizeChanged = ui->checkScaleFontSize->isChecked() != settings->value("Interface/scaleFontSize", true).toBool();
+	if (themeChanged || scaleFontSizeChanged) {
+		if (m_themeLoader->setTheme(theme)) {
+			settings->setValue("theme", theme);
+		}
+		settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
+	}
+
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("add", ui->lineAdd->text());
 	settings->setValue("globalPostFilter", ui->lineGlobalPostFilter->text());
@@ -1043,7 +1054,6 @@ void OptionsWindow::save()
 	const QStringList infiniteScroll { "disabled", "button", "scroll" };
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
-	settings->setValue("Interface/scaleFontSize", ui->checkScaleFontSize->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
@@ -1169,12 +1179,6 @@ void OptionsWindow::save()
 		settings->endGroup();
 	}
 	settings->endGroup();
-
-	// Themes
-	const QString theme = ui->comboTheme->currentText();
-	if (m_themeLoader->setTheme(theme)) {
-		settings->setValue("theme", theme);
-	}
 
 	settings->setValue("Viewer/singleWindow", ui->checkViewerSingleWindow->isChecked());
 	const QStringList positions { "top", "left", "auto" };
