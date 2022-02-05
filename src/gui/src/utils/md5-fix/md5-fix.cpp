@@ -42,8 +42,6 @@ Md5Fix::~Md5Fix()
 
 	m_thread.quit();
 	m_thread.wait();
-
-	m_worker->deleteLater();
 }
 
 void Md5Fix::cancel()
