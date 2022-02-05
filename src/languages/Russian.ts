@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt; чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt;, чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -69,7 +69,7 @@
     <message>
       <location filename="../gui/src/batch/add-group-window.ui" line="127"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
   </context>
   <context>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
       <source>Filesize</source>
-      <translation>Размер</translation>
+      <translation>Размер файла</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="99"/>
@@ -368,7 +368,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
       <source>Thumbnail</source>
-      <translation>Превью</translation>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="57"/>
@@ -646,12 +646,12 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
       <source>Downloading pages, please wait...</source>
-      <translation>Загрузка страниц, пожалуйста подождите...</translation>
+      <translation>Загрузка страниц, пожалуйста, подождите...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="768"/>
       <source>Preparing images, please wait...</source>
-      <translation>Подготовка изображений, пожалуйста подождите...</translation>
+      <translation>Подготовка изображений, пожалуйста, подождите...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="782"/>
@@ -705,9 +705,9 @@ Please solve the issue before resuming the download.</source>
       <source>%n file(s) ignored.</source>
       <translation>
         <numerusform>%n файл проигнорирован.</numerusform>
-        <numerusform>%n файла проигнорированно.</numerusform>
-        <numerusform>%n файлов проигнорированно.</numerusform>
-        <numerusform>%n файлов проигнорированно.</numerusform>
+        <numerusform>%n файла проигнорировано.</numerusform>
+        <numerusform>%n файлов проигнорировано.</numerusform>
+        <numerusform>%n файлов проигнорировано.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1053,7 +1053,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="278"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="298"/>
@@ -1175,7 +1175,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="176"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/gallery-tab.ui" line="183"/>
@@ -1314,7 +1314,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="928"/>
       <source>Filesize</source>
-      <translation>Размер</translation>
+      <translation>Размер файла</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="930"/>
@@ -1344,7 +1344,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="934"/>
       <source>Thumbnail</source>
-      <translation>Превью</translation>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="936"/>
@@ -2084,7 +2084,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="83"/>
       <source>Separate log files</source>
-      <translation>Отдельные файлы лога</translation>
+      <translation>Отдельные файлы журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="93"/>
@@ -2192,17 +2192,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="263"/>
       <source>Once a day</source>
-      <translation>Раз в день</translation>
+      <translation>Ежедневно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="268"/>
       <source>Once a week</source>
-      <translation>Раз в неделю</translation>
+      <translation>Еженедельно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="273"/>
       <source>Once a month</source>
-      <translation>Раз в месяц</translation>
+      <translation>Ежемесячно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="278"/>
@@ -2263,7 +2263,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
       <source>Ask for confirmation before closing the window</source>
-      <translation>Спрашивать подтвеждение перед закрытием окна</translation>
+      <translation>Запрашивать подтверждение перед закрытием окна</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="389"/>
@@ -2473,12 +2473,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1016"/>
       <source>Replace spaces by underscores</source>
-      <translation>Заменять пробелы "_"</translation>
+      <translation>Заменять пробелы на подчёркивания</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1023"/>
       <source>Replace JPEG by JPG</source>
-      <translation>Заменять JPEG на JPG(сокращение не влияет на сам файл)</translation>
+      <translation>Заменять JPEG на JPG</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1033"/>
@@ -2498,7 +2498,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
       <source>Add a separate log file</source>
-      <translation>Добавить отдельный файл лога</translation>
+      <translation>Добавить отдельный файл журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1187"/>
@@ -2620,7 +2620,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
       <source>Source's type display</source>
-      <translation>Вид отоброжения источника</translation>
+      <translation>Вид отображения источника</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1475"/>
@@ -2672,7 +2672,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
       <source>Preload all tabs when restoring a previous session</source>
-      <translation>Подгружать все вкладки при востановлении сессии</translation>
+      <translation>Подгружать все вкладки при восстановлении предыдущего сеанса</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1577"/>
@@ -2996,7 +2996,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="350"/>
       <source>Post-filters</source>
-      <translation>Пост-фильтры</translation>
+      <translation>Постфильтры</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="88"/>
@@ -3437,7 +3437,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4467"/>
       <source>Blacklisted</source>
-      <translation>В черном списке</translation>
+      <translation>В чёрном списке</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4495"/>
@@ -3534,7 +3534,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4903"/>
       <source> s</source>
-      <translation> s</translation>
+      <translation> с</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4913"/>
@@ -3758,7 +3758,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="245"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/pool-tab.ui" line="415"/>
@@ -3839,12 +3839,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="303"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation>Не удается проверить выражения Javascript.</translation>
+      <translation>Не удаётся проверить выражения Javascript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="309"/>
       <source>Can't compile your filename: %1</source>
-      <translation>Не удается скомпилировать имя файла: %1</translation>
+      <translation>Не удаётся скомпилировать имя файла: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="316"/>
@@ -3925,7 +3925,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="147"/>
       <source>An image needs a date to be filtered by age</source>
-      <translation>Изображение должно иметь дату для сортировки по возврасту</translation>
+      <translation>Изображение должно иметь дату для сортировки по возрасту</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="168"/>
@@ -4140,7 +4140,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="576"/>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
-      <translation>Некоторые теги изображения находятся в белом списке: %1. Также некоторые теги находятся в черном списке: %2. Всё равно хотите сохранить изображение?</translation>
+      <translation>Некоторые теги изображения находятся в белом списке: %1. Также некоторые теги находятся в чёрном списке: %2. Всё равно хотите сохранить изображение?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
@@ -4256,7 +4256,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="96"/>
       <source>Rank</source>
-      <translation>Ранк</translation>
+      <translation>Ранг</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="104"/>
@@ -4516,7 +4516,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
       <source>Use a secure connection (https)</source>
-      <translation>Использовать защищенное соединение (https)</translation>
+      <translation>Использовать безопасное соединение (https)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
@@ -4627,7 +4627,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="110"/>
       <source>Username</source>
-      <translation>Имя пользовалеля</translation>
+      <translation>Имя пользователя</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="112"/>
@@ -5073,7 +5073,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="195"/>
       <source>Post-filtering</source>
-      <translation>Пост-фильтр</translation>
+      <translation>Постфильтр</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/tag-tab.ui" line="254"/>
@@ -5350,7 +5350,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="794"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation>Файл слишколь большой для предпоказа.
+      <translation>Файл слишком большой для отображения.
 %1</translation>
     </message>
     <message>

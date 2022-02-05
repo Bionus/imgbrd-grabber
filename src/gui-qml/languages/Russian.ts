@@ -113,17 +113,17 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a day</source>
-      <translation>Раз в день</translation>
+      <translation>Ежедневно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a week</source>
-      <translation>Раз в неделю</translation>
+      <translation>Еженедельно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a month</source>
-      <translation>Раз в месяц</translation>
+      <translation>Ежемесячно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="55"/>
       <source>Thumbnail fill mode</source>
-      <translation>Режим заполнения эскизов</translation>
+      <translation>Режим заполнения миниатюр</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="63"/>
@@ -979,7 +979,7 @@
     <message>
       <location filename="../src/main-screen.qml" line="55"/>
       <source>Username</source>
-      <translation>Имя пользовалеля</translation>
+      <translation>Имя пользователя</translation>
     </message>
     <message>
       <location filename="../src/main-screen.qml" line="56"/>
