@@ -11,7 +11,7 @@
     <message>
       <location filename="../gui/src/about-window.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt; чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href="{website}"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;сайт программы&lt;/span&gt;&lt;/a&gt;, чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
     </message>
     <message>
       <location filename="../gui/src/about-window.ui" line="79"/>
@@ -368,7 +368,7 @@
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
       <source>Thumbnail</source>
-      <translation>Превью</translation>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../gui/src/utils/blacklist-fix/blacklist-fix-2.ui" line="57"/>
@@ -646,7 +646,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="694"/>
       <source>Downloading pages, please wait...</source>
-      <translation>Загрузка страниц, пожалуйста подождите...</translation>
+      <translation>Загрузка страниц, пожалуйста, подождите...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="768"/>
@@ -705,9 +705,9 @@ Please solve the issue before resuming the download.</source>
       <source>%n file(s) ignored.</source>
       <translation>
         <numerusform>%n файл проигнорирован.</numerusform>
-        <numerusform>%n файла проигнорированно.</numerusform>
-        <numerusform>%n файлов проигнорированно.</numerusform>
-        <numerusform>%n файлов проигнорированно.</numerusform>
+        <numerusform>%n файла проигнорировано.</numerusform>
+        <numerusform>%n файлов проигнорировано.</numerusform>
+        <numerusform>%n файлов проигнорировано.</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1344,7 +1344,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="934"/>
       <source>Thumbnail</source>
-      <translation>Превью</translation>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../lib/src/models/image.cpp" line="936"/>
@@ -2084,7 +2084,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="83"/>
       <source>Separate log files</source>
-      <translation>Отдельные файлы лога</translation>
+      <translation>Отдельные файлы журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="93"/>
@@ -2498,7 +2498,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1163"/>
       <source>Add a separate log file</source>
-      <translation>Добавить отдельный файл лога</translation>
+      <translation>Добавить отдельный файл журнала</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1187"/>
@@ -2620,7 +2620,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
       <source>Source's type display</source>
-      <translation>Вид отоброжения источника</translation>
+      <translation>Вид отображения источника</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1475"/>
