@@ -37,10 +37,10 @@ QSharedPointer<Image> Api::parseImage(Site *site, Page *parentPage, QMap<QString
 	}
 
 	if (d["file_url"].isEmpty()) {
-		d["file_url"] = d["preview_url"];
+		d["file_url"] = !d["sample_url"].isEmpty() ? d["sample_url"] : d["preview_url"];
 	}
 	if (d["sample_url"].isEmpty()) {
-		d["sample_url"] = d["preview_url"];
+		d["sample_url"] = d["file_url"];
 	}
 
 	if (!tags.isEmpty()) {
