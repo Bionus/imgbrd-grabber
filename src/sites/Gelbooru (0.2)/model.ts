@@ -145,6 +145,7 @@ export const source: ISource = {
                         tags: Grabber.regexToTags('<li class="tag-type-(?<type>[^"]+)">(?:[^<]*(?:<span[^>]*>[^<]*)?<a[^>]*>[^<]*</a>(?:[^<]*</span>)?)*[^<]*<a[^>]*>(?<name>[^<]*)</a>[^<]*<span[^>]*>(?<count>\\d+)</span>[^<]*</li>', src),
                         imageUrl: Grabber.regexToConst("url", '<img[^>]+src="([^"]+)"[^>]+onclick="Note\\.toggle\\(\\);"[^>]*/>', src),
                         createdAt: src.match(/>Posted:\s*([^<]+)</i)?.[1],
+                        source: src.match(/>Source:\s*<a href="([^"]+)"/i)?.[1],
                     };
                 },
             },
