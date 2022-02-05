@@ -418,7 +418,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="55"/>
       <source>Thumbnail fill mode</source>
-      <translation>Режим заполнения эскизов</translation>
+      <translation>Режим заполнения миниатюр</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="63"/>
