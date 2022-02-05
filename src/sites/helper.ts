@@ -230,3 +230,47 @@ addHelper("buildQueryParams", (params: Record<string, string | number | boolean>
     }
     return ret.join("&");
 });
+
+function parseSearchVal(value: string, meta: MetaField): any | null {
+    if (meta.type === "options") {
+        for (const opt of meta.options) {
+            const optVal = typeof opt === "string" ? opt : opt.value;
+            if (optVal === value) {
+                return value;
+            }
+        }
+    } else if (meta.type === "input") {
+        return meta.parser ? meta.parser(value) : value;
+    }
+    return null;
+}
+addHelper("parseSearchQuery", (query: string, metas: Record<string, MetaField>): Record<string, any> => {
+    const tags = [];
+    const ret: Record<string, any> = {};
+
+    // Default values
+    for (const key in metas) {
+        if (metas[key].default) {
+            ret[key] = metas[key].default;
+        }
+    }
+
+    // Parse search
+    for (const part of query.split(" ")) {
+        const index = part.indexOf(":");
+        if (index !== -1) {
+            const key = part.substring(0, index);
+            if (key in metas) {
+                const val = parseSearchVal(part.substring(index + 1), metas[key]);
+                if (val !== null) {
+                    ret[key] = val;
+                    continue;
+                }
+            }
+        }
+        tags.push(part);
+    }
+
+    ret.query = tags.join(" ");
+    return ret;
+});

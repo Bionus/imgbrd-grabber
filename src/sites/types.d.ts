@@ -184,6 +184,23 @@ interface ISearchFormatType {
     prefix?: string;
 }
 
+type MetaField = IMetaFieldOptions | IMetaTypeInput;
+interface IMetaFieldBase {
+    label?: string;
+    default?: any;
+}
+interface IMetaFieldOptions extends IMetaFieldBase {
+    type: "options";
+    options: Array<{
+        label?: string;
+        value: string;
+    }> | string[];
+}
+interface IMetaTypeInput extends IMetaFieldBase  {
+    type: "input";
+    parser?: (value: string) => any;
+}
+
 type IParsedSearchQuery = ITag | IParsedSearchOperator;
 interface IParsedSearchOperator {
     operator: "or" | "and";
@@ -273,6 +290,7 @@ interface ISource {
     forcedTokens?: string[];
     tagFormat?: ITagFormat;
     searchFormat?: SearchFormat;
+    meta?: { [id: string]: MetaField };
     auth?: { [id: string]: IAuth };
     apis: { [id: string]: IApi };
 }
