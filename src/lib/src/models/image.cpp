@@ -487,6 +487,9 @@ void Image::parseDetails()
 	if (ret.createdAt.isValid()) {
 		m_data["date"] = ret.createdAt;
 	}
+	if (!ret.sources.isEmpty()) {
+		m_sources = ret.sources;
+	}
 
 	// Image url
 	if (!ret.imageUrl.isEmpty()) {

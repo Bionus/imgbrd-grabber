@@ -96,6 +96,8 @@ interface IParsedDetails {
     tags?: ITag[] | string[];
     imageUrl?: string;
     createdAt?: string;
+    sources?: string[];
+    source?: string;
 }
 interface IParsedGallery extends IParsedSearch {}
 

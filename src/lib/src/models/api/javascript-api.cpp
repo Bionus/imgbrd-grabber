@@ -575,6 +575,12 @@ ParsedDetails JavascriptApi::parseDetails(const QString &source, int statusCode,
 	if (results.hasProperty("createdAt") && results.property("createdAt").isString()) {
 		ret.createdAt = qDateTimeFromString(results.property("createdAt").toString());
 	}
+	if (results.hasProperty("source") && results.property("source").isString()) {
+		ret.sources = QStringList { results.property("source").toString() };
+	}
+	if (results.hasProperty("sources") && results.property("sources").isArray()) {
+		ret.sources = jsToStringList(results.property("sources"));
+	}
 
 	if (results.hasProperty("pools")) {
 		const QJSValue pools = results.property("pools");
