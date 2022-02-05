@@ -651,7 +651,7 @@
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="768"/>
       <source>Preparing images, please wait...</source>
-      <translation>Подготовка изображений, пожалуйста подождите...</translation>
+      <translation>Подготовка изображений, пожалуйста, подождите...</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/downloads-tab.cpp" line="782"/>
@@ -2192,17 +2192,17 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="263"/>
       <source>Once a day</source>
-      <translation>Раз в день</translation>
+      <translation>Ежедневно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="268"/>
       <source>Once a week</source>
-      <translation>Раз в неделю</translation>
+      <translation>Еженедельно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="273"/>
       <source>Once a month</source>
-      <translation>Раз в месяц</translation>
+      <translation>Ежемесячно</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="278"/>
@@ -2263,7 +2263,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="382"/>
       <source>Ask for confirmation before closing the window</source>
-      <translation>Спрашивать подтвеждение перед закрытием окна</translation>
+      <translation>Запрашивать подтверждение перед закрытием окна</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="389"/>
@@ -2478,7 +2478,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1023"/>
       <source>Replace JPEG by JPG</source>
-      <translation>Заменять JPEG на JPG(сокращение не влияет на сам файл)</translation>
+      <translation>Заменять JPEG на JPG</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1033"/>
@@ -2672,7 +2672,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1556"/>
       <source>Preload all tabs when restoring a previous session</source>
-      <translation>Подгружать все вкладки при востановлении сессии</translation>
+      <translation>Подгружать все вкладки при восстановлении предыдущего сеанса</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1577"/>
@@ -3839,12 +3839,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="303"/>
       <source>Can't validate Javascript expressions.</source>
-      <translation>Не удается проверить выражения Javascript.</translation>
+      <translation>Не удаётся проверить выражения Javascript.</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="309"/>
       <source>Can't compile your filename: %1</source>
-      <translation>Не удается скомпилировать имя файла: %1</translation>
+      <translation>Не удаётся скомпилировать имя файла: %1</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filename.cpp" line="316"/>
@@ -3925,7 +3925,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="147"/>
       <source>An image needs a date to be filtered by age</source>
-      <translation>Изображение должно иметь дату для сортировки по возврасту</translation>
+      <translation>Изображение должно иметь дату для сортировки по возрасту</translation>
     </message>
     <message>
       <location filename="../lib/src/models/filtering/meta-filter.cpp" line="168"/>
@@ -4140,7 +4140,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="576"/>
       <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
-      <translation>Некоторые теги изображения находятся в белом списке: %1. Также некоторые теги находятся в черном списке: %2. Всё равно хотите сохранить изображение?</translation>
+      <translation>Некоторые теги изображения находятся в белом списке: %1. Также некоторые теги находятся в чёрном списке: %2. Всё равно хотите сохранить изображение?</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="759"/>
@@ -4516,7 +4516,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="175"/>
       <source>Use a secure connection (https)</source>
-      <translation>Использовать защищенное соединение (https)</translation>
+      <translation>Использовать безопасное соединение (https)</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.ui" line="186"/>
@@ -5350,7 +5350,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/viewer/viewer-window.cpp" line="794"/>
       <source>File is too big to be displayed.
 %1</source>
-      <translation>Файл слишколь большой для предпоказа.
+      <translation>Файл слишком большой для отображения.
 %1</translation>
     </message>
     <message>
