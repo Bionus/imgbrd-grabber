@@ -113,17 +113,17 @@
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a day</source>
-      <translation>Раз в день</translation>
+      <translation>Ежедневно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a week</source>
-      <translation>Раз в неделю</translation>
+      <translation>Еженедельно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
       <source>Once a month</source>
-      <translation>Раз в месяц</translation>
+      <translation>Ежемесячно</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/AdvancedSettingsPage.qml" line="17"/>
