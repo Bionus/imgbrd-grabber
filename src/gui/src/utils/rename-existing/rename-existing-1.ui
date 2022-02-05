@@ -58,7 +58,7 @@
    <item row="6" column="0">
     <widget class="QLabel" name="labelFilenameDestination">
      <property name="text">
-      <string>Destintation filename</string>
+      <string>Destination filename</string>
      </property>
     </widget>
    </item>
