@@ -9,6 +9,9 @@ if(ANDROID)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
 endif()
 
+# Lexbor
+add_subdirectory(vendor/lexbor)
+
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 include_directories("src/")
 
