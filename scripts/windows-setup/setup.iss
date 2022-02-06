@@ -221,6 +221,10 @@ Source: "{#SrcDir}\sites\NHentai\icon.png";   DestDir: "{app}\sites\NHentai"; Fl
 Source: "{#SrcDir}\sites\NHentai\model.js";   DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\sites.txt";  DestDir: "{app}\sites\NHentai"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\NHentai\nhentai.net\defaults.ini"; DestDir: "{app}\sites\NHentai\nhentai.net"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Nijie\icon.png";   DestDir: "{app}\sites\Nijie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Nijie\model.js";   DestDir: "{app}\sites\Nijie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Nijie\sites.txt";  DestDir: "{app}\sites\Nijie"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Nijie\nijie.info\defaults.ini"; DestDir: "{app}\sites\Nijie\nijie.info"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\icon.png";     DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\model.js";     DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\sites.txt";    DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
