@@ -155,7 +155,8 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 					if (type == "get" || type == "post") {
 						const QString url = auth.property("url").toString();
 						const QString cookie = checkType == "cookie" ? check.property("key").toString() : QString();
-						ret = new HttpAuth(type, url, fields, cookie);
+						const QString redirectUrl = checkType == "redirect" ? check.property("url").toString() : QString();
+						ret = new HttpAuth(type, url, fields, cookie, redirectUrl);
 					} else {
 						const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
 						ret = new UrlAuth(type, fields, maxPage);

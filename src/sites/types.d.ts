@@ -120,10 +120,14 @@ interface IAuthHashField extends IAuthFieldBase {
     salt: string;
 }
 
-type IAuthCheck = IAuthCheckCookie | IAuthCheckMaxPage;
+type IAuthCheck = IAuthCheckCookie | IAuthCheckRedirect | IAuthCheckMaxPage;
 interface IAuthCheckCookie {
     type: "cookie";
     key: string;
+}
+interface IAuthCheckRedirect {
+    type: "redirect";
+    url: string;
 }
 interface IAuthCheckMaxPage {
     type: "max_page";

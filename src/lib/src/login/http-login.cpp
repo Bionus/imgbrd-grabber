@@ -53,19 +53,28 @@ void HttpLogin::login()
 
 void HttpLogin::loginFinished()
 {
-	const auto status = hasCookie(m_loginReply->url())
-		? Result::Success
-		: Result::Failure;
+	// "cookie" check
+	bool success = hasCookie(m_loginReply->url());
 
-	emit loggedIn(status);
+	// "redirect" check
+	const QString redirectCheck = m_auth->redirectUrl();
+	if (!redirectCheck.isEmpty()) {
+		const QUrl redirection = m_loginReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+		success = redirection.toString().contains(redirectCheck);
+	}
+
+	emit loggedIn(success ? Result::Success : Result::Failure);
 }
 
 bool HttpLogin::hasCookie(const QUrl &url) const
 {
 	const QString cookieName = m_auth->cookie();
+	if (cookieName.isEmpty()) {
+		return false;
+	}
 
-	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
-	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(url);
+	const QNetworkCookieJar *cookieJar = m_manager->cookieJar();
+	const QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(url);
 
 	for (const QNetworkCookie &cookie : cookies) {
 		if (cookie.name() == cookieName && !cookie.value().isEmpty() && cookie.value() != "0") {
