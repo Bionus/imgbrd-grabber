@@ -23,7 +23,7 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	manager->setCookieJar(new QNetworkCookieJar(manager));
 
 	QList<AuthField*> fields;
-	HttpAuth auth(type, "/login", fields, "test_cookie");
+	HttpAuth auth(type, "/login", fields, "test_cookie", "");
 	T login(&auth, site, manager, site->settings());
 
 	REQUIRE(login.isTestable());
@@ -55,7 +55,7 @@ TEST_CASE("HttpLogin")
 	SECTION("NonTestable")
 	{
 		QList<AuthField*> fields;
-		HttpAuth auth("url", "", fields, "");
+		HttpAuth auth("url", "", fields, "", "");
 		HttpGetLogin login(&auth, site, &accessManager, site->settings());
 
 		REQUIRE(!login.isTestable());
