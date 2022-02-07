@@ -11,6 +11,8 @@ endif()
 
 # Lexbor
 add_subdirectory(vendor/lexbor)
+set(LIBS ${LIBS} lexbor_static)
+include_directories("vendor/lexbor/source/")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 include_directories("src/")

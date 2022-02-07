@@ -106,3 +106,37 @@ Parses the string passed and return the parsed XML tree.
     }
 }
 ```
+
+## parseHTML
+
+**Parameters:**
+* html (string)
+
+**Returns:** object (JavascriptHtmlDocument)
+
+### Description
+Parses the string passed and return a parsed HTML node object.
+
+### Example
+```ts
+const parsed = Grabber.parseHTML(src);
+const images = parsed.find("#images-list img");
+const inner = images.map((img) => img.innerHTML());
+```
+
+## JavascriptHtmlDocument::find
+
+**Parameters:**
+* css (string)
+
+**Returns:** object[] (JavascriptHtmlDocument[])
+
+### Description
+Returns a list of nodes matching the passed CSS selectors.
+
+## JavascriptHtmlDocument::innerHTML
+
+**Returns:** string
+
+### Description
+Returns the HTML contents of a given node.

@@ -3,6 +3,7 @@
 
 #include <QJSValue>
 #include <QObject>
+#include "javascript-html-document.h"
 
 
 class QDomNode;
@@ -18,6 +19,7 @@ class JavascriptGrabberHelper : public QObject
 		Q_INVOKABLE QJSValue htmlDecode(const QString &txt) const;
 		Q_INVOKABLE QJSValue regexMatches(const QString &regex, const QString &txt) const;
 		Q_INVOKABLE QJSValue parseXML(const QString &txt) const;
+		Q_INVOKABLE QJSValue parseHTML(const QString &txt) const;
 
 	private:
 		QJSValue _parseXMLRec(const QDomNode &node) const;

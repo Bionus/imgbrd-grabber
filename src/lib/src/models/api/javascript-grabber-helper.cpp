@@ -4,6 +4,7 @@
 #include <QJSValue>
 #include <QRegularExpression>
 #include "functions.h"
+#include "javascript-html-document.h"
 #include "logger.h"
 
 
@@ -123,4 +124,13 @@ QJSValue JavascriptGrabberHelper::parseXML(const QString &txt) const
 	}
 
 	return _parseXMLRec(doc);
+}
+
+QJSValue JavascriptGrabberHelper::parseHTML(const QString &txt) const
+{
+	const JavascriptHtmlDocument *doc = JavascriptHtmlDocument::fromString(m_engine, txt);
+	if (doc == nullptr) {
+		return QJSValue(QJSValue::UndefinedValue);
+	}
+	return m_engine.newQObject((QObject*) doc);
 }
