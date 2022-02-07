@@ -21,20 +21,38 @@ JavascriptHtmlDocument *JavascriptHtmlDocument::fromString(QJSEngine &engine, co
 	}
 
 	auto *body = lxb_html_document_body_element(document);
-	return new JavascriptHtmlDocument(engine, reinterpret_cast<lxb_dom_node_t*>(body));
+	return new JavascriptHtmlDocument(engine, lxb_dom_interface_node(body));
 }
 
 
-QJSValue JavascriptHtmlDocument::innerHTML() const
+QJSValue JavascriptHtmlDocument::outerHTML() const
 {
-	lexbor_str_t str = {0};
-	auto status = lxb_html_serialize_str(m_document, &str);
+	lexbor_str_t str = {NULL};
+	auto status = lxb_html_serialize_tree_str(m_document, &str);
 	if (status != LXB_STATUS_OK) {
 		log(QStringLiteral("Error serializing HTML node: %1.").arg(status), Logger::Error);
 		return QString();
 	}
 	return QString(reinterpret_cast<const char *>(str.data));
 }
+
+QJSValue JavascriptHtmlDocument::innerHTML() const
+{
+	lexbor_str_t str = {NULL};
+	auto status = lxb_html_serialize_deep_str(m_document, &str);
+	if (status != LXB_STATUS_OK) {
+		log(QStringLiteral("Error serializing HTML node: %1.").arg(status), Logger::Error);
+		return QString();
+	}
+	return QString(reinterpret_cast<const char *>(str.data));
+}
+
+QJSValue JavascriptHtmlDocument::innerText() const
+{
+	lxb_char_t *str = lxb_dom_node_text_content(m_document, NULL);
+	return QString(reinterpret_cast<const char *>(str));
+}
+
 
 lxb_status_t find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
 {
@@ -65,16 +83,15 @@ QJSValue JavascriptHtmlDocument::find(const QString &css) const
 	auto *list = lxb_css_selectors_parse(parser, reinterpret_cast<const lxb_char_t *>(css.toStdString().c_str()), css.length());
 	if (parser->status != LXB_STATUS_OK) {
 		log(QStringLiteral("Error parsing CSS selectors: %1.").arg(selectors_status), Logger::Error);
-		return EXIT_FAILURE;
+		return QJSValue(QJSValue::UndefinedValue);
 	}
 
 	// Find matching HTML nodes
 	QList<lxb_dom_node_t*> nodes;
-	auto *body = lxb_dom_interface_node(m_document);
-	auto status_find = lxb_selectors_find(selectors, body, list, find_callback, &nodes);
+	auto status_find = lxb_selectors_find(selectors, m_document, list, find_callback, &nodes);
 	if (status_find != LXB_STATUS_OK) {
 		log(QStringLiteral("Error finding nodes via CSS selectors: %1.").arg(status_find), Logger::Error);
-		return EXIT_FAILURE;
+		return QJSValue(QJSValue::UndefinedValue);
 	}
 
 	// Convert result to QJSValue

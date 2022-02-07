@@ -16,7 +16,10 @@ class JavascriptHtmlDocument : public QObject
 		JavascriptHtmlDocument(QJSEngine &engine, lxb_dom_node_t *node);
 		static JavascriptHtmlDocument *fromString(QJSEngine &m_engine, const QString &html);
 
+		Q_INVOKABLE QJSValue outerHTML() const;
 		Q_INVOKABLE QJSValue innerHTML() const;
+		Q_INVOKABLE QJSValue innerText() const;
+
 		Q_INVOKABLE QJSValue find(const QString &css) const;
 
 	private:

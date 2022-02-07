@@ -134,9 +134,23 @@ const inner = images.map((img) => img.innerHTML());
 ### Description
 Returns a list of nodes matching the passed CSS selectors.
 
+## JavascriptHtmlDocument::outerHTML
+
+**Returns:** string
+
+### Description
+Returns the serialized HTML of the element and its descendants.
+
 ## JavascriptHtmlDocument::innerHTML
 
 **Returns:** string
 
 ### Description
-Returns the HTML contents of a given node.
+Returns the serialized HTML of the element's descendants.
+
+## JavascriptHtmlDocument::innerText
+
+**Returns:** string
+
+### Description
+Returns the rendered text content of an element.
