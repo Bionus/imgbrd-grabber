@@ -19,6 +19,7 @@
   children:
     - link: /docs/sites/
     - link: /docs/sites/source.html
+    - link: /docs/sites/source-example.html
     - link: /docs/sites/javascript-helper.html
 - name: Plugins
   children:
