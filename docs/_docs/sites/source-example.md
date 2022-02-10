@@ -91,9 +91,9 @@ export const source: ISource = {
 ```
 
 We can see a few things here:
-* The `name` field is quite obvious, we just use "JSON" because that's the format used by this API*
-* The `auth` field is left empty, because even anonymous users can use this API
-* The `search` object contains two functions, `url()` and `parse()` that we will now discuss
+* The `name` field is quite obvious, we just use "JSON" because that's the format used by this API
+* The `auth` field is left as an empty array, because even anonymous users can use this API, no autentication is required
+* The `search` object contains two functions, `url()` and `parse()` that we will now discuss in more detail
 
 
 ## Search "url" function
@@ -127,11 +127,9 @@ Note that we use `encodeURIComponent` for the free input part, as we don't know 
 
 With the URL generated above, Grabber will make an HTTP call. Then, it will pas the output of this call to the "parse" function, whose job is to turn this raw output into a list of images.
 
-In our case, the raw output is made of JSON. JavaScript (and by extension TypeScript) provides a convenient way to parse JSON, namely [JSON.parse()]{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse}.
+In our case, the raw output is made of JSON. JavaScript (and by extension TypeScript) provides a convenient way to parse JSON, namely [JSON.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
 
-We also want to turn this raw JSON into a list of images, defined in [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts) as the `IImage` type.
-
-Let's use this information to do some basic parsing and map it to the correct image format:
+Let's use this information to do some basic parsing and map it to the correct image format, defined in [types.d.ts](https://github.com/Bionus/imgbrd-grabber/blob/develop/src/sites/types.d.ts) as the `IImage` type:
 ```typescript
 parse(src: string): IParsedSearch {
     const parsed = JSON.parse(src);
@@ -172,9 +170,9 @@ Of course, there's still more fields we could add, but let's stop here for the s
 
 # Authentication
 
-While this particular API does not require authentication, it's pretty common for sources to require being authenticated before being able to access the API. In Danbooru's case, it's also useful to provide authentication because it allows premium users to use their premium features within Grabber (for example to search more than 2 tags at a time).
+While this particular API does not require authentication, it's pretty common for sources to require being authenticated before being able to access their API. In Danbooru's case, it's also useful to provide authentication because it allows premium users to use their premium features within Grabber (for example to search more than 2 tags at a time).
 
-So how do we do that? First, we have to determine which kind of authentication is required. Usually, for proper API, the user would need to provide its API key somehow in the request. Or for an HTML-based "API", that would be a more classic login form somewhere.
+So how do we do that? First, we have to determine which kind of authentication is required. Usually, for a proper API, the user would need to provide its API key somehow in the request. Or for an HTML-based "API", that would be a more classic login form somewhere.
 
 Grabber supports many types of login, such as OAuth, POST, HTTP Basic, in-url, etc. The exhaustive list can be found in the `IAuth` type.
 
@@ -196,6 +194,17 @@ const auth: IAuth = {
 ```
 
 How do we get those values? Simply go to the login page and inspect the main `<form>` element there. The "method" attribute corresponds to the `type` you want to use (GET or POST, by default and most usually POST), and the "action" attribute corresponds to the `url`.
+
+Here's the HTML of the `<form>` field for reference:
+```html
+<form
+    novalidate="novalidate"
+    class="simple_form session"
+    action="/session"
+    accept-charset="UTF-8"
+    method="post"
+>
+```
 
 Now you'll notice we're still missing the `fields` and `check` members.
 
@@ -221,6 +230,19 @@ In this example, there's two inputs on the page: username and password, which gi
 * `id` corresponds to a certain mapping in Grabber. For usernames, you need to use "pseudo". For passwords, it's the straightforward "password"
 * `key` corresponds to the "name" property of the `<input>` field, i.e. the name of the data as sent by the form
 * `type` is optional, and allows to customize the type of input on Grabber's side. "password" for example will hide the user input
+
+Here's the HTML of those two fields for reference (the most important being the `<input />` fields):
+```html
+<div class="input string required session_name">
+    <label class="string required" for="session_name"><abbr title="required">*</abbr> Name</label>
+    <input class="string required" type="text" name="session[name]" id="session_name" />
+</div>
+<div class="input password required session_password field_with_hint">
+    <label class="password required" for="session_password"><abbr title="required">*</abbr> Password</label>
+    <input autocomplete="password" class="password required" type="password" name="session[password]" id="session_password" />
+    <span class="hint"><a href="/password_reset">Forgot password?</a></span>
+</div>
+```
 
 ### Auth check
 Once the HTTP call is done, it can be very useful to check whether the login was successful or not. To do so, there's multiple ways to check, described in the `IAuthCheck` type.
