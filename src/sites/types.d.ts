@@ -170,23 +170,22 @@ type IAuthField = IAuthNormalField | IAuthConstField | IAuthHashField;
  */
 interface IAuthFieldBase {
     /**
-     * ???
+     * The name of the field, as it will be passed in the request.
      */
     key?: string;
 }
 
 interface IAuthNormalField extends IAuthFieldBase {
     /**
-     * ???
+     * The ID of the field as stored in the settings.
+     *
+     * Values are shared between authentications if they have the same ID, even if the key is different.
+     * Standard IDs allow proper translation and naming in the UI, but they can be any other value.
      */
-    id: string;
+    id: "pseudo" | "userId" | "password" | "salt" | "apiKey" | "consumerKey" | "consumerSecret" | "accessToken" | "refreshToken" | string;
 
     /**
-     * ???
-     *
-     * * text: ???
-     * * password: ???
-     * * salt: ???
+     * The type of field. For example, a "password" field will have its input hidden to the user in the UI.
      */
     type?: "text" | "password" | "salt";
 

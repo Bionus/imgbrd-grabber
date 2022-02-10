@@ -178,13 +178,13 @@ So how do we do that? First, we have to determine which kind of authentication i
 
 Grabber supports many types of login, such as OAuth, POST, HTTP Basic, in-url, etc. The exhaustive list can be found in the `IAuth` type.
 
-For this example, there's two ways to authenticate requests to Danbooru. The first is pretty obvious and is the login form. The second can be found in their documentation: ???
+For this example, there's two ways to authenticate requests to Danbooru. The first is pretty obvious and is the login form. The second can be found in [their documentation](https://danbooru.donmai.us/wiki_pages/help:api), in the "Authentication" part. It says that we can use either HTTP Basic authentication using an API key, or just pass it in the URL.
 
 
 ## Login form
 
 ### Basics
-The login form authentication type is described in the `IHttpAuth` login type, let's start by writing a basic version:
+The "login form" authentication type is described in the `IHttpAuth` login type, let's start by writing a basic version:
 
 ```typescript
 const auth: IAuth = {
