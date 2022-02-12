@@ -323,11 +323,11 @@ void ImageDownloader::networkError(NetworkReply::NetworkError error, const QStri
 
 		const bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
 		const bool shouldFallback = m_size == Image::Size::Full && sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
-		QString newext = extensionRotator != nullptr ? extensionRotator->next() : QString();
+		const QString newExt = extensionRotator != nullptr ? extensionRotator->next() : QString();
 
-		if (m_rotate && !newext.isEmpty()) {
-			m_url = setExtension(m_image->url(m_size), newext);
-			log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newext, m_url.toString()));
+		if (m_rotate && !newExt.isEmpty()) {
+			m_url = setExtension(m_image->url(m_size), newExt);
+			log(QStringLiteral("Image not found. New try with extension %1 (%2)...").arg(newExt, m_url.toString()));
 			m_image->setUrl(m_url);
 			loadImage();
 		} else if (shouldFallback && !m_tryingSample) {

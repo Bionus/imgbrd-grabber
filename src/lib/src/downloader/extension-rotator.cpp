@@ -5,23 +5,14 @@
 ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
 	: QObject(other.parent())
 {
-	m_initialExtension = other.m_initialExtension;
+	m_initialExtensionIndex = other.m_initialExtensionIndex;
 	m_extensions = other.m_extensions;
 	m_next = other.m_next;
 }
 
 ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent)
-	: QObject(parent), m_initialExtension(initialExtension), m_extensions(extensions)
-{
-	const int index = extensions.indexOf(initialExtension);
-
-	// If the initial extension is not in the list, we return the first one
-	if (index < 0) {
-		m_next = 0;
-	} else {
-		m_next = index + 1;
-	}
-}
+	: QObject(parent), m_initialExtensionIndex(extensions.indexOf(initialExtension)), m_extensions(extensions)
+{}
 
 QString ExtensionRotator::next()
 {
@@ -30,15 +21,19 @@ QString ExtensionRotator::next()
 		return QString();
 	}
 
-	QString next = m_extensions[m_next % m_extensions.length()];
+	// Skip the initial extension
+	if (m_next == m_initialExtensionIndex) {
+		m_next++;
+	}
 
 	// If we did a full loop, that means we finished
-	const bool isLast = m_next == m_extensions.size();
-	const bool isNotFound = m_extensions.indexOf(m_initialExtension) < 0;
-	if (next == m_initialExtension || (isLast && isNotFound)) {
+	if (m_next >= m_extensions.size()) {
 		return QString();
 	}
 
+	// Return the next extension in the list
+	QString next = m_extensions[m_next % m_extensions.length()];
 	m_next++;
+
 	return next;
 }
