@@ -230,7 +230,7 @@ void Image::init()
 	m_pageUrl = m_parentSite->fixUrl(m_pageUrl).toString();
 
 	// Setup extension rotator
-	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	const bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated") || hasTag("video");
 	const QStringList extensions = animated
 		? QStringList { "mp4", "webm", "gif", "jpg", "png", "jpeg", "swf" }
 		: QStringList { "jpg", "png", "gif", "jpeg", "webm", "swf", "mp4" };
