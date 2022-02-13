@@ -33,6 +33,31 @@ function completeImage(img: IImage): IImage {
 export const source: ISource = {
     name: "DeviantArt",
     forcedTokens: ["file_url"],
+    auth: {
+        session: {
+            type: "post",
+            url: "/_sisu/do/signin",
+            fields: [
+                {
+                    id: "pseudo",
+                    key: "username",
+                },
+                {
+                    id: "password",
+                    key: "password",
+                    type: "password",
+                },
+            ],
+            csrf: {
+                url: "/users/login",
+                fields: ["csrf_token"],
+            },
+            check: {
+                type: "cookie",
+                key: "auth",
+            },
+        },
+    },
     apis: {
         rss: {
             name: "RSS",
