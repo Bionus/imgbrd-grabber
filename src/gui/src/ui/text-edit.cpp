@@ -252,6 +252,8 @@ void TextEdit::openCustomContextMenu(const QPoint &pos)
 {
 	Q_UNUSED(pos)
 
+	const QString text = toPlainText().trimmed();
+
 	auto *menu = new QMenu(this);
 		auto *favs = new QMenu(tr("Favorites"), menu);
 			auto *favsGroup = new QActionGroup(favs);
@@ -260,8 +262,8 @@ void TextEdit::openCustomContextMenu(const QPoint &pos)
 				for (const Favorite &fav : qAsConst(m_favorites)) {
 					favsGroup->addAction(fav.getName());
 				}
-				if (!toPlainText().isEmpty()) {
-					if (m_favorites.contains(Favorite(toPlainText()))) {
+				if (!text.isEmpty()) {
+					if (m_favorites.contains(Favorite(text))) {
 						favs->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetFavorite()));
 					} else {
 						favs->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setFavorite()));
@@ -279,8 +281,8 @@ void TextEdit::openCustomContextMenu(const QPoint &pos)
 				for (const QString &viewItLater : qAsConst(m_viewItLater)) {
 					vilsGroup->addAction(viewItLater);
 				}
-				if (!toPlainText().isEmpty()) {
-					if (m_viewItLater.contains(toPlainText())) {
+				if (!text.isEmpty()) {
+					if (m_viewItLater.contains(text)) {
 						vils->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetKfl()));
 					} else {
 						vils->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setKfl()));
@@ -331,20 +333,21 @@ void TextEdit::openCustomContextMenu(const QPoint &pos)
 
 void TextEdit::setFavorite()
 {
-	m_profile->addFavorite(Favorite(toPlainText()));
-	emit addedFavorite(toPlainText());
+	const QString text = toPlainText().trimmed();
+	m_profile->addFavorite(Favorite(text));
+	emit addedFavorite(text);
 }
 void TextEdit::unsetFavorite()
 {
-	m_profile->removeFavorite(Favorite(toPlainText()));
+	m_profile->removeFavorite(Favorite(toPlainText().trimmed()));
 }
 void TextEdit::setKfl()
 {
-	m_profile->addKeptForLater(toPlainText());
+	m_profile->addKeptForLater(toPlainText().trimmed());
 }
 void TextEdit::unsetKfl()
 {
-	m_profile->removeKeptForLater(toPlainText());
+	m_profile->removeKeptForLater(toPlainText().trimmed());
 }
 
 void TextEdit::insertFav(QAction *act)
