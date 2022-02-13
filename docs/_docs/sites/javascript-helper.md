@@ -111,11 +111,14 @@ Parses the string passed and return the parsed XML tree.
 
 **Parameters:**
 * html (string)
+* fragment (bool) = false
 
 **Returns:** object (JavascriptHtmlDocument)
 
 ### Description
 Parses the string passed and return a parsed HTML node object.
+
+Set `fragment` to true if the HTML to parse is not a whole HTML document but only a part of it.
 
 ### Example
 ```ts

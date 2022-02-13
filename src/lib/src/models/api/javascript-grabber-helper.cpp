@@ -126,9 +126,9 @@ QJSValue JavascriptGrabberHelper::parseXML(const QString &txt) const
 	return _parseXMLRec(doc);
 }
 
-QJSValue JavascriptGrabberHelper::parseHTML(const QString &txt) const
+QJSValue JavascriptGrabberHelper::parseHTML(const QString &html, bool fragment) const
 {
-	const JavascriptHtmlDocument *doc = JavascriptHtmlDocument::fromString(m_engine, txt);
+	const JavascriptHtmlDocument *doc = JavascriptHtmlDocument::fromString(m_engine, html, fragment);
 	if (doc == nullptr) {
 		return QJSValue(QJSValue::UndefinedValue);
 	}

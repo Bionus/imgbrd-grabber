@@ -9,16 +9,36 @@ HtmlNode::HtmlNode(lxb_dom_node_t *node)
 	: m_node(node)
 {}
 
-HtmlNode *HtmlNode::fromString(const QString &html)
+HtmlNode *HtmlNode::fromString(const QString &html, bool fragment)
 {
 	auto *document = lxb_html_document_create();
+
+	// Parse an HTML fragment
+	if (fragment) {
+		const QString fragmentWrapper = "p";
+		auto *root = lxb_html_document_create_element(document, reinterpret_cast<const lxb_char_t *>(fragmentWrapper.toStdString().c_str()), fragmentWrapper.length(), NULL);
+		auto *node = lxb_html_document_parse_fragment(document, &root->element, reinterpret_cast<const lxb_char_t *>(html.toStdString().c_str()), html.length());
+		if (node == NULL) {
+			log(QStringLiteral("Error parsing HTML fragment."), Logger::Error);
+			return nullptr;
+		}
+
+		// Ignore the default-built "html" node if there's only one child
+		if (node->first_child == node->last_child) {
+			node = node->first_child;
+		}
+
+		return new HtmlNode(node);
+	}
+
+	// Parse a whole HTML document
 	auto status = lxb_html_document_parse(document, reinterpret_cast<const lxb_char_t *>(html.toStdString().c_str()), html.length());
 	if (status != LXB_STATUS_OK) {
 		log(QStringLiteral("Error parsing HTML: %1.").arg(status), Logger::Error);
-		return {};
+		return nullptr;
 	}
-
-	return new HtmlNode(lxb_dom_interface_node(document));
+	const auto *body = lxb_html_document_body_element(document);
+	return new HtmlNode(lxb_dom_interface_node(body));
 }
 
 HtmlNode::~HtmlNode()

@@ -11,9 +11,9 @@ JavascriptHtmlDocument::JavascriptHtmlDocument(QJSEngine &engine, const HtmlNode
 	: QObject(&engine), m_engine(engine), m_node(node)
 {}
 
-JavascriptHtmlDocument *JavascriptHtmlDocument::fromString(QJSEngine &engine, const QString &html)
+JavascriptHtmlDocument *JavascriptHtmlDocument::fromString(QJSEngine &engine, const QString &html, bool fragment)
 {
-	HtmlNode *node = HtmlNode::fromString(html);
+	HtmlNode *node = HtmlNode::fromString(html, fragment);
 	if (node == nullptr) {
 		return nullptr;
 	}
