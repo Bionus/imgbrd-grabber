@@ -317,6 +317,18 @@ interface IBasicAuth {
     check?: IAuthCheck;
 }
 
+interface IParsedCsrf {
+    /**
+     * Additional fields to pass to the auth request.
+     */
+    fields: { [key: string]: string | number };
+
+    /**
+     * Override the URL to call in the main login flow.
+     */
+    url?: string;
+}
+
 /**
  * Authentication by a HTTP call to a given URL (for example for login forms).
  */
@@ -335,6 +347,21 @@ interface IHttpAuth {
      * Definition of fields to pass to the request.
      */
     fields: IAuthField[];
+
+    /**
+     * Optional URL to load to get any CSRF token from the form.
+     */
+    csrf?: {
+        /**
+         * The URL to load.
+         */
+        url: string;
+
+        /**
+         * Field names to parse in the results.
+         */
+        fields: string[];
+    },
 
     /**
      * Method to check for successful authentication.

@@ -156,7 +156,12 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 						const QString url = auth.property("url").toString();
 						const QString cookie = checkType == "cookie" ? check.property("key").toString() : QString();
 						const QString redirectUrl = checkType == "redirect" ? check.property("url").toString() : QString();
-						ret = new HttpAuth(type, url, fields, cookie, redirectUrl);
+
+						const QJSValue &csrf = auth.property("csrf");
+						const QString csrfUrl = csrf.isObject() ? csrf.property("url").toString() : QString();
+						const QStringList csrfFields = csrf.isObject() ? jsToStringList(csrf.property("fields")) : QStringList();
+
+						ret = new HttpAuth(type, url, fields, cookie, redirectUrl, csrfUrl, csrfFields);
 					} else {
 						const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
 						ret = new UrlAuth(type, fields, maxPage);
