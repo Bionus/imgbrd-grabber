@@ -23,6 +23,7 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 	setFixedHeight(sizeHint().height());
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::openCustomContextMenu);
+	connect(m_profile, &Profile::favoritesChanged, this, &TextEdit::doColor);
 }
 
 QSize TextEdit::sizeHint() const
