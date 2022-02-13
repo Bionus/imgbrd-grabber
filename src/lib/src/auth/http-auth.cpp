@@ -31,4 +31,3 @@ QStringList HttpAuth::csrfFields() const
 {
 	return m_csrfFields;
 }
-
