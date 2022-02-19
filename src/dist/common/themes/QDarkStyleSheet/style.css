@@ -886,6 +886,26 @@ QTabBar::tab:right:!selected:hover {
     background-color: #3daee9;
 }
 
+/* https://github.com/Bionus/imgbrd-grabber/issues/2603 */
+QTabBar QToolButton {
+    background-color: #31363b;
+    border: 1px solid #76797C;
+}
+QTabBar QToolButton:disabled {
+    background-color: #31363b;
+    border: 1px solid #454545;
+}
+QTabBar QToolButton:hover {
+    background-color: #31363b;
+    border: 1px solid #3daee9;
+}
+QTabBar QToolButton:focus {
+    background-color: #3daee9;
+}
+QTabBar QToolButton:pressed {
+    background-color: #3daee9;
+}
+
 QTabBar QToolButton::right-arrow:enabled {
      image: url(img/right_arrow.png);
  }
