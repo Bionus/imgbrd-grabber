@@ -2,6 +2,7 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QSettings>
+#include <QSortFilterProxyModel>
 
 
 ToggleColumnsTableView::ToggleColumnsTableView(QWidget *parent)
@@ -46,6 +47,12 @@ void ToggleColumnsTableView::headersContextMenu(const QPoint &pos)
 
 	auto *menu = new QMenu(this);
 
+	const bool isSortable = dynamic_cast<QSortFilterProxyModel*>(model()) != nullptr;
+	if (isSortable) {
+		menu->addAction(tr("Reset sorting"), [this]() { this->resetSort(); });
+		menu->addSeparator();
+	}
+
 	for (int i = 0; i < model()->columnCount(); ++i) {
 		const bool enabled = !horizontalHeader()->isSectionHidden(i);
 		const QString title = model()->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
@@ -66,4 +73,13 @@ void ToggleColumnsTableView::toggleColumn(int index)
 {
 	const bool current = horizontalHeader()->isSectionHidden(index);
 	horizontalHeader()->setSectionHidden(index, !current);
+}
+
+void ToggleColumnsTableView::resetSort()
+{
+	auto *header = horizontalHeader();
+	header->blockSignals(true);
+	header->setSortIndicator (0, Qt::DescendingOrder);
+	model()->sort(-1);
+	header->blockSignals(false);
 }

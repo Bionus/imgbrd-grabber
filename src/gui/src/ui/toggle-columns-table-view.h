@@ -23,6 +23,7 @@ class ToggleColumnsTableView : public QTableView
 
 	protected slots:
 		void headersContextMenu(const QPoint &pos);
+		void resetSort();
 };
 
 #endif // TOGGLE_COLUMNS_TABLE_VIEW_H
