@@ -24,7 +24,7 @@ function getLastCommit(path) {
     if (!out) {
         return undefined;
     }
-    
+
     const parts = out.split("/");
     return {
         hash: parts[0],
@@ -59,7 +59,7 @@ for (const source of sources) {
     output.sources.push({
         name: source,
         version: version ? version[1] : undefined,
-        hash: crypto.createHash("sha256").update(fs.readFileSync(mkPath(source, "model.js"))).digest("hex"),
+        hash: crypto.createHash("sha256").update(fs.readFileSync(mkPath(source, "model.js"), "utf-8")).digest("hex"),
         lastCommit,
         defaultSites,
         supportedSites: supportedSites.length ? supportedSites : defaultSites,
