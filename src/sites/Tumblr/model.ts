@@ -8,7 +8,7 @@ function urlSampleToThumbnail(url: string): string {
 }
 
 export const source: ISource = {
-    name: "Pixiv",
+    name: "Tumblr",
     modifiers: [],
     forcedTokens: [],
     searchFormat: {
