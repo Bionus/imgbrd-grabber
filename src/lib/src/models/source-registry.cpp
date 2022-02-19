@@ -10,8 +10,8 @@
 #include "network/network-reply.h"
 
 
-SourceRegistry::SourceRegistry(QString jsonUrl)
-	: m_jsonUrl(std::move(jsonUrl))
+SourceRegistry::SourceRegistry(QString jsonUrl, QObject *parent)
+	: QObject(parent), m_jsonUrl(std::move(jsonUrl))
 {
 	m_manager = new NetworkManager(this);
 }
@@ -32,7 +32,7 @@ void SourceRegistry::jsonLoaded()
 	// Loading error
 	if (reply->error() != NetworkReply::NetworkError::NoError) {
 		log(QStringLiteral("Error loading source registry metadata (%1)").arg(reply->errorString()), Logger::Error);
-		emit loaded();
+		emit loaded(false);
 		return;
 	}
 
@@ -48,7 +48,7 @@ void SourceRegistry::jsonLoaded()
 	// Supported sources
 	QJsonArray sources = object["sources"].toArray();
 	for (auto sourceJson : sources) {
-		QJsonObject sourceObj =  sourceJson.toObject();
+		QJsonObject sourceObj = sourceJson.toObject();
 		QJsonObject lastCommitObj = sourceObj["lastCommit"].toObject();
 
 		SourceRegistrySource source;
@@ -74,5 +74,5 @@ void SourceRegistry::jsonLoaded()
 		m_sources.insert(source.name, source);
 	}
 
-	emit loaded();
+	emit loaded(true);
 }

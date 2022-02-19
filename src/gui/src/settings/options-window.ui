@@ -63,6 +63,11 @@
        <property name="text">
         <string>Sources</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Registries</string>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
@@ -629,6 +634,45 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageSourcesRegistries">
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <widget class="QLabel" name="labelSourcesRegistriesHelp">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>New sources and sites can be supported by adding third-party source registries.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="layoutSourcesRegistries"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonAddSourceRegistry">
+          <property name="text">
+           <string>Add a new source registry</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSave">
        <layout class="QFormLayout" name="formLayout_17">
         <property name="fieldGrowthPolicy">
@@ -1125,8 +1169,8 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
              </spacer>
@@ -5646,5 +5690,6 @@
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>addLogFile()</slot>
   <slot>addWebService()</slot>
+  <slot>addSourceRegistry()</slot>
  </slots>
 </ui>

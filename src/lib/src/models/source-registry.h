@@ -32,7 +32,7 @@ class SourceRegistry : public QObject
 	Q_OBJECT
 
 	public:
-		explicit SourceRegistry(QString jsonUrl);
+		explicit SourceRegistry(QString jsonUrl, QObject *parent = nullptr);
 		void load();
 
 		const QString &jsonUrl() const { return m_jsonUrl; }
@@ -45,7 +45,7 @@ class SourceRegistry : public QObject
 		void jsonLoaded();
 
 	signals:
-		void loaded();
+		void loaded(bool ok);
 
 	private:
 		QString m_jsonUrl;

@@ -99,6 +99,10 @@ class OptionsWindow : public QDialog
 		void removeLogFile(int index);
 		void setLogFile(int index, const QMap<QString, QVariant> &logFile);
 
+		// Source registries
+		void reloadSourceRegistries();
+		void addSourceRegistry();
+
 		// Web services
 		void addWebService();
 		void showWebServices();
