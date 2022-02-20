@@ -21,6 +21,7 @@
     - link: /docs/sites/source.html
     - link: /docs/sites/source-example.html
     - link: /docs/sites/javascript-helper.html
+    - link: /docs/sites/source-registry.html
 - name: Plugins
   children:
     - link: /docs/plugins/translation.html
