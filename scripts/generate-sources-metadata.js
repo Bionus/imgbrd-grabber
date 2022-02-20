@@ -34,10 +34,12 @@ function getLastCommit(path) {
     };
 }
 
+const args = process.argv.slice(2);
+const isNightly = args.length > 0 && args[0] == "develop";
 const output = {
-    name: "Official Grabber sources",
+    name: "Official Grabber sources" + (isNightly ? " (nightly)" : ""),
     home: "https://github.com/Bionus/imgbrd-grabber",
-    url: "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/src/sites/",
+    url: "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/" + (isNightly ? "develop" : "master") + "/src/sites/",
     sources: [],
 };
 

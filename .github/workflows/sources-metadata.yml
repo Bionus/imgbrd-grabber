@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Generate sources metadata
-        run: node scripts/generate-sources-metadata.js | tee metadata-${{ matrix.branch }}.json
+        run: node scripts/generate-sources-metadata.js ${{ matrix.branch }} | tee metadata-${{ matrix.branch }}.json
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
