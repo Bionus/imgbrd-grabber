@@ -176,7 +176,7 @@ Behoimi
 
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
-* Theme support using CSS. See [Themes](https://github.com/Bionus/imgbrd-grabber/wiki/Themes) for details.
+* Theme support using CSS. See [Themes](https://bionus.github.io/imgbrd-grabber/docs/plugins/theme.html) for details.
 * Lots of options to customize the program's behaviour
 </div>
 
@@ -185,11 +185,11 @@ Behoimi
 
 ## Organize
 
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Filename) for details.
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://bionus.github.io/imgbrd-grabber/docs/filename.html) for details.
 * Favorite tags to keep track of new images
 * "View it later" tags to save a search for later
-* Support saving images directly to a local booru, such as [Shimmie](https://github.com/Bionus/imgbrd-grabber/wiki/Shimmie), [Gelbooru](https://github.com/Bionus/imgbrd-grabber/wiki/Gelbooru) or [MyImouto](https://github.com/Bionus/imgbrd-grabber/wiki/MyImouto).
-* Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+* Support saving images directly to a local booru, such as [Szurubooru](https://bionus.github.io/imgbrd-grabber/docs/commands/szurubooru.html), [MyImouto](https://bionus.github.io/imgbrd-grabber/docs/commands/my-imouto.html), [Gelbooru](https://bionus.github.io/imgbrd-grabber/docs/commands/gelbooru.html), or [Shimmie](https://bionus.github.io/imgbrd-grabber/docs/commands/shimmie.html).
+* Can add entries to a database for each image or tag while downloading. See [Commands](https://bionus.github.io/imgbrd-grabber/docs/commands/) for details.
 * Conditional filenames triggered by a tag
 * Rename already downloaded images
 </div>

@@ -39,7 +39,7 @@ There are four fields to fill:
 * Language: the interface language
 * Source: the source you want to try first, you can change it later, and even select more than one at a time
 * Folder: where you want to store your images
-* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename]({{ site.baseurl }}{% link _docs/filename.md %}) wiki page for more details. The default value of `%md5%.%ext%` should be good at first.
+* Filename: the biggest strentgh of Grabber is its filename formatting! See the [Filename]({{ site.baseurl }}{% link _docs/filename.md %}) documentation page for more details. The default value of `%md5%.%ext%` should be good at first.
 
 Once finished, you can press the "Ok" button.
 
