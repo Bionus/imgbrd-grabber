@@ -36,9 +36,33 @@ QJSValue JavascriptHtmlDocument::innerText() const
 	return m_node.innerText();
 }
 
+QJSValue JavascriptHtmlDocument::tag() const
+{
+	return m_node.tag();
+}
+
 QJSValue JavascriptHtmlDocument::attr(const QString &attr) const
 {
 	return m_node.attr(attr);
+}
+
+QJSValue listToJsValue(QJSEngine *engine, const QStringList &list)
+{
+	QJSValue js = engine->newArray(list.length());
+	for (int i = 0; i < list.length(); ++i) {
+		js.setProperty(i, list[i]);
+	}
+	return js;
+}
+
+QJSValue JavascriptHtmlDocument::path() const
+{
+	return listToJsValue(&m_engine, m_node.path());
+}
+
+QJSValue JavascriptHtmlDocument::pathIds() const
+{
+	return listToJsValue(&m_engine, m_node.pathIds());
 }
 
 QJSValue JavascriptHtmlDocument::find(const QString &css) const

@@ -19,7 +19,12 @@ class JavascriptHtmlDocument : public QObject
 		Q_INVOKABLE QJSValue outerHTML() const;
 		Q_INVOKABLE QJSValue innerHTML() const;
 		Q_INVOKABLE QJSValue innerText() const;
+
+		Q_INVOKABLE QJSValue tag() const;
 		Q_INVOKABLE QJSValue attr(const QString &attr) const;
+		Q_INVOKABLE QJSValue path() const;
+		Q_INVOKABLE QJSValue pathIds() const;
+
 		Q_INVOKABLE QJSValue find(const QString &css) const;
 
 	private:

@@ -43,12 +43,10 @@ HtmlNode *HtmlNode::fromString(const QString &html, bool fragment)
 
 HtmlNode::~HtmlNode()
 {
-	/*if (m_node->type == LXB_DOM_NODE_TYPE_DOCUMENT) {
+	if (m_node->type == LXB_DOM_NODE_TYPE_DOCUMENT) {
 		auto *doc = lxb_dom_interface_document(m_node);
 		lxb_dom_document_destroy(doc);
-	} else {
-		lxb_dom_node_destroy(m_node);
-	}*/
+	}
 }
 
 
@@ -81,6 +79,12 @@ QString HtmlNode::innerText() const
 }
 
 
+QString HtmlNode::tag() const
+{
+	const auto *tagName = lxb_dom_element_qualified_name(lxb_dom_interface_element(m_node), NULL);
+	return QString(reinterpret_cast<const char *>(tagName));
+}
+
 QString HtmlNode::attr(const QString &attr) const
 {
 	auto *element = lxb_dom_interface_element(m_node);
@@ -99,6 +103,34 @@ QString HtmlNode::attr(const QString &attr) const
 	}
 
 	return QString(reinterpret_cast<const char *>(value));
+}
+
+QStringList HtmlNode::path() const
+{
+	QStringList ret;
+
+	lxb_dom_node_t *parent = m_node->parent;
+	while (parent != NULL) {
+		const auto *tagName = lxb_dom_element_qualified_name(lxb_dom_interface_element(parent), NULL);
+		ret.prepend(QString(reinterpret_cast<const char *>(tagName)));
+
+		parent = parent->parent;
+	}
+
+	return ret;
+}
+
+QStringList HtmlNode::pathIds() const
+{
+	QStringList ret;
+
+	lxb_dom_node_t *parent = m_node->parent;
+	while (parent->parent != NULL) {
+		ret.prepend(QString::number((quintptr) parent));
+		parent = parent->parent;
+	}
+
+	return ret;
 }
 
 

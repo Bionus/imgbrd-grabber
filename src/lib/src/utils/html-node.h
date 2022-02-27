@@ -17,7 +17,10 @@ class HtmlNode
 		QString innerHTML() const;
 		QString innerText() const;
 
+		QString tag() const;
 		QString attr(const QString &attr) const;
+		QStringList path() const;
+		QStringList pathIds() const;
 
 		QList<HtmlNode> find(const QString &css) const;
 
