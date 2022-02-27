@@ -278,7 +278,16 @@ type IAuth = IBasicAuth | IOauth2Auth | IOauth1Auth | IHttpAuth | IHttpBasicAuth
  */
 interface IOauth2Auth {
     type: "oauth2";
-    authType: "password" | "password_json" | "client_credentials" | "client_credentials_header" | "refresh_token"  | "pkce";
+    authType: "password" | "password_json" | "client_credentials" | "refresh_token"  | "pkce";
+
+    /**
+     * Where should the client authentication parameters should be passed (default: body).
+     *
+     * * header: they will be passed via HTTP Basic authentication
+     * * body: they will be put in the request body
+     */
+    clientAuthentication?: "header" | "body";
+
     requestUrl?: string;
     tokenUrl?: string;
     refreshTokenUrl?: string;

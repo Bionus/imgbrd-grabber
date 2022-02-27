@@ -2,8 +2,8 @@
 #include <utility>
 
 
-OAuth2Auth::OAuth2Auth(QString type, QString authType, QString tokenUrl, QString authorizationUrl, QString redirectUrl, QString urlProtocol)
-	: Auth(std::move(type)), m_authType(std::move(authType)), m_tokenUrl(std::move(tokenUrl)), m_authorizationUrl(std::move(authorizationUrl)), m_redirectUrl(std::move(redirectUrl)), m_urlProtocol(std::move(urlProtocol))
+OAuth2Auth::OAuth2Auth(QString type, QString authType, QString tokenUrl, QString authorizationUrl, QString redirectUrl, QString urlProtocol, QString clientAuthentication)
+	: Auth(std::move(type)), m_authType(std::move(authType)), m_tokenUrl(std::move(tokenUrl)), m_authorizationUrl(std::move(authorizationUrl)), m_redirectUrl(std::move(redirectUrl)), m_urlProtocol(std::move(urlProtocol)), m_clientAuthentication(std::move(clientAuthentication))
 {}
 
 
@@ -30,6 +30,11 @@ QString OAuth2Auth::redirectUrl() const
 QString OAuth2Auth::urlProtocol() const
 {
 	return m_urlProtocol;
+}
+
+QString OAuth2Auth::clientAuthentication() const
+{
+	return m_clientAuthentication;
 }
 
 QString OAuth2Auth::name() const

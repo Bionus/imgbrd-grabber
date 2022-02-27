@@ -126,7 +126,8 @@ export const source: ISource = {
     auth: {
         oauth2: {
             type: "oauth2",
-            authType: "client_credentials_header",
+            authType: "client_credentials",
+            clientAuthentication: "header",
             tokenUrl: "/oauth2/token",
         },
         /*oauth1: {

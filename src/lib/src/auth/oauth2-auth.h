@@ -8,12 +8,13 @@
 class OAuth2Auth : public Auth
 {
 	public:
-		OAuth2Auth(QString type, QString authType, QString tokenUrl, QString authorizationUrl, QString redirectUrl, QString urlProtocol);
+		OAuth2Auth(QString type, QString authType, QString tokenUrl, QString authorizationUrl, QString redirectUrl, QString urlProtocol, QString clientAuthentication = {});
 		QString authType() const;
 		QString tokenUrl() const;
 		QString authorizationUrl() const;
 		QString redirectUrl() const;
 		QString urlProtocol() const;
+		QString clientAuthentication() const;
 		QString name() const override;
 		QList<AuthSettingField> settingFields() const override;
 
@@ -23,6 +24,7 @@ class OAuth2Auth : public Auth
 		QString m_authorizationUrl;
 		QString m_redirectUrl;
 		QString m_urlProtocol;
+		QString m_clientAuthentication;
 };
 
 #endif // OAUTH2_AUTH_H
