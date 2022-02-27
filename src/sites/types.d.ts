@@ -298,6 +298,15 @@ interface IOauth1Auth {
     temporaryCredentialsUrl: string,
     authorizationUrl: string,
     tokenCredentialsUrl: string,
+
+    /**
+     * The signature method for the requests.
+     *
+     * RSA-SHA1 is not supported.
+     *
+     * @see {@link https://datatracker.ietf.org/doc/html/rfc5849#section-3.4}
+     */
+    signatureMethod?: "hmac-sha1" | "plaintext",
 }
 
 /**

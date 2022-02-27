@@ -120,10 +120,7 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 					const QString urlProtocol = auth.property("urlProtocol").isString() ? auth.property("urlProtocol").toString() : QString();
 					ret = new OAuth2Auth(type, authType, tokenUrl, authorizationUrl, redirectUrl, urlProtocol);
 				} else if (type == "oauth1") {
-					const QString temporaryCredentialsUrl = auth.property("temporaryCredentialsUrl").toString();
-					const QString authorizationUrl = auth.property("authorizationUrl").toString();
-					const QString tokenCredentialsUrl = auth.property("tokenCredentialsUrl").toString();
-					ret = new OAuth1Auth(type, temporaryCredentialsUrl, authorizationUrl, tokenCredentialsUrl);
+					ret = new OAuth1Auth(type, auth);
 				} else if (type == "http_basic") {
 					const int maxPage = checkType == "max_page" ? check.property("value").toInt() : 0;
 					const QString passwordType = auth.property("passwordType").toString();

@@ -16,7 +16,14 @@ OAuth1Login::OAuth1Login(OAuth1Auth *auth, Site *site, NetworkManager *manager, 
 	: m_auth(auth), m_site(site), m_manager(manager), m_settings(settings)
 {
 	m_oauth1 = new QOAuth1Setup(new QNetworkAccessManager(), this);
-	m_oauth1->setSignatureMethod(QOAuth1::SignatureMethod::Hmac_Sha1);
+
+	// Signature method
+	const QString signatureMethod = m_auth->signatureMethod();
+	if (signatureMethod == "hmac-sha1") {
+		m_oauth1->setSignatureMethod(QOAuth1::SignatureMethod::Hmac_Sha1);
+	} else if (signatureMethod == "plaintext") {
+		m_oauth1->setSignatureMethod(QOAuth1::SignatureMethod::PlainText);
+	}
 
 	// Create OAuth 1 client with proper API keys
 	const QString apiKey = m_settings->value("auth/consumerKey").toString();
@@ -63,7 +70,7 @@ void OAuth1Login::login()
 		emit loggedIn(Result::Failure);
 		return;
 	}
-	log(QStringLiteral("[%1] OAuth1 HTTP handler listening on port %2").arg(m_site->url(), QString::number(replyHandler->port())), Logger::Info);
+	log(QStringLiteral("[%1] OAuth1 HTTP handler listening on port %2, with callback `%3`").arg(m_site->url(), QString::number(replyHandler->port()), replyHandler->callback()), Logger::Info);
 
 	// Actual login call
 	connect(m_oauth1, &QOAuth1::granted, [this, replyHandler]() {
