@@ -1,5 +1,5 @@
 // Usage:
-// node szurubooru.js "username" "token" "tagType1:tag1 tagType2:tag2" "safe" "http://source" "path/to/file.jpg"
+// node danbooru.js "username" "api_key" "tagType1:tag1 tagType2:tag2" "safe" "http://source" "path/to/file.jpg"
 
 const axios = require("axios");
 const fs = require("fs");
