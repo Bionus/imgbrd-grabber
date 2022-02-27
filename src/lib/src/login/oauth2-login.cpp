@@ -66,7 +66,7 @@ void OAuth2Login::login()
 
 	QList<QStrP> body;
 
-	if (type == "header_basic") {
+	if (type == "client_credentials_header") {
 		body << QStrP("grant_type", "client_credentials");
 
 		const QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);

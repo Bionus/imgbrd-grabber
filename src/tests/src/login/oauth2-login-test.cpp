@@ -66,14 +66,14 @@ TEST_CASE("OAuth2Login")
 
 	SECTION("LoginSuccess")
 	{
-		testLogin("header_basic", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
+		testLogin("client_credentials_header", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 		testLogin("client_credentials", "tests/resources/oauth2/ok_in_response.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 		testLogin("password", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 	}
 
 	SECTION("LoginFailure")
 	{
-		testLogin("header_basic", "404", Login::Result::Failure, QString(), site, &accessManager);
+		testLogin("client_credentials_header", "404", Login::Result::Failure, QString(), site, &accessManager);
 		testLogin("client_credentials", "tests/resources/oauth2/no_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
 		testLogin("password", "tests/resources/oauth2/wrong_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
 	}
