@@ -13,7 +13,7 @@
 #include "source-helpers.h"
 
 
-void testLogin(const QString &type, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, NetworkManager *manager)
+void testLogin(const QString &type, const QString &clientAuthentication, const QString &url, Login::Result expected, const QString &expectedHeader, Site *site, NetworkManager *manager)
 {
 	MixedSettings *settings = site->settings();
 	settings->setValue("auth/consumerKey", "consumerKey");
@@ -21,7 +21,7 @@ void testLogin(const QString &type, const QString &url, Login::Result expected, 
 	settings->setValue("auth/accessToken", "");
 	settings->setValue("auth/refreshToken", "");
 
-	OAuth2Auth auth("oauth2", type, "/token", "/authorization", "/redirect", "");
+	OAuth2Auth auth("oauth2", type, "/token", "/authorization", "/redirect", "", clientAuthentication);
 	OAuth2Login login(&auth, site, manager, settings);
 
 	REQUIRE(login.isTestable());
@@ -66,15 +66,15 @@ TEST_CASE("OAuth2Login")
 
 	SECTION("LoginSuccess")
 	{
-		testLogin("client_credentials_header", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
-		testLogin("client_credentials", "tests/resources/oauth2/ok_in_response.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
-		testLogin("password", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
+		testLogin("client_credentials", "header", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
+		testLogin("client_credentials", "body", "tests/resources/oauth2/ok_in_response.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
+		testLogin("password", "body", "tests/resources/oauth2/ok.json", Login::Result::Success, "Bearer test_token", site, &accessManager);
 	}
 
 	SECTION("LoginFailure")
 	{
-		testLogin("client_credentials_header", "404", Login::Result::Failure, QString(), site, &accessManager);
-		testLogin("client_credentials", "tests/resources/oauth2/no_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
-		testLogin("password", "tests/resources/oauth2/wrong_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
+		testLogin("client_credentials", "header", "404", Login::Result::Failure, QString(), site, &accessManager);
+		testLogin("client_credentials", "body", "tests/resources/oauth2/no_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
+		testLogin("password", "body", "tests/resources/oauth2/wrong_token_type.json", Login::Result::Failure, QString(), site, &accessManager);
 	}
 }

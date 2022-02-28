@@ -2,6 +2,8 @@
 #define OAUTH2_LOGIN_H
 
 #include <QDateTime>
+#include <QList>
+#include <QMap>
 #include <QString>
 #include "login/login.h"
 
