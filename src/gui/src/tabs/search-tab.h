@@ -85,6 +85,7 @@ class SearchTab : public QWidget
 	public slots:
 		// Sources
 		void openSourcesWindow();
+		void pruneSources();
 		void saveSources(const QList<Site *> &sel, bool canLoad = true);
 		void updateCheckboxes();
 		// Zooms

@@ -1184,6 +1184,32 @@ void SearchTab::openSourcesWindow()
 	adv->show();
 }
 
+void SearchTab::pruneSources()
+{
+    log(QStringLiteral("TODO prune sources"));
+	// for (Site *site : m_selectedSources) {
+    //     log(site->name());
+	// }
+    QList<Site*> sitesWithImages;
+    for (const QSharedPointer<Image> &img : qAsConst(m_images)) {
+        if (!sitesWithImages.contains(img->parentSite())) {
+            sitesWithImages.append(img->parentSite());
+		    log(img->parentSite()->name());
+        }
+	}
+    QList<Site*> goodSources;
+    
+    for (Site *site : m_selectedSources) {
+        if (!sitesWithImages.contains(site)) {
+            log(QStringLiteral("Site in selected sources, but has no images for this query: \"%1\"").arg(site->name()));
+        } else {
+            goodSources.append(site);
+        }
+    }
+    this->setSources(goodSources);
+}
+
+
 void SearchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 {
 	log(QStringLiteral("Saving sources..."));
