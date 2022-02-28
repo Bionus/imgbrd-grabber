@@ -5,11 +5,12 @@
 #include <QVariant>
 #include "commands/sql-worker.h"
 #include "catch.h"
+#include "raii-helpers.h"
 
 
 TEST_CASE("SqlWorkerTest")
 {
-	QFile::remove("test_sql_worker.db");
+	FileDeleter removeFile("test_sql_worker.db", true);
 
 	SECTION("Connect works")
 	{
