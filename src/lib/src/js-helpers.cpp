@@ -96,6 +96,23 @@ void getProperty(const QJSValue &val, const QString &key, bool &out)
 
 	out = prop.toBool();
 }
+void getProperty(const QJSValue &val, const QString &key, QStringList &out)
+{
+	if (!val.hasProperty(key)) {
+		return;
+	}
+
+	const QJSValue prop = val.property(key);
+	if (prop.isUndefined() || prop.isNull() || !(prop.isArray() || prop.isString())) {
+		return;
+	}
+
+	if (prop.isArray()) {
+		out = jsToStringList(prop);
+	} else {
+		out = QStringList() << prop.toString();
+	}
+}
 
 QStringList jsToStringList(const QJSValue &val)
 {

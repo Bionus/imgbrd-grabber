@@ -113,6 +113,12 @@ void OAuth2Login::postRequest(QList<QStrP> body, QMap<QString, QByteArray> heade
 		}
 	}
 
+	// Scopes
+	const QStringList scopes = m_auth->scopes();
+	if (!scopes.isEmpty()) {
+		body << QStrP("scope", scopes.join(' '));
+	}
+
 	// Build headers
 	m_site->setRequestHeaders(request);
 	for (const QString &key : headers.keys()) {
@@ -154,6 +160,11 @@ void OAuth2Login::loginAuthorizationCode()
 	auto *flow = new QOAuth2AuthorizationCodeFlow(consumerKey, consumerSecret, manager, this);
 	flow->setAuthorizationUrl(m_site->fixUrl(m_auth->authorizationUrl()));
 	flow->setAccessTokenUrl(m_site->fixUrl(m_auth->tokenUrl()));
+
+	const QStringList scopes = m_auth->scopes();
+	if (!scopes.isEmpty()) {
+		flow->setScope(scopes.join(' '));
+	}
 
 	auto *replyHandler = new QOAuthHttpServerReplyHandler(58923, this);
 	flow->setReplyHandler(replyHandler);
@@ -419,7 +430,7 @@ bool OAuth2Login::readResponse(NetworkReply *reply)
 		}
 
 		if (!m_expires.isNull()) {
-			const qint64 expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
+			const int expiresSecond = QDateTime::currentDateTime().secsTo(m_expires);
 			QTimer::singleShot((expiresSecond / 2) * 1000, this, SIGNAL(basicRefresh()));
 			log(QStringLiteral("[%1] Token will expire at '%2'").arg(m_site->url(), m_expires.toString("yyyy-MM-dd HH:mm:ss")), Logger::Debug);
 		}

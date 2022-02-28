@@ -113,13 +113,7 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 				const QString checkType = check.isObject() ? check.property("type").toString() : QString();
 
 				if (type == "oauth2") {
-					const QString authType = auth.property("authType").toString();
-					const QString tokenUrl = auth.property("tokenUrl").toString();
-					const QString authorizationUrl = auth.property("authorizationUrl").toString();
-					const QString redirectUrl = auth.property("redirectUrl").toString();
-					const QString urlProtocol = auth.property("urlProtocol").isString() ? auth.property("urlProtocol").toString() : QString();
-					const QString clientAuthentication = auth.property("clientAuthentication").isString() ? auth.property("clientAuthentication").toString() : QString();
-					ret = new OAuth2Auth(type, authType, tokenUrl, authorizationUrl, redirectUrl, urlProtocol, clientAuthentication);
+					ret = new OAuth2Auth(type, auth);
 				} else if (type == "oauth1") {
 					ret = new OAuth1Auth(type, auth);
 				} else if (type == "http_basic") {

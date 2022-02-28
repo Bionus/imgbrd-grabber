@@ -16,6 +16,7 @@ void getProperty(const QJSValue &val, const QString &key, double &out);
 void getProperty(const QJSValue &val, const QString &key, QString &out);
 void getProperty(const QJSValue &val, const QString &key, QUrl &out);
 void getProperty(const QJSValue &val, const QString &key, bool &out);
+void getProperty(const QJSValue &val, const QString &key, QStringList &out);
 
 template <class T>
 T getPropertyOr(const QJSValue &val, const QString &key, T def)

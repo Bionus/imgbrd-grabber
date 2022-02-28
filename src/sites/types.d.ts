@@ -294,7 +294,7 @@ interface IOauth2Auth {
     authorizationUrl?: string;
     redirectUrl?: string;
     urlProtocol?: string;
-    scope?: string[];
+    scopes?: string[];
 }
 
 /**
