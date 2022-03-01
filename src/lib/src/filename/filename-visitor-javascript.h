@@ -18,7 +18,7 @@ class FilenameVisitorJavaScript : public FilenameVisitorBase
 
 	protected:
 		void setJavaScriptVariables(QJSEngine &engine, const QMap<QString, Token> &tokens, QJSValue obj) const;
-		QString separator(const QString &key, const QString &override) const;
+		QString separator(const QString &key) const;
 
 	private:
 		QSettings *m_settings;

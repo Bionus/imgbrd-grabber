@@ -132,4 +132,24 @@ TEST_CASE("FilenameExecutionVisitor")
 			REQUIRE(result == QString("1bc29b36f623ba82aaf6724fd3b16718.jpg"));
 		}
 	}
+
+	SECTION("Missing parent")
+	{
+		QMap<QString, Token> tokens {
+			{ "md5", Token("1bc29b36f623ba82aaf6724fd3b16718") },
+			{ "ext", Token("jpg") }
+		};
+
+		FilenameParser parser("%gallery.id%/%md5%.%ext%");
+		auto ast = parser.parseRoot();
+
+		REQUIRE(parser.error() == QString());
+		REQUIRE(ast != nullptr);
+
+		QSettings settings("tests/resources/settings.ini", QSettings::IniFormat);
+		FilenameExecutionVisitor executionVisitor(tokens, &settings);
+		QString result = executionVisitor.run(*ast);
+
+		REQUIRE(result == QString("/1bc29b36f623ba82aaf6724fd3b16718.jpg"));
+	}
 }

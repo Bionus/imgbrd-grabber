@@ -2,13 +2,14 @@
 #define FILENAME_PRINT_VISITOR_H
 
 #include <QString>
+#include "filename/ast/filename-node.h"
 #include "filename/ast/filename-visitor-base.h"
 
 
 class FilenamePrintVisitor : public FilenameVisitorBase
 {
 	public:
-		QString run(const FilenameNodeRoot &node);
+		QString run(const FilenameNode &node);
 
 		void visit(const FilenameNodeConditional &node) override;
 		void visit(const FilenameNodeConditionIgnore &node) override;

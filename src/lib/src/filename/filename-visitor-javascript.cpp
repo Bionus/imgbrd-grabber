@@ -27,7 +27,7 @@ void FilenameVisitorJavaScript::setJavaScriptVariables(QJSEngine &engine, const 
 				if (name != "all" && name != "tags") {
 					obj.setProperty(name + "s", engine.toScriptValue(vals));
 				}
-				res = vals.join(separator(name, QString()));
+				res = vals.join(separator(name));
 			} else {
 				res = val.toString();
 			}
@@ -51,16 +51,10 @@ void FilenameVisitorJavaScript::setJavaScriptVariables(QJSEngine &engine, const 
 	}
 }
 
-QString FilenameVisitorJavaScript::separator(const QString &key, const QString &override) const
+QString FilenameVisitorJavaScript::separator(const QString &key) const
 {
-	QString separator;
-
-	if (!override.isEmpty()) {
-		separator = override;
-	} else {
-		QString mainSeparator = m_settings->value("Save/separator", " ").toString();
-		separator = m_settings->value("Save/" + key + "_sep", mainSeparator).toString();
-	}
+	QString mainSeparator = m_settings->value("Save/separator", " ").toString();
+	QString separator = m_settings->value("Save/" + key + "_sep", mainSeparator).toString();
 
 	separator.replace("\\n", "\n").replace("\\r", "\r");
 	return separator;
