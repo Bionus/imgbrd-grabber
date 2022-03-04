@@ -117,7 +117,9 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
-          run: ../build/gui/tests/gui-tests
+          run: |
+            ../build/gui/tests/gui-tests
+            ../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Capture coverage info
         run: |
@@ -234,7 +236,9 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: src
-          run: ../build/gui/tests/gui-tests
+          run: |
+            ../build/gui/tests/gui-tests
+            ../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate AppImage
         run: |
@@ -331,7 +335,9 @@ jobs:
 
       - name: Test GUI
         working-directory: src
-        run: ../build/gui/tests/gui-tests
+        run: |
+          ../build/gui/tests/gui-tests
+          ../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate package
         run: ./scripts/package-mac.sh
