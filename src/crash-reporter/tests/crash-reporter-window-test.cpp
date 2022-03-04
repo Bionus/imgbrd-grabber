@@ -11,7 +11,7 @@ TEST_CASE("CrashReporterWindow")
 
 	SECTION("Renders default values")
 	{
-		const auto *window = new CrashReporterWindow(nullptr);
+		const QScopedPointer<CrashReporterWindow> window(new CrashReporterWindow(nullptr));
 
 		const auto *lineLog = window->findChild<QLineEdit*>("lineLog");
 		const auto *lineSettings = window->findChild<QLineEdit*>("lineSettings");
@@ -29,7 +29,7 @@ TEST_CASE("CrashReporterWindow")
 		f.write("test.dmp");
 		f.close();
 
-		const auto *window = new CrashReporterWindow(nullptr);
+		const QScopedPointer<CrashReporterWindow> window(new CrashReporterWindow(nullptr));
 
 		const auto *lineDump = window->findChild<QLineEdit*>("lineDump");
 		REQUIRE(lineDump->text().endsWith("test.dmp"));

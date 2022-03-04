@@ -9,21 +9,21 @@ TEST_CASE("ConditionalFilename")
 {
 	SECTION("Empty condition")
 	{
-		ConditionalFilename filename("", "yes" ,  "/");
+		ConditionalFilename filename("", "yes", "/");
 
 		REQUIRE(!filename.matches({}, nullptr));
 	}
 
 	SECTION("Parse error")
 	{
-		ConditionalFilename filename("%test", "yes" ,  "/");
+		ConditionalFilename filename("%test", "yes", "/");
 
 		REQUIRE(!filename.matches({}, nullptr));
 	}
 
 	SECTION("Basic usage")
 	{
-		ConditionalFilename filename("%test%", "yes" ,  "/");
+		ConditionalFilename filename("%test%", "yes", "/");
 
 		REQUIRE(!filename.matches({{ "test", Token("") }}, nullptr));
 		REQUIRE(filename.matches({{ "test", Token("yes") }}, nullptr));
