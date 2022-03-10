@@ -118,7 +118,7 @@
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="198"/>
       <source>One MD5 per line.</source>
-      <translation>Один MD5 в строку.</translation>
+      <translation>Один MD5 на строку.</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/add-unique-window.ui" line="47"/>
@@ -1706,7 +1706,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.cpp" line="250"/>
       <source>It seems that the application was not properly closed for its last use. Do you want to restore your last session?</source>
-      <translation>Видимо приложение в прошлый раз было закрыто некорректно. Хотите ли вы восстановить сеанс?</translation>
+      <translation>Видимо, приложение в прошлый раз было закрыто некорректно. Хотите ли вы восстановить сеанс?</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.cpp" line="459"/>
@@ -2008,7 +2008,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/monitoring-center.cpp" line="111"/>
       <source>Grabber monitoring</source>
-      <translation>Grabber мониторинг</translation>
+      <translation>Мониторинг Grabber</translation>
     </message>
   </context>
   <context>
@@ -2104,7 +2104,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="128"/>
       <source>Image window</source>
-      <translation>Окно превью</translation>
+      <translation>Окно изображения</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="143"/>
@@ -2881,12 +2881,12 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2077"/>
       <source>Middle click to close window</source>
-      <translation>Зарывать окно средней клавишей мыши</translation>
+      <translation>Закрывать окно средней кнопкой мыши</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2087"/>
       <source>Enable scroll wheel navigation</source>
-      <translation>Включить навигацию колёсиком мыши</translation>
+      <translation>Включить навигацию колесом мыши</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2104"/>
@@ -4178,7 +4178,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/search-tab.cpp" line="1077"/>
       <source>Blacklist</source>
-      <translation>Черный список</translation>
+      <translation>Чёрный список</translation>
     </message>
     <message numerus="yes">
       <location filename="../gui/src/tabs/search-tab.cpp" line="1077"/>
@@ -4959,7 +4959,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="35"/>
       <source>Blacklist</source>
-      <translation>Черный список</translation>
+      <translation>Чёрный список</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="40"/>
