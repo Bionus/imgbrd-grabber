@@ -7,7 +7,7 @@ mkdir -p $OUTPUT_DIR
 for DIR in src/sites/*/; do
     NAME=$(basename "$DIR")
 
-    [[ $NAME =~ ^(node_modules)$ ]] && continue
+    [[ $NAME =~ ^(node_modules|Sankaku|Tumblr|Reddit)$ ]] && continue
     [[ ! -f "$DIR/model.js" ]] && continue
 
     pushd "$DIR"
