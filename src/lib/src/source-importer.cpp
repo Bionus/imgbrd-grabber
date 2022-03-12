@@ -27,7 +27,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	// Detect network errors
 	if (reply->error() != QNetworkReply::NoError) {
 		log(QStringLiteral("Network error %1 importing source: %2").arg(reply->error()).arg(reply->errorString()), Logger::Error);
-		emit finished(ImportResult::NetworkError);
+		emit finished(ImportResult::NetworkError, {});
 		return;
 	}
 
@@ -35,7 +35,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	QFile tmpZip(m_profile->tempPath() + "/source-importer.zip");
 	if (!tmpZip.open(QFile::WriteOnly)) {
 		log(QStringLiteral("Could not open a temporary file to store source import ZIP"), Logger::Error);
-		emit finished(ImportResult::ZipError);
+		emit finished(ImportResult::ZipError, {});
 		return;
 	}
 	tmpZip.write(reply->readAll());
@@ -45,7 +45,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	// Create temporary directory to store the output
 	QTemporaryDir tmpDir;
 	if (!tmpDir.isValid()) {
-		emit finished(ImportResult::ZipError);
+		emit finished(ImportResult::ZipError, {});
 		return;
 	}
 
@@ -55,18 +55,30 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	// Import valid sources
 	QDir dir(tmpDir.path());
 	if (dir.exists("model.js")) {
-		importSource(tmpDir.path());
+		Source *source = importSource(tmpDir.path());
+		if (source == nullptr) {
+			emit finished(ImportResult::SourceError, {});
+		} else {
+			emit finished(ImportResult::Success, {source});
+		}
 	} else {
+		QList<Source*> sources;
 		const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
 		for (const auto &d: dirs) {
-			importSource(d.filePath());
+			Source *source = importSource(d.filePath());
+			if (source != nullptr) {
+				sources.append(source);
+			}
+		}
+		if (sources.isEmpty()) {
+			emit finished(ImportResult::SourceError, {});
+		} else {
+			emit finished(ImportResult::Success, sources);
 		}
 	}
-
-	emit finished(ImportResult::Success);
 }
 
-void SourceImporter::importSource(const QString &path)
+Source *SourceImporter::importSource(const QString &path)
 {
 	const QFileInfo d(path);
 
@@ -74,7 +86,7 @@ void SourceImporter::importSource(const QString &path)
 	QDir subDir(d.filePath());
 	if (!subDir.exists("model.js")) {
 		log(QStringLiteral("No 'model.js' file found in '%1'").arg(d.fileName()), Logger::Error);
-		return;
+		return nullptr;
 	}
 
 	// Ensure the Source has at least one API
@@ -82,12 +94,15 @@ void SourceImporter::importSource(const QString &path)
 		Source tmpSource(m_profile, ReadWritePath(d.filePath()));
 		if (tmpSource.getApis().isEmpty()) {
 			log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
-			return;
+			return nullptr;
 		}
 	}
 
 	// Add the source to the profile, overwriting existing ones
 	const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
 	copyRecursively(d.filePath(), dest, true);
-	m_profile->addSource(new Source(m_profile, ReadWritePath(dest)));
+	auto *source = new Source(m_profile, ReadWritePath(dest));
+	m_profile->addSource(source);
+
+	return source;
 }
