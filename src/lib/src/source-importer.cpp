@@ -19,7 +19,10 @@ SourceImporter::SourceImporter(Profile *profile, QObject *parent)
 
 void SourceImporter::load(const QUrl &url) const
 {
-	m_manager->get(QNetworkRequest(url));
+	QNetworkRequest request(url);
+	request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+	m_manager->get(request);
 }
 
 void SourceImporter::finishedLoading(QNetworkReply *reply)
