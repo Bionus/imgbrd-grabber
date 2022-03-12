@@ -41,7 +41,7 @@ const isNightly = branch == "develop";
 const output = {
     name: "Official Grabber sources" + (isNightly ? " (nightly)" : ""),
     home: "https://github.com/Bionus/imgbrd-grabber",
-    url: "https://github.com/Bionus/imgbrd-grabber/releases/download/sources-" + branch + "/source-",
+    url: "https://github.com/Bionus/imgbrd-grabber/releases/download/sources-" + branch + "/",
     sources: [],
 };
 
@@ -61,13 +61,15 @@ for (const source of sources) {
     }
 
     const contents = fs.readFileSync(modelFile, "utf-8");
+    const name = /name:\s*"([^"]+)"/.exec(contents);
     const version = /version:\s*"([^"]+)"/.exec(contents);
     const defaultSites = parseSites(mkPath(source, "sites.txt"));
     const supportedSites = parseSites(mkPath(source, "supported.txt"));
     const lastCommit = getLastCommit(modelFile);
 
     output.sources.push({
-        name: source,
+        slug: source.replace(/[^a-z0-9_.-]+/gi, ".").replace(/^\.+|\.+$/g, ""),
+        name: name ? name[1] : source,
         version: version ? version[1] : undefined,
         hash: crypto.createHash("sha256").update(fs.readFileSync(mkPath(source, "model.js"), "utf-8")).digest("hex"),
         lastCommit,

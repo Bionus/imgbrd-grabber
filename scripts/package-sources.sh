@@ -11,6 +11,6 @@ for DIR in src/sites/*/; do
     [[ ! -f "$DIR/model.js" ]] && continue
 
     pushd "$DIR"
-        zip "$OUTPUT_DIR/source-$NAME.zip" model.js icon.png sites.txt */defaults.ini */tag-types.txt
+        zip "$OUTPUT_DIR/$NAME.zip" model.js icon.png sites.txt */defaults.ini */tag-types.txt
     popd
 done
