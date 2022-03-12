@@ -23,10 +23,11 @@ class SourceImporter : public QObject
 		explicit SourceImporter(Profile *profile, QObject *parent = nullptr);
 
 	public slots:
-		void load(const QUrl & url) const;
+		void load(const QUrl &url) const;
 
 	protected slots:
 		void finishedLoading(QNetworkReply *reply);
+		void importSource(const QString &path);
 
 	signals:
 		void finished(ImportResult result);

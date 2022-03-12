@@ -17,6 +17,7 @@ struct SourceRegistrySourceCommit
 
 struct SourceRegistrySource
 {
+	QString slug;
 	QString name;
 	QString hash;
 	SourceRegistrySourceCommit lastCommit;

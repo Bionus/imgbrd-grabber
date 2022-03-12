@@ -52,6 +52,7 @@ void SourceRegistry::jsonLoaded()
 		QJsonObject lastCommitObj = sourceObj["lastCommit"].toObject();
 
 		SourceRegistrySource source;
+		source.slug = sourceObj["slug"].toString();
 		source.name = sourceObj["name"].toString();
 		source.hash = sourceObj["hash"].toString();
 		source.lastCommit.hash = lastCommitObj["hash"].toString();

@@ -31,7 +31,7 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 		return;
 	}
 
-	// Read response into a the temporary file
+	// Read response into a temporary file
 	QFile tmpZip(m_profile->tempPath() + "/source-importer.zip");
 	if (!tmpZip.open(QFile::WriteOnly)) {
 		log(QStringLiteral("Could not open a temporary file to store source import ZIP"), Logger::Error);
@@ -52,28 +52,42 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	// Unzip file
 	unzipFile(tmpZip.fileName(), tmpDir.path());
 
-	// Move valid sources
+	// Import valid sources
 	QDir dir(tmpDir.path());
-	const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (const auto &d : dirs) {
-		QDir subDir(d.filePath());
-		if (!subDir.exists("model.js")) {
-			log(QStringLiteral("No 'model.js' file found in '%1'").arg(d.fileName()), Logger::Error);
-			continue;
+	if (dir.exists("model.js")) {
+		importSource(tmpDir.path());
+	} else {
+		const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+		for (const auto &d: dirs) {
+			importSource(d.filePath());
 		}
-
-		{
-			Source tmpSource(m_profile, ReadWritePath(d.filePath()));
-			if (tmpSource.getApis().isEmpty()) {
-				log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
-				continue;
-			}
-		}
-
-		const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
-		copyRecursively(d.filePath(), dest, true);
-		m_profile->addSource(new Source(m_profile, ReadWritePath(dest)));
 	}
 
 	emit finished(ImportResult::Success);
+}
+
+void SourceImporter::importSource(const QString &path)
+{
+	const QFileInfo d(path);
+
+	// Ensure a "model.js" file exists in this directory
+	QDir subDir(d.filePath());
+	if (!subDir.exists("model.js")) {
+		log(QStringLiteral("No 'model.js' file found in '%1'").arg(d.fileName()), Logger::Error);
+		return;
+	}
+
+	// Ensure the Source has at least one API
+	{
+		Source tmpSource(m_profile, ReadWritePath(d.filePath()));
+		if (tmpSource.getApis().isEmpty()) {
+			log(QStringLiteral("Invalid source file in '%1'").arg(d.fileName()), Logger::Error);
+			return;
+		}
+	}
+
+	// Add the source to the profile, overwriting existing ones
+	const QString dest = m_profile->getPath() + "/sites/" + d.fileName();
+	copyRecursively(d.filePath(), dest, true);
+	m_profile->addSource(new Source(m_profile, ReadWritePath(dest)));
 }
