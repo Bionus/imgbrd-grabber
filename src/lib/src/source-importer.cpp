@@ -53,7 +53,10 @@ void SourceImporter::finishedLoading(QNetworkReply *reply)
 	}
 
 	// Unzip file
-	unzipFile(tmpZip.fileName(), tmpDir.path());
+	if (!unzipFile(tmpZip.fileName(), tmpDir.path())) {
+		emit finished(ImportResult::ZipError, {});
+		return;
+	}
 
 	// Import valid sources
 	QDir dir(tmpDir.path());
