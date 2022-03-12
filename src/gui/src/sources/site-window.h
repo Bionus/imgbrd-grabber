@@ -25,6 +25,9 @@ class SiteWindow : public QDialog
 		void accept() override;
 		void finish(Source *source = nullptr);
 
+	protected:
+		QString getDomain(QString url, bool *ssl = nullptr);
+
 	private:
 		Ui::SiteWindow *ui;
 		Profile *m_profile;

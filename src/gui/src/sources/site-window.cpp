@@ -51,6 +51,16 @@ void SiteWindow::accept()
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked()) {
+		const QString &domain = getDomain(m_url);
+
+		// Check in installed sources if there is a perfect match
+		for (Source *source : m_sources) {
+			if (source->getSupportedSites().contains(domain)) {
+				finish(source);
+				return;
+			}
+		}
+
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(m_sources.count());
 		ui->progressBar->show();
@@ -73,6 +83,25 @@ void SiteWindow::accept()
 	finish(src);
 }
 
+QString SiteWindow::getDomain(QString url, bool *ssl)
+{
+	if (url.startsWith("http://")) {
+		url = url.mid(7);
+		if (ssl != nullptr) {
+			*ssl = false;
+		}
+	} else if (url.startsWith("https://")) {
+		url = url.mid(8);
+		if (ssl != nullptr) {
+			*ssl = true;
+		}
+	}
+	if (url.endsWith('/')) {
+		url = url.left(url.length() - 1);
+	}
+	return url;
+}
+
 void SiteWindow::finish(Source *src)
 {
 	if (src == nullptr) {
@@ -90,17 +119,9 @@ void SiteWindow::finish(Source *src)
 
 	// Remove unnecessary prefix
 	bool ssl = false;
-	if (m_url.startsWith("http://")) {
-		m_url = m_url.mid(7);
-	} else if (m_url.startsWith("https://")) {
-		m_url = m_url.mid(8);
-		ssl = true;
-	}
-	if (m_url.endsWith('/')) {
-		m_url = m_url.left(m_url.length() - 1);
-	}
+	const QString url = getDomain(m_url, &ssl);
 
-	Site *site = new Site(m_url, src);
+	Site *site = new Site(url, src);
 	m_profile->addSite(site);
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site
