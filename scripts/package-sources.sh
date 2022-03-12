@@ -7,10 +7,10 @@ mkdir -p $OUTPUT_DIR
 for DIR in src/sites/*/; do
     NAME=$(basename "$DIR")
 
-    [[ $NAME =~ ^(node_modules|Sankaku|Tumblr|Reddit)$ ]] && continue
+    [[ $NAME =~ ^(Sankaku|Tumblr|Reddit)$ ]] && continue
     [[ ! -f "$DIR/model.js" ]] && continue
 
     pushd "$DIR"
-        zip "$OUTPUT_DIR/$NAME.zip" model.js icon.png sites.txt */defaults.ini */tag-types.txt
+        zip "$OUTPUT_DIR/source-$NAME.zip" model.js icon.png sites.txt */defaults.ini */tag-types.txt
     popd
 done

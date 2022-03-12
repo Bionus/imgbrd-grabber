@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const cp = require("child_process");
 
 const SITES_DIR = "src/sites";
+const DISABLED_SOURCES = ["Sankaku", "Tumblr", "Reddit"];
 
 function mkPath(source, filename) {
     return SITES_DIR + "/" + source + "/" + filename;
@@ -35,11 +36,12 @@ function getLastCommit(path) {
 }
 
 const args = process.argv.slice(2);
-const isNightly = args.length > 0 && args[0] == "develop";
+const branch = args.length > 0 ? args[0] : "master";
+const isNightly = branch == "develop";
 const output = {
     name: "Official Grabber sources" + (isNightly ? " (nightly)" : ""),
     home: "https://github.com/Bionus/imgbrd-grabber",
-    url: "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/" + (isNightly ? "develop" : "master") + "/src/sites/",
+    url: "https://github.com/Bionus/imgbrd-grabber/releases/download/sources-" + branch + "/source-",
     sources: [],
 };
 
@@ -47,6 +49,12 @@ const sources = fs
     .readdirSync(SITES_DIR)
     .filter((f) => fs.statSync(SITES_DIR + "/" + f).isDirectory());
 for (const source of sources) {
+    // Skip disabled sources
+    if (DISABLED_SOURCES.includes(source)) {
+        continue;
+    }
+
+    // Skip directories without a "model.ts" file
     const modelFile = mkPath(source, "model.ts");
     if (!fs.existsSync(modelFile)) {
         continue;
