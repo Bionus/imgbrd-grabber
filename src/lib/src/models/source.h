@@ -31,6 +31,7 @@ class Source : public QObject
 		QString getName() const;
 		ReadWritePath getPath() const;
 		const QList<Site*> &getSites() const;
+		const QStringList &getSupportedSites() const;
 		const QList<Api*> &getApis() const;
 		Api *getApi(const QString &name) const;
 		const QMap<QString, Auth*> &getAuths() const;
@@ -51,6 +52,7 @@ class Source : public QObject
 		QString m_diskName;
 		QString m_name;
 		QList<Site*> m_sites;
+		QStringList m_supportedSites;
 		QList<Api*> m_apis;
 		QMap<QString, Auth*> m_auths;
 		QStringList m_additionalTokens;

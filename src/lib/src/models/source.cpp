@@ -187,6 +187,18 @@ Source::Source(Profile *profile, const ReadWritePath &dir)
 	if (m_sites.isEmpty()) {
 		log(QStringLiteral("No site for source %1").arg(m_name), Logger::Debug);
 	}
+
+	// Get the list of all supported sites for this source
+	QFile supportedFile(m_dir.readPath("supported.txt"));
+	if (supportedFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		while (!supportedFile.atEnd()) {
+			const QString line = supportedFile.readLine().trimmed();
+			if (line.isEmpty()) {
+				continue;
+			}
+			m_supportedSites.append(line);
+		}
+	}
 }
 
 Source::~Source()
@@ -239,6 +251,7 @@ bool Source::removeSite(Site *site)
 QString Source::getName() const { return m_name; }
 ReadWritePath Source::getPath() const { return m_dir; }
 const QList<Site*> &Source::getSites() const { return m_sites; }
+const QStringList &Source::getSupportedSites() const { return m_supportedSites; }
 const QList<Api*> &Source::getApis() const { return m_apis; }
 Profile *Source::getProfile() const { return m_profile; }
 const SourceUpdater &Source::getUpdater() const { return m_updater; }

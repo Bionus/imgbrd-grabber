@@ -26,7 +26,8 @@ Sources can be found in your settings folder. On Windows, by default, it is `C:\
 A source is defined by a folder containing three files:
 * `icon.png`: a PNG icon, usually the favicon of the source (recommended size: 16x16, it will be resized if larger)
 * `model.js`: the JS script that decides which URLs to load and how to parse the results into images (usually compiled from a `model.ts` TypeScript file)
-* `sites.txt`: the list of the sites based on this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
+* `supported.txt`: the list of supported  sites based on this source, separated by a new line
+* `sites.txt`: the list of default sites to add when installing this source, separated by a new line. This file can be ignored and will be created when adding a new site using this source in Grabber
 
 
 # Utils
