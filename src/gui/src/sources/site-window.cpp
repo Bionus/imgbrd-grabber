@@ -55,7 +55,7 @@ void SiteWindow::accept()
 		ui->progressBar->setMaximum(m_sources.count());
 		ui->progressBar->show();
 
-		SourceGuesser sourceGuesser(m_url, m_sources);
+		SourceGuesser sourceGuesser(m_url, m_sources, this);
 		connect(&sourceGuesser, &SourceGuesser::progress, ui->progressBar, &QProgressBar::setValue);
 		connect(&sourceGuesser, &SourceGuesser::finished, this, &SiteWindow::finish);
 		sourceGuesser.start();
