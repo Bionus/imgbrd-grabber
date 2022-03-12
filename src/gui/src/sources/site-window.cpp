@@ -1,5 +1,6 @@
 #include "sources/site-window.h"
 #include <QFile>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <ui_site-window.h>
@@ -9,6 +10,8 @@
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
+#include "models/source-registry.h"
+#include "source-importer.h"
 
 
 SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
@@ -61,6 +64,23 @@ void SiteWindow::accept()
 			}
 		}
 
+		// Check in the source registries if there is a perfect match
+		for (const auto &sourceRegistry : m_profile->getSourceRegistries()) {
+			const auto &sources = sourceRegistry->sources();
+			for (const QString &src : sources.keys()) {
+				const auto &source = sources[src];
+				if (source.supportedSites.contains(domain)) {
+					const int reply = QMessageBox::question(this, windowTitle(), tr("A source supporting '%1' has been found in the registry '%2': '%3'. Install it?").arg(domain, sourceRegistry->name(), source.name), QMessageBox::Yes | QMessageBox::No);
+					if (reply == QMessageBox::Yes) {
+						auto *sourceImporter = new SourceImporter(m_profile, this);
+						connect(sourceImporter, &SourceImporter::finished, this, &SiteWindow::sourceImported);
+						sourceImporter->load(sourceRegistry->url() + source.slug + ".zip");
+						return;
+					}
+				}
+			}
+		}
+
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(m_sources.count());
 		ui->progressBar->show();
@@ -100,6 +120,16 @@ QString SiteWindow::getDomain(QString url, bool *ssl)
 		url = url.left(url.length() - 1);
 	}
 	return url;
+}
+
+void SiteWindow::sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources)
+{
+	if (result != SourceImporter::Success || sources.isEmpty()) {
+		error(this, tr("Error importing source."));
+		return;
+	}
+
+	finish(sources.first());
 }
 
 void SiteWindow::finish(Source *src)

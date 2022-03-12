@@ -2,6 +2,8 @@
 #define SITE_WINDOW_H
 
 #include <QDialog>
+#include <QList>
+#include "source-importer.h"
 
 
 namespace Ui
@@ -23,6 +25,7 @@ class SiteWindow : public QDialog
 
 	public slots:
 		void accept() override;
+		void sourceImported(SourceImporter::ImportResult result, const QList<Source*> &sources);
 		void finish(Source *source = nullptr);
 
 	protected:
