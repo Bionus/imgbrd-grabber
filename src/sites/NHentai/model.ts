@@ -1,7 +1,7 @@
 const extensionMap: any = {
     j: "jpg",
     p: "png",
-    g: "gif,
+    g: "gif",
 };
 
 function makeGallery(gallery: any): IImage {
