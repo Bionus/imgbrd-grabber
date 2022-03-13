@@ -1,6 +1,7 @@
 const extensionMap: any = {
     j: "jpg",
     p: "png",
+    g: "gif",
 };
 
 function makeGallery(gallery: any): IImage {
@@ -13,7 +14,8 @@ function makeImage(image: any): IImage {
     image["file_url"] = image["preview_url"]
         .replace("https://t.", "https://i.")
         .replace(/t.jpg$/, ".jpg")
-        .replace(/t.png$/, ".png");
+        .replace(/t.png$/, ".png")
+        .replace(/t.gif$/, ".gif");
     return image;
 }
 
