@@ -1013,7 +1013,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="63"/>
       <source>Sort by</source>
-      <translation>Сортировать по</translation>
+      <translation>Сортировка</translation>
     </message>
     <message>
       <location filename="../gui/src/tabs/favorites-tab.ui" line="80"/>
@@ -2453,7 +2453,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="842"/>
       <source>Keep deleted files in the MD5 list</source>
-      <translation>Оставлять информацию об удалённых файлах в списке MD5 сумм</translation>
+      <translation>Оставлять информацию об удалённых файлах в списке MD5-сумм</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="849"/>
@@ -2615,7 +2615,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1457"/>
       <source>The favorites list will be hidden as soon as this image number has been reached.</source>
-      <translation>Список избранного будет скрыт как только будет достигнуто заданное количество изображений.</translation>
+      <translation>Список избранного будет скрыт по достижении указанного числа изображений.</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="1467"/>
@@ -3452,7 +3452,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4551"/>
       <source>Kept for later</source>
-      <translation>Оставленое на потом</translation>
+      <translation>Оставленное на потом</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="4579"/>
@@ -4201,7 +4201,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/search-window.ui" line="33"/>
       <source>Sort by</source>
-      <translation>Сортировать по</translation>
+      <translation>Сортировка</translation>
     </message>
     <message>
       <location filename="../gui/src/search-window.ui" line="46"/>
@@ -4427,7 +4427,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/site-window.cpp" line="79"/>
       <source>Unable to guess site's type. Are you sure about the url?</source>
-      <translation>Невозможно определить тип сайта. Вы уверенны что правильно ввели адрес?</translation>
+      <translation>Невозможно определить тип сайта. Вы уверены, что ввели адрес правильно?</translation>
     </message>
   </context>
   <context>
@@ -4652,7 +4652,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="96"/>
       <source>Through URL</source>
-      <translation>Через URL</translation>
+      <translation>По адресу</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-settings-window.cpp" line="97"/>
@@ -4847,7 +4847,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="384"/>
       <source>- No preset selected -</source>
-      <translation>- Не выбран пресет -</translation>
+      <translation>- Не выбран шаблон -</translation>
     </message>
     <message>
       <location filename="../gui/src/sources/sources-window.cpp" line="396"/>
