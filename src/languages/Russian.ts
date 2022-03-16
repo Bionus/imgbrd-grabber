@@ -151,7 +151,7 @@
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="89"/>
       <source>Url</source>
-      <translation>Адрес URL</translation>
+      <translation>Адрес</translation>
     </message>
     <message>
       <location filename="../gui/src/batch/batch-window.ui" line="94"/>
@@ -835,7 +835,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="14"/>
       <source>Edit a favorite</source>
-      <translation>Редактировать избранное</translation>
+      <translation>Изменить избранное</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="28"/>
@@ -870,7 +870,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="73"/>
       <source>Last view</source>
-      <translation>Недавно просмотренное</translation>
+      <translation>Последний просмотр</translation>
     </message>
     <message>
       <location filename="../gui/src/favorite-window.ui" line="80"/>
@@ -1324,7 +1324,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../lib/src/models/image.cpp" line="931"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>Адрес</translation>
     </message>
     <message numerus="yes">
       <location filename="../lib/src/models/image.cpp" line="932"/>
@@ -1537,7 +1537,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/main-window.ui" line="102"/>
       <source>View</source>
-      <translation>Просмотр</translation>
+      <translation>Вид</translation>
     </message>
     <message>
       <location filename="../gui/src/main-window.ui" line="107"/>
@@ -2896,7 +2896,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2111"/>
       <source>Tag order</source>
-      <translation>Сортировка тегов</translation>
+      <translation>Порядок тегов</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.ui" line="2119"/>
@@ -3686,7 +3686,7 @@ Please solve the issue before resuming the download.</source>
       <location filename="../gui/src/settings/options-window.cpp" line="568"/>
       <location filename="../gui/src/settings/options-window.cpp" line="680"/>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Изменить</translation>
     </message>
     <message>
       <location filename="../gui/src/settings/options-window.cpp" line="573"/>
@@ -3786,7 +3786,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="383"/>
       <source>Displays this help.</source>
-      <translation>Показывает помощь.</translation>
+      <translation>Отображает эту справку.</translation>
     </message>
     <message>
       <location filename="../cli/src/vendor/qcommandlineparser.cpp" line="475"/>
@@ -4934,7 +4934,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="18"/>
       <source>Choose as image</source>
-      <translation>Выберите как изображение</translation>
+      <translation>Выбрать изображением</translation>
     </message>
     <message>
       <location filename="../gui/src/tag-context-menu.cpp" line="21"/>
@@ -5395,7 +5395,7 @@ Please solve the issue before resuming the download.</source>
     <message>
       <location filename="../gui/src/settings/web-service-window.ui" line="30"/>
       <source>Url</source>
-      <translation>Url</translation>
+      <translation>Адрес</translation>
     </message>
   </context>
   <context>
