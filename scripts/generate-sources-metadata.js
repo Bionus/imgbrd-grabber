@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const cp = require("child_process");
 
 const SITES_DIR = "src/sites";
-const DISABLED_SOURCES = ["Sankaku", "Tumblr", "Reddit"];
+const DISABLED_SOURCES = ["Sankaku", "Tumblr"];
 
 function mkPath(source, filename) {
     return SITES_DIR + "/" + source + "/" + filename;

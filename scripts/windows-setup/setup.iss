@@ -229,6 +229,10 @@ Source: "{#SrcDir}\sites\Pixiv\icon.png";     DestDir: "{app}\sites\Pixiv"; Flag
 Source: "{#SrcDir}\sites\Pixiv\model.js";     DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\sites.txt";    DestDir: "{app}\sites\Pixiv"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Pixiv\www.pixiv.net\defaults.ini"; DestDir: "{app}\sites\Pixiv\www.pixiv.net"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Reddit\icon.png";    DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Reddit\model.js";    DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Reddit\sites.txt";   DestDir: "{app}\sites\Reddit"; Flags: ignoreversion
+Source: "{#SrcDir}\sites\Reddit\www.reddit.com\defaults.ini";              DestDir: "{app}\sites\Reddit\www.reddit.com"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\icon.png";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\model.js";   DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
 Source: "{#SrcDir}\sites\Shimmie\sites.txt";  DestDir: "{app}\sites\Shimmie"; Flags: ignoreversion
