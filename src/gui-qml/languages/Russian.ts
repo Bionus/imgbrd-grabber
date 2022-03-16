@@ -574,7 +574,7 @@
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="46"/>
       <source>Username</source>
-      <translation>Имя пользовалеля</translation>
+      <translation>Имя пользователя</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/NetworkSettingsPage.qml" line="52"/>
@@ -609,7 +609,7 @@
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="29"/>
       <source>Replace spaces by underscores</source>
-      <translation>Заменить пробелы на символы подчеркивания</translation>
+      <translation>Заменять пробелы на подчёркивания</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/SaveSettingsPage.qml" line="34"/>
