@@ -80,7 +80,7 @@
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="53"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>Адрес</translation>
     </message>
     <message>
       <location filename="../src/components/AddSourceScreen.qml" line="63"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../src/components/settings/items/KeyValueSetting.qml" line="105"/>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Изменить</translation>
     </message>
   </context>
   <context>
