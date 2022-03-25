@@ -428,7 +428,7 @@
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="70"/>
       <source>Rounded grid</source>
-      <translation>Скругленная сетка</translation>
+      <translation>Скруглённая сетка</translation>
     </message>
     <message>
       <location filename="../src/components/settings/pages/InterfaceSettingsPage.qml" line="71"/>
