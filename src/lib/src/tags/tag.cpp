@@ -31,7 +31,6 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 		// Some artist names end with " (artist)" so we can guess their type
 		if (m_text.endsWith(QLatin1String("(artist)"))) {
 			m_type = TagType(QStringLiteral("artist"));
-			m_text = m_text.left(m_text.length() - 9);
 		}
 
 		const int sepPos = m_text.indexOf(':');
@@ -55,6 +54,11 @@ Tag::Tag(int id, const QString &text, TagType type, int count, QStringList relat
 				m_text = m_text.mid(sepPos + 1);
 			}
 		}
+	}
+
+	// Remove suffixes to turn "name_(artist)" into "name"
+	if (false && m_text.endsWith(QStringLiteral("_(%1)").arg(m_type.name()))) {
+		m_text = m_text.left(m_text.length() - m_type.name().length() - 3);
 	}
 }
 

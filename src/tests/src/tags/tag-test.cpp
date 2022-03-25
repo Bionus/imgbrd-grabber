@@ -55,10 +55,10 @@ TEST_CASE("Tag")
 	}
 	SECTION("TypeArtistEnding")
 	{
-		Tag tag("tag_text (artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+		Tag tag("tag_text_(artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
 		REQUIRE(tag.type().name() == QString("artist"));
-		REQUIRE(tag.text() == QString("tag_text"));
+		REQUIRE(tag.text() == QString("tag_text_(artist)"));
 	}
 	SECTION("TypePrefix")
 	{
