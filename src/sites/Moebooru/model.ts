@@ -207,7 +207,8 @@ export const source: any = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.indexOf("Running Moebooru") !== -1;
+                    return src.indexOf("Running Moebooru") !== -1
+                        || src.indexOf("Running MyImouto 1") !== -1; // MyImouto is a PHP port of Moebooru
                 },
             },
         },

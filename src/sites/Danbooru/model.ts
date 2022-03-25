@@ -258,8 +258,7 @@ export const source: ISource = {
                     return "/";
                 },
                 parse: (src: string): boolean => {
-                    return src.indexOf("Running Danbooru 1") !== -1
-                        || src.indexOf("Running MyImouto 1") !== -1;
+                    return src.indexOf("Running Danbooru 1") !== -1;
                 },
             },
         },
