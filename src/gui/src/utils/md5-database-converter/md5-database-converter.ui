@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tag loader</string>
+   <string>MD5 database converter</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../../resources/resources.qrc">

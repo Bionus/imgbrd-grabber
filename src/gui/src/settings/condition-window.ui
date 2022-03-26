@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add a custom token</string>
+   <string>Add a conditional filename</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/resources.qrc">
