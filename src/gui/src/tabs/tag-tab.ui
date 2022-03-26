@@ -414,13 +414,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonPruneSources">
-       <property name="text">
-        <string>Prune</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QCheckBox" name="checkMergeResults">
        <property name="text">
         <string>&amp;Merge results</string>
@@ -580,12 +573,6 @@
      <y>63</y>
     </hint>
    </hints>
-  </connection>
-  <connection>
-   <sender>buttonPruneSources</sender>
-   <signal>clicked()</signal>
-   <receiver>TagTab</receiver>
-   <slot>pruneSources()</slot>
   </connection>
   <connection>
    <sender>buttonSourcesList</sender>
