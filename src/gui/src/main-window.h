@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
 		void aboutDonatePatreon();
 		void saveFolder();
 		void openSettingsFolder();
+		void pruneSources();
 		void blacklistFix();
 		void emptyDirsFix();
 		void md5FixOpen();

@@ -694,6 +694,10 @@ void MainWindow::openSettingsFolder()
 		showInGraphicalShell(dir.absolutePath());
 	}
 }
+void MainWindow::pruneSources()
+{
+	m_currentTab->pruneSources();
+}
 
 
 Site *MainWindow::getSelectedSiteOrDefault()
